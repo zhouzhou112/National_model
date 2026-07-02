@@ -1,0 +1,102 @@
+{
+  "source": {
+    "document": "D:/codeenv/pycharmproject/National_RL/tech_economic/EES_paper.pdf",
+    "document_identity": "CISPO Supplementary Information, Energy & Environmental Science, 2025",
+    "inventory": "D:/codeenv/pycharmproject/National_RL/tech_economic/outputs/techno_economic_parameter_inventory.tsv"
+  },
+  "finance": {
+    "real_wacc_fraction": 0.074,
+    "source_page": 69
+  },
+  "vre_cost_anchor": [
+    {"technology": "onwind", "capex_yuan_per_kw": 5800, "fixed_om_fraction_capex_per_year": 0.015, "source_page": 52},
+    {"technology": "offwind", "capex_yuan_per_kw": 11500, "fixed_om_fraction_capex_per_year": 0.015, "source_page": 52},
+    {"technology": "upv", "capex_yuan_per_kw": 3923, "fixed_om_fraction_capex_per_year": 0.005, "source_page": 52},
+    {"technology": "dpv", "capex_yuan_per_kw": 3740, "fixed_om_fraction_capex_per_year": 0.005, "source_page": 52},
+    {"technology": "csp", "capex_yuan_per_kw": 16643, "fixed_om_fraction_capex_per_year": 0.010, "source_page": 52},
+    {"technology": "hydro", "capex_yuan_per_kw": 13319, "fixed_om_fraction_capex_per_year": 0.020, "lifetime_years": 40, "source_page": 55}
+  ],
+  "thermal_ruc": [
+    {"technology": "bio", "pmin_fraction": 0.35, "pmax_fraction": 1.00, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 500, "shutdown_yuan_per_mw": 500, "inertia_s": 2.94, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 9.00, "ccs_power_loss_fraction": 0.00},
+    {"technology": "bioccs", "pmin_fraction": 0.35, "pmax_fraction": 1.00, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 500, "shutdown_yuan_per_mw": 500, "inertia_s": 2.94, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 10.30, "ccs_power_loss_fraction": 0.05},
+    {"technology": "coal", "pmin_fraction": 0.40, "pmax_fraction": 1.00, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 1100, "shutdown_yuan_per_mw": 1100, "inertia_s": 5.89, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 9.00, "ccs_power_loss_fraction": 0.00},
+    {"technology": "coalccs", "pmin_fraction": 0.40, "pmax_fraction": 1.00, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 1100, "shutdown_yuan_per_mw": 1100, "inertia_s": 5.89, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 11.25, "ccs_power_loss_fraction": 0.05},
+    {"technology": "cchp", "pmin_fraction": 0.60, "pmax_fraction": 0.90, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 1100, "shutdown_yuan_per_mw": 1100, "inertia_s": 5.89, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 9.47, "ccs_power_loss_fraction": 0.00},
+    {"technology": "cchpccs", "pmin_fraction": 0.60, "pmax_fraction": 0.90, "min_up_h": 8, "min_down_h": 8, "startup_yuan_per_mw": 1100, "shutdown_yuan_per_mw": 1100, "inertia_s": 5.89, "ramp_fraction_per_h": 0.25, "fuel_load_mj_per_kwh": 11.25, "ccs_power_loss_fraction": 0.05},
+    {"technology": "gas", "pmin_fraction": 0.30, "pmax_fraction": 1.00, "min_up_h": 4, "min_down_h": 2, "startup_yuan_per_mw": 300, "shutdown_yuan_per_mw": 300, "inertia_s": 4.97, "ramp_fraction_per_h": 0.50, "fuel_load_mj_per_kwh": 6.31, "ccs_power_loss_fraction": 0.00},
+    {"technology": "gasccs", "pmin_fraction": 0.30, "pmax_fraction": 1.00, "min_up_h": 4, "min_down_h": 2, "startup_yuan_per_mw": 300, "shutdown_yuan_per_mw": 300, "inertia_s": 4.97, "ramp_fraction_per_h": 0.50, "fuel_load_mj_per_kwh": 7.83, "ccs_power_loss_fraction": 0.05},
+    {"technology": "gchp", "pmin_fraction": 0.30, "pmax_fraction": 1.00, "min_up_h": 4, "min_down_h": 2, "startup_yuan_per_mw": 300, "shutdown_yuan_per_mw": 300, "inertia_s": 4.97, "ramp_fraction_per_h": 0.50, "fuel_load_mj_per_kwh": 6.31, "ccs_power_loss_fraction": 0.00},
+    {"technology": "gchpccs", "pmin_fraction": 0.30, "pmax_fraction": 1.00, "min_up_h": 4, "min_down_h": 2, "startup_yuan_per_mw": 300, "shutdown_yuan_per_mw": 300, "inertia_s": 4.97, "ramp_fraction_per_h": 0.50, "fuel_load_mj_per_kwh": 7.83, "ccs_power_loss_fraction": 0.05},
+    {"technology": "nuclear", "pmin_fraction": 0.85, "pmax_fraction": 1.00, "min_up_h": 22, "min_down_h": 22, "startup_yuan_per_mw": 2200, "shutdown_yuan_per_mw": 2200, "inertia_s": 4.07, "ramp_fraction_per_h": 0.05, "fuel_load_mj_per_kwh": 10.00, "ccs_power_loss_fraction": 0.00}
+  ],
+  "thermal_economic": {
+    "source_page": 60,
+    "fixed_om_fraction_capex_per_year": {"coal": 0.02, "coalccs": 0.025, "cchp": 0.02, "cchpccs": 0.025, "gas": 0.02, "gasccs": 0.025, "gchp": 0.02, "gchpccs": 0.025, "bio": 0.02, "bioccs": 0.025, "nuclear": 0.015},
+    "variable_om_yuan_per_mwh": {"coal": 31, "coalccs": 58, "cchp": 31, "cchpccs": 58, "gas": 23, "gasccs": 46, "gchp": 23, "gchpccs": 46, "bio": 35, "bioccs": 60, "nuclear": 14},
+    "biofuel_yuan_per_tonne": 700,
+    "nuclear_fuel_yuan_per_kwh": 0.069,
+    "nuclear_capex_yuan_per_kw": {"2030": 19320, "2050": 17250, "2060": 16215}
+  },
+  "emissions": {
+    "source_page": 59,
+    "ccs_capture_fraction": 0.90,
+    "coal_kgco2_per_kwh": {"2030": 0.82, "2040": 0.7633333333, "2050": 0.7066666667, "2060": 0.65},
+    "gas_kgco2_per_kwh": {"2030": 0.37, "2040": 0.3466666667, "2050": 0.3233333333, "2060": 0.30},
+    "beccs_kgco2_per_kwh": {"2030": -1.77, "2040": -1.40, "2050": -1.21, "2060": -1.10}
+  },
+  "storage": [
+    {"technology": "phs", "fixed_om_fraction_capex_per_year": 0.015, "variable_om_yuan_per_mwh": 1.5, "charge_efficiency": 0.88, "discharge_efficiency": 0.88, "self_discharge_fraction_per_day": 0.0, "duration_h": 8, "lifetime_years": 40},
+    {"technology": "battery", "fixed_om_fraction_capex_per_year": 0.010, "variable_om_yuan_per_mwh": 20, "charge_efficiency": 0.95, "discharge_efficiency": 0.95, "self_discharge_fraction_per_day": 0.0007, "duration_h": 4, "lifetime_years": 15}
+  ],
+  "transmission": {
+    "source_page": 65,
+    "loss_fraction_per_km": 0.000032,
+    "substation_lifetime_years": 25,
+    "overhead_line_lifetime_years": 50,
+    "voltage_options": [
+      {"technology": "DC", "voltage_kv": 1100, "substation_yuan_per_kw": 637, "overhead_line_thousand_yuan_per_km": 7000},
+      {"technology": "AC", "voltage_kv": 1000, "substation_yuan_per_kw": 370, "overhead_line_thousand_yuan_per_km": 7080},
+      {"technology": "DC", "voltage_kv": 800, "substation_yuan_per_kw": 592, "overhead_line_thousand_yuan_per_km": 4950},
+      {"technology": "AC", "voltage_kv": 750, "substation_yuan_per_kw": 148, "overhead_line_thousand_yuan_per_km": 2990},
+      {"technology": "DC", "voltage_kv": 500, "substation_yuan_per_kw": 912, "overhead_line_thousand_yuan_per_km": 1986},
+      {"technology": "AC", "voltage_kv": 500, "substation_yuan_per_kw": 159, "overhead_line_thousand_yuan_per_km": 2640},
+      {"technology": "AC", "voltage_kv": 330, "substation_yuan_per_kw": 241, "overhead_line_thousand_yuan_per_km": 1214}
+    ]
+  },
+  "ccs": {
+    "source_page": 68,
+    "capture_yuan_per_tco2": 260,
+    "transport_yuan_per_tco2_km": 0.8,
+    "storage_yuan_per_tco2": 116,
+    "storage_injection_lifetime_years": 65
+  },
+  "dac": {
+    "source_pages": "68-69",
+    "lifetime_years": 25,
+    "heat_pump_cop": 2.5,
+    "base_cost_year": 2022,
+    "technologies": [
+      {"technology": "koh_cl", "name": "KOH with Ca looping", "capex_yuan_per_tco2_per_year_capacity": 5894, "fixed_om_yuan_per_tco2_per_year_capacity": 171, "variable_om_yuan_per_tco2": 17, "direct_electricity_gj_per_tco2": 1.32, "direct_heat_gj_per_tco2": 5.3, "ratios": {"2030": 0.94, "2040": 0.91, "2050": 0.88, "2060": 0.75}},
+      {"technology": "koh_b", "name": "KOH with BPMED", "capex_yuan_per_tco2_per_year_capacity": 5580, "fixed_om_yuan_per_tco2_per_year_capacity": 161, "variable_om_yuan_per_tco2": 1820, "direct_electricity_gj_per_tco2": 22.5, "direct_heat_gj_per_tco2": 0.0, "ratios": {"2030": 0.83, "2040": 0.79, "2050": 0.75, "2060": 0.69}},
+      {"technology": "ssor", "name": "Solid sorbent", "capex_yuan_per_tco2_per_year_capacity": 50754, "fixed_om_yuan_per_tco2_per_year_capacity": 1378, "variable_om_yuan_per_tco2": 862, "direct_electricity_gj_per_tco2": 0.99, "direct_heat_gj_per_tco2": 9.8, "ratios": {"2030": 0.41, "2040": 0.36, "2050": 0.32, "2060": 0.28}},
+      {"technology": "mgo_am", "name": "MgO ambient weathering", "capex_yuan_per_tco2_per_year_capacity": 6403, "fixed_om_yuan_per_tco2_per_year_capacity": 184, "variable_om_yuan_per_tco2": 14, "direct_electricity_gj_per_tco2": 0.78, "direct_heat_gj_per_tco2": 6.2, "ratios": {"2030": 0.95, "2040": 0.89, "2050": 0.84, "2060": 0.72}}
+    ]
+  },
+  "unresolved": [
+    {"parameter": "VRE, thermal and storage future CapEx", "status": "RESOLVED_VISUAL_ESTIMATE", "reason": "Use Energy_Technologies_CapEx_Predictions.xlsx; values are user-extracted visual estimates from CISPO Figures S36, S40 and S42."},
+    {"parameter": "CapEx figure-digitization uncertainty and price basis", "status": "SOFT_ASSUMPTION", "reason": "The workbook states visual estimates in yuan/kW; exact digitization error and real/nominal price basis are not provided."},
+    {"parameter": "CHP CapEx mapping", "status": "SOFT_ASSUMPTION", "reason": "Coal/gas CHP and CCS-CHP use the corresponding fuel and CCS CapEx curves because no separate extracted CHP rows were supplied."},
+    {"parameter": "hydropower CapEx trajectory", "status": "SOFT_ASSUMPTION", "reason": "The explicit 13,319 yuan/kW CISPO anchor is held constant for 2030-2060 because the CapEx workbook has no hydro row."},
+    {"parameter": "provincial coal and gas fuel prices", "status": "RESOLVED_USER_SCREENSHOT", "reason": "Use the user-provided Supplementary Table 2 screenshot, converted from USD/GJ to yuan/GJ at 6.9 yuan/USD."},
+    {"parameter": "fuel-price year and temporal trajectory", "status": "SOFT_ASSUMPTION", "reason": "The screenshot does not state a price year or future trajectory; converted prices are held constant from 2025 through 2060 without inflation escalation."},
+    {"parameter": "Beijing and Tibet coal fuel price", "status": "CONSTRAINT_REQUIRED", "reason": "Coal price is blank in the screenshot and existing 2025 coal capacity is zero; new coal/coal-CCS/coal-CHP capacity is disabled in these provinces unless a price is supplied."},
+    {"parameter": "Inner Mongolia fuel-price aggregation", "status": "SOFT_ASSUMPTION", "reason": "31-province implementation uses the arithmetic mean of East and West Inner Mongolia screenshot values."},
+    {"parameter": "2025 carbon emissions limit", "status": "NOT_APPLICABLE_BASE_YEAR", "reason": "CISPO carbon pathways begin in 2030; 2025 is retained as an unconstrained fixed calibration year."},
+    {"parameter": "2025 thermal emission factors", "status": "SOFT_ASSUMPTION", "reason": "The SI starts in 2030; 2030 values are held backward only for 2025 fixed-base dispatch accounting."},
+    {"parameter": "OSM substation rated capacity and available bays", "status": "RESOLVED_PROXY_INITIAL_ONLY", "reason": "The EES SI does not provide rated substation capacity. Initial VRE interface capacity is conservatively proxied by simultaneous output of all mapped 2025 onshore wind, offshore wind and UPV nameplate capacity; a paper-consistent 2023 hourly coincident-peak comparator is also retained. This proxy is not an equipment nameplate or available-bay observation."},
+    {"parameter": "substation-to-load-center trunk distance", "status": "RESOLVED_GEODESIC_PROXY", "reason": "City load centers are estimated from 2022 city electricity coverage and urban-population-weighted county centroids; each substation is connected to the nearest center in the same province by great-circle distance."},
+    {"parameter": "city load-center spatial proxy", "status": "SOFT_ASSUMPTION", "reason": "Urban-population-weighted county centroids locate city-scale demand more directly than substation density, but do not reproduce within-city consumption grids or individual major-node coordinates."},
+    {"parameter": "trunk engineering route", "status": "SOFT_ASSUMPTION", "reason": "Trunk distance is geodesic between OSM substation and city load-center proxy, not a routed right-of-way or existing network path."},
+    {"parameter": "routed spur/export cable length", "status": "SOFT_ASSUMPTION", "reason": "Current distance is great-circle to the nearest same-province >=220 kV OSM substation, not a terrain/sea-route engineering alignment."}
+  ]
+}

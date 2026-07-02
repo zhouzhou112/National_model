@@ -1,0 +1,56 @@
+{
+  "source": {
+    "dataset_title": "Monthly Electricity Consumption Data at 1km x 1km grid for 280 Cities in China from 2012 to 2019",
+    "article_doi": "10.1038/s41597-024-03684-4",
+    "data_doi": "10.6084/m9.figshare.25398559.v1",
+    "license": "CC BY 4.0",
+    "archive_md5": "87cdc40f0f5c644566c2506c238fc9fc",
+    "archive_size_bytes": 198361539,
+    "expected_first_month": "2012-04",
+    "expected_last_month": "2019-12",
+    "expected_raster_count": 93,
+    "documented_city_count": 280,
+    "documented_national_electricity_share": 0.906,
+    "unit_status": "unconfirmed_native_raster_unit"
+  },
+  "audit": {
+    "spatial_weight_year": 2019,
+    "maximum_unmatched_native_value_share": 0.001,
+    "maximum_boundary_leakage_native_value_share": 0.002,
+    "expected_width": 4833,
+    "expected_height": 5255,
+    "expected_resolution_m": 1000.0,
+    "expected_positive_value_minimum": 0.0,
+    "write_annual_raster": true,
+    "annual_raster_nodata": 0.0
+  },
+  "load_center_identification": {
+    "status": "candidate_only_do_not_replace_production_outputs",
+    "spatial_weight_source": "2019 raster distribution within covered cities",
+    "city_weight_source": "data/grid/city_load_centers.csv annual_city_power_share_in_province",
+    "uncovered_city_fallback": "existing urban-population-weighted city center",
+    "target_weighted_p95_distance_km": 50.0,
+    "target_weighted_p99_distance_km": 100.0,
+    "maximum_centers_per_province": 50,
+    "random_seed": 20260702,
+    "kmeans_n_init": 10,
+    "snap_to_unique_substation": true,
+    "minimum_substation_voltage_kv": 220.0
+  },
+  "paper_reconstruction": {
+    "paper_section": "Supplementary Information S3.3.2 Grid integration",
+    "paper_pdf_pages": [47, 48, 49],
+    "primary_urban_area_scale": "1:50m",
+    "tibet_supplement_scale": "1:10m",
+    "centroid_crs_method": "geometric centroid after projection to the source electricity raster Albers equal-area CRS",
+    "centroid_scope_note": "272 centers fall in the filtered 337-city 31-province boundary; the earlier count of 277 used an unfiltered city layer that included model-out-of-scope areas",
+    "expected_50m_china_center_count_current_snapshot": 272,
+    "expected_10m_tibet_additional_center_count_current_snapshot": 6,
+    "expected_total_center_count_current_snapshot": 278,
+    "power_grid_scope_adaptation": "31 provinces with Inner Mongolia merged",
+    "minimum_substation_voltage_kv": 220.0,
+    "matching_objective": "minimize geodesic grid_to_substation_spur_km plus substation_to_nearest_urban_center_trunk_km within province",
+    "distributed_pv_integration_distance_km": 0.0,
+    "candidate_status": "paper_faithful_candidate_not_production_default"
+  }
+}

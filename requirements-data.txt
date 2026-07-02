@@ -1,0 +1,16 @@
+# Dependencies for rebuilding and reading the CISPO input package.
+pandas>=2.2
+numpy>=1.26
+scipy>=1.12
+xarray>=2024.1
+zarr>=2.18,<3
+numcodecs>=0.12
+netCDF4>=1.6
+xlrd>=2.0
+openpyxl>=3.1
+
+# The optimization environment also requires a licensed Gurobi installation.
+gurobipy>=11
+
+# Rebuilding grid/substation inputs requires ArcGIS Pro Python with arcpy;
+# arcpy is supplied by ArcGIS Pro and is not installed from pip.

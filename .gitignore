@@ -1,0 +1,29 @@
+# Generated model-ready data and optimization runs
+data/
+outputs/
+logs/
+tmp/
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Gurobi generated artifacts
+*.lp
+*.mps
+*.rew
+*.rlp
+*.sol
+*.ilp
+*.prm
+gurobi.log
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
