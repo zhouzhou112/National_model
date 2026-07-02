@@ -3,6 +3,14 @@ data/
 outputs/
 logs/
 tmp/
+transfer_bundle/
+
+# Abandoned local Benders prototype retained outside production history
+MODEL_IMPLEMENTATION_STATUS.md
+cispo_model/subproblem.py
+scripts/build_cispo_2030_master.py
+scripts/solve_cispo_2030_block.py
+legacy_benders/
 
 # Python caches and local environments
 __pycache__/

@@ -1233,13 +1233,13 @@ DAC 年捕集量被平均分配到所有小时，因此形成恒定附加负荷�
 
 ## 6. 动态规划年份设置
 
-CISPO 不是一次性把所有年份联合求解，而是按规划年序贯求解。本地复现把模型边界前移至 2025：2025 只用于固定存量和完整 8760 小时校准，不允许新增容量投资；随后沿用原文扩张决策年：
+CISPO 不是一次性把所有年份联合求解，而是按规划年序贯求解。本地复现把模型边界前移至 2025：2025 仅作为存量、退役和初始网络状态的边界输入，不单独运行优化；第一个完整 8760 小时规划问题为 2030，表示 2025—2030 的容量变化和年度成本；随后沿用原文扩张决策年：
 
 ```text
-2025 [fixed calibration] -> 2030 -> 2040 -> 2050 -> 2060
+2025 [boundary state only] -> 2030 -> 2040 -> 2050 -> 2060
 ```
 
-每个年份单独运行一个完整 8760 小时模型。2025 运行存量系统校准；2030 起，上一期优化装机扣除退役后作为下一规划年的已有装机下界。2025 现有火电容量不得再扣除 `2025` 退役桶，否则会把基准年存量重复减少。
+2030/2040/2050/2060 各自运行一个完整 8760 小时模型。2030 下界由 2025 边界存量扣除截至 2030 的退役得到；此后上一期优化装机扣除退役后作为下一规划年的已有装机下界。2025 现有火电容量不得再扣除 `2025` 退役桶，否则会把基准存量重复减少。
 
 ### 6.1 容量继承公式
 
@@ -1259,7 +1259,7 @@ K^{opt}_{i,k,y-\Delta y}-K^{retired}_{i,k,y}
 
 ### 6.2 2025 基准状态与 2030 初始下界
 
-本地实现以 2025 年已运行装机作为基准状态。2025 年 `capacity_expansion_enabled=False`，其存量容量只用于校准负荷平衡、调度、排放和安全约束。2030 年下界由 2025 存量扣除截至 2030 的退役容量得到；核电采用 GEM 2030 committed/pipeline 下界。若已建容量退役后允许替换，必须把 replacement capacity 与真正新增容量分开记录。
+本地实现以 2025 年已运行装机作为边界状态，不建立2025调度优化实例。2030 年下界由 2025 存量扣除截至 2030 的退役容量得到；核电采用 GEM 2030 committed/pipeline 下界。若已建容量退役后允许替换，必须把 replacement capacity 与真正新增容量分开记录。
 
 ### 6.3 寿命退役
 
@@ -1416,7 +1416,7 @@ def solve_year(year, existing_capacity, scenario_params):
 然后外层循环：
 
 ```python
-base = run_fixed_base_dispatch(2025, existing_capacity, expansion_enabled=False)
+existing_capacity = load_boundary_state(2025)
 for year in [2030, 2040, 2050, 2060]:
     result = solve_year(year, existing_capacity, scenario[year])
     existing_capacity = update_existing_capacity(result.capacity, retirements, lifetime)
