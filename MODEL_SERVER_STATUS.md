@@ -6,6 +6,7 @@
 - 2030 is the first planning year and represents changes over 2025-2030.
 - Production is one continuous LP containing all 8760 chronological hours.
 - No Benders decomposition, representative days, sampled hours, or temporal weights are used.
+- Optional 744h and 4344h leading-hour horizons are explicitly test-only; 8760h remains the only scientific horizon.
 
 ## Implemented
 
@@ -22,7 +23,8 @@
 - Data preflight: 23 PASS, 1 INFO, 0 WARN, 0 HARD_FAIL.
 - Estimated full scale: 32,678,590 variables, 53,204,758 constraints, 738,317,504 nonzeros.
 - Conservative model-memory estimate: 38.23 GiB; configured `SoftMemLimit`: 80 GiB.
-- 24h structural smoke: 358,491 variables, 296,321 constraints, 1,734,974 nonzeros.
+- Local 744h build-only test: 3,026,091 variables, 4,771,841 constraints, 37,350,577 nonzeros; completed in about 143 seconds without optimization.
+- Six-month/full-year local preflight correctly reported that the 32/64 GiB memory gates were not met; no construction was attempted.
 - Server: 96 logical CPUs, 125 GiB RAM, 4.3 TiB free under `/data`.
 - Server Gurobi package/license: not yet configured.
 

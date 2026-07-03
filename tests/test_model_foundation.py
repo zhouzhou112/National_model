@@ -4,7 +4,7 @@ import unittest
 
 from cispo_model.config import capital_recovery_factor, load_model_config
 from cispo_model.data import load_model_data
-from cispo_model.preflight import run_preflight
+from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.timeblocks import make_time_blocks
 
 
@@ -25,6 +25,25 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertEqual(blocks[-1].hours, 8760)
         covered = [hour for block in blocks for hour in range(block.hour_start, block.hour_stop)]
         self.assertEqual(covered, list(range(8760)))
+
+    def test_supported_horizons_are_exact_and_test_scoped(self):
+        one_month = self.config.horizon("one_month")
+        six_months = self.config.horizon("six_months")
+        full_year = self.config.horizon("full_year")
+        self.assertEqual(one_month["hours"], 744)
+        self.assertEqual(six_months["hours"], 4344)
+        self.assertEqual(full_year["hours"], 8760)
+        self.assertTrue(one_month["test_only"])
+        self.assertTrue(six_months["test_only"])
+        self.assertFalse(full_year["test_only"])
+
+    def test_horizon_scale_estimates_are_monotonic(self):
+        estimates = [
+            estimate_full_model_scale(self.config, self.data, hours).variables
+            for hours in (744, 4344, 8760)
+        ]
+        self.assertLess(estimates[0], estimates[1])
+        self.assertLess(estimates[1], estimates[2])
 
     def test_full_data_preflight_has_no_hard_fail(self):
         report = run_preflight(self.config, self.data)

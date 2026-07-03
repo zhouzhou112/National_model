@@ -418,19 +418,20 @@ def build_master(
 
     # Project always-on requirements to chronological block boundaries. A
     # boundary state is the online state of the hour immediately preceding the
-    # block; boundary 0 therefore corresponds to hour 8759 under cyclic-year
-    # conditions.
+    # block; boundary 0 therefore corresponds to the last selected hour under
+    # cyclic-horizon conditions.
     hour_dates = (
         data.load[["hour_index", "datetime_bj"]]
         .drop_duplicates("hour_index")
         .sort_values("hour_index")
     )
     hour_month = pd.to_datetime(hour_dates.datetime_bj).dt.month.to_numpy()
+    selected_hours = blocks[-1].hour_stop
     boundary_hours = [
-        (blocks[boundary].hour_start - 1) % config.hours
+        (blocks[boundary].hour_start - 1) % selected_hours
         for boundary in range(b_count)
     ]
-    boundary_hours.append(config.hours - 1)
+    boundary_hours.append(selected_hours - 1)
     boundary_cf = np.zeros((b_count + 1, len(data.vre_sites)), dtype=np.float64)
     for source_technology, group in data.vre_sites.groupby("cf_source_technology", sort=False):
         boundary_cf[:, group.index.to_numpy(dtype=int)] = data.cf.read_hours(
@@ -444,9 +445,9 @@ def build_master(
     bio_minimum = float(config.raw["thermal"]["biomass_minimum_online_fraction"])
     for boundary in range(b_count + 1):
         if boundary == b_count:
-            previous_hour = config.hours - 1
+            previous_hour = selected_hours - 1
         else:
-            previous_hour = (blocks[boundary].hour_start - 1) % config.hours
+            previous_hour = (blocks[boundary].hour_start - 1) % selected_hours
         if int(hour_month[previous_hour]) in winter_months:
             for k in chp_indices:
                 model.addConstr(

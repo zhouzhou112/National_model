@@ -36,6 +36,14 @@ class ModelConfig:
     def vre_scenario(self) -> str:
         return str(self.raw["vre_scenario"])
 
+    def horizon(self, name: str) -> dict[str, Any]:
+        horizons = self.raw["construction"]["horizons"]
+        if name not in horizons:
+            raise ValueError(
+                f"Unknown horizon {name!r}; choose one of {', '.join(sorted(horizons))}"
+            )
+        return dict(horizons[name])
+
     def validate(self) -> None:
         if self.boundary_year != 2025:
             raise ValueError("The current production boundary must remain 2025")
@@ -58,6 +66,21 @@ class ModelConfig:
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))
         if chunk <= 0 or chunk > self.hours:
             raise ValueError("build_hour_chunk_size must be in [1, 8760]")
+        horizons = self.raw["construction"].get("horizons", {})
+        expected_hours = {"one_month": 744, "six_months": 4344, "full_year": 8760}
+        if set(horizons) != set(expected_hours):
+            raise ValueError("horizons must contain one_month, six_months, and full_year")
+        for name, expected in expected_hours.items():
+            if int(horizons[name]["hours"]) != expected:
+                raise ValueError(f"{name} must contain exactly {expected} chronological hours")
+            if float(horizons[name]["minimum_available_memory_gb"]) <= 0:
+                raise ValueError(f"{name} memory gate must be positive")
+        if bool(horizons["full_year"]["test_only"]):
+            raise ValueError("full_year cannot be marked test-only")
+        if not bool(horizons["one_month"]["test_only"]) or not bool(
+            horizons["six_months"]["test_only"]
+        ):
+            raise ValueError("truncated horizons must remain test-only")
 
 
 def load_model_config(path: str | Path | None = None) -> ModelConfig:

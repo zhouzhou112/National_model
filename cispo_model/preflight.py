@@ -26,9 +26,15 @@ class ScaleEstimate:
     estimated_peak_block_memory_gb: float
 
 
-def estimate_full_model_scale(config: ModelConfig, data: ModelData) -> ScaleEstimate:
+def estimate_full_model_scale(
+    config: ModelConfig,
+    data: ModelData,
+    hours: int | None = None,
+) -> ScaleEstimate:
     p = len(data.provinces)
-    h = config.hours
+    h = config.hours if hours is None else int(hours)
+    if h <= 0 or h > config.hours:
+        raise ValueError("scale-estimate hours must be in [1, 8760]")
     v = len(VRE_TECHS)
     k = len(THERMAL_TECHS)
     s = len(STORAGE_TECHS)

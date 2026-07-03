@@ -101,14 +101,14 @@ def build_full_year_monolithic(
     data: ModelData,
     *,
     compute_max_cf: bool = True,
-    structural_smoke_hours: int | None = None,
+    optimization_hours: int | None = None,
 ) -> MasterArtifacts:
-    """Build the full 2030/8760 continuous LP in one Gurobi model."""
+    """Build one chronological LP over the selected number of leading hours."""
     if config.raw["construction"]["architecture"] != "full_year_monolithic_lp":
         raise ValueError("Refusing to build a non-monolithic production configuration")
-    hours = config.hours if structural_smoke_hours is None else int(structural_smoke_hours)
+    hours = config.hours if optimization_hours is None else int(optimization_hours)
     if hours <= 0 or hours > config.hours:
-        raise ValueError("structural_smoke_hours must be in [1, 8760]")
+        raise ValueError("optimization_hours must be in [1, 8760]")
     block = TimeBlock(block_id=0, hour_start=0, hour_stop=hours)
     artifacts = build_master(config, data, [block], compute_max_cf=compute_max_cf)
     model = artifacts.model
@@ -138,7 +138,7 @@ def build_full_year_monolithic(
         model, config, data, vre_capacity, vre_generation, p_index, hours
     )
 
-    # Continuous capacity-based RUC with a cyclic transition from hour 8759 to 0.
+    # Continuous capacity-based RUC with a cyclic transition over the selected horizon.
     online = model.addMVar((p_count, k_count, hours), lb=0.0, name="online_capacity_gw")
     startup = model.addMVar((p_count, k_count, hours), lb=0.0, name="startup_capacity_gw")
     shutdown = model.addMVar((p_count, k_count, hours), lb=0.0, name="shutdown_capacity_gw")
@@ -503,10 +503,10 @@ def build_full_year_monolithic(
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
     artifacts.index.update(
-        full_year_block=block,
+        optimization_block=block,
         line_efficiency=line_efficiency,
         architecture="full_year_monolithic_lp",
-        structural_smoke_hours=structural_smoke_hours,
+        optimization_hours=hours,
     )
     model.update()
     return artifacts

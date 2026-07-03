@@ -138,6 +138,26 @@
     "architecture": "full_year_monolithic_lp",
     "build_hour_chunk_size": 168,
     "hour_chunk_size": 168,
+    "horizons": {
+      "one_month": {
+        "hours": 744,
+        "minimum_available_memory_gb": 8,
+        "test_only": true,
+        "definition": "first 31 days (January), cyclic over the selected test horizon"
+      },
+      "six_months": {
+        "hours": 4344,
+        "minimum_available_memory_gb": 32,
+        "test_only": true,
+        "definition": "first six calendar months (January-June), cyclic over the selected test horizon"
+      },
+      "full_year": {
+        "hours": 8760,
+        "minimum_available_memory_gb": 64,
+        "test_only": false,
+        "definition": "full non-leap calendar year, production scientific horizon"
+      }
+    },
     "write_lp": false,
     "compute_iis_on_infeasible": true,
     "minimum_available_memory_gb_before_build": 64,
