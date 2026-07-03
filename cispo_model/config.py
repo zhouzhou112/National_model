@@ -61,6 +61,21 @@ class ModelConfig:
             raise ValueError("Debug slacks must be disabled in production configuration")
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
+        if not self.raw["features"].get("annual_load_center_transmission", False):
+            raise ValueError("Production requires the annual 278-load-center transmission layer")
+        center_network = self.raw.get("load_center_network", {})
+        if center_network.get("scenario") != "Natural_Earth_paper_replication_278":
+            raise ValueError("Production load-center scenario must be Natural_Earth_paper_replication_278")
+        if center_network.get("voltage_class") != "AC_500kV":
+            raise ValueError("The current intra-province cost basis must remain AC_500kV")
+        utilization = float(center_network.get("design_utilization_fraction", 0.0))
+        if not 0.0 < utilization <= 1.0:
+            raise ValueError("load-center design_utilization_fraction must be in (0, 1]")
+        if float(center_network.get("intra_loss_fraction_per_km", -1.0)) != 0.0:
+            raise ValueError(
+                "The annual layer currently requires zero intra loss; nonzero loss must first be "
+                "fed back into the hourly provincial energy balance"
+            )
         if self.raw["construction"].get("architecture") != "full_year_monolithic_lp":
             raise ValueError("Production architecture must be full_year_monolithic_lp")
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))

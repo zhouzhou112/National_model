@@ -86,6 +86,149 @@ def export_master_solution(
     line["new_capacity_gw"] = variables["line_new"].X
     line.to_csv(output_dir / "transmission_capacity.csv", index=False, encoding="utf-8-sig")
 
+    if "intra_load_center_capacity" in variables:
+        intra = data.intra_load_center_edges[
+            [
+                "intra_edge_id", "province_code", "from_load_center_id",
+                "to_load_center_id", "distance_km", "technology",
+                "initial_capacity_gw", "unit_cost_yuan_per_kw",
+            ]
+        ].copy()
+        intra["capacity_gw"] = variables["intra_load_center_capacity"].X
+        intra["new_capacity_gw"] = variables["intra_load_center_new"].X
+        if "intra_load_center_flow_forward" in variables:
+            intra["annual_flow_forward_gwh"] = variables["intra_load_center_flow_forward"].X
+            intra["annual_flow_reverse_gwh"] = variables["intra_load_center_flow_reverse"].X
+        intra.to_csv(
+            output_dir / "load_center_intra_transmission.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+
+    if "load_center_annual_injection" in variables:
+        centers = data.load_centers[
+            [
+                "load_center_id", "province_code", "province_name_zh", "lon", "lat",
+                "annual_demand_share_in_province",
+            ]
+        ].copy()
+        centers["annual_injection_gwh"] = variables["load_center_annual_injection"].X
+        centers["annual_effective_demand_gwh"] = variables["load_center_annual_demand"].X
+        centers["annual_external_export_gwh"] = variables["load_center_external_export"].X
+        centers.to_csv(
+            output_dir / "load_center_annual_balance.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+        generation_rows = []
+        vre_generation = variables["load_center_vre_generation"].X
+        ror_generation = variables["load_center_ror_generation"].X
+        reservoir_generation = variables["load_center_reservoir_generation"].X
+        for center_position, center in data.load_centers.reset_index(drop=True).iterrows():
+            for technology_position, technology in enumerate(VRE_TECHS):
+                generation_rows.append(
+                    {
+                        "load_center_id": center.load_center_id,
+                        "province_code": int(center.province_code),
+                        "technology": technology,
+                        "annual_generation_gwh": vre_generation[
+                            center_position, technology_position
+                        ],
+                    }
+                )
+            for technology, values in (
+                ("ror", ror_generation),
+                ("reservoir", reservoir_generation),
+            ):
+                generation_rows.append(
+                    {
+                        "load_center_id": center.load_center_id,
+                        "province_code": int(center.province_code),
+                        "technology": technology,
+                        "annual_generation_gwh": values[center_position],
+                    }
+                )
+        pd.DataFrame(generation_rows).to_csv(
+            output_dir / "load_center_annual_generation.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+        province_accounts = data.provinces[["province_code", "province_name_zh"]].copy()
+        province_accounts["annual_non_spatial_injection_gwh"] = variables[
+            "province_annual_non_spatial_injection"
+        ].X
+        province_accounts["annual_effective_demand_gwh"] = variables[
+            "province_annual_effective_demand"
+        ].X
+        province_accounts["annual_external_sent_gwh"] = variables[
+            "province_annual_external_sent"
+        ].X
+        province_accounts.to_csv(
+            output_dir / "province_annual_load_center_accounts.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+        forward = variables["intra_load_center_flow_forward"].X
+        reverse = variables["intra_load_center_flow_reverse"].X
+        balance_residual = (
+            variables["load_center_annual_injection"].X
+            - variables["load_center_annual_demand"].X
+            - variables["load_center_external_export"].X
+        )
+        center_index = artifacts.index["load_center_index"]
+        for edge, row in enumerate(data.intra_load_center_edges.itertuples(index=False)):
+            origin = center_index[str(row.from_load_center_id)]
+            destination = center_index[str(row.to_load_center_id)]
+            balance_residual[origin] -= forward[edge]
+            balance_residual[destination] += forward[edge]
+            balance_residual[destination] -= reverse[edge]
+            balance_residual[origin] += reverse[edge]
+        province_export_residual = []
+        external_sent = variables["province_annual_external_sent"].X
+        for p, province_code in enumerate(artifacts.index["province_codes"]):
+            positions = data.load_centers.index[
+                data.load_centers.province_code.eq(province_code)
+            ].to_numpy(dtype=int)
+            province_export_residual.append(
+                variables["load_center_external_export"].X[positions].sum()
+                - external_sent[p]
+            )
+        design_hours = float(artifacts.index["intra_load_center_design_hours"])
+        capacity_residual = (
+            forward + reverse
+            - design_hours * variables["intra_load_center_capacity"].X
+        )
+        dpv_rows = data.vre_sites.technology.eq("dpv").to_numpy()
+        dpv_spur_max = (
+            float(variables["spur_augmentation"].X[dpv_rows].max())
+            if dpv_rows.any() else 0.0
+        )
+        qc = {
+            "maximum_center_balance_residual_gwh": float(np.abs(balance_residual).max()),
+            "maximum_province_export_residual_gwh": float(
+                np.abs(province_export_residual).max()
+            ),
+            "maximum_intra_capacity_violation_gwh": float(
+                np.maximum(capacity_residual, 0.0).max()
+            ),
+            "bidirectional_active_edge_count": int(
+                ((forward > 1e-7) & (reverse > 1e-7)).sum()
+            ),
+            "dpv_spur_augmentation_max_gw": dpv_spur_max,
+        }
+        pd.DataFrame([qc]).to_csv(
+            output_dir / "load_center_network_qc.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+        if (
+            qc["maximum_center_balance_residual_gwh"] > 1e-5
+            or qc["maximum_province_export_residual_gwh"] > 1e-5
+            or qc["maximum_intra_capacity_violation_gwh"] > 1e-5
+            or qc["dpv_spur_augmentation_max_gw"] > 1e-8
+        ):
+            raise RuntimeError(f"Load-center solution QC failed: {qc}")
+
     pd.DataFrame(
         [
             {"cost_component": name, "value_million_cny_per_year": expression.getValue()}
@@ -234,6 +377,29 @@ def build_master(
     line_crf = capital_recovery_factor(wacc, float(lifetimes["transmission"]))
     line_unit_cost = data.lines.preset_unit_cost_yuan_per_kw.to_numpy(dtype=float)
     costs["transmission_investment"] = (line_unit_cost * line_crf) @ line_new
+
+    if config.raw["features"]["annual_load_center_transmission"]:
+        intra_floor = data.intra_load_center_edges.initial_capacity_gw.to_numpy(dtype=float)
+        intra_new = model.addMVar(
+            len(data.intra_load_center_edges), lb=0.0, name="intra_load_center_new_gw"
+        )
+        intra_capacity = model.addMVar(
+            len(data.intra_load_center_edges),
+            lb=intra_floor,
+            name="intra_load_center_capacity_gw",
+        )
+        model.addConstr(
+            intra_capacity == intra_floor + intra_new,
+            name="intra_load_center_capacity_accounting",
+        )
+        variables.update(
+            intra_load_center_new=intra_new,
+            intra_load_center_capacity=intra_capacity,
+        )
+        intra_unit_cost = data.intra_load_center_edges.unit_cost_yuan_per_kw.to_numpy(dtype=float)
+        costs["load_center_intra_transmission_investment"] = (
+            intra_unit_cost * line_crf
+        ) @ intra_new
 
     # DAC annual capacity and removal.
     dac_cap = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capacity_mtpa")
@@ -591,39 +757,99 @@ def build_master(
             for row in data.vre_sites.itertuples()
         ])
         spur_new = model.addMVar(len(data.vre_sites), lb=0.0, name="spur_augmentation_gw")
-        model.addConstr(spur_new + initial_spur >= max_cf * vre_cap, name="spur_capacity")
+        non_dpv_positions = data.vre_sites.index[
+            ~data.vre_sites.technology.eq("dpv")
+        ].to_numpy(dtype=int)
+        dpv_positions = data.vre_sites.index[
+            data.vre_sites.technology.eq("dpv")
+        ].to_numpy(dtype=int)
+        if len(dpv_positions):
+            spur_new[dpv_positions].UB = 0.0
+        model.addConstr(
+            spur_new[non_dpv_positions] + initial_spur[non_dpv_positions]
+            >= max_cf[non_dpv_positions] * vre_cap[non_dpv_positions],
+            name="spur_capacity_non_dpv",
+        )
+
+        hydro_route = data.hydro_load_center_routes.set_index("hydrochn_row_id")
+        hydro_substation = data.hydro_stations.hydrochn_row_id.map(
+            hydro_route.substation_id
+        ).astype(str)
+        hydro_spur_distance = data.hydro_stations.hydrochn_row_id.map(
+            hydro_route.hydro_spur_distance_km
+        ).to_numpy(dtype=float)
+        hydro_floor = data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)
+        hydro_spur_new = model.addMVar(
+            len(data.hydro_stations), lb=0.0, name="hydro_spur_augmentation_gw"
+        )
+        model.addConstr(
+            hydro_spur_new + hydro_floor >= hydro_cap,
+            name="hydro_spur_capacity",
+        )
 
         substation_ids = data.substations.substation_id.astype(str).tolist()
         sub_index = {sub: i for i, sub in enumerate(substation_ids)}
         trunk_new = model.addMVar(len(substation_ids), lb=0.0, name="trunk_augmentation_gw")
         initial_trunk = data.substations.initial_trunk_capacity_gw.to_numpy(dtype=float)
-        for substation_id, grouped in data.vre_sites.assign(_sub=site_substation).groupby("_sub"):
-            if substation_id not in sub_index:
+        vre_by_substation = {
+            str(substation_id): grouped.loc[~grouped.technology.eq("dpv")].index.to_numpy(dtype=int)
+            for substation_id, grouped in data.vre_sites.assign(_sub=site_substation).groupby("_sub")
+        }
+        hydro_by_substation = {
+            str(substation_id): grouped.index.to_numpy(dtype=int)
+            for substation_id, grouped in data.hydro_stations.assign(_sub=hydro_substation).groupby("_sub")
+        }
+        initial_hydro_trunk = np.zeros(len(substation_ids), dtype=float)
+        for substation_id, substation_position in sub_index.items():
+            vre_positions = vre_by_substation.get(substation_id, np.asarray([], dtype=int))
+            hydro_positions = hydro_by_substation.get(substation_id, np.asarray([], dtype=int))
+            if len(hydro_positions):
+                initial_hydro_trunk[substation_position] = hydro_floor[hydro_positions].sum()
+            if not len(vre_positions) and not len(hydro_positions):
                 continue
-            eligible = grouped.loc[~grouped.technology.eq("dpv")]
-            positions = eligible.index.to_numpy(dtype=int)
-            if len(positions):
-                model.addConstr(
-                    trunk_new[sub_index[substation_id]] + initial_trunk[sub_index[substation_id]]
-                    >= max_cf[positions] @ vre_cap[positions],
-                    name=f"trunk_capacity_{sub_index[substation_id]}",
-                )
-        variables.update(spur_augmentation=spur_new, trunk_augmentation=trunk_new)
+            required = gp.LinExpr()
+            if len(vre_positions):
+                required += max_cf[vre_positions] @ vre_cap[vre_positions]
+            if len(hydro_positions):
+                required += hydro_cap[hydro_positions].sum()
+            model.addConstr(
+                trunk_new[substation_position]
+                + initial_trunk[substation_position]
+                + initial_hydro_trunk[substation_position]
+                >= required,
+                name=f"trunk_capacity_{substation_position}",
+            )
+        variables.update(
+            spur_augmentation=spur_new,
+            hydro_spur_augmentation=hydro_spur_new,
+            trunk_augmentation=trunk_new,
+        )
         network = config.raw["network"]
         spur_crf = capital_recovery_factor(wacc, float(lifetimes["spur"]))
         trunk_crf = capital_recovery_factor(wacc, float(lifetimes["trunk"]))
-        costs["spur"] = (
+        spur_unit_cost = (
             (float(network["spur_capex_million_yuan_per_gw_km"]) * site_distance
              + float(network["substation_capex_million_yuan_per_gw"]))
             * (spur_crf + float(network["spur_fixed_om_fraction"]))
-        ) @ spur_new
+        )
+        spur_unit_cost[dpv_positions] = 0.0
+        costs["spur"] = spur_unit_cost @ spur_new
+        costs["hydro_spur"] = (
+            (float(network["spur_capex_million_yuan_per_gw_km"]) * hydro_spur_distance
+             + float(network["substation_capex_million_yuan_per_gw"]))
+            * (spur_crf + float(network["spur_fixed_om_fraction"]))
+        ) @ hydro_spur_new
         trunk_distance = data.substations.trunk_distance_km.fillna(0.0).to_numpy(dtype=float)
         costs["trunk"] = (
             (float(network["trunk_capex_million_yuan_per_gw_km"]) * trunk_distance
              + float(network["substation_capex_million_yuan_per_gw"]))
             * (trunk_crf + float(network["trunk_fixed_om_fraction"]))
         ) @ trunk_new
-        index_extra = {"substation_ids": substation_ids, "vre_max_cf": max_cf}
+        index_extra = {
+            "substation_ids": substation_ids,
+            "vre_max_cf": max_cf,
+            "initial_hydro_trunk_capacity_gw": initial_hydro_trunk,
+        }
     else:
         index_extra = {}
 

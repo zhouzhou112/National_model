@@ -17,13 +17,17 @@
 - 411 interprovincial corridors, strict hourly power balance, reserve and inertia.
 - DAC, annual carbon and biomass accounts, CCS capture and point-level injection.
 - Spur/trunk/substation augmentation, memory gate, numerical diagnostics and IIS.
+- Production load centers are the 278-node Natural Earth paper replication.
+- Annual center energy allocation, provincial export closure and 517-edge intra-province AC500 expansion layer.
+- Hydropower station-to-substation/load-center routing and hydro spur/trunk augmentation.
 
 ## Verification snapshot
 
-- Data preflight: 23 PASS, 1 INFO, 0 WARN, 0 HARD_FAIL.
-- Estimated full scale: 32,678,590 variables, 53,204,758 constraints, 738,317,504 nonzeros.
+- Data preflight: 32 PASS, 1 WARN, 1 INFO, 0 HARD_FAIL.
+- Estimated full scale: 32,685,283 variables, 53,210,634 constraints, 738,364,512 nonzeros.
 - Conservative model-memory estimate: 38.23 GiB; configured `SoftMemLimit`: 80 GiB.
-- Local 744h build-only test: 3,026,091 variables, 4,771,841 constraints, 37,350,577 nonzeros; completed in about 143 seconds without optimization.
+- Local 744h build-only test: 3,032,784 variables, 4,760,844 constraints, 39,084,173 nonzeros; completed in about 134 seconds without optimization.
+- Local 24h smoke solve: 365,184 variables, 285,309 constraints and 1,812,785 nonzeros; continuous LP solved to optimality in about 8 seconds after presolve. Maximum center-balance and province-export residuals were `1.16e-13` and `1.14e-13` GWh; no edge flowed in both directions, DPV spur augmentation was exactly zero, and no intra-capacity constraint was violated.
 - Six-month/full-year local preflight correctly reported that the 32/64 GiB memory gates were not met; no construction was attempted.
 - Server: 96 logical CPUs, 125 GiB RAM, 4.3 TiB free under `/data`.
 - Server Gurobi package/license: not yet configured.
@@ -32,8 +36,9 @@
 
 - CSP site potential and hourly profiles; CSP remains disabled.
 - Observed province-level 2025 PHS floor; current floor is explicitly zero.
-- Hydropower station-to-substation mapping; hydro is excluded from trunk augmentation.
 - Thermal online fuel term `f_on`; fuel is charged on gross generation only.
 - Capacity credits, inertia threshold and spur/trunk proxy costs require sensitivity tests.
+- Intra-center annual capacity uses a 50% design utilization assumption; two western AC500 proxy edges exceed the 1000 km source range.
+- Intra-center losses remain zero until their annual energy can be fed back into the provincial hourly balance.
 
 The only production entry is `scripts/run_cispo_2030_full_year.py`.

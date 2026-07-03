@@ -43,6 +43,8 @@ def estimate_full_model_scale(
     n_vre = len(data.vre_sites)
     n_hydro = len(data.hydro_stations)
     n_sub = len(data.substations)
+    n_center = len(data.load_centers)
+    n_intra = len(data.intra_load_center_edges)
     c = int((data.vre_points[config.raw["ccs_injection_field"]] > 0).sum())
 
     blocks = {
@@ -55,7 +57,10 @@ def estimate_full_model_scale(
         "transmission_capacity_and_flow": 2 * e + 2 * e * h,
         "dac_capacity_and_capture": 2 * p * d,
         "co2_source_sink_flow": p * c,
-        "spur_and_trunk_capacity": n_vre + n_sub,
+        "spur_and_trunk_capacity": n_vre + n_hydro + n_sub,
+        "annual_load_center_network": (
+            n_center * (len(VRE_TECHS) + 5) + 4 * n_intra + 3 * p
+        ),
     }
     variables = int(sum(blocks.values()))
     constraints = int(
@@ -70,7 +75,12 @@ def estimate_full_model_scale(
         + p * k
         + p * c
         + n_vre
+        + n_hydro
         + n_sub
+        + n_center * (len(VRE_TECHS) + 5)
+        + len(data.provinces) * len(VRE_TECHS)
+        + 6 * len(data.provinces)
+        + 2 * n_intra
     )
     # Dense VRE availability is the dominant coefficient block. Other blocks
     # are sparse with approximately 5-12 coefficients per row.
@@ -140,6 +150,71 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("carbon_active", bool(data.carbon.constraint_active), bool(data.carbon.constraint_active), "True")
     check("csp_source_gap_explicit", not config.raw["features"]["csp"], config.raw["features"]["csp"], "False until source exists", "SOFT")
     check("phs_floor_gap_explicit", "existing_phs" in config.raw["explicit_data_gaps"], "existing_phs" in config.raw["explicit_data_gaps"], "explicitly registered", "SOFT")
+    check("natural_earth_load_center_count", len(data.load_centers) == 278, len(data.load_centers), "278")
+    check(
+        "natural_earth_load_center_provinces",
+        data.load_centers.province_code.nunique() == 31,
+        data.load_centers.province_code.nunique(),
+        "31",
+    )
+    center_share_error = (
+        data.load_centers.groupby("province_code").annual_demand_share_in_province.sum()
+        .sub(1.0).abs().max()
+    )
+    check(
+        "natural_earth_annual_demand_share_closure",
+        center_share_error <= 1e-9,
+        float(center_share_error),
+        "<= 1e-9",
+    )
+    check(
+        "vre_load_center_route_coverage",
+        not set(data.vre_sites.grid_uid).difference(data.vre_load_center_routes.grid_uid),
+        len(set(data.vre_sites.grid_uid).difference(data.vre_load_center_routes.grid_uid)),
+        "0 missing active VRE sites",
+    )
+    check(
+        "hydro_load_center_route_coverage",
+        not set(data.hydro_stations.hydrochn_row_id).difference(
+            data.hydro_load_center_routes.hydrochn_row_id
+        ),
+        len(set(data.hydro_stations.hydrochn_row_id).difference(
+            data.hydro_load_center_routes.hydrochn_row_id
+        )),
+        "0 missing hydropower stations",
+    )
+    known_centers = set(data.load_centers.load_center_id.astype(str))
+    intra = data.intra_load_center_edges
+    endpoint_valid = (
+        set(intra.from_load_center_id.astype(str)).issubset(known_centers)
+        and set(intra.to_load_center_id.astype(str)).issubset(known_centers)
+    )
+    check("intra_load_center_endpoints", endpoint_valid, endpoint_valid, "all endpoints known")
+    center_province = data.load_centers.set_index("load_center_id").province_code
+    same_province = (
+        intra.from_load_center_id.map(center_province).to_numpy()
+        == intra.to_load_center_id.map(center_province).to_numpy()
+    ).all()
+    check("intra_load_center_same_province", bool(same_province), bool(same_province), "True")
+    check(
+        "intra_load_center_edge_costs",
+        bool((intra.unit_cost_yuan_per_kw > 0).all()),
+        float(intra.unit_cost_yuan_per_kw.min()),
+        "> 0 yuan/kW",
+    )
+    check(
+        "intra_load_center_initial_capacity",
+        bool((intra.initial_capacity_gw >= 0).all()),
+        float(intra.initial_capacity_gw.min()),
+        ">= 0 GW",
+    )
+    check(
+        "intra_load_center_long_distance_proxy",
+        int(intra.distance_km.gt(1000).sum()) == 0,
+        int(intra.distance_km.gt(1000).sum()),
+        "0 AC500 edges beyond 1000 km source range",
+        "SOFT",
+    )
 
     scale = estimate_full_model_scale(config, data)
     stop_threshold = float(config.raw["construction"]["stop_before_build_if_estimated_memory_gb_exceeds"])

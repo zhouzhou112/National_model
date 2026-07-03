@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "transfer_bundle"
 MODEL_DATA_DIRS = (
     "sets", "vre", "load", "thermal", "hydro", "biomass",
-    "transmission", "carbon", "technology", "grid",
+    "transmission", "carbon", "technology", "grid", "load_center_network",
 )
 CF_ROOT = Path(r"D:\National_model\Data\Gis\Hourly_cf")
 HYDRO_ROOT = Path(

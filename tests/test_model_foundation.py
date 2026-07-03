@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import unittest
 
+import numpy as np
+
 from cispo_model.config import capital_recovery_factor, load_model_config
 from cispo_model.data import load_model_data
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
@@ -56,6 +58,57 @@ class ModelFoundationTests(unittest.TestCase):
         value = capital_recovery_factor(0.074, 25)
         self.assertGreater(value, 0.08)
         self.assertLess(value, 0.10)
+
+    def test_natural_earth_278_is_the_production_load_center_scenario(self):
+        centers = self.data.load_centers
+        self.assertEqual(self.config.raw["load_center_network"]["scenario"], "Natural_Earth_paper_replication_278")
+        self.assertEqual(len(centers), 278)
+        self.assertEqual(centers.province_code.nunique(), 31)
+        share_error = (
+            centers.groupby("province_code").annual_demand_share_in_province.sum()
+            .sub(1.0).abs().max()
+        )
+        self.assertLessEqual(float(share_error), 1e-9)
+
+    def test_spatial_generation_routes_are_complete(self):
+        active_vre = set(self.data.vre_sites.grid_uid)
+        routed_vre = set(self.data.vre_load_center_routes.grid_uid)
+        self.assertFalse(active_vre.difference(routed_vre))
+        hydro = set(self.data.hydro_stations.hydrochn_row_id)
+        routed_hydro = set(self.data.hydro_load_center_routes.hydrochn_row_id)
+        self.assertFalse(hydro.difference(routed_hydro))
+
+    def test_intra_load_center_edges_are_within_province_and_initialized(self):
+        centers = self.data.load_centers.set_index("load_center_id")
+        edges = self.data.intra_load_center_edges
+        from_province = edges.from_load_center_id.map(centers.province_code).to_numpy()
+        to_province = edges.to_load_center_id.map(centers.province_code).to_numpy()
+        self.assertTrue(np.array_equal(from_province, to_province))
+        self.assertEqual(len(edges), 517)
+        self.assertTrue((edges.initial_capacity_gw >= 0).all())
+        self.assertGreater(float(edges.initial_capacity_gw.sum()), 0.0)
+        self.assertTrue((edges.unit_cost_yuan_per_kw > 0).all())
+
+    def test_each_province_load_center_graph_is_connected(self):
+        centers = self.data.load_centers
+        edges = self.data.intra_load_center_edges
+        for province_code, group in centers.groupby("province_code"):
+            node_ids = set(group.load_center_id.astype(str))
+            if len(node_ids) == 1:
+                continue
+            adjacency = {node_id: set() for node_id in node_ids}
+            for row in edges.loc[edges.province_code.eq(province_code)].itertuples(index=False):
+                adjacency[str(row.from_load_center_id)].add(str(row.to_load_center_id))
+                adjacency[str(row.to_load_center_id)].add(str(row.from_load_center_id))
+            visited = set()
+            stack = [next(iter(node_ids))]
+            while stack:
+                node = stack.pop()
+                if node in visited:
+                    continue
+                visited.add(node)
+                stack.extend(adjacency[node].difference(visited))
+            self.assertEqual(visited, node_ids, msg=f"disconnected province {province_code}")
 
 
 if __name__ == "__main__":

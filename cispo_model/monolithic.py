@@ -17,6 +17,7 @@ from scipy import sparse
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .hydro import HydroProfileReader
+from .load_center import attach_annual_load_center_network
 from .master import MasterArtifacts, build_master
 from .timeblocks import TimeBlock
 
@@ -38,7 +39,7 @@ def _attach_vre_availability(
     generation: gp.MVar,
     province_index: dict[int, int],
     hours: int,
-) -> gp.MVar:
+) -> tuple[gp.MVar, np.ndarray]:
     """Build exact site-CF-by-capacity expressions in bounded hour chunks."""
     available = model.addMVar(
         (len(province_index), len(VRE_TECHS), hours),
@@ -46,6 +47,7 @@ def _attach_vre_availability(
         name="vre_available_gw",
     )
     technology_index = {technology: i for i, technology in enumerate(VRE_TECHS)}
+    site_cf_hours = np.zeros(len(data.vre_sites), dtype=float)
     chunk = int(config.raw["construction"]["build_hour_chunk_size"])
     grouped = data.vre_sites.groupby(["province_code", "technology"], sort=False)
     present: set[tuple[int, int]] = set()
@@ -68,6 +70,7 @@ def _attach_vre_availability(
                 )
                 tolerance = float(config.raw["numerics"]["coefficient_zero_tolerance"])
                 coefficients[np.abs(coefficients) < tolerance] = 0.0
+                site_cf_hours[positions] += coefficients.sum(axis=0)
                 expressions.append(sparse.csr_matrix(coefficients) @ capacity[positions])
             model.addConstr(
                 available[p, v, start:stop] == _vector_sum(expressions, stop - start),
@@ -78,7 +81,9 @@ def _attach_vre_availability(
             if (p, v) not in present:
                 available[p, v, :].UB = 0.0
     model.addConstr(generation <= available, name="vre_generation_availability")
-    return available
+    if not np.isfinite(site_cf_hours).all() or (site_cf_hours < 0.0).any():
+        raise ValueError("Invalid selected-horizon VRE full-load-hour coefficients")
+    return available, site_cf_hours
 
 
 def _network_incidence(data: ModelData, province_index: dict[int, int]):
@@ -134,7 +139,7 @@ def build_full_year_monolithic(
     vre_generation = model.addMVar(
         (p_count, v_count, hours), lb=0.0, name="vre_generation_gw"
     )
-    vre_available = _attach_vre_availability(
+    vre_available, vre_site_cf_hours = _attach_vre_availability(
         model, config, data, vre_capacity, vre_generation, p_index, hours
     )
 
@@ -363,6 +368,30 @@ def build_full_year_monolithic(
             name=f"strict_power_balance_p{provinces[p]}",
         )
 
+    if config.raw["features"]["annual_load_center_transmission"]:
+        intra_load_center_flow_cost = attach_annual_load_center_network(
+            model,
+            config,
+            data,
+            artifacts,
+            hours=hours,
+            vre_site_cf_hours=vre_site_cf_hours,
+            vre_generation=vre_generation,
+            actual_thermal=actual_thermal,
+            storage_charge=charge,
+            storage_discharge=discharge,
+            dac_load=dac_load,
+            hydro_block=hydro,
+            hydro_capacity=hydro_capacity,
+            ror_generation=ror_generation,
+            reservoir_generation=reservoir_generation,
+            interprovincial_flow_forward=flow_forward,
+            interprovincial_flow_reverse=flow_reverse,
+            interprovincial_efficiency=line_efficiency,
+        )
+    else:
+        intra_load_center_flow_cost = gp.LinExpr()
+
     security = config.raw["security"]
     thermal_up = (
         (pmax[None, :, None] * online - gross) * (1.0 - loss[None, :, None])
@@ -446,6 +475,7 @@ def build_full_year_monolithic(
         "ramping": ramp_cost,
         "storage_variable_om": storage_vom,
         "transmission_flow_regularization": flow_cost,
+        "load_center_intra_flow_regularization": intra_load_center_flow_cost,
     }
     model.addConstr(
         variables["operating_cost_account"][0] == gp.quicksum(operating_costs.values()),

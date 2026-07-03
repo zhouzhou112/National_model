@@ -175,6 +175,10 @@ class ModelData:
     grid_connections: pd.DataFrame
     initial_spur: pd.DataFrame
     substations: pd.DataFrame
+    load_centers: pd.DataFrame
+    vre_load_center_routes: pd.DataFrame
+    hydro_load_center_routes: pd.DataFrame
+    intra_load_center_edges: pd.DataFrame
     cf: CapacityFactorStore
 
     @property
@@ -325,9 +329,56 @@ def load_model_data(config: ModelConfig) -> ModelData:
     dac = dac.loc[dac.year.eq(config.planning_year)].copy()
     ccs_cost = _read("technology/ccs_cost_parameters.csv").iloc[0]
 
-    grid_connections = _read("grid/grid_connection_by_point.csv")
-    initial_spur = _read("grid/initial_spur_capacity_2025.csv")
-    substations = _read("grid/substation_initial_capacity_2025.csv")
+    load_center_subdirectory = str(config.raw["load_center_network"]["input_subdirectory"])
+    load_centers = _read(f"{load_center_subdirectory}/load_centers.csv")
+    vre_load_center_routes = _read(f"{load_center_subdirectory}/vre_routes.csv")
+    hydro_load_center_routes = _read(f"{load_center_subdirectory}/hydro_routes.csv")
+    intra_load_center_edges = _read(f"{load_center_subdirectory}/intra_edges.csv")
+    initial_spur = _read(f"{load_center_subdirectory}/initial_spur_capacity_2025.csv")
+    substations = _read(f"{load_center_subdirectory}/substation_initial_capacity_2025.csv")
+    # The promoted Natural Earth route replaces the former 337-city route for
+    # all production spur/trunk decisions.
+    grid_connections = vre_load_center_routes
+
+    require_columns(
+        load_centers,
+        ["load_center_id", "province_code", "annual_demand_share_in_province", "lon", "lat"],
+        "Natural Earth load centers",
+    )
+    require_columns(
+        vre_load_center_routes,
+        ["grid_uid", "province_code", "substation_id", "load_center_id"],
+        "VRE load-center routes",
+    )
+    require_columns(
+        hydro_load_center_routes,
+        ["hydrochn_row_id", "province_code", "substation_id", "load_center_id", "hydro_spur_distance_km"],
+        "hydropower load-center routes",
+    )
+    require_columns(
+        intra_load_center_edges,
+        [
+            "intra_edge_id", "province_code", "from_load_center_id", "to_load_center_id",
+            "distance_km", "unit_cost_yuan_per_kw", "initial_capacity_gw",
+        ],
+        "intra-province load-center edges",
+    )
+    if len(load_centers) != 278 or not load_centers.load_center_id.is_unique:
+        raise ValueError("Natural Earth production scenario requires 278 unique load centers")
+    share_error = (
+        load_centers.groupby("province_code").annual_demand_share_in_province.sum()
+        .sub(1.0).abs()
+    )
+    if share_error.max() > 1e-9:
+        raise ValueError(f"Load-center demand shares do not close by province: {share_error.max()}")
+    if vre_load_center_routes.grid_uid.duplicated().any():
+        raise ValueError("VRE load-center routes must be unique by grid_uid")
+    if hydro_load_center_routes.hydrochn_row_id.duplicated().any():
+        raise ValueError("Hydropower load-center routes must be unique by hydrochn_row_id")
+    if set(vre_sites.grid_uid).difference(vre_load_center_routes.grid_uid):
+        raise ValueError("Some active VRE sites have no Natural Earth load-center route")
+    if set(hydro.hydrochn_row_id).difference(hydro_load_center_routes.hydrochn_row_id):
+        raise ValueError("Some hydropower stations have no Natural Earth load-center route")
 
     return ModelData(
         provinces=provinces,
@@ -352,5 +403,9 @@ def load_model_data(config: ModelConfig) -> ModelData:
         grid_connections=grid_connections,
         initial_spur=initial_spur,
         substations=substations,
+        load_centers=load_centers,
+        vre_load_center_routes=vre_load_center_routes,
+        hydro_load_center_routes=hydro_load_center_routes,
+        intra_load_center_edges=intra_load_center_edges,
         cf=cf,
     )

@@ -25,12 +25,12 @@
     "dac": true,
     "ccs_source_sink": true,
     "intra_grid_spur_trunk": true,
+    "annual_load_center_transmission": true,
     "csp": false
   },
   "explicit_data_gaps": {
     "csp": "TODO_SOURCE_DATA_REQUIRED: no 0.25-degree CSP potential or hourly CSP solar-field profile is present; capacity is fixed to zero",
     "existing_phs": "TODO_SOURCE_DATA_REQUIRED: no province-level 2025 pumped-storage capacity floor is present; current floor is zero",
-    "hydro_trunk_mapping": "TODO_SOURCE_DATA_REQUIRED: hydro stations are not mapped to OSM substations; hydro is excluded from trunk augmentation",
     "thermal_online_fuel": "TODO_SOURCE_DATA_REQUIRED: f_on is not present in the extracted RUC table; first block implementation charges fuel on gross generation only",
     "capacity_credit": "SOFT_ASSUMPTION: values are explicit configuration parameters, not extracted CISPO source data",
     "inertia_threshold": "SOFT_ASSUMPTION: minimum system inertia seconds is explicit configuration, not extracted CISPO source data",
@@ -117,6 +117,18 @@
     "substation_capex_million_yuan_per_gw": 241.0,
     "spur_fixed_om_fraction": 0.01,
     "trunk_fixed_om_fraction": 0.01
+  },
+  "load_center_network": {
+    "scenario": "Natural_Earth_paper_replication_278",
+    "input_subdirectory": "load_center_network/natural_earth_278",
+    "spatial_generation_technologies": ["onwind", "offwind", "upv", "dpv", "ror", "reservoir"],
+    "province_share_allocated_terms": ["thermal_nuclear_biomass", "storage_charge_discharge", "dac", "received_interprovincial_energy"],
+    "topology_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",
+    "voltage_class": "AC_500kV",
+    "design_utilization_fraction": 0.5,
+    "flow_regularization_yuan_per_mwh": 0.001,
+    "intra_loss_fraction_per_km": 0.0,
+    "partial_horizon_interpretation": "test-period aggregate energy only; scientific interpretation requires full_year"
   },
   "numerics": {
     "coefficient_zero_tolerance": 1e-10,
