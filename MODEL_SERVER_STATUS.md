@@ -30,6 +30,8 @@
 - Local 24h smoke solve: 365,184 variables, 285,309 constraints and 1,812,785 nonzeros; continuous LP solved to optimality in about 8 seconds after presolve. Maximum center-balance and province-export residuals were `1.16e-13` and `1.14e-13` GWh; no edge flowed in both directions, DPV spur augmentation was exactly zero, and no intra-capacity constraint was violated.
 - Six-month/full-year local preflight correctly reported that the 32/64 GiB memory gates were not met; no construction was attempted.
 - Server: 96 logical CPUs, 125 GiB RAM, 4.3 TiB free under `/data`.
+- Server working copy and model-ready data were synchronized at commit `c99b6c2`; the uploaded data archive SHA256 is `09831040de1901fa02610fb6272e76e7995edaabcbac12d158ae81b0caf47b25`.
+- Server verification: 10/10 tests passed; full-year preflight passed the 64 GiB runtime gate with about 110 GiB available and reported 32 PASS, 1 WARN, 1 INFO and 0 HARD_FAIL.
 - Server Gurobi package/license: not yet configured.
 
 ## Explicit unresolved inputs
