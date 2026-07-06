@@ -13,7 +13,7 @@
 - 31 provinces and 36,686 VRE technology-site rows at 0.25-degree resolution.
 - Exact 2023 hourly CF linkage with sparse coefficient construction.
 - Continuous capacity-based RUC and cyclic annual commitment/ramp state.
-- Battery/PHS SOC and reserve; station-level hydropower and reservoir balance. Local commit `b3e6298` adds Stage2 core-mainstem conventional hydropower cascade coupling, but it is not yet server-validated.
+- Battery/PHS SOC and reserve; station-level hydropower and reservoir balance. Commit `b3e6298` adds Stage2 core-mainstem conventional hydropower cascade coupling and is deployed on the server.
 - 411 interprovincial corridors, strict hourly power balance, reserve and inertia.
 - DAC, annual carbon and biomass accounts, CCS capture and point-level injection.
 - Spur/trunk/substation augmentation, memory gate, numerical diagnostics and IIS.
@@ -23,18 +23,19 @@
 
 ## Verification snapshot
 
-- Current validated code commit: `8e49a87` (`fix: harden CCS and station-level hydropower model`).
+- Current deployed implementation commit: `b3e6298` (`fix: add core hydropower cascade coupling`); live server checkout HEAD was `7a2ca27` on 2026-07-06.
 - Current validated server data paths:
-  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro`
-  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro`
+  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade`
+  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade`
   - `CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019`
 - Raw GRFR transfer completed on 2026-07-06 and was verified on the server:
   - `output_pfaf_03_2019.nc`: 3,380,260,808 bytes, SHA256 `84ff2c882fb17a4b8693bb0773718c2472038021b64618b05f99f8070a506e0f`.
   - `output_pfaf_04_2019.nc`: 5,445,519,752 bytes, SHA256 `e56d5da855ddbdafabdafcb5582981b3f0003054156cf8d912d24a9efd232756`.
 - Server readiness with `--require-raw-grfr --verify-raw-grfr-sha256`: `PASS`, zero hard failures.
-- Hydropower station input: 2,030 rows, 620 reservoir rows, 1,410 run-of-river rows, 0 potential paper-rule mismatches, no missing required columns.
-- Server regression test: 15/15 tests passed with pytest in 20.75 seconds.
-- One-month server preflight: 4,300,620 variables, 6,004,434 constraints, 74,591,808 nonzeros; estimated model memory 4.19 GiB; memory gate passed with 110.24 GiB available.
+- Hydropower station input: 2,030 rows, 620 reservoir rows, 1,410 run-of-river rows, 0 potential paper-rule mismatches, no missing required columns. Cascade readiness reported 142 nodes, 124 edges, 4 low-correlation edges, 18 max-bound edges and maximum lag 168 h.
+- Server regression test: 16/16 tests passed with pytest in 20.12 seconds.
+- One-month cascade server preflight: 4,761,900 variables, 6,465,714 constraints, 78,282,048 nonzeros; estimated model memory 4.48 GiB; memory gate passed with about 106.65 GiB available.
+- Actual one-month cascade model build: 4,808,836 variables, 6,536,681 constraints and 46,092,407 nonzeros.
 - Full-year server preflight: 48,164,172 variables, 68,689,554 constraints, 862,195,872 nonzeros.
 - Conservative full-year model-memory estimate: 47.98 GiB; configured `SoftMemLimit`: 80 GiB.
 - Local 744h build-only test: 3,032,784 variables, 4,760,844 constraints, 39,084,173 nonzeros; completed in about 134 seconds without optimization.
@@ -45,13 +46,15 @@
 - Server license: retrieved successfully with Gurobi 13.0.2 on 2026-07-03, stored at `/home/zz2/gurobi.lic`, and valid through 2027-07-02. The server-issued license ID is 2840423.
 - Production-license gate passed on 2026-07-06: Gurobi 13.0.2 solved the deterministic 2,501-variable LP to optimality with objective `1.0`, confirming that the bundled size-limited fallback is not active. This gate is also enforced by `scripts/check_server_readiness.py`.
 
-## Pending cascade server validation
+## Cascade server validation status
 
-- Local implementation commit `b3e6298` reads Stage2 core cascade files from `D:\codeenv\pycharmproject\National_RL\Gis_process\hydro_power\process_hydro\hydro_model_2019_stage2_classification_cascade_20260630`.
-- Local generated cascade inputs contain 142 COMID nodes, 124 directed edges and 146 mapped reservoir stations. All mapped stations exist in `data/hydro/hydro_stations.csv`, all are `reservoir_storage`, capacity alignment residual is 0.0 GW and the topology is acyclic.
+- Implementation commit `b3e6298` reads Stage2 core cascade files from `D:\codeenv\pycharmproject\National_RL\Gis_process\hydro_power\process_hydro\hydro_model_2019_stage2_classification_cascade_20260630`.
+- Generated cascade inputs contain 142 COMID nodes, 124 directed edges and 146 mapped reservoir stations. All mapped stations exist in `data/hydro/hydro_stations.csv`, all are `reservoir_storage`, capacity alignment residual is 0.0 GW and the topology is acyclic.
 - Travel lags are estimated from 2019 GRFR hourly discharge by 3h-multiple cross-correlation, range 0-168 h. QA warnings remain for 4 low-correlation edges and 18 edges selecting the 168 h maximum search bound.
 - Local checks passed: data-package rebuild with 90 QC checks and zero failures, smoke test 118/118 PASS, unit tests 16/16 PASS, one-month preflight PASS, and custom 24h monolithic build PASS with 146 cascade reservoir rows and 124 cascade edges.
-- Server status is unchanged until `b3e6298` is synchronized to the server, bundled with a new model-ready data root and revalidated on the server.
+- Server readiness, regression, preflight and full 744h model-build gates passed using the versioned cascade data roots.
+- The 744h solve under `/data/zz2/National_model/outputs/2030_one_month_hydro_cascade` is still running as PID `244035`. At 2026-07-06 22:37 Asia/Shanghai it had run for about 5 h 59 min. Gurobi reported large coefficient/RHS ranges, restarted barrier near iteration 111, completed dual crossover pushes and remained in primal cleanup with about 1.92 million pushes and `PInf` about 312.
+- No `solve_report.json` or `solution_qc.json` existed at that checkpoint. Therefore the cascade version is validated through construction but not yet through the complete optimization/QC gate.
 
 ## Explicit unresolved inputs
 

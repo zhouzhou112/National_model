@@ -18,16 +18,16 @@ Production architecture is one continuous LP containing 2030 capacity decisions 
 
 The `/data` filesystem is NTFS/fuseblk and does not enforce normal Unix ownership or mode bits. Do not store SSH keys or `gurobi.lic` there.
 
-Current validated station-hydropower data version from 2026-07-06:
+Current cascade-hydropower data version from 2026-07-06:
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 ```
 
-Commit `b3e6298` after the server-validated `8e49a87` contains a pending core-mainstem hydropower cascade update. Do not reuse the validated station-hydropower paths above as evidence for that cascade version. After the branch is synchronized to the server, create new versioned data roots, for example `model_ready_YYYYMMDD_hydro_cascade` and `hydro_timeseries_YYYYMMDD_hydro_cascade`, and rerun the full readiness gate before optimization.
+Commit `b3e6298` contains the deployed core-mainstem hydropower cascade update. Server checkout HEAD `7a2ca27`, the versioned data roots above, readiness checks and 16 regression tests were verified on 2026-07-06. The complete 744h optimization/QC gate is still pending and must not be represented as passed until `solve_report.json` and `solution_qc.json` are audited.
 
 ## Long-term Git synchronization
 
@@ -53,9 +53,9 @@ If code is edited on the server, commit and push it before pulling locally. Mode
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 $PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
@@ -98,6 +98,29 @@ Preflight without requiring Gurobi:
 
 ```bash
 $PYTHON scripts/run_cispo_2030_full_year.py --horizon one_month --preflight-only
+```
+
+## Current 744h cascade gate
+
+The current server integration run uses:
+
+```bash
+OUT=/data/zz2/National_model/outputs/2030_one_month_hydro_cascade
+PID=$(cat "$OUT/run.pid")
+ps -p "$PID" -o pid,etime,%mem,%cpu,rss,vsz,stat,cmd
+tail -n 100 "$OUT/gurobi.log"
+ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
+```
+
+At the 2026-07-06 22:37 checkpoint, PID `244035` was still active after about 5 h 59 min. The actual model contained 4,808,836 variables, 6,536,681 constraints and 46,092,407 nonzeros. Gurobi warned about large coefficient and RHS ranges, restarted barrier once, then entered a long crossover cleanup. The run is not accepted until it exits and writes a satisfactory `solve_report.json` plus `solution_qc.json`.
+
+If this run ends with `TIME_LIMIT`, `SUBOPTIMAL`, a numerical failure or unacceptable crossover duration, preserve the output directory. For the next diagnostic, copy `config/optimization_2030.json` to a separately named test configuration and change only `numerics.crossover` from `1` to `0`, then invoke it with `--config`. Do not overwrite the baseline configuration or alter model equations/constraints before comparing the diagnostic result:
+
+```bash
+$PYTHON scripts/run_cispo_2030_full_year.py \
+  --config config/optimization_2030_crossover0.json \
+  --horizon one_month \
+  --output-dir /data/zz2/National_model/outputs/2030_one_month_hydro_cascade_crossover0
 ```
 
 ## Full model
