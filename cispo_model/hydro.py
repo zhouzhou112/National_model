@@ -140,7 +140,12 @@ class HydroProfileReader:
                     dtype=np.float64,
                 )
                 q_environment[np.ix_(selected_hours, valid)] = values[None, :]
-        return np.maximum(qout - q_environment, 0.0)
+        available = np.maximum(qout - q_environment, 0.0)
+        tolerance = float(
+            self.config.raw["hydro"]["hydrology_flow_zero_tolerance_m3s"]
+        )
+        available[available < tolerance] = 0.0
+        return available
 
     def read_linear_block(self, block: TimeBlock) -> HydroLinearBlock:
         """Read one chronological block without fixing hydro capacity decisions."""

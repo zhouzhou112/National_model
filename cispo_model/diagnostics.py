@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -24,12 +25,24 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
     model.Params.Method = int(numerics["method"])
     model.Params.BarConvTol = float(numerics["barrier_convergence_tolerance"])
     model.Params.Crossover = int(numerics["crossover"])
-    model.Params.Threads = int(numerics["threads"])
+    configured_threads = int(numerics["threads"])
+    if configured_threads == -1 and gp.gurobi.version()[0] < 13:
+        # Gurobi 13 defines -1 as all virtual processors. Older supported
+        # local installations require the explicit logical-CPU count.
+        configured_threads = int(os.cpu_count() or 1)
+    model.Params.Threads = configured_threads
     model.Params.TimeLimit = float(numerics["time_limit_seconds"])
     model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
     model.Params.OutputFlag = int(numerics["output_flag"])
     model.Params.DualReductions = 0
     model.Params.InfUnbdInfo = 1
+    if "pdhg_gpu" in numerics:
+        try:
+            model.Params.PDHGGPU = int(numerics["pdhg_gpu"])
+        except gp.GurobiError as error:
+            raise RuntimeError(
+                "numerics.pdhg_gpu requires a Gurobi version that exposes PDHGGPU"
+            ) from error
 
 
 def model_statistics(model: gp.Model) -> dict:
@@ -82,7 +95,30 @@ def solve_and_report(
         "best_bound_million_cny": float(model.ObjBound) if model.IsMIP and model.SolCount else None,
         "solution_count": int(model.SolCount),
         "configuration": str(config.path),
+        "solver_parameters": {
+            "method": int(model.Params.Method),
+            "threads": int(model.Params.Threads),
+            "available_logical_cpus": int(os.cpu_count() or 1),
+            "crossover": int(model.Params.Crossover),
+            "numeric_focus": int(model.Params.NumericFocus),
+            "scale_flag": int(model.Params.ScaleFlag),
+            "feasibility_tolerance": float(model.Params.FeasibilityTol),
+            "optimality_tolerance": float(model.Params.OptimalityTol),
+            "barrier_convergence_tolerance": float(model.Params.BarConvTol),
+            "pdhg_gpu": int(getattr(model.Params, "PDHGGPU", 0)),
+        },
+        "iteration_counts": {
+            "simplex": float(model.IterCount),
+            "barrier": int(model.BarIterCount),
+            "pdhg": int(getattr(model, "PDHGIterCount", 0)),
+        },
     }
+    if model.SolCount:
+        report["solution_quality"] = {
+            "maximum_constraint_violation": float(model.ConstrVio),
+            "maximum_bound_violation": float(model.BoundVio),
+            "maximum_dual_violation": float(model.DualVio),
+        }
     if model.Status == GRB.INFEASIBLE and compute_iis:
         model.computeIIS()
         model.write(str(output_dir / "iis.ilp"))

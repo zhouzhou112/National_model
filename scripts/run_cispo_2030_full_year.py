@@ -30,6 +30,14 @@ def main() -> None:
         default="full_year",
         help="744h and 4344h runs are code tests only; full_year is the scientific run.",
     )
+    parser.add_argument(
+        "--diagnostic-hours",
+        type=int,
+        help=(
+            "Build/solve an exact leading-hour diagnostic in [1, 8759]. "
+            "Annual costs and policy limits are not rescaled; never interpret it scientifically."
+        ),
+    )
     parser.add_argument("--output-dir")
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
@@ -44,18 +52,34 @@ def main() -> None:
         raise SystemExit("--skip-full-max-cf requires --build-only")
     if args.preflight_only and (args.build_only or args.write_mps):
         raise SystemExit("--preflight-only cannot be combined with build/write options")
+    if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
+        raise SystemExit("--diagnostic-hours must be in [1, 8759]")
 
     config = load_model_config(args.config)
-    horizon = config.horizon(args.horizon)
-    optimization_hours = int(horizon["hours"])
-    test_only = bool(horizon["test_only"])
-    output_dir = Path(args.output_dir or f"outputs/2030_{args.horizon}")
+    if args.diagnostic_hours is None:
+        horizon_name = args.horizon
+        horizon = config.horizon(args.horizon)
+        optimization_hours = int(horizon["hours"])
+        test_only = bool(horizon["test_only"])
+        definition = str(horizon["definition"])
+        required_gb = float(horizon["minimum_available_memory_gb"])
+    else:
+        horizon_name = f"diagnostic_{args.diagnostic_hours}h"
+        optimization_hours = int(args.diagnostic_hours)
+        test_only = True
+        definition = (
+            f"first {optimization_hours} chronological hours; cyclic over the "
+            "selected diagnostic horizon"
+        )
+        required_gb = float(
+            config.horizon("one_month")["minimum_available_memory_gb"]
+        )
+    output_dir = Path(args.output_dir or f"outputs/2030_{horizon_name}")
     if not output_dir.is_absolute():
         output_dir = ROOT / output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
     available_gb = psutil.virtual_memory().available / 1024**3
-    required_gb = float(horizon["minimum_available_memory_gb"])
     data = load_model_data(config)
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
     if preflight["status"] != "PASS":
@@ -63,10 +87,10 @@ def main() -> None:
     selected_scale = estimate_full_model_scale(config, data, optimization_hours)
     scope_report = {
         "generated_at": datetime.now().astimezone().isoformat(),
-        "horizon": args.horizon,
+        "horizon": horizon_name,
         "optimization_hours": optimization_hours,
         "configured_full_year_hours": config.hours,
-        "definition": horizon["definition"],
+        "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
         "annual_cost_and_policy_scaling": (
             "not rescaled; truncated horizons exist only for code and solver testing"
@@ -90,7 +114,7 @@ def main() -> None:
     if available_gb < required_gb:
         raise SystemExit(
             f"HARD_FAIL: available memory {available_gb:.1f} GiB < "
-            f"{required_gb:.1f} GiB required for {args.horizon}"
+            f"{required_gb:.1f} GiB required for {horizon_name}"
         )
 
     # Lazy imports let data/horizon preflight run before Gurobi is installed.
@@ -114,7 +138,7 @@ def main() -> None:
         "architecture": "full_year_monolithic_lp",
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
-        "horizon": args.horizon,
+        "horizon": horizon_name,
         "optimization_hours": optimization_hours,
         "result_use": scope_report["result_use"],
         "available_memory_gb_before_build": round(available_gb, 2),
@@ -145,7 +169,7 @@ def main() -> None:
         compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
     )
     report.update(
-        horizon=args.horizon,
+        horizon=horizon_name,
         optimization_hours=optimization_hours,
         result_use=scope_report["result_use"],
     )

@@ -57,9 +57,24 @@ def export_operational_solution(
     reservoir_by_province = _value(variables["reservoir_generation_by_province"])
     reservoir_soc = _value(variables["reservoir_soc"])
     reservoir_spill = _value(variables["reservoir_spill"])
-    reservoir_turbine_flow = _value(variables["reservoir_turbine_flow"])
-    reservoir_spill_flow = _value(variables["reservoir_spill_flow"])
-    reservoir_volume = _value(variables["reservoir_volume"])
+    reservoir_flow_scale_m3s = float(
+        artifacts.index.get("reservoir_flow_scale_m3s", 1.0)
+    )
+    reservoir_volume_scale_m3 = float(
+        artifacts.index.get("reservoir_volume_scale_m3", 1.0)
+    )
+    reservoir_turbine_flow = (
+        _value(variables["reservoir_turbine_flow"])
+        * reservoir_flow_scale_m3s
+    )
+    reservoir_spill_flow = (
+        _value(variables["reservoir_spill_flow"])
+        * reservoir_flow_scale_m3s
+    )
+    reservoir_volume = (
+        _value(variables["reservoir_volume"])
+        * reservoir_volume_scale_m3
+    )
     reservoir_inflow = np.asarray(artifacts.index["reservoir_inflow_gwh"], dtype=float)
     reservoir_energy_upper = np.asarray(
         artifacts.index["reservoir_energy_upper_gwh"], dtype=float
@@ -205,7 +220,10 @@ def export_operational_solution(
     objective_value = float(artifacts.model.ObjVal)
     objective_component_residual = sum(objective_cost_values.values()) - objective_value
     tolerance = 1e-5
-    reservoir_volume_tolerance_m3 = 1e-2
+    # The internal water-balance equation is scaled to million m3. A 1 m3
+    # physical tolerance is 1e-6 in that equation and remains negligible
+    # relative to the largest active storage while aligning with LP tolerances.
+    reservoir_volume_tolerance_m3 = 1.0
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "optimization_hours": hours,

@@ -63,6 +63,38 @@ class HydroStationModelTests(unittest.TestCase):
             (expected_reservoirs,),
         )
         self.assertTrue((block.reservoir_local_inflow_m3s >= 0.0).all())
+        positive = block.reservoir_local_inflow_m3s[
+            block.reservoir_local_inflow_m3s > 0.0
+        ]
+        self.assertGreaterEqual(
+            float(positive.min()),
+            float(self.config.raw["hydro"]["hydrology_flow_zero_tolerance_m3s"]),
+        )
+
+    def test_reservoir_variable_scaling_preserves_physical_equations(self):
+        hydro = self.config.raw["hydro"]
+        flow_scale = float(hydro["reservoir_flow_variable_scale_m3s"])
+        volume_scale = float(hydro["reservoir_volume_variable_scale_m3"])
+        physical_flow_m3s = 2750.0
+        model_flow = physical_flow_m3s / flow_scale
+        physical_volume_change_m3 = physical_flow_m3s * 3600.0
+        model_volume_change = model_flow * flow_scale * 3600.0 / volume_scale
+        self.assertAlmostEqual(
+            model_volume_change * volume_scale,
+            physical_volume_change_m3,
+            places=9,
+        )
+        conversion_gw_per_m3s = 8.5e-4
+        self.assertAlmostEqual(
+            model_flow * flow_scale * conversion_gw_per_m3s,
+            physical_flow_m3s * conversion_gw_per_m3s,
+            places=12,
+        )
+
+    def test_production_numerics_use_crossover_and_all_logical_cpus(self):
+        numerics = self.config.raw["numerics"]
+        self.assertEqual(int(numerics["crossover"]), 1)
+        self.assertEqual(int(numerics["threads"]), -1)
 
     def test_core_cascade_topology_loads(self):
         self.assertEqual(len(self.data.hydro_cascade_nodes), 142)

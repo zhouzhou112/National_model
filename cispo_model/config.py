@@ -78,6 +78,28 @@ class ModelConfig:
             )
         if self.raw["construction"].get("architecture") != "full_year_monolithic_lp":
             raise ValueError("Production architecture must be full_year_monolithic_lp")
+        hydro = self.raw.get("hydro", {})
+        if float(hydro.get("reservoir_flow_variable_scale_m3s", 0.0)) <= 0.0:
+            raise ValueError("reservoir_flow_variable_scale_m3s must be positive")
+        if float(hydro.get("reservoir_volume_variable_scale_m3", 0.0)) <= 0.0:
+            raise ValueError("reservoir_volume_variable_scale_m3 must be positive")
+        if float(hydro.get("hydrology_flow_zero_tolerance_m3s", -1.0)) < 0.0:
+            raise ValueError("hydrology_flow_zero_tolerance_m3s must be nonnegative")
+        numerics = self.raw.get("numerics", {})
+        coefficient_tolerance = float(
+            numerics.get("coefficient_zero_tolerance", 0.0)
+        )
+        if not 0.0 < coefficient_tolerance <= 1e-4:
+            raise ValueError(
+                "coefficient_zero_tolerance must be in (0, 1e-4]"
+            )
+        threads = int(numerics.get("threads", 0))
+        if threads == 0 or threads < -1:
+            raise ValueError(
+                "numerics.threads must be -1 (all logical CPUs) or a positive count"
+            )
+        if int(numerics.get("crossover", -1)) not in {-1, 0, 1, 2, 3, 4}:
+            raise ValueError("numerics.crossover is outside the Gurobi-supported range")
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))
         if chunk <= 0 or chunk > self.hours:
             raise ValueError("build_hour_chunk_size must be in [1, 8760]")

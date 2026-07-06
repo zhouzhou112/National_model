@@ -303,18 +303,38 @@ def build_full_year_monolithic(
     reservoir_generation = model.addMVar(
         (reservoir_count, hours), lb=0.0, name="reservoir_generation_gw"
     )
+    hydro_constants = config.raw["hydro"]
+    reservoir_flow_scale_m3s = float(
+        hydro_constants["reservoir_flow_variable_scale_m3s"]
+    )
+    reservoir_volume_scale_m3 = float(
+        hydro_constants["reservoir_volume_variable_scale_m3"]
+    )
+    flow_to_volume_scaled = (
+        reservoir_flow_scale_m3s * 3600.0 / reservoir_volume_scale_m3
+    )
     reservoir_turbine_flow = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_turbine_flow_m3s"
+        (reservoir_count, hours),
+        lb=0.0,
+        name="reservoir_turbine_flow_1000m3s",
     )
     reservoir_spill_flow = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_spill_flow_m3s"
+        (reservoir_count, hours),
+        lb=0.0,
+        name="reservoir_spill_flow_1000m3s",
     )
     reservoir_volume = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_active_storage_m3"
+        (reservoir_count, hours),
+        lb=0.0,
+        name="reservoir_active_storage_million_m3",
     )
     conversion = hydro.reservoir_generation_conversion_gw_per_m3s
-    reservoir_soc = reservoir_volume * (conversion[:, None] / 3600.0)
-    reservoir_spill = reservoir_spill_flow * conversion[:, None]
+    scaled_flow_to_power = conversion * reservoir_flow_scale_m3s
+    scaled_volume_to_energy = (
+        conversion * reservoir_volume_scale_m3 / 3600.0
+    )
+    reservoir_soc = reservoir_volume * scaled_volume_to_energy[:, None]
+    reservoir_spill = reservoir_spill_flow * scaled_flow_to_power[:, None]
     reservoir_incidence = sparse.csr_matrix(
         (
             np.ones(reservoir_count, dtype=float),
@@ -351,7 +371,8 @@ def build_full_year_monolithic(
             ror_available[p, :].UB = 0.0
     model.addConstr(ror_generation <= ror_available, name="ror_generation_availability")
     model.addConstr(
-        reservoir_generation == reservoir_turbine_flow * conversion[:, None],
+        reservoir_generation
+        == reservoir_turbine_flow * scaled_flow_to_power[:, None],
         name="reservoir_s4_13_flow_to_power",
     )
     model.addConstr(
@@ -359,7 +380,8 @@ def build_full_year_monolithic(
         name="reservoir_station_power",
     )
     model.addConstr(
-        reservoir_volume <= hydro.reservoir_active_storage_m3[:, None],
+        reservoir_volume
+        <= hydro.reservoir_active_storage_m3[:, None] / reservoir_volume_scale_m3,
         name="reservoir_s4_12_active_storage",
     )
     cascade_rows = np.asarray(hydro.cascade_station_local_rows, dtype=np.int64)
@@ -368,7 +390,10 @@ def build_full_year_monolithic(
         all_reservoir_local_rows, cascade_rows, assume_unique=True
     )
     if len(independent_rows):
-        local = hydro.reservoir_local_inflow_m3s[independent_rows]
+        local = (
+            hydro.reservoir_local_inflow_m3s[independent_rows]
+            / reservoir_flow_scale_m3s
+        )
         model.addConstr(
             reservoir_volume[independent_rows, 0]
             == reservoir_volume[independent_rows, -1]
@@ -377,7 +402,7 @@ def build_full_year_monolithic(
                 - reservoir_turbine_flow[independent_rows, 0]
                 - reservoir_spill_flow[independent_rows, 0]
             )
-            * 3600.0,
+            * flow_to_volume_scaled,
             name="reservoir_independent_cyclic_first_hour",
         )
         if hours > 1:
@@ -389,7 +414,7 @@ def build_full_year_monolithic(
                     - reservoir_turbine_flow[independent_rows, 1:]
                     - reservoir_spill_flow[independent_rows, 1:]
                 )
-                * 3600.0,
+                * flow_to_volume_scaled,
                 name="reservoir_independent_hourly_transition",
             )
     upstream_terms_by_target: dict[int, list[tuple[np.ndarray, float, int]]] = {
@@ -421,11 +446,12 @@ def build_full_year_monolithic(
                 == reservoir_volume[target_row, previous_t]
                 + (
                     float(hydro.reservoir_local_inflow_m3s[target_row, t])
+                    / reservoir_flow_scale_m3s
                     + upstream_release
                     - reservoir_turbine_flow[target_row, t]
                     - reservoir_spill_flow[target_row, t]
                 )
-                * 3600.0,
+                * flow_to_volume_scaled,
                 name=f"reservoir_cascade_s4_8_9_12_row{target_row}_h{t}",
             )
 
@@ -643,6 +669,8 @@ def build_full_year_monolithic(
         reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,
         reservoir_local_inflow_m3s=hydro.reservoir_local_inflow_m3s,
         reservoir_active_storage_m3=hydro.reservoir_active_storage_m3,
+        reservoir_flow_scale_m3s=reservoir_flow_scale_m3s,
+        reservoir_volume_scale_m3=reservoir_volume_scale_m3,
         reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
         cascade_station_local_rows=hydro.cascade_station_local_rows,
         cascade_edge_source_local_rows=hydro.cascade_edge_source_local_rows,
