@@ -14,15 +14,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.1.0`
+- Handoff version: `v0.2.0`
 - Snapshot date: `2026-07-06`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Latest validated implementation commit: `805a1fa`
+- Latest validated implementation commit: `8e49a87`
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
-- At handoff version `v0.1.0`, local and server worktrees were clean and both contained `1ac58dd`. Always confirm the live HEAD with `git rev-parse --short HEAD` rather than treating a documentation commit as immutable current state.
+- At handoff version `v0.2.0`, local code was committed and pushed as `8e49a87`, and the server checkout under `/data/zz2/National_model/repo` was fast-forwarded to that commit before data/readiness validation. Always confirm the live HEAD with `git rev-parse --short HEAD` rather than treating a documentation commit as immutable current state.
 
 ### Fixed model boundary and architecture
 
@@ -63,28 +63,33 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
+export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 ```
 
 ### Latest verification evidence
 
-- Full-license gate: Gurobi 13.0.2 solved a deterministic LP with 2,501 variables and one constraint to objective `1.0`; status `PASS`.
-- Server readiness: `PASS`, zero hard failures.
-- Regression tests: `10 passed in 4.72s` with pytest 9.1.1.
-- Full-year preflight: memory gate passed with 112.23 GiB available.
-- Estimated 8760h scale: 32,685,283 variables, 53,210,634 constraints and 738,364,512 nonzeros.
-- Estimated model memory: 38.23 GiB.
-- Verification script: `scripts/check_gurobi_full_license.py`; it is also called by `scripts/check_server_readiness.py`.
+- Local implementation commit: `8e49a87` (`fix: harden CCS and station-level hydropower model`) pushed to `origin/codex/cispo-2030-full-lp`.
+- Raw GRFR transfer to `/data/zz2/National_model/data/grfr_raw_2019` completed and was verified by server-side file size and SHA256:
+  - `output_pfaf_03_2019.nc`: `84ff2c882fb17a4b8693bb0773718c2472038021b64618b05f99f8070a506e0f`.
+  - `output_pfaf_04_2019.nc`: `e56d5da855ddbdafabdafcb5582981b3f0003054156cf8d912d24a9efd232756`.
+- Server readiness with `--require-raw-grfr --verify-raw-grfr-sha256`: `PASS`, zero hard failures; hydropower station rows `2030`, reservoir rows `620`, run-of-river rows `1410`, potential paper-rule mismatches `0`.
+- Server regression tests: `15 passed in 20.75s` with pytest.
+- One-month server preflight: 4,300,620 variables, 6,004,434 constraints, 74,591,808 nonzeros; estimated memory 4.19 GiB; memory gate passed with about 110.24 GiB available.
+- Full-year server preflight: 48,164,172 variables, 68,689,554 constraints, 862,195,872 nonzeros; estimated memory 47.98 GiB; memory gate passed with about 110.22 GiB available.
+- Local verification before server sync: AST parse passed for 14 changed Python files; `unittest discover -s tests -q` passed 15 tests; data-package smoke test passed 113/113 checks; 24h station-hydro solve reached Gurobi `OPTIMAL` and `solution_qc.json` reported `PASS`.
+- Verification scripts: `scripts/check_gurobi_full_license.py` and `scripts/check_server_readiness.py`; the latter now enforces raw GRFR presence and optional SHA256 verification.
 
 ### Known limitations and unresolved inputs
 
 - CSP site potential and hourly profiles are missing; CSP is disabled.
 - The observed provincial 2025 PHS capacity floor is unavailable; the current floor is explicitly zero.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
-- Capacity credits, inertia threshold and spur/trunk proxy costs require sensitivity analysis.
+- Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
+- Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
 - Two western AC500 proxy edges exceed the 1000 km range of the cited source cost.
 - Intraprovincial load-center transmission losses remain zero.
@@ -98,19 +103,48 @@ Run the complete 744h `one_month` optimization on the server before any 8760h pr
 ```bash
 cd /data/zz2/National_model/repo
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
+export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 $PYTHON scripts/run_cispo_2030_full_year.py \
   --horizon one_month \
-  --output-dir /data/zz2/National_model/outputs/2030_one_month
+  --output-dir /data/zz2/National_model/outputs/2030_one_month_station_hydro
 ```
 
 Record build time, solve time, peak memory, solver status, objective decomposition, numerical warnings, balance residuals, SOC/reservoir checks, transmission flows, curtailment, capacity additions and CCS injection. If infeasible, inspect the generated IIS; do not silently relax production constraints. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start the production solve.
 
 ## Version history
+
+### v0.2.0 - 2026-07-06 - station-level hydropower, CCS retrofit accounting and raw GRFR server readiness
+
+- Git baseline: `8e49a87` (`fix: harden CCS and station-level hydropower model`).
+- Scope: implemented assigned-label hydropower rules, paper-consistent potential hydropower classification, independent station-level reservoir balance using GRFR inflow, CCS retrofit/capture-cost accounting, production solution export/QC, and raw GRFR server readiness gates.
+- Main changed files:
+  - `config/optimization_2030.json`
+  - `config/model_data_config.json`
+  - `scripts/build_cispo_data_package.py`
+  - `scripts/check_server_readiness.py`
+  - `scripts/prepare_server_bundle.py`
+  - `scripts/run_cispo_2030_full_year.py`
+  - `cispo_model/hydro.py`
+  - `cispo_model/monolithic.py`
+  - `cispo_model/load_center.py`
+  - `cispo_model/master.py`
+  - `cispo_model/solution_export.py`
+  - `cispo_model/runtime_monitor.py`
+  - `tests/test_hydro_station_model.py`
+  - `tests/test_ccs_model_structure.py`
+- Data packages transferred to the server:
+  - `/data/zz2/National_model/data/model_ready_20260706_station_hydro`
+  - `/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro`
+  - `/data/zz2/National_model/data/grfr_raw_2019`
+- Verification: raw GRFR SHA256 matched source files; server readiness passed with raw-GRFR SHA verification; 15/15 tests passed on the server; one-month and full-year preflights passed memory gates with the scale estimates recorded in the current snapshot.
+- Modeling note: according to the EES hydropower supplement, installed labels are retained from assigned labels, potential dam sites with design capacity greater than 750 MW are modeled as reservoir hydropower, remaining potential sites as run-of-river hydropower, and no hydraulic cascade propagation delay is added because the cited equations use independent station-level natural inflow rather than upstream/downstream travel-time coupling.
+- Unresolved items: listed in the current snapshot above.
+- Next action: run and audit the server-side 744h `one_month` optimization using the versioned station-hydropower data paths.
 
 ### v0.1.0 - 2026-07-06 - Gurobi 13.0.2 server readiness
 

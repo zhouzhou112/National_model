@@ -18,6 +18,15 @@ Production architecture is one continuous LP containing 2030 capacity decisions 
 
 The `/data` filesystem is NTFS/fuseblk and does not enforce normal Unix ownership or mode bits. Do not store SSH keys or `gurobi.lic` there.
 
+Current validated station-hydropower data version from 2026-07-06:
+
+```bash
+export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
+export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
+```
+
 ## Long-term Git synchronization
 
 - Bare remote: `/home/zz2/git/National_model.git`
@@ -42,9 +51,9 @@ If code is edited on the server, commit and push it before pulling locally. Mode
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_station_hydro
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_station_hydro
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 $PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
