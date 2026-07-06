@@ -29,7 +29,10 @@ class HydroLinearBlock:
 
     ror_station_rows: dict[int, np.ndarray]
     ror_capacity_factor: dict[int, np.ndarray]
-    reservoir_station_rows: dict[int, np.ndarray]
+    reservoir_station_rows: np.ndarray
+    reservoir_station_rows_by_province: dict[int, np.ndarray]
+    reservoir_local_rows_by_province: dict[int, np.ndarray]
+    reservoir_province_positions: np.ndarray
     reservoir_inflow_gwh: np.ndarray
     reservoir_energy_upper_gwh: np.ndarray
 
@@ -132,9 +135,29 @@ class HydroProfileReader:
         )
         ror_rows: dict[int, np.ndarray] = {}
         ror_cf: dict[int, np.ndarray] = {}
-        reservoir_rows: dict[int, np.ndarray] = {}
-        reservoir_inflow = np.zeros((len(self.provinces), block.hours), dtype=np.float64)
-        reservoir_energy_upper = np.zeros(len(self.provinces), dtype=np.float64)
+        province_values = stations.province_code.to_numpy(dtype=int)
+        all_reservoir_rows = np.flatnonzero(reservoir_mask)
+        reservoir_row_to_local = {
+            int(station_row): local_row
+            for local_row, station_row in enumerate(all_reservoir_rows)
+        }
+        reservoir_rows_by_province: dict[int, np.ndarray] = {}
+        reservoir_local_rows_by_province: dict[int, np.ndarray] = {}
+        reservoir_province_positions = np.asarray(
+            [
+                self.province_index[int(province_code)]
+                for province_code in province_values[all_reservoir_rows]
+            ],
+            dtype=np.int64,
+        )
+        reservoir_q_available = self._available_flow_for_rows(
+            block, all_reservoir_rows
+        )
+        reservoir_inflow = (
+            reservoir_q_available
+            * head[all_reservoir_rows][None, :]
+            * conversion
+        ).T
         energy_upper_station = (
             stations.active_storage_gl.fillna(0.0).to_numpy(dtype=float)
             * 1.0e6
@@ -142,7 +165,6 @@ class HydroProfileReader:
             * conversion
             / 3600.0
         )
-        province_values = stations.province_code.to_numpy(dtype=int)
         for province_code, p in self.province_index.items():
             selected_ror = np.flatnonzero((province_values == province_code) & ror_mask)
             ror_rows[p] = selected_ror
@@ -158,20 +180,23 @@ class HydroProfileReader:
             else:
                 ror_cf[p] = np.zeros((block.hours, 0), dtype=np.float32)
 
-            selected_reservoir = np.flatnonzero((province_values == province_code) & reservoir_mask)
-            reservoir_rows[p] = selected_reservoir
-            if len(selected_reservoir):
-                q_available = self._available_flow_for_rows(block, selected_reservoir)
-                reservoir_inflow[p] = (
-                    q_available * head[selected_reservoir][None, :] * conversion
-                ).sum(axis=1)
-                reservoir_energy_upper[p] = energy_upper_station[selected_reservoir].sum()
+            selected_reservoir = np.flatnonzero(
+                (province_values == province_code) & reservoir_mask
+            )
+            reservoir_rows_by_province[p] = selected_reservoir
+            reservoir_local_rows_by_province[p] = np.asarray(
+                [reservoir_row_to_local[int(row)] for row in selected_reservoir],
+                dtype=np.int64,
+            )
         return HydroLinearBlock(
             ror_station_rows=ror_rows,
             ror_capacity_factor=ror_cf,
-            reservoir_station_rows=reservoir_rows,
+            reservoir_station_rows=all_reservoir_rows,
+            reservoir_station_rows_by_province=reservoir_rows_by_province,
+            reservoir_local_rows_by_province=reservoir_local_rows_by_province,
+            reservoir_province_positions=reservoir_province_positions,
             reservoir_inflow_gwh=reservoir_inflow,
-            reservoir_energy_upper_gwh=reservoir_energy_upper,
+            reservoir_energy_upper_gwh=energy_upper_station[all_reservoir_rows],
         )
 
     def read_block(self, block: TimeBlock, hydro_capacity_gw: np.ndarray) -> HydroBlock:

@@ -42,6 +42,9 @@ def estimate_full_model_scale(
     d = len(DAC_TECHS)
     n_vre = len(data.vre_sites)
     n_hydro = len(data.hydro_stations)
+    n_reservoir = int(
+        data.hydro_stations.operation_type_model.eq("reservoir_storage").sum()
+    )
     n_sub = len(data.substations)
     n_center = len(data.load_centers)
     n_intra = len(data.intra_load_center_edges)
@@ -53,7 +56,9 @@ def estimate_full_model_scale(
         "thermal_capacity_and_new": 2 * p * k,
         "thermal_hourly_ruc": 6 * p * k * h,
         "storage_capacity_and_hourly": 2 * p * s + 7 * p * s * h,
-        "hydro_site_capacity_and_hourly": 2 * n_hydro + 5 * p * h + p,
+        "hydro_site_capacity_and_hourly": (
+            2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
+        ),
         "transmission_capacity_and_flow": 2 * e + 2 * e * h,
         "dac_capacity_and_capture": 2 * p * d,
         "co2_source_sink_flow": p * c,
@@ -68,7 +73,8 @@ def estimate_full_model_scale(
         + 2 * p * v * h
         + 13 * p * k * h
         + 11 * p * s * h
-        + 5 * p * h
+        + 2 * p * h
+        + 3 * n_reservoir * h
         + e * h
         + p * h
         + 3 * p * h
@@ -96,7 +102,7 @@ def estimate_full_model_scale(
         2 * p * v * block_hours
         + 6 * p * k * block_hours
         + 7 * p * s * block_hours
-        + 5 * p * block_hours
+        + (2 * p + 3 * n_reservoir) * block_hours
         + 2 * e * block_hours
     )
     maximum_block_nonzeros = int(n_vre * block_hours + maximum_block_variables * 8)

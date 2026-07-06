@@ -626,22 +626,35 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
     fallback = float(config["hydro_proxy"]["fallback_threshold_mw"])
     threshold, balanced_accuracy = best_capacity_threshold(hydro, fallback)
     explicit = hydro.operation_type_final.isin(["run_of_river", "reservoir_storage"])
-    hydro["operation_type_model"] = np.where(
+    assigned_installed_type = np.where(
         explicit,
         hydro.operation_type_final,
         np.where(hydro.capacity_mw_model.ge(threshold), "reservoir_storage", "run_of_river"),
     )
-    hydro["operation_type_source_model"] = np.where(
-        explicit, "GHT_2026_explicit", f"capacity_proxy_threshold_{threshold:g}_mw"
+    is_operating = hydro.get(
+        "status_model", pd.Series(index=hydro.index, dtype=object)
+    ).eq("operating")
+    potential_threshold = float(config["hydro_proxy"]["potential_reservoir_threshold_mw"])
+    paper_potential_type = np.where(
+        hydro.capacity_mw_model.gt(potential_threshold),
+        "reservoir_storage",
+        "run_of_river",
+    )
+    # Paper-consistent split: installed plants retain the assigned label,
+    # regardless of confidence; non-operating/potential dam sites follow the
+    # explicit >750 MW reservoir rule in EES SI Section S3.4.
+    hydro["operation_type_model"] = np.where(
+        is_operating, assigned_installed_type, paper_potential_type
+    )
+    hydro["operation_type_source_model"] = np.select(
+        [is_operating & explicit, is_operating & ~explicit],
+        ["GHT_2026_explicit_installed", f"installed_capacity_proxy_{threshold:g}_mw"],
+        default=f"paper_potential_threshold_gt_{potential_threshold:g}_mw",
     )
     hydro["operation_type_confidence_model"] = np.where(explicit, "high", "low")
-    for sensitivity in config["hydro_proxy"]["sensitivity_thresholds_mw"]:
-        col = f"proxy_type_at_{int(sensitivity)}mw"
-        hydro[col] = np.where(
-            explicit,
-            hydro.operation_type_final,
-            np.where(hydro.capacity_mw_model.ge(float(sensitivity)), "reservoir_storage", "run_of_river"),
-        )
+    hydro["installed_operation_type_assigned"] = assigned_installed_type
+    hydro["potential_operation_type_paper"] = paper_potential_type
+    hydro["operation_type_scope"] = np.where(is_operating, "installed", "potential_or_nonoperating")
     hydro["existing_capacity_gw"] = np.where(
         hydro.get("status_model", pd.Series(index=hydro.index, dtype=object)).eq("operating"),
         hydro.capacity_mw_model / 1000.0,
@@ -659,7 +672,7 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
         "existing_capacity_gw", "capacity_potential_gw", "head_m", "q_rated_m3s", "v_max_gl", "v_min_gl",
         "active_storage_gl", "active_storage_duration_days_at_qrated", "gross_storage_duration_days_at_qrated",
         "operation_type_model", "operation_type_source_model", "operation_type_confidence_model",
-        "proxy_type_at_60mw", "proxy_type_at_115mw", "proxy_type_at_200mw",
+        "installed_operation_type_assigned", "potential_operation_type_paper", "operation_type_scope",
         "status_model", "technology_type_ght", "duplicate_comid_flag", "river_ght", "river_group_stage2",
         "environmental_flow_method", "stage2_issue_flags",
     ]
@@ -701,12 +714,18 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
         ["operation_type_model", "operation_type_source_model", "operation_type_confidence_model"],
         as_index=False,
     ).agg(station_rows=("hydrochn_row_id", "size"), capacity_potential_gw=("capacity_potential_gw", "sum"))
-    summary["calibrated_threshold_mw"] = threshold
+    summary["installed_proxy_threshold_mw"] = threshold
+    summary["potential_reservoir_threshold_mw"] = potential_threshold
     summary["threshold_balanced_accuracy_on_explicit_labels"] = balanced_accuracy
     write_csv(summary, DATA_ROOT / "hydro" / "classification_summary.csv")
     add_qc(qc, "hydro_station_rows", len(out), "PASS" if len(out) == 2030 else "FAIL", "HydroCHN rows preserved")
-    add_qc(qc, "hydro_unclassified_after_proxy", int(out.operation_type_model.isna().sum()), "PASS" if out.operation_type_model.notna().all() else "FAIL", "All stations receive explicit or low-confidence proxy type")
-    add_qc(qc, "hydro_proxy_threshold_mw", threshold, "WARN", f"Calibrated on explicit GHT labels; balanced accuracy={balanced_accuracy:.3f}; use sensitivity labels")
+    add_qc(qc, "hydro_unclassified_after_rules", int(out.operation_type_model.isna().sum()), "PASS" if out.operation_type_model.notna().all() else "FAIL", "Installed plants use assigned labels; potential sites use the paper >750 MW rule")
+    add_qc(qc, "hydro_installed_proxy_threshold_mw", threshold, "WARN", f"Installed unlabeled plants retain the assigned proxy label; calibration balanced accuracy={balanced_accuracy:.3f}")
+    potential_mismatch = int((
+        out.operation_type_scope.eq("potential_or_nonoperating")
+        & out.operation_type_model.ne(out.potential_operation_type_paper)
+    ).sum())
+    add_qc(qc, "hydro_potential_paper_rule_mismatches", potential_mismatch, "PASS" if potential_mismatch == 0 else "FAIL", "Potential sites >750 MW are reservoir; all others are run-of-river")
     add_qc(qc, "hydro_max_province_assignment_distance_deg", round(float(distance.max()), 6), "PASS" if distance.max() <= 0.25 else "WARN", "Nearest corrected 0.25-degree grid assignment")
 
 
@@ -1947,6 +1966,11 @@ def write_defaults(config: dict, hydro_summary_path: Path) -> None:
         "nuclear_capacity_floor": "GEM committed/pipeline scenario; 2050 floor held to 2060",
         "biomass_interpolation": config["biomass_interpolation"],
         "hydro_environmental_flow": config["hydro_proxy"]["environmental_flow_method"],
+        "hydro_installed_type_rule": config["hydro_proxy"]["installed_type_rule"],
+        "hydro_potential_type_rule": config["hydro_proxy"]["potential_type_rule"],
+        "hydro_potential_reservoir_threshold_mw": config["hydro_proxy"]["potential_reservoir_threshold_mw"],
+        "hydro_reservoir_dispatch_resolution": "station",
+        "hydro_cascade_hydraulic_coupling": False,
         "hydro_classification_summary": str(hydro_summary_path),
         "grid_connection_distance_method": config["grid_connection"]["distance_method"],
         "initial_intra_grid_capacity_method": config["grid_connection"]["initial_capacity_method"],
@@ -2039,7 +2063,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 - 碳约束：默认 `Base_-550Mt`，2025 基准年不设外生排放上限；2030/2040/2050/2060 为 4000/1300/-100/-550 MtCO2/yr。
 - 核电：采用 GEM 已投运/在建/规划管线作为下界，不使用人为强制的 2050 年 300 GW 情景；2060 暂保持 2050 管线下界。
 - 生物质：只采用农业残余物、林业残余物和废弃地能源作物。2030/2040 在 2020 与 2050 省级源值之间线性插值，2060 保持 2050 值。
-- 水电：GHT 2026 明确标签优先。未分类站点使用按高置信标签校准的容量阈值代理，并标为 `low` confidence；同时输出 60/115/200 MW 敏感性标签。环境流量使用已有 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签（GHT 2026 明确标签或 115 MW 代理标签），不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式。水库式使用各站 GRFR 入流独立平衡，不引入论文未定义的梯级传播时滞。环境流量使用已有 2019 单年 monthly P10 代理。
 
 ## 目录与直接读取文件
 
@@ -2079,7 +2103,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 
 ## 必须保留的警告
 
-1. 水电容量代理分类不是事实标签。现有高置信 GHT 样本上，单容量阈值区分 ROR/水库式的能力有限；必须使用敏感性列检查结论。
+1. 现有未标注水电站的容量代理分类不是事实标签，在 GHT 已标注样本上的平衡准确率约 0.677；本轮按用户决策直接使用，后续获得权威类型时再验证。
 2. GRFR 时区未在源 NetCDF 中声明，当前保留 source-native 时间；不得静默平移。
 3. 环境流量只由 2019 单年计算，不等同于论文的多年气候态 P10/P30。
 4. 未来负荷使用北京时间；容量因子 Zarr 的主时间也为 UTC+8，但文件年份跟随 ERA5 UTC 源年，首尾不是严格北京时间自然年。
@@ -2132,7 +2156,7 @@ def write_readme(config: dict) -> None:
 - 省内接入初值：原论文未给出变电站额定容量。默认采用 2025 年 onwind/offwind/UPV 全部铭牌容量同时送出的保守压力情景；同时保留按 {config['grid_connection']['initial_capacity_weather_year']} 小时 CF 聚合的论文一致对照值。DPV 位于负荷侧，不占 spur/trunk 容量。
 - 负荷中心：以 2022 城市用电表和县级城镇人口加权中心构建 337 个市级节点；296 城直接使用用电表，缺失的 41 个自治州/地区等按省内单位城镇人口用电强度插补。
 - Trunk 距离：每个 OSM 变电站连接同省最近市级负荷中心，使用大圆距离。市级变电站密度和电压权重仅作验证与敏感性分析，不作为负荷主权重。
-- 水电：GHT 明确标签优先；其余站点使用容量阈值低置信度代理并输出 60/115/200 MW 敏感性标签；环境流量为 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；各水库站使用 GRFR 自然入流独立平衡；环境流量为 2019 单年 monthly P10 代理。
 
 ## 主要直接输入
 
@@ -2171,7 +2195,7 @@ def write_readme(config: dict) -> None:
 7. 城市用电表未覆盖 41 个自治州、地区等地级单元；当前按省内单位城镇人口用电强度插补，正式结果应进行插补敏感性分析。
 8. 变电站数量和电压权重与城市用电份额仅中等相关，不能替代城市用电/人口主权重。
 9. 沿海掩膜错配点采用显式 CF 回退：风电取同格 `mixed_wind`，UPV 取同省最近陆地 PV 格点；必须保留逐点审计字段。
-10. 水电代理分类不是事实标签，正式结果须报告容量阈值敏感性。
+10. 现有未标注水电站的 115 MW 代理分类不是事实标签；本轮直接使用，待获得权威类型后验证，不开展分类阈值敏感性。
 
 ## 追溯与验证
 

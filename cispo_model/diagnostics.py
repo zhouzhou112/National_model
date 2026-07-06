@@ -22,6 +22,7 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
     model.Params.ScaleFlag = int(numerics["scale_flag"])
     model.Params.Presolve = int(numerics["presolve"])
     model.Params.Method = int(numerics["method"])
+    model.Params.BarConvTol = float(numerics["barrier_convergence_tolerance"])
     model.Params.Crossover = int(numerics["crossover"])
     model.Params.Threads = int(numerics["threads"])
     model.Params.TimeLimit = float(numerics["time_limit_seconds"])
@@ -68,6 +69,7 @@ def solve_and_report(
         GRB.TIME_LIMIT: "TIME_LIMIT",
         GRB.MEM_LIMIT: "MEM_LIMIT",
         GRB.INTERRUPTED: "INTERRUPTED",
+        GRB.SUBOPTIMAL: "SUBOPTIMAL",
     }.get(model.Status, str(model.Status))
     report = {
         "generated_at": datetime.now().astimezone().isoformat(),

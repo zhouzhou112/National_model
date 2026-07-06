@@ -16,6 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from cispo_model.config import ROOT, load_model_config
 from cispo_model.data import load_model_data
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
+from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
 def main() -> None:
@@ -96,8 +97,10 @@ def main() -> None:
     from cispo_model.diagnostics import model_statistics, solve_and_report
     from cispo_model.master import export_master_solution
     from cispo_model.monolithic import build_full_year_monolithic
+    from cispo_model.solution_export import export_operational_solution
 
     started = datetime.now().astimezone()
+    memory_monitor = PeakMemoryMonitor().start()
     artifacts = build_full_year_monolithic(
         config,
         data,
@@ -116,6 +119,7 @@ def main() -> None:
         "result_use": scope_report["result_use"],
         "available_memory_gb_before_build": round(available_gb, 2),
         "full_max_cf_used": not args.skip_full_max_cf,
+        "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
     }
     (output_dir / "build_report.json").write_text(
@@ -127,6 +131,11 @@ def main() -> None:
             str(output_dir / f"cispo_2030_{optimization_hours}h.mps")
         )
     if args.build_only:
+        build_report["memory_at_exit"] = memory_monitor.stop()
+        (output_dir / "build_report.json").write_text(
+            json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
         print(json.dumps(build_report, ensure_ascii=False, indent=2))
         return
     report = solve_and_report(
@@ -146,6 +155,18 @@ def main() -> None:
     )
     if artifacts.model.SolCount:
         export_master_solution(artifacts, data, output_dir)
+        qc = export_operational_solution(artifacts, data, config, output_dir)
+        report["solution_qc_status"] = qc["status"]
+        report["solution_qc_path"] = str(output_dir / "solution_qc.json")
+        (output_dir / "solve_report.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+    report["runtime_memory"] = memory_monitor.stop()
+    (output_dir / "solve_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 

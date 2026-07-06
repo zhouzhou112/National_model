@@ -8,6 +8,7 @@ Production architecture is one continuous LP containing 2030 capacity decisions 
 - Model-ready tables: `/data/zz2/National_model/data/model_ready`
 - Capacity factors: `/data/zz2/National_model/data/hourly_cf`
 - Hydrology: `/data/zz2/National_model/data/hydro_timeseries`
+- Raw 2019 GRFR source: `/data/zz2/National_model/data/grfr_raw_2019`
 - Python environment: `/home/zz2/.local/envs/cispo-2030`
 - Gurobi Optimizer: `/home/zz2/opt/gurobi1302/linux64`
 - Gurobi license: `/home/zz2/gurobi.lic` (mode `600`)
@@ -42,9 +43,10 @@ If code is edited on the server, commit and push it before pulling locally. Mode
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries
+export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
-$PYTHON scripts/check_server_readiness.py
+$PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
 ```
 
@@ -95,3 +97,5 @@ $PYTHON scripts/run_cispo_2030_full_year.py --horizon full_year --output-dir /da
 ```
 
 The runtime gate refuses to build when available memory is below the configured threshold. For infeasibility, the solve path writes `iis.ilp`; production constraints are not silently relaxed.
+
+Successful solves additionally write `solution_qc.json`, compressed hourly province balances, technology dispatch arrays, station-indexed reservoir dispatch, transmission flows, annual carbon/CCS accounts and objective cost decomposition. A solution is not accepted as production output unless `solution_qc.json` reports `PASS`.

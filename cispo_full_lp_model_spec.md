@@ -437,10 +437,11 @@ I_{g,ror,t}\le \sum_{z\in Z_{g,ror}}cf_{g,z,ror,t}p_{g,z,ror},
 \quad \forall g,\; z\in Z_{g,resvor}
 ```
 
-对于已建水库水电，CISPO 中通常固定容量：
+对于已建水库水电，容量下界为现有装机；候选坝址允许扩建到数据给定的潜力上界。潜在坝址按论文口径分类：设计容量严格大于 750 MW 作为水库式，其余作为径流式。现有电站因源数据无法提供完整可靠类型，直接采用当前分配标签（GHT 明确标签或 115 MW 代理标签），不因置信度较低而从模型剔除。
 
 ```math
-\underline{p}_{g,z,resvor}=p_{g,z,resvor}=\overline{p}_{g,z,resvor}
+\underline{p}_{g,z,resvor}=p^{exist}_{g,z,resvor},
+\quad p_{g,z,resvor}\le \overline{p}_{g,z,resvor}
 ```
 
 ### S4-11 水库期初期末库容一致
@@ -499,6 +500,8 @@ I_{g,resvor,t}=\sum_{z\in Z_{g,resvor}}I_{g,z,resvor,t},
 v_{g,z,t}=v_{g,z,t-1}+\left(q^{in}_{g,z,t}-q^{gen}_{g,z,t}-q^{spill}_{g,z,t}\right)\Delta t,
 \quad \forall g,\; z\in Z_{g,resvor},\; t\in T
 ```
+
+论文 S4-10 至 S4-17 对每个坝址 `z` 使用该站对应的 GRFR 自然入流，未给出上下游水量传递、河道传播时滞或梯级联合调度方程。因此当前“严格按论文”实现为站点级独立水量平衡，不额外构造级联传播。Stage2 河网拓扑仅保留用于站群识别和拓扑质量检查，不进入优化约束。
 
 ---
 
@@ -1366,7 +1369,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
 | 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv` | GEM committed/pipeline 下界；不强制 2050 年 300 GW，2060 暂保持 2050 管线下界 |
-| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv` | GHT 明确标签优先；其余站点用 115 MW 校准阈值形成低置信度代理，并保留 60/115/200 MW 敏感性标签；环境流量为 2019 单年 monthly P10 代理 |
+| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；水库式采用站点级独立 GRFR 入流与水量平衡；环境流量为 2019 单年 monthly P10 代理 |
 | 生物质 | `data/biomass/fuel_potential_by_province_year.csv` | 省级农业残余、林业残余、能源作物热值约束；2030/2040 线性插值，2060 保持 2050 |
 | 输电 | `data/transmission/existing_lines.csv`、`data/transmission/candidate_corridors.csv` | 2025 既有通道和 31 省全组合候选走廊 |
 | 碳约束 | `data/carbon/emissions_limits_by_scenario.csv` | 2025 不启用上限；默认 Base 路径为 2030/2040/2050/2060 = 4000/1300/-100/-550 MtCO2/yr |
@@ -1383,7 +1386,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 省内中心网络 | `data/load_center_network/natural_earth_278/intra_edges.csv` | 517条省内MST+3NN无向边、AC500成本、2025容量代理 |
 | 省级接入汇总 | `data/grid/province_initial_intra_grid_capacity_2025.csv` | 31 省容量闭合、变电站峰值合计和省级同时峰值对照 |
 
-数据层面的默认选项记录在 `data/model_defaults.json`，来源与输出校验分别记录在 `data/source_manifest.csv`、`data/output_manifest.csv`、`data/qc_summary.csv` 和 `data/smoke_test_report.json`。其中水电按容量分类的平衡准确率仅约 0.677，因此不得将低置信度代理标签作为电站事实属性；正式情景结果至少要报告 60/115/200 MW 三组分类敏感性。
+数据层面的默认选项记录在 `data/model_defaults.json`，来源与输出校验分别记录在 `data/source_manifest.csv`、`data/output_manifest.csv`、`data/qc_summary.csv` 和 `data/smoke_test_report.json`。现有未标注水电站的 115 MW 代理分类在 GHT 已标注样本上的平衡准确率约为 0.677，故该标签是当前模型分配值而不是经核验的电站事实属性；本轮按用户决策直接使用，不开展 60/115/200 MW 分类敏感性。
 
 重建与检查命令：
 

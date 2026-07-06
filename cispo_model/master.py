@@ -50,6 +50,12 @@ def export_master_solution(
     thermal_rows = []
     capacity = variables["thermal_capacity"].X
     new_capacity = variables["thermal_new"].X
+    retrofit = variables.get("thermal_retrofit_to_ccs")
+    retrofit_values = retrofit.X if retrofit is not None else None
+    ccs_pair_index = {
+        ccs: pair_position
+        for pair_position, (_, ccs) in enumerate(artifacts.index.get("ccs_pairs", ()))
+    }
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, k in artifacts.index["thermal_index"].items():
             thermal_rows.append(
@@ -58,6 +64,11 @@ def export_master_solution(
                     "technology": technology,
                     "capacity_gw": capacity[p, k],
                     "new_capacity_gw": new_capacity[p, k],
+                    "retrofit_to_ccs_gw": (
+                        retrofit_values[p, ccs_pair_index[technology]]
+                        if retrofit_values is not None and technology in ccs_pair_index
+                        else 0.0
+                    ),
                 }
             )
     pd.DataFrame(thermal_rows).to_csv(
@@ -77,6 +88,47 @@ def export_master_solution(
             )
     pd.DataFrame(storage_rows).to_csv(
         output_dir / "storage_capacity.csv", index=False, encoding="utf-8-sig"
+    )
+
+    hydro = data.hydro_stations.copy()
+    hydro["capacity_gw"] = variables["hydro_capacity"].X
+    hydro["new_capacity_gw"] = variables["hydro_new"].X
+    hydro.to_csv(output_dir / "hydro_capacity.csv", index=False, encoding="utf-8-sig")
+
+    dac_rows = []
+    dac_capacity = variables["dac_capacity"].X
+    dac_capture = variables["dac_capture"].X
+    for p, province_code in enumerate(artifacts.index["province_codes"]):
+        for technology, d in artifacts.index["dac_index"].items():
+            dac_rows.append(
+                {
+                    "province_code": province_code,
+                    "technology": technology,
+                    "capacity_mtpa": dac_capacity[p, d],
+                    "capture_mtco2": dac_capture[p, d],
+                }
+            )
+    pd.DataFrame(dac_rows).to_csv(
+        output_dir / "dac_capacity_capture.csv", index=False, encoding="utf-8-sig"
+    )
+
+    co2_ship = variables["co2_ship"].X
+    sinks = artifacts.index["ccs_sinks"]
+    positive = np.argwhere(co2_ship > 1e-9)
+    co2_rows = []
+    for p, sink_position in positive:
+        sink = sinks.iloc[int(sink_position)]
+        co2_rows.append(
+            {
+                "province_code": artifacts.index["province_codes"][int(p)],
+                "sink_grid_uid": sink.grid_uid,
+                "sink_lon": sink.lon,
+                "sink_lat": sink.lat,
+                "shipped_mtco2": co2_ship[int(p), int(sink_position)],
+            }
+        )
+    pd.DataFrame(co2_rows).to_csv(
+        output_dir / "co2_source_sink_flows.csv", index=False, encoding="utf-8-sig"
     )
 
     line = data.lines[
@@ -229,12 +281,24 @@ def export_master_solution(
         ):
             raise RuntimeError(f"Load-center solution QC failed: {qc}")
 
-    pd.DataFrame(
+    cost_frame = pd.DataFrame(
         [
-            {"cost_component": name, "value_million_cny_per_year": expression.getValue()}
+            {
+                "cost_component": name,
+                "value_million_cny_per_year": expression.getValue(),
+                "included_directly_in_objective": not name.startswith("operating_"),
+            }
             for name, expression in artifacts.cost_components.items()
         ]
-    ).to_csv(output_dir / "cost_components_lower_bound.csv", index=False, encoding="utf-8-sig")
+    )
+    cost_frame.to_csv(output_dir / "cost_components.csv", index=False, encoding="utf-8-sig")
+    # Backward-compatible legacy name; in the monolithic solve these values are
+    # objective components of the incumbent solution, not a lower bound.
+    cost_frame.to_csv(
+        output_dir / "cost_components_lower_bound.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
 
 
 def _technology_lookup(frame: pd.DataFrame, value_column: str) -> dict[str, float]:
@@ -307,10 +371,51 @@ def build_master(
     floor_table = floor_table.reindex(index=provinces, columns=THERMAL_TECHS[:-1], fill_value=0.0)
     nuclear = data.nuclear_floor.set_index("province_code").capacity_floor_gw.reindex(provinces).fillna(0.0)
     thermal_floor = np.column_stack([floor_table.to_numpy(dtype=float), nuclear.to_numpy(dtype=float)])
-    thermal_new = model.addMVar((p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_new_gw")
-    thermal_cap = model.addMVar((p_count, len(THERMAL_TECHS)), lb=thermal_floor, name="thermal_capacity_gw")
-    model.addConstr(thermal_cap == thermal_floor + thermal_new, name="thermal_capacity_accounting")
-    variables.update(thermal_new=thermal_new, thermal_capacity=thermal_cap)
+    thermal_new = model.addMVar(
+        (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_new_gw"
+    )
+    thermal_cap = model.addMVar(
+        (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_capacity_gw"
+    )
+    ccs_pairs = (
+        ("coal", "coalccs"),
+        ("cchp", "cchpccs"),
+        ("gas", "gasccs"),
+        ("gchp", "gchpccs"),
+        ("bio", "bioccs"),
+    )
+    thermal_retrofit = model.addMVar(
+        (p_count, len(ccs_pairs)), lb=0.0, name="thermal_retrofit_to_ccs_gw"
+    )
+    for pair_position, (non_ccs, ccs) in enumerate(ccs_pairs):
+        non_ccs_k = k_index[non_ccs]
+        ccs_k = k_index[ccs]
+        thermal_retrofit[:, pair_position].UB = thermal_floor[:, non_ccs_k]
+        model.addConstr(
+            thermal_cap[:, non_ccs_k]
+            == thermal_floor[:, non_ccs_k]
+            - thermal_retrofit[:, pair_position]
+            + thermal_new[:, non_ccs_k],
+            name=f"thermal_non_ccs_capacity_accounting_{non_ccs}",
+        )
+        model.addConstr(
+            thermal_cap[:, ccs_k]
+            == thermal_floor[:, ccs_k]
+            + thermal_retrofit[:, pair_position]
+            + thermal_new[:, ccs_k],
+            name=f"thermal_ccs_capacity_accounting_{ccs}",
+        )
+    nuclear_k = k_index["nuclear"]
+    model.addConstr(
+        thermal_cap[:, nuclear_k]
+        == thermal_floor[:, nuclear_k] + thermal_new[:, nuclear_k],
+        name="nuclear_capacity_accounting",
+    )
+    variables.update(
+        thermal_new=thermal_new,
+        thermal_capacity=thermal_cap,
+        thermal_retrofit_to_ccs=thermal_retrofit,
+    )
 
     fuel_allowed = data.fuel.pivot(index="province_code", columns="technology", values="new_capacity_allowed")
     for technology in THERMAL_TECHS[:-1]:
@@ -320,11 +425,8 @@ def build_master(
             for p in np.flatnonzero(disabled):
                 thermal_new[p, k].UB = 0.0
     for non_ccs, ccs in (("cchp", "cchpccs"), ("gchp", "gchpccs")):
-        pair = [k_index[non_ccs], k_index[ccs]]
-        model.addConstr(
-            thermal_cap[:, pair].sum(axis=1) == thermal_floor[:, pair].sum(axis=1),
-            name=f"fixed_chp_pair_{non_ccs}",
-        )
+        thermal_new[:, k_index[non_ccs]].UB = 0.0
+        thermal_new[:, k_index[ccs]].UB = 0.0
 
     om = data.thermal_om.set_index("technology")
     thermal_investment = gp.LinExpr()
@@ -333,7 +435,10 @@ def build_master(
         k = k_index[technology]
         crf = capital_recovery_factor(wacc, float(lifetimes[technology]))
         capex = float(capex_2030[technology])
-        thermal_investment += capex * crf * thermal_new[:, k].sum()
+        # CISPO SI Eq. 4.3 annualizes total thermal/nuclear capacity. This also
+        # gives a source-grounded incremental cost for non-CCS to CCS retrofit
+        # through the technology-specific CapEx difference.
+        thermal_investment += capex * crf * thermal_cap[:, k].sum()
         thermal_fom += capex * float(om.loc[technology, "fixed_om_fraction_capex_per_year"]) * thermal_cap[:, k].sum()
     costs["thermal_nuclear_investment"] = thermal_investment
     costs["thermal_nuclear_fixed_om"] = thermal_fom
@@ -518,6 +623,11 @@ def build_master(
     transport_cost = (
         float(data.ccs_cost.storage_yuan_per_tco2)
         + float(data.ccs_cost.transport_yuan_per_tco2_km) * transport_distance
+    )
+    # yuan/tCO2 multiplied by MtCO2 equals million CNY. Capture cost is
+    # separate from the CCS efficiency penalty and transport/injection cost.
+    costs["ccs_capture"] = (
+        float(data.ccs_cost.capture_yuan_per_tco2) * annual_captured.sum()
     )
     costs["co2_transport_injection"] = (transport_cost * co2_ship).sum()
 
@@ -863,6 +973,7 @@ def build_master(
         "thermal_index": k_index,
         "storage_index": s_index,
         "dac_index": d_index,
+        "ccs_pairs": ccs_pairs,
         "blocks": blocks,
         "max_commitment_history": max_commitment_history,
         "ccs_sinks": sinks,

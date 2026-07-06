@@ -11,7 +11,9 @@
   "hydro_proxy": {
     "calibrate_capacity_threshold_from_explicit_ght_labels": true,
     "fallback_threshold_mw": 115.0,
-    "sensitivity_thresholds_mw": [60.0, 115.0, 200.0],
+    "potential_reservoir_threshold_mw": 750.0,
+    "installed_type_rule": "assigned_GHT_or_115MW_proxy_label",
+    "potential_type_rule": "paper_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
     "environmental_flow_method": "monthly_p10_from_2019_only"
   },
   "grid_connection": {

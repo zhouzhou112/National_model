@@ -129,6 +129,10 @@ def attach_annual_load_center_network(
     # Attribute province-level hydropower dispatch to spatially routed plants.
     hydro_route_lookup = data.hydro_load_center_routes.set_index("hydrochn_row_id").load_center_id
     hydro_center = data.hydro_stations.hydrochn_row_id.map(hydro_route_lookup).astype(str)
+    reservoir_global_to_local = {
+        int(station_row): local_row
+        for local_row, station_row in enumerate(hydro_block.reservoir_station_rows)
+    }
     ror_full_load_hours = np.zeros(len(data.hydro_stations), dtype=float)
     for p in range(len(provinces)):
         station_rows = hydro_block.ror_station_rows[p]
@@ -141,10 +145,17 @@ def attach_annual_load_center_network(
             .eq("run_of_river").to_numpy()
         ]
         ror_rows = ror_rows[ror_full_load_hours[ror_rows] >= coefficient_tolerance]
-        reservoir_rows = station_rows[
+        reservoir_station_rows = station_rows[
             ~data.hydro_stations.loc[station_rows, "operation_type_model"]
             .eq("run_of_river").to_numpy()
         ]
+        reservoir_local_rows = np.asarray(
+            [
+                reservoir_global_to_local[int(station_row)]
+                for station_row in reservoir_station_rows
+            ],
+            dtype=np.int64,
+        )
         if len(ror_rows):
             model.addConstr(
                 center_ror_generation[center_position]
@@ -153,11 +164,11 @@ def attach_annual_load_center_network(
             )
         else:
             center_ror_generation[center_position].UB = 0.0
-        if len(reservoir_rows):
+        if len(reservoir_local_rows):
             model.addConstr(
                 center_reservoir_generation[center_position]
-                <= float(hours) * hydro_capacity[reservoir_rows].sum(),
-                name=f"load_center_reservoir_power_envelope_{center_position}",
+                == reservoir_generation[reservoir_local_rows, :].sum(),
+                name=f"load_center_reservoir_generation_{center_position}",
             )
         else:
             center_reservoir_generation[center_position].UB = 0.0
@@ -172,7 +183,9 @@ def attach_annual_load_center_network(
         )
         model.addConstr(
             center_reservoir_generation[center_positions].sum()
-            == reservoir_generation[p, :].sum(),
+            == reservoir_generation[
+                hydro_block.reservoir_local_rows_by_province[p], :
+            ].sum(),
             name=f"load_center_reservoir_generation_closure_p{province_code}",
         )
 

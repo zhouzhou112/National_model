@@ -108,7 +108,13 @@
     "reservoir_efficiency": 0.85,
     "water_density_kg_per_m3": 1000.0,
     "gravity_m_per_s2": 9.81,
-    "classification_column": "operation_type_model"
+    "classification_column": "operation_type_model",
+    "installed_type_rule": "use_assigned_GHT_or_115MW_proxy_label_regardless_of_confidence",
+    "potential_reservoir_threshold_mw": 750.0,
+    "potential_type_rule": "paper_rule_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
+    "reservoir_dispatch_resolution": "station",
+    "reservoir_inflow_rule": "paper_S4_17_independent_station_GRFR_natural_inflow",
+    "cascade_hydraulic_coupling": false
   },
   "network": {
     "flow_regularization_yuan_per_mwh": 0.001,
@@ -139,7 +145,8 @@
     "scale_flag": 2,
     "presolve": 2,
     "method": 2,
-    "crossover": 0,
+    "barrier_convergence_tolerance": 1e-9,
+    "crossover": 1,
     "threads": 32,
     "time_limit_seconds": 86400,
     "soft_mem_limit_gb": 80,

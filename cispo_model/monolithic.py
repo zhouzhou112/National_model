@@ -298,10 +298,31 @@ def build_full_year_monolithic(
         hydro = hydro_reader.read_linear_block(block)
     ror_available = model.addMVar((p_count, hours), lb=0.0, name="ror_available_gw")
     ror_generation = model.addMVar((p_count, hours), lb=0.0, name="ror_generation_gw")
-    reservoir_capacity = model.addMVar(p_count, lb=0.0, name="reservoir_capacity_gw")
-    reservoir_generation = model.addMVar((p_count, hours), lb=0.0, name="reservoir_generation_gw")
-    reservoir_soc = model.addMVar((p_count, hours), lb=0.0, name="reservoir_energy_gwh")
-    reservoir_spill = model.addMVar((p_count, hours), lb=0.0, name="reservoir_spill_gw")
+    reservoir_rows = hydro.reservoir_station_rows
+    reservoir_count = len(reservoir_rows)
+    reservoir_generation = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_generation_gw"
+    )
+    reservoir_soc = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_energy_gwh"
+    )
+    reservoir_spill = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_spill_gwh"
+    )
+    reservoir_incidence = sparse.csr_matrix(
+        (
+            np.ones(reservoir_count, dtype=float),
+            (
+                hydro.reservoir_province_positions,
+                np.arange(reservoir_count, dtype=np.int64),
+            ),
+        ),
+        shape=(p_count, reservoir_count),
+    )
+    reservoir_capacity_by_province = (
+        reservoir_incidence @ hydro_capacity[reservoir_rows]
+    )
+    reservoir_generation_by_province = reservoir_incidence @ reservoir_generation
     chunk = int(config.raw["construction"]["build_hour_chunk_size"])
     for p in range(p_count):
         rows = hydro.ror_station_rows[p]
@@ -322,16 +343,11 @@ def build_full_year_monolithic(
                 )
         else:
             ror_available[p, :].UB = 0.0
-        reservoir_rows = hydro.reservoir_station_rows[p]
-        if len(reservoir_rows):
-            model.addConstr(
-                reservoir_capacity[p] == hydro_capacity[reservoir_rows].sum(),
-                name=f"reservoir_capacity_p{provinces[p]}",
-            )
-        else:
-            reservoir_capacity[p].UB = 0.0
     model.addConstr(ror_generation <= ror_available, name="ror_generation_availability")
-    model.addConstr(reservoir_generation <= reservoir_capacity[:, None], name="reservoir_power")
+    model.addConstr(
+        reservoir_generation <= hydro_capacity[reservoir_rows, None],
+        name="reservoir_station_power",
+    )
     model.addConstr(reservoir_soc <= hydro.reservoir_energy_upper_gwh[:, None], name="reservoir_energy")
     model.addConstr(
         reservoir_soc[:, 0] == reservoir_soc[:, -1] + hydro.reservoir_inflow_gwh[:, 0]
@@ -361,7 +377,7 @@ def build_full_year_monolithic(
     for p in range(p_count):
         model.addConstr(
             vre_generation[p].sum(axis=0) + actual_thermal[p].sum(axis=0)
-            + ror_generation[p] + reservoir_generation[p]
+            + ror_generation[p] + reservoir_generation_by_province[p]
             + discharge[p].sum(axis=0) - charge[p].sum(axis=0)
             + network_injection[p]
             == load[p] + dac_load[p],
@@ -400,7 +416,12 @@ def build_full_year_monolithic(
         (gross - pmin[None, :, None] * online) * (1.0 - loss[None, :, None])
     ).sum(axis=1)
     vre_up = (vre_available - vre_generation).sum(axis=1)
-    hydro_up = reservoir_capacity[:, None] - reservoir_generation + ror_available - ror_generation
+    hydro_up = (
+        reservoir_capacity_by_province[:, None]
+        - reservoir_generation_by_province
+        + ror_available
+        - ror_generation
+    )
     storage_up = rup_c.sum(axis=1) + rup_d.sum(axis=1)
     storage_down = rdn_c.sum(axis=1) + rdn_d.sum(axis=1)
     vre_dispatch = vre_generation.sum(axis=1)
@@ -411,7 +432,7 @@ def build_full_year_monolithic(
         name="up_reserve",
     )
     model.addConstr(
-        thermal_down + ror_generation + reservoir_generation + storage_down
+        thermal_down + ror_generation + reservoir_generation_by_province + storage_down
         >= float(security["down_reserve_load_fraction"]) * load
         + float(security["down_reserve_vre_fraction"]) * vre_dispatch,
         name="down_reserve",
@@ -421,12 +442,12 @@ def build_full_year_monolithic(
     hydro_inertia = model.addMVar(p_count, lb=0.0, name="hydro_inertia_gw_s")
     for p in range(p_count):
         ror_rows = hydro.ror_station_rows[p]
-        reservoir_rows = hydro.reservoir_station_rows[p]
+        reservoir_rows_p = hydro.reservoir_station_rows_by_province[p]
         expression = gp.LinExpr()
         if len(ror_rows):
             expression += float(non_sync["ror"]) * hydro_capacity[ror_rows].sum()
-        if len(reservoir_rows):
-            expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows].sum()
+        if len(reservoir_rows_p):
+            expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows_p].sum()
         model.addConstr(hydro_inertia[p] == expression, name=f"hydro_inertia_p{provinces[p]}")
     storage_inertia = np.asarray([float(non_sync[t]) for t in STORAGE_TECHS])
     for p in range(p_count):
@@ -521,14 +542,22 @@ def build_full_year_monolithic(
     variables.update(
         vre_generation=vre_generation, vre_available=vre_available,
         online=online, startup=startup, shutdown=shutdown,
-        thermal_gross_generation=gross, ramp_up=ramp_up, ramp_down=ramp_down,
+        thermal_gross_generation=gross, actual_thermal_generation=actual_thermal,
+        ramp_up=ramp_up, ramp_down=ramp_down,
         storage_charge=charge, storage_discharge=discharge, storage_soc=soc,
         storage_reserve_up_charge=rup_c, storage_reserve_down_charge=rdn_c,
         storage_reserve_up_discharge=rup_d, storage_reserve_down_discharge=rdn_d,
         ror_available=ror_available, ror_generation=ror_generation,
-        reservoir_capacity=reservoir_capacity, reservoir_generation=reservoir_generation,
+        reservoir_station_rows=reservoir_rows,
+        reservoir_capacity_by_province=reservoir_capacity_by_province,
+        reservoir_generation=reservoir_generation,
+        reservoir_generation_by_province=reservoir_generation_by_province,
         reservoir_soc=reservoir_soc, reservoir_spill=reservoir_spill,
         flow_forward=flow_forward, flow_reverse=flow_reverse,
+        network_injection=network_injection, dac_load=dac_load,
+        thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
+        vre_reserve_up=vre_up, hydro_reserve_up=hydro_up,
+        storage_reserve_up=storage_up, storage_reserve_down=storage_down,
         hydro_inertia=hydro_inertia,
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
@@ -537,6 +566,9 @@ def build_full_year_monolithic(
         line_efficiency=line_efficiency,
         architecture="full_year_monolithic_lp",
         optimization_hours=hours,
+        selected_load_gw=load,
+        reservoir_inflow_gwh=hydro.reservoir_inflow_gwh,
+        reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,
     )
     model.update()
     return artifacts
