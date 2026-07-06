@@ -57,7 +57,7 @@ def estimate_full_model_scale(
         "thermal_hourly_ruc": 6 * p * k * h,
         "storage_capacity_and_hourly": 2 * p * s + 7 * p * s * h,
         "hydro_site_capacity_and_hourly": (
-            2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
+            2 * n_hydro + 2 * p * h + 4 * n_reservoir * h
         ),
         "transmission_capacity_and_flow": 2 * e + 2 * e * h,
         "dac_capacity_and_capture": 2 * p * d,
@@ -74,7 +74,7 @@ def estimate_full_model_scale(
         + 13 * p * k * h
         + 11 * p * s * h
         + 2 * p * h
-        + 3 * n_reservoir * h
+        + 4 * n_reservoir * h
         + e * h
         + p * h
         + 3 * p * h
@@ -102,7 +102,7 @@ def estimate_full_model_scale(
         2 * p * v * block_hours
         + 6 * p * k * block_hours
         + 7 * p * s * block_hours
-        + (2 * p + 3 * n_reservoir) * block_hours
+        + (2 * p + 4 * n_reservoir) * block_hours
         + 2 * e * block_hours
     )
     maximum_block_nonzeros = int(n_vre * block_hours + maximum_block_variables * 8)
@@ -189,6 +189,37 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         )),
         "0 missing hydropower stations",
     )
+    check("hydro_cascade_nodes", len(data.hydro_cascade_nodes) == 142, len(data.hydro_cascade_nodes), "142")
+    check("hydro_cascade_edges", len(data.hydro_cascade_edges) == 124, len(data.hydro_cascade_edges), "124")
+    if not data.hydro_cascade_nodes.empty:
+        cascade_ids: set[str] = set()
+        for value in data.hydro_cascade_nodes.hydrochn_row_ids.dropna():
+            cascade_ids.update(part.strip() for part in str(value).split(";") if part.strip())
+        cascade_hydro = data.hydro_stations.loc[
+            data.hydro_stations.hydrochn_row_id.astype(str).isin(cascade_ids)
+        ]
+        non_reservoir = int(
+            cascade_hydro.operation_type_model.ne("reservoir_storage").sum()
+        )
+        check("hydro_cascade_station_rows", len(cascade_hydro) == 146, len(cascade_hydro), "146")
+        check("hydro_cascade_all_reservoir", non_reservoir == 0, non_reservoir, "0")
+    if not data.hydro_cascade_edges.empty:
+        check(
+            "hydro_cascade_lag_nonnegative",
+            bool(data.hydro_cascade_edges.travel_lag_h.ge(0).all()),
+            float(data.hydro_cascade_edges.travel_lag_h.min()),
+            ">= 0 h",
+        )
+        low_lag = int(
+            data.hydro_cascade_edges.lag_quality_flag.eq("LOW_CORRELATION").sum()
+        )
+        check(
+            "hydro_cascade_low_lag_correlation_edges",
+            low_lag == 0,
+            low_lag,
+            "0 low-correlation lag estimates",
+            "SOFT",
+        )
     known_centers = set(data.load_centers.load_center_id.astype(str))
     intra = data.intra_load_center_edges
     endpoint_valid = (

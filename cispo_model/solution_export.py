@@ -57,9 +57,18 @@ def export_operational_solution(
     reservoir_by_province = _value(variables["reservoir_generation_by_province"])
     reservoir_soc = _value(variables["reservoir_soc"])
     reservoir_spill = _value(variables["reservoir_spill"])
+    reservoir_turbine_flow = _value(variables["reservoir_turbine_flow"])
+    reservoir_spill_flow = _value(variables["reservoir_spill_flow"])
+    reservoir_volume = _value(variables["reservoir_volume"])
     reservoir_inflow = np.asarray(artifacts.index["reservoir_inflow_gwh"], dtype=float)
     reservoir_energy_upper = np.asarray(
         artifacts.index["reservoir_energy_upper_gwh"], dtype=float
+    )
+    reservoir_local_inflow = np.asarray(
+        artifacts.index["reservoir_local_inflow_m3s"], dtype=float
+    )
+    reservoir_active_storage = np.asarray(
+        artifacts.index["reservoir_active_storage_m3"], dtype=float
     )
     storage_charge = _value(variables["storage_charge"])
     storage_discharge = _value(variables["storage_discharge"])
@@ -122,20 +131,45 @@ def export_operational_solution(
         + storage_discharge[:, :, 1:] / eta_d[None, :, None]
     )
 
-    reservoir_cycle_residual = np.empty_like(reservoir_soc)
+    upstream_release = np.zeros_like(reservoir_volume)
+    for source_rows, target_rows, target_weights, lag in zip(
+        artifacts.index.get("cascade_edge_source_local_rows", []),
+        artifacts.index.get("cascade_edge_target_local_rows", []),
+        artifacts.index.get("cascade_edge_target_weights", []),
+        artifacts.index.get("cascade_edge_lag_h", []),
+    ):
+        source_rows = np.asarray(source_rows, dtype=int)
+        target_rows = np.asarray(target_rows, dtype=int)
+        target_weights = np.asarray(target_weights, dtype=float)
+        release = (
+            reservoir_turbine_flow[source_rows, :].sum(axis=0)
+            + reservoir_spill_flow[source_rows, :].sum(axis=0)
+        )
+        shifted = np.roll(release, int(lag) % hours)
+        for target_row, weight in zip(target_rows, target_weights):
+            upstream_release[int(target_row), :] += float(weight) * shifted
+    reservoir_cycle_residual = np.empty_like(reservoir_volume)
     reservoir_cycle_residual[:, 0] = (
-        reservoir_soc[:, 0]
-        - reservoir_soc[:, -1]
-        - reservoir_inflow[:, 0]
-        + reservoir_generation[:, 0]
-        + reservoir_spill[:, 0]
+        reservoir_volume[:, 0]
+        - reservoir_volume[:, -1]
+        - (
+            reservoir_local_inflow[:, 0]
+            + upstream_release[:, 0]
+            - reservoir_turbine_flow[:, 0]
+            - reservoir_spill_flow[:, 0]
+        )
+        * 3600.0
     )
     reservoir_cycle_residual[:, 1:] = (
-        reservoir_soc[:, 1:]
-        - reservoir_soc[:, :-1]
-        - reservoir_inflow[:, 1:]
-        + reservoir_generation[:, 1:]
-        + reservoir_spill[:, 1:]
+        reservoir_volume[:, 1:]
+        - reservoir_volume[:, :-1]
+        - (
+            reservoir_local_inflow[:, 1:]
+            + upstream_release[:, 1:]
+            - reservoir_turbine_flow[:, 1:]
+            - reservoir_spill_flow[:, 1:]
+        )
+        * 3600.0
     )
 
     line_capacity = _value(variables["line_capacity"])
@@ -171,6 +205,7 @@ def export_operational_solution(
     objective_value = float(artifacts.model.ObjVal)
     objective_component_residual = sum(objective_cost_values.values()) - objective_value
     tolerance = 1e-5
+    reservoir_volume_tolerance_m3 = 1e-2
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "optimization_hours": hours,
@@ -188,9 +223,18 @@ def export_operational_solution(
                 0.0,
             ).max()
         ),
-        "maximum_reservoir_transition_residual_gwh": float(np.abs(reservoir_cycle_residual).max()),
+        "maximum_reservoir_transition_residual_m3": float(np.abs(reservoir_cycle_residual).max()),
         "maximum_reservoir_energy_upper_violation_gwh": float(
             np.maximum(reservoir_soc - reservoir_energy_upper[:, None], 0.0).max()
+        ),
+        "maximum_reservoir_active_storage_upper_violation_m3": float(
+            np.maximum(reservoir_volume - reservoir_active_storage[:, None], 0.0).max()
+        ),
+        "core_cascade_station_rows": int(
+            len(np.asarray(artifacts.index.get("cascade_station_local_rows", [])))
+        ),
+        "core_cascade_edges": int(
+            len(artifacts.index.get("cascade_edge_ids", []))
         ),
         "annual_gross_emissions_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,
@@ -217,8 +261,9 @@ def export_operational_solution(
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,
         "storage_soc": qc["maximum_storage_soc_upper_violation_gwh"] <= tolerance,
-        "reservoir_transition": qc["maximum_reservoir_transition_residual_gwh"] <= tolerance,
+        "reservoir_transition": qc["maximum_reservoir_transition_residual_m3"] <= reservoir_volume_tolerance_m3,
         "reservoir_energy": qc["maximum_reservoir_energy_upper_violation_gwh"] <= tolerance,
+        "reservoir_active_storage": qc["maximum_reservoir_active_storage_upper_violation_m3"] <= reservoir_volume_tolerance_m3,
         "carbon": qc["carbon_limit_margin_mtco2"] >= -tolerance,
         "biomass": qc["maximum_biomass_limit_violation_pj"] <= tolerance,
         "co2_source": qc["maximum_co2_source_balance_residual_mt"] <= tolerance,
@@ -287,6 +332,12 @@ def export_operational_solution(
     )
     reservoir_index = data.hydro_stations.iloc[reservoir_station_rows].copy()
     reservoir_index.insert(0, "reservoir_local_index", np.arange(len(reservoir_index)))
+    cascade_local_rows = set(
+        np.asarray(artifacts.index.get("cascade_station_local_rows", []), dtype=int).tolist()
+    )
+    reservoir_index["is_core_cascade_station"] = reservoir_index.reservoir_local_index.isin(
+        cascade_local_rows
+    )
     reservoir_index.to_csv(
         output_dir / "reservoir_station_index.csv", index=False, encoding="utf-8-sig"
     )
@@ -295,8 +346,23 @@ def export_operational_solution(
         generation_gw=reservoir_generation,
         soc_gwh=reservoir_soc,
         spill_gwh=reservoir_spill,
+        turbine_flow_m3s=reservoir_turbine_flow,
+        spill_flow_m3s=reservoir_spill_flow,
+        active_storage_m3=reservoir_volume,
+        local_inflow_m3s=reservoir_local_inflow,
+        upstream_release_m3s=upstream_release,
         inflow_gwh=reservoir_inflow,
         energy_upper_gwh=reservoir_energy_upper,
+        active_storage_upper_m3=reservoir_active_storage,
+        core_cascade_local_rows=np.asarray(
+            artifacts.index.get("cascade_station_local_rows", []), dtype=int
+        ),
+        core_cascade_edge_ids=np.asarray(
+            artifacts.index.get("cascade_edge_ids", []), dtype=str
+        ),
+        core_cascade_edge_lag_h=np.asarray(
+            artifacts.index.get("cascade_edge_lag_h", []), dtype=int
+        ),
         hydrochn_row_id=reservoir_index.hydrochn_row_id.astype(str).to_numpy(),
         hour_index=hour_index,
     )

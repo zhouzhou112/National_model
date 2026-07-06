@@ -14,7 +14,12 @@
     "potential_reservoir_threshold_mw": 750.0,
     "installed_type_rule": "assigned_GHT_or_115MW_proxy_label",
     "potential_type_rule": "paper_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
-    "environmental_flow_method": "monthly_p10_from_2019_only"
+    "environmental_flow_method": "monthly_p10_from_2019_only",
+    "cascade_scope": "stage2_recommended_core_reservoir_groups_only",
+    "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
+    "cascade_max_lag_h": 168,
+    "cascade_low_correlation_warning_threshold": 0.2,
+    "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split"
   },
   "grid_connection": {
     "minimum_substation_voltage_v": 220000,
@@ -37,6 +42,9 @@
     "thermal_retirement": "D:/codeenv/pycharmproject/National_RL/Gis_process/thermal_power/outputs/thermal_retirement_20260612_official_gem_neacheck/retirement_5yr_operating_capacity.csv",
     "nuclear_pipeline": "D:/codeenv/pycharmproject/National_RL/Gis_process/thermal_power/outputs/nuclear_capacity_milestones_expanded_20260612/nuclear_capacity_by_province_milestone_pipeline.csv",
     "hydro_stage2": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/model_inputs/hydro_station_operation_type_stage2.csv",
+    "hydro_cascade_stage2_nodes": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/figure_data/cascade_topology_nodes_stage2.csv",
+    "hydro_cascade_stage2_edges": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/figure_data/cascade_topology_edges_stage2.csv",
+    "hydro_cascade_stage2_qa": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/validation/cascade_topology_qa.json",
     "hydro_updated_inventory": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_phs_module/data_output/hydrochn_ght2026_updated.csv",
     "hydro_hourly_discharge": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage1_20260629/model_inputs/grfr_target_comids_hourly_2019.nc",
     "hydro_environmental_flow": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage1_20260629/model_inputs/grfr_monthly_p10_single_year_proxy_2019.nc",

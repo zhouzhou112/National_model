@@ -161,6 +161,8 @@ class ModelData:
     thermal_floor: pd.DataFrame
     nuclear_floor: pd.DataFrame
     hydro_stations: pd.DataFrame
+    hydro_cascade_nodes: pd.DataFrame
+    hydro_cascade_edges: pd.DataFrame
     biomass: pd.DataFrame
     lines: pd.DataFrame
     carbon: pd.Series
@@ -301,6 +303,29 @@ def load_model_data(config: ModelConfig) -> ModelData:
     nuclear_floor = _read("thermal/nuclear_capacity_floor_by_year.csv")
     nuclear_floor = nuclear_floor.loc[nuclear_floor.year.eq(config.planning_year)].copy()
     hydro = _read("hydro/hydro_stations.csv")
+    try:
+        hydro_cascade_nodes = _read("hydro/cascade_topology_nodes.csv")
+        hydro_cascade_edges = _read("hydro/cascade_topology_edges.csv")
+    except FileNotFoundError:
+        hydro_cascade_nodes = pd.DataFrame(
+            columns=[
+                "node_id", "river_group_stage2", "comid", "hydrochn_row_ids",
+                "model_station_count", "model_capacity_gw", "existing_capacity_gw",
+                "stage2_capacity_gw", "plant_count_at_comid", "topology_in_degree",
+                "topology_out_degree", "topology_role", "label_name",
+            ]
+        )
+        hydro_cascade_edges = pd.DataFrame(
+            columns=[
+                "edge_id", "river_group_stage2", "source_node_id", "target_node_id",
+                "source_comid", "target_comid", "source_hydrochn_row_ids",
+                "target_hydrochn_row_ids", "source_model_station_count",
+                "target_model_station_count", "steps_to_next_candidate",
+                "traced_length_km", "travel_lag_h", "lag_correlation",
+                "lag_method", "lag_quality_flag", "source_capacity_mw",
+                "target_capacity_mw",
+            ]
+        )
     biomass = _read("biomass/fuel_potential_by_province_year.csv")
     biomass = biomass.loc[biomass.year.eq(config.planning_year)].copy()
     lines = _read("transmission/candidate_corridors.csv")
@@ -379,6 +404,34 @@ def load_model_data(config: ModelConfig) -> ModelData:
         raise ValueError("Some active VRE sites have no Natural Earth load-center route")
     if set(hydro.hydrochn_row_id).difference(hydro_load_center_routes.hydrochn_row_id):
         raise ValueError("Some hydropower stations have no Natural Earth load-center route")
+    if not hydro_cascade_edges.empty:
+        require_columns(
+            hydro_cascade_nodes,
+            ["node_id", "hydrochn_row_ids", "model_station_count", "model_capacity_gw"],
+            "hydropower cascade nodes",
+        )
+        require_columns(
+            hydro_cascade_edges,
+            [
+                "edge_id", "source_node_id", "target_node_id",
+                "source_hydrochn_row_ids", "target_hydrochn_row_ids",
+                "travel_lag_h", "lag_quality_flag",
+            ],
+            "hydropower cascade edges",
+        )
+        cascade_ids: set[str] = set()
+        for value in pd.concat(
+            [hydro_cascade_nodes.hydrochn_row_ids, hydro_cascade_edges.source_hydrochn_row_ids,
+             hydro_cascade_edges.target_hydrochn_row_ids],
+            ignore_index=True,
+        ).dropna():
+            cascade_ids.update(part.strip() for part in str(value).split(";") if part.strip())
+        missing_cascade_ids = cascade_ids.difference(hydro.hydrochn_row_id.astype(str))
+        if missing_cascade_ids:
+            raise ValueError(
+                f"Cascade topology references missing hydropower stations: "
+                f"{sorted(missing_cascade_ids)[:10]}"
+            )
 
     return ModelData(
         provinces=provinces,
@@ -389,6 +442,8 @@ def load_model_data(config: ModelConfig) -> ModelData:
         thermal_floor=thermal_floor,
         nuclear_floor=nuclear_floor,
         hydro_stations=hydro,
+        hydro_cascade_nodes=hydro_cascade_nodes,
+        hydro_cascade_edges=hydro_cascade_edges,
         biomass=biomass,
         lines=lines,
         carbon=carbon,

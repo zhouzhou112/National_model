@@ -113,8 +113,13 @@
     "potential_reservoir_threshold_mw": 750.0,
     "potential_type_rule": "paper_rule_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
     "reservoir_dispatch_resolution": "station",
-    "reservoir_inflow_rule": "paper_S4_17_independent_station_GRFR_natural_inflow",
-    "cascade_hydraulic_coupling": false
+    "reservoir_inflow_rule": "core_cascade_local_GRFR_inflow_plus_upstream_release_other_reservoirs_independent",
+    "cascade_hydraulic_coupling": true,
+    "cascade_scope": "stage2_recommended_core_reservoir_groups_only",
+    "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
+    "cascade_max_lag_h": 168,
+    "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split",
+    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p10_2019_proxy; formal p30 spill lower bound requires multi-year source data"
   },
   "network": {
     "flow_regularization_yuan_per_mwh": 0.001,

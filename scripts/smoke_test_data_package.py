@@ -184,6 +184,27 @@ def main() -> None:
     hydro_bound_error = float((hydro.existing_capacity_gw - hydro.capacity_potential_gw).max())
     checks.check("hydro_existing_within_potential", hydro_bound_error <= 1e-9, hydro_bound_error, "<= 0 GW")
     checks.check("hydro_classified", hydro.operation_type_model.notna().all(), int(hydro.operation_type_model.isna().sum()), "0 missing")
+    cascade_nodes = pd.read_csv(DATA / "hydro" / "cascade_topology_nodes.csv")
+    cascade_edges = pd.read_csv(DATA / "hydro" / "cascade_topology_edges.csv")
+    checks.check("hydro_cascade_nodes", len(cascade_nodes) == 142, len(cascade_nodes), "142")
+    checks.check("hydro_cascade_edges", len(cascade_edges) == 124, len(cascade_edges), "124")
+    checks.check(
+        "hydro_cascade_lag_present",
+        cascade_edges.travel_lag_h.notna().all() and cascade_edges.travel_lag_h.ge(0).all(),
+        int(cascade_edges.travel_lag_h.isna().sum()),
+        "non-negative lag for every edge",
+    )
+    cascade_ids = set()
+    for value in cascade_nodes.hydrochn_row_ids.dropna():
+        cascade_ids.update(part.strip() for part in str(value).split(";") if part.strip())
+    cascade_hydro = hydro.loc[hydro.hydrochn_row_id.isin(cascade_ids)]
+    checks.check("hydro_cascade_station_rows", len(cascade_hydro) == 146, len(cascade_hydro), "146")
+    checks.check(
+        "hydro_cascade_all_reservoir",
+        cascade_hydro.operation_type_model.eq("reservoir_storage").all(),
+        int(cascade_hydro.operation_type_model.ne("reservoir_storage").sum()),
+        "0 non-reservoir cascade stations",
+    )
 
     timeseries = pd.read_csv(DATA / "hydro" / "timeseries_index.csv")
     timeseries_issues = []

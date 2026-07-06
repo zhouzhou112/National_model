@@ -35,6 +35,29 @@ class HydroLinearBlock:
     reservoir_province_positions: np.ndarray
     reservoir_inflow_gwh: np.ndarray
     reservoir_energy_upper_gwh: np.ndarray
+    reservoir_local_inflow_m3s: np.ndarray
+    reservoir_generation_conversion_gw_per_m3s: np.ndarray
+    reservoir_active_storage_m3: np.ndarray
+    cascade_station_local_rows: np.ndarray
+    cascade_edge_source_local_rows: list[np.ndarray]
+    cascade_edge_target_local_rows: list[np.ndarray]
+    cascade_edge_target_weights: list[np.ndarray]
+    cascade_edge_lag_h: np.ndarray
+    cascade_edge_ids: list[str]
+
+
+def _split_semicolon_ids(value: object) -> list[str]:
+    if pd.isna(value):
+        return []
+    return [part.strip() for part in str(value).split(";") if part.strip()]
+
+
+def _cyclic_shift_previous(values: np.ndarray, lag_h: int) -> np.ndarray:
+    """Return values[t-lag_h] on the selected cyclic horizon."""
+    lag = int(lag_h) % values.shape[0]
+    if lag == 0:
+        return values.copy()
+    return np.concatenate([values[-lag:], values[:-lag]])
 
 
 class HydroProfileReader:
@@ -153,11 +176,18 @@ class HydroProfileReader:
         reservoir_q_available = self._available_flow_for_rows(
             block, all_reservoir_rows
         )
+        reservoir_q_available_station = reservoir_q_available.T.copy()
+        reservoir_local_inflow_m3s = reservoir_q_available_station.copy()
         reservoir_inflow = (
             reservoir_q_available
             * head[all_reservoir_rows][None, :]
             * conversion
         ).T
+        reservoir_conversion = head[all_reservoir_rows] * conversion
+        reservoir_active_storage_m3 = (
+            stations.active_storage_gl.fillna(0.0).to_numpy(dtype=float)[all_reservoir_rows]
+            * 1.0e6
+        )
         energy_upper_station = (
             stations.active_storage_gl.fillna(0.0).to_numpy(dtype=float)
             * 1.0e6
@@ -165,6 +195,77 @@ class HydroProfileReader:
             * conversion
             / 3600.0
         )
+        cascade_station_local_rows: set[int] = set()
+        cascade_edge_source_local_rows: list[np.ndarray] = []
+        cascade_edge_target_local_rows: list[np.ndarray] = []
+        cascade_edge_target_weights: list[np.ndarray] = []
+        cascade_edge_lag_h: list[int] = []
+        cascade_edge_ids: list[str] = []
+        cascade_edges = getattr(self.data, "hydro_cascade_edges", pd.DataFrame())
+        cascade_nodes = getattr(self.data, "hydro_cascade_nodes", pd.DataFrame())
+        if not cascade_edges.empty:
+            station_id_to_global = {
+                str(hydro_id): int(row)
+                for row, hydro_id in enumerate(stations.hydrochn_row_id.astype(str))
+            }
+            station_id_to_local = {
+                str(stations.hydrochn_row_id.iloc[station_row]): reservoir_row_to_local[int(station_row)]
+                for station_row in all_reservoir_rows
+            }
+            node_to_local_rows: dict[str, np.ndarray] = {}
+            node_to_weights: dict[str, np.ndarray] = {}
+            node_to_natural: dict[str, np.ndarray] = {}
+            capacity = stations.capacity_potential_gw.to_numpy(dtype=float)
+            for row in cascade_nodes.itertuples(index=False):
+                station_ids = _split_semicolon_ids(row.hydrochn_row_ids)
+                local_rows = np.asarray(
+                    [
+                        station_id_to_local[station_id]
+                        for station_id in station_ids
+                        if station_id in station_id_to_local
+                    ],
+                    dtype=np.int64,
+                )
+                if not len(local_rows):
+                    continue
+                global_rows = np.asarray(
+                    [station_id_to_global[station_id] for station_id in station_ids],
+                    dtype=np.int64,
+                )
+                weights = capacity[global_rows]
+                if not np.isfinite(weights).all() or weights.sum() <= 0.0:
+                    weights = np.ones(len(local_rows), dtype=float)
+                weights = weights / weights.sum()
+                node_id = str(row.node_id)
+                node_to_local_rows[node_id] = local_rows
+                node_to_weights[node_id] = weights.astype(float)
+                node_to_natural[node_id] = reservoir_q_available_station[local_rows[0]].copy()
+                cascade_station_local_rows.update(int(local) for local in local_rows)
+
+            node_local_inflow = {
+                node_id: values.copy() for node_id, values in node_to_natural.items()
+            }
+            for row in cascade_edges.itertuples(index=False):
+                source = str(row.source_node_id)
+                target = str(row.target_node_id)
+                if source not in node_to_natural or target not in node_local_inflow:
+                    continue
+                lag = int(row.travel_lag_h)
+                node_local_inflow[target] -= _cyclic_shift_previous(
+                    node_to_natural[source], lag
+                )
+                cascade_edge_source_local_rows.append(node_to_local_rows[source])
+                cascade_edge_target_local_rows.append(node_to_local_rows[target])
+                cascade_edge_target_weights.append(node_to_weights[target])
+                cascade_edge_lag_h.append(lag)
+                cascade_edge_ids.append(str(row.edge_id))
+
+            for node_id, local_rows in node_to_local_rows.items():
+                local = np.maximum(node_local_inflow[node_id], 0.0)
+                weights = node_to_weights[node_id]
+                for row_position, local_row in enumerate(local_rows):
+                    reservoir_local_inflow_m3s[local_row] = local * weights[row_position]
+            reservoir_inflow = reservoir_local_inflow_m3s * reservoir_conversion[:, None]
         for province_code, p in self.province_index.items():
             selected_ror = np.flatnonzero((province_values == province_code) & ror_mask)
             ror_rows[p] = selected_ror
@@ -188,6 +289,9 @@ class HydroProfileReader:
                 [reservoir_row_to_local[int(row)] for row in selected_reservoir],
                 dtype=np.int64,
             )
+        cascade_station_local_rows_array = np.asarray(
+            sorted(cascade_station_local_rows), dtype=np.int64
+        )
         return HydroLinearBlock(
             ror_station_rows=ror_rows,
             ror_capacity_factor=ror_cf,
@@ -197,6 +301,15 @@ class HydroProfileReader:
             reservoir_province_positions=reservoir_province_positions,
             reservoir_inflow_gwh=reservoir_inflow,
             reservoir_energy_upper_gwh=energy_upper_station[all_reservoir_rows],
+            reservoir_local_inflow_m3s=reservoir_local_inflow_m3s,
+            reservoir_generation_conversion_gw_per_m3s=reservoir_conversion,
+            reservoir_active_storage_m3=reservoir_active_storage_m3,
+            cascade_station_local_rows=cascade_station_local_rows_array,
+            cascade_edge_source_local_rows=cascade_edge_source_local_rows,
+            cascade_edge_target_local_rows=cascade_edge_target_local_rows,
+            cascade_edge_target_weights=cascade_edge_target_weights,
+            cascade_edge_lag_h=np.asarray(cascade_edge_lag_h, dtype=np.int64),
+            cascade_edge_ids=cascade_edge_ids,
         )
 
     def read_block(self, block: TimeBlock, hydro_capacity_gw: np.ndarray) -> HydroBlock:

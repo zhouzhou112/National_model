@@ -16,7 +16,7 @@ import gzip
 import json
 import math
 import re
-from collections import defaultdict
+from collections import defaultdict, deque
 from pathlib import Path
 
 import numpy as np
@@ -608,6 +608,190 @@ def inspect_netcdf(path: Path) -> dict:
     return {"dimensions": dimensions, "variables": variables}
 
 
+def _split_semicolon_ids(value: object) -> list[str]:
+    if pd.isna(value):
+        return []
+    return [part.strip() for part in str(value).split(";") if part.strip()]
+
+
+def _is_directed_acyclic(edges: pd.DataFrame) -> bool:
+    nodes = set(edges.source_node_id.astype(str)).union(edges.target_node_id.astype(str))
+    indegree = {node: 0 for node in nodes}
+    outgoing: dict[str, list[str]] = {node: [] for node in nodes}
+    for row in edges.itertuples(index=False):
+        source = str(row.source_node_id)
+        target = str(row.target_node_id)
+        outgoing[source].append(target)
+        indegree[target] += 1
+    queue = deque([node for node, degree in indegree.items() if degree == 0])
+    visited = 0
+    while queue:
+        node = queue.popleft()
+        visited += 1
+        for target in outgoing[node]:
+            indegree[target] -= 1
+            if indegree[target] == 0:
+                queue.append(target)
+    return visited == len(nodes)
+
+
+def _pearson_at_lag(source: np.ndarray, target: np.ndarray, lag: int) -> float:
+    if lag:
+        source = source[:-lag]
+        target = target[lag:]
+    source = source.astype(float, copy=False)
+    target = target.astype(float, copy=False)
+    source = source - float(np.nanmean(source))
+    target = target - float(np.nanmean(target))
+    source_std = float(np.nanstd(source))
+    target_std = float(np.nanstd(target))
+    if source_std <= 0.0 or target_std <= 0.0:
+        return -2.0
+    return float(np.nanmean(source * target) / (source_std * target_std))
+
+
+def estimate_cascade_lags(
+    edges: pd.DataFrame,
+    discharge_path: Path,
+    *,
+    max_lag_h: int,
+    lag_step_h: int = 3,
+) -> pd.DataFrame:
+    """Estimate upstream-to-downstream delay by discharge cross-correlation.
+
+    The hydropower cascade paper estimates delay time from cross-correlation on
+    3-hour discharge series. Stage1 already expands the 2019 GRFR discharge to
+    hourly model time, so this function searches only multiples of 3 h.
+    """
+    try:
+        from netCDF4 import Dataset
+    except ImportError as exc:  # pragma: no cover - production env has netCDF4
+        raise RuntimeError("netCDF4 is required to estimate cascade lags") from exc
+    needed_comids = sorted(
+        set(edges.source_comid.astype(int)).union(edges.target_comid.astype(int))
+    )
+    with Dataset(discharge_path) as dataset:
+        comids = np.asarray(dataset.variables["comid"][:], dtype=np.int64)
+        position = {int(comid): i for i, comid in enumerate(comids)}
+        missing = [comid for comid in needed_comids if comid not in position]
+        if missing:
+            raise ValueError(f"Cascade COMIDs absent from GRFR discharge: {missing[:10]}")
+        selected = [position[comid] for comid in needed_comids]
+        discharge = np.asarray(
+            dataset.variables["qout_model_m3s"][:, selected], dtype=np.float64
+        )
+    series = {comid: discharge[:, i] for i, comid in enumerate(needed_comids)}
+    lags: list[int] = []
+    correlations: list[float] = []
+    for row in edges.itertuples(index=False):
+        source = series[int(row.source_comid)]
+        target = series[int(row.target_comid)]
+        best_lag = 0
+        best_corr = -2.0
+        for lag in range(0, int(max_lag_h) + 1, int(lag_step_h)):
+            corr = _pearson_at_lag(source, target, lag)
+            if corr > best_corr:
+                best_lag = int(lag)
+                best_corr = float(corr)
+        lags.append(best_lag)
+        correlations.append(best_corr)
+    out = edges.copy()
+    out["travel_lag_h"] = lags
+    out["lag_correlation"] = correlations
+    out["lag_method"] = f"cross_correlation_qout_model_m3s_2019_step_{lag_step_h}h"
+    return out
+
+
+def build_hydro_cascade(config: dict, hydro: pd.DataFrame, qc: list[dict]) -> None:
+    nodes = pd.read_csv(config["sources"]["hydro_cascade_stage2_nodes"])
+    edges = pd.read_csv(config["sources"]["hydro_cascade_stage2_edges"])
+    qa_path = config["sources"].get("hydro_cascade_stage2_qa")
+    qa_status = ""
+    if qa_path and Path(qa_path).exists():
+        qa_status = json.loads(Path(qa_path).read_text(encoding="utf-8")).get("status", "")
+
+    hydro_lookup = hydro.set_index("hydrochn_row_id")
+    node_rows = []
+    missing_ids: list[str] = []
+    non_reservoir_ids: list[str] = []
+    for row in nodes.itertuples(index=False):
+        ids = _split_semicolon_ids(row.hydrochn_row_ids)
+        missing_ids.extend([hydro_id for hydro_id in ids if hydro_id not in hydro_lookup.index])
+        present = [hydro_id for hydro_id in ids if hydro_id in hydro_lookup.index]
+        if present:
+            types = hydro_lookup.loc[present, "operation_type_model"].astype(str)
+            non_reservoir_ids.extend(types.index[types.ne("reservoir_storage")].tolist())
+            model_capacity = float(hydro_lookup.loc[present, "capacity_potential_gw"].sum())
+            existing_capacity = float(hydro_lookup.loc[present, "existing_capacity_gw"].sum())
+        else:
+            model_capacity = 0.0
+            existing_capacity = 0.0
+        node_rows.append(
+            {
+                "node_id": str(row.node_id),
+                "river_group_stage2": str(row.river_group_stage2),
+                "comid": int(row.comid),
+                "hydrochn_row_ids": ";".join(present),
+                "model_station_count": len(present),
+                "model_capacity_gw": model_capacity,
+                "existing_capacity_gw": existing_capacity,
+                "stage2_capacity_gw": float(row.capacity_mw) / 1000.0,
+                "plant_count_at_comid": int(row.plant_count_at_comid),
+                "topology_in_degree": int(row.topology_in_degree),
+                "topology_out_degree": int(row.topology_out_degree),
+                "topology_role": str(row.topology_role),
+                "label_name": str(row.label_name),
+            }
+        )
+    node_out = pd.DataFrame(node_rows)
+    node_id_to_rows = node_out.set_index("node_id").hydrochn_row_ids.to_dict()
+    edge_out = estimate_cascade_lags(
+        edges,
+        config["sources"]["hydro_hourly_discharge"],
+        max_lag_h=int(config["hydro_proxy"]["cascade_max_lag_h"]),
+    )
+    edge_out["source_hydrochn_row_ids"] = edge_out.source_node_id.map(node_id_to_rows)
+    edge_out["target_hydrochn_row_ids"] = edge_out.target_node_id.map(node_id_to_rows)
+    edge_out["source_model_station_count"] = edge_out.source_hydrochn_row_ids.fillna("").map(
+        lambda value: len(_split_semicolon_ids(value))
+    )
+    edge_out["target_model_station_count"] = edge_out.target_hydrochn_row_ids.fillna("").map(
+        lambda value: len(_split_semicolon_ids(value))
+    )
+    low_threshold = float(config["hydro_proxy"]["cascade_low_correlation_warning_threshold"])
+    edge_out["lag_quality_flag"] = np.select(
+        [
+            edge_out.lag_correlation.lt(low_threshold),
+            edge_out.travel_lag_h.ge(int(config["hydro_proxy"]["cascade_max_lag_h"])),
+        ],
+        ["LOW_CORRELATION", "MAX_LAG_BOUND_SELECTED"],
+        default="PASS",
+    )
+    edge_keep = [
+        "edge_id", "river_group_stage2", "source_node_id", "target_node_id",
+        "source_comid", "target_comid", "source_hydrochn_row_ids",
+        "target_hydrochn_row_ids", "source_model_station_count",
+        "target_model_station_count", "steps_to_next_candidate",
+        "traced_length_km", "travel_lag_h", "lag_correlation", "lag_method",
+        "lag_quality_flag", "source_capacity_mw", "target_capacity_mw",
+    ]
+    write_csv(node_out, DATA_ROOT / "hydro" / "cascade_topology_nodes.csv")
+    write_csv(edge_out[edge_keep], DATA_ROOT / "hydro" / "cascade_topology_edges.csv")
+
+    stage2_capacity_diff = float((node_out.model_capacity_gw - node_out.stage2_capacity_gw).abs().max())
+    add_qc(qc, "hydro_cascade_stage2_qa_status", qa_status or "missing", "WARN" if qa_status == "PASS_WITH_WARNINGS" else "PASS", "Stage2 topology is a modeling scaffold and carries documented warnings")
+    add_qc(qc, "hydro_cascade_node_rows", len(node_out), "PASS" if len(node_out) == 142 else "FAIL", "Unique COMID nodes in recommended core cascade groups")
+    add_qc(qc, "hydro_cascade_edge_rows", len(edge_out), "PASS" if len(edge_out) == 124 else "FAIL", "MERIT downstream edges within recommended groups")
+    add_qc(qc, "hydro_cascade_missing_model_rows", len(missing_ids), "PASS" if not missing_ids else "FAIL", "All Stage2 cascade stations must map into current hydro_stations")
+    add_qc(qc, "hydro_cascade_non_reservoir_model_rows", len(non_reservoir_ids), "PASS" if not non_reservoir_ids else "FAIL", "Core cascade stations must remain reservoir_storage in current model")
+    add_qc(qc, "hydro_cascade_capacity_alignment_gw", round(stage2_capacity_diff, 9), "PASS" if stage2_capacity_diff <= 1e-9 else "FAIL", "Node capacity equals current model station capacity after COMID aggregation")
+    add_qc(qc, "hydro_cascade_topology_is_dag", _is_directed_acyclic(edge_out), "PASS" if _is_directed_acyclic(edge_out) else "FAIL", "Cascade edges must be acyclic")
+    low_lag = int(edge_out.lag_quality_flag.eq("LOW_CORRELATION").sum())
+    max_lag = int(edge_out.lag_quality_flag.eq("MAX_LAG_BOUND_SELECTED").sum())
+    add_qc(qc, "hydro_cascade_low_lag_correlation_edges", low_lag, "WARN" if low_lag else "PASS", f"Edges with lag-correlation below {low_threshold}")
+    add_qc(qc, "hydro_cascade_max_lag_bound_edges", max_lag, "WARN" if max_lag else "PASS", "Edges whose best cross-correlation occurs at the configured max lag")
+
+
 def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
     hydro = pd.read_csv(config["sources"]["hydro_stage2"])
     inventory = pd.read_csv(
@@ -727,6 +911,7 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
     ).sum())
     add_qc(qc, "hydro_potential_paper_rule_mismatches", potential_mismatch, "PASS" if potential_mismatch == 0 else "FAIL", "Potential sites >750 MW are reservoir; all others are run-of-river")
     add_qc(qc, "hydro_max_province_assignment_distance_deg", round(float(distance.max()), 6), "PASS" if distance.max() <= 0.25 else "WARN", "Nearest corrected 0.25-degree grid assignment")
+    build_hydro_cascade(config, out, qc)
 
 
 def interpolate_biomass(raw: pd.DataFrame, year: int) -> tuple[pd.DataFrame, str]:
@@ -1970,7 +2155,10 @@ def write_defaults(config: dict, hydro_summary_path: Path) -> None:
         "hydro_potential_type_rule": config["hydro_proxy"]["potential_type_rule"],
         "hydro_potential_reservoir_threshold_mw": config["hydro_proxy"]["potential_reservoir_threshold_mw"],
         "hydro_reservoir_dispatch_resolution": "station",
-        "hydro_cascade_hydraulic_coupling": False,
+        "hydro_cascade_hydraulic_coupling": True,
+        "hydro_cascade_scope": config["hydro_proxy"]["cascade_scope"],
+        "hydro_cascade_lag_method": config["hydro_proxy"]["cascade_lag_method"],
+        "hydro_cascade_duplicate_comid_handling": config["hydro_proxy"]["cascade_duplicate_comid_handling"],
         "hydro_classification_summary": str(hydro_summary_path),
         "grid_connection_distance_method": config["grid_connection"]["distance_method"],
         "initial_intra_grid_capacity_method": config["grid_connection"]["initial_capacity_method"],
@@ -2002,6 +2190,9 @@ def build_manifest(config: dict, qc: list[dict]) -> None:
         "thermal_retirement": "Five-year retirement buckets",
         "nuclear_pipeline": "Committed/pipeline nuclear lower-bound scenario",
         "hydro_stage2": "HydroCHN/GHT station attributes and explicit labels",
+        "hydro_cascade_stage2_nodes": "Stage2 recommended core hydropower cascade COMID nodes",
+        "hydro_cascade_stage2_edges": "Stage2 MERIT downstream topology among recommended cascade nodes",
+        "hydro_cascade_stage2_qa": "Stage2 cascade-topology QA report and warnings",
         "hydro_updated_inventory": "HydroCHN/GHT operating status used for existing-capacity lower bounds",
         "hydro_hourly_discharge": "2019 hourly GRFR discharge for target COMIDs",
         "hydro_environmental_flow": "2019-only monthly P10 environmental-flow proxy",
@@ -2063,7 +2254,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 - 碳约束：默认 `Base_-550Mt`，2025 基准年不设外生排放上限；2030/2040/2050/2060 为 4000/1300/-100/-550 MtCO2/yr。
 - 核电：采用 GEM 已投运/在建/规划管线作为下界，不使用人为强制的 2050 年 300 GW 情景；2060 暂保持 2050 管线下界。
 - 生物质：只采用农业残余物、林业残余物和废弃地能源作物。2030/2040 在 2020 与 2050 省级源值之间线性插值，2060 保持 2050 值。
-- 水电：现有站采用当前分配标签（GHT 2026 明确标签或 115 MW 代理标签），不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式。水库式使用各站 GRFR 入流独立平衡，不引入论文未定义的梯级传播时滞。环境流量使用已有 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签（GHT 2026 明确标签或 115 MW 代理标签），不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式。Stage2 推荐的 5 个核心干流梯级组启用 MERIT 下游拓扑和 2019 GRFR 互相关时滞；其他水库站保持独立平衡。环境流量使用已有 2019 单年 monthly P10 代理。
 
 ## 目录与直接读取文件
 
@@ -2081,6 +2272,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 | `thermal/` | `nuclear_capacity_floor_by_year.csv` | GEM核电管线下界 |
 | `hydro/` | `hydro_stations.csv` | 站点容量、状态、分类、库容、水头、COMID |
 | `hydro/` | `timeseries_index.csv` | GRFR、环境流量和显式ROR时序路径 |
+| `hydro/` | `cascade_topology_nodes.csv`、`cascade_topology_edges.csv` | 核心干流梯级节点、MERIT 下游边和互相关时滞 |
 | `biomass/` | `fuel_potential_by_province_year.csv` | `thermcal_gj_per_year` 省级燃料约束 |
 | `transmission/` | `existing_lines.csv` | 2025既有AC/DC线路 |
 | `transmission/` | `candidate_corridors.csv` | 31省全部省对候选走廊 |
@@ -2156,7 +2348,7 @@ def write_readme(config: dict) -> None:
 - 省内接入初值：原论文未给出变电站额定容量。默认采用 2025 年 onwind/offwind/UPV 全部铭牌容量同时送出的保守压力情景；同时保留按 {config['grid_connection']['initial_capacity_weather_year']} 小时 CF 聚合的论文一致对照值。DPV 位于负荷侧，不占 spur/trunk 容量。
 - 负荷中心：以 2022 城市用电表和县级城镇人口加权中心构建 337 个市级节点；296 城直接使用用电表，缺失的 41 个自治州/地区等按省内单位城镇人口用电强度插补。
 - Trunk 距离：每个 OSM 变电站连接同省最近市级负荷中心，使用大圆距离。市级变电站密度和电压权重仅作验证与敏感性分析，不作为负荷主权重。
-- 水电：现有站采用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；各水库站使用 GRFR 自然入流独立平衡；环境流量为 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级组使用局地 GRFR 入流加上游释放传播，其他水库站独立平衡；环境流量为 2019 单年 monthly P10 代理。
 
 ## 主要直接输入
 
@@ -2167,7 +2359,7 @@ def write_readme(config: dict) -> None:
 | 容量因子 | `vre/hourly_cf_index.csv` | 2020–2025 大型 Zarr 路径和时间口径 |
 | 负荷 | `load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 年 × 8760 h，GW |
 | 火电/核电 | `thermal/capacity_floor_by_year.csv`, `thermal/nuclear_capacity_floor_by_year.csv` | 存量退役后容量下界 |
-| 水电 | `hydro/hydro_stations.csv`, `hydro/timeseries_index.csv` | 站点属性与径流索引 |
+| 水电 | `hydro/hydro_stations.csv`, `hydro/timeseries_index.csv`, `hydro/cascade_topology_edges.csv` | 站点属性、径流索引与核心干流梯级拓扑 |
 | 生物质 | `biomass/fuel_potential_by_province_year.csv` | 省级燃料可用量，GJ/yr |
 | 输电 | `transmission/existing_lines.csv`, `transmission/candidate_corridors.csv` | 既有线路与候选走廊 |
 | 碳约束 | `carbon/emissions_limits_by_scenario.csv` | 各情景年度排放上限 |

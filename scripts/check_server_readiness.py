@@ -105,9 +105,13 @@ def main() -> None:
         hard_fail.append("model-ready data root missing")
     hydro_stations_path = data_root / "hydro" / "hydro_stations.csv"
     classification_path = data_root / "hydro" / "classification_summary.csv"
+    cascade_nodes_path = data_root / "hydro" / "cascade_topology_nodes.csv"
+    cascade_edges_path = data_root / "hydro" / "cascade_topology_edges.csv"
     report["hydro_station_model"] = {
         "hydro_stations_path": str(hydro_stations_path),
         "classification_summary_path": str(classification_path),
+        "cascade_nodes_path": str(cascade_nodes_path),
+        "cascade_edges_path": str(cascade_edges_path),
     }
     if hydro_stations_path.is_file():
         import pandas as pd
@@ -146,6 +150,32 @@ def main() -> None:
         hard_fail.append("hydro_stations.csv missing")
     if not classification_path.is_file():
         hard_fail.append("hydropower classification summary missing")
+    if cascade_nodes_path.is_file() and cascade_edges_path.is_file():
+        import pandas as pd
+
+        nodes = pd.read_csv(cascade_nodes_path)
+        edges = pd.read_csv(cascade_edges_path)
+        cascade_required = {
+            "edge_id", "source_node_id", "target_node_id",
+            "source_hydrochn_row_ids", "target_hydrochn_row_ids",
+            "travel_lag_h", "lag_quality_flag",
+        }
+        missing_edge_columns = sorted(cascade_required.difference(edges.columns))
+        report["hydro_cascade_model"] = {
+            "node_rows": int(len(nodes)),
+            "edge_rows": int(len(edges)),
+            "missing_edge_columns": missing_edge_columns,
+            "low_correlation_edges": int(edges.lag_quality_flag.eq("LOW_CORRELATION").sum())
+            if "lag_quality_flag" in edges else None,
+            "max_lag_bound_edges": int(edges.lag_quality_flag.eq("MAX_LAG_BOUND_SELECTED").sum())
+            if "lag_quality_flag" in edges else None,
+            "maximum_travel_lag_h": float(edges.travel_lag_h.max())
+            if "travel_lag_h" in edges and len(edges) else None,
+        }
+        if len(nodes) != 142 or len(edges) != 124 or missing_edge_columns:
+            hard_fail.append("core hydropower cascade topology is inconsistent")
+    else:
+        hard_fail.append("core hydropower cascade topology files missing")
     if args.require_raw_grfr:
         if not all(row["exists"] for row in report["raw_grfr_files"]):
             hard_fail.append("raw GRFR source files incomplete")

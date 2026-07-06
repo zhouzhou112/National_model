@@ -303,12 +303,18 @@ def build_full_year_monolithic(
     reservoir_generation = model.addMVar(
         (reservoir_count, hours), lb=0.0, name="reservoir_generation_gw"
     )
-    reservoir_soc = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_energy_gwh"
+    reservoir_turbine_flow = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_turbine_flow_m3s"
     )
-    reservoir_spill = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_spill_gwh"
+    reservoir_spill_flow = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_spill_flow_m3s"
     )
+    reservoir_volume = model.addMVar(
+        (reservoir_count, hours), lb=0.0, name="reservoir_active_storage_m3"
+    )
+    conversion = hydro.reservoir_generation_conversion_gw_per_m3s
+    reservoir_soc = reservoir_volume * (conversion[:, None] / 3600.0)
+    reservoir_spill = reservoir_spill_flow * conversion[:, None]
     reservoir_incidence = sparse.csr_matrix(
         (
             np.ones(reservoir_count, dtype=float),
@@ -345,20 +351,83 @@ def build_full_year_monolithic(
             ror_available[p, :].UB = 0.0
     model.addConstr(ror_generation <= ror_available, name="ror_generation_availability")
     model.addConstr(
+        reservoir_generation == reservoir_turbine_flow * conversion[:, None],
+        name="reservoir_s4_13_flow_to_power",
+    )
+    model.addConstr(
         reservoir_generation <= hydro_capacity[reservoir_rows, None],
         name="reservoir_station_power",
     )
-    model.addConstr(reservoir_soc <= hydro.reservoir_energy_upper_gwh[:, None], name="reservoir_energy")
     model.addConstr(
-        reservoir_soc[:, 0] == reservoir_soc[:, -1] + hydro.reservoir_inflow_gwh[:, 0]
-        - reservoir_generation[:, 0] - reservoir_spill[:, 0],
-        name="reservoir_cyclic_first_hour",
+        reservoir_volume <= hydro.reservoir_active_storage_m3[:, None],
+        name="reservoir_s4_12_active_storage",
     )
-    model.addConstr(
-        reservoir_soc[:, 1:] == reservoir_soc[:, :-1] + hydro.reservoir_inflow_gwh[:, 1:]
-        - reservoir_generation[:, 1:] - reservoir_spill[:, 1:],
-        name="reservoir_hourly_transition",
+    cascade_rows = np.asarray(hydro.cascade_station_local_rows, dtype=np.int64)
+    all_reservoir_local_rows = np.arange(reservoir_count, dtype=np.int64)
+    independent_rows = np.setdiff1d(
+        all_reservoir_local_rows, cascade_rows, assume_unique=True
     )
+    if len(independent_rows):
+        local = hydro.reservoir_local_inflow_m3s[independent_rows]
+        model.addConstr(
+            reservoir_volume[independent_rows, 0]
+            == reservoir_volume[independent_rows, -1]
+            + (
+                local[:, 0]
+                - reservoir_turbine_flow[independent_rows, 0]
+                - reservoir_spill_flow[independent_rows, 0]
+            )
+            * 3600.0,
+            name="reservoir_independent_cyclic_first_hour",
+        )
+        if hours > 1:
+            model.addConstr(
+                reservoir_volume[independent_rows, 1:]
+                == reservoir_volume[independent_rows, :-1]
+                + (
+                    local[:, 1:]
+                    - reservoir_turbine_flow[independent_rows, 1:]
+                    - reservoir_spill_flow[independent_rows, 1:]
+                )
+                * 3600.0,
+                name="reservoir_independent_hourly_transition",
+            )
+    upstream_terms_by_target: dict[int, list[tuple[np.ndarray, float, int]]] = {
+        int(row): [] for row in cascade_rows
+    }
+    for source_rows, target_rows, target_weights, lag in zip(
+        hydro.cascade_edge_source_local_rows,
+        hydro.cascade_edge_target_local_rows,
+        hydro.cascade_edge_target_weights,
+        hydro.cascade_edge_lag_h,
+    ):
+        for target_row, weight in zip(target_rows, target_weights):
+            upstream_terms_by_target.setdefault(int(target_row), []).append(
+                (source_rows, float(weight), int(lag))
+            )
+    for target_row in cascade_rows:
+        terms = upstream_terms_by_target.get(int(target_row), [])
+        for t in range(hours):
+            previous_t = (t - 1) % hours
+            upstream_release = gp.LinExpr()
+            for source_rows, weight, lag in terms:
+                source_t = (t - lag) % hours
+                upstream_release += weight * (
+                    reservoir_turbine_flow[source_rows, source_t].sum()
+                    + reservoir_spill_flow[source_rows, source_t].sum()
+                )
+            model.addConstr(
+                reservoir_volume[target_row, t]
+                == reservoir_volume[target_row, previous_t]
+                + (
+                    float(hydro.reservoir_local_inflow_m3s[target_row, t])
+                    + upstream_release
+                    - reservoir_turbine_flow[target_row, t]
+                    - reservoir_spill_flow[target_row, t]
+                )
+                * 3600.0,
+                name=f"reservoir_cascade_s4_8_9_12_row{target_row}_h{t}",
+            )
 
     # Directed transport with receiving-end losses and shared bidirectional capacity.
     edge_count = len(data.lines)
@@ -552,6 +621,9 @@ def build_full_year_monolithic(
         reservoir_capacity_by_province=reservoir_capacity_by_province,
         reservoir_generation=reservoir_generation,
         reservoir_generation_by_province=reservoir_generation_by_province,
+        reservoir_turbine_flow=reservoir_turbine_flow,
+        reservoir_spill_flow=reservoir_spill_flow,
+        reservoir_volume=reservoir_volume,
         reservoir_soc=reservoir_soc, reservoir_spill=reservoir_spill,
         flow_forward=flow_forward, flow_reverse=flow_reverse,
         network_injection=network_injection, dac_load=dac_load,
@@ -569,6 +641,15 @@ def build_full_year_monolithic(
         selected_load_gw=load,
         reservoir_inflow_gwh=hydro.reservoir_inflow_gwh,
         reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,
+        reservoir_local_inflow_m3s=hydro.reservoir_local_inflow_m3s,
+        reservoir_active_storage_m3=hydro.reservoir_active_storage_m3,
+        reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
+        cascade_station_local_rows=hydro.cascade_station_local_rows,
+        cascade_edge_source_local_rows=hydro.cascade_edge_source_local_rows,
+        cascade_edge_target_local_rows=hydro.cascade_edge_target_local_rows,
+        cascade_edge_target_weights=hydro.cascade_edge_target_weights,
+        cascade_edge_lag_h=hydro.cascade_edge_lag_h,
+        cascade_edge_ids=hydro.cascade_edge_ids,
     )
     model.update()
     return artifacts

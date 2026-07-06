@@ -56,6 +56,31 @@ class HydroStationModelTests(unittest.TestCase):
             list(block.reservoir_local_rows_by_province.values())
         )
         self.assertEqual(set(local_rows.tolist()), set(range(expected_reservoirs)))
+        self.assertEqual(block.reservoir_local_inflow_m3s.shape, (expected_reservoirs, 24))
+        self.assertEqual(block.reservoir_active_storage_m3.shape, (expected_reservoirs,))
+        self.assertEqual(
+            block.reservoir_generation_conversion_gw_per_m3s.shape,
+            (expected_reservoirs,),
+        )
+        self.assertTrue((block.reservoir_local_inflow_m3s >= 0.0).all())
+
+    def test_core_cascade_topology_loads(self):
+        self.assertEqual(len(self.data.hydro_cascade_nodes), 142)
+        self.assertEqual(len(self.data.hydro_cascade_edges), 124)
+        with HydroProfileReader(self.config, self.data) as reader:
+            block = reader.read_linear_block(TimeBlock(0, 0, 24))
+        self.assertEqual(len(block.cascade_station_local_rows), 146)
+        self.assertEqual(len(block.cascade_edge_ids), 124)
+        self.assertEqual(len(block.cascade_edge_lag_h), 124)
+        self.assertTrue((block.cascade_edge_lag_h >= 0).all())
+        for source_rows, target_rows, weights in zip(
+            block.cascade_edge_source_local_rows,
+            block.cascade_edge_target_local_rows,
+            block.cascade_edge_target_weights,
+        ):
+            self.assertGreater(len(source_rows), 0)
+            self.assertGreater(len(target_rows), 0)
+            self.assertAlmostEqual(float(weights.sum()), 1.0, places=9)
 
 
 if __name__ == "__main__":
