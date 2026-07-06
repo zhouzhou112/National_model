@@ -27,6 +27,8 @@ export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 ```
 
+Commit `b3e6298` after the server-validated `8e49a87` contains a pending core-mainstem hydropower cascade update. Do not reuse the validated station-hydropower paths above as evidence for that cascade version. After the branch is synchronized to the server, create new versioned data roots, for example `model_ready_YYYYMMDD_hydro_cascade` and `hydro_timeseries_YYYYMMDD_hydro_cascade`, and rerun the full readiness gate before optimization.
+
 ## Long-term Git synchronization
 
 - Bare remote: `/home/zz2/git/National_model.git`
@@ -58,6 +60,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 $PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
 ```
+
+For the pending cascade version, the model-ready data root must include:
+
+- `hydro/cascade_topology_nodes.csv`
+- `hydro/cascade_topology_edges.csv`
+
+The readiness gate now reports cascade node/edge counts, low-correlation lag edges, max-bound lag edges and maximum travel lag. A valid cascade server bundle should report 142 nodes, 124 edges, 4 low-correlation lag warnings, 18 max-bound lag warnings and no missing required cascade columns.
 
 The server uses Gurobi Optimizer and `gurobipy` 13.0.2. Store the license file under the protected home directory, not `/data`. Do not commit the license file or activation key.
 

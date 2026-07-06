@@ -14,11 +14,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.2.0`
+- Handoff version: `v0.3.0`
 - Snapshot date: `2026-07-06`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Latest validated implementation commit: `8e49a87`
+- Latest server-validated implementation commit: `8e49a87`
+- Latest local implementation commit: `b3e6298` (`fix: add core hydropower cascade coupling`).
+- Server validation still corresponds to `8e49a87` until the branch is synchronized to the server and a new cascade data/readiness run is recorded here.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -38,7 +40,7 @@ This is the repository's single handoff document for work continued across Codex
 - 31 provincial load regions; Inner Mongolia is not split.
 - 36,686 VRE technology-site rows with 2023 hourly capacity-factor linkage.
 - Continuous capacity-based thermal RUC, ramping, reserve and inertia.
-- Battery and PHS state of charge; station-level hydropower and reservoir balance.
+- Battery and PHS state of charge; station-level hydropower, reservoir balance and committed core-cascade hydropower coupling for the Stage2 recommended mainstem groups.
 - 411 interprovincial transmission corridors and strict hourly provincial power balance.
 - DAC, annual carbon and biomass accounting, CCS capture and point-level injection.
 - Spur line, trunk line and substation augmentation.
@@ -82,6 +84,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Full-year server preflight: 48,164,172 variables, 68,689,554 constraints, 862,195,872 nonzeros; estimated memory 47.98 GiB; memory gate passed with about 110.22 GiB available.
 - Local verification before server sync: AST parse passed for 14 changed Python files; `unittest discover -s tests -q` passed 15 tests; data-package smoke test passed 113/113 checks; 24h station-hydro solve reached Gurobi `OPTIMAL` and `solution_qc.json` reported `PASS`.
 - Verification scripts: `scripts/check_gurobi_full_license.py` and `scripts/check_server_readiness.py`; the latter now enforces raw GRFR presence and optional SHA256 verification.
+- Local cascade implementation verification on 2026-07-06:
+  - Stage2 source path `D:\codeenv\pycharmproject\National_RL\Gis_process\hydro_power\process_hydro\hydro_model_2019_stage2_classification_cascade_20260630` is readable.
+  - Generated cascade topology contains 142 COMID nodes, 124 directed edges and 146 mapped reservoir stations across 5 recommended core groups.
+  - All 146 Stage2 station IDs map into current `data/hydro/hydro_stations.csv`; all are `reservoir_storage`; capacity alignment residual is 0.0 GW; the directed topology is acyclic.
+  - GRFR cross-correlation lag estimation produced non-negative 3h-multiple lags with range 0-168 h; 4 edges have low lag correlation and 18 edges select the 168 h search bound, so these are WARN-level topology/lag QA items.
+  - `scripts/build_cispo_data_package.py` with ArcGIS Pro Python regenerated the local data package with 90 QC checks and zero failures.
+  - `python scripts/smoke_test_data_package.py` passed 118/118 checks.
+  - `C:\Users\ZZ\.conda\envs\RL\python.exe -m unittest discover -s tests -q` passed 16/16 tests.
+  - `scripts/run_cispo_2030_full_year.py --horizon one_month --preflight-only` passed and estimated 4,761,900 variables, 6,465,714 constraints and 78,282,048 nonzeros.
+  - A custom 24h monolithic build with `compute_max_cf=False` succeeded with 422,596 variables, 342,510 constraints and 2,037,793 nonzeros; reservoir variables now include `reservoir_turbine_flow`, `reservoir_spill_flow` and `reservoir_volume`; core cascade rows = 146 and edges = 124.
 
 ### Known limitations and unresolved inputs
 
@@ -89,6 +101,8 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - The observed provincial 2025 PHS capacity floor is unavailable; the current floor is explicitly zero.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
+- Core hydropower cascade coupling is committed locally in `b3e6298` but is not server-deployed until the branch is synchronized, the data bundle is transferred and server readiness passes. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
+- Core cascade environmental flow still uses the 2019 single-year monthly P10 proxy. Formal multi-year P30 environmental flow and manual review of the 4 low-correlation / 18 max-bound lag edges remain unresolved inputs.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
 - Two western AC500 proxy edges exceed the 1000 km range of the cited source cost.
@@ -98,7 +112,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Run the complete 744h `one_month` optimization on the server before any 8760h production solve:
+After the local cascade working tree is committed and pushed, prepare a new versioned server bundle and run server readiness before any optimization. The currently server-validated paths below still refer to the previous station-hydropower version, not the local cascade working tree:
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -114,9 +128,34 @@ $PYTHON scripts/run_cispo_2030_full_year.py \
   --output-dir /data/zz2/National_model/outputs/2030_one_month_station_hydro
 ```
 
-Record build time, solve time, peak memory, solver status, objective decomposition, numerical warnings, balance residuals, SOC/reservoir checks, transmission flows, curtailment, capacity additions and CCS injection. If infeasible, inspect the generated IIS; do not silently relax production constraints. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start the production solve.
+First exact next action: ensure `b3e6298` and this handoff update are pushed to `origin/codex/cispo-2030-full-lp`, then build and transfer versioned `model_ready` and hydrology data roots that include `data/hydro/cascade_topology_nodes.csv` and `data/hydro/cascade_topology_edges.csv`. After server readiness passes, run the complete 744h `one_month` optimization and record build time, solve time, peak memory, solver status, objective decomposition, numerical warnings, balance residuals, reservoir water-balance checks, transmission flows, curtailment, capacity additions and CCS injection. If infeasible, inspect the generated IIS; do not silently relax production constraints. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start the production solve.
 
 ## Version history
+
+### v0.3.0 - 2026-07-06 - core mainstem hydropower cascade implementation
+
+- Git baseline: `b3e6298` (`fix: add core hydropower cascade coupling`), based on prior server-validated commit `8e49a87` (`fix: harden CCS and station-level hydropower model`).
+- Scope: read and validated the Stage2 core-mainstem hydropower classification/cascade scaffold; generated model-ready cascade nodes/edges; estimated MERIT downstream travel lags by 2019 GRFR cross-correlation; replaced independent core-reservoir operation with local-inflow plus upstream turbine/spill delayed arrival; retained independent operation for non-core reservoirs.
+- Main changed files in the implementation commit:
+  - `config/optimization_2030.json`
+  - `config/model_data_config.json`
+  - `scripts/build_cispo_data_package.py`
+  - `scripts/check_server_readiness.py`
+  - `scripts/smoke_test_data_package.py`
+  - `cispo_model/data.py`
+  - `cispo_model/hydro.py`
+  - `cispo_model/monolithic.py`
+  - `cispo_model/preflight.py`
+  - `cispo_model/solution_export.py`
+  - `tests/test_hydro_station_model.py`
+  - `cispo_full_lp_model_spec.md`
+- Local generated data files:
+  - `data/hydro/cascade_topology_nodes.csv`
+  - `data/hydro/cascade_topology_edges.csv`
+- Verification: Stage2-to-model mapping passed with 146/146 reservoir stations; cascade topology is acyclic; local data package QC has zero failures; smoke test passed 118/118 checks; local unit tests passed 16/16; one-month preflight passed; custom 24h monolithic build succeeded.
+- Modeling note: the local implementation follows the user's requested core-mainstem cascade mode for conventional reservoir hydropower. It does not yet implement open-loop/closed-loop PHS hydraulic coupling because required pairing/source data are not present in the current data package.
+- Unresolved items: 4 low-correlation lag edges and 18 max-bound lag edges require manual hydrological/topological review; formal multi-year environmental flow remains unavailable.
+- Next action: synchronize the branch and transfer a new versioned data package to the server, then rerun server readiness plus 744h `one_month` optimization.
 
 ### v0.2.0 - 2026-07-06 - station-level hydropower, CCS retrofit accounting and raw GRFR server readiness
 
