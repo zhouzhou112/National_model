@@ -69,11 +69,22 @@ def main() -> None:
         hard_fail.append("hydrology inputs incomplete")
     if not report["model_ready_data"]["exists"]:
         hard_fail.append("model-ready data root missing")
-    report["gurobi_license_gate"] = (
-        "PACKAGE_PRESENT_LICENSE_NOT_TESTED" if report["packages"]["gurobipy"] else "PACKAGE_MISSING"
-    )
+    if report["packages"]["gurobipy"]:
+        try:
+            from check_gurobi_full_license import check_full_license
+
+            report["gurobi_license_gate"] = check_full_license()
+        except Exception as exc:  # preserve the exact solver/license diagnostic
+            report["gurobi_license_gate"] = {
+                "status": "HARD_FAIL",
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+            hard_fail.append("Gurobi full-license gate failed")
+    else:
+        report["gurobi_license_gate"] = {"status": "HARD_FAIL", "error": "PACKAGE_MISSING"}
+        hard_fail.append("gurobipy package missing")
     report["hard_failures"] = hard_fail
-    report["status"] = "HARD_FAIL" if hard_fail else "PASS_WITHOUT_GUROBI_LICENSE_TEST"
+    report["status"] = "HARD_FAIL" if hard_fail else "PASS"
     print(json.dumps(report, ensure_ascii=False, indent=2))
     raise SystemExit(2 if hard_fail else 0)
 

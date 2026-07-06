@@ -32,7 +32,11 @@
 - Server: 96 logical CPUs, 125 GiB RAM, 4.3 TiB free under `/data`.
 - Server working copy and model-ready data were synchronized at commit `c99b6c2`; the uploaded data archive SHA256 is `09831040de1901fa02610fb6272e76e7995edaabcbac12d158ae81b0caf47b25`.
 - Server verification: 10/10 tests passed; full-year preflight passed the 64 GiB runtime gate with about 110 GiB available and reported 32 PASS, 1 WARN, 1 INFO and 0 HARD_FAIL.
-- Server Gurobi package/license: not yet configured.
+- Server Gurobi Optimizer and `gurobipy`: 13.0.2 installed under `/home/zz2/opt/gurobi1302/linux64` and `/home/zz2/.local/envs/cispo-2030` respectively; 12.0.1 remains available as rollback software.
+- Server license: retrieved successfully with Gurobi 13.0.2 on 2026-07-03, stored at `/home/zz2/gurobi.lic`, and valid through 2027-07-02. The server-issued license ID is 2840423.
+- Production-license gate passed on 2026-07-06: Gurobi 13.0.2 solved the deterministic 2,501-variable LP to optimality with objective `1.0`, confirming that the bundled size-limited fallback is not active. This gate is also enforced by `scripts/check_server_readiness.py`.
+- Post-upgrade full-year preflight passed with 112.23 GiB available memory; the estimated production scale remains 32,685,283 variables, 53,210,634 constraints and 738,364,512 nonzeros.
+- Post-upgrade regression test: 10/10 tests passed on the server with pytest 9.1.1 in 4.69 seconds.
 
 ## Explicit unresolved inputs
 

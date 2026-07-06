@@ -13,6 +13,7 @@ scripts/solve_cispo_2030_block.py
 legacy_benders/
 
 # Python caches and local environments
+.cache/
 __pycache__/
 *.py[cod]
 .pytest_cache/

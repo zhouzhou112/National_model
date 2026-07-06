@@ -9,6 +9,8 @@ Production architecture is one continuous LP containing 2030 capacity decisions 
 - Capacity factors: `/data/zz2/National_model/data/hourly_cf`
 - Hydrology: `/data/zz2/National_model/data/hydro_timeseries`
 - Python environment: `/home/zz2/.local/envs/cispo-2030`
+- Gurobi Optimizer: `/home/zz2/opt/gurobi1302/linux64`
+- Gurobi license: `/home/zz2/gurobi.lic` (mode `600`)
 - Environment definition: `/data/zz2/National_model/repo/env/cispo-server.yml`
 - Outputs: `/data/zz2/National_model/outputs`
 - Logs and manifests: `/data/zz2/National_model/logs`, `/data/zz2/National_model/manifests`
@@ -46,7 +48,21 @@ $PYTHON scripts/check_server_readiness.py
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
 ```
 
-Install `gurobipy` only after the license mechanism is confirmed. Store a license file under the protected home directory, not `/data`.
+The server uses Gurobi Optimizer and `gurobipy` 13.0.2. Store the license file under the protected home directory, not `/data`. Do not commit the license file or activation key.
+
+```bash
+export GUROBI_HOME=/home/zz2/opt/gurobi1302/linux64
+export PATH="$GUROBI_HOME/bin:$PATH"
+export LD_LIBRARY_PATH="$GUROBI_HOME/lib:${LD_LIBRARY_PATH:-}"
+chmod 600 /home/zz2/gurobi.lic
+$PYTHON scripts/check_gurobi_full_license.py
+```
+
+The license gate deliberately solves an LP with 2,501 variables. A size-limited fallback license must fail this check; package import or a two-variable solve is not sufficient evidence for production readiness.
+
+Install test-only dependencies with `$PYTHON -m pip install -r requirements-test.txt`, then run `$PYTHON -m pytest -q`. The production dependency file intentionally excludes `pytest`.
+
+As verified on 2026-07-06, direct server access to PyPI fails certificate-chain validation. Do not bypass TLS with `--trusted-host` or disabled verification. Download Linux/Python 3.11 wheels on a trusted workstation, record SHA256 hashes, upload them, and install with `--no-index --find-links=<wheel-directory>` until the institutional CA chain is repaired.
 
 ## Selectable optimization horizons
 

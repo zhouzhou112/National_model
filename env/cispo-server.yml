@@ -11,4 +11,5 @@ dependencies:
   - numcodecs>=0.13,<0.14
   - psutil>=5.9,<7
   - pip
-  # Add gurobipy after the server license method is confirmed.
+  - pip:
+      - gurobipy==13.0.2
