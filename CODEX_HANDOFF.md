@@ -18,10 +18,11 @@ This is the repository's single handoff document for work continued across Codex
 - Snapshot date: `2026-07-06`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Validated Git commit: `805a1fa`
+- Latest validated implementation commit: `805a1fa`
+- Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
-- Local and server worktrees were clean and synchronized at `805a1fa`.
+- At handoff version `v0.1.0`, local and server worktrees were clean and both contained `1ac58dd`. Always confirm the live HEAD with `git rev-parse --short HEAD` rather than treating a documentation commit as immutable current state.
 
 ### Fixed model boundary and architecture
 
