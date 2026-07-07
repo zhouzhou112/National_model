@@ -4,6 +4,7 @@ outputs/
 logs/
 tmp/
 transfer_bundle/
+downloads/
 
 # Abandoned local Benders prototype retained outside production history
 MODEL_IMPLEMENTATION_STATUS.md

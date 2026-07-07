@@ -66,7 +66,27 @@ class HydroProfileReader:
         self.data = data
         index = pd.read_csv(DATA_ROOT / "hydro" / "timeseries_index.csv")
         discharge_indexed = str(index.loc[index.dataset.eq("hourly_discharge_2019"), "path"].iloc[0])
-        environment_indexed = str(index.loc[index.dataset.eq("monthly_environmental_flow_2019_p10"), "path"].iloc[0])
+        hydro_config = config.raw["hydro"]
+        environment_dataset = str(
+            hydro_config.get(
+                "environmental_flow_dataset",
+                "monthly_environmental_flow_2019_p30",
+            )
+        )
+        environment_variable = str(
+            hydro_config.get(
+                "environmental_flow_variable",
+                "monthly_p30_proxy_m3s",
+            )
+        )
+        environment_rows = index.loc[index.dataset.eq(environment_dataset), "path"]
+        if environment_rows.empty:
+            available = ", ".join(index.dataset.astype(str).tolist())
+            raise ValueError(
+                f"Hydrology index does not contain {environment_dataset}; "
+                f"available datasets: {available}"
+            )
+        environment_indexed = str(environment_rows.iloc[0])
         server_root = os.environ.get("CISPO_HYDRO_ROOT")
         if server_root:
             discharge_path = Path(server_root) / PureWindowsPath(discharge_indexed).name
@@ -81,6 +101,16 @@ class HydroProfileReader:
             )
         self.discharge = Dataset(discharge_path)
         self.environment = Dataset(environment_path)
+        self.environment_variable = environment_variable
+        if self.environment_variable not in self.environment.variables:
+            if "monthly_environmental_flow_m3s" in self.environment.variables:
+                self.environment_variable = "monthly_environmental_flow_m3s"
+            else:
+                available = ", ".join(self.environment.variables.keys())
+                raise ValueError(
+                    f"Environmental-flow variable {environment_variable} is absent; "
+                    f"available variables: {available}"
+                )
         discharge_comids = np.asarray(self.discharge.variables["comid"][:], dtype=np.int64)
         environment_comids = np.asarray(self.environment.variables["comid"][:], dtype=np.int64)
         if not np.array_equal(discharge_comids, environment_comids):
@@ -134,7 +164,7 @@ class HydroProfileReader:
             selected_hours = np.flatnonzero(months == month)
             if valid.any():
                 values = np.asarray(
-                    self.environment.variables["monthly_p10_proxy_m3s"][
+                    self.environment.variables[self.environment_variable][
                         month_position[int(month)], position_values[valid]
                     ],
                     dtype=np.float64,

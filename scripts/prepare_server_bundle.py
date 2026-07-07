@@ -124,12 +124,18 @@ def main() -> None:
 
     hydro_archive = BUNDLE / "hydro_timeseries.tar.gz"
     with tarfile.open(hydro_archive, "w:gz") as archive:
-        for name in (
-            "grfr_target_comids_hourly_2019.nc",
-            "grfr_monthly_p10_single_year_proxy_2019.nc",
-            "ror_hourly_profiles_2019_provisional.nc",
-        ):
-            archive.add(HYDRO_ROOT / name, arcname=name)
+        hydro_files = {
+            "grfr_target_comids_hourly_2019.nc": HYDRO_ROOT
+            / "grfr_target_comids_hourly_2019.nc",
+            "grfr_monthly_p30_single_year_proxy_2019.nc": ROOT
+            / "data"
+            / "hydro"
+            / "grfr_monthly_p30_single_year_proxy_2019.nc",
+            "ror_hourly_profiles_2019_provisional.nc": HYDRO_ROOT
+            / "ror_hourly_profiles_2019_provisional.nc",
+        }
+        for name, path in hydro_files.items():
+            archive.add(path, arcname=name)
     archives.append(hydro_archive)
 
     raw_grfr_files = []

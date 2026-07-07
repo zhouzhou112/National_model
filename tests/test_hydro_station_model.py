@@ -96,6 +96,20 @@ class HydroStationModelTests(unittest.TestCase):
         self.assertEqual(int(numerics["crossover"]), 1)
         self.assertEqual(int(numerics["threads"]), -1)
 
+    def test_environmental_flow_uses_p30_proxy(self):
+        hydro = self.config.raw["hydro"]
+        self.assertEqual(
+            hydro["environmental_flow_dataset"],
+            "monthly_environmental_flow_2019_p30",
+        )
+        self.assertEqual(hydro["environmental_flow_variable"], "monthly_p30_proxy_m3s")
+        timeseries = self.data_root_timeseries()
+        self.assertIn("monthly_environmental_flow_2019_p30", set(timeseries.dataset))
+        row = timeseries.loc[
+            timeseries.dataset.eq("monthly_environmental_flow_2019_p30")
+        ].iloc[0]
+        self.assertIn("monthly_p30_proxy_m3s", str(row.variables))
+
     def test_core_cascade_topology_loads(self):
         self.assertEqual(len(self.data.hydro_cascade_nodes), 142)
         self.assertEqual(len(self.data.hydro_cascade_edges), 124)
@@ -113,6 +127,14 @@ class HydroStationModelTests(unittest.TestCase):
             self.assertGreater(len(source_rows), 0)
             self.assertGreater(len(target_rows), 0)
             self.assertAlmostEqual(float(weights.sum()), 1.0, places=9)
+
+    @staticmethod
+    def data_root_timeseries():
+        import pandas as pd
+
+        from cispo_model.data import DATA_ROOT
+
+        return pd.read_csv(DATA_ROOT / "hydro" / "timeseries_index.csv")
 
 
 if __name__ == "__main__":

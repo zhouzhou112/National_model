@@ -85,6 +85,10 @@ class ModelConfig:
             raise ValueError("reservoir_volume_variable_scale_m3 must be positive")
         if float(hydro.get("hydrology_flow_zero_tolerance_m3s", -1.0)) < 0.0:
             raise ValueError("hydrology_flow_zero_tolerance_m3s must be nonnegative")
+        if hydro.get("environmental_flow_dataset") != "monthly_environmental_flow_2019_p30":
+            raise ValueError("Hydropower environmental-flow dataset must remain monthly_environmental_flow_2019_p30")
+        if hydro.get("environmental_flow_variable") != "monthly_p30_proxy_m3s":
+            raise ValueError("Hydropower environmental-flow variable must remain monthly_p30_proxy_m3s")
         numerics = self.raw.get("numerics", {})
         coefficient_tolerance = float(
             numerics.get("coefficient_zero_tolerance", 0.0)

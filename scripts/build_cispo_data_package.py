@@ -53,7 +53,17 @@ def load_config() -> dict:
         path = Path(value)
         resolved_sources[key] = path if path.is_absolute() else ROOT / path
     config["sources"] = resolved_sources
-    missing = [str(path) for path in config["sources"].values() if not path.exists()]
+    generated_sources = set()
+    if (
+        config.get("hydro_proxy", {}).get("environmental_flow_method")
+        == "monthly_p30_from_2019_only"
+    ):
+        generated_sources.add("hydro_environmental_flow")
+    missing = [
+        str(path)
+        for key, path in config["sources"].items()
+        if key not in generated_sources and not path.exists()
+    ]
     if missing:
         raise FileNotFoundError("Missing configured source files:\n" + "\n".join(missing))
     return config
@@ -608,6 +618,88 @@ def inspect_netcdf(path: Path) -> dict:
     return {"dimensions": dimensions, "variables": variables}
 
 
+def ensure_monthly_environmental_flow_proxy(config: dict) -> tuple[str, str, str]:
+    """Create or reuse the configured monthly environmental-flow proxy.
+
+    The currently available hydrology source contains only 2019 target-COMID
+    hourly discharge. For the requested P30 treatment, this writes a traceable
+    single-year monthly P30 proxy. It is not a substitute for the formal
+    multi-year climatological P30 requirement when 1980-2019 discharge becomes
+    available.
+    """
+
+    method = str(config["hydro_proxy"]["environmental_flow_method"])
+    if method != "monthly_p30_from_2019_only":
+        return (
+            "monthly_environmental_flow_2019_p10",
+            "monthly_p10_proxy_m3s",
+            "Monthly P10 proxy derived only from 2019 discharge",
+        )
+
+    try:
+        from netCDF4 import Dataset
+    except ImportError as exc:  # pragma: no cover - production env has netCDF4
+        raise RuntimeError(
+            "netCDF4 is required to build the monthly P30 environmental-flow proxy"
+        ) from exc
+
+    source = config["sources"]["hydro_hourly_discharge"]
+    target = config["sources"]["hydro_environmental_flow"]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists():
+        return (
+            "monthly_environmental_flow_2019_p30",
+            "monthly_p30_proxy_m3s",
+            "Monthly P30 proxy derived only from 2019 discharge",
+        )
+
+    dates = pd.date_range("2019-01-01 00:00", periods=8760, freq="h")
+    with Dataset(source, "r") as src, Dataset(target, "w", format="NETCDF4") as out:
+        comids = np.asarray(src.variables["comid"][:], dtype=np.int64)
+        out.createDimension("month", 12)
+        out.createDimension("comid", len(comids))
+        month_var = out.createVariable("month", "i4", ("month",))
+        month_var[:] = np.arange(1, 13, dtype=np.int32)
+        comid_var = out.createVariable("comid", "i8", ("comid",))
+        comid_var[:] = comids
+        p30_var = out.createVariable(
+            "monthly_p30_proxy_m3s",
+            "f4",
+            ("month", "comid"),
+            zlib=True,
+            complevel=4,
+        )
+        p30_var.units = "m3 s-1"
+        p30_var.long_name = "2019 single-year monthly P30 environmental-flow proxy"
+        generic_var = out.createVariable(
+            "monthly_environmental_flow_m3s",
+            "f4",
+            ("month", "comid"),
+            zlib=True,
+            complevel=4,
+        )
+        generic_var.units = "m3 s-1"
+        generic_var.long_name = "Alias of monthly_p30_proxy_m3s"
+        values = np.empty((12, len(comids)), dtype=np.float32)
+        qout = src.variables["qout_model_m3s"]
+        for month in range(1, 13):
+            hour_positions = np.flatnonzero(dates.month.to_numpy() == month)
+            monthly_q = np.ma.filled(qout[hour_positions, :], np.nan)
+            values[month - 1, :] = np.nanpercentile(monthly_q, 30, axis=0).astype(
+                np.float32
+            )
+        p30_var[:] = values
+        generic_var[:] = values
+        out.source_discharge = str(source)
+        out.method = "single_year_monthly_p30_proxy"
+        out.warning = "Not equivalent to formal 1980-2019 climatological monthly P30"
+    return (
+        "monthly_environmental_flow_2019_p30",
+        "monthly_p30_proxy_m3s",
+        "Monthly P30 proxy derived only from 2019 discharge",
+    )
+
+
 def _split_semicolon_ids(value: object) -> list[str]:
     if pd.isna(value):
         return []
@@ -793,6 +885,7 @@ def build_hydro_cascade(config: dict, hydro: pd.DataFrame, qc: list[dict]) -> No
 
 
 def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
+    env_dataset_name, env_variable_name, env_role = ensure_monthly_environmental_flow_proxy(config)
     hydro = pd.read_csv(config["sources"]["hydro_stage2"])
     inventory = pd.read_csv(
         config["sources"]["hydro_updated_inventory"],
@@ -866,7 +959,7 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
     index_rows = []
     for dataset_name, source_key, role in (
         ("hourly_discharge_2019", "hydro_hourly_discharge", "Hourly natural discharge for all target COMIDs"),
-        ("monthly_environmental_flow_2019_p10", "hydro_environmental_flow", "Monthly P10 proxy derived only from 2019 discharge"),
+        (env_dataset_name, "hydro_environmental_flow", env_role),
         ("explicit_ror_profiles_2019", "hydro_explicit_ror_profiles", "Provisional profile for 204 GHT-explicit run-of-river stations"),
     ):
         path = config["sources"][source_key]
@@ -911,6 +1004,7 @@ def build_hydro(config: dict, points: pd.DataFrame, qc: list[dict]) -> None:
     ).sum())
     add_qc(qc, "hydro_potential_paper_rule_mismatches", potential_mismatch, "PASS" if potential_mismatch == 0 else "FAIL", "Potential sites >750 MW are reservoir; all others are run-of-river")
     add_qc(qc, "hydro_max_province_assignment_distance_deg", round(float(distance.max()), 6), "PASS" if distance.max() <= 0.25 else "WARN", "Nearest corrected 0.25-degree grid assignment")
+    add_qc(qc, "hydro_environmental_flow_dataset", env_dataset_name, "PASS", f"NetCDF variable={env_variable_name}; formal multi-year P30 still requires multi-year source data")
     build_hydro_cascade(config, out, qc)
 
 
@@ -2195,7 +2289,7 @@ def build_manifest(config: dict, qc: list[dict]) -> None:
         "hydro_cascade_stage2_qa": "Stage2 cascade-topology QA report and warnings",
         "hydro_updated_inventory": "HydroCHN/GHT operating status used for existing-capacity lower bounds",
         "hydro_hourly_discharge": "2019 hourly GRFR discharge for target COMIDs",
-        "hydro_environmental_flow": "2019-only monthly P10 environmental-flow proxy",
+        "hydro_environmental_flow": "2019-only monthly P30 environmental-flow proxy generated from hourly GRFR target-COMID discharge",
         "hydro_explicit_ror_profiles": "Existing 204-station provisional ROR profiles",
         "grfr_manifest": "GRFR transfer and integrity status",
         "biomass_province_workbook": "Province bioenergy common-three source years",
@@ -2254,7 +2348,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 - 碳约束：默认 `Base_-550Mt`，2025 基准年不设外生排放上限；2030/2040/2050/2060 为 4000/1300/-100/-550 MtCO2/yr。
 - 核电：采用 GEM 已投运/在建/规划管线作为下界，不使用人为强制的 2050 年 300 GW 情景；2060 暂保持 2050 管线下界。
 - 生物质：只采用农业残余物、林业残余物和废弃地能源作物。2030/2040 在 2020 与 2050 省级源值之间线性插值，2060 保持 2050 值。
-- 水电：现有站采用当前分配标签（GHT 2026 明确标签或 115 MW 代理标签），不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式。Stage2 推荐的 5 个核心干流梯级组启用 MERIT 下游拓扑和 2019 GRFR 互相关时滞；其他水库站保持独立平衡。环境流量使用已有 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签（GHT 2026 明确标签或 115 MW 代理标签），不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式。Stage2 推荐的 5 个核心干流梯级组启用 MERIT 下游拓扑和 2019 GRFR 互相关时滞；其他水库站保持独立平衡。环境流量使用 2019 单年 monthly P30 代理。
 
 ## 目录与直接读取文件
 
@@ -2297,7 +2391,7 @@ def _write_readme_legacy_mojibake(config: dict) -> None:
 
 1. 现有未标注水电站的容量代理分类不是事实标签，在 GHT 已标注样本上的平衡准确率约 0.677；本轮按用户决策直接使用，后续获得权威类型时再验证。
 2. GRFR 时区未在源 NetCDF 中声明，当前保留 source-native 时间；不得静默平移。
-3. 环境流量只由 2019 单年计算，不等同于论文的多年气候态 P10/P30。
+3. 环境流量只由 2019 单年计算，不等同于论文的多年气候态 P30。
 4. 未来负荷使用北京时间；容量因子 Zarr 的主时间也为 UTC+8，但文件年份跟随 ERA5 UTC 源年，首尾不是严格北京时间自然年。
 5. transmission `capacity_group` 用于识别同一工程/共享容量；模型实现不能把多段共享容量无条件重复计入。
 6. `grid_connection_by_point.csv` 是大圆直线距离，不是沿道路、地形、海缆走廊或已有线路的工程路由长度；OSM 也不提供可靠的可接入容量和间隔数量。
@@ -2348,7 +2442,7 @@ def write_readme(config: dict) -> None:
 - 省内接入初值：原论文未给出变电站额定容量。默认采用 2025 年 onwind/offwind/UPV 全部铭牌容量同时送出的保守压力情景；同时保留按 {config['grid_connection']['initial_capacity_weather_year']} 小时 CF 聚合的论文一致对照值。DPV 位于负荷侧，不占 spur/trunk 容量。
 - 负荷中心：以 2022 城市用电表和县级城镇人口加权中心构建 337 个市级节点；296 城直接使用用电表，缺失的 41 个自治州/地区等按省内单位城镇人口用电强度插补。
 - Trunk 距离：每个 OSM 变电站连接同省最近市级负荷中心，使用大圆距离。市级变电站密度和电压权重仅作验证与敏感性分析，不作为负荷主权重。
-- 水电：现有站采用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级组使用局地 GRFR 入流加上游释放传播，其他水库站独立平衡；环境流量为 2019 单年 monthly P10 代理。
+- 水电：现有站采用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级组使用局地 GRFR 入流加上游释放传播，其他水库站独立平衡；环境流量为 2019 单年 monthly P30 代理。
 
 ## 主要直接输入
 

@@ -122,7 +122,9 @@
     "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
     "cascade_max_lag_h": 168,
     "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split",
-    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p10_2019_proxy; formal p30 spill lower bound requires multi-year source data"
+    "environmental_flow_dataset": "monthly_environmental_flow_2019_p30",
+    "environmental_flow_variable": "monthly_p30_proxy_m3s",
+    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data"
   },
   "network": {
     "flow_regularization_yuan_per_mwh": 0.001,

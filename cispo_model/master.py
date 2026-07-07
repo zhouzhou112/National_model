@@ -534,50 +534,11 @@ def build_master(
     annual_captured = model.addMVar(
         (b_count, p_count), lb=0.0, name="annual_captured_co2_mt"
     )
-    storage_boundary = model.addMVar((b_count + 1, p_count, len(STORAGE_TECHS)), lb=0.0, name="storage_boundary_gwh")
-    online_boundary = model.addMVar((b_count + 1, p_count, len(THERMAL_TECHS)), lb=0.0, name="online_boundary_gw")
-    gross_boundary = model.addMVar((b_count + 1, p_count, len(THERMAL_TECHS)), lb=0.0, name="gross_generation_boundary_gw")
-    reservoir_boundary = model.addMVar((b_count + 1, p_count), lb=0.0, name="reservoir_boundary_gwh")
-    max_commitment_history = int(max(data.ruc.min_up_h.max(), data.ruc.min_down_h.max()))
-    startup_history = model.addMVar(
-        (b_count + 1, p_count, len(THERMAL_TECHS), max_commitment_history),
-        lb=0.0,
-        name="startup_boundary_history_gw",
-    )
-    shutdown_history = model.addMVar(
-        (b_count + 1, p_count, len(THERMAL_TECHS), max_commitment_history),
-        lb=0.0,
-        name="shutdown_boundary_history_gw",
-    )
-    startup_prefix = model.addMVar(
-        (b_count, p_count, len(THERMAL_TECHS), max_commitment_history),
-        lb=0.0,
-        name="startup_block_prefix_gw",
-    )
-    shutdown_prefix = model.addMVar(
-        (b_count, p_count, len(THERMAL_TECHS), max_commitment_history),
-        lb=0.0,
-        name="shutdown_block_prefix_gw",
-    )
-    model.addConstr(storage_boundary[0] == storage_boundary[-1], name="storage_annual_cycle")
-    model.addConstr(online_boundary[0] == online_boundary[-1], name="ruc_annual_cycle")
-    model.addConstr(gross_boundary[0] == gross_boundary[-1], name="gross_generation_annual_cycle")
-    model.addConstr(reservoir_boundary[0] == reservoir_boundary[-1], name="reservoir_annual_cycle")
-    model.addConstr(startup_history[0] == startup_history[-1], name="startup_history_annual_cycle")
-    model.addConstr(shutdown_history[0] == shutdown_history[-1], name="shutdown_history_annual_cycle")
     variables.update(
         operating_cost_account=operating_cost_account,
         annual_emissions=annual_emissions,
         annual_biomass=annual_biomass,
         annual_captured=annual_captured,
-        storage_boundary=storage_boundary,
-        online_boundary=online_boundary,
-        gross_boundary=gross_boundary,
-        reservoir_boundary=reservoir_boundary,
-        startup_history=startup_history,
-        shutdown_history=shutdown_history,
-        startup_prefix=startup_prefix,
-        shutdown_prefix=shutdown_prefix,
     )
 
     carbon_limit = float(data.carbon.emissions_limit_mtco2_per_year)
@@ -630,193 +591,6 @@ def build_master(
         float(data.ccs_cost.capture_yuan_per_tco2) * annual_captured.sum()
     )
     costs["co2_transport_injection"] = (transport_cost * co2_ship).sum()
-
-    # Boundary state upper bounds strengthen the monolithic LP.
-    storage_duration = data.storage.set_index("technology").duration_h.reindex(STORAGE_TECHS).to_numpy(dtype=float)
-    for boundary in range(b_count + 1):
-        model.addConstr(
-            storage_boundary[boundary] <= storage_cap * storage_duration[None, :],
-            name=f"storage_boundary_capacity_b{boundary}",
-        )
-        model.addConstr(
-            online_boundary[boundary] <= thermal_cap,
-            name=f"online_boundary_capacity_b{boundary}",
-        )
-        ruc_boundary = data.ruc.set_index("technology").reindex(THERMAL_TECHS)
-        boundary_pmin = ruc_boundary.pmin_fraction.to_numpy(dtype=float)
-        boundary_pmax = ruc_boundary.pmax_fraction.to_numpy(dtype=float)
-        model.addConstr(
-            gross_boundary[boundary] >= online_boundary[boundary] * boundary_pmin[None, :],
-            name=f"gross_boundary_minimum_b{boundary}",
-        )
-        model.addConstr(
-            gross_boundary[boundary] <= online_boundary[boundary] * boundary_pmax[None, :],
-            name=f"gross_boundary_maximum_b{boundary}",
-        )
-        model.addConstr(
-            startup_history[boundary] <= thermal_cap[:, :, None],
-            name=f"startup_history_capacity_b{boundary}",
-        )
-        model.addConstr(
-            shutdown_history[boundary] <= thermal_cap[:, :, None],
-            name=f"shutdown_history_capacity_b{boundary}",
-        )
-        if boundary < b_count:
-            model.addConstr(
-                startup_prefix[boundary] <= thermal_cap[:, :, None],
-                name=f"startup_prefix_capacity_b{boundary}",
-            )
-            model.addConstr(
-                shutdown_prefix[boundary] <= thermal_cap[:, :, None],
-                name=f"shutdown_prefix_capacity_b{boundary}",
-            )
-    reservoir_energy_by_province = np.zeros(p_count, dtype=float)
-    hydro_constants = config.raw["hydro"]
-    reservoir_rows = data.hydro_stations.operation_type_model.eq("reservoir_storage")
-    reservoir = data.hydro_stations.loc[reservoir_rows].copy()
-    reservoir["energy_gwh"] = (
-        reservoir.active_storage_gl.fillna(0.0)
-        * 1.0e6
-        * reservoir.head_m.fillna(0.0)
-        * float(hydro_constants["reservoir_efficiency"])
-        * float(hydro_constants["gravity_m_per_s2"])
-        * float(hydro_constants["water_density_kg_per_m3"])
-        / 3.6e12
-    )
-    reservoir_energy_lookup = reservoir.groupby("province_code").energy_gwh.sum()
-    for province_code, p in p_index.items():
-        reservoir_energy_by_province[p] = float(reservoir_energy_lookup.get(province_code, 0.0))
-    for boundary in range(b_count + 1):
-        model.addConstr(
-            reservoir_boundary[boundary] <= reservoir_energy_by_province,
-            name=f"reservoir_boundary_capacity_b{boundary}",
-        )
-
-    # Project always-on requirements to chronological block boundaries. A
-    # boundary state is the online state of the hour immediately preceding the
-    # block; boundary 0 therefore corresponds to the last selected hour under
-    # cyclic-horizon conditions.
-    hour_dates = (
-        data.load[["hour_index", "datetime_bj"]]
-        .drop_duplicates("hour_index")
-        .sort_values("hour_index")
-    )
-    hour_month = pd.to_datetime(hour_dates.datetime_bj).dt.month.to_numpy()
-    selected_hours = blocks[-1].hour_stop
-    boundary_hours = [
-        (blocks[boundary].hour_start - 1) % selected_hours
-        for boundary in range(b_count)
-    ]
-    boundary_hours.append(selected_hours - 1)
-    boundary_cf = np.zeros((b_count + 1, len(data.vre_sites)), dtype=np.float64)
-    for source_technology, group in data.vre_sites.groupby("cf_source_technology", sort=False):
-        boundary_cf[:, group.index.to_numpy(dtype=int)] = data.cf.read_hours(
-            source_technology,
-            group.cf_grid_id.to_numpy(dtype=np.int64),
-            boundary_hours,
-        )
-    winter_months = set(config.raw["thermal"]["chp_winter_months"])
-    chp_indices = [k_index[t] for t in ("cchp", "cchpccs", "gchp", "gchpccs")]
-    bio_indices = [k_index[t] for t in ("bio", "bioccs")]
-    bio_minimum = float(config.raw["thermal"]["biomass_minimum_online_fraction"])
-    for boundary in range(b_count + 1):
-        if boundary == b_count:
-            previous_hour = selected_hours - 1
-        else:
-            previous_hour = (blocks[boundary].hour_start - 1) % selected_hours
-        if int(hour_month[previous_hour]) in winter_months:
-            for k in chp_indices:
-                model.addConstr(
-                    online_boundary[boundary, :, k] == thermal_cap[:, k],
-                    name=f"chp_winter_online_boundary_b{boundary}_k{k}",
-                )
-        for k in bio_indices:
-            model.addConstr(
-                online_boundary[boundary, :, k] >= bio_minimum * thermal_cap[:, k],
-                name=f"biomass_online_boundary_b{boundary}_k{k}",
-            )
-        boundary_load = data.load_gw[:, previous_hour]
-        boundary_ruc = data.ruc.set_index("technology").reindex(THERMAL_TECHS)
-        boundary_loss = boundary_ruc.ccs_power_loss_fraction.to_numpy(dtype=float)
-        boundary_inertia = boundary_ruc.inertia_s.to_numpy(dtype=float)
-        hydro_boundary_capacity = model.addMVar(
-            p_count, lb=0.0, name=f"hydro_boundary_capacity_b{boundary}"
-        )
-        hydro_boundary_inertia = model.addMVar(
-            p_count, lb=0.0, name=f"hydro_boundary_inertia_b{boundary}"
-        )
-        non_sync = config.raw["security"]["non_synchronous_inertia_seconds"]
-        for province_code, p in p_index.items():
-            subset = data.hydro_stations.loc[data.hydro_stations.province_code.eq(province_code)]
-            ror_rows = subset.index[subset.operation_type_model.eq("run_of_river")].to_numpy(dtype=int)
-            reservoir_rows = subset.index[
-                subset.operation_type_model.eq("reservoir_storage")
-            ].to_numpy(dtype=int)
-            ror_capacity = hydro_cap[ror_rows].sum() if len(ror_rows) else 0.0
-            reservoir_capacity = (
-                hydro_cap[reservoir_rows].sum() if len(reservoir_rows) else 0.0
-            )
-            model.addConstr(
-                hydro_boundary_capacity[p] == ror_capacity + reservoir_capacity,
-                name=f"hydro_boundary_capacity_link_b{boundary}_p{province_code}",
-            )
-            model.addConstr(
-                hydro_boundary_inertia[p]
-                == ror_capacity * float(non_sync["ror"])
-                + reservoir_capacity * float(non_sync["reservoir"]),
-                name=f"hydro_boundary_inertia_link_b{boundary}_p{province_code}",
-            )
-        thermal_up_boundary = (
-            (1.0 - boundary_loss[None, :])
-            * (boundary_pmax[None, :] * online_boundary[boundary] - gross_boundary[boundary])
-        ).sum(axis=1)
-        thermal_down_boundary = (
-            (1.0 - boundary_loss[None, :])
-            * (gross_boundary[boundary] - boundary_pmin[None, :] * online_boundary[boundary])
-        ).sum(axis=1)
-        model.addConstr(
-            thermal_up_boundary + storage_cap.sum(axis=1) + hydro_boundary_capacity
-            >= float(config.raw["security"]["up_reserve_load_fraction"]) * boundary_load,
-            name=f"boundary_up_reserve_b{boundary}",
-        )
-        model.addConstr(
-            thermal_down_boundary + storage_cap.sum(axis=1)
-            >= float(config.raw["security"]["down_reserve_load_fraction"]) * boundary_load,
-            name=f"boundary_down_reserve_b{boundary}",
-        )
-        storage_inertia = np.asarray(
-            [float(non_sync[technology]) for technology in STORAGE_TECHS], dtype=float
-        )
-        model.addConstr(
-            online_boundary[boundary] @ boundary_inertia
-            + storage_cap @ storage_inertia
-            + hydro_boundary_inertia
-            >= float(config.raw["security"]["minimum_system_inertia_seconds"]) * boundary_load,
-            name=f"boundary_inertia_b{boundary}",
-        )
-        for province_code, p in p_index.items():
-            site_positions = data.vre_sites.index[
-                data.vre_sites.province_code.eq(province_code)
-            ].to_numpy(dtype=int)
-            vre_supply = (
-                boundary_cf[boundary, site_positions] @ vre_cap[site_positions]
-                if len(site_positions)
-                else 0.0
-            )
-            import_capacity = gp.LinExpr()
-            for e, line in enumerate(data.lines.itertuples(index=False)):
-                efficiency = (1.0 - 3.2e-5) ** float(line.distance_km)
-                if int(line.from_province_code) == province_code or int(line.to_province_code) == province_code:
-                    import_capacity += efficiency * line_cap[e]
-            model.addConstr(
-                ((1.0 - boundary_loss) * gross_boundary[boundary, p, :]).sum()
-                + vre_supply
-                + storage_cap[p, :].sum()
-                + hydro_boundary_capacity[p]
-                + import_capacity
-                >= boundary_load[p],
-                name=f"boundary_power_adequacy_b{boundary}_p{province_code}",
-            )
 
     # Capacity margin is imposed on annual capacity decisions.
     credit = config.raw["security"]["capacity_credit"]
@@ -975,7 +749,6 @@ def build_master(
         "dac_index": d_index,
         "ccs_pairs": ccs_pairs,
         "blocks": blocks,
-        "max_commitment_history": max_commitment_history,
         "ccs_sinks": sinks,
         "co2_transport_distance_km": transport_distance,
         **index_extra,

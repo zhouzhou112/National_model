@@ -50,7 +50,7 @@ def main() -> None:
     ]
     required_hydro = [
         hydro_root / "grfr_target_comids_hourly_2019.nc",
-        hydro_root / "grfr_monthly_p10_single_year_proxy_2019.nc",
+        hydro_root / "grfr_monthly_p30_single_year_proxy_2019.nc",
         hydro_root / "ror_hourly_profiles_2019_provisional.nc",
     ]
     required_raw_grfr = [
