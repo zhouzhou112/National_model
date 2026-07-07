@@ -102,7 +102,7 @@ Gurobi 13 的 GPU 加速仅针对 PDHG：需要独立 GPU 构建、`Method=6`、
 4. PHS 暂保留为省级储能变量，不复现论文中的 open-loop/closed-loop 水力配对。
 5. GPU-enabled Gurobi 已安装在隔离环境 `/home/zz2/.local/envs/cispo-gurobi-gpu`，版本为 `gurobipy 13.0.2+cu129`。探针日志确认 `linux64gpu[cuda12]`、`GPU model: NVIDIA GeForce RTX 4090` 和 `Start PDHG on GPU`。
 6. 对同一 24h P30 诊断模型，CPU barrier 在 `45.06 s` 达到 `OPTIMAL` 且 `solution_qc=PASS`；GPU-PDHG 运行约 `600 s` 后仍未完成，已中止且没有 `solve_report.json`。因此当前模型默认求解路径仍应使用 CPU barrier，而不是 GPU-PDHG。
-7. P30-cleanup 744h CPU 门禁已启动：`/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu`，PID `863603`。该门禁未完成前，不得启动 8760h production solve。
+7. P30-cleanup 744h CPU 门禁已启动：`/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu`，PID `863603`。模型构建已完成，耗时 `339.56 s`，峰值 RSS `5.336 GiB`，规模为 4,762,150 variables、6,472,914 constraints、45,718,011 nonzeros。Gurobi 优化仍在进行；该门禁未完成前，不得启动 8760h production solve。
 
 ## 8. 精确下一步
 
