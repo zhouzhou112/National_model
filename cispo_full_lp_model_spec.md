@@ -469,6 +469,8 @@ q^{gen}_{g,z,t}H_{g,z}\eta^{resvor}g_e\rho_h,
 
 > 实现注意：上式需处理单位换算。若 `q` 为 m3/s，`H` 为 m，`g_e` 为 m/s2，`rho_h` 为 kg/m3，则得到 W，需要转为 GW。
 
+> 数值实现（2026-07-07，commit `281f9c7`）：输入、公式说明、结果导出和 QC 继续使用物理单位 `m3/s`、`m3`；LP 内部采用严格等价的缩放变量 `q_model=q_m3s/1000` 和 `v_model=v_m3/1e6`。因此小时水量平衡系数由 `3600` 变为 `3.6`，发电系数同步乘以 `1000`，不改变任何物理流量、库容、发电量或梯级传播关系。
+
 ### S4-14 水库水电出力不超过装机容量
 
 ```math
@@ -533,7 +535,7 @@ q^{local}_{g,z,t}
 \right]\Delta t
 ```
 
-重复 COMID 节点中的多个电站按 `capacity_potential_gw` 权重分摊本地增量入流和上游到达流量。当前环境流量仍为 2019 单年 monthly P10 代理；正式多年 P30 环境流和开环/闭环抽水蓄能水库配对尚未接入。
+重复 COMID 节点中的多个电站按 `capacity_potential_gw` 权重分摊本地增量入流和上游到达流量。当前环境流量为 2019 单年 monthly P30 代理；正式 1980-2019 多年 P30 环境流和开环/闭环抽水蓄能水库配对尚未接入。
 
 ---
 
@@ -1401,7 +1403,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
 | 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv` | GEM committed/pipeline 下界；不强制 2050 年 300 GW，2060 暂保持 2050 管线下界 |
-| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级站使用本地 GRFR 增量入流 + 上游发电/弃水时滞到达，其余水库站保持独立水量平衡；环境流量为 2019 单年 monthly P10 代理 |
+| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级站使用本地 GRFR 增量入流 + 上游发电/弃水时滞到达，其余水库站保持独立水量平衡；环境流量为 2019 单年 monthly P30 代理，正式多年 P30 尚未接入 |
 | 生物质 | `data/biomass/fuel_potential_by_province_year.csv` | 省级农业残余、林业残余、能源作物热值约束；2030/2040 线性插值，2060 保持 2050 |
 | 输电 | `data/transmission/existing_lines.csv`、`data/transmission/candidate_corridors.csv` | 2025 既有通道和 31 省全组合候选走廊 |
 | 碳约束 | `data/carbon/emissions_limits_by_scenario.csv` | 2025 不启用上限；默认 Base 路径为 2030/2040/2050/2060 = 4000/1300/-100/-550 MtCO2/yr |

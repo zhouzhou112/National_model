@@ -14,13 +14,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.3.1`
-- Snapshot date: `2026-07-06`
+- Handoff version: `v0.4.1`
+- Snapshot date: `2026-07-07`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Latest server-deployed implementation commit: `b3e6298` (`fix: add core hydropower cascade coupling`).
-- Latest server checkout HEAD: `7a2ca27` (`docs: record hydropower cascade handoff`), verified live on 2026-07-06.
-- Cascade data/readiness and regression tests are server-validated; the complete 744h optimization gate is still running and is not yet accepted.
+- Latest server-deployed implementation and checkout HEAD: `a8cd150` (`fix: switch hydropower to p30 proxy`), verified live on 2026-07-07.
+- The old 744h run was preserved and normally interrupted after `37,576.53 s`; it had no solution and exposed severe coefficient/RHS scaling plus crossover instability.
+- The P30-cleanup 24h CPU gate is `OPTIMAL` with `solution_qc=PASS`; the P30-cleanup 744h CPU gate is running as PID `863603` and remains the next required acceptance test.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -57,6 +57,7 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 - Python environment: `/home/zz2/.local/envs/cispo-2030`, Python 3.11.15.
 - Gurobi Optimizer: 13.0.2 at `/home/zz2/opt/gurobi1302/linux64`.
 - `gurobipy`: 13.0.2 in the `cispo-2030` environment.
+- GPU test environment: `/home/zz2/.local/envs/cispo-gurobi-gpu` with `gurobipy 13.0.2+cu129`; it is isolated from the production CPU environment and should be used only for PDHG tests with `Method=6`, `PDHGGPU=1`.
 - Gurobi 12.0.1 remains installed as rollback software.
 - License file: `/home/zz2/gurobi.lic`, mode `0600`, issued license ID `2840423`, valid through `2027-07-02`.
 - The activation key and license-file contents must not be committed or copied into documentation.
@@ -65,8 +66,8 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
@@ -103,6 +104,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   - The actual 744h model build completed with 4,808,836 variables, 6,536,681 constraints and 46,092,407 nonzeros.
   - The optimization output directory is `/data/zz2/National_model/outputs/2030_one_month_hydro_cascade`; PID `244035` remained active at 2026-07-06 22:37 Asia/Shanghai after about 5 h 59 min.
   - Gurobi reported large matrix-coefficient and RHS ranges, barrier restarted near iteration 111, dual crossover pushes completed, and primal cleanup was still active at about 1,919,682 remaining pushes with `PInf=3.1246436e+02`. No `solve_report.json` or `solution_qc.json` existed at that checkpoint, so the 744h gate is not yet passed.
+- Numerical-stability implementation and validation on 2026-07-07:
+  - Commit `281f9c7` scales reservoir flow variables to `10^3 m3/s` and reservoir volume variables to `10^6 m3`, preserving physical `m3/s` and `m3` at all inputs, exports and QC checks.
+  - `coefficient_zero_tolerance=1e-6`, `hydrology_flow_zero_tolerance_m3s=1e-4`, `BarConvTol=1e-8`, `Crossover=1` and `Threads=-1` are explicit configuration values.
+  - Local numerical audit at 24h improved matrix coefficients from approximately `1e-10–3600` to `1e-6–24`, RHS from approximately `2e-13–4.48e10` to `4.32e-7–1.17e5`, and removed all coefficients/RHS below `1e-8` in the audited model.
+  - Local 24h full solve: 422,596 variables, 342,508 constraints and 2,037,549 nonzeros; Gurobi `59.66 s`; `OPTIMAL`; `solution_qc=PASS`; peak RSS `0.865 GiB`.
+  - Server checkout was fast-forwarded to `281f9c7`; 18/18 tests passed in `19.46 s`.
+  - Server 168h full solve under `/data/zz2/National_model/outputs/2030_diagnostic_168h_numerics_scaled`: 1,299,844 variables, 1,581,351 constraints and 10,733,898 nonzeros; build `90.54 s`; Gurobi `675.56 s`; `OPTIMAL`; `solution_qc=PASS`; peak RSS `4.061 GiB`.
+  - Server CPU is 48 physical cores / 96 logical processors. `Threads=-1` exposed all 96 logical processors; barrier factorization used 48 physical threads. Two RTX 4090 GPUs are present, but current `gurobipy 13.0.2` is the standard non-`+cu` build and therefore did not use GPU acceleration.
+  - Detailed module and numerical audit: `MODEL_SYSTEM_AUDIT_20260707.md`.
+- P30-cleanup and GPU validation on 2026-07-07:
+  - Commit `a8cd150` removes the obsolete early block-boundary variables from `master.py`, switches conventional hydropower environmental flow to the configured `monthly_environmental_flow_2019_p30` dataset and keeps run-of-river hydropower as station-CF-weighted provincial hourly output variables.
+  - Local checks: AST parse for changed Python files PASS; `C:\Users\ZZ\.conda\envs\RL\python.exe -m unittest discover -s tests -q` passed 19/19; `scripts/smoke_test_data_package.py` passed 118/118.
+  - New server data roots: `/data/zz2/National_model/data/model_ready_20260707_p30_cleanup` and `/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup`; P30 proxy NetCDF SHA256 `c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767`.
+  - Server readiness with the P30 roots passed, including raw-GRFR SHA256 verification; server regression tests passed 19/19 in `18.06 s`.
+  - Server 24h CPU P30 gate under `/data/zz2/National_model/outputs/2030_diagnostic_24h_p30_cleanup_cpu`: 375,910 variables, 278,737 constraints, 1,879,966 nonzeros; Gurobi `45.06 s`; `OPTIMAL`; `solution_qc=PASS`; peak RSS `0.879 GiB`.
+  - GPU-enabled Gurobi was installed only in `/home/zz2/.local/envs/cispo-gurobi-gpu` from verified wheel `gurobipy-13.0.2+cu129-cp311-cp311-manylinux_2_24_x86_64.whl` (SHA256 `10f0a10fed0c0f959d11bc4f60d36d4ef04a13c48ecf649cd557e8b952de0680`; server SHA256 matched after upload).
+  - GPU probe confirmed `linux64gpu[cuda12]`, `GPU model: NVIDIA GeForce RTX 4090` and `Start PDHG on GPU`.
+  - The same 24h model with GPU-PDHG was interrupted after about 600 s because it was still iterating and had no `solve_report.json`; CPU barrier is therefore the accepted default for this model at this stage.
 
 ### Known limitations and unresolved inputs
 
@@ -110,8 +129,8 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - The observed provincial 2025 PHS capacity floor is unavailable; the current floor is explicitly zero.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
-- Core hydropower cascade coupling is server-deployed and has passed readiness, regression and model-build gates. The complete 744h solve remains unvalidated because Gurobi is still in a long numerical crossover cleanup. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
-- Core cascade environmental flow still uses the 2019 single-year monthly P10 proxy. Formal multi-year P30 environmental flow and manual review of the 4 low-correlation / 18 max-bound lag edges remain unresolved inputs.
+- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. The old 744h run was interrupted with no solution; a replacement scaled 744h run remains unvalidated. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
+- Core cascade environmental flow now uses a 2019 single-year monthly P30 proxy. This follows the requested P30 direction but is still not the formal 1980-2019 climatological P30; manual review of the 4 low-correlation / 18 max-bound lag edges also remains unresolved input work.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
 - Two western AC500 proxy edges exceed the 1000 km range of the cited source cost.
@@ -121,27 +140,48 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start the 8760h production solve until the active 744h cascade run exits and its reports are audited. Monitor the existing run without changing its model or parameters:
+Do not start the 8760h production solve. Monitor the active P30-cleanup 744h CPU gate using server HEAD `a8cd150` and the versioned P30 data roots:
 
 ```bash
 cd /data/zz2/National_model/repo
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
-OUT=/data/zz2/National_model/outputs/2030_one_month_hydro_cascade
-PID=$(cat "$OUT/run.pid")
-ps -p "$PID" -o pid,etime,%mem,%cpu,rss,vsz,stat,cmd
-tail -n 100 "$OUT/gurobi.log"
+OUT=/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu
+ps -p 863603 -o pid,etime,%cpu,%mem,rss,stat,cmd
+tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-First exact next action: wait for PID `244035` to exit, then inspect `solve_report.json`, `solution_qc.json`, objective decomposition, balance residuals, reservoir water balance, cascade dispatch, transmission, curtailment, capacity additions and CCS injection. If the run reaches `TIME_LIMIT`, `SUBOPTIMAL`, a numerical failure or remains trapped in crossover, preserve this output and run a separate diagnostic using a copied configuration with only `numerics.crossover=0`; do not alter the baseline water-balance equations, objectives or constraints. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start the production solve.
+First exact next action: wait for PID `863603` to exit, then audit `solve_report.json`, `solution_qc.json`, objective decomposition, balance residuals, reservoir water balance, cascade dispatch, transmission, curtailment, capacity additions and CCS injection. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable constraint/water-balance residuals and recorded build/solve/export time plus peak memory. The one-hour runtime is a target, not yet verified. GPU-PDHG is not the default route after the 24h comparison. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start production.
 
 ## Version history
+
+### v0.4.1 - 2026-07-07 - P30 hydropower cleanup and GPU-PDHG isolation test
+
+- Git implementation baseline and live server HEAD: `a8cd150` (`fix: switch hydropower to p30 proxy`).
+- Scope: removed obsolete early block-boundary variables from `master.py`; switched conventional hydropower environmental flow from the single-year P10 proxy to the configured single-year P30 proxy; retained run-of-river as station-CF-weighted provincial hourly output variables; kept PHS as province-level storage; installed GPU-enabled Gurobi only in an isolated venv and tested PDHG.
+- Main changed files: `.gitignore`, `config/model_data_config.json`, `config/optimization_2030.json`, `cispo_model/config.py`, `cispo_model/hydro.py`, `cispo_model/master.py`, `scripts/build_cispo_data_package.py`, `scripts/check_server_readiness.py`, `scripts/prepare_server_bundle.py`, `tests/test_hydro_station_model.py`.
+- Data roots: `/data/zz2/National_model/data/model_ready_20260707_p30_cleanup` and `/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup`; P30 NetCDF SHA256 `c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767`.
+- Validation: local AST PASS, local 19/19 unit tests PASS, data smoke test 118/118 PASS; server readiness PASS with raw-GRFR SHA256 verification; server 19/19 tests PASS; server 24h CPU P30 solve `OPTIMAL`, `solution_qc=PASS`, Gurobi `45.06 s`, peak RSS `0.879 GiB`.
+- GPU result: isolated `gurobipy 13.0.2+cu129` environment successfully used `Start PDHG on GPU`, but the 24h P30 model was still iterating after about 600 s and was interrupted with no `solve_report.json`; standard CPU barrier remains the accepted solver route.
+- Current run: P30-cleanup 744h CPU gate is running at `/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu`, PID `863603`.
+- Unresolved: 744h gate final status not yet known; formal 1980-2019 climatological P30 remains future data work; low-correlation/max-bound cascade lag edges still need manual data review.
+- Next action: monitor PID `863603`, then audit solve/QC outputs before any 8760h build or production solve.
+
+### v0.4.0 - 2026-07-07 - LP numerical scaling repair and 168h server gate
+
+- Git baseline and live server HEAD: `281f9c7` (`fix: stabilize hydropower LP numerics`).
+- Scope: preserved and interrupted the failed old 744h run; audited every model block; applied mathematically equivalent reservoir flow/volume scaling; added numerical-audit and arbitrary diagnostic-hour tooling; exposed all server CPUs; expanded solver-quality reporting.
+- Main changed files: `config/optimization_2030.json`, `cispo_model/config.py`, `cispo_model/diagnostics.py`, `cispo_model/hydro.py`, `cispo_model/monolithic.py`, `cispo_model/solution_export.py`, `scripts/audit_model_numerics.py`, `scripts/run_cispo_2030_full_year.py`, `tests/test_hydro_station_model.py`.
+- Validation: local 18/18 tests PASS; local 24h `OPTIMAL` and QC PASS in `59.66 s`; server 18/18 tests PASS; server 168h `OPTIMAL` and QC PASS in `675.56 s` with `4.061 GiB` peak RSS.
+- CPU/GPU: `Threads=-1` exposes 96 logical processors; barrier uses 48 physical threads. Two RTX 4090 GPUs are compatible candidates for Gurobi GPU PDHG, but current installed build is CPU-only; any GPU test must use a separate `+cu` environment and `Method=6`, `PDHGGPU=1`.
+- Unresolved: replacement scaled 744h run not yet started; no 8760h run is authorized before it passes. Full details are in `MODEL_SYSTEM_AUDIT_20260707.md`.
+- Next action: run and audit `/data/zz2/National_model/outputs/2030_one_month_hydro_cascade_numerics_scaled`.
 
 ### v0.3.1 - 2026-07-06 - cascade server deployment and 744h numerical gate in progress
 

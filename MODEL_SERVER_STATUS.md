@@ -23,17 +23,17 @@
 
 ## Verification snapshot
 
-- Current deployed implementation commit: `b3e6298` (`fix: add core hydropower cascade coupling`); live server checkout HEAD was `7a2ca27` on 2026-07-06.
+- Current deployed implementation and live server checkout HEAD: `a8cd150` (`fix: switch hydropower to p30 proxy`) on 2026-07-07.
 - Current validated server data paths:
-  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260706_hydro_cascade`
-  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260706_hydro_cascade`
+  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup`
+  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup`
   - `CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019`
 - Raw GRFR transfer completed on 2026-07-06 and was verified on the server:
   - `output_pfaf_03_2019.nc`: 3,380,260,808 bytes, SHA256 `84ff2c882fb17a4b8693bb0773718c2472038021b64618b05f99f8070a506e0f`.
   - `output_pfaf_04_2019.nc`: 5,445,519,752 bytes, SHA256 `e56d5da855ddbdafabdafcb5582981b3f0003054156cf8d912d24a9efd232756`.
 - Server readiness with `--require-raw-grfr --verify-raw-grfr-sha256`: `PASS`, zero hard failures.
 - Hydropower station input: 2,030 rows, 620 reservoir rows, 1,410 run-of-river rows, 0 potential paper-rule mismatches, no missing required columns. Cascade readiness reported 142 nodes, 124 edges, 4 low-correlation edges, 18 max-bound edges and maximum lag 168 h.
-- Server regression test: 16/16 tests passed with pytest in 20.12 seconds.
+- Server regression test after P30 cleanup: 19/19 tests passed with pytest in 18.06 seconds.
 - One-month cascade server preflight: 4,761,900 variables, 6,465,714 constraints, 78,282,048 nonzeros; estimated model memory 4.48 GiB; memory gate passed with about 106.65 GiB available.
 - Actual one-month cascade model build: 4,808,836 variables, 6,536,681 constraints and 46,092,407 nonzeros.
 - Full-year server preflight: 48,164,172 variables, 68,689,554 constraints, 862,195,872 nonzeros.
@@ -53,8 +53,11 @@
 - Travel lags are estimated from 2019 GRFR hourly discharge by 3h-multiple cross-correlation, range 0-168 h. QA warnings remain for 4 low-correlation edges and 18 edges selecting the 168 h maximum search bound.
 - Local checks passed: data-package rebuild with 90 QC checks and zero failures, smoke test 118/118 PASS, unit tests 16/16 PASS, one-month preflight PASS, and custom 24h monolithic build PASS with 146 cascade reservoir rows and 124 cascade edges.
 - Server readiness, regression, preflight and full 744h model-build gates passed using the versioned cascade data roots.
-- The 744h solve under `/data/zz2/National_model/outputs/2030_one_month_hydro_cascade` is still running as PID `244035`. At 2026-07-06 22:37 Asia/Shanghai it had run for about 5 h 59 min. Gurobi reported large coefficient/RHS ranges, restarted barrier near iteration 111, completed dual crossover pushes and remained in primal cleanup with about 1.92 million pushes and `PInf` about 312.
-- No `solve_report.json` or `solution_qc.json` existed at that checkpoint. Therefore the cascade version is validated through construction but not yet through the complete optimization/QC gate.
+- The old 744h solve under `/data/zz2/National_model/outputs/2030_one_month_hydro_cascade` was normally interrupted after `37,576.53 s`. Final status is `INTERRUPTED`, `solution_count=0`, and peak RSS is `22.161 GiB`; the output is preserved as the failed numerical baseline.
+- Commit `281f9c7` scales water flow/volume variables without changing physical equations. Server 168h validation under `/data/zz2/National_model/outputs/2030_diagnostic_168h_numerics_scaled` reached `OPTIMAL` in `675.56 s`, used `4.061 GiB` peak RSS and passed every `solution_qc.json` hard check.
+- Commit `a8cd150` switches hydropower environmental flow to the 2019 single-year monthly P30 proxy and removes obsolete master boundary variables. Server 24h P30 CPU validation under `/data/zz2/National_model/outputs/2030_diagnostic_24h_p30_cleanup_cpu` reached `OPTIMAL` in `45.06 s`, used `0.879 GiB` peak RSS and passed `solution_qc.json`.
+- GPU-enabled Gurobi is available only in `/home/zz2/.local/envs/cispo-gurobi-gpu` (`gurobipy 13.0.2+cu129`). It confirmed `Start PDHG on GPU`, but the same 24h model with GPU-PDHG was still iterating after about 600 s and was interrupted without `solve_report.json`; CPU barrier remains the default route.
+- The P30-cleanup 744h CPU gate is running as PID `863603` under `/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu`. Therefore 8760h remains blocked.
 
 ## Explicit unresolved inputs
 
@@ -63,7 +66,7 @@
 - Open-loop and closed-loop PHS hydraulic pairing data; the local cascade update covers conventional reservoir hydropower only.
 - Thermal online fuel term `f_on`; fuel is charged on gross generation only.
 - Hydropower type labels include low-confidence assigned labels because source data do not provide reliable type labels for all stations; retain them for now and validate later against external station evidence.
-- Formal multi-year environmental flow for hydropower; the current cascade update still uses the 2019 single-year monthly P10 proxy. Four low-correlation and eighteen max-bound cascade-lag edges need manual hydrological/topological review.
+- Formal multi-year environmental flow for hydropower; the current cleanup uses the requested 2019 single-year monthly P30 proxy, not a formal 1980-2019 climatological P30. Four low-correlation and eighteen max-bound cascade-lag edges need manual hydrological/topological review.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still need parameter-source review, but no sensitivity-test workflow is requested for the current milestone.
 - Intra-center annual capacity uses a 50% design utilization assumption; two western AC500 proxy edges exceed the 1000 km source range.
 - Intra-center losses remain zero until their annual energy can be fed back into the provincial hourly balance.
