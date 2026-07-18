@@ -2,7 +2,7 @@
 
 ## 2026-07-19 deployment note
 
-Server checkout HEAD `827b37f` contains implementation commit `2a0ee99`. Readiness, raw-GRFR hashes, 24/24 tests and the new 24h `OPTIMAL/QC PASS` gate were verified live on 2026-07-19. Replacement 744h PID `3778049` is active; it is not an accepted result until both solve and QC reports pass.
+Deployed tracked-file baseline `827b37f` contains implementation commit `2a0ee99`; later documentation-only commits may advance the live HEAD. Readiness, raw-GRFR hashes, 24/24 tests and the new 24h `OPTIMAL/QC PASS` gate were verified live on 2026-07-19. Replacement 744h PID `3778049` is active; it is not an accepted result until both solve and QC reports pass.
 
 The updated data root must include `storage/phs_capacity_bounds_by_province_year.csv`. Use `config/model_input_files.json` as the minimal table contract. The code transfer archive must be created from tracked files after the implementation commit; do not package untracked workspace directories.
 
@@ -33,7 +33,7 @@ export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 ```
 
-Server checkout HEAD `827b37f`, the versioned data roots above and 24 regression tests were verified on 2026-07-19. The 24h CPU diagnostic is `OPTIMAL` with QC PASS; the replacement 744h CPU optimization/QC gate is running as PID `3778049`.
+Server implementation baseline `827b37f`, the versioned data roots above and 24 regression tests were verified on 2026-07-19. The 24h CPU diagnostic is `OPTIMAL` with QC PASS; the replacement 744h CPU optimization/QC gate is running as PID `3778049`.
 
 ## Long-term Git synchronization
 

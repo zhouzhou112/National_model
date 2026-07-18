@@ -2,7 +2,7 @@
 
 ## 2026-07-19 synchronized server validation
 
-- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); current local/server checkout HEAD is `827b37f`.
+- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); deployed tracked-file baseline `827b37f` contains that implementation. Later documentation-only commits may advance HEAD.
 - The production sequence is now 2030/2040/2050/2060, with checksummed capacity-cohort transfer between successive full-year solves.
 - Local final 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; `OPTIMAL` in 58.79 s; `solution_qc=PASS`; peak RSS 0.698 GiB.
 - Local full-year preflight: 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory; local available RAM does not meet the 64 GiB build gate.
@@ -35,7 +35,7 @@
 
 ## Verification snapshot
 
-- Current deployed implementation and live server checkout HEAD: `827b37f` on 2026-07-19; it contains implementation commit `2a0ee99`.
+- Current deployed implementation baseline: `827b37f` on 2026-07-19; it contains implementation commit `2a0ee99`. Verify the live HEAD directly because documentation-only synchronization commits follow this baseline.
 - Current validated server data paths:
   - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse`
   - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse`

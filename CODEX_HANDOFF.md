@@ -18,7 +18,7 @@ This is the repository's single handoff document for work continued across Codex
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); current local and server checkout HEAD is `827b37f`.
+- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); deployed tracked-file baseline `827b37f` contains that implementation plus its validated tests and handoff material. Later documentation-only commits may advance HEAD; always verify live HEAD directly.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - Replacement 744h CPU barrier gate is currently running as PID `3778049`; it is not accepted until `solve_report.json` reports `OPTIMAL` and `solution_qc.json` reports `PASS`.
