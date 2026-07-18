@@ -154,6 +154,16 @@ GPU-PDHG 的已验证 24h 对比慢于 CPU barrier（超过 600 s 仍未完成�
 
 ## 9. 服务器下一步
 
+已生成并本地复核的最小传输包：
+
+| Archive | Bytes | SHA256 |
+|---|---:|---|
+| `national_model_code.tar.gz` | 281,726 | `2bb66bf65d3789e96cb855abdf5b212f0c3c2c59ed6fcb74e2e7559d0c4aa87b` |
+| `model_ready_data.tar.gz` | 49,131,551 | `d91985b99b41bcb9c3e73e6e2878cc44f4b0930730e08121ef0206ad5cbd9b2b` |
+| `hydro_timeseries.tar.gz` | 24,777,505 | `9e84cbd9770aa7e922614241d4d5477f295293519d8aa36472e3d0f0f402ac06` |
+
+代码包仅含 tracked files；数据包包含 PHS bounds；三个包均不含 `supplementary_materials/`。当前因 SSH key-exchange 关闭尚未上传。
+
 1. 恢复 SSH 后先核验服务器 Git HEAD、旧 744h PID 和 `solve_report.json/solution_qc.json`，不得用旧文档推断当前状态。
 2. 部署 commit `2a0ee99` 及由最小输入合同构建的新数据包。
 3. 执行 readiness、23 项测试和 744h CPU gate。

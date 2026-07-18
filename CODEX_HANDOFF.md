@@ -82,6 +82,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Nonempty 2040 state-transfer diagnostic: `OPTIMAL/QC PASS`; inherited 2.5 GW battery and 1.0 GW PHS cohorts entered the intended province-technology lower bounds exactly.
 - PHS source/QC: GHT 2026 province-level 8h storage; national operating floor 65.94 GW; 2030 project upper 249.191 GW; 2040+ upper 514.755 GW.
 - Outputs: compact capacity/generation/storage/monthly/hourly summaries, SVG quicklooks and SHA256 result manifest are implemented and validated. Detailed audit: `MODEL_SYSTEM_AUDIT_20260718.md`.
+- Minimal server bundle prepared with `--skip-cf` and locally rehashed: `national_model_code.tar.gz` 281,726 bytes SHA256 `2bb66bf65d3789e96cb855abdf5b212f0c3c2c59ed6fcb74e2e7559d0c4aa87b`; `model_ready_data.tar.gz` 49,131,551 bytes SHA256 `d91985b99b41bcb9c3e73e6e2878cc44f4b0930730e08121ef0206ad5cbd9b2b`; `hydro_timeseries.tar.gz` 24,777,505 bytes SHA256 `9e84cbd9770aa7e922614241d4d5477f295293519d8aa36472e3d0f0f402ac06`. The data archive contains the PHS bounds and no untracked `supplementary_materials/` files.
 - Server refresh attempt on 2026-07-18 failed during SSH key exchange. All server/PID evidence below is retained historical evidence from 2026-07-07 unless explicitly refreshed later.
 
 - Local implementation commit: `8e49a87` (`fix: harden CCS and station-level hydropower model`) pushed to `origin/codex/cispo-2030-full-lp`.
@@ -179,6 +180,7 @@ Exact next action after SSH recovers: inspect the old 744h artifacts, deploy com
 - Local validation: AST 38 PASS; unit tests 23/23 PASS; data-package smoke 124/124 PASS; 2030 and 2040 full-year preflight PASS; four-year sequence dry-run PASS; final 24h solve `OPTIMAL/QC PASS` in 58.79 s with 0.698 GiB peak RSS; nonempty 2040 state diagnostic `OPTIMAL/QC PASS`.
 - Scale: full-year preflight estimates 44,090,772 variables, 67,603,314 constraints, 853,505,952 nonzeros and 46.62 GiB model memory. Local build is correctly blocked by the 64 GiB runtime gate.
 - Server status: not deployed. SSH connected to TCP/22 but closed during key exchange on 2026-07-18, so server HEAD and old 744h status could not be verified.
+- Transfer status: minimal code/data/hydrology archives and SHA256 manifest were prepared locally; Git push and server upload are blocked by the same SSH key-exchange closure.
 - Unresolved: replacement 744h and 8760 build-only gates; formal multi-year P30; 4 low-correlation and 18 max-bound lag edges; plant-level thermal retrofit/retirement identity; CSP, thermal `f_on`, PHS hydraulic pairing and proxy network assumptions.
 - Next action: restore SSH, verify old artifacts, deploy commit/data, pass readiness/tests/744h, then 8760 build-only before any production sequence.
 
