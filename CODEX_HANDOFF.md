@@ -76,7 +76,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Latest verification evidence
 
-- Local implementation commit `2a0ee99`; AST 38 files PASS; unit tests 23/23 PASS; data-package smoke 124/124 PASS.
+- Local implementation commit `2a0ee99` plus planning-state export test commit `ecfc7ed`; AST 38 files PASS; unit tests 24/24 PASS; data-package smoke 124/124 PASS.
 - Final local 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; Gurobi `OPTIMAL` in 58.79 s; peak RSS 0.698 GiB; `solution_qc=PASS`; maximum power-balance residual `3.90e-11 GW`.
 - Local full-year preflight: PASS, zero hard failures; 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory. The workstation does not meet the 64 GiB full-year construction gate.
 - Nonempty 2040 state-transfer diagnostic: `OPTIMAL/QC PASS`; inherited 2.5 GW battery and 1.0 GW PHS cohorts entered the intended province-technology lower bounds exactly.
@@ -168,7 +168,7 @@ tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-Exact next action after SSH recovers: inspect the old 744h artifacts, deploy commit `2a0ee99` plus a new minimal-contract model-ready bundle, run readiness and 23 regression tests, then run a replacement 744h CPU barrier gate. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable balance/water residuals and recorded build/solve/export time plus peak memory. The one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after the replacement 744h gate passes may 8760h `build-only` run; only after that gate may the 2030 production solve and subsequent state-chained years begin.
+Exact next action after SSH recovers: inspect the old 744h artifacts, deploy commit `ecfc7ed` or later plus a new minimal-contract model-ready bundle, run readiness and 24 regression tests, then run a replacement 744h CPU barrier gate. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable balance/water residuals and recorded build/solve/export time plus peak memory. The one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after the replacement 744h gate passes may 8760h `build-only` run; only after that gate may the 2030 production solve and subsequent state-chained years begin.
 
 ## Version history
 
@@ -177,7 +177,7 @@ Exact next action after SSH recovers: inspect the old 744h artifacts, deploy com
 - Git implementation baseline: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
 - Scope: implemented checksummed 2030/2040/2050/2060 capacity-cohort transfer; added GHT 2026 province-level PHS floor/project upper; removed redundant ramp, storage reserve, reservoir generation, hydro inertia and operating-cost-account variables/equalities using exact linear reformulations; completed compact outputs/SVG/manifest; reduced model input tables to an explicit 28-table contract.
 - Main changed files: `cispo_model/config.py`, `data.py`, `master.py`, `monolithic.py`, `planning_state.py`, `preflight.py`, `result_summary.py`; `config/model_data_config.json`, `optimization_2030.json`, `model_input_files.json`; run/build/readiness/smoke scripts and sequence/tests.
-- Local validation: AST 38 PASS; unit tests 23/23 PASS; data-package smoke 124/124 PASS; 2030 and 2040 full-year preflight PASS; four-year sequence dry-run PASS; final 24h solve `OPTIMAL/QC PASS` in 58.79 s with 0.698 GiB peak RSS; nonempty 2040 state diagnostic `OPTIMAL/QC PASS`.
+- Local validation: AST 38 PASS; unit tests 24/24 PASS including real solution-to-cohort mapping; data-package smoke 124/124 PASS; 2030 and 2040 full-year preflight PASS; four-year sequence dry-run PASS; final 24h solve `OPTIMAL/QC PASS` in 58.79 s with 0.698 GiB peak RSS; nonempty 2040 state diagnostic `OPTIMAL/QC PASS`.
 - Scale: full-year preflight estimates 44,090,772 variables, 67,603,314 constraints, 853,505,952 nonzeros and 46.62 GiB model memory. Local build is correctly blocked by the 64 GiB runtime gate.
 - Server status: not deployed. SSH connected to TCP/22 but closed during key exchange on 2026-07-18, so server HEAD and old 744h status could not be verified.
 - Transfer status: minimal code/data/hydrology archives and SHA256 manifest were prepared locally; Git push and server upload are blocked by the same SSH key-exchange closure.

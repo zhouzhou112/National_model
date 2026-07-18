@@ -124,7 +124,7 @@ PHS 使用 `phs_ght2026_8h_clean.csv` 生成 `storage/phs_capacity_bounds_by_pro
 ## 7. 本地验证证据
 
 - AST：38 个 Python 文件解析通过。
-- Unit tests：23/23 PASS。
+- Unit tests：24/24 PASS；包含真实 solution arrays 到 checksummed capacity cohorts 的映射测试。
 - Data package smoke：124/124 PASS。
 - 2030 full-year preflight：PASS，0 hard fail；粗略规模 44,090,772 variables、67,603,314 constraints、853,505,952 nonzeros、46.62 GiB 模型内存估计。
 - 24h 最终诊断：349,962 variables、260,973 constraints、1,827,245 nonzeros；CPU barrier + crossover `OPTIMAL`，Gurobi 58.79 s，peak RSS 0.698 GiB，`solution_qc PASS`。
@@ -166,6 +166,6 @@ GPU-PDHG 的已验证 24h 对比慢于 CPU barrier（超过 600 s 仍未完成�
 
 1. 恢复 SSH 后先核验服务器 Git HEAD、旧 744h PID 和 `solve_report.json/solution_qc.json`，不得用旧文档推断当前状态。
 2. 部署 commit `2a0ee99` 及由最小输入合同构建的新数据包。
-3. 执行 readiness、23 项测试和 744h CPU gate。
+3. 执行 readiness、24 项测试和 744h CPU gate。
 4. 744h 通过后执行 8760 `--build-only`，记录真实 build time、model statistics 和 peak RSS。
 5. 只有 build-only 和可用内存门槛均通过，才启动 2030 full-year；2030 通过后由 `scripts/run_cispo_planning_sequence.py` 依次推进后续年份。
