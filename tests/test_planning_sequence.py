@@ -3,13 +3,17 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
+import numpy as np
 import pandas as pd
 
 from cispo_model.config import load_model_config
+from cispo_model.data import DAC_TECHS, STORAGE_TECHS, THERMAL_TECHS
 from cispo_model.planning_state import (
     PlanningState,
     STATE_COLUMNS,
+    export_solution_planning_state,
     stable_asset_id,
     write_planning_state,
 )
@@ -70,6 +74,74 @@ class PlanningSequenceTests(unittest.TestCase):
             )
             with self.assertRaises(ValueError):
                 PlanningState.load(state_dir, expected_boundary_year=2040)
+
+    def test_solution_export_maps_capacity_decisions_to_checksummed_cohorts(self):
+        class Value:
+            def __init__(self, values):
+                self.X = np.asarray(values, dtype=float)
+
+        config = load_model_config().for_planning_year(2030)
+        thermal_new = np.zeros((1, len(THERMAL_TECHS)))
+        thermal_new[0, 0] = 0.4
+        storage_new = np.zeros((1, len(STORAGE_TECHS)))
+        storage_new[0, 0] = 0.2
+        dac_new = np.zeros((1, len(DAC_TECHS)))
+        dac_new[0, 0] = 0.05
+        variables = {
+            "vre_new": Value([0.3]),
+            "thermal_new": Value(thermal_new),
+            "thermal_retrofit_to_ccs": Value(np.zeros((1, 5))),
+            "hydro_new": Value([0.1]),
+            "storage_new": Value(storage_new),
+            "line_new": Value([0.6]),
+            "dac_new": Value(dac_new),
+        }
+        ccs_pairs = (
+            ("coal", "coalccs"), ("cchp", "cchpccs"),
+            ("gas", "gasccs"), ("gchp", "gchpccs"),
+            ("bio", "bioccs"),
+        )
+        artifacts = SimpleNamespace(
+            variables=variables,
+            index={
+                "vre_asset_ids": [stable_asset_id("G1", "onwind")],
+                "province_codes": [11],
+                "thermal_index": {t: i for i, t in enumerate(THERMAL_TECHS)},
+                "ccs_pairs": ccs_pairs,
+                "storage_index": {t: i for i, t in enumerate(STORAGE_TECHS)},
+                "dac_index": {t: i for i, t in enumerate(DAC_TECHS)},
+            },
+        )
+        data = SimpleNamespace(
+            vre_sites=pd.DataFrame(
+                [{"grid_uid": "G1", "province_code": 11, "technology": "onwind"}]
+            ),
+            hydro_stations=pd.DataFrame(
+                [{"hydrochn_row_id": "H1", "province_code": 11}]
+            ),
+            lines=pd.DataFrame(
+                [{"line_id": "L1", "preset_technology": "AC_500kV"}]
+            ),
+            dac=pd.DataFrame(
+                {
+                    "technology": list(DAC_TECHS),
+                    "lifetime_years": [20] * len(DAC_TECHS),
+                }
+            ),
+            planning_state=PlanningState.empty(2025),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = export_solution_planning_state(
+                artifacts, data, config, Path(temporary)
+            )
+            state = PlanningState.load(state_dir, expected_boundary_year=2030)
+            self.assertEqual(
+                set(state.cohorts.asset_class),
+                {"vre", "thermal", "hydro", "storage", "interprovincial_transmission", "dac"},
+            )
+            self.assertAlmostEqual(
+                float(state.cohorts.capacity_delta.sum()), 1.65, places=9
+            )
 
 
 if __name__ == "__main__":
