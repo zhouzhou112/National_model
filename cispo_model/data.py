@@ -12,6 +12,7 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 from .config import ModelConfig, ROOT
+from .planning_state import PlanningState
 
 
 DATA_ROOT = Path(os.environ.get("CISPO_DATA_ROOT", str(ROOT / "data")))
@@ -170,6 +171,7 @@ class ModelData:
     ruc: pd.DataFrame
     thermal_om: pd.DataFrame
     storage: pd.DataFrame
+    storage_bounds: pd.DataFrame
     fuel: pd.DataFrame
     emissions: pd.DataFrame
     dac: pd.DataFrame
@@ -182,6 +184,7 @@ class ModelData:
     hydro_load_center_routes: pd.DataFrame
     intra_load_center_edges: pd.DataFrame
     cf: CapacityFactorStore
+    planning_state: PlanningState
 
     @property
     def province_codes(self) -> np.ndarray:
@@ -254,8 +257,15 @@ def _resolve_vre_cf_sites(
     return sites
 
 
-def load_model_data(config: ModelConfig) -> ModelData:
-    provinces = _read("sets/provinces.csv").sort_values("province_code").reset_index(drop=True)
+def load_model_data(
+    config: ModelConfig,
+    planning_state: PlanningState | None = None,
+) -> ModelData:
+    planning_state = planning_state or PlanningState.empty(config.boundary_year)
+    provinces = _read(
+        "sets/provinces.csv",
+        usecols=["province_code", "province_name_en", "province_name_zh"],
+    ).sort_values("province_code").reset_index(drop=True)
     if len(provinces) != 31 or not provinces.province_code.is_unique:
         raise ValueError("The model requires 31 unique province rows")
 
@@ -266,7 +276,9 @@ def load_model_data(config: ModelConfig) -> ModelData:
     load = load.loc[load.year.eq(config.planning_year)].copy()
     expected_load_rows = len(provinces) * config.hours
     if len(load) != expected_load_rows:
-        raise ValueError(f"2030 load rows={len(load)}; expected {expected_load_rows}")
+        raise ValueError(
+            f"{config.planning_year} load rows={len(load)}; expected {expected_load_rows}"
+        )
     if load.duplicated(["province_code", "hour_index"]).any():
         raise ValueError("Duplicate province-hour load rows")
     province_order = provinces.province_code.tolist()
@@ -275,7 +287,18 @@ def load_model_data(config: ModelConfig) -> ModelData:
     if load_pivot.isna().any().any() or (load_pivot < 0).any().any():
         raise ValueError("Load matrix contains missing or negative values")
 
-    points = _read("vre/optimization_points.csv")
+    point_columns = [
+        "grid_uid", "grid_id", "province_code", "lon", "lat", "is_land",
+        str(config.raw["ccs_injection_field"]),
+    ]
+    for technology in VRE_TECHS:
+        point_columns.extend(
+            [
+                f"existing_{technology}_gw",
+                f"pmax_{technology}_{config.vre_scenario}_gw",
+            ]
+        )
+    points = _read("vre/optimization_points.csv", usecols=point_columns)
     require_columns(points, ["grid_uid", "grid_id", "province_code", "lon", "lat"], "VRE points")
     if points.grid_uid.duplicated().any():
         raise ValueError("VRE grid_uid must be unique")
@@ -294,18 +317,50 @@ def load_model_data(config: ModelConfig) -> ModelData:
     if (vre_sites.capacity_floor_gw > vre_sites.capacity_upper_gw + 1e-9).any():
         raise ValueError("VRE floor exceeds scenario upper bound")
 
-    cf_index = _read("vre/hourly_cf_index.csv")
+    cf_index = _read(
+        "vre/hourly_cf_index.csv",
+        usecols=["technology", "year", "zarr_path"],
+    )
     cf = CapacityFactorStore(cf_index, config.weather_year)
     vre_sites = _resolve_vre_cf_sites(points, vre_sites, cf)
 
-    thermal_floor = _read("thermal/capacity_floor_by_year.csv")
+    thermal_floor = _read(
+        "thermal/capacity_floor_by_year.csv",
+        usecols=["province_code", "year", "technology", "capacity_floor_gw"],
+    )
     thermal_floor = thermal_floor.loc[thermal_floor.year.eq(config.planning_year)].copy()
-    nuclear_floor = _read("thermal/nuclear_capacity_floor_by_year.csv")
+    nuclear_floor = _read(
+        "thermal/nuclear_capacity_floor_by_year.csv",
+        usecols=["province_code", "year", "capacity_floor_gw"],
+    )
     nuclear_floor = nuclear_floor.loc[nuclear_floor.year.eq(config.planning_year)].copy()
-    hydro = _read("hydro/hydro_stations.csv")
+    hydro = _read(
+        "hydro/hydro_stations.csv",
+        usecols=[
+            "hydrochn_row_id", "plant_name_model", "lon", "lat", "comid",
+            "province_code", "existing_capacity_gw", "capacity_potential_gw",
+            "head_m", "q_rated_m3s", "active_storage_gl",
+            "operation_type_model", "status_model",
+            "installed_operation_type_assigned", "potential_operation_type_paper",
+            "operation_type_scope", "river_group_stage2", "stage2_issue_flags",
+        ],
+    )
     try:
-        hydro_cascade_nodes = _read("hydro/cascade_topology_nodes.csv")
-        hydro_cascade_edges = _read("hydro/cascade_topology_edges.csv")
+        hydro_cascade_nodes = _read(
+            "hydro/cascade_topology_nodes.csv",
+            usecols=[
+                "node_id", "hydrochn_row_ids", "model_station_count",
+                "model_capacity_gw",
+            ],
+        )
+        hydro_cascade_edges = _read(
+            "hydro/cascade_topology_edges.csv",
+            usecols=[
+                "edge_id", "source_node_id", "target_node_id",
+                "source_hydrochn_row_ids", "target_hydrochn_row_ids",
+                "travel_lag_h", "lag_quality_flag",
+            ],
+        )
     except FileNotFoundError:
         hydro_cascade_nodes = pd.DataFrame(
             columns=[
@@ -326,13 +381,30 @@ def load_model_data(config: ModelConfig) -> ModelData:
                 "target_capacity_mw",
             ]
         )
-    biomass = _read("biomass/fuel_potential_by_province_year.csv")
+    biomass = _read(
+        "biomass/fuel_potential_by_province_year.csv",
+        usecols=["province_code", "year", "thermcal_gj_per_year"],
+    )
     biomass = biomass.loc[biomass.year.eq(config.planning_year)].copy()
-    lines = _read("transmission/candidate_corridors.csv")
+    lines = _read(
+        "transmission/candidate_corridors.csv",
+        usecols=[
+            "from_province_code", "to_province_code", "distance_km",
+            "allowed_by_model", "preset_technology", "preset_option",
+            "preset_voltage", "existing_capacity_gw",
+            "preset_unit_cost_yuan_per_kw",
+        ],
+    )
     lines = lines.loc[lines.allowed_by_model.astype(bool)].copy().reset_index(drop=True)
     lines["line_id"] = [f"CORRIDOR_{i:04d}" for i in range(len(lines))]
 
-    carbon_table = _read("carbon/emissions_limits_by_scenario.csv")
+    carbon_table = _read(
+        "carbon/emissions_limits_by_scenario.csv",
+        usecols=[
+            "scenario", "year", "emissions_limit_mtco2_per_year",
+            "constraint_active",
+        ],
+    )
     carbon_rows = carbon_table.loc[
         carbon_table.scenario.eq(config.raw["carbon_scenario"])
         & carbon_table.year.eq(config.planning_year)
@@ -341,26 +413,141 @@ def load_model_data(config: ModelConfig) -> ModelData:
         raise ValueError("Exactly one active carbon-scenario row is required")
     carbon = carbon_rows.iloc[0]
 
-    capex = _read("technology/technology_capex_by_year.csv")
+    capex = _read(
+        "technology/technology_capex_by_year.csv",
+        usecols=["technology", "year", "capex_yuan_per_kw"],
+    )
     capex = capex.loc[capex.year.eq(config.planning_year)].copy()
-    ruc = _read("technology/thermal_nuclear_ruc_parameters.csv")
-    thermal_om = _read("technology/thermal_nuclear_om_parameters.csv")
-    storage = _read("technology/storage_technical_parameters.csv")
-    fuel = _read("technology/province_fuel_generation_cost_by_year.csv")
+    ruc = _read(
+        "technology/thermal_nuclear_ruc_parameters.csv",
+        usecols=[
+            "technology", "pmin_fraction", "pmax_fraction", "min_up_h",
+            "min_down_h", "startup_yuan_per_mw", "shutdown_yuan_per_mw",
+            "inertia_s", "ramp_fraction_per_h", "fuel_load_mj_per_kwh",
+            "ccs_power_loss_fraction",
+        ],
+    )
+    thermal_om = _read(
+        "technology/thermal_nuclear_om_parameters.csv",
+        usecols=[
+            "technology", "fixed_om_fraction_capex_per_year",
+            "variable_om_yuan_per_mwh",
+        ],
+    )
+    storage = _read(
+        "technology/storage_technical_parameters.csv",
+        usecols=[
+            "technology", "fixed_om_fraction_capex_per_year",
+            "variable_om_yuan_per_mwh", "charge_efficiency",
+            "discharge_efficiency", "self_discharge_fraction_per_day",
+            "duration_h", "lifetime_years",
+        ],
+    )
+    storage_bounds = _read(
+        "storage/phs_capacity_bounds_by_province_year.csv",
+        usecols=[
+            "province_code", "year", "technology", "capacity_floor_gw",
+            "capacity_upper_gw", "duration_h",
+        ],
+    )
+    storage_bounds = storage_bounds.loc[
+        storage_bounds.year.eq(config.planning_year)
+    ].copy()
+    if len(storage_bounds) != len(provinces):
+        raise ValueError(
+            f"{config.planning_year} PHS bounds rows={len(storage_bounds)}; "
+            f"expected {len(provinces)}"
+        )
+    if storage_bounds.duplicated(["province_code", "technology"]).any():
+        raise ValueError("Duplicate province-technology PHS capacity bounds")
+    if set(storage_bounds.technology) != {"phs"}:
+        raise ValueError("PHS capacity bounds must contain only technology='phs'")
+    if set(storage_bounds.province_code) != set(province_order):
+        raise ValueError("PHS capacity bounds must cover all 31 model provinces")
+    if (
+        storage_bounds.capacity_floor_gw.lt(-1e-9).any()
+        or storage_bounds.capacity_upper_gw.lt(
+            storage_bounds.capacity_floor_gw - 1e-9
+        ).any()
+    ):
+        raise ValueError("Invalid PHS capacity floor or upper bound")
+    fuel = _read(
+        "technology/province_fuel_generation_cost_by_year.csv",
+        usecols=[
+            "province_code", "year", "technology", "fuel_cost_yuan_per_mwh",
+            "dispatch_allowed", "new_capacity_allowed",
+        ],
+    )
     fuel = fuel.loc[fuel.year.eq(config.planning_year)].copy()
-    emissions = _read("technology/emission_factors_by_year.csv")
+    emissions = _read(
+        "technology/emission_factors_by_year.csv",
+        usecols=[
+            "technology", "year", "emission_factor_mtco2_per_gwh",
+            "ccs_capture_fraction",
+        ],
+    )
     emissions = emissions.loc[emissions.year.eq(config.planning_year)].copy()
-    dac = _read("technology/dac_parameters_by_year.csv")
+    dac = _read(
+        "technology/dac_parameters_by_year.csv",
+        usecols=[
+            "technology", "year",
+            "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year",
+            "fixed_om_million_yuan_per_mtco2_per_year_capacity_year",
+            "variable_om_yuan_per_tco2", "average_power_gw_per_mtco2_per_year",
+            "lifetime_years",
+        ],
+    )
     dac = dac.loc[dac.year.eq(config.planning_year)].copy()
-    ccs_cost = _read("technology/ccs_cost_parameters.csv").iloc[0]
+    ccs_cost = _read(
+        "technology/ccs_cost_parameters.csv",
+        usecols=[
+            "capture_yuan_per_tco2", "transport_yuan_per_tco2_km",
+            "storage_yuan_per_tco2",
+        ],
+    ).iloc[0]
 
     load_center_subdirectory = str(config.raw["load_center_network"]["input_subdirectory"])
-    load_centers = _read(f"{load_center_subdirectory}/load_centers.csv")
-    vre_load_center_routes = _read(f"{load_center_subdirectory}/vre_routes.csv")
-    hydro_load_center_routes = _read(f"{load_center_subdirectory}/hydro_routes.csv")
-    intra_load_center_edges = _read(f"{load_center_subdirectory}/intra_edges.csv")
-    initial_spur = _read(f"{load_center_subdirectory}/initial_spur_capacity_2025.csv")
-    substations = _read(f"{load_center_subdirectory}/substation_initial_capacity_2025.csv")
+    load_centers = _read(
+        f"{load_center_subdirectory}/load_centers.csv",
+        usecols=[
+            "load_center_id", "province_code", "province_name_zh",
+            "annual_demand_share_in_province", "lon", "lat",
+        ],
+    )
+    vre_load_center_routes = _read(
+        f"{load_center_subdirectory}/vre_routes.csv",
+        usecols=[
+            "grid_uid", "province_code", "substation_id", "load_center_id",
+            "onwind_spur_distance_km", "offwind_export_distance_km",
+            "upv_spur_distance_km", "dpv_spur_distance_km",
+        ],
+    )
+    hydro_load_center_routes = _read(
+        f"{load_center_subdirectory}/hydro_routes.csv",
+        usecols=[
+            "hydrochn_row_id", "province_code", "substation_id",
+            "load_center_id", "hydro_spur_distance_km",
+        ],
+    )
+    intra_load_center_edges = _read(
+        f"{load_center_subdirectory}/intra_edges.csv",
+        usecols=[
+            "intra_edge_id", "province_code", "from_load_center_id",
+            "to_load_center_id", "distance_km", "technology",
+            "unit_cost_yuan_per_kw", "initial_capacity_gw",
+        ],
+    )
+    initial_spur = _read(
+        f"{load_center_subdirectory}/initial_spur_capacity_2025.csv",
+        usecols=["grid_uid", "technology", "initial_spur_capacity_gw"],
+    )
+    substations = _read(
+        f"{load_center_subdirectory}/substation_initial_capacity_2025.csv",
+        usecols=[
+            "substation_id", "province_code", "initial_trunk_capacity_gw",
+            "trunk_distance_km",
+        ],
+    )
     # The promoted Natural Earth route replaces the former 337-city route for
     # all production spur/trunk decisions.
     grid_connections = vre_load_center_routes
@@ -451,6 +638,7 @@ def load_model_data(config: ModelConfig) -> ModelData:
         ruc=ruc,
         thermal_om=thermal_om,
         storage=storage,
+        storage_bounds=storage_bounds,
         fuel=fuel,
         emissions=emissions,
         dac=dac,
@@ -463,4 +651,5 @@ def load_model_data(config: ModelConfig) -> ModelData:
         hydro_load_center_routes=hydro_load_center_routes,
         intra_load_center_edges=intra_load_center_edges,
         cf=cf,
+        planning_state=planning_state,
     )

@@ -21,9 +21,21 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="2030 capacity expansion plus chronological operation in one LP"
+        description="Sequential CISPO planning-year expansion plus chronological operation"
     )
     parser.add_argument("--config", default="config/optimization_2030.json")
+    parser.add_argument(
+        "--planning-year",
+        type=int,
+        choices=(2030, 2040, 2050, 2060),
+        help="Override the base configuration with one sequential planning year.",
+    )
+    parser.add_argument(
+        "--state-in",
+        help=(
+            "Prior accepted full-year planning_state directory. Required after 2030."
+        ),
+    )
     parser.add_argument(
         "--horizon",
         choices=("one_month", "six_months", "full_year"),
@@ -55,7 +67,27 @@ def main() -> None:
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
 
-    config = load_model_config(args.config)
+    base_config = load_model_config(args.config)
+    config = (
+        base_config.for_planning_year(args.planning_year)
+        if args.planning_year is not None
+        else base_config
+    )
+    from cispo_model.planning_state import PlanningState
+
+    if config.boundary_year == 2025:
+        if args.state_in:
+            raise SystemExit("2030 uses the 2025 data boundary and must not receive --state-in")
+        planning_state = PlanningState.empty(config.boundary_year)
+    else:
+        if not args.state_in:
+            raise SystemExit(
+                f"{config.planning_year} requires --state-in from accepted "
+                f"{config.boundary_year} full-year results"
+            )
+        planning_state = PlanningState.load(
+            args.state_in, expected_boundary_year=config.boundary_year
+        )
     if args.diagnostic_hours is None:
         horizon_name = args.horizon
         horizon = config.horizon(args.horizon)
@@ -74,13 +106,15 @@ def main() -> None:
         required_gb = float(
             config.horizon("one_month")["minimum_available_memory_gb"]
         )
-    output_dir = Path(args.output_dir or f"outputs/2030_{horizon_name}")
+    output_dir = Path(
+        args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
+    )
     if not output_dir.is_absolute():
         output_dir = ROOT / output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
     available_gb = psutil.virtual_memory().available / 1024**3
-    data = load_model_data(config)
+    data = load_model_data(config, planning_state=planning_state)
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
     if preflight["status"] != "PASS":
         raise SystemExit("Preflight HARD_FAIL; model was not built")
@@ -98,6 +132,10 @@ def main() -> None:
             else "full annual accounting"
         ),
         "time_boundary": "cyclic_over_selected_horizon",
+        "boundary_year": config.boundary_year,
+        "planning_year": config.planning_year,
+        "state_in": str(planning_state.root) if planning_state.root else None,
+        "state_format": planning_state.metadata.get("format"),
         "available_memory_gb": round(available_gb, 2),
         "minimum_available_memory_gb": required_gb,
         "memory_gate_pass": available_gb >= required_gb,
@@ -122,6 +160,8 @@ def main() -> None:
     from cispo_model.master import export_master_solution
     from cispo_model.monolithic import build_full_year_monolithic
     from cispo_model.solution_export import export_operational_solution
+    from cispo_model.result_summary import export_result_summary, finalize_result_manifest
+    from cispo_model.planning_state import export_solution_planning_state
 
     started = datetime.now().astimezone()
     memory_monitor = PeakMemoryMonitor().start()
@@ -152,7 +192,7 @@ def main() -> None:
     )
     if args.write_mps:
         artifacts.model.write(
-            str(output_dir / f"cispo_2030_{optimization_hours}h.mps")
+            str(output_dir / f"cispo_{config.planning_year}_{optimization_hours}h.mps")
         )
     if args.build_only:
         build_report["memory_at_exit"] = memory_monitor.stop()
@@ -180,6 +220,16 @@ def main() -> None:
     if artifacts.model.SolCount:
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
+        export_result_summary(artifacts, data, config, output_dir)
+        if (
+            not test_only
+            and report["status"] == "OPTIMAL"
+            and qc["status"] == "PASS"
+        ):
+            state_dir = export_solution_planning_state(
+                artifacts, data, config, output_dir
+            )
+            report["planning_state_path"] = str(state_dir)
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
         (output_dir / "solve_report.json").write_text(
@@ -187,10 +237,14 @@ def main() -> None:
             encoding="utf-8",
         )
     report["runtime_memory"] = memory_monitor.stop()
+    if artifacts.model.SolCount:
+        report["result_manifest_path"] = str(output_dir / "result_manifest.json")
     (output_dir / "solve_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    if artifacts.model.SolCount:
+        finalize_result_manifest(output_dir, config)
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 

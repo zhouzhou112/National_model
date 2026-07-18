@@ -54,10 +54,10 @@ def estimate_full_model_scale(
         "vre_site_capacity_and_new": 2 * n_vre,
         "vre_availability_and_dispatch": 2 * p * v * h,
         "thermal_capacity_and_new": 2 * p * k,
-        "thermal_hourly_ruc": 6 * p * k * h,
-        "storage_capacity_and_hourly": 2 * p * s + 7 * p * s * h,
+        "thermal_hourly_ruc": 5 * p * k * h,
+        "storage_capacity_and_hourly": 2 * p * s + 5 * p * s * h,
         "hydro_site_capacity_and_hourly": (
-            2 * n_hydro + 2 * p * h + 4 * n_reservoir * h
+            2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
         ),
         "transmission_capacity_and_flow": 2 * e + 2 * e * h,
         "dac_capacity_and_capture": 2 * p * d,
@@ -72,9 +72,9 @@ def estimate_full_model_scale(
         n_vre
         + 2 * p * v * h
         + 13 * p * k * h
-        + 11 * p * s * h
+        + 9 * p * s * h
         + 2 * p * h
-        + 4 * n_reservoir * h
+        + 3 * n_reservoir * h
         + e * h
         + p * h
         + 3 * p * h
@@ -100,9 +100,9 @@ def estimate_full_model_scale(
     block_count = 1
     maximum_block_variables = int(
         2 * p * v * block_hours
-        + 6 * p * k * block_hours
-        + 7 * p * s * block_hours
-        + (2 * p + 4 * n_reservoir) * block_hours
+        + 5 * p * k * block_hours
+        + 5 * p * s * block_hours
+        + (2 * p + 3 * n_reservoir) * block_hours
         + 2 * e * block_hours
     )
     maximum_block_nonzeros = int(n_vre * block_hours + maximum_block_variables * 8)
@@ -135,9 +135,30 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
             status = "HARD_FAIL" if severity == "HARD" else "WARN"
         checks.append({"check": name, "status": status, "value": value, "expected": expected})
 
-    check("planning_boundary", config.boundary_year == 2025, config.boundary_year, "2025")
-    check("first_planning_year", config.planning_year == 2030, config.planning_year, "2030")
+    expected_boundary = (
+        2025
+        if config.planning_year == config.planning_years[0]
+        else config.planning_years[config.planning_years.index(config.planning_year) - 1]
+    )
+    check(
+        "planning_boundary",
+        config.boundary_year == expected_boundary,
+        config.boundary_year,
+        str(expected_boundary),
+    )
+    check(
+        "sequential_planning_year",
+        config.planning_year in config.planning_years,
+        config.planning_year,
+        str(config.planning_years),
+    )
     check("full_hours", config.hours == 8760, config.hours, "8760")
+    check(
+        "planning_state_boundary",
+        config.boundary_year == 2025 or data.planning_state.root is not None,
+        str(data.planning_state.root) if data.planning_state.root else None,
+        "no state for initial 2025 boundary; checksummed prior state thereafter",
+    )
     check("province_count", len(data.provinces) == 31, len(data.provinces), "31")
     check("load_shape", data.load_gw.shape == (31, 8760), str(data.load_gw.shape), "(31, 8760)")
     check("load_finite", np.isfinite(data.load_gw).all(), bool(np.isfinite(data.load_gw).all()), "True")
@@ -149,13 +170,50 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("nuclear_floor_rows", len(data.nuclear_floor) == 31, len(data.nuclear_floor), "31")
     check("ruc_technology_rows", set(data.ruc.technology) == set(THERMAL_TECHS), sorted(data.ruc.technology), "11 technologies")
     check("storage_rows", set(data.storage.technology) == set(STORAGE_TECHS), sorted(data.storage.technology), "battery and phs")
+    check(
+        "phs_bound_rows",
+        len(data.storage_bounds) == 31,
+        len(data.storage_bounds),
+        "31 province rows for the planning year",
+    )
+    check(
+        "phs_bounds",
+        bool(
+            data.storage_bounds.capacity_floor_gw.le(
+                data.storage_bounds.capacity_upper_gw + 1e-9
+            ).all()
+        ),
+        int(
+            data.storage_bounds.capacity_floor_gw.gt(
+                data.storage_bounds.capacity_upper_gw + 1e-9
+            ).sum()
+        ),
+        "0 floor-above-upper violations",
+    )
+    checks.append(
+        {
+            "check": "phs_national_capacity_bounds_gw",
+            "status": "INFO",
+            "value": {
+                "floor": float(data.storage_bounds.capacity_floor_gw.sum()),
+                "upper": float(data.storage_bounds.capacity_upper_gw.sum()),
+            },
+            "expected": "GHT 2026 operating floor and year-available project upper",
+        }
+    )
     check("allowed_candidate_corridors", len(data.lines) == 411, len(data.lines), "411 allowed rows from the 465-pair matrix")
     check("hydro_station_rows", len(data.hydro_stations) == 2030, len(data.hydro_stations), "2030")
     check("biomass_rows", len(data.biomass) == 31, len(data.biomass), "31")
     check("dac_rows", len(data.dac) == 4, len(data.dac), "4")
     check("carbon_active", bool(data.carbon.constraint_active), bool(data.carbon.constraint_active), "True")
     check("csp_source_gap_explicit", not config.raw["features"]["csp"], config.raw["features"]["csp"], "False until source exists", "SOFT")
-    check("phs_floor_gap_explicit", "existing_phs" in config.raw["explicit_data_gaps"], "existing_phs" in config.raw["explicit_data_gaps"], "explicitly registered", "SOFT")
+    check(
+        "phs_representation_gap_explicit",
+        "phs_water_pairing" in config.raw["explicit_data_gaps"],
+        "phs_water_pairing" in config.raw["explicit_data_gaps"],
+        "province-level representation explicitly registered",
+        "SOFT",
+    )
     check("natural_earth_load_center_count", len(data.load_centers) == 278, len(data.load_centers), "278")
     check(
         "natural_earth_load_center_provinces",
@@ -220,6 +278,18 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
             "0 low-correlation lag estimates",
             "SOFT",
         )
+        max_bound_lag = int(
+            data.hydro_cascade_edges.lag_quality_flag.eq(
+                "MAX_LAG_BOUND_SELECTED"
+            ).sum()
+        )
+        check(
+            "hydro_cascade_max_lag_bound_edges",
+            max_bound_lag == 0,
+            max_bound_lag,
+            "0 lag estimates selected at the configured maximum bound",
+            "SOFT",
+        )
     known_centers = set(data.load_centers.load_center_id.astype(str))
     intra = data.intra_load_center_edges
     endpoint_valid = (
@@ -277,8 +347,14 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     report = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "configuration": str(config.path),
-        "boundary_interpretation": "2025 is input state only; no 2025 optimization solve",
-        "planning_interpretation": "2030 is the first 8760-hour expansion decision representing 2025-2030 change",
+        "boundary_interpretation": (
+            f"{config.boundary_year} is the inherited input state; no optimization "
+            "is performed for the boundary inside this solve"
+        ),
+        "planning_interpretation": (
+            f"{config.planning_year} is one sequential 8760-hour expansion decision "
+            f"representing {config.boundary_year}-{config.planning_year} change"
+        ),
         "scale_estimate": asdict(scale),
         "checks": checks,
         "status_counts": {
@@ -286,6 +362,12 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
             for status in ("PASS", "WARN", "INFO", "HARD_FAIL")
         },
         "explicit_data_gaps": config.raw["explicit_data_gaps"],
+        "planning_state": {
+            "path": str(data.planning_state.root) if data.planning_state.root else None,
+            "format": data.planning_state.metadata.get("format"),
+            "source_planning_year": data.planning_state.metadata.get("planning_year"),
+            "cohort_rows": int(len(data.planning_state.cohorts)),
+        },
     }
     report["status"] = "PASS" if report["status_counts"]["HARD_FAIL"] == 0 else "HARD_FAIL"
     if output_path:

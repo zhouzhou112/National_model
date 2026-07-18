@@ -21,6 +21,13 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertEqual(self.config.planning_year, 2030)
         self.assertEqual(self.config.hours, 8760)
 
+    def test_sequential_year_contract(self):
+        self.assertEqual(self.config.planning_years, (2030, 2040, 2050, 2060))
+        expected_boundaries = {2030: 2025, 2040: 2030, 2050: 2040, 2060: 2050}
+        for planning_year, boundary_year in expected_boundaries.items():
+            year_config = self.config.for_planning_year(planning_year)
+            self.assertEqual(year_config.boundary_year, boundary_year)
+
     def test_single_full_year_block_covers_every_hour_once(self):
         blocks = make_time_blocks(8760, 8760)
         self.assertEqual(len(blocks), 1)
@@ -58,6 +65,16 @@ class ModelFoundationTests(unittest.TestCase):
         value = capital_recovery_factor(0.074, 25)
         self.assertGreater(value, 0.08)
         self.assertLess(value, 0.10)
+
+    def test_phs_floor_and_pipeline_upper_are_data_bounded(self):
+        bounds_2030 = self.data.storage_bounds
+        self.assertEqual(len(bounds_2030), 31)
+        self.assertTrue((bounds_2030.technology == "phs").all())
+        self.assertAlmostEqual(float(bounds_2030.capacity_floor_gw.sum()), 65.94, places=6)
+        self.assertAlmostEqual(float(bounds_2030.capacity_upper_gw.sum()), 249.191, places=6)
+        self.assertTrue(
+            (bounds_2030.capacity_floor_gw <= bounds_2030.capacity_upper_gw + 1e-9).all()
+        )
 
     def test_natural_earth_278_is_the_production_load_center_scenario(self):
         centers = self.data.load_centers

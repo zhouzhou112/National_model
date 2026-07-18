@@ -40,7 +40,7 @@ def _attach_vre_availability(
     province_index: dict[int, int],
     hours: int,
 ) -> tuple[gp.MVar, np.ndarray]:
-    """Build exact site-CF-by-capacity expressions in bounded hour chunks."""
+    """Build exact site-CF availability once to preserve matrix sparsity."""
     available = model.addMVar(
         (len(province_index), len(VRE_TECHS), hours),
         lb=0.0,
@@ -73,7 +73,8 @@ def _attach_vre_availability(
                 site_cf_hours[positions] += coefficients.sum(axis=0)
                 expressions.append(sparse.csr_matrix(coefficients) @ capacity[positions])
             model.addConstr(
-                available[p, v, start:stop] == _vector_sum(expressions, stop - start),
+                available[p, v, start:stop]
+                == _vector_sum(expressions, stop - start),
                 name=f"vre_availability_p{province_code}_{technology}_h{start}",
             )
     for p in range(len(province_index)):
@@ -148,8 +149,9 @@ def build_full_year_monolithic(
     startup = model.addMVar((p_count, k_count, hours), lb=0.0, name="startup_capacity_gw")
     shutdown = model.addMVar((p_count, k_count, hours), lb=0.0, name="shutdown_capacity_gw")
     gross = model.addMVar((p_count, k_count, hours), lb=0.0, name="gross_generation_gw")
-    ramp_up = model.addMVar((p_count, k_count, hours), lb=0.0, name="ramp_up_gw")
-    ramp_down = model.addMVar((p_count, k_count, hours), lb=0.0, name="ramp_down_gw")
+    ramp_magnitude = model.addMVar(
+        (p_count, k_count, hours), lb=0.0, name="ramp_magnitude_gw"
+    )
     model.addConstr(online <= thermal_capacity[:, :, None], name="online_capacity_limit")
     model.addConstr(startup <= thermal_capacity[:, :, None], name="startup_capacity_limit")
     model.addConstr(shutdown <= thermal_capacity[:, :, None], name="shutdown_capacity_limit")
@@ -208,12 +210,14 @@ def build_full_year_monolithic(
                 name=f"ruc_s4_28_{technology}_{t}",
             )
             model.addConstr(
-                ramp_up[:, k, t] >= gross[:, k, t] - gross[:, k, previous_t],
-                name=f"ramp_up_{technology}_{t}",
+                ramp_magnitude[:, k, t]
+                >= gross[:, k, t] - gross[:, k, previous_t],
+                name=f"ramp_absolute_up_{technology}_{t}",
             )
             model.addConstr(
-                ramp_down[:, k, t] >= gross[:, k, previous_t] - gross[:, k, t],
-                name=f"ramp_down_{technology}_{t}",
+                ramp_magnitude[:, k, t]
+                >= gross[:, k, previous_t] - gross[:, k, t],
+                name=f"ramp_absolute_down_{technology}_{t}",
             )
 
     dispatch_allowed = data.fuel.pivot(
@@ -254,10 +258,12 @@ def build_full_year_monolithic(
     charge = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_charge_gw")
     discharge = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_discharge_gw")
     soc = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_soc_gwh")
-    rup_c = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_reserve_up_charge_gw")
-    rdn_c = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_reserve_down_charge_gw")
-    rup_d = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_reserve_up_discharge_gw")
-    rdn_d = model.addMVar((p_count, s_count, hours), lb=0.0, name="storage_reserve_down_discharge_gw")
+    storage_up = model.addMVar(
+        (p_count, s_count, hours), lb=0.0, name="storage_reserve_up_gw"
+    )
+    storage_down = model.addMVar(
+        (p_count, s_count, hours), lb=0.0, name="storage_reserve_down_gw"
+    )
     storage_table = data.storage.set_index("technology").reindex(STORAGE_TECHS)
     eta_c = storage_table.charge_efficiency.to_numpy(dtype=float)
     eta_d = storage_table.discharge_efficiency.to_numpy(dtype=float)
@@ -274,35 +280,74 @@ def build_full_year_monolithic(
         + eta_c[None, :] * charge[:, :, 0] - discharge[:, :, 0] / eta_d[None, :],
         name="storage_cyclic_first_hour",
     )
-    model.addConstr(
-        soc[:, :, 1:]
-        == (1.0 - self_discharge[None, :, None]) * soc[:, :, :-1]
-        + eta_c[None, :, None] * charge[:, :, 1:]
-        - discharge[:, :, 1:] / eta_d[None, :, None],
-        name="storage_hourly_transition",
+    if hours > 1:
+        model.addConstr(
+            soc[:, :, 1:]
+            == (1.0 - self_discharge[None, :, None]) * soc[:, :, :-1]
+            + eta_c[None, :, None] * charge[:, :, 1:]
+            - discharge[:, :, 1:] / eta_d[None, :, None],
+            name="storage_hourly_transition",
+        )
+    # Exact projection of the four CISPO charge/discharge reserve components
+    # onto aggregate up/down reserve. It preserves the feasible aggregate set
+    # while removing two province-technology-hour variable arrays.
+    discharge_headroom = (
+        storage_capacity[:, :, None] * eta_d[None, :, None] - discharge
     )
-    model.addConstr(charge + rdn_c <= storage_capacity[:, :, None], name="storage_s4_41")
-    model.addConstr((charge[:, :, 0] + rdn_c[:, :, 0]) * eta_c[None, :]
-                    <= storage_capacity * duration[None, :] - soc[:, :, -1], name="storage_s4_42_first")
-    model.addConstr((charge[:, :, 1:] + rdn_c[:, :, 1:]) * eta_c[None, :, None]
-                    <= storage_capacity[:, :, None] * duration[None, :, None] - soc[:, :, :-1], name="storage_s4_42")
-    model.addConstr(rup_c <= charge, name="storage_s4_43")
-    model.addConstr(discharge + rup_d <= storage_capacity[:, :, None] * eta_d[None, :, None], name="storage_s4_44")
-    model.addConstr(discharge[:, :, 0] + rup_d[:, :, 0] <= soc[:, :, -1] * eta_d[None, :], name="storage_s4_45_first")
-    model.addConstr(discharge[:, :, 1:] + rup_d[:, :, 1:] <= soc[:, :, :-1] * eta_d[None, :, None], name="storage_s4_45")
-    model.addConstr(rdn_d <= discharge, name="storage_s4_46")
-    model.addConstr(rup_c + rup_d <= storage_capacity[:, :, None] * eta_d[None, :, None], name="storage_s4_47")
+    model.addConstr(
+        storage_up <= charge + discharge_headroom,
+        name="storage_projected_up_component_limits",
+    )
+    model.addConstr(
+        storage_up <= storage_capacity[:, :, None] * eta_d[None, :, None],
+        name="storage_projected_up_total_limit",
+    )
+    model.addConstr(
+        storage_up[:, :, 0]
+        <= charge[:, :, 0] + soc[:, :, -1] * eta_d[None, :]
+        - discharge[:, :, 0],
+        name="storage_projected_up_energy_first",
+    )
+    if hours > 1:
+        model.addConstr(
+            storage_up[:, :, 1:]
+            <= charge[:, :, 1:] + soc[:, :, :-1] * eta_d[None, :, None]
+            - discharge[:, :, 1:],
+            name="storage_projected_up_energy",
+        )
+    model.addConstr(
+        storage_down <= discharge + storage_capacity[:, :, None] - charge,
+        name="storage_projected_down_power_limit",
+    )
+    model.addConstr(
+        storage_down[:, :, 0]
+        <= discharge[:, :, 0]
+        + (storage_capacity * duration[None, :] - soc[:, :, -1]) / eta_c[None, :]
+        - charge[:, :, 0],
+        name="storage_projected_down_energy_first",
+    )
+    if hours > 1:
+        model.addConstr(
+            storage_down[:, :, 1:]
+            <= discharge[:, :, 1:]
+            + (
+                storage_capacity[:, :, None] * duration[None, :, None]
+                - soc[:, :, :-1]
+            )
+            / eta_c[None, :, None]
+            - charge[:, :, 1:],
+            name="storage_projected_down_energy",
+        )
 
     # Hydro coefficients preserve station-level investment decisions.
     with HydroProfileReader(config, data) as hydro_reader:
         hydro = hydro_reader.read_linear_block(block)
-    ror_available = model.addMVar((p_count, hours), lb=0.0, name="ror_available_gw")
+    ror_available = model.addMVar(
+        (p_count, hours), lb=0.0, name="ror_available_gw"
+    )
     ror_generation = model.addMVar((p_count, hours), lb=0.0, name="ror_generation_gw")
     reservoir_rows = hydro.reservoir_station_rows
     reservoir_count = len(reservoir_rows)
-    reservoir_generation = model.addMVar(
-        (reservoir_count, hours), lb=0.0, name="reservoir_generation_gw"
-    )
     hydro_constants = config.raw["hydro"]
     reservoir_flow_scale_m3s = float(
         hydro_constants["reservoir_flow_variable_scale_m3s"]
@@ -335,6 +380,9 @@ def build_full_year_monolithic(
     )
     reservoir_soc = reservoir_volume * scaled_volume_to_energy[:, None]
     reservoir_spill = reservoir_spill_flow * scaled_flow_to_power[:, None]
+    reservoir_generation = (
+        reservoir_turbine_flow * scaled_flow_to_power[:, None]
+    )
     reservoir_incidence = sparse.csr_matrix(
         (
             np.ones(reservoir_count, dtype=float),
@@ -348,7 +396,12 @@ def build_full_year_monolithic(
     reservoir_capacity_by_province = (
         reservoir_incidence @ hydro_capacity[reservoir_rows]
     )
-    reservoir_generation_by_province = reservoir_incidence @ reservoir_generation
+    reservoir_power_incidence = reservoir_incidence @ sparse.diags(
+        scaled_flow_to_power
+    )
+    reservoir_generation_by_province = (
+        reservoir_power_incidence @ reservoir_turbine_flow
+    )
     chunk = int(config.raw["construction"]["build_hour_chunk_size"])
     for p in range(p_count):
         rows = hydro.ror_station_rows[p]
@@ -369,11 +422,9 @@ def build_full_year_monolithic(
                 )
         else:
             ror_available[p, :].UB = 0.0
-    model.addConstr(ror_generation <= ror_available, name="ror_generation_availability")
     model.addConstr(
-        reservoir_generation
-        == reservoir_turbine_flow * scaled_flow_to_power[:, None],
-        name="reservoir_s4_13_flow_to_power",
+        ror_generation <= ror_available,
+        name="ror_generation_availability",
     )
     model.addConstr(
         reservoir_generation <= hydro_capacity[reservoir_rows, None],
@@ -517,24 +568,25 @@ def build_full_year_monolithic(
         + ror_available
         - ror_generation
     )
-    storage_up = rup_c.sum(axis=1) + rup_d.sum(axis=1)
-    storage_down = rdn_c.sum(axis=1) + rdn_d.sum(axis=1)
+    storage_up_by_province = storage_up.sum(axis=1)
+    storage_down_by_province = storage_down.sum(axis=1)
     vre_dispatch = vre_generation.sum(axis=1)
     model.addConstr(
-        thermal_up + vre_up + hydro_up + storage_up
+        thermal_up + vre_up + hydro_up + storage_up_by_province
         >= float(security["up_reserve_load_fraction"]) * load
         + float(security["up_reserve_vre_fraction"]) * vre_dispatch,
         name="up_reserve",
     )
     model.addConstr(
-        thermal_down + ror_generation + reservoir_generation_by_province + storage_down
+        thermal_down + ror_generation + reservoir_generation_by_province
+        + storage_down_by_province
         >= float(security["down_reserve_load_fraction"]) * load
         + float(security["down_reserve_vre_fraction"]) * vre_dispatch,
         name="down_reserve",
     )
     inertia = ruc.inertia_s.to_numpy(dtype=float)
     non_sync = security["non_synchronous_inertia_seconds"]
-    hydro_inertia = model.addMVar(p_count, lb=0.0, name="hydro_inertia_gw_s")
+    hydro_inertia = gp.MLinExpr.zeros(p_count)
     for p in range(p_count):
         ror_rows = hydro.ror_station_rows[p]
         reservoir_rows_p = hydro.reservoir_station_rows_by_province[p]
@@ -543,7 +595,7 @@ def build_full_year_monolithic(
             expression += float(non_sync["ror"]) * hydro_capacity[ror_rows].sum()
         if len(reservoir_rows_p):
             expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows_p].sum()
-        model.addConstr(hydro_inertia[p] == expression, name=f"hydro_inertia_p{provinces[p]}")
+        hydro_inertia[p] = expression
     storage_inertia = np.asarray([float(non_sync[t]) for t in STORAGE_TECHS])
     for p in range(p_count):
         model.addConstr(
@@ -573,8 +625,10 @@ def build_full_year_monolithic(
             fuel_cost += unit_fuel * 1e-3 * gross[p, k].sum()
             startup_cost += float(ruc.loc[technology, "startup_yuan_per_mw"]) * 1e-3 * startup[p, k].sum()
             startup_cost += float(ruc.loc[technology, "shutdown_yuan_per_mw"]) * 1e-3 * shutdown[p, k].sum()
-            ramp_cost += float(config.raw["thermal"]["ramping_cost_yuan_per_mwh"]) * 1e-3 * (
-                ramp_up[p, k].sum() + ramp_down[p, k].sum()
+            ramp_cost += (
+                float(config.raw["thermal"]["ramping_cost_yuan_per_mwh"])
+                * 1e-3
+                * ramp_magnitude[p, k].sum()
             )
     storage_vom = gp.LinExpr()
     for technology, s in s_index.items():
@@ -593,9 +647,8 @@ def build_full_year_monolithic(
         "transmission_flow_regularization": flow_cost,
         "load_center_intra_flow_regularization": intra_load_center_flow_cost,
     }
-    model.addConstr(
-        variables["operating_cost_account"][0] == gp.quicksum(operating_costs.values()),
-        name="annual_operating_cost_accounting",
+    artifacts.cost_components["annual_operation"] = gp.quicksum(
+        operating_costs.values()
     )
     emission_table = data.emissions.set_index("technology")
     coal_factor = float(emission_table.loc["coal", "emission_factor_mtco2_per_gwh"])
@@ -638,10 +691,10 @@ def build_full_year_monolithic(
         vre_generation=vre_generation, vre_available=vre_available,
         online=online, startup=startup, shutdown=shutdown,
         thermal_gross_generation=gross, actual_thermal_generation=actual_thermal,
-        ramp_up=ramp_up, ramp_down=ramp_down,
+        ramp_magnitude=ramp_magnitude,
         storage_charge=charge, storage_discharge=discharge, storage_soc=soc,
-        storage_reserve_up_charge=rup_c, storage_reserve_down_charge=rdn_c,
-        storage_reserve_up_discharge=rup_d, storage_reserve_down_discharge=rdn_d,
+        storage_reserve_up_technology=storage_up,
+        storage_reserve_down_technology=storage_down,
         ror_available=ror_available, ror_generation=ror_generation,
         reservoir_station_rows=reservoir_rows,
         reservoir_capacity_by_province=reservoir_capacity_by_province,
@@ -655,10 +708,19 @@ def build_full_year_monolithic(
         network_injection=network_injection, dac_load=dac_load,
         thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
         vre_reserve_up=vre_up, hydro_reserve_up=hydro_up,
-        storage_reserve_up=storage_up, storage_reserve_down=storage_down,
+        storage_reserve_up=storage_up_by_province,
+        storage_reserve_down=storage_down_by_province,
         hydro_inertia=hydro_inertia,
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
+    model.setObjective(
+        gp.quicksum(
+            expression
+            for name, expression in artifacts.cost_components.items()
+            if not name.startswith("operating_")
+        ),
+        GRB.MINIMIZE,
+    )
     artifacts.index.update(
         optimization_block=block,
         line_efficiency=line_efficiency,

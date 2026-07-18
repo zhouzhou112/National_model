@@ -1,0 +1,43 @@
+{
+  "contract_version": "v1",
+  "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
+  "required_model_tables": [
+    "sets/provinces.csv",
+    "vre/optimization_points.csv",
+    "vre/hourly_cf_index.csv",
+    "load/hourly_load_2025_2060.csv.gz",
+    "thermal/capacity_floor_by_year.csv",
+    "thermal/nuclear_capacity_floor_by_year.csv",
+    "hydro/hydro_stations.csv",
+    "hydro/cascade_topology_nodes.csv",
+    "hydro/cascade_topology_edges.csv",
+    "hydro/timeseries_index.csv",
+    "biomass/fuel_potential_by_province_year.csv",
+    "transmission/candidate_corridors.csv",
+    "carbon/emissions_limits_by_scenario.csv",
+    "technology/technology_capex_by_year.csv",
+    "technology/thermal_nuclear_ruc_parameters.csv",
+    "technology/thermal_nuclear_om_parameters.csv",
+    "technology/storage_technical_parameters.csv",
+    "storage/phs_capacity_bounds_by_province_year.csv",
+    "technology/province_fuel_generation_cost_by_year.csv",
+    "technology/emission_factors_by_year.csv",
+    "technology/dac_parameters_by_year.csv",
+    "technology/ccs_cost_parameters.csv",
+    "load_center_network/natural_earth_278/load_centers.csv",
+    "load_center_network/natural_earth_278/vre_routes.csv",
+    "load_center_network/natural_earth_278/hydro_routes.csv",
+    "load_center_network/natural_earth_278/intra_edges.csv",
+    "load_center_network/natural_earth_278/initial_spur_capacity_2025.csv",
+    "load_center_network/natural_earth_278/substation_initial_capacity_2025.csv"
+  ],
+  "server_validation_sidecars": [
+    "hydro/classification_summary.csv",
+    "README.md",
+    "model_defaults.json",
+    "output_manifest.csv",
+    "qc_summary.csv",
+    "smoke_test_report.json",
+    "source_manifest.csv"
+  ]
+}

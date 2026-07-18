@@ -206,6 +206,40 @@ def main() -> None:
         "0 non-reservoir cascade stations",
     )
 
+    phs_bounds = pd.read_csv(DATA / "storage" / "phs_capacity_bounds_by_province_year.csv")
+    checks.check("phs_bound_rows", len(phs_bounds) == 31 * 4, len(phs_bounds), "124")
+    checks.check(
+        "phs_bound_unique_index",
+        not phs_bounds.duplicated(["province_code", "year", "technology"]).any(),
+        int(phs_bounds.duplicated(["province_code", "year", "technology"]).sum()),
+        "0 duplicates",
+    )
+    checks.check(
+        "phs_bound_province_coverage",
+        phs_bounds.groupby("year").province_code.nunique().eq(31).all(),
+        phs_bounds.groupby("year").province_code.nunique().to_dict(),
+        "31 provinces in each planning year",
+    )
+    checks.check(
+        "phs_floor_within_pipeline_upper",
+        phs_bounds.capacity_floor_gw.le(phs_bounds.capacity_upper_gw + 1e-9).all(),
+        int(phs_bounds.capacity_floor_gw.gt(phs_bounds.capacity_upper_gw + 1e-9).sum()),
+        "0 violations",
+    )
+    phs_national = phs_bounds.groupby("year")[["capacity_floor_gw", "capacity_upper_gw"]].sum()
+    checks.check(
+        "phs_existing_2025_floor",
+        np.isclose(phs_national.capacity_floor_gw.loc[2030], 65.94),
+        float(phs_national.capacity_floor_gw.loc[2030]),
+        "65.94 GW",
+    )
+    checks.check(
+        "phs_2030_pipeline_upper",
+        np.isclose(phs_national.capacity_upper_gw.loc[2030], 249.191),
+        float(phs_national.capacity_upper_gw.loc[2030]),
+        "249.191 GW",
+    )
+
     timeseries = pd.read_csv(DATA / "hydro" / "timeseries_index.csv")
     timeseries_issues = []
     for row in timeseries.itertuples(index=False):

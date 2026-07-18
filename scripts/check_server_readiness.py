@@ -41,6 +41,7 @@ def main() -> None:
         raise SystemExit("--verify-raw-grfr-sha256 requires --require-raw-grfr")
     project = Path(__file__).resolve().parents[1]
     data_root = Path(os.environ.get("CISPO_DATA_ROOT", str(project / "data")))
+    input_contract_path = project / "config" / "model_input_files.json"
     cf_root = Path(os.environ.get("CISPO_CF_ROOT", ""))
     hydro_root = Path(os.environ.get("CISPO_HYDRO_ROOT", ""))
     raw_grfr_root = Path(os.environ.get("CISPO_RAW_GRFR_ROOT", ""))
@@ -95,6 +96,27 @@ def main() -> None:
         },
     }
     hard_fail = []
+    if input_contract_path.is_file():
+        input_contract = json.loads(input_contract_path.read_text(encoding="utf-8"))
+        required_tables = input_contract["required_model_tables"]
+        missing_tables = [
+            relative for relative in required_tables
+            if not (data_root / relative).is_file()
+        ]
+        report["model_input_contract"] = {
+            "path": str(input_contract_path),
+            "contract_version": input_contract.get("contract_version"),
+            "required_table_count": len(required_tables),
+            "missing_tables": missing_tables,
+        }
+        if missing_tables:
+            hard_fail.append("minimal model-input contract is incomplete")
+    else:
+        report["model_input_contract"] = {
+            "path": str(input_contract_path),
+            "missing": True,
+        }
+        hard_fail.append("model_input_files.json missing")
     if not all(report["packages"][name] for name in ("numpy", "pandas", "scipy", "netCDF4", "zarr", "psutil")):
         hard_fail.append("scientific Python environment incomplete")
     if not all(row["exists"] for row in report["capacity_factor_stores"]):

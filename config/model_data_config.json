@@ -46,6 +46,7 @@
     "hydro_cascade_stage2_edges": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/figure_data/cascade_topology_edges_stage2.csv",
     "hydro_cascade_stage2_qa": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage2_classification_cascade_20260630/validation/cascade_topology_qa.json",
     "hydro_updated_inventory": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_phs_module/data_output/hydrochn_ght2026_updated.csv",
+    "phs_inventory": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydrochn_clean_v1_outputs/phs_ght2026_8h_clean.csv",
     "hydro_hourly_discharge": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage1_20260629/model_inputs/grfr_target_comids_hourly_2019.nc",
     "hydro_environmental_flow": "data/hydro/grfr_monthly_p30_single_year_proxy_2019.nc",
     "hydro_explicit_ror_profiles": "D:/codeenv/pycharmproject/National_RL/Gis_process/hydro_power/process_hydro/hydro_model_2019_stage1_20260629/model_inputs/ror_hourly_profiles_2019_provisional.nc",

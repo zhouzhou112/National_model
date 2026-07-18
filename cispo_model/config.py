@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -44,13 +45,58 @@ class ModelConfig:
             )
         return dict(horizons[name])
 
+    @property
+    def planning_years(self) -> tuple[int, ...]:
+        return tuple(int(year) for year in self.raw["planning_sequence"]["years"])
+
+    def for_planning_year(self, planning_year: int) -> "ModelConfig":
+        """Return a validated year-specific view of the sequential configuration."""
+        planning_year = int(planning_year)
+        if planning_year not in self.planning_years:
+            raise ValueError(
+                f"planning_year must be one of {', '.join(map(str, self.planning_years))}"
+            )
+        position = self.planning_years.index(planning_year)
+        boundary_year = (
+            int(self.raw["planning_sequence"]["initial_boundary_year"])
+            if position == 0
+            else self.planning_years[position - 1]
+        )
+        raw = deepcopy(self.raw)
+        raw["boundary_year"] = boundary_year
+        raw["planning_year"] = planning_year
+        raw["planning_interval_years"] = planning_year - boundary_year
+        config = ModelConfig(self.path, raw)
+        config.validate()
+        return config
+
     def validate(self) -> None:
-        if self.boundary_year != 2025:
-            raise ValueError("The current production boundary must remain 2025")
+        sequence = self.raw.get("planning_sequence", {})
+        years = tuple(int(year) for year in sequence.get("years", ()))
+        if years != (2030, 2040, 2050, 2060):
+            raise ValueError("planning_sequence.years must be [2030, 2040, 2050, 2060]")
+        if int(sequence.get("initial_boundary_year", 0)) != 2025:
+            raise ValueError("planning_sequence.initial_boundary_year must remain 2025")
+        if self.planning_year not in years:
+            raise ValueError("planning_year must be one of the configured sequential years")
+        position = years.index(self.planning_year)
+        expected_boundary = 2025 if position == 0 else years[position - 1]
+        if self.boundary_year != expected_boundary:
+            raise ValueError(
+                f"planning year {self.planning_year} requires boundary year {expected_boundary}"
+            )
         if self.planning_year <= self.boundary_year:
             raise ValueError("planning_year must be later than boundary_year")
-        if self.planning_year != 2030:
-            raise ValueError("This version is the first 2030 sequential expansion model")
+        if int(self.raw.get("planning_interval_years", 0)) != (
+            self.planning_year - self.boundary_year
+        ):
+            raise ValueError("planning_interval_years must equal planning_year - boundary_year")
+        if sequence.get("state_format") != "capacity_cohorts_v1":
+            raise ValueError("planning_sequence.state_format must be capacity_cohorts_v1")
+        if sequence.get("retirement_rule") != "active_when_planning_year_lt_retire_year":
+            raise ValueError(
+                "planning_sequence.retirement_rule must remain active_when_planning_year_lt_retire_year"
+            )
         if self.hours != 8760:
             raise ValueError("Production configuration must use all 8760 hours")
         if self.vre_scenario not in {"C", "B", "O"}:

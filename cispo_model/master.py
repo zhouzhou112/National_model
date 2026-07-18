@@ -19,6 +19,7 @@ from .data import (
     compute_vre_max_cf,
 )
 from .timeblocks import TimeBlock
+from .planning_state import stable_asset_id
 
 
 @dataclass
@@ -43,6 +44,13 @@ def export_master_solution(
     vre = data.vre_sites[
         ["grid_uid", "grid_id", "province_code", "technology", "capacity_floor_gw", "capacity_upper_gw"]
     ].copy()
+    vre = vre.rename(columns={"capacity_floor_gw": "exogenous_capacity_floor_gw"})
+    vre["capacity_floor_gw"] = np.asarray(
+        artifacts.index["vre_capacity_floor_gw"], dtype=float
+    )
+    vre["inherited_capacity_adjustment_gw"] = (
+        vre.capacity_floor_gw - vre.exogenous_capacity_floor_gw
+    )
     vre["capacity_gw"] = variables["vre_capacity"].X
     vre["new_capacity_gw"] = variables["vre_new"].X
     vre.to_csv(output_dir / "vre_capacity.csv", index=False, encoding="utf-8-sig")
@@ -53,20 +61,37 @@ def export_master_solution(
     retrofit = variables.get("thermal_retrofit_to_ccs")
     retrofit_values = retrofit.X if retrofit is not None else None
     ccs_pair_index = {
-        ccs: pair_position
-        for pair_position, (_, ccs) in enumerate(artifacts.index.get("ccs_pairs", ()))
+        technology: (pair_position, direction)
+        for pair_position, pair in enumerate(artifacts.index.get("ccs_pairs", ()))
+        for technology, direction in ((pair[0], "out"), (pair[1], "in"))
     }
+    thermal_floor = np.asarray(artifacts.index["thermal_capacity_floor_gw"])
+    thermal_exogenous = np.asarray(artifacts.index["thermal_exogenous_floor_gw"])
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, k in artifacts.index["thermal_index"].items():
             thermal_rows.append(
                 {
                     "province_code": province_code,
                     "technology": technology,
+                    "exogenous_capacity_floor_gw": thermal_exogenous[p, k],
+                    "inherited_capacity_adjustment_gw": (
+                        thermal_floor[p, k] - thermal_exogenous[p, k]
+                    ),
+                    "capacity_floor_gw": thermal_floor[p, k],
                     "capacity_gw": capacity[p, k],
                     "new_capacity_gw": new_capacity[p, k],
-                    "retrofit_to_ccs_gw": (
-                        retrofit_values[p, ccs_pair_index[technology]]
-                        if retrofit_values is not None and technology in ccs_pair_index
+                    "retrofit_out_gw": (
+                        retrofit_values[p, ccs_pair_index[technology][0]]
+                        if retrofit_values is not None
+                        and technology in ccs_pair_index
+                        and ccs_pair_index[technology][1] == "out"
+                        else 0.0
+                    ),
+                    "retrofit_in_gw": (
+                        retrofit_values[p, ccs_pair_index[technology][0]]
+                        if retrofit_values is not None
+                        and technology in ccs_pair_index
+                        and ccs_pair_index[technology][1] == "in"
                         else 0.0
                     ),
                 }
@@ -77,34 +102,63 @@ def export_master_solution(
 
     storage_rows = []
     capacity = variables["storage_capacity"].X
+    new_capacity = variables["storage_new"].X
+    storage_floor = np.asarray(artifacts.index["storage_capacity_floor_gw"])
+    storage_exogenous_floor = np.asarray(
+        artifacts.index["storage_exogenous_floor_gw"]
+    )
+    storage_upper = np.asarray(artifacts.index["storage_capacity_upper_gw"])
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, s in artifacts.index["storage_index"].items():
             storage_rows.append(
                 {
                     "province_code": province_code,
                     "technology": technology,
+                    "exogenous_capacity_floor_gw": storage_exogenous_floor[p, s],
+                    "inherited_capacity_adjustment_gw": (
+                        storage_floor[p, s] - storage_exogenous_floor[p, s]
+                    ),
+                    "capacity_floor_gw": storage_floor[p, s],
+                    "capacity_upper_gw": storage_upper[p, s],
                     "capacity_gw": capacity[p, s],
+                    "new_capacity_gw": new_capacity[p, s],
                 }
             )
     pd.DataFrame(storage_rows).to_csv(
         output_dir / "storage_capacity.csv", index=False, encoding="utf-8-sig"
     )
 
-    hydro = data.hydro_stations.copy()
+    hydro = data.hydro_stations[
+        [
+            "hydrochn_row_id", "plant_name_model", "province_code", "lon", "lat",
+            "comid", "operation_type_model", "status_model", "river_group_stage2",
+            "existing_capacity_gw", "capacity_potential_gw",
+        ]
+    ].copy()
+    hydro["capacity_floor_gw"] = np.asarray(
+        artifacts.index["hydro_capacity_floor_gw"], dtype=float
+    )
+    hydro["inherited_capacity_adjustment_gw"] = (
+        hydro.capacity_floor_gw - hydro.existing_capacity_gw
+    )
     hydro["capacity_gw"] = variables["hydro_capacity"].X
     hydro["new_capacity_gw"] = variables["hydro_new"].X
     hydro.to_csv(output_dir / "hydro_capacity.csv", index=False, encoding="utf-8-sig")
 
     dac_rows = []
     dac_capacity = variables["dac_capacity"].X
+    dac_new = variables["dac_new"].X
     dac_capture = variables["dac_capture"].X
+    dac_floor = np.asarray(artifacts.index["dac_capacity_floor_mtpa"])
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, d in artifacts.index["dac_index"].items():
             dac_rows.append(
                 {
                     "province_code": province_code,
                     "technology": technology,
+                    "capacity_floor_mtpa": dac_floor[p, d],
                     "capacity_mtpa": dac_capacity[p, d],
+                    "new_capacity_mtpa": dac_new[p, d],
                     "capture_mtco2": dac_capture[p, d],
                 }
             )
@@ -135,6 +189,9 @@ def export_master_solution(
         ["line_id", "from_province_code", "to_province_code", "preset_technology", "distance_km"]
     ].copy()
     line["capacity_gw"] = variables["line_capacity"].X
+    line["capacity_floor_gw"] = np.asarray(
+        artifacts.index["line_capacity_floor_gw"], dtype=float
+    )
     line["new_capacity_gw"] = variables["line_new"].X
     line.to_csv(output_dir / "transmission_capacity.csv", index=False, encoding="utf-8-sig")
 
@@ -292,13 +349,6 @@ def export_master_solution(
         ]
     )
     cost_frame.to_csv(output_dir / "cost_components.csv", index=False, encoding="utf-8-sig")
-    # Backward-compatible legacy name; in the monolithic solve these values are
-    # objective components of the incumbent solution, not a lower bound.
-    cost_frame.to_csv(
-        output_dir / "cost_components_lower_bound.csv",
-        index=False,
-        encoding="utf-8-sig",
-    )
 
 
 def _technology_lookup(frame: pd.DataFrame, value_column: str) -> dict[str, float]:
@@ -342,9 +392,21 @@ def build_master(
     wacc = float(config.raw["finance"]["real_wacc_fraction"])
     lifetimes = config.raw["finance"]["default_lifetime_years"]
 
-    # VRE site capacity remains at 0.25-degree resolution.
-    site_floor = data.vre_sites.capacity_floor_gw.to_numpy(dtype=float)
+    # VRE site capacity remains at 0.25-degree resolution. Sequential years
+    # add only active model-built cohorts to the unchanged observed baseline.
+    vre_asset_ids = [
+        stable_asset_id(row.grid_uid, row.technology)
+        for row in data.vre_sites.itertuples(index=False)
+    ]
+    vre_inherited = data.planning_state.active_adjustment(
+        "vre", vre_asset_ids, planning_year=config.planning_year, unit="GW"
+    )
+    site_floor = (
+        data.vre_sites.capacity_floor_gw.to_numpy(dtype=float) + vre_inherited
+    )
     site_upper = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
+    if (site_floor < -1e-9).any() or (site_floor > site_upper + 1e-9).any():
+        raise ValueError("Inherited VRE capacity is outside the active site bounds")
     vre_new = model.addMVar(len(data.vre_sites), lb=0.0, name="vre_new_gw")
     vre_cap = model.addMVar(len(data.vre_sites), lb=site_floor, ub=site_upper, name="vre_capacity_gw")
     model.addConstr(vre_cap == site_floor + vre_new, name="vre_capacity_accounting")
@@ -360,7 +422,7 @@ def build_master(
         positions = group.index.to_numpy(dtype=int)
         crf = capital_recovery_factor(wacc, float(lifetimes[technology]))
         capex = float(capex_2030[technology])
-        vre_investment += capex * crf * vre_new[positions].sum()
+        vre_investment += capex * crf * vre_cap[positions].sum()
         vre_fom += capex * vre_fom_fraction[technology] * vre_cap[positions].sum()
     costs["vre_investment"] = vre_investment
     costs["vre_fixed_om"] = vre_fom
@@ -370,7 +432,26 @@ def build_master(
     floor_table = data.thermal_floor.pivot(index="province_code", columns="technology", values="capacity_floor_gw")
     floor_table = floor_table.reindex(index=provinces, columns=THERMAL_TECHS[:-1], fill_value=0.0)
     nuclear = data.nuclear_floor.set_index("province_code").capacity_floor_gw.reindex(provinces).fillna(0.0)
-    thermal_floor = np.column_stack([floor_table.to_numpy(dtype=float), nuclear.to_numpy(dtype=float)])
+    thermal_exogenous_floor = np.column_stack(
+        [floor_table.to_numpy(dtype=float), nuclear.to_numpy(dtype=float)]
+    )
+    thermal_asset_ids = [
+        stable_asset_id(province_code, technology)
+        for province_code in provinces
+        for technology in THERMAL_TECHS
+    ]
+    thermal_inherited = data.planning_state.active_adjustment(
+        "thermal",
+        thermal_asset_ids,
+        planning_year=config.planning_year,
+        unit="GW",
+    ).reshape(p_count, len(THERMAL_TECHS))
+    thermal_floor = thermal_exogenous_floor + thermal_inherited
+    if (thermal_floor < -1e-9).any():
+        raise ValueError(
+            "Inherited thermal retrofit/build cohorts make a capacity floor negative"
+        )
+    thermal_floor = np.maximum(thermal_floor, 0.0)
     thermal_new = model.addMVar(
         (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_new_gw"
     )
@@ -444,22 +525,70 @@ def build_master(
     costs["thermal_nuclear_fixed_om"] = thermal_fom
 
     # Hydropower station capacity is retained at station resolution.
-    hydro_floor = data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)
+    hydro_asset_ids = data.hydro_stations.hydrochn_row_id.astype(str).tolist()
+    hydro_inherited = data.planning_state.active_adjustment(
+        "hydro",
+        hydro_asset_ids,
+        planning_year=config.planning_year,
+        unit="GW",
+    )
+    hydro_floor = (
+        data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)
+        + hydro_inherited
+    )
     hydro_upper = data.hydro_stations.capacity_potential_gw.to_numpy(dtype=float)
+    if (hydro_floor < -1e-9).any() or (hydro_floor > hydro_upper + 1e-9).any():
+        raise ValueError("Inherited hydropower capacity is outside station bounds")
     hydro_new = model.addMVar(len(data.hydro_stations), lb=0.0, name="hydro_new_gw")
     hydro_cap = model.addMVar(len(data.hydro_stations), lb=hydro_floor, ub=hydro_upper, name="hydro_capacity_gw")
     model.addConstr(hydro_cap == hydro_floor + hydro_new, name="hydro_capacity_accounting")
     variables.update(hydro_new=hydro_new, hydro_capacity=hydro_cap)
     hydro_capex = float(capex_2030["hydro"])
     hydro_crf = capital_recovery_factor(wacc, float(lifetimes["hydro"]))
-    costs["hydro_investment"] = hydro_capex * hydro_crf * hydro_new.sum()
+    costs["hydro_investment"] = hydro_capex * hydro_crf * hydro_cap.sum()
     costs["hydro_fixed_om"] = hydro_capex * 0.02 * hydro_cap.sum()
 
-    # Storage has no observed 2025 floor in the current package; this is an
-    # explicit input gap, not an inferred zero-observation claim.
+    # Province-level PHS retains the GHT 2026 operating floor and is capped by
+    # projects available by the planning year. Battery potential remains open.
+    storage_asset_ids = [
+        stable_asset_id(province_code, technology)
+        for province_code in provinces
+        for technology in STORAGE_TECHS
+    ]
+    storage_exogenous_floor = np.zeros((p_count, len(STORAGE_TECHS)), dtype=float)
+    storage_upper = np.full((p_count, len(STORAGE_TECHS)), np.inf, dtype=float)
+    phs_bounds = data.storage_bounds.set_index("province_code")
+    phs_index = s_index["phs"]
+    for p, province_code in enumerate(provinces):
+        storage_exogenous_floor[p, phs_index] = float(
+            phs_bounds.loc[province_code, "capacity_floor_gw"]
+        )
+        storage_upper[p, phs_index] = float(
+            phs_bounds.loc[province_code, "capacity_upper_gw"]
+        )
+    storage_inherited = data.planning_state.active_adjustment(
+        "storage",
+        storage_asset_ids,
+        planning_year=config.planning_year,
+        unit="GW",
+    ).reshape(p_count, len(STORAGE_TECHS))
+    storage_floor = storage_exogenous_floor + storage_inherited
+    if (
+        (storage_floor < -1e-9).any()
+        or (storage_floor > storage_upper + 1e-9).any()
+    ):
+        raise ValueError("Inherited storage capacity is outside configured bounds")
     storage_new = model.addMVar((p_count, len(STORAGE_TECHS)), lb=0.0, name="storage_new_gw")
-    storage_cap = model.addMVar((p_count, len(STORAGE_TECHS)), lb=0.0, name="storage_capacity_gw")
-    model.addConstr(storage_cap == storage_new, name="storage_capacity_accounting")
+    storage_cap = model.addMVar(
+        (p_count, len(STORAGE_TECHS)),
+        lb=storage_floor,
+        ub=storage_upper,
+        name="storage_capacity_gw",
+    )
+    model.addConstr(
+        storage_cap == storage_floor + storage_new,
+        name="storage_capacity_accounting",
+    )
     variables.update(storage_new=storage_new, storage_capacity=storage_cap)
     storage_params = data.storage.set_index("technology")
     storage_investment = gp.LinExpr()
@@ -468,23 +597,42 @@ def build_master(
         s = s_index[technology]
         capex = float(capex_2030[technology])
         crf = capital_recovery_factor(wacc, float(lifetimes[technology]))
-        storage_investment += capex * crf * storage_new[:, s].sum()
+        storage_investment += capex * crf * storage_cap[:, s].sum()
         storage_fom += capex * float(storage_params.loc[technology, "fixed_om_fraction_capex_per_year"]) * storage_cap[:, s].sum()
     costs["storage_investment"] = storage_investment
     costs["storage_fixed_om"] = storage_fom
 
     # One technology is preset for each allowed corridor; capacity remains continuous.
-    line_floor = data.lines.existing_capacity_gw.fillna(0.0).to_numpy(dtype=float)
+    line_asset_ids = data.lines.line_id.astype(str).tolist()
+    line_inherited = data.planning_state.active_adjustment(
+        "interprovincial_transmission",
+        line_asset_ids,
+        planning_year=config.planning_year,
+        unit="GW",
+    )
+    line_floor = (
+        data.lines.existing_capacity_gw.fillna(0.0).to_numpy(dtype=float)
+        + line_inherited
+    )
     line_new = model.addMVar(len(data.lines), lb=0.0, name="line_new_gw")
     line_cap = model.addMVar(len(data.lines), lb=line_floor, name="line_capacity_gw")
     model.addConstr(line_cap == line_floor + line_new, name="line_capacity_accounting")
     variables.update(line_new=line_new, line_capacity=line_cap)
     line_crf = capital_recovery_factor(wacc, float(lifetimes["transmission"]))
     line_unit_cost = data.lines.preset_unit_cost_yuan_per_kw.to_numpy(dtype=float)
-    costs["transmission_investment"] = (line_unit_cost * line_crf) @ line_new
+    costs["transmission_investment"] = (line_unit_cost * line_crf) @ line_cap
 
     if config.raw["features"]["annual_load_center_transmission"]:
-        intra_floor = data.intra_load_center_edges.initial_capacity_gw.to_numpy(dtype=float)
+        intra_asset_ids = data.intra_load_center_edges.intra_edge_id.astype(str).tolist()
+        intra_floor = (
+            data.intra_load_center_edges.initial_capacity_gw.to_numpy(dtype=float)
+            + data.planning_state.active_adjustment(
+                "intra_load_center_transmission",
+                intra_asset_ids,
+                planning_year=config.planning_year,
+                unit="GW",
+            )
+        )
         intra_new = model.addMVar(
             len(data.intra_load_center_edges), lb=0.0, name="intra_load_center_new_gw"
         )
@@ -504,13 +652,28 @@ def build_master(
         intra_unit_cost = data.intra_load_center_edges.unit_cost_yuan_per_kw.to_numpy(dtype=float)
         costs["load_center_intra_transmission_investment"] = (
             intra_unit_cost * line_crf
-        ) @ intra_new
+        ) @ intra_capacity
 
     # DAC annual capacity and removal.
+    dac_asset_ids = [
+        stable_asset_id(province_code, technology)
+        for province_code in provinces
+        for technology in DAC_TECHS
+    ]
+    dac_floor = data.planning_state.active_adjustment(
+        "dac",
+        dac_asset_ids,
+        planning_year=config.planning_year,
+        unit="MtCO2_per_year",
+    ).reshape(p_count, len(DAC_TECHS))
+    dac_new = model.addMVar(
+        (p_count, len(DAC_TECHS)), lb=0.0, name="dac_new_capacity_mtpa"
+    )
     dac_cap = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capacity_mtpa")
     dac_mass = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capture_mt")
+    model.addConstr(dac_cap == dac_floor + dac_new, name="dac_capacity_accounting")
     model.addConstr(dac_mass <= dac_cap, name="dac_annual_capacity")
-    variables.update(dac_capacity=dac_cap, dac_capture=dac_mass)
+    variables.update(dac_new=dac_new, dac_capacity=dac_cap, dac_capture=dac_mass)
     dac_table = data.dac.set_index("technology")
     dac_cost = gp.LinExpr()
     for technology in DAC_TECHS:
@@ -520,11 +683,9 @@ def build_master(
         dac_cost += float(dac_table.loc[technology, "variable_om_yuan_per_tco2"]) * dac_mass[:, d].sum()
     costs["dac"] = dac_cost
 
-    # One annual operating-cost and resource account. ``b_count`` is one in
-    # production; the leading dimension is retained for matrix consistency.
-    operating_cost_account = model.addMVar(
-        b_count, lb=0.0, name="annual_operating_cost_million_cny"
-    )
+    # Annual resource accounts. Operating cost is attached directly to the
+    # objective after hourly variables exist, avoiding a badly scaled dense
+    # accounting equality.
     annual_emissions = model.addMVar(
         b_count, lb=-GRB.INFINITY, name="annual_net_emissions_mt"
     )
@@ -535,7 +696,6 @@ def build_master(
         (b_count, p_count), lb=0.0, name="annual_captured_co2_mt"
     )
     variables.update(
-        operating_cost_account=operating_cost_account,
         annual_emissions=annual_emissions,
         annual_biomass=annual_biomass,
         annual_captured=annual_captured,
@@ -640,6 +800,12 @@ def build_master(
             float(initial_spur_lookup.get((row.grid_uid, row.technology), 0.0))
             for row in data.vre_sites.itertuples()
         ])
+        initial_spur += data.planning_state.active_adjustment(
+            "vre_spur",
+            vre_asset_ids,
+            planning_year=config.planning_year,
+            unit="GW",
+        )
         spur_new = model.addMVar(len(data.vre_sites), lb=0.0, name="spur_augmentation_gw")
         non_dpv_positions = data.vre_sites.index[
             ~data.vre_sites.technology.eq("dpv")
@@ -662,19 +828,36 @@ def build_master(
         hydro_spur_distance = data.hydro_stations.hydrochn_row_id.map(
             hydro_route.hydro_spur_distance_km
         ).to_numpy(dtype=float)
-        hydro_floor = data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)
+        hydro_spur_floor = (
+            data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)
+            + data.planning_state.active_adjustment(
+                "hydro_spur",
+                hydro_asset_ids,
+                planning_year=config.planning_year,
+                unit="GW",
+            )
+        )
         hydro_spur_new = model.addMVar(
             len(data.hydro_stations), lb=0.0, name="hydro_spur_augmentation_gw"
         )
         model.addConstr(
-            hydro_spur_new + hydro_floor >= hydro_cap,
+            hydro_spur_new + hydro_spur_floor >= hydro_cap,
             name="hydro_spur_capacity",
         )
 
         substation_ids = data.substations.substation_id.astype(str).tolist()
         sub_index = {sub: i for i, sub in enumerate(substation_ids)}
         trunk_new = model.addMVar(len(substation_ids), lb=0.0, name="trunk_augmentation_gw")
-        initial_trunk = data.substations.initial_trunk_capacity_gw.to_numpy(dtype=float)
+        trunk_asset_ids = data.substations.substation_id.astype(str).tolist()
+        initial_trunk = (
+            data.substations.initial_trunk_capacity_gw.to_numpy(dtype=float)
+            + data.planning_state.active_adjustment(
+                "trunk",
+                trunk_asset_ids,
+                planning_year=config.planning_year,
+                unit="GW",
+            )
+        )
         vre_by_substation = {
             str(substation_id): grouped.loc[~grouped.technology.eq("dpv")].index.to_numpy(dtype=int)
             for substation_id, grouped in data.vre_sites.assign(_sub=site_substation).groupby("_sub")
@@ -688,7 +871,11 @@ def build_master(
             vre_positions = vre_by_substation.get(substation_id, np.asarray([], dtype=int))
             hydro_positions = hydro_by_substation.get(substation_id, np.asarray([], dtype=int))
             if len(hydro_positions):
-                initial_hydro_trunk[substation_position] = hydro_floor[hydro_positions].sum()
+                initial_hydro_trunk[substation_position] = (
+                    data.hydro_stations.existing_capacity_gw.to_numpy(dtype=float)[
+                        hydro_positions
+                    ].sum()
+                )
             if not len(vre_positions) and not len(hydro_positions):
                 continue
             required = gp.LinExpr()
@@ -733,11 +920,15 @@ def build_master(
             "substation_ids": substation_ids,
             "vre_max_cf": max_cf,
             "initial_hydro_trunk_capacity_gw": initial_hydro_trunk,
+            "vre_spur_floor_gw": initial_spur,
+            "hydro_spur_floor_gw": hydro_spur_floor,
+            "trunk_floor_gw": initial_trunk,
+            "trunk_asset_ids": trunk_asset_ids,
         }
     else:
         index_extra = {}
 
-    costs["annual_operation"] = operating_cost_account.sum()
+    costs["annual_operation"] = gp.LinExpr()
     objective = gp.quicksum(costs.values())
     model.setObjective(objective, GRB.MINIMIZE)
     model.update()
@@ -751,6 +942,24 @@ def build_master(
         "blocks": blocks,
         "ccs_sinks": sinks,
         "co2_transport_distance_km": transport_distance,
+        "vre_asset_ids": vre_asset_ids,
+        "vre_capacity_floor_gw": site_floor,
+        "thermal_asset_ids": thermal_asset_ids,
+        "thermal_exogenous_floor_gw": thermal_exogenous_floor,
+        "thermal_capacity_floor_gw": thermal_floor,
+        "hydro_asset_ids": hydro_asset_ids,
+        "hydro_capacity_floor_gw": hydro_floor,
+        "storage_asset_ids": storage_asset_ids,
+        "storage_exogenous_floor_gw": storage_exogenous_floor,
+        "storage_capacity_floor_gw": storage_floor,
+        "storage_capacity_upper_gw": storage_upper,
+        "line_asset_ids": line_asset_ids,
+        "line_capacity_floor_gw": line_floor,
+        "dac_asset_ids": dac_asset_ids,
+        "dac_capacity_floor_mtpa": dac_floor,
         **index_extra,
     }
+    if config.raw["features"]["annual_load_center_transmission"]:
+        index["intra_asset_ids"] = intra_asset_ids
+        index["intra_capacity_floor_gw"] = intra_floor
     return MasterArtifacts(model=model, variables=variables, cost_components=costs, index=index)

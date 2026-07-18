@@ -12,10 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "transfer_bundle"
-MODEL_DATA_DIRS = (
-    "sets", "vre", "load", "thermal", "hydro", "biomass",
-    "transmission", "carbon", "technology", "grid", "load_center_network",
-)
+MODEL_INPUT_CONTRACT = ROOT / "config" / "model_input_files.json"
 CF_ROOT = Path(r"D:\National_model\Data\Gis\Hourly_cf")
 HYDRO_ROOT = Path(
     r"D:\codeenv\pycharmproject\National_RL\Gis_process\hydro_power\process_hydro"
@@ -61,7 +58,7 @@ def main() -> None:
 
     code_archive = BUNDLE / "national_model_code.tar.gz"
     listed = subprocess.run(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        ["git", "ls-files", "--cached"],
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -102,16 +99,18 @@ def main() -> None:
         return
 
     data_archive = BUNDLE / "model_ready_data.tar.gz"
+    input_contract = json.loads(MODEL_INPUT_CONTRACT.read_text(encoding="utf-8"))
+    model_files = (
+        input_contract["required_model_tables"]
+        + input_contract["server_validation_sidecars"]
+    )
     with tarfile.open(data_archive, "w:gz") as archive:
-        for directory in MODEL_DATA_DIRS:
-            add_tree(archive, ROOT / "data" / directory, directory)
-        for name in (
-            "README.md", "model_defaults.json", "output_manifest.csv",
-            "qc_summary.csv", "smoke_test_report.json", "source_manifest.csv",
-        ):
-            path = ROOT / "data" / name
-            if path.exists():
-                archive.add(path, arcname=name)
+        for relative in model_files:
+            path = ROOT / "data" / relative
+            if not path.is_file():
+                raise FileNotFoundError(path)
+            archive.add(path, arcname=relative)
+        archive.add(MODEL_INPUT_CONTRACT, arcname="model_input_files.json")
     archives.append(data_archive)
 
     if not args.skip_cf:
@@ -172,10 +171,12 @@ def main() -> None:
         "excluded": [
             "data/raw (source and rebuild inputs)",
             "data/load_centers_1km (validation-only rasters)",
+            "all model-ready tables not listed in config/model_input_files.json",
             "all non-2023 capacity-factor years",
             "2023 capacity-factor archive (only when --skip-cf is used)",
             "outputs and local Gurobi artifacts",
             "SSH keys and Gurobi license files",
+            "untracked workspace files",
         ],
     }
     (BUNDLE / "transfer_manifest.json").write_text(

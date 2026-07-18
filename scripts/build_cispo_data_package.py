@@ -1191,6 +1191,76 @@ def capital_recovery_factor(rate: float, lifetime_years: float) -> float:
     return rate * (1.0 + rate) ** lifetime_years / ((1.0 + rate) ** lifetime_years - 1.0)
 
 
+def build_phs_capacity_bounds(config: dict, qc: list[dict]) -> pd.DataFrame:
+    """Build province-year PHS floors and pipeline potentials from GHT 2026."""
+    source = Path(config["sources"]["phs_inventory"])
+    phs = pd.read_csv(source)
+    required = {
+        "phs_id", "province", "status_ght", "capacity_mw_model",
+        "is_existing_2025", "available_from_year", "duration_h",
+    }
+    missing = sorted(required.difference(phs.columns))
+    if missing:
+        raise ValueError(f"PHS inventory missing columns: {', '.join(missing)}")
+    provinces = pd.read_csv(DATA_ROOT / "sets" / "provinces.csv")
+    province_lookup = provinces.set_index("province_name_en").province_code.to_dict()
+    unmatched = sorted(set(phs.province).difference(province_lookup))
+    if unmatched:
+        raise ValueError(f"Unmatched PHS provinces: {unmatched}")
+    phs["province_code"] = phs.province.map(province_lookup).astype(int)
+    rows = []
+    for year in config["capacity_expansion_years"]:
+        available = phs.available_from_year.le(int(year))
+        for province in provinces.itertuples(index=False):
+            local = phs.province_code.eq(int(province.province_code))
+            floor = phs.loc[
+                local & phs.is_existing_2025.astype(bool), "capacity_mw_model"
+            ].sum() / 1000.0
+            upper = phs.loc[
+                local & available, "capacity_mw_model"
+            ].sum() / 1000.0
+            rows.append(
+                {
+                    "province_code": int(province.province_code),
+                    "province_name_en": province.province_name_en,
+                    "province_name_zh": province.province_name_zh,
+                    "year": int(year),
+                    "technology": "phs",
+                    "capacity_floor_gw": float(floor),
+                    "capacity_upper_gw": float(upper),
+                    "duration_h": 8.0,
+                    "floor_method": "GHT_2026_is_existing_2025_operating_projects",
+                    "upper_method": "GHT_2026_projects_with_available_from_year_le_planning_year",
+                    "source_path": str(source),
+                }
+            )
+    bounds = pd.DataFrame(rows).sort_values(["year", "province_code"])
+    if len(bounds) != 31 * len(config["capacity_expansion_years"]):
+        raise ValueError("PHS bounds must contain 31 provinces x planning years")
+    if (bounds.capacity_floor_gw > bounds.capacity_upper_gw + 1e-9).any():
+        raise ValueError("PHS floor exceeds project-pipeline upper bound")
+    write_csv(
+        bounds,
+        DATA_ROOT / "storage" / "phs_capacity_bounds_by_province_year.csv",
+    )
+    national = bounds.groupby("year")[["capacity_floor_gw", "capacity_upper_gw"]].sum()
+    add_qc(
+        qc,
+        "phs_existing_2025_capacity_gw",
+        float(national.capacity_floor_gw.iloc[0]),
+        "PASS" if math.isclose(float(national.capacity_floor_gw.iloc[0]), 65.94, abs_tol=1e-6) else "FAIL",
+        "65.94 GW GHT-cleaned operating PHS anchor",
+    )
+    add_qc(
+        qc,
+        "phs_2030_pipeline_upper_gw",
+        float(national.loc[2030, "capacity_upper_gw"]),
+        "PASS" if math.isclose(float(national.loc[2030, "capacity_upper_gw"]), 249.191, abs_tol=1e-6) else "FAIL",
+        "249.191 GW projects available by 2030",
+    )
+    return bounds
+
+
 def build_technology_parameters(config: dict, qc: list[dict]) -> None:
     with TECH_CONFIG_PATH.open("r", encoding="utf-8") as stream:
         tech = json.load(stream)
@@ -1312,6 +1382,7 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
     storage["source_page"] = 64
     storage["source_document"] = source_pdf
     write_csv(storage, DATA_ROOT / "technology" / "storage_technical_parameters.csv")
+    build_phs_capacity_bounds(config, qc)
 
     transmission = pd.DataFrame(tech["transmission"]["voltage_options"])
     transmission["loss_fraction_per_km"] = tech["transmission"]["loss_fraction_per_km"]
