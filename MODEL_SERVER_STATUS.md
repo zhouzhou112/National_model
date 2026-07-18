@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-18 local implementation / server verification split
+
+- Current local implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
+- The production sequence is now 2030/2040/2050/2060, with checksummed capacity-cohort transfer between successive full-year solves.
+- Local final 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; `OPTIMAL` in 58.79 s; `solution_qc=PASS`; peak RSS 0.698 GiB.
+- Local full-year preflight: 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory; local available RAM does not meet the 64 GiB build gate.
+- PHS now uses the GHT 2026 province-level 8h-storage floor/project-pipeline upper: 2030 national floor 65.94 GW and upper 249.191 GW; 2040+ upper 514.755 GW.
+- The previous server facts below are the last verified 2026-07-07 snapshot, not confirmed current state. On 2026-07-18 TCP/22 connected but SSH closed during key exchange (`kex_exchange_identification`), so PID `863603`, server HEAD and old 744h outputs could not be refreshed.
+- Do not start 8760 until the new commit/data bundle is deployed and the replacement 744h CPU gate returns `OPTIMAL + solution_qc PASS`.
+
 ## Boundary and architecture
 
 - 2025 is an input boundary only; it is not an optimization year.
@@ -62,8 +72,7 @@
 ## Explicit unresolved inputs
 
 - CSP site potential and hourly profiles; CSP remains disabled.
-- Observed province-level 2025 PHS floor; current floor is explicitly zero.
-- Open-loop and closed-loop PHS hydraulic pairing data; the local cascade update covers conventional reservoir hydropower only.
+- Open-loop and closed-loop PHS hydraulic pairing data remain unavailable; current PHS is province-level 8h storage with GHT 2026 operating floor and year-available project upper.
 - Thermal online fuel term `f_on`; fuel is charged on gross generation only.
 - Hydropower type labels include low-confidence assigned labels because source data do not provide reliable type labels for all stations; retain them for now and validate later against external station evidence.
 - Formal multi-year environmental flow for hydropower; the current cleanup uses the requested 2019 single-year monthly P30 proxy, not a formal 1980-2019 climatological P30. Four low-correlation and eighteen max-bound cascade-lag edges need manual hydrological/topological review.
@@ -71,4 +80,5 @@
 - Intra-center annual capacity uses a 50% design utilization assumption; two western AC500 proxy edges exceed the 1000 km source range.
 - Intra-center losses remain zero until their annual energy can be fed back into the provincial hourly balance.
 
-The only production entry is `scripts/run_cispo_2030_full_year.py`.
+Per-year production entry: `scripts/run_cispo_2030_full_year.py`.
+Sequential production entry: `scripts/run_cispo_planning_sequence.py`.

@@ -1621,3 +1621,47 @@ nodal dispatch model
 ```
 
 除非后续另行扩展。
+
+---
+
+## 14. 2026-07-18 production implementation addendum
+
+本节记录当前 production code 相对基础公式文档的实现合同，代码基线为 `2a0ee99`。详细审计证据见 `MODEL_SYSTEM_AUDIT_20260718.md`。
+
+### 14.1 规划年份和状态传递
+
+模型按 `2030 -> 2040 -> 2050 -> 2060` 顺序逐期求解。2025 仅是 2030 的输入边界。第 `y` 年容量下界由外生存量与仍在寿命期内的历史模型 cohort 组成：
+
+```math
+\underline P_{a,y}^{effective}
+=
+\underline P_{a,y}^{exogenous}
++
+\sum_{c:\; build_c\le y<retire_c}\Delta P_{a,c}.
+```
+
+每个 full-year 解只有在 `OPTIMAL` 且 `solution_qc=PASS` 后才写出带 SHA256 的下一期状态。该路径是 myopic sequential planning，不是四期 perfect foresight。
+
+### 14.2 PHS 边界
+
+PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 operating projects，capacity upper 来自 `available_from_year <= planning_year` 的项目池。当前不表示 open-loop/closed-loop reservoir pairing。
+
+### 14.3 储能备用的精确投影
+
+代码将四类 charge/discharge reserve component 投影为 `R_up`、`R_down`，但保留相同聚合可行域。上备用同时受功率容量、当前充电可削减量和前一时刻 SOC 约束；下备用同时受充电余量和剩余 SOC 空间约束。不得删除 SOC reserve headroom 约束。
+
+### 14.4 稀疏等价表达
+
+- `ramp_magnitude >= +/- (P_t-P_{t-1})` 替代独立 `ramp_up/ramp_down`；
+- reservoir generation 由 turbine flow 线性表达，不再设置重复 generation variable/equality；
+- hydro inertia 为容量表达式；
+- annual operating cost 直接进入 objective，不再设置大尺度会计等式；
+- VRE/ROR availability 辅助变量继续保留，因为直接代入会把 site CF 系数复制到多个约束并增加 nonzeros。
+
+### 14.5 成本口径
+
+与本文件 CISPO 目标函数保持一致，VRE、thermal/nuclear、hydro、storage 和 transmission 的 annualized CapEx 均按当期 total installed capacity 计算。对固定的既有容量，这部分是当期常数；对新增/继承 cohort，边际系数与技术 CapEx/CRF 一致。
+
+### 14.6 生产输出和停止规则
+
+生产输出必须包含容量、逐小时运行、碳/CCS、成本分解、`solution_qc.json`、SHA256 manifest 和简要 SVG。744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status 或 QC 不通过，不得自动放松约束或写出下一期 planning state。

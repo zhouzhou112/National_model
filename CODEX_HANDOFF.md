@@ -14,13 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.4.1`
-- Snapshot date: `2026-07-07`
+- Handoff version: `v0.5.0`
+- Snapshot date: `2026-07-18`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Latest server-deployed implementation and checkout HEAD: `a8cd150` (`fix: switch hydropower to p30 proxy`), verified live on 2026-07-07.
-- The old 744h run was preserved and normally interrupted after `37,576.53 s`; it had no solution and exposed severe coefficient/RHS scaling plus crossover instability.
-- The P30-cleanup 24h CPU gate is `OPTIMAL` with `solution_qc=PASS`; the P30-cleanup 744h CPU gate is running as PID `863603` and remains the next required acceptance test.
+- Current local implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
+- Latest server-deployed implementation last verified live remains `a8cd150` (`fix: switch hydropower to p30 proxy`) from 2026-07-07; it is now behind local.
+- On 2026-07-18 TCP/22 connected but SSH closed during key exchange. Therefore server HEAD, old PID `863603` and the P30-cleanup 744h result are currently unverified; do not infer that the process is still running or that the gate passed.
+- Current local 24h gate on `2a0ee99` is `OPTIMAL` in 58.79 s with `solution_qc=PASS`; current full-year preflight is PASS but the local 64 GiB RAM build gate is not met.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -29,11 +30,11 @@ This is the repository's single handoff document for work continued across Codex
 ### Fixed model boundary and architecture
 
 - 2025 is an input boundary condition, not an optimization year.
-- 2030 is the first planning year and represents capacity changes during 2025-2030.
+- 2030 is the first planning year and represents capacity changes during 2025-2030; accepted capacity cohorts then pass sequentially to 2040, 2050 and 2060.
 - The scientific production model is one continuous national LP with 8760 chronological hours.
 - No Benders decomposition, representative periods, sampled hours or temporal weights are used.
 - Test horizons are `one_month=744h` and `six_months=4344h`; their annual costs and policy constraints are not rescaled, so their solutions are engineering tests rather than planning results.
-- The only production entry point is `scripts/run_cispo_2030_full_year.py`.
+- Per-year entry is `scripts/run_cispo_2030_full_year.py`; the isolated multi-year entry is `scripts/run_cispo_planning_sequence.py`.
 
 ### Implemented model scope
 
@@ -74,6 +75,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 ```
 
 ### Latest verification evidence
+
+- Local implementation commit `2a0ee99`; AST 38 files PASS; unit tests 23/23 PASS; data-package smoke 124/124 PASS.
+- Final local 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; Gurobi `OPTIMAL` in 58.79 s; peak RSS 0.698 GiB; `solution_qc=PASS`; maximum power-balance residual `3.90e-11 GW`.
+- Local full-year preflight: PASS, zero hard failures; 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory. The workstation does not meet the 64 GiB full-year construction gate.
+- Nonempty 2040 state-transfer diagnostic: `OPTIMAL/QC PASS`; inherited 2.5 GW battery and 1.0 GW PHS cohorts entered the intended province-technology lower bounds exactly.
+- PHS source/QC: GHT 2026 province-level 8h storage; national operating floor 65.94 GW; 2030 project upper 249.191 GW; 2040+ upper 514.755 GW.
+- Outputs: compact capacity/generation/storage/monthly/hourly summaries, SVG quicklooks and SHA256 result manifest are implemented and validated. Detailed audit: `MODEL_SYSTEM_AUDIT_20260718.md`.
+- Server refresh attempt on 2026-07-18 failed during SSH key exchange. All server/PID evidence below is retained historical evidence from 2026-07-07 unless explicitly refreshed later.
 
 - Local implementation commit: `8e49a87` (`fix: harden CCS and station-level hydropower model`) pushed to `origin/codex/cispo-2030-full-lp`.
 - Raw GRFR transfer to `/data/zz2/National_model/data/grfr_raw_2019` completed and was verified by server-side file size and SHA256:
@@ -127,7 +136,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 ### Known limitations and unresolved inputs
 
 - CSP site potential and hourly profiles are missing; CSP is disabled.
-- The observed provincial 2025 PHS capacity floor is unavailable; the current floor is explicitly zero.
+- PHS open-loop/closed-loop hydraulic pairing is unavailable. PHS is represented as province-level 8h storage with a GHT 2026 operating floor and year-available project upper.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
 - Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. The old 744h run was interrupted with no solution; a replacement scaled 744h run remains unvalidated. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
@@ -141,7 +150,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start the 8760h production solve. Monitor the active P30-cleanup 744h CPU gate using server HEAD `a8cd150` and the versioned P30 data roots:
+Do not start the 8760h production solve. First restore live SSH access and verify, rather than assume, the old P30-cleanup 744h process/output and server HEAD:
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -158,9 +167,20 @@ tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-First exact next action: wait for PID `863603` to exit, then audit `solve_report.json`, `solution_qc.json`, objective decomposition, balance residuals, reservoir water balance, cascade dispatch, transmission, curtailment, capacity additions and CCS injection. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable constraint/water-balance residuals and recorded build/solve/export time plus peak memory. The one-hour runtime is a target, not yet verified. GPU-PDHG is not the default route after the 24h comparison. After the 744h gate passes, run 8760h `build-only`, review actual memory/build behavior, freeze the baseline commit and only then start production.
+Exact next action after SSH recovers: inspect the old 744h artifacts, deploy commit `2a0ee99` plus a new minimal-contract model-ready bundle, run readiness and 23 regression tests, then run a replacement 744h CPU barrier gate. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable balance/water residuals and recorded build/solve/export time plus peak memory. The one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after the replacement 744h gate passes may 8760h `build-only` run; only after that gate may the 2030 production solve and subsequent state-chained years begin.
 
 ## Version history
+
+### v0.5.0 - 2026-07-18 - sequential planning, exact sparse reformulation and complete outputs
+
+- Git implementation baseline: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
+- Scope: implemented checksummed 2030/2040/2050/2060 capacity-cohort transfer; added GHT 2026 province-level PHS floor/project upper; removed redundant ramp, storage reserve, reservoir generation, hydro inertia and operating-cost-account variables/equalities using exact linear reformulations; completed compact outputs/SVG/manifest; reduced model input tables to an explicit 28-table contract.
+- Main changed files: `cispo_model/config.py`, `data.py`, `master.py`, `monolithic.py`, `planning_state.py`, `preflight.py`, `result_summary.py`; `config/model_data_config.json`, `optimization_2030.json`, `model_input_files.json`; run/build/readiness/smoke scripts and sequence/tests.
+- Local validation: AST 38 PASS; unit tests 23/23 PASS; data-package smoke 124/124 PASS; 2030 and 2040 full-year preflight PASS; four-year sequence dry-run PASS; final 24h solve `OPTIMAL/QC PASS` in 58.79 s with 0.698 GiB peak RSS; nonempty 2040 state diagnostic `OPTIMAL/QC PASS`.
+- Scale: full-year preflight estimates 44,090,772 variables, 67,603,314 constraints, 853,505,952 nonzeros and 46.62 GiB model memory. Local build is correctly blocked by the 64 GiB runtime gate.
+- Server status: not deployed. SSH connected to TCP/22 but closed during key exchange on 2026-07-18, so server HEAD and old 744h status could not be verified.
+- Unresolved: replacement 744h and 8760 build-only gates; formal multi-year P30; 4 low-correlation and 18 max-bound lag edges; plant-level thermal retrofit/retirement identity; CSP, thermal `f_on`, PHS hydraulic pairing and proxy network assumptions.
+- Next action: restore SSH, verify old artifacts, deploy commit/data, pass readiness/tests/744h, then 8760 build-only before any production sequence.
 
 ### v0.4.1 - 2026-07-07 - P30 hydropower cleanup and GPU-PDHG isolation test
 

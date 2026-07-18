@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-18 deployment note
+
+Local implementation commit `2a0ee99` supersedes the server-deployed code described later in this file. Server SSH closed during key exchange on 2026-07-18, so the live checkout and old 744h PID could not be verified. Treat all PID/status statements below as the last verified 2026-07-07 snapshot until a live check succeeds.
+
+The updated data root must include `storage/phs_capacity_bounds_by_province_year.csv`. Use `config/model_input_files.json` as the minimal table contract. The code transfer archive must be created from tracked files after the implementation commit; do not package untracked workspace directories.
+
 Production architecture is one continuous LP containing 2030 capacity decisions and all 8760 chronological hours. The 2025 data are boundary conditions only. No Benders decomposition, representative periods, or temporal weights are used.
 
 ## Server layout
@@ -142,3 +148,31 @@ $PYTHON scripts/run_cispo_2030_full_year.py --horizon full_year --output-dir /da
 The runtime gate refuses to build when available memory is below the configured threshold. For infeasibility, the solve path writes `iis.ilp`; production constraints are not silently relaxed.
 
 Successful solves additionally write `solution_qc.json`, compressed hourly province balances, technology dispatch arrays, station-indexed reservoir dispatch, transmission flows, annual carbon/CCS accounts and objective cost decomposition. A solution is not accepted as production output unless `solution_qc.json` reports `PASS`.
+
+## Sequential 2030-2060 production path
+
+After the revised 744h gate and 8760 build-only gate pass, run a single year as:
+
+```bash
+$PYTHON scripts/run_cispo_2030_full_year.py \
+  --planning-year 2030 \
+  --horizon full_year \
+  --output-dir /data/zz2/National_model/outputs/planning_sequence/2030
+```
+
+Only `OPTIMAL + solution_qc PASS` full-year runs write `planning_state/`. The isolated sequential driver releases each year's process memory before the next year:
+
+```bash
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --output-root /data/zz2/National_model/outputs/planning_sequence
+```
+
+Resume only already accepted years:
+
+```bash
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --output-root /data/zz2/National_model/outputs/planning_sequence \
+  --resume
+```
+
+The driver stops at the first non-optimal/QC-failed year. Do not manually copy an unchecked state directory or bypass its SHA256/year-boundary validation.
