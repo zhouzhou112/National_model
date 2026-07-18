@@ -158,11 +158,11 @@ GPU-PDHG 的已验证 24h 对比慢于 CPU barrier（超过 600 s 仍未完成�
 
 | Archive | Bytes | SHA256 |
 |---|---:|---|
-| `national_model_code.tar.gz` | 281,726 | `2bb66bf65d3789e96cb855abdf5b212f0c3c2c59ed6fcb74e2e7559d0c4aa87b` |
-| `model_ready_data.tar.gz` | 49,131,551 | `d91985b99b41bcb9c3e73e6e2878cc44f4b0930730e08121ef0206ad5cbd9b2b` |
-| `hydro_timeseries.tar.gz` | 24,777,505 | `9e84cbd9770aa7e922614241d4d5477f295293519d8aa36472e3d0f0f402ac06` |
+| `national_model_code.tar.gz` | 283,416 | `1311f3ccfd53b26248e37c13370016a6b5e6165f717d1bde0e79c21d3cd73a4d` |
+| `model_ready_data.tar.gz` | 49,131,551 | `502a60e58da959bfa6e5c3ba2ea83a8d39c3aade212231e5c6ecc42db6a9eb17` |
+| `hydro_timeseries.tar.gz` | 24,777,505 | `573d1285eb4787a3058bff8c25b382a5df6630441de2c5e5b8d58095fbfd70f5` |
 
-代码包仅含 tracked files；数据包包含 PHS bounds；三个包均不含 `supplementary_materials/`。当前因 SSH key-exchange 关闭尚未上传。
+该 bundle 从 Git HEAD `dafeb24` 生成。代码包仅含 tracked files；数据包包含 PHS bounds；三个包均不含 `supplementary_materials/`。当前因 SSH key-exchange 关闭尚未上传。
 
 1. 恢复 SSH 后先核验服务器 Git HEAD、旧 744h PID 和 `solve_report.json/solution_qc.json`，不得用旧文档推断当前状态。
 2. 部署 commit `2a0ee99` 及由最小输入合同构建的新数据包。
