@@ -1,14 +1,16 @@
 # CISPO 2030 full-year server status
 
-## 2026-07-18 local implementation / server verification split
+## 2026-07-19 synchronized server validation
 
-- Current local implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
+- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); current local/server checkout HEAD is `827b37f`.
 - The production sequence is now 2030/2040/2050/2060, with checksummed capacity-cohort transfer between successive full-year solves.
 - Local final 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; `OPTIMAL` in 58.79 s; `solution_qc=PASS`; peak RSS 0.698 GiB.
 - Local full-year preflight: 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory; local available RAM does not meet the 64 GiB build gate.
 - PHS now uses the GHT 2026 province-level 8h-storage floor/project-pipeline upper: 2030 national floor 65.94 GW and upper 249.191 GW; 2040+ upper 514.755 GW.
-- The previous server facts below are the last verified 2026-07-07 snapshot, not confirmed current state. On 2026-07-18 TCP/22 connected but SSH closed during key exchange (`kex_exchange_identification`), so PID `863603`, server HEAD and old 744h outputs could not be refreshed.
-- Do not start 8760 until the new commit/data bundle is deployed and the replacement 744h CPU gate returns `OPTIMAL + solution_qc PASS`.
+- Server readiness and raw-GRFR SHA256 verification passed on the 2026-07-19 versioned data roots; server regression tests passed 24/24.
+- Server 24h gate: 349,962 variables, 260,973 constraints and 1,827,246 nonzeros; `OPTIMAL` in 60.53 s; `solution_qc=PASS`; peak RSS 0.851 GiB.
+- Replacement 744h CPU gate is active as PID `3778049` under `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`; it is not accepted yet.
+- Do not start 8760 until the replacement 744h gate returns `OPTIMAL + solution_qc PASS` and available RAM is at least 64 GiB. At launch, shared jobs left about 49 GiB available and swap was full.
 
 ## Boundary and architecture
 
@@ -33,17 +35,18 @@
 
 ## Verification snapshot
 
-- Current deployed implementation and live server checkout HEAD: `a8cd150` (`fix: switch hydropower to p30 proxy`) on 2026-07-07.
+- Current deployed implementation and live server checkout HEAD: `827b37f` on 2026-07-19; it contains implementation commit `2a0ee99`.
 - Current validated server data paths:
-  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup`
-  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup`
+  - `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse`
+  - `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse`
   - `CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019`
 - Raw GRFR transfer completed on 2026-07-06 and was verified on the server:
   - `output_pfaf_03_2019.nc`: 3,380,260,808 bytes, SHA256 `84ff2c882fb17a4b8693bb0773718c2472038021b64618b05f99f8070a506e0f`.
   - `output_pfaf_04_2019.nc`: 5,445,519,752 bytes, SHA256 `e56d5da855ddbdafabdafcb5582981b3f0003054156cf8d912d24a9efd232756`.
 - Server readiness with `--require-raw-grfr --verify-raw-grfr-sha256`: `PASS`, zero hard failures.
 - Hydropower station input: 2,030 rows, 620 reservoir rows, 1,410 run-of-river rows, 0 potential paper-rule mismatches, no missing required columns. Cascade readiness reported 142 nodes, 124 edges, 4 low-correlation edges, 18 max-bound edges and maximum lag 168 h.
-- Server regression test after P30 cleanup: 19/19 tests passed with pytest in 18.06 seconds.
+- Server regression test on the synchronized checkout/data: 24/24 tests passed with `unittest` in 19.62 seconds.
+- Current one-month preflight: 3,954,660 estimated variables, 5,912,178 constraints, 73,853,760 nonzeros and 4.08 GiB estimated model memory.
 - One-month cascade server preflight: 4,761,900 variables, 6,465,714 constraints, 78,282,048 nonzeros; estimated model memory 4.48 GiB; memory gate passed with about 106.65 GiB available.
 - Actual one-month cascade model build: 4,808,836 variables, 6,536,681 constraints and 46,092,407 nonzeros.
 - Full-year server preflight: 48,164,172 variables, 68,689,554 constraints, 862,195,872 nonzeros.
@@ -67,7 +70,7 @@
 - Commit `281f9c7` scales water flow/volume variables without changing physical equations. Server 168h validation under `/data/zz2/National_model/outputs/2030_diagnostic_168h_numerics_scaled` reached `OPTIMAL` in `675.56 s`, used `4.061 GiB` peak RSS and passed every `solution_qc.json` hard check.
 - Commit `a8cd150` switches hydropower environmental flow to the 2019 single-year monthly P30 proxy and removes obsolete master boundary variables. Server 24h P30 CPU validation under `/data/zz2/National_model/outputs/2030_diagnostic_24h_p30_cleanup_cpu` reached `OPTIMAL` in `45.06 s`, used `0.879 GiB` peak RSS and passed `solution_qc.json`.
 - GPU-enabled Gurobi is available only in `/home/zz2/.local/envs/cispo-gurobi-gpu` (`gurobipy 13.0.2+cu129`). It confirmed `Start PDHG on GPU`, but the same 24h model with GPU-PDHG was still iterating after about 600 s and was interrupted without `solve_report.json`; CPU barrier remains the default route.
-- The P30-cleanup 744h CPU gate is running as PID `863603` under `/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu`. Its model build completed in `339.56 s` with peak RSS `5.336 GiB`; model statistics are 4,762,150 variables, 6,472,914 constraints and 45,718,011 nonzeros. Gurobi optimization is still in progress and 8760h remains blocked.
+- The obsolete PID `863603` was no longer active on 2026-07-19. Replacement PID `3778049` is active under `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`; its initial health check showed an active build, empty `stderr` and about 1.41 GiB RSS after 55 seconds. No acceptance report existed at that checkpoint, so 8760h remains blocked.
 
 ## Explicit unresolved inputs
 

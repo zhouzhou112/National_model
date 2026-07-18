@@ -1,8 +1,8 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-07-18 deployment note
+## 2026-07-19 deployment note
 
-Local implementation commit `2a0ee99` supersedes the server-deployed code described later in this file. Server SSH closed during key exchange on 2026-07-18, so the live checkout and old 744h PID could not be verified. Treat all PID/status statements below as the last verified 2026-07-07 snapshot until a live check succeeds.
+Server checkout HEAD `827b37f` contains implementation commit `2a0ee99`. Readiness, raw-GRFR hashes, 24/24 tests and the new 24h `OPTIMAL/QC PASS` gate were verified live on 2026-07-19. Replacement 744h PID `3778049` is active; it is not an accepted result until both solve and QC reports pass.
 
 The updated data root must include `storage/phs_capacity_bounds_by_province_year.csv`. Use `config/model_input_files.json` as the minimal table contract. The code transfer archive must be created from tracked files after the implementation commit; do not package untracked workspace directories.
 
@@ -24,16 +24,16 @@ Production architecture is one continuous LP containing 2030 capacity decisions 
 
 The `/data` filesystem is NTFS/fuseblk and does not enforce normal Unix ownership or mode bits. Do not store SSH keys or `gurobi.lic` there.
 
-Current cascade-hydropower data version from 2026-07-06:
+Current versioned model and hydropower data:
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 ```
 
-Commit `a8cd150` contains the deployed P30 hydropower cleanup on top of the numerical-scaling repair. Server checkout HEAD `a8cd150`, the versioned P30 data roots above and 19 regression tests were verified on 2026-07-07. The 24h P30 CPU diagnostic is `OPTIMAL` with QC PASS; the 744h P30 CPU optimization/QC gate is running as PID `863603`.
+Server checkout HEAD `827b37f`, the versioned data roots above and 24 regression tests were verified on 2026-07-19. The 24h CPU diagnostic is `OPTIMAL` with QC PASS; the replacement 744h CPU optimization/QC gate is running as PID `3778049`.
 
 ## Long-term Git synchronization
 
@@ -59,9 +59,9 @@ If code is edited on the server, commit and push it before pulling locally. Mode
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 $PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
@@ -120,11 +120,12 @@ ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 
 PID `244035` was normally interrupted on 2026-07-07 after `37,576.53 s`; it produced no solution. Do not delete this directory.
 
-The current replacement P30 gate is already running as PID `863603`:
+The current replacement gate is running as PID `3778049`:
 
 ```bash
-OUT=/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu
-ps -p 863603 -o pid,etime,%mem,%cpu,rss,vsz,stat,cmd
+OUT=/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu
+PID=$(cat "$OUT/run.pid")
+ps -p "$PID" -o pid,etime,%mem,%cpu,rss,vsz,stat,cmd
 tail -n 100 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```

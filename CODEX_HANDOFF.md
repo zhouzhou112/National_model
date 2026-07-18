@@ -14,14 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.0`
-- Snapshot date: `2026-07-18`
+- Handoff version: `v0.5.1`
+- Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Current local implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`).
-- Latest server-deployed implementation last verified live remains `a8cd150` (`fix: switch hydropower to p30 proxy`) from 2026-07-07; it is now behind local.
-- On 2026-07-18 TCP/22 connected but SSH closed during key exchange. Therefore server HEAD, old PID `863603` and the P30-cleanup 744h result are currently unverified; do not infer that the process is still running or that the gate passed.
-- Current local 24h gate on `2a0ee99` is `OPTIMAL` in 58.79 s with `solution_qc=PASS`; current full-year preflight is PASS but the local 64 GiB RAM build gate is not met.
+- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); current local and server checkout HEAD is `827b37f`.
+- SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
+- Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
+- Replacement 744h CPU barrier gate is currently running as PID `3778049`; it is not accepted until `solve_report.json` reports `OPTIMAL` and `solution_qc.json` reports `PASS`.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -67,8 +67,8 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
@@ -83,7 +83,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - PHS source/QC: GHT 2026 province-level 8h storage; national operating floor 65.94 GW; 2030 project upper 249.191 GW; 2040+ upper 514.755 GW.
 - Outputs: compact capacity/generation/storage/monthly/hourly summaries, SVG quicklooks and SHA256 result manifest are implemented and validated. Detailed audit: `MODEL_SYSTEM_AUDIT_20260718.md`.
 - Minimal server bundle prepared from HEAD `dafeb24` with `--skip-cf` and locally rehashed: `national_model_code.tar.gz` 283,416 bytes SHA256 `1311f3ccfd53b26248e37c13370016a6b5e6165f717d1bde0e79c21d3cd73a4d`; `model_ready_data.tar.gz` 49,131,551 bytes SHA256 `502a60e58da959bfa6e5c3ba2ea83a8d39c3aade212231e5c6ecc42db6a9eb17`; `hydro_timeseries.tar.gz` 24,777,505 bytes SHA256 `573d1285eb4787a3058bff8c25b382a5df6630441de2c5e5b8d58095fbfd70f5`. The data archive contains the PHS bounds and no untracked `supplementary_materials/` files.
-- Server refresh attempt on 2026-07-18 failed during SSH key exchange. All server/PID evidence below is retained historical evidence from 2026-07-07 unless explicitly refreshed later.
+- On 2026-07-19 those two data archives were uploaded, verified with the same SHA256 values and extracted additively to the current server roots. Readiness passed with 28/28 required tables, 2,030 hydro stations, 124 cascade edges, full-license confirmation and both raw-GRFR hashes valid; server `unittest` passed 24/24 in 19.62 s.
+- Server 24h output `/data/zz2/National_model/outputs/2030_diagnostic_24h_20260719_sequential_sparse_cpu`: 349,962 variables, 260,973 constraints and 1,827,246 nonzeros; Gurobi `OPTIMAL` in 60.53 s; maximum constraint violation `1.32e-08`; peak process-tree RSS 0.851 GiB; `solution_qc=PASS`.
+- Replacement 744h preflight: 3,954,660 estimated variables, 5,912,178 constraints, 73,853,760 nonzeros and 4.08 GiB estimated memory. PID `3778049` was alive after 55 s with empty `stderr` under `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`.
+- At launch, another user's four training jobs occupied about 67 GiB RAM; server available RAM was about 49 GiB and swap was full. This is adequate for the 744h estimate but below the configured 64 GiB full-year gate, so 8760h was not started.
 
 - Local implementation commit: `8e49a87` (`fix: harden CCS and station-level hydropower model`) pushed to `origin/codex/cispo-2030-full-lp`.
 - Raw GRFR transfer to `/data/zz2/National_model/data/grfr_raw_2019` completed and was verified by server-side file size and SHA256:
@@ -140,7 +143,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - PHS open-loop/closed-loop hydraulic pairing is unavailable. PHS is represented as province-level 8h storage with a GHT 2026 operating floor and year-available project upper.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
-- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. The old 744h run was interrupted with no solution; a replacement scaled 744h run remains unvalidated. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
+- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. The old 744h run was interrupted with no solution; replacement PID `3778049` is active but remains unvalidated until solve/QC reports exist. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
 - Core cascade environmental flow now uses a 2019 single-year monthly P30 proxy. This follows the requested P30 direction but is still not the formal 1980-2019 climatological P30; manual review of the 4 low-correlation / 18 max-bound lag edges also remains unresolved input work.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
@@ -151,26 +154,37 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start the 8760h production solve. First restore live SSH access and verify, rather than assume, the old P30-cleanup 744h process/output and server HEAD:
+Do not start the 8760h build or production solve while the replacement 744h gate is active or available RAM is below 64 GiB. Check the replacement gate at low frequency:
 
 ```bash
 cd /data/zz2/National_model/repo
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260707_p30_cleanup
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260707_p30_cleanup
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
-OUT=/data/zz2/National_model/outputs/2030_one_month_p30_cleanup_cpu
-ps -p 863603 -o pid,etime,%cpu,%mem,rss,stat,cmd
+OUT=/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu
+PID=$(cat "$OUT/run.pid")
+ps -p "$PID" -o pid,etime,%cpu,%mem,rss,stat,cmd
 tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-Exact next action after SSH recovers: inspect the old 744h artifacts, deploy commit `ecfc7ed` or later plus a new minimal-contract model-ready bundle, run readiness and 24 regression tests, then run a replacement 744h CPU barrier gate. Acceptance requires `OPTIMAL`, `solution_qc=PASS`, acceptable balance/water residuals and recorded build/solve/export time plus peak memory. The one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after the replacement 744h gate passes may 8760h `build-only` run; only after that gate may the 2030 production solve and subsequent state-chained years begin.
+When PID `3778049` exits, inspect both reports and record build/solve/export time, peak memory and balance/water residuals. Acceptance requires `OPTIMAL + solution_qc=PASS`; the one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after acceptance and after available RAM again exceeds the 64 GiB gate may an 8760h `build-only` run begin; only after that gate may the 2030 production solve and subsequent state-chained years begin.
 
 ## Version history
+
+### v0.5.1 - 2026-07-19 - server synchronization and replacement 744h launch
+
+- Git baseline: branch `codex/cispo-2030-full-lp`, server checkout HEAD `827b37f`, containing implementation commit `2a0ee99`.
+- Scope: restored live SSH through the configured bound-source alias; fast-forwarded the clean server checkout; uploaded and SHA256-verified versioned model/hydrology bundles; ran readiness, regression and 24h solve gates; launched the replacement 744h CPU barrier gate.
+- Changed files: `CODEX_HANDOFF.md`, `MODEL_SERVER_STATUS.md`, `SERVER_RUNBOOK.md`; model source files were not changed in this milestone.
+- Verification: readiness PASS with zero hard failures; raw GRFR 2/2 hashes PASS; tests 24/24 PASS; 24h `OPTIMAL/QC PASS` in 60.53 s with 0.851 GiB peak RSS.
+- Server output: `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`, PID `3778049`; initial process check passed and `stderr` was empty.
+- Unresolved: the 744h result is still pending; formal climatological P30 and 4 low-correlation/18 max-bound cascade-lag edges remain input limitations. Shared server load leaves only about 49 GiB available, below the 8760h gate.
+- Next action: inspect the 744h reports after process exit; if and only if `OPTIMAL/QC PASS` and RAM is at least 64 GiB, run the 8760h build-only gate.
 
 ### v0.5.0 - 2026-07-18 - sequential planning, exact sparse reformulation and complete outputs
 
