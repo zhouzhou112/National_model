@@ -14,13 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.2`
+- Handoff version: `v0.5.3`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
 - Current implementation commit: `1b6da28` (`fix: align interprovincial flows with CISPO`). It retains the sequential/sparse implementation from `2a0ee99` and corrects the transmission formulation/QC discovered by the 744h audit.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
+- After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
 - PID `3778049` completed mathematically `OPTIMAL`, but its result is rejected as a physical model gate because the prior QC omitted 3,358 material AC bidirectional edge-hours. Commit `1b6da28` is the replacement formulation and still requires a new server 24h and 744h gate.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
@@ -175,6 +176,17 @@ ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and after available RAM exceeds the 64 GiB gate may an 8760h `build-only` run begin.
 
 ## Version history
+
+### v0.5.3 - 2026-07-19 - corrected server 24h transmission gate
+
+- Git implementation: `1b6da28`; synchronized server documentation HEAD includes `c4cfddd` or later.
+- Server tests: 26/26 PASS in 22.24 s under `/home/zz2/.local/envs/cispo-2030`.
+- Output: `/data/zz2/National_model/outputs/2030_diagnostic_24h_20260719_cispo_flow_alignment_cpu`.
+- Solver: 350,024 variables, 261,280 constraints and 1,867,007 nonzeros; Gurobi 13.0.2 `OPTIMAL` in 43.88 s; peak process-tree RSS 0.845 GiB.
+- QC: power-balance residual `1.46e-11 GW`; reservoir-transition residual `7.63e-06 m3`; zero AC bidirectional edge-hours; zero DC reverse flow on 363 DC edges; all hard checks PASS.
+- Output integrity: every scientific manifest file matched size and SHA256; runtime-owned stdout/stderr/PID files are explicitly excluded.
+- Resource stop: only about 32 GiB RAM was available and all 21 GiB swap was occupied by shared workloads. No corrected 744h or 8760h process was started.
+- Next action: wait for shared memory pressure to clear, require at least 64 GiB available RAM, then launch a new versioned corrected 744h CPU barrier gate.
 
 ### v0.5.2 - 2026-07-19 - CISPO transmission alignment after 744h result audit
 

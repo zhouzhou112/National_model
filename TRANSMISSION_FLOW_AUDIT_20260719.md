@@ -58,3 +58,16 @@
 2. 共享服务器可用内存恢复到安全水平后再运行修复后的 744h；旧结果不得作为接受依据。
 3. 修复后的 744h 必须 `OPTIMAL + QC PASS`，且 AC 双向记录和 DC 反向流均为 0。
 4. 只有此后且服务器可用内存不少于 64 GiB，才运行 8760h build-only。
+
+## 服务器修复验证
+
+- 服务器 tests：26/26 PASS，22.24 s。
+- 输出：`/data/zz2/National_model/outputs/2030_diagnostic_24h_20260719_cispo_flow_alignment_cpu`。
+- Gurobi 13.0.2：`OPTIMAL`，43.88 s；350,024 variables；261,280 constraints；1,867,007 nonzeros；峰值 RSS 0.845 GiB。
+- AC bidirectional edge-hours：0。
+- DC reverse maximum：0 GW（363 条 DC 边）。
+- 最大功率平衡残差：`1.46e-11 GW`。
+- 最大水库转移残差：`7.63e-06 m3`。
+- 全部 hard checks：PASS。
+- scientific manifest mismatch：0。
+- 资源门：当时 available RAM 约 32 GiB，21 GiB swap 已满，因此没有启动新的 744h。
