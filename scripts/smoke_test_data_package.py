@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from pathlib import PureWindowsPath
 
 import numpy as np
 import pandas as pd
@@ -53,6 +54,13 @@ def read_zarr_cf_meta(store: Path) -> dict:
     dimensions = metadata["cf/.zattrs"]["_ARRAY_DIMENSIONS"]
     sizes = dict(zip(dimensions, array["shape"]))
     return {"dimensions": dimensions, "sizes": sizes}
+
+
+def resolve_cf_store_path(indexed_path: str, technology: str) -> Path:
+    cf_root = os.environ.get("CISPO_CF_ROOT")
+    if cf_root:
+        return Path(cf_root) / technology / PureWindowsPath(str(indexed_path)).name
+    return Path(indexed_path)
 
 
 def main() -> None:
@@ -143,7 +151,7 @@ def main() -> None:
     checks.check("default_cf_technologies", set(current_cf.technology) == {"mixed_wind", "onshore_wind", "offshore_wind", "pv"}, sorted(current_cf.technology), "four VRE stores")
     zarr_issues = []
     for row in current_cf.itertuples(index=False):
-        meta = read_zarr_cf_meta(Path(row.zarr_path))
+        meta = read_zarr_cf_meta(resolve_cf_store_path(row.zarr_path, row.technology))
         if set(meta["dimensions"]) != {"time", "grid_id"}:
             zarr_issues.append(f"{row.technology}: dimensions={meta['dimensions']}")
         if meta["sizes"]["time"] != 8760:
