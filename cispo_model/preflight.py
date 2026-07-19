@@ -53,18 +53,19 @@ def estimate_full_model_scale(
     blocks = {
         "vre_site_capacity_and_new": 2 * n_vre,
         "vre_availability_and_dispatch": 2 * p * v * h,
-        "thermal_capacity_and_new": 2 * p * k,
+        "thermal_capacity_new_and_retrofit": 2 * p * k + 5 * p,
         "thermal_hourly_ruc": 5 * p * k * h,
         "storage_capacity_and_hourly": 2 * p * s + 5 * p * s * h,
         "hydro_site_capacity_and_hourly": (
             2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
         ),
         "transmission_capacity_and_flow": 2 * e + 2 * e * h,
-        "dac_capacity_and_capture": 2 * p * d,
+        "dac_capacity_and_capture": 3 * p * d,
+        "annual_resource_accounts": 2 * p + 1,
         "co2_source_sink_flow": p * c,
         "spur_and_trunk_capacity": n_vre + n_hydro + n_sub,
         "annual_load_center_network": (
-            n_center * (len(VRE_TECHS) + 5) + 4 * n_intra + 3 * p
+            n_center * (len(VRE_TECHS) + 5) + 4 * n_intra + 5 * p
         ),
     }
     variables = int(sum(blocks.values()))
@@ -85,13 +86,16 @@ def estimate_full_model_scale(
         + n_sub
         + n_center * (len(VRE_TECHS) + 5)
         + len(data.provinces) * len(VRE_TECHS)
-        + 6 * len(data.provinces)
+        + 5 * len(data.provinces)
         + 2 * n_intra
     )
-    # Dense VRE availability is the dominant coefficient block. Other blocks
-    # are sparse with approximately 5-12 coefficients per row.
+    # Dense VRE availability is the dominant coefficient block. The remaining
+    # rows use a conservative 3-coefficient structural average calibrated
+    # against the accepted 24 h and 744 h monolithic builds. This is a static
+    # model-memory planning estimate; barrier factorization remains a separate
+    # and potentially much larger solve-time risk.
     vre_nonzeros = int(n_vre * h)
-    other_nonzeros = int(max(constraints - p * v * h, 0) * 8)
+    other_nonzeros = int(max(constraints - p * v * h, 0) * 3.0)
     nonzeros = vre_nonzeros + other_nonzeros
     # Conservative planning estimate, not a Gurobi guarantee.
     memory_bytes = nonzeros * 32 + variables * 240 + constraints * 180
@@ -105,7 +109,9 @@ def estimate_full_model_scale(
         + (2 * p + 3 * n_reservoir) * block_hours
         + 2 * e * block_hours
     )
-    maximum_block_nonzeros = int(n_vre * block_hours + maximum_block_variables * 8)
+    maximum_block_nonzeros = int(
+        n_vre * block_hours + maximum_block_variables * 3.0
+    )
     block_memory_bytes = (
         maximum_block_nonzeros * 32
         + maximum_block_variables * 240

@@ -170,7 +170,6 @@
     "threads": -1,
     "time_limit_seconds": 86400,
     "soft_mem_limit_gb": 80,
-    "nodefile_start_gb": 16,
     "output_flag": 1
   },
   "construction": {
@@ -192,14 +191,13 @@
       },
       "full_year": {
         "hours": 8760,
-        "minimum_available_memory_gb": 64,
+        "minimum_available_memory_gb": 96,
         "test_only": false,
         "definition": "full non-leap calendar year, production scientific horizon"
       }
     },
     "write_lp": false,
     "compute_iis_on_infeasible": true,
-    "minimum_available_memory_gb_before_build": 64,
     "stop_before_build_if_estimated_memory_gb_exceeds": 80
   }
 }

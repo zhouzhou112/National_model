@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+import inspect
 
 import numpy as np
 
@@ -8,6 +9,7 @@ from cispo_model.config import capital_recovery_factor, load_model_config
 from cispo_model.data import load_model_data
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.timeblocks import make_time_blocks
+from cispo_model import load_center
 
 
 class ModelFoundationTests(unittest.TestCase):
@@ -53,6 +55,38 @@ class ModelFoundationTests(unittest.TestCase):
         ]
         self.assertLess(estimates[0], estimates[1])
         self.assertLess(estimates[1], estimates[2])
+
+    def test_scale_estimator_covers_all_current_variable_blocks(self):
+        self.assertEqual(
+            estimate_full_model_scale(self.config, self.data, 24).variables,
+            350_024,
+        )
+        self.assertEqual(
+            estimate_full_model_scale(self.config, self.data, 8760).variables,
+            44_091_176,
+        )
+
+    def test_full_year_memory_gate_is_build_safe(self):
+        self.assertEqual(
+            float(self.config.horizon("full_year")["minimum_available_memory_gb"]),
+            96.0,
+        )
+
+    def test_load_center_dense_expressions_are_not_duplicated(self):
+        source = inspect.getsource(load_center.attach_annual_load_center_network)
+        self.assertIn(
+            "province_external_received[p] - province_external_sent[p]",
+            source,
+        )
+        self.assertNotIn(
+            "== received_energy[p] - sent_energy[p]",
+            source,
+        )
+        self.assertNotIn(
+            "load_center_reservoir_generation_closure_p",
+            source,
+        )
+        self.assertIn("reservoir_route_counts", source)
 
     def test_full_data_preflight_has_no_hard_fail(self):
         report = run_preflight(self.config, self.data)

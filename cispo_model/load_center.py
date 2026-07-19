@@ -141,11 +141,20 @@ def attach_annual_load_center_network(
     # Attribute province-level hydropower dispatch to spatially routed plants.
     hydro_route_lookup = data.hydro_load_center_routes.set_index("hydrochn_row_id").load_center_id
     hydro_center = data.hydro_stations.hydrochn_row_id.map(hydro_route_lookup).astype(str)
+    invalid_hydro_routes = ~hydro_center.isin(center_ids)
+    if invalid_hydro_routes.any():
+        raise ValueError(
+            "Hydropower load-center routes contain missing or unknown center IDs: "
+            f"{int(invalid_hydro_routes.sum())} stations"
+        )
     reservoir_global_to_local = {
         int(station_row): local_row
         for local_row, station_row in enumerate(hydro_block.reservoir_station_rows)
     }
     ror_full_load_hours = np.zeros(len(data.hydro_stations), dtype=float)
+    reservoir_route_counts = np.zeros(
+        len(hydro_block.reservoir_station_rows), dtype=np.int64
+    )
     for p in range(len(provinces)):
         station_rows = hydro_block.ror_station_rows[p]
         if len(station_rows):
@@ -168,6 +177,7 @@ def attach_annual_load_center_network(
             ],
             dtype=np.int64,
         )
+        reservoir_route_counts[reservoir_local_rows] += 1
         if len(ror_rows):
             model.addConstr(
                 center_ror_generation[center_position]
@@ -184,6 +194,11 @@ def attach_annual_load_center_network(
             )
         else:
             center_reservoir_generation[center_position].UB = 0.0
+    if not np.equal(reservoir_route_counts, 1).all():
+        raise ValueError(
+            "Each reservoir station must be routed to exactly one load center; "
+            f"violations={int(np.count_nonzero(reservoir_route_counts != 1))}"
+        )
     for province_code in provinces:
         p = province_index[province_code]
         center_positions = centers.index[
@@ -192,13 +207,6 @@ def attach_annual_load_center_network(
         model.addConstr(
             center_ror_generation[center_positions].sum() == ror_generation[p, :].sum(),
             name=f"load_center_ror_generation_closure_p{province_code}",
-        )
-        model.addConstr(
-            center_reservoir_generation[center_positions].sum()
-            == reservoir_generation[
-                hydro_block.reservoir_local_rows_by_province[p], :
-            ].sum(),
-            name=f"load_center_reservoir_generation_closure_p{province_code}",
         )
 
     received_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]
@@ -240,7 +248,7 @@ def attach_annual_load_center_network(
         )
         model.addConstr(
             province_external_net_import[p]
-            == received_energy[p] - sent_energy[p],
+            == province_external_received[p] - province_external_sent[p],
             name=f"province_annual_external_net_import_p{province_code}",
         )
 
