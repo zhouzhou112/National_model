@@ -63,6 +63,17 @@ def resolve_cf_store_path(indexed_path: str, technology: str) -> Path:
     return Path(indexed_path)
 
 
+def resolve_hydro_timeseries_path(indexed_path: str, dataset: str) -> Path:
+    if dataset == "grfr_download_manifest":
+        raw_root = os.environ.get("CISPO_RAW_GRFR_ROOT")
+        if raw_root:
+            return Path(raw_root) / "raw_grfr_transfer_manifest.json"
+    hydro_root = os.environ.get("CISPO_HYDRO_ROOT")
+    if hydro_root:
+        return Path(hydro_root) / PureWindowsPath(str(indexed_path)).name
+    return Path(indexed_path)
+
+
 def main() -> None:
     checks = Checks()
     defaults = json.loads((DATA / "model_defaults.json").read_text(encoding="utf-8"))
@@ -313,7 +324,7 @@ def main() -> None:
     timeseries_issues = []
     for row in timeseries.itertuples(index=False):
         try:
-            path = Path(row.path)
+            path = resolve_hydro_timeseries_path(row.path, row.dataset)
             if path.suffix.lower() == ".nc":
                 with Dataset(path) as dataset:
                     if not dataset.dimensions or not dataset.variables:
