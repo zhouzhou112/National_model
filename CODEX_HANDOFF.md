@@ -14,11 +14,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.7`
+- Handoff version: `v0.5.8`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Server implementation commit remains `5a9f4ab` (`Reduce annual network matrix duplication`). Local V0719 corrections are an uncommitted working tree on Git HEAD `f84143a`; do not describe them as deployed until a dedicated implementation commit is created, pushed and fast-forwarded on the server.
+- Server implementation commit is `bc83663` (`fix: resolve hydrology paths in server smoke test`). It includes V0719 capacity-bound/DC active-index commit `451b1c0`, server CF-path smoke fix `c8db9be` and server hydrology-path smoke fix `bc83663`.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
@@ -81,6 +81,9 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - V0719 local capacity-bound/DC-sparse correction: 32/32 unit tests PASS; 139/139 data-package smoke checks PASS; strict 24h output `outputs/2030_24h_v0719_capacity_bounds_dc_sparse_rerun` reached `OPTIMAL + solution_qc=PASS` with 341,312 variables, 261,280 constraints, 1,768,956 nonzeros, 39.79 s solver time and 0.702 GiB peak RSS.
 - New bound QC is zero for nuclear floor/upper, shared biomass+BECCS upper and battery/PHS floor. DC reverse maximum and AC bidirectional edge-hours are zero; maximum power-balance residual is `7.43e-12 GW`.
 - Full-year V0719 estimator: 40,911,296 variables, 67,603,283 constraints, 520,920,489 nonzeros and about 36.0 GiB static model memory. Exact DC variable removal is `363×8760=3,179,880`; no runtime or factor-memory speedup is inferred from this structural reduction.
+- Server V0719 deployment root is `/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds`. It was copied additively from the completed sparse root, then supplemented with the three generated V0719 bound tables, `sets/model_years.csv` and 28 canonical smoke/QC/source files that were absent from the old sparse root. The old root and completed 744h output were not overwritten.
+- Server V0719 gates on 2026-07-19: checkout HEAD `bc83663`; readiness PASS; 32/32 unit tests PASS; 139/139 smoke checks PASS; 24h solve `/data/zz2/National_model/outputs/2030_24h_v0719_capacity_bounds_server` reached `OPTIMAL + solution_qc=PASS` with 341,312 variables, 261,280 constraints, 1,768,957 nonzeros, objective `2,024,722.7392 million CNY`, Gurobi runtime 48.96 s, peak RSS 0.841 GiB and zero nuclear/biomass/storage/DC/AC hard-check violations.
+- Requested 8760 direct trial was not launched because the live memory gate failed: `scripts/run_cispo_2030_full_year.py --horizon full_year --preflight-only --output-dir /data/zz2/National_model/outputs/2030_8760_v0719_preflight_memory_check` reported available memory `73.15 GiB` versus required `96.0 GiB`. It produced a V0719 full-year estimate of 40,911,296 variables, 67,603,283 constraints, 520,920,489 nonzeros and 36.0 GiB static model memory; no full-year model was built or solved.
 - Server 744h strict gate `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` completed on 2026-07-19 19:44 Asia/Shanghai under deployed HEAD `5a9f4ab`. It reached `OPTIMAL + solution_qc=PASS`: 3,955,064 variables, 5,919,746 constraints, 43,707,940 nonzeros, objective `2,196,413.3453 million CNY`, solver runtime 16,245.79 s, wall time 4:37:02 and peak process-tree RSS 21.979 GiB. Hard QC passed with zero bidirectional interprovincial edge-hours, zero DC reverse flow, maximum power-balance residual `3.64e-10 GW`, and maximum constraint/bound/dual violations `9.73e-8`/`6.59e-8`/`8.81e-8`.
 
 - Commit `5a9f4ab` is pushed and deployed. Local tests passed 29/29; the strict local 24h solve reached `OPTIMAL` in 32.00 s with peak RSS 0.694 GiB and every QC hard check passed.
@@ -172,7 +175,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start an 8760h production solve from the old deployed data root. The `5a9f4ab` 744h sparse gate is complete and should be preserved as server evidence. The next model milestone is to commit the local V0719 corrections, push, create a new versioned server data root, generate the three bound tables, and pass readiness plus 24h/168h/corrected-744h gates. Never overwrite `model_ready_20260719_sequential_sparse` or the completed output directory in place. The completed 744h evidence can be inspected with:
+Do not start an 8760h production solve on the current 125 GiB host while available memory is below the 96 GiB runtime gate. The V0719 code and data root are deployed and the 24h server gate has passed; the next safe gates are 168h and 744h V0719 solves. If a full-year trial is still desired before those gates, run only `--preflight-only` or move to a high-memory node. Preserve both the old sparse 744h evidence and the new V0719 data root.
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -183,15 +186,25 @@ export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
-OUT=/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict
+OUT=/data/zz2/National_model/outputs/2030_24h_v0719_capacity_bounds_server
 cat "$OUT/solve_report.json"
 cat "$OUT/solution_qc.json"
 tail -n 80 "$OUT/gurobi.log"
 ```
 
-The completed gate reports `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after the V0719 server deployment gates pass and with at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
+The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.5.8 - 2026-07-19 - V0719 deployed, 24h gate passed, 8760 memory gate blocked
+
+- Git/server state: local commits `451b1c0`, `c8db9be` and `bc83663` were pushed to `origin/codex/cispo-2030-full-lp`; server checkout `/data/zz2/National_model/repo` was fast-forwarded to `bc83663`.
+- Scope: deployed V0719 code and data contract to a new additive data root, fixed server smoke-test path resolution for CF and hydrology files, and ran server validation. No old data root or old 744h output was overwritten.
+- Data root: `/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds`; generated `thermal/nuclear_capacity_upper_by_year.csv`, `biomass/capacity_upper_by_province_year.csv` and `storage/battery_capacity_floor_by_province_year.csv`; added missing smoke/QC support files from canonical `model_ready`.
+- Validation evidence: server smoke `139/139 PASS`, server unit tests `32/32 PASS`, readiness `PASS` with full Gurobi license and raw-GRFR SHA256 verification.
+- Solve evidence: server 24h V0719 output `/data/zz2/National_model/outputs/2030_24h_v0719_capacity_bounds_server` reached `OPTIMAL/QC PASS`; model size 341,312 variables / 261,280 constraints / 1,768,957 nonzeros; Gurobi runtime 48.96 s; peak RSS 0.841 GiB; zero nuclear, biomass+BECCS, storage and transmission-direction hard-check violations.
+- 8760 evidence: direct full-year solve was not launched. Full-year preflight `/data/zz2/National_model/outputs/2030_8760_v0719_preflight_memory_check` reported `memory_gate_pass=false`, available memory `73.15 GiB` versus required `96.0 GiB`; estimated full-year scale 40,911,296 variables / 67,603,283 constraints / 520,920,489 nonzeros.
+- Unresolved/next action: wait for memory pressure to clear or use a high-memory node. On this host, run V0719 168h and 744h gates before any full-year production solve. If overriding for an exploratory full-year build, require at least 96 GiB available RAM and start with build-only/preflight evidence, not optimize.
 
 ### v0.5.7 - 2026-07-19 - corrected 744h sparse gate completed
 
