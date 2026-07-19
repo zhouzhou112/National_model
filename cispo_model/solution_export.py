@@ -224,6 +224,18 @@ def export_operational_solution(
     # physical tolerance is 1e-6 in that equation and remains negligible
     # relative to the largest active storage while aligning with LP tolerances.
     reservoir_volume_tolerance_m3 = 1.0
+    flow_direction_tolerance_gw = 1e-6
+    bidirectional_mask = (
+        (flow_forward > flow_direction_tolerance_gw)
+        & (flow_reverse > flow_direction_tolerance_gw)
+    )
+    bidirectional_minimum_flow = np.minimum(flow_forward, flow_reverse)
+    dc_edge_mask = (
+        data.lines.preset_technology.astype(str).str.upper().eq("DC").to_numpy()
+    )
+    maximum_dc_reverse_flow = float(
+        flow_reverse[dc_edge_mask, :].max() if dc_edge_mask.any() else 0.0
+    )
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "optimization_hours": hours,
@@ -268,8 +280,19 @@ def export_operational_solution(
         "objective_component_residual_million_cny": objective_component_residual,
         "total_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "bidirectional_interprovincial_edge_hours": int(
-            ((flow_forward > 1e-7) & (flow_reverse > 1e-7)).sum()
+            bidirectional_mask.sum()
         ),
+        "bidirectional_flow_tolerance_gw": flow_direction_tolerance_gw,
+        "maximum_bidirectional_minimum_flow_gw": float(
+            bidirectional_minimum_flow[bidirectional_mask].max()
+            if bidirectional_mask.any()
+            else 0.0
+        ),
+        "total_bidirectional_minimum_flow_gwh": float(
+            bidirectional_minimum_flow[bidirectional_mask].sum()
+        ),
+        "dc_fixed_direction_edge_count": int(dc_edge_mask.sum()),
+        "maximum_dc_reverse_flow_gw": maximum_dc_reverse_flow,
     }
     hard_checks = {
         "power_balance": qc["maximum_power_balance_residual_gw"] <= tolerance,
@@ -277,6 +300,11 @@ def export_operational_solution(
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
         "vre_availability": qc["maximum_vre_availability_violation_gw"] <= tolerance,
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
+        "unidirectional_interprovincial_flow": qc[
+            "bidirectional_interprovincial_edge_hours"
+        ] == 0,
+        "dc_fixed_direction": qc["maximum_dc_reverse_flow_gw"]
+        <= flow_direction_tolerance_gw,
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,
         "storage_soc": qc["maximum_storage_soc_upper_violation_gwh"] <= tolerance,
         "reservoir_transition": qc["maximum_reservoir_transition_residual_m3"] <= reservoir_volume_tolerance_m3,

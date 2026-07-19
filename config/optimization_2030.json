@@ -137,7 +137,7 @@
     "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data"
   },
   "network": {
-    "flow_regularization_yuan_per_mwh": 0.001,
+    "flow_regularization_yuan_per_mwh": 1.0,
     "spur_capex_million_yuan_per_gw_km": 1.214,
     "trunk_capex_million_yuan_per_gw_km": 1.214,
     "substation_capex_million_yuan_per_gw": 241.0,

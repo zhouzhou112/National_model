@@ -349,6 +349,16 @@ def _sha256(path: Path) -> str:
 
 def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Path:
     output_dir = Path(output_dir)
+    # These files are owned by the outer shell/nohup wrapper. In particular,
+    # stdout receives the final printed solve report after this function
+    # returns, so hashing it here would create a manifest that is stale by
+    # construction. Scientific result files and the Gurobi log remain hashed.
+    runtime_managed_files = {
+        "result_manifest.json",
+        "runner_stdout.log",
+        "runner_stderr.log",
+        "run.pid",
+    }
     try:
         git_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"],
@@ -361,7 +371,7 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
         git_commit = "UNAVAILABLE"
     files = []
     for path in sorted(output_dir.rglob("*")):
-        if path.is_file() and path.name != "result_manifest.json":
+        if path.is_file() and path.name not in runtime_managed_files:
             files.append(
                 {
                     "path": path.relative_to(output_dir).as_posix(),
@@ -375,6 +385,7 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
         "planning_year": config.planning_year,
         "git_commit": git_commit,
         "configuration": str(config.path),
+        "excluded_runtime_files": sorted(runtime_managed_files - {"result_manifest.json"}),
         "files": files,
     }
     path = output_dir / "result_manifest.json"

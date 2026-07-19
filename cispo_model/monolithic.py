@@ -510,6 +510,13 @@ def build_full_year_monolithic(
     edge_count = len(data.lines)
     flow_forward = model.addMVar((edge_count, hours), lb=0.0, name="flow_forward_gw")
     flow_reverse = model.addMVar((edge_count, hours), lb=0.0, name="flow_reverse_gw")
+    dc_edge_rows = np.flatnonzero(
+        data.lines.preset_technology.astype(str).str.upper().eq("DC").to_numpy()
+    )
+    if len(dc_edge_rows):
+        # CISPO S4-55 models DC corridors in their committed direction only.
+        # AC corridors retain both directions subject to the shared S4-56 cap.
+        flow_reverse[dc_edge_rows, :].UB = 0.0
     model.addConstr(flow_forward + flow_reverse <= line_capacity[:, None], name="line_capacity_hourly")
     forward_incidence, reverse_incidence, line_efficiency = _network_incidence(data, p_index)
     network_injection = forward_incidence @ flow_forward + reverse_incidence @ flow_reverse

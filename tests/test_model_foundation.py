@@ -127,6 +127,17 @@ class ModelFoundationTests(unittest.TestCase):
                 stack.extend(adjacency[node].difference(visited))
             self.assertEqual(visited, node_ids, msg=f"disconnected province {province_code}")
 
+    def test_interprovincial_flow_regularization_matches_cispo_units(self):
+        # CISPO specifies 0.001 yuan/kWh, which is exactly 1 yuan/MWh.
+        self.assertEqual(
+            float(self.config.raw["network"]["flow_regularization_yuan_per_mwh"]),
+            1.0,
+        )
+        technologies = set(
+            self.data.lines.preset_technology.astype(str).str.upper()
+        )
+        self.assertEqual(technologies, {"AC", "DC"})
+
 
 if __name__ == "__main__":
     unittest.main()

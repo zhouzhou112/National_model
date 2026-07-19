@@ -223,7 +223,9 @@ def export_master_solution(
         ].copy()
         centers["annual_injection_gwh"] = variables["load_center_annual_injection"].X
         centers["annual_effective_demand_gwh"] = variables["load_center_annual_demand"].X
-        centers["annual_external_export_gwh"] = variables["load_center_external_export"].X
+        centers["annual_external_net_import_gwh"] = variables[
+            "load_center_external_net_import"
+        ].X
         centers.to_csv(
             output_dir / "load_center_annual_balance.csv",
             index=False,
@@ -272,6 +274,12 @@ def export_master_solution(
         province_accounts["annual_external_sent_gwh"] = variables[
             "province_annual_external_sent"
         ].X
+        province_accounts["annual_external_received_gwh"] = variables[
+            "province_annual_external_received"
+        ].X
+        province_accounts["annual_external_net_import_gwh"] = variables[
+            "province_annual_external_net_import"
+        ].X
         province_accounts.to_csv(
             output_dir / "province_annual_load_center_accounts.csv",
             index=False,
@@ -281,8 +289,8 @@ def export_master_solution(
         reverse = variables["intra_load_center_flow_reverse"].X
         balance_residual = (
             variables["load_center_annual_injection"].X
+            + variables["load_center_external_net_import"].X
             - variables["load_center_annual_demand"].X
-            - variables["load_center_external_export"].X
         )
         center_index = artifacts.index["load_center_index"]
         for edge, row in enumerate(data.intra_load_center_edges.itertuples(index=False)):
@@ -292,15 +300,15 @@ def export_master_solution(
             balance_residual[destination] += forward[edge]
             balance_residual[destination] -= reverse[edge]
             balance_residual[origin] += reverse[edge]
-        province_export_residual = []
-        external_sent = variables["province_annual_external_sent"].X
+        province_net_exchange_residual = []
+        external_net_import = variables["province_annual_external_net_import"].X
         for p, province_code in enumerate(artifacts.index["province_codes"]):
             positions = data.load_centers.index[
                 data.load_centers.province_code.eq(province_code)
             ].to_numpy(dtype=int)
-            province_export_residual.append(
-                variables["load_center_external_export"].X[positions].sum()
-                - external_sent[p]
+            province_net_exchange_residual.append(
+                variables["load_center_external_net_import"].X[positions].sum()
+                - external_net_import[p]
             )
         design_hours = float(artifacts.index["intra_load_center_design_hours"])
         capacity_residual = (
@@ -314,8 +322,8 @@ def export_master_solution(
         )
         qc = {
             "maximum_center_balance_residual_gwh": float(np.abs(balance_residual).max()),
-            "maximum_province_export_residual_gwh": float(
-                np.abs(province_export_residual).max()
+            "maximum_province_net_exchange_residual_gwh": float(
+                np.abs(province_net_exchange_residual).max()
             ),
             "maximum_intra_capacity_violation_gwh": float(
                 np.maximum(capacity_residual, 0.0).max()
@@ -332,8 +340,9 @@ def export_master_solution(
         )
         if (
             qc["maximum_center_balance_residual_gwh"] > 1e-5
-            or qc["maximum_province_export_residual_gwh"] > 1e-5
+            or qc["maximum_province_net_exchange_residual_gwh"] > 1e-5
             or qc["maximum_intra_capacity_violation_gwh"] > 1e-5
+            or qc["bidirectional_active_edge_count"] > 0
             or qc["dpv_spur_augmentation_max_gw"] > 1e-8
         ):
             raise RuntimeError(f"Load-center solution QC failed: {qc}")

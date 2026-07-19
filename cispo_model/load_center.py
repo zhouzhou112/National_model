@@ -37,7 +37,9 @@ def attach_annual_load_center_network(
 
     Spatial VRE and hydropower generation are attributed to their connected
     Natural Earth centers. Province-aggregated terms are allocated by the
-    fixed annual center demand shares. Summing every center balance within a
+    fixed annual center demand shares. Interprovincial exchange enters this
+    annual layer as net received-minus-sent energy, so the center proxy cannot
+    create a gross import/export loop. Summing every center balance within a
     province exactly recovers the summed provincial hourly power balance when
     intra-province losses are zero.
     """
@@ -74,8 +76,10 @@ def attach_annual_load_center_network(
     center_demand = model.addMVar(
         center_count, lb=0.0, name="load_center_annual_effective_demand_gwh"
     )
-    center_export = model.addMVar(
-        center_count, lb=0.0, name="load_center_external_export_gwh"
+    center_external_net_import = model.addMVar(
+        center_count,
+        lb=-gp.GRB.INFINITY,
+        name="load_center_external_net_import_gwh",
     )
     intra_forward = model.addMVar(
         edge_count, lb=0.0, name="intra_load_center_flow_forward_gwh"
@@ -91,6 +95,14 @@ def attach_annual_load_center_network(
     )
     province_external_sent = model.addMVar(
         len(provinces), lb=0.0, name="province_annual_external_sent_gwh"
+    )
+    province_external_received = model.addMVar(
+        len(provinces), lb=0.0, name="province_annual_external_received_gwh"
+    )
+    province_external_net_import = model.addMVar(
+        len(provinces),
+        lb=-gp.GRB.INFINITY,
+        name="province_annual_external_net_import_gwh",
     )
 
     # Attribute actual province-technology VRE generation to centers while
@@ -208,8 +220,7 @@ def attach_annual_load_center_network(
         model.addConstr(
             province_non_spatial_injection[p]
             == actual_thermal[p, :, :].sum()
-            + storage_discharge[p, :, :].sum()
-            + received_energy[p],
+            + storage_discharge[p, :, :].sum(),
             name=f"province_annual_non_spatial_injection_p{province_code}",
         )
         model.addConstr(
@@ -222,6 +233,15 @@ def attach_annual_load_center_network(
         model.addConstr(
             province_external_sent[p] == sent_energy[p],
             name=f"province_annual_external_sent_p{province_code}",
+        )
+        model.addConstr(
+            province_external_received[p] == received_energy[p],
+            name=f"province_annual_external_received_p{province_code}",
+        )
+        model.addConstr(
+            province_external_net_import[p]
+            == received_energy[p] - sent_energy[p],
+            name=f"province_annual_external_net_import_p{province_code}",
         )
 
     # Center injection and effective demand use the same fixed annual share for
@@ -244,12 +264,19 @@ def attach_annual_load_center_network(
                 center_demand[center_position] == share * province_effective_demand[p],
                 name=f"load_center_annual_demand_{center_position}",
             )
+            model.addConstr(
+                center_external_net_import[center_position]
+                == share * province_external_net_import[p],
+                name=f"load_center_external_net_import_{center_position}",
+            )
         else:
             model.addConstr(
                 center_injection[center_position] == spatial_injection,
                 name=f"load_center_annual_injection_{center_position}",
             )
             center_demand[center_position].UB = 0.0
+            center_external_net_import[center_position].LB = 0.0
+            center_external_net_import[center_position].UB = 0.0
 
     forward_in: list[list[int]] = [[] for _ in range(center_count)]
     forward_out: list[list[int]] = [[] for _ in range(center_count)]
@@ -275,19 +302,11 @@ def attach_annual_load_center_network(
         if reverse_out[center_position]:
             outflow += intra_reverse[reverse_out[center_position]].sum()
         model.addConstr(
-            center_injection[center_position] + inflow
-            == center_demand[center_position] + outflow + center_export[center_position],
+            center_injection[center_position]
+            + center_external_net_import[center_position]
+            + inflow
+            == center_demand[center_position] + outflow,
             name=f"load_center_annual_energy_balance_{center_position}",
-        )
-
-    for province_code in provinces:
-        p = province_index[province_code]
-        center_positions = centers.index[
-            centers.province_code.eq(province_code)
-        ].to_numpy(dtype=int)
-        model.addConstr(
-            center_export[center_positions].sum() == province_external_sent[p],
-            name=f"load_center_external_export_closure_p{province_code}",
         )
 
     utilization = float(config.raw["load_center_network"]["design_utilization_fraction"])
@@ -304,12 +323,14 @@ def attach_annual_load_center_network(
         load_center_reservoir_generation=center_reservoir_generation,
         load_center_annual_injection=center_injection,
         load_center_annual_demand=center_demand,
-        load_center_external_export=center_export,
+        load_center_external_net_import=center_external_net_import,
         intra_load_center_flow_forward=intra_forward,
         intra_load_center_flow_reverse=intra_reverse,
         province_annual_non_spatial_injection=province_non_spatial_injection,
         province_annual_effective_demand=province_effective_demand,
         province_annual_external_sent=province_external_sent,
+        province_annual_external_received=province_external_received,
+        province_annual_external_net_import=province_external_net_import,
     )
     artifacts.index.update(
         load_center_ids=center_ids,

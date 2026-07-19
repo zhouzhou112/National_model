@@ -296,7 +296,7 @@ C_{trans\_DC} =
 \sum_{t\in T}\kappa^{vom}_l f^{DC,\to}_{l,t}\right]
 ```
 
-> CISPO 中 `kappa_vom_l` 取一个很小的值，用于避免交流线路同小时双向流动，并避免 AC/DC 人工偏好。
+> CISPO 中 `kappa_vom_l` 取 `0.001 yuan/kWh = 1 yuan/MWh`，用于避免交流线路同小时双向流动，并避免 AC/DC 人工偏好。实现中必须按 `yuan/MWh` 配置为 `1.0`，不能误写为 `0.001 yuan/MWh`。
 
 ### 4.10 风光/CSP/水电接入线 spur line 成本
 
@@ -1014,6 +1014,8 @@ f^{DC,\to}_{l,t}\le p^{DC}_{l},
 f^{AC,\to}_{l,t}+f^{AC,\leftarrow}_{l,t}\le p^{AC}_{l},
 \quad \forall l\in L^{AC},\; t\in T
 ```
+
+> 当前实现对 AC 保留正反向非负流量并施加上述共享容量约束；对 DC 按 S4-55 将反向流量上界固定为 0。年度负荷中心代理层只接收省级净外部交换，避免额外的毛进口/毛出口闭合重新诱导小时级对冲潮流。`solution_qc.json` 将 AC 同小时实质性双向流动和 DC 反向流动均列为硬失败。
 
 > 该约束配合极小输电可变成本，用于避免同小时无意义的双向流动。
 
