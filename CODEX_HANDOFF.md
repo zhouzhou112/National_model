@@ -14,14 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.1`
+- Handoff version: `v0.5.2`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); deployed tracked-file baseline `827b37f` contains that implementation plus its validated tests and handoff material. Later documentation-only commits may advance HEAD; always verify live HEAD directly.
+- Current implementation commit: `1b6da28` (`fix: align interprovincial flows with CISPO`). It retains the sequential/sparse implementation from `2a0ee99` and corrects the transmission formulation/QC discovered by the 744h audit.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
-- Replacement 744h CPU barrier gate is currently running as PID `3778049`; it is not accepted until `solve_report.json` reports `OPTIMAL` and `solution_qc.json` reports `PASS`.
+- PID `3778049` completed mathematically `OPTIMAL`, but its result is rejected as a physical model gate because the prior QC omitted 3,358 material AC bidirectional edge-hours. Commit `1b6da28` is the replacement formulation and still requires a new server 24h and 744h gate.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -143,7 +143,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - PHS open-loop/closed-loop hydraulic pairing is unavailable. PHS is represented as province-level 8h storage with a GHT 2026 operating floor and year-available project upper.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
-- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. The old 744h run was interrupted with no solution; replacement PID `3778049` is active but remains unvalidated until solve/QC reports exist. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
+- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. PID `3778049` reached mathematical optimality but is preserved as a rejected transmission-formulation baseline; a corrected 744h run is still required. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
 - Core cascade environmental flow now uses a 2019 single-year monthly P30 proxy. This follows the requested P30 direction but is still not the formal 1980-2019 climatological P30; manual review of the 4 low-correlation / 18 max-bound lag edges also remains unresolved input work.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
@@ -154,7 +154,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start the 8760h build or production solve while the replacement 744h gate is active or available RAM is below 64 GiB. Check the replacement gate at low frequency:
+Do not start the 8760h build or production solve. First deploy commit `1b6da28`, pass the server 26-test suite and a corrected 24h gate, then wait for at least 64 GiB available RAM before launching another 744h gate. The old output remains diagnostic evidence only:
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -172,9 +172,19 @@ tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-When PID `3778049` exits, inspect both reports and record build/solve/export time, peak memory and balance/water residuals. Acceptance requires `OPTIMAL + solution_qc=PASS`; the one-hour runtime remains a target, not a verified promise. GPU-PDHG is not the default route. Only after acceptance and after available RAM again exceeds the 64 GiB gate may an 8760h `build-only` run begin; only after that gate may the 2030 production solve and subsequent state-chained years begin.
+The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and after available RAM exceeds the 64 GiB gate may an 8760h `build-only` run begin.
 
 ## Version history
+
+### v0.5.2 - 2026-07-19 - CISPO transmission alignment after 744h result audit
+
+- Git implementation: `1b6da28` (`fix: align interprovincial flows with CISPO`).
+- Rejected baseline: `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu` reached `OPTIMAL` in 20,118.58 s with 22.141 GiB peak RSS, but contained 3,358 material bidirectional edge-hours, 3,909.04 GWh summed opposing minimum flow and a 4.393 GW maximum opposing minimum flow.
+- Root causes: the model configured `0.001 yuan/MWh` instead of CISPO's `0.001 yuan/kWh = 1 yuan/MWh`; DC reverse flow was not fixed to zero; the added annual load-center layer closed gross sent/received energy and rewarded artificial loops.
+- Fix: AC keeps `f_forward + f_reverse <= capacity`; DC reverse UB is zero; flow cost is 1 yuan/MWh; the annual load-center layer closes province net exchange; AC bidirectionality and DC reverse flow are hard QC failures; shell-managed files are excluded from the scientific SHA256 manifest.
+- Local verification: tests 26/26 PASS; corrected 24h model 350,024 variables, 261,280 constraints and 1,867,006 nonzeros; `OPTIMAL` in 40.02 s; peak RSS 0.700 GiB; power-balance residual `5.35e-12 GW`; zero AC bidirectionality; zero DC reverse flow across 363 DC edges; manifest mismatches zero.
+- Detailed evidence: `TRANSMISSION_FLOW_AUDIT_20260719.md`.
+- Next action: deploy `1b6da28`, run server tests and corrected 24h gate, then defer the corrected 744h until shared-server available RAM is safe.
 
 ### v0.5.1 - 2026-07-19 - server synchronization and replacement 744h launch
 

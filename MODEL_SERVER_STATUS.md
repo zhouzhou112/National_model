@@ -2,15 +2,15 @@
 
 ## 2026-07-19 synchronized server validation
 
-- Current implementation commit: `2a0ee99` (`feat: add sequential planning and stabilize full-year LP`); deployed tracked-file baseline `827b37f` contains that implementation. Later documentation-only commits may advance HEAD.
+- Current implementation commit: `1b6da28` (`fix: align interprovincial flows with CISPO`).
 - The production sequence is now 2030/2040/2050/2060, with checksummed capacity-cohort transfer between successive full-year solves.
 - Local final 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; `OPTIMAL` in 58.79 s; `solution_qc=PASS`; peak RSS 0.698 GiB.
 - Local full-year preflight: 44,090,772 variables, 67,603,314 constraints, 853,505,952 estimated nonzeros and 46.62 GiB estimated model memory; local available RAM does not meet the 64 GiB build gate.
 - PHS now uses the GHT 2026 province-level 8h-storage floor/project-pipeline upper: 2030 national floor 65.94 GW and upper 249.191 GW; 2040+ upper 514.755 GW.
 - Server readiness and raw-GRFR SHA256 verification passed on the 2026-07-19 versioned data roots; server regression tests passed 24/24.
 - Server 24h gate: 349,962 variables, 260,973 constraints and 1,827,246 nonzeros; `OPTIMAL` in 60.53 s; `solution_qc=PASS`; peak RSS 0.851 GiB.
-- Replacement 744h CPU gate is active as PID `3778049` under `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`; it is not accepted yet.
-- Do not start 8760 until the replacement 744h gate returns `OPTIMAL + solution_qc PASS` and available RAM is at least 64 GiB. At launch, shared jobs left about 49 GiB available and swap was full.
+- PID `3778049` completed `OPTIMAL`, but the result is rejected: 3,358 material simultaneous AC-direction edge-hours were omitted from the former hard QC. The corrected formulation still needs new server gates.
+- Do not start 8760 until commit `1b6da28` passes corrected server 24h and 744h gates and available RAM is at least 64 GiB. After the rejected run, shared jobs left only about 32 GiB available and swap was full.
 
 ## Boundary and architecture
 
@@ -70,7 +70,8 @@
 - Commit `281f9c7` scales water flow/volume variables without changing physical equations. Server 168h validation under `/data/zz2/National_model/outputs/2030_diagnostic_168h_numerics_scaled` reached `OPTIMAL` in `675.56 s`, used `4.061 GiB` peak RSS and passed every `solution_qc.json` hard check.
 - Commit `a8cd150` switches hydropower environmental flow to the 2019 single-year monthly P30 proxy and removes obsolete master boundary variables. Server 24h P30 CPU validation under `/data/zz2/National_model/outputs/2030_diagnostic_24h_p30_cleanup_cpu` reached `OPTIMAL` in `45.06 s`, used `0.879 GiB` peak RSS and passed `solution_qc.json`.
 - GPU-enabled Gurobi is available only in `/home/zz2/.local/envs/cispo-gurobi-gpu` (`gurobipy 13.0.2+cu129`). It confirmed `Start PDHG on GPU`, but the same 24h model with GPU-PDHG was still iterating after about 600 s and was interrupted without `solve_report.json`; CPU barrier remains the default route.
-- The obsolete PID `863603` was no longer active on 2026-07-19. Replacement PID `3778049` is active under `/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu`; its initial health check showed an active build, empty `stderr` and about 1.41 GiB RSS after 55 seconds. No acceptance report existed at that checkpoint, so 8760h remains blocked.
+- PID `3778049` completed with 3,955,002 variables, 5,919,470 constraints and 44,169,131 nonzeros; build 348.74 s, solve 20,118.58 s and peak RSS 22.141 GiB. Although the old report says `solution_qc=PASS`, post-audit found 3,358 material bidirectional edge-hours, so the output is explicitly rejected and 8760h remains blocked.
+- Commit `1b6da28` aligns with CISPO S4-55/S4-56: AC shared bidirectional capacity, DC fixed direction, `0.001 yuan/kWh = 1 yuan/MWh` flow cost, net-exchange load-center closure and hard directionality QC. Local 26/26 tests and corrected 24h `OPTIMAL/QC PASS` succeeded with zero AC bidirectionality and zero DC reverse flow.
 
 ## Explicit unresolved inputs
 
