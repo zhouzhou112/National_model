@@ -1,5 +1,5 @@
 {
-  "contract_version": "v1",
+  "contract_version": "v2",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
@@ -8,11 +8,13 @@
     "load/hourly_load_2025_2060.csv.gz",
     "thermal/capacity_floor_by_year.csv",
     "thermal/nuclear_capacity_floor_by_year.csv",
+    "thermal/nuclear_capacity_upper_by_year.csv",
     "hydro/hydro_stations.csv",
     "hydro/cascade_topology_nodes.csv",
     "hydro/cascade_topology_edges.csv",
     "hydro/timeseries_index.csv",
     "biomass/fuel_potential_by_province_year.csv",
+    "biomass/capacity_upper_by_province_year.csv",
     "transmission/candidate_corridors.csv",
     "carbon/emissions_limits_by_scenario.csv",
     "technology/technology_capex_by_year.csv",
@@ -20,6 +22,7 @@
     "technology/thermal_nuclear_om_parameters.csv",
     "technology/storage_technical_parameters.csv",
     "storage/phs_capacity_bounds_by_province_year.csv",
+    "storage/battery_capacity_floor_by_province_year.csv",
     "technology/province_fuel_generation_cost_by_year.csv",
     "technology/emission_factors_by_year.csv",
     "technology/dac_parameters_by_year.csv",

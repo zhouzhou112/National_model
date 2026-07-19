@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -12,7 +13,7 @@ from data_package_common import write_output_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+DATA = Path(os.environ.get("CISPO_DATA_ROOT", str(ROOT / "data"))).resolve()
 EXPECTED_PROVINCES = 31
 EXPECTED_YEARS = [2025, 2030, 2040, 2050, 2060]
 
@@ -179,6 +180,37 @@ def main() -> None:
     checks.check("nuclear_rows", len(nuclear) == 31 * 5, len(nuclear), "155")
     checks.check("nuclear_pipeline_totals", nuclear_totals == expected_nuclear, str(nuclear_totals), str(expected_nuclear))
 
+    nuclear_upper = pd.read_csv(DATA / "thermal" / "nuclear_capacity_upper_by_year.csv")
+    nuclear_upper_totals = nuclear_upper.groupby("year").capacity_upper_gw.sum().round(6).to_dict()
+    expected_nuclear_upper = {2030: 110.0, 2040: 205.0, 2050: 300.0, 2060: 300.0}
+    checks.check("nuclear_upper_rows", len(nuclear_upper) == 31 * 4, len(nuclear_upper), "124")
+    checks.check(
+        "nuclear_upper_unique_index",
+        not nuclear_upper.duplicated(["province_code", "year"]).any(),
+        int(nuclear_upper.duplicated(["province_code", "year"]).sum()),
+        "0 duplicates",
+    )
+    checks.check(
+        "nuclear_upper_province_coverage",
+        nuclear_upper.groupby("year").province_code.nunique().eq(31).all(),
+        nuclear_upper.groupby("year").province_code.nunique().to_dict(),
+        "31 provinces in each planning year",
+    )
+    checks.check(
+        "nuclear_upper_national_totals",
+        nuclear_upper_totals == expected_nuclear_upper,
+        str(nuclear_upper_totals),
+        str(expected_nuclear_upper),
+    )
+    nuclear_floor_planning = nuclear.loc[nuclear.year.ge(2030), ["province_code", "year", "capacity_floor_gw"]]
+    nuclear_bound_check = nuclear_upper.merge(nuclear_floor_planning, on=["province_code", "year"], validate="one_to_one")
+    checks.check(
+        "nuclear_floor_within_upper",
+        nuclear_bound_check.capacity_floor_gw.le(nuclear_bound_check.capacity_upper_gw + 1e-9).all(),
+        int(nuclear_bound_check.capacity_floor_gw.gt(nuclear_bound_check.capacity_upper_gw + 1e-9).sum()),
+        "0 violations",
+    )
+
     hydro = pd.read_csv(DATA / "hydro" / "hydro_stations.csv")
     checks.check("hydro_rows", len(hydro) == 2030, len(hydro), "2030")
     hydro_bound_error = float((hydro.existing_capacity_gw - hydro.capacity_potential_gw).max())
@@ -240,6 +272,35 @@ def main() -> None:
         "249.191 GW",
     )
 
+    battery_bounds = pd.read_csv(DATA / "storage" / "battery_capacity_floor_by_province_year.csv")
+    battery_totals = battery_bounds.groupby("year").capacity_floor_gw.sum().round(6).to_dict()
+    expected_battery_totals = {2030: 65.85, 2040: 0.0, 2050: 0.0, 2060: 0.0}
+    checks.check("battery_bound_rows", len(battery_bounds) == 31 * 4, len(battery_bounds), "124")
+    checks.check(
+        "battery_bound_unique_index",
+        not battery_bounds.duplicated(["province_code", "year", "technology"]).any(),
+        int(battery_bounds.duplicated(["province_code", "year", "technology"]).sum()),
+        "0 duplicates",
+    )
+    checks.check(
+        "battery_bound_province_coverage",
+        battery_bounds.groupby("year").province_code.nunique().eq(31).all(),
+        battery_bounds.groupby("year").province_code.nunique().to_dict(),
+        "31 provinces in each planning year",
+    )
+    checks.check(
+        "battery_bound_nonnegative",
+        battery_bounds.capacity_floor_gw.ge(0).all(),
+        float(battery_bounds.capacity_floor_gw.min()),
+        ">= 0 GW",
+    )
+    checks.check(
+        "battery_bound_national_totals",
+        battery_totals == expected_battery_totals,
+        str(battery_totals),
+        str(expected_battery_totals),
+    )
+
     timeseries = pd.read_csv(DATA / "hydro" / "timeseries_index.csv")
     timeseries_issues = []
     for row in timeseries.itertuples(index=False):
@@ -263,6 +324,42 @@ def main() -> None:
     checks.check("biomass_rows", len(biomass) == 31 * 5, len(biomass), "155")
     checks.check("biomass_province_year_unique", not biomass.duplicated(["province_code", "year"]).any(), int(biomass.duplicated(["province_code", "year"]).sum()), "0 duplicates")
     checks.check("biomass_positive", biomass.thermcal_gj_per_year.gt(0).all(), float(biomass.thermcal_gj_per_year.min()), "> 0 GJ/yr")
+
+    biomass_upper = pd.read_csv(DATA / "biomass" / "capacity_upper_by_province_year.csv")
+    checks.check("biomass_upper_rows", len(biomass_upper) == 31 * 4, len(biomass_upper), "124")
+    checks.check(
+        "biomass_upper_unique_index",
+        not biomass_upper.duplicated(["province_code", "year"]).any(),
+        int(biomass_upper.duplicated(["province_code", "year"]).sum()),
+        "0 duplicates",
+    )
+    checks.check(
+        "biomass_upper_province_coverage",
+        biomass_upper.groupby("year").province_code.nunique().eq(31).all(),
+        biomass_upper.groupby("year").province_code.nunique().to_dict(),
+        "31 provinces in each planning year",
+    )
+    checks.check(
+        "biomass_upper_not_below_existing_pair_floor",
+        biomass_upper.capacity_upper_gw.ge(biomass_upper.minimum_existing_pair_capacity_gw - 1e-9).all(),
+        int((biomass_upper.capacity_upper_gw < biomass_upper.minimum_existing_pair_capacity_gw - 1e-9).sum()),
+        "0 violations",
+    )
+    checks.check(
+        "biomass_upper_formula_or_floor",
+        np.allclose(
+            biomass_upper.capacity_upper_gw,
+            biomass_upper[["formula_capacity_upper_gw", "minimum_existing_pair_capacity_gw"]].max(axis=1),
+            atol=1e-9,
+        ),
+        float(
+            (
+                biomass_upper.capacity_upper_gw
+                - biomass_upper[["formula_capacity_upper_gw", "minimum_existing_pair_capacity_gw"]].max(axis=1)
+            ).abs().max()
+        ),
+        "<= 1e-9 GW",
+    )
 
     carbon = pd.read_csv(DATA / "carbon" / "emissions_limits_by_scenario.csv")
     checks.check("carbon_scenario_rows", len(carbon) == 4 * 5, len(carbon), "20")

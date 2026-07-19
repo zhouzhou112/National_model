@@ -18,6 +18,7 @@
   "carbon_scenario": "Base_-550Mt",
   "ccs_injection_field": "ccs_inj_rec_mtpa",
   "ruc_formula_variant": "CISPO_original",
+  "capacity_bound_profile": "V0719_nuclear_biomass_battery_corrected",
   "time_boundary": "cyclic_year",
   "objective_unit": "million_CNY_per_year",
   "strict_load_balance": true,

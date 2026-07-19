@@ -1,5 +1,35 @@
 # CISPO 2030/8760 server runbook
 
+## V0719 capacity-bound/DC-sparse deployment gate
+
+V0719 adds three required data tables and changes the in-memory reverse-flow index. It must be deployed only after the local working tree is committed and the currently active `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` task has completed or been explicitly preserved. Never rebuild the active `model_ready_20260719_sequential_sparse` directory in place.
+
+After the implementation commit is pushed and the server checkout is fast-forwarded, create an additive data version and generate only the three new bound tables:
+
+```bash
+OLD_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+NEW_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds
+test -d "$OLD_DATA_ROOT"
+test ! -e "$NEW_DATA_ROOT"
+cp -a "$OLD_DATA_ROOT" "$NEW_DATA_ROOT"
+
+cd /data/zz2/National_model/repo
+PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
+$PYTHON scripts/build_v0719_capacity_bounds.py --data-root "$NEW_DATA_ROOT"
+export CISPO_DATA_ROOT="$NEW_DATA_ROOT"
+$PYTHON scripts/smoke_test_data_package.py
+$PYTHON -m unittest discover -s tests -q
+$PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
+```
+
+Acceptance requires 32/32 unit tests, 139/139 data smoke checks and readiness PASS. Confirm the generated national totals before solving:
+
+- nuclear upper 2030/2040/2050/2060 = `110/205/300/300 GW`;
+- battery floor 2030 = `65.85 GW`, later exogenous floors = 0;
+- `bio+bioccs` shared capacity upper is never below inherited pair capacity; the current expected safeguard is Shanghai in four planning years.
+
+Then run new output directories in order: 24h, 168h and corrected 744h. Each must report zero nuclear floor/upper violation, zero biomass/BECCS shared-capacity violation, zero storage-floor violation, zero AC simultaneous bidirectionality and zero DC reverse flow. Do not launch 8760 before corrected 744h acceptance and the 96 GiB available-memory gate.
+
 ## 2026-07-19 deployment note
 
 Implementation commit `1b6da28` supersedes the previously deployed formulation. PID `3778049` completed mathematically `OPTIMAL`, but post-audit rejected it because the former QC did not fail 3,358 material AC bidirectional edge-hours. Do not reuse that result as a solver/model gate.

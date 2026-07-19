@@ -36,6 +36,11 @@ from data_package_common import (
     write_csv,
     write_output_manifest,
 )
+from build_v0719_capacity_bounds import (
+    build_battery_floor as build_v0719_battery_floor,
+    build_biomass_upper as build_v0719_biomass_upper,
+    build_nuclear_upper as build_v0719_nuclear_upper,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +48,7 @@ CONFIG_PATH = ROOT / "config" / "model_data_config.json"
 TECH_CONFIG_PATH = ROOT / "config" / "technology_parameters.json"
 FUEL_CONFIG_PATH = ROOT / "config" / "fuel_prices_supplementary_table2.json"
 DATA_ROOT = ROOT / "data"
+CAPACITY_BOUNDS_CONFIG_PATH = ROOT / "config" / "capacity_bounds_v0719.json"
 
 
 def load_config() -> dict:
@@ -2572,6 +2578,43 @@ def write_readme(config: dict) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def build_v0719_capacity_bounds(qc: list[dict]) -> None:
+    """Build the three explicit capacity-bound tables after their source tables."""
+    bounds_config = json.loads(
+        CAPACITY_BOUNDS_CONFIG_PATH.read_text(encoding="utf-8")
+    )
+    provinces = pd.read_csv(DATA_ROOT / "sets" / "provinces.csv")[[
+        "province_code", "province_name_en", "province_name_zh"
+    ]].sort_values("province_code")
+    nuclear = build_v0719_nuclear_upper(bounds_config, DATA_ROOT, provinces)
+    biomass = build_v0719_biomass_upper(bounds_config, DATA_ROOT, provinces)
+    battery = build_v0719_battery_floor(bounds_config, provinces)
+    write_csv(nuclear, DATA_ROOT / "thermal" / "nuclear_capacity_upper_by_year.csv")
+    write_csv(biomass, DATA_ROOT / "biomass" / "capacity_upper_by_province_year.csv")
+    write_csv(battery, DATA_ROOT / "storage" / "battery_capacity_floor_by_province_year.csv")
+    add_qc(
+        qc,
+        "nuclear_2030_capacity_upper_gw",
+        float(nuclear.loc[nuclear.year.eq(2030), "capacity_upper_gw"].sum()),
+        "PASS",
+        "110 GW national deployment envelope",
+    )
+    add_qc(
+        qc,
+        "battery_2030_capacity_floor_gw",
+        float(battery.loc[battery.year.eq(2030), "capacity_floor_gw"].sum()),
+        "PASS",
+        "65.85 GW merged CISPO Table S17 floor",
+    )
+    add_qc(
+        qc,
+        "biomass_capacity_upper_adjusted_rows",
+        int(biomass.capacity_upper_adjusted_to_floor.sum()),
+        "PASS",
+        "explicit max(S4-34 formula, inherited pair floor) feasibility safeguard",
+    )
+
+
 def main() -> None:
     config = load_config()
     DATA_ROOT.mkdir(parents=True, exist_ok=True)
@@ -2583,6 +2626,7 @@ def main() -> None:
     build_thermal_nuclear(config, qc)
     build_hydro(config, points, qc)
     build_biomass(config, qc)
+    build_v0719_capacity_bounds(qc)
     build_transmission(config, qc)
     build_carbon(config, qc)
     build_technology_parameters(config, qc)

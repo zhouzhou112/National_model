@@ -30,7 +30,8 @@ def attach_annual_load_center_network(
     ror_generation: gp.MVar,
     reservoir_generation: gp.MVar,
     interprovincial_flow_forward: gp.MVar,
-    interprovincial_flow_reverse: gp.MVar,
+    interprovincial_flow_reverse_ac: gp.MVar,
+    interprovincial_reverse_edge_rows: np.ndarray,
     interprovincial_efficiency: np.ndarray,
 ) -> gp.LinExpr:
     """Attach an annual energy network without adding center-hour variables.
@@ -211,14 +212,24 @@ def attach_annual_load_center_network(
 
     received_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]
     sent_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]
+    reverse_position_by_edge = {
+        int(edge_row): position
+        for position, edge_row in enumerate(interprovincial_reverse_edge_rows)
+    }
     for edge, row in enumerate(data.lines.itertuples(index=False)):
         p_from = province_index[int(row.from_province_code)]
         p_to = province_index[int(row.to_province_code)]
         efficiency = float(interprovincial_efficiency[edge])
         sent_energy[p_from] += interprovincial_flow_forward[edge, :].sum()
         received_energy[p_to] += efficiency * interprovincial_flow_forward[edge, :].sum()
-        sent_energy[p_to] += interprovincial_flow_reverse[edge, :].sum()
-        received_energy[p_from] += efficiency * interprovincial_flow_reverse[edge, :].sum()
+        reverse_position = reverse_position_by_edge.get(edge)
+        if reverse_position is not None:
+            sent_energy[p_to] += interprovincial_flow_reverse_ac[
+                reverse_position, :
+            ].sum()
+            received_energy[p_from] += efficiency * interprovincial_flow_reverse_ac[
+                reverse_position, :
+            ].sum()
 
     # Aggregate each dense province-hour expression once. Reusing these scalar
     # annual accounts at the 278 centers avoids duplicating millions of matrix

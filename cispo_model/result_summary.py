@@ -284,7 +284,11 @@ def export_result_summary(
     vre_available = _value(variables["vre_available"])
     ror_available = _value(variables["ror_available"])
     flow_forward = _value(variables["flow_forward"])
-    flow_reverse = _value(variables["flow_reverse"])
+    reverse_edge_rows = np.asarray(
+        artifacts.index["interprovincial_reverse_edge_rows"], dtype=int
+    )
+    flow_reverse = np.zeros_like(flow_forward)
+    flow_reverse[reverse_edge_rows, :] = _value(variables["flow_reverse_ac"])
     efficiency = np.asarray(artifacts.index["line_efficiency"], dtype=float)
     transmission_losses = float(
         ((1.0 - efficiency)[:, None] * (flow_forward + flow_reverse)).sum()

@@ -14,15 +14,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.5`
+- Handoff version: `v0.5.7`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Current implementation commit: `5a9f4ab` (`Reduce annual network matrix duplication`). It retains the CISPO transmission correction from `1b6da28`, removes duplicated annual transmission coefficients and an implied reservoir closure, and hard-checks unique reservoir-to-load-center routing.
+- Server implementation commit remains `5a9f4ab` (`Reduce annual network matrix duplication`). Local V0719 corrections are an uncommitted working tree on Git HEAD `f84143a`; do not describe them as deployed until a dedicated implementation commit is created, pushed and fast-forwarded on the server.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
-- PID `3778049` completed mathematically `OPTIMAL`, but its result is rejected as a physical model gate because the prior QC omitted 3,358 material AC bidirectional edge-hours. Commit `1b6da28` is the replacement formulation and still requires a new server 24h and 744h gate.
+- PID `3778049` completed mathematically `OPTIMAL`, but its result is rejected as a physical model gate because the prior QC omitted 3,358 material AC bidirectional edge-hours.
 - Initial handoff-document commit: `1ac58dd`
 - Server repository: `/data/zz2/National_model/repo`
 - Server Git remote: `/home/zz2/git/National_model.git`
@@ -44,6 +44,7 @@ This is the repository's single handoff document for work continued across Codex
 - Continuous capacity-based thermal RUC, ramping, reserve and inertia.
 - Battery and PHS state of charge; station-level hydropower, reservoir balance and committed core-cascade hydropower coupling for the Stage2 recommended mainstem groups.
 - 411 interprovincial transmission corridors and strict hourly provincial power balance.
+- V0719 local working tree adds nuclear upper bounds, a shared `bio+bioccs` capacity upper, the CISPO Table S17 2030 battery floor and AC-only reverse-flow active indexing; the server remains on the preceding formulation until gated deployment.
 - DAC, annual carbon and biomass accounting, CCS capture and point-level injection.
 - Spur line, trunk line and substation augmentation.
 - The production load-center scenario is the 278-node Natural Earth paper replication.
@@ -77,11 +78,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Latest verification evidence
 
+- V0719 local capacity-bound/DC-sparse correction: 32/32 unit tests PASS; 139/139 data-package smoke checks PASS; strict 24h output `outputs/2030_24h_v0719_capacity_bounds_dc_sparse_rerun` reached `OPTIMAL + solution_qc=PASS` with 341,312 variables, 261,280 constraints, 1,768,956 nonzeros, 39.79 s solver time and 0.702 GiB peak RSS.
+- New bound QC is zero for nuclear floor/upper, shared biomass+BECCS upper and battery/PHS floor. DC reverse maximum and AC bidirectional edge-hours are zero; maximum power-balance residual is `7.43e-12 GW`.
+- Full-year V0719 estimator: 40,911,296 variables, 67,603,283 constraints, 520,920,489 nonzeros and about 36.0 GiB static model memory. Exact DC variable removal is `363×8760=3,179,880`; no runtime or factor-memory speedup is inferred from this structural reduction.
+- Server 744h strict gate `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` completed on 2026-07-19 19:44 Asia/Shanghai under deployed HEAD `5a9f4ab`. It reached `OPTIMAL + solution_qc=PASS`: 3,955,064 variables, 5,919,746 constraints, 43,707,940 nonzeros, objective `2,196,413.3453 million CNY`, solver runtime 16,245.79 s, wall time 4:37:02 and peak process-tree RSS 21.979 GiB. Hard QC passed with zero bidirectional interprovincial edge-hours, zero DC reverse flow, maximum power-balance residual `3.64e-10 GW`, and maximum constraint/bound/dual violations `9.73e-8`/`6.59e-8`/`8.81e-8`.
+
 - Commit `5a9f4ab` is pushed and deployed. Local tests passed 29/29; the strict local 24h solve reached `OPTIMAL` in 32.00 s with peak RSS 0.694 GiB and every QC hard check passed.
 - The corrected server 168h gate under `/data/zz2/National_model/outputs/2030_168h_sparse_gate_strict` contains 1,071,032 variables, 1,392,960 constraints and 10,100,058 nonzeros. It reached strict `OPTIMAL` in 666.45 s with peak RSS 3.910 GiB, maximum constraint violation `4.17e-8`, zero AC bidirectional edge-hours, zero DC reverse flow and `solution_qc=PASS`.
 - The equivalent annual-network rewrite reduced 168h nonzeros by 380,581 (`3.63%`) without changing decision-variable count. Directly eliminating the VRE/ROR availability auxiliaries was tested and rejected because it duplicated CF coefficients in availability and reserve rows.
 - The full-year runtime memory gate is now 96 GiB. The scale estimator covers all current variable blocks exactly (44,091,176 projected variables), estimates about 520.9 million nonzeros and 36.71 GiB static model memory, and explicitly does not treat this as a barrier-factorization guarantee.
-- Corrected 744h CPU barrier gate launched at `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict`; `/usr/bin/time` PID `3344086`, Python child PID `3344087`. Do not launch 8760 until this run is `OPTIMAL + solution_qc=PASS`.
+- Corrected 744h CPU barrier gate under `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` has passed for deployed HEAD `5a9f4ab`. This preserves the sparse transmission/load-center formulation gate, but it does not include the uncommitted V0719 capacity-bound/DC active-index corrections.
 - Solvability audit commit `ab9dfe8` records the revised 8760h projection: 44,091,176 variables, 68,188,384 constraints and about 515-524 million nonzeros. The existing 853.5 million preflight nonzero count is a conservative structural upper estimate, while its 46.62 GiB memory number is not a barrier peak-memory estimate.
 - Current 24h and 168h build-only numerical audits were written under `outputs/audit_24h_20260719_system_solvability` and `outputs/audit_168h_20260719_system_solvability`. They contain 350,024/261,280/1,867,008 and 1,071,032/1,392,991/10,480,639 variables/constraints/nonzeros respectively.
 - Rejected 744h solver evidence identifies the scaling bottleneck: presolved 3,274,450 rows and 3,353,208 columns; `Factor NZ=8.289e8` (about 10 GB); barrier 10,969.01 s and crossover 9,123.64 s. Linear factor-memory extrapolation alone is about 118 GB at 8760h, so a direct solve on the 125 GiB host is high risk even if build-only succeeds.
@@ -155,7 +161,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - PHS open-loop/closed-loop hydraulic pairing is unavailable. PHS is represented as province-level 8h storage with a GHT 2026 operating floor and year-available project upper.
 - Thermal online fuel term `f_on` is not implemented; fuel is charged on gross generation only.
 - Hydropower type labels are assigned from the available GHT/proxy rules because source data do not provide reliable type labels for every plant; low-confidence labels are retained for now and should be validated later against external station evidence.
-- Core hydropower cascade coupling and the scaled 168h solve have passed server regression, optimization and QC gates. PID `3778049` reached mathematical optimality but is preserved as a rejected transmission-formulation baseline; a corrected 744h run is still required. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
+- Core hydropower cascade coupling, the scaled 168h solve and the corrected 744h sparse transmission gate have passed server regression, optimization and QC gates. PID `3778049` reached mathematical optimality but is preserved as a rejected transmission-formulation baseline. Current implementation covers conventional reservoir cascade operation, not open-loop or closed-loop PHS water-pair coupling.
 - Core cascade environmental flow now uses a 2019 single-year monthly P30 proxy. This follows the requested P30 direction but is still not the formal 1980-2019 climatological P30; manual review of the 4 low-correlation / 18 max-bound lag edges also remains unresolved input work.
 - Capacity credits, inertia threshold and spur/trunk proxy costs still require parameter-source review, but no sensitivity-analysis workflow is requested for the current milestone.
 - The intraprovincial load-center network uses a 50% design-utilization assumption.
@@ -166,7 +172,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start an 8760h production solve. The corrected 24h gate has passed; next implement the exact sparse reductions listed in `MODEL_SOLVABILITY_AUDIT_20260719.md`, rerun regression/24h/168h gates, then wait for at least 64 GiB available RAM and cleared swap pressure before launching a corrected 744h gate. The old output remains diagnostic evidence only:
+Do not start an 8760h production solve from the old deployed data root. The `5a9f4ab` 744h sparse gate is complete and should be preserved as server evidence. The next model milestone is to commit the local V0719 corrections, push, create a new versioned server data root, generate the three bound tables, and pass readiness plus 24h/168h/corrected-744h gates. Never overwrite `model_ready_20260719_sequential_sparse` or the completed output directory in place. The completed 744h evidence can be inspected with:
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -177,16 +183,36 @@ export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
-OUT=/data/zz2/National_model/outputs/2030_one_month_20260719_sequential_sparse_cpu
-PID=$(cat "$OUT/run.pid")
-ps -p "$PID" -o pid,etime,%cpu,%mem,rss,stat,cmd
+OUT=/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict
+cat "$OUT/solve_report.json"
+cat "$OUT/solution_qc.json"
 tail -n 80 "$OUT/gurobi.log"
-ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and with at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
+The completed gate reports `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after the V0719 server deployment gates pass and with at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.5.7 - 2026-07-19 - corrected 744h sparse gate completed
+
+- Git/server state: server checkout HEAD `5a9f4ab`; local V0719 capacity-bound/DC active-index corrections remain an uncommitted working tree on local HEAD `f84143a` and were not used by this server run.
+- Scope: verified completion of `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict`; no model code, data root or server process was changed.
+- Verification evidence: `solve_report.json` reports `OPTIMAL`, `solution_count=1`, objective `2,196,413.3453 million CNY`, runtime `16,245.79 s`, barrier iterations `214`, simplex/crossover iterations `1,468,988`, peak process-tree RSS `21.979 GiB`, and model size 3,955,064 variables / 5,919,746 constraints / 43,707,940 nonzeros. `/usr/bin/time` reports wall time 4:37:02, maximum RSS 23,469,440 kB and exit status 0.
+- QC evidence: `solution_qc.json` reports `PASS`, maximum power-balance residual `3.64e-10 GW`, zero line-capacity violation, zero bidirectional interprovincial edge-hours, zero DC reverse flow across 363 DC corridors, zero biomass/carbon/CO2 sink violations and all hard checks true.
+- Unresolved/next action: preserve this as the completed pre-V0719 sparse gate. Do not start 8760 production on this older scientific boundary. Commit/push V0719, build a new versioned data root with the three new capacity-bound tables, then rerun readiness, tests, smoke, 24h, 168h and corrected 744h before any 8760 build-only or solve.
+
+### v0.5.6 - 2026-07-19 - V0719 capacity bounds and DC active-index correction
+
+- Git state: branch `codex/cispo-2030-full-lp`, local HEAD `f84143a`, implementation base `5a9f4ab`; V0719 changes are intentionally left uncommitted pending user review. Server HEAD remains `5a9f4ab`.
+- Scope: implemented the four issues identified in `supplementary_materials/MODEL_V0719_REVIEW_REPORT.md`: nuclear capacity upper, shared biomass+BECCS capacity upper, 2030 battery exogenous floor and removal of DC reverse fixed-zero variables.
+- Main changed files: `config/capacity_bounds_v0719.json`, `scripts/build_v0719_capacity_bounds.py`, data/config loaders, `cispo_model/master.py`, `monolithic.py`, `load_center.py`, `solution_export.py`, `result_summary.py`, `preflight.py`, model-input contract/config, data-package builder/smoke tests, unit tests, model specification and V0719 report.
+- Generated inputs: `thermal/nuclear_capacity_upper_by_year.csv` (124 rows), `biomass/capacity_upper_by_province_year.csv` (124 rows), `storage/battery_capacity_floor_by_province_year.csv` (124 rows). These are generated under the configured data root and remain outside Git with the rest of `data/`.
+- Scientific boundaries: nuclear national upper `110/205/300/300 GW`; shared `bio+bioccs` upper uses `thermcal×0.35/(3600×6132)` with an inherited-floor safeguard that triggers only in Shanghai; 2030 battery floor totals 65.85 GW after Mengdong/Mengxi merge and is zero as an exogenous boundary from 2040 onward.
+- Exact sparsification: reverse variables now exist only for 48 AC corridors; all 411 corridors retain forward variables. Dense 411-row reverse output is reconstructed with DC rows zero, preserving file/API compatibility. Full-year variable reduction is 3,179,880.
+- Commands/evidence: `C:\Users\ZZ\.conda\envs\RL\python.exe scripts\build_v0719_capacity_bounds.py`; `... -m unittest discover -s tests -q` passed 32/32 in 17.62 s; `... scripts\smoke_test_data_package.py` passed 139/139; strict 24h solve at `outputs/2030_24h_v0719_capacity_bounds_dc_sparse_rerun` reached `OPTIMAL/QC PASS` with 341,312 variables, 261,280 constraints, 1,768,956 nonzeros, solver 39.79 s and peak RSS 0.702 GiB.
+- Validation details: all new capacity-bound violations are zero; DC reverse flow and AC simultaneous bidirectionality are zero; maximum power-balance residual `7.43e-12 GW`. The first too-short timeout output `outputs/2030_24h_v0719_capacity_bounds_dc_sparse` is retained as an interrupted trace.
+- Server evidence: at 2026-07-19 16:42 Asia/Shanghai, `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` remained active under PID `3344086`, elapsed 01:35:08 at barrier iteration 107, with no solve/QC reports. It uses the old versioned data root and was not modified.
+- Unresolved/next action: commit/push only after review; after the old 744h is preserved, create a new versioned data root, generate the three bound tables and pass server readiness, 32 tests, 139 smoke checks, 24h, 168h and corrected 744h. Do not run 8760 yet. Long-term nuclear, updated biomass, separated battery GW/GWh, formal multi-year hydrology and CSP remain scenario/data work, not hidden hard constraints.
 
 ### v0.5.5 - 2026-07-19 - annual-network sparse cleanup and corrected 168h gate
 

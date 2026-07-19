@@ -811,6 +811,18 @@ CISPO 中 `sigma_on = 0.5`。
 \quad \forall g
 ```
 
+V0719 实现以 `data/biomass/capacity_upper_by_province_year.csv` 为直接输入，对 `bio + bioccs` 施加共享省级上界。表中公式为
+
+```math
+\overline{u}^{tot}_{g,bio}
+=\max\left(
+\frac{thermcal_{g,bio}\eta_{bio}}{3600\,h^{eq}_{bio}},
+\underline u^{existing}_{g,bio}+\underline u^{existing}_{g,bioccs}
+\right),
+```
+
+其中 `eta_bio=0.35`、`h_eq_bio=6132 h`。第二项是既有容量可行性保护；当前只在上海触发。S4-34 与 S4-35 同时保留，分别约束装机规模和年度燃料消耗。
+
 ### S4-35 生物质燃料年消耗上限
 
 ```math
@@ -830,6 +842,8 @@ thermcal_{g,bio},
 \underline{u}^{tot}_{g,pt}\le u^{tot}_{g,pt}\le \overline{u}^{tot}_{g,pt},
 \quad \forall g,\; pt\in NP
 ```
+
+V0719 下界继续使用 GEM committed/pipeline；上界由 `data/thermal/nuclear_capacity_upper_by_year.csv` 读取。全国 2030/2040/2050/2060 上界为 `110/205/300/300 GW`，省级分配先保证不低于管线下界，再按 2050 管线权重分配剩余包络。2030 的 110 GW 是官方规划锚点，2040-2060 是显式研究情景，不应解释为官方目标。
 
 ## 5.5.9 CCS 改造配对约束
 
@@ -1015,7 +1029,7 @@ f^{AC,\to}_{l,t}+f^{AC,\leftarrow}_{l,t}\le p^{AC}_{l},
 \quad \forall l\in L^{AC},\; t\in T
 ```
 
-> 当前实现对 AC 保留正反向非负流量并施加上述共享容量约束；对 DC 按 S4-55 将反向流量上界固定为 0。年度负荷中心代理层只接收省级净外部交换，避免额外的毛进口/毛出口闭合重新诱导小时级对冲潮流。`solution_qc.json` 将 AC 同小时实质性双向流动和 DC 反向流动均列为硬失败。
+> 当前实现对 AC 保留正反向非负流量并施加上述共享容量约束；对 DC 按 S4-55 **不创建反向变量**。内部变量为 `flow_forward_gw[411,H]` 和 `flow_reverse_ac_gw[48,H]`；结果导出时重建 411 行反向数组并将 DC 行填 0，以保持输出兼容。年度负荷中心代理层只接收省级净外部交换，避免额外的毛进口/毛出口闭合重新诱导小时级对冲潮流。`solution_qc.json` 将 AC 同小时实质性双向流动和 DC 反向流动均列为硬失败。
 
 > 该约束配合极小输电可变成本，用于避免同小时无意义的双向流动。
 
@@ -1391,7 +1405,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 9. `outputs/model_diagnostics.json`
    - constraints count, variables count, nonzeros, solve status, gap, runtime, infeasibility diagnostics.
 
-### 7.3 当前 31 省模型输入数据包（2026-07-01）
+### 7.3 当前 31 省模型输入数据包（V0719）
 
 可直接读取的数据位于 `data/`，由 `scripts/build_cispo_data_package.py` 统一生成，独立完整性检查由 `scripts/smoke_test_data_package.py` 执行。所有容量和功率字段已统一为 GW；大型小时容量因子和水文 NetCDF 不复制，在索引表中记录绝对原始路径、数组维度和时间口径。
 
@@ -1404,9 +1418,10 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 小时容量因子 | `data/vre/hourly_cf_index.csv` | 索引 `D:\National_model\Data\Gis\Hourly_cf` 下 2020–2025 Zarr；默认气象年为 2023 |
 | 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
-| 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv` | GEM committed/pipeline 下界；不强制 2050 年 300 GW，2060 暂保持 2050 管线下界 |
+| 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv`、`data/thermal/nuclear_capacity_upper_by_year.csv` | GEM committed/pipeline 下界；V0719 全国上界 2030/2040/2050/2060 = 110/205/300/300 GW，省级按管线权重分配 |
 | 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级站使用本地 GRFR 增量入流 + 上游发电/弃水时滞到达，其余水库站保持独立水量平衡；环境流量为 2019 单年 monthly P30 代理，正式多年 P30 尚未接入 |
-| 生物质 | `data/biomass/fuel_potential_by_province_year.csv` | 省级农业残余、林业残余、能源作物热值约束；2030/2040 线性插值，2060 保持 2050 |
+| 生物质 | `data/biomass/fuel_potential_by_province_year.csv`、`data/biomass/capacity_upper_by_province_year.csv` | 省级热值同时进入年度燃料约束和 bio+bioccs 共享容量上界；2030/2040 线性插值，2060 保持 2050 |
+| 电池 | `data/storage/battery_capacity_floor_by_province_year.csv` | CISPO Table S17 的 2025 省级目标作为 2030 功率下界；Mengdong/Mengxi 合并后全国 65.85 GW；2040+ 不重复锁定该 15 年寿命 cohort |
 | 输电 | `data/transmission/existing_lines.csv`、`data/transmission/candidate_corridors.csv` | 2025 既有通道和 31 省全组合候选走廊 |
 | 碳约束 | `data/carbon/emissions_limits_by_scenario.csv` | 2025 不启用上限；默认 Base 路径为 2030/2040/2050/2060 = 4000/1300/-100/-550 MtCO2/yr |
 | DAC | `data/technology/dac_parameters_by_year.csv` | 四类技术，包含年度成本、CRF、直接电耗、热耗、COP换算后总电耗 |
@@ -1644,7 +1659,9 @@ nodal dispatch model
 
 每个 full-year 解只有在 `OPTIMAL` 且 `solution_qc=PASS` 后才写出带 SHA256 的下一期状态。该路径是 myopic sequential planning，不是四期 perfect foresight。
 
-### 14.2 PHS 边界
+### 14.2 Battery/PHS 边界
+
+Battery 的 2030 省级 exogenous capacity floor 来自 `data/storage/battery_capacity_floor_by_province_year.csv`，全国合计 65.85 GW。当前 battery 为固定 4h 功率-能量比，因此不能直接把异质时长的新型储能统计功率全部写成下界；后续应将 GW 与 GWh 分开建模。
 
 PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 operating projects，capacity upper 来自 `available_from_year <= planning_year` 的项目池。当前不表示 open-loop/closed-loop reservoir pairing。
 
@@ -1659,6 +1676,7 @@ PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 opera
 - hydro inertia 为容量表达式；
 - annual operating cost 直接进入 objective，不再设置大尺度会计等式；
 - VRE/ROR availability 辅助变量继续保留，因为直接代入会把 site CF 系数复制到多个约束并增加 nonzeros。
+- DC 走廊不创建反向逐时变量；仅 48 条 AC 走廊创建 `flow_reverse_ac_gw`，全年精确减少 `363×8760=3,179,880` 个固定零变量。
 
 ### 14.5 成本口径
 

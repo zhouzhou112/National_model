@@ -506,20 +506,39 @@ def build_full_year_monolithic(
                 name=f"reservoir_cascade_s4_8_9_12_row{target_row}_h{t}",
             )
 
-    # Directed transport with receiving-end losses and shared bidirectional capacity.
+    # Directed transport with receiving-end losses. Reverse variables exist
+    # only for AC corridors; DC corridors keep their committed direction and
+    # therefore do not create fixed-zero reverse columns.
     edge_count = len(data.lines)
     flow_forward = model.addMVar((edge_count, hours), lb=0.0, name="flow_forward_gw")
-    flow_reverse = model.addMVar((edge_count, hours), lb=0.0, name="flow_reverse_gw")
     dc_edge_rows = np.flatnonzero(
         data.lines.preset_technology.astype(str).str.upper().eq("DC").to_numpy()
     )
+    ac_edge_rows = np.flatnonzero(
+        data.lines.preset_technology.astype(str).str.upper().eq("AC").to_numpy()
+    )
+    if len(ac_edge_rows) + len(dc_edge_rows) != edge_count:
+        raise ValueError("Every interprovincial corridor must be classified as AC or DC")
+    flow_reverse_ac = model.addMVar(
+        (len(ac_edge_rows), hours), lb=0.0, name="flow_reverse_ac_gw"
+    )
+    if len(ac_edge_rows):
+        model.addConstr(
+            flow_forward[ac_edge_rows, :] + flow_reverse_ac
+            <= line_capacity[ac_edge_rows][:, None],
+            name="ac_line_shared_capacity_hourly",
+        )
     if len(dc_edge_rows):
-        # CISPO S4-55 models DC corridors in their committed direction only.
-        # AC corridors retain both directions subject to the shared S4-56 cap.
-        flow_reverse[dc_edge_rows, :].UB = 0.0
-    model.addConstr(flow_forward + flow_reverse <= line_capacity[:, None], name="line_capacity_hourly")
+        model.addConstr(
+            flow_forward[dc_edge_rows, :]
+            <= line_capacity[dc_edge_rows][:, None],
+            name="dc_line_forward_capacity_hourly",
+        )
     forward_incidence, reverse_incidence, line_efficiency = _network_incidence(data, p_index)
-    network_injection = forward_incidence @ flow_forward + reverse_incidence @ flow_reverse
+    network_injection = (
+        forward_incidence @ flow_forward
+        + reverse_incidence[:, ac_edge_rows] @ flow_reverse_ac
+    )
 
     actual_thermal = gross * (1.0 - loss[None, :, None])
     dac_power = data.dac.set_index("technology").reindex(
@@ -555,7 +574,8 @@ def build_full_year_monolithic(
             ror_generation=ror_generation,
             reservoir_generation=reservoir_generation,
             interprovincial_flow_forward=flow_forward,
-            interprovincial_flow_reverse=flow_reverse,
+            interprovincial_flow_reverse_ac=flow_reverse_ac,
+            interprovincial_reverse_edge_rows=ac_edge_rows,
             interprovincial_efficiency=line_efficiency,
         )
     else:
@@ -643,7 +663,7 @@ def build_full_year_monolithic(
             charge[:, s, :].sum() + discharge[:, s, :].sum()
         )
     flow_cost = float(config.raw["network"]["flow_regularization_yuan_per_mwh"]) * 1e-3 * (
-        flow_forward.sum() + flow_reverse.sum()
+        flow_forward.sum() + flow_reverse_ac.sum()
     )
     operating_costs = {
         "thermal_variable_om": thermal_vom,
@@ -711,7 +731,7 @@ def build_full_year_monolithic(
         reservoir_spill_flow=reservoir_spill_flow,
         reservoir_volume=reservoir_volume,
         reservoir_soc=reservoir_soc, reservoir_spill=reservoir_spill,
-        flow_forward=flow_forward, flow_reverse=flow_reverse,
+        flow_forward=flow_forward, flow_reverse_ac=flow_reverse_ac,
         network_injection=network_injection, dac_load=dac_load,
         thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
         vre_reserve_up=vre_up, hydro_reserve_up=hydro_up,
@@ -734,6 +754,7 @@ def build_full_year_monolithic(
         architecture="full_year_monolithic_lp",
         optimization_hours=hours,
         selected_load_gw=load,
+        interprovincial_reverse_edge_rows=ac_edge_rows,
         reservoir_inflow_gwh=hydro.reservoir_inflow_gwh,
         reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,
         reservoir_local_inflow_m3s=hydro.reservoir_local_inflow_m3s,

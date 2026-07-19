@@ -1,0 +1,68 @@
+{
+  "version": "V0719",
+  "nuclear": {
+    "national_capacity_upper_gw": {
+      "2030": 110.0,
+      "2040": 205.0,
+      "2050": 300.0,
+      "2060": 300.0
+    },
+    "allocation_weight": "province_share_of_2050_GEM_pipeline_capacity",
+    "source_method": {
+      "2030": "NEA 2026 Fifteenth Five-Year energy plan: about 110 GW nuclear in operation by 2030",
+      "2040": "research deployment-envelope scenario retained from the upstream target-adjusted nuclear pathway",
+      "2050": "research deployment-envelope scenario retained from the upstream target-adjusted nuclear pathway",
+      "2060": "hold the 2050 research deployment envelope constant"
+    },
+    "official_2030_source_url": "https://www.nea.gov.cn/20260625/0ccfdc1674e84868b49480edf584eb5f/202606250ccfdc1674e84868b49480edf584eb5f_27b526ec29479c4fd4bbb6f42d3ce5bbca.pdf"
+  },
+  "biomass": {
+    "thermal_efficiency": 0.35,
+    "equivalent_full_load_hours": 6132.0,
+    "formula": "capacity_upper_gw = thermcal_gj_per_year * thermal_efficiency / 3600 / equivalent_full_load_hours",
+    "source_method": "CISPO supplementary information S4-34"
+  },
+  "battery": {
+    "2030_floor_basis": "CISPO Table S17 provincial 2025 targets; Mengdong and Mengxi merged into Inner Mongolia",
+    "duration_h": 4.0,
+    "floor_retirement_rule": "2025 policy-target boundary is applied only in 2030 and expires before the 2040 solve under the 15-year battery lifetime",
+    "cispo_source_path": "supplementary_materials/CISPO.pdf",
+    "latest_validation_sources": [
+      "https://www.nea.gov.cn/20260130/50f657ce87f848e1a9a1861d1fd9aa23/c.html",
+      "https://www.nea.gov.cn/20260625/0ccfdc1674e84868b49480edf584eb5f/202606250ccfdc1674e84868b49480edf584eb5f_27b526ec29479c4fd4bbb6f42d3ce5bbca.pdf"
+    ],
+    "capacity_floor_gw_2030_by_province_code": {
+      "11": 0.7,
+      "12": 0.5,
+      "13": 4.0,
+      "14": 6.0,
+      "15": 5.0,
+      "21": 1.0,
+      "22": 0.25,
+      "23": 0.0,
+      "31": 0.0,
+      "32": 2.6,
+      "33": 3.0,
+      "34": 3.0,
+      "35": 0.6,
+      "36": 1.0,
+      "37": 5.0,
+      "41": 2.2,
+      "42": 2.0,
+      "43": 2.0,
+      "44": 3.0,
+      "45": 2.0,
+      "46": 0.0,
+      "50": 0.0,
+      "51": 2.0,
+      "52": 1.0,
+      "53": 2.0,
+      "54": 0.0,
+      "61": 0.0,
+      "62": 6.0,
+      "63": 6.0,
+      "64": 5.0,
+      "65": 0.0
+    }
+  }
+}

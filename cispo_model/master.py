@@ -461,12 +461,22 @@ def build_master(
             "Inherited thermal retrofit/build cohorts make a capacity floor negative"
         )
     thermal_floor = np.maximum(thermal_floor, 0.0)
+    nuclear_k = k_index["nuclear"]
+    nuclear_upper = (
+        data.nuclear_upper.set_index("province_code")
+        .capacity_upper_gw.reindex(provinces).to_numpy(dtype=float)
+    )
+    if (thermal_floor[:, nuclear_k] > nuclear_upper + 1e-9).any():
+        raise ValueError(
+            "Inherited nuclear capacity exceeds the configured province upper bound"
+        )
     thermal_new = model.addMVar(
         (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_new_gw"
     )
     thermal_cap = model.addMVar(
         (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_capacity_gw"
     )
+    thermal_cap[:, nuclear_k].UB = nuclear_upper
     ccs_pairs = (
         ("coal", "coalccs"),
         ("cchp", "cchpccs"),
@@ -495,11 +505,26 @@ def build_master(
             + thermal_new[:, ccs_k],
             name=f"thermal_ccs_capacity_accounting_{ccs}",
         )
-    nuclear_k = k_index["nuclear"]
     model.addConstr(
         thermal_cap[:, nuclear_k]
         == thermal_floor[:, nuclear_k] + thermal_new[:, nuclear_k],
         name="nuclear_capacity_accounting",
+    )
+    bio_k = k_index["bio"]
+    bioccs_k = k_index["bioccs"]
+    biomass_pair_upper = (
+        data.biomass_capacity_bounds.set_index("province_code")
+        .capacity_upper_gw.reindex(provinces).to_numpy(dtype=float)
+    )
+    biomass_pair_floor = thermal_floor[:, bio_k] + thermal_floor[:, bioccs_k]
+    if (biomass_pair_floor > biomass_pair_upper + 1e-9).any():
+        raise ValueError(
+            "Inherited biomass plus BECCS capacity exceeds the configured shared upper bound"
+        )
+    model.addConstr(
+        thermal_cap[:, bio_k] + thermal_cap[:, bioccs_k]
+        <= biomass_pair_upper,
+        name="biomass_beccs_shared_capacity_upper_s4_34",
     )
     variables.update(
         thermal_new=thermal_new,
@@ -567,8 +592,13 @@ def build_master(
     storage_exogenous_floor = np.zeros((p_count, len(STORAGE_TECHS)), dtype=float)
     storage_upper = np.full((p_count, len(STORAGE_TECHS)), np.inf, dtype=float)
     phs_bounds = data.storage_bounds.set_index("province_code")
+    battery_bounds = data.battery_bounds.set_index("province_code")
+    battery_index = s_index["battery"]
     phs_index = s_index["phs"]
     for p, province_code in enumerate(provinces):
+        storage_exogenous_floor[p, battery_index] = float(
+            battery_bounds.loc[province_code, "capacity_floor_gw"]
+        )
         storage_exogenous_floor[p, phs_index] = float(
             phs_bounds.loc[province_code, "capacity_floor_gw"]
         )
@@ -956,6 +986,8 @@ def build_master(
         "thermal_asset_ids": thermal_asset_ids,
         "thermal_exogenous_floor_gw": thermal_exogenous_floor,
         "thermal_capacity_floor_gw": thermal_floor,
+        "nuclear_capacity_upper_gw": nuclear_upper,
+        "biomass_pair_capacity_upper_gw": biomass_pair_upper,
         "hydro_asset_ids": hydro_asset_ids,
         "hydro_capacity_floor_gw": hydro_floor,
         "storage_asset_ids": storage_asset_ids,

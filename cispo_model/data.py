@@ -161,10 +161,12 @@ class ModelData:
     vre_sites: pd.DataFrame
     thermal_floor: pd.DataFrame
     nuclear_floor: pd.DataFrame
+    nuclear_upper: pd.DataFrame
     hydro_stations: pd.DataFrame
     hydro_cascade_nodes: pd.DataFrame
     hydro_cascade_edges: pd.DataFrame
     biomass: pd.DataFrame
+    biomass_capacity_bounds: pd.DataFrame
     lines: pd.DataFrame
     carbon: pd.Series
     capex: pd.DataFrame
@@ -172,6 +174,7 @@ class ModelData:
     thermal_om: pd.DataFrame
     storage: pd.DataFrame
     storage_bounds: pd.DataFrame
+    battery_bounds: pd.DataFrame
     fuel: pd.DataFrame
     emissions: pd.DataFrame
     dac: pd.DataFrame
@@ -334,6 +337,34 @@ def load_model_data(
         usecols=["province_code", "year", "capacity_floor_gw"],
     )
     nuclear_floor = nuclear_floor.loc[nuclear_floor.year.eq(config.planning_year)].copy()
+    nuclear_upper = _read(
+        "thermal/nuclear_capacity_upper_by_year.csv",
+        usecols=["province_code", "year", "capacity_upper_gw"],
+    )
+    nuclear_upper = nuclear_upper.loc[
+        nuclear_upper.year.eq(config.planning_year)
+    ].copy()
+    if len(nuclear_floor) != len(provinces) or len(nuclear_upper) != len(provinces):
+        raise ValueError("Nuclear capacity bounds must cover all 31 model provinces")
+    if (
+        nuclear_floor.duplicated("province_code").any()
+        or nuclear_upper.duplicated("province_code").any()
+    ):
+        raise ValueError("Duplicate province rows in nuclear capacity bounds")
+    if (
+        set(nuclear_floor.province_code) != set(province_order)
+        or set(nuclear_upper.province_code) != set(province_order)
+    ):
+        raise ValueError("Nuclear capacity bounds must match the model province set")
+    nuclear_check = nuclear_floor[["province_code", "capacity_floor_gw"]].merge(
+        nuclear_upper[["province_code", "capacity_upper_gw"]],
+        on="province_code",
+        validate="one_to_one",
+    )
+    if nuclear_check.capacity_floor_gw.gt(
+        nuclear_check.capacity_upper_gw + 1e-9
+    ).any():
+        raise ValueError("Nuclear capacity floor exceeds the configured upper bound")
     hydro = _read(
         "hydro/hydro_stations.csv",
         usecols=[
@@ -386,6 +417,31 @@ def load_model_data(
         usecols=["province_code", "year", "thermcal_gj_per_year"],
     )
     biomass = biomass.loc[biomass.year.eq(config.planning_year)].copy()
+    biomass_capacity_bounds = _read(
+        "biomass/capacity_upper_by_province_year.csv",
+        usecols=[
+            "province_code", "year", "capacity_upper_gw",
+            "formula_capacity_upper_gw", "minimum_existing_pair_capacity_gw",
+            "capacity_upper_adjusted_to_floor",
+        ],
+    )
+    biomass_capacity_bounds = biomass_capacity_bounds.loc[
+        biomass_capacity_bounds.year.eq(config.planning_year)
+    ].copy()
+    if (
+        len(biomass) != len(provinces)
+        or len(biomass_capacity_bounds) != len(provinces)
+        or biomass.duplicated("province_code").any()
+        or biomass_capacity_bounds.duplicated("province_code").any()
+    ):
+        raise ValueError("Biomass fuel and capacity bounds require one row per province")
+    if (
+        set(biomass.province_code) != set(province_order)
+        or set(biomass_capacity_bounds.province_code) != set(province_order)
+    ):
+        raise ValueError("Biomass bounds must match the model province set")
+    if biomass_capacity_bounds.capacity_upper_gw.lt(-1e-9).any():
+        raise ValueError("Biomass capacity upper bounds must be nonnegative")
     lines = _read(
         "transmission/candidate_corridors.csv",
         usecols=[
@@ -471,6 +527,29 @@ def load_model_data(
         ).any()
     ):
         raise ValueError("Invalid PHS capacity floor or upper bound")
+    battery_bounds = _read(
+        "storage/battery_capacity_floor_by_province_year.csv",
+        usecols=[
+            "province_code", "year", "technology", "capacity_floor_gw",
+            "duration_h",
+        ],
+    )
+    battery_bounds = battery_bounds.loc[
+        battery_bounds.year.eq(config.planning_year)
+    ].copy()
+    if len(battery_bounds) != len(provinces):
+        raise ValueError(
+            f"{config.planning_year} battery floor rows={len(battery_bounds)}; "
+            f"expected {len(provinces)}"
+        )
+    if battery_bounds.duplicated(["province_code", "technology"]).any():
+        raise ValueError("Duplicate province-technology battery capacity floors")
+    if set(battery_bounds.technology) != {"battery"}:
+        raise ValueError("Battery capacity floor table must use technology='battery'")
+    if set(battery_bounds.province_code) != set(province_order):
+        raise ValueError("Battery capacity floors must cover all 31 model provinces")
+    if battery_bounds.capacity_floor_gw.lt(-1e-9).any():
+        raise ValueError("Battery capacity floors must be nonnegative")
     fuel = _read(
         "technology/province_fuel_generation_cost_by_year.csv",
         usecols=[
@@ -628,10 +707,12 @@ def load_model_data(
         vre_sites=vre_sites,
         thermal_floor=thermal_floor,
         nuclear_floor=nuclear_floor,
+        nuclear_upper=nuclear_upper,
         hydro_stations=hydro,
         hydro_cascade_nodes=hydro_cascade_nodes,
         hydro_cascade_edges=hydro_cascade_edges,
         biomass=biomass,
+        biomass_capacity_bounds=biomass_capacity_bounds,
         lines=lines,
         carbon=carbon,
         capex=capex,
@@ -639,6 +720,7 @@ def load_model_data(
         thermal_om=thermal_om,
         storage=storage,
         storage_bounds=storage_bounds,
+        battery_bounds=battery_bounds,
         fuel=fuel,
         emissions=emissions,
         dac=dac,

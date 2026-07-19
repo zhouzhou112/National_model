@@ -89,7 +89,11 @@ def export_operational_solution(
     storage_discharge = _value(variables["storage_discharge"])
     storage_soc = _value(variables["storage_soc"])
     flow_forward = _value(variables["flow_forward"])
-    flow_reverse = _value(variables["flow_reverse"])
+    reverse_edge_rows = np.asarray(
+        artifacts.index["interprovincial_reverse_edge_rows"], dtype=int
+    )
+    flow_reverse = np.zeros_like(flow_forward)
+    flow_reverse[reverse_edge_rows, :] = _value(variables["flow_reverse_ac"])
     network_injection = _value(variables["network_injection"])
     dac_load = _value(variables["dac_load"])
 
@@ -189,6 +193,23 @@ def export_operational_solution(
 
     line_capacity = _value(variables["line_capacity"])
     line_violation = flow_forward + flow_reverse - line_capacity[:, None]
+    thermal_capacity = _value(variables["thermal_capacity"])
+    thermal_floor = np.asarray(
+        artifacts.index["thermal_capacity_floor_gw"], dtype=float
+    )
+    nuclear_k = int(artifacts.index["thermal_index"]["nuclear"])
+    bio_k = int(artifacts.index["thermal_index"]["bio"])
+    bioccs_k = int(artifacts.index["thermal_index"]["bioccs"])
+    nuclear_upper = np.asarray(
+        artifacts.index["nuclear_capacity_upper_gw"], dtype=float
+    )
+    biomass_pair_upper = np.asarray(
+        artifacts.index["biomass_pair_capacity_upper_gw"], dtype=float
+    )
+    storage_capacity = _value(variables["storage_capacity"])
+    storage_floor = np.asarray(
+        artifacts.index["storage_capacity_floor_gw"], dtype=float
+    )
     vre_violation = vre_generation - vre_available
     annual_emissions = float(_value(variables["annual_emissions"]).sum())
     dac_removed = float(_value(variables["dac_capture"]).sum())
@@ -244,11 +265,27 @@ def export_operational_solution(
         "minimum_down_reserve_margin_gw": float(down_margin.min()),
         "maximum_vre_availability_violation_gw": float(np.maximum(vre_violation, 0.0).max()),
         "maximum_line_capacity_violation_gw": float(np.maximum(line_violation, 0.0).max()),
+        "maximum_nuclear_capacity_floor_violation_gw": float(
+            np.maximum(thermal_floor[:, nuclear_k] - thermal_capacity[:, nuclear_k], 0.0).max()
+        ),
+        "maximum_nuclear_capacity_upper_violation_gw": float(
+            np.maximum(thermal_capacity[:, nuclear_k] - nuclear_upper, 0.0).max()
+        ),
+        "maximum_biomass_beccs_capacity_upper_violation_gw": float(
+            np.maximum(
+                thermal_capacity[:, bio_k] + thermal_capacity[:, bioccs_k]
+                - biomass_pair_upper,
+                0.0,
+            ).max()
+        ),
+        "maximum_storage_capacity_floor_violation_gw": float(
+            np.maximum(storage_floor - storage_capacity, 0.0).max()
+        ),
         "maximum_storage_transition_residual_gwh": float(np.abs(storage_cycle_residual).max()),
         "maximum_storage_soc_upper_violation_gwh": float(
             np.maximum(
                 storage_soc
-                - _value(variables["storage_capacity"])[:, :, None]
+                - storage_capacity[:, :, None]
                 * storage_table.duration_h.to_numpy(float)[None, :, None],
                 0.0,
             ).max()
@@ -300,6 +337,18 @@ def export_operational_solution(
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
         "vre_availability": qc["maximum_vre_availability_violation_gw"] <= tolerance,
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
+        "nuclear_capacity_floor": qc[
+            "maximum_nuclear_capacity_floor_violation_gw"
+        ] <= tolerance,
+        "nuclear_capacity_upper": qc[
+            "maximum_nuclear_capacity_upper_violation_gw"
+        ] <= tolerance,
+        "biomass_beccs_capacity_upper": qc[
+            "maximum_biomass_beccs_capacity_upper_violation_gw"
+        ] <= tolerance,
+        "storage_capacity_floor": qc[
+            "maximum_storage_capacity_floor_violation_gw"
+        ] <= tolerance,
         "unidirectional_interprovincial_flow": qc[
             "bidirectional_interprovincial_edge_hours"
         ] == 0,

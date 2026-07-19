@@ -39,6 +39,9 @@ def estimate_full_model_scale(
     k = len(THERMAL_TECHS)
     s = len(STORAGE_TECHS)
     e = len(data.lines)
+    e_reverse = int(
+        data.lines.preset_technology.astype(str).str.upper().eq("AC").sum()
+    )
     d = len(DAC_TECHS)
     n_vre = len(data.vre_sites)
     n_hydro = len(data.hydro_stations)
@@ -59,7 +62,7 @@ def estimate_full_model_scale(
         "hydro_site_capacity_and_hourly": (
             2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
         ),
-        "transmission_capacity_and_flow": 2 * e + 2 * e * h,
+        "transmission_capacity_and_flow": 2 * e + (e + e_reverse) * h,
         "dac_capacity_and_capture": 3 * p * d,
         "annual_resource_accounts": 2 * p + 1,
         "co2_source_sink_flow": p * c,
@@ -107,7 +110,7 @@ def estimate_full_model_scale(
         + 5 * p * k * block_hours
         + 5 * p * s * block_hours
         + (2 * p + 3 * n_reservoir) * block_hours
-        + 2 * e * block_hours
+        + (e + e_reverse) * block_hours
     )
     maximum_block_nonzeros = int(
         n_vre * block_hours + maximum_block_variables * 3.0
@@ -174,6 +177,26 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("vre_cf_mapping", bool(data.vre_sites.cf_grid_id.ge(0).all()), int(data.vre_sites.cf_grid_id.lt(0).sum()), "0 unresolved")
     check("thermal_floor_rows", len(data.thermal_floor) == 31 * 10, len(data.thermal_floor), "310")
     check("nuclear_floor_rows", len(data.nuclear_floor) == 31, len(data.nuclear_floor), "31")
+    check("nuclear_upper_rows", len(data.nuclear_upper) == 31, len(data.nuclear_upper), "31")
+    nuclear_bounds = data.nuclear_floor[["province_code", "capacity_floor_gw"]].merge(
+        data.nuclear_upper[["province_code", "capacity_upper_gw"]],
+        on="province_code",
+        validate="one_to_one",
+    )
+    check(
+        "nuclear_capacity_bounds",
+        bool(
+            nuclear_bounds.capacity_floor_gw.le(
+                nuclear_bounds.capacity_upper_gw + 1e-9
+            ).all()
+        ),
+        int(
+            nuclear_bounds.capacity_floor_gw.gt(
+                nuclear_bounds.capacity_upper_gw + 1e-9
+            ).sum()
+        ),
+        "0 floor-above-upper violations",
+    )
     check("ruc_technology_rows", set(data.ruc.technology) == set(THERMAL_TECHS), sorted(data.ruc.technology), "11 technologies")
     check("storage_rows", set(data.storage.technology) == set(STORAGE_TECHS), sorted(data.storage.technology), "battery and phs")
     check(
@@ -181,6 +204,18 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         len(data.storage_bounds) == 31,
         len(data.storage_bounds),
         "31 province rows for the planning year",
+    )
+    check(
+        "battery_bound_rows",
+        len(data.battery_bounds) == 31,
+        len(data.battery_bounds),
+        "31 province rows for the planning year",
+    )
+    check(
+        "battery_capacity_floor_nonnegative",
+        bool(data.battery_bounds.capacity_floor_gw.ge(-1e-9).all()),
+        float(data.battery_bounds.capacity_floor_gw.min()),
+        ">= 0 GW",
     )
     check(
         "phs_bounds",
@@ -210,6 +245,18 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("allowed_candidate_corridors", len(data.lines) == 411, len(data.lines), "411 allowed rows from the 465-pair matrix")
     check("hydro_station_rows", len(data.hydro_stations) == 2030, len(data.hydro_stations), "2030")
     check("biomass_rows", len(data.biomass) == 31, len(data.biomass), "31")
+    check(
+        "biomass_capacity_bound_rows",
+        len(data.biomass_capacity_bounds) == 31,
+        len(data.biomass_capacity_bounds),
+        "31",
+    )
+    check(
+        "biomass_capacity_upper_nonnegative",
+        bool(data.biomass_capacity_bounds.capacity_upper_gw.ge(-1e-9).all()),
+        float(data.biomass_capacity_bounds.capacity_upper_gw.min()),
+        ">= 0 GW",
+    )
     check("dac_rows", len(data.dac) == 4, len(data.dac), "4")
     check("carbon_active", bool(data.carbon.constraint_active), bool(data.carbon.constraint_active), "True")
     check("csp_source_gap_explicit", not config.raw["features"]["csp"], config.raw["features"]["csp"], "False until source exists", "SOFT")

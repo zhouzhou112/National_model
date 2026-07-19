@@ -59,12 +59,38 @@ class ModelFoundationTests(unittest.TestCase):
     def test_scale_estimator_covers_all_current_variable_blocks(self):
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 24).variables,
-            350_024,
+            341_312,
         )
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 8760).variables,
-            44_091_176,
+            40_911_296,
         )
+
+    def test_nuclear_biomass_and_battery_bounds_are_explicit(self):
+        self.assertAlmostEqual(
+            float(self.data.nuclear_floor.capacity_floor_gw.sum()), 106.764, places=6
+        )
+        self.assertAlmostEqual(
+            float(self.data.nuclear_upper.capacity_upper_gw.sum()), 110.0, places=6
+        )
+        self.assertTrue(
+            self.data.nuclear_floor.set_index("province_code").capacity_floor_gw.le(
+                self.data.nuclear_upper.set_index("province_code").capacity_upper_gw
+                + 1e-9
+            ).all()
+        )
+        self.assertAlmostEqual(
+            float(self.data.battery_bounds.capacity_floor_gw.sum()), 65.85, places=6
+        )
+        self.assertAlmostEqual(
+            float(self.data.biomass_capacity_bounds.capacity_upper_gw.sum()),
+            473.85372630036,
+            places=6,
+        )
+        adjusted = self.data.biomass_capacity_bounds.loc[
+            self.data.biomass_capacity_bounds.capacity_upper_adjusted_to_floor.astype(bool)
+        ]
+        self.assertEqual(adjusted.province_code.astype(int).tolist(), [31])
 
     def test_full_year_memory_gate_is_build_safe(self):
         self.assertEqual(
@@ -171,6 +197,14 @@ class ModelFoundationTests(unittest.TestCase):
             self.data.lines.preset_technology.astype(str).str.upper()
         )
         self.assertEqual(technologies, {"AC", "DC"})
+        self.assertEqual(
+            int(self.data.lines.preset_technology.astype(str).str.upper().eq("AC").sum()),
+            48,
+        )
+        self.assertEqual(
+            int(self.data.lines.preset_technology.astype(str).str.upper().eq("DC").sum()),
+            363,
+        )
 
 
 if __name__ == "__main__":

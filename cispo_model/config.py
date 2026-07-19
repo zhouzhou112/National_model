@@ -103,6 +103,12 @@ class ModelConfig:
             raise ValueError("vre_scenario must be one of C, B, O")
         if not self.raw["strict_load_balance"]:
             raise ValueError("Production configuration requires strict load balance")
+        if self.raw.get("capacity_bound_profile") != (
+            "V0719_nuclear_biomass_battery_corrected"
+        ):
+            raise ValueError(
+                "Production requires the V0719 nuclear/biomass/battery capacity-bound profile"
+            )
         if self.raw["allow_debug_slacks"]:
             raise ValueError("Debug slacks must be disabled in production configuration")
         if self.raw["features"].get("csp", False):

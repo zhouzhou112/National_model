@@ -39,6 +39,38 @@ class CCSModelStructureTests(unittest.TestCase):
                     0.0,
                 )
 
+    def test_nuclear_upper_and_shared_biomass_upper_are_enforced(self):
+        capacity = self.artifacts.variables["thermal_capacity"]
+        thermal_index = self.artifacts.index["thermal_index"]
+        nuclear_upper = self.artifacts.index["nuclear_capacity_upper_gw"]
+        nuclear_k = thermal_index["nuclear"]
+        for province_position, upper in enumerate(nuclear_upper):
+            self.assertAlmostEqual(
+                capacity[province_position, nuclear_k].UB,
+                float(upper),
+                places=9,
+            )
+        self.assertIsNotNone(
+            self.artifacts.model.getConstrByName(
+                "biomass_beccs_shared_capacity_upper_s4_34[0]"
+            )
+        )
+
+    def test_battery_floor_is_applied_to_storage_capacity(self):
+        storage_capacity = self.artifacts.variables["storage_capacity"]
+        battery_k = self.artifacts.index["storage_index"]["battery"]
+        expected = (
+            self.data.battery_bounds.set_index("province_code")
+            .capacity_floor_gw.reindex(self.artifacts.index["province_codes"])
+            .to_numpy(float)
+        )
+        for province_position, floor in enumerate(expected):
+            self.assertAlmostEqual(
+                storage_capacity[province_position, battery_k].LB,
+                float(floor),
+                places=9,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
