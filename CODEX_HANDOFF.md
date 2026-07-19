@@ -14,11 +14,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.4`
+- Handoff version: `v0.5.5`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Current implementation commit: `1b6da28` (`fix: align interprovincial flows with CISPO`). It retains the sequential/sparse implementation from `2a0ee99` and corrects the transmission formulation/QC discovered by the 744h audit.
+- Current implementation commit: `5a9f4ab` (`Reduce annual network matrix duplication`). It retains the CISPO transmission correction from `1b6da28`, removes duplicated annual transmission coefficients and an implied reservoir closure, and hard-checks unique reservoir-to-load-center routing.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
@@ -77,6 +77,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Latest verification evidence
 
+- Commit `5a9f4ab` is pushed and deployed. Local tests passed 29/29; the strict local 24h solve reached `OPTIMAL` in 32.00 s with peak RSS 0.694 GiB and every QC hard check passed.
+- The corrected server 168h gate under `/data/zz2/National_model/outputs/2030_168h_sparse_gate_strict` contains 1,071,032 variables, 1,392,960 constraints and 10,100,058 nonzeros. It reached strict `OPTIMAL` in 666.45 s with peak RSS 3.910 GiB, maximum constraint violation `4.17e-8`, zero AC bidirectional edge-hours, zero DC reverse flow and `solution_qc=PASS`.
+- The equivalent annual-network rewrite reduced 168h nonzeros by 380,581 (`3.63%`) without changing decision-variable count. Directly eliminating the VRE/ROR availability auxiliaries was tested and rejected because it duplicated CF coefficients in availability and reserve rows.
+- The full-year runtime memory gate is now 96 GiB. The scale estimator covers all current variable blocks exactly (44,091,176 projected variables), estimates about 520.9 million nonzeros and 36.71 GiB static model memory, and explicitly does not treat this as a barrier-factorization guarantee.
+- Corrected 744h CPU barrier gate launched at `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict`; `/usr/bin/time` PID `3344086`, Python child PID `3344087`. Do not launch 8760 until this run is `OPTIMAL + solution_qc=PASS`.
 - Solvability audit commit `ab9dfe8` records the revised 8760h projection: 44,091,176 variables, 68,188,384 constraints and about 515-524 million nonzeros. The existing 853.5 million preflight nonzero count is a conservative structural upper estimate, while its 46.62 GiB memory number is not a barrier peak-memory estimate.
 - Current 24h and 168h build-only numerical audits were written under `outputs/audit_24h_20260719_system_solvability` and `outputs/audit_168h_20260719_system_solvability`. They contain 350,024/261,280/1,867,008 and 1,071,032/1,392,991/10,480,639 variables/constraints/nonzeros respectively.
 - Rejected 744h solver evidence identifies the scaling bottleneck: presolved 3,274,450 rows and 3,353,208 columns; `Factor NZ=8.289e8` (about 10 GB); barrier 10,969.01 s and crossover 9,123.64 s. Linear factor-memory extrapolation alone is about 118 GB at 8760h, so a direct solve on the 125 GiB host is high risk even if build-only succeeds.
@@ -182,6 +187,15 @@ ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and with at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.5.5 - 2026-07-19 - annual-network sparse cleanup and corrected 168h gate
+
+- Git implementation: `5a9f4ab` (`Reduce annual network matrix duplication`).
+- Scope/changed files: `cispo_model/load_center.py` reuses province sent/received accounts in net-import closure, removes the implied province reservoir-generation closure and adds unique route checks; `cispo_model/preflight.py` corrects variable-block accounting and recalibrates nonzeros; `config/optimization_2030.json` raises the full-year RAM gate to 96 GiB and removes unused LP-inapplicable settings; `tests/test_model_foundation.py` adds scale/sparsity/gate regressions.
+- Verification: local 29/29 tests; local strict 24h `OPTIMAL/QC PASS`; server readiness/raw-GRFR/full-license PASS; server 29/29 tests; server strict 168h `OPTIMAL/QC PASS` in 666.45 s with 3.910 GiB peak RSS.
+- Scale evidence: 168h nonzeros decreased from 10,480,639 to 10,100,058 while variables remained 1,071,032. Direct availability-variable removal was rejected after a 24h build increased nonzeros from about 1.87m to 2.23m.
+- Server command/output: `scripts/run_cispo_2030_full_year.py --diagnostic-hours 168 --output-dir /data/zz2/National_model/outputs/2030_168h_sparse_gate_strict`.
+- Unresolved/next action: PID `3344086`/child `3344087` is running the strict corrected 744h gate under `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict`. Only after `OPTIMAL/QC PASS` and a fresh >=96 GiB memory check may 8760h build-only start; build success still does not authorize solve.
 
 ### v0.5.4 - 2026-07-19 - full-year solvability and cross-year completeness audit
 

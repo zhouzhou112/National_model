@@ -98,7 +98,7 @@ As verified on 2026-07-06, direct server access to PyPI fails certificate-chain 
 |---|---:|---|---:|
 | `one_month` | 744 | Local code/solver test only | 8 GiB |
 | `six_months` | 4344 | Large integration test only | 32 GiB |
-| `full_year` | 8760 | Production scientific run | 64 GiB |
+| `full_year` | 8760 | Production scientific run/build gate | 96 GiB |
 
 The truncated horizons use the leading hours and a cyclic boundary over the selected interval. Annual investment costs, carbon limits and biomass limits are not rescaled. Their solutions therefore must not be interpreted as planning results.
 
@@ -109,6 +109,19 @@ $PYTHON scripts/run_cispo_2030_full_year.py --horizon one_month --preflight-only
 ```
 
 ## Current 744h cascade gate
+
+The active corrected gate is:
+
+```bash
+OUT=/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict
+PID=$(cat "$OUT/run.pid")
+ps -p "$PID" -o pid,etime,%mem,%cpu,rss,vsz,stat,cmd
+pgrep -P "$PID" -a
+tail -n 100 "$OUT/gurobi.log"
+ls -lh "$OUT/build_report.json" "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
+```
+
+It was launched from implementation `5a9f4ab` after the strict 168h gate reached `OPTIMAL/QC PASS`. At launch `/usr/bin/time` PID was `3344086`, Python child PID was `3344087`, and about 116 GiB RAM was available. Do not infer completion from PID exit alone; require both reports and inspect QC.
 
 The old output below is a preserved failed numerical baseline and must not be reused:
 
@@ -158,7 +171,7 @@ Solve:
 $PYTHON scripts/run_cispo_2030_full_year.py --horizon full_year --output-dir /data/zz2/National_model/outputs/2030_full_year
 ```
 
-The runtime gate refuses to build when available memory is below the configured threshold, but the checked-in 64 GiB full-year setting is now considered too tight and must be raised after the planned scale-estimator update. Until that code change, enforce the 96 GiB scheduling gate manually. For infeasibility, the solve path writes `iis.ilp`; production constraints are not silently relaxed.
+The runtime gate refuses to build when available memory is below the checked-in 96 GiB threshold. This is a build scheduling gate, not proof that barrier factorization fits. For infeasibility, the solve path writes `iis.ilp`; production constraints are not silently relaxed.
 
 Successful solves additionally write `solution_qc.json`, compressed hourly province balances, technology dispatch arrays, station-indexed reservoir dispatch, transmission flows, annual carbon/CCS accounts and objective cost decomposition. A solution is not accepted as production output unless `solution_qc.json` reports `PASS`.
 
