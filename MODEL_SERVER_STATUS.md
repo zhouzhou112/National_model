@@ -2,6 +2,11 @@
 
 ## 2026-07-19 synchronized server validation
 
+- Solvability audit `ab9dfe8` revises the current-code 8760 projection to approximately 44,091,176 variables, 68,188,384 constraints and 515-524 million nonzeros. The prior 853.5 million nonzero preflight is conservative for the raw matrix, but the reported 46.62 GiB is not a barrier peak-memory estimate.
+- The rejected 744h barrier formed `8.289e8` factor nonzeros (about 10 GB), then spent 10,969.01 s in barrier and 9,123.64 s in crossover. Linear factor-memory extrapolation is already about 118 GB at 8760h before the model and workspaces are counted; a direct solve on this 125 GiB host is therefore high risk.
+- Live resource refresh: server HEAD `f22b9cf`, about 30 GiB available RAM and 21 GiB/21 GiB swap occupied. No corrected 744h or 8760 process was launched.
+- Full-year build-only now requires at least 96 GiB available RAM after corrected 744h acceptance. A successful build-only does not authorize solve; inspect peak RSS and factor-risk estimates first.
+
 - Current implementation commit: `1b6da28` (`fix: align interprovincial flows with CISPO`).
 - The production sequence is now 2030/2040/2050/2060, with checksummed capacity-cohort transfer between successive full-year solves.
 - Local final 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; `OPTIMAL` in 58.79 s; `solution_qc=PASS`; peak RSS 0.698 GiB.
@@ -10,7 +15,7 @@
 - Server readiness and raw-GRFR SHA256 verification passed on the 2026-07-19 versioned data roots; server regression tests passed 24/24.
 - Server 24h gate: 349,962 variables, 260,973 constraints and 1,827,246 nonzeros; `OPTIMAL` in 60.53 s; `solution_qc=PASS`; peak RSS 0.851 GiB.
 - PID `3778049` completed `OPTIMAL`, but the result is rejected: 3,358 material simultaneous AC-direction edge-hours were omitted from the former hard QC. The corrected formulation still needs new server gates.
-- Do not start 8760 until commit `1b6da28` passes corrected server 24h and 744h gates and available RAM is at least 64 GiB. After the rejected run, shared jobs left only about 32 GiB available and swap was full.
+- Do not start 8760 until the exact sparse cleanup and corrected 744h gates pass. Require at least 96 GiB available RAM for build-only; a direct solve remains blocked pending true build/factor-memory review.
 
 ## Boundary and architecture
 

@@ -14,7 +14,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.3`
+- Handoff version: `v0.5.4`
 - Snapshot date: `2026-07-19`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
@@ -76,6 +76,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 ```
 
 ### Latest verification evidence
+
+- Solvability audit commit `ab9dfe8` records the revised 8760h projection: 44,091,176 variables, 68,188,384 constraints and about 515-524 million nonzeros. The existing 853.5 million preflight nonzero count is a conservative structural upper estimate, while its 46.62 GiB memory number is not a barrier peak-memory estimate.
+- Current 24h and 168h build-only numerical audits were written under `outputs/audit_24h_20260719_system_solvability` and `outputs/audit_168h_20260719_system_solvability`. They contain 350,024/261,280/1,867,008 and 1,071,032/1,392,991/10,480,639 variables/constraints/nonzeros respectively.
+- Rejected 744h solver evidence identifies the scaling bottleneck: presolved 3,274,450 rows and 3,353,208 columns; `Factor NZ=8.289e8` (about 10 GB); barrier 10,969.01 s and crossover 9,123.64 s. Linear factor-memory extrapolation alone is about 118 GB at 8760h, so a direct solve on the 125 GiB host is high risk even if build-only succeeds.
+- A current-model 24h `Crossover=0` re-audit returned `SUBOPTIMAL`, maximum constraint violation 0.01355 and failed reservoir/directionality QC. A candidate `FeasibilityTol=OptimalityTol=1e-6`, `BarConvTol=1e-7`, `Crossover=1` run reached `OPTIMAL/QC PASS` in 37.38 s versus the approximately 40.02 s local strict baseline; this candidate is not approved for production until a corrected 168h/744h comparison passes.
+- Live server HEAD remained `f22b9cf`; available RAM was about 30 GiB and all 21 GiB swap was occupied. No large server process was launched.
 
 - Local implementation commit `2a0ee99` plus planning-state export test commit `ecfc7ed`; AST 38 files PASS; unit tests 24/24 PASS; data-package smoke 124/124 PASS.
 - Final local 24h gate: 349,962 variables, 260,973 constraints, 1,827,245 nonzeros; Gurobi `OPTIMAL` in 58.79 s; peak RSS 0.698 GiB; `solution_qc=PASS`; maximum power-balance residual `3.90e-11 GW`.
@@ -155,7 +161,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start the 8760h build or production solve. First deploy commit `1b6da28`, pass the server 26-test suite and a corrected 24h gate, then wait for at least 64 GiB available RAM before launching another 744h gate. The old output remains diagnostic evidence only:
+Do not start an 8760h production solve. The corrected 24h gate has passed; next implement the exact sparse reductions listed in `MODEL_SOLVABILITY_AUDIT_20260719.md`, rerun regression/24h/168h gates, then wait for at least 64 GiB available RAM and cleared swap pressure before launching a corrected 744h gate. The old output remains diagnostic evidence only:
 
 ```bash
 cd /data/zz2/National_model/repo
@@ -173,9 +179,20 @@ tail -n 80 "$OUT/gurobi.log"
 ls -lh "$OUT/solve_report.json" "$OUT/solution_qc.json" 2>/dev/null
 ```
 
-The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and after available RAM exceeds the 64 GiB gate may an 8760h `build-only` run begin.
+The corrected gate must report `OPTIMAL + solution_qc=PASS`, zero AC bidirectional edge-hours above `1e-6 GW`, zero DC reverse flow, closed load-center net exchange and a fully reproducible result manifest. GPU-PDHG is not the default route. Only after corrected 744h acceptance and with at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.5.4 - 2026-07-19 - full-year solvability and cross-year completeness audit
+
+- Git audit commit: `ab9dfe8` (`docs: audit full-year solvability and state transfer`); implementation remains `1b6da28`, documentation baseline before this entry was `f22b9cf`.
+- Scope: decomposed current 24h/168h model size by VRE, thermal RUC, storage, hydropower, transmission, balance/security, annual load-center and carbon blocks; recalibrated 8760 nonzeros/static build memory; audited 744h factorization/crossover; reviewed Gurobi parameters and every cross-year capacity cohort class.
+- Changed files: `MODEL_SOLVABILITY_AUDIT_20260719.md`, followed by continuity updates in `CODEX_HANDOFF.md`, `MODEL_SERVER_STATUS.md` and `SERVER_RUNBOOK.md`.
+- Commands/evidence: current 24h/168h `scripts/audit_model_numerics.py --skip-full-max-cf`; live `ssh national-model-server` HEAD/resource check; rejected 744h `solve_report.json` and `gurobi.log`; two current-model 24h parameter diagnostics.
+- Findings: revised 8760 scale is about 44.09m variables, 68.19m constraints and 515-524m nonzeros; calibrated build peak is about 58 GiB, but linearly extrapolated barrier factor memory alone is about 118 GB. Direct 8760 solve on 125 GiB is high risk.
+- Parameter result: `Crossover=0` failed current hard QC; a default feasibility/optimality tolerance plus `BarConvTol=1e-7` candidate saved about 7% at 24h and remains diagnostic-only.
+- Cross-year result: all current capacity decision classes are transferred through checksummed active cohorts, including VRE, thermal/nuclear, hydro, battery/PHS, inter-/intra-provincial transmission, DAC, spur and trunk. Remaining physical limitations are myopic foresight, missing existing-VRE age retirement, plant-level thermal retrofit remaining life, additive nuclear pipeline interpretation and province-level fixed-duration PHS.
+- Unresolved/next action: implement exact availability/load-center sparse reformulations, correct scale reporting, pass local gates, then rerun corrected 744h when shared memory pressure clears. Require at least 96 GiB available RAM for 8760 build-only; do not optimize until its true memory evidence is reviewed.
 
 ### v0.5.3 - 2026-07-19 - corrected server 24h transmission gate
 
