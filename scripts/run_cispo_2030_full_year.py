@@ -14,7 +14,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from cispo_model.config import ROOT, load_model_config
-from cispo_model.data import load_model_data
+from cispo_model.data import DATA_ROOT, load_model_data
+from cispo_model.io_contract import write_run_provenance
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
@@ -114,6 +115,12 @@ def main() -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     available_gb = psutil.virtual_memory().available / 1024**3
+    write_run_provenance(
+        output_dir,
+        config,
+        data_root=DATA_ROOT,
+        planning_state=planning_state,
+    )
     data = load_model_data(config, planning_state=planning_state)
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
     if preflight["status"] != "PASS":
@@ -161,6 +168,7 @@ def main() -> None:
     from cispo_model.monolithic import build_full_year_monolithic
     from cispo_model.solution_export import export_operational_solution
     from cispo_model.result_summary import export_result_summary, finalize_result_manifest
+    from cispo_model.io_contract import write_output_catalog
     from cispo_model.planning_state import export_solution_planning_state
 
     started = datetime.now().astimezone()
@@ -217,25 +225,20 @@ def main() -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    export_state = False
     if artifacts.model.SolCount:
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
         export_result_summary(artifacts, data, config, output_dir)
-        if (
+        export_state = bool(
             not test_only
             and report["status"] == "OPTIMAL"
             and qc["status"] == "PASS"
-        ):
-            state_dir = export_solution_planning_state(
-                artifacts, data, config, output_dir
-            )
-            report["planning_state_path"] = str(state_dir)
+        )
+        if export_state:
+            report["planning_state_path"] = str(output_dir / "planning_state")
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
-        (output_dir / "solve_report.json").write_text(
-            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
     report["runtime_memory"] = memory_monitor.stop()
     if artifacts.model.SolCount:
         report["result_manifest_path"] = str(output_dir / "result_manifest.json")
@@ -243,7 +246,10 @@ def main() -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    if export_state:
+        export_solution_planning_state(artifacts, data, config, output_dir)
     if artifacts.model.SolCount:
+        write_output_catalog(output_dir)
         finalize_result_manifest(output_dir, config)
     print(json.dumps(report, ensure_ascii=False, indent=2))
 

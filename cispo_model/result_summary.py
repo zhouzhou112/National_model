@@ -15,6 +15,7 @@ import pandas as pd
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .master import MasterArtifacts
+from .io_contract import RUNTIME_MANAGED_FILES
 
 
 def _value(expression: Any) -> np.ndarray:
@@ -168,6 +169,69 @@ def export_result_summary(
         encoding="utf-8-sig",
     )
 
+    province_capacity_rows: list[dict] = []
+    for p, province_code in enumerate(artifacts.index["province_codes"]):
+        for technology in VRE_TECHS:
+            rows = (
+                data.vre_sites.province_code.eq(province_code)
+                & data.vre_sites.technology.eq(technology)
+            ).to_numpy()
+            province_capacity_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "asset_group": "generation",
+                    "technology": technology,
+                    "unit": "GW",
+                    "capacity": float(vre_capacity[rows].sum()),
+                    "new_capacity": float(vre_new[rows].sum()),
+                }
+            )
+        for technology, k in artifacts.index["thermal_index"].items():
+            province_capacity_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "asset_group": "generation",
+                    "technology": technology,
+                    "unit": "GW",
+                    "capacity": float(thermal_capacity[p, k]),
+                    "new_capacity": float(thermal_new[p, k]),
+                }
+            )
+        for label, operation_type in (
+            ("ror", "run_of_river"),
+            ("reservoir", "reservoir_storage"),
+        ):
+            rows = (
+                data.hydro_stations.province_code.eq(province_code)
+                & data.hydro_stations.operation_type_model.eq(operation_type)
+            ).to_numpy()
+            province_capacity_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "asset_group": "generation",
+                    "technology": label,
+                    "unit": "GW",
+                    "capacity": float(hydro_capacity[rows].sum()),
+                    "new_capacity": float(hydro_new[rows].sum()),
+                }
+            )
+        for technology, s in artifacts.index["storage_index"].items():
+            province_capacity_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "asset_group": "storage_power",
+                    "technology": technology,
+                    "unit": "GW",
+                    "capacity": float(storage_capacity[p, s]),
+                    "new_capacity": float(storage_new[p, s]),
+                }
+            )
+    pd.DataFrame(province_capacity_rows).to_csv(
+        output_dir / "annual_capacity_by_province_technology.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
     vre_generation = _value(variables["vre_generation"])
     thermal_generation = _value(variables["actual_thermal_generation"])
     ror_generation = _value(variables["ror_generation"])
@@ -229,9 +293,18 @@ def export_result_summary(
     load = np.asarray(artifacts.index["selected_load_gw"], dtype=float).sum(axis=0)
     dac_load = _value(variables["dac_load"]).sum()
     network_injection = _value(variables["network_injection"]).sum(axis=0)
+    dates = (
+        data.load[["hour_index", "datetime_bj"]]
+        .drop_duplicates("hour_index")
+        .sort_values("hour_index")
+        .iloc[:hours]
+    )
     national = pd.DataFrame(
         {
             "hour_index": np.arange(hours),
+            "datetime_bj": pd.to_datetime(dates.datetime_bj).dt.strftime(
+                "%Y-%m-%d %H:%M:%S"
+            ).to_numpy(),
             "load_gw": load,
             "vre_generation_gw": sum(generation_series[t] for t in VRE_TECHS),
             "thermal_nuclear_generation_gw": sum(
@@ -252,12 +325,6 @@ def export_result_summary(
         encoding="utf-8-sig",
     )
 
-    dates = (
-        data.load[["hour_index", "datetime_bj"]]
-        .drop_duplicates("hour_index")
-        .sort_values("hour_index")
-        .iloc[:hours]
-    )
     months = pd.to_datetime(dates.datetime_bj).dt.month.to_numpy(dtype=int)
     monthly_rows = []
     for month in sorted(np.unique(months)):
@@ -293,12 +360,29 @@ def export_result_summary(
     transmission_losses = float(
         ((1.0 - efficiency)[:, None] * (flow_forward + flow_reverse)).sum()
     )
+    full_year = hours == config.hours
     summary = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
         "optimization_hours": hours,
+        "result_use": "SCIENTIFIC_PRODUCTION" if full_year else "TEST_ONLY_TRUNCATED_HORIZON",
+        "energy_scope": "full_year" if full_year else "selected_test_horizon",
+        "objective_interpretation": (
+            "annual system objective"
+            if full_year
+            else "mixed annual capacity/policy terms plus truncated operating terms; not a planning result"
+        ),
         "objective_million_cny_per_year": float(artifacts.model.ObjVal),
+        "period_load_gwh": float(load.sum()),
+        "period_generation_gwh": float(generation.generation_gwh.sum()),
+        "period_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
+        "period_ror_curtailment_gwh": float((ror_available - ror_generation).sum()),
+        "period_storage_charge_gwh": float(storage_charge.sum()),
+        "period_storage_discharge_gwh": float(storage_discharge.sum()),
+        "period_interprovincial_transmission_losses_gwh": transmission_losses,
+        # Backward-compatible aliases. For truncated gates these are selected-
+        # horizon totals despite the historical annual_* names.
         "annual_load_gwh": float(load.sum()),
         "peak_load_gw": float(load.max()),
         "annual_generation_gwh": float(generation.generation_gwh.sum()),
@@ -309,6 +393,7 @@ def export_result_summary(
         "interprovincial_transmission_losses_gwh": transmission_losses,
     }
     _write_json(summary, output_dir / "annual_summary.json")
+    _write_json(summary, output_dir / "run_summary.json")
 
     plotted_capacity = capacity.loc[
         capacity.unit.eq("GW") & capacity.capacity.gt(1e-9)
@@ -357,12 +442,7 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
     # stdout receives the final printed solve report after this function
     # returns, so hashing it here would create a manifest that is stale by
     # construction. Scientific result files and the Gurobi log remain hashed.
-    runtime_managed_files = {
-        "result_manifest.json",
-        "runner_stdout.log",
-        "runner_stderr.log",
-        "run.pid",
-    }
+    runtime_managed_files = set(RUNTIME_MANAGED_FILES)
     try:
         git_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"],
@@ -374,8 +454,11 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
     except (OSError, subprocess.CalledProcessError):
         git_commit = "UNAVAILABLE"
     files = []
+    excluded_present: set[str] = set()
     for path in sorted(output_dir.rglob("*")):
-        if path.is_file() and path.name not in runtime_managed_files:
+        if path.is_file() and path.name in runtime_managed_files:
+            excluded_present.add(path.name)
+        elif path.is_file():
             files.append(
                 {
                     "path": path.relative_to(output_dir).as_posix(),
@@ -389,7 +472,7 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
         "planning_year": config.planning_year,
         "git_commit": git_commit,
         "configuration": str(config.path),
-        "excluded_runtime_files": sorted(runtime_managed_files - {"result_manifest.json"}),
+        "excluded_runtime_files": sorted(excluded_present - {"result_manifest.json"}),
         "files": files,
     }
     path = output_dir / "result_manifest.json"

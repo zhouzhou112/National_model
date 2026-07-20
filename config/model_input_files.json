@@ -1,8 +1,9 @@
 {
-  "contract_version": "v2",
+  "contract_version": "v3",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
+    "sets/model_years.csv",
     "vre/optimization_points.csv",
     "vre/hourly_cf_index.csv",
     "load/hourly_load_2025_2060.csv.gz",
@@ -42,5 +43,39 @@
     "qc_summary.csv",
     "smoke_test_report.json",
     "source_manifest.csv"
-  ]
+  ],
+  "roles": {
+    "sets/provinces.csv": "Canonical 31-province index and Chinese/English labels",
+    "sets/model_years.csv": "Boundary and sequential planning-year definitions",
+    "vre/optimization_points.csv": "0.25-degree VRE capacity floors, scenario upper bounds and CCS sink fields",
+    "vre/hourly_cf_index.csv": "Weather-year capacity-factor store index and time metadata",
+    "load/hourly_load_2025_2060.csv.gz": "Chronological 31-province hourly demand for all modeled years",
+    "thermal/capacity_floor_by_year.csv": "Exogenous non-nuclear thermal capacity floors after retirement",
+    "thermal/nuclear_capacity_floor_by_year.csv": "Province-year nuclear committed/pipeline lower bounds",
+    "thermal/nuclear_capacity_upper_by_year.csv": "Province-year nuclear scenario upper bounds",
+    "hydro/hydro_stations.csv": "Station capacity, type, hydraulic and spatial attributes",
+    "hydro/cascade_topology_nodes.csv": "Core-cascade node-to-station mapping",
+    "hydro/cascade_topology_edges.csv": "Core-cascade direction and travel-lag topology",
+    "hydro/timeseries_index.csv": "Hydrology NetCDF paths, variables, dimensions and source hashes",
+    "biomass/fuel_potential_by_province_year.csv": "Province-year biomass thermal resource potential",
+    "biomass/capacity_upper_by_province_year.csv": "Shared bio plus BECCS province-year capacity upper bounds",
+    "transmission/candidate_corridors.csv": "Allowed interprovincial AC/DC corridors, existing capacity and costs",
+    "carbon/emissions_limits_by_scenario.csv": "Scenario-year net carbon constraints",
+    "technology/technology_capex_by_year.csv": "Technology-year investment costs",
+    "technology/thermal_nuclear_ruc_parameters.csv": "Continuous RUC, ramp, inertia, heat-rate and CCS-loss parameters",
+    "technology/thermal_nuclear_om_parameters.csv": "Thermal/nuclear fixed and variable O&M parameters",
+    "technology/storage_technical_parameters.csv": "Storage efficiency, duration, lifetime and O&M parameters",
+    "storage/phs_capacity_bounds_by_province_year.csv": "Province-year PHS floors and project-pipeline upper bounds",
+    "storage/battery_capacity_floor_by_province_year.csv": "Province-year battery power-capacity floors",
+    "technology/province_fuel_generation_cost_by_year.csv": "Province-year fuel generation costs and availability flags",
+    "technology/emission_factors_by_year.csv": "Year-specific fossil residual and BECCS emission factors",
+    "technology/dac_parameters_by_year.csv": "DAC capacity, cost, energy and lifetime parameters",
+    "technology/ccs_cost_parameters.csv": "CO2 capture, transport and injection costs",
+    "load_center_network/natural_earth_278/load_centers.csv": "278 load centers and province demand shares",
+    "load_center_network/natural_earth_278/vre_routes.csv": "VRE-site to substation/load-center routing",
+    "load_center_network/natural_earth_278/hydro_routes.csv": "Hydropower-station to substation/load-center routing",
+    "load_center_network/natural_earth_278/intra_edges.csv": "Candidate intraprovincial load-center network",
+    "load_center_network/natural_earth_278/initial_spur_capacity_2025.csv": "2025 VRE spur interface floor",
+    "load_center_network/natural_earth_278/substation_initial_capacity_2025.csv": "2025 substation/trunk interface floor"
+  }
 }

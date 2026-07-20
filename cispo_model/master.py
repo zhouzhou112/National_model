@@ -181,7 +181,13 @@ def export_master_solution(
                 "shipped_mtco2": co2_ship[int(p), int(sink_position)],
             }
         )
-    pd.DataFrame(co2_rows).to_csv(
+    pd.DataFrame(
+        co2_rows,
+        columns=[
+            "province_code", "sink_grid_uid", "sink_lon", "sink_lat",
+            "shipped_mtco2",
+        ],
+    ).to_csv(
         output_dir / "co2_source_sink_flows.csv", index=False, encoding="utf-8-sig"
     )
 
@@ -398,6 +404,7 @@ def build_master(
 
     variables: dict[str, Any] = {}
     costs: dict[str, gp.LinExpr] = {}
+    constraint_handles: dict[str, Any] = {}
     wacc = float(config.raw["finance"]["real_wacc_fraction"])
     lifetimes = config.raw["finance"]["default_lifetime_years"]
 
@@ -521,7 +528,7 @@ def build_master(
         raise ValueError(
             "Inherited biomass plus BECCS capacity exceeds the configured shared upper bound"
         )
-    model.addConstr(
+    constraint_handles["biomass_beccs_capacity_upper"] = model.addConstr(
         thermal_cap[:, bio_k] + thermal_cap[:, bioccs_k]
         <= biomass_pair_upper,
         name="biomass_beccs_shared_capacity_upper_s4_34",
@@ -742,13 +749,19 @@ def build_master(
 
     carbon_limit = float(data.carbon.emissions_limit_mtco2_per_year)
     effective_dac = dac_mass.sum()
-    model.addConstr(annual_emissions.sum() - effective_dac <= carbon_limit, name="annual_net_carbon_limit")
+    constraint_handles["annual_net_carbon_limit"] = model.addConstr(
+        annual_emissions.sum() - effective_dac <= carbon_limit,
+        name="annual_net_carbon_limit",
+    )
     biomass_limit = (
         data.biomass.set_index("province_code")
         .thermcal_gj_per_year.reindex(provinces).to_numpy(dtype=float)
         / 1.0e6
     )
-    model.addConstr(annual_biomass.sum(axis=0) <= biomass_limit, name="annual_biomass_fuel_limit")
+    constraint_handles["annual_biomass_fuel_limit"] = model.addConstr(
+        annual_biomass.sum(axis=0) <= biomass_limit,
+        name="annual_biomass_fuel_limit",
+    )
 
     # Annual CCS source-sink allocation. Positive grid-point injection fields
     # remain separate sinks; no province aggregation is used here.
@@ -758,13 +771,15 @@ def build_master(
         ["grid_uid", "lon", "lat", injection_field],
     ].reset_index(drop=True)
     co2_ship = model.addMVar((p_count, len(sinks)), lb=0.0, name="co2_ship_mt")
+    co2_source_constraints = []
     for p in range(p_count):
-        model.addConstr(
+        co2_source_constraints.append(model.addConstr(
             co2_ship[p, :].sum()
             == annual_captured[:, p].sum() + dac_mass[p, :].sum(),
             name=f"co2_source_balance_p{provinces[p]}",
-        )
-    model.addConstr(
+        ))
+    constraint_handles["co2_source_balance"] = co2_source_constraints
+    constraint_handles["co2_sink_injection_capacity"] = model.addConstr(
         co2_ship.sum(axis=0) <= sinks[injection_field].to_numpy(dtype=float),
         name="co2_sink_injection_capacity",
     )
@@ -795,6 +810,7 @@ def build_master(
     credit = config.raw["security"]["capacity_credit"]
     peak = data.load_gw.max(axis=1)
     margin = 1.0 + float(config.raw["security"]["capacity_margin_fraction"])
+    capacity_margin_constraints = []
     for province_code, p in p_index.items():
         expr = gp.LinExpr()
         for technology in THERMAL_TECHS:
@@ -816,7 +832,12 @@ def build_master(
                 expr += float(credit["reservoir"]) * hydro_cap[hydro_rows[~ror_mask]].sum()
         for technology in STORAGE_TECHS:
             expr += float(credit[technology]) * storage_cap[p, s_index[technology]]
-        model.addConstr(expr >= margin * peak[p], name=f"capacity_margin_p{province_code}")
+        capacity_margin_constraints.append(
+            model.addConstr(
+                expr >= margin * peak[p], name=f"capacity_margin_p{province_code}"
+            )
+        )
+    constraint_handles["capacity_margin"] = capacity_margin_constraints
 
     # Intra-grid capacity variables are annual master decisions. Max CF is
     # precomputed from the full 8760 source, never from sampled hours.
@@ -998,6 +1019,7 @@ def build_master(
         "line_capacity_floor_gw": line_floor,
         "dac_asset_ids": dac_asset_ids,
         "dac_capacity_floor_mtpa": dac_floor,
+        "constraint_handles": constraint_handles,
         **index_extra,
     }
     if config.raw["features"]["annual_load_center_transmission"]:

@@ -60,6 +60,7 @@ class PlanningSequenceTests(unittest.TestCase):
                 source_solution_qc="solution_qc.json",
             )
             state = PlanningState.load(state_dir, expected_boundary_year=2030)
+            self.assertTrue((state_dir / "state_transition_summary.csv").is_file())
             self.assertAlmostEqual(
                 state.active_adjustment(
                     "storage", [asset_id], planning_year=2040, unit="GW"
@@ -74,6 +75,35 @@ class PlanningSequenceTests(unittest.TestCase):
             )
             with self.assertRaises(ValueError):
                 PlanningState.load(state_dir, expected_boundary_year=2040)
+
+    def test_state_rejects_modified_source_solve_or_qc(self):
+        config = load_model_config().for_planning_year(2030)
+        new_cohorts = pd.DataFrame(columns=STATE_COLUMNS)
+        with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            qc_path = output_dir / "solution_qc.json"
+            solve_path = output_dir / "solve_report.json"
+            qc_path.write_text('{"status":"PASS"}\n', encoding="utf-8")
+            solve_path.write_text(
+                '{"status":"OPTIMAL","result_use":"SCIENTIFIC_PRODUCTION",'
+                '"planning_year":2030}\n',
+                encoding="utf-8",
+            )
+            state_dir = write_planning_state(
+                output_dir,
+                config=config,
+                previous_state=PlanningState.empty(2025),
+                new_cohorts=new_cohorts,
+                source_solution_qc="solution_qc.json",
+            )
+            PlanningState.load(state_dir, expected_boundary_year=2030)
+            solve_path.write_text(
+                '{"status":"SUBOPTIMAL","result_use":"SCIENTIFIC_PRODUCTION",'
+                '"planning_year":2030}\n',
+                encoding="utf-8",
+            )
+            with self.assertRaises(ValueError):
+                PlanningState.load(state_dir, expected_boundary_year=2030)
 
     def test_solution_export_maps_capacity_decisions_to_checksummed_cohorts(self):
         class Value:

@@ -16,6 +16,7 @@ from .config import ModelConfig
 
 STATE_METADATA = "state_metadata.json"
 STATE_COHORTS = "capacity_cohorts.csv.gz"
+STATE_SUMMARY = "state_transition_summary.csv"
 STATE_COLUMNS = (
     "asset_class",
     "asset_id",
@@ -80,6 +81,34 @@ class PlanningState:
         actual_hash = sha256_file(cohorts_path)
         if expected_hash and expected_hash != actual_hash:
             raise ValueError("Planning-state cohort SHA256 mismatch")
+        source_qc = metadata.get("source_solution_qc")
+        source_qc_hash = metadata.get("source_solution_qc_sha256")
+        if source_qc_hash:
+            source_qc_path = root.parent / str(source_qc)
+            if not source_qc_path.is_file():
+                raise FileNotFoundError(
+                    f"Planning-state source QC is missing: {source_qc_path}"
+                )
+            if sha256_file(source_qc_path) != source_qc_hash:
+                raise ValueError("Planning-state source solution QC SHA256 mismatch")
+            source_qc_payload = json.loads(source_qc_path.read_text(encoding="utf-8"))
+            if source_qc_payload.get("status") != "PASS":
+                raise ValueError("Planning-state source solution QC is not PASS")
+        source_solve_hash = metadata.get("source_solve_report_sha256")
+        if source_solve_hash:
+            source_solve_path = root.parent / "solve_report.json"
+            if not source_solve_path.is_file():
+                raise FileNotFoundError(
+                    f"Planning-state source solve report is missing: {source_solve_path}"
+                )
+            if sha256_file(source_solve_path) != source_solve_hash:
+                raise ValueError("Planning-state source solve-report SHA256 mismatch")
+            source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
+            if (
+                source_solve.get("status") != "OPTIMAL"
+                or source_solve.get("result_use") != "SCIENTIFIC_PRODUCTION"
+            ):
+                raise ValueError("Planning-state source solve is not accepted production output")
         cohorts = pd.read_csv(cohorts_path)
         missing = sorted(set(STATE_COLUMNS).difference(cohorts.columns))
         if missing:
@@ -157,6 +186,15 @@ def write_planning_state(
     additions = new_cohorts.loc[
         new_cohorts.capacity_delta.abs().gt(tolerance), STATE_COLUMNS
     ].copy()
+    numeric_additions = additions[
+        ["build_year", "retire_year", "capacity_delta"]
+    ].apply(pd.to_numeric, errors="coerce")
+    if (
+        numeric_additions.isna().any().any()
+        or not np.isfinite(numeric_additions.to_numpy(dtype=float)).all()
+        or (numeric_additions.retire_year <= numeric_additions.build_year).any()
+    ):
+        raise ValueError("New planning-state cohorts contain invalid numeric values")
     frames = [frame for frame in (retained, additions) if not frame.empty]
     cohorts = (
         pd.concat(frames, ignore_index=True)
@@ -174,20 +212,53 @@ def write_planning_state(
         encoding="utf-8",
         lineterminator="\n",
     )
+    next_planning_year = next(
+        (year for year in config.planning_years if year > config.planning_year),
+        None,
+    )
+    active_next = (
+        cohorts.loc[
+            cohorts.build_year.le(next_planning_year)
+            & cohorts.retire_year.gt(next_planning_year)
+        ]
+        if next_planning_year is not None
+        else cohorts.iloc[0:0]
+    )
+    summary = (
+        active_next.groupby(
+            ["asset_class", "technology", "unit", "action"], dropna=False
+        )
+        .agg(cohort_rows=("asset_id", "size"), capacity_delta=("capacity_delta", "sum"))
+        .reset_index()
+    )
+    summary.insert(0, "active_planning_year", next_planning_year)
+    summary.to_csv(
+        state_dir / STATE_SUMMARY,
+        index=False,
+        encoding="utf-8-sig",
+        lineterminator="\n",
+    )
+    source_qc_path = output_dir / source_solution_qc
+    source_solve_path = output_dir / "solve_report.json"
     metadata = {
         "format": "capacity_cohorts_v1",
         "generated_at": datetime.now().astimezone().isoformat(),
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
-        "next_planning_year": next(
-            (year for year in config.planning_years if year > config.planning_year),
-            None,
-        ),
+        "next_planning_year": next_planning_year,
         "retirement_rule": config.raw["planning_sequence"]["retirement_rule"],
         "source_solution_qc": source_solution_qc,
+        "source_solution_qc_sha256": (
+            sha256_file(source_qc_path) if source_qc_path.is_file() else None
+        ),
+        "source_solve_report_sha256": (
+            sha256_file(source_solve_path) if source_solve_path.is_file() else None
+        ),
         "cohort_rows": int(len(cohorts)),
         "new_cohort_rows": int(len(additions)),
+        "active_next_planning_year_rows": int(len(active_next)),
         "capacity_cohorts_sha256": sha256_file(cohorts_path),
+        "state_transition_summary_sha256": sha256_file(state_dir / STATE_SUMMARY),
     }
     (state_dir / STATE_METADATA).write_text(
         json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",

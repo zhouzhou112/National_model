@@ -119,6 +119,7 @@ def build_full_year_monolithic(
     artifacts = build_master(config, data, [block], compute_max_cf=compute_max_cf)
     model = artifacts.model
     variables = artifacts.variables
+    constraint_handles = artifacts.index["constraint_handles"]
     provinces = data.province_codes.tolist()
     p_index = artifacts.index["province_index"]
     k_index = artifacts.index["thermal_index"]
@@ -523,13 +524,13 @@ def build_full_year_monolithic(
         (len(ac_edge_rows), hours), lb=0.0, name="flow_reverse_ac_gw"
     )
     if len(ac_edge_rows):
-        model.addConstr(
+        constraint_handles["ac_line_shared_capacity_hourly"] = model.addConstr(
             flow_forward[ac_edge_rows, :] + flow_reverse_ac
             <= line_capacity[ac_edge_rows][:, None],
             name="ac_line_shared_capacity_hourly",
         )
     if len(dc_edge_rows):
-        model.addConstr(
+        constraint_handles["dc_line_forward_capacity_hourly"] = model.addConstr(
             flow_forward[dc_edge_rows, :]
             <= line_capacity[dc_edge_rows][:, None],
             name="dc_line_forward_capacity_hourly",
@@ -546,15 +547,17 @@ def build_full_year_monolithic(
     ).average_power_gw_per_mtco2_per_year.to_numpy(dtype=float)
     dac_load = dac_capture @ dac_power
     province_emissions: list[gp.LinExpr] = []
+    power_balance_constraints = []
     for p in range(p_count):
-        model.addConstr(
+        power_balance_constraints.append(model.addConstr(
             vre_generation[p].sum(axis=0) + actual_thermal[p].sum(axis=0)
             + ror_generation[p] + reservoir_generation_by_province[p]
             + discharge[p].sum(axis=0) - charge[p].sum(axis=0)
             + network_injection[p]
             == load[p] + dac_load[p],
             name=f"strict_power_balance_p{provinces[p]}",
-        )
+        ))
+    constraint_handles["strict_power_balance"] = power_balance_constraints
 
     if config.raw["features"]["annual_load_center_transmission"]:
         intra_load_center_flow_cost = attach_annual_load_center_network(
@@ -598,13 +601,13 @@ def build_full_year_monolithic(
     storage_up_by_province = storage_up.sum(axis=1)
     storage_down_by_province = storage_down.sum(axis=1)
     vre_dispatch = vre_generation.sum(axis=1)
-    model.addConstr(
+    constraint_handles["up_reserve"] = model.addConstr(
         thermal_up + vre_up + hydro_up + storage_up_by_province
         >= float(security["up_reserve_load_fraction"]) * load
         + float(security["up_reserve_vre_fraction"]) * vre_dispatch,
         name="up_reserve",
     )
-    model.addConstr(
+    constraint_handles["down_reserve"] = model.addConstr(
         thermal_down + ror_generation + reservoir_generation_by_province
         + storage_down_by_province
         >= float(security["down_reserve_load_fraction"]) * load
@@ -624,13 +627,15 @@ def build_full_year_monolithic(
             expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows_p].sum()
         hydro_inertia[p] = expression
     storage_inertia = np.asarray([float(non_sync[t]) for t in STORAGE_TECHS])
+    inertia_constraints = []
     for p in range(p_count):
-        model.addConstr(
+        inertia_constraints.append(model.addConstr(
             (online[p] * inertia[:, None]).sum(axis=0) + hydro_inertia[p]
             + storage_capacity[p] @ storage_inertia
             >= float(security["minimum_system_inertia_seconds"]) * load[p],
             name=f"inertia_p{provinces[p]}",
-        )
+        ))
+    constraint_handles["inertia"] = inertia_constraints
 
     # Annual operating costs and exact carbon/biomass/CCS accounting.
     om = data.thermal_om.set_index("technology").reindex(THERMAL_TECHS)

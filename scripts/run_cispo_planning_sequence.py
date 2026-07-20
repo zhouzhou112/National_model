@@ -15,6 +15,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from cispo_model.config import load_model_config
+from cispo_model.io_contract import validate_result_manifest
+from cispo_model.planning_state import PlanningState
 from cispo_model.result_summary import _svg_lines
 
 
@@ -26,12 +28,26 @@ def accepted(output_dir: Path, *, require_state: bool = True) -> bool:
         return False
     solve = json.loads(solve_path.read_text(encoding="utf-8"))
     qc = json.loads(qc_path.read_text(encoding="utf-8"))
-    return bool(
+    accepted_core = bool(
         solve.get("status") == "OPTIMAL"
         and solve.get("result_use") == "SCIENTIFIC_PRODUCTION"
         and qc.get("status") == "PASS"
         and (state_path.is_file() or not require_state)
     )
+    if not accepted_core:
+        return False
+    manifest_ok, _ = validate_result_manifest(output_dir)
+    if not manifest_ok:
+        return False
+    if require_state:
+        try:
+            PlanningState.load(
+                output_dir / "planning_state",
+                expected_boundary_year=int(solve["planning_year"]),
+            )
+        except (FileNotFoundError, KeyError, TypeError, ValueError):
+            return False
+    return True
 
 
 def write_sequence_summaries(output_root: Path, years: list[int]) -> None:
@@ -64,6 +80,46 @@ def write_sequence_summaries(output_root: Path, years: list[int]) -> None:
         index=False,
         encoding="utf-8-sig",
     )
+
+    optional_tables = {
+        "annual_capacity_by_province_technology.csv": "sequence_capacity_by_province_technology.csv",
+        "annual_generation_by_province_technology.csv": "sequence_generation_by_province_technology.csv",
+        "annual_resource_accounting_by_province.csv": "sequence_resource_accounting_by_province.csv",
+        "annual_storage_operation_by_technology.csv": "sequence_storage_operation_by_technology.csv",
+        "cost_components.csv": "sequence_cost_components.csv",
+    }
+    for source_name, output_name in optional_tables.items():
+        frames = []
+        for year in years:
+            source = output_root / str(year) / source_name
+            if not source.is_file():
+                frames = []
+                break
+            frame = pd.read_csv(source)
+            frame.insert(0, "planning_year", year)
+            frames.append(frame)
+        if frames:
+            pd.concat(frames, ignore_index=True).to_csv(
+                output_root / output_name,
+                index=False,
+                encoding="utf-8-sig",
+            )
+
+    carbon_rows = []
+    for year in years:
+        source = output_root / str(year) / "annual_carbon_ccs.json"
+        if not source.is_file():
+            carbon_rows = []
+            break
+        row = json.loads(source.read_text(encoding="utf-8"))
+        row["planning_year"] = year
+        carbon_rows.append(row)
+    if carbon_rows:
+        pd.DataFrame(carbon_rows).to_csv(
+            output_root / "sequence_carbon_ccs.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
     capacity_wide = (
         capacity_frame.loc[capacity_frame.unit.eq("GW")]
         .pivot_table(index="planning_year", columns="technology", values="capacity", aggfunc="sum")

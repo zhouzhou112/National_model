@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from gurobipy import GurobiError
 
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
@@ -51,6 +52,7 @@ def export_operational_solution(
     online = _value(variables["online"])
     startup = _value(variables["startup"])
     shutdown = _value(variables["shutdown"])
+    ramp_magnitude = _value(variables["ramp_magnitude"])
     ror_generation = _value(variables["ror_generation"])
     ror_available = _value(variables["ror_available"])
     reservoir_generation = _value(variables["reservoir_generation"])
@@ -88,6 +90,16 @@ def export_operational_solution(
     storage_charge = _value(variables["storage_charge"])
     storage_discharge = _value(variables["storage_discharge"])
     storage_soc = _value(variables["storage_soc"])
+    storage_capacity = _value(variables["storage_capacity"])
+    vre_capacity = _value(variables["vre_capacity"])
+    hydro_capacity = _value(variables["hydro_capacity"])
+    thermal_capacity = _value(variables["thermal_capacity"])
+    storage_reserve_up_technology = _value(
+        variables["storage_reserve_up_technology"]
+    )
+    storage_reserve_down_technology = _value(
+        variables["storage_reserve_down_technology"]
+    )
     flow_forward = _value(variables["flow_forward"])
     reverse_edge_rows = np.asarray(
         artifacts.index["interprovincial_reverse_edge_rows"], dtype=int
@@ -129,6 +141,85 @@ def export_operational_solution(
         thermal_down + ror_generation + reservoir_by_province + storage_down
         - down_requirement
     )
+
+    dates = (
+        data.load[["hour_index", "datetime_bj"]]
+        .drop_duplicates("hour_index")
+        .sort_values("hour_index")
+        .iloc[:hours]
+        .copy()
+    )
+    if len(dates) != hours:
+        raise ValueError(f"Time index rows={len(dates)}; expected {hours}")
+    dates["datetime_bj"] = pd.to_datetime(dates.datetime_bj)
+    dates["month"] = dates.datetime_bj.dt.month
+    dates["day_of_year"] = dates.datetime_bj.dt.dayofyear
+    dates["hour_of_day"] = dates.datetime_bj.dt.hour
+    dates.to_csv(
+        output_dir / "time_index.csv", index=False, encoding="utf-8-sig"
+    )
+
+    ruc_table = data.ruc.set_index("technology").reindex(THERMAL_TECHS)
+    inertia_s = ruc_table.inertia_s.to_numpy(dtype=float)
+    thermal_inertia = (online * inertia_s[None, :, None]).sum(axis=1)
+    hydro_inertia = _value(variables["hydro_inertia"]).reshape(p_count)
+    storage_inertia_s = np.asarray(
+        [
+            float(config.raw["security"]["non_synchronous_inertia_seconds"][tech])
+            for tech in STORAGE_TECHS
+        ],
+        dtype=float,
+    )
+    storage_inertia = storage_capacity @ storage_inertia_s
+    inertia_provided = (
+        thermal_inertia + hydro_inertia[:, None] + storage_inertia[:, None]
+    )
+    inertia_required = (
+        float(config.raw["security"]["minimum_system_inertia_seconds"]) * load
+    )
+    capacity_credit = config.raw["security"]["capacity_credit"]
+    credited_capacity = np.zeros(p_count, dtype=float)
+    for p, province_code in enumerate(provinces):
+        for technology, k in artifacts.index["thermal_index"].items():
+            credited_capacity[p] += (
+                float(capacity_credit[technology]) * thermal_capacity[p, k]
+            )
+        for technology, v in zip(VRE_TECHS, range(len(VRE_TECHS))):
+            rows = (
+                data.vre_sites.province_code.eq(province_code)
+                & data.vre_sites.technology.eq(technology)
+            ).to_numpy()
+            credited_capacity[p] += (
+                float(capacity_credit[technology]) * vre_capacity[rows].sum()
+            )
+        province_hydro = data.hydro_stations.province_code.eq(province_code)
+        for technology, operation_type in (
+            ("ror", "run_of_river"),
+            ("reservoir", "reservoir_storage"),
+        ):
+            rows = (
+                province_hydro
+                & data.hydro_stations.operation_type_model.eq(operation_type)
+            ).to_numpy()
+            credited_capacity[p] += (
+                float(capacity_credit[technology]) * hydro_capacity[rows].sum()
+            )
+        for technology, s in artifacts.index["storage_index"].items():
+            credited_capacity[p] += (
+                float(capacity_credit[technology]) * storage_capacity[p, s]
+            )
+    capacity_margin_required = (
+        1.0 + float(config.raw["security"]["capacity_margin_fraction"])
+    ) * data.load_gw.max(axis=1)
+    capacity_margin = credited_capacity - capacity_margin_required
+
+    pmin = ruc_table.pmin_fraction.to_numpy(dtype=float)
+    pmax = ruc_table.pmax_fraction.to_numpy(dtype=float)
+    ruc_transition_residual = (
+        online - np.roll(online, 1, axis=2) - startup + shutdown
+    )
+    storage_overlap = np.minimum(storage_charge, storage_discharge)
+    startup_shutdown_overlap = np.minimum(startup, shutdown)
 
     storage_table = data.storage.set_index("technology").reindex(STORAGE_TECHS)
     eta_c = storage_table.charge_efficiency.to_numpy(dtype=float)
@@ -193,7 +284,6 @@ def export_operational_solution(
 
     line_capacity = _value(variables["line_capacity"])
     line_violation = flow_forward + flow_reverse - line_capacity[:, None]
-    thermal_capacity = _value(variables["thermal_capacity"])
     thermal_floor = np.asarray(
         artifacts.index["thermal_capacity_floor_gw"], dtype=float
     )
@@ -206,7 +296,6 @@ def export_operational_solution(
     biomass_pair_upper = np.asarray(
         artifacts.index["biomass_pair_capacity_upper_gw"], dtype=float
     )
-    storage_capacity = _value(variables["storage_capacity"])
     storage_floor = np.asarray(
         artifacts.index["storage_capacity_floor_gw"], dtype=float
     )
@@ -228,6 +317,40 @@ def export_operational_solution(
     injection_field = str(config.raw["ccs_injection_field"])
     sinks = data.vre_points.loc[data.vre_points[injection_field].gt(0)]
     co2_sink_violation = co2_ship.sum(axis=0) - sinks[injection_field].to_numpy(float)
+
+    thermal_energy = thermal_gross.sum(axis=2)
+    emission_table = data.emissions.set_index("technology")
+    coal_factor = float(
+        emission_table.loc["coal", "emission_factor_mtco2_per_gwh"]
+    )
+    gas_factor = float(
+        emission_table.loc["gas", "emission_factor_mtco2_per_gwh"]
+    )
+    capture_fraction = float(emission_table.loc["coal", "ccs_capture_fraction"])
+    bioccs_factor = float(
+        emission_table.loc["bioccs", "emission_factor_mtco2_per_gwh"]
+    )
+    fossil_unabated = np.zeros(p_count, dtype=float)
+    emissions_before_dac_by_province = np.zeros(p_count, dtype=float)
+    for technology, k in artifacts.index["thermal_index"].items():
+        generation = thermal_energy[:, k]
+        if technology.startswith("coal") or technology.startswith("cchp"):
+            base_factor = coal_factor
+        elif technology.startswith("gas") or technology.startswith("gchp"):
+            base_factor = gas_factor
+        else:
+            base_factor = 0.0
+        fossil_unabated += base_factor * generation
+        if technology.endswith("ccs") and technology != "bioccs":
+            emissions_before_dac_by_province += (
+                base_factor * (1.0 - capture_fraction) * generation
+            )
+        elif technology == "bioccs":
+            emissions_before_dac_by_province += bioccs_factor * generation
+        else:
+            emissions_before_dac_by_province += base_factor * generation
+    dac_by_province = _value(variables["dac_capture"]).sum(axis=1)
+    biomass_by_province = _value(variables["annual_biomass"]).sum(axis=0)
 
     cost_values = {
         name: float(expression.getValue())
@@ -263,6 +386,35 @@ def export_operational_solution(
         "maximum_power_balance_residual_gw": float(np.abs(balance_residual).max()),
         "minimum_up_reserve_margin_gw": float(up_margin.min()),
         "minimum_down_reserve_margin_gw": float(down_margin.min()),
+        "minimum_inertia_margin_gw_s": float(
+            (inertia_provided - inertia_required).min()
+        ),
+        "minimum_capacity_margin_gw": float(capacity_margin.min()),
+        "maximum_ruc_transition_residual_gw": float(
+            np.abs(ruc_transition_residual).max()
+        ),
+        "maximum_thermal_online_capacity_violation_gw": float(
+            np.maximum(online - thermal_capacity[:, :, None], 0.0).max()
+        ),
+        "maximum_thermal_minimum_generation_violation_gw": float(
+            np.maximum(pmin[None, :, None] * online - thermal_gross, 0.0).max()
+        ),
+        "maximum_thermal_maximum_generation_violation_gw": float(
+            np.maximum(thermal_gross - pmax[None, :, None] * online, 0.0).max()
+        ),
+        "storage_simultaneous_charge_discharge_asset_hours": int(
+            ((storage_charge > flow_direction_tolerance_gw)
+             & (storage_discharge > flow_direction_tolerance_gw)).sum()
+        ),
+        "maximum_storage_charge_discharge_overlap_gw": float(storage_overlap.max()),
+        "total_storage_charge_discharge_overlap_gwh": float(storage_overlap.sum()),
+        "thermal_simultaneous_startup_shutdown_asset_hours": int(
+            ((startup > flow_direction_tolerance_gw)
+             & (shutdown > flow_direction_tolerance_gw)).sum()
+        ),
+        "maximum_thermal_startup_shutdown_overlap_gw": float(
+            startup_shutdown_overlap.max()
+        ),
         "maximum_vre_availability_violation_gw": float(np.maximum(vre_violation, 0.0).max()),
         "maximum_line_capacity_violation_gw": float(np.maximum(line_violation, 0.0).max()),
         "maximum_nuclear_capacity_floor_violation_gw": float(
@@ -304,6 +456,7 @@ def export_operational_solution(
             len(artifacts.index.get("cascade_edge_ids", []))
         ),
         "annual_gross_emissions_mtco2": annual_emissions,
+        "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,
         "annual_net_emissions_mtco2": net_emissions,
         "carbon_limit_mtco2": carbon_limit,
@@ -335,6 +488,18 @@ def export_operational_solution(
         "power_balance": qc["maximum_power_balance_residual_gw"] <= tolerance,
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
+        "inertia": qc["minimum_inertia_margin_gw_s"] >= -tolerance,
+        "capacity_margin": qc["minimum_capacity_margin_gw"] >= -tolerance,
+        "ruc_transition": qc["maximum_ruc_transition_residual_gw"] <= tolerance,
+        "thermal_online_capacity": qc[
+            "maximum_thermal_online_capacity_violation_gw"
+        ] <= tolerance,
+        "thermal_minimum_generation": qc[
+            "maximum_thermal_minimum_generation_violation_gw"
+        ] <= tolerance,
+        "thermal_maximum_generation": qc[
+            "maximum_thermal_maximum_generation_violation_gw"
+        ] <= tolerance,
         "vre_availability": qc["maximum_vre_availability_violation_gw"] <= tolerance,
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
         "nuclear_capacity_floor": qc[
@@ -373,6 +538,10 @@ def export_operational_solution(
         {
             "province_code": np.repeat(provinces, hours),
             "hour_index": np.tile(hour_index, p_count),
+            "datetime_bj": np.tile(
+                dates.datetime_bj.dt.strftime("%Y-%m-%d %H:%M:%S").to_numpy(),
+                p_count,
+            ),
             "load_gw": load.ravel(),
             "vre_generation_gw": vre_generation.sum(axis=1).ravel(),
             "thermal_net_generation_gw": thermal_net.sum(axis=1).ravel(),
@@ -394,6 +563,273 @@ def export_operational_solution(
         encoding="utf-8-sig",
     )
 
+    security_hour = pd.DataFrame(
+        {
+            "province_code": np.repeat(provinces, hours),
+            "hour_index": np.tile(hour_index, p_count),
+            "datetime_bj": np.tile(
+                dates.datetime_bj.dt.strftime("%Y-%m-%d %H:%M:%S").to_numpy(),
+                p_count,
+            ),
+            "up_reserve_requirement_gw": up_requirement.ravel(),
+            "up_reserve_thermal_gw": thermal_up.ravel(),
+            "up_reserve_vre_gw": vre_up.ravel(),
+            "up_reserve_hydro_gw": hydro_up.ravel(),
+            "up_reserve_storage_gw": storage_up.ravel(),
+            "up_reserve_margin_gw": up_margin.ravel(),
+            "down_reserve_requirement_gw": down_requirement.ravel(),
+            "down_reserve_thermal_gw": thermal_down.ravel(),
+            "down_reserve_hydro_gw": (ror_generation + reservoir_by_province).ravel(),
+            "down_reserve_storage_gw": storage_down.ravel(),
+            "down_reserve_margin_gw": down_margin.ravel(),
+            "inertia_required_gw_s": inertia_required.ravel(),
+            "inertia_thermal_gw_s": thermal_inertia.ravel(),
+            "inertia_hydro_gw_s": np.repeat(hydro_inertia, hours),
+            "inertia_storage_gw_s": np.repeat(storage_inertia, hours),
+            "inertia_provided_gw_s": inertia_provided.ravel(),
+            "inertia_margin_gw_s": (inertia_provided - inertia_required).ravel(),
+        }
+    )
+    security_hour.to_csv(
+        output_dir / "hourly_province_security.csv.gz",
+        index=False,
+        compression="gzip",
+        encoding="utf-8-sig",
+    )
+
+    dual_status: dict[str, Any] = {
+        "generated_at": datetime.now().astimezone().isoformat(),
+        "available": False,
+        "model_class": "continuous_linear_program",
+        "note": (
+            "Gurobi Pi is the derivative of the objective with respect to the "
+            "constraint RHS. Equality power-balance Pi is reported as an energy "
+            "price; inequality scarcity values use the documented tightening sign."
+        ),
+    }
+    try:
+        handles = artifacts.index["constraint_handles"]
+        power_balance_pi = np.vstack(
+            [np.asarray(handle.Pi, dtype=float) for handle in handles["strict_power_balance"]]
+        )
+        up_reserve_pi = np.asarray(handles["up_reserve"].Pi, dtype=float)
+        down_reserve_pi = np.asarray(handles["down_reserve"].Pi, dtype=float)
+        inertia_pi = np.vstack(
+            [np.asarray(handle.Pi, dtype=float) for handle in handles["inertia"]]
+        )
+        if any(
+            value.shape != (p_count, hours)
+            for value in (
+                power_balance_pi, up_reserve_pi, down_reserve_pi, inertia_pi
+            )
+        ):
+            raise ValueError("Unexpected hourly dual-array shape")
+        pd.DataFrame(
+            {
+                "province_code": np.repeat(provinces, hours),
+                "hour_index": np.tile(hour_index, p_count),
+                "datetime_bj": np.tile(
+                    dates.datetime_bj.dt.strftime("%Y-%m-%d %H:%M:%S").to_numpy(),
+                    p_count,
+                ),
+                "power_balance_pi_million_cny_per_gwh": power_balance_pi.ravel(),
+                "marginal_energy_price_cny_per_mwh": (
+                    power_balance_pi * 1000.0
+                ).ravel(),
+                "up_reserve_pi_million_cny_per_gwh": up_reserve_pi.ravel(),
+                "up_reserve_scarcity_cny_per_mwh": (
+                    up_reserve_pi * 1000.0
+                ).ravel(),
+                "down_reserve_pi_million_cny_per_gwh": down_reserve_pi.ravel(),
+                "down_reserve_scarcity_cny_per_mwh": (
+                    down_reserve_pi * 1000.0
+                ).ravel(),
+                "inertia_pi_million_cny_per_gw_s": inertia_pi.ravel(),
+                "inertia_scarcity_million_cny_per_gw_s": inertia_pi.ravel(),
+            }
+        ).to_csv(
+            output_dir / "hourly_marginal_prices.csv.gz",
+            index=False,
+            compression="gzip",
+            encoding="utf-8-sig",
+        )
+
+        annual_dual_rows: list[dict[str, Any]] = []
+
+        def add_dual(
+            constraint: str,
+            index_type: str,
+            index_value: Any,
+            pi: float,
+            sense: str,
+            interpreted_unit: str,
+        ) -> None:
+            annual_dual_rows.append(
+                {
+                    "constraint": constraint,
+                    "index_type": index_type,
+                    "index_value": index_value,
+                    "sense": sense,
+                    "gurobi_pi": float(pi),
+                    "tightening_scarcity_value": (
+                        -float(pi) if sense == "<=" else float(pi)
+                    ),
+                    "interpreted_unit": interpreted_unit,
+                }
+            )
+
+        add_dual(
+            "annual_net_carbon_limit",
+            "national",
+            "China",
+            float(handles["annual_net_carbon_limit"].Pi),
+            "<=",
+            "CNY_per_tCO2",
+        )
+        for province_code, pi in zip(
+            provinces,
+            np.asarray(handles["annual_biomass_fuel_limit"].Pi, dtype=float),
+        ):
+            add_dual(
+                "annual_biomass_fuel_limit",
+                "province_code",
+                int(province_code),
+                float(pi),
+                "<=",
+                "CNY_per_GJ",
+            )
+        for province_code, handle in zip(provinces, handles["capacity_margin"]):
+            add_dual(
+                "capacity_margin",
+                "province_code",
+                int(province_code),
+                float(handle.Pi),
+                ">=",
+                "CNY_per_kW_credited_capacity",
+            )
+        for province_code, pi in zip(
+            provinces,
+            np.asarray(handles["biomass_beccs_capacity_upper"].Pi, dtype=float),
+        ):
+            add_dual(
+                "biomass_beccs_capacity_upper",
+                "province_code",
+                int(province_code),
+                float(pi),
+                "<=",
+                "CNY_per_kW",
+            )
+        for province_code, handle in zip(
+            provinces, handles["co2_source_balance"]
+        ):
+            add_dual(
+                "co2_source_balance",
+                "province_code",
+                int(province_code),
+                float(handle.Pi),
+                "=",
+                "CNY_per_tCO2",
+            )
+        sink_pi = np.asarray(
+            handles["co2_sink_injection_capacity"].Pi, dtype=float
+        )
+        for sink_uid, pi in zip(sinks.grid_uid.astype(str), sink_pi):
+            add_dual(
+                "co2_sink_injection_capacity",
+                "sink_grid_uid",
+                sink_uid,
+                float(pi),
+                "<=",
+                "CNY_per_tCO2",
+            )
+        pd.DataFrame(annual_dual_rows).to_csv(
+            output_dir / "annual_constraint_shadow_prices.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+        dual_status.update(
+            available=True,
+            hourly_rows=int(p_count * hours),
+            annual_rows=int(len(annual_dual_rows)),
+        )
+    except (AttributeError, KeyError, TypeError, ValueError, GurobiError) as exc:
+        dual_status["reason"] = f"{type(exc).__name__}: {exc}"
+    _write_json(dual_status, output_dir / "dual_export_status.json")
+
+    pd.DataFrame(
+        {
+            "province_code": provinces,
+            "peak_load_gw": data.load_gw.max(axis=1),
+            "capacity_margin_fraction": float(
+                config.raw["security"]["capacity_margin_fraction"]
+            ),
+            "credited_capacity_required_gw": capacity_margin_required,
+            "credited_capacity_available_gw": credited_capacity,
+            "capacity_margin_gw": capacity_margin,
+        }
+    ).to_csv(
+        output_dir / "annual_adequacy_by_province.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
+    generation_rows: list[dict[str, Any]] = []
+    for p, province_code in enumerate(provinces):
+        for technology, v in zip(VRE_TECHS, range(len(VRE_TECHS))):
+            generation_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "technology": technology,
+                    "generation_gwh": float(vre_generation[p, v, :].sum()),
+                }
+            )
+        for technology, k in artifacts.index["thermal_index"].items():
+            generation_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "technology": technology,
+                    "generation_gwh": float(thermal_net[p, k, :].sum()),
+                }
+            )
+        generation_rows.extend(
+            [
+                {
+                    "province_code": int(province_code),
+                    "technology": "ror",
+                    "generation_gwh": float(ror_generation[p, :].sum()),
+                },
+                {
+                    "province_code": int(province_code),
+                    "technology": "reservoir",
+                    "generation_gwh": float(reservoir_by_province[p, :].sum()),
+                },
+            ]
+        )
+    pd.DataFrame(generation_rows).to_csv(
+        output_dir / "annual_generation_by_province_technology.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
+    pd.DataFrame(
+        {
+            "province_code": provinces,
+            "fossil_unabated_emissions_mtco2": fossil_unabated,
+            "emissions_before_dac_mtco2": emissions_before_dac_by_province,
+            "co2_captured_for_storage_mtco2": captured,
+            "dac_removed_mtco2": dac_by_province,
+            "net_emissions_after_dac_mtco2": (
+                emissions_before_dac_by_province - dac_by_province
+            ),
+            "biomass_fuel_pj": biomass_by_province,
+            "dac_electricity_gwh": dac_load * hours,
+        }
+    ).to_csv(
+        output_dir / "annual_resource_accounting_by_province.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
     np.savez_compressed(
         output_dir / "thermal_dispatch.npz",
         gross_generation_gw=thermal_gross,
@@ -401,6 +837,9 @@ def export_operational_solution(
         online_capacity_gw=online,
         startup_capacity_gw=startup,
         shutdown_capacity_gw=shutdown,
+        ramp_magnitude_gw=ramp_magnitude,
+        reserve_up_gw=thermal_up,
+        reserve_down_gw=thermal_down,
         province_codes=provinces,
         technologies=np.asarray(THERMAL_TECHS),
         hour_index=hour_index,
@@ -409,6 +848,7 @@ def export_operational_solution(
         output_dir / "vre_dispatch.npz",
         generation_gw=vre_generation,
         available_gw=vre_available,
+        reserve_up_gw=vre_up,
         province_codes=provinces,
         technologies=np.asarray(VRE_TECHS),
         hour_index=hour_index,
@@ -418,6 +858,8 @@ def export_operational_solution(
         charge_gw=storage_charge,
         discharge_gw=storage_discharge,
         soc_gwh=storage_soc,
+        reserve_up_gw=storage_reserve_up_technology,
+        reserve_down_gw=storage_reserve_down_technology,
         province_codes=provinces,
         technologies=np.asarray(STORAGE_TECHS),
         hour_index=hour_index,
@@ -458,19 +900,30 @@ def export_operational_solution(
         core_cascade_edge_lag_h=np.asarray(
             artifacts.index.get("cascade_edge_lag_h", []), dtype=int
         ),
-        hydrochn_row_id=reservoir_index.hydrochn_row_id.astype(str).to_numpy(),
+        hydrochn_row_id=reservoir_index.hydrochn_row_id.astype(str).to_numpy(dtype=str),
+        hour_index=hour_index,
+    )
+    np.savez_compressed(
+        output_dir / "hydro_dispatch.npz",
+        ror_generation_gw=ror_generation,
+        ror_available_gw=ror_available,
+        reservoir_generation_gw=reservoir_by_province,
+        reserve_up_gw=hydro_up,
+        province_codes=provinces,
         hour_index=hour_index,
     )
     np.savez_compressed(
         output_dir / "transmission_flows.npz",
         forward_gw=flow_forward,
         reverse_gw=flow_reverse,
-        line_ids=data.lines.line_id.astype(str).to_numpy(),
+        line_ids=data.lines.line_id.astype(str).to_numpy(dtype=str),
         hour_index=hour_index,
     )
 
     carbon = {
         "annual_gross_emissions_mtco2": annual_emissions,
+        "annual_emissions_before_dac_mtco2": annual_emissions,
+        "annual_fossil_unabated_emissions_mtco2": float(fossil_unabated.sum()),
         "annual_dac_removed_mtco2": dac_removed,
         "annual_net_emissions_mtco2": net_emissions,
         "carbon_limit_mtco2": carbon_limit,

@@ -16,7 +16,10 @@ class ResultManifestTests(unittest.TestCase):
             output_dir = Path(temporary)
             scientific = output_dir / "solution_qc.json"
             scientific.write_text('{"status":"PASS"}\n', encoding="utf-8")
-            for name in ("runner_stdout.log", "runner_stderr.log", "run.pid"):
+            for name in (
+                "runner_stdout.log", "runner_stderr.log", "run.pid",
+                "run.stdout", "run.time",
+            ):
                 (output_dir / name).write_text("runtime\n", encoding="utf-8")
             config = SimpleNamespace(
                 boundary_year=2025,
@@ -31,7 +34,10 @@ class ResultManifestTests(unittest.TestCase):
             self.assertEqual(set(rows), {"solution_qc.json"})
             self.assertEqual(
                 set(manifest["excluded_runtime_files"]),
-                {"runner_stdout.log", "runner_stderr.log", "run.pid"},
+                {
+                    "runner_stdout.log", "runner_stderr.log", "run.pid",
+                    "run.stdout", "run.time",
+                },
             )
             self.assertEqual(rows["solution_qc.json"]["bytes"], scientific.stat().st_size)
             self.assertEqual(
