@@ -14,11 +14,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.5.8`
-- Snapshot date: `2026-07-19`
+- Handoff version: `v0.7.0`
+- Snapshot date: `2026-07-20`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Server implementation commit is `bc83663` (`fix: resolve hydrology paths in server smoke test`). It includes V0719 capacity-bound/DC active-index commit `451b1c0`, server CF-path smoke fix `c8db9be` and server hydrology-path smoke fix `bc83663`.
+- Local, pushed and fixed-server implementation commit is `b40900a` (`feat: formalize model I/O and diagnostics`). It includes V0719 capacity-bound/DC active-index commit `451b1c0`, server path fixes and the V0720 reproducible I/O/diagnostic layer.
+- A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud with a verified checksum, while the academic named-user license is intentionally not copied pending target-machine/license-scope verification. Port 8443 and the IPv6 port-22 entry still reset before the banner. The cloud endpoint remains unapproved for paid production work until compute-node scheduler, resources, data and license checks pass.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
@@ -44,7 +45,7 @@ This is the repository's single handoff document for work continued across Codex
 - Continuous capacity-based thermal RUC, ramping, reserve and inertia.
 - Battery and PHS state of charge; station-level hydropower, reservoir balance and committed core-cascade hydropower coupling for the Stage2 recommended mainstem groups.
 - 411 interprovincial transmission corridors and strict hourly provincial power balance.
-- V0719 local working tree adds nuclear upper bounds, a shared `bio+bioccs` capacity upper, the CISPO Table S17 2030 battery floor and AC-only reverse-flow active indexing; the server remains on the preceding formulation until gated deployment.
+- Nuclear upper bounds, a shared `bio+bioccs` capacity upper, the CISPO Table S17 2030 battery floor and AC-only reverse-flow active indexing are committed and deployed. V0720 changes only provenance, exports, diagnostics and state acceptance; it does not change the feasible set.
 - DAC, annual carbon and biomass accounting, CCS capture and point-level injection.
 - Spur line, trunk line and substation augmentation.
 - The production load-center scenario is the 278-node Natural Earth paper replication.
@@ -70,7 +71,7 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
@@ -78,6 +79,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Latest verification evidence
 
+- V0720 implementation `b40900a` is pushed and deployed to the clean fixed-server checkout. Local and server unit tests pass 34/34; the V0719 server data package passes 139/139 smoke checks.
+- Server 24h I/O-contract gate `/data/zz2/National_model/outputs/2030_24h_v0720_io_contract_server` reached `OPTIMAL + solution_qc=PASS`: 341,312 variables, 261,280 constraints, 1,768,957 nonzeros, objective `2,024,722.739184 million CNY`, Gurobi runtime 43.65 s and peak process-tree RSS 0.838 GiB. All 27 hard checks pass; result-manifest validation has zero mismatches; all NPZ files load with `allow_pickle=False`; dual export contains 744 hourly and 3,366 annual rows.
+- The output contract now includes immutable configuration/environment/input manifests, a 50-file output catalog, a 493-row data dictionary, province-technology capacity and generation tables, security/adequacy/resource diagnostics, hourly marginal prices, annual shadow prices and verified capacity-cohort state transfer. Detailed definitions are in `MODEL_IO_CONTRACT.md`.
+- The pre-V0719 744h run at old commit `5a9f4ab` is an accepted engineering gate only. Its solver/QC passed, but the old result manifest is not closed: `run.stdout` and `run.time` were modified by the wrapper after hashing. See `MODEL_744_SERVER_RUN_AUDIT_20260720.md`.
 - V0719 local capacity-bound/DC-sparse correction: 32/32 unit tests PASS; 139/139 data-package smoke checks PASS; strict 24h output `outputs/2030_24h_v0719_capacity_bounds_dc_sparse_rerun` reached `OPTIMAL + solution_qc=PASS` with 341,312 variables, 261,280 constraints, 1,768,956 nonzeros, 39.79 s solver time and 0.702 GiB peak RSS.
 - New bound QC is zero for nuclear floor/upper, shared biomass+BECCS upper and battery/PHS floor. DC reverse maximum and AC bidirectional edge-hours are zero; maximum power-balance residual is `7.43e-12 GW`.
 - Full-year V0719 estimator: 40,911,296 variables, 67,603,283 constraints, 520,920,489 nonzeros and about 36.0 GiB static model memory. Exact DC variable removal is `363×8760=3,179,880`; no runtime or factor-memory speedup is inferred from this structural reduction.
@@ -195,6 +200,68 @@ tail -n 80 "$OUT/gurobi.log"
 The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.7.0 - 2026-07-20 - open-source I/O contract, diagnostics and verified server gate
+
+- Git implementation: `b40900a` (`feat: formalize model I/O and diagnostics`), pushed to `origin/codex/cispo-2030-full-lp` and fast-forwarded on the clean fixed-server checkout.
+- Scope: added an open-source project `README.md`; formal input/output contract and data dictionary; immutable configuration, environment and input provenance; scope-aware summaries; complete dispatch, reserve, adequacy, resource, marginal-price and shadow-price exports; pickle-free NPZ identifiers; stronger model/state acceptance checks; and sequence-wide aggregation. Constraint handles and diagnostics were added without changing the LP feasible set.
+- Main changed files: `README.md`, `MODEL_IO_CONTRACT.md`, `MODEL_744_SERVER_RUN_AUDIT_20260720.md`, `cispo_model/io_contract.py`, `solution_export.py`, `result_summary.py`, `planning_state.py`, `master.py`, `monolithic.py`, run/sequence scripts, input contract and tests.
+- Local evidence: 34/34 unit tests PASS; 139/139 data-package checks PASS; local 24h output `outputs/2030_24h_v0720_io_contract_rerun3` is `OPTIMAL/QC PASS`, all 27 hard checks pass, manifest validation is clean, dual export is available and complementarity diagnostics are zero.
+- Server evidence: 34/34 unit tests and 139/139 smoke checks PASS. `/data/zz2/National_model/outputs/2030_24h_v0720_io_contract_server` is `OPTIMAL/QC PASS` with 43.65 s solver time and 0.838 GiB peak RSS; manifest `(True, [])`; output catalog 50 rows; data dictionary 493 rows; hourly prices 744 rows; annual shadow prices 3,366 rows; all NPZ files are safe under `allow_pickle=False`.
+- 744h audit: the old `5a9f4ab` engineering gate remains solver-valid, but its wrapper-owned `run.stdout` and `run.time` invalidate two old manifest entries. V0720 excludes runtime-managed wrapper files from the scientific manifest and validates the manifest before accepting sequence output.
+- Architecture decision: retain sequential 2030/2040/2050/2060 full-year optimization as the production default. It requires four solves and is myopic, but keeps only one 8760h LP resident at a time; a joint four-year perfect-foresight model would multiply time-dependent matrix blocks and peak memory and is reserved for reduced-scale research experiments.
+- Unresolved/next action: do not repeat 744h on the fixed server. Complete cloud compute-node/license/data staging, run 24h/168h gates there, then use the 8760h output contract for a single production case. Existing VRE retirement, formal climatological hydrology, cascade lag warnings, PHS hydraulic pairing and long-term sensitivity assumptions remain explicit research items.
+
+### v0.6.4 - 2026-07-20 - Gurobi Linux package staged; license transfer held
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, solver environment or remote job state was changed.
+- Scope: downloaded the official Gurobi 13.0.2 Linux x86-64 package, verified the official MD5 and uploaded only the installation archive to the user-private cloud staging directory. No license file was transferred.
+- Artifact evidence: `/publicfs01/fs1-a8/home/a8s001819/staging/gurobi1302/gurobi13.0.2_linux64.tar.gz`, 64,798,273 bytes, MD5 `f12dcad337ae1d8f9b8c2b3f51b92bb5`, SHA256 `cffd4ee3c1990294e80446626bd1772045e420d7c34c379839b6acca16f0a23b`; local and remote hashes match.
+- License decision: the user-provided email identifies an academic named-user license. Because Gurobi named-user licenses are machine-scoped and Slurm may dispatch jobs across multiple compute nodes, copying a license generated on another server was not assumed valid and was deliberately not performed. The cloud document records `grbgetkey`/WLS decision rules without storing key codes or license contents.
+- Unresolved/next action: after explicit approval, use a small scheduler allocation to determine the compute-node target and Gurobi installation path, then choose a compliant named-user reactivation or Academic WLS/site license. Do not install or start 8760h before this check.
+
+### v0.6.3 - 2026-07-20 - BSCC-A8 manual reconciliation and cloud usage document
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, data, solver environment or remote job state was changed.
+- Scope: interpreted the user-provided official BSCC-A8 manual screenshot and created `supplementary_materials/云服务器使用规范_BSCC-A8.md` with the documented Modules/Slurm/compiler workflow, current SSH aliases, login-node boundary, storage layout, cost gate and CISPO-specific 8760h stop rules.
+- Reconciliation evidence: the manual is dated 2024-08-26 and refers to the older `amd_a8_768` queue; live Slurm audit on `ln301.para.bscc` reports `amd_m8_768-a` as the default partition and `amd_a8_384` as the second active partition. The document marks live values as authoritative instead of copying stale queue names.
+- Safety evidence: no remote file was written, no module or package was installed, no Slurm allocation was requested and no job was submitted. The verified module initializer `/public1/soft/modules/module.sh` is documented, while current compute-node Gurobi availability remains explicitly unverified.
+- Unresolved/next action: only after user approval, run a small scheduler allocation to inventory compute-node Python/Gurobi/license and perform a smoke test; do not launch 8760h production directly from the login node.
+
+### v0.6.2 - 2026-07-20 - ParaCloud Slurm login-node audit
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, data, solver environment or remote job state was changed.
+- Scope: performed a read-only audit after public-key login to identify the safe cloud execution path. No `sbatch`, `srun`, package installation, environment activation persisted, file transfer or model execution was performed.
+- Verified cluster: Rocky Linux 8.10 login host `ln301.para.bscc`; Slurm 23.11.9, cluster `bscc-m8`, `select/cons_tres` with `CR_CORE_MEMORY`; account `bscc-a8`, QoS `normal`, association output showing a 10-job submission limit.
+- Verified partitions: default `amd_m8_768-a` has 194 nodes, 192 CPUs/node and 768000 MB/node with 4000 MB/CPU default; `amd_a8_384` has 103 nodes, 128 CPUs/node and 384000+ MB/node with 3000 MB/CPU default. Both partitions are `UP` and allow all accounts/QoS at the partition level.
+- Environment evidence: login host has 64 logical CPUs and about 376 GiB RAM; `/publicfs01` has about 3.1 PB free. System Python is legacy; shared Miniforge `/public1/soft/miniforge/24.11` exposes `base`, `py-moose` and `toga2`, but none of the checked environments imports `gurobipy` or `torch`. This does not prove compute-node software absence.
+- Safety conclusion/next action: treat `ln301` as login-only. Before any paid 8760h work, create an explicit Slurm script, request a small approved allocation to inventory compute-node Python/Gurobi/license and run a smoke check, then require the full-year preflight, memory gate and cost confirmation. Do not install packages or run the long solve from the login node.
+
+### v0.6.1 - 2026-07-20 - ParaCloud public-key authentication verified
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, data or solver environment was changed.
+- Scope: corrected the ParaCloud SSH aliases to use the normal public-key-first OpenSSH authentication order, then verified both port 22 and port 2222 end to end with a read-only remote command.
+- Verification evidence: `paracloud-bscc-a8` and `paracloud-bscc-a8-backup` authenticated with the existing local public key and returned `CODEX_CLOUD_SSH_OK`, remote host `ln301.para.bscc`, account `a8s001819` and home `/publicfs01/fs1-a8/home/a8s001819`; both commands exited with status 0.
+- Security evidence: no password was entered, stored or logged; no private-key content was read or copied. The earlier password prompt was caused by the temporary alias preference and has been removed.
+- Unresolved/next action: inventory scheduler, quotas, CPU/RAM/storage, Python/Gurobi, data paths and job accounting on the cloud login node. Do not launch a paid 8760h solve until the cost gate and full-year preflight requirements in the selection policy pass.
+
+### v0.6.0 - 2026-07-20 - ParaCloud route selection and cost-gated SSH configuration
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, data or solver environment was changed.
+- Scope: classified the two server targets and configured local SSH aliases for the separate ParaCloud BSCC-A8 endpoint. Existing `national-model-server` configuration was preserved unchanged.
+- Changed files/state: repository handoff updated; user SSH config `C:\Users\ZZ\.ssh\config` gained `paracloud-bscc-a8` on port 22 and `paracloud-bscc-a8-backup` on port 2222; memory note `20260720-paracloud-server-routing.md` records non-secret routing and cost-gate metadata.
+- Verification evidence: DNS resolved both IPv4 backends; TCP checks passed on ports 22, 2222 and 8443 via Ethernet source `124.16.2.171`. SSH banner/auth checks succeeded on ports 22 and 2222 (`ParaCloud`, `password,publickey`); 8443 and IPv6 port 22 reset before the banner. `ssh -G` confirmed both aliases resolve to the intended compound user and ports.
+- Selection rule: use `national-model-server` for local work and the 744h engineering gate; use ParaCloud only for explicitly authorized, scheduler-backed 8760h production after full-year preflight, memory/resource/license validation and cost confirmation. No cloud authentication or paid job was started.
+- Unresolved/next action: authenticate through `paracloud-bscc-a8`; inventory scheduler, quotas, CPU/RAM/storage, Python/Gurobi and data paths; only then prepare a checksum-verified production transfer and launch decision.
+
+### v0.5.9 - 2026-07-20 - ParaCloud candidate SSH pre-authentication check
+
+- Git state: local branch `codex/cispo-2030-full-lp`, HEAD `3c9edfa76c3077de421b56b2b287585cb7b6188d`; no model code, data, solver environment or server process was changed.
+- Scope: performed a read-only connectivity check for the separate ParaCloud/BSCC-A8 candidate endpoint intended for possible future 8760h computation. The existing validated `national-model-server` target and its SSH configuration were not modified.
+- Changed file: `CODEX_HANDOFF.md` only, to preserve this verified server milestone without credentials.
+- Verification evidence: the hostname resolved to two IPv4 backends; `Test-NetConnection` passed on TCP port `8443` for both via the workstation Ethernet source address. OpenSSH parsed the compound login user correctly, but `ssh -vv`, `ssh-keyscan` and raw banner checks received no SSH banner and both backends reset or timed out before key exchange.
+- Security evidence: no password, private-key content, activation key or license content was read, logged or written. Password validity was not tested because the connection never reached authentication.
+- Unresolved/next action: verify in ParaCloud that the BSCC-A8 direct-connection mapping is active and that the workstation source IP is permitted, then rerun the SSH banner/authentication check. After successful login, inventory scheduler, CPU/RAM/storage, quotas, environment and Gurobi license before transferring data or launching any 744h/8760h job.
 
 ### v0.5.8 - 2026-07-19 - V0719 deployed, 24h gate passed, 8760 memory gate blocked
 

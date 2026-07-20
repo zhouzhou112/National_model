@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## V0720 production I/O and acceptance contract
+
+Implementation `b40900a` is the current fixed-server baseline. Read `README.md` and `MODEL_IO_CONTRACT.md` before scheduling an expensive case. A case is accepted only when all of the following hold:
+
+- `solve_report.json`: `status=OPTIMAL` and `result_use=SCIENTIFIC_PRODUCTION`;
+- `solution_qc.json`: `status=PASS` and every hard check is true;
+- `result_manifest.json` validates every scientific output by byte size and SHA256;
+- `output_catalog.csv`, `output_data_dictionary.csv`, `model_config_snapshot.json`, `run_environment.json` and `input_manifest.csv` are present;
+- the next planning year loads `planning_state/state_metadata.json` and verifies the source solve, source QC, cohort table and transition summary hashes.
+
+Wrapper-owned files such as `run.stdout`, `run.time`, PID and scheduler logs must not be included in the scientific manifest because wrappers can append after model finalization. Preserve them next to the case as operational evidence.
+
+The fixed server is limited to small regression gates for this phase. Use a new versioned output directory for 24h/168h, and do not launch 744h/8760h there. Production 8760h is reserved for the cloud compute node after Gurobi license, data hashes, 34 tests, 139 smoke checks and a 24h solve have passed.
+
 ## V0719 capacity-bound/DC-sparse deployment gate
 
 V0719 adds three required data tables and changes the in-memory reverse-flow index. It must be deployed only after the local working tree is committed and the currently active `/data/zz2/National_model/outputs/2030_744h_sparse_gate_strict` task has completed or been explicitly preserved. Never rebuild the active `model_ready_20260719_sequential_sparse` directory in place.
@@ -60,12 +74,12 @@ Current versioned model and hydropower data:
 
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 ```
 
-The versioned data roots remain current. Deploy `1b6da28` and rerun 26 regression tests plus a corrected 24h gate before scheduling another 744h run.
+The versioned data roots remain current. Fixed-server HEAD `b40900a` passes 34 regression tests, 139 smoke checks and the V0720 24h I/O-contract gate. Do not schedule another 744h run on this host.
 
 ## Long-term Git synchronization
 
@@ -93,7 +107,7 @@ If code is edited on the server, commit and push it before pulling locally. Mode
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 $PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 $PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_2030.json
