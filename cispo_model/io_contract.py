@@ -267,7 +267,12 @@ def write_run_provenance(
     for logical_path in contract.get("server_validation_sidecars", []):
         add_file("validation_sidecar", logical_path, data_root / logical_path, False)
     if planning_state.root:
-        for name in ("state_metadata.json", "capacity_cohorts.csv.gz"):
+        for name in (
+            "state_metadata.json",
+            "capacity_cohorts.csv.gz",
+            "state_transition_summary.csv",
+            "../result_manifest.json",
+        ):
             add_file("planning_state", name, Path(planning_state.root) / name, True)
 
     cf_index_path = data_root / "vre" / "hourly_cf_index.csv"

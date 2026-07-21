@@ -92,6 +92,14 @@ class ModelFoundationTests(unittest.TestCase):
         ]
         self.assertEqual(adjusted.province_code.astype(int).tolist(), [31])
 
+    def test_biomass_and_beccs_fuel_costs_are_positive_and_complete(self):
+        biomass_fuel = self.data.fuel.loc[
+            self.data.fuel.technology.isin(["bio", "bioccs"])
+        ]
+        self.assertEqual(len(biomass_fuel), 31 * 2)
+        self.assertTrue(biomass_fuel.dispatch_allowed.astype(bool).all())
+        self.assertTrue(biomass_fuel.fuel_cost_yuan_per_mwh.gt(0.0).all())
+
     def test_full_year_memory_gate_is_build_safe(self):
         self.assertEqual(
             float(self.config.horizon("full_year")["minimum_available_memory_gb"]),

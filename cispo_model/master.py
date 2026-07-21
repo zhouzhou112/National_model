@@ -67,6 +67,17 @@ def export_master_solution(
     }
     thermal_floor = np.asarray(artifacts.index["thermal_capacity_floor_gw"])
     thermal_exogenous = np.asarray(artifacts.index["thermal_exogenous_floor_gw"])
+    retrofit_survivor_upper = np.asarray(
+        artifacts.index.get(
+            "thermal_retrofit_survivor_upper_gw",
+            np.zeros(
+                (
+                    len(artifacts.index["province_codes"]),
+                    len(artifacts.index.get("ccs_pairs", ())),
+                )
+            ),
+        )
+    )
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, k in artifacts.index["thermal_index"].items():
             thermal_rows.append(
@@ -92,6 +103,11 @@ def export_master_solution(
                         if retrofit_values is not None
                         and technology in ccs_pair_index
                         and ccs_pair_index[technology][1] == "in"
+                        else 0.0
+                    ),
+                    "retrofit_survivor_upper_gw": (
+                        retrofit_survivor_upper[p, ccs_pair_index[technology][0]]
+                        if technology in ccs_pair_index
                         else 0.0
                     ),
                 }
@@ -494,10 +510,49 @@ def build_master(
     thermal_retrofit = model.addMVar(
         (p_count, len(ccs_pairs)), lb=0.0, name="thermal_retrofit_to_ccs_gw"
     )
+    retrofit_survivor_upper = np.zeros((p_count, len(ccs_pairs)), dtype=float)
     for pair_position, (non_ccs, ccs) in enumerate(ccs_pairs):
         non_ccs_k = k_index[non_ccs]
         ccs_k = k_index[ccs]
-        thermal_retrofit[:, pair_position].UB = thermal_floor[:, non_ccs_k]
+        # A retrofit inherits the source fleet's remaining modeled life.  The
+        # aggregate input has no unit vintages, so only capacity that remains
+        # present at every later planning snapshot while this retrofit cohort
+        # is active may be converted.  This conservative envelope prevents a
+        # negative non-CCS floor when the exogenous fleet retires in 2040+.
+        survivor_upper = thermal_floor[:, non_ccs_k].copy()
+        retrofit_retire_year = (
+            config.planning_year
+            + int(round(float(config.raw["finance"]["default_lifetime_years"][non_ccs])))
+        )
+        for future_year in (
+            year
+            for year in config.planning_years
+            if config.planning_year < year < retrofit_retire_year
+        ):
+            future_table = data.thermal_floor_all_years.loc[
+                data.thermal_floor_all_years.year.eq(future_year)
+            ].pivot(
+                index="province_code",
+                columns="technology",
+                values="capacity_floor_gw",
+            )
+            future_exogenous = (
+                future_table.reindex(index=provinces, columns=[non_ccs], fill_value=0.0)
+                .iloc[:, 0]
+                .to_numpy(dtype=float)
+            )
+            future_inherited = data.planning_state.active_adjustment(
+                "thermal",
+                thermal_asset_ids,
+                planning_year=future_year,
+                unit="GW",
+            ).reshape(p_count, len(THERMAL_TECHS))[:, non_ccs_k]
+            survivor_upper = np.minimum(
+                survivor_upper,
+                np.maximum(future_exogenous + future_inherited, 0.0),
+            )
+        retrofit_survivor_upper[:, pair_position] = survivor_upper
+        thermal_retrofit[:, pair_position].UB = survivor_upper
         model.addConstr(
             thermal_cap[:, non_ccs_k]
             == thermal_floor[:, non_ccs_k]
@@ -1007,6 +1062,7 @@ def build_master(
         "thermal_asset_ids": thermal_asset_ids,
         "thermal_exogenous_floor_gw": thermal_exogenous_floor,
         "thermal_capacity_floor_gw": thermal_floor,
+        "thermal_retrofit_survivor_upper_gw": retrofit_survivor_upper,
         "nuclear_capacity_upper_gw": nuclear_upper,
         "biomass_pair_capacity_upper_gw": biomass_pair_upper,
         "hydro_asset_ids": hydro_asset_ids,

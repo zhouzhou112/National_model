@@ -51,6 +51,19 @@ def main() -> None:
             "Annual costs and policy limits are not rescaled; never interpret it scientifically."
         ),
     )
+    parser.add_argument(
+        "--export-diagnostic-state",
+        action="store_true",
+        help=(
+            "Export an explicitly test-only state for a diagnostic sequence. "
+            "That state is rejected by production runs."
+        ),
+    )
+    parser.add_argument(
+        "--allow-diagnostic-state-in",
+        action="store_true",
+        help="Allow a test-only predecessor state; valid only for a test horizon.",
+    )
     parser.add_argument("--output-dir")
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
@@ -67,6 +80,8 @@ def main() -> None:
         raise SystemExit("--preflight-only cannot be combined with build/write options")
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
+    if args.export_diagnostic_state and args.diagnostic_hours is None:
+        raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
 
     base_config = load_model_config(args.config)
     config = (
@@ -74,6 +89,14 @@ def main() -> None:
         if args.planning_year is not None
         else base_config
     )
+    requested_test_only = bool(
+        args.diagnostic_hours is not None
+        or config.horizon(args.horizon)["test_only"]
+    )
+    if args.allow_diagnostic_state_in and not requested_test_only:
+        raise SystemExit(
+            "--allow-diagnostic-state-in cannot be used for a scientific full-year run"
+        )
     from cispo_model.planning_state import PlanningState
 
     if config.boundary_year == 2025:
@@ -87,8 +110,16 @@ def main() -> None:
                 f"{config.boundary_year} full-year results"
             )
         planning_state = PlanningState.load(
-            args.state_in, expected_boundary_year=config.boundary_year
+            args.state_in,
+            expected_boundary_year=config.boundary_year,
+            allow_test_only=args.allow_diagnostic_state_in,
         )
+        if (
+            planning_state.metadata.get("state_use")
+            == "TEST_ONLY_TRUNCATED_HORIZON"
+            and not requested_test_only
+        ):
+            raise SystemExit("A diagnostic planning state cannot enter a production run")
     if args.diagnostic_hours is None:
         horizon_name = args.horizon
         horizon = config.horizon(args.horizon)
@@ -217,6 +248,8 @@ def main() -> None:
         compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
     )
     report.update(
+        boundary_year=config.boundary_year,
+        planning_year=config.planning_year,
         horizon=horizon_name,
         optimization_hours=optimization_hours,
         result_use=scope_report["result_use"],
@@ -231,7 +264,7 @@ def main() -> None:
         qc = export_operational_solution(artifacts, data, config, output_dir)
         export_result_summary(artifacts, data, config, output_dir)
         export_state = bool(
-            not test_only
+            (not test_only or args.export_diagnostic_state)
             and report["status"] == "OPTIMAL"
             and qc["status"] == "PASS"
         )
@@ -247,7 +280,13 @@ def main() -> None:
         encoding="utf-8",
     )
     if export_state:
-        export_solution_planning_state(artifacts, data, config, output_dir)
+        export_solution_planning_state(
+            artifacts,
+            data,
+            config,
+            output_dir,
+            state_use=scope_report["result_use"],
+        )
     if artifacts.model.SolCount:
         write_output_catalog(output_dir)
         finalize_result_manifest(output_dir, config)

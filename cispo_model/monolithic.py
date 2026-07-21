@@ -649,8 +649,6 @@ def build_full_year_monolithic(
             thermal_vom += float(om.loc[technology, "variable_om_yuan_per_mwh"]) * 1e-3 * actual_thermal[p, k].sum()
             if technology == "nuclear":
                 unit_fuel = float(config.raw["thermal"]["nuclear_fuel_yuan_per_mwh"])
-            elif technology in {"bio", "bioccs"}:
-                unit_fuel = 0.0
             else:
                 value = fuel_table.loc[(province_code, technology), "fuel_cost_yuan_per_mwh"]
                 unit_fuel = 0.0 if pd.isna(value) else float(value)

@@ -29,6 +29,29 @@ class CCSModelStructureTests(unittest.TestCase):
         self.assertEqual(retrofit.shape, (31, 5))
         self.assertEqual(len(self.artifacts.index["ccs_pairs"]), 5)
 
+    def test_retrofit_upper_cannot_overdraw_future_exogenous_floor(self):
+        upper = self.artifacts.index["thermal_retrofit_survivor_upper_gw"]
+        provinces = self.artifacts.index["province_codes"]
+        for pair_position, (non_ccs, _) in enumerate(
+            self.artifacts.index["ccs_pairs"]
+        ):
+            lifetime = int(
+                self.config.raw["finance"]["default_lifetime_years"][non_ccs]
+            )
+            for year in self.config.planning_years:
+                if not self.config.planning_year < year < self.config.planning_year + lifetime:
+                    continue
+                future = (
+                    self.data.thermal_floor_all_years.loc[
+                        self.data.thermal_floor_all_years.year.eq(year)
+                        & self.data.thermal_floor_all_years.technology.eq(non_ccs)
+                    ]
+                    .set_index("province_code")
+                    .capacity_floor_gw.reindex(provinces)
+                    .to_numpy(float)
+                )
+                self.assertTrue((upper[:, pair_position] <= future + 1e-9).all())
+
     def test_chp_new_build_is_disabled_but_retrofit_is_available(self):
         new_capacity = self.artifacts.variables["thermal_new"]
         thermal_index = self.artifacts.index["thermal_index"]

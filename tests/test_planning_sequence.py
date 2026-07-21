@@ -11,12 +11,15 @@ import pandas as pd
 from cispo_model.config import load_model_config
 from cispo_model.data import DAC_TECHS, STORAGE_TECHS, THERMAL_TECHS
 from cispo_model.planning_state import (
+    DIAGNOSTIC_STATE_USE,
+    PRODUCTION_STATE_USE,
     PlanningState,
     STATE_COLUMNS,
     export_solution_planning_state,
     stable_asset_id,
     write_planning_state,
 )
+from cispo_model.result_summary import finalize_result_manifest
 
 
 class PlanningSequenceTests(unittest.TestCase):
@@ -52,13 +55,24 @@ class PlanningSequenceTests(unittest.TestCase):
             columns=STATE_COLUMNS,
         )
         with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            (output_dir / "solution_qc.json").write_text(
+                '{"status":"PASS"}\n', encoding="utf-8"
+            )
+            (output_dir / "solve_report.json").write_text(
+                '{"status":"OPTIMAL","result_use":"SCIENTIFIC_PRODUCTION",'
+                '"planning_year":2030}\n',
+                encoding="utf-8",
+            )
             state_dir = write_planning_state(
-                Path(temporary),
+                output_dir,
                 config=config,
                 previous_state=PlanningState.empty(2025),
                 new_cohorts=new_cohorts,
                 source_solution_qc="solution_qc.json",
+                state_use=PRODUCTION_STATE_USE,
             )
+            finalize_result_manifest(output_dir, config)
             state = PlanningState.load(state_dir, expected_boundary_year=2030)
             self.assertTrue((state_dir / "state_transition_summary.csv").is_file())
             self.assertAlmostEqual(
@@ -73,8 +87,44 @@ class PlanningSequenceTests(unittest.TestCase):
                 )[0],
                 0.0,
             )
+            summary_path = state_dir / "state_transition_summary.csv"
+            original_summary = summary_path.read_bytes()
+            summary_path.write_bytes(original_summary + b"tampered\n")
+            with self.assertRaises(ValueError):
+                PlanningState.load(state_dir, expected_boundary_year=2030)
+            summary_path.write_bytes(original_summary)
             with self.assertRaises(ValueError):
                 PlanningState.load(state_dir, expected_boundary_year=2040)
+
+    def test_diagnostic_state_requires_explicit_test_only_permission(self):
+        config = load_model_config().for_planning_year(2030)
+        with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            (output_dir / "solution_qc.json").write_text(
+                '{"status":"PASS"}\n', encoding="utf-8"
+            )
+            (output_dir / "solve_report.json").write_text(
+                '{"status":"OPTIMAL","result_use":"TEST_ONLY_TRUNCATED_HORIZON",'
+                '"planning_year":2030}\n',
+                encoding="utf-8",
+            )
+            state_dir = write_planning_state(
+                output_dir,
+                config=config,
+                previous_state=PlanningState.empty(2025),
+                new_cohorts=pd.DataFrame(columns=STATE_COLUMNS),
+                source_solution_qc="solution_qc.json",
+                state_use=DIAGNOSTIC_STATE_USE,
+            )
+            finalize_result_manifest(output_dir, config)
+            with self.assertRaises(ValueError):
+                PlanningState.load(state_dir, expected_boundary_year=2030)
+            loaded = PlanningState.load(
+                state_dir,
+                expected_boundary_year=2030,
+                allow_test_only=True,
+            )
+            self.assertEqual(loaded.metadata["state_use"], DIAGNOSTIC_STATE_USE)
 
     def test_state_rejects_modified_source_solve_or_qc(self):
         config = load_model_config().for_planning_year(2030)
@@ -95,7 +145,9 @@ class PlanningSequenceTests(unittest.TestCase):
                 previous_state=PlanningState.empty(2025),
                 new_cohorts=new_cohorts,
                 source_solution_qc="solution_qc.json",
+                state_use=PRODUCTION_STATE_USE,
             )
+            finalize_result_manifest(output_dir, config)
             PlanningState.load(state_dir, expected_boundary_year=2030)
             solve_path.write_text(
                 '{"status":"SUBOPTIMAL","result_use":"SCIENTIFIC_PRODUCTION",'
@@ -161,9 +213,23 @@ class PlanningSequenceTests(unittest.TestCase):
             planning_state=PlanningState.empty(2025),
         )
         with tempfile.TemporaryDirectory() as temporary:
-            state_dir = export_solution_planning_state(
-                artifacts, data, config, Path(temporary)
+            output_dir = Path(temporary)
+            (output_dir / "solution_qc.json").write_text(
+                '{"status":"PASS"}\n', encoding="utf-8"
             )
+            (output_dir / "solve_report.json").write_text(
+                '{"status":"OPTIMAL","result_use":"SCIENTIFIC_PRODUCTION",'
+                '"planning_year":2030}\n',
+                encoding="utf-8",
+            )
+            state_dir = export_solution_planning_state(
+                artifacts,
+                data,
+                config,
+                output_dir,
+                state_use=PRODUCTION_STATE_USE,
+            )
+            finalize_result_manifest(output_dir, config)
             state = PlanningState.load(state_dir, expected_boundary_year=2030)
             self.assertEqual(
                 set(state.cohorts.asset_class),

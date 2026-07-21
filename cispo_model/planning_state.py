@@ -17,6 +17,9 @@ from .config import ModelConfig
 STATE_METADATA = "state_metadata.json"
 STATE_COHORTS = "capacity_cohorts.csv.gz"
 STATE_SUMMARY = "state_transition_summary.csv"
+STATE_FORMAT = "capacity_cohorts_v2"
+PRODUCTION_STATE_USE = "SCIENTIFIC_PRODUCTION"
+DIAGNOSTIC_STATE_USE = "TEST_ONLY_TRUNCATED_HORIZON"
 STATE_COLUMNS = (
     "asset_class",
     "asset_id",
@@ -53,7 +56,8 @@ class PlanningState:
         return cls(
             root=None,
             metadata={
-                "format": "capacity_cohorts_v1",
+                "format": STATE_FORMAT,
+                "state_use": "INITIAL_DATA_BOUNDARY",
                 "planning_year": int(boundary_year),
                 "empty_initial_boundary": True,
             },
@@ -61,7 +65,13 @@ class PlanningState:
         )
 
     @classmethod
-    def load(cls, path: str | Path, *, expected_boundary_year: int) -> "PlanningState":
+    def load(
+        cls,
+        path: str | Path,
+        *,
+        expected_boundary_year: int,
+        allow_test_only: bool = False,
+    ) -> "PlanningState":
         root = Path(path).resolve()
         metadata_path = root / STATE_METADATA
         cohorts_path = root / STATE_COHORTS
@@ -70,45 +80,77 @@ class PlanningState:
                 f"Planning state requires {metadata_path} and {cohorts_path}"
             )
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-        if metadata.get("format") != "capacity_cohorts_v1":
+        if metadata.get("format") != STATE_FORMAT:
             raise ValueError("Unsupported planning-state format")
         if int(metadata.get("planning_year", -1)) != int(expected_boundary_year):
             raise ValueError(
                 f"Planning state year {metadata.get('planning_year')} does not match "
                 f"required boundary year {expected_boundary_year}"
             )
-        expected_hash = metadata.get("capacity_cohorts_sha256")
+        required_metadata = {
+            "state_use",
+            "capacity_cohorts_sha256",
+            "state_transition_summary_sha256",
+            "source_solution_qc",
+            "source_solution_qc_sha256",
+            "source_solve_report_sha256",
+        }
+        missing_metadata = sorted(
+            key for key in required_metadata if not metadata.get(key)
+        )
+        if missing_metadata:
+            raise ValueError(
+                "Planning-state metadata missing required integrity fields: "
+                + ", ".join(missing_metadata)
+            )
+        state_use = str(metadata["state_use"])
+        if state_use not in {PRODUCTION_STATE_USE, DIAGNOSTIC_STATE_USE}:
+            raise ValueError(f"Unsupported planning-state use: {state_use}")
+        if state_use == DIAGNOSTIC_STATE_USE and not allow_test_only:
+            raise ValueError(
+                "Diagnostic planning state requires explicit allow_test_only=True"
+            )
+        expected_hash = str(metadata["capacity_cohorts_sha256"])
         actual_hash = sha256_file(cohorts_path)
-        if expected_hash and expected_hash != actual_hash:
+        if expected_hash != actual_hash:
             raise ValueError("Planning-state cohort SHA256 mismatch")
-        source_qc = metadata.get("source_solution_qc")
-        source_qc_hash = metadata.get("source_solution_qc_sha256")
-        if source_qc_hash:
-            source_qc_path = root.parent / str(source_qc)
-            if not source_qc_path.is_file():
-                raise FileNotFoundError(
-                    f"Planning-state source QC is missing: {source_qc_path}"
-                )
-            if sha256_file(source_qc_path) != source_qc_hash:
-                raise ValueError("Planning-state source solution QC SHA256 mismatch")
-            source_qc_payload = json.loads(source_qc_path.read_text(encoding="utf-8"))
-            if source_qc_payload.get("status") != "PASS":
-                raise ValueError("Planning-state source solution QC is not PASS")
-        source_solve_hash = metadata.get("source_solve_report_sha256")
-        if source_solve_hash:
-            source_solve_path = root.parent / "solve_report.json"
-            if not source_solve_path.is_file():
-                raise FileNotFoundError(
-                    f"Planning-state source solve report is missing: {source_solve_path}"
-                )
-            if sha256_file(source_solve_path) != source_solve_hash:
-                raise ValueError("Planning-state source solve-report SHA256 mismatch")
-            source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
-            if (
-                source_solve.get("status") != "OPTIMAL"
-                or source_solve.get("result_use") != "SCIENTIFIC_PRODUCTION"
-            ):
-                raise ValueError("Planning-state source solve is not accepted production output")
+        summary_path = root / STATE_SUMMARY
+        if not summary_path.is_file():
+            raise FileNotFoundError(f"Planning-state summary is missing: {summary_path}")
+        if sha256_file(summary_path) != metadata["state_transition_summary_sha256"]:
+            raise ValueError("Planning-state transition-summary SHA256 mismatch")
+        source_qc_path = root.parent / str(metadata["source_solution_qc"])
+        if not source_qc_path.is_file():
+            raise FileNotFoundError(
+                f"Planning-state source QC is missing: {source_qc_path}"
+            )
+        if sha256_file(source_qc_path) != metadata["source_solution_qc_sha256"]:
+            raise ValueError("Planning-state source solution QC SHA256 mismatch")
+        source_qc_payload = json.loads(source_qc_path.read_text(encoding="utf-8"))
+        if source_qc_payload.get("status") != "PASS":
+            raise ValueError("Planning-state source solution QC is not PASS")
+        source_solve_path = root.parent / "solve_report.json"
+        if not source_solve_path.is_file():
+            raise FileNotFoundError(
+                f"Planning-state source solve report is missing: {source_solve_path}"
+            )
+        if sha256_file(source_solve_path) != metadata["source_solve_report_sha256"]:
+            raise ValueError("Planning-state source solve-report SHA256 mismatch")
+        source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
+        if source_solve.get("status") != "OPTIMAL":
+            raise ValueError("Planning-state source solve is not OPTIMAL")
+        if source_solve.get("result_use") != state_use:
+            raise ValueError("Planning-state use does not match source solve result_use")
+        if int(source_solve.get("planning_year", -1)) != int(expected_boundary_year):
+            raise ValueError("Planning-state source solve planning_year mismatch")
+        from .io_contract import validate_result_manifest
+
+        manifest_ok, manifest_failures = validate_result_manifest(root.parent)
+        if not manifest_ok:
+            raise ValueError(
+                "Planning-state source result manifest is invalid: "
+                + ", ".join(manifest_failures[:10])
+            )
         cohorts = pd.read_csv(cohorts_path)
         missing = sorted(set(STATE_COLUMNS).difference(cohorts.columns))
         if missing:
@@ -171,6 +213,7 @@ def write_planning_state(
     previous_state: PlanningState,
     new_cohorts: pd.DataFrame,
     source_solution_qc: str,
+    state_use: str,
 ) -> Path:
     """Write an additive, checksummed state bundle for the next planning year."""
     output_dir = Path(output_dir)
@@ -238,22 +281,25 @@ def write_planning_state(
         encoding="utf-8-sig",
         lineterminator="\n",
     )
+    if state_use not in {PRODUCTION_STATE_USE, DIAGNOSTIC_STATE_USE}:
+        raise ValueError(f"Unsupported planning-state use: {state_use}")
     source_qc_path = output_dir / source_solution_qc
     source_solve_path = output_dir / "solve_report.json"
+    if not source_qc_path.is_file() or not source_solve_path.is_file():
+        raise FileNotFoundError(
+            "Planning state requires source solution_qc.json and solve_report.json"
+        )
     metadata = {
-        "format": "capacity_cohorts_v1",
+        "format": STATE_FORMAT,
+        "state_use": state_use,
         "generated_at": datetime.now().astimezone().isoformat(),
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
         "next_planning_year": next_planning_year,
         "retirement_rule": config.raw["planning_sequence"]["retirement_rule"],
         "source_solution_qc": source_solution_qc,
-        "source_solution_qc_sha256": (
-            sha256_file(source_qc_path) if source_qc_path.is_file() else None
-        ),
-        "source_solve_report_sha256": (
-            sha256_file(source_solve_path) if source_solve_path.is_file() else None
-        ),
+        "source_solution_qc_sha256": sha256_file(source_qc_path),
+        "source_solve_report_sha256": sha256_file(source_solve_path),
         "cohort_rows": int(len(cohorts)),
         "new_cohort_rows": int(len(additions)),
         "active_next_planning_year_rows": int(len(active_next)),
@@ -272,6 +318,8 @@ def export_solution_planning_state(
     data,
     config: ModelConfig,
     output_dir: str | Path,
+    *,
+    state_use: str,
 ) -> Path:
     """Convert one accepted full-year solution into transferable cohorts."""
     variables = artifacts.variables
@@ -306,13 +354,17 @@ def export_solution_planning_state(
             }
         )
 
+    # Read each Gurobi solution array once.  Accessing ``MVar.X`` inside the
+    # 36,686-site loop repeatedly materializes the full vector and turns state
+    # export into an accidental O(n^2) post-processing step.
+    vre_new = np.asarray(variables["vre_new"].X, dtype=float)
     for position, site in data.vre_sites.iterrows():
         append(
             "vre",
             artifacts.index["vre_asset_ids"][position],
             site.province_code,
             site.technology,
-            variables["vre_new"].X[position],
+            vre_new[position],
             "GW",
             lifetimes[site.technology],
             "new_build",
@@ -385,13 +437,14 @@ def export_solution_planning_state(
                 "new_build",
             )
 
+    line_new = np.asarray(variables["line_new"].X, dtype=float)
     for position, line in data.lines.iterrows():
         append(
             "interprovincial_transmission",
             line.line_id,
             None,
             line.preset_technology,
-            variables["line_new"].X[position],
+            line_new[position],
             "GW",
             lifetimes["transmission"],
             "new_build",
@@ -470,4 +523,5 @@ def export_solution_planning_state(
         previous_state=data.planning_state,
         new_cohorts=new_cohorts,
         source_solution_qc="solution_qc.json",
+        state_use=state_use,
     )

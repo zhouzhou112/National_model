@@ -160,6 +160,7 @@ class ModelData:
     vre_points: pd.DataFrame
     vre_sites: pd.DataFrame
     thermal_floor: pd.DataFrame
+    thermal_floor_all_years: pd.DataFrame
     nuclear_floor: pd.DataFrame
     nuclear_upper: pd.DataFrame
     hydro_stations: pd.DataFrame
@@ -327,11 +328,13 @@ def load_model_data(
     cf = CapacityFactorStore(cf_index, config.weather_year)
     vre_sites = _resolve_vre_cf_sites(points, vre_sites, cf)
 
-    thermal_floor = _read(
+    thermal_floor_all_years = _read(
         "thermal/capacity_floor_by_year.csv",
         usecols=["province_code", "year", "technology", "capacity_floor_gw"],
     )
-    thermal_floor = thermal_floor.loc[thermal_floor.year.eq(config.planning_year)].copy()
+    thermal_floor = thermal_floor_all_years.loc[
+        thermal_floor_all_years.year.eq(config.planning_year)
+    ].copy()
     nuclear_floor = _read(
         "thermal/nuclear_capacity_floor_by_year.csv",
         usecols=["province_code", "year", "capacity_floor_gw"],
@@ -558,6 +561,30 @@ def load_model_data(
         ],
     )
     fuel = fuel.loc[fuel.year.eq(config.planning_year)].copy()
+    expected_fuel_technologies = set(THERMAL_TECHS).difference({"nuclear"})
+    if len(fuel) != len(provinces) * len(expected_fuel_technologies):
+        raise ValueError(
+            f"Fuel cost rows for {config.planning_year}={len(fuel)}; expected "
+            f"{len(provinces) * len(expected_fuel_technologies)}"
+        )
+    if fuel.duplicated(["province_code", "technology"]).any():
+        raise ValueError("Duplicate province-technology fuel cost rows")
+    if set(fuel.province_code) != set(province_order):
+        raise ValueError("Fuel cost table must cover all model provinces")
+    if set(fuel.technology) != expected_fuel_technologies:
+        raise ValueError(
+            "Fuel cost technology coverage mismatch: "
+            f"{sorted(set(fuel.technology))}"
+        )
+    available_fuel = fuel.loc[fuel.dispatch_allowed.astype(bool)]
+    if (
+        available_fuel.fuel_cost_yuan_per_mwh.isna().any()
+        or not np.isfinite(
+            available_fuel.fuel_cost_yuan_per_mwh.to_numpy(dtype=float)
+        ).all()
+        or available_fuel.fuel_cost_yuan_per_mwh.lt(0.0).any()
+    ):
+        raise ValueError("Allowed fuel cost rows must have finite nonnegative cost")
     emissions = _read(
         "technology/emission_factors_by_year.csv",
         usecols=[
@@ -706,6 +733,7 @@ def load_model_data(
         vre_points=points,
         vre_sites=vre_sites,
         thermal_floor=thermal_floor,
+        thermal_floor_all_years=thermal_floor_all_years,
         nuclear_floor=nuclear_floor,
         nuclear_upper=nuclear_upper,
         hydro_stations=hydro,

@@ -5,6 +5,7 @@ import argparse
 import json
 import subprocess
 import sys
+import uuid
 from datetime import datetime
 from pathlib import Path
 
@@ -20,17 +21,56 @@ from cispo_model.planning_state import PlanningState
 from cispo_model.result_summary import _svg_lines
 
 
-def accepted(output_dir: Path, *, require_state: bool = True) -> bool:
+def _predecessor_matches_manifest(output_dir: Path, expected_state_in: Path) -> bool:
+    try:
+        manifest = pd.read_csv(output_dir / "input_manifest.csv")
+    except (FileNotFoundError, pd.errors.EmptyDataError, UnicodeDecodeError):
+        return False
+    expected_root = expected_state_in.resolve()
+    required = {
+        "state_metadata.json": expected_root / "state_metadata.json",
+        "capacity_cohorts.csv.gz": expected_root / "capacity_cohorts.csv.gz",
+        "state_transition_summary.csv": expected_root / "state_transition_summary.csv",
+        "../result_manifest.json": expected_root.parent / "result_manifest.json",
+    }
+    for logical_path, current_path in required.items():
+        selected = manifest.loc[
+            manifest.kind.eq("planning_state")
+            & manifest.logical_path.eq(logical_path)
+        ]
+        if len(selected) != 1 or not current_path.is_file():
+            return False
+        row = selected.iloc[0]
+        if Path(str(row.resolved_path)).resolve() != current_path.resolve():
+            return False
+        from cispo_model.io_contract import sha256_file
+
+        if str(row.sha256) != sha256_file(current_path):
+            return False
+    return True
+
+
+def accepted(
+    output_dir: Path,
+    *,
+    require_state: bool = True,
+    expected_result_use: str = "SCIENTIFIC_PRODUCTION",
+    expected_state_in: Path | None = None,
+    expected_run_id: str | None = None,
+) -> bool:
     solve_path = output_dir / "solve_report.json"
     qc_path = output_dir / "solution_qc.json"
     state_path = output_dir / "planning_state" / "state_metadata.json"
     if not solve_path.is_file() or not qc_path.is_file():
         return False
-    solve = json.loads(solve_path.read_text(encoding="utf-8"))
-    qc = json.loads(qc_path.read_text(encoding="utf-8"))
+    try:
+        solve = json.loads(solve_path.read_text(encoding="utf-8"))
+        qc = json.loads(qc_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
+        return False
     accepted_core = bool(
         solve.get("status") == "OPTIMAL"
-        and solve.get("result_use") == "SCIENTIFIC_PRODUCTION"
+        and solve.get("result_use") == expected_result_use
         and qc.get("status") == "PASS"
         and (state_path.is_file() or not require_state)
     )
@@ -39,11 +79,25 @@ def accepted(output_dir: Path, *, require_state: bool = True) -> bool:
     manifest_ok, _ = validate_result_manifest(output_dir)
     if not manifest_ok:
         return False
+    if expected_run_id is not None:
+        try:
+            attempt = json.loads(
+                (output_dir / "sequence_attempt.json").read_text(encoding="utf-8")
+            )
+        except (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError):
+            return False
+        if attempt.get("run_id") != expected_run_id:
+            return False
+    if expected_state_in is not None and not _predecessor_matches_manifest(
+        output_dir, expected_state_in
+    ):
+        return False
     if require_state:
         try:
             PlanningState.load(
                 output_dir / "planning_state",
                 expected_boundary_year=int(solve["planning_year"]),
+                allow_test_only=expected_result_use != "SCIENTIFIC_PRODUCTION",
             )
         except (FileNotFoundError, KeyError, TypeError, ValueError):
             return False
@@ -152,7 +206,17 @@ def main() -> None:
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--diagnostic-hours",
+        type=int,
+        help=(
+            "Run an isolated test-only sequential solve at the given leading-hour "
+            "horizon. Diagnostic states can never enter a production run."
+        ),
+    )
     args = parser.parse_args()
+    if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
+        raise SystemExit("--diagnostic-hours must be in [1, 8759]")
 
     config = load_model_config(args.config)
     years = [
@@ -174,12 +238,23 @@ def main() -> None:
         "generated_at": datetime.now().astimezone().isoformat(),
         "years": years,
         "status": "RUNNING",
+        "result_use": (
+            "TEST_ONLY_TRUNCATED_HORIZON"
+            if args.diagnostic_hours is not None
+            else "SCIENTIFIC_PRODUCTION"
+        ),
+        "diagnostic_hours": args.diagnostic_hours,
         "runs": [],
     }
+    expected_result_use = sequence_report["result_use"]
 
     for year in years:
         output_dir = output_root / str(year)
-        if args.resume and accepted(output_dir):
+        if args.resume and accepted(
+            output_dir,
+            expected_result_use=expected_result_use,
+            expected_state_in=prior_state,
+        ):
             sequence_report["runs"].append(
                 {"planning_year": year, "status": "RESUMED_ACCEPTED", "output_dir": str(output_dir)}
             )
@@ -192,17 +267,30 @@ def main() -> None:
             args.config,
             "--planning-year",
             str(year),
-            "--horizon",
-            "full_year",
             "--output-dir",
             str(output_dir),
         ]
+        if args.diagnostic_hours is None:
+            command.extend(["--horizon", "full_year"])
+        else:
+            command.extend(
+                [
+                    "--diagnostic-hours",
+                    str(args.diagnostic_hours),
+                    "--export-diagnostic-state",
+                ]
+            )
         if prior_state is not None:
             command.extend(["--state-in", str(prior_state)])
+            if args.diagnostic_hours is not None:
+                command.append("--allow-diagnostic-state-in")
+        run_id = str(uuid.uuid4())
         run_record = {
             "planning_year": year,
+            "run_id": run_id,
             "command": command,
             "output_dir": str(output_dir),
+            "state_in": str(prior_state) if prior_state is not None else None,
         }
         sequence_report["runs"].append(run_record)
         (output_root / "sequence_report.json").write_text(
@@ -213,13 +301,44 @@ def main() -> None:
             run_record["status"] = "DRY_RUN"
             prior_state = output_dir / "planning_state"
             continue
+        if output_dir.exists() and any(output_dir.iterdir()):
+            raise SystemExit(
+                f"Refusing to run into non-empty directory {output_dir}. "
+                "Use --resume only for a fully accepted matching chain, or choose "
+                "a new output root."
+            )
         output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "sequence_attempt.json").write_text(
+            json.dumps(
+                {
+                    "run_id": run_id,
+                    "planning_year": year,
+                    "started_at": datetime.now().astimezone().isoformat(),
+                    "expected_result_use": expected_result_use,
+                    "state_in": str(prior_state) if prior_state is not None else None,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
         with (output_dir / "sequence_stdout.log").open("w", encoding="utf-8") as stdout, (
             output_dir / "sequence_stderr.log"
         ).open("w", encoding="utf-8") as stderr:
             completed = subprocess.run(command, cwd=PROJECT_ROOT, stdout=stdout, stderr=stderr)
         run_record["return_code"] = completed.returncode
-        run_record["status"] = "ACCEPTED" if accepted(output_dir) else "HARD_FAIL"
+        run_record["status"] = (
+            "ACCEPTED"
+            if completed.returncode == 0
+            and accepted(
+                output_dir,
+                expected_result_use=expected_result_use,
+                expected_state_in=prior_state,
+                expected_run_id=run_id,
+            )
+            else "HARD_FAIL"
+        )
         if run_record["status"] != "ACCEPTED":
             sequence_report["status"] = "HARD_FAIL"
             (output_root / "sequence_report.json").write_text(

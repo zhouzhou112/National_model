@@ -1517,8 +1517,10 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
     exchange_rate = float(fuel_config["usd_to_yuan"])
     model["coal_yuan_per_gj"] = model.coal_usd_per_gj * exchange_rate
     model["gas_yuan_per_gj"] = model.gas_usd_per_gj * exchange_rate
+    model["biomass_yuan_per_gj"] = model.biomass_usd_per_gj * exchange_rate
     model["coal_fuel_available"] = model.coal_yuan_per_gj.notna()
     model["gas_fuel_available"] = model.gas_yuan_per_gj.notna()
+    model["biomass_fuel_available"] = model.biomass_yuan_per_gj.notna()
     model["usd_to_yuan"] = exchange_rate
     model["price_basis_year"] = fuel_config["price_basis_year"]
     model["temporal_method"] = fuel_config["temporal_method"]
@@ -1534,8 +1536,10 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
             [
                 "province_code", "province_name_en", "province_name_zh",
                 "coal_usd_per_gj", "coal_correlation_r", "gas_usd_per_gj",
+                "biomass_usd_per_gj",
                 "coal_yuan_per_gj", "gas_yuan_per_gj", "coal_fuel_available",
-                "gas_fuel_available", "usd_to_yuan", "price_basis_year",
+                "biomass_yuan_per_gj", "gas_fuel_available",
+                "biomass_fuel_available", "usd_to_yuan", "price_basis_year",
                 "temporal_method", "merge_method", "source_evidence",
             ]
         ],
@@ -1548,6 +1552,7 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
     fuel_technology = {
         "coal": "coal", "coalccs": "coal", "cchp": "coal", "cchpccs": "coal",
         "gas": "gas", "gasccs": "gas", "gchp": "gas", "gchpccs": "gas",
+        "bio": "biomass", "bioccs": "biomass",
     }
     cost_rows = []
     for province in model.itertuples(index=False):
@@ -1579,7 +1584,8 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
     add_qc(qc, "fuel_price_model_province_rows", len(model), "PASS" if len(model) == 31 else "FAIL", "East/West Inner Mongolia merged by arithmetic mean")
     add_qc(qc, "fuel_price_missing_coal_provinces", int(model.coal_yuan_per_gj.isna().sum()), "WARN", "Beijing and Tibet coal prices are blank; coal technologies disabled there")
     add_qc(qc, "fuel_price_missing_gas_provinces", int(model.gas_yuan_per_gj.isna().sum()), "PASS" if model.gas_yuan_per_gj.notna().all() else "FAIL", "All 31 provinces require gas prices")
-    add_qc(qc, "fuel_generation_cost_rows", len(generation_cost), "PASS" if len(generation_cost) == 31 * len(config["planning_years"]) * 8 else "FAIL", "31 provinces x model years x eight coal/gas classes")
+    add_qc(qc, "fuel_price_missing_biomass_provinces", int(model.biomass_yuan_per_gj.isna().sum()), "PASS" if model.biomass_yuan_per_gj.notna().all() else "FAIL", "All 31 provinces require biomass prices")
+    add_qc(qc, "fuel_generation_cost_rows", len(generation_cost), "PASS" if len(generation_cost) == 31 * len(config["planning_years"]) * 10 else "FAIL", "31 provinces x model years x ten coal/gas/biomass classes")
 
 
 def lonlat_to_unit_sphere(lon: np.ndarray, lat: np.ndarray) -> np.ndarray:

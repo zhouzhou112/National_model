@@ -91,8 +91,8 @@ class ModelConfig:
             self.planning_year - self.boundary_year
         ):
             raise ValueError("planning_interval_years must equal planning_year - boundary_year")
-        if sequence.get("state_format") != "capacity_cohorts_v1":
-            raise ValueError("planning_sequence.state_format must be capacity_cohorts_v1")
+        if sequence.get("state_format") != "capacity_cohorts_v2":
+            raise ValueError("planning_sequence.state_format must be capacity_cohorts_v2")
         if sequence.get("retirement_rule") != "active_when_planning_year_lt_retire_year":
             raise ValueError(
                 "planning_sequence.retirement_rule must remain active_when_planning_year_lt_retire_year"
