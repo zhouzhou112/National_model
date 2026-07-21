@@ -1,0 +1,36 @@
+parameter_group,parameter_key,runtime_authority,unit,base_value,sensitivity_ready,evidence_status,notes
+scope,weather_year,config/optimization_2030.json,year,2023,yes,MODEL_CHOICE,All cases in a comparison must use the same weather year
+scope,vre_scenario,config/optimization_2030.json,category,B,yes,MODEL_CHOICE,C/B/O suitability upper-bound scenario
+scope,carbon_scenario,config/optimization_2030.json,category,Base_-550Mt,yes,MODEL_CHOICE,Selects one row per planning year from the carbon table
+finance,real_wacc_fraction,config/optimization_2030.json,fraction,0.074,yes,SOURCE_REVIEWED,Use a scenario override rather than editing code
+finance,default_lifetime_years.nuclear,config/optimization_2030.json,year,60,yes,SCENARIO_REQUIRED,Key long-term sensitivity
+security,capacity_margin_fraction,config/optimization_2030.json,fraction,0.15,yes,SCENARIO_REQUIRED,Uses baseline peak even in flexible-load cases
+security,minimum_system_inertia_seconds,config/optimization_2030.json,s,3.0,yes,SCENARIO_REQUIRED,Explicit model assumption
+security,up_reserve_load_fraction,config/optimization_2030.json,fraction,0.05,yes,MODEL_ASSUMPTION,Applied to optimized effective load
+security,up_reserve_vre_fraction,config/optimization_2030.json,fraction,0.05,yes,MODEL_ASSUMPTION,Applied to dispatched VRE
+network,flow_regularization_yuan_per_mwh,config/optimization_2030.json,CNY/MWh,1.0,yes,CISPO_ALIGNED,Equivalent to 0.001 CNY/kWh
+network,load_center_network.design_utilization_fraction,config/optimization_2030.json,fraction,0.5,yes,SOFT_ASSUMPTION,Annual AC500 proxy sizing factor
+hydro,reservoir_efficiency,config/optimization_2030.json,fraction,0.85,yes,MODEL_ASSUMPTION,Station-level reservoir conversion
+hydro,environmental_flow_dataset,config/optimization_2030.json,category,monthly_environmental_flow_2019_p30,no,PROXY,Formal multi-year P30 data still required
+flexibility,heating.maximum_reduction_fraction,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
+flexibility,heating.maximum_increase_fraction_of_daily_peak,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
+flexibility,cooling.maximum_reduction_fraction,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
+flexibility,cooling.maximum_increase_fraction_of_daily_peak,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
+flexibility,ev_v1g.shiftable_energy_fraction,config/optimization_2030.json,fraction,0.5,yes,ILLUSTRATIVE,Requires fleet availability calibration
+flexibility,ev_v1g.maximum_power_to_daily_average_ratio,config/optimization_2030.json,ratio,2.0,yes,ILLUSTRATIVE,Aggregate charging envelope
+flexibility,ev_v2g.participation_fraction,config/optimization_2030.json,fraction,0.2,yes,ILLUSTRATIVE,Inactive unless V2G scenario is selected
+flexibility,ev_v2g.usable_energy_to_daily_ev_energy_ratio,config/optimization_2030.json,ratio,1.0,yes,ILLUSTRATIVE,Proxy for accessible fleet battery energy
+flexibility,ev_v2g.power_duration_hours,config/optimization_2030.json,h,4.0,yes,ILLUSTRATIVE,Converts accessible energy to power limit
+flexibility,ev_v2g.charge_efficiency,config/optimization_2030.json,fraction,0.95,yes,ILLUSTRATIVE,Daily-cyclic virtual storage
+flexibility,ev_v2g.discharge_efficiency,config/optimization_2030.json,fraction,0.95,yes,ILLUSTRATIVE,Daily-cyclic virtual storage
+flexibility,shift_throughput_cost_yuan_per_mwh,config/optimization_2030.json,CNY/MWh,2.0,yes,ILLUSTRATIVE,Prevents cost-free simultaneous up/down degeneracy
+flexibility,degradation_cost_yuan_per_mwh,config/optimization_2030.json,CNY/MWh,50.0,yes,ILLUSTRATIVE,V2G charge plus discharge throughput
+load,demand_and_components,data/load/hourly_load_2025_2060.csv.gz,GW,table,yes,VERIFIED,31 provinces x 5 years x 8760 hours with hard component closure
+nuclear,capacity_floor,data/thermal/nuclear_capacity_floor_by_year.csv,GW,table,yes,VERIFIED,One province-year lower bound
+nuclear,capacity_upper,data/thermal/nuclear_capacity_upper_by_year.csv,GW,table,yes,VERIFIED,One province-year scenario upper bound
+biomass,fuel_potential,data/biomass/fuel_potential_by_province_year.csv,PJ/year,table,yes,VERIFIED,Province-year shared biomass fuel resource
+biomass,capacity_upper,data/biomass/capacity_upper_by_province_year.csv,GW,table,yes,VERIFIED,Shared bio plus BECCS upper bound
+battery,capacity_floor,data/storage/battery_capacity_floor_by_province_year.csv,GW,table,yes,VERIFIED,Province-year commissioned or committed floor
+technology,capex,data/technology/technology_capex_by_year.csv,CNY/kW,table,yes,SOURCE_RISK,Digitized future trajectory remains a sensitivity risk
+technology,fuel_generation_cost,data/technology/province_fuel_generation_cost_by_year.csv,CNY/MWh,table,yes,SOURCE_RISK,Province-year coal gas and biomass fuel costs
+carbon,emissions_limit,data/carbon/emissions_limits_by_scenario.csv,MtCO2/year,table,yes,MODEL_SCENARIO,Selected by carbon_scenario

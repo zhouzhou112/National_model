@@ -157,6 +157,7 @@ class ModelData:
     provinces: pd.DataFrame
     load: pd.DataFrame
     load_gw: np.ndarray
+    load_components_gw: dict[str, np.ndarray]
     vre_points: pd.DataFrame
     vre_sites: pd.DataFrame
     thermal_floor: pd.DataFrame
@@ -275,7 +276,10 @@ def load_model_data(
 
     load = _read(
         "load/hourly_load_2025_2060.csv.gz",
-        usecols=["province_code", "year", "hour_index", "datetime_bj", "demand_gw"],
+        usecols=[
+            "province_code", "year", "hour_index", "datetime_bj", "demand_gw",
+            "base_residual_gw", "heating_gw", "cooling_gw", "ev_gw",
+        ],
     )
     load = load.loc[load.year.eq(config.planning_year)].copy()
     expected_load_rows = len(provinces) * config.hours
@@ -290,6 +294,28 @@ def load_model_data(
     load_pivot = load_pivot.reindex(index=province_order, columns=range(config.hours))
     if load_pivot.isna().any().any() or (load_pivot < 0).any().any():
         raise ValueError("Load matrix contains missing or negative values")
+    component_columns = {
+        "base_residual": "base_residual_gw",
+        "heating": "heating_gw",
+        "cooling": "cooling_gw",
+        "ev": "ev_gw",
+    }
+    load_components_gw: dict[str, np.ndarray] = {}
+    for component, column in component_columns.items():
+        pivot = load.pivot(index="province_code", columns="hour_index", values=column)
+        pivot = pivot.reindex(index=province_order, columns=range(config.hours))
+        values = pivot.to_numpy(dtype=np.float64)
+        if not np.isfinite(values).all() or (values < 0.0).any():
+            raise ValueError(f"{component} load matrix contains missing or negative values")
+        load_components_gw[component] = values
+    component_sum = sum(load_components_gw.values())
+    closure_error = float(
+        np.abs(load_pivot.to_numpy(dtype=np.float64) - component_sum).max()
+    )
+    if closure_error > 1e-9:
+        raise ValueError(
+            f"Load-component closure error {closure_error:.6g} GW exceeds 1e-9 GW"
+        )
 
     point_columns = [
         "grid_uid", "grid_id", "province_code", "lon", "lat", "is_land",
@@ -730,6 +756,7 @@ def load_model_data(
         provinces=provinces,
         load=load,
         load_gw=load_pivot.to_numpy(dtype=np.float64),
+        load_components_gw=load_components_gw,
         vre_points=points,
         vre_sites=vre_sites,
         thermal_floor=thermal_floor,

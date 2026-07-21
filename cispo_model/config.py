@@ -16,6 +16,7 @@ DEFAULT_CONFIG = ROOT / "config" / "optimization_2030.json"
 class ModelConfig:
     path: Path
     raw: dict[str, Any]
+    scenario_path: Path | None = None
 
     @property
     def boundary_year(self) -> int:
@@ -66,7 +67,7 @@ class ModelConfig:
         raw["boundary_year"] = boundary_year
         raw["planning_year"] = planning_year
         raw["planning_interval_years"] = planning_year - boundary_year
-        config = ModelConfig(self.path, raw)
+        config = ModelConfig(self.path, raw, self.scenario_path)
         config.validate()
         return config
 
@@ -113,6 +114,44 @@ class ModelConfig:
             raise ValueError("Debug slacks must be disabled in production configuration")
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
+        flexible = self.raw.get("flexible_load", {})
+        if "flexible_load" not in self.raw.get("features", {}):
+            raise ValueError("features.flexible_load must be explicit")
+        if flexible.get("energy_conservation_window_hours") != 24:
+            raise ValueError(
+                "The first flexible-load implementation requires 24-hour energy conservation"
+            )
+        for component in ("heating", "cooling"):
+            settings = flexible.get(component, {})
+            reduction = float(settings.get("maximum_reduction_fraction", -1.0))
+            increase = float(
+                settings.get("maximum_increase_fraction_of_daily_peak", -1.0)
+            )
+            if not 0.0 <= reduction <= 1.0 or not 0.0 <= increase <= 1.0:
+                raise ValueError(
+                    f"flexible_load.{component} fractions must be in [0, 1]"
+                )
+        ev_v1g = flexible.get("ev_v1g", {})
+        if not 0.0 <= float(ev_v1g.get("shiftable_energy_fraction", -1.0)) <= 1.0:
+            raise ValueError("flexible_load.ev_v1g.shiftable_energy_fraction must be in [0, 1]")
+        if float(ev_v1g.get("maximum_power_to_daily_average_ratio", 0.0)) < 1.0:
+            raise ValueError(
+                "flexible_load.ev_v1g.maximum_power_to_daily_average_ratio must be >= 1"
+            )
+        ev_v2g = flexible.get("ev_v2g", {})
+        for key in ("charge_efficiency", "discharge_efficiency"):
+            if not 0.0 < float(ev_v2g.get(key, 0.0)) <= 1.0:
+                raise ValueError(f"flexible_load.ev_v2g.{key} must be in (0, 1]")
+        if not 0.0 <= float(ev_v2g.get("participation_fraction", -1.0)) <= 1.0:
+            raise ValueError("flexible_load.ev_v2g.participation_fraction must be in [0, 1]")
+        if float(ev_v2g.get("power_duration_hours", 0.0)) <= 0.0:
+            raise ValueError("flexible_load.ev_v2g.power_duration_hours must be positive")
+        for key in (
+            "shift_throughput_cost_yuan_per_mwh",
+            "degradation_cost_yuan_per_mwh",
+        ):
+            if float(flexible.get(key, -1.0)) < 0.0:
+                raise ValueError(f"flexible_load.{key} must be nonnegative")
         if not self.raw["features"].get("annual_load_center_transmission", False):
             raise ValueError("Production requires the annual 278-load-center transmission layer")
         center_network = self.raw.get("load_center_network", {})
@@ -176,12 +215,47 @@ class ModelConfig:
             raise ValueError("truncated horizons must remain test-only")
 
 
-def load_model_config(path: str | Path | None = None) -> ModelConfig:
+def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    """Recursively merge a small, recorded scenario override into the base config."""
+    merged = deepcopy(base)
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _deep_merge(merged[key], value)
+        else:
+            merged[key] = deepcopy(value)
+    return merged
+
+
+def load_model_config(
+    path: str | Path | None = None,
+    scenario_path: str | Path | None = None,
+) -> ModelConfig:
     config_path = Path(path) if path else DEFAULT_CONFIG
     if not config_path.is_absolute():
         config_path = ROOT / config_path
     raw = json.loads(config_path.read_text(encoding="utf-8"))
-    config = ModelConfig(config_path.resolve(), raw)
+    resolved_scenario: Path | None = None
+    if scenario_path is not None:
+        resolved_scenario = Path(scenario_path)
+        if not resolved_scenario.is_absolute():
+            resolved_scenario = ROOT / resolved_scenario
+        payload = json.loads(resolved_scenario.read_text(encoding="utf-8"))
+        if payload.get("scenario_override_version") != "v1":
+            raise ValueError("Scenario override must declare scenario_override_version=v1")
+        if not payload.get("scenario_id") or not payload.get("scenario_family"):
+            raise ValueError("Scenario override requires scenario_id and scenario_family")
+        overrides = payload.get("overrides")
+        if not isinstance(overrides, dict):
+            raise ValueError("Scenario override requires an object-valued overrides field")
+        raw = _deep_merge(raw, overrides)
+        raw["scenario"] = {
+            "id": str(payload["scenario_id"]),
+            "family": str(payload["scenario_family"]),
+            "description": str(payload.get("description", "")),
+            "evidence_status": str(payload.get("evidence_status", "UNSPECIFIED")),
+        }
+        resolved_scenario = resolved_scenario.resolve()
+    config = ModelConfig(config_path.resolve(), raw, resolved_scenario)
     config.validate()
     return config
 

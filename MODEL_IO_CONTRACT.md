@@ -13,7 +13,9 @@ One 8760-hour solve is expensive. A completed case must therefore preserve all o
 3. Hydrology NetCDF files under `CISPO_HYDRO_ROOT`, indexed by `hydro/timeseries_index.csv`.
 4. A prior accepted `planning_state/` bundle for 2040, 2050 or 2060.
 
-At case start, `input_manifest.csv` records every resolved table and hydrology file with size and SHA256. Zarr stores record an exact resolved path and metadata fingerprint; the large chunk payload is not copied into the case directory. `model_config_snapshot.json` embeds the resolved year-specific configuration rather than only referencing a mutable config path.
+At case start, `input_manifest.csv` records every resolved table and hydrology file with size and SHA256. If `--scenario-config` is used, the override file is also checksummed. Zarr stores record an exact resolved path and metadata fingerprint; the large chunk payload is not copied into the case directory. `model_config_snapshot.json` embeds the resolved year-specific configuration rather than only referencing a mutable config path.
+
+The hourly load input preserves `demand_gw`, `base_residual_gw`, `heating_gw`, `cooling_gw` and `ev_gw`. The loader hard-fails on missing/negative values or component closure above `1e-9 GW`; optional flexibility is applied only after this immutable baseline is loaded.
 
 All model power variables use GW, hourly energy sums use GWh, storage energy uses GWh, carbon uses MtCO2, biomass uses PJ, reservoir flows use m3/s and physical active storage uses m3. The objective uses million CNY per year. Truncated horizons retain annual capacity and policy terms but contain only truncated operating terms.
 
@@ -24,6 +26,7 @@ All model power variables use GW, hourly energy sums use GWh, storage energy use
 | Provenance | `run_scope.json`, `run_environment.json`, `model_config_snapshot.json`, `input_manifest.csv` | Reproduce the exact case and distinguish scientific vs test horizons |
 | Capacity | `vre_capacity.csv`, `thermal_nuclear_capacity.csv`, `hydro_capacity.csv`, `storage_capacity.csv`, `transmission_capacity.csv`, `annual_capacity_by_province_technology.csv` | Capacity maps, province comparisons, build/floor/boundary decomposition |
 | Chronological operation | `thermal_dispatch.npz`, `vre_dispatch.npz`, `storage_dispatch.npz`, `hydro_dispatch.npz`, `reservoir_dispatch.npz`, `transmission_flows.npz` | Dispatch, ramps, starts, reserve, SOC, hydrology and corridor-flow analysis |
+| Demand flexibility | `scenario_manifest.json`, `flexible_load_dispatch.npz`, `annual_flexible_load_by_province.csv` | Baseline/optimized load components, shifts, V2G, peaks, losses and scenario assumptions |
 | Readable hourly tables | `time_index.csv`, `hourly_national_balance.csv.gz`, `hourly_province_balance.csv.gz`, `hourly_province_security.csv.gz` | Plotting, balance checks, adequacy and flexibility metrics |
 | Annual/monthly analysis | `annual_generation_by_province_technology.csv`, `annual_resource_accounting_by_province.csv`, `annual_adequacy_by_province.csv`, `annual_constraint_shadow_prices.csv`, `monthly_energy_by_technology.csv`, `cost_components.csv` | Paper tables, regional mechanisms, adequacy, shadow prices, carbon/resource and cost decomposition |
 | Spatial network | `load_center_*.csv`, `province_annual_load_center_accounts.csv`, `co2_source_sink_flows.csv` | 278-node spatial allocation, intraprovincial grid and CCS routing |
@@ -40,6 +43,7 @@ NPZ files are saved with numeric arrays and fixed-width Unicode identifiers, so 
 - `hydro_dispatch.npz`: `[province, hour]` ROR availability/generation, reservoir generation and up reserve.
 - `reservoir_dispatch.npz`: `[reservoir_station, hour]` generation, flow, spill, storage and inflow, linked through `reservoir_station_index.csv`.
 - `transmission_flows.npz`: `[corridor, hour]` forward/reverse flow, linked to `transmission_capacity.csv`. DC reverse rows are explicitly reconstructed as zero for output compatibility.
+- `flexible_load_dispatch.npz`: `[province, hour]` immutable baseline components, optimized components, up/down shifts and V2G charge/discharge/SOC. It is written for Base too; Base arrays equal the inputs and all flexibility arrays are zero.
 
 The optimization does not contain site-hour VRE dispatch variables. It dispatches VRE at province-technology-hour resolution while retaining site-level capacity and exact site CF coefficients. Therefore no artificial site-level curtailment allocation is exported. Site potential generation can be recomputed from the saved capacity decision and immutable CF input without rerunning optimization.
 

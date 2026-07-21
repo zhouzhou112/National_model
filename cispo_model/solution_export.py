@@ -43,7 +43,26 @@ def export_operational_solution(
     provinces = np.asarray(artifacts.index["province_codes"], dtype=int)
     p_count = len(provinces)
     hour_index = np.arange(hours, dtype=int)
-    load = np.asarray(artifacts.index["selected_load_gw"], dtype=float)
+    load = _value(artifacts.index["selected_load_gw"])
+    baseline_load = np.asarray(artifacts.index["baseline_load_gw"], dtype=float)
+    baseline_components = {
+        name: np.asarray(values, dtype=float)
+        for name, values in artifacts.index["baseline_load_components_gw"].items()
+    }
+    actual_components = {
+        name: _value(values)
+        for name, values in artifacts.index["actual_load_components_gw"].items()
+    }
+    zero_load = np.zeros_like(baseline_load)
+    heating_up = _value(variables.get("heating_shift_up", zero_load))
+    heating_down = _value(variables.get("heating_shift_down", zero_load))
+    cooling_up = _value(variables.get("cooling_shift_up", zero_load))
+    cooling_down = _value(variables.get("cooling_shift_down", zero_load))
+    ev_up = _value(variables.get("ev_v1g_shift_up", zero_load))
+    ev_down = _value(variables.get("ev_v1g_shift_down", zero_load))
+    v2g_charge = _value(variables.get("ev_v2g_charge", zero_load))
+    v2g_discharge = _value(variables.get("ev_v2g_discharge", zero_load))
+    v2g_soc = _value(variables.get("ev_v2g_soc", zero_load))
 
     vre_generation = _value(variables["vre_generation"])
     vre_available = _value(variables["vre_available"])
@@ -119,6 +138,50 @@ def export_operational_solution(
         + network_injection
     )
     balance_residual = generation_total - load - dac_load[:, None]
+    component_input_closure = baseline_load - sum(baseline_components.values())
+    component_effective_closure = load - (
+        sum(actual_components.values()) + v2g_charge - v2g_discharge
+    )
+    day_slices = artifacts.index["flexible_load_day_slices"]
+    daily_energy_residuals = {
+        component: np.asarray(
+            [
+                (
+                    actual_components[component][:, day].sum(axis=1)
+                    - baseline_components[component][:, day].sum(axis=1)
+                )
+                for day in day_slices
+            ]
+        )
+        for component in ("heating", "cooling", "ev")
+    }
+    v2g_transition_max = 0.0
+    if bool(config.raw["features"]["flexible_load"]) and bool(
+        config.raw["flexible_load"]["ev_v2g"]["enabled"]
+    ):
+        v2g_config = config.raw["flexible_load"]["ev_v2g"]
+        eta_c = float(v2g_config["charge_efficiency"])
+        eta_d = float(v2g_config["discharge_efficiency"])
+        retention = 1.0 - float(v2g_config["self_discharge_fraction_per_hour"])
+        transition_residuals = []
+        for day in day_slices:
+            start, stop = int(day.start), int(day.stop)
+            transition_residuals.append(
+                v2g_soc[:, start]
+                - retention * v2g_soc[:, stop - 1]
+                - eta_c * v2g_charge[:, start]
+                + v2g_discharge[:, start] / eta_d
+            )
+            if stop - start > 1:
+                transition_residuals.append(
+                    v2g_soc[:, start + 1:stop]
+                    - retention * v2g_soc[:, start:stop - 1]
+                    - eta_c * v2g_charge[:, start + 1:stop]
+                    + v2g_discharge[:, start + 1:stop] / eta_d
+                )
+        v2g_transition_max = max(
+            float(np.abs(values).max()) for values in transition_residuals
+        )
 
     thermal_up = _value(variables["thermal_reserve_up"])
     thermal_down = _value(variables["thermal_reserve_down"])
@@ -384,6 +447,40 @@ def export_operational_solution(
         "generated_at": datetime.now().astimezone().isoformat(),
         "optimization_hours": hours,
         "maximum_power_balance_residual_gw": float(np.abs(balance_residual).max()),
+        "maximum_load_component_input_closure_error_gw": float(
+            np.abs(component_input_closure).max()
+        ),
+        "maximum_effective_load_reconstruction_error_gw": float(
+            np.abs(component_effective_closure).max()
+        ),
+        "minimum_effective_load_gw": float(load.min()),
+        "maximum_heating_daily_energy_residual_gwh": float(
+            np.abs(daily_energy_residuals["heating"]).max()
+        ),
+        "maximum_cooling_daily_energy_residual_gwh": float(
+            np.abs(daily_energy_residuals["cooling"]).max()
+        ),
+        "maximum_ev_v1g_daily_energy_residual_gwh": float(
+            np.abs(daily_energy_residuals["ev"]).max()
+        ),
+        "maximum_ev_v2g_transition_residual_gwh": v2g_transition_max,
+        "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
+        "heating_simultaneous_up_down_province_hours": int(
+            ((heating_up > flow_direction_tolerance_gw)
+             & (heating_down > flow_direction_tolerance_gw)).sum()
+        ),
+        "cooling_simultaneous_up_down_province_hours": int(
+            ((cooling_up > flow_direction_tolerance_gw)
+             & (cooling_down > flow_direction_tolerance_gw)).sum()
+        ),
+        "ev_v1g_simultaneous_up_down_province_hours": int(
+            ((ev_up > flow_direction_tolerance_gw)
+             & (ev_down > flow_direction_tolerance_gw)).sum()
+        ),
+        "ev_v2g_simultaneous_charge_discharge_province_hours": int(
+            ((v2g_charge > flow_direction_tolerance_gw)
+             & (v2g_discharge > flow_direction_tolerance_gw)).sum()
+        ),
         "minimum_up_reserve_margin_gw": float(up_margin.min()),
         "minimum_down_reserve_margin_gw": float(down_margin.min()),
         "minimum_inertia_margin_gw_s": float(
@@ -486,6 +583,23 @@ def export_operational_solution(
     }
     hard_checks = {
         "power_balance": qc["maximum_power_balance_residual_gw"] <= tolerance,
+        "load_component_input_closure": qc[
+            "maximum_load_component_input_closure_error_gw"
+        ] <= tolerance,
+        "effective_load_reconstruction": qc[
+            "maximum_effective_load_reconstruction_error_gw"
+        ] <= tolerance,
+        "effective_load_nonnegative": qc["minimum_effective_load_gw"] >= -tolerance,
+        "heating_daily_energy_conservation": qc[
+            "maximum_heating_daily_energy_residual_gwh"
+        ] <= tolerance,
+        "cooling_daily_energy_conservation": qc[
+            "maximum_cooling_daily_energy_residual_gwh"
+        ] <= tolerance,
+        "ev_v1g_daily_energy_conservation": qc[
+            "maximum_ev_v1g_daily_energy_residual_gwh"
+        ] <= tolerance,
+        "ev_v2g_transition": qc["maximum_ev_v2g_transition_residual_gwh"] <= tolerance,
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
         "inertia": qc["minimum_inertia_margin_gw_s"] >= -tolerance,
@@ -542,7 +656,14 @@ def export_operational_solution(
                 dates.datetime_bj.dt.strftime("%Y-%m-%d %H:%M:%S").to_numpy(),
                 p_count,
             ),
+            "baseline_load_gw": baseline_load.ravel(),
             "load_gw": load.ravel(),
+            "base_residual_load_gw": actual_components["base_residual"].ravel(),
+            "heating_load_gw": actual_components["heating"].ravel(),
+            "cooling_load_gw": actual_components["cooling"].ravel(),
+            "ev_load_gw": actual_components["ev"].ravel(),
+            "ev_v2g_charge_gw": v2g_charge.ravel(),
+            "ev_v2g_discharge_gw": v2g_discharge.ravel(),
             "vre_generation_gw": vre_generation.sum(axis=1).ravel(),
             "thermal_net_generation_gw": thermal_net.sum(axis=1).ravel(),
             "ror_generation_gw": ror_generation.ravel(),
@@ -863,6 +984,85 @@ def export_operational_solution(
         province_codes=provinces,
         technologies=np.asarray(STORAGE_TECHS),
         hour_index=hour_index,
+    )
+    np.savez_compressed(
+        output_dir / "flexible_load_dispatch.npz",
+        baseline_total_load_gw=baseline_load,
+        effective_total_load_gw=load,
+        baseline_base_residual_gw=baseline_components["base_residual"],
+        baseline_heating_gw=baseline_components["heating"],
+        baseline_cooling_gw=baseline_components["cooling"],
+        baseline_ev_gw=baseline_components["ev"],
+        actual_base_residual_gw=actual_components["base_residual"],
+        actual_heating_gw=actual_components["heating"],
+        actual_cooling_gw=actual_components["cooling"],
+        actual_ev_gw=actual_components["ev"],
+        heating_shift_up_gw=heating_up,
+        heating_shift_down_gw=heating_down,
+        cooling_shift_up_gw=cooling_up,
+        cooling_shift_down_gw=cooling_down,
+        ev_v1g_shift_up_gw=ev_up,
+        ev_v1g_shift_down_gw=ev_down,
+        ev_v2g_charge_gw=v2g_charge,
+        ev_v2g_discharge_gw=v2g_discharge,
+        ev_v2g_soc_gwh=v2g_soc,
+        province_codes=provinces,
+        hour_index=hour_index,
+    )
+    flexible_rows = []
+    for p, province_code in enumerate(provinces):
+        flexible_rows.append(
+            {
+                "province_code": int(province_code),
+                "optimization_hours": hours,
+                "result_use": (
+                    "SCIENTIFIC_PRODUCTION"
+                    if hours == config.hours
+                    else "TEST_ONLY_TRUNCATED_HORIZON"
+                ),
+                "baseline_load_gwh": float(baseline_load[p].sum()),
+                "effective_load_gwh": float(load[p].sum()),
+                "baseline_peak_load_gw": float(baseline_load[p].max()),
+                "effective_peak_load_gw": float(load[p].max()),
+                "heating_shift_up_gwh": float(heating_up[p].sum()),
+                "heating_shift_down_gwh": float(heating_down[p].sum()),
+                "cooling_shift_up_gwh": float(cooling_up[p].sum()),
+                "cooling_shift_down_gwh": float(cooling_down[p].sum()),
+                "ev_v1g_shift_up_gwh": float(ev_up[p].sum()),
+                "ev_v1g_shift_down_gwh": float(ev_down[p].sum()),
+                "ev_v2g_charge_gwh": float(v2g_charge[p].sum()),
+                "ev_v2g_discharge_gwh": float(v2g_discharge[p].sum()),
+                "net_load_energy_change_gwh": float(
+                    load[p].sum() - baseline_load[p].sum()
+                ),
+            }
+        )
+    pd.DataFrame(flexible_rows).to_csv(
+        output_dir / "annual_flexible_load_by_province.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+    _write_json(
+        {
+            "scenario": config.raw["scenario"],
+            "optimization_hours": hours,
+            "result_use": (
+                "SCIENTIFIC_PRODUCTION"
+                if hours == config.hours
+                else "TEST_ONLY_TRUNCATED_HORIZON"
+            ),
+            "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
+            "flexible_load_parameters": config.raw["flexible_load"],
+            "baseline_load_definition": (
+                "base_residual + heating + cooling + EV; source table values remain immutable"
+            ),
+            "v2g_definition": (
+                "incremental daily-cyclic virtual storage around the EV charging service; "
+                "no reserve or capacity-margin credit"
+            ),
+            "reliability_treatment": config.raw["flexible_load"]["reliability_treatment"],
+        },
+        output_dir / "scenario_manifest.json",
     )
     reservoir_station_rows = np.asarray(
         artifacts.variables["reservoir_station_rows"], dtype=int

@@ -129,6 +129,20 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertEqual(report["scale_estimate"]["block_count"], 1)
         self.assertEqual(self.config.raw["construction"]["architecture"], "full_year_monolithic_lp")
 
+    def test_hourly_load_components_are_complete_and_close(self):
+        self.assertEqual(
+            set(self.data.load_components_gw),
+            {"base_residual", "heating", "cooling", "ev"},
+        )
+        for values in self.data.load_components_gw.values():
+            self.assertEqual(values.shape, (31, 8760))
+            self.assertTrue(np.isfinite(values).all())
+            self.assertGreaterEqual(float(values.min()), 0.0)
+        closure = np.abs(
+            self.data.load_gw - sum(self.data.load_components_gw.values())
+        ).max()
+        self.assertLessEqual(float(closure), 1e-9)
+
     def test_crf_is_numerically_stable(self):
         value = capital_recovery_factor(0.074, 25)
         self.assertGreater(value, 0.08)

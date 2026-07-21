@@ -1,0 +1,18 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "flexible_load_v2g_v1",
+  "scenario_family": "demand_flexibility",
+  "description": "Heating/cooling shifting, EV V1G relocation and an incremental daily-cyclic V2G virtual-storage envelope.",
+  "evidence_status": "ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY",
+  "overrides": {
+    "features": {
+      "flexible_load": true
+    },
+    "flexible_load": {
+      "heating": {"enabled": true},
+      "cooling": {"enabled": true},
+      "ev_v1g": {"enabled": true},
+      "ev_v2g": {"enabled": true}
+    }
+  }
+}

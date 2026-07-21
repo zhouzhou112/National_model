@@ -38,6 +38,7 @@ OUTPUT_FILE_ROLES = {
     "annual_carbon_ccs.json": "National carbon, capture, DAC and storage accounting",
     "annual_generation_by_province_technology.csv": "Province-technology generation over the selected horizon",
     "annual_generation_by_technology.csv": "National generation by technology over the selected horizon",
+    "annual_flexible_load_by_province.csv": "Province demand-flexibility energy, peak and V2G accounting",
     "annual_resource_accounting_by_province.csv": "Province biomass, emissions, capture and DAC accounting",
     "annual_storage_operation_by_technology.csv": "Storage energy, losses and cycling by technology",
     "annual_summary.json": "Backward-compatible compact result summary",
@@ -46,6 +47,7 @@ OUTPUT_FILE_ROLES = {
     "cost_components.csv": "Objective and diagnostic cost decomposition",
     "dac_capacity_capture.csv": "Province-technology DAC capacity and capture",
     "dual_export_status.json": "Availability and interpretation of LP shadow-price exports",
+    "flexible_load_dispatch.npz": "Province-hour baseline components, optimized flexible demand and V2G arrays",
     "hourly_marginal_prices.csv.gz": "Province-hour energy, reserve and inertia dual values",
     "hourly_national_balance.csv.gz": "Chronological national power balance",
     "hourly_province_balance.csv.gz": "Chronological provincial power balance",
@@ -68,6 +70,7 @@ OUTPUT_FILE_ROLES = {
     "result_manifest.json": "SHA256 manifest of scientific result artifacts",
     "run_environment.json": "Software, host, command and data-root provenance",
     "run_scope.json": "Horizon, scientific-use boundary and scale estimate",
+    "scenario_manifest.json": "Resolved optional-module scenario and demand-flexibility assumptions",
     "run_summary.json": "Scope-aware compact result summary",
     "solution_qc.json": "Hard physical and numerical solution checks",
     "solve_report.json": "Solver status, parameters, quality, runtime and memory",
@@ -83,6 +86,29 @@ OUTPUT_FILE_ROLES = {
 }
 
 NPZ_DIMENSIONS = {
+    "flexible_load_dispatch.npz": {
+        "baseline_total_load_gw": "province,hour",
+        "effective_total_load_gw": "province,hour",
+        "baseline_base_residual_gw": "province,hour",
+        "baseline_heating_gw": "province,hour",
+        "baseline_cooling_gw": "province,hour",
+        "baseline_ev_gw": "province,hour",
+        "actual_base_residual_gw": "province,hour",
+        "actual_heating_gw": "province,hour",
+        "actual_cooling_gw": "province,hour",
+        "actual_ev_gw": "province,hour",
+        "heating_shift_up_gw": "province,hour",
+        "heating_shift_down_gw": "province,hour",
+        "cooling_shift_up_gw": "province,hour",
+        "cooling_shift_down_gw": "province,hour",
+        "ev_v1g_shift_up_gw": "province,hour",
+        "ev_v1g_shift_down_gw": "province,hour",
+        "ev_v2g_charge_gw": "province,hour",
+        "ev_v2g_discharge_gw": "province,hour",
+        "ev_v2g_soc_gwh": "province,hour",
+        "province_codes": "province",
+        "hour_index": "hour",
+    },
     "thermal_dispatch.npz": {
         "gross_generation_gw": "province,technology,hour",
         "net_generation_gw": "province,technology,hour",
@@ -204,6 +230,10 @@ def write_run_provenance(
         "generated_at": datetime.now().astimezone().isoformat(),
         "source_path": str(config.path),
         "source_sha256": sha256_file(config.path),
+        "scenario_source_path": str(config.scenario_path) if config.scenario_path else None,
+        "scenario_source_sha256": (
+            sha256_file(config.scenario_path) if config.scenario_path else None
+        ),
         "resolved_configuration": config.raw,
     }
     config_path = output_dir / "model_config_snapshot.json"
@@ -261,6 +291,13 @@ def write_run_provenance(
         )
 
     add_file("configuration", str(config.path), config.path, True)
+    if config.scenario_path:
+        add_file(
+            "scenario_configuration",
+            str(config.scenario_path),
+            config.scenario_path,
+            True,
+        )
     add_file("input_contract", "config/model_input_files.json", contract_path, True)
     for logical_path in contract["required_model_tables"]:
         add_file("model_table", logical_path, data_root / logical_path, True)

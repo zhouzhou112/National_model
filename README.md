@@ -48,6 +48,8 @@ export GRB_LICENSE_FILE=/path/to/gurobi.lic
 
 The exact required table list and roles are defined by `config/model_input_files.json`. Run the read-only readiness gate before a solve:
 
+Parameter authority, scenario overrides and sensitivity rules are documented in [config/README.md](config/README.md). Implemented versus planned case modules are separated in [SCENARIO_MODULE_ARCHITECTURE.md](SCENARIO_MODULE_ARCHITECTURE.md).
+
 ```bash
 python scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
 python -m unittest discover -s tests -q
@@ -72,6 +74,16 @@ python scripts/run_cispo_2030_full_year.py \
   --planning-year 2030 \
   --diagnostic-hours 24 \
   --output-dir outputs/2030_24h_regression
+```
+
+Optional modules are enabled by a recorded partial override, for example:
+
+```bash
+python scripts/run_cispo_2030_full_year.py \
+  --scenario-config config/scenarios/flexible_load_v1.json \
+  --planning-year 2030 \
+  --diagnostic-hours 24 \
+  --output-dir outputs/flexible_load_v1_24h_gate
 ```
 
 Production solve:

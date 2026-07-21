@@ -1039,6 +1039,39 @@ f^{AC,\to}_{l,t}+f^{AC,\leftarrow}_{l,t}\le p^{AC}_{l},
 
 CISPO 负荷平衡在省级电网 `g` 与小时 `t` 层面闭合。
 
+### 5.8.0 可选需求柔性扩展（非 CISPO 基准）
+
+运行时负荷表同时保存 `base_residual_gw`、`heating_gw`、`cooling_gw` 和 `ev_gw`，并硬校验四分量逐省逐时之和等于 `dem_{g,t}`。Base 情景直接使用 `dem_{g,t}`，不创建任何柔性变量。仅当 `features.flexible_load=true` 时，供暖、制冷和 EV 充电分别引入非负上调、下调变量：
+
+\[
+d^{x,act}_{g,t}=d^{x,base}_{g,t}+d^{x,+}_{g,t}-d^{x,-}_{g,t},
+\qquad x\in\{heat,cool,EV\}.
+\]
+
+每个北京时间自然日 `D` 内严格保持能量服务：
+
+\[
+\sum_{t\in D}d^{x,+}_{g,t}=\sum_{t\in D}d^{x,-}_{g,t}.
+\]
+
+冷热下调界由原小时分量乘 `maximum_reduction_fraction` 给出，上调界由当日分量峰值乘 `maximum_increase_fraction_of_daily_peak` 给出。EV V1G 下调不超过原充电负荷的可搬运比例；上调后的聚合充电功率不超过当日平均 EV 功率乘显式倍率。以上均为线性约束。
+
+可选 V2G 不是重复计算驾驶用能，而是在上述 EV 服务上叠加日内循环虚拟储能：
+
+\[
+e^{EV}_{g,t}=\lambda e^{EV}_{g,t-1}+\eta_c p^{V2G,c}_{g,t}
+-p^{V2G,d}_{g,t}/\eta_d,
+\]
+
+日首与前一日末在各自然日内部循环，功率和能量上界由当日 EV 电量、参与率、可用电量比例和持续小时数生成。有效负荷为：
+
+\[
+d^{eff}_{g,t}=d^{base}_{g,t}+d^{heat,act}_{g,t}+d^{cool,act}_{g,t}
++d^{EV,act}_{g,t}+p^{V2G,c}_{g,t}-p^{V2G,d}_{g,t}\ge0.
+\]
+
+移峰吞吐与 V2G 充放电吞吐均进入目标函数。小时功率平衡、备用、惯量和年度负荷中心闭合使用 `d^{eff}`；规划容量裕度仍使用 Base 峰值，且需求柔性不提供备用或容量信用。该处理故意保守，并防止未校准的需求侧参数削弱可靠性边界。当前参数属于显式敏感性假设，不得作为 CISPO 原始参数引用。
+
 ## 5.8.1 本省负荷满足方程
 
 ### S4-57 负荷由本地供电、储能放电和外省输入满足
@@ -1416,7 +1449,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | UPV/DPV | 同上 | 继续分开。二者共享 PV 容量因子，但保留不同的既有容量、资源上限、成本和接入距离口径；DPV 接入距离可设为 0 |
 | 模型年份 | `data/sets/model_years.csv` | 2025 为固定校准年；2030/2040/2050/2060 为容量扩张决策年 |
 | 小时容量因子 | `data/vre/hourly_cf_index.csv` | 索引 `D:\National_model\Data\Gis\Hourly_cf` 下 2020–2025 Zarr；默认气象年为 2023 |
-| 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW |
+| 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW；总负荷与 base residual/heating/cooling/EV 四分量逐时闭合 |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
 | 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv`、`data/thermal/nuclear_capacity_upper_by_year.csv` | GEM committed/pipeline 下界；V0719 全国上界 2030/2040/2050/2060 = 110/205/300/300 GW，省级按管线权重分配 |
 | 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级站使用本地 GRFR 增量入流 + 上游发电/弃水时滞到达，其余水库站保持独立水量平衡；环境流量为 2019 单年 monthly P30 代理，正式多年 P30 尚未接入 |

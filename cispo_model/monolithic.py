@@ -16,6 +16,7 @@ from scipy import sparse
 
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
+from .flexible_load import attach_flexible_load
 from .hydro import HydroProfileReader
 from .load_center import attach_annual_load_center_network
 from .master import MasterArtifacts, build_master
@@ -128,7 +129,9 @@ def build_full_year_monolithic(
     k_count = len(THERMAL_TECHS)
     s_count = len(STORAGE_TECHS)
     v_count = len(VRE_TECHS)
-    load = data.load_gw[:, :hours]
+    baseline_load = data.load_gw[:, :hours]
+    flexible_load = attach_flexible_load(model, config, data, hours=hours)
+    load = flexible_load.effective_load_gw
 
     vre_capacity = variables["vre_capacity"]
     thermal_capacity = variables["thermal_capacity"]
@@ -580,6 +583,7 @@ def build_full_year_monolithic(
             interprovincial_flow_reverse_ac=flow_reverse_ac,
             interprovincial_reverse_edge_rows=ac_edge_rows,
             interprovincial_efficiency=line_efficiency,
+            effective_load=load,
         )
     else:
         intra_load_center_flow_cost = gp.LinExpr()
@@ -676,6 +680,7 @@ def build_full_year_monolithic(
         "storage_variable_om": storage_vom,
         "transmission_flow_regularization": flow_cost,
         "load_center_intra_flow_regularization": intra_load_center_flow_cost,
+        **flexible_load.costs,
     }
     artifacts.cost_components["annual_operation"] = gp.quicksum(
         operating_costs.values()
@@ -741,6 +746,7 @@ def build_full_year_monolithic(
         storage_reserve_up=storage_up_by_province,
         storage_reserve_down=storage_down_by_province,
         hydro_inertia=hydro_inertia,
+        **flexible_load.variables,
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
     model.setObjective(
@@ -757,6 +763,13 @@ def build_full_year_monolithic(
         architecture="full_year_monolithic_lp",
         optimization_hours=hours,
         selected_load_gw=load,
+        baseline_load_gw=baseline_load,
+        baseline_load_components_gw={
+            name: values[:, :hours]
+            for name, values in data.load_components_gw.items()
+        },
+        actual_load_components_gw=flexible_load.actual_components_gw,
+        flexible_load_day_slices=flexible_load.day_slices,
         interprovincial_reverse_edge_rows=ac_edge_rows,
         reservoir_inflow_gwh=hydro.reservoir_inflow_gwh,
         reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,

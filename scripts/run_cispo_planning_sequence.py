@@ -57,6 +57,7 @@ def accepted(
     expected_result_use: str = "SCIENTIFIC_PRODUCTION",
     expected_state_in: Path | None = None,
     expected_run_id: str | None = None,
+    expected_scenario_id: str | None = None,
 ) -> bool:
     solve_path = output_dir / "solve_report.json"
     qc_path = output_dir / "solution_qc.json"
@@ -76,6 +77,18 @@ def accepted(
     )
     if not accepted_core:
         return False
+    if expected_scenario_id is not None:
+        scenario_id = solve.get("scenario_id")
+        if scenario_id is None:
+            try:
+                scope = json.loads(
+                    (output_dir / "run_scope.json").read_text(encoding="utf-8")
+                )
+                scenario_id = scope.get("scenario_id", "base")
+            except (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError):
+                scenario_id = "base"
+        if str(scenario_id) != str(expected_scenario_id):
+            return False
     manifest_ok, _ = validate_result_manifest(output_dir)
     if not manifest_ok:
         return False
@@ -141,6 +154,7 @@ def write_sequence_summaries(output_root: Path, years: list[int]) -> None:
         "annual_resource_accounting_by_province.csv": "sequence_resource_accounting_by_province.csv",
         "annual_storage_operation_by_technology.csv": "sequence_storage_operation_by_technology.csv",
         "cost_components.csv": "sequence_cost_components.csv",
+        "annual_flexible_load_by_province.csv": "sequence_flexible_load_by_province.csv",
     }
     for source_name, output_name in optional_tables.items():
         frames = []
@@ -197,6 +211,10 @@ def main() -> None:
         description="Run the accepted CISPO planning sequence with cohort state transfer"
     )
     parser.add_argument("--config", default="config/optimization_2030.json")
+    parser.add_argument(
+        "--scenario-config",
+        help="Optional v1 scenario override forwarded unchanged to every planning year.",
+    )
     parser.add_argument("--output-root", default="outputs/planning_sequence")
     parser.add_argument("--start-year", type=int, default=2030)
     parser.add_argument("--end-year", type=int, default=2060)
@@ -218,7 +236,7 @@ def main() -> None:
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
 
-    config = load_model_config(args.config)
+    config = load_model_config(args.config, args.scenario_config)
     years = [
         year
         for year in config.planning_years
@@ -244,6 +262,7 @@ def main() -> None:
             else "SCIENTIFIC_PRODUCTION"
         ),
         "diagnostic_hours": args.diagnostic_hours,
+        "scenario_id": config.raw["scenario"]["id"],
         "runs": [],
     }
     expected_result_use = sequence_report["result_use"]
@@ -254,6 +273,7 @@ def main() -> None:
             output_dir,
             expected_result_use=expected_result_use,
             expected_state_in=prior_state,
+            expected_scenario_id=config.raw["scenario"]["id"],
         ):
             sequence_report["runs"].append(
                 {"planning_year": year, "status": "RESUMED_ACCEPTED", "output_dir": str(output_dir)}
@@ -270,6 +290,8 @@ def main() -> None:
             "--output-dir",
             str(output_dir),
         ]
+        if args.scenario_config:
+            command.extend(["--scenario-config", args.scenario_config])
         if args.diagnostic_hours is None:
             command.extend(["--horizon", "full_year"])
         else:
@@ -315,6 +337,7 @@ def main() -> None:
                     "planning_year": year,
                     "started_at": datetime.now().astimezone().isoformat(),
                     "expected_result_use": expected_result_use,
+                    "expected_scenario_id": config.raw["scenario"]["id"],
                     "state_in": str(prior_state) if prior_state is not None else None,
                 },
                 ensure_ascii=False,
@@ -336,6 +359,7 @@ def main() -> None:
                 expected_result_use=expected_result_use,
                 expected_state_in=prior_state,
                 expected_run_id=run_id,
+                expected_scenario_id=config.raw["scenario"]["id"],
             )
             else "HARD_FAIL"
         )

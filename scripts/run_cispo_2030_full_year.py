@@ -26,6 +26,10 @@ def main() -> None:
     )
     parser.add_argument("--config", default="config/optimization_2030.json")
     parser.add_argument(
+        "--scenario-config",
+        help="Optional v1 partial override under config/scenarios; recorded in provenance.",
+    )
+    parser.add_argument(
         "--planning-year",
         type=int,
         choices=(2030, 2040, 2050, 2060),
@@ -83,7 +87,7 @@ def main() -> None:
     if args.export_diagnostic_state and args.diagnostic_hours is None:
         raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
 
-    base_config = load_model_config(args.config)
+    base_config = load_model_config(args.config, args.scenario_config)
     config = (
         base_config.for_planning_year(args.planning_year)
         if args.planning_year is not None
@@ -172,6 +176,8 @@ def main() -> None:
         "time_boundary": "cyclic_over_selected_horizon",
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
+        "scenario_id": config.raw["scenario"]["id"],
+        "scenario_family": config.raw["scenario"]["family"],
         "state_in": str(planning_state.root) if planning_state.root else None,
         "state_format": planning_state.metadata.get("format"),
         "available_memory_gb": round(available_gb, 2),
@@ -217,6 +223,7 @@ def main() -> None:
         "architecture": "full_year_monolithic_lp",
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
+        "scenario_id": config.raw["scenario"]["id"],
         "horizon": horizon_name,
         "optimization_hours": optimization_hours,
         "result_use": scope_report["result_use"],
@@ -250,6 +257,8 @@ def main() -> None:
     report.update(
         boundary_year=config.boundary_year,
         planning_year=config.planning_year,
+        scenario_id=config.raw["scenario"]["id"],
+        scenario_family=config.raw["scenario"]["family"],
         horizon=horizon_name,
         optimization_hours=optimization_hours,
         result_use=scope_report["result_use"],

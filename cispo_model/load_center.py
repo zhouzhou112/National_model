@@ -33,6 +33,7 @@ def attach_annual_load_center_network(
     interprovincial_flow_reverse_ac: gp.MVar,
     interprovincial_reverse_edge_rows: np.ndarray,
     interprovincial_efficiency: np.ndarray,
+    effective_load: Any,
 ) -> gp.LinExpr:
     """Attach an annual energy network without adding center-hour variables.
 
@@ -244,7 +245,7 @@ def attach_annual_load_center_network(
         )
         model.addConstr(
             province_effective_demand[p]
-            == float(data.load_gw[p, :hours].sum())
+            == effective_load[p, :].sum()
             + storage_charge[p, :, :].sum()
             + float(hours) * dac_load[p],
             name=f"province_annual_effective_demand_p{province_code}",

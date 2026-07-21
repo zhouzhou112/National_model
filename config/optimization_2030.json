@@ -19,6 +19,12 @@
   "ccs_injection_field": "ccs_inj_rec_mtpa",
   "ruc_formula_variant": "CISPO_original",
   "capacity_bound_profile": "V0719_nuclear_biomass_battery_corrected",
+  "scenario": {
+    "id": "base",
+    "family": "cispo_replication",
+    "description": "CISPO-style economic optimum without optional demand-flexibility or complementarity extensions",
+    "evidence_status": "MODEL_BASELINE"
+  },
   "time_boundary": "cyclic_year",
   "objective_unit": "million_CNY_per_year",
   "strict_load_balance": true,
@@ -37,7 +43,43 @@
     "ccs_source_sink": true,
     "intra_grid_spur_trunk": true,
     "annual_load_center_transmission": true,
+    "flexible_load": false,
     "csp": false
+  },
+  "flexible_load": {
+    "contract_version": "v1",
+    "energy_conservation_window_hours": 24,
+    "shift_throughput_cost_yuan_per_mwh": 2.0,
+    "degradation_cost_yuan_per_mwh": 50.0,
+    "heating": {
+      "enabled": true,
+      "maximum_reduction_fraction": 0.15,
+      "maximum_increase_fraction_of_daily_peak": 0.15
+    },
+    "cooling": {
+      "enabled": true,
+      "maximum_reduction_fraction": 0.15,
+      "maximum_increase_fraction_of_daily_peak": 0.15
+    },
+    "ev_v1g": {
+      "enabled": true,
+      "shiftable_energy_fraction": 0.5,
+      "maximum_power_to_daily_average_ratio": 2.0
+    },
+    "ev_v2g": {
+      "enabled": false,
+      "participation_fraction": 0.2,
+      "usable_energy_to_daily_ev_energy_ratio": 1.0,
+      "power_duration_hours": 4.0,
+      "charge_efficiency": 0.95,
+      "discharge_efficiency": 0.95,
+      "self_discharge_fraction_per_hour": 0.0
+    },
+    "reliability_treatment": {
+      "hourly_reserve_and_inertia_use_effective_load": true,
+      "planning_capacity_margin_uses_baseline_peak": true,
+      "flexibility_provides_no_reserve_credit": true
+    }
   },
   "explicit_data_gaps": {
     "csp": "TODO_SOURCE_DATA_REQUIRED: no 0.25-degree CSP potential or hourly CSP solar-field profile is present; capacity is fixed to zero",

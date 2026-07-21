@@ -52,6 +52,26 @@ def estimate_full_model_scale(
     n_center = len(data.load_centers)
     n_intra = len(data.intra_load_center_edges)
     c = int((data.vre_points[config.raw["ccs_injection_field"]] > 0).sum())
+    flex = config.raw["flexible_load"]
+    flex_enabled = bool(config.raw["features"]["flexible_load"])
+    flexible_variable_multiplier = 0
+    flexible_daily_modules = 0
+    if flex_enabled:
+        for component in ("heating", "cooling"):
+            if bool(flex[component]["enabled"]):
+                flexible_variable_multiplier += 2
+                flexible_daily_modules += 1
+        if bool(flex["ev_v1g"]["enabled"]):
+            flexible_variable_multiplier += 2
+            flexible_daily_modules += 1
+        if bool(flex["ev_v2g"]["enabled"]):
+            flexible_variable_multiplier += 3
+    flexible_variables = flexible_variable_multiplier * p * h
+    flexible_constraints = 0
+    if flex_enabled:
+        flexible_constraints = p * h + flexible_daily_modules * p * int(np.ceil(h / 24))
+        if bool(flex["ev_v2g"]["enabled"]):
+            flexible_constraints += p * h
 
     blocks = {
         "vre_site_capacity_and_new": 2 * n_vre,
@@ -70,6 +90,7 @@ def estimate_full_model_scale(
         "annual_load_center_network": (
             n_center * (len(VRE_TECHS) + 5) + 4 * n_intra + 5 * p
         ),
+        "optional_flexible_load": flexible_variables,
     }
     variables = int(sum(blocks.values()))
     constraints = int(
@@ -91,6 +112,7 @@ def estimate_full_model_scale(
         + len(data.provinces) * len(VRE_TECHS)
         + 5 * len(data.provinces)
         + 2 * n_intra
+        + flexible_constraints
     )
     # Dense VRE availability is the dominant coefficient block. The remaining
     # rows use a conservative 3-coefficient structural average calibrated
@@ -111,6 +133,7 @@ def estimate_full_model_scale(
         + 5 * p * s * block_hours
         + (2 * p + 3 * n_reservoir) * block_hours
         + (e + e_reverse) * block_hours
+        + flexible_variables
     )
     maximum_block_nonzeros = int(
         n_vre * block_hours + maximum_block_variables * 3.0
@@ -172,6 +195,30 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("load_shape", data.load_gw.shape == (31, 8760), str(data.load_gw.shape), "(31, 8760)")
     check("load_finite", np.isfinite(data.load_gw).all(), bool(np.isfinite(data.load_gw).all()), "True")
     check("load_nonnegative", float(data.load_gw.min()) >= 0, float(data.load_gw.min()), ">= 0 GW")
+    expected_component_shape = (31, 8760)
+    for component in ("base_residual", "heating", "cooling", "ev"):
+        values = data.load_components_gw[component]
+        check(
+            f"load_component_{component}_shape",
+            values.shape == expected_component_shape,
+            str(values.shape),
+            str(expected_component_shape),
+        )
+        check(
+            f"load_component_{component}_nonnegative",
+            bool(np.isfinite(values).all() and values.min() >= 0.0),
+            float(values.min()),
+            ">= 0 GW and finite",
+        )
+    load_component_error = float(
+        np.abs(data.load_gw - sum(data.load_components_gw.values())).max()
+    )
+    check(
+        "load_component_closure",
+        load_component_error <= 1e-9,
+        load_component_error,
+        "<= 1e-9 GW",
+    )
     check("vre_sites", len(data.vre_sites) > 0, len(data.vre_sites), "> 0")
     check("vre_bounds", bool((data.vre_sites.capacity_floor_gw <= data.vre_sites.capacity_upper_gw + 1e-9).all()), int((data.vre_sites.capacity_floor_gw > data.vre_sites.capacity_upper_gw + 1e-9).sum()), "0 violations")
     check("vre_cf_mapping", bool(data.vre_sites.cf_grid_id.ge(0).all()), int(data.vre_sites.cf_grid_id.lt(0).sum()), "0 unresolved")

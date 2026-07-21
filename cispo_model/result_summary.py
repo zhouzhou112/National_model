@@ -290,7 +290,12 @@ def export_result_summary(
         index=False,
         encoding="utf-8-sig",
     )
-    load = np.asarray(artifacts.index["selected_load_gw"], dtype=float).sum(axis=0)
+    load_by_province = _value(artifacts.index["selected_load_gw"])
+    baseline_load_by_province = np.asarray(
+        artifacts.index["baseline_load_gw"], dtype=float
+    )
+    load = load_by_province.sum(axis=0)
+    baseline_load = baseline_load_by_province.sum(axis=0)
     dac_load = _value(variables["dac_load"]).sum()
     network_injection = _value(variables["network_injection"]).sum(axis=0)
     dates = (
@@ -306,6 +311,7 @@ def export_result_summary(
                 "%Y-%m-%d %H:%M:%S"
             ).to_numpy(),
             "load_gw": load,
+            "baseline_load_gw": baseline_load,
             "vre_generation_gw": sum(generation_series[t] for t in VRE_TECHS),
             "thermal_nuclear_generation_gw": sum(
                 generation_series[t] for t in THERMAL_TECHS
@@ -365,6 +371,9 @@ def export_result_summary(
         "generated_at": datetime.now().astimezone().isoformat(),
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
+        "scenario_id": config.raw["scenario"]["id"],
+        "scenario_family": config.raw["scenario"]["family"],
+        "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
         "optimization_hours": hours,
         "result_use": "SCIENTIFIC_PRODUCTION" if full_year else "TEST_ONLY_TRUNCATED_HORIZON",
         "energy_scope": "full_year" if full_year else "selected_test_horizon",
@@ -375,6 +384,7 @@ def export_result_summary(
         ),
         "objective_million_cny_per_year": float(artifacts.model.ObjVal),
         "period_load_gwh": float(load.sum()),
+        "period_baseline_load_gwh": float(baseline_load.sum()),
         "period_generation_gwh": float(generation.generation_gwh.sum()),
         "period_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "period_ror_curtailment_gwh": float((ror_available - ror_generation).sum()),

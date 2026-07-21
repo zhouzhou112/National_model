@@ -49,7 +49,7 @@
     "sets/model_years.csv": "Boundary and sequential planning-year definitions",
     "vre/optimization_points.csv": "0.25-degree VRE capacity floors, scenario upper bounds and CCS sink fields",
     "vre/hourly_cf_index.csv": "Weather-year capacity-factor store index and time metadata",
-    "load/hourly_load_2025_2060.csv.gz": "Chronological 31-province hourly demand for all modeled years",
+    "load/hourly_load_2025_2060.csv.gz": "Chronological 31-province hourly demand and base-residual/heating/cooling/EV components for all modeled years",
     "thermal/capacity_floor_by_year.csv": "Exogenous non-nuclear thermal capacity floors after retirement",
     "thermal/nuclear_capacity_floor_by_year.csv": "Province-year nuclear committed/pipeline lower bounds",
     "thermal/nuclear_capacity_upper_by_year.csv": "Province-year nuclear scenario upper bounds",
