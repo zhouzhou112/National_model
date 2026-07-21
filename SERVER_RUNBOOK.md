@@ -1,8 +1,23 @@
 # CISPO 2030/8760 server runbook
 
-## V0720 production I/O and acceptance contract
+## V0722 deployed scenario interface
 
-Implementation `b40900a` is the current fixed-server baseline. Read `README.md` and `MODEL_IO_CONTRACT.md` before scheduling an expensive case. A case is accepted only when all of the following hold:
+Commit `6ed943a` adds optional, checksummed scenario overrides without changing Base by default and is deployed on the fixed server. The pre-deployment Base 168h gate ran from checkout `b6ca42d`, containing model implementation `0c1eaf2`. Do not mix code versions inside an existing output root.
+
+After deployment, a flexibility gate is selected explicitly:
+
+```bash
+$PYTHON scripts/run_cispo_2030_full_year.py \
+  --scenario-config config/scenarios/flexible_load_v1.json \
+  --diagnostic-hours 24 \
+  --output-dir /data/zz2/National_model/outputs/flexible_load_v1_24h_gate
+```
+
+Require `scenario_manifest.json`, `flexible_load_dispatch.npz`, `annual_flexible_load_by_province.csv`, `solution_qc=PASS` and a closed result manifest. Full-year Base/V1/V2G estimates are 40.91M/42.54M/43.36M variables respectively; retain the 96 GiB pre-build gate because the static estimate does not bound barrier factor memory.
+
+## V0721 production I/O and acceptance contract
+
+Implementation `0c1eaf2` is the current fixed-server baseline. Read `README.md` and `MODEL_IO_CONTRACT.md` before scheduling an expensive case. A case is accepted only when all of the following hold:
 
 - `solve_report.json`: `status=OPTIMAL` and `result_use=SCIENTIFIC_PRODUCTION`;
 - `solution_qc.json`: `status=PASS` and every hard check is true;
@@ -12,7 +27,7 @@ Implementation `b40900a` is the current fixed-server baseline. Read `README.md` 
 
 Wrapper-owned files such as `run.stdout`, `run.time`, PID and scheduler logs must not be included in the scientific manifest because wrappers can append after model finalization. Preserve them next to the case as operational evidence.
 
-The fixed server is limited to small regression gates for this phase. Use a new versioned output directory for 24h/168h, and do not launch 744h/8760h there. Production 8760h is reserved for the cloud compute node after Gurobi license, data hashes, 34 tests, 139 smoke checks and a 24h solve have passed.
+The fixed server is limited to small regression gates for this phase. Use a new versioned output directory for 24h/168h, and do not launch 744h/8760h there. Production 8760h is reserved for the cloud compute node after Gurobi license, data hashes, current regression/smoke checks and 24h/168h solves have passed.
 
 ## V0719 capacity-bound/DC-sparse deployment gate
 

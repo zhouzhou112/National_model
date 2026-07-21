@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-22 V0722 flexibility deployment and server gates (authoritative)
+
+- Commit `6ed943a` implements the optional flexibility/scenario interface and is now the clean fixed-server checkout. It passes 42/42 local and server tests plus local Base 1h, V1 24h and V2G 24h `OPTIMAL/QC PASS` gates.
+- The fixed-server Base 168h gate ran from checkout `b6ca42d`, whose model implementation baseline is `0c1eaf2`; this corrects the earlier shorthand that described the checkout itself as `0c1eaf2`. The active data root remains `/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state`.
+- The server four-year 24h sequence and immediate resume audit pass for 2030/2040/2050/2060.
+- Four-year 168h Base sequence `/data/zz2/National_model/outputs/planning_sequence_168h_v0721_fuel_state` completed `PASS`: all years are `OPTIMAL + solution_qc=PASS`, every result manifest validates, the resume identity audit passes, wall time is 1:08:40, peak RSS is 4,116,892 KiB and swap is zero.
+- Four-year 24h `flexible_load_v1` sequence `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_flexible_load_v1` completed `PASS` and passed resume identity validation. Wall time is 6:32, peak RSS is 946,804 KiB and all daily flexibility residuals are below `6.44e-13 GWh` with no simultaneous up/down.
+- Four-year 168h `flexible_load_v1` sequence is active under PID `1708266` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_flexible_load_v1`. Do not change the checkout until this output is accepted or explicitly stopped.
+- Flexibility is disabled in Base. Local full-year static estimates are 40.91M variables for Base, 42.54M for V1 and 43.36M for V2G; the 96 GiB availability gate remains unchanged.
+- No fixed-server 744h/8760h and no cloud 8760h task is running. Cloud production remains gated on an accepted 168h chain, exact code/data deployment and explicit cost authorization.
+
 ## 2026-07-20 V0720 I/O-contract deployment (authoritative)
 
 - Fixed-server checkout is clean at `b40900a`; active model data are `/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds` with the existing versioned hydrology and CF stores.
