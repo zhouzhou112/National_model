@@ -253,7 +253,11 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
 
 四个规划年当前是逐年求解并传递容量 cohort 的目标年快照，不是一次性跨期 NPV 优化。年度 objective 也不能直接相加解释为 2025–2060 路径总成本。后续成本松弛互补性模型应分离 `fixed_exogenous_cost`、`decision_dependent_cost`、`new_build_annualized_cost` 和 `operating_cost`。
 """
-    (output_dir / "PARAMETER_AUDIT_REPORT_ZH.md").write_text(report, encoding="utf-8")
+    # UTF-8 BOM keeps Chinese readable in legacy Windows PowerShell/Notepad
+    # while remaining standards-compliant for modern editors and GitHub.
+    (output_dir / "PARAMETER_AUDIT_REPORT_ZH.md").write_text(
+        report, encoding="utf-8-sig"
+    )
     return summary
 
 
