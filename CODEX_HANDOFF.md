@@ -16,7 +16,7 @@ This is the repository's single handoff document for work continued across Codex
 
 - Latest cloud gate (2026-07-21): Slurm job `3975741` on `m4cl2501.para.bscc` explicitly set the HTTP proxy, reached `token.gurobi.com` through `172.16.110.3:8888` (HTTP 302), and solved a Gurobi 13.0.2 WLS smoke LP to `OPTIMAL` with `GUROBI_SMOKE_PASS`. The account `.bashrc` still contains non-standard whitespace after `export`; every job must set proxy variables explicitly until repaired. The cloud endpoint is ready for staged 24h/168h CISPO gates, not yet for paid 8760h production.
 
-- Handoff version: `v0.8.0`
+- Handoff version: `v0.8.1`
 - Snapshot date: `2026-07-22`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
@@ -84,7 +84,8 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - V0721 implementation `0c1eaf2` is pushed and deployed to the fixed server. Local and server regression tests pass 37/37. The local real 1h 2030→2040→2050→2060 diagnostic chain and a subsequent `--resume` audit both report `PASS`; all four years are `OPTIMAL + solution_qc=PASS + accepted state`.
 - New server data root `/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state` was copied additively from the V0719 root and receives only the rebuilt fuel tables. SHA256 matches the local files: `province_fuel_prices.csv` = `b6867259317b419bc8b35aedf6b614fd930cf0eed9620fdddeca6fc6434c50a1`; `province_fuel_generation_cost_by_year.csv` = `e1133fbfc798a15524e3ee920a0c6e3e771206874427abcef7db399227df94cd`.
 - Local and server parameter audits each expand 11,658 active runtime parameter rows and report 22 PASS, 0 WARN, 0 HARD_FAIL, with seven scientific risks retained separately. Province-level biomass/BECCS fuel costs now cover every model province and are no longer zeroed in the objective.
-- Fixed-server 24h four-year diagnostic sequence is running under PID `1314704` at `/data/zz2/National_model/outputs/planning_sequence_24h_v0721_fuel_state`. This is a test-only chain; it cannot enter a scientific 8760h run.
+- Fixed-server 24h four-year diagnostic sequence `/data/zz2/National_model/outputs/planning_sequence_24h_v0721_fuel_state` and a subsequent `--resume` chain-identity audit both report `PASS`. All four years are `OPTIMAL + solution_qc=PASS`; solver runtimes are 49.42/46.49/45.98/45.74 s, wall time is 6:03 and peak RSS is 0.879 GiB. States are explicitly `TEST_ONLY_TRUNCATED_HORIZON`.
+- Fixed-server 168h four-year diagnostic sequence is running under PID `1348292` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0721_fuel_state`; 2030 started normally with empty `stderr`.
 - The pre-fix V0720 2030 168h comparison gate completed `OPTIMAL + solution_qc=PASS` under `/data/zz2/National_model/outputs/2030_168h_v0720_io_contract_server`: solver runtime 799.07 s, wall time 16:06, peak process-tree RSS 3.762 GiB. It omits biomass fuel cost and is retained only as a comparison baseline.
 - V0720 implementation `b40900a` is pushed and deployed to the clean fixed-server checkout. Local and server unit tests pass 34/34; the V0719 server data package passes 139/139 smoke checks.
 - Server 24h I/O-contract gate `/data/zz2/National_model/outputs/2030_24h_v0720_io_contract_server` reached `OPTIMAL + solution_qc=PASS`: 341,312 variables, 261,280 constraints, 1,768,957 nonzeros, objective `2,024,722.739184 million CNY`, Gurobi runtime 43.65 s and peak process-tree RSS 0.838 GiB. All 27 hard checks pass; result-manifest validation has zero mismatches; all NPZ files load with `allow_pickle=False`; dual export contains 744 hourly and 3,366 annual rows.
@@ -207,6 +208,14 @@ tail -n 80 "$OUT/gurobi.log"
 The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.8.1 - 2026-07-22 - fixed-server four-year 24h chain passed
+
+- Git/model/data baseline: implementation `0c1eaf2`, documentation/encoding HEAD `b6ca42d`, V0721 additive data root.
+- Output: `/data/zz2/National_model/outputs/planning_sequence_24h_v0721_fuel_state`; initial sequence `PASS`, immediate `--resume` sequence `PASS`, four `RESUMED_ACCEPTED` records.
+- Per-year result: 2030/2040/2050/2060 all `OPTIMAL + solution_qc=PASS`; solver runtimes 49.424/46.489/45.976/45.735 s; objective values 2,024,956.703 / 2,073,142.226 / 2,232,353.866 / 2,470,806.369 million CNY. These are truncated-horizon engineering values and have no scientific cost interpretation.
+- Resource evidence: sequence wall time 6:03.31, maximum RSS 921,792 KiB, exit status 0 and no swap by the sequence process tree.
+- Next gate: launched the 168h four-year diagnostic chain as PID `1348292` under `/data/zz2/National_model/outputs/planning_sequence_168h_v0721_fuel_state`. Audit all four years and resume identity after completion; do not start cloud 8760h meanwhile.
 
 ### v0.8.0 - 2026-07-22 - fuel accounting and safe sequential diagnostic chain
 
