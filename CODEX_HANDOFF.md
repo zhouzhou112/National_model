@@ -14,14 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Latest cloud gate (2026-07-21): Slurm job `3975724` on `m4cl0208.para.bscc` explicitly set the HTTP proxy, reached `token.gurobi.com` through `172.16.110.3:8888`, and solved a Gurobi 13.0.2 WLS smoke LP to `OPTIMAL` (objective 1.0). The account `.bashrc` still contains non-standard whitespace after `export`; every job must set proxy variables explicitly until repaired. The cloud endpoint is ready for staged 24h/168h CISPO gates, not yet for paid 8760h production.
+- Latest cloud gate (2026-07-21): Slurm job `3975741` on `m4cl2501.para.bscc` explicitly set the HTTP proxy, reached `token.gurobi.com` through `172.16.110.3:8888` (HTTP 302), and solved a Gurobi 13.0.2 WLS smoke LP to `OPTIMAL` with `GUROBI_SMOKE_PASS`. The account `.bashrc` still contains non-standard whitespace after `export`; every job must set proxy variables explicitly until repaired. The cloud endpoint is ready for staged 24h/168h CISPO gates, not yet for paid 8760h production.
 
-- Handoff version: `v0.7.2`
-- Snapshot date: `2026-07-21`
+- Handoff version: `v0.8.0`
+- Snapshot date: `2026-07-22`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- Local, pushed and fixed-server implementation commit is `b40900a` (`feat: formalize model I/O and diagnostics`). It includes V0719 capacity-bound/DC active-index commit `451b1c0`, server path fixes and the V0720 reproducible I/O/diagnostic layer.
-- A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud, and engineer-provided `gurobipy310` was exercised in compute-node job `3975724`. With explicit proxy variables, node `m4cl0208.para.bscc` reached the WLS endpoint through `172.16.110.3:8888` and solved a tiny LP to `OPTIMAL` under Gurobi 13.0.2. The account `.bashrc` still contains non-standard whitespace after `export`, so proxy variables must be set explicitly in each job until that file is repaired. The cloud endpoint is technically ready for a staged CISPO gate, but not yet approved for paid 8760h production until code/data staging and 24h/168h gates pass.
+- Local, pushed and fixed-server implementation commit is `0c1eaf2` (`fix: harden sequential planning and fuel accounting`). It includes the V0720 reproducible I/O layer, positive province-level `bio/bioccs` fuel cost, strict `capacity_cohorts_v2`, diagnostic-only cross-year state isolation, chain/resume integrity checks, conservative retrofit survivor bounds and fast cached state export.
+- A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud, and engineer-provided `gurobipy310` was exercised in compute-node jobs `3975724` and `3975741`. With explicit proxy variables, both jobs reached the WLS endpoint through `172.16.110.3:8888` and solved a tiny LP to `OPTIMAL` under Gurobi 13.0.2; `3975741` additionally confirmed the route with HTTP 302 and `GUROBI_SMOKE_PASS`. The account `.bashrc` still contains non-standard whitespace after `export`, so proxy variables must be set explicitly in each job until that file is repaired. The cloud endpoint is technically ready for a staged CISPO gate, but not yet approved for paid 8760h production until code/data staging, explicit thread limits and 24h/168h gates pass.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
@@ -73,7 +73,7 @@ Detailed definitions are in `cispo_full_lp_model_spec.md` and `LOAD_CENTER_NETWO
 ```bash
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_v0719_capacity_bounds
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
@@ -81,6 +81,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Latest verification evidence
 
+- V0721 implementation `0c1eaf2` is pushed and deployed to the fixed server. Local and server regression tests pass 37/37. The local real 1h 2030→2040→2050→2060 diagnostic chain and a subsequent `--resume` audit both report `PASS`; all four years are `OPTIMAL + solution_qc=PASS + accepted state`.
+- New server data root `/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state` was copied additively from the V0719 root and receives only the rebuilt fuel tables. SHA256 matches the local files: `province_fuel_prices.csv` = `b6867259317b419bc8b35aedf6b614fd930cf0eed9620fdddeca6fc6434c50a1`; `province_fuel_generation_cost_by_year.csv` = `e1133fbfc798a15524e3ee920a0c6e3e771206874427abcef7db399227df94cd`.
+- Local and server parameter audits each expand 11,658 active runtime parameter rows and report 22 PASS, 0 WARN, 0 HARD_FAIL, with seven scientific risks retained separately. Province-level biomass/BECCS fuel costs now cover every model province and are no longer zeroed in the objective.
+- Fixed-server 24h four-year diagnostic sequence is running under PID `1314704` at `/data/zz2/National_model/outputs/planning_sequence_24h_v0721_fuel_state`. This is a test-only chain; it cannot enter a scientific 8760h run.
+- The pre-fix V0720 2030 168h comparison gate completed `OPTIMAL + solution_qc=PASS` under `/data/zz2/National_model/outputs/2030_168h_v0720_io_contract_server`: solver runtime 799.07 s, wall time 16:06, peak process-tree RSS 3.762 GiB. It omits biomass fuel cost and is retained only as a comparison baseline.
 - V0720 implementation `b40900a` is pushed and deployed to the clean fixed-server checkout. Local and server unit tests pass 34/34; the V0719 server data package passes 139/139 smoke checks.
 - Server 24h I/O-contract gate `/data/zz2/National_model/outputs/2030_24h_v0720_io_contract_server` reached `OPTIMAL + solution_qc=PASS`: 341,312 variables, 261,280 constraints, 1,768,957 nonzeros, objective `2,024,722.739184 million CNY`, Gurobi runtime 43.65 s and peak process-tree RSS 0.838 GiB. All 27 hard checks pass; result-manifest validation has zero mismatches; all NPZ files load with `allow_pickle=False`; dual export contains 744 hourly and 3,366 annual rows.
 - The output contract now includes immutable configuration/environment/input manifests, a 50-file output catalog, a 493-row data dictionary, province-technology capacity and generation tables, security/adequacy/resource diagnostics, hourly marginal prices, annual shadow prices and verified capacity-cohort state transfer. Detailed definitions are in `MODEL_IO_CONTRACT.md`.
@@ -202,6 +207,25 @@ tail -n 80 "$OUT/gurobi.log"
 The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.8.0 - 2026-07-22 - fuel accounting and safe sequential diagnostic chain
+
+- Git implementation: `0c1eaf2` (`fix: harden sequential planning and fuel accounting`), pushed to `origin/codex/cispo-2030-full-lp` and fast-forwarded on the fixed server.
+- Scope: connected existing province-level biomass prices to `bio/bioccs` fuel costs and the objective; added strict fuel-table coverage/range checks; upgraded state to `capacity_cohorts_v2`; validated source QC/solve/summary/result-manifest hashes and source year/use; isolated test-only diagnostic states from 8760h production; prevented nonempty-directory overwrite, nonzero-return acceptance and stale/mixed resume chains; bounded thermal retrofits by future surviving source capacity; cached Gurobi solution arrays during cohort export; added a parameter audit and deployment/paper case roadmaps.
+- Changed files: `cispo_model/{config,data,io_contract,master,monolithic,planning_state}.py`, `config/optimization_2030.json`, `scripts/{build_cispo_data_package,rebuild_fuel_price_tables,audit_model_parameters,run_cispo_2030_full_year,run_cispo_planning_sequence}.py`, three regression tests, `FINAL_DEPLOYMENT_WORKFLOW_20260721.md` and `PAPER_CASE_ROADMAP_20260721.md`.
+- Data: new additive fixed-server root `/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state`; rebuilt fuel-table SHA256 values are recorded in the current snapshot. The previous V0719 root was not overwritten.
+- Local verification: 37/37 tests PASS; parameter audit 11,658 rows / 22 PASS / 0 WARN / 0 HARD_FAIL; real four-year 1h diagnostic sequence PASS; all years `OPTIMAL + solution_qc=PASS`; immediate `--resume` revalidation PASS. Caching `vre_new.X` reduced a 1h result/state export from an interrupted >5 min path to about 40 s total wall time.
+- Server verification: HEAD `0c1eaf2`; parameter audit matches local counts; 37/37 tests PASS; V0721 24h four-year diagnostic sequence launched as PID `1314704`.
+- Unresolved: BECCS gross/captured/stored/lifecycle/net carbon separation; 40/60-year nuclear lifetime, 5/15% capacity margin and 3.0/3.5 s inertia scenarios; CapEx and fuel-price low/base/high trajectories; decision-dependent versus fixed cost decomposition before complementarity epsilon constraints; formal multi-weather-year hydrology/robustness.
+- Exact next action: audit the server 24h chain; if four years and resume identity pass, launch a new 168h four-year chain. Only after both pass should the cloud receive the new code/data package and run a single 2030 8760h production case.
+
+### v0.7.4 - 2026-07-21 - second proxy/WLS smoke passed; thread limit flagged
+
+- Git state: current model commit remains `b40900a`; no model code, input data or production output was changed.
+- Scope: submitted only Slurm job `3975741` to `amd_a8_384`, 1 node, 1 CPU, 2 GB and 5 minutes; no CISPO command and no exclusive-node request.
+- Proxy/license evidence: node `m4cl2501.para.bscc` used the engineer-provided proxy `172.16.110.3:8888`; the connectivity check returned HTTP 302, WLS authentication succeeded, and the two-variable LP returned `OPTIMAL` with `GUROBI_SMOKE_PASS`. `sacct` reports `COMPLETED`, exit code `0`.
+- Resource caveat: despite the one-CPU request, the smoke log reported Gurobi could use up to 32 threads. Production scripts must set Gurobi `Threads` no higher than `--cpus-per-task` and verify the effective thread count before paid runs.
+- Unresolved/next action: stage only the validated input package, verify SHA256 and output permissions, run cloud 24h/168h gates with explicit resources, then perform the full-year preflight/build-only gate. Do not submit 8760 optimization yet.
 
 ### v0.7.3 - 2026-07-21 - compute-node proxy/WLS smoke passed
 
