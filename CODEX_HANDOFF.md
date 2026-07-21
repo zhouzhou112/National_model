@@ -14,12 +14,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ### Version identity
 
-- Handoff version: `v0.7.0`
-- Snapshot date: `2026-07-20`
+- Latest cloud gate (2026-07-21): Slurm job `3975724` on `m4cl0208.para.bscc` explicitly set the HTTP proxy, reached `token.gurobi.com` through `172.16.110.3:8888`, and solved a Gurobi 13.0.2 WLS smoke LP to `OPTIMAL` (objective 1.0). The account `.bashrc` still contains non-standard whitespace after `export`; every job must set proxy variables explicitly until repaired. The cloud endpoint is ready for staged 24h/168h CISPO gates, not yet for paid 8760h production.
+
+- Handoff version: `v0.7.2`
+- Snapshot date: `2026-07-21`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
 - Local, pushed and fixed-server implementation commit is `b40900a` (`feat: formalize model I/O and diagnostics`). It includes V0719 capacity-bound/DC active-index commit `451b1c0`, server path fixes and the V0720 reproducible I/O/diagnostic layer.
-- A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud with a verified checksum, while the academic named-user license is intentionally not copied pending target-machine/license-scope verification. Port 8443 and the IPv6 port-22 entry still reset before the banner. The cloud endpoint remains unapproved for paid production work until compute-node scheduler, resources, data and license checks pass.
+- A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud, and engineer-provided `gurobipy310` was exercised in compute-node jobs `3974169` and `3975474`. The first used a host-bound license and failed `HostID mismatch`; the second recognized WLS credentials but failed to resolve `token.gurobi.com` while requesting a token. Port 8443 and the IPv6 port-22 entry still reset before the banner. The cloud endpoint remains unapproved for paid production work until compute-node DNS/egress is fixed and a smoke test returns `OPTIMAL`.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
 - After commit `1b6da28`, server regression tests passed 26/26 and the corrected 24h transmission gate reached `OPTIMAL` in 43.88 s with all directionality/QC/manifest checks passing.
@@ -200,6 +202,30 @@ tail -n 80 "$OUT/gurobi.log"
 The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
 
 ## Version history
+
+### v0.7.3 - 2026-07-21 - compute-node proxy/WLS smoke passed
+
+- Git state: current model commit remains `b40900a`; no model code, input data or production output was changed.
+- Scope: submitted only Slurm job `3975724` to partition `amd_m8_768-a`, 1 node, 2 CPUs, 8 GiB, 5 minutes; no CISPO command and no exclusive-node request.
+- Compute evidence: node `m4cl0208.para.bscc`, Python 3.10.20, `gurobipy`/Gurobi 13.0.2. Partition inventory reports 192 CPUs and 768,000 MB per node; this resource class is adequate for the current 8760 build/factor-memory estimate, subject to an explicit per-job memory request.
+- Proxy evidence: correctly encoded lower- and upper-case proxy variables made `token.gurobi.com` return HTTP 405 through remote IP `172.16.110.3`; WLS authentication then solved the tiny LP with `GUROBI_STATUS=2` and objective `1.0`. A PyPI request transferred data but did not finish within 30 seconds, so proxy throughput remains unbenchmarked for multi-GB data transfer.
+- Configuration defect: the account `.bashrc` lines contain non-breaking spaces after `export`, producing `No such file or directory` on login and job startup. No configuration was modified automatically; correct proxy exports are now required inside every Slurm script.
+- Unresolved/next action: transfer the tracked code and versioned model-ready/CF/hydrology data to a new cloud directory, verify SHA256 and shared-file permissions, run cloud 24h and 168h CISPO gates, then perform the full-year preflight/build-only gate. Do not submit 8760 optimization yet.
+
+### v0.7.2 - 2026-07-21 - WLS recognized; compute-node DNS/egress gate failed
+
+- Git state: current HEAD remains `b40900a`; no model or input-data files were changed by this milestone.
+- Scope: after the engineer's WLS reinstallation, submitted only job `3975474` to `amd_a8_384` with 1 node, 1 CPU, 2 GB memory and a 5-minute limit; no `--exclusive` request and no CISPO production command.
+- Compute/license evidence: node `m4cl1306.para.bscc` loaded `gurobipy310`/Gurobi 13.0.2 and recognized WLS parameters from the new private license path. `Env.start()` then failed with `Could not resolve host: token.gurobi.com`; `sacct` reports `FAILED`, exit code `1`.
+- Unresolved/next action: the WLS credentials are being parsed, but the compute node cannot resolve/reach the WLS endpoint. Ask the cluster engineer to fix compute-node DNS/egress or provide the required proxy/allowlist, and protect the WLS file with mode `600`. Do not resubmit paid jobs or launch CISPO until one smoke test returns `GUROBI_SMOKE_PASS`/`OPTIMAL`.
+
+### v0.7.1 - 2026-07-21 - Compute-node Gurobi call reached license gate
+
+- Git state: current HEAD remains `b40900a`; no model or input-data files were changed by this milestone.
+- Scope: submitted only job `3974169` to `amd_a8_384` with 1 node, 1 CPU, 2 GB memory and a 5-minute limit; no `--exclusive` request and no CISPO production command.
+- Compute evidence: node `m4cm2307.para.bscc` loaded `/publicfs01/fs1-a8/home/a8s001819/.conda/envs/gurobipy310`, imported `gurobipy` 13.0.2 and saw `GRB_LICENSE_FILE`.
+- License evidence: the two-variable LP failed at `Env.start()` with `HostID mismatch`; `sacct` reports `FAILED`, exit code `1`. The Python/Gurobi installation path is therefore reachable, but the current license is not valid for the allocated compute node.
+- Unresolved/next action: do not launch CISPO or repeatedly resubmit paid smoke jobs. Obtain a compute-node-compatible academic named-user reactivation or Academic WLS/site license, then rerun one equivalent smoke test requiring `GUROBI_SMOKE_PASS`/`OPTIMAL` before any data staging or 8760h preflight.
 
 ### v0.7.0 - 2026-07-20 - open-source I/O contract, diagnostics and verified server gate
 
