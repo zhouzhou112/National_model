@@ -65,3 +65,26 @@ V2G 是叠加在 EV 驾驶能量服务上的增量虚拟储能：按日循环 SO
 - 参数来源和未决风险以 `outputs/parameter_audit_*/` 为准。
 
 已实现和待实现情景的机器可读状态见 `scenarios/scenario_catalog.json`。
+
+## 5. 诊断敏感性 suite runner
+
+`scripts/run_cispo_sensitivity_suite.py` 只编排 `scenario_catalog.json` 中 `implemented` 的情景，并为每个情景建立独立的四年状态链。它拒绝 `planned_not_runnable`、拒绝重复 `scenario_id`、校验 catalog 与 scenario 文件身份及 SHA256，并且只接受显式的 `--diagnostic-hours`；全量 8760h 仍必须按昂贵 case 的单独审批与门禁流程运行。
+
+先检查 catalog，不创建输出：
+
+```bash
+python scripts/run_cispo_sensitivity_suite.py --list-scenarios
+```
+
+生成 Base 与 V1 的 1h 编排 dry-run：
+
+```bash
+python scripts/run_cispo_sensitivity_suite.py \
+  --scenario base \
+  --scenario flexible_load_v1 \
+  --diagnostic-hours 1 \
+  --output-root outputs/sensitivity_suite_1h_v1 \
+  --dry-run
+```
+
+实际诊断运行去掉 `--dry-run`。只有完整接受且 catalog、base config、情景列表、情景 SHA256 和诊断时长完全相同的独立情景链才能对同一 suite root 使用 `--resume`；失败或混合目录必须换新的版本化 `--output-root`。每次成功进入 resume 前，旧 suite report 会追加保存到 `sensitivity_suite_history/`，逐情景 wrapper 日志也使用时间标签，不覆盖先前运行证据。suite 输出包括 `sensitivity_suite_report.json`、`sensitivity_suite_index.csv`、逐情景 wrapper 日志和每个情景自身的完整 `sequence_report.json`/科学输出。该 runner 不共享跨情景 `planning_state`，也不授权固定服务器 744h/8760h 或付费云端 8760h。
