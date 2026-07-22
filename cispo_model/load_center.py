@@ -1,4 +1,4 @@
-"""Annual 278-load-center energy allocation and intra-province transmission."""
+"""Annual load-center energy allocation and intra-province transmission."""
 from __future__ import annotations
 
 from typing import Any
@@ -38,7 +38,7 @@ def attach_annual_load_center_network(
     """Attach an annual energy network without adding center-hour variables.
 
     Spatial VRE and hydropower generation are attributed to their connected
-    Natural Earth centers. Province-aggregated terms are allocated by the
+    configured load centers. Province-aggregated terms are allocated by the
     fixed annual center demand shares. Interprovincial exchange enters this
     annual layer as net received-minus-sent energy, so the center proxy cannot
     create a gross import/export loop. Summing every center balance within a
@@ -61,7 +61,7 @@ def attach_annual_load_center_network(
         1.0,
         atol=1e-9,
     ).all():
-        raise ValueError("Natural Earth load-center demand shares do not close by province")
+        raise ValueError("Configured load-center demand shares do not close by province")
 
     center_vre_generation = model.addMVar(
         (center_count, len(VRE_TECHS)), lb=0.0, name="load_center_vre_generation_gwh"
@@ -233,7 +233,7 @@ def attach_annual_load_center_network(
             ].sum()
 
     # Aggregate each dense province-hour expression once. Reusing these scalar
-    # annual accounts at the 278 centers avoids duplicating millions of matrix
+    # annual accounts at the configured centers avoids duplicating millions of matrix
     # coefficients without changing the formulation.
     for province_code in provinces:
         p = province_index[province_code]

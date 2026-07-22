@@ -5,7 +5,11 @@ import inspect
 
 import numpy as np
 
-from cispo_model.config import capital_recovery_factor, load_model_config
+from cispo_model.config import (
+    capital_recovery_factor,
+    load_model_config,
+    resolve_minimum_system_inertia_seconds,
+)
 from cispo_model.data import load_model_data
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.timeblocks import make_time_blocks
@@ -59,11 +63,11 @@ class ModelFoundationTests(unittest.TestCase):
     def test_scale_estimator_covers_all_current_variable_blocks(self):
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 24).variables,
-            341_312,
+            342_343,
         )
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 8760).variables,
-            40_911_296,
+            40_912_327,
         )
 
     def test_nuclear_biomass_and_battery_bounds_are_explicit(self):
@@ -148,6 +152,25 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertGreater(value, 0.08)
         self.assertLess(value, 0.10)
 
+    def test_reviewed_security_parameters_are_explicit(self):
+        security = self.config.raw["security"]
+        self.assertAlmostEqual(float(security["capacity_margin_fraction"]), 0.05)
+        self.assertAlmostEqual(float(security["inertia_reference_seconds"]), 3.5)
+        self.assertAlmostEqual(float(security["inertia_tolerance_fraction"]), 1.0)
+        self.assertAlmostEqual(
+            resolve_minimum_system_inertia_seconds(security), 3.5
+        )
+
+    def test_legacy_effective_inertia_override_remains_supported(self):
+        security = {
+            "minimum_system_inertia_seconds": 3.0,
+            "inertia_reference_seconds": 3.5,
+            "inertia_tolerance_fraction": 1.0,
+        }
+        self.assertAlmostEqual(
+            resolve_minimum_system_inertia_seconds(security), 3.0
+        )
+
     def test_phs_floor_and_pipeline_upper_are_data_bounded(self):
         bounds_2030 = self.data.storage_bounds
         self.assertEqual(len(bounds_2030), 31)
@@ -158,10 +181,14 @@ class ModelFoundationTests(unittest.TestCase):
             (bounds_2030.capacity_floor_gw <= bounds_2030.capacity_upper_gw + 1e-9).all()
         )
 
-    def test_natural_earth_278_is_the_production_load_center_scenario(self):
+    def test_city_337_is_the_production_load_center_scenario(self):
         centers = self.data.load_centers
-        self.assertEqual(self.config.raw["load_center_network"]["scenario"], "Natural_Earth_paper_replication_278")
-        self.assertEqual(len(centers), 278)
+        self.assertEqual(self.config.raw["load_center_network"]["scenario"], "city_337")
+        self.assertEqual(
+            self.config.raw["load_center_network"]["input_subdirectory"],
+            "load_center_network/city_337",
+        )
+        self.assertEqual(len(centers), 337)
         self.assertEqual(centers.province_code.nunique(), 31)
         share_error = (
             centers.groupby("province_code").annual_demand_share_in_province.sum()
@@ -183,10 +210,31 @@ class ModelFoundationTests(unittest.TestCase):
         from_province = edges.from_load_center_id.map(centers.province_code).to_numpy()
         to_province = edges.to_load_center_id.map(centers.province_code).to_numpy()
         self.assertTrue(np.array_equal(from_province, to_province))
-        self.assertEqual(len(edges), 517)
+        self.assertEqual(len(edges), 642)
         self.assertTrue((edges.initial_capacity_gw >= 0).all())
         self.assertGreater(float(edges.initial_capacity_gw.sum()), 0.0)
         self.assertTrue((edges.unit_cost_yuan_per_kw > 0).all())
+
+    def test_city_337_2025_network_initialization_closes(self):
+        self.assertAlmostEqual(
+            float(self.data.initial_spur.initial_spur_capacity_gw.sum()),
+            1310.0,
+            places=5,
+        )
+        self.assertAlmostEqual(
+            float(self.data.substations.initial_trunk_capacity_gw.sum()),
+            1310.0,
+            places=5,
+        )
+        self.assertEqual(
+            int(self.data.intra_load_center_edges.initial_capacity_gw.gt(1e-12).sum()),
+            203,
+        )
+        self.assertAlmostEqual(
+            float(self.data.intra_load_center_edges.initial_capacity_gw.sum()),
+            647.8400936079125,
+            places=6,
+        )
 
     def test_each_province_load_center_graph_is_connected(self):
         centers = self.data.load_centers

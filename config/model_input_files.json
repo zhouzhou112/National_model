@@ -28,12 +28,12 @@
     "technology/emission_factors_by_year.csv",
     "technology/dac_parameters_by_year.csv",
     "technology/ccs_cost_parameters.csv",
-    "load_center_network/natural_earth_278/load_centers.csv",
-    "load_center_network/natural_earth_278/vre_routes.csv",
-    "load_center_network/natural_earth_278/hydro_routes.csv",
-    "load_center_network/natural_earth_278/intra_edges.csv",
-    "load_center_network/natural_earth_278/initial_spur_capacity_2025.csv",
-    "load_center_network/natural_earth_278/substation_initial_capacity_2025.csv"
+    "load_center_network/city_337/load_centers.csv",
+    "load_center_network/city_337/vre_routes.csv",
+    "load_center_network/city_337/hydro_routes.csv",
+    "load_center_network/city_337/intra_edges.csv",
+    "load_center_network/city_337/initial_spur_capacity_2025.csv",
+    "load_center_network/city_337/substation_initial_capacity_2025.csv"
   ],
   "server_validation_sidecars": [
     "hydro/classification_summary.csv",
@@ -71,11 +71,11 @@
     "technology/emission_factors_by_year.csv": "Year-specific fossil residual and BECCS emission factors",
     "technology/dac_parameters_by_year.csv": "DAC capacity, cost, energy and lifetime parameters",
     "technology/ccs_cost_parameters.csv": "CO2 capture, transport and injection costs",
-    "load_center_network/natural_earth_278/load_centers.csv": "278 load centers and province demand shares",
-    "load_center_network/natural_earth_278/vre_routes.csv": "VRE-site to substation/load-center routing",
-    "load_center_network/natural_earth_278/hydro_routes.csv": "Hydropower-station to substation/load-center routing",
-    "load_center_network/natural_earth_278/intra_edges.csv": "Candidate intraprovincial load-center network",
-    "load_center_network/natural_earth_278/initial_spur_capacity_2025.csv": "2025 VRE spur interface floor",
-    "load_center_network/natural_earth_278/substation_initial_capacity_2025.csv": "2025 substation/trunk interface floor"
+    "load_center_network/city_337/load_centers.csv": "337 city load centers and province demand shares",
+    "load_center_network/city_337/vre_routes.csv": "Jointly optimized VRE-site to substation/city-center routing",
+    "load_center_network/city_337/hydro_routes.csv": "Jointly optimized hydropower-station to substation/city-center routing",
+    "load_center_network/city_337/intra_edges.csv": "Initialized candidate intraprovincial city-center network",
+    "load_center_network/city_337/initial_spur_capacity_2025.csv": "2025 VRE spur interface floor on city-337 routes",
+    "load_center_network/city_337/substation_initial_capacity_2025.csv": "2025 substation/trunk interface floor on city-337 routes"
   }
 }

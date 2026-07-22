@@ -314,9 +314,20 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         "province-level representation explicitly registered",
         "SOFT",
     )
-    check("natural_earth_load_center_count", len(data.load_centers) == 278, len(data.load_centers), "278")
+    expected_load_center_count = int(
+        config.raw["load_center_network"]["expected_load_center_count"]
+    )
+    expected_intra_edge_count = int(
+        config.raw["load_center_network"]["expected_intra_edge_count"]
+    )
     check(
-        "natural_earth_load_center_provinces",
+        "configured_load_center_count",
+        len(data.load_centers) == expected_load_center_count,
+        len(data.load_centers),
+        str(expected_load_center_count),
+    )
+    check(
+        "configured_load_center_provinces",
         data.load_centers.province_code.nunique() == 31,
         data.load_centers.province_code.nunique(),
         "31",
@@ -326,7 +337,7 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         .sub(1.0).abs().max()
     )
     check(
-        "natural_earth_annual_demand_share_closure",
+        "configured_load_center_annual_demand_share_closure",
         center_share_error <= 1e-9,
         float(center_share_error),
         "<= 1e-9",
@@ -392,6 +403,12 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         )
     known_centers = set(data.load_centers.load_center_id.astype(str))
     intra = data.intra_load_center_edges
+    check(
+        "configured_intra_load_center_edge_count",
+        len(intra) == expected_intra_edge_count,
+        len(intra),
+        str(expected_intra_edge_count),
+    )
     endpoint_valid = (
         set(intra.from_load_center_id.astype(str)).issubset(known_centers)
         and set(intra.to_load_center_id.astype(str)).issubset(known_centers)

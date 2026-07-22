@@ -638,7 +638,7 @@ p^{exist}_{g,z,pt}cf_{g,z,pt,t}
 
 沿海中心点存在技术掩膜与装机类型错配。逐点回退规则为：onwind/offwind 缺少专用小时 CF 时使用同格 `mixed_wind`；UPV 缺少 PV CF 时使用同省最近陆地 PV 格点。所有回退均写入审计字段，不得静默处理。
 
-正式方案采用 278 个 Natural Earth 城市斑块几何中心复现论文方法。1 km 电力消费栅格只用于在省内分配年度需求份额，不移动中心坐标，也不生成中心小时负荷曲线。每个优化格点选择使“格点到变电站 spur 距离 + 变电站到同省 Natural Earth 中心 trunk 距离”最小的 ≥220 kV OSM 变电站。水电站使用同一目标函数补齐路线。DPV 位于负荷侧，spur/trunk 容量与成本保持为0。
+正式方案采用 337 个市级行政单元代理中心；节点坐标为县级城镇人口加权中心，需求权重为 2022 城市用电省内份额（296 个观测、41 个按省内用电/城镇人口强度插补）。每个风光优化格点或水电站在同省全部 ≥220 kV OSM 变电站中精确选择使“大圆 spur 距离 + 该变电站到最近市级中心 trunk 距离”最小的联合路线。DPV 位于负荷侧，spur/trunk 容量与成本保持为0。原 278 个 Natural Earth 建成区质心及 2019 年 1 km 栅格权重完整保留为 CISPO 复现/敏感性方案。
 
 ## 5.4.4 负荷中心年度能量分配与省内500 kV扩容
 
@@ -658,7 +658,7 @@ J_{lc}+\sum_{e\in IN(lc)}F_e
 =\sum_{t}\sum_{l\in OUT(g)}f^{send}_{l,t}
 ```
 
-省内边只连接同省中心。候选拓扑为每省最小生成树加每节点3个最近邻，共517条无向边。线路容量约束为：
+省内边只连接同省中心。候选拓扑为每省最小生成树加每节点3个最近邻，共642条无向边。线路容量约束为：
 
 ```math
 F^{\to}_e+F^{\leftarrow}_e
@@ -1240,6 +1240,8 @@ sr^{-}_{g,st,t}=sr^{-,char}_{g,st,t}+sr^{-,dis}_{g,st,t},
 \quad \forall g
 ```
 
+当前 reviewed Base 取 `rho^{cap}=0.05`，并继续逐省使用 Base 负荷峰值；需求柔性不获得容量信用。其他裕度必须通过显式 scenario override 给出。
+
 其中：
 
 ```math
@@ -1264,6 +1266,8 @@ dem^{peak}_{g}=\max_{t\in T}dem_{g,t}
 ```
 
 > 实现注意：原文将火电/核电按在线容量提供惯量，水电、CSP、储能按装机容量提供惯量。储能是否具有等效惯量能力取决于参数假设。
+>
+> 当前 reviewed Base 将 `iota_0=3.5 s` 与 `iota^{tol}=1.0` 分开记录，有效最低惯量为 `3.5 s`。各发电技术的 `iota_pt` 保持技术参数值，不应统一替换为 3.5 s。旧版 scenario 若仍提供单一 `minimum_system_inertia_seconds`，由兼容解析器将其作为该 scenario 的有效阈值。
 
 ---
 
@@ -1476,12 +1480,13 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 煤气价格 | `data/technology/province_fuel_prices.csv` | Supplementary Table 2 截图的 31 省煤炭/天然气价格；6.9 yuan/USD 转换；蒙东/蒙西算术平均；截图未注明价格年，暂保持 2025–2060 不变 |
 | 发电燃料成本 | `data/technology/province_fuel_generation_cost_by_year.csv` | 由省级 yuan/GJ 与 RUC fuel load 计算为 yuan/MWh；北京、西藏煤价缺失，煤类技术不允许调度或新增 |
 | 技术参数 | `data/technology/` | VRE/水电成本锚点、thermal/nuclear RUC、储能、输电、CCS与排放因子 |
-| 278中心正式输入 | `data/load_center_network/natural_earth_278/load_centers.csv` | Natural Earth论文复现中心及1 km栅格年度需求份额；31省份额分别闭合到1 |
-| 风光省内接入 | `data/load_center_network/natural_earth_278/vre_routes.csv` | 16,609个优化格点的最小spur+trunk路线；DPV接入距离为0 |
-| 水电省内接入 | `data/load_center_network/natural_earth_278/hydro_routes.csv` | 2,030个水电站到同省变电站和Natural Earth中心的路线 |
-| Spur 初始容量 | `data/load_center_network/natural_earth_278/initial_spur_capacity_2025.csv` | 论文路线下的2025逐点逐技术初值与2023 CF峰值对照 |
-| Trunk/变电站初值 | `data/load_center_network/natural_earth_278/substation_initial_capacity_2025.csv` | 6,294个OSM变电站的VRE接口容量代理；水电既有容量在模型中另行加入初始trunk |
-| 省内中心网络 | `data/load_center_network/natural_earth_278/intra_edges.csv` | 517条省内MST+3NN无向边、AC500成本、2025容量代理 |
+| 337中心正式输入 | `data/load_center_network/city_337/load_centers.csv` | 一市一点、2022 城市用电省内份额；31省份额分别闭合到1 |
+| 风光省内接入 | `data/load_center_network/city_337/vre_routes.csv` | 16,609个优化格点的联合最小spur+trunk路线；DPV接入距离为0 |
+| 水电省内接入 | `data/load_center_network/city_337/hydro_routes.csv` | 2,030个水电站经同省联合最优变电站连接到最近市级中心 |
+| Spur 初始容量 | `data/load_center_network/city_337/initial_spur_capacity_2025.csv` | 337路线下的2025逐点逐技术名义装机压力初值 |
+| Trunk/变电站初值 | `data/load_center_network/city_337/substation_initial_capacity_2025.csv` | 6,294个OSM变电站的VRE接口需求代理；水电既有容量在模型中另行加入初始trunk |
+| 省内中心网络 | `data/load_center_network/city_337/intra_edges.csv` | 642条省内MST+3NN无向边、AC500成本，203条边具有2025正初始容量 |
+| 278中心复现输入 | `data/load_center_network/natural_earth_278/` | CISPO Natural Earth定义、2019年1 km栅格权重及完整旧路线；保留用于敏感性，不覆盖 |
 | 省级接入汇总 | `data/grid/province_initial_intra_grid_capacity_2025.csv` | 31 省容量闭合、变电站峰值合计和省级同时峰值对照 |
 
 数据层面的默认选项记录在 `data/model_defaults.json`，来源与输出校验分别记录在 `data/source_manifest.csv`、`data/output_manifest.csv`、`data/qc_summary.csv` 和 `data/smoke_test_report.json`。现有未标注水电站的 115 MW 代理分类在 GHT 已标注样本上的平衡准确率约为 0.677，故该标签是当前模型分配值而不是经核验的电站事实属性；本轮按用户决策直接使用，不开展 60/115/200 MW 分类敏感性。
@@ -1491,10 +1496,11 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 ```powershell
 & "D:\Program Files\ArcGISPro\bin\Python\envs\arcgispro-py3\python.exe" scripts\build_cispo_data_package.py
 & "D:\Program Files\ArcGISPro\bin\Python\envs\arcgispro-py3\python.exe" scripts\smoke_test_data_package.py
-python scripts\build_natural_earth_278_network.py
+python scripts\build_city_337_network.py
+python scripts\build_natural_earth_278_network.py  # 仅在需要重建 CISPO 复现情景时运行
 ```
 
-当前正式负荷中心情景为278中心Natural Earth论文复现方案。模型已包含风光、水电空间归属、其他电源按需求份额分配、省际送端电量闭合、省内年度流动和AC500扩容成本。当前主要限制是中心间线路仍为直线候选走廊、2条西部边超过EES AC500的1000 km来源范围、年度容量换算使用50%利用率软假设，以及省内损耗尚未反馈到小时平衡。
+当前正式负荷中心情景为337市级方案；278中心Natural Earth论文复现方案仍完整保留。模型已包含风光、水电空间归属、其他电源按需求份额分配、省际送端电量闭合、省内累计能量流动和AC500扩容成本。当前主要限制是中心间线路仍为大圆距离候选走廊、年度容量换算使用50%利用率软假设、省际交换按城市需求份额分摊，以及省内损耗尚未反馈到小时平衡。
 
 ---
 

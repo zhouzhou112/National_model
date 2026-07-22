@@ -121,8 +121,9 @@
     "down_reserve_load_fraction": 0.05,
     "up_reserve_vre_fraction": 0.05,
     "down_reserve_vre_fraction": 0.05,
-    "capacity_margin_fraction": 0.15,
-    "minimum_system_inertia_seconds": 3.0,
+    "capacity_margin_fraction": 0.05,
+    "inertia_reference_seconds": 3.5,
+    "inertia_tolerance_fraction": 1.0,
     "capacity_credit": {
       "coal": 1.0,
       "coalccs": 1.0,
@@ -188,8 +189,10 @@
     "trunk_fixed_om_fraction": 0.01
   },
   "load_center_network": {
-    "scenario": "Natural_Earth_paper_replication_278",
-    "input_subdirectory": "load_center_network/natural_earth_278",
+    "scenario": "city_337",
+    "input_subdirectory": "load_center_network/city_337",
+    "expected_load_center_count": 337,
+    "expected_intra_edge_count": 642,
     "spatial_generation_technologies": ["onwind", "offwind", "upv", "dpv", "ror", "reservoir"],
     "province_share_allocated_terms": ["thermal_nuclear_biomass", "storage_charge_discharge", "dac", "received_interprovincial_energy"],
     "topology_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",

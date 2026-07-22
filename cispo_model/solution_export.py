@@ -11,7 +11,7 @@ import pandas as pd
 from gurobipy import GurobiError
 
 from .carbon_accounting import resolve_beccs_carbon_factors
-from .config import ModelConfig
+from .config import ModelConfig, resolve_minimum_system_inertia_seconds
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .master import MasterArtifacts
 
@@ -238,9 +238,10 @@ def export_operational_solution(
     inertia_provided = (
         thermal_inertia + hydro_inertia[:, None] + storage_inertia[:, None]
     )
-    inertia_required = (
-        float(config.raw["security"]["minimum_system_inertia_seconds"]) * load
+    minimum_inertia_seconds = resolve_minimum_system_inertia_seconds(
+        config.raw["security"]
     )
+    inertia_required = minimum_inertia_seconds * load
     capacity_credit = config.raw["security"]["capacity_credit"]
     credited_capacity = np.zeros(p_count, dtype=float)
     for p, province_code in enumerate(provinces):
@@ -512,6 +513,7 @@ def export_operational_solution(
         "minimum_inertia_margin_gw_s": float(
             (inertia_provided - inertia_required).min()
         ),
+        "minimum_system_inertia_seconds": minimum_inertia_seconds,
         "minimum_capacity_margin_gw": float(capacity_margin.min()),
         "maximum_ruc_transition_residual_gw": float(
             np.abs(ruc_transition_residual).max()
@@ -1117,6 +1119,18 @@ def export_operational_solution(
                 "no reserve or capacity-margin credit"
             ),
             "reliability_treatment": config.raw["flexible_load"]["reliability_treatment"],
+            "security_parameters": {
+                "capacity_margin_fraction": float(
+                    config.raw["security"]["capacity_margin_fraction"]
+                ),
+                "inertia_reference_seconds": config.raw["security"].get(
+                    "inertia_reference_seconds"
+                ),
+                "inertia_tolerance_fraction": config.raw["security"].get(
+                    "inertia_tolerance_fraction"
+                ),
+                "minimum_system_inertia_seconds_effective": minimum_inertia_seconds,
+            },
         },
         output_dir / "scenario_manifest.json",
     )

@@ -112,6 +112,11 @@ class ModelConfig:
             )
         if self.raw["allow_debug_slacks"]:
             raise ValueError("Debug slacks must be disabled in production configuration")
+        security = self.raw.get("security", {})
+        capacity_margin = float(security.get("capacity_margin_fraction", -1.0))
+        if not 0.0 <= capacity_margin <= 1.0:
+            raise ValueError("security.capacity_margin_fraction must be in [0, 1]")
+        resolve_minimum_system_inertia_seconds(security)
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
         flexible = self.raw.get("flexible_load", {})
@@ -153,10 +158,14 @@ class ModelConfig:
             if float(flexible.get(key, -1.0)) < 0.0:
                 raise ValueError(f"flexible_load.{key} must be nonnegative")
         if not self.raw["features"].get("annual_load_center_transmission", False):
-            raise ValueError("Production requires the annual 278-load-center transmission layer")
+            raise ValueError("Production requires the annual load-center transmission layer")
         center_network = self.raw.get("load_center_network", {})
-        if center_network.get("scenario") != "Natural_Earth_paper_replication_278":
-            raise ValueError("Production load-center scenario must be Natural_Earth_paper_replication_278")
+        if center_network.get("scenario") != "city_337":
+            raise ValueError("Production load-center scenario must be city_337")
+        if int(center_network.get("expected_load_center_count", 0)) != 337:
+            raise ValueError("city_337 requires expected_load_center_count=337")
+        if int(center_network.get("expected_intra_edge_count", 0)) != 642:
+            raise ValueError("city_337 requires expected_intra_edge_count=642")
         if center_network.get("voltage_class") != "AC_500kV":
             raise ValueError("The current intra-province cost basis must remain AC_500kV")
         utilization = float(center_network.get("design_utilization_fraction", 0.0))
@@ -267,3 +276,29 @@ def capital_recovery_factor(real_wacc: float, lifetime_years: float) -> float:
         return 1.0 / lifetime_years
     factor = (1.0 + real_wacc) ** lifetime_years
     return real_wacc * factor / (factor - 1.0)
+
+
+def resolve_minimum_system_inertia_seconds(
+    security: dict[str, Any],
+) -> float:
+    """Resolve the effective inertia threshold with legacy override support."""
+    legacy = security.get("minimum_system_inertia_seconds")
+    if legacy is not None:
+        effective = float(legacy)
+    else:
+        if "inertia_reference_seconds" not in security:
+            raise ValueError("security.inertia_reference_seconds is required")
+        if "inertia_tolerance_fraction" not in security:
+            raise ValueError("security.inertia_tolerance_fraction is required")
+        reference = float(security["inertia_reference_seconds"])
+        tolerance = float(security["inertia_tolerance_fraction"])
+        if reference <= 0.0:
+            raise ValueError("security.inertia_reference_seconds must be positive")
+        if not 0.0 < tolerance <= 1.0:
+            raise ValueError(
+                "security.inertia_tolerance_fraction must be in (0, 1]"
+            )
+        effective = reference * tolerance
+    if effective <= 0.0:
+        raise ValueError("Effective minimum system inertia must be positive")
+    return effective

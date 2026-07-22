@@ -15,7 +15,7 @@ from gurobipy import GRB
 from scipy import sparse
 
 from .carbon_accounting import resolve_beccs_carbon_factors
-from .config import ModelConfig
+from .config import ModelConfig, resolve_minimum_system_inertia_seconds
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .flexible_load import attach_flexible_load
 from .hydro import HydroProfileReader
@@ -632,12 +632,13 @@ def build_full_year_monolithic(
             expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows_p].sum()
         hydro_inertia[p] = expression
     storage_inertia = np.asarray([float(non_sync[t]) for t in STORAGE_TECHS])
+    minimum_inertia_seconds = resolve_minimum_system_inertia_seconds(security)
     inertia_constraints = []
     for p in range(p_count):
         inertia_constraints.append(model.addConstr(
             (online[p] * inertia[:, None]).sum(axis=0) + hydro_inertia[p]
             + storage_capacity[p] @ storage_inertia
-            >= float(security["minimum_system_inertia_seconds"]) * load[p],
+            >= minimum_inertia_seconds * load[p],
             name=f"inertia_p{provinces[p]}",
         ))
     constraint_handles["inertia"] = inertia_constraints

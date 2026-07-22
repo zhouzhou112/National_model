@@ -680,14 +680,14 @@ def load_model_data(
             "trunk_distance_km",
         ],
     )
-    # The promoted Natural Earth route replaces the former 337-city route for
-    # all production spur/trunk decisions.
+    # The configured load-center route controls all production spur/trunk
+    # decisions; alternative packages remain isolated under versioned folders.
     grid_connections = vre_load_center_routes
 
     require_columns(
         load_centers,
         ["load_center_id", "province_code", "annual_demand_share_in_province", "lon", "lat"],
-        "Natural Earth load centers",
+        "configured load centers",
     )
     require_columns(
         vre_load_center_routes,
@@ -707,8 +707,17 @@ def load_model_data(
         ],
         "intra-province load-center edges",
     )
-    if len(load_centers) != 278 or not load_centers.load_center_id.is_unique:
-        raise ValueError("Natural Earth production scenario requires 278 unique load centers")
+    expected_load_center_count = int(
+        config.raw["load_center_network"]["expected_load_center_count"]
+    )
+    if (
+        len(load_centers) != expected_load_center_count
+        or not load_centers.load_center_id.is_unique
+    ):
+        raise ValueError(
+            "Configured load-center scenario requires "
+            f"{expected_load_center_count} unique load centers"
+        )
     share_error = (
         load_centers.groupby("province_code").annual_demand_share_in_province.sum()
         .sub(1.0).abs()
@@ -720,9 +729,9 @@ def load_model_data(
     if hydro_load_center_routes.hydrochn_row_id.duplicated().any():
         raise ValueError("Hydropower load-center routes must be unique by hydrochn_row_id")
     if set(vre_sites.grid_uid).difference(vre_load_center_routes.grid_uid):
-        raise ValueError("Some active VRE sites have no Natural Earth load-center route")
+        raise ValueError("Some active VRE sites have no configured load-center route")
     if set(hydro.hydrochn_row_id).difference(hydro_load_center_routes.hydrochn_row_id):
-        raise ValueError("Some hydropower stations have no Natural Earth load-center route")
+        raise ValueError("Some hydropower stations have no configured load-center route")
     if not hydro_cascade_edges.empty:
         require_columns(
             hydro_cascade_nodes,
