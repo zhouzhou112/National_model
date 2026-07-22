@@ -416,7 +416,30 @@ def main() -> None:
     checks.check("inner_mongolia_coal_mean", np.isclose(inner.coal_usd_per_gj, 2.56) and np.isclose(inner.coal_yuan_per_gj, 17.664), f"{inner.coal_usd_per_gj}, {inner.coal_yuan_per_gj}", "2.56 USD/GJ, 17.664 yuan/GJ")
     checks.check("inner_mongolia_gas_mean", np.isclose(inner.gas_usd_per_gj, 7.51) and np.isclose(inner.gas_yuan_per_gj, 51.819), f"{inner.gas_usd_per_gj}, {inner.gas_yuan_per_gj}", "7.51 USD/GJ, 51.819 yuan/GJ")
     fuel_cost = pd.read_csv(DATA / "technology" / "province_fuel_generation_cost_by_year.csv")
-    checks.check("province_fuel_generation_cost_rows", len(fuel_cost) == 31 * 5 * 8, len(fuel_cost), "1240")
+    expected_fuel_technologies = {
+        "coal", "coalccs", "cchp", "cchpccs", "gas",
+        "gasccs", "gchp", "gchpccs", "bio", "bioccs",
+    }
+    expected_fuel_years = {2025, 2030, 2040, 2050, 2060}
+    checks.check("province_fuel_generation_cost_rows", len(fuel_cost) == 31 * 5 * 10, len(fuel_cost), "1550")
+    checks.check(
+        "province_fuel_generation_cost_unique",
+        not fuel_cost.duplicated(["province_code", "year", "technology"]).any(),
+        int(fuel_cost.duplicated(["province_code", "year", "technology"]).sum()),
+        "0 duplicates",
+    )
+    checks.check(
+        "province_fuel_generation_cost_years",
+        set(fuel_cost.year) == expected_fuel_years,
+        sorted(fuel_cost.year.unique().tolist()),
+        sorted(expected_fuel_years),
+    )
+    checks.check(
+        "province_fuel_generation_cost_technologies",
+        set(fuel_cost.technology) == expected_fuel_technologies,
+        sorted(fuel_cost.technology.unique().tolist()),
+        sorted(expected_fuel_technologies),
+    )
     unavailable_coal = fuel_cost.loc[fuel_cost.fuel.eq("coal") & fuel_cost.province_code.isin([11, 54])]
     checks.check("missing_coal_technologies_disabled", (~unavailable_coal.dispatch_allowed).all() and (~unavailable_coal.new_capacity_allowed).all(), int(unavailable_coal.dispatch_allowed.sum() + unavailable_coal.new_capacity_allowed.sum()), "0 allowed rows")
     checks.check("gas_technologies_available", fuel_cost.loc[fuel_cost.fuel.eq("gas"), "dispatch_allowed"].all(), int((~fuel_cost.loc[fuel_cost.fuel.eq("gas"), "dispatch_allowed"]).sum()), "0 disabled rows")
