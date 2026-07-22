@@ -14,6 +14,7 @@ import pandas as pd
 from gurobipy import GRB
 from scipy import sparse
 
+from .carbon_accounting import resolve_beccs_carbon_factors
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .flexible_load import attach_flexible_load
@@ -689,7 +690,7 @@ def build_full_year_monolithic(
     coal_factor = float(emission_table.loc["coal", "emission_factor_mtco2_per_gwh"])
     gas_factor = float(emission_table.loc["gas", "emission_factor_mtco2_per_gwh"])
     capture_fraction = float(emission_table.loc["coal", "ccs_capture_fraction"])
-    bioccs_factor = float(emission_table.loc["bioccs", "emission_factor_mtco2_per_gwh"])
+    beccs_carbon = resolve_beccs_carbon_factors(emission_table)
     fuel_load = ruc.fuel_load_mj_per_kwh.to_numpy(dtype=float)
     for p in range(p_count):
         emissions = gp.LinExpr()
@@ -707,8 +708,8 @@ def build_full_year_monolithic(
                 emissions += base_factor * (1.0 - capture_fraction) * generation
                 captured += base_factor * capture_fraction * generation
             elif technology == "bioccs":
-                emissions += bioccs_factor * generation
-                captured += abs(bioccs_factor) * generation
+                emissions += beccs_carbon.net_emissions * generation
+                captured += beccs_carbon.stored * generation
             else:
                 emissions += base_factor * generation
             if technology in {"bio", "bioccs"}:

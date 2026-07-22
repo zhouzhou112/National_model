@@ -199,7 +199,7 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
     _check(checks, "storage_lifetime_config_table_match", not storage_lifetime_mismatch, storage_lifetime_mismatch, "exact match")
 
     known_risks = [
-        {"risk_id": "P0_BECCS_CARBON_MASS_BALANCE", "severity": "P0", "status": "OPEN", "parameter": "bioccs emission/capture factor", "issue": "One negative factor is used both as net emissions and physical captured CO2; gross biogenic carbon and lifecycle emissions are not separated."},
+        {"risk_id": "P0_BECCS_CARBON_MASS_BALANCE", "severity": "P0", "status": "CLOSED", "parameter": "bioccs carbon mass balance", "issue": "The CISPO negative net factor is now split into gross/captured/stored/uncaptured biogenic CO2, zero baseline lifecycle emissions and net removal with hard closure QC; nonzero lifecycle emissions require a sourced scenario."},
         {"risk_id": "P1_NUCLEAR_LIFETIME", "severity": "P1", "status": "SCENARIO_REQUIRED", "parameter": "finance.default_lifetime_years.nuclear", "issue": "Runtime base is 60 years while the local CISPO extraction records 40 years; do not silently change the baseline."},
         {"risk_id": "P1_CAPACITY_MARGIN", "severity": "P1", "status": "SCENARIO_REQUIRED", "parameter": "security.capacity_margin_fraction", "issue": "Runtime base is 15%; local CISPO extraction records 5%. Treat 5/15% as explicit scenarios."},
         {"risk_id": "P1_INERTIA_THRESHOLD", "severity": "P1", "status": "SCENARIO_REQUIRED", "parameter": "security.minimum_system_inertia_seconds", "issue": "Runtime base is 3.0 s; local CISPO extraction suggests 3.5 s with an unresolved tolerance convention."},

@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from gurobipy import GurobiError
 
+from .carbon_accounting import resolve_beccs_carbon_factors
 from .config import ModelConfig
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .master import MasterArtifacts
@@ -390,10 +391,9 @@ def export_operational_solution(
         emission_table.loc["gas", "emission_factor_mtco2_per_gwh"]
     )
     capture_fraction = float(emission_table.loc["coal", "ccs_capture_fraction"])
-    bioccs_factor = float(
-        emission_table.loc["bioccs", "emission_factor_mtco2_per_gwh"]
-    )
+    beccs_carbon = resolve_beccs_carbon_factors(emission_table)
     fossil_unabated = np.zeros(p_count, dtype=float)
+    fossil_captured = np.zeros(p_count, dtype=float)
     emissions_before_dac_by_province = np.zeros(p_count, dtype=float)
     for technology, k in artifacts.index["thermal_index"].items():
         generation = thermal_energy[:, k]
@@ -408,10 +408,36 @@ def export_operational_solution(
             emissions_before_dac_by_province += (
                 base_factor * (1.0 - capture_fraction) * generation
             )
+            fossil_captured += base_factor * capture_fraction * generation
         elif technology == "bioccs":
-            emissions_before_dac_by_province += bioccs_factor * generation
+            emissions_before_dac_by_province += beccs_carbon.net_emissions * generation
         else:
             emissions_before_dac_by_province += base_factor * generation
+    beccs_generation = thermal_energy[:, bioccs_k]
+    beccs_gross_biogenic = beccs_carbon.gross_biogenic * beccs_generation
+    beccs_captured_biogenic = beccs_carbon.captured_biogenic * beccs_generation
+    beccs_stored = beccs_carbon.stored * beccs_generation
+    beccs_uncaptured_biogenic = (
+        beccs_carbon.uncaptured_biogenic * beccs_generation
+    )
+    beccs_lifecycle_emissions = (
+        beccs_carbon.lifecycle_emissions * beccs_generation
+    )
+    beccs_net_removal = beccs_carbon.net_removal * beccs_generation
+    beccs_capture_residual = (
+        beccs_captured_biogenic
+        - beccs_carbon.capture_fraction * beccs_gross_biogenic
+    )
+    beccs_storage_residual = beccs_stored - beccs_captured_biogenic
+    beccs_net_residual = (
+        beccs_lifecycle_emissions
+        + beccs_uncaptured_biogenic
+        - beccs_gross_biogenic
+        + beccs_net_removal
+    )
+    captured_reconstruction_residual = (
+        captured - fossil_captured - beccs_stored
+    )
     dac_by_province = _value(variables["dac_capture"]).sum(axis=1)
     biomass_by_province = _value(variables["annual_biomass"]).sum(axis=0)
 
@@ -563,6 +589,18 @@ def export_operational_solution(
         ),
         "maximum_co2_source_balance_residual_mt": float(np.abs(co2_source_residual).max()),
         "maximum_co2_sink_capacity_violation_mt": float(np.maximum(co2_sink_violation, 0.0).max()),
+        "maximum_beccs_capture_balance_residual_mtco2": float(
+            np.abs(beccs_capture_residual).max()
+        ),
+        "maximum_beccs_storage_balance_residual_mtco2": float(
+            np.abs(beccs_storage_residual).max()
+        ),
+        "maximum_beccs_net_carbon_balance_residual_mtco2": float(
+            np.abs(beccs_net_residual).max()
+        ),
+        "maximum_captured_co2_reconstruction_residual_mtco2": float(
+            np.abs(captured_reconstruction_residual).max()
+        ),
         "objective_value_million_cny": objective_value,
         "objective_component_residual_million_cny": objective_component_residual,
         "total_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
@@ -642,6 +680,18 @@ def export_operational_solution(
         "biomass": qc["maximum_biomass_limit_violation_pj"] <= tolerance,
         "co2_source": qc["maximum_co2_source_balance_residual_mt"] <= tolerance,
         "co2_sink": qc["maximum_co2_sink_capacity_violation_mt"] <= tolerance,
+        "beccs_capture_mass_balance": qc[
+            "maximum_beccs_capture_balance_residual_mtco2"
+        ] <= tolerance,
+        "beccs_storage_mass_balance": qc[
+            "maximum_beccs_storage_balance_residual_mtco2"
+        ] <= tolerance,
+        "beccs_net_carbon_balance": qc[
+            "maximum_beccs_net_carbon_balance_residual_mtco2"
+        ] <= tolerance,
+        "captured_co2_reconstruction": qc[
+            "maximum_captured_co2_reconstruction_residual_mtco2"
+        ] <= tolerance,
         "objective_components": abs(objective_component_residual) <= tolerance,
     }
     qc["hard_checks"] = hard_checks
@@ -938,6 +988,12 @@ def export_operational_solution(
             "fossil_unabated_emissions_mtco2": fossil_unabated,
             "emissions_before_dac_mtco2": emissions_before_dac_by_province,
             "co2_captured_for_storage_mtco2": captured,
+            "beccs_gross_biogenic_co2_mtco2": beccs_gross_biogenic,
+            "beccs_captured_biogenic_co2_mtco2": beccs_captured_biogenic,
+            "beccs_stored_co2_mtco2": beccs_stored,
+            "beccs_uncaptured_biogenic_co2_mtco2": beccs_uncaptured_biogenic,
+            "beccs_lifecycle_emissions_mtco2": beccs_lifecycle_emissions,
+            "beccs_net_removal_mtco2": beccs_net_removal,
             "dac_removed_mtco2": dac_by_province,
             "net_emissions_after_dac_mtco2": (
                 emissions_before_dac_by_province - dac_by_province

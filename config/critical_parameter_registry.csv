@@ -30,6 +30,7 @@ nuclear,capacity_floor,data/thermal/nuclear_capacity_floor_by_year.csv,GW,table,
 nuclear,capacity_upper,data/thermal/nuclear_capacity_upper_by_year.csv,GW,table,yes,VERIFIED,One province-year scenario upper bound
 biomass,fuel_potential,data/biomass/fuel_potential_by_province_year.csv,PJ/year,table,yes,VERIFIED,Province-year shared biomass fuel resource
 biomass,capacity_upper,data/biomass/capacity_upper_by_province_year.csv,GW,table,yes,VERIFIED,Shared bio plus BECCS upper bound
+carbon,beccs_mass_balance,cispo_model/carbon_accounting.py,MtCO2/GWh,CISPO net factor plus 90% capture,yes,CISPO_EQUIVALENT_BASELINE,Zero lifecycle emissions in replication baseline; hard gross capture storage and net closure QC
 battery,capacity_floor,data/storage/battery_capacity_floor_by_province_year.csv,GW,table,yes,VERIFIED,Province-year commissioned or committed floor
 technology,capex,data/technology/technology_capex_by_year.csv,CNY/kW,table,yes,SOURCE_RISK,Digitized future trajectory remains a sensitivity risk
 technology,fuel_generation_cost,data/technology/province_fuel_generation_cost_by_year.csv,CNY/MWh,table,yes,SOURCE_RISK,Province-year coal gas and biomass fuel costs

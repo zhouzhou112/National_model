@@ -49,7 +49,7 @@ The optimization does not contain site-hour VRE dispatch variables. It dispatche
 
 ## 5. Carbon terminology
 
-The historical field `annual_gross_emissions_mtco2` is retained for compatibility, but the model quantity includes residual fossil emissions and the negative BECCS factor before DAC. New outputs use the precise name `emissions_before_dac_mtco2`, alongside fossil-unabated emissions, CO2 captured for storage, DAC removal and final net emissions.
+The historical field `annual_gross_emissions_mtco2` is retained for compatibility, but the model quantity includes residual fossil emissions and BECCS net emissions before DAC. New outputs use the precise name `emissions_before_dac_mtco2`, alongside fossil-unabated emissions, CO2 captured for storage, DAC removal and final net emissions. The CISPO-equivalent BECCS baseline additionally exports `beccs_gross_biogenic_co2_mtco2`, `beccs_captured_biogenic_co2_mtco2`, `beccs_stored_co2_mtco2`, `beccs_uncaptured_biogenic_co2_mtco2`, `beccs_lifecycle_emissions_mtco2` and `beccs_net_removal_mtco2`. Baseline lifecycle emissions are explicitly zero; hard QC closes capture, storage, net carbon and total captured-CO2 reconstruction.
 
 For the current continuous LP, `hourly_marginal_prices.csv.gz` exports provincial power-balance, reserve and inertia `Pi`, while `annual_constraint_shadow_prices.csv` exports carbon, biomass, capacity-margin and CCS scarcity values. `dual_export_status.json` records whether duals were available. A future nonconvex QCP/MIQCP must not interpret these LP duals as if they remain valid; Gurobi may not provide comparable shadow prices for a nonconvex solution.
 

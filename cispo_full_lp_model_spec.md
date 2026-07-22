@@ -1283,6 +1283,20 @@ E
 
 > 实现注意：生物质与 BECCS 的碳核算取决于 `ef_pt` 与 `eta_ccs_pt` 的参数化。若要表达 BECCS 负排放，需要明确生物质碳排放因子与捕集量如何进入净排放核算，不能仅凭技术名称假设。
 
+V0722 将 CISPO replication baseline 的隐含碳流显式拆分。CISPO 假定 biomass carbon-neutral、CCS 捕集率为 `eta_ccs=0.9`、捕集量全部封存，并给出逐年的 BECCS 净负排放因子 `ef_net<0`。在暂不加入生命周期排放的基线中：
+
+```math
+CO2^{stored}=-ef^{net}G,\qquad
+CO2^{gross}_{bio}=CO2^{stored}/\eta^{ccs},
+```
+
+```math
+CO2^{uncaptured}_{bio}=CO2^{gross}_{bio}-CO2^{stored},\qquad
+E^{BECCS}=CO2^{lifecycle}+CO2^{uncaptured}_{bio}-CO2^{gross}_{bio}=-CO2^{stored}.
+```
+
+该拆分不改变原有负排放系数、捕集/运输/封存成本或可行域，只消除同一负因子同时承担“净排放”和“物理捕集量”语义的歧义。若以后采用非零 `CO2_lifecycle`，必须作为有独立来源的 adapted scenario，并满足 `net removal = stored - lifecycle emissions`。
+
 ---
 
 ## 5.12 DAC 约束
