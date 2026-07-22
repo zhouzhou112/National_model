@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## V0722 diagnostic sensitivity suite interface
+
+Local commit `c91828a` adds `scripts/run_cispo_sensitivity_suite.py` as a diagnostic-only wrapper around the existing four-year planning sequence. It does not authorize 8760h and is not deployed on the fixed server; live checkout `6ed943a` remains the accepted Base/V1 model gate. The wrapper gives every scenario an independent state chain, records catalog/config SHA256 values, rejects planned-not-runnable entries and refuses a non-empty root unless `--resume` passes exact suite identity checks.
+
+List or dry-run the implemented scenarios before any solve:
+
+```bash
+$PYTHON scripts/run_cispo_sensitivity_suite.py --list-scenarios
+$PYTHON scripts/run_cispo_sensitivity_suite.py \
+  --diagnostic-hours 24 \
+  --output-root /data/zz2/National_model/outputs/sensitivity_suite_24h_<version> \
+  --dry-run
+```
+
+An actual small gate uses the same command without `--dry-run`; an audit of an accepted root adds `--resume`. Resume must match the mode, diagnostic hours, scenario order, catalog/base-config hashes and each scenario-config hash. The prior suite report is preserved under `sensitivity_suite_history/`, and new timestamped stdout/stderr logs are created rather than overwriting operational evidence. Base must report flexibility disabled, V1 must report V2G disabled, and V2G must remain a separate scenario/root. Do not deploy or start even this small gate until the server is idle and its exact checkout is verified; do not use this wrapper for fixed-server 744h/8760h or paid cloud 8760h.
+
 ## V0722 deployed scenario interface
 
 Commit `6ed943a` adds optional, checksummed scenario overrides without changing Base by default and is deployed on the fixed server. The pre-deployment Base 168h gate ran from checkout `b6ca42d`, containing model implementation `0c1eaf2`. Do not mix code versions inside an existing output root.
