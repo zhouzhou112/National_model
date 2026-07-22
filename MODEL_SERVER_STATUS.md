@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-23 city_337 fixed-server 168h Base accepted; V1 24h active
+
+- Four-year 168h Base root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337` is accepted: sequence and `--resume` pass, all years are `OPTIMAL + solution_qc=PASS`, runtimes 733.00/811.58/892.10/1397.12 s, wall 1:13:47, peak RSS 4,085,152 KiB and zero swaps.
+- Every year has zero false hard checks, 59 valid manifest entries, 337 center balances, 642 intra-edge outputs and 31 province accounts. Maximum network/power residuals are below `1.78e-10` in their reported units; BECCS closure is numerical zero.
+- Relative to the prior 278 Base gate, the 168h city model adds 1,031 variables, 924 constraints and 2,749 nonzeros. Total solver time rises 4.68%; the measurable risk is 2060 Crossover (706.6 s), not model construction or memory.
+- PID `3632117` now runs a separate four-year 24h `flexible_load_v1` chain at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v1`. Checkout remains `cf39e0a`; do not pull the later documentation commit while it runs. No V2G/744h/8760h task is authorized by this gate.
+
 ## 2026-07-23 city_337 fixed-server 24h accepted; 168h active
 
 - Fixed-server checkout is clean at `cf39e0a`; active data root is `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. The city archive SHA256 matches local: `c1451d95c3303f98e53434cd29abc4288f486cba04c99a2c591380b010d470bb`.

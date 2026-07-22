@@ -1,16 +1,16 @@
 # CISPO 2030/8760 server runbook
 
-## Active V0722 city_337 168h gate
+## Active V0722 city_337 flexibility gate
 
-The 24h gate is accepted at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337`. The active next gate is PID `3321747` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337`, running checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
+The Base 24h and 168h gates are accepted at `/data/zz2/National_model/outputs/planning_sequence_{24h,168h}_v0722_city337`. The active next gate is PID `3632117` at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v1`, running checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
 
 ```bash
-OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337
+OUT=/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v1
 ps -p "$(cat "$OUT/sequence.pid")" -o pid,etime,%cpu,%mem,rss,stat,cmd
 tail -n 30 "$OUT/run.stderr"
 ```
 
-After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks and an immediate four-year `--resume`. Do not launch fixed-server 744h/8760h.
+After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks, daily heating/cooling/EV V1G conservation, zero simultaneous up/down, V2G disabled and an immediate four-year `--resume`. Do not launch fixed-server 744h/8760h.
 
 ## V0722 city_337 deployment and small-gate contract
 
