@@ -16,11 +16,11 @@ This is the repository's single handoff document for work continued across Codex
 
 - Latest cloud gate (2026-07-21): Slurm job `3975741` on `m4cl2501.para.bscc` explicitly set the HTTP proxy, reached `token.gurobi.com` through `172.16.110.3:8888` (HTTP 302), and solved a Gurobi 13.0.2 WLS smoke LP to `OPTIMAL` with `GUROBI_SMOKE_PASS`. The account `.bashrc` still contains non-standard whitespace after `export`; every job must set proxy variables explicitly until repaired. The cloud endpoint is ready for staged 24h/168h CISPO gates, not yet for paid 8760h production.
 
-- Handoff version: `v0.9.1`
+- Handoff version: `v0.9.2`
 - Snapshot date: `2026-07-22`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
-- The local and pushed branch includes documentation commit `0c6166c` (`docs: record flexibility server gates`) atop model implementation `6ed943a` (`feat: add modular demand flexibility scenarios`). The fixed-server checkout intentionally remains `6ed943a` while its 168h flexibility chain is active. The immediately preceding fixed-server Base gate ran from checkout `b6ca42d`, whose model implementation baseline is `0c1eaf2`; this distinction corrects the earlier shorthand that called the checkout itself `0c1eaf2`. `6ed943a` preserves Base by default, reads the existing four-component load contract, adds checksummed partial scenario overrides, daily-conserving heating/cooling/EV V1G flexibility, optional daily-cyclic V2G, complete flexibility outputs/QC and scenario-safe sequential resume checks.
+- Before this continuity update, the local and pushed branch was clean outside the preserved user-owned `supplementary_materials/**` changes at documentation commit `d00d1fb` (`docs: distinguish model and handoff commits`) atop model implementation `6ed943a` (`feat: add modular demand flexibility scenarios`). The fixed-server checkout was independently verified clean at `6ed943a` while the 168h flexibility chain completed; no checkout change occurred during the run or its acceptance audit. The immediately preceding fixed-server Base gate ran from checkout `b6ca42d`, whose model implementation baseline is `0c1eaf2`. `6ed943a` preserves Base by default, reads the existing four-component load contract, adds checksummed partial scenario overrides, daily-conserving heating/cooling/EV V1G flexibility, optional daily-cyclic V2G, complete flexibility outputs/QC and scenario-safe sequential resume checks.
 - A separate ParaCloud/BSCC-A8 endpoint was authenticated on 2026-07-20 through both configured IPv4 routes using the existing local public key. The remote host was `ln301.para.bscc`, account `a8s001819`; port 22 is primary and 2222 is fallback. Read-only audit confirms this is a Slurm login node. The official BSCC-A8 manual was reconciled into `supplementary_materials/云服务器使用规范_BSCC-A8.md`; current live partition names override the older screenshot values. The official Gurobi 13.0.2 Linux package is staged privately on the cloud, and engineer-provided `gurobipy310` was exercised in compute-node jobs `3975724` and `3975741`. With explicit proxy variables, both jobs reached the WLS endpoint through `172.16.110.3:8888` and solved a tiny LP to `OPTIMAL` under Gurobi 13.0.2; `3975741` additionally confirmed the route with HTTP 302 and `GUROBI_SMOKE_PASS`. The account `.bashrc` still contains non-standard whitespace after `export`, so proxy variables must be set explicitly in each job until that file is repaired. The cloud endpoint is technically ready for a staged CISPO gate, but not yet approved for paid 8760h production until code/data staging, explicit thread limits and 24h/168h gates pass.
 - SSH access was restored on 2026-07-19 by using the configured `national-model-server` alias, which binds the approved workstation source address. The obsolete PID `863603` was not active and no CISPO solve process remained.
 - Server readiness, raw-GRFR SHA256 verification and 24/24 regression tests passed on the new versioned data roots. The server 24h gate is `OPTIMAL` in 60.53 s with `solution_qc=PASS`.
@@ -91,7 +91,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Fixed-server 24h four-year diagnostic sequence `/data/zz2/National_model/outputs/planning_sequence_24h_v0721_fuel_state` and a subsequent `--resume` chain-identity audit both report `PASS`. All four years are `OPTIMAL + solution_qc=PASS`; solver runtimes are 49.42/46.49/45.98/45.74 s, wall time is 6:03 and peak RSS is 0.879 GiB. States are explicitly `TEST_ONLY_TRUNCATED_HORIZON`.
 - Fixed-server Base 168h four-year diagnostic sequence `/data/zz2/National_model/outputs/planning_sequence_168h_v0721_fuel_state` completed `PASS` for 2030/2040/2050/2060 and passed an immediate `--resume` identity audit. All four years are `OPTIMAL + solution_qc=PASS`; solver runtimes are 708.80/708.69/1107.69/1137.22 s, wall time is 1:08:40, peak RSS is 4,116,892 KiB and swap is zero. Each result manifest validates with zero mismatches. It ran from checkout `b6ca42d` containing implementation `0c1eaf2` and is retained as the uncontaminated pre-flexibility Base gate.
 - After deployment to `6ed943a`, the fixed server passes 42/42 regression tests with all three external data roots explicit. Four-year 24h `flexible_load_v1` sequence `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_flexible_load_v1` and its immediate resume audit both report `PASS`: all years are `OPTIMAL + solution_qc=PASS`, wall time is 6:32, peak RSS is 946,804 KiB and swap is zero. Daily heating/cooling/EV residuals are at most `6.44e-13 GWh`, simultaneous up/down counts are zero, all manifests validate, and every input manifest records scenario SHA256 `7b8f1c920bad35e2e41111f7913cfb456b6e369b85db5b03ae86d43801840532`.
-- Fixed-server four-year 168h `flexible_load_v1` sequence is running under PID `1708266` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_flexible_load_v1`. Do not deploy another checkout into this live output root.
+- Fixed-server four-year 168h `flexible_load_v1` sequence `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_flexible_load_v1` completed `PASS` from clean checkout `6ed943a`; PID `1708266` has exited and no CISPO process remains. All four years are `OPTIMAL + solution_qc=PASS`, every hard QC check passes, and each 59-file result manifest validates with zero size/SHA256 mismatches. Solver runtimes are 705.49/672.16/994.41/1181.26 s; wall time is 1:06:54, peak RSS is 4,040,256 KiB and swap is zero. Heating/cooling/EV V1G daily-energy residuals are at most `8.17e-13 GWh`, all simultaneous up/down counts are zero, and every input manifest records scenario SHA256 `7b8f1c920bad35e2e41111f7913cfb456b6e369b85db5b03ae86d43801840532`. A fresh `--resume` identity audit reports four `RESUMED_ACCEPTED` years and sequence `PASS`; diagnostic states remain `TEST_ONLY_TRUNCATED_HORIZON`.
 - The pre-fix V0720 2030 168h comparison gate completed `OPTIMAL + solution_qc=PASS` under `/data/zz2/National_model/outputs/2030_168h_v0720_io_contract_server`: solver runtime 799.07 s, wall time 16:06, peak process-tree RSS 3.762 GiB. It omits biomass fuel cost and is retained only as a comparison baseline.
 - V0720 implementation `b40900a` is pushed and deployed to the clean fixed-server checkout. Local and server unit tests pass 34/34; the V0719 server data package passes 139/139 smoke checks.
 - Server 24h I/O-contract gate `/data/zz2/National_model/outputs/2030_24h_v0720_io_contract_server` reached `OPTIMAL + solution_qc=PASS`: 341,312 variables, 261,280 constraints, 1,768,957 nonzeros, objective `2,024,722.739184 million CNY`, Gurobi runtime 43.65 s and peak process-tree RSS 0.838 GiB. All 27 hard checks pass; result-manifest validation has zero mismatches; all NPZ files load with `allow_pickle=False`; dual export contains 744 hourly and 3,366 annual rows.
@@ -195,26 +195,38 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-Do not start an 8760h production solve on the current 125 GiB host while available memory is below the 96 GiB runtime gate. The V0719 code and data root are deployed and the 24h server gate has passed; the next safe gates are 168h and 744h V0719 solves. If a full-year trial is still desired before those gates, run only `--preflight-only` or move to a high-memory node. Preserve both the old sparse 744h evidence and the new V0719 data root.
+The fixed-server Base 168h and `flexible_load_v1` 24h/168h four-year gates are accepted. Do not run 744h or 8760h on the fixed server, and do not launch a paid cloud 8760h case without explicit cost authorization. The next model-development milestone is to formalize and test the sensitivity-case registry/runner around the existing checksummed scenario override contract, while keeping Base flexibility disabled and preserving strict sequential state identity. Building thermal/comfort envelopes and province-hour EV availability, driving-energy, accessible-battery and departure-SOC inputs still require calibration before any flexibility case can be interpreted scientifically. `flexible_load_v2g_v1` remains an independent optional scenario; its current local 24h gate is engineering evidence only.
 
 ```bash
 cd /data/zz2/National_model/repo
 export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
 export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
-export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260719_sequential_sparse
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260722_v0721_fuel_state
 export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
 export GRB_LICENSE_FILE=/home/zz2/gurobi.lic
 PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
-OUT=/data/zz2/National_model/outputs/2030_24h_v0719_capacity_bounds_server
-cat "$OUT/solve_report.json"
-cat "$OUT/solution_qc.json"
-tail -n 80 "$OUT/gurobi.log"
+OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_flexible_load_v1
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --scenario-config config/scenarios/flexible_load_v1.json \
+  --diagnostic-hours 168 \
+  --output-root "$OUT" \
+  --resume
 ```
 
-The completed V0719 24h gate reports `OPTIMAL + solution_qc=PASS`, zero nuclear upper/floor violation, zero biomass+BECCS capacity-upper violation, zero storage-floor violation, zero AC bidirectional edge-hours and zero DC reverse flow. GPU-PDHG is not the default route. Only after at least 96 GiB available RAM may an 8760h `build-only` run begin. Build-only success does not authorize optimize; inspect its true peak RSS and numerical/factor-risk evidence first.
+The command above must finish with four `RESUMED_ACCEPTED` records and must never rerun into the accepted year directories. Preserve all current output roots. Any later cloud staging must use exact code/data/scenario hashes, explicit Slurm thread limits and new 24h/168h gates before a separately authorized 8760h job. The 96 GiB pre-build gate remains necessary but is not proof that barrier factorization will fit.
 
 ## Version history
+
+### v0.9.2 - 2026-07-22 - fixed-server 168h flexibility chain accepted
+
+- Git/server identity: before this documentation update, local and pushed HEAD was `d00d1fb`; fixed-server checkout was clean at model commit `6ed943a`. No server checkout change occurred during the run or audit, and PID `1708266` is no longer active.
+- Output: `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_flexible_load_v1`; original sequence `PASS`, four years `ACCEPTED`, wall time 1:06:54, peak RSS 4,040,256 KiB, swap zero and wrapper exit status 0.
+- Solve/QC evidence: 2030/2040/2050/2060 are all `OPTIMAL + solution_qc=PASS`; runtimes 705.49/672.16/994.41/1181.26 s; all hard checks pass. Maximum heating/cooling/EV V1G daily-energy residual over all years is `8.17e-13 GWh`, with zero simultaneous up/down province-hours.
+- Integrity/state evidence: each year has a closed 59-file result manifest; scenario IDs agree across solve/scope/scenario manifests; all input manifests record SHA256 `7b8f1c920bad35e2e41111f7913cfb456b6e369b85db5b03ae86d43801840532`; `capacity_cohorts_v2` state inputs follow 2030 -> 2040 -> 2050 -> 2060 and remain `TEST_ONLY_TRUNCATED_HORIZON`.
+- Resume evidence: a fresh `--resume` audit at 2026-07-22 16:05 CST returned sequence `PASS` with four `RESUMED_ACCEPTED` records and no re-solve.
+- Changed files: `CODEX_HANDOFF.md`, `MODEL_SERVER_STATUS.md`, `SERVER_RUNBOOK.md`; user-owned `supplementary_materials/**` changes were not modified or staged.
+- Unresolved/next action: formalize the sensitivity-case registry/runner and calibrate building/EV flexibility envelopes before scientific interpretation. Keep Base disabled, keep V2G separate, and do not start fixed-server 744h/8760h or paid cloud 8760h without the required gates and explicit authorization.
 
 ### v0.9.1 - 2026-07-22 - fixed-server flexibility deployment and gates
 
