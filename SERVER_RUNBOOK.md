@@ -1,16 +1,16 @@
 # CISPO 2030/8760 server runbook
 
-## Active V0722 city_337 flexibility gate
+## Active V0722 city_337 V2G gate
 
-The Base 24h and 168h gates are accepted at `/data/zz2/National_model/outputs/planning_sequence_{24h,168h}_v0722_city337`. The 24h V1 gate `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v1` is also accepted with four `OPTIMAL + solution_qc=PASS` years and four `RESUMED_ACCEPTED` records. The active next gate is PID `3687503` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v1`, running checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
+The Base and V1 24h/168h gates are accepted for `city_337`. The V1 168h root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v1` has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. PID `3984748` now runs the independent 24h V2G gate at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1`, using checkout `cf39e0a` and data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
 
 ```bash
-OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v1
+OUT=/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1
 ps -p "$(cat "$OUT/run.pid")" -o pid,etime,%cpu,%mem,rss,stat,cmd
 tail -n 30 "$OUT/run.stderr"
 ```
 
-After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks, daily heating/cooling/EV V1G conservation, zero simultaneous up/down, V2G disabled and an immediate four-year `--resume`. Keep `run.stdout`, `run.stderr` and `run.pid` as wrapper evidence. Do not launch fixed-server 744h/8760h.
+After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks, daily heating/cooling/EV V1G conservation, V2G transition closure, zero simultaneous charge/discharge, explicit charging-loss accounting and an immediate four-year `--resume`. Keep `run.stdout`, `run.stderr` and `run.pid` as wrapper evidence. Do not launch fixed-server 744h/8760h.
 
 ## V0722 city_337 deployment and small-gate contract
 
