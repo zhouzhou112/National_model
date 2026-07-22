@@ -1,5 +1,17 @@
 # CISPO 2030/8760 server runbook
 
+## Active V0722 city_337 168h gate
+
+The 24h gate is accepted at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337`. The active next gate is PID `3321747` at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337`, running checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
+
+```bash
+OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337
+ps -p "$(cat "$OUT/sequence.pid")" -o pid,etime,%cpu,%mem,rss,stat,cmd
+tail -n 30 "$OUT/run.stderr"
+```
+
+After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks and an immediate four-year `--resume`. Do not launch fixed-server 744h/8760h.
+
 ## V0722 city_337 deployment and small-gate contract
 
 Implementation `8e76753` changes the production spatial input contract from `natural_earth_278` to `city_337` and includes the reviewed 5% capacity-margin/3.5 s inertia baseline. Because `data/` is intentionally outside Git, deploy code and data as two independently verified artifacts. Never copy over the active V0721 data root.
