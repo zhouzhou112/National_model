@@ -1,5 +1,37 @@
 # CISPO 2030/8760 server runbook
 
+## V0722 city_337 deployment and small-gate contract
+
+Implementation `8e76753` changes the production spatial input contract from `natural_earth_278` to `city_337` and includes the reviewed 5% capacity-margin/3.5 s inertia baseline. Because `data/` is intentionally outside Git, deploy code and data as two independently verified artifacts. Never copy over the active V0721 data root.
+
+Required new data files are `load_center_network/city_337/{load_centers,vre_routes,hydro_routes,intra_edges,initial_spur_capacity_2025,substation_initial_capacity_2025}.csv`; retain the package README, manifest, initialization audit and route comparison as sidecars. Verify the transferred archive SHA256 before extraction, copy the current data root to a new additive root, and extract only the `city_337` subdirectory there.
+
+Before changing checkout, require `git status --short` empty and no `run_cispo`/Gurobi process. Then run, with the new data root and existing CF/hydrology roots:
+
+```bash
+$PYTHON -m unittest discover -s tests -p 'test_*.py' -v
+$PYTHON scripts/preflight_cispo_2030.py --output /data/zz2/National_model/outputs/preflight_v0722_city337.json
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --diagnostic-hours 24 \
+  --output-root /data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337
+```
+
+Accept only if all four years are `OPTIMAL + solution_qc=PASS`, scenario ID is `base`, flexibility is disabled, every result manifest closes, load-center outputs contain 337 unique nodes, center/province/capacity residuals pass, security manifests record 5% and 3.5 s, and `--resume` returns four `RESUMED_ACCEPTED` years. Only then launch the corresponding new 168h Base root. Current live memory (about 35 GiB available with swap occupied) is sufficient only for these small gates; do not launch 744h/8760h on the fixed server.
+
+## V0722 reviewed reliability update — not deployed
+
+The local working tree at Git HEAD `e28f315` changes the feasible set: Base provincial capacity margin is `5%`, and minimum system inertia is recorded as `3.5 s reference × 1.0 tolerance = 3.5 s effective`. Model construction and QC share one resolver; legacy scenario overrides may still provide `minimum_system_inertia_seconds`.
+
+Local regression validation is 49/49 PASS. The local 1h engineering gate `outputs/2030_1h_v0722_security_5pct_inertia_3p5s` is `OPTIMAL + solution_qc=PASS` and its result manifest validates. The fixed server remains at accepted checkout `6ed943a`, so every existing server output predates this reliability update. Never reuse an accepted output directory with the new configuration. After an explicit commit/push/deployment decision, first verify an idle clean server checkout, then use a new versioned 24h root and require:
+
+- `model_config_snapshot.json` contains capacity margin `0.05` and the two inertia fields;
+- `scenario_manifest.json.security_parameters.minimum_system_inertia_seconds_effective = 3.5`;
+- `solution_qc.json.minimum_system_inertia_seconds = 3.5`;
+- capacity-margin and inertia hard checks both pass;
+- the result manifest closes with no size/SHA256 mismatch.
+
+Do not start fixed-server 744h/8760h or paid cloud 8760h from this local-only state.
+
 ## V0722 BECCS carbon-accounting gate
 
 Local commit `c62b769` explicitly closes the CISPO-equivalent BECCS carbon mass balance while retaining the published negative factors, 90% capture assumption and all capture/transport/storage costs. It is not deployed on the fixed server. Before deployment, verify an idle clean checkout and use a new versioned 1h/24h output root; do not reuse any accepted Base/V1 directory.
