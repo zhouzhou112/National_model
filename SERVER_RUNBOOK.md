@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## V0722 BECCS carbon-accounting gate
+
+Local commit `c62b769` explicitly closes the CISPO-equivalent BECCS carbon mass balance while retaining the published negative factors, 90% capture assumption and all capture/transport/storage costs. It is not deployed on the fixed server. Before deployment, verify an idle clean checkout and use a new versioned 1h/24h output root; do not reuse any accepted Base/V1 directory.
+
+Acceptance requires the four `solution_qc.json` fields `maximum_beccs_capture_balance_residual_mtco2`, `maximum_beccs_storage_balance_residual_mtco2`, `maximum_beccs_net_carbon_balance_residual_mtco2` and `maximum_captured_co2_reconstruction_residual_mtco2` to pass, plus all six explicit BECCS columns in `annual_resource_accounting_by_province.csv` and a closed result manifest. Baseline lifecycle emissions are zero. A nonzero lifecycle factor is a separate sourced scenario and must not be inserted into Base silently.
+
 ## V0722 diagnostic sensitivity suite interface
 
 Local commit `c91828a` adds `scripts/run_cispo_sensitivity_suite.py` as a diagnostic-only wrapper around the existing four-year planning sequence. It does not authorize 8760h and is not deployed on the fixed server; live checkout `6ed943a` remains the accepted Base/V1 model gate. The wrapper gives every scenario an independent state chain, records catalog/config SHA256 values, rejects planned-not-runnable entries and refuses a non-empty root unless `--resume` passes exact suite identity checks.
