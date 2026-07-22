@@ -2,10 +2,10 @@
 
 ## Active V0722 city_337 V2G gate
 
-The Base and V1 24h/168h gates are accepted for `city_337`. The V1 168h root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v1` has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. PID `3984748` now runs the independent 24h V2G gate at `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1`, using checkout `cf39e0a` and data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
+The Base and V1 24h/168h gates are accepted for `city_337`. The independent 24h V2G root `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1` also has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. PID `4032297` now runs the corresponding 168h V2G gate at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1`, using checkout `cf39e0a` and data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
 
 ```bash
-OUT=/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1
+OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1
 ps -p "$(cat "$OUT/run.pid")" -o pid,etime,%cpu,%mem,rss,stat,cmd
 tail -n 30 "$OUT/run.stderr"
 ```
