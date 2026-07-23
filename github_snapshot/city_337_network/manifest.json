@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-07-22T23:49:30.759532+08:00",
+  "scenario": "city_337",
+  "status": "PASS",
+  "scenario_status": "production_default_city_337",
+  "route_method": "exact_same_province_minimum_geodesic_spur_plus_nearest_city_center_trunk",
+  "topology_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",
+  "design_utilization_fraction": 0.5,
+  "counts": {
+    "load_centers": 337,
+    "provinces": 31,
+    "substations": 6294,
+    "vre_grid_routes": 16609,
+    "hydro_routes": 2030,
+    "intra_edges": 642,
+    "initialized_intra_edges": 203
+  },
+  "2025_initialization": {
+    "connected_wind_utility_pv_nameplate_gw": 1309.999999962,
+    "local_dpv_gw": 530.000000002,
+    "existing_hydro_gw": 297.88949999999994,
+    "intra_capacity_sum_gw": 647.8400936079125,
+    "method": "simultaneous spatial renewable nameplate balance proxy",
+    "rated_capacity_status": "inferred requirement; not observed line/substation rating"
+  },
+  "route_comparison": {
+    "mean_improvement_km": 20.21358047321511,
+    "p95_improvement_km": 87.0357170966804,
+    "maximum_negative_improvement_km": 1.0866676447562895e-08
+  },
+  "checks": [
+    {
+      "check": "load_center_count",
+      "status": "PASS",
+      "value": 337
+    },
+    {
+      "check": "province_count",
+      "status": "PASS",
+      "value": 31
+    },
+    {
+      "check": "province_share_closure",
+      "status": "PASS",
+      "value": 1.1102230246251565e-15
+    },
+    {
+      "check": "substation_route_count",
+      "status": "PASS",
+      "value": 6294
+    },
+    {
+      "check": "vre_route_count",
+      "status": "PASS",
+      "value": 16609
+    },
+    {
+      "check": "hydro_route_count",
+      "status": "PASS",
+      "value": 2030
+    },
+    {
+      "check": "intra_edge_count",
+      "status": "PASS",
+      "value": 642
+    },
+    {
+      "check": "intra_edge_same_province",
+      "status": "PASS",
+      "value": true
+    },
+    {
+      "check": "connected_vre_nameplate_gw",
+      "status": "PASS",
+      "value": 1309.999999962
+    },
+    {
+      "check": "local_dpv_gw",
+      "status": "PASS",
+      "value": 530.000000002
+    },
+    {
+      "check": "joint_route_not_worse_than_legacy",
+      "status": "PASS",
+      "value": 1.0866676447562895e-08
+    },
+    {
+      "check": "initial_balance_residual",
+      "status": "PASS",
+      "value": 7.283063041541027e-14
+    },
+    {
+      "check": "initial_edge_capacity_nonnegative",
+      "status": "PASS",
+      "value": 0.0
+    }
+  ],
+  "source_files": {
+    "data\\grid\\city_load_centers.csv": "acfa1a4c1d38b45ed71a216cc76d33acb957a4a762a91d47bd40163b6d1a6c4e",
+    "data\\grid\\substations_osm_220kv_plus.csv": "049f7a1290798bcd0e06532d0683bf0c97d717bb2839cd9996b12115eec284b5",
+    "data\\vre\\optimization_points.csv": "0042fe90a23930ab06df524fde3fe4b7ec252ba55a7e7745e49054140c9e8878",
+    "data\\hydro\\hydro_stations.csv": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142",
+    "data\\grid\\initial_spur_capacity_2025.csv": "65a693c587d98d8500381d2562227af26ce9fa197b3ca85afe545c2095da7890",
+    "data\\load\\annual_load_summary.csv": "2bd99ba71255730ed928ff8e44bfd21d7ce95c7a5533b99e8f30c1a8169b0db5",
+    "data\\grid\\grid_connection_by_point.csv": "81757796fb7cd1302d57fe2c0973740a9743f0c2871947b60980a9e0cb1d3e70",
+    "data\\grid\\substation_to_load_center.csv": "91cadb8313daa98070259aaf3556f2d75d39310afd7029438a574d3126ef3ced"
+  },
+  "output_files": {
+    "load_centers.csv": "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3",
+    "vre_routes.csv": "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27",
+    "hydro_routes.csv": "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc",
+    "intra_edges.csv": "efcac091e51e48355f290bd7df840fb89acc83645f0923798bb8ef8ec89116e4",
+    "initial_spur_capacity_2025.csv": "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc",
+    "substation_initial_capacity_2025.csv": "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d",
+    "load_center_initial_capacity_2025.csv": "15e5abe8e3a13a62f1f2c1deb04068927f479945b22c54dd2deccd8d85ee110e",
+    "initial_capacity_2025_audit.csv": "1968b1445b7188dcd795ad1b9445337d4f42d10cd83722ff55df3dcc19bb3e0d",
+    "route_optimization_comparison.csv": "4115f98922e3e873e9e3ddaff8fa714c4525a945956dbd9aea13cd34256b97c2",
+    "README_zh.md": "0cbf1a20017c48404c02acad16fd91c48b6e346ef89dc173e2486dd47bd7de7e"
+  }
+}

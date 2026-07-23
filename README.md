@@ -12,6 +12,8 @@ This repository implements a continuous linear capacity-expansion and chronologi
 
 The full mathematical specification is in [cispo_full_lp_model_spec.md](cispo_full_lp_model_spec.md). Current validated implementation and server evidence are in [CODEX_HANDOFF.md](CODEX_HANDOFF.md).
 
+The production spatial layer is `city_337`: 337 city-level load centers and a 642-edge within-province network. The retained 278-node Natural Earth layer is a replication/sensitivity input only. For a browser-reviewable code-and-data index, see [GITHUB_WEB_REVIEW_GUIDE.md](GITHUB_WEB_REVIEW_GUIDE.md).
+
 ## Repository layout
 
 | Path | Purpose |
@@ -120,6 +122,10 @@ Every solved case is self-describing:
 - `result_manifest.json`: final SHA256 integrity manifest.
 
 The stable schema and interpretation rules are documented in [MODEL_IO_CONTRACT.md](MODEL_IO_CONTRACT.md).
+
+## Cost interpretation
+
+For a full 8760-hour planning-year case, the objective is `million_CNY_per_year`: annualized capacity cost (`CapEx * CRF`) plus fixed O&M for installed assets, and 8760-hour variable O&M, fuel, startup/shutdown, ramping, storage, flow and optional flexibility costs. It is a target-year annual-system objective, suitable for a static capacity-expansion comparison. The sequential `2030 -> 2040 -> 2050 -> 2060` workflow transfers physical capacity cohorts but does **not** minimize a discounted 2025-2060 pathway NPV. A pathway-total study must use either a multi-stage discounted investment formulation with incremental `CapEx * ΔK`, or a separately declared ex-post accounting ledger; do not combine lump-sum CapEx and CRF for the same investment.
 
 ## Development rule
 

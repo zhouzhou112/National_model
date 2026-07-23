@@ -1,16 +1,16 @@
 # CISPO 2030/8760 server runbook
 
-## Active V0722 city_337 V2G gate
+## Accepted V0722 city_337 V2G gate
 
-The Base and V1 24h/168h gates are accepted for `city_337`. The independent 24h V2G root `/data/zz2/National_model/outputs/planning_sequence_24h_v0722_city337_flexible_load_v2g_v1` also has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. PID `4032297` now runs the corresponding 168h V2G gate at `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1`, using checkout `cf39e0a` and data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Monitor without changing checkout:
+The Base, V1 and independent V2G 24h/168h gates are accepted for `city_337`. The accepted V2G 168h root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1` has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. The server is idle at checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Revalidate without changing checkout:
 
 ```bash
 OUT=/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1
-ps -p "$(cat "$OUT/run.pid")" -o pid,etime,%cpu,%mem,rss,stat,cmd
-tail -n 30 "$OUT/run.stderr"
+pgrep -af '[r]un_cispo_2030_full_year.py|[r]un_cispo_planning_sequence.py' || true
+cat "$OUT/sequence_report.json"
 ```
 
-After exit, require all four `OPTIMAL + solution_qc=PASS`, 337 center rows, 59 manifest entries, closed network/BECCS/security checks, daily heating/cooling/EV V1G conservation, V2G transition closure, zero simultaneous charge/discharge, explicit charging-loss accounting and an immediate four-year `--resume`. Keep `run.stdout`, `run.stderr` and `run.pid` as wrapper evidence. Do not launch fixed-server 744h/8760h.
+The accepted chain has closed network/BECCS/security checks, V2G transition closure, zero simultaneous charge/discharge, explicit charging-loss accounting and an immediate four-year `--resume`. Keep `run.stdout`, `run.stderr` and `run.pid` as wrapper evidence. Do not launch fixed-server 744h/8760h.
 
 ## V0722 city_337 deployment and small-gate contract
 
