@@ -1,5 +1,13 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-24 ParaCloud city_337 staged preflight (current cloud state)
+
+The additive release is `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`; do not overwrite it. It contains code archive `National_model_22fb493.tar.gz`, the checksummed runtime roots `data/model_ready_20260723_v0722_city337`, `data/hourly_cf` and `data/hydro_timeseries_20260719_sequential_sparse`, and the source-to-cloud SHA256 manifest. The 2030 Base 8760h `--preflight-only` job `4001137` passed on a compute node with 175.17 GiB available memory; its scale is 40,912,327 variables, 67,604,064 constraints and 520,922,832 nonzeros. This proves neither model construction nor optimization.
+
+Do not submit the staged `cloud_cispo_8760_preflight.sbatch` as a Gurobi build substitute. The actual WLS smoke is currently blocked: both `amd_a8_384` and `amd_m8_768-a` rejected the historical proxy `172.16.110.3:8888`, while direct compute-node DNS/egress failed. The account `.bashrc` retains malformed proxy exports; leave it unchanged and export lower- and upper-case proxy variables explicitly in every batch script. After a cloud administrator restores a route, rerun one minimal WLS LP and require `GUROBI_SMOKE_PASS` before any CISPO Gurobi process.
+
+Only after that smoke succeeds, use a new versioned 24h cloud root, then a new 168h root, both with `Threads <= --cpus-per-task`, full manifests and QC. A full-year `--build-only` is still a distinct later gate; it requires at least 96 GiB available memory and must not be treated as evidence that barrier factorization or a production solve fits. The raw GRFR source is deliberately not in this runtime release; add it only when running the separate raw-hydrology provenance readiness check.
+
 ## Accepted V0722 city_337 V2G gate
 
 The Base, V1 and independent V2G 24h/168h gates are accepted for `city_337`. The accepted V2G 168h root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1` has four `OPTIMAL + solution_qc=PASS` years, four valid 59-entry manifests and four `RESUMED_ACCEPTED` records. The server is idle at checkout `cf39e0a` with data root `/data/zz2/National_model/data/model_ready_20260723_v0722_city337`. Revalidate without changing checkout:

@@ -1,6 +1,9 @@
 # Generated model-ready data and optimization runs
 data/
 outputs/
+cloud_runs/logs/
+cloud_runs/releases/
+cloud_runs/wheels/
 logs/
 tmp/
 transfer_bundle/

@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-24 ParaCloud city_337 release staged; 8760h preflight passed; WLS blocked
+
+- New cloud release: `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`. It carries code archive `22fb493` (SHA256 `2f3564ff9123b292106e51bd5ee943e13e874b6798450e38a96428a48a3b6b7a`) and exactly 11,350 runtime data files whose cloud SHA256 check matches the fixed-server manifest (`662565a090b64523ec353994e6fdb3314a94b88d429f16e85e1665300ffbc85a`). The release is additive and does not modify the fixed server.
+- Cloud preflight job `4001137` completed on `m4ci1905.para.bscc`: 175.17 GiB available memory exceeds the full-year 96 GiB gate. For 2030 Base/city_337 it estimates 40,912,327 variables, 67,604,064 constraints, 520,922,832 nonzeros and 36.0 GiB static model memory. This is a data/scale gate only, not a Gurobi build or solve.
+- Cloud environment was completed offline with the project numerical stack and `pip check` passes. The WLS gate is nevertheless currently failing: `4000608` (`amd_a8_384`) and `4000762` (`amd_m8_768-a`) both see direct DNS/egress failure and connection refusal from the historical proxy. No cloud 24h/168h, full-year build-only or full-year solve is active or authorized while this remains unresolved.
+- Next cloud action: after the administrator restores an approved compute-node route, require one fresh `GUROBI_SMOKE_PASS`, then new 24h and 168h cloud gates with explicit Gurobi thread limits. Fixed server remains idle and restricted to its accepted 24h/168h roots; do not start fixed-server 744h/8760h.
+
 ## 2026-07-23 city_337 fixed-server 168h V2G accepted; server idle
 
 - Four-year 168h V2G root `/data/zz2/National_model/outputs/planning_sequence_168h_v0722_city337_flexible_load_v2g_v1` and immediate `--resume` pass. All years are `OPTIMAL + solution_qc=PASS`; runtimes are 792.55/806.12/953.60/1033.25 s, wall time is 1:09:57, peak RSS is 4,087,888 KiB and swaps are zero.
