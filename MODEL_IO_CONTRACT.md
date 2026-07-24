@@ -29,7 +29,7 @@ All model power variables use GW, hourly energy sums use GWh, storage energy use
 | Demand flexibility | `scenario_manifest.json`, `flexible_load_dispatch.npz`, `annual_flexible_load_by_province.csv` | Baseline/optimized load components, shifts, V2G, peaks, losses and scenario assumptions |
 | Readable hourly tables | `time_index.csv`, `hourly_national_balance.csv.gz`, `hourly_province_balance.csv.gz`, `hourly_province_security.csv.gz` | Plotting, balance checks, adequacy and flexibility metrics |
 | Annual/monthly analysis | `annual_generation_by_province_technology.csv`, `annual_resource_accounting_by_province.csv`, `annual_adequacy_by_province.csv`, `annual_constraint_shadow_prices.csv`, `monthly_energy_by_technology.csv`, `cost_components.csv` | Paper tables, regional mechanisms, adequacy, shadow prices, carbon/resource and cost decomposition |
-| Spatial network | `load_center_*.csv`, `province_annual_load_center_accounts.csv`, `co2_source_sink_flows.csv` | 278-node spatial allocation, intraprovincial grid and CCS routing |
+| Spatial network | `load_center_*.csv`, `province_annual_load_center_accounts.csv`, `co2_source_sink_flows.csv` | 337-city annual load-center allocation, intraprovincial transmission proxy and CCS routing; the 278-node Natural Earth package is retained only for replication/sensitivity |
 | Acceptance | `solve_report.json`, `solution_qc.json`, `output_catalog.csv`, `output_data_dictionary.csv`, `result_manifest.json` | Numerical status, physical validity, schema discovery and integrity |
 | Cross-year | `planning_state/state_metadata.json`, `capacity_cohorts.csv.gz`, `state_transition_summary.csv` | Exact cohort inheritance and lifetime retirement |
 

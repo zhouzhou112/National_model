@@ -242,8 +242,34 @@ def _resolve_vre_cf_sites(
 
     unresolved = sites.cf_grid_id.eq(-1)
     if unresolved.any():
+        unresolved_wind = unresolved & sites.technology.isin({"onwind", "offwind"})
+        if unresolved_wind.any():
+            examples = sites.loc[
+                unresolved_wind,
+                ["grid_uid", "grid_id", "province_code", "technology"],
+            ].head(10)
+            raise ValueError(
+                "Wind CF is missing from both the technology-specific and "
+                f"same-grid mixed-wind stores; wind-to-PV fallback is forbidden: "
+                f"{examples.to_dict(orient='records')}"
+            )
+
+        unresolved_non_pv = unresolved & ~sites.technology.isin({"upv", "dpv"})
+        if unresolved_non_pv.any():
+            raise ValueError(
+                "No capacity-factor fallback rule for technologies: "
+                f"{sorted(sites.loc[unresolved_non_pv, 'technology'].unique())}"
+            )
+
         point_by_grid = points.set_index("grid_id")
-        pv_grid_ids = sorted(source_available["pv"].intersection(point_by_grid.index))
+        land_grid_ids = set(
+            points.loc[points.is_land.eq(1), "grid_id"].astype(np.int64)
+        )
+        pv_grid_ids = sorted(
+            source_available["pv"].intersection(point_by_grid.index).intersection(
+                land_grid_ids
+            )
+        )
         pv_points = point_by_grid.loc[pv_grid_ids, ["province_code", "lon", "lat"]].copy()
         for province_code, group in sites.loc[unresolved].groupby("province_code"):
             candidates = pv_points.loc[pv_points.province_code.eq(province_code)]

@@ -222,6 +222,32 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("vre_sites", len(data.vre_sites) > 0, len(data.vre_sites), "> 0")
     check("vre_bounds", bool((data.vre_sites.capacity_floor_gw <= data.vre_sites.capacity_upper_gw + 1e-9).all()), int((data.vre_sites.capacity_floor_gw > data.vre_sites.capacity_upper_gw + 1e-9).sum()), "0 violations")
     check("vre_cf_mapping", bool(data.vre_sites.cf_grid_id.ge(0).all()), int(data.vre_sites.cf_grid_id.lt(0).sum()), "0 unresolved")
+    cross_technology_cf = (
+        data.vre_sites.technology.isin({"onwind", "offwind"})
+        & data.vre_sites.cf_source_technology.eq("pv")
+    ) | (
+        data.vre_sites.technology.isin({"upv", "dpv"})
+        & data.vre_sites.cf_source_technology.eq("mixed_wind")
+    )
+    check(
+        "vre_cf_cross_technology_fallback",
+        not bool(cross_technology_cf.any()),
+        int(cross_technology_cf.sum()),
+        "0 wind-to-PV or PV-to-wind mappings",
+    )
+    pv_fallback = data.vre_sites.cf_fallback_method.eq(
+        "nearest_same_province_land_pv_grid"
+    )
+    source_is_land = data.vre_sites.cf_grid_id.map(
+        data.vre_points.set_index("grid_id").is_land
+    )
+    non_land_pv_fallback = pv_fallback & ~source_is_land.eq(1)
+    check(
+        "vre_cf_pv_fallback_uses_land_grid",
+        not bool(non_land_pv_fallback.any()),
+        int(non_land_pv_fallback.sum()),
+        "0 non-land PV fallback source grids",
+    )
     check("thermal_floor_rows", len(data.thermal_floor) == 31 * 10, len(data.thermal_floor), "310")
     check("nuclear_floor_rows", len(data.nuclear_floor) == 31, len(data.nuclear_floor), "31")
     check("nuclear_upper_rows", len(data.nuclear_upper) == 31, len(data.nuclear_upper), "31")
