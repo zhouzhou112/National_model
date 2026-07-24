@@ -12,12 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- Cloud execution update (2026-07-24): the staged `city_337` release passed both mandatory single-year 2030 Base engineering gates. Job `4003035` (24h, 32 CPU/64G) is `OPTIMAL + solution_qc=PASS`, with 342,343 variables, 262,201 constraints, 1,771,703 nonzeros, 26.978 s solver time and 0.834 GiB peak process-tree RSS. Job `4003045` (168h, 32 CPU/64G, `m4ci1805`) is `OPTIMAL + solution_qc=PASS`, with 1,011,079 variables, 1,393,915 constraints, 9,797,949 nonzeros, 377.057 s solver time and 3.661 GiB peak process-tree RSS. Both pass all 50 regression tests and independent `solve_report`/`solution_qc`/result-manifest validation.
+- Full-year cloud state: structural job `4003088` is currently constructing the 2030 Base 8760h LP on `m4cm1904` (`amd_a8_768`, 128 CPU, 700G, no `optimize`). Its output root is `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493/outputs/full_year_build_only_2030_22fb493_128cpu_700g`. The user subsequently authorized a real single-year full solve. Job `4003172` is submitted with `afterok:4003088` dependency, independent root `outputs/full_year_2030_base_22fb493_128cpu_700g`, 128 CPU, 700G, 24h wall limit, and a 640G Gurobi soft-memory limit. It must not be confused with a four-year production sequence and must be accepted only after full output QC/manifest checks.
+
 ### Version identity
 
 - Latest cloud audit (2026-07-24): the user-authorized city_337 release is staged at `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`. Code archive SHA256 is `2f3564ff9123b292106e51bd5ee943e13e874b6798450e38a96428a48a3b6b7a`; all 11,350 runtime-input files (model-ready, hourly CF and hydrology) match the fixed-server SHA256 manifest (`662565a090b64523ec353994e6fdb3314a94b88d429f16e85e1665300ffbc85a`). Compute-node job `4001137` completed the 2030/8760h preflight: 175.17 GiB available memory, 40,912,327 variables, 67,604,064 constraints, 520,922,832 nonzeros and 36.0 GiB static model-memory estimate. It did not construct or solve a Gurobi model.
 - Cloud proxy/WLS was revalidated on 2026-07-24 after repairing the three malformed `.bashrc` exports (the pre-fix file is retained as `.bashrc.codex_backup_20260724_proxy_export`). Compute-node job `4002980` inherited the proxy from `.bashrc` and reached `token.gurobi.com` through `172.16.110.3:8888` with HTTP 302. WLS job `4002981` then completed `Env.start()` and a tiny LP with `GUROBI_SMOKE_PASS`/`OPTIMAL` on `m4ci1905.para.bscc`. A short standalone curl probe in that smoke still timed out, so treat Gurobi's successful authenticated solve—not curl alone—as the license gate. Cloud 24h/168h gates are now eligible; full-year build-only remains downstream of those gates.
 
-- Handoff version: `v0.9.15`
+- Handoff version: `v0.9.16`
 - Snapshot date: `2026-07-24`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
@@ -228,6 +231,13 @@ $PYTHON scripts/run_cispo_planning_sequence.py \
 The command above must finish with four `RESUMED_ACCEPTED` records and must never rerun into the accepted year directories. Preserve all current output roots. If the suite runner is later deployed, first fast-forward the server to the exact pushed commit while no model process is active, then use a new versioned 24h/168h output root; do not reuse the accepted V1 roots. Any later cloud staging must use exact code/data/scenario hashes, explicit Slurm thread limits and new 24h/168h gates before a separately authorized 8760h job. The 96 GiB pre-build gate remains necessary but is not proof that barrier factorization will fit.
 
 ## Version history
+
+### v0.9.16 - 2026-07-24 - cloud 24h/168h gates accepted; authorized 2030 full-year execution queued
+
+- Git baseline: `1d72a8a`; new tracked cloud wrappers are `cloud_runs/scripts/cloud_cispo_diagnostic_gate.sbatch`, `cloud_runs/scripts/cloud_cispo_8760_build_only.sbatch` and `cloud_runs/scripts/cloud_cispo_8760_2030_base.sbatch`, alongside the three handoff/runbook status documents. No `supplementary_materials/**` content was modified or staged.
+- Scope: the user-authorized release passed ordered 24h and 168h 2030 Base cloud gates, each with explicit `Threads=32`, 50/50 tests, `OPTIMAL`, `solution_qc=PASS` and closed result-manifest validation. Structural full-year job `4003088` then began on the 768G partition with 128 CPU and 700G; it performs model construction only. After the user explicitly authorized a single-year full solve, `4003172` was submitted with `afterok:4003088`, 128 CPU, 700G, 24h scheduler limit and a 640G Gurobi soft-memory limit. The resource overrides do not change the CISPO physics, objective, constraints, data or horizon.
+- Evidence: `4003035` has 342,343 variables/262,201 constraints/1,771,703 nonzeros and 26.978 s solve time; `4003045` has 1,011,079/1,393,915/9,797,949 and 377.057 s. Their cloud roots are respectively `outputs/cloud_gate_24h_base_2030_22fb493` and `outputs/cloud_gate_168h_base_2030_22fb493`; both retain full solver, QC and manifest evidence. At update time `4003088` is running on `m4cm1904`, while `4003172` is correctly `PENDING` on the success dependency.
+- Exact next action: let `4003088` finish and validate its `build_report.json`, run scope and Slurm `MaxRSS`. If it succeeds, monitor `4003172` through model construction, Gurobi presolve/barrier/crossover and terminal output QC. Do not start a 2040 successor or reinterpret an incomplete/limit-stopped 2030 run as a scientific production sequence.
 
 ### v0.9.15 - 2026-07-24 - cloud proxy export repaired; WLS smoke restored
 

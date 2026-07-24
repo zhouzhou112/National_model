@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-24 cloud execution state: accepted small gates and one authorized 2030 Base full-year job
+
+The staged city_337 release now has accepted cloud gates `outputs/cloud_gate_24h_base_2030_22fb493` (`4003035`) and `outputs/cloud_gate_168h_base_2030_22fb493` (`4003045`). Both use the released code/data roots, `Threads=32`, pass 50/50 tests, reach `OPTIMAL`, pass QC and close their result manifests. Do not rerun into either root.
+
+`4003088` is the non-solving 8760h construction gate on `amd_a8_768` (128 CPU, 700G), root `outputs/full_year_build_only_2030_22fb493_128cpu_700g`. The user has explicitly authorized exactly one real 2030 Base full-year solve after this gate: `4003172` is held by `afterok:4003088`, uses 128 CPU/700G/24h and root `outputs/full_year_2030_base_22fb493_128cpu_700g`. Its runtime configuration changes only `numerics.threads=128` and `numerics.soft_mem_limit_gb=640`; do not change any scientific model setting. Monitor Slurm accounting plus `run_scope.json`, `build_report.json`, Gurobi log, `solve_report.json`, `solution_qc.json` and `result_manifest.json`. Do not launch a successor planning year until the 2030 root is accepted.
+
 ## 2026-07-24 ParaCloud city_337 staged preflight (current cloud state)
 
 The additive release is `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`; do not overwrite it. It contains code archive `National_model_22fb493.tar.gz`, the checksummed runtime roots `data/model_ready_20260723_v0722_city337`, `data/hourly_cf` and `data/hydro_timeseries_20260719_sequential_sparse`, and the source-to-cloud SHA256 manifest. The 2030 Base 8760h `--preflight-only` job `4001137` passed on a compute node with 175.17 GiB available memory; its scale is 40,912,327 variables, 67,604,064 constraints and 520,922,832 nonzeros. This proves neither model construction nor optimization.
