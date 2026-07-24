@@ -1,5 +1,38 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-24 `flexible_load_state_v2` deployment boundary
+
+Implementation `271c6dc` is local-only. It adds
+`config/scenarios/flexible_load_state_v2.json` and does not change the accepted Base,
+`flexible_load_v1` or `flexible_load_v2g_v1` configurations. Never update an active
+server/cloud checkout or reuse an accepted output root for this code.
+
+The new module uses `Power_curve_V2` load components already present in
+`hourly_load_2025_2060.csv.gz`. Heating/cooling have causal daily-reset equivalent
+inventories; EV V1G has a causal daily-reset charging backlog. Do not relabel
+`ev_hour_weight` as vehicle availability. Configuration validation intentionally rejects
+V2G in this formulation until hourly availability, usable battery energy and departure
+service are provided.
+
+After explicit deployment authorization, first verify an idle clean server and use a new
+checkout/data/output identity. Minimum gates are:
+
+```bash
+$PYTHON -m unittest discover -s tests -p 'test_*.py' -v
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --scenario-config config/scenarios/flexible_load_state_v2.json \
+  --diagnostic-hours 24 \
+  --output-root /data/zz2/National_model/outputs/planning_sequence_24h_<version>_flexible_load_state_v2
+```
+
+Require four `OPTIMAL + solution_qc=PASS` years, four valid result manifests,
+`scenario_id=flexible_load_state_v2`, `flexible_load_formulation=state_envelope_v2`,
+closed thermal/EV transitions, zero daily terminal state/backlog, no simultaneous
+up/down, valid capacity-cohort hashes and four `RESUMED_ACCEPTED` records. Only then may
+an explicitly authorized new 168h root start. The current full-year estimate is
+43,356,367 variables/68,724,249 constraints/524,283,387 nonzeros; do not infer
+fixed-server 744h/8760h or paid-cloud 8760h authorization from this estimate.
+
 ## 2026-07-24 local CF-fallback hardening deployment boundary
 
 The local post-release change forbids cross-technology wind-to-PV CF fallback and adds hard preflight checks. It does not alter the currently staged cloud release and must not be copied into an active checkout or output root. Current production inputs already resolve all 45 wind primary-store gaps through same-grid `mixed_wind`; the patch therefore changes no current wind CF mapping or model scale. When deploying later, require a new versioned code/output identity, 54/54 local-equivalent tests, preflight checks `vre_cf_cross_technology_fallback=PASS` and `vre_cf_pv_fallback_uses_land_grid=PASS`, followed by new 24h and 168h gates.
