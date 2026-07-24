@@ -61,6 +61,9 @@ def export_operational_solution(
     cooling_down = _value(variables.get("cooling_shift_down", zero_load))
     ev_up = _value(variables.get("ev_v1g_shift_up", zero_load))
     ev_down = _value(variables.get("ev_v1g_shift_down", zero_load))
+    heating_state = _value(variables.get("heating_state", zero_load))
+    cooling_state = _value(variables.get("cooling_state", zero_load))
+    ev_backlog = _value(variables.get("ev_v1g_backlog", zero_load))
     v2g_charge = _value(variables.get("ev_v2g_charge", zero_load))
     v2g_discharge = _value(variables.get("ev_v2g_discharge", zero_load))
     v2g_soc = _value(variables.get("ev_v2g_soc", zero_load))
@@ -156,6 +159,84 @@ def export_operational_solution(
         )
         for component in ("heating", "cooling", "ev")
     }
+    flexible_formulation = str(
+        config.raw["flexible_load"].get(
+            "formulation", "daily_energy_shift_v1"
+        )
+    )
+    thermal_state_transition_max = {"heating": 0.0, "cooling": 0.0}
+    thermal_state_terminal_max = {"heating": 0.0, "cooling": 0.0}
+    thermal_daily_energy_change_min = {"heating": 0.0, "cooling": 0.0}
+    ev_backlog_transition_max = 0.0
+    ev_backlog_terminal_max = 0.0
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and flexible_formulation == "state_envelope_v2"
+    ):
+        thermal_arrays = {
+            "heating": (heating_state, heating_up, heating_down),
+            "cooling": (cooling_state, cooling_up, cooling_down),
+        }
+        for component, (state, charge, discharge) in thermal_arrays.items():
+            component_config = config.raw["flexible_load"][component]
+            retention = float(component_config["retention_per_hour"])
+            eta_c = float(component_config["charge_efficiency"])
+            eta_d = float(component_config["discharge_efficiency"])
+            transition_residuals = []
+            terminal_residuals = []
+            energy_changes = []
+            for day in day_slices:
+                start, stop = int(day.start), int(day.stop)
+                transition_residuals.append(
+                    state[:, start]
+                    - eta_c * charge[:, start]
+                    + discharge[:, start] / eta_d
+                )
+                if stop - start > 1:
+                    transition_residuals.append(
+                        state[:, start + 1:stop]
+                        - retention * state[:, start:stop - 1]
+                        - eta_c * charge[:, start + 1:stop]
+                        + discharge[:, start + 1:stop] / eta_d
+                    )
+                terminal_residuals.append(state[:, stop - 1])
+                energy_changes.append(
+                    actual_components[component][:, day].sum(axis=1)
+                    - baseline_components[component][:, day].sum(axis=1)
+                )
+            thermal_state_transition_max[component] = max(
+                float(np.abs(values).max()) for values in transition_residuals
+            )
+            thermal_state_terminal_max[component] = max(
+                float(np.abs(values).max()) for values in terminal_residuals
+            )
+            thermal_daily_energy_change_min[component] = min(
+                float(values.min()) for values in energy_changes
+            )
+
+        backlog_transition_residuals = []
+        backlog_terminal_residuals = []
+        for day in day_slices:
+            start, stop = int(day.start), int(day.stop)
+            backlog_transition_residuals.append(
+                ev_backlog[:, start] - ev_down[:, start] + ev_up[:, start]
+            )
+            if stop - start > 1:
+                backlog_transition_residuals.append(
+                    ev_backlog[:, start + 1:stop]
+                    - ev_backlog[:, start:stop - 1]
+                    - ev_down[:, start + 1:stop]
+                    + ev_up[:, start + 1:stop]
+                )
+            backlog_terminal_residuals.append(ev_backlog[:, stop - 1])
+        ev_backlog_transition_max = max(
+            float(np.abs(values).max())
+            for values in backlog_transition_residuals
+        )
+        ev_backlog_terminal_max = max(
+            float(np.abs(values).max())
+            for values in backlog_terminal_residuals
+        )
     v2g_transition_max = 0.0
     if bool(config.raw["features"]["flexible_load"]) and bool(
         config.raw["flexible_load"]["ev_v2g"]["enabled"]
@@ -490,6 +571,31 @@ def export_operational_solution(
         "maximum_ev_v1g_daily_energy_residual_gwh": float(
             np.abs(daily_energy_residuals["ev"]).max()
         ),
+        "flexible_load_formulation": flexible_formulation,
+        "maximum_heating_state_transition_residual_gwh": (
+            thermal_state_transition_max["heating"]
+        ),
+        "maximum_cooling_state_transition_residual_gwh": (
+            thermal_state_transition_max["cooling"]
+        ),
+        "maximum_heating_daily_terminal_state_gwh": (
+            thermal_state_terminal_max["heating"]
+        ),
+        "maximum_cooling_daily_terminal_state_gwh": (
+            thermal_state_terminal_max["cooling"]
+        ),
+        "minimum_heating_daily_net_energy_change_gwh": (
+            thermal_daily_energy_change_min["heating"]
+        ),
+        "minimum_cooling_daily_net_energy_change_gwh": (
+            thermal_daily_energy_change_min["cooling"]
+        ),
+        "maximum_ev_v1g_backlog_transition_residual_gwh": (
+            ev_backlog_transition_max
+        ),
+        "maximum_ev_v1g_daily_terminal_backlog_gwh": (
+            ev_backlog_terminal_max
+        ),
         "maximum_ev_v2g_transition_residual_gwh": v2g_transition_max,
         "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
         "heating_simultaneous_up_down_province_hours": int(
@@ -630,15 +736,59 @@ def export_operational_solution(
             "maximum_effective_load_reconstruction_error_gw"
         ] <= tolerance,
         "effective_load_nonnegative": qc["minimum_effective_load_gw"] >= -tolerance,
-        "heating_daily_energy_conservation": qc[
-            "maximum_heating_daily_energy_residual_gwh"
-        ] <= tolerance,
-        "cooling_daily_energy_conservation": qc[
-            "maximum_cooling_daily_energy_residual_gwh"
-        ] <= tolerance,
+        "heating_service_accounting": (
+            (
+                qc["maximum_heating_state_transition_residual_gwh"] <= tolerance
+                and qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
+                and qc["minimum_heating_daily_net_energy_change_gwh"] >= -tolerance
+            )
+            if flexible_formulation == "state_envelope_v2"
+            else qc["maximum_heating_daily_energy_residual_gwh"] <= tolerance
+        ),
+        "cooling_service_accounting": (
+            (
+                qc["maximum_cooling_state_transition_residual_gwh"] <= tolerance
+                and qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
+                and qc["minimum_cooling_daily_net_energy_change_gwh"] >= -tolerance
+            )
+            if flexible_formulation == "state_envelope_v2"
+            else qc["maximum_cooling_daily_energy_residual_gwh"] <= tolerance
+        ),
+        "heating_state_transition": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_heating_state_transition_residual_gwh"] <= tolerance
+        ),
+        "cooling_state_transition": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_cooling_state_transition_residual_gwh"] <= tolerance
+        ),
+        "heating_daily_state_reset": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
+        ),
+        "cooling_daily_state_reset": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
+        ),
+        "heating_state_loss_accounting": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["minimum_heating_daily_net_energy_change_gwh"] >= -tolerance
+        ),
+        "cooling_state_loss_accounting": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["minimum_cooling_daily_net_energy_change_gwh"] >= -tolerance
+        ),
         "ev_v1g_daily_energy_conservation": qc[
             "maximum_ev_v1g_daily_energy_residual_gwh"
         ] <= tolerance,
+        "ev_v1g_backlog_transition": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_ev_v1g_backlog_transition_residual_gwh"] <= tolerance
+        ),
+        "ev_v1g_daily_backlog_reset": (
+            flexible_formulation != "state_envelope_v2"
+            or qc["maximum_ev_v1g_daily_terminal_backlog_gwh"] <= tolerance
+        ),
         "ev_v2g_transition": qc["maximum_ev_v2g_transition_residual_gwh"] <= tolerance,
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
@@ -1061,6 +1211,9 @@ def export_operational_solution(
         cooling_shift_down_gw=cooling_down,
         ev_v1g_shift_up_gw=ev_up,
         ev_v1g_shift_down_gw=ev_down,
+        heating_state_gwh=heating_state,
+        cooling_state_gwh=cooling_state,
+        ev_v1g_backlog_gwh=ev_backlog,
         ev_v2g_charge_gw=v2g_charge,
         ev_v2g_discharge_gw=v2g_discharge,
         ev_v2g_soc_gwh=v2g_soc,
@@ -1088,6 +1241,17 @@ def export_operational_solution(
                 "cooling_shift_down_gwh": float(cooling_down[p].sum()),
                 "ev_v1g_shift_up_gwh": float(ev_up[p].sum()),
                 "ev_v1g_shift_down_gwh": float(ev_down[p].sum()),
+                "heating_state_peak_gwh": float(heating_state[p].max()),
+                "cooling_state_peak_gwh": float(cooling_state[p].max()),
+                "heating_net_energy_change_gwh": float(
+                    actual_components["heating"][p].sum()
+                    - baseline_components["heating"][p].sum()
+                ),
+                "cooling_net_energy_change_gwh": float(
+                    actual_components["cooling"][p].sum()
+                    - baseline_components["cooling"][p].sum()
+                ),
+                "ev_v1g_backlog_peak_gwh": float(ev_backlog[p].max()),
                 "ev_v2g_charge_gwh": float(v2g_charge[p].sum()),
                 "ev_v2g_discharge_gwh": float(v2g_discharge[p].sum()),
                 "net_load_energy_change_gwh": float(
@@ -1110,6 +1274,7 @@ def export_operational_solution(
                 else "TEST_ONLY_TRUNCATED_HORIZON"
             ),
             "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
+            "flexible_load_formulation": flexible_formulation,
             "flexible_load_parameters": config.raw["flexible_load"],
             "baseline_load_definition": (
                 "base_residual + heating + cooling + EV; source table values remain immutable"
@@ -1117,6 +1282,11 @@ def export_operational_solution(
             "v2g_definition": (
                 "incremental daily-cyclic virtual storage around the EV charging service; "
                 "no reserve or capacity-margin credit"
+            ),
+            "state_envelope_v2_definition": (
+                "daily-reset equivalent heating/cooling inventories and causal EV "
+                "charging backlog; Power_curve_V2 ev_hour_weight is an uncontrolled "
+                "charging baseline and is not interpreted as vehicle plug availability"
             ),
             "reliability_treatment": config.raw["flexible_load"]["reliability_treatment"],
             "security_parameters": {

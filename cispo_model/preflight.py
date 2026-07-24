@@ -54,22 +54,39 @@ def estimate_full_model_scale(
     c = int((data.vre_points[config.raw["ccs_injection_field"]] > 0).sum())
     flex = config.raw["flexible_load"]
     flex_enabled = bool(config.raw["features"]["flexible_load"])
+    flex_formulation = str(
+        flex.get("formulation", "daily_energy_shift_v1")
+    )
     flexible_variable_multiplier = 0
     flexible_daily_modules = 0
     if flex_enabled:
         for component in ("heating", "cooling"):
             if bool(flex[component]["enabled"]):
-                flexible_variable_multiplier += 2
+                flexible_variable_multiplier += (
+                    3 if flex_formulation == "state_envelope_v2" else 2
+                )
                 flexible_daily_modules += 1
         if bool(flex["ev_v1g"]["enabled"]):
-            flexible_variable_multiplier += 2
+            flexible_variable_multiplier += (
+                3 if flex_formulation == "state_envelope_v2" else 2
+            )
             flexible_daily_modules += 1
         if bool(flex["ev_v2g"]["enabled"]):
             flexible_variable_multiplier += 3
     flexible_variables = flexible_variable_multiplier * p * h
     flexible_constraints = 0
     if flex_enabled:
-        flexible_constraints = p * h + flexible_daily_modules * p * int(np.ceil(h / 24))
+        days = int(np.ceil(h / 24))
+        if flex_formulation == "state_envelope_v2":
+            # Effective-load nonnegativity plus hourly state/queue transitions
+            # and one terminal reset per province-day-module.
+            flexible_constraints = (
+                p * h
+                + flexible_daily_modules * p * h
+                + flexible_daily_modules * p * days
+            )
+        else:
+            flexible_constraints = p * h + flexible_daily_modules * p * days
         if bool(flex["ev_v2g"]["enabled"]):
             flexible_constraints += p * h
 

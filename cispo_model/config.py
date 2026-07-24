@@ -126,6 +126,17 @@ class ModelConfig:
             raise ValueError(
                 "The first flexible-load implementation requires 24-hour energy conservation"
             )
+        flexible_formulation = str(
+            flexible.get("formulation", "daily_energy_shift_v1")
+        )
+        if flexible_formulation not in {
+            "daily_energy_shift_v1",
+            "state_envelope_v2",
+        }:
+            raise ValueError(
+                "flexible_load.formulation must be daily_energy_shift_v1 "
+                "or state_envelope_v2"
+            )
         for component in ("heating", "cooling"):
             settings = flexible.get(component, {})
             reduction = float(settings.get("maximum_reduction_fraction", -1.0))
@@ -136,6 +147,22 @@ class ModelConfig:
                 raise ValueError(
                     f"flexible_load.{component} fractions must be in [0, 1]"
                 )
+            if flexible_formulation == "state_envelope_v2":
+                if float(settings.get("duration_hours", 0.0)) <= 0.0:
+                    raise ValueError(
+                        f"flexible_load.{component}.duration_hours must be positive"
+                    )
+                retention = float(settings.get("retention_per_hour", 0.0))
+                if not 0.0 < retention <= 1.0:
+                    raise ValueError(
+                        f"flexible_load.{component}.retention_per_hour must be in (0, 1]"
+                    )
+                for key in ("charge_efficiency", "discharge_efficiency"):
+                    efficiency = float(settings.get(key, 0.0))
+                    if not 0.0 < efficiency <= 1.0:
+                        raise ValueError(
+                            f"flexible_load.{component}.{key} must be in (0, 1]"
+                        )
         ev_v1g = flexible.get("ev_v1g", {})
         if not 0.0 <= float(ev_v1g.get("shiftable_energy_fraction", -1.0)) <= 1.0:
             raise ValueError("flexible_load.ev_v1g.shiftable_energy_fraction must be in [0, 1]")
@@ -143,6 +170,11 @@ class ModelConfig:
             raise ValueError(
                 "flexible_load.ev_v1g.maximum_power_to_daily_average_ratio must be >= 1"
             )
+        if flexible_formulation == "state_envelope_v2":
+            if float(ev_v1g.get("maximum_queue_duration_hours", 0.0)) <= 0.0:
+                raise ValueError(
+                    "flexible_load.ev_v1g.maximum_queue_duration_hours must be positive"
+                )
         ev_v2g = flexible.get("ev_v2g", {})
         for key in ("charge_efficiency", "discharge_efficiency"):
             if not 0.0 < float(ev_v2g.get(key, 0.0)) <= 1.0:
@@ -151,6 +183,13 @@ class ModelConfig:
             raise ValueError("flexible_load.ev_v2g.participation_fraction must be in [0, 1]")
         if float(ev_v2g.get("power_duration_hours", 0.0)) <= 0.0:
             raise ValueError("flexible_load.ev_v2g.power_duration_hours must be positive")
+        if flexible_formulation == "state_envelope_v2" and bool(
+            ev_v2g.get("enabled", False)
+        ):
+            raise ValueError(
+                "state_envelope_v2 cannot enable V2G until calibrated hourly vehicle "
+                "availability, battery-energy and departure-service inputs exist"
+            )
         for key in (
             "shift_throughput_cost_yuan_per_mwh",
             "degradation_cost_yuan_per_mwh",

@@ -15,7 +15,7 @@ One 8760-hour solve is expensive. A completed case must therefore preserve all o
 
 At case start, `input_manifest.csv` records every resolved table and hydrology file with size and SHA256. If `--scenario-config` is used, the override file is also checksummed. Zarr stores record an exact resolved path and metadata fingerprint; the large chunk payload is not copied into the case directory. `model_config_snapshot.json` embeds the resolved year-specific configuration rather than only referencing a mutable config path.
 
-The hourly load input preserves `demand_gw`, `base_residual_gw`, `heating_gw`, `cooling_gw` and `ev_gw`. The loader hard-fails on missing/negative values or component closure above `1e-9 GW`; optional flexibility is applied only after this immutable baseline is loaded.
+The hourly load input preserves `demand_gw`, `base_residual_gw`, `heating_gw`, `cooling_gw` and `ev_gw`. The loader hard-fails on missing/negative values or component closure above `1e-9 GW`; optional flexibility is applied only after this immutable baseline is loaded. The current future-load source is the local `Power_curve_V2` projection: heating/cooling use the non-leap 2024 BAIT/HDD/CDD shapes multiplied by `thermal_multiplier`, while EV load is `future_nev_stock × ev_kwh_per_vehicle_day × ev_hour_weight`. `ev_hour_weight` is an uncontrolled charging-profile weight and must not be relabelled as plug availability.
 
 All model power variables use GW, hourly energy sums use GWh, storage energy uses GWh, carbon uses MtCO2, biomass uses PJ, reservoir flows use m3/s and physical active storage uses m3. The objective uses million CNY per year. Truncated horizons retain annual capacity and policy terms but contain only truncated operating terms.
 
@@ -43,7 +43,7 @@ NPZ files are saved with numeric arrays and fixed-width Unicode identifiers, so 
 - `hydro_dispatch.npz`: `[province, hour]` ROR availability/generation, reservoir generation and up reserve.
 - `reservoir_dispatch.npz`: `[reservoir_station, hour]` generation, flow, spill, storage and inflow, linked through `reservoir_station_index.csv`.
 - `transmission_flows.npz`: `[corridor, hour]` forward/reverse flow, linked to `transmission_capacity.csv`. DC reverse rows are explicitly reconstructed as zero for output compatibility.
-- `flexible_load_dispatch.npz`: `[province, hour]` immutable baseline components, optimized components, up/down shifts and V2G charge/discharge/SOC. It is written for Base too; Base arrays equal the inputs and all flexibility arrays are zero.
+- `flexible_load_dispatch.npz`: `[province, hour]` immutable baseline components, optimized components, up/down shifts, equivalent heating/cooling state, EV V1G backlog and V2G charge/discharge/SOC. It is written for Base too; Base arrays equal the inputs and all flexibility/state arrays are zero. In `state_envelope_v2`, thermal states and EV backlog start from zero and reset to zero within each Beijing-time day; in legacy V1 those three arrays are zero and the accepted daily energy-equality formulation is unchanged.
 
 The optimization does not contain site-hour VRE dispatch variables. It dispatches VRE at province-technology-hour resolution while retaining site-level capacity and exact site CF coefficients. Therefore no artificial site-level curtailment allocation is exported. Site potential generation can be recomputed from the saved capacity decision and immutable CF input without rerunning optimization.
 

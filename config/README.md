@@ -31,6 +31,16 @@ python scripts/run_cispo_2030_full_year.py \
   --output-dir outputs/flexible_load_v1_2030
 ```
 
+状态型冷热 + 因果 EV V1G（V2G 关闭）：
+
+```bash
+python scripts/run_cispo_2030_full_year.py \
+  --scenario-config config/scenarios/flexible_load_state_v2.json \
+  --planning-year 2030 \
+  --horizon full_year \
+  --output-dir outputs/flexible_load_state_v2_2030
+```
+
 冷热 + EV V1G + V2G：
 
 ```bash
@@ -54,6 +64,30 @@ Base 不创建任何柔性变量。启用后，冷热负荷使用逐时 `shift_u
 V2G 是叠加在 EV 驾驶能量服务上的增量虚拟储能：按日循环 SOC，显式计入充放电效率和退化吞吐成本。它不获得备用、惯量或规划容量信用。当前规划容量裕度仍使用 Base 峰值，小时备用与惯量约束使用优化后的有效负荷，这是保守的可靠性处理。
 
 当前 V1 是宏观情景模块，不是交通行为模型。`15%` 冷热上下调、`50%` EV 可搬运比例、V2G 参与率等均标记为 `ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY`；在作为论文主结论前，必须用建筑热惯性、接入率、车辆电池容量、驾驶耗能和出发 SOC 数据校准。
+
+## 3.1 状态型 `flexible_load_state_v2`
+
+该情景不改变四分量输入。`heating_gw` 和 `cooling_gw` 来自
+`Power_curve_V2` 的 BAIT/HDD/CDD 重建；未来年份沿用 2024 非闰年逐时形状并按
+`thermal_multiplier` 缩放。每个省和北京时间自然日增加等效热库存：
+
+`state[t] = retention * state[t-1] + eta_charge * shift_up[t] - shift_down[t] / eta_discharge`。
+
+日首库存固定为零，日末回到零；因此不能从未来小时或下一日借用热量。库存损耗会使
+优化后的冷热用电高于原基线，QC 检查状态转移、日末归零和损耗方向，不再错误要求
+冷热逐日净电量严格相等。该表示仍是省级等效代理，不是建筑温度或 COP 的 RC 模型。
+
+EV 输入由 `Power_curve_V2` 的
+`future_nev_stock × ev_kwh_per_vehicle_day × ev_hour_weight` 构成。
+其中 `ev_hour_weight` 是无序充电基线形状，不是车辆接桩可用率。V2 将可搬运基线视为
+逐时进入的待充服务，增加非负 `ev_v1g_backlog_gwh`；只有先延期形成队列后，后续小时
+才可补充充电，并在每日末清零。`maximum_queue_duration_hours` 是聚合队列能量包络，
+不是逐车严格充电截止期。
+
+`flexible_load_state_v2` 继续继承 V1 的 `15%` 冷热功率比例、`50%` EV 可搬运比例和
+`2 ×` 日均充电功率包络；新增 `4/5 h` 热库存时长、`0.94/0.92` 小时保留率和
+`12 h` EV 队列包络。以上均为显式敏感性假设。该情景强制关闭 V2G；在缺少逐时接入率、
+可用电池能量和出发服务约束时，配置校验拒绝把状态 V2 与 V2G 同时开启。
 
 ## 4. 敏感性分析规则
 

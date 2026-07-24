@@ -23,7 +23,12 @@ class SensitivitySuiteTests(unittest.TestCase):
         implemented = {row["scenario_id"]: row for row in catalog["implemented"]}
         self.assertEqual(
             set(implemented),
-            {"base", "flexible_load_v1", "flexible_load_v2g_v1"},
+            {
+                "base",
+                "flexible_load_v1",
+                "flexible_load_state_v2",
+                "flexible_load_v2g_v1",
+            },
         )
 
         base = load_model_config(scenario_path=implemented["base"]["config_path"])
@@ -33,9 +38,16 @@ class SensitivitySuiteTests(unittest.TestCase):
         v2g = load_model_config(
             scenario_path=implemented["flexible_load_v2g_v1"]["config_path"]
         )
+        state = load_model_config(
+            scenario_path=implemented["flexible_load_state_v2"]["config_path"]
+        )
         self.assertFalse(base.raw["features"]["flexible_load"])
         self.assertTrue(v1.raw["features"]["flexible_load"])
         self.assertFalse(v1.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertEqual(
+            state.raw["flexible_load"]["formulation"], "state_envelope_v2"
+        )
+        self.assertFalse(state.raw["flexible_load"]["ev_v2g"]["enabled"])
         self.assertTrue(v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
 
     def test_planned_scenario_cannot_be_selected(self):

@@ -3,6 +3,7 @@
   "implemented": [
     {"scenario_id": "base", "config": "config/scenarios/base.json"},
     {"scenario_id": "flexible_load_v1", "config": "config/scenarios/flexible_load_v1.json"},
+    {"scenario_id": "flexible_load_state_v2", "config": "config/scenarios/flexible_load_state_v2.json"},
     {"scenario_id": "flexible_load_v2g_v1", "config": "config/scenarios/flexible_load_v2g_v1.json"}
   ],
   "planned_not_runnable": [
