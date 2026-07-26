@@ -6,14 +6,21 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import xarray as xr
+
+try:
+    import xarray as xr
+except ModuleNotFoundError:
+    xr = None
 
 from cispo_model.config import load_model_config
 from cispo_model.wave_energy import (
     WaveCapacityFactorStore,
     wave_cost_parameters,
 )
-from scripts.build_wave_energy_inputs import map_to_existing_marine_grid
+if xr is not None:
+    from scripts.build_wave_energy_inputs import map_to_existing_marine_grid
+else:
+    map_to_existing_marine_grid = None
 
 
 class WaveEnergyTests(unittest.TestCase):
@@ -37,6 +44,7 @@ class WaveEnergyTests(unittest.TestCase):
             "wave_existing_grid_v2",
         )
 
+    @unittest.skipIf(xr is None, "optional wave preprocessing tests require xarray")
     def test_mapping_keeps_only_unique_existing_marine_grids(self):
         points = pd.DataFrame(
             {
@@ -57,6 +65,7 @@ class WaveEnergyTests(unittest.TestCase):
         np.testing.assert_array_equal(positions, [0])
         self.assertLess(differences[0], 0.02)
 
+    @unittest.skipIf(xr is None, "optional wave NetCDF tests require xarray")
     def test_netcdf_reader_selects_exact_scenario_and_grid_order(self):
         hours = 8760
         grid_ids = np.asarray([11, 22], dtype=np.int64)
