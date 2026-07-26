@@ -14,24 +14,38 @@ Required sequence:
 2. verify the fixed server has no CISPO/Gurobi process, then fast-forward the
    checkout to the exact pushed commit;
 3. export the four versioned runtime roots and pass the complete server regression;
-4. run new isolated 24h and 168h Base gates with `OPTIMAL + solution_qc=PASS`;
-5. run only one 744h profile at a time, requiring at least 56 GiB available RAM
+4. close the explicit-versus-projected spill A/B with the same 168h Base
+   Barrier-32 command and select using presolved/factor/runtime/QC evidence;
+5. compare solver profiles sequentially on the selected 168h formulation;
+6. run only one 744h profile at a time, requiring at least 56 GiB available RAM
    before launch and using `SoftMemLimit=48`;
-6. compare `build_report.json`, `solver_telemetry.jsonl`, `gurobi.log`,
+7. compare `build_report.json`, `solver_telemetry.jsonl`, `gurobi.log`,
    `solve_report.json`, `solution_qc.json`, process-tree peak RSS and `/usr/bin/time`;
-7. stop further profiles after any memory hard failure or when available RAM falls
+8. stop further profiles after any memory hard failure or when available RAM falls
    below the gate. Never run multiple profiles concurrently.
 
-The first exact model reduction eliminates only independent-reservoir spill
-columns. Cascade spill remains explicit. Base 8760h estimated columns fall from
-40,912,327 to 36,760,087. Solver profiles are numerics-only JSON files and are
-separately hashed in provenance:
+The independent-reservoir spill projection in `6d84209` is mathematically exact,
+but raw-column reduction alone is not an acceptance criterion. A paired 24h test
+made the presolved matrix and factor operations larger and was slower; the
+projected 168h fixed-server run was faster than an older non-matched reference.
+Commit `9e82cc5` therefore restores explicit spill provisionally so a matched
+168h comparison can decide the retained formulation. Preserve both output roots.
+
+Solver profiles are numerics-only JSON files and are separately hashed in
+provenance:
 
 ```text
 config/solver_profiles/barrier_32_reference_v1.json
 config/solver_profiles/barrier_16_sparse_amd_v1.json
 config/solver_profiles/dual_simplex_16_v1.json
+config/solver_profiles/barrier_32_limited_presolve_fast_basis_v1.json
+config/solver_profiles/barrier_32_force_dual_v1.json
+config/solver_profiles/pdhg_cpu_32_v1.json
 ```
+
+Run CPU PDHG only with Gurobi 13.0+ (the fixed server qualifies); local Gurobi
+12 must not be used for that profile. Use `scripts/compare_solver_runs.py` to
+write one JSON and CSV row per isolated output root.
 
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
