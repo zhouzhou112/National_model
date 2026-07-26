@@ -14,9 +14,9 @@ Required sequence:
 2. verify the fixed server has no CISPO/Gurobi process, then fast-forward the
    checkout to the exact pushed commit;
 3. export the four versioned runtime roots and pass the complete server regression;
-4. close the explicit-versus-projected spill A/B with the same 168h Base
-   Barrier-32 command and select using presolved/factor/runtime/QC evidence;
-5. compare solver profiles sequentially on the selected 168h formulation;
+4. retain explicit spill: its matched 168h factor structure and telemetry memory
+   are lower, and its 24h flexibility runtime is materially faster;
+5. compare dual simplex, Barrier-16 and CPU-PDHG sequentially at 168h;
 6. run only one 744h profile at a time, requiring at least 56 GiB available RAM
    before launch and using `SoftMemLimit=48`;
 7. compare `build_report.json`, `solver_telemetry.jsonl`, `gurobi.log`,
@@ -25,11 +25,17 @@ Required sequence:
    below the gate. Never run multiple profiles concurrently.
 
 The independent-reservoir spill projection in `6d84209` is mathematically exact,
-but raw-column reduction alone is not an acceptance criterion. A paired 24h test
-made the presolved matrix and factor operations larger and was slower; the
-projected 168h fixed-server run was faster than an older non-matched reference.
-Commit `9e82cc5` therefore restores explicit spill provisionally so a matched
-168h comparison can decide the retained formulation. Preserve both output roots.
+but raw-column reduction alone is not an acceptance criterion. The matched 168h
+projection is 1.84% faster, yet explicit spill has lower presolved rows/nonzeros,
+lower `AA' NZ`, `Factor NZ`, `Factor Ops` and telemetry solver memory. Explicit
+spill is also 24.0% faster in the paired flexibility case. Commit `9e82cc5`
+therefore remains the default because 8760h is factor-memory bound. Preserve both
+output roots and the audit at:
+
+```text
+/data/zz2/National_model/outputs/solver_comparisons/spill_168h_ab_v0726.json
+/data/zz2/National_model/outputs/solver_comparisons/spill_168h_ab_v0726.csv
+```
 
 Solver profiles are numerics-only JSON files and are separately hashed in
 provenance:

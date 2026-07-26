@@ -1,12 +1,12 @@
 # CISPO 2030 full-year server status
 
-## 2026-07-26 spill A/B reopened; projected 168h accepted; cloud job terminal
+## 2026-07-26 spill A/B closed; explicit formulation retained; profile gates next
 
 - ParaCloud job `4004585` is terminal `TIMEOUT` after `1-00:00:25`; its batch step is `CANCELLED` after `1-00:00:32`. It reached Barrier iteration 35 at solver time 82,521 s, with primal residual `1.05e8`, dual residual `2.68`, complementarity `6.03e6`, primal objective `2.0166e11` and dual objective `-1.4513e13`. It was still far from acceptance.
 - Sampled MaxRSS remains 499,919,116 KiB = 476.76 GiB. The run did not produce `solve_report.json`, `solution_qc.json` or `result_manifest.json`; it is neither solved nor evidence of infeasibility. Preserve the cloud root unchanged. No cloud job is active.
-- Fixed-server HEAD `ed8e91a` completed `/data/zz2/National_model/outputs/2030_168h_v0726_spill_projection_barrier32` as `OPTIMAL + solution_qc=PASS`: 931,447 original columns; 744,673/757,209/7,053,168 presolved rows/columns/nonzeros; `Factor NZ=1.043e8`; `Factor Ops=8.504e10`; Barrier 182 iterations/585.33 s; total solver runtime 641.996 s; peak process-tree RSS 3.512 GiB. The server is now idle.
-- The exact projection is not yet accepted as the default. In a local same-code 24h `flexible_load_comfort_v3` comparison, it increased Factor Ops by 9.62% and runtime from 34.358 s to 45.168 s despite removing 11,376 raw columns. Commit `9e82cc5` restores explicit spill provisionally and adds a machine-readable comparison tool; 67/67 local tests and the repeated explicit 24h solve/QC pass.
-- Persistent solver telemetry, graceful termination and six traceable numerics-only solver profiles are validated locally. The user has explicitly authorized sequential fixed-server 744h or longer stress tests provided memory remains safe; this supersedes earlier fixed-server 744h prohibitions for the present engineering campaign. First complete a matched explicit-spill 168h A/B, then compare profiles. Do not run concurrent CISPO solves and do not start fixed-server 8760h.
+- Fixed-server HEAD `94d1f1d` passes 67 tests (two optional wave-I/O skips). Both 168h spill formulations are `OPTIMAL + solution_qc=PASS`. Projection takes 641.996 s and explicit spill 654.026 s, but explicit spill has lower presolved rows/nonzeros, `Factor NZ`, `Factor Ops` and telemetry solver memory; it is also materially faster in the paired 24h flexibility case. Explicit spill is therefore retained for the memory-bound full-year target.
+- Machine-readable evidence is saved at `/data/zz2/National_model/outputs/solver_comparisons/spill_168h_ab_v0726.{json,csv}`. The two original output roots are preserved.
+- Persistent solver telemetry, graceful termination and six traceable numerics-only solver profiles are validated. Local Base 24h pre-screen favors dual simplex (25.796 s) and Barrier-16 (29.181 s) over Barrier-32 reference (33.889 s); all are optimal and QC PASS. Sequential fixed-server 168h profile gates are now eligible. The user has authorized one-at-a-time 744h or longer stress tests subject to the memory gate. Do not run concurrent CISPO solves and do not start fixed-server 8760h.
 
 ## 2026-07-25 20:30 CST Barrier-32 reached iteration 23
 
