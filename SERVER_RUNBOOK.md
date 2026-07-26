@@ -120,6 +120,22 @@ This passes the build/factor memory gate but is not solve acceptance. Continue
 monitoring the Barrier residual trajectory and subsequent crossover; do not
 infer success from factorization alone.
 
+Barrier subsequently completed normally in 244 iterations and 8,917.48 solver
+seconds with interior objective `2,196,881.94 million CNY`. The active run is
+now in crossover:
+
+```text
+initial dual pushes remaining: 1,044,784
+dual pushes remaining at solver time 9,860 s: 464,775
+latest telemetry checkpoint: 358,606 simplex iterations at 9,996.25 s
+current / peak solver memory: 13.948 / 25.087 GB
+```
+
+Do not treat the Barrier objective as the accepted LP result. Continue until
+crossover and any primal cleanup finish, then require `OPTIMAL`,
+`solution_qc=PASS`, a closed result manifest, `scenario_id=base` and final
+process-tree memory/time evidence.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
