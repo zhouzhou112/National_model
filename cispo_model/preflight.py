@@ -48,18 +48,6 @@ def estimate_full_model_scale(
     n_reservoir = int(
         data.hydro_stations.operation_type_model.eq("reservoir_storage").sum()
     )
-    reservoir_ids = set(
-        data.hydro_stations.loc[
-            data.hydro_stations.operation_type_model.eq("reservoir_storage"),
-            "hydrochn_row_id",
-        ].astype(str)
-    )
-    cascade_ids: set[str] = set()
-    for value in data.hydro_cascade_nodes.get("hydrochn_row_ids", []):
-        cascade_ids.update(
-            part.strip() for part in str(value).split(";") if part.strip()
-        )
-    n_cascade_reservoir = len(reservoir_ids.intersection(cascade_ids))
     n_sub = len(data.substations)
     n_center = len(data.load_centers)
     n_intra = len(data.intra_load_center_edges)
@@ -116,9 +104,7 @@ def estimate_full_model_scale(
         "thermal_hourly_ruc": 5 * p * k * h,
         "storage_capacity_and_hourly": 2 * p * s + 5 * p * s * h,
         "hydro_site_capacity_and_hourly": (
-            2 * n_hydro
-            + 2 * p * h
-            + (2 * n_reservoir + n_cascade_reservoir) * h
+            2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
         ),
         "transmission_capacity_and_flow": 2 * e + (e + e_reverse) * h,
         "dac_capacity_and_capture": 3 * p * d,
@@ -174,7 +160,7 @@ def estimate_full_model_scale(
         2 * p * v * block_hours
         + 5 * p * k * block_hours
         + 5 * p * s * block_hours
-        + (2 * p + 2 * n_reservoir + n_cascade_reservoir) * block_hours
+        + (2 * p + 3 * n_reservoir) * block_hours
         + (e + e_reverse) * block_hours
         + flexible_variables
     )

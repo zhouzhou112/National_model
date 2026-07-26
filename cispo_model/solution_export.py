@@ -96,6 +96,7 @@ def export_operational_solution(
     reservoir_generation = _value(variables["reservoir_generation"])
     reservoir_by_province = _value(variables["reservoir_generation_by_province"])
     reservoir_soc = _value(variables["reservoir_soc"])
+    reservoir_spill = _value(variables["reservoir_spill"])
     reservoir_flow_scale_m3s = float(
         artifacts.index.get("reservoir_flow_scale_m3s", 1.0)
     )
@@ -104,6 +105,10 @@ def export_operational_solution(
     )
     reservoir_turbine_flow = (
         _value(variables["reservoir_turbine_flow"])
+        * reservoir_flow_scale_m3s
+    )
+    reservoir_spill_flow = (
+        _value(variables["reservoir_spill_flow"])
         * reservoir_flow_scale_m3s
     )
     reservoir_volume = (
@@ -120,41 +125,6 @@ def export_operational_solution(
     reservoir_active_storage = np.asarray(
         artifacts.index["reservoir_active_storage_m3"], dtype=float
     )
-    cascade_rows = np.asarray(
-        artifacts.index.get("cascade_station_local_rows", []), dtype=int
-    )
-    independent_rows = np.asarray(
-        artifacts.index.get("independent_reservoir_local_rows", []), dtype=int
-    )
-    reservoir_spill_flow = np.zeros_like(reservoir_turbine_flow)
-    if len(cascade_rows):
-        reservoir_spill_flow[cascade_rows, :] = (
-            _value(variables["reservoir_cascade_spill_flow"])
-            * reservoir_flow_scale_m3s
-        )
-    if len(independent_rows):
-        independent_volume_change = np.empty(
-            (len(independent_rows), hours), dtype=float
-        )
-        independent_volume_change[:, 0] = (
-            reservoir_volume[independent_rows, 0]
-            - reservoir_volume[independent_rows, -1]
-        )
-        if hours > 1:
-            independent_volume_change[:, 1:] = (
-                reservoir_volume[independent_rows, 1:]
-                - reservoir_volume[independent_rows, :-1]
-            )
-        reservoir_spill_flow[independent_rows, :] = (
-            reservoir_local_inflow[independent_rows, :]
-            - reservoir_turbine_flow[independent_rows, :]
-            - independent_volume_change / 3600.0
-        )
-    reservoir_conversion = np.asarray(
-        artifacts.index["reservoir_generation_conversion_gw_per_m3s"],
-        dtype=float,
-    )
-    reservoir_spill = reservoir_spill_flow * reservoir_conversion[:, None]
     storage_charge = _value(variables["storage_charge"])
     storage_discharge = _value(variables["storage_discharge"])
     storage_soc = _value(variables["storage_soc"])
@@ -617,7 +587,6 @@ def export_operational_solution(
     # physical tolerance is 1e-6 in that equation and remains negligible
     # relative to the largest active storage while aligning with LP tolerances.
     reservoir_volume_tolerance_m3 = 1.0
-    reservoir_spill_flow_tolerance_m3s = 1e-3
     flow_direction_tolerance_gw = 1e-6
     bidirectional_mask = (
         (flow_forward > flow_direction_tolerance_gw)
@@ -765,9 +734,6 @@ def export_operational_solution(
             ).max()
         ),
         "maximum_reservoir_transition_residual_m3": float(np.abs(reservoir_cycle_residual).max()),
-        "minimum_reconstructed_reservoir_spill_flow_m3s": float(
-            reservoir_spill_flow.min()
-        ),
         "maximum_reservoir_energy_upper_violation_gwh": float(
             np.maximum(reservoir_soc - reservoir_energy_upper[:, None], 0.0).max()
         ),
@@ -937,9 +903,6 @@ def export_operational_solution(
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,
         "storage_soc": qc["maximum_storage_soc_upper_violation_gwh"] <= tolerance,
         "reservoir_transition": qc["maximum_reservoir_transition_residual_m3"] <= reservoir_volume_tolerance_m3,
-        "reservoir_spill_nonnegative": qc[
-            "minimum_reconstructed_reservoir_spill_flow_m3s"
-        ] >= -reservoir_spill_flow_tolerance_m3s,
         "reservoir_energy": qc["maximum_reservoir_energy_upper_violation_gwh"] <= tolerance,
         "reservoir_active_storage": qc["maximum_reservoir_active_storage_upper_violation_m3"] <= reservoir_volume_tolerance_m3,
         "carbon": qc["carbon_limit_margin_mtco2"] >= -tolerance,

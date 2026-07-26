@@ -128,52 +128,6 @@ class HydroStationModelTests(unittest.TestCase):
             self.assertGreater(len(target_rows), 0)
             self.assertAlmostEqual(float(weights.sum()), 1.0, places=9)
 
-    def test_independent_reservoir_spill_projection_is_exact(self):
-        """The inequality slack reconstructs the eliminated nonnegative spill."""
-        inflow = np.asarray([3.0, 2.5, 4.0])
-        turbine = np.asarray([1.0, 2.0, 1.5])
-        volume = np.asarray([8.0, 8.1, 8.0])
-        previous = np.roll(volume, 1)
-        scale = 0.25
-        projected_rhs = previous + (inflow - turbine) * scale
-        self.assertTrue((volume <= projected_rhs + 1e-12).all())
-        reconstructed_spill = inflow - turbine - (volume - previous) / scale
-        self.assertTrue((reconstructed_spill >= -1e-12).all())
-        reconstructed_volume = (
-            previous + (inflow - turbine - reconstructed_spill) * scale
-        )
-        np.testing.assert_allclose(reconstructed_volume, volume, atol=1e-12)
-
-    def test_scale_estimate_counts_only_cascade_spill_columns(self):
-        from cispo_model.preflight import estimate_full_model_scale
-
-        estimate_24 = estimate_full_model_scale(self.config, self.data, 24)
-        estimate_48 = estimate_full_model_scale(self.config, self.data, 48)
-        hourly_growth = (
-            estimate_48.dominant_blocks["hydro_site_capacity_and_hourly"]
-            - estimate_24.dominant_blocks["hydro_site_capacity_and_hourly"]
-        ) // 24
-        reservoir_count = int(
-            self.data.hydro_stations.operation_type_model.eq(
-                "reservoir_storage"
-            ).sum()
-        )
-        cascade_ids = set()
-        for value in self.data.hydro_cascade_nodes.hydrochn_row_ids:
-            cascade_ids.update(
-                part.strip() for part in str(value).split(";") if part.strip()
-            )
-        reservoir_ids = set(
-            self.data.hydro_stations.loc[
-                self.data.hydro_stations.operation_type_model.eq(
-                    "reservoir_storage"
-                ),
-                "hydrochn_row_id",
-            ].astype(str)
-        )
-        cascade_count = len(reservoir_ids.intersection(cascade_ids))
-        self.assertEqual(hourly_growth, 2 * 31 + 2 * reservoir_count + cascade_count)
-
     @staticmethod
     def data_root_timeseries():
         import pandas as pd

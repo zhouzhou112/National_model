@@ -428,6 +428,11 @@ def build_full_year_monolithic(
         lb=0.0,
         name="reservoir_turbine_flow_1000m3s",
     )
+    reservoir_spill_flow = model.addMVar(
+        (reservoir_count, hours),
+        lb=0.0,
+        name="reservoir_spill_flow_1000m3s",
+    )
     reservoir_volume = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
@@ -439,6 +444,7 @@ def build_full_year_monolithic(
         conversion * reservoir_volume_scale_m3 / 3600.0
     )
     reservoir_soc = reservoir_volume * scaled_volume_to_energy[:, None]
+    reservoir_spill = reservoir_spill_flow * scaled_flow_to_power[:, None]
     reservoir_generation = (
         reservoir_turbine_flow * scaled_flow_to_power[:, None]
     )
@@ -499,32 +505,18 @@ def build_full_year_monolithic(
     independent_rows = np.setdiff1d(
         all_reservoir_local_rows, cascade_rows, assume_unique=True
     )
-    cascade_position_by_local_row = np.full(reservoir_count, -1, dtype=np.int64)
-    cascade_position_by_local_row[cascade_rows] = np.arange(
-        len(cascade_rows), dtype=np.int64
-    )
-    reservoir_cascade_spill_flow = model.addMVar(
-        (len(cascade_rows), hours),
-        lb=0.0,
-        name="reservoir_cascade_spill_flow_1000m3s",
-    )
     if len(independent_rows):
         local = (
             hydro.reservoir_local_inflow_m3s[independent_rows]
             / reservoir_flow_scale_m3s
         )
-        # For an independent reservoir, nonnegative spill occurs nowhere except
-        # its own water balance. Projecting it out is exact:
-        #   V_t = V_prev + (inflow - turbine - spill) * scale, spill >= 0
-        # iff
-        #   V_t <= V_prev + (inflow - turbine) * scale.
-        # The physical spill series is reconstructed from this slack at export.
         model.addConstr(
             reservoir_volume[independent_rows, 0]
-            <= reservoir_volume[independent_rows, -1]
+            == reservoir_volume[independent_rows, -1]
             + (
                 local[:, 0]
                 - reservoir_turbine_flow[independent_rows, 0]
+                - reservoir_spill_flow[independent_rows, 0]
             )
             * flow_to_volume_scaled,
             name="reservoir_independent_cyclic_first_hour",
@@ -532,17 +524,16 @@ def build_full_year_monolithic(
         if hours > 1:
             model.addConstr(
                 reservoir_volume[independent_rows, 1:]
-                <= reservoir_volume[independent_rows, :-1]
+                == reservoir_volume[independent_rows, :-1]
                 + (
                     local[:, 1:]
                     - reservoir_turbine_flow[independent_rows, 1:]
+                    - reservoir_spill_flow[independent_rows, 1:]
                 )
                 * flow_to_volume_scaled,
                 name="reservoir_independent_hourly_transition",
             )
-    upstream_terms_by_target: dict[
-        int, list[tuple[np.ndarray, np.ndarray, float, int]]
-    ] = {
+    upstream_terms_by_target: dict[int, list[tuple[np.ndarray, float, int]]] = {
         int(row): [] for row in cascade_rows
     }
     for source_rows, target_rows, target_weights, lag in zip(
@@ -551,34 +542,20 @@ def build_full_year_monolithic(
         hydro.cascade_edge_target_weights,
         hydro.cascade_edge_lag_h,
     ):
-        source_cascade_positions = cascade_position_by_local_row[source_rows]
-        if (source_cascade_positions < 0).any():
-            raise ValueError(
-                "Cascade topology source rows must be represented by explicit "
-                "cascade spill variables"
-            )
         for target_row, weight in zip(target_rows, target_weights):
             upstream_terms_by_target.setdefault(int(target_row), []).append(
-                (
-                    source_rows,
-                    source_cascade_positions,
-                    float(weight),
-                    int(lag),
-                )
+                (source_rows, float(weight), int(lag))
             )
     for target_row in cascade_rows:
         terms = upstream_terms_by_target.get(int(target_row), [])
-        target_cascade_position = int(cascade_position_by_local_row[target_row])
         for t in range(hours):
             previous_t = (t - 1) % hours
             upstream_release = gp.LinExpr()
-            for source_rows, source_cascade_positions, weight, lag in terms:
+            for source_rows, weight, lag in terms:
                 source_t = (t - lag) % hours
                 upstream_release += weight * (
                     reservoir_turbine_flow[source_rows, source_t].sum()
-                    + reservoir_cascade_spill_flow[
-                        source_cascade_positions, source_t
-                    ].sum()
+                    + reservoir_spill_flow[source_rows, source_t].sum()
                 )
             model.addConstr(
                 reservoir_volume[target_row, t]
@@ -588,9 +565,7 @@ def build_full_year_monolithic(
                     / reservoir_flow_scale_m3s
                     + upstream_release
                     - reservoir_turbine_flow[target_row, t]
-                    - reservoir_cascade_spill_flow[
-                        target_cascade_position, t
-                    ]
+                    - reservoir_spill_flow[target_row, t]
                 )
                 * flow_to_volume_scaled,
                 name=f"reservoir_cascade_s4_8_9_12_row{target_row}_h{t}",
@@ -835,9 +810,9 @@ def build_full_year_monolithic(
         reservoir_generation=reservoir_generation,
         reservoir_generation_by_province=reservoir_generation_by_province,
         reservoir_turbine_flow=reservoir_turbine_flow,
-        reservoir_cascade_spill_flow=reservoir_cascade_spill_flow,
+        reservoir_spill_flow=reservoir_spill_flow,
         reservoir_volume=reservoir_volume,
-        reservoir_soc=reservoir_soc,
+        reservoir_soc=reservoir_soc, reservoir_spill=reservoir_spill,
         flow_forward=flow_forward, flow_reverse_ac=flow_reverse_ac,
         network_injection=network_injection, dac_load=dac_load,
         thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
@@ -878,8 +853,6 @@ def build_full_year_monolithic(
         reservoir_volume_scale_m3=reservoir_volume_scale_m3,
         reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
         cascade_station_local_rows=hydro.cascade_station_local_rows,
-        independent_reservoir_local_rows=independent_rows,
-        cascade_position_by_local_row=cascade_position_by_local_row,
         cascade_edge_source_local_rows=hydro.cascade_edge_source_local_rows,
         cascade_edge_target_local_rows=hydro.cascade_edge_target_local_rows,
         cascade_edge_target_weights=hydro.cascade_edge_target_weights,
