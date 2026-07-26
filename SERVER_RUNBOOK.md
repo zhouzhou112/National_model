@@ -136,6 +136,34 @@ crossover and any primal cleanup finish, then require `OPTIMAL`,
 `solution_qc=PASS`, a closed result manifest, `scenario_id=base` and final
 process-tree memory/time evidence.
 
+The run subsequently completed:
+
+```text
+status: OPTIMAL
+objective: 2,196,881.920967378 million CNY
+solver runtime: 13,541.717 s
+Barrier / simplex iterations: 244 / 1,451,182
+wall time: 3:52:03
+peak process-tree RSS: 23.121 GiB
+swaps: 0
+solution_qc: PASS
+scenario: base
+```
+
+Scientific checks pass, but strict manifest validation returns only
+`size:stdout.log`. The manifest records 63,631 bytes and the completed file has
+66,236 bytes. The launch wrapper used `stdout.log`, while
+`RUNTIME_MANAGED_FILES` recognizes `runner_stdout.log`, `run.stdout` and the
+sequence variants. Because the entrypoint prints the final solve report after
+manifest finalization, hashing the generic redirected log creates a stale
+manifest.
+
+Preserve this output unchanged. Treat it as valid mathematical/QC and
+performance evidence, but not as a closed reproducibility gate. Before any
+replacement run, align the wrapper filename with the runtime-managed contract
+or make a reviewed additive contract fix with regression coverage. Do not
+silently regenerate the existing manifest or overwrite the terminal output.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
