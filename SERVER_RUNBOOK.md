@@ -43,6 +43,7 @@ provenance:
 ```text
 config/solver_profiles/barrier_32_reference_v1.json
 config/solver_profiles/barrier_16_sparse_amd_v1.json
+config/solver_profiles/barrier_16_auto_order_v1.json
 config/solver_profiles/dual_simplex_16_v1.json
 config/solver_profiles/barrier_32_limited_presolve_fast_basis_v1.json
 config/solver_profiles/barrier_32_force_dual_v1.json
@@ -60,6 +61,11 @@ Dual simplex is not a 744h candidate. The 168h run was stopped gracefully after
 ```text
 /data/zz2/National_model/outputs/2030_168h_v0726_spill_explicit_dual_simplex16
 ```
+
+Barrier-16+AMD completes 168h in 644.636 s with lower RSS, but AMD increases
+factor nonzeros and operations. Do not promote it directly to 744h. First run
+`barrier_16_auto_order_v1.json`, which changes only the thread limit relative to
+the Barrier-32 reference.
 
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer

@@ -24,6 +24,13 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(profiled.raw["numerics"]["bar_order"], 0)
         self.assertEqual(profiled.solver_path, profile_path.resolve())
 
+        auto_order = load_model_config(
+            solver_path=profile_path.parent / "barrier_16_auto_order_v1.json"
+        )
+        self.assertEqual(auto_order.raw["numerics"]["threads"], 16)
+        self.assertNotIn("bar_order", auto_order.raw["numerics"])
+        self.assertNotIn("pre_sparsify", auto_order.raw["numerics"])
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent

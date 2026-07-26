@@ -1,0 +1,13 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_auto_order_v1",
+  "description": "Memory-conscious 16-thread CPU Barrier profile retaining Gurobi automatic ordering for clean thread-count comparison.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}
