@@ -369,6 +369,25 @@ def export_solution_planning_state(
             lifetimes[site.technology],
             "new_build",
         )
+    if getattr(data, "wave", None) is not None and "wave_new" in variables:
+        wave_new = np.asarray(variables["wave_new"].X, dtype=float)
+        wave_cost_year = str(
+            config.raw["wave_energy"]["cost_year_by_planning_year"][str(year)]
+        )
+        wave_lifetime = float(
+            config.raw["wave_energy"]["lifetime_years_by_year"][wave_cost_year]
+        )
+        for position, site in data.wave.sites.iterrows():
+            append(
+                "wave",
+                artifacts.index["wave_asset_ids"][position],
+                site.province_code,
+                "wave",
+                wave_new[position],
+                "GW",
+                wave_lifetime,
+                "new_build",
+            )
 
     provinces = artifacts.index["province_codes"]
     thermal_index = artifacts.index["thermal_index"]

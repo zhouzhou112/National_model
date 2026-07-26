@@ -1,5 +1,266 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-26 solvability-optimization campaign
+
+The user has explicitly authorized sequential 744h or longer fixed-server stress
+tests for the latest model, provided the host does not exceed safe memory. This
+authorization supersedes earlier fixed-server 744h prohibitions in older entries,
+but it does not authorize a fixed-server 8760h solve or another paid cloud run.
+
+Required sequence:
+
+1. preserve `supplementary_materials/**` user changes and commit only reviewed
+   non-supplementary code/config/test/handoff files;
+2. verify the fixed server has no CISPO/Gurobi process, then fast-forward the
+   checkout to the exact pushed commit;
+3. export the four versioned runtime roots and pass the complete server regression;
+4. run new isolated 24h and 168h Base gates with `OPTIMAL + solution_qc=PASS`;
+5. run only one 744h profile at a time, requiring at least 56 GiB available RAM
+   before launch and using `SoftMemLimit=48`;
+6. compare `build_report.json`, `solver_telemetry.jsonl`, `gurobi.log`,
+   `solve_report.json`, `solution_qc.json`, process-tree peak RSS and `/usr/bin/time`;
+7. stop further profiles after any memory hard failure or when available RAM falls
+   below the gate. Never run multiple profiles concurrently.
+
+The first exact model reduction eliminates only independent-reservoir spill
+columns. Cascade spill remains explicit. Base 8760h estimated columns fall from
+40,912,327 to 36,760,087. Solver profiles are numerics-only JSON files and are
+separately hashed in provenance:
+
+```text
+config/solver_profiles/barrier_32_reference_v1.json
+config/solver_profiles/barrier_16_sparse_amd_v1.json
+config/solver_profiles/dual_simplex_16_v1.json
+```
+
+For Slurm deployments, request a termination warning such as
+`--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
+than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
+write a normal interrupted report. `solver_telemetry.jsonl` is flushed during
+optimization and remains useful even if a later hard kill prevents final export.
+
+Cloud job `4004585` is terminal `TIMEOUT`. It reached Barrier iteration 35 with
+476.76 GiB sampled MaxRSS but remained far from convergence, and it produced no
+acceptance reports. Preserve its output unchanged.
+
+## 2026-07-25 Barrier-32 live factorization evidence
+
+At `2026-07-25 20:30 CST`, job `4004585` has passed ordering and reached Barrier
+iteration 23:
+
+```text
+Ordering time: 3180.53 s
+AA' NZ: 7.425e8
+Factor NZ: 3.848e10
+estimated factor memory: 340.0 GB
+Factor Ops: 2.448e15
+Threads: 32
+MaxRSS: 499,919,116 KiB = 476.76 GiB
+```
+
+The residuals are decreasing, but no accepted solution exists. Slurm ends the job
+at `2026-07-26 02:34:26 CST`, about 6:04 after this checkpoint. Because the
+Gurobi 86,400-second limit begins after model construction, the Slurm wall limit
+will arrive first. Do not interpret a later scheduler kill as mathematical
+infeasibility, and do not extend the paid allocation or start another job without
+explicit authorization.
+
+## 2026-07-25 active Barrier-32 full-year diagnostic
+
+User-authorized ParaCloud job `4004585` is the only active full-year retry. It uses
+the immutable `22fb493` Base/`city_337` release and the additive script:
+
+```text
+/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493/cloud_cispo_8760_2030_base_barrier32.sbatch
+SHA256 fc604a1a25d37c9cff8a336c83969809cb5b52ea0ab815183d1ea3a7a96bfbf2
+```
+
+Relative to failed job `4003172`, change only:
+
+```text
+Gurobi Threads: 128 -> 32
+Slurm CPUs/Task: 128 -> 32
+job/log/output identity: new and isolated
+```
+
+Retain `Method=2`, `Presolve=2`, `Crossover=1`, `SoftMemLimit=640`, 700G,
+24h and every scientific setting. The output root is:
+
+```text
+/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493/outputs/full_year_2030_base_22fb493_barrier32_700g_v0725
+```
+
+Initial evidence at `2026-07-25 02:35 CST`: job `4004585` is `RUNNING` on
+`m4cg1702`; 50/50 tests pass; the generated config records `threads=32`.
+Because 700G forced an allocation of 96 CPU/billing units, do not estimate this
+run at only 32 billed core-hours per wall-clock hour. Monitor with:
+
+```bash
+squeue -j 4004585 -o '%i|%j|%T|%M|%D|%C|%m|%R'
+sstat -j 4004585.batch --format=JobID,AveCPU,MaxRSS,MaxVMSize
+tail -n 80 cloud_cispo_8760_base_b32-4004585.out
+tail -n 80 outputs/full_year_2030_base_22fb493_barrier32_700g_v0725/gurobi.log
+```
+
+The failed 128-thread job consumed `CPUTimeRAW=2,642,304` allocated CPU-seconds,
+or 733.973 core-hours; actual `TotalCPU` was only 7:03:11. Slurm exposes this
+usage but not the ParaCloud paid-credit or remaining currency balance.
+
+Do not start 2040 or another retry. Accept only after terminal Slurm state plus
+`solve_report.json`, `solution_qc.json` and `result_manifest.json`; reaching
+`Barrier statistics`/iteration 0 is diagnostic progress but not scientific
+acceptance.
+
+## 2026-07-25 cloud full-year OOM boundary
+
+Job `4003172` is terminal `OUT_OF_MEMORY`; do not resubmit its batch script unchanged.
+The build-only gate is still valid, but the real solve proved that build memory is not a
+barrier-factorization memory estimate.
+
+Terminal facts:
+
+```text
+state: OUT_OF_MEMORY
+exit: 0:125
+elapsed: 05:44:03
+request: 128 CPU / 700G
+recorded MaxRSS: 526.99 GiB
+presolve time: 17,932.25 s
+presolved model: 37,982,903 rows / 35,423,761 columns / 400,861,556 nonzeros
+terminal stage: ordering before barrier iteration 0
+```
+
+The absence of `solve_report.json`, `solution_qc.json` and `result_manifest.json` is
+decisive. Preserve the failed root:
+
+```text
+/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493/outputs/full_year_2030_base_22fb493_128cpu_700g
+```
+
+`Crossover=0` is not a remedy because crossover was never reached. Raising only
+`SoftMemLimit` is also unsupported: Slurm killed the step before the configured 640G
+soft limit was reported. The 750G-class node rebooted shortly after the event, while
+accounting captured only 526.99 GiB; require administrator evidence before interpreting
+that value as the true peak.
+
+Before another paid full-year attempt, first choose and validate a lower-memory solver
+route on bounded gates or secure a genuinely larger-memory node. Any new 8760h submission
+requires a new output identity, explicit user authorization and monitoring through
+presolve, ordering, factorization, barrier and QC. Do not start 2040 from this failed
+2030 root.
+
+## 2026-07-25 existing-grid correction and combined wave/flexibility cases
+
+This section supersedes the nearest-offshore-wind routing language in the older
+wave section below. `scripts/build_wave_energy_inputs.py` must produce contract
+`wave_existing_grid_v2`: only coordinate-matched rows already present in
+`optimization_points.csv` with `is_land=0` are eligible. Require 1,285 unique
+`grid_uid` rows, exact route equality with `city_337/vre_routes.csv`, maximum
+coordinate difference no larger than `0.02` degrees, and the recorded source/table
+SHA256 values. Never map source rows outside the optimization grid to a distant
+in-model anchor.
+
+Two reproducible combined cases are available:
+
+```text
+config/scenarios/wave_energy_medium_v1_flexible_load_v1.json
+config/scenarios/wave_energy_medium_v1_flexible_load_comfort_v3.json
+```
+
+Each combined file enables wave and flexible load in one LP. Comparative Base,
+single-module and combined cases remain separate sensitivity-suite runs with
+separate output roots. Deployment still requires an explicitly authorized,
+versioned release and fresh tests/preflight/24h build and solve-QC gates.
+
+## 2026-07-25 `wave_energy_medium_v1` local-only deployment boundary
+
+The optional wave module is not present in any accepted fixed-server or cloud release.
+Base must keep `features.wave_energy=false`. Enabling the scenario requires three
+separately verified artifacts:
+
+```text
+config/scenarios/wave_energy_medium_v1.json
+data/wave/wave_sites.csv
+data/wave/wave_input_manifest.json
+```
+
+and the external hourly source:
+
+```bash
+export CISPO_WAVE_ROOT=/versioned/path/to/wave_energy
+test -f "$CISPO_WAVE_ROOT/wave_grid.nc"
+```
+
+Rebuild the small site contract locally before transfer:
+
+```bash
+$PYTHON scripts/build_wave_energy_inputs.py \
+  --wave-netcdf /source/path/wave_grid.nc \
+  --output-directory data/wave
+```
+
+Require the source and site-table SHA256 values in `wave_input_manifest.json`.
+Do not interpret the nearest offshore-wind routing anchor as a maritime boundary or
+engineering cable route. Do not claim scenario-specific potential: the current source
+potential is identical across all ten CF scenarios. The configured 2060 profile/cost is
+an explicit 2050 hold.
+
+After separate deployment authorization, use a new release and output root. First run
+tests, wave preflight and a 24h build-only gate. A later 24h optimization must additionally
+pass wave availability, power balance, reserve, load-center closure, cost, cohort and
+manifest checks. Do not share offshore-wind spur/trunk in this scenario. A successful
+local build is not permission for server/cloud 24h, 168h, 744h or 8760h execution.
+
+## 2026-07-24 `comfort_envelope_v3` local-only deployment boundary
+
+The V3 implementation is an independent sensitivity and is not present in the fixed-server
+checkout or active cloud release. It requires both code and the ignored generated input:
+
+```text
+data/load/flexible_load_envelope_v3.csv.gz
+data/load/flexible_load_envelope_v3.manifest.json
+```
+
+Rebuild locally from the recorded `Power_curve_V2` products with:
+
+```bash
+$PYTHON scripts/build_flexible_load_envelope_v3.py
+```
+
+The accepted local table has 1,357,800 rows and SHA256
+`b5ebda4344a8f978606c242065159f27a75994a5d976f2cbe06038d66a429a03`.
+The input manifest must record both the scenario table and its sidecar. Never stage only the
+scenario JSON: a missing or mismatched envelope must hard-fail.
+
+Main and optional V2G scenario files are:
+
+```text
+config/scenarios/flexible_load_comfort_v3.json
+config/scenarios/flexible_load_comfort_v3_v2g_5pct.json
+```
+
+The 5% value means 5% of each province-day baseline EV peak power, not 5% vehicle
+participation and not a policy mandate. Main V3 keeps V2G disabled. The V2G sensitivity uses
+`daily_zero_causal`, so it cannot borrow energy from the end of a day.
+
+After explicit deployment authorization, create a new versioned code/data/output identity and
+first require:
+
+```bash
+$PYTHON -m unittest discover -s tests -q
+$PYTHON scripts/run_cispo_planning_sequence.py \
+  --scenario-config config/scenarios/flexible_load_comfort_v3.json \
+  --diagnostic-hours 24 \
+  --output-root /data/zz2/National_model/outputs/planning_sequence_24h_<version>_flexible_load_comfort_v3
+```
+
+Acceptance additionally requires four valid input/result manifests, four
+`OPTIMAL + solution_qc=PASS` years, `flexible_load_formulation=comfort_envelope_v3`,
+closed thermal state and V1G backlog transitions, zero daily terminal state/backlog, zero
+simultaneous up/down, correct cost components and four `RESUMED_ACCEPTED` records. Validate the
+no-V2G main scenario before separately testing the 5% V2G case. A successful 24h local gate is
+not permission for server 168h/744h/8760h or cloud execution.
+
 ## 2026-07-24 `flexible_load_state_v2` deployment boundary
 
 Implementation `271c6dc` is local-only. It adds

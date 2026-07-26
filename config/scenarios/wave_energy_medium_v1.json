@@ -1,0 +1,38 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "wave_energy_medium_v1",
+  "scenario_family": "wave_energy_development",
+  "description": "Optional wave expansion on existing marine optimization grid_uids using medium device-performance trajectories and independent depth/distance-adjusted costs.",
+  "evidence_status": "ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY",
+  "overrides": {
+    "features": {
+      "wave_energy": true
+    },
+    "wave_energy": {
+      "scenario_by_planning_year": {
+        "2030": "medium",
+        "2040": "medium",
+        "2050": "medium",
+        "2060": "medium"
+      },
+      "profile_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "cost_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "potential_fraction": 1.0,
+      "maximum_distance_to_shore_km": null,
+      "maximum_water_depth_m": null,
+      "exclude_imputed_cf": false,
+      "capacity_credit": 0.0,
+      "reserve_requirement_fraction": 0.05
+    }
+  }
+}

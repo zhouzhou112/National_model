@@ -28,6 +28,11 @@ class SensitivitySuiteTests(unittest.TestCase):
                 "flexible_load_v1",
                 "flexible_load_state_v2",
                 "flexible_load_v2g_v1",
+                "flexible_load_comfort_v3",
+                "flexible_load_comfort_v3_v2g_5pct",
+                "wave_energy_medium_v1",
+                "wave_energy_medium_v1_flexible_load_v1",
+                "wave_energy_medium_v1_flexible_load_comfort_v3",
             },
         )
 
@@ -41,6 +46,33 @@ class SensitivitySuiteTests(unittest.TestCase):
         state = load_model_config(
             scenario_path=implemented["flexible_load_state_v2"]["config_path"]
         )
+        comfort = load_model_config(
+            scenario_path=implemented["flexible_load_comfort_v3"]["config_path"]
+        )
+        comfort_v2g = load_model_config(
+            scenario_path=implemented[
+                "flexible_load_comfort_v3_v2g_5pct"
+            ]["config_path"]
+        )
+        wave = load_model_config(
+            scenario_path=implemented["wave_energy_medium_v1"]["config_path"]
+        )
+        combined = load_model_config(
+            scenario_path=implemented[
+                "wave_energy_medium_v1_flexible_load_v1"
+            ]["config_path"]
+        )
+        combined_comfort = load_model_config(
+            scenario_path=implemented[
+                "wave_energy_medium_v1_flexible_load_comfort_v3"
+            ]["config_path"]
+        )
+        self.assertTrue(wave.raw["features"]["wave_energy"])
+        self.assertFalse(base.raw["features"]["wave_energy"])
+        self.assertEqual(
+            wave.raw["wave_energy"]["profile_year_by_planning_year"]["2060"],
+            2050,
+        )
         self.assertFalse(base.raw["features"]["flexible_load"])
         self.assertTrue(v1.raw["features"]["flexible_load"])
         self.assertFalse(v1.raw["flexible_load"]["ev_v2g"]["enabled"])
@@ -49,6 +81,17 @@ class SensitivitySuiteTests(unittest.TestCase):
         )
         self.assertFalse(state.raw["flexible_load"]["ev_v2g"]["enabled"])
         self.assertTrue(v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertFalse(comfort.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(combined.raw["features"]["wave_energy"])
+        self.assertTrue(combined.raw["features"]["flexible_load"])
+        self.assertFalse(combined.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(combined_comfort.raw["features"]["wave_energy"])
+        self.assertTrue(combined_comfort.raw["features"]["flexible_load"])
+        self.assertEqual(
+            combined_comfort.raw["flexible_load"]["formulation"],
+            "comfort_envelope_v3",
+        )
 
     def test_planned_scenario_cannot_be_selected(self):
         catalog = load_scenario_catalog(

@@ -143,6 +143,21 @@ def export_result_summary(
         capacity_rows.append(
             {"asset_group": "generation", "technology": technology, "unit": "GW", "capacity": vre_capacity[rows].sum(), "new_capacity": vre_new[rows].sum()}
         )
+    if data.wave is not None:
+        wave_capacity = _value(variables["wave_capacity"])
+        wave_new = _value(variables["wave_new"])
+        capacity_rows.append(
+            {
+                "asset_group": "generation",
+                "technology": "wave",
+                "unit": "GW",
+                "capacity": wave_capacity.sum(),
+                "new_capacity": wave_new.sum(),
+            }
+        )
+    else:
+        wave_capacity = np.asarray([], dtype=float)
+        wave_new = np.asarray([], dtype=float)
     thermal_capacity = _value(variables["thermal_capacity"])
     thermal_new = _value(variables["thermal_new"])
     for technology, k in artifacts.index["thermal_index"].items():
@@ -184,6 +199,18 @@ def export_result_summary(
                     "unit": "GW",
                     "capacity": float(vre_capacity[rows].sum()),
                     "new_capacity": float(vre_new[rows].sum()),
+                }
+            )
+        if data.wave is not None:
+            rows = data.wave.sites.province_code.eq(province_code).to_numpy()
+            province_capacity_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "asset_group": "generation",
+                    "technology": "wave",
+                    "unit": "GW",
+                    "capacity": float(wave_capacity[rows].sum()),
+                    "new_capacity": float(wave_new[rows].sum()),
                 }
             )
         for technology, k in artifacts.index["thermal_index"].items():
@@ -239,6 +266,10 @@ def export_result_summary(
     generation_series: dict[str, np.ndarray] = {}
     for technology, position in zip(VRE_TECHS, range(len(VRE_TECHS))):
         generation_series[technology] = vre_generation[:, position, :].sum(axis=0)
+    if data.wave is not None:
+        generation_series["wave"] = _value(
+            variables["wave_generation"]
+        ).sum(axis=0)
     for technology, k in artifacts.index["thermal_index"].items():
         generation_series[technology] = thermal_generation[:, k, :].sum(axis=0)
     generation_series["ror"] = ror_generation.sum(axis=0)
@@ -374,6 +405,7 @@ def export_result_summary(
         "scenario_id": config.raw["scenario"]["id"],
         "scenario_family": config.raw["scenario"]["family"],
         "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
+        "wave_energy_enabled": data.wave is not None,
         "optimization_hours": hours,
         "result_use": "SCIENTIFIC_PRODUCTION" if full_year else "TEST_ONLY_TRUNCATED_HORIZON",
         "energy_scope": "full_year" if full_year else "selected_test_horizon",
@@ -386,6 +418,11 @@ def export_result_summary(
         "period_load_gwh": float(load.sum()),
         "period_baseline_load_gwh": float(baseline_load.sum()),
         "period_generation_gwh": float(generation.generation_gwh.sum()),
+        "period_wave_generation_gwh": float(
+            _value(variables["wave_generation"]).sum()
+            if data.wave is not None
+            else 0.0
+        ),
         "period_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "period_ror_curtailment_gwh": float((ror_available - ror_generation).sum()),
         "period_storage_charge_gwh": float(storage_charge.sum()),

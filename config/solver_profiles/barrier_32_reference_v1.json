@@ -1,0 +1,13 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_32_reference_v1",
+  "description": "Reference CPU Barrier profile for fixed-server solvability comparisons; scientific settings are unchanged.",
+  "numerics": {
+    "method": 2,
+    "threads": 32,
+    "presolve": 2,
+    "crossover": 1,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

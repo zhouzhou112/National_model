@@ -7,7 +7,9 @@ import numpy as np
 from cispo_model.config import load_model_config
 from cispo_model.flexible_load import (
     _ev_backlog_bounds,
+    _ev_deadline_backlog_bounds,
     _ev_v1g_shift_bounds,
+    _thermal_envelope_state_bounds,
     _thermal_state_bounds,
     _thermal_shift_bounds,
     make_day_slices,
@@ -26,6 +28,14 @@ class FlexibleLoadContractTests(unittest.TestCase):
         state = load_model_config(
             scenario_path="config/scenarios/flexible_load_state_v2.json"
         )
+        comfort = load_model_config(
+            scenario_path="config/scenarios/flexible_load_comfort_v3.json"
+        )
+        comfort_v2g = load_model_config(
+            scenario_path=(
+                "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"
+            )
+        )
         self.assertEqual(base.raw["scenario"]["id"], "base")
         self.assertFalse(base.raw["features"]["flexible_load"])
         self.assertTrue(flexible.raw["features"]["flexible_load"])
@@ -35,6 +45,17 @@ class FlexibleLoadContractTests(unittest.TestCase):
             state.raw["flexible_load"]["formulation"], "state_envelope_v2"
         )
         self.assertFalse(state.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertEqual(
+            comfort.raw["flexible_load"]["formulation"], "comfort_envelope_v3"
+        )
+        self.assertFalse(comfort.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertEqual(
+            comfort_v2g.raw["flexible_load"]["ev_v2g"][
+                "power_fraction_of_daily_baseline_peak"
+            ],
+            0.05,
+        )
         self.assertNotIn("formulation", flexible.raw["flexible_load"])
 
     def test_day_slices_cover_partial_horizon_once(self):
@@ -86,6 +107,26 @@ class FlexibleLoadContractTests(unittest.TestCase):
         # ratio * daily mean, so the zero-shift solution remains feasible.
         np.testing.assert_allclose(up, [[4.0, 3.0, 0.0, 3.0]])
         np.testing.assert_allclose(queue, np.full_like(baseline, 4.5))
+
+    def test_external_thermal_envelope_gets_duration_scaled_state(self):
+        up = np.asarray([[0.0, 2.0, 1.0, 0.0]])
+        down = np.asarray([[1.0, 0.0, 3.0, 0.0]])
+        state = _thermal_envelope_state_bounds(
+            up, down, (slice(0, 4),), duration_hours=2.0
+        )
+        np.testing.assert_allclose(state, np.full_like(up, 6.0))
+
+    def test_ev_deadline_backlog_uses_rolling_movable_energy(self):
+        baseline = np.asarray([[1.0, 2.0, 3.0, 4.0, 5.0]])
+        _, down, queue = _ev_deadline_backlog_bounds(
+            baseline,
+            (slice(0, 5),),
+            shiftable_energy_fraction=0.5,
+            maximum_power_to_daily_average_ratio=2.0,
+            maximum_queue_duration_hours=3.0,
+        )
+        np.testing.assert_allclose(down, 0.5 * baseline)
+        np.testing.assert_allclose(queue, [[0.5, 1.5, 3.0, 4.5, 6.0]])
 
 
 if __name__ == "__main__":

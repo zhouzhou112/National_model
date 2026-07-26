@@ -3,13 +3,180 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import gurobipy as gp
 from gurobipy import GRB
 
 from .config import ModelConfig
+
+
+class SolverTelemetry:
+    """Persist low-overhead solver progress that survives a later hard kill."""
+
+    def __init__(self, path: Path, *, progress_interval_seconds: float = 30.0):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self.path = path
+        self.progress_interval_seconds = float(progress_interval_seconds)
+        self._stream = path.open("w", encoding="utf-8", buffering=1)
+        self._last_iteration: dict[str, float] = {}
+        self._last_runtime: dict[str, float] = {}
+        self._callback_error_recorded = False
+
+    @staticmethod
+    def _cb_get(model: gp.Model, code_name: str) -> float | None:
+        code = getattr(GRB.Callback, code_name, None)
+        if code is None:
+            return None
+        try:
+            return float(model.cbGet(code))
+        except gp.GurobiError:
+            return None
+
+    def write_event(self, event: str, **values: Any) -> None:
+        record = {
+            "timestamp": datetime.now().astimezone().isoformat(),
+            "event": event,
+            **values,
+        }
+        self._stream.write(
+            json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n"
+        )
+        self._stream.flush()
+
+    def _should_record(
+        self,
+        phase: str,
+        iteration: float | None,
+        runtime: float | None,
+        *,
+        iteration_step: float,
+    ) -> bool:
+        previous_iteration = self._last_iteration.get(phase, float("-inf"))
+        previous_runtime = self._last_runtime.get(phase, float("-inf"))
+        iteration_due = (
+            iteration is not None
+            and iteration >= previous_iteration + iteration_step
+        )
+        time_due = (
+            runtime is not None
+            and runtime >= previous_runtime + self.progress_interval_seconds
+        )
+        if iteration_due or time_due:
+            if iteration is not None:
+                self._last_iteration[phase] = iteration
+            if runtime is not None:
+                self._last_runtime[phase] = runtime
+            return True
+        return False
+
+    def __call__(self, model: gp.Model, where: int) -> None:
+        try:
+            phase: str | None = None
+            iteration_code: str | None = None
+            iteration_step = 1.0
+            if where == getattr(GRB.Callback, "BARRIER", -1):
+                phase = "barrier"
+                iteration_code = "BARRIER_ITRCNT"
+            elif where == getattr(GRB.Callback, "PDHG", -1):
+                phase = "pdhg"
+                iteration_code = "PDHG_ITRCNT"
+                iteration_step = 1000.0
+            elif where == getattr(GRB.Callback, "SIMPLEX", -1):
+                phase = "simplex"
+                iteration_code = "SPX_ITRCNT"
+                iteration_step = 10000.0
+            if phase is None or iteration_code is None:
+                return
+            iteration = self._cb_get(model, iteration_code)
+            runtime = self._cb_get(model, "RUNTIME")
+            if not self._should_record(
+                phase, iteration, runtime, iteration_step=iteration_step
+            ):
+                return
+            common = {
+                "runtime_seconds": runtime,
+                "work_units": self._cb_get(model, "WORK"),
+                "memory_used_gb": self._cb_get(model, "MEMUSED"),
+                "max_memory_used_gb": self._cb_get(model, "MAXMEMUSED"),
+            }
+            if phase == "barrier":
+                self.write_event(
+                    "solver_progress",
+                    phase="barrier",
+                    iteration=iteration,
+                    primal_objective=self._cb_get(model, "BARRIER_PRIMOBJ"),
+                    dual_objective=self._cb_get(model, "BARRIER_DUALOBJ"),
+                    primal_infeasibility=self._cb_get(model, "BARRIER_PRIMINF"),
+                    dual_infeasibility=self._cb_get(model, "BARRIER_DUALINF"),
+                    complementarity=self._cb_get(model, "BARRIER_COMPL"),
+                    **common,
+                )
+                return
+            if phase == "pdhg":
+                self.write_event(
+                    "solver_progress",
+                    phase="pdhg",
+                    iteration=iteration,
+                    primal_objective=self._cb_get(model, "PDHG_PRIMOBJ"),
+                    dual_objective=self._cb_get(model, "PDHG_DUALOBJ"),
+                    primal_infeasibility=self._cb_get(model, "PDHG_PRIMINF"),
+                    dual_infeasibility=self._cb_get(model, "PDHG_DUALINF"),
+                    **common,
+                )
+                return
+            if phase == "simplex":
+                self.write_event(
+                    "solver_progress",
+                    phase="simplex",
+                    iteration=iteration,
+                    objective=self._cb_get(model, "SPX_OBJVAL"),
+                    primal_infeasibility=self._cb_get(model, "SPX_PRIMINF"),
+                    dual_infeasibility=self._cb_get(model, "SPX_DUALINF"),
+                    **common,
+                )
+        except Exception as error:  # telemetry must never abort optimization
+            if not self._callback_error_recorded:
+                self._callback_error_recorded = True
+                self.write_event(
+                    "telemetry_error",
+                    error_type=type(error).__name__,
+                    message=str(error),
+                )
+
+    def close(self) -> None:
+        if not self._stream.closed:
+            self._stream.close()
+
+
+class GracefulSolverTermination:
+    """Translate SIGTERM/SIGINT into Model.terminate() when supported."""
+
+    def __init__(self, model: gp.Model, telemetry: SolverTelemetry):
+        self.model = model
+        self.telemetry = telemetry
+        self.received_signal: str | None = None
+        self._previous: dict[int, Any] = {}
+
+    def _handler(self, signum: int, _frame: Any) -> None:
+        self.received_signal = signal.Signals(signum).name
+        self.telemetry.write_event(
+            "termination_requested", signal=self.received_signal
+        )
+        self.model.terminate()
+
+    def __enter__(self) -> GracefulSolverTermination:
+        for signum in (signal.SIGINT, signal.SIGTERM):
+            self._previous[signum] = signal.getsignal(signum)
+            signal.signal(signum, self._handler)
+        return self
+
+    def __exit__(self, _exc_type: Any, _exc: Any, _traceback: Any) -> None:
+        for signum, previous in self._previous.items():
+            signal.signal(signum, previous)
 
 
 def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> None:
@@ -43,6 +210,21 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
             raise RuntimeError(
                 "numerics.pdhg_gpu requires a Gurobi version that exposes PDHGGPU"
             ) from error
+    optional_parameters = {
+        "aggregate": ("Aggregate", int),
+        "agg_fill": ("AggFill", int),
+        "bar_correctors": ("BarCorrectors", int),
+        "bar_homogeneous": ("BarHomogeneous", int),
+        "bar_order": ("BarOrder", int),
+        "pre_sparsify": ("PreSparsify", int),
+    }
+    for config_key, (parameter_name, converter) in optional_parameters.items():
+        if config_key in numerics:
+            setattr(
+                model.Params,
+                parameter_name,
+                converter(numerics[config_key]),
+            )
 
 
 def model_statistics(model: gp.Model) -> dict:
@@ -73,7 +255,24 @@ def solve_and_report(
     output_dir.mkdir(parents=True, exist_ok=True)
     configure_gurobi(model, config, output_dir / "gurobi.log")
     before = model_statistics(model)
-    model.optimize()
+    telemetry = SolverTelemetry(output_dir / "solver_telemetry.jsonl")
+    telemetry.write_event(
+        "solver_start",
+        model_statistics=before,
+        process_id=os.getpid(),
+    )
+    termination: GracefulSolverTermination | None = None
+    try:
+        with GracefulSolverTermination(model, telemetry) as termination:
+            model.optimize(telemetry)
+        telemetry.write_event(
+            "solver_end",
+            status_code=int(model.Status),
+            runtime_seconds=float(model.Runtime),
+            work_units=float(model.Work),
+        )
+    finally:
+        telemetry.close()
     status_name = {
         GRB.OPTIMAL: "OPTIMAL",
         GRB.INFEASIBLE: "INFEASIBLE",
@@ -94,7 +293,15 @@ def solve_and_report(
         "objective_value_million_cny": float(model.ObjVal) if model.SolCount else None,
         "best_bound_million_cny": float(model.ObjBound) if model.IsMIP and model.SolCount else None,
         "solution_count": int(model.SolCount),
+        "solver_telemetry_path": str(output_dir / "solver_telemetry.jsonl"),
+        "termination_signal": (
+            termination.received_signal if termination is not None else None
+        ),
         "configuration": str(config.path),
+        "solver_profile": (
+            str(config.solver_path) if config.solver_path else None
+        ),
+        "solver_profile_id": config.raw.get("solver_profile", {}).get("id"),
         "solver_parameters": {
             "method": int(model.Params.Method),
             "threads": int(model.Params.Threads),
@@ -106,6 +313,10 @@ def solve_and_report(
             "optimality_tolerance": float(model.Params.OptimalityTol),
             "barrier_convergence_tolerance": float(model.Params.BarConvTol),
             "pdhg_gpu": int(getattr(model.Params, "PDHGGPU", 0)),
+            "bar_order": int(model.Params.BarOrder),
+            "pre_sparsify": int(model.Params.PreSparsify),
+            "aggregate": int(model.Params.Aggregate),
+            "agg_fill": int(model.Params.AggFill),
         },
         "iteration_counts": {
             "simplex": float(model.IterCount),

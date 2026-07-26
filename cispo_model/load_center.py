@@ -21,6 +21,8 @@ def attach_annual_load_center_network(
     hours: int,
     vre_site_cf_hours: np.ndarray,
     vre_generation: gp.MVar,
+    wave_site_cf_hours: np.ndarray,
+    wave_generation: Any,
     actual_thermal: gp.MVar,
     storage_charge: gp.MVar,
     storage_discharge: gp.MVar,
@@ -65,6 +67,13 @@ def attach_annual_load_center_network(
 
     center_vre_generation = model.addMVar(
         (center_count, len(VRE_TECHS)), lb=0.0, name="load_center_vre_generation_gwh"
+    )
+    center_wave_generation = (
+        model.addMVar(
+            center_count, lb=0.0, name="load_center_wave_generation_gwh"
+        )
+        if data.wave is not None
+        else None
     )
     center_ror_generation = model.addMVar(
         center_count, lb=0.0, name="load_center_ror_generation_gwh"
@@ -138,6 +147,44 @@ def attach_annual_load_center_network(
                 center_vre_generation[center_positions, technology_position].sum()
                 == vre_generation[p, technology_position, :].sum(),
                 name=f"load_center_vre_generation_closure_p{province_code}_{technology}",
+            )
+
+    # Wave is an additional technology on existing marine grid_uids and reuses
+    # those rows' city_337 route.  Its depth/distance cost remains independent;
+    # no offshore-wind export-capacity decision is shared.
+    if data.wave is not None:
+        wave_capacity = artifacts.variables["wave_capacity"]
+        wave_center = data.wave.sites.load_center_id.astype(str)
+        invalid_wave_routes = ~wave_center.isin(center_ids)
+        if invalid_wave_routes.any():
+            raise ValueError(
+                "Wave routes contain missing or unknown center IDs: "
+                f"{int(invalid_wave_routes.sum())} sites"
+            )
+        for center_id, center_position in center_index.items():
+            positions = data.wave.sites.index[
+                wave_center.eq(center_id)
+            ].to_numpy(dtype=int)
+            positions = positions[
+                wave_site_cf_hours[positions] >= coefficient_tolerance
+            ]
+            if len(positions):
+                model.addConstr(
+                    center_wave_generation[center_position]
+                    <= wave_site_cf_hours[positions] @ wave_capacity[positions],
+                    name=f"load_center_wave_availability_{center_position}",
+                )
+            else:
+                center_wave_generation[center_position].UB = 0.0
+        for province_code in provinces:
+            p = province_index[province_code]
+            center_positions = centers.index[
+                centers.province_code.eq(province_code)
+            ].to_numpy(dtype=int)
+            model.addConstr(
+                center_wave_generation[center_positions].sum()
+                == wave_generation[p, :].sum(),
+                name=f"load_center_wave_generation_closure_p{province_code}",
             )
 
     # Attribute province-level hydropower dispatch to spatially routed plants.
@@ -274,6 +321,8 @@ def attach_annual_load_center_network(
             + center_ror_generation[center_position]
             + center_reservoir_generation[center_position]
         )
+        if center_wave_generation is not None:
+            spatial_injection += center_wave_generation[center_position]
         if share >= coefficient_tolerance:
             model.addConstr(
                 center_injection[center_position]
@@ -352,6 +401,10 @@ def attach_annual_load_center_network(
         province_annual_external_received=province_external_received,
         province_annual_external_net_import=province_external_net_import,
     )
+    if center_wave_generation is not None:
+        artifacts.variables["load_center_wave_generation"] = (
+            center_wave_generation
+        )
     artifacts.index.update(
         load_center_ids=center_ids,
         load_center_index=center_index,

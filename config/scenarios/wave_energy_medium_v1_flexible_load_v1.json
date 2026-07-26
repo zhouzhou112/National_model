@@ -1,0 +1,45 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "wave_energy_medium_v1_flexible_load_v1",
+  "scenario_family": "combined_supply_demand_options",
+  "description": "Combined case: wave expansion on existing marine grid_uids plus daily energy-conserving thermal shifting and EV V1G relocation; V2G disabled.",
+  "evidence_status": "ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY",
+  "overrides": {
+    "features": {
+      "wave_energy": true,
+      "flexible_load": true
+    },
+    "wave_energy": {
+      "scenario_by_planning_year": {
+        "2030": "medium",
+        "2040": "medium",
+        "2050": "medium",
+        "2060": "medium"
+      },
+      "profile_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "cost_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "potential_fraction": 1.0,
+      "maximum_distance_to_shore_km": null,
+      "maximum_water_depth_m": null,
+      "exclude_imputed_cf": false,
+      "capacity_credit": 0.0,
+      "reserve_requirement_fraction": 0.05
+    },
+    "flexible_load": {
+      "heating": {"enabled": true},
+      "cooling": {"enabled": true},
+      "ev_v1g": {"enabled": true},
+      "ev_v2g": {"enabled": false}
+    }
+  }
+}

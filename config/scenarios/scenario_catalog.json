@@ -4,7 +4,12 @@
     {"scenario_id": "base", "config": "config/scenarios/base.json"},
     {"scenario_id": "flexible_load_v1", "config": "config/scenarios/flexible_load_v1.json"},
     {"scenario_id": "flexible_load_state_v2", "config": "config/scenarios/flexible_load_state_v2.json"},
-    {"scenario_id": "flexible_load_v2g_v1", "config": "config/scenarios/flexible_load_v2g_v1.json"}
+    {"scenario_id": "flexible_load_v2g_v1", "config": "config/scenarios/flexible_load_v2g_v1.json"},
+    {"scenario_id": "flexible_load_comfort_v3", "config": "config/scenarios/flexible_load_comfort_v3.json"},
+    {"scenario_id": "flexible_load_comfort_v3_v2g_5pct", "config": "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"},
+    {"scenario_id": "wave_energy_medium_v1", "config": "config/scenarios/wave_energy_medium_v1.json"},
+    {"scenario_id": "wave_energy_medium_v1_flexible_load_v1", "config": "config/scenarios/wave_energy_medium_v1_flexible_load_v1.json"},
+    {"scenario_id": "wave_energy_medium_v1_flexible_load_comfort_v3", "config": "config/scenarios/wave_energy_medium_v1_flexible_load_comfort_v3.json"}
   ],
   "planned_not_runnable": [
     {"scenario_id": "complementarity_point", "reason": "objective and cost-relaxation formulation not yet frozen"},

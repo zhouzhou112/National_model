@@ -36,3 +36,12 @@ battery,capacity_floor,data/storage/battery_capacity_floor_by_province_year.csv,
 technology,capex,data/technology/technology_capex_by_year.csv,CNY/kW,table,yes,SOURCE_RISK,Digitized future trajectory remains a sensitivity risk
 technology,fuel_generation_cost,data/technology/province_fuel_generation_cost_by_year.csv,CNY/MWh,table,yes,SOURCE_RISK,Province-year coal gas and biomass fuel costs
 carbon,emissions_limit,data/carbon/emissions_limits_by_scenario.csv,MtCO2/year,table,yes,MODEL_SCENARIO,Selected by carbon_scenario
+wave,capacity_upper_raw,data/wave/wave_sites.csv,GW/existing marine grid,table,yes,SOURCE_RISK,Existing-grid intersection retains 9.798 TW of the 35.898 TW raw source potential; potential is identical across all ten CF scenarios
+wave,spatial_mapping,scripts/build_wave_energy_inputs.py,grid_uid,1285 existing marine grids,yes,MODEL_BOUNDARY,Strict coordinate intersection within 0.02 degrees and is_land=0; exact reuse of existing province and city_337 route
+wave,potential_fraction,config/optimization_2030.json,fraction,1.0,yes,ILLUSTRATIVE,Explicit scalar for sensitivity because no scenario-specific potential is present
+wave,capacity_factor,$CISPO_WAVE_ROOT/wave_grid.nc,fraction,scenario x 8760 x 4194,yes,USER_SOURCE,2023 hourly profile selected by planning-year device scenario
+wave,capex_base,config/optimization_2030.json,EUR/kW,2777/2012/1731,yes,LITERATURE_ILLUSTRATIVE,Applied Energy 2024 DOI 10.1016/j.apenergy.2024.123119 for 2030/2040/2050
+wave,depth_distance_capex_adders,config/optimization_2030.json,EUR/kW/m and EUR/kW/km,table,yes,LITERATURE_ILLUSTRATIVE,Independent project cost adders; no shared offshore-wind export
+wave,eur_to_cny,config/optimization_2030.json,CNY/EUR,7.8,yes,ILLUSTRATIVE,Explicit conversion assumption requiring cost-year sensitivity
+wave,capacity_credit,config/optimization_2030.json,fraction,0.0,yes,CONSERVATIVE,No adequacy credit until calibrated
+wave,reserve_requirement_fraction,config/optimization_2030.json,fraction,0.05,yes,CONSERVATIVE,Adds reserve demand but wave provides no reserve

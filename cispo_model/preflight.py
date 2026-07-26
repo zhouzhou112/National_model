@@ -48,9 +48,22 @@ def estimate_full_model_scale(
     n_reservoir = int(
         data.hydro_stations.operation_type_model.eq("reservoir_storage").sum()
     )
+    reservoir_ids = set(
+        data.hydro_stations.loc[
+            data.hydro_stations.operation_type_model.eq("reservoir_storage"),
+            "hydrochn_row_id",
+        ].astype(str)
+    )
+    cascade_ids: set[str] = set()
+    for value in data.hydro_cascade_nodes.get("hydrochn_row_ids", []):
+        cascade_ids.update(
+            part.strip() for part in str(value).split(";") if part.strip()
+        )
+    n_cascade_reservoir = len(reservoir_ids.intersection(cascade_ids))
     n_sub = len(data.substations)
     n_center = len(data.load_centers)
     n_intra = len(data.intra_load_center_edges)
+    n_wave = 0 if data.wave is None else len(data.wave.sites)
     c = int((data.vre_points[config.raw["ccs_injection_field"]] > 0).sum())
     flex = config.raw["flexible_load"]
     flex_enabled = bool(config.raw["features"]["flexible_load"])
@@ -59,16 +72,20 @@ def estimate_full_model_scale(
     )
     flexible_variable_multiplier = 0
     flexible_daily_modules = 0
+    state_formulation = flex_formulation in {
+        "state_envelope_v2",
+        "comfort_envelope_v3",
+    }
     if flex_enabled:
         for component in ("heating", "cooling"):
             if bool(flex[component]["enabled"]):
                 flexible_variable_multiplier += (
-                    3 if flex_formulation == "state_envelope_v2" else 2
+                    3 if state_formulation else 2
                 )
                 flexible_daily_modules += 1
         if bool(flex["ev_v1g"]["enabled"]):
             flexible_variable_multiplier += (
-                3 if flex_formulation == "state_envelope_v2" else 2
+                3 if state_formulation else 2
             )
             flexible_daily_modules += 1
         if bool(flex["ev_v2g"]["enabled"]):
@@ -77,7 +94,7 @@ def estimate_full_model_scale(
     flexible_constraints = 0
     if flex_enabled:
         days = int(np.ceil(h / 24))
-        if flex_formulation == "state_envelope_v2":
+        if state_formulation:
             # Effective-load nonnegativity plus hourly state/queue transitions
             # and one terminal reset per province-day-module.
             flexible_constraints = (
@@ -89,6 +106,8 @@ def estimate_full_model_scale(
             flexible_constraints = p * h + flexible_daily_modules * p * days
         if bool(flex["ev_v2g"]["enabled"]):
             flexible_constraints += p * h
+            if flex_formulation == "comfort_envelope_v3":
+                flexible_constraints += p * days + p * h
 
     blocks = {
         "vre_site_capacity_and_new": 2 * n_vre,
@@ -97,7 +116,9 @@ def estimate_full_model_scale(
         "thermal_hourly_ruc": 5 * p * k * h,
         "storage_capacity_and_hourly": 2 * p * s + 5 * p * s * h,
         "hydro_site_capacity_and_hourly": (
-            2 * n_hydro + 2 * p * h + 3 * n_reservoir * h
+            2 * n_hydro
+            + 2 * p * h
+            + (2 * n_reservoir + n_cascade_reservoir) * h
         ),
         "transmission_capacity_and_flow": 2 * e + (e + e_reverse) * h,
         "dac_capacity_and_capture": 3 * p * d,
@@ -108,6 +129,9 @@ def estimate_full_model_scale(
             n_center * (len(VRE_TECHS) + 5) + 4 * n_intra + 5 * p
         ),
         "optional_flexible_load": flexible_variables,
+        "optional_wave_energy": (
+            0 if data.wave is None else 2 * n_wave + p * h + n_center
+        ),
     }
     variables = int(sum(blocks.values()))
     constraints = int(
@@ -130,6 +154,7 @@ def estimate_full_model_scale(
         + 5 * len(data.provinces)
         + 2 * n_intra
         + flexible_constraints
+        + (0 if data.wave is None else n_wave + p * h + n_center + p)
     )
     # Dense VRE availability is the dominant coefficient block. The remaining
     # rows use a conservative 3-coefficient structural average calibrated
@@ -138,7 +163,8 @@ def estimate_full_model_scale(
     # and potentially much larger solve-time risk.
     vre_nonzeros = int(n_vre * h)
     other_nonzeros = int(max(constraints - p * v * h, 0) * 3.0)
-    nonzeros = vre_nonzeros + other_nonzeros
+    wave_nonzeros = 0 if data.wave is None else int(n_wave * h)
+    nonzeros = vre_nonzeros + wave_nonzeros + other_nonzeros
     # Conservative planning estimate, not a Gurobi guarantee.
     memory_bytes = nonzeros * 32 + variables * 240 + constraints * 180
     estimated_memory_gb = memory_bytes / (1024**3)
@@ -148,7 +174,7 @@ def estimate_full_model_scale(
         2 * p * v * block_hours
         + 5 * p * k * block_hours
         + 5 * p * s * block_hours
-        + (2 * p + 3 * n_reservoir) * block_hours
+        + (2 * p + 2 * n_reservoir + n_cascade_reservoir) * block_hours
         + (e + e_reverse) * block_hours
         + flexible_variables
     )
@@ -350,6 +376,94 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
     check("dac_rows", len(data.dac) == 4, len(data.dac), "4")
     check("carbon_active", bool(data.carbon.constraint_active), bool(data.carbon.constraint_active), "True")
     check("csp_source_gap_explicit", not config.raw["features"]["csp"], config.raw["features"]["csp"], "False until source exists", "SOFT")
+    check(
+        "wave_feature_data_contract",
+        bool(config.raw["features"]["wave_energy"]) == (data.wave is not None),
+        {
+            "feature_enabled": bool(config.raw["features"]["wave_energy"]),
+            "wave_data_loaded": data.wave is not None,
+        },
+        "feature flag and loaded data agree",
+    )
+    if data.wave is not None:
+        check(
+            "wave_existing_grid_uid_unique",
+            data.wave.sites.grid_uid.is_unique,
+            int(data.wave.sites.grid_uid.nunique()),
+            str(len(data.wave.sites)),
+        )
+        existing_grid_uids = set(data.vre_points.grid_uid.astype(str))
+        check(
+            "wave_grid_uid_is_existing_optimization_grid",
+            set(data.wave.sites.grid_uid.astype(str)).issubset(existing_grid_uids),
+            int(data.wave.sites.grid_uid.isin(existing_grid_uids).sum()),
+            str(len(data.wave.sites)),
+        )
+        check(
+            "wave_existing_grid_is_marine",
+            bool(data.wave.sites.is_land.eq(0).all()),
+            int(data.wave.sites.is_land.eq(0).sum()),
+            str(len(data.wave.sites)),
+        )
+        point_lookup = data.vre_points.set_index("grid_uid")
+        matched_points = point_lookup.loc[
+            data.wave.sites.grid_uid.astype(str)
+        ].reset_index()
+        coordinate_difference = np.maximum(
+            np.abs(
+                matched_points.lon.to_numpy(dtype=float)
+                - data.wave.sites.lon.to_numpy(dtype=float)
+            ),
+            np.abs(
+                matched_points.lat.to_numpy(dtype=float)
+                - data.wave.sites.lat.to_numpy(dtype=float)
+            ),
+        )
+        check(
+            "wave_coordinates_equal_existing_grid",
+            bool((coordinate_difference <= 1e-9).all()),
+            float(coordinate_difference.max()),
+            "<= 1e-9 degrees",
+        )
+        route_lookup = data.vre_load_center_routes.set_index("grid_uid")
+        matched_routes = route_lookup.loc[
+            data.wave.sites.grid_uid.astype(str)
+        ].reset_index()
+        exact_routes = (
+            matched_routes.load_center_id.astype(str).to_numpy()
+            == data.wave.sites.load_center_id.astype(str).to_numpy()
+        ) & (
+            matched_routes.substation_id.astype(str).to_numpy()
+            == data.wave.sites.substation_id.astype(str).to_numpy()
+        )
+        check(
+            "wave_routes_equal_existing_grid_routes",
+            bool(exact_routes.all()),
+            int(exact_routes.sum()),
+            str(len(data.wave.sites)),
+        )
+        check(
+            "wave_capacity_upper_nonnegative",
+            bool(data.wave.sites.capacity_upper_gw.ge(0.0).all()),
+            float(data.wave.sites.capacity_upper_gw.min()),
+            ">= 0 GW",
+        )
+        check(
+            "wave_province_route_valid",
+            set(data.wave.sites.province_code.astype(int)).issubset(
+                set(data.province_codes.astype(int))
+            ),
+            sorted(set(data.wave.sites.province_code.astype(int))),
+            "subset of active province codes",
+        )
+        check(
+            "wave_load_center_route_valid",
+            set(data.wave.sites.load_center_id.astype(str)).issubset(
+                set(data.load_centers.load_center_id.astype(str))
+            ),
+            int(data.wave.sites.load_center_id.nunique()),
+            "all routed centers known",
+        )
     check(
         "phs_representation_gap_explicit",
         "phs_water_pairing" in config.raw["explicit_data_gaps"],

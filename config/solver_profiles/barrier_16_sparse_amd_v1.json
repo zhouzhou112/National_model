@@ -1,0 +1,15 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_sparse_amd_v1",
+  "description": "Memory-conscious CPU Barrier profile with presolve sparsification and AMD ordering for fixed-server comparison only.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "pre_sparsify": 1,
+    "bar_order": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

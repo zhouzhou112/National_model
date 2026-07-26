@@ -6,8 +6,10 @@ daily-reset equivalent thermal inventory for heating/cooling and a causal EV
 charging backlog. The latter treats the Power_curve_V2 EV profile as the
 uncontrolled charging-service baseline, not as observed plug availability.
 
-V2G remains an independent legacy sensitivity envelope until vehicle
-availability, battery energy and departure-service inputs are calibrated.
+``comfort_envelope_v3`` replaces uniform thermal fractions with hourly
+Power_curve_V2 BAIT/setpoint envelopes, strengthens the EV backlog with an
+hourly service deadline, and supports an explicitly optional causal V2G
+sensitivity. Base and previously accepted formulations are unchanged.
 """
 from __future__ import annotations
 
@@ -80,6 +82,25 @@ def _thermal_state_bounds(
     return up, down, energy
 
 
+def _thermal_envelope_state_bounds(
+    up: np.ndarray,
+    down: np.ndarray,
+    day_slices: tuple[slice, ...],
+    duration_hours: float,
+) -> np.ndarray:
+    """Return an equivalent thermal-energy bound for exogenous power envelopes."""
+    if up.shape != down.shape:
+        raise ValueError("Thermal increase and reduction envelopes must align")
+    energy = np.zeros_like(up)
+    for day in day_slices:
+        power_envelope = np.maximum(
+            up[:, day].max(axis=1),
+            down[:, day].max(axis=1),
+        )
+        energy[:, day] = (duration_hours * power_envelope)[:, None]
+    return energy
+
+
 def _ev_v1g_shift_bounds(
     baseline: np.ndarray,
     day_slices: tuple[slice, ...],
@@ -123,6 +144,41 @@ def _ev_backlog_bounds(
         queue[:, day] = (
             maximum_queue_duration_hours * shiftable_average
         )[:, None]
+    return up, down, queue
+
+
+def _ev_deadline_backlog_bounds(
+    baseline: np.ndarray,
+    day_slices: tuple[slice, ...],
+    shiftable_energy_fraction: float,
+    maximum_power_to_daily_average_ratio: float,
+    maximum_queue_duration_hours: float,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return V1G bounds with a cumulative latest-service deadline.
+
+    At hour ``t`` the backlog cannot exceed shiftable baseline energy from the
+    latest ``L`` hours. Combined with the queue transition, this is the
+    aggregate cumulative constraint ``served(t) >= baseline(t-L)``.
+    """
+    up, down, _ = _ev_backlog_bounds(
+        baseline,
+        day_slices,
+        shiftable_energy_fraction,
+        maximum_power_to_daily_average_ratio,
+        maximum_queue_duration_hours,
+    )
+    deadline = int(round(maximum_queue_duration_hours))
+    if not np.isclose(deadline, maximum_queue_duration_hours) or deadline <= 0:
+        raise ValueError("V1G maximum queue duration must be a positive integer")
+    queue = np.zeros_like(baseline)
+    movable_baseline = shiftable_energy_fraction * baseline
+    for day in day_slices:
+        start, stop = int(day.start), int(day.stop)
+        for hour in range(start, stop):
+            rolling_start = max(start, hour - deadline + 1)
+            queue[:, hour] = movable_baseline[:, rolling_start : hour + 1].sum(
+                axis=1
+            )
     return up, down, queue
 
 
@@ -225,6 +281,7 @@ def attach_flexible_load(
     formulation = str(settings.get("formulation", "daily_energy_shift_v1"))
     variables: dict[str, Any] = {}
     shift_terms: list[Any] = []
+    v3_activation_terms: dict[str, Any] = {}
     actual_components: dict[str, Any] = {
         "base_residual": components["base_residual"]
     }
@@ -233,7 +290,24 @@ def attach_flexible_load(
         component_settings = settings[component]
         component_baseline = components[component]
         if bool(component_settings["enabled"]):
-            if formulation == "state_envelope_v2":
+            if formulation == "comfort_envelope_v3":
+                up_ub = data.flexible_load_envelopes_gw[f"{component}_up"][
+                    :, :hours
+                ]
+                down_ub = data.flexible_load_envelopes_gw[f"{component}_down"][
+                    :, :hours
+                ]
+                state_ub = _thermal_envelope_state_bounds(
+                    up_ub,
+                    down_ub,
+                    day_slices,
+                    float(
+                        component_settings[
+                            "equivalent_storage_duration_hours"
+                        ]
+                    ),
+                )
+            elif formulation == "state_envelope_v2":
                 up_ub, down_ub, state_ub = _thermal_state_bounds(
                     component_baseline,
                     day_slices,
@@ -260,7 +334,7 @@ def attach_flexible_load(
             down = model.addMVar(
                 shape, lb=0.0, ub=down_ub, name=f"{component}_shift_down_gw"
             )
-            if formulation == "state_envelope_v2":
+            if formulation in {"state_envelope_v2", "comfort_envelope_v3"}:
                 state = model.addMVar(
                     shape,
                     lb=0.0,
@@ -292,14 +366,31 @@ def attach_flexible_load(
             actual_components[component] = component_baseline + up - down
             variables[f"{component}_shift_up"] = up
             variables[f"{component}_shift_down"] = down
-            shift_terms.extend((up.sum(), down.sum()))
+            if formulation == "comfort_envelope_v3":
+                v3_activation_terms[f"{component}_increase"] = up.sum()
+                v3_activation_terms[f"{component}_reduction"] = down.sum()
+            else:
+                shift_terms.extend((up.sum(), down.sum()))
         else:
             actual_components[component] = component_baseline
 
     ev_settings = settings["ev_v1g"]
     ev_baseline = components["ev"]
+    ev_grid_charge_ub = ev_baseline
     if bool(ev_settings["enabled"]):
-        if formulation == "state_envelope_v2":
+        if formulation == "comfort_envelope_v3":
+            ev_up_ub, ev_down_ub, ev_queue_ub = (
+                _ev_deadline_backlog_bounds(
+                    ev_baseline,
+                    day_slices,
+                    float(ev_settings["shiftable_energy_fraction"]),
+                    float(
+                        ev_settings["maximum_power_to_daily_average_ratio"]
+                    ),
+                    float(ev_settings["maximum_queue_duration_hours"]),
+                )
+            )
+        elif formulation == "state_envelope_v2":
             ev_up_ub, ev_down_ub, ev_queue_ub = _ev_backlog_bounds(
                 ev_baseline,
                 day_slices,
@@ -318,7 +409,8 @@ def attach_flexible_load(
         ev_down = model.addMVar(
             shape, lb=0.0, ub=ev_down_ub, name="ev_v1g_shift_down_gw"
         )
-        if formulation == "state_envelope_v2":
+        ev_grid_charge_ub = ev_baseline + ev_up_ub
+        if formulation in {"state_envelope_v2", "comfort_envelope_v3"}:
             ev_queue = model.addMVar(
                 shape,
                 lb=0.0,
@@ -341,7 +433,12 @@ def attach_flexible_load(
                 )
         actual_components["ev"] = ev_baseline + ev_up - ev_down
         variables.update(ev_v1g_shift_up=ev_up, ev_v1g_shift_down=ev_down)
-        shift_terms.extend((ev_up.sum(), ev_down.sum()))
+        if formulation == "comfort_envelope_v3":
+            # Daily service conservation makes ev_down and ev_up equal. Charge
+            # one relocated MWh once rather than counting both directions.
+            v3_activation_terms["ev_v1g_relocated"] = ev_down.sum()
+        else:
+            shift_terms.extend((ev_up.sum(), ev_down.sum()))
     else:
         actual_components["ev"] = ev_baseline
 
@@ -353,14 +450,27 @@ def attach_flexible_load(
     if bool(v2g_settings["enabled"]):
         power_ub = _zero(shape)
         energy_ub = _zero(shape)
-        participation = float(v2g_settings["participation_fraction"])
-        energy_ratio = float(v2g_settings["usable_energy_to_daily_ev_energy_ratio"])
         duration = float(v2g_settings["power_duration_hours"])
-        for day in day_slices:
-            daily_ev_energy = ev_baseline[:, day].sum(axis=1)
-            usable_energy = participation * energy_ratio * daily_ev_energy
-            energy_ub[:, day] = usable_energy[:, None]
-            power_ub[:, day] = (usable_energy / duration)[:, None]
+        if formulation == "comfort_envelope_v3":
+            power_fraction = float(
+                v2g_settings["power_fraction_of_daily_baseline_peak"]
+            )
+            for day in day_slices:
+                available_power = (
+                    power_fraction * ev_baseline[:, day].max(axis=1)
+                )
+                power_ub[:, day] = available_power[:, None]
+                energy_ub[:, day] = (duration * available_power)[:, None]
+        else:
+            participation = float(v2g_settings["participation_fraction"])
+            energy_ratio = float(
+                v2g_settings["usable_energy_to_daily_ev_energy_ratio"]
+            )
+            for day in day_slices:
+                daily_ev_energy = ev_baseline[:, day].sum(axis=1)
+                usable_energy = participation * energy_ratio * daily_ev_energy
+                energy_ub[:, day] = usable_energy[:, None]
+                power_ub[:, day] = (usable_energy / duration)[:, None]
         v2g_charge = model.addMVar(
             shape, lb=0.0, ub=power_ub, name="ev_v2g_charge_gw"
         )
@@ -373,29 +483,50 @@ def attach_flexible_load(
         eta_charge = float(v2g_settings["charge_efficiency"])
         eta_discharge = float(v2g_settings["discharge_efficiency"])
         retention = 1.0 - float(v2g_settings["self_discharge_fraction_per_hour"])
-        for day_number, day in enumerate(day_slices):
-            start, stop = int(day.start), int(day.stop)
-            model.addConstr(
-                v2g_soc[:, start]
-                == retention * v2g_soc[:, stop - 1]
-                + eta_charge * v2g_charge[:, start]
-                - v2g_discharge[:, start] / eta_discharge,
-                name=f"ev_v2g_daily_cyclic_first_d{day_number}",
+        if formulation == "comfort_envelope_v3":
+            _attach_daily_reset_state(
+                model,
+                state=v2g_soc,
+                charge=v2g_charge,
+                discharge=v2g_discharge,
+                day_slices=day_slices,
+                retention=retention,
+                charge_efficiency=eta_charge,
+                discharge_efficiency=eta_discharge,
+                name="ev_v2g_state",
             )
-            if stop - start > 1:
+            model.addConstr(
+                actual_components["ev"] + v2g_charge <= ev_grid_charge_ub,
+                name="ev_combined_grid_charging_power_limit",
+            )
+        else:
+            for day_number, day in enumerate(day_slices):
+                start, stop = int(day.start), int(day.stop)
                 model.addConstr(
-                    v2g_soc[:, start + 1:stop]
-                    == retention * v2g_soc[:, start:stop - 1]
-                    + eta_charge * v2g_charge[:, start + 1:stop]
-                    - v2g_discharge[:, start + 1:stop] / eta_discharge,
-                    name=f"ev_v2g_hourly_transition_d{day_number}",
+                    v2g_soc[:, start]
+                    == retention * v2g_soc[:, stop - 1]
+                    + eta_charge * v2g_charge[:, start]
+                    - v2g_discharge[:, start] / eta_discharge,
+                    name=f"ev_v2g_daily_cyclic_first_d{day_number}",
                 )
+                if stop - start > 1:
+                    model.addConstr(
+                        v2g_soc[:, start + 1:stop]
+                        == retention * v2g_soc[:, start:stop - 1]
+                        + eta_charge * v2g_charge[:, start + 1:stop]
+                        - v2g_discharge[:, start + 1:stop] / eta_discharge,
+                        name=f"ev_v2g_hourly_transition_d{day_number}",
+                    )
         variables.update(
             ev_v2g_charge=v2g_charge,
             ev_v2g_discharge=v2g_discharge,
             ev_v2g_soc=v2g_soc,
         )
         v2g_throughput = v2g_charge.sum() + v2g_discharge.sum()
+        if formulation == "comfort_envelope_v3":
+            # One discharged MWh represents one use of the battery cycle. Grid
+            # energy for charging is already paid through the system objective.
+            v3_activation_terms["ev_v2g_discharged"] = v2g_discharge.sum()
 
     effective_load = (
         actual_components["base_residual"]
@@ -411,31 +542,51 @@ def attach_flexible_load(
         actual_heating_load=actual_components["heating"],
         actual_cooling_load=actual_components["cooling"],
         actual_ev_load=actual_components["ev"],
+        ev_grid_charge_power_ub=ev_grid_charge_ub,
         ev_v2g_charge=v2g_charge,
         ev_v2g_discharge=v2g_discharge,
         ev_v2g_soc=v2g_soc,
     )
 
-    shift_cost = (
-        float(settings["shift_throughput_cost_yuan_per_mwh"])
-        * 1e-3
-        * gp.quicksum(shift_terms)
-        if shift_terms
-        else gp.LinExpr()
-    )
-    degradation_cost = (
-        float(settings["degradation_cost_yuan_per_mwh"])
-        * 1e-3
-        * v2g_throughput
-    )
+    if formulation == "comfort_envelope_v3":
+        activation_costs = settings["activation_costs_yuan_per_mwh"]
+        cost_components = {
+            f"flexible_load_{name}_compensation": (
+                float(activation_costs[name])
+                * 1e-3
+                * v3_activation_terms.get(name, gp.LinExpr())
+            )
+            for name in (
+                "heating_reduction",
+                "heating_increase",
+                "cooling_reduction",
+                "cooling_increase",
+                "ev_v1g_relocated",
+                "ev_v2g_discharged",
+            )
+        }
+    else:
+        shift_cost = (
+            float(settings["shift_throughput_cost_yuan_per_mwh"])
+            * 1e-3
+            * gp.quicksum(shift_terms)
+            if shift_terms
+            else gp.LinExpr()
+        )
+        degradation_cost = (
+            float(settings["degradation_cost_yuan_per_mwh"])
+            * 1e-3
+            * v2g_throughput
+        )
+        cost_components = {
+            "flexible_load_shift_throughput": shift_cost,
+            "ev_v2g_degradation": degradation_cost,
+        }
     return FlexibleLoadBlock(
         effective_load_gw=effective_load,
         baseline_load_gw=baseline,
         actual_components_gw=actual_components,
         variables=variables,
-        costs={
-            "flexible_load_shift_throughput": shift_cost,
-            "ev_v2g_degradation": degradation_cost,
-        },
+        costs=cost_components,
         day_slices=day_slices,
     )

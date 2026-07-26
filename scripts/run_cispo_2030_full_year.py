@@ -30,6 +30,13 @@ def main() -> None:
         help="Optional v1 partial override under config/scenarios; recorded in provenance.",
     )
     parser.add_argument(
+        "--solver-config",
+        help=(
+            "Optional v1 numerics-only solver profile. It cannot change the "
+            "scientific scenario and is recorded with a SHA256 snapshot."
+        ),
+    )
+    parser.add_argument(
         "--planning-year",
         type=int,
         choices=(2030, 2040, 2050, 2060),
@@ -87,7 +94,9 @@ def main() -> None:
     if args.export_diagnostic_state and args.diagnostic_hours is None:
         raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
 
-    base_config = load_model_config(args.config, args.scenario_config)
+    base_config = load_model_config(
+        args.config, args.scenario_config, args.solver_config
+    )
     config = (
         base_config.for_planning_year(args.planning_year)
         if args.planning_year is not None

@@ -17,6 +17,7 @@ class ModelConfig:
     path: Path
     raw: dict[str, Any]
     scenario_path: Path | None = None
+    solver_path: Path | None = None
 
     @property
     def boundary_year(self) -> int:
@@ -67,7 +68,9 @@ class ModelConfig:
         raw["boundary_year"] = boundary_year
         raw["planning_year"] = planning_year
         raw["planning_interval_years"] = planning_year - boundary_year
-        config = ModelConfig(self.path, raw, self.scenario_path)
+        config = ModelConfig(
+            self.path, raw, self.scenario_path, self.solver_path
+        )
         config.validate()
         return config
 
@@ -119,6 +122,77 @@ class ModelConfig:
         resolve_minimum_system_inertia_seconds(security)
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
+        if "wave_energy" not in self.raw.get("features", {}):
+            raise ValueError("features.wave_energy must be explicit")
+        wave = self.raw.get("wave_energy", {})
+        if wave.get("contract_version") != "wave_existing_grid_v2":
+            raise ValueError(
+                "wave_energy.contract_version must be wave_existing_grid_v2"
+            )
+        if not 0.0 <= float(wave.get("potential_fraction", -1.0)) <= 1.0:
+            raise ValueError("wave_energy.potential_fraction must be in [0, 1]")
+        if float(wave.get("eur_to_cny", 0.0)) <= 0.0:
+            raise ValueError("wave_energy.eur_to_cny must be positive")
+        if not 0.0 <= float(wave.get("capacity_credit", -1.0)) <= 1.0:
+            raise ValueError("wave_energy.capacity_credit must be in [0, 1]")
+        if not 0.0 <= float(
+            wave.get("reserve_requirement_fraction", -1.0)
+        ) <= 1.0:
+            raise ValueError(
+                "wave_energy.reserve_requirement_fraction must be in [0, 1]"
+            )
+        if wave.get("connection_treatment") != (
+            "independent_cost_adders_no_shared_offwind_export"
+        ):
+            raise ValueError(
+                "The first wave implementation requires independent cost adders "
+                "and no shared offshore-wind export capacity"
+            )
+        allowed_wave_scenarios = {"conservative", "medium", "aggressive"}
+        for planning_year in years:
+            year_key = str(planning_year)
+            if year_key not in wave.get("scenario_by_planning_year", {}):
+                raise ValueError(
+                    f"wave_energy.scenario_by_planning_year lacks {year_key}"
+                )
+            if (
+                str(wave["scenario_by_planning_year"][year_key]).lower()
+                not in allowed_wave_scenarios
+            ):
+                raise ValueError(
+                    "Wave scenario must be conservative, medium, or aggressive"
+                )
+            profile_year = int(
+                wave.get("profile_year_by_planning_year", {}).get(year_key, 0)
+            )
+            cost_year = int(
+                wave.get("cost_year_by_planning_year", {}).get(year_key, 0)
+            )
+            if profile_year not in {2030, 2040, 2050}:
+                raise ValueError(
+                    "Wave profile year must be one of 2030, 2040, 2050; "
+                    "2060 may explicitly hold the 2050 profile"
+                )
+            if cost_year not in {2030, 2040, 2050}:
+                raise ValueError(
+                    "Wave cost year must be one of 2030, 2040, 2050; "
+                    "2060 may explicitly hold the 2050 cost"
+                )
+        for cost_year in ("2030", "2040", "2050"):
+            for field in (
+                "capex_eur_per_kw_by_year",
+                "fixed_om_fraction_by_year",
+                "lifetime_years_by_year",
+                "depth_adder_eur_per_kw_m_by_year",
+                "distance_adder_eur_per_kw_km_by_year",
+            ):
+                value = float(wave.get(field, {}).get(cost_year, -1.0))
+                if value < 0.0 or (
+                    field == "lifetime_years_by_year" and value <= 0.0
+                ):
+                    raise ValueError(
+                        f"wave_energy.{field}.{cost_year} must be nonnegative"
+                    )
         flexible = self.raw.get("flexible_load", {})
         if "flexible_load" not in self.raw.get("features", {}):
             raise ValueError("features.flexible_load must be explicit")
@@ -132,25 +206,55 @@ class ModelConfig:
         if flexible_formulation not in {
             "daily_energy_shift_v1",
             "state_envelope_v2",
+            "comfort_envelope_v3",
         }:
             raise ValueError(
                 "flexible_load.formulation must be daily_energy_shift_v1 "
-                "or state_envelope_v2"
+                "or state_envelope_v2 or comfort_envelope_v3"
             )
+        if flexible_formulation == "comfort_envelope_v3":
+            envelope_file = str(flexible.get("hourly_envelope_file", "")).strip()
+            if not envelope_file:
+                raise ValueError(
+                    "comfort_envelope_v3 requires flexible_load.hourly_envelope_file"
+                )
         for component in ("heating", "cooling"):
             settings = flexible.get(component, {})
-            reduction = float(settings.get("maximum_reduction_fraction", -1.0))
-            increase = float(
-                settings.get("maximum_increase_fraction_of_daily_peak", -1.0)
-            )
-            if not 0.0 <= reduction <= 1.0 or not 0.0 <= increase <= 1.0:
-                raise ValueError(
-                    f"flexible_load.{component} fractions must be in [0, 1]"
-                )
-            if flexible_formulation == "state_envelope_v2":
-                if float(settings.get("duration_hours", 0.0)) <= 0.0:
+            if flexible_formulation == "comfort_envelope_v3":
+                if float(settings.get("comfort_band_delta_c", 0.0)) <= 0.0:
                     raise ValueError(
-                        f"flexible_load.{component}.duration_hours must be positive"
+                        f"flexible_load.{component}.comfort_band_delta_c must be positive"
+                    )
+                if float(
+                    settings.get("equivalent_storage_duration_hours", 0.0)
+                ) <= 0.0:
+                    raise ValueError(
+                        f"flexible_load.{component}."
+                        "equivalent_storage_duration_hours must be positive"
+                    )
+            else:
+                reduction = float(
+                    settings.get("maximum_reduction_fraction", -1.0)
+                )
+                increase = float(
+                    settings.get("maximum_increase_fraction_of_daily_peak", -1.0)
+                )
+                if not 0.0 <= reduction <= 1.0 or not 0.0 <= increase <= 1.0:
+                    raise ValueError(
+                        f"flexible_load.{component} fractions must be in [0, 1]"
+                    )
+            if flexible_formulation in {
+                "state_envelope_v2",
+                "comfort_envelope_v3",
+            }:
+                duration_key = (
+                    "equivalent_storage_duration_hours"
+                    if flexible_formulation == "comfort_envelope_v3"
+                    else "duration_hours"
+                )
+                if float(settings.get(duration_key, 0.0)) <= 0.0:
+                    raise ValueError(
+                        f"flexible_load.{component}.{duration_key} must be positive"
                     )
                 retention = float(settings.get("retention_per_hour", 0.0))
                 if not 0.0 < retention <= 1.0:
@@ -170,7 +274,10 @@ class ModelConfig:
             raise ValueError(
                 "flexible_load.ev_v1g.maximum_power_to_daily_average_ratio must be >= 1"
             )
-        if flexible_formulation == "state_envelope_v2":
+        if flexible_formulation in {
+            "state_envelope_v2",
+            "comfort_envelope_v3",
+        }:
             if float(ev_v1g.get("maximum_queue_duration_hours", 0.0)) <= 0.0:
                 raise ValueError(
                     "flexible_load.ev_v1g.maximum_queue_duration_hours must be positive"
@@ -179,10 +286,29 @@ class ModelConfig:
         for key in ("charge_efficiency", "discharge_efficiency"):
             if not 0.0 < float(ev_v2g.get(key, 0.0)) <= 1.0:
                 raise ValueError(f"flexible_load.ev_v2g.{key} must be in (0, 1]")
-        if not 0.0 <= float(ev_v2g.get("participation_fraction", -1.0)) <= 1.0:
-            raise ValueError("flexible_load.ev_v2g.participation_fraction must be in [0, 1]")
         if float(ev_v2g.get("power_duration_hours", 0.0)) <= 0.0:
             raise ValueError("flexible_load.ev_v2g.power_duration_hours must be positive")
+        if flexible_formulation == "comfort_envelope_v3":
+            v2g_power_fraction = float(
+                ev_v2g.get("power_fraction_of_daily_baseline_peak", -1.0)
+            )
+            if not 0.0 <= v2g_power_fraction <= 1.0:
+                raise ValueError(
+                    "flexible_load.ev_v2g."
+                    "power_fraction_of_daily_baseline_peak must be in [0, 1]"
+                )
+            if ev_v2g.get("state_boundary") != "daily_zero_causal":
+                raise ValueError(
+                    "comfort_envelope_v3 requires "
+                    "flexible_load.ev_v2g.state_boundary=daily_zero_causal"
+                )
+        else:
+            if not 0.0 <= float(
+                ev_v2g.get("participation_fraction", -1.0)
+            ) <= 1.0:
+                raise ValueError(
+                    "flexible_load.ev_v2g.participation_fraction must be in [0, 1]"
+                )
         if flexible_formulation == "state_envelope_v2" and bool(
             ev_v2g.get("enabled", False)
         ):
@@ -196,6 +322,24 @@ class ModelConfig:
         ):
             if float(flexible.get(key, -1.0)) < 0.0:
                 raise ValueError(f"flexible_load.{key} must be nonnegative")
+        if flexible_formulation == "comfort_envelope_v3":
+            activation_costs = flexible.get(
+                "activation_costs_yuan_per_mwh", {}
+            )
+            required_costs = (
+                "heating_reduction",
+                "heating_increase",
+                "cooling_reduction",
+                "cooling_increase",
+                "ev_v1g_relocated",
+                "ev_v2g_discharged",
+            )
+            for key in required_costs:
+                if float(activation_costs.get(key, -1.0)) < 0.0:
+                    raise ValueError(
+                        "flexible_load.activation_costs_yuan_per_mwh."
+                        f"{key} must be nonnegative"
+                    )
         if not self.raw["features"].get("annual_load_center_transmission", False):
             raise ValueError("Production requires the annual load-center transmission layer")
         center_network = self.raw.get("load_center_network", {})
@@ -277,6 +421,7 @@ def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any
 def load_model_config(
     path: str | Path | None = None,
     scenario_path: str | Path | None = None,
+    solver_path: str | Path | None = None,
 ) -> ModelConfig:
     config_path = Path(path) if path else DEFAULT_CONFIG
     if not config_path.is_absolute():
@@ -303,7 +448,47 @@ def load_model_config(
             "evidence_status": str(payload.get("evidence_status", "UNSPECIFIED")),
         }
         resolved_scenario = resolved_scenario.resolve()
-    config = ModelConfig(config_path.resolve(), raw, resolved_scenario)
+    resolved_solver: Path | None = None
+    if solver_path is not None:
+        resolved_solver = Path(solver_path)
+        if not resolved_solver.is_absolute():
+            resolved_solver = ROOT / resolved_solver
+        payload = json.loads(resolved_solver.read_text(encoding="utf-8"))
+        if payload.get("solver_profile_version") != "v1":
+            raise ValueError(
+                "Solver profile must declare solver_profile_version=v1"
+            )
+        if not payload.get("profile_id"):
+            raise ValueError("Solver profile requires profile_id")
+        overrides = payload.get("numerics")
+        if not isinstance(overrides, dict):
+            raise ValueError(
+                "Solver profile requires an object-valued numerics field"
+            )
+        allowed_optional = {
+            "aggregate",
+            "agg_fill",
+            "bar_correctors",
+            "bar_homogeneous",
+            "bar_order",
+            "pre_sparsify",
+        }
+        allowed = set(raw["numerics"]).union(allowed_optional)
+        unknown = set(overrides).difference(allowed)
+        if unknown:
+            raise ValueError(
+                "Unsupported solver-profile numerics keys: "
+                + ", ".join(sorted(unknown))
+            )
+        raw["numerics"] = _deep_merge(raw["numerics"], overrides)
+        raw["solver_profile"] = {
+            "id": str(payload["profile_id"]),
+            "description": str(payload.get("description", "")),
+        }
+        resolved_solver = resolved_solver.resolve()
+    config = ModelConfig(
+        config_path.resolve(), raw, resolved_scenario, resolved_solver
+    )
     config.validate()
     return config
 

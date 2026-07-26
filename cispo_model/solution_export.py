@@ -14,6 +14,7 @@ from .carbon_accounting import resolve_beccs_carbon_factors
 from .config import ModelConfig, resolve_minimum_system_inertia_seconds
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .master import MasterArtifacts
+from .wave_energy import reconstruct_wave_availability
 
 
 def _value(expression: Any) -> np.ndarray:
@@ -64,12 +65,26 @@ def export_operational_solution(
     heating_state = _value(variables.get("heating_state", zero_load))
     cooling_state = _value(variables.get("cooling_state", zero_load))
     ev_backlog = _value(variables.get("ev_v1g_backlog", zero_load))
+    ev_grid_charge_power_ub = _value(
+        variables.get("ev_grid_charge_power_ub", baseline_components["ev"])
+    )
     v2g_charge = _value(variables.get("ev_v2g_charge", zero_load))
     v2g_discharge = _value(variables.get("ev_v2g_discharge", zero_load))
     v2g_soc = _value(variables.get("ev_v2g_soc", zero_load))
 
     vre_generation = _value(variables["vre_generation"])
     vre_available = _value(variables["vre_available"])
+    wave_generation = _value(
+        variables.get("wave_generation", np.zeros((p_count, hours)))
+    )
+    if data.wave is not None:
+        wave_capacity = _value(variables["wave_capacity"])
+        wave_available = reconstruct_wave_availability(
+            config, data.wave, wave_capacity, provinces, hours
+        )
+    else:
+        wave_capacity = np.asarray([], dtype=float)
+        wave_available = np.zeros((p_count, hours), dtype=float)
     thermal_gross = _value(variables["thermal_gross_generation"])
     thermal_net = _value(variables["actual_thermal_generation"])
     online = _value(variables["online"])
@@ -81,7 +96,6 @@ def export_operational_solution(
     reservoir_generation = _value(variables["reservoir_generation"])
     reservoir_by_province = _value(variables["reservoir_generation_by_province"])
     reservoir_soc = _value(variables["reservoir_soc"])
-    reservoir_spill = _value(variables["reservoir_spill"])
     reservoir_flow_scale_m3s = float(
         artifacts.index.get("reservoir_flow_scale_m3s", 1.0)
     )
@@ -90,10 +104,6 @@ def export_operational_solution(
     )
     reservoir_turbine_flow = (
         _value(variables["reservoir_turbine_flow"])
-        * reservoir_flow_scale_m3s
-    )
-    reservoir_spill_flow = (
-        _value(variables["reservoir_spill_flow"])
         * reservoir_flow_scale_m3s
     )
     reservoir_volume = (
@@ -110,6 +120,41 @@ def export_operational_solution(
     reservoir_active_storage = np.asarray(
         artifacts.index["reservoir_active_storage_m3"], dtype=float
     )
+    cascade_rows = np.asarray(
+        artifacts.index.get("cascade_station_local_rows", []), dtype=int
+    )
+    independent_rows = np.asarray(
+        artifacts.index.get("independent_reservoir_local_rows", []), dtype=int
+    )
+    reservoir_spill_flow = np.zeros_like(reservoir_turbine_flow)
+    if len(cascade_rows):
+        reservoir_spill_flow[cascade_rows, :] = (
+            _value(variables["reservoir_cascade_spill_flow"])
+            * reservoir_flow_scale_m3s
+        )
+    if len(independent_rows):
+        independent_volume_change = np.empty(
+            (len(independent_rows), hours), dtype=float
+        )
+        independent_volume_change[:, 0] = (
+            reservoir_volume[independent_rows, 0]
+            - reservoir_volume[independent_rows, -1]
+        )
+        if hours > 1:
+            independent_volume_change[:, 1:] = (
+                reservoir_volume[independent_rows, 1:]
+                - reservoir_volume[independent_rows, :-1]
+            )
+        reservoir_spill_flow[independent_rows, :] = (
+            reservoir_local_inflow[independent_rows, :]
+            - reservoir_turbine_flow[independent_rows, :]
+            - independent_volume_change / 3600.0
+        )
+    reservoir_conversion = np.asarray(
+        artifacts.index["reservoir_generation_conversion_gw_per_m3s"],
+        dtype=float,
+    )
+    reservoir_spill = reservoir_spill_flow * reservoir_conversion[:, None]
     storage_charge = _value(variables["storage_charge"])
     storage_discharge = _value(variables["storage_discharge"])
     storage_soc = _value(variables["storage_soc"])
@@ -134,6 +179,7 @@ def export_operational_solution(
 
     generation_total = (
         vre_generation.sum(axis=1)
+        + wave_generation
         + thermal_net.sum(axis=1)
         + ror_generation
         + reservoir_by_province
@@ -164,6 +210,10 @@ def export_operational_solution(
             "formulation", "daily_energy_shift_v1"
         )
     )
+    thermal_state_formulation = flexible_formulation in {
+        "state_envelope_v2",
+        "comfort_envelope_v3",
+    }
     thermal_state_transition_max = {"heating": 0.0, "cooling": 0.0}
     thermal_state_terminal_max = {"heating": 0.0, "cooling": 0.0}
     thermal_daily_energy_change_min = {"heating": 0.0, "cooling": 0.0}
@@ -171,7 +221,7 @@ def export_operational_solution(
     ev_backlog_terminal_max = 0.0
     if (
         bool(config.raw["features"]["flexible_load"])
-        and flexible_formulation == "state_envelope_v2"
+        and thermal_state_formulation
     ):
         thermal_arrays = {
             "heating": (heating_state, heating_up, heating_down),
@@ -238,6 +288,7 @@ def export_operational_solution(
             for values in backlog_terminal_residuals
         )
     v2g_transition_max = 0.0
+    v2g_terminal_max = 0.0
     if bool(config.raw["features"]["flexible_load"]) and bool(
         config.raw["flexible_load"]["ev_v2g"]["enabled"]
     ):
@@ -246,14 +297,23 @@ def export_operational_solution(
         eta_d = float(v2g_config["discharge_efficiency"])
         retention = 1.0 - float(v2g_config["self_discharge_fraction_per_hour"])
         transition_residuals = []
+        terminal_residuals = []
         for day in day_slices:
             start, stop = int(day.start), int(day.stop)
-            transition_residuals.append(
-                v2g_soc[:, start]
-                - retention * v2g_soc[:, stop - 1]
-                - eta_c * v2g_charge[:, start]
-                + v2g_discharge[:, start] / eta_d
-            )
+            if flexible_formulation == "comfort_envelope_v3":
+                transition_residuals.append(
+                    v2g_soc[:, start]
+                    - eta_c * v2g_charge[:, start]
+                    + v2g_discharge[:, start] / eta_d
+                )
+                terminal_residuals.append(v2g_soc[:, stop - 1])
+            else:
+                transition_residuals.append(
+                    v2g_soc[:, start]
+                    - retention * v2g_soc[:, stop - 1]
+                    - eta_c * v2g_charge[:, start]
+                    + v2g_discharge[:, start] / eta_d
+                )
             if stop - start > 1:
                 transition_residuals.append(
                     v2g_soc[:, start + 1:stop]
@@ -264,6 +324,10 @@ def export_operational_solution(
         v2g_transition_max = max(
             float(np.abs(values).max()) for values in transition_residuals
         )
+        if terminal_residuals:
+            v2g_terminal_max = max(
+                float(np.abs(values).max()) for values in terminal_residuals
+            )
 
     thermal_up = _value(variables["thermal_reserve_up"])
     thermal_down = _value(variables["thermal_reserve_down"])
@@ -281,6 +345,13 @@ def export_operational_solution(
         float(security["down_reserve_load_fraction"]) * load
         + float(security["down_reserve_vre_fraction"]) * vre_dispatch
     )
+    if data.wave is not None:
+        wave_requirement = (
+            float(config.raw["wave_energy"]["reserve_requirement_fraction"])
+            * wave_generation
+        )
+        up_requirement += wave_requirement
+        down_requirement += wave_requirement
     up_margin = thermal_up + vre_up + hydro_up + storage_up - up_requirement
     down_margin = (
         thermal_down + ror_generation + reservoir_by_province + storage_down
@@ -353,6 +424,12 @@ def export_operational_solution(
         for technology, s in artifacts.index["storage_index"].items():
             credited_capacity[p] += (
                 float(capacity_credit[technology]) * storage_capacity[p, s]
+            )
+        if data.wave is not None:
+            rows = data.wave.sites.province_code.eq(province_code).to_numpy()
+            credited_capacity[p] += (
+                float(config.raw["wave_energy"]["capacity_credit"])
+                * wave_capacity[rows].sum()
             )
     capacity_margin_required = (
         1.0 + float(config.raw["security"]["capacity_margin_fraction"])
@@ -446,6 +523,7 @@ def export_operational_solution(
         artifacts.index["storage_capacity_floor_gw"], dtype=float
     )
     vre_violation = vre_generation - vre_available
+    wave_violation = wave_generation - wave_available
     annual_emissions = float(_value(variables["annual_emissions"]).sum())
     dac_removed = float(_value(variables["dac_capture"]).sum())
     net_emissions = annual_emissions - dac_removed
@@ -539,6 +617,7 @@ def export_operational_solution(
     # physical tolerance is 1e-6 in that equation and remains negligible
     # relative to the largest active storage while aligning with LP tolerances.
     reservoir_volume_tolerance_m3 = 1.0
+    reservoir_spill_flow_tolerance_m3s = 1e-3
     flow_direction_tolerance_gw = 1e-6
     bidirectional_mask = (
         (flow_forward > flow_direction_tolerance_gw)
@@ -597,6 +676,15 @@ def export_operational_solution(
             ev_backlog_terminal_max
         ),
         "maximum_ev_v2g_transition_residual_gwh": v2g_transition_max,
+        "maximum_ev_v2g_daily_terminal_state_gwh": v2g_terminal_max,
+        "maximum_ev_combined_grid_charging_power_violation_gw": float(
+            np.maximum(
+                actual_components["ev"]
+                + v2g_charge
+                - ev_grid_charge_power_ub,
+                0.0,
+            ).max()
+        ),
         "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
         "heating_simultaneous_up_down_province_hours": int(
             ((heating_up > flow_direction_tolerance_gw)
@@ -647,6 +735,9 @@ def export_operational_solution(
             startup_shutdown_overlap.max()
         ),
         "maximum_vre_availability_violation_gw": float(np.maximum(vre_violation, 0.0).max()),
+        "maximum_wave_availability_violation_gw": float(
+            np.maximum(wave_violation, 0.0).max()
+        ),
         "maximum_line_capacity_violation_gw": float(np.maximum(line_violation, 0.0).max()),
         "maximum_nuclear_capacity_floor_violation_gw": float(
             np.maximum(thermal_floor[:, nuclear_k] - thermal_capacity[:, nuclear_k], 0.0).max()
@@ -674,6 +765,9 @@ def export_operational_solution(
             ).max()
         ),
         "maximum_reservoir_transition_residual_m3": float(np.abs(reservoir_cycle_residual).max()),
+        "minimum_reconstructed_reservoir_spill_flow_m3s": float(
+            reservoir_spill_flow.min()
+        ),
         "maximum_reservoir_energy_upper_violation_gwh": float(
             np.maximum(reservoir_soc - reservoir_energy_upper[:, None], 0.0).max()
         ),
@@ -712,6 +806,11 @@ def export_operational_solution(
         "objective_value_million_cny": objective_value,
         "objective_component_residual_million_cny": objective_component_residual,
         "total_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
+        "wave_energy_enabled": data.wave is not None,
+        "total_wave_generation_gwh": float(wave_generation.sum()),
+        "total_wave_curtailment_gwh": float(
+            (wave_available - wave_generation).sum()
+        ),
         "bidirectional_interprovincial_edge_hours": int(
             bidirectional_mask.sum()
         ),
@@ -742,7 +841,7 @@ def export_operational_solution(
                 and qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
                 and qc["minimum_heating_daily_net_energy_change_gwh"] >= -tolerance
             )
-            if flexible_formulation == "state_envelope_v2"
+            if thermal_state_formulation
             else qc["maximum_heating_daily_energy_residual_gwh"] <= tolerance
         ),
         "cooling_service_accounting": (
@@ -751,45 +850,54 @@ def export_operational_solution(
                 and qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
                 and qc["minimum_cooling_daily_net_energy_change_gwh"] >= -tolerance
             )
-            if flexible_formulation == "state_envelope_v2"
+            if thermal_state_formulation
             else qc["maximum_cooling_daily_energy_residual_gwh"] <= tolerance
         ),
         "heating_state_transition": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_heating_state_transition_residual_gwh"] <= tolerance
         ),
         "cooling_state_transition": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_cooling_state_transition_residual_gwh"] <= tolerance
         ),
         "heating_daily_state_reset": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
         ),
         "cooling_daily_state_reset": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
         ),
         "heating_state_loss_accounting": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["minimum_heating_daily_net_energy_change_gwh"] >= -tolerance
         ),
         "cooling_state_loss_accounting": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["minimum_cooling_daily_net_energy_change_gwh"] >= -tolerance
         ),
         "ev_v1g_daily_energy_conservation": qc[
             "maximum_ev_v1g_daily_energy_residual_gwh"
         ] <= tolerance,
         "ev_v1g_backlog_transition": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_ev_v1g_backlog_transition_residual_gwh"] <= tolerance
         ),
         "ev_v1g_daily_backlog_reset": (
-            flexible_formulation != "state_envelope_v2"
+            not thermal_state_formulation
             or qc["maximum_ev_v1g_daily_terminal_backlog_gwh"] <= tolerance
         ),
         "ev_v2g_transition": qc["maximum_ev_v2g_transition_residual_gwh"] <= tolerance,
+        "ev_v2g_daily_state_reset": (
+            flexible_formulation != "comfort_envelope_v3"
+            or qc["maximum_ev_v2g_daily_terminal_state_gwh"] <= tolerance
+        ),
+        "ev_combined_grid_charging_power": (
+            flexible_formulation != "comfort_envelope_v3"
+            or qc["maximum_ev_combined_grid_charging_power_violation_gw"]
+            <= tolerance
+        ),
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
         "inertia": qc["minimum_inertia_margin_gw_s"] >= -tolerance,
@@ -805,6 +913,9 @@ def export_operational_solution(
             "maximum_thermal_maximum_generation_violation_gw"
         ] <= tolerance,
         "vre_availability": qc["maximum_vre_availability_violation_gw"] <= tolerance,
+        "wave_availability": (
+            qc["maximum_wave_availability_violation_gw"] <= tolerance
+        ),
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
         "nuclear_capacity_floor": qc[
             "maximum_nuclear_capacity_floor_violation_gw"
@@ -826,6 +937,9 @@ def export_operational_solution(
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,
         "storage_soc": qc["maximum_storage_soc_upper_violation_gwh"] <= tolerance,
         "reservoir_transition": qc["maximum_reservoir_transition_residual_m3"] <= reservoir_volume_tolerance_m3,
+        "reservoir_spill_nonnegative": qc[
+            "minimum_reconstructed_reservoir_spill_flow_m3s"
+        ] >= -reservoir_spill_flow_tolerance_m3s,
         "reservoir_energy": qc["maximum_reservoir_energy_upper_violation_gwh"] <= tolerance,
         "reservoir_active_storage": qc["maximum_reservoir_active_storage_upper_violation_m3"] <= reservoir_volume_tolerance_m3,
         "carbon": qc["carbon_limit_margin_mtco2"] >= -tolerance,
@@ -867,6 +981,7 @@ def export_operational_solution(
             "ev_v2g_charge_gw": v2g_charge.ravel(),
             "ev_v2g_discharge_gw": v2g_discharge.ravel(),
             "vre_generation_gw": vre_generation.sum(axis=1).ravel(),
+            "wave_generation_gw": wave_generation.ravel(),
             "thermal_net_generation_gw": thermal_net.sum(axis=1).ravel(),
             "ror_generation_gw": ror_generation.ravel(),
             "reservoir_generation_gw": reservoir_by_province.ravel(),
@@ -1114,6 +1229,14 @@ def export_operational_solution(
                     "generation_gwh": float(thermal_net[p, k, :].sum()),
                 }
             )
+        if data.wave is not None:
+            generation_rows.append(
+                {
+                    "province_code": int(province_code),
+                    "technology": "wave",
+                    "generation_gwh": float(wave_generation[p, :].sum()),
+                }
+            )
         generation_rows.extend(
             [
                 {
@@ -1182,6 +1305,20 @@ def export_operational_solution(
         technologies=np.asarray(VRE_TECHS),
         hour_index=hour_index,
     )
+    if data.wave is not None:
+        np.savez_compressed(
+            output_dir / "wave_dispatch.npz",
+            generation_gw=wave_generation,
+            available_gw=wave_available,
+            capacity_gw=wave_capacity,
+            province_codes=provinces,
+            grid_uids=data.wave.sites.grid_uid.to_numpy(dtype=str),
+            grid_ids=data.wave.sites.grid_id.to_numpy(dtype=np.int64),
+            wave_source_grid_ids=data.wave.sites.wave_source_grid_id.to_numpy(
+                dtype=np.int64
+            ),
+            hour_index=hour_index,
+        )
     np.savez_compressed(
         output_dir / "storage_dispatch.npz",
         charge_gw=storage_charge,
@@ -1276,6 +1413,21 @@ def export_operational_solution(
             "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
             "flexible_load_formulation": flexible_formulation,
             "flexible_load_parameters": config.raw["flexible_load"],
+            "wave_energy_enabled": data.wave is not None,
+            "wave_energy_parameters": config.raw["wave_energy"],
+            "wave_energy_data_summary": (
+                {
+                    "active_grid_rows": int(len(data.wave.sites)),
+                    "raw_capacity_upper_gw": float(
+                        data.wave.sites.capacity_upper_gw_raw.sum()
+                    ),
+                    "active_capacity_upper_gw": float(
+                        data.wave.sites.capacity_upper_gw.sum()
+                    ),
+                }
+                if data.wave is not None
+                else None
+            ),
             "baseline_load_definition": (
                 "base_residual + heating + cooling + EV; source table values remain immutable"
             ),

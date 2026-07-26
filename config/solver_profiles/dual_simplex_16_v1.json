@@ -1,0 +1,13 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "dual_simplex_16_v1",
+  "description": "Dual-simplex engineering comparison profile; scientific settings are unchanged.",
+  "numerics": {
+    "method": 1,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

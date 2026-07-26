@@ -20,6 +20,7 @@ from .data import (
 )
 from .timeblocks import TimeBlock
 from .planning_state import stable_asset_id
+from .wave_energy import wave_cost_parameters
 
 
 @dataclass
@@ -54,6 +55,32 @@ def export_master_solution(
     vre["capacity_gw"] = variables["vre_capacity"].X
     vre["new_capacity_gw"] = variables["vre_new"].X
     vre.to_csv(output_dir / "vre_capacity.csv", index=False, encoding="utf-8-sig")
+    if data.wave is not None and "wave_capacity" in variables:
+        wave = data.wave.sites[
+            [
+                "grid_uid",
+                "grid_id",
+                "wave_source_grid_id",
+                "lon",
+                "lat",
+                "province_code",
+                "load_center_id",
+                "substation_id",
+                "capacity_upper_gw_raw",
+                "capacity_upper_gw",
+                "distance_to_shore_km",
+                "water_depth_m",
+                "wave_nc_imputed",
+            ]
+        ].copy()
+        wave["capacity_floor_gw"] = np.asarray(
+            artifacts.index["wave_capacity_floor_gw"], dtype=float
+        )
+        wave["capacity_gw"] = variables["wave_capacity"].X
+        wave["new_capacity_gw"] = variables["wave_new"].X
+        wave.to_csv(
+            output_dir / "wave_capacity.csv", index=False, encoding="utf-8-sig"
+        )
 
     thermal_rows = []
     capacity = variables["thermal_capacity"].X
@@ -281,6 +308,17 @@ def export_master_solution(
                         "annual_generation_gwh": values[center_position],
                     }
                 )
+            if "load_center_wave_generation" in variables:
+                generation_rows.append(
+                    {
+                        "load_center_id": center.load_center_id,
+                        "province_code": int(center.province_code),
+                        "technology": "wave",
+                        "annual_generation_gwh": variables[
+                            "load_center_wave_generation"
+                        ].X[center_position],
+                    }
+                )
         pd.DataFrame(generation_rows).to_csv(
             output_dir / "load_center_annual_generation.csv",
             index=False,
@@ -458,6 +496,54 @@ def build_master(
         vre_fom += capex * vre_fom_fraction[technology] * vre_cap[positions].sum()
     costs["vre_investment"] = vre_investment
     costs["vre_fixed_om"] = vre_fom
+
+    # Wave energy is a separate opt-in asset class.  This leaves the validated
+    # wind/PV arrays and their spur/trunk contract untouched in Base.
+    if data.wave is not None:
+        wave_sites = data.wave.sites
+        wave_asset_ids = [
+            stable_asset_id(grid_uid, "wave")
+            for grid_uid in wave_sites.grid_uid
+        ]
+        wave_inherited = data.planning_state.active_adjustment(
+            "wave",
+            wave_asset_ids,
+            planning_year=config.planning_year,
+            unit="GW",
+        )
+        wave_floor = np.asarray(wave_inherited, dtype=float)
+        wave_upper = wave_sites.capacity_upper_gw.to_numpy(dtype=float)
+        if (wave_floor < -1e-9).any() or (wave_floor > wave_upper + 1e-9).any():
+            raise ValueError(
+                "Inherited wave capacity is outside the active site bounds"
+            )
+        wave_new = model.addMVar(
+            len(wave_sites), lb=0.0, name="wave_new_gw"
+        )
+        wave_capacity = model.addMVar(
+            len(wave_sites),
+            lb=wave_floor,
+            ub=wave_upper,
+            name="wave_capacity_gw",
+        )
+        model.addConstr(
+            wave_capacity == wave_floor + wave_new,
+            name="wave_capacity_accounting",
+        )
+        wave_capex, wave_fom_fraction, wave_lifetime = wave_cost_parameters(
+            config, wave_sites
+        )
+        wave_crf = capital_recovery_factor(wacc, wave_lifetime)
+        costs["wave_investment"] = (
+            wave_capex * wave_crf
+        ) @ wave_capacity
+        costs["wave_fixed_om"] = (
+            wave_capex * wave_fom_fraction
+        ) @ wave_capacity
+        variables.update(wave_new=wave_new, wave_capacity=wave_capacity)
+    else:
+        wave_asset_ids = []
+        wave_floor = np.asarray([], dtype=float)
 
     # Thermal and nuclear capacity in GW. Continuous RUC makes explicit unit
     # counts unnecessary; all unit-based equations are scaled by capacity.
@@ -887,6 +973,15 @@ def build_master(
                 expr += float(credit["reservoir"]) * hydro_cap[hydro_rows[~ror_mask]].sum()
         for technology in STORAGE_TECHS:
             expr += float(credit[technology]) * storage_cap[p, s_index[technology]]
+        if data.wave is not None:
+            wave_rows = data.wave.sites.index[
+                data.wave.sites.province_code.eq(province_code)
+            ].to_numpy(dtype=int)
+            if len(wave_rows):
+                expr += (
+                    float(config.raw["wave_energy"]["capacity_credit"])
+                    * variables["wave_capacity"][wave_rows].sum()
+                )
         capacity_margin_constraints.append(
             model.addConstr(
                 expr >= margin * peak[p], name=f"capacity_margin_p{province_code}"
@@ -1058,6 +1153,8 @@ def build_master(
         "ccs_sinks": sinks,
         "co2_transport_distance_km": transport_distance,
         "vre_asset_ids": vre_asset_ids,
+        "wave_asset_ids": wave_asset_ids,
+        "wave_capacity_floor_gw": wave_floor,
         "vre_capacity_floor_gw": site_floor,
         "thermal_asset_ids": thermal_asset_ids,
         "thermal_exogenous_floor_gw": thermal_exogenous_floor,

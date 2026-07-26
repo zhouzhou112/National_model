@@ -83,9 +83,21 @@ OUTPUT_FILE_ROLES = {
     "transmission_flows.npz": "Corridor-hour directional transmission arrays",
     "vre_capacity.csv": "Site-technology VRE capacity decisions and bounds",
     "vre_dispatch.npz": "Province-technology-hour VRE availability, generation and reserve arrays",
+    "wave_capacity.csv": "Wave capacity decisions on existing marine optimization grid rows",
+    "wave_dispatch.npz": "Province-hour wave availability and dispatch plus grid capacity decisions",
 }
 
 NPZ_DIMENSIONS = {
+    "wave_dispatch.npz": {
+        "generation_gw": "province,hour",
+        "available_gw": "province,hour",
+        "capacity_gw": "existing_marine_grid",
+        "province_codes": "province",
+        "grid_uids": "existing_marine_grid",
+        "grid_ids": "existing_marine_grid",
+        "wave_source_grid_ids": "existing_marine_grid",
+        "hour_index": "hour",
+    },
     "flexible_load_dispatch.npz": {
         "baseline_total_load_gw": "province,hour",
         "effective_total_load_gw": "province,hour",
@@ -237,6 +249,12 @@ def write_run_provenance(
         "scenario_source_sha256": (
             sha256_file(config.scenario_path) if config.scenario_path else None
         ),
+        "solver_source_path": (
+            str(config.solver_path) if config.solver_path else None
+        ),
+        "solver_source_sha256": (
+            sha256_file(config.solver_path) if config.solver_path else None
+        ),
         "resolved_configuration": config.raw,
     }
     config_path = output_dir / "model_config_snapshot.json"
@@ -257,13 +275,17 @@ def write_run_provenance(
         "git_worktree_status": _git_value("status", "--short"),
         "packages": {
             name: _package_version(name)
-            for name in ("numpy", "pandas", "scipy", "netCDF4", "zarr", "psutil", "gurobipy")
+            for name in (
+                "numpy", "pandas", "scipy", "xarray", "netCDF4", "zarr",
+                "psutil", "gurobipy",
+            )
         },
         "data_roots": {
             "CISPO_DATA_ROOT": str(data_root),
             "CISPO_CF_ROOT": os.environ.get("CISPO_CF_ROOT"),
             "CISPO_HYDRO_ROOT": os.environ.get("CISPO_HYDRO_ROOT"),
             "CISPO_RAW_GRFR_ROOT": os.environ.get("CISPO_RAW_GRFR_ROOT"),
+            "CISPO_WAVE_ROOT": os.environ.get("CISPO_WAVE_ROOT"),
         },
         "planning_state_in": str(planning_state.root) if planning_state.root else None,
         "planning_state_format": planning_state.metadata.get("format"),
@@ -304,6 +326,67 @@ def write_run_provenance(
     add_file("input_contract", "config/model_input_files.json", contract_path, True)
     for logical_path in contract["required_model_tables"]:
         add_file("model_table", logical_path, data_root / logical_path, True)
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and str(
+            config.raw["flexible_load"].get(
+                "formulation", "daily_energy_shift_v1"
+            )
+        )
+        == "comfort_envelope_v3"
+    ):
+        envelope_logical_path = str(
+            config.raw["flexible_load"]["hourly_envelope_file"]
+        )
+        envelope_path = data_root / envelope_logical_path
+        add_file(
+            "scenario_model_table",
+            envelope_logical_path,
+            envelope_path,
+            True,
+        )
+        envelope_manifest = envelope_path.with_suffix("").with_suffix(
+            ".manifest.json"
+        )
+        add_file(
+            "scenario_validation_sidecar",
+            str(
+                Path(envelope_logical_path)
+                .with_suffix("")
+                .with_suffix(".manifest.json")
+            ),
+            envelope_manifest,
+            True,
+        )
+    if bool(config.raw["features"].get("wave_energy", False)):
+        wave_sites_logical = str(config.raw["wave_energy"]["sites_file"])
+        add_file(
+            "scenario_model_table",
+            wave_sites_logical,
+            data_root / wave_sites_logical,
+            True,
+        )
+        wave_manifest_logical = str(
+            Path(wave_sites_logical).with_name("wave_input_manifest.json")
+        )
+        add_file(
+            "scenario_validation_sidecar",
+            wave_manifest_logical,
+            data_root / wave_manifest_logical,
+            True,
+        )
+        wave_root = os.environ.get("CISPO_WAVE_ROOT")
+        wave_cf = (
+            Path(wave_root) / str(config.raw["wave_energy"]["cf_filename"])
+            if wave_root
+            else Path("__CISPO_WAVE_ROOT_NOT_SET__")
+        )
+        add_file(
+            "capacity_factor_store",
+            f"wave:{config.planning_year}",
+            wave_cf,
+            True,
+        )
     for logical_path in contract.get("server_validation_sidecars", []):
         add_file("validation_sidecar", logical_path, data_root / logical_path, False)
     if planning_state.root:

@@ -1723,6 +1723,49 @@ nodal dispatch model
 
 ---
 
+## 14A. 2026-07-25 波浪能可选扩建附录
+
+波浪能是默认关闭的独立资产类，不加入 `VRE_TECHS`，因此 Base 的风光
+容量、出力和 spur/trunk 数组保持不变。原始波浪格点不作为第二套优化
+网格；构建输入时只保留与 `optimization_points.csv` 坐标一致且
+`is_land == 0` 的既有 `grid_uid`。启用
+`config/scenarios/wave_energy_medium_v1.json` 后，对每个被波浪数据覆盖的
+既有海洋格点 \(i\) 增加连续容量变量：
+
+\[
+K_i^{wave}=K_{i,inherited}^{wave}+K_{i,new}^{wave},\qquad
+0\le K_i^{wave}\le f_{potential}K_{i,raw}^{wave}.
+\]
+
+省份 \(p\) 的波浪能小时出力满足：
+
+\[
+0\le g_{p,t}^{wave}\le\sum_{i\in p}CF_{i,t}^{wave}K_i^{wave},
+\]
+
+并直接进入严格省级小时电力平衡。首版不给予波浪能向上/向下备用、容量
+充裕度或惯量贡献，但按实际波浪能出力增加 5% 上下备用需求。这样既保持
+保守可靠性边界，也无需增加波浪能 availability 或备用分配辅助变量。
+
+成本使用 `base CAPEX + depth adder × water_depth_m + distance adder ×
+distance_to_shore_km`，其中参数来自 DOI
+`10.1016/j.apenergy.2024.123119`。该成本已代表独立海上项目的位置差异，
+因此本情景不占用或共享海上风电 spur/trunk。省份、变电站和负荷中心
+标识直接复用同一个既有 `grid_uid` 的 `city_337` 路由，不使用最近海上
+风电格点代理，也不代表新增工程海缆路线。
+
+原始数据只有 2030/2040/2050 的 conservative/medium/aggressive CF，
+容量潜力在全部情景中相同且没有 2060 数据。当前 2060 明确保持 2050
+medium CF 和成本；`potential_fraction`、水深/离岸距离筛选、插补 CF、
+汇率和成本必须作为敏感性参数。完整数据审计、规模门检和运行说明见
+`WAVE_ENERGY_INTEGRATION.md`。
+
+波浪能可以与其他可选模块在同一个 LP 中共同求解。当前显式组合配置为
+`wave_energy_medium_v1_flexible_load_v1.json` 和
+`wave_energy_medium_v1_flexible_load_comfort_v3.json`。每个组合配置是
+一个独立案例；Base、单模块和组合案例由敏感性套件分别运行，不能把多个
+互斥案例解释成一个随机多情景规划问题。
+
 ## 14. 2026-07-18 production implementation addendum
 
 本节记录当前 production code 相对基础公式文档的实现合同，代码基线为 `2a0ee99`。详细审计证据见 `MODEL_SYSTEM_AUDIT_20260718.md`。

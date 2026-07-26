@@ -13,6 +13,7 @@ from scipy.spatial import cKDTree
 
 from .config import ModelConfig, ROOT
 from .planning_state import PlanningState
+from .wave_energy import WaveEnergyData, load_wave_energy_data
 
 
 DATA_ROOT = Path(os.environ.get("CISPO_DATA_ROOT", str(ROOT / "data")))
@@ -158,6 +159,7 @@ class ModelData:
     load: pd.DataFrame
     load_gw: np.ndarray
     load_components_gw: dict[str, np.ndarray]
+    flexible_load_envelopes_gw: dict[str, np.ndarray]
     vre_points: pd.DataFrame
     vre_sites: pd.DataFrame
     thermal_floor: pd.DataFrame
@@ -189,6 +191,7 @@ class ModelData:
     hydro_load_center_routes: pd.DataFrame
     intra_load_center_edges: pd.DataFrame
     cf: CapacityFactorStore
+    wave: WaveEnergyData | None
     planning_state: PlanningState
 
     @property
@@ -342,6 +345,82 @@ def load_model_data(
         raise ValueError(
             f"Load-component closure error {closure_error:.6g} GW exceeds 1e-9 GW"
         )
+
+    flexible_load_envelopes_gw: dict[str, np.ndarray] = {}
+    flexible_formulation = str(
+        config.raw["flexible_load"].get("formulation", "daily_energy_shift_v1")
+    )
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and flexible_formulation == "comfort_envelope_v3"
+    ):
+        envelope_relative_path = str(
+            config.raw["flexible_load"]["hourly_envelope_file"]
+        )
+        envelope_columns = {
+            "heating_up": "heating_increase_limit_gw",
+            "heating_down": "heating_reduction_limit_gw",
+            "cooling_up": "cooling_increase_limit_gw",
+            "cooling_down": "cooling_reduction_limit_gw",
+        }
+        envelope = _read(
+            envelope_relative_path,
+            usecols=[
+                "province_code",
+                "year",
+                "hour_index",
+                "heating_comfort_band_c",
+                "cooling_comfort_band_c",
+                *envelope_columns.values(),
+            ],
+        )
+        envelope = envelope.loc[
+            envelope.year.eq(config.planning_year)
+        ].copy()
+        if len(envelope) != expected_load_rows:
+            raise ValueError(
+                f"{config.planning_year} flexible-load envelope rows={len(envelope)}; "
+                f"expected {expected_load_rows}"
+            )
+        if envelope.duplicated(["province_code", "hour_index"]).any():
+            raise ValueError("Duplicate province-hour flexible-load envelope rows")
+        expected_bands = {
+            "heating_comfort_band_c": float(
+                config.raw["flexible_load"]["heating"]["comfort_band_delta_c"]
+            ),
+            "cooling_comfort_band_c": float(
+                config.raw["flexible_load"]["cooling"]["comfort_band_delta_c"]
+            ),
+        }
+        for column, expected in expected_bands.items():
+            values = envelope[column].to_numpy(dtype=np.float64)
+            if not np.isfinite(values).all() or not np.allclose(
+                values, expected, atol=1e-12, rtol=0.0
+            ):
+                raise ValueError(
+                    f"{column} does not match configured value {expected}"
+                )
+        for name, column in envelope_columns.items():
+            pivot = envelope.pivot(
+                index="province_code", columns="hour_index", values=column
+            )
+            pivot = pivot.reindex(index=province_order, columns=range(config.hours))
+            values = pivot.to_numpy(dtype=np.float64)
+            if not np.isfinite(values).all() or (values < 0.0).any():
+                raise ValueError(
+                    f"{name} flexible-load envelope contains missing or negative values"
+                )
+            flexible_load_envelopes_gw[name] = values
+        for component in ("heating", "cooling"):
+            violation = (
+                flexible_load_envelopes_gw[f"{component}_down"]
+                - load_components_gw[component]
+            )
+            if float(violation.max()) > 1e-9:
+                raise ValueError(
+                    f"{component} reduction envelope exceeds baseline load by "
+                    f"{float(violation.max()):.6g} GW"
+                )
 
     point_columns = [
         "grid_uid", "grid_id", "province_code", "lon", "lat", "is_land",
@@ -787,11 +866,14 @@ def load_model_data(
                 f"{sorted(missing_cascade_ids)[:10]}"
             )
 
+    wave = load_wave_energy_data(config)
+
     return ModelData(
         provinces=provinces,
         load=load,
         load_gw=load_pivot.to_numpy(dtype=np.float64),
         load_components_gw=load_components_gw,
+        flexible_load_envelopes_gw=flexible_load_envelopes_gw,
         vre_points=points,
         vre_sites=vre_sites,
         thermal_floor=thermal_floor,
@@ -823,5 +905,6 @@ def load_model_data(
         hydro_load_center_routes=hydro_load_center_routes,
         intra_load_center_edges=intra_load_center_edges,
         cf=cf,
+        wave=wave,
         planning_state=planning_state,
     )

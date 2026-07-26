@@ -89,6 +89,54 @@ def _attach_vre_availability(
     return available, site_cf_hours
 
 
+def _attach_wave_generation(
+    model: gp.Model,
+    config: ModelConfig,
+    data: ModelData,
+    capacity: gp.MVar,
+    province_index: dict[int, int],
+    hours: int,
+) -> tuple[gp.MVar, np.ndarray]:
+    """Attach grid-CF wave dispatch without a duplicate availability MVar.
+
+    Wave provides no upward reserve in the first implementation, so a direct
+    dispatch upper bound preserves the exact feasible set while avoiding one
+    province-hour auxiliary variable per hour.
+    """
+    if data.wave is None:
+        raise ValueError("Wave generation requested without wave data")
+    generation = model.addMVar(
+        (len(province_index), hours), lb=0.0, name="wave_generation_gw"
+    )
+    site_cf_hours = np.zeros(len(data.wave.sites), dtype=float)
+    chunk = int(config.raw["construction"]["build_hour_chunk_size"])
+    tolerance = float(config.raw["numerics"]["coefficient_zero_tolerance"])
+    present: set[int] = set()
+    for province_code, group in data.wave.sites.groupby(
+        "province_code", sort=False
+    ):
+        p = province_index[int(province_code)]
+        present.add(p)
+        positions = group.index.to_numpy(dtype=int)
+        grid_ids = group.wave_source_grid_id.to_numpy(dtype=np.int64)
+        for start in range(0, hours, chunk):
+            stop = min(start + chunk, hours)
+            coefficients = data.wave.cf.read(grid_ids, start, stop)
+            coefficients[np.abs(coefficients) < tolerance] = 0.0
+            site_cf_hours[positions] += coefficients.sum(axis=0)
+            model.addConstr(
+                generation[p, start:stop]
+                <= sparse.csr_matrix(coefficients) @ capacity[positions],
+                name=f"wave_availability_p{int(province_code)}_h{start}",
+            )
+    for p in range(len(province_index)):
+        if p not in present:
+            generation[p, :].UB = 0.0
+    if not np.isfinite(site_cf_hours).all() or (site_cf_hours < 0.0).any():
+        raise ValueError("Invalid selected-horizon wave full-load-hour coefficients")
+    return generation, site_cf_hours
+
+
 def _network_incidence(data: ModelData, province_index: dict[int, int]):
     edge_count = len(data.lines)
     forward = sparse.lil_matrix((len(province_index), edge_count), dtype=float)
@@ -148,6 +196,18 @@ def build_full_year_monolithic(
     vre_available, vre_site_cf_hours = _attach_vre_availability(
         model, config, data, vre_capacity, vre_generation, p_index, hours
     )
+    if data.wave is not None:
+        wave_generation, wave_site_cf_hours = _attach_wave_generation(
+            model,
+            config,
+            data,
+            variables["wave_capacity"],
+            p_index,
+            hours,
+        )
+    else:
+        wave_generation = np.zeros((p_count, hours), dtype=float)
+        wave_site_cf_hours = np.asarray([], dtype=float)
 
     # Continuous capacity-based RUC with a cyclic transition over the selected horizon.
     online = model.addMVar((p_count, k_count, hours), lb=0.0, name="online_capacity_gw")
@@ -368,11 +428,6 @@ def build_full_year_monolithic(
         lb=0.0,
         name="reservoir_turbine_flow_1000m3s",
     )
-    reservoir_spill_flow = model.addMVar(
-        (reservoir_count, hours),
-        lb=0.0,
-        name="reservoir_spill_flow_1000m3s",
-    )
     reservoir_volume = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
@@ -384,7 +439,6 @@ def build_full_year_monolithic(
         conversion * reservoir_volume_scale_m3 / 3600.0
     )
     reservoir_soc = reservoir_volume * scaled_volume_to_energy[:, None]
-    reservoir_spill = reservoir_spill_flow * scaled_flow_to_power[:, None]
     reservoir_generation = (
         reservoir_turbine_flow * scaled_flow_to_power[:, None]
     )
@@ -445,18 +499,32 @@ def build_full_year_monolithic(
     independent_rows = np.setdiff1d(
         all_reservoir_local_rows, cascade_rows, assume_unique=True
     )
+    cascade_position_by_local_row = np.full(reservoir_count, -1, dtype=np.int64)
+    cascade_position_by_local_row[cascade_rows] = np.arange(
+        len(cascade_rows), dtype=np.int64
+    )
+    reservoir_cascade_spill_flow = model.addMVar(
+        (len(cascade_rows), hours),
+        lb=0.0,
+        name="reservoir_cascade_spill_flow_1000m3s",
+    )
     if len(independent_rows):
         local = (
             hydro.reservoir_local_inflow_m3s[independent_rows]
             / reservoir_flow_scale_m3s
         )
+        # For an independent reservoir, nonnegative spill occurs nowhere except
+        # its own water balance. Projecting it out is exact:
+        #   V_t = V_prev + (inflow - turbine - spill) * scale, spill >= 0
+        # iff
+        #   V_t <= V_prev + (inflow - turbine) * scale.
+        # The physical spill series is reconstructed from this slack at export.
         model.addConstr(
             reservoir_volume[independent_rows, 0]
-            == reservoir_volume[independent_rows, -1]
+            <= reservoir_volume[independent_rows, -1]
             + (
                 local[:, 0]
                 - reservoir_turbine_flow[independent_rows, 0]
-                - reservoir_spill_flow[independent_rows, 0]
             )
             * flow_to_volume_scaled,
             name="reservoir_independent_cyclic_first_hour",
@@ -464,16 +532,17 @@ def build_full_year_monolithic(
         if hours > 1:
             model.addConstr(
                 reservoir_volume[independent_rows, 1:]
-                == reservoir_volume[independent_rows, :-1]
+                <= reservoir_volume[independent_rows, :-1]
                 + (
                     local[:, 1:]
                     - reservoir_turbine_flow[independent_rows, 1:]
-                    - reservoir_spill_flow[independent_rows, 1:]
                 )
                 * flow_to_volume_scaled,
                 name="reservoir_independent_hourly_transition",
             )
-    upstream_terms_by_target: dict[int, list[tuple[np.ndarray, float, int]]] = {
+    upstream_terms_by_target: dict[
+        int, list[tuple[np.ndarray, np.ndarray, float, int]]
+    ] = {
         int(row): [] for row in cascade_rows
     }
     for source_rows, target_rows, target_weights, lag in zip(
@@ -482,20 +551,34 @@ def build_full_year_monolithic(
         hydro.cascade_edge_target_weights,
         hydro.cascade_edge_lag_h,
     ):
+        source_cascade_positions = cascade_position_by_local_row[source_rows]
+        if (source_cascade_positions < 0).any():
+            raise ValueError(
+                "Cascade topology source rows must be represented by explicit "
+                "cascade spill variables"
+            )
         for target_row, weight in zip(target_rows, target_weights):
             upstream_terms_by_target.setdefault(int(target_row), []).append(
-                (source_rows, float(weight), int(lag))
+                (
+                    source_rows,
+                    source_cascade_positions,
+                    float(weight),
+                    int(lag),
+                )
             )
     for target_row in cascade_rows:
         terms = upstream_terms_by_target.get(int(target_row), [])
+        target_cascade_position = int(cascade_position_by_local_row[target_row])
         for t in range(hours):
             previous_t = (t - 1) % hours
             upstream_release = gp.LinExpr()
-            for source_rows, weight, lag in terms:
+            for source_rows, source_cascade_positions, weight, lag in terms:
                 source_t = (t - lag) % hours
                 upstream_release += weight * (
                     reservoir_turbine_flow[source_rows, source_t].sum()
-                    + reservoir_spill_flow[source_rows, source_t].sum()
+                    + reservoir_cascade_spill_flow[
+                        source_cascade_positions, source_t
+                    ].sum()
                 )
             model.addConstr(
                 reservoir_volume[target_row, t]
@@ -505,7 +588,9 @@ def build_full_year_monolithic(
                     / reservoir_flow_scale_m3s
                     + upstream_release
                     - reservoir_turbine_flow[target_row, t]
-                    - reservoir_spill_flow[target_row, t]
+                    - reservoir_cascade_spill_flow[
+                        target_cascade_position, t
+                    ]
                 )
                 * flow_to_volume_scaled,
                 name=f"reservoir_cascade_s4_8_9_12_row{target_row}_h{t}",
@@ -554,7 +639,8 @@ def build_full_year_monolithic(
     power_balance_constraints = []
     for p in range(p_count):
         power_balance_constraints.append(model.addConstr(
-            vre_generation[p].sum(axis=0) + actual_thermal[p].sum(axis=0)
+            vre_generation[p].sum(axis=0) + wave_generation[p]
+            + actual_thermal[p].sum(axis=0)
             + ror_generation[p] + reservoir_generation_by_province[p]
             + discharge[p].sum(axis=0) - charge[p].sum(axis=0)
             + network_injection[p]
@@ -572,6 +658,8 @@ def build_full_year_monolithic(
             hours=hours,
             vre_site_cf_hours=vre_site_cf_hours,
             vre_generation=vre_generation,
+            wave_site_cf_hours=wave_site_cf_hours,
+            wave_generation=wave_generation,
             actual_thermal=actual_thermal,
             storage_charge=charge,
             storage_discharge=discharge,
@@ -606,17 +694,25 @@ def build_full_year_monolithic(
     storage_up_by_province = storage_up.sum(axis=1)
     storage_down_by_province = storage_down.sum(axis=1)
     vre_dispatch = vre_generation.sum(axis=1)
+    wave_reserve_requirement = (
+        float(config.raw["wave_energy"]["reserve_requirement_fraction"])
+        * wave_generation
+        if data.wave is not None
+        else 0.0
+    )
     constraint_handles["up_reserve"] = model.addConstr(
         thermal_up + vre_up + hydro_up + storage_up_by_province
         >= float(security["up_reserve_load_fraction"]) * load
-        + float(security["up_reserve_vre_fraction"]) * vre_dispatch,
+        + float(security["up_reserve_vre_fraction"]) * vre_dispatch
+        + wave_reserve_requirement,
         name="up_reserve",
     )
     constraint_handles["down_reserve"] = model.addConstr(
         thermal_down + ror_generation + reservoir_generation_by_province
         + storage_down_by_province
         >= float(security["down_reserve_load_fraction"]) * load
-        + float(security["down_reserve_vre_fraction"]) * vre_dispatch,
+        + float(security["down_reserve_vre_fraction"]) * vre_dispatch
+        + wave_reserve_requirement,
         name="down_reserve",
     )
     inertia = ruc.inertia_s.to_numpy(dtype=float)
@@ -726,6 +822,7 @@ def build_full_year_monolithic(
 
     variables.update(
         vre_generation=vre_generation, vre_available=vre_available,
+        wave_generation=wave_generation,
         online=online, startup=startup, shutdown=shutdown,
         thermal_gross_generation=gross, actual_thermal_generation=actual_thermal,
         ramp_magnitude=ramp_magnitude,
@@ -738,9 +835,9 @@ def build_full_year_monolithic(
         reservoir_generation=reservoir_generation,
         reservoir_generation_by_province=reservoir_generation_by_province,
         reservoir_turbine_flow=reservoir_turbine_flow,
-        reservoir_spill_flow=reservoir_spill_flow,
+        reservoir_cascade_spill_flow=reservoir_cascade_spill_flow,
         reservoir_volume=reservoir_volume,
-        reservoir_soc=reservoir_soc, reservoir_spill=reservoir_spill,
+        reservoir_soc=reservoir_soc,
         flow_forward=flow_forward, flow_reverse_ac=flow_reverse_ac,
         network_injection=network_injection, dac_load=dac_load,
         thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
@@ -781,6 +878,8 @@ def build_full_year_monolithic(
         reservoir_volume_scale_m3=reservoir_volume_scale_m3,
         reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
         cascade_station_local_rows=hydro.cascade_station_local_rows,
+        independent_reservoir_local_rows=independent_rows,
+        cascade_position_by_local_row=cascade_position_by_local_row,
         cascade_edge_source_local_rows=hydro.cascade_edge_source_local_rows,
         cascade_edge_target_local_rows=hydro.cascade_edge_target_local_rows,
         cascade_edge_target_weights=hydro.cascade_edge_target_weights,
