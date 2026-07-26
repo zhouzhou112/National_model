@@ -73,6 +73,36 @@ root named `2030_168h_v0726_spill_explicit_pdhg_cpu32` is a pre-build config
 failure, not a solve. Use a new output root only after the `pdhg_gpu` solver-key
 whitelist regression passes on the server.
 
+The corrected CPU-PDHG root is:
+
+```text
+/data/zz2/National_model/outputs/2030_168h_v0726_spill_explicit_pdhg_cpu32_v2
+```
+
+It was gracefully terminated after 3,074.134 solver seconds with no feasible
+solution. The last telemetry record is near iteration 496,035; peak solver and
+process-tree memory are only 1.990 GB and 2.503 GiB, but the terminal primal
+residual is still about 49.5 and the dual residual is rising. Retain it as a
+low-memory diagnostic, not as the first 744h profile.
+
+The active one-at-a-time 744h gate is:
+
+```bash
+OUT=/data/zz2/National_model/outputs/2030_744h_v0726_spill_explicit_barrier16_auto_order
+PID=663050
+ps -p "$PID" -o pid,etime,%cpu,%mem,rss,vsz,stat,cmd
+tail -n 100 "$OUT/stdout.log"
+tail -n 20 "$OUT/solver_telemetry.jsonl" 2>/dev/null
+ls -lh "$OUT"/{build_report,solve_report,solution_qc,result_manifest}.json 2>/dev/null
+```
+
+It uses clean server HEAD `c879c99`, the `city_337` data root,
+`barrier_16_auto_order_v1`, `Threads=16`, `Crossover=1` and
+`SoftMemLimit=48`. Available RAM was about 69 GiB at launch. Do not start a
+second fixed-server solve. PID exit is not acceptance: require `OPTIMAL`,
+`solution_qc=PASS`, a closed result manifest and inspection of process-tree
+peak RSS, presolve/factor structure and crossover behavior.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
