@@ -7,6 +7,7 @@
 - Fixed-server HEAD `94d1f1d` passes 67 tests (two optional wave-I/O skips). Both 168h spill formulations are `OPTIMAL + solution_qc=PASS`. Projection takes 641.996 s and explicit spill 654.026 s, but explicit spill has lower presolved rows/nonzeros, `Factor NZ`, `Factor Ops` and telemetry solver memory; it is also materially faster in the paired 24h flexibility case. Explicit spill is therefore retained for the memory-bound full-year target.
 - Machine-readable evidence is saved at `/data/zz2/National_model/outputs/solver_comparisons/spill_168h_ab_v0726.{json,csv}`. The two original output roots are preserved.
 - Persistent solver telemetry, graceful termination and six traceable numerics-only solver profiles are validated. Local Base 24h pre-screen favors dual simplex (25.796 s) and Barrier-16 (29.181 s) over Barrier-32 reference (33.889 s); all are optimal and QC PASS. Sequential fixed-server 168h profile gates are now eligible. The user has authorized one-at-a-time 744h or longer stress tests subject to the memory gate. Do not run concurrent CISPO solves and do not start fixed-server 8760h.
+- The 168h dual-simplex result overturns its 24h ranking: after 905.073 s/421,470 pivots it remained infeasible and was gracefully terminated, producing a traceable `INTERRUPTED` report. Peak process-tree RSS was only 2.594 GiB, but runtime already exceeded complete Barrier-32 by 38.4%. Dual simplex is excluded from 744h; Barrier-16 and CPU-PDHG remain pending.
 
 ## 2026-07-25 20:30 CST Barrier-32 reached iteration 23
 

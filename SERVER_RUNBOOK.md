@@ -53,6 +53,14 @@ Run CPU PDHG only with Gurobi 13.0+ (the fixed server qualifies); local Gurobi
 12 must not be used for that profile. Use `scripts/compare_solver_runs.py` to
 write one JSON and CSV row per isolated output root.
 
+Dual simplex is not a 744h candidate. The 168h run was stopped gracefully after
+905.073 solver seconds and 421,470 pivots without a feasible basis, compared with
+654.026 s for a complete Barrier-32 solution. Preserve its diagnostic root:
+
+```text
+/data/zz2/National_model/outputs/2030_168h_v0726_spill_explicit_dual_simplex16
+```
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
