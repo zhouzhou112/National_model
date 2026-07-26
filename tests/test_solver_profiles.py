@@ -24,6 +24,19 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(profiled.raw["numerics"]["bar_order"], 0)
         self.assertEqual(profiled.solver_path, profile_path.resolve())
 
+        limited = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_32_limited_presolve_fast_basis_v1.json"
+            )
+        )
+        self.assertEqual(limited.raw["numerics"]["pre_passes"], 3)
+        self.assertEqual(limited.raw["numerics"]["crossover_basis"], 0)
+        forced_dual = load_model_config(
+            solver_path=profile_path.parent / "barrier_32_force_dual_v1.json"
+        )
+        self.assertEqual(forced_dual.raw["numerics"]["pre_dual"], 1)
+
     def test_solver_profile_rejects_scientific_overrides(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "invalid.json"

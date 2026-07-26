@@ -1,0 +1,14 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_32_force_dual_v1",
+  "description": "Engineering comparison that forces presolve to form the dual continuous model before Barrier.",
+  "numerics": {
+    "method": 2,
+    "threads": 32,
+    "presolve": 2,
+    "pre_dual": 1,
+    "crossover": 1,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

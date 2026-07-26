@@ -216,6 +216,9 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         "bar_correctors": ("BarCorrectors", int),
         "bar_homogeneous": ("BarHomogeneous", int),
         "bar_order": ("BarOrder", int),
+        "crossover_basis": ("CrossoverBasis", int),
+        "pre_dual": ("PreDual", int),
+        "pre_passes": ("PrePasses", int),
         "pre_sparsify": ("PreSparsify", int),
     }
     for config_key, (parameter_name, converter) in optional_parameters.items():
@@ -317,6 +320,9 @@ def solve_and_report(
             "pre_sparsify": int(model.Params.PreSparsify),
             "aggregate": int(model.Params.Aggregate),
             "agg_fill": int(model.Params.AggFill),
+            "crossover_basis": int(model.Params.CrossoverBasis),
+            "pre_dual": int(model.Params.PreDual),
+            "pre_passes": int(model.Params.PrePasses),
         },
         "iteration_counts": {
             "simplex": float(model.IterCount),

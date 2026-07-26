@@ -471,6 +471,9 @@ def load_model_config(
             "bar_correctors",
             "bar_homogeneous",
             "bar_order",
+            "crossover_basis",
+            "pre_dual",
+            "pre_passes",
             "pre_sparsify",
         }
         allowed = set(raw["numerics"]).union(allowed_optional)

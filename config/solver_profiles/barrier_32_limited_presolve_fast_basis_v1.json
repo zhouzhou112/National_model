@@ -1,0 +1,16 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_32_limited_presolve_fast_basis_v1",
+  "description": "Engineering candidate for a presolve-dominated LP: cap presolve at three passes, sparsify, and request fast crossover basis construction.",
+  "numerics": {
+    "method": 2,
+    "threads": 32,
+    "presolve": 2,
+    "pre_passes": 3,
+    "pre_sparsify": 1,
+    "crossover": 1,
+    "crossover_basis": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

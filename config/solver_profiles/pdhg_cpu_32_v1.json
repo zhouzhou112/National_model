@@ -1,0 +1,14 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "pdhg_cpu_32_v1",
+  "description": "Gurobi 13 CPU PDHG engineering comparison with crossover; not compatible with older Gurobi releases.",
+  "numerics": {
+    "method": 6,
+    "threads": 32,
+    "presolve": 2,
+    "crossover": 1,
+    "pdhg_gpu": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}
