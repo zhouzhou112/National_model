@@ -103,6 +103,23 @@ second fixed-server solve. PID exit is not acceptance: require `OPTIMAL`,
 `solution_qc=PASS`, a closed result manifest and inspection of process-tree
 peak RSS, presolve/factor structure and crossover behavior.
 
+The verified active-run structure checkpoint is:
+
+```text
+build: 341.673 s; 3,686,023 columns; 5,920,701 rows; 42,360,391 nonzeros
+build peak process-tree RSS: 4.977 GiB
+presolve: 223.80 s; 3,017,979 columns; 3,088,821 rows; 30,884,732 nonzeros
+ordering: 115.48 s
+AA' NZ: 6.449e7
+Factor NZ: 8.062e8 (about 9.0 GB)
+Factor Ops: 6.197e12
+early telemetry peak solver memory: 25.087 GB
+```
+
+This passes the build/factor memory gate but is not solve acceptance. Continue
+monitoring the Barrier residual trajectory and subsequent crossover; do not
+infer success from factorization alone.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
