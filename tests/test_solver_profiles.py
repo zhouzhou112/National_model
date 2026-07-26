@@ -43,6 +43,11 @@ class SolverProfileTests(unittest.TestCase):
             solver_path=profile_path.parent / "barrier_32_force_dual_v1.json"
         )
         self.assertEqual(forced_dual.raw["numerics"]["pre_dual"], 1)
+        pdhg = load_model_config(
+            solver_path=profile_path.parent / "pdhg_cpu_32_v1.json"
+        )
+        self.assertEqual(pdhg.raw["numerics"]["method"], 6)
+        self.assertEqual(pdhg.raw["numerics"]["pdhg_gpu"], 0)
 
     def test_solver_profile_rejects_scientific_overrides(self):
         with tempfile.TemporaryDirectory() as temp_dir:

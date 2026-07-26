@@ -67,6 +67,12 @@ factor nonzeros and operations. Do not promote it directly to 744h. First run
 `barrier_16_auto_order_v1.json`, which changes only the thread limit relative to
 the Barrier-32 reference.
 
+The automatic-order control completes in 637.344 s and is the current Barrier
+leader while preserving the reference factor structure. The first PDHG launch
+root named `2030_168h_v0726_spill_explicit_pdhg_cpu32` is a pre-build config
+failure, not a solve. Use a new output root only after the `pdhg_gpu` solver-key
+whitelist regression passes on the server.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and

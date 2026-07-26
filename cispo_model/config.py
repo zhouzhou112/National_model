@@ -472,6 +472,7 @@ def load_model_config(
             "bar_homogeneous",
             "bar_order",
             "crossover_basis",
+            "pdhg_gpu",
             "pre_dual",
             "pre_passes",
             "pre_sparsify",
