@@ -80,6 +80,23 @@ def main() -> None:
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--write-mps", action="store_true")
     parser.add_argument(
+        "--constraint-family-audit",
+        action="store_true",
+        help=(
+            "Write a raw LP row/column sparsity census by model family. "
+            "It does not modify the model and reports presolve only globally."
+        ),
+    )
+    parser.add_argument(
+        "--constraint-family-audit-max-nonzeros",
+        type=int,
+        default=50_000_000,
+        help=(
+            "Safety limit for the audit's explicit sparse-matrix access; "
+            "default 50,000,000."
+        ),
+    )
+    parser.add_argument(
         "--skip-full-max-cf",
         action="store_true",
         help="Developer-only structural build; never use for a production solve.",
@@ -93,6 +110,8 @@ def main() -> None:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
     if args.export_diagnostic_state and args.diagnostic_hours is None:
         raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
+    if args.constraint_family_audit_max_nonzeros < 1:
+        raise SystemExit("--constraint-family-audit-max-nonzeros must be positive")
 
     base_config = load_model_config(
         args.config, args.scenario_config, args.solver_config
@@ -210,6 +229,7 @@ def main() -> None:
 
     # Lazy imports let data/horizon preflight run before Gurobi is installed.
     from cispo_model.diagnostics import model_statistics, solve_and_report
+    from cispo_model.model_structure_audit import audit_model_structure
     from cispo_model.master import export_master_solution
     from cispo_model.monolithic import build_full_year_monolithic
     from cispo_model.solution_export import export_operational_solution
@@ -225,6 +245,17 @@ def main() -> None:
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
     )
+    structure_audit_path = output_dir / "constraint_family_audit.json"
+    structure_audit = None
+    if args.constraint_family_audit:
+        structure_audit = audit_model_structure(
+            artifacts.model,
+            max_matrix_nonzeros=args.constraint_family_audit_max_nonzeros,
+        )
+        structure_audit_path.write_text(
+            json.dumps(structure_audit, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     statistics = model_statistics(artifacts.model)
     build_report = {
         "generated_at": datetime.now().astimezone().isoformat(),
@@ -238,6 +269,15 @@ def main() -> None:
         "result_use": scope_report["result_use"],
         "available_memory_gb_before_build": round(available_gb, 2),
         "full_max_cf_used": not args.skip_full_max_cf,
+        "constraint_family_audit": {
+            "enabled": bool(args.constraint_family_audit),
+            "path": str(structure_audit_path) if structure_audit else None,
+            "matrix_nonzero_safety_limit": (
+                int(args.constraint_family_audit_max_nonzeros)
+                if args.constraint_family_audit
+                else None
+            ),
+        },
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
     }
@@ -297,6 +337,26 @@ def main() -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    if structure_audit is not None:
+        from cispo_model.solver_audit import parse_gurobi_log
+
+        structure_audit["solver_log_global"] = parse_gurobi_log(
+            (output_dir / "gurobi.log").read_text(
+                encoding="utf-8", errors="replace"
+            )
+        )
+        structure_audit["solve_summary"] = {
+            "status": report.get("status"),
+            "runtime_seconds": report.get("runtime_seconds"),
+            "objective_value_million_cny": report.get("objective_value_million_cny"),
+            "peak_process_tree_rss_gib": report.get("runtime_memory", {}).get(
+                "peak_process_tree_rss_gib"
+            ),
+        }
+        structure_audit_path.write_text(
+            json.dumps(structure_audit, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     if export_state:
         export_solution_planning_state(
             artifacts,

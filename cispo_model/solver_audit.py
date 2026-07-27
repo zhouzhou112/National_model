@@ -101,6 +101,7 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
     solve = _read_json(root / "solve_report.json")
     qc = _read_json(root / "solution_qc.json")
     build = _read_json(root / "build_report.json")
+    structure = _read_json(root / "constraint_family_audit.json")
     scope = _read_json(root / "run_scope.json")
     log_path = root / "gurobi.log"
     log_fields = (
@@ -135,6 +136,12 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         default=None,
     )
     statistics = solve.get("model_statistics") or build.get("statistics") or {}
+    largest_constraint_family = next(
+        iter(structure.get("constraint_families", [])), {}
+    )
+    largest_variable_family = next(
+        iter(structure.get("variable_families", [])), {}
+    )
     return {
         "output_root": str(root),
         "planning_year": solve.get("planning_year", scope.get("planning_year")),
@@ -161,5 +168,14 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "variables": statistics.get("variables"),
         "constraints": statistics.get("constraints"),
         "nonzeros": statistics.get("nonzeros"),
+        "constraint_family_audit_schema": structure.get("schema_version"),
+        "largest_raw_constraint_family": largest_constraint_family.get("family"),
+        "largest_raw_constraint_family_nonzeros": largest_constraint_family.get(
+            "matrix_nonzeros"
+        ),
+        "largest_raw_variable_family": largest_variable_family.get("family"),
+        "largest_raw_variable_family_nonzeros": largest_variable_family.get(
+            "matrix_nonzeros"
+        ),
         **log_fields,
     }

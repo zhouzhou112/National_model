@@ -1776,3 +1776,23 @@ PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 opera
 ### 14.6 生产输出和停止规则
 
 生产输出必须包含容量、逐小时运行、碳/CCS、成本分解、`solution_qc.json`、SHA256 manifest 和简要 SVG。744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status 或 QC 不通过，不得自动放松约束或写出下一期 planning state。
+
+### 14.7 原始 LP 结构审计合同
+
+求解性优化候选必须先用 `--constraint-family-audit` 在新的、隔离的短时
+Base 根进行结构测量。审计在 `model.update()` 后仅读取 Gurobi 的原始系数
+矩阵，不调用 `optimize()`、不修改参数、变量、目标函数或约束。它输出
+`constraint_family_audit.json`，并作为科学诊断文件进入 `output_catalog.csv`
+和 `result_manifest.json`。
+
+审计至少记录原始 rows/columns/nonzeros、按稳定名称前缀归类的约束/变量
+族、每族的最大/平均行或列非零元，以及最稠密的 25 个具体行和列。求解完成
+后同一文件追加 Gurobi 日志中的全局 presolve、ordering、`AA' NZ`、`Factor NZ`、
+`Factor Ops`、Barrier 和 crossover 指标。Gurobi 不提供稳定的“预处理后行到
+源约束族”映射，因此不得把全局 presolve 删除量归因给某一族。
+
+`Model.getA()` 会显式物化稀疏矩阵；默认安全上限是 50,000,000 个原始非零元，
+超过上限必须硬失败而不是占用全年求解内存。故该审计自身不构成 744h/8760h
+运行许可；任何等价改写仍须在匹配 24h/168h 上验证目标、全部 QC、manifest、
+raw/presolved 规模、因子结构、阶段时间、迭代数和峰值 RSS 后，才可评价是否有
+全年收益。

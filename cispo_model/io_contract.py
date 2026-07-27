@@ -45,6 +45,7 @@ OUTPUT_FILE_ROLES = {
     "annual_storage_operation_by_technology.csv": "Storage energy, losses and cycling by technology",
     "annual_summary.json": "Backward-compatible compact result summary",
     "build_report.json": "Built-model size, architecture and memory report",
+    "constraint_family_audit.json": "Raw LP constraint and variable family sparsity census with global solver phases",
     "co2_source_sink_flows.csv": "Positive province-to-storage-site CO2 flows",
     "cost_components.csv": "Objective and diagnostic cost decomposition",
     "dac_capacity_capture.csv": "Province-technology DAC capacity and capture",
