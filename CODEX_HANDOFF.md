@@ -12,6 +12,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- Manifest 契约 P0 与本地 P1 闭合（2026-07-27，实施提交 `7499062`）：已将通用 `stdout.log`、`stderr.log` 明确加入 `RUNTIME_MANAGED_FILES`，与既有 runner/sequence 日志一样排除在科学输出目录和 result manifest 之外。`tests/test_result_manifest.py` 会创建这两个文件、生成 manifest、随后追加 wrapper 文本，并验证 `validate_result_manifest()` 仍为真。完整本地测试通过 `67/67`。新的独立 2030 Base 根 `outputs/2030_1h_v0727_manifest_runtime_contract` 与 `outputs/2030_24h_v0727_manifest_runtime_contract` 均达到 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，灵活负荷和波浪能均关闭。24h 诊断为 342,343 个变量、262,201 条约束、1,771,702 个非零元，求解时间 41.296 s、进程树峰值 RSS 为 0.725 GiB。它们仍是 `TEST_ONLY_TRUNCATED_HORIZON`；未改变固定服务器/云端 checkout、进程或既有 744h 输出。确切下一步：推送审查后的提交，再复核空闲固定服务器后决定是否部署到新的 168h Base 根。
 - Solvability A/B decision (2026-07-26, comparison commit `9e82cc5`): explicit nonnegative spill and equality water balances remain the default. Both 168h Base formulations are `OPTIMAL + solution_qc=PASS` with objectives agreeing within `6.2e-8 million CNY`. Projection is 1.84% faster (641.996 versus 654.026 s), but explicit spill reduces presolved rows/nonzeros by 2.03%/0.74%, `AA' NZ` by 0.88%, `Factor NZ/Factor Ops` by 0.67%/0.80%, and telemetry peak solver memory from 3.957 to 3.876 GB. It is also 24.0% faster in the paired 24h flexibility case. Because the 8760h bottleneck is factorization memory, not a 12 s 168h runtime difference, lower factor structure and cross-scenario robustness take priority over removing raw columns. The projected outputs remain preserved as exact-formulation evidence. `scripts/compare_solver_runs.py` writes the paired JSON/CSV audit.
 - Solver engineering milestone (2026-07-26, commits `6d84209` and `44f7fef`): a numerics-only `--solver-config` contract, six versioned Barrier/dual-simplex/CPU-PDHG profiles, flushed `solver_telemetry.jsonl` and SIGTERM/SIGINT-to-`Model.terminate()` handling are validated locally. Solver-profile paths/hashes are recorded and cannot modify scientific settings. CPU-PDHG requires the fixed server's Gurobi 13 environment and is not run under local Gurobi 12.
 - Dual-simplex 168h rejection (2026-07-26): the fixed-server 16-thread run was gracefully terminated after 905.073 solver seconds and 421,470 pivots, with no feasible solution and repeated primal-infeasibility spikes. This is already 38.4% slower than the complete Barrier-32 reference. Peak process-tree RSS falls from 3.614 to 2.594 GiB, but the convergence loss disqualifies dual simplex from the first 744h gate. The SIGTERM handler wrote a normal `INTERRUPTED` report with `termination_signal=SIGTERM`; logs and telemetry are preserved.
@@ -39,7 +40,7 @@ This is the repository's single handoff document for work continued across Codex
 - Latest cloud audit (2026-07-24): the user-authorized city_337 release is staged at `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`. Code archive SHA256 is `2f3564ff9123b292106e51bd5ee943e13e874b6798450e38a96428a48a3b6b7a`; all 11,350 runtime-input files (model-ready, hourly CF and hydrology) match the fixed-server SHA256 manifest (`662565a090b64523ec353994e6fdb3314a94b88d429f16e85e1665300ffbc85a`). Compute-node job `4001137` completed the 2030/8760h preflight: 175.17 GiB available memory, 40,912,327 variables, 67,604,064 constraints, 520,922,832 nonzeros and 36.0 GiB static model-memory estimate. It did not construct or solve a Gurobi model.
 - Cloud proxy/WLS was revalidated on 2026-07-24 after repairing the three malformed `.bashrc` exports (the pre-fix file is retained as `.bashrc.codex_backup_20260724_proxy_export`). Compute-node job `4002980` inherited the proxy from `.bashrc` and reached `token.gurobi.com` through `172.16.110.3:8888` with HTTP 302. WLS job `4002981` then completed `Env.start()` and a tiny LP with `GUROBI_SMOKE_PASS`/`OPTIMAL` on `m4ci1905.para.bscc`. A short standalone curl probe in that smoke still timed out, so treat Gurobi's successful authenticated solve—not curl alone—as the license gate. Cloud 24h/168h gates are now eligible; full-year build-only remains downstream of those gates.
 
-- Handoff version: `v0.9.36`
+- Handoff version: `v0.9.37`
 - Snapshot date: `2026-07-27`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
@@ -238,6 +239,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 7. 科学建模的并行后续：保持 Base 不启用灵活性；用 `Power_curve_V2`/建筑热工与车辆可用性数据校准 V3 后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 的成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.37 - 2026-07-27 - manifest runtime 日志契约闭合；本地 Base 短门禁通过
+
+- Git 实施：`7499062`（`fix: exclude generic wrapper logs from result manifest`）。仅修改 `cispo_model/io_contract.py` 与 `tests/test_result_manifest.py`；未暂存或提交 `supplementary_materials/**`。
+- 契约修正：`stdout.log`、`stderr.log` 与 `runner_stdout.log`、`runner_stderr.log`、`sequence_stdout.log`、`sequence_stderr.log`、`run.stdout`、`run.stderr`、`run.time` 和 PID 文件同属 runtime-managed artifacts。它们从科学目录和 SHA256 result manifest 中排除；`gurobi.log` 继续作为带哈希的科学诊断文件。
+- 回归证据：修订后的 manifest 测试先 finalize、再向通用 stdout/stderr 追加，随后通过 `validate_result_manifest()`。聚焦 manifest/I-O 测试通过；`conda run -n RL python -m unittest discover -s tests -p 'test_*.py' -v` 在 17.821 s 内通过 `67/67`。直接以模块路径调用 unittest 的失败仅因 `tests/` 不是 Python package；discovery 是认可的调用方式。
+- 新本地 Base 诊断：`outputs/2030_1h_v0727_manifest_runtime_contract` 与 `outputs/2030_24h_v0727_manifest_runtime_contract` 均为新根，均有 `OPTIMAL`、`solution_qc=PASS`、`scenario_id=base`、灵活负荷/波浪能关闭且 result manifest 零失败。24h 为 342,343 个变量、262,201 条约束、1,771,702 个非零元、41.296 s 求解时间和 0.725 GiB 进程树峰值 RSS；它们仅是截断工程门禁。
+- 保全/下一步：已完成的固定服务器 744h 根未被写入、重建或重做 manifest；未改变服务器/云端 checkout、进程、调度任务或付费运行。推送审查后的提交后，再次实时核验固定服务器空闲状态、checkout 与内存，才单独决定是否部署并运行新的 168h Base 门禁。固定服务器 8760h 仍禁止；新云端 8760h 仍须单独授权。
 
 ### v0.9.36 - 2026-07-27 - 对话收束、实时状态复核与下一阶段目标冻结
 

@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 本地 manifest 契约与 Base 短门禁闭合
+
+- 本地实施提交 `7499062` 将通用 `stdout.log`、`stderr.log` 加入 runtime-managed manifest 排除集合。在不改变 LP、数据、场景、目标函数、约束、时空边界或 solver profile 的前提下，修复了已知的通用重定向日志契约缺陷。
+- 回归先 finalize 科学 manifest、随后向两类 wrapper 日志追加内容，再确认 `validate_result_manifest()` 仍通过。聚焦测试及完整本地 `unittest discover` 套件通过 `67/67`。
+- 新的独立 2030 Base 诊断 `outputs/2030_1h_v0727_manifest_runtime_contract` 与 `outputs/2030_24h_v0727_manifest_runtime_contract` 均为 `OPTIMAL`、`solution_qc=PASS`、`scenario_id=base`、灵活负荷/波浪能关闭和 result manifest 闭合。24h 根记录 342,343 个变量、262,201 条约束、1,771,702 个非零元、41.296 s 求解时间与 0.725 GiB 进程树峰值 RSS；它们是 `TEST_ONLY_TRUNCATED_HORIZON`，不是年度科学结果。
+- 未改变固定服务器/云端 checkout、进程、输出或调度状态，既有 744h 输出按字节保全。在任何新的服务器 168h 门禁之前，须推送精确审查提交并重复实时核验服务器空闲、checkout 和内存。固定服务器 8760h 仍禁止。
+
 ## 2026-07-27 744h optimal/QC pass; strict manifest closure failed
 
 - 2026-07-27 对话收束时再次实时复核：固定服务器无 CISPO/Gurobi 进程，约 69 GiB 可用内存，checkout 干净停留在实现 `c879c99`；本地文档分支起始 HEAD 为 `3664177`。ParaCloud `squeue -u a8s001819` 为空，历史作业状态仍为 `4003088=COMPLETED build-only`、`4003172=OUT_OF_MEMORY`、`4004585=TIMEOUT`，没有已验收的 8760h 结果。

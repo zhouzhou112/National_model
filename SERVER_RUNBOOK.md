@@ -1,5 +1,27 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-27 manifest 契约 P0 在本地闭合
+
+提交 `7499062` 修复通用 shell 重定向文件名缺口：`stdout.log` 和
+`stderr.log` 均为 runtime-managed artifacts，已从科学输出目录及
+`result_manifest.json` 排除；不改变任何科学模型设定。回归先 finalize
+manifest，再向两类通用 wrapper 日志追加，并验证所有科学文件哈希仍可
+验证。完整本地回归通过 `67/67`。
+
+新的 Base 诊断根为：
+
+```text
+outputs/2030_1h_v0727_manifest_runtime_contract
+outputs/2030_24h_v0727_manifest_runtime_contract
+```
+
+两者均为 `OPTIMAL + solution_qc=PASS + scenario_id=base`，manifest 闭合且
+灵活负荷/波浪能关闭；24h 门禁有 342,343 个变量、262,201 条约束、1,771,702
+个非零元、41.296 s 求解时间和 0.725 GiB 峰值 RSS。它们仅为 test-only
+门禁。不得向旧 744h 目录写入。提交推送后，先重新核验固定服务器 checkout、
+CISPO/Gurobi 进程和可用内存，再决定是否部署并启动一个新的 168h Base 根。
+固定服务器 8760h 与所有新的付费云端 8760h 工作仍禁止。
+
 ## 2026-07-26 solvability-optimization campaign
 
 The user has explicitly authorized sequential 744h or longer fixed-server stress
