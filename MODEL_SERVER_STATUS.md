@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 连续 RUC 等价瘦身已在本地闭合；未部署
+
+- 本地实施提交 `3f2255a` 仅删除连续 RUC 中由保留 S4-24、S4-25、S4-29 严格蕴含的四组逐小时上界；容量、备用、惯量、爬坡、最小出力、启停时序、目标函数、Base 技术边界与变量数均未改变。建模前会拒绝不满足 `min_up_h>=1`、`min_down_h>=1`、`pmin_fraction<=pmax_fraction` 或参数缺失的 RUC 表，防止未来参数修改破坏等价性。
+- 新的本地含波浪 Base 1h/24h 根 `outputs/2030_{1h,24h}_v0727_ruc_dominated_bounds_removed_base` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，灵活负荷关闭。24h 原始矩阵由 `345,992/263,810/1,794,507` 变为 `345,992/231,074/1,729,035`（variables/rows/nonzeros），目标完全相同；presolved `129,335/260,116/1,269,506`、`AA' NZ=2.200e6`、`Factor NZ=6.111e6`、`Factor Ops=6.039e8`、95 Barrier 和 67,614 simplex/crossover 均不变。因此它是安全的构建瘦身，并非已证实的 Barrier 加速。
+- 8760h 静态预估更新为 `41,186,792` variables、`55,928,636` estimated constraints、`497,144,388` estimated nonzeros、`33.40 GiB`。这不证明 factorization 可行，不能触发固定服务器 8760h 或新付费云端任务。本轮未连接或修改固定服务器/ParaCloud；服务器 checkout、进程、输出和队列状态必须在任何后续部署前重新实时核验。
+
 ## 2026-07-27 Base 定义重置为含波浪能；仅本地验证，未部署
 
 - 用户已将 Base 定义为风电（含海风）、光伏和波浪能共同参与的连续 LP。提交 `c992550` 将 `base` 的 `wave_energy=true` 固化，并仅保留一个柔性覆盖层 `flexible_load_comfort_v3_v2g_5pct`：它继承含波浪 Base，再启用 `comfort_envelope_v3`、V1G 和因果日内 5% V2G。旧的 V1、state-v2、单独 wave/comfort 及组合情景 JSON 已删除；历史根和记录保持原样，不能改名为新 Base。

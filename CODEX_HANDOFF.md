@@ -12,6 +12,10 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 连续 RUC 的可证明等价瘦身（2026-07-27，实施提交 `3f2255a`）：在不改变任何变量、目标函数、科学情景、容量/备用/惯量/爬坡/最小出力/启停时序或水电约束的前提下，移除了四组已被保留时序行严格蕴含的逐小时上界：`online<=capacity`、`startup<=capacity`、`shutdown<=capacity` 和通用 `gross<=pmax*online`。建模前新硬校验要求完整 RUC 参数、`min_up_h>=1`、`min_down_h>=1`、`pmin_fraction<=pmax_fraction`；S4-24、S4-25 和 S4-29 仍全部保留，因此这是可行域完全等价的行缩减而非放松。详见 `cispo_full_lp_model_spec.md` §5.5.3。
+- 新建且隔离的 Base 1h/24h 根 `outputs/2030_{1h,24h}_v0727_ruc_dominated_bounds_removed_base` 均达到 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，灵活负荷关闭、波浪能开启。相对于对应的 wave-integrated Base 对照，变量数和最优目标不变（1h 仅有 `-2.33e-10 million CNY` 浮点舍入差，24h 完全一致）；1h/24h 原始行数精确减少 `1,364/32,736`，非零元减少 `2,728/65,472`。24h 原始矩阵由 `345,992/263,810/1,794,507` 降至 `345,992/231,074/1,729,035`（variables/rows/nonzeros），但 presolve 后均为 `129,335/260,116/1,269,506`，且 `AA' NZ=2.200e6`、`Factor NZ=6.111e6`、`Factor Ops=6.039e8`、95 Barrier、67,614 simplex/crossover 完全相同。该缩减降低的是原始建模/矩阵负担，并未在此尺度改变 Barrier 因子分解瓶颈。
+- 更新后的 8760h 静态 preflight 是 `41,186,792` variables、`55,928,636` estimated constraints、`497,144,388` estimated nonzeros、`33.40 GiB`；较原估算少 `11,948,640` 行和 `35,845,920` 估计非零元。它只是结构性预估，绝不能作为全年 Barrier factorization 可行性或 8760h 授权证据。本轮未接触固定服务器 checkout/进程/输出或 ParaCloud 队列，未启动任何服务器、云端、744h 或 8760h 作业；既有 744h 根保持未改。
+
 - 情景边界已按用户指令重置（2026-07-27，实施提交 `c992550`）：唯一可运行的基准为 `base`，其默认包含陆上/海上风电、光伏与已严格映射到既有 marine `grid_uid` 的波浪能；`flexible_load=false`。唯一可运行的柔性覆盖层是 `flexible_load_comfort_v3_v2g_5pct`，它继承同一含波浪 Base，并启用 `comfort_envelope_v3` 冷热状态、EV V1G 与日内因果 5% V2G。其灵活性参数仍为待校准敏感性，不得作为已校准 Base 结论。旧 `flexible_load_v1`、`flexible_load_state_v2`、`flexible_load_v2g_v1`、单独 comfort/wave 及各组合情景 JSON 已删除；历史代码、Git 记录和既有输出均保留且只能按其原情景身份解释。`CISPO_WAVE_ROOT` 因而是两个当前可运行情景的必需运行时数据根。
 - 本地验证（`c992550`）：设置 `CISPO_WAVE_ROOT` 后，完整 `unittest discover` 回归为 `66/66` 通过。四个全新截断根 `outputs/2030_{1h,24h}_v0727_wave_integrated_base` 与 `outputs/2030_{1h,24h}_v0727_wave_integrated_flexible_v3_v2g_5pct` 都独立达到 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True`，所有 hard checks 为真且 scenario identity/开关复核正确。24h Base 为 raw `345,992/263,810/1,794,507`、presolved `129,335/260,116/1,269,506`（rows/columns/nonzeros）、`AA' NZ=2.200e6`、`Factor NZ=6.111e6`、`Factor Ops=6.039e8`、95 Barrier、67,614 simplex/crossover、34.074 s、0.735 GiB 峰值 RSS；24h 柔性覆盖层为 `354,920/268,398/1,844,355`、`132,254/266,492/1,299,953`、`2.221e6`、`6.179e6`、`5.905e8`、101、56,990、33.984 s、0.731 GiB。它们均为 `TEST_ONLY_TRUNCATED_HORIZON`，不能解释为年度科学结果或已校准技术经济性。
 - 全年静态 preflight（未构建、未求解）现为：wave-integrated Base `41,186,792` variables、`67,877,276` constraints、`532,990,308` nonzeros、36.47 GiB；唯一柔性覆盖层 `44,445,512`、`69,551,896`、`538,014,168`、37.63 GiB。本机可用内存约 15 GiB，低于 96 GiB preflight 门槛；这些静态数值绝不证明 Barrier factorization 可行。此次只做本地工作，未触碰固定服务器 checkout/进程/输出、ParaCloud 队列或历史 744h 根；固定服务器 8760h 和新的付费云端任务仍未授权。
@@ -47,7 +51,7 @@ This is the repository's single handoff document for work continued across Codex
 - Latest cloud audit (2026-07-24): the user-authorized city_337 release is staged at `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260724_city337_22fb493`. Code archive SHA256 is `2f3564ff9123b292106e51bd5ee943e13e874b6798450e38a96428a48a3b6b7a`; all 11,350 runtime-input files (model-ready, hourly CF and hydrology) match the fixed-server SHA256 manifest (`662565a090b64523ec353994e6fdb3314a94b88d429f16e85e1665300ffbc85a`). Compute-node job `4001137` completed the 2030/8760h preflight: 175.17 GiB available memory, 40,912,327 variables, 67,604,064 constraints, 520,922,832 nonzeros and 36.0 GiB static model-memory estimate. It did not construct or solve a Gurobi model.
 - Cloud proxy/WLS was revalidated on 2026-07-24 after repairing the three malformed `.bashrc` exports (the pre-fix file is retained as `.bashrc.codex_backup_20260724_proxy_export`). Compute-node job `4002980` inherited the proxy from `.bashrc` and reached `token.gurobi.com` through `172.16.110.3:8888` with HTTP 302. WLS job `4002981` then completed `Env.start()` and a tiny LP with `GUROBI_SMOKE_PASS`/`OPTIMAL` on `m4ci1905.para.bscc`. A short standalone curl probe in that smoke still timed out, so treat Gurobi's successful authenticated solve—not curl alone—as the license gate. Cloud 24h/168h gates are now eligible; full-year build-only remains downstream of those gates.
 
-- Handoff version: `v0.9.39`
+- Handoff version: `v0.9.41`
 - Snapshot date: `2026-07-27`
 - Local repository: `D:\codeenv\pycharmproject\National_RL\National_model`
 - Git branch: `codex/cispo-2030-full-lp`
@@ -237,15 +241,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-1. 在本地最小修改 manifest 契约：把通用 `stdout.log`、`stderr.log` 明确归为 wrapper/runtime-managed 文件，或采用等价且可证明不会在 finalize 后继续变化的设计；增加“manifest 生成后继续追加 wrapper log，scientific manifest 仍闭合”的回归测试。不得改写现有 744h 输出。
-2. 运行完整本地回归及新的 Base 1h/24h 闭合门禁；只有 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True + scenario_id=base` 才可部署。
-3. 固定服务器仍空闲且 checkout 干净时，部署确切提交并运行新的 168h Base 根。该验证用于 manifest 契约与无回归检查，不自动授权第二次 744h。
-4. 对既有 744h 终态作明确选择：默认保留为数学/QC/性能证据，并生成目录外、名称明确的只读 post-run audit；只有研究协议坚持“原始 `result_manifest.json` 必须闭合”时才申请重跑修正版 744h。
-5. 开展 8760h 求解性优化时不得改变 Base 科学边界。优先分析 time-expanded matrix、presolved rows/columns/nonzeros、`AA' NZ`、`Factor NZ`、`Factor Ops`、线程数和 crossover 工作量；每个候选先过匹配的 24h/168h A/B，再决定 744h。不得从静态 36-54 GiB 构建内存推断 8760h Barrier 可行。
-6. 新的付费云端 8760h 必须单独获得授权，并满足：不可变代码/数据/场景 hash、新 24h/168h 门禁、清晰的高内存节点/线程/时限方案、预计核时和停止规则。固定服务器不得启动 8760h。
-7. 科学建模的并行后续：保持 Base 不启用灵活性；用 `Power_curve_V2`/建筑热工与车辆可用性数据校准 V3 后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 的成本松弛和点/省/全国互补性分析。
+1. 保留既有 744h 原目录不变；如研究协议需要处理其 manifest，只能设计目录外、名称明确、只读的 post-run audit。原目录 manifest 只有在明确批准后才可由全新根重跑取代。
+2. 这项连续 RUC 行缩减已完成本地 1h/24h 闭合门禁；若用户单独授权服务器部署，先实时复核固定服务器 checkout、进程、内存和数据根，再部署精确提交，在新的、隔离的含波浪 Base 根上运行一个匹配 168h A/B。不得并发求解、不得覆盖历史根，也不得直接放大到 744h/8760h。
+3. 后续 P3 优先寻找会同时改善 presolved 矩阵和 `Factor NZ/Factor Ops` 的等价结构修改；每个候选须记录 raw/presolved rows、columns、nonzeros、ordering/Barrier/crossover 时间、迭代数、目标、全部 QC 与 RSS。仅减少会被 presolve 消去的原始行不足以证明全年收益。
+4. 新的付费云端 8760h 必须单独获得授权，并满足不可变代码/数据/场景 hash、新 24h/168h 门禁、高内存节点与线程/SoftMemLimit、Slurm 优雅终止规则、预计核时费用和明确停止条件；固定服务器继续禁止 8760h。
+5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.41 - 2026-07-27 - exact continuous-RUC row reduction
+
+- Implementation commit: `3f2255a` (`Optimize redundant continuous RUC bounds`); this is local only and has not changed the fixed-server or ParaCloud checkout.
+- Changed `cispo_model/monolithic.py`, `cispo_model/preflight.py`, `tests/test_ruc_redundancy.py` and `cispo_full_lp_model_spec.md`. It removes only the four generic continuous-RUC upper-bound row families proven by S4-24/S4-25/S4-29 and the nonnegative variable bounds. A build-time domain guard rejects missing RUC parameters, `min_up_h<1`, `min_down_h<1` or `pmin_fraction>pmax_fraction`.
+- Validation: the targeted proof/regression tests pass 3/3 and the full local discovery suite passes 69/69 with `CISPO_WAVE_ROOT` set. Fresh Base roots `outputs/2030_1h_v0727_ruc_dominated_bounds_removed_base` and `outputs/2030_24h_v0727_ruc_dominated_bounds_removed_base` are `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`; wave is enabled and flexibility is disabled. Objectives match the paired wave-integrated Base reference within floating-point tolerance, all hard checks pass and manifests close.
+- 24h raw rows/nonzeros fall by exactly 32,736/65,472 (12.41%/3.65%) with no variable change. Presolved matrix, factor structure and iterations are identical, so retain this as safe construction/matrix thinning—not as evidence of a Barrier-factorization speedup. The revised static 8760h estimate is 41,186,792 variables/55,928,636 constraints/497,144,388 nonzeros/33.40 GiB and remains non-evidence for an 8760h solve.
+- Existing outputs and user-owned `supplementary_materials/**` remain untouched. No server/cloud process, checkout, queue, output root, 744h run or 8760h run was changed. Next action is a separately authorized, fresh 168h A/B only after live server readiness revalidation.
 
 ### v0.9.40 - 2026-07-27 - wave-integrated Base and single flexibility overlay
 

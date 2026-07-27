@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-27 连续 RUC 等价瘦身：仅本地已验收，服务器操作需另行授权
+
+本地实施提交 `3f2255a` 移除了连续 RUC 中四组严格冗余的逐小时上界行：
+`online<=capacity`、`startup<=capacity`、`shutdown<=capacity`、`gross<=pmax*online`。
+它们分别由保留的 S4-24、S4-25、S4-29 和变量非负下界蕴含；建模前硬校验
+`min_up_h>=1`、`min_down_h>=1`、`pmin_fraction<=pmax_fraction` 及参数完整性。不得在
+未保留这些行或未通过硬校验的分支上套用此说明。
+
+本地完整回归 `69/69`，以及新建 Base 1h/24h 根
+`outputs/2030_{1h,24h}_v0727_ruc_dominated_bounds_removed_base` 均为
+`OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`；Base 波浪能开启、
+灵活负荷关闭。24h 原始行数/非零元减少 `32,736/65,472`，变量和目标值不变；但 presolved
+矩阵、`AA' NZ`、`Factor NZ`、`Factor Ops`、Barrier/crossover 迭代都完全相同。因此把它记录为
+原始构建负担的等价缩减，不能以此声称 8760h Factorization 已加速或可行。
+
+本轮没有服务器部署或远程写操作。只有用户另行授权后，才可按顺序：实时读取服务器
+checkout/进程/内存/数据根 → 部署精确的已推送提交 → 用新的、隔离的含波浪 Base 输出根运行一个
+匹配 168h A/B。不得并发求解、覆盖任何历史输出、启动固定服务器 8760h，或提交新的付费云端任务。
+
 ## 2026-07-27 新 Base：波浪能已整合；服务器尚未部署
 
 当前仅允许两个可运行身份：
