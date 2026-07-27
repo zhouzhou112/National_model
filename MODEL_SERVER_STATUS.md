@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 固定服务器 Base 168h manifest 闭合门禁
+
+- 先实时确认固定服务器无 CISPO/Gurobi 进程、约 69 GiB 可用内存、checkout 干净于 `c879c99`，随后仅 fast-forward 到已经推送的 `67482ab`；P0 实施提交为 `7499062`。相对于原服务器模型实现，部署代码的唯一模型邻接差异是通用 runtime 日志排除，不改变 LP、数据、情景、目标函数、约束或时空边界。
+- 服务器以三个版本化数据根运行完整 discovery 回归，结果 `67` 项通过、`2` 项可选 xarray 测试跳过。随后单独启动一个 Base 168h 根 `/data/zz2/National_model/outputs/2030_168h_v0727_manifest_runtime_contract_base`，使用 `barrier_16_auto_order_v1`、`Threads=16`、`SoftMemLimit=48`、`Crossover=1` 和 generic `stdout.log`/`stderr.log` wrapper 重定向；无并行求解。
+- 终态为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，灵活负荷/波浪能均关闭，所有 hard checks 为真。原始矩阵 1,393,915 行、1,011,079 列、9,797,949 非零元；presolved 为 729,559/817,723/7,001,232，presolve 22.89 s、ordering 26.08 s，`AA' NZ=2.131e7`、`Factor NZ=1.036e8`、`Factor Ops=8.436e10`。Gurobi 为 161 次 Barrier、226,659 次 simplex/crossover、614.894 s；端到端为 12:24.94、进程树峰值 RSS 3.453 GiB（`/usr/bin/time` 3,641,828 KiB），zero swaps。
+- 物理/数值关键值：目标 `2,028,598.8440447072 million CNY`，最大功率平衡残差 `3.91e-12 GW`，最大约束/边界/对偶违例 `4.17e-8/4.11e-12/1.75e-10`。该根标记为 `TEST_ONLY_TRUNCATED_HORIZON`，不得作为全年科学结论。
+- P0 直接复核：`result_manifest.json` 的 `excluded_runtime_files` 恰为 `run.pid`、`stderr.log`、`stdout.log`；完成后 stdout/stderr 分别为 18,072/1,006 bytes，科学 manifest 仍零失败。这验证了 finalize 后 wrapper 继续打印的实际运行路径。既有 744h 根完全未写入；没有固定服务器 8760h 或新的 ParaCloud 任务。后续仅按 P2 设计目录外只读审计或按 P3 做匹配 A/B，不得因本日志缺陷立即重跑 744h。
+
 ## 2026-07-27 本地 manifest 契约与 Base 短门禁闭合
 
 - 本地实施提交 `7499062` 将通用 `stdout.log`、`stderr.log` 加入 runtime-managed manifest 排除集合。在不改变 LP、数据、场景、目标函数、约束、时空边界或 solver profile 的前提下，修复了已知的通用重定向日志契约缺陷。

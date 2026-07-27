@@ -1,5 +1,41 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-27 Base 168h generic-wrapper manifest 门禁已通过
+
+固定服务器在空闲且 clean 的 `c879c99` 上复核后，fast-forward 到已推送的
+`67482ab`（其中 P0 实施为 `7499062`），并完成服务器 discovery 回归 `67` 项
+通过、`2` 项可选 xarray 测试跳过。相对于原固定服务器模型实现，新增的唯一
+模型邻接代码为 runtime-log manifest 排除；不得将它表述为 LP 或科学边界变化。
+
+已完成且必须保留的新门禁根：
+
+```text
+/data/zz2/National_model/outputs/2030_168h_v0727_manifest_runtime_contract_base
+```
+
+命令使用 `barrier_16_auto_order_v1`、`Threads=16`、`SoftMemLimit=48`、
+`Crossover=1`，将 wrapper 输出重定向到通用 `stdout.log`/`stderr.log`，并由
+`/usr/bin/time -v` 记录端到端资源。终态为 `OPTIMAL + solution_qc=PASS +
+scenario_id=base + validate_result_manifest=True`，Base 灵活负荷和波浪能均关闭；
+所有 hard checks 通过。原始/预处理矩阵为
+`1,393,915/1,011,079/9,797,949` 和 `729,559/817,723/7,001,232`
+（rows/columns/nonzeros）；`AA' NZ=2.131e7`、`Factor NZ=1.036e8`、
+`Factor Ops=8.436e10`。Gurobi 运行 614.894 s（161 Barrier、226,659
+simplex/crossover），端到端 12:24.94，峰值进程树 RSS 3.453 GiB，未发生 swap。
+
+`result_manifest.json` 明确排除 `run.pid`、`stdout.log`、`stderr.log`；最终
+`validate_result_manifest()` 为真且无失败项，证明最终报告打印发生在 manifest
+finalize 后时，wrapper 日志不会再污染科学哈希契约。这个 168h 根仅为
+`TEST_ONLY_TRUNCATED_HORIZON`。不得写入、重建或原地修复旧
+`2030_744h_v0726_spill_explicit_barrier16_auto_order`；不得启动固定服务器
+8760h 或新的付费云端 8760h。
+
+接下来 P2 若需要处理旧 744h，只能先设计名称明确、目录外且只读的
+post-run audit manifest；只有研究协议明确要求原目录 result manifest 闭合时，
+才可申请全新根的修正版 744h。P3 候选必须先在匹配 24h/168h 记录 raw/presolved
+rows、columns、nonzeros、`AA' NZ`、`Factor NZ`、`Factor Ops`、phase time、
+Barrier/crossover、objective/QC 与 RSS；不得以改变 Base 科学边界换取加速。
+
 ## 2026-07-27 manifest 契约 P0 在本地闭合
 
 提交 `7499062` 修复通用 shell 重定向文件名缺口：`stdout.log` 和
