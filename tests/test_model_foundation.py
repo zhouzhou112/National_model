@@ -61,13 +61,14 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertLess(estimates[1], estimates[2])
 
     def test_scale_estimator_covers_all_current_variable_blocks(self):
+        self.assertTrue(self.config.raw["features"]["wave_energy"])
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 24).variables,
-            342_343,
+            345_992,
         )
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 8760).variables,
-            40_912_327,
+            41_186_792,
         )
 
     def test_nuclear_biomass_and_battery_bounds_are_explicit(self):

@@ -1,9 +1,9 @@
-"""Optional grid-resolved wave-energy capacity and hourly availability.
+"""Grid-resolved wave-energy capacity and hourly availability.
 
-The module is deliberately isolated from ``VRE_TECHS`` so the validated
-wind/PV data contract and Base model remain unchanged when wave energy is
-disabled.  Wave capacity is continuous and grid resolved; hourly dispatch is
-aggregated only after applying every site's own capacity-factor series.
+Wave remains isolated from ``VRE_TECHS`` so its existing-marine-grid data
+contract stays distinct from wind/PV, but it is enabled in the Base model.
+Wave capacity is continuous and grid resolved; hourly dispatch is aggregated
+only after applying every site's own capacity-factor series.
 """
 from __future__ import annotations
 

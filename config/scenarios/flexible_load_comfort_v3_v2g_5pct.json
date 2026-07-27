@@ -2,7 +2,7 @@
   "scenario_override_version": "v1",
   "scenario_id": "flexible_load_comfort_v3_v2g_5pct",
   "scenario_family": "demand_flexibility_v2g",
-  "description": "Comfort-envelope V3 with a causal V2G sensitivity capped at 5% of each province-day baseline EV peak.",
+  "description": "Demand-flexibility overlay on the wave-integrated Base: comfort-envelope V3 with causal V2G capped at 5% of each province-day baseline EV peak.",
   "evidence_status": "EVIDENCE_ANCHORED_PARAMETERS_REQUIRE_SENSITIVITY",
   "overrides": {
     "features": {

@@ -24,23 +24,19 @@ else:
 
 
 class WaveEnergyTests(unittest.TestCase):
-    def test_base_is_disabled_and_overlay_is_explicit(self):
+    def test_wave_is_integrated_into_base(self):
         base = load_model_config()
-        wave = load_model_config(
-            scenario_path="config/scenarios/wave_energy_medium_v1.json"
-        )
-        self.assertFalse(base.raw["features"]["wave_energy"])
-        self.assertTrue(wave.raw["features"]["wave_energy"])
+        self.assertTrue(base.raw["features"]["wave_energy"])
         self.assertEqual(
-            wave.raw["wave_energy"]["profile_year_by_planning_year"]["2060"],
+            base.raw["wave_energy"]["profile_year_by_planning_year"]["2060"],
             2050,
         )
         self.assertEqual(
-            wave.raw["wave_energy"]["connection_treatment"],
+            base.raw["wave_energy"]["connection_treatment"],
             "independent_cost_adders_no_shared_offwind_export",
         )
         self.assertEqual(
-            wave.raw["wave_energy"]["contract_version"],
+            base.raw["wave_energy"]["contract_version"],
             "wave_existing_grid_v2",
         )
 
@@ -108,9 +104,7 @@ class WaveEnergyTests(unittest.TestCase):
         np.testing.assert_allclose(block[:, 1], 0.25)
 
     def test_cost_adders_are_site_specific_and_convert_currency(self):
-        config = load_model_config(
-            scenario_path="config/scenarios/wave_energy_medium_v1.json"
-        )
+        config = load_model_config()
         sites = __import__("pandas").DataFrame(
             {
                 "water_depth_m": [0.0, 100.0],

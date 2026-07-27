@@ -22,7 +22,7 @@
   "scenario": {
     "id": "base",
     "family": "cispo_replication",
-    "description": "CISPO-style economic optimum without optional demand-flexibility or complementarity extensions",
+    "description": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
     "evidence_status": "MODEL_BASELINE"
   },
   "time_boundary": "cyclic_year",
@@ -44,7 +44,7 @@
     "intra_grid_spur_trunk": true,
     "annual_load_center_transmission": true,
     "flexible_load": false,
-    "wave_energy": false,
+    "wave_energy": true,
     "csp": false
   },
   "wave_energy": {

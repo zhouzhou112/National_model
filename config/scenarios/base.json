@@ -2,11 +2,12 @@
   "scenario_override_version": "v1",
   "scenario_id": "base",
   "scenario_family": "cispo_replication",
-  "description": "Explicit no-extension baseline; equivalent to running without --scenario-config.",
+  "description": "Explicit wave-integrated baseline with demand flexibility disabled; equivalent to running without --scenario-config.",
   "evidence_status": "MODEL_BASELINE",
   "overrides": {
     "features": {
-      "flexible_load": false
+      "flexible_load": false,
+      "wave_energy": true
     }
   }
 }

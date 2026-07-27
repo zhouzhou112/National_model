@@ -1039,22 +1039,19 @@ f^{AC,\to}_{l,t}+f^{AC,\leftarrow}_{l,t}\le p^{AC}_{l},
 
 CISPO 负荷平衡在省级电网 `g` 与小时 `t` 层面闭合。
 
-### 5.8.0 可选需求柔性扩展（非 CISPO 基准）
+### 5.8.0 唯一需求柔性覆盖：`comfort_envelope_v3_v2g_5pct`
 
-运行时负荷表同时保存 `base_residual_gw`、`heating_gw`、`cooling_gw` 和 `ev_gw`，并硬校验四分量逐省逐时之和等于 `dem_{g,t}`。Base 情景直接使用 `dem_{g,t}`，不创建任何柔性变量。仅当 `features.flexible_load=true` 时，供暖、制冷和 EV 充电分别引入非负上调、下调变量：
+运行时负荷表同时保存 `base_residual_gw`、`heating_gw`、`cooling_gw` 和 `ev_gw`，并硬校验四分量逐省逐时之和等于 `dem_{g,t}`。Base 直接使用 `dem_{g,t}`，不创建任何柔性变量。唯一保留的柔性 JSON `flexible_load_comfort_v3_v2g_5pct.json` 在 Base 上使 `features.flexible_load=true`；供暖、制冷和 EV 充电分别引入非负上调、下调变量：
 
 \[
 d^{x,act}_{g,t}=d^{x,base}_{g,t}+d^{x,+}_{g,t}-d^{x,-}_{g,t},
 \qquad x\in\{heat,cool,EV\}.
 \]
 
-每个北京时间自然日 `D` 内严格保持能量服务：
-
-\[
-\sum_{t\in D}d^{x,+}_{g,t}=\sum_{t\in D}d^{x,-}_{g,t}.
-\]
-
-冷热下调界由原小时分量乘 `maximum_reduction_fraction` 给出，上调界由当日分量峰值乘 `maximum_increase_fraction_of_daily_peak` 给出。EV V1G 下调不超过原充电负荷的可搬运比例；上调后的聚合充电功率不超过当日平均 EV 功率乘显式倍率。以上均为线性约束。
+V3 冷热功率包络由 `Power_curve_V2` BAIT/balance-point 公式的 `+/-1 C` 舒适区间生成；
+冷热等效库存采用逐日因果转移、日首/日末为零，分别使用 4/5 h 时长和 0.94/0.92 小时
+保留率。EV V1G 以无序充电基线为服务需求，加入非负因果待充队列和 12 h 聚合服务期限；
+`ev_hour_weight` 不能解释为接桩可用率。
 
 可选 V2G 不是重复计算驾驶用能，而是在上述 EV 服务上叠加日内循环虚拟储能：
 
@@ -1063,43 +1060,15 @@ e^{EV}_{g,t}=\lambda e^{EV}_{g,t-1}+\eta_c p^{V2G,c}_{g,t}
 -p^{V2G,d}_{g,t}/\eta_d,
 \]
 
-日首与前一日末在各自然日内部循环，功率和能量上界由当日 EV 电量、参与率、可用电量比例和持续小时数生成。有效负荷为：
+日首与前一日末在各自然日内部循环；V2G 功率上限为各省每日基线 EV 峰值的 5%，并与
+V1G 共用电网充电功率上限。有效负荷为：
 
 \[
 d^{eff}_{g,t}=d^{base}_{g,t}+d^{heat,act}_{g,t}+d^{cool,act}_{g,t}
 +d^{EV,act}_{g,t}+p^{V2G,c}_{g,t}-p^{V2G,d}_{g,t}\ge0.
 \]
 
-移峰吞吐与 V2G 充放电吞吐均进入目标函数。小时功率平衡、备用、惯量和年度负荷中心闭合使用 `d^{eff}`；规划容量裕度仍使用 Base 峰值，且需求柔性不提供备用或容量信用。该处理故意保守，并防止未校准的需求侧参数削弱可靠性边界。当前参数属于显式敏感性假设，不得作为 CISPO 原始参数引用。
-
-`flexible_load_state_v2` 是独立、向后兼容的增强情景，不替换上述已验收
-`daily_energy_shift_v1`。其冷热分量使用逐省逐时等效库存：
-
-\[
-e^x_{g,t}=\rho_x e^x_{g,t-1}
-+\eta^x_c d^{x,+}_{g,t}
--d^{x,-}_{g,t}/\eta^x_d,\qquad x\in\{heat,cool\}.
-\]
-
-每个北京时间自然日的日首库存从零开始，日末库存固定为零。这样既保留 LP，也避免
-诊断截断时段通过周期首尾从未来借能。冷热日用电不再强制等于基线；库存保持损耗要求
-`sum(actual-base) >= 0`，并由状态转移和日末归零 QC 共同闭合。`duration_hours`
-乘当日充/放功率包络生成等效库存上界。当前参数只是省级等效敏感性代理，不代表建筑
-温度、COP 或经标定的 RC 参数。
-
-EV V1G V2 不把 `Power_curve_V2` 的 `ev_hour_weight` 解释为接桩可用率。该权重与
-`future_nev_stock`、`ev_kwh_per_vehicle_day` 共同形成不可变的无序充电基线。
-模型保留 V1 的上调/下调变量，并增加非负待充队列：
-
-\[
-q^{EV}_{g,t}=q^{EV}_{g,t-1}+d^{EV,-}_{g,t}-d^{EV,+}_{g,t}.
-\]
-
-队列每日从零开始并回到零，所以补充充电只能发生在此前已有延期电量之后，且逐日
-EV 电量严格守恒。`maximum_queue_duration_hours × shiftable_daily_average`
-仅是聚合队列能量包络，不是逐车严格截止期。由于当前输入没有逐时车辆接入率、可用
-电池能量和出发服务 SOC，配置校验禁止 `state_envelope_v2` 与 V2G 同时启用；既有
-`flexible_load_v2g_v1` 仍是独立的虚拟储能敏感性情景。
+移峰吞吐与 V2G 充放电吞吐均进入目标函数。小时功率平衡、备用、惯量和年度负荷中心闭合使用 `d^{eff}`；规划容量裕度仍使用 Base 峰值，且需求柔性不提供备用或容量信用。该处理故意保守，并防止未校准的需求侧参数削弱可靠性边界。热工、车辆连接率、可用电池、出发 SOC 和响应成本仍属显式敏感性假设，不得作为 CISPO 原始参数引用。
 
 ## 5.8.1 本省负荷满足方程
 
@@ -1723,14 +1692,11 @@ nodal dispatch model
 
 ---
 
-## 14A. 2026-07-25 波浪能可选扩建附录
+## 14A. 2026-07-27 波浪能纳入 Base
 
-波浪能是默认关闭的独立资产类，不加入 `VRE_TECHS`，因此 Base 的风光
-容量、出力和 spur/trunk 数组保持不变。原始波浪格点不作为第二套优化
-网格；构建输入时只保留与 `optimization_points.csv` 坐标一致且
-`is_land == 0` 的既有 `grid_uid`。启用
-`config/scenarios/wave_energy_medium_v1.json` 后，对每个被波浪数据覆盖的
-既有海洋格点 \(i\) 增加连续容量变量：
+波浪能是 Base 的默认资产类，但不加入 `VRE_TECHS`。原始波浪格点不作为第二套优化
+网格；构建输入时只保留与 `optimization_points.csv` 坐标一致且 `is_land == 0` 的既有
+`grid_uid`。对每个被波浪数据覆盖的既有海洋格点 \(i\) 增加连续容量变量：
 
 \[
 K_i^{wave}=K_{i,inherited}^{wave}+K_{i,new}^{wave},\qquad
@@ -1754,17 +1720,11 @@ distance_to_shore_km`，其中参数来自 DOI
 标识直接复用同一个既有 `grid_uid` 的 `city_337` 路由，不使用最近海上
 风电格点代理，也不代表新增工程海缆路线。
 
-原始数据只有 2030/2040/2050 的 conservative/medium/aggressive CF，
-容量潜力在全部情景中相同且没有 2060 数据。当前 2060 明确保持 2050
-medium CF 和成本；`potential_fraction`、水深/离岸距离筛选、插补 CF、
-汇率和成本必须作为敏感性参数。完整数据审计、规模门检和运行说明见
-`WAVE_ENERGY_INTEGRATION.md`。
-
-波浪能可以与其他可选模块在同一个 LP 中共同求解。当前显式组合配置为
-`wave_energy_medium_v1_flexible_load_v1.json` 和
-`wave_energy_medium_v1_flexible_load_comfort_v3.json`。每个组合配置是
-一个独立案例；Base、单模块和组合案例由敏感性套件分别运行，不能把多个
-互斥案例解释成一个随机多情景规划问题。
+原始数据只有 2030/2040/2050 的 conservative/medium/aggressive CF，容量潜力在全部
+情景中相同且没有 2060 数据。当前 2060 明确保持 2050 medium CF 和成本；
+`potential_fraction`、水深/离岸距离筛选、插补 CF、汇率和成本必须作为敏感性参数。
+运行 Base 或唯一 V3+V2G 柔性覆盖均须设置 `CISPO_WAVE_ROOT`。完整数据审计、规模门检
+和运行说明见 `WAVE_ENERGY_INTEGRATION.md`；历史波浪单模块和组合 JSON 已删除。
 
 ## 14. 2026-07-18 production implementation addendum
 

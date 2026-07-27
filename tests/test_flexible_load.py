@@ -17,44 +17,22 @@ from cispo_model.flexible_load import (
 
 
 class FlexibleLoadContractTests(unittest.TestCase):
-    def test_base_and_optional_scenarios_are_explicit(self):
+    def test_wave_integrated_base_and_v3_v2g_overlay_are_explicit(self):
         base = load_model_config()
-        flexible = load_model_config(
-            scenario_path="config/scenarios/flexible_load_v1.json"
-        )
-        v2g = load_model_config(
-            scenario_path="config/scenarios/flexible_load_v2g_v1.json"
-        )
-        state = load_model_config(
-            scenario_path="config/scenarios/flexible_load_state_v2.json"
-        )
-        comfort = load_model_config(
-            scenario_path="config/scenarios/flexible_load_comfort_v3.json"
-        )
         comfort_v2g = load_model_config(
             scenario_path=(
                 "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"
             )
         )
-        combined_comfort_v2g = load_model_config(
-            scenario_path=(
-                "config/scenarios/"
-                "wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct.json"
-            )
-        )
         self.assertEqual(base.raw["scenario"]["id"], "base")
         self.assertFalse(base.raw["features"]["flexible_load"])
-        self.assertTrue(flexible.raw["features"]["flexible_load"])
-        self.assertFalse(flexible.raw["flexible_load"]["ev_v2g"]["enabled"])
-        self.assertTrue(v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(base.raw["features"]["wave_energy"])
+        self.assertTrue(comfort_v2g.raw["features"]["wave_energy"])
+        self.assertTrue(comfort_v2g.raw["features"]["flexible_load"])
         self.assertEqual(
-            state.raw["flexible_load"]["formulation"], "state_envelope_v2"
+            comfort_v2g.raw["flexible_load"]["formulation"],
+            "comfort_envelope_v3",
         )
-        self.assertFalse(state.raw["flexible_load"]["ev_v2g"]["enabled"])
-        self.assertEqual(
-            comfort.raw["flexible_load"]["formulation"], "comfort_envelope_v3"
-        )
-        self.assertFalse(comfort.raw["flexible_load"]["ev_v2g"]["enabled"])
         self.assertTrue(comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
         self.assertEqual(
             comfort_v2g.raw["flexible_load"]["ev_v2g"][
@@ -62,22 +40,6 @@ class FlexibleLoadContractTests(unittest.TestCase):
             ],
             0.05,
         )
-        self.assertTrue(combined_comfort_v2g.raw["features"]["wave_energy"])
-        self.assertTrue(combined_comfort_v2g.raw["features"]["flexible_load"])
-        self.assertEqual(
-            combined_comfort_v2g.raw["flexible_load"]["formulation"],
-            "comfort_envelope_v3",
-        )
-        self.assertTrue(
-            combined_comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"]
-        )
-        self.assertEqual(
-            combined_comfort_v2g.raw["flexible_load"]["ev_v2g"][
-                "power_fraction_of_daily_baseline_peak"
-            ],
-            0.05,
-        )
-        self.assertNotIn("formulation", flexible.raw["flexible_load"])
 
     def test_day_slices_cover_partial_horizon_once(self):
         slices = make_day_slices(25, 24)

@@ -78,14 +78,15 @@ python scripts/run_cispo_2030_full_year.py \
   --output-dir outputs/2030_24h_regression
 ```
 
-Optional modules are enabled by a recorded partial override, for example:
+The only demand-flexibility overlay is the recorded V3+V2G partial override; both
+Base and this overlay require `CISPO_WAVE_ROOT` to point to `wave_grid.nc`:
 
 ```bash
 python scripts/run_cispo_2030_full_year.py \
-  --scenario-config config/scenarios/flexible_load_v1.json \
+  --scenario-config config/scenarios/flexible_load_comfort_v3_v2g_5pct.json \
   --planning-year 2030 \
   --diagnostic-hours 24 \
-  --output-dir outputs/flexible_load_v1_24h_gate
+  --output-dir outputs/base_wave_flexible_v3_v2g_5pct_24h_gate
 ```
 
 Production solve:
