@@ -88,6 +88,9 @@ OUTPUT_FILE_ROLES = {
     "vre_dispatch.npz": "Province-technology-hour VRE availability, generation and reserve arrays",
     "wave_capacity.csv": "Wave capacity decisions on existing marine optimization grid rows",
     "wave_dispatch.npz": "Province-hour wave availability and dispatch plus grid capacity decisions",
+    "warm_start_basis.bas": "Test-only post-crossover Gurobi LP basis for guarded diagnostic reuse",
+    "warm_start_basis_manifest.json": "Integrity and named-structure contract for a test-only LP basis",
+    "warm_start_input.json": "Verified source and compatibility record for an imported test-only LP basis",
 }
 
 NPZ_DIMENSIONS = {

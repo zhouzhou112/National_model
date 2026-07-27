@@ -31,6 +31,30 @@ Solved in 223903 iterations and 732.95 seconds
         self.assertEqual(parsed["barrier_iterations"], 171)
         self.assertEqual(parsed["total_solver_log_seconds"], 732.95)
 
+    def test_parse_barrier_performed_then_crossover(self):
+        parsed = parse_gurobi_log(
+            """
+Optimize a model with 200 rows, 300 columns and 400 nonzeros
+Presolve time: 1.50s
+Presolved: 100 rows, 150 columns, 200 nonzeros
+Ordering time: 0.30s
+ Dense cols : 12
+ AA' NZ     : 1.000e+04
+ Factor NZ  : 4.000e+04 (roughly 1 GB of memory)
+ Factor Ops : 2.000e+06
+Barrier performed 99 iterations in 35.96 seconds
+Crossover time: 3.01 seconds (2.89 work units)
+Solved in 73826 iterations and 39.39 seconds
+"""
+        )
+        self.assertEqual(parsed["barrier_termination"], "PERFORMED")
+        self.assertEqual(parsed["barrier_iterations"], 99)
+        self.assertEqual(parsed["dense_columns"], 12)
+        self.assertEqual(parsed["crossover_seconds"], 3.01)
+        self.assertAlmostEqual(parsed["post_barrier_solver_seconds"], 3.43)
+        self.assertAlmostEqual(parsed["presolve_nonzero_reduction_fraction"], 0.5)
+        self.assertEqual(parsed["factor_to_aa_nonzero_ratio"], 4.0)
+
     def test_collect_solver_run_includes_structure_audit_summary(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)

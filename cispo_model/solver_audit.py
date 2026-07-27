@@ -38,6 +38,10 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
         r"([0-9.]+) seconds",
         text,
     )
+    barrier_performed = re.search(
+        r"Barrier performed ([0-9,]+) iterations in ([0-9.]+) seconds",
+        text,
+    )
     solved = re.search(
         r"Solved in ([0-9,]+) iterations and ([0-9.]+) seconds",
         text,
@@ -63,6 +67,12 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
             rf"Factor NZ[^\n]*roughly\s*{_NUMBER}\s*GB of memory",
             converter=float,
         ),
+        "dense_columns": _match(
+            text, r"Dense cols\s*:\s*([0-9,]+)", converter=lambda value: int(value.replace(",", ""))
+        ),
+        "crossover_seconds": _match(
+            text, rf"Crossover time:\s*{_NUMBER}\s+seconds"
+        ),
     }
     if original:
         result.update(
@@ -80,12 +90,39 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
         result.update(
             barrier_iterations=int(barrier_solved.group(1).replace(",", "")),
             barrier_solve_seconds=float(barrier_solved.group(2)),
+            barrier_termination="SOLVED",
+        )
+    elif barrier_performed:
+        result.update(
+            barrier_iterations=int(barrier_performed.group(1).replace(",", "")),
+            barrier_solve_seconds=float(barrier_performed.group(2)),
+            barrier_termination="PERFORMED",
         )
     if solved:
         result.update(
             simplex_iterations=int(solved.group(1).replace(",", "")),
             total_solver_log_seconds=float(solved.group(2)),
         )
+    original_rows = result.get("original_rows")
+    original_columns = result.get("original_columns")
+    original_nonzeros = result.get("original_nonzeros")
+    presolved_rows = result.get("presolved_rows")
+    presolved_columns = result.get("presolved_columns")
+    presolved_nonzeros = result.get("presolved_nonzeros")
+    if original_rows and presolved_rows is not None:
+        result["presolve_row_reduction_fraction"] = 1.0 - presolved_rows / original_rows
+    if original_columns and presolved_columns is not None:
+        result["presolve_column_reduction_fraction"] = 1.0 - presolved_columns / original_columns
+    if original_nonzeros and presolved_nonzeros is not None:
+        result["presolve_nonzero_reduction_fraction"] = 1.0 - presolved_nonzeros / original_nonzeros
+    aa_transpose_nonzeros = result.get("aa_transpose_nonzeros")
+    factor_nonzeros = result.get("factor_nonzeros")
+    if aa_transpose_nonzeros and factor_nonzeros is not None:
+        result["factor_to_aa_nonzero_ratio"] = factor_nonzeros / aa_transpose_nonzeros
+    barrier_seconds = result.get("barrier_solve_seconds")
+    total_seconds = result.get("total_solver_log_seconds")
+    if barrier_seconds is not None and total_seconds is not None:
+        result["post_barrier_solver_seconds"] = total_seconds - barrier_seconds
     return result
 
 
@@ -103,6 +140,8 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
     build = _read_json(root / "build_report.json")
     structure = _read_json(root / "constraint_family_audit.json")
     scope = _read_json(root / "run_scope.json")
+    config_snapshot = _read_json(root / "model_config_snapshot.json")
+    environment = _read_json(root / "run_environment.json")
     log_path = root / "gurobi.log"
     log_fields = (
         parse_gurobi_log(log_path.read_text(encoding="utf-8", errors="replace"))
@@ -149,9 +188,14 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
             "optimization_hours", scope.get("optimization_hours")
         ),
         "scenario_id": solve.get("scenario_id", scope.get("scenario_id")),
+        "result_use": solve.get("result_use", scope.get("result_use")),
         "status": solve.get("status"),
         "solution_qc_status": qc.get("status"),
         "solver_profile_id": solve.get("solver_profile_id"),
+        "git_commit": environment.get("git_commit"),
+        "configuration_source_sha256": config_snapshot.get("source_sha256"),
+        "scenario_source_sha256": config_snapshot.get("scenario_source_sha256"),
+        "solver_profile_source_sha256": config_snapshot.get("solver_source_sha256"),
         "objective_value_million_cny": solve.get(
             "objective_value_million_cny"
         ),

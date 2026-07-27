@@ -254,9 +254,14 @@ def solve_and_report(
     output_dir: Path,
     *,
     compute_iis: bool = True,
+    warm_start: dict | None = None,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     configure_gurobi(model, config, output_dir / "gurobi.log")
+    if warm_start is not None:
+        from .basis_reuse import apply_basis_reuse
+
+        apply_basis_reuse(model, warm_start)
     before = model_statistics(model)
     telemetry = SolverTelemetry(output_dir / "solver_telemetry.jsonl")
     telemetry.write_event(
@@ -323,7 +328,9 @@ def solve_and_report(
             "crossover_basis": int(model.Params.CrossoverBasis),
             "pre_dual": int(model.Params.PreDual),
             "pre_passes": int(model.Params.PrePasses),
+            "lp_warm_start": int(model.Params.LPWarmStart),
         },
+        "warm_start": warm_start,
         "iteration_counts": {
             "simplex": float(model.IterCount),
             "barrier": int(model.BarIterCount),

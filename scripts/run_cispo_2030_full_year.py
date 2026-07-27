@@ -71,6 +71,31 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--export-warm-start-basis",
+        action="store_true",
+        help=(
+            "Export a post-crossover Gurobi .bas file plus a strict named-LP "
+            "identity manifest. Restricted to diagnostic horizons."
+        ),
+    )
+    parser.add_argument(
+        "--basis-in",
+        help=(
+            "Accepted diagnostic output directory containing warm_start_basis.bas "
+            "and warm_start_basis_manifest.json."
+        ),
+    )
+    parser.add_argument(
+        "--allow-basis-reuse",
+        action="store_true",
+        help="Explicitly acknowledge test-only LP basis reuse for this run.",
+    )
+    parser.add_argument(
+        "--allow-cross-year-basis",
+        action="store_true",
+        help="Permit a checked diagnostic basis from another planning year.",
+    )
+    parser.add_argument(
         "--allow-diagnostic-state-in",
         action="store_true",
         help="Allow a test-only predecessor state; valid only for a test horizon.",
@@ -110,6 +135,14 @@ def main() -> None:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
     if args.export_diagnostic_state and args.diagnostic_hours is None:
         raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
+    if args.export_warm_start_basis and args.diagnostic_hours is None:
+        raise SystemExit("--export-warm-start-basis requires --diagnostic-hours")
+    if args.basis_in and not args.allow_basis_reuse:
+        raise SystemExit("--basis-in requires explicit --allow-basis-reuse")
+    if args.allow_basis_reuse and not args.basis_in:
+        raise SystemExit("--allow-basis-reuse requires --basis-in")
+    if args.allow_cross_year_basis and not args.basis_in:
+        raise SystemExit("--allow-cross-year-basis requires --basis-in")
     if args.constraint_family_audit_max_nonzeros < 1:
         raise SystemExit("--constraint-family-audit-max-nonzeros must be positive")
 
@@ -213,6 +246,12 @@ def main() -> None:
         "memory_gate_pass": available_gb >= required_gb,
         "scale_estimate": selected_scale.__dict__,
         "gurobi_required_for_build": True,
+        "basis_reuse_request": {
+            "basis_in": str(args.basis_in) if args.basis_in else None,
+            "allow_basis_reuse": bool(args.allow_basis_reuse),
+            "allow_cross_year_basis": bool(args.allow_cross_year_basis),
+            "export_warm_start_basis": bool(args.export_warm_start_basis),
+        },
     }
     (output_dir / "run_scope.json").write_text(
         json.dumps(scope_report, ensure_ascii=False, indent=2) + "\n",
@@ -245,6 +284,22 @@ def main() -> None:
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
     )
+    warm_start = None
+    if args.basis_in:
+        from cispo_model.basis_reuse import prepare_basis_reuse
+
+        warm_start = prepare_basis_reuse(
+            args.basis_in,
+            artifacts.model,
+            config,
+            optimization_hours=optimization_hours,
+            result_use=scope_report["result_use"],
+            allow_cross_year=bool(args.allow_cross_year_basis),
+        )
+        (output_dir / "warm_start_input.json").write_text(
+            json.dumps(warm_start, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     structure_audit_path = output_dir / "constraint_family_audit.json"
     structure_audit = None
     if args.constraint_family_audit:
@@ -280,6 +335,7 @@ def main() -> None:
         },
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
+        "warm_start": warm_start,
     }
     (output_dir / "build_report.json").write_text(
         json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
@@ -302,6 +358,7 @@ def main() -> None:
         config,
         output_dir,
         compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
+        warm_start=warm_start,
     )
     report.update(
         boundary_year=config.boundary_year,
@@ -317,6 +374,7 @@ def main() -> None:
         encoding="utf-8",
     )
     export_state = False
+    qc = None
     if artifacts.model.SolCount:
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
@@ -331,6 +389,23 @@ def main() -> None:
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
     report["runtime_memory"] = memory_monitor.stop()
+    if (
+        args.export_warm_start_basis
+        and qc is not None
+        and report["status"] == "OPTIMAL"
+        and qc["status"] == "PASS"
+    ):
+        from cispo_model.basis_reuse import export_warm_start_basis
+
+        report["warm_start_basis"] = export_warm_start_basis(
+            artifacts.model,
+            config,
+            output_dir,
+            solve_report=report,
+            solution_qc=qc,
+            optimization_hours=optimization_hours,
+            result_use=scope_report["result_use"],
+        )
     if artifacts.model.SolCount:
         report["result_manifest_path"] = str(output_dir / "result_manifest.json")
     (output_dir / "solve_report.json").write_text(
