@@ -22,6 +22,8 @@ RUNTIME_MANAGED_FILES = {
     "result_manifest.json",
     "runner_stdout.log",
     "runner_stderr.log",
+    "stdout.log",
+    "stderr.log",
     "sequence_stdout.log",
     "sequence_stderr.log",
     "run.pid",
