@@ -164,6 +164,53 @@ replacement run, align the wrapper filename with the runtime-managed contract
 or make a reviewed additive contract fix with regression coverage. Do not
 silently regenerate the existing manifest or overwrite the terminal output.
 
+## 2026-07-27 next-phase closure and scale-up gate
+
+Live closeout state:
+
+```text
+fixed-server implementation HEAD: c879c99 (clean)
+fixed-server CISPO/Gurobi process: none
+fixed-server available RAM: about 69 GiB
+ParaCloud active jobs: none
+8760h accepted scientific result: none
+```
+
+Follow this order:
+
+1. Make a minimal local manifest-contract fix. Generic wrapper files
+   `stdout.log` and `stderr.log` must be runtime-managed/excluded, or the
+   alternative design must prove they cannot change after manifest
+   finalization. Add a regression that appends to a wrapper log after finalize
+   and still validates every scientific file.
+2. Preserve
+   `/data/zz2/National_model/outputs/2030_744h_v0726_spill_explicit_barrier16_auto_order`
+   byte-for-byte. Never regenerate its `result_manifest.json` in place.
+3. Pass the complete local regression and new Base 1h/24h roots with
+   `OPTIMAL`, `solution_qc=PASS`, `scenario_id=base` and a closed result
+   manifest. Then, only on an idle clean fixed server, deploy the exact commit
+   and run one new 168h Base root.
+4. Do not rerun 744h solely because the wrapper log changed. Default to an
+   explicitly named, directory-external, read-only post-run audit for the old
+   result. Request a corrected 744h rerun only if the research acceptance
+   protocol requires the original in-directory manifest to close.
+5. For solvability work, compare candidate formulations/settings on matched
+   24h and 168h cases before any 744h. Record raw/presolved rows, columns and
+   nonzeros, `AA' NZ`, `Factor NZ`, `Factor Ops`, Barrier/crossover iterations,
+   objective/QC equivalence and process-tree peak RSS. Do not change Base
+   physics, temporal resolution, objective or constraints to obtain speed.
+6. A new ParaCloud 2030/8760h solve requires separate explicit authorization,
+   immutable code/data/scenario hashes, fresh 24h/168h gates, a reviewed
+   high-memory node/thread/time-limit plan, estimated billed core-hours and
+   termination rules. Never launch fixed-server 8760h.
+
+Scientific work may proceed independently only behind scenario/accounting
+boundaries: Base keeps flexibility and wave disabled; flexibility V3 requires
+building/EV calibration and low/base/high tests; total 2025-2060 transformation
+cost requires a discounted pathway ledger or an explicitly approved
+multi-period objective; MGA cost-relaxation and point/province/national
+complementarity follow an accepted Base scientific solution.
+
 For Slurm deployments, request a termination warning such as
 `--signal=B:TERM@300` and set the Slurm wall limit at least five minutes longer
 than Gurobi `TimeLimit`. This lets the signal handler call `Model.terminate()` and
