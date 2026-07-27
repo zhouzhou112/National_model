@@ -398,6 +398,12 @@ def export_result_summary(
         ((1.0 - efficiency)[:, None] * (flow_forward + flow_reverse)).sum()
     )
     full_year = hours == config.hours
+    mga_metadata = artifacts.index.get("mga")
+    primary_objective = (
+        float(artifacts.model.ObjVal)
+        if mga_metadata is None
+        else float(artifacts.index["mga_primary_cost_expression"].getValue())
+    )
     summary = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "boundary_year": config.boundary_year,
@@ -414,7 +420,7 @@ def export_result_summary(
             if full_year
             else "mixed annual capacity/policy terms plus truncated operating terms; not a planning result"
         ),
-        "objective_million_cny_per_year": float(artifacts.model.ObjVal),
+        "objective_million_cny_per_year": primary_objective,
         "period_load_gwh": float(load.sum()),
         "period_baseline_load_gwh": float(baseline_load.sum()),
         "period_generation_gwh": float(generation.generation_gwh.sum()),
@@ -439,6 +445,20 @@ def export_result_summary(
         "storage_discharge_gwh": float(storage_discharge.sum()),
         "interprovincial_transmission_losses_gwh": transmission_losses,
     }
+    if mga_metadata is not None:
+        summary["analysis_mode"] = "MGA_CONSTRAINED_SECONDARY_OBJECTIVE"
+        summary["mga"] = {
+            "mga_id": mga_metadata["mga_id"],
+            "cost_cap_million_cny": mga_metadata["cost_cap_million_cny"],
+            "primary_cost_value_million_cny": primary_objective,
+            "cost_cap_slack_million_cny": (
+                float(mga_metadata["cost_cap_million_cny"]) - primary_objective
+            ),
+            "secondary_objective_value_gw": float(artifacts.model.ObjVal),
+            "secondary_objective_direction": mga_metadata[
+                "secondary_objective_direction"
+            ],
+        }
     _write_json(summary, output_dir / "annual_summary.json")
     _write_json(summary, output_dir / "run_summary.json")
 

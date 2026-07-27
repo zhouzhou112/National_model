@@ -62,6 +62,8 @@ OUTPUT_FILE_ROLES = {
     "load_center_annual_generation.csv": "Annual spatial generation assigned to load centers",
     "load_center_intra_transmission.csv": "Annual intraprovincial load-center network decisions and flows",
     "load_center_network_qc.csv": "Load-center network hard checks",
+    "mga_request.json": "Validated MGA baseline, immutable inputs, cost slack and secondary-objective request",
+    "mga_run.json": "Applied MGA cost-cap and secondary-objective metadata plus realized values",
     "model_config_snapshot.json": "Exact resolved year-specific model configuration",
     "monthly_energy_by_technology.csv": "Monthly energy balance by technology",
     "output_catalog.csv": "File-level result catalog",

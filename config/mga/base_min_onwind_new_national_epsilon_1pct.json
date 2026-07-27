@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "base_min_onwind_new_national_epsilon_1pct",
+  "cost_slack": {
+    "relative": 0.01
+  },
+  "secondary_objective": {
+    "direction": "minimize",
+    "asset_type": "vre_new_capacity_gw",
+    "technology": "onwind"
+  }
+}

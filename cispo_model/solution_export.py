@@ -580,7 +580,23 @@ def export_operational_solution(
         for name, value in cost_values.items()
         if not name.startswith("operating_")
     }
-    objective_value = float(artifacts.model.ObjVal)
+    mga_metadata = artifacts.index.get("mga")
+    if mga_metadata is None:
+        objective_value = float(artifacts.model.ObjVal)
+        solver_objective_value = objective_value
+        mga_result = None
+    else:
+        objective_value = float(
+            artifacts.index["mga_primary_cost_expression"].getValue()
+        )
+        solver_objective_value = float(artifacts.model.ObjVal)
+        cost_cap = float(mga_metadata["cost_cap_million_cny"])
+        mga_result = {
+            **mga_metadata,
+            "primary_cost_value_million_cny": objective_value,
+            "cost_cap_slack_million_cny": cost_cap - objective_value,
+            "secondary_objective_value_gw": solver_objective_value,
+        }
     objective_component_residual = sum(objective_cost_values.values()) - objective_value
     tolerance = 1e-5
     # The internal water-balance equation is scaled to million m3. A 1 m3
@@ -774,6 +790,8 @@ def export_operational_solution(
         ),
         "objective_value_million_cny": objective_value,
         "objective_component_residual_million_cny": objective_component_residual,
+        "solver_objective_value": solver_objective_value,
+        "mga": mga_result,
         "total_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "wave_energy_enabled": data.wave is not None,
         "total_wave_generation_gwh": float(wave_generation.sum()),
@@ -926,6 +944,10 @@ def export_operational_solution(
         ] <= tolerance,
         "objective_components": abs(objective_component_residual) <= tolerance,
     }
+    if mga_result is not None:
+        hard_checks["mga_primary_cost_cap"] = (
+            mga_result["cost_cap_slack_million_cny"] >= -tolerance
+        )
     qc["hard_checks"] = hard_checks
     qc["status"] = "PASS" if all(hard_checks.values()) else "HARD_FAIL"
     _write_json(qc, output_dir / "solution_qc.json")

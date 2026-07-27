@@ -100,6 +100,19 @@ def main() -> None:
         action="store_true",
         help="Allow a test-only predecessor state; valid only for a test horizon.",
     )
+    parser.add_argument(
+        "--mga-spec",
+        help=(
+            "Explicit MGA secondary-objective JSON. It is valid only with an "
+            "accepted scientific full-year Base baseline."
+        ),
+    )
+    parser.add_argument(
+        "--mga-baseline",
+        help=(
+            "Accepted least-cost Base result root used to set the MGA cost cap."
+        ),
+    )
     parser.add_argument("--output-dir")
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
@@ -143,6 +156,8 @@ def main() -> None:
         raise SystemExit("--allow-basis-reuse requires --basis-in")
     if args.allow_cross_year_basis and not args.basis_in:
         raise SystemExit("--allow-cross-year-basis requires --basis-in")
+    if bool(args.mga_spec) != bool(args.mga_baseline):
+        raise SystemExit("--mga-spec and --mga-baseline must be supplied together")
     if args.constraint_family_audit_max_nonzeros < 1:
         raise SystemExit("--constraint-family-audit-max-nonzeros must be positive")
 
@@ -162,6 +177,15 @@ def main() -> None:
         raise SystemExit(
             "--allow-diagnostic-state-in cannot be used for a scientific full-year run"
         )
+    if args.mga_spec and requested_test_only:
+        raise SystemExit("MGA requires the configured scientific full-year horizon")
+    if args.mga_spec and (
+        args.export_diagnostic_state
+        or args.export_warm_start_basis
+        or args.basis_in
+        or args.allow_diagnostic_state_in
+    ):
+        raise SystemExit("MGA cannot be combined with diagnostic state or basis reuse")
     from cispo_model.planning_state import PlanningState
 
     if config.boundary_year == 2025:
@@ -252,11 +276,40 @@ def main() -> None:
             "allow_cross_year_basis": bool(args.allow_cross_year_basis),
             "export_warm_start_basis": bool(args.export_warm_start_basis),
         },
+        "analysis_mode": "BASE_MINIMUM_COST",
+        "mga": None,
     }
     (output_dir / "run_scope.json").write_text(
         json.dumps(scope_report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    mga_request = None
+    if args.mga_spec:
+        from cispo_model.mga import prepare_mga_request
+
+        mga_request = prepare_mga_request(
+            args.mga_spec,
+            args.mga_baseline,
+            config,
+            output_dir / "input_manifest.csv",
+        )
+        scope_report["analysis_mode"] = mga_request["analysis_mode"]
+        scope_report["mga"] = {
+            key: value
+            for key, value in mga_request.items()
+            if key not in {"baseline"}
+        }
+        scope_report["mga"]["baseline_result_manifest_sha256"] = mga_request[
+            "baseline"
+        ]["baseline_result_manifest_sha256"]
+        (output_dir / "mga_request.json").write_text(
+            json.dumps(mga_request, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (output_dir / "run_scope.json").write_text(
+            json.dumps(scope_report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     if args.preflight_only:
         print(json.dumps(scope_report, ensure_ascii=False, indent=2))
         return
@@ -284,6 +337,15 @@ def main() -> None:
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
     )
+    mga_run = None
+    if mga_request is not None:
+        from cispo_model.mga import apply_mga_secondary_objective
+
+        mga_run = apply_mga_secondary_objective(artifacts, data, mga_request)
+        (output_dir / "mga_run.json").write_text(
+            json.dumps(mga_run, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     warm_start = None
     if args.basis_in:
         from cispo_model.basis_reuse import prepare_basis_reuse
@@ -336,6 +398,7 @@ def main() -> None:
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
         "warm_start": warm_start,
+        "mga": mga_run,
     }
     (output_dir / "build_report.json").write_text(
         json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
@@ -383,7 +446,18 @@ def main() -> None:
             (not test_only or args.export_diagnostic_state)
             and report["status"] == "OPTIMAL"
             and qc["status"] == "PASS"
+            and mga_request is None
         )
+        if mga_request is not None:
+            report["solver_secondary_objective_value_gw"] = report[
+                "objective_value_million_cny"
+            ]
+            report["objective_value_million_cny"] = qc["objective_value_million_cny"]
+            report["mga"] = qc["mga"]
+            (output_dir / "mga_run.json").write_text(
+                json.dumps(qc["mga"], ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
         if export_state:
             report["planning_state_path"] = str(output_dir / "planning_state")
         report["solution_qc_status"] = qc["status"]

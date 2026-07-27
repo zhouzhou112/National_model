@@ -413,6 +413,11 @@ def export_master_solution(
                 "cost_component": name,
                 "value_million_cny_per_year": expression.getValue(),
                 "included_directly_in_objective": not name.startswith("operating_"),
+                "included_in_primary_cost": not name.startswith("operating_"),
+                "included_directly_in_solver_objective": (
+                    not name.startswith("operating_")
+                    and "mga" not in artifacts.index
+                ),
             }
             for name, expression in artifacts.cost_components.items()
         ]
