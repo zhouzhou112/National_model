@@ -1,0 +1,15 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_auto_order_v2",
+  "description": "Production-oriented 16-thread Barrier profile with automatic ordering and default dual reductions enabled; infeasibility diagnostics are disabled unless explicitly requested.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

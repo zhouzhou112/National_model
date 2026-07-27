@@ -1,0 +1,8 @@
+{
+  "formulation_profile_version": "v1",
+  "profile_id": "annual_emissions_province_hierarchy_v1",
+  "description": "Exact province-level annual emissions accounting followed by a 31-term national carbon limit, replacing one all-hour national border row without changing the feasible set or objective.",
+  "formulation": {
+    "annual_emissions_accounting": "province_hierarchical_v2"
+  }
+}

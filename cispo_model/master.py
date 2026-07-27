@@ -878,8 +878,18 @@ def build_master(
     # Annual resource accounts. Operating cost is attached directly to the
     # objective after hourly variables exist, avoiding a badly scaled dense
     # accounting equality.
+    emissions_accounting = config.raw["formulation"][
+        "annual_emissions_accounting"
+    ]
+    annual_emissions_shape = (
+        (b_count, p_count)
+        if emissions_accounting == "province_hierarchical_v2"
+        else b_count
+    )
     annual_emissions = model.addMVar(
-        b_count, lb=-GRB.INFINITY, name="annual_net_emissions_mt"
+        annual_emissions_shape,
+        lb=-GRB.INFINITY,
+        name="annual_net_emissions_mt",
     )
     annual_biomass = model.addMVar(
         (b_count, p_count), lb=0.0, name="annual_biomass_fuel_pj"
@@ -1177,6 +1187,7 @@ def build_master(
         "line_capacity_floor_gw": line_floor,
         "dac_asset_ids": dac_asset_ids,
         "dac_capacity_floor_mtpa": dac_floor,
+        "annual_emissions_accounting": emissions_accounting,
         "constraint_handles": constraint_handles,
         **index_extra,
     }

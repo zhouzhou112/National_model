@@ -41,7 +41,7 @@ class WaveCapacityFactorStore:
         profile_year: int,
         scenario: str,
         expected_hours: int,
-        weather_year: int = 2023,
+        time_reference_year: int = 2023,
     ):
         try:
             import xarray as xr
@@ -83,14 +83,14 @@ class WaveCapacityFactorStore:
             )
         time = pd.DatetimeIndex(self.dataset["time"].values)
         expected_time = pd.date_range(
-            f"{int(weather_year)}-01-01 00:00:00",
+            f"{int(time_reference_year)}-01-01 00:00:00",
             periods=int(expected_hours),
             freq="h",
         )
         if not time.equals(expected_time):
             raise ValueError(
                 "Wave time coordinate must be a gap-free naive hourly sequence "
-                f"for weather year {weather_year}"
+                f"for reference year {time_reference_year}"
             )
         scenario_key = str(scenario).lower()
         if scenario_key not in SCENARIO_CODE:
@@ -245,7 +245,7 @@ def load_wave_energy_data(config: ModelConfig) -> WaveEnergyData | None:
         profile_year=profile_year,
         scenario=scenario,
         expected_hours=config.hours,
-        weather_year=config.weather_year,
+        time_reference_year=int(settings["time_reference_year"]),
     )
     missing_grid_ids = set(
         sites.wave_source_grid_id.astype(int)

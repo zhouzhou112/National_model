@@ -94,6 +94,33 @@ class CCSModelStructureTests(unittest.TestCase):
                 places=9,
             )
 
+    def test_dense_annual_emissions_account_is_scalar_per_block(self):
+        annual_emissions = self.artifacts.variables["annual_emissions"]
+        self.assertEqual(annual_emissions.shape, (1,))
+        self.assertEqual(
+            self.artifacts.index["annual_emissions_accounting"],
+            "national_dense_v1",
+        )
+
+    def test_hierarchical_annual_emissions_account_is_province_resolved(self):
+        profile = (
+            self.config.path.parent
+            / "formulation_profiles"
+            / "annual_emissions_province_hierarchy_v1.json"
+        )
+        config = load_model_config(formulation_path=profile)
+        artifacts = build_master(
+            config,
+            self.data,
+            [TimeBlock(0, 0, 24)],
+            compute_max_cf=False,
+        )
+        self.assertEqual(artifacts.variables["annual_emissions"].shape, (1, 31))
+        self.assertEqual(
+            artifacts.index["annual_emissions_accounting"],
+            "province_hierarchical_v2",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

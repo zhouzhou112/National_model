@@ -201,8 +201,8 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
     model.Params.TimeLimit = float(numerics["time_limit_seconds"])
     model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
     model.Params.OutputFlag = int(numerics["output_flag"])
-    model.Params.DualReductions = 0
-    model.Params.InfUnbdInfo = 1
+    model.Params.DualReductions = int(numerics.get("dual_reductions", 1))
+    model.Params.InfUnbdInfo = int(numerics.get("inf_unbd_info", 0))
     if "pdhg_gpu" in numerics:
         try:
             model.Params.PDHGGPU = int(numerics["pdhg_gpu"])
@@ -213,6 +213,7 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
     optional_parameters = {
         "aggregate": ("Aggregate", int),
         "agg_fill": ("AggFill", int),
+        "bar_iter_limit": ("BarIterLimit", int),
         "bar_correctors": ("BarCorrectors", int),
         "bar_homogeneous": ("BarHomogeneous", int),
         "bar_order": ("BarOrder", int),
@@ -310,6 +311,15 @@ def solve_and_report(
             str(config.solver_path) if config.solver_path else None
         ),
         "solver_profile_id": config.raw.get("solver_profile", {}).get("id"),
+        "formulation_profile": (
+            str(config.formulation_path) if config.formulation_path else None
+        ),
+        "formulation_profile_id": config.raw.get("formulation_profile", {}).get(
+            "id"
+        ),
+        "annual_emissions_accounting": config.raw["formulation"][
+            "annual_emissions_accounting"
+        ],
         "solver_parameters": {
             "method": int(model.Params.Method),
             "threads": int(model.Params.Threads),
@@ -329,6 +339,9 @@ def solve_and_report(
             "pre_dual": int(model.Params.PreDual),
             "pre_passes": int(model.Params.PrePasses),
             "lp_warm_start": int(model.Params.LPWarmStart),
+            "dual_reductions": int(model.Params.DualReductions),
+            "inf_unbd_info": int(model.Params.InfUnbdInfo),
+            "bar_iter_limit": int(model.Params.BarIterLimit),
         },
         "warm_start": warm_start,
         "iteration_counts": {

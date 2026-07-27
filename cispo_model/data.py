@@ -50,7 +50,12 @@ class CapacityFactorStore:
         "dpv": "pv",
     }
 
-    def __init__(self, index: pd.DataFrame, weather_year: int):
+    def __init__(
+        self,
+        index: pd.DataFrame,
+        weather_year: int,
+        time_alignment: str = "source_utc_year_first_8760_v1",
+    ):
         try:
             import zarr
         except ImportError as exc:  # pragma: no cover - environment diagnostic
@@ -58,19 +63,77 @@ class CapacityFactorStore:
                 "zarr is required in the Gurobi environment; install requirements-data.txt"
             ) from exc
         self._zarr = zarr
-        current = index.loc[index.year.eq(weather_year)].copy()
-        if current.technology.duplicated().any():
-            raise ValueError(f"Duplicate capacity-factor stores for weather year {weather_year}")
-        self.index = current.set_index("technology")
-        self.groups: dict[str, object] = {}
-        self.positions: dict[str, dict[int, int]] = {}
-        self.dimensions: dict[str, tuple[str, ...]] = {}
+        self.weather_year = int(weather_year)
+        self.time_alignment = str(time_alignment)
+        selected = index.copy()
+        selected["year"] = selected["year"].astype(int)
+        if selected.duplicated(["year", "technology"]).any():
+            raise ValueError("Duplicate capacity-factor stores for year/technology")
+        self.index = selected.set_index(["year", "technology"]).sort_index()
+        self.model_source_year, self.model_source_hour, self.model_local_time = (
+            self._build_model_hour_mapping()
+        )
+        self.source_years = tuple(
+            int(year) for year in np.unique(self.model_source_year)
+        )
+        self.groups: dict[tuple[int, str], object] = {}
+        self.positions: dict[tuple[int, str], dict[int, int]] = {}
+        self.dimensions: dict[tuple[int, str], tuple[str, ...]] = {}
 
-    def _open(self, source_technology: str):
-        if source_technology not in self.groups:
-            if source_technology not in self.index.index:
-                raise KeyError(f"No CF store indexed for {source_technology}")
-            indexed_path = str(self.index.loc[source_technology, "zarr_path"])
+    def _build_model_hour_mapping(
+        self,
+    ) -> tuple[np.ndarray, np.ndarray, pd.DatetimeIndex]:
+        if self.time_alignment == "source_utc_year_first_8760_v1":
+            local_time = pd.date_range(
+                f"{self.weather_year}-01-01 00:00:00",
+                periods=8760,
+                freq="h",
+            )
+            return (
+                np.full(8760, self.weather_year, dtype=np.int64),
+                np.arange(8760, dtype=np.int64),
+                local_time,
+            )
+        if self.time_alignment != "beijing_natural_year_drop_feb29_v1":
+            raise ValueError(
+                f"Unsupported capacity-factor time alignment {self.time_alignment!r}"
+            )
+        local_time = pd.date_range(
+            f"{self.weather_year}-01-01 00:00:00",
+            f"{self.weather_year}-12-31 23:00:00",
+            freq="h",
+        )
+        local_time = local_time[
+            ~((local_time.month == 2) & (local_time.day == 29))
+        ]
+        if len(local_time) != 8760:
+            raise ValueError(
+                "Beijing natural-year capacity-factor mapping must contain 8760 hours"
+            )
+        utc_time = local_time - pd.Timedelta(hours=8)
+        source_year = utc_time.year.to_numpy(dtype=np.int64)
+        source_start = pd.to_datetime(
+            {
+                "year": source_year,
+                "month": np.ones(len(source_year), dtype=np.int64),
+                "day": np.ones(len(source_year), dtype=np.int64),
+            }
+        )
+        source_hour = (
+            (utc_time.to_numpy() - source_start.to_numpy())
+            / np.timedelta64(1, "h")
+        ).astype(np.int64)
+        return source_year, source_hour, local_time
+
+    def _open(self, source_technology: str, source_year: int | None = None):
+        source_year = self.weather_year if source_year is None else int(source_year)
+        key = (source_year, source_technology)
+        if key not in self.groups:
+            if key not in self.index.index:
+                raise KeyError(
+                    f"No CF store indexed for {source_technology}:{source_year}"
+                )
+            indexed_path = str(self.index.loc[key, "zarr_path"])
             server_root = os.environ.get("CISPO_CF_ROOT")
             if server_root:
                 path = Path(server_root) / source_technology / PureWindowsPath(indexed_path).name
@@ -88,16 +151,37 @@ class CapacityFactorStore:
             dimensions = tuple(group["cf"].attrs["_ARRAY_DIMENSIONS"])
             if set(dimensions) != {"time", "grid_id"}:
                 raise ValueError(f"Unexpected dimensions in {path}: {dimensions}")
-            self.groups[source_technology] = group
-            self.positions[source_technology] = {
+            required_source_hours = self.model_source_hour[
+                self.model_source_year == source_year
+            ]
+            time_axis = dimensions.index("time")
+            if (
+                required_source_hours.size
+                and int(required_source_hours.max()) >= int(group["cf"].shape[time_axis])
+            ):
+                raise ValueError(
+                    f"CF store {path} does not cover required source hour "
+                    f"{int(required_source_hours.max())}"
+                )
+            self.groups[key] = group
+            self.positions[key] = {
                 int(grid_id): position for position, grid_id in enumerate(grid_ids)
             }
-            self.dimensions[source_technology] = dimensions
-        return self.groups[source_technology]
+            self.dimensions[key] = dimensions
+        return self.groups[key]
 
     def available_grid_ids(self, source_technology: str) -> set[int]:
-        self._open(source_technology)
-        return set(self.positions[source_technology])
+        reference: set[int] | None = None
+        for source_year in self.source_years:
+            self._open(source_technology, source_year)
+            current = set(self.positions[(source_year, source_technology)])
+            if reference is None:
+                reference = current
+            elif current != reference:
+                raise ValueError(
+                    f"CF grid IDs differ across source years for {source_technology}"
+                )
+        return reference or set()
 
     def read(
         self,
@@ -106,24 +190,11 @@ class CapacityFactorStore:
         hour_start: int,
         hour_stop: int,
     ) -> np.ndarray:
-        group = self._open(source_technology)
-        positions = np.asarray(
-            [self.positions[source_technology][int(grid_id)] for grid_id in grid_ids],
-            dtype=np.int64,
+        return self.read_hours(
+            source_technology,
+            grid_ids,
+            range(int(hour_start), int(hour_stop)),
         )
-        array = group["cf"]
-        dimensions = self.dimensions[source_technology]
-        if dimensions == ("time", "grid_id"):
-            block = np.asarray(array[hour_start:hour_stop, positions], dtype=np.float64)
-        else:
-            block = np.asarray(array[positions, hour_start:hour_stop], dtype=np.float64).T
-        if block.shape != (hour_stop - hour_start, len(positions)):
-            raise ValueError(
-                f"CF block shape mismatch for {source_technology}: {block.shape}"
-            )
-        if not np.isfinite(block).all():
-            raise ValueError(f"Non-finite CF values in {source_technology}")
-        return np.clip(block, 0.0, 1.0)
 
     def read_hours(
         self,
@@ -132,19 +203,38 @@ class CapacityFactorStore:
         hour_indices: Iterable[int],
     ) -> np.ndarray:
         """Read an arbitrary hour/site orthogonal selection as hours x sites."""
-        group = self._open(source_technology)
-        positions = np.asarray(
-            [self.positions[source_technology][int(grid_id)] for grid_id in grid_ids],
-            dtype=np.int64,
-        )
-        hours = np.asarray(list(hour_indices), dtype=np.int64)
-        array = group["cf"]
-        dimensions = self.dimensions[source_technology]
-        if dimensions == ("time", "grid_id"):
-            block = np.asarray(array.oindex[hours, positions], dtype=np.float64)
-        else:
-            block = np.asarray(array.oindex[positions, hours], dtype=np.float64).T
-        if block.shape != (len(hours), len(positions)):
+        grid_ids = [int(grid_id) for grid_id in grid_ids]
+        model_hours = np.asarray(list(hour_indices), dtype=np.int64)
+        if (
+            model_hours.size
+            and (
+                int(model_hours.min()) < 0
+                or int(model_hours.max()) >= len(self.model_source_year)
+            )
+        ):
+            raise IndexError("Capacity-factor model hour is outside [0, 8759]")
+        block = np.empty((len(model_hours), len(grid_ids)), dtype=np.float64)
+        for source_year in np.unique(self.model_source_year[model_hours]):
+            row_mask = self.model_source_year[model_hours] == source_year
+            group = self._open(source_technology, int(source_year))
+            key = (int(source_year), source_technology)
+            positions = np.asarray(
+                [self.positions[key][grid_id] for grid_id in grid_ids],
+                dtype=np.int64,
+            )
+            source_hours = self.model_source_hour[model_hours[row_mask]]
+            array = group["cf"]
+            dimensions = self.dimensions[key]
+            if dimensions == ("time", "grid_id"):
+                current = np.asarray(
+                    array.oindex[source_hours, positions], dtype=np.float64
+                )
+            else:
+                current = np.asarray(
+                    array.oindex[positions, source_hours], dtype=np.float64
+                ).T
+            block[row_mask, :] = current
+        if block.shape != (len(model_hours), len(grid_ids)):
             raise ValueError(
                 f"CF arbitrary-hour block shape mismatch for {source_technology}: {block.shape}"
             )
@@ -456,7 +546,11 @@ def load_model_data(
         "vre/hourly_cf_index.csv",
         usecols=["technology", "year", "zarr_path"],
     )
-    cf = CapacityFactorStore(cf_index, config.weather_year)
+    cf = CapacityFactorStore(
+        cf_index,
+        config.weather_year,
+        config.weather_time_alignment,
+    )
     vre_sites = _resolve_vre_cf_sites(points, vre_sites, cf)
 
     thermal_floor_all_years = _read(

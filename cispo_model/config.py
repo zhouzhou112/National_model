@@ -18,6 +18,7 @@ class ModelConfig:
     raw: dict[str, Any]
     scenario_path: Path | None = None
     solver_path: Path | None = None
+    formulation_path: Path | None = None
 
     @property
     def boundary_year(self) -> int:
@@ -30,6 +31,20 @@ class ModelConfig:
     @property
     def weather_year(self) -> int:
         return int(self.raw["weather_year"])
+
+    @property
+    def weather_time_alignment(self) -> str:
+        return str(self.raw["weather_time_alignment"])
+
+    @property
+    def weather_source_years(self) -> tuple[int, ...]:
+        if self.weather_time_alignment == "beijing_natural_year_drop_feb29_v1":
+            return (self.weather_year - 1, self.weather_year)
+        if self.weather_time_alignment == "source_utc_year_first_8760_v1":
+            return (self.weather_year,)
+        raise ValueError(
+            f"Unsupported weather_time_alignment={self.weather_time_alignment!r}"
+        )
 
     @property
     def hours(self) -> int:
@@ -69,7 +84,11 @@ class ModelConfig:
         raw["planning_year"] = planning_year
         raw["planning_interval_years"] = planning_year - boundary_year
         config = ModelConfig(
-            self.path, raw, self.scenario_path, self.solver_path
+            self.path,
+            raw,
+            self.scenario_path,
+            self.solver_path,
+            self.formulation_path,
         )
         config.validate()
         return config
@@ -103,6 +122,21 @@ class ModelConfig:
             )
         if self.hours != 8760:
             raise ValueError("Production configuration must use all 8760 hours")
+        if self.weather_year not in range(2020, 2026):
+            raise ValueError("weather_year must be covered by the 2020-2025 CF index")
+        if self.weather_time_alignment not in {
+            "beijing_natural_year_drop_feb29_v1",
+            "source_utc_year_first_8760_v1",
+        }:
+            raise ValueError("Unsupported weather_time_alignment")
+        if (
+            self.weather_time_alignment
+            == "beijing_natural_year_drop_feb29_v1"
+            and self.weather_year <= 2020
+        ):
+            raise ValueError(
+                "Strict Beijing-year alignment requires the preceding indexed UTC year"
+            )
         if self.vre_scenario not in {"C", "B", "O"}:
             raise ValueError("vre_scenario must be one of C, B, O")
         if not self.raw["strict_load_balance"]:
@@ -133,6 +167,8 @@ class ModelConfig:
             raise ValueError("wave_energy.potential_fraction must be in [0, 1]")
         if float(wave.get("eur_to_cny", 0.0)) <= 0.0:
             raise ValueError("wave_energy.eur_to_cny must be positive")
+        if int(wave.get("time_reference_year", 0)) <= 0:
+            raise ValueError("wave_energy.time_reference_year must be explicit")
         if not 0.0 <= float(wave.get("capacity_credit", -1.0)) <= 1.0:
             raise ValueError("wave_energy.capacity_credit must be in [0, 1]")
         if not 0.0 <= float(
@@ -387,6 +423,21 @@ class ModelConfig:
             )
         if int(numerics.get("crossover", -1)) not in {-1, 0, 1, 2, 3, 4}:
             raise ValueError("numerics.crossover is outside the Gurobi-supported range")
+        if int(numerics.get("dual_reductions", 1)) not in {0, 1}:
+            raise ValueError("numerics.dual_reductions must be 0 or 1")
+        if int(numerics.get("inf_unbd_info", 0)) not in {0, 1}:
+            raise ValueError("numerics.inf_unbd_info must be 0 or 1")
+        if int(numerics.get("bar_iter_limit", 1000)) < 0:
+            raise ValueError("numerics.bar_iter_limit must be nonnegative")
+        formulation = self.raw.get("formulation", {})
+        if formulation.get("annual_emissions_accounting") not in {
+            "national_dense_v1",
+            "province_hierarchical_v2",
+        }:
+            raise ValueError(
+                "formulation.annual_emissions_accounting must be "
+                "national_dense_v1 or province_hierarchical_v2"
+            )
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))
         if chunk <= 0 or chunk > self.hours:
             raise ValueError("build_hour_chunk_size must be in [1, 8760]")
@@ -422,6 +473,7 @@ def load_model_config(
     path: str | Path | None = None,
     scenario_path: str | Path | None = None,
     solver_path: str | Path | None = None,
+    formulation_path: str | Path | None = None,
 ) -> ModelConfig:
     config_path = Path(path) if path else DEFAULT_CONFIG
     if not config_path.is_absolute():
@@ -468,10 +520,13 @@ def load_model_config(
         allowed_optional = {
             "aggregate",
             "agg_fill",
+            "bar_iter_limit",
             "bar_correctors",
             "bar_homogeneous",
             "bar_order",
             "crossover_basis",
+            "dual_reductions",
+            "inf_unbd_info",
             "pdhg_gpu",
             "pre_dual",
             "pre_passes",
@@ -490,8 +545,42 @@ def load_model_config(
             "description": str(payload.get("description", "")),
         }
         resolved_solver = resolved_solver.resolve()
+    resolved_formulation: Path | None = None
+    if formulation_path is not None:
+        resolved_formulation = Path(formulation_path)
+        if not resolved_formulation.is_absolute():
+            resolved_formulation = ROOT / resolved_formulation
+        payload = json.loads(resolved_formulation.read_text(encoding="utf-8"))
+        if payload.get("formulation_profile_version") != "v1":
+            raise ValueError(
+                "Formulation profile must declare formulation_profile_version=v1"
+            )
+        if not payload.get("profile_id"):
+            raise ValueError("Formulation profile requires profile_id")
+        overrides = payload.get("formulation")
+        if not isinstance(overrides, dict):
+            raise ValueError(
+                "Formulation profile requires an object-valued formulation field"
+            )
+        allowed_formulation = {"annual_emissions_accounting"}
+        unknown = set(overrides).difference(allowed_formulation)
+        if unknown:
+            raise ValueError(
+                "Unsupported formulation-profile keys: "
+                + ", ".join(sorted(unknown))
+            )
+        raw["formulation"] = _deep_merge(raw["formulation"], overrides)
+        raw["formulation_profile"] = {
+            "id": str(payload["profile_id"]),
+            "description": str(payload.get("description", "")),
+        }
+        resolved_formulation = resolved_formulation.resolve()
     config = ModelConfig(
-        config_path.resolve(), raw, resolved_scenario, resolved_solver
+        config_path.resolve(),
+        raw,
+        resolved_scenario,
+        resolved_solver,
+        resolved_formulation,
     )
     config.validate()
     return config

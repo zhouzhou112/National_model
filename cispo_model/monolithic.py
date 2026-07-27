@@ -816,11 +816,19 @@ def build_full_year_monolithic(
         model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj, name=f"annual_biomass_p{provinces[p]}")
         model.addConstr(variables["annual_captured"][0, p] == captured, name=f"annual_captured_p{provinces[p]}")
         province_emissions.append(emissions)
-    model.addConstr(
-        variables["annual_emissions"][0]
-        == gp.quicksum(province_emissions),
-        name="annual_emissions_accounting",
-    )
+    emissions_accounting = artifacts.index["annual_emissions_accounting"]
+    if emissions_accounting == "province_hierarchical_v2":
+        for p, province_code in enumerate(provinces):
+            model.addConstr(
+                variables["annual_emissions"][0, p] == province_emissions[p],
+                name=f"annual_emissions_accounting_p{province_code}",
+            )
+    else:
+        model.addConstr(
+            variables["annual_emissions"][0]
+            == gp.quicksum(province_emissions),
+            name="annual_emissions_accounting",
+        )
 
     variables.update(
         vre_generation=vre_generation, vre_available=vre_available,

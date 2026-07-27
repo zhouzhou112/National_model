@@ -1,0 +1,16 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_presparsify_lp_v1",
+  "description": "Matched production Barrier candidate that forces LP presolve sparsification while retaining automatic ordering.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "pre_sparsify": 2,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

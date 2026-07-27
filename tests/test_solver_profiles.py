@@ -31,6 +31,35 @@ class SolverProfileTests(unittest.TestCase):
         self.assertNotIn("bar_order", auto_order.raw["numerics"])
         self.assertNotIn("pre_sparsify", auto_order.raw["numerics"])
 
+        production = load_model_config(
+            solver_path=profile_path.parent / "barrier_16_auto_order_v2.json"
+        )
+        self.assertEqual(production.raw["numerics"]["dual_reductions"], 1)
+        self.assertEqual(production.raw["numerics"]["inf_unbd_info"], 0)
+        sparsified = load_model_config(
+            solver_path=profile_path.parent / "barrier_16_presparsify_lp_v1.json"
+        )
+        self.assertEqual(sparsified.raw["numerics"]["pre_sparsify"], 2)
+        self.assertEqual(
+            load_model_config(
+                solver_path=profile_path.parent / "barrier_16_predual1_v1.json"
+            ).raw["numerics"]["pre_dual"],
+            1,
+        )
+        self.assertEqual(
+            load_model_config(
+                solver_path=profile_path.parent / "barrier_16_predual2_v1.json"
+            ).raw["numerics"]["pre_dual"],
+            2,
+        )
+        diagnostic = load_model_config(
+            solver_path=(
+                profile_path.parent / "barrier_16_infeasibility_diagnostic_v1.json"
+            )
+        )
+        self.assertEqual(diagnostic.raw["numerics"]["dual_reductions"], 0)
+        self.assertEqual(diagnostic.raw["numerics"]["inf_unbd_info"], 1)
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent
@@ -66,6 +95,42 @@ class SolverProfileTests(unittest.TestCase):
                 ValueError, "Unsupported solver-profile numerics keys"
             ):
                 load_model_config(solver_path=path)
+
+    def test_formulation_profile_is_structural_only_and_traced(self):
+        root = Path(__file__).resolve().parents[1]
+        profile_path = (
+            root
+            / "config"
+            / "formulation_profiles"
+            / "annual_emissions_province_hierarchy_v1.json"
+        )
+        base = load_model_config()
+        profiled = load_model_config(formulation_path=profile_path)
+        self.assertEqual(base.raw["scenario"], profiled.raw["scenario"])
+        self.assertEqual(base.raw["numerics"], profiled.raw["numerics"])
+        self.assertEqual(
+            profiled.raw["formulation"]["annual_emissions_accounting"],
+            "province_hierarchical_v2",
+        )
+        self.assertEqual(profiled.formulation_path, profile_path.resolve())
+
+    def test_formulation_profile_rejects_nonstructural_overrides(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "invalid_formulation.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "formulation_profile_version": "v1",
+                        "profile_id": "invalid",
+                        "formulation": {"carbon_limit": 0.0},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError, "Unsupported formulation-profile keys"
+            ):
+                load_model_config(formulation_path=path)
 
 
 if __name__ == "__main__":

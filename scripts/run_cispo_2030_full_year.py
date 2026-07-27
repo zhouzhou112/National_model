@@ -37,6 +37,13 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--formulation-config",
+        help=(
+            "Optional v1 algebraically equivalent formulation profile. It may "
+            "change matrix structure only and is recorded with a SHA256 snapshot."
+        ),
+    )
+    parser.add_argument(
         "--planning-year",
         type=int,
         choices=(2030, 2040, 2050, 2060),
@@ -162,7 +169,10 @@ def main() -> None:
         raise SystemExit("--constraint-family-audit-max-nonzeros must be positive")
 
     base_config = load_model_config(
-        args.config, args.scenario_config, args.solver_config
+        args.config,
+        args.scenario_config,
+        args.solver_config,
+        args.formulation_config,
     )
     config = (
         base_config.for_planning_year(args.planning_year)
@@ -263,6 +273,12 @@ def main() -> None:
         "planning_year": config.planning_year,
         "scenario_id": config.raw["scenario"]["id"],
         "scenario_family": config.raw["scenario"]["family"],
+        "formulation_profile_id": config.raw.get("formulation_profile", {}).get(
+            "id"
+        ),
+        "annual_emissions_accounting": config.raw["formulation"][
+            "annual_emissions_accounting"
+        ],
         "state_in": str(planning_state.root) if planning_state.root else None,
         "state_format": planning_state.metadata.get("format"),
         "available_memory_gb": round(available_gb, 2),
@@ -381,6 +397,12 @@ def main() -> None:
         "boundary_year": config.boundary_year,
         "planning_year": config.planning_year,
         "scenario_id": config.raw["scenario"]["id"],
+        "formulation_profile_id": config.raw.get("formulation_profile", {}).get(
+            "id"
+        ),
+        "annual_emissions_accounting": config.raw["formulation"][
+            "annual_emissions_accounting"
+        ],
         "horizon": horizon_name,
         "optimization_hours": optimization_hours,
         "result_use": scope_report["result_use"],

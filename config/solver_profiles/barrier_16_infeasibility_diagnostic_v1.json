@@ -1,0 +1,15 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_infeasibility_diagnostic_v1",
+  "description": "Diagnostic-only 16-thread Barrier profile that reproduces the prior global settings by disabling dual reductions and requesting infeasible/unbounded information.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "dual_reductions": 0,
+    "inf_unbd_info": 1,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

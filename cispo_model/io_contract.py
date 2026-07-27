@@ -263,6 +263,14 @@ def write_run_provenance(
         "solver_source_sha256": (
             sha256_file(config.solver_path) if config.solver_path else None
         ),
+        "formulation_source_path": (
+            str(config.formulation_path) if config.formulation_path else None
+        ),
+        "formulation_source_sha256": (
+            sha256_file(config.formulation_path)
+            if config.formulation_path
+            else None
+        ),
         "resolved_configuration": config.raw,
     }
     config_path = output_dir / "model_config_snapshot.json"
@@ -329,6 +337,20 @@ def write_run_provenance(
             "scenario_configuration",
             str(config.scenario_path),
             config.scenario_path,
+            True,
+        )
+    if config.solver_path:
+        add_file(
+            "solver_configuration",
+            str(config.solver_path),
+            config.solver_path,
+            True,
+        )
+    if config.formulation_path:
+        add_file(
+            "formulation_configuration",
+            str(config.formulation_path),
+            config.formulation_path,
             True,
         )
     add_file("input_contract", "config/model_input_files.json", contract_path, True)
@@ -410,7 +432,9 @@ def write_run_provenance(
     if cf_index_path.is_file():
         cf_index = pd.read_csv(cf_index_path)
         cf_root = os.environ.get("CISPO_CF_ROOT")
-        for row in cf_index.loc[cf_index.year.eq(config.weather_year)].itertuples(index=False):
+        for row in cf_index.loc[
+            cf_index.year.isin(config.weather_source_years)
+        ].itertuples(index=False):
             indexed = str(row.zarr_path)
             resolved = (
                 Path(cf_root) / str(row.technology) / PureWindowsPath(indexed).name
@@ -421,7 +445,7 @@ def write_run_provenance(
             rows.append(
                 {
                     "kind": "capacity_factor_store",
-                    "logical_path": f"{row.technology}:{config.weather_year}",
+                    "logical_path": f"{row.technology}:{int(row.year)}",
                     "resolved_path": str(resolved),
                     "required": True,
                     "exists": resolved.is_dir(),

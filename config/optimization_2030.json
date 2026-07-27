@@ -12,7 +12,8 @@
     "existing_hydro_retirement": "paper_assumption_operational_through_2060",
     "model_build_retirement": "technology_lifetime_from_build_year"
   },
-  "weather_year": 2023,
+  "weather_year": 2024,
+  "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
   "hours": 8760,
   "vre_scenario": "B",
   "carbon_scenario": "Base_-550Mt",
@@ -51,6 +52,7 @@
     "contract_version": "wave_existing_grid_v2",
     "sites_file": "wave/wave_sites.csv",
     "cf_filename": "wave_grid.nc",
+    "time_reference_year": 2023,
     "scenario_by_planning_year": {
       "2030": "medium",
       "2040": "medium",
@@ -273,6 +275,8 @@
     "method": 2,
     "barrier_convergence_tolerance": 1e-8,
     "crossover": 1,
+    "dual_reductions": 0,
+    "inf_unbd_info": 1,
     "threads": -1,
     "time_limit_seconds": 86400,
     "soft_mem_limit_gb": 80,
@@ -305,5 +309,8 @@
     "write_lp": false,
     "compute_iis_on_infeasible": true,
     "stop_before_build_if_estimated_memory_gb_exceeds": 80
+  },
+  "formulation": {
+    "annual_emissions_accounting": "national_dense_v1"
   }
 }
