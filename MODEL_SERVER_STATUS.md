@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 孤立梯级节点等价清理已在本地闭合；未部署
+
+- 本地提交 `9787ba7` 保留 142 个源拓扑节点、124 条源边和全部水电站/GRFR 入流/库容/泄流物理，仅将 8 个“无入边、无出边、单站”的节点从逐小时核心梯级行转入已有的向量化独立水库平衡。该节点的上游项为空、局部入流等于站点 GRFR 可用流量，故约束代数等价；有效核心站点行由 146 降至 138。多站孤立节点触发硬失败，避免未来数据刷新静默改变水文聚合。
+- 本地完整回归 `71/71` 通过；含波浪、无灵活负荷的全新 Base 1h/24h 根 `outputs/2030_{1h,24h}_v0727_cascade_isolated_nodes_independent_base` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，全部 hard checks 为真。24h 与清理前的目标仅差 `9.78e-09 million CNY`，raw/presolved 维度不变；`Factor NZ/Factor Ops` 增至 `6.284e6/7.399e8`，所以它是构建路径清理，不是 Barrier 提速证据。
+- 本轮没有连接、写入或部署固定服务器，也没有查询/修改 ParaCloud；不得据此启动 168h、744h、8760h 或云端任务。若以后另行授权部署，先实时复核服务器 checkout、进程、可用内存和数据根，部署精确推送提交后才可在新根运行单一匹配 168h 门禁。
+
 ## 2026-07-27 连续 RUC 等价瘦身已在本地闭合；未部署
 
 - 本地实施提交 `3f2255a` 仅删除连续 RUC 中由保留 S4-24、S4-25、S4-29 严格蕴含的四组逐小时上界；容量、备用、惯量、爬坡、最小出力、启停时序、目标函数、Base 技术边界与变量数均未改变。建模前会拒绝不满足 `min_up_h>=1`、`min_down_h>=1`、`pmin_fraction<=pmax_fraction` 或参数缺失的 RUC 表，防止未来参数修改破坏等价性。
