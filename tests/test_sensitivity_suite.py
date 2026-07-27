@@ -33,6 +33,7 @@ class SensitivitySuiteTests(unittest.TestCase):
                 "wave_energy_medium_v1",
                 "wave_energy_medium_v1_flexible_load_v1",
                 "wave_energy_medium_v1_flexible_load_comfort_v3",
+                "wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct",
             },
         )
 
@@ -67,6 +68,11 @@ class SensitivitySuiteTests(unittest.TestCase):
                 "wave_energy_medium_v1_flexible_load_comfort_v3"
             ]["config_path"]
         )
+        combined_comfort_v2g = load_model_config(
+            scenario_path=implemented[
+                "wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct"
+            ]["config_path"]
+        )
         self.assertTrue(wave.raw["features"]["wave_energy"])
         self.assertFalse(base.raw["features"]["wave_energy"])
         self.assertEqual(
@@ -91,6 +97,15 @@ class SensitivitySuiteTests(unittest.TestCase):
         self.assertEqual(
             combined_comfort.raw["flexible_load"]["formulation"],
             "comfort_envelope_v3",
+        )
+        self.assertTrue(combined_comfort_v2g.raw["features"]["wave_energy"])
+        self.assertTrue(combined_comfort_v2g.raw["features"]["flexible_load"])
+        self.assertEqual(
+            combined_comfort_v2g.raw["flexible_load"]["formulation"],
+            "comfort_envelope_v3",
+        )
+        self.assertTrue(
+            combined_comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"]
         )
 
     def test_planned_scenario_cannot_be_selected(self):

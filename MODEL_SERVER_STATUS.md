@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 本地全模块联合敏感性门禁；未部署到服务器或云端
+
+- 新增本地独立情景 `wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct`，在同一连续 LP 中启用既有 marine `grid_uid` 波浪能、`comfort_envelope_v3` 冷热状态、EV V1G 和日内因果 5% V2G。它保持 `EVIDENCE_ANCHORED_PARAMETERS_REQUIRE_SENSITIVITY`，不是 Base；Base 默认开关与任何科学边界均未改变。
+- 本地 1h、24h、168h 新根均达到 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True`，完整回归 `67/67` 通过。联合 168h raw/presolved 为 `1,081,688/1,429,226/10,293,428` 和 `751,365/865,314/7,363,654`，`AA' NZ=2.162e7`、`Factor NZ=1.056e8`、`Factor Ops=8.603e10`，180 Barrier、239,930 simplex/crossover、602.265 s、3.296 GiB 峰值 RSS。详情和局限见 `MODEL_COMBINED_MODULE_SOLVABILITY_AUDIT_20260727.md`。
+- 全年 preflight 的 37.63 GiB 是静态构建估计，不能证明 Barrier factorization；因此本工作不授权固定服务器 8760h 或新付费云任务。未对服务器 checkout、运行进程、现有输出或 ParaCloud 队列作任何写入。若以后要上服务器，只能在空闲复核后以新输出根做单一匹配 168h A/B；不得与其他求解并发。
+
 ## 2026-07-27 固定服务器 Base 168h manifest 闭合门禁
 
 - 先实时确认固定服务器无 CISPO/Gurobi 进程、约 69 GiB 可用内存、checkout 干净于 `c879c99`，随后仅 fast-forward 到已经推送的 `67482ab`；P0 实施提交为 `7499062`。相对于原服务器模型实现，部署代码的唯一模型邻接差异是通用 runtime 日志排除，不改变 LP、数据、情景、目标函数、约束或时空边界。

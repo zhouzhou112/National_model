@@ -36,6 +36,12 @@ class FlexibleLoadContractTests(unittest.TestCase):
                 "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"
             )
         )
+        combined_comfort_v2g = load_model_config(
+            scenario_path=(
+                "config/scenarios/"
+                "wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct.json"
+            )
+        )
         self.assertEqual(base.raw["scenario"]["id"], "base")
         self.assertFalse(base.raw["features"]["flexible_load"])
         self.assertTrue(flexible.raw["features"]["flexible_load"])
@@ -52,6 +58,21 @@ class FlexibleLoadContractTests(unittest.TestCase):
         self.assertTrue(comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
         self.assertEqual(
             comfort_v2g.raw["flexible_load"]["ev_v2g"][
+                "power_fraction_of_daily_baseline_peak"
+            ],
+            0.05,
+        )
+        self.assertTrue(combined_comfort_v2g.raw["features"]["wave_energy"])
+        self.assertTrue(combined_comfort_v2g.raw["features"]["flexible_load"])
+        self.assertEqual(
+            combined_comfort_v2g.raw["flexible_load"]["formulation"],
+            "comfort_envelope_v3",
+        )
+        self.assertTrue(
+            combined_comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"]
+        )
+        self.assertEqual(
+            combined_comfort_v2g.raw["flexible_load"]["ev_v2g"][
                 "power_fraction_of_daily_baseline_peak"
             ],
             0.05,

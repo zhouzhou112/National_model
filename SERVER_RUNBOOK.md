@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-27 全模块联合敏感性：本地门禁完成，服务器运行尚未授权
+
+本地新增的 `wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct` 同时启用波浪能、
+`comfort_envelope_v3` 冷热、V1G 和 5% 日内因果 V2G。它是参数待校准的独立敏感性，
+不是 Base；不得通过覆盖 Base JSON、环境变量或默认开关把它伪装为 Base。
+
+本地 1h/24h/168h 已各自形成新根并通过
+`OPTIMAL + solution_qc=PASS + validate_result_manifest=True`；168h 的 factor 结构为
+`AA' NZ=2.162e7`、`Factor NZ=1.056e8`、`Factor Ops=8.603e10`。其全年静态 preflight
+估计 37.63 GiB，但这不是 Barrier factor/workspace 的内存保证，更不是 8760h 授权。
+详细输出、短窗口解释限制与结构优化次序见
+`MODEL_COMBINED_MODULE_SOLVABILITY_AUDIT_20260727.md`。
+
+禁止仅因该本地结果启动固定服务器 8760h、新付费云端任务或并发第二个求解。若用户另行
+授权服务器比较，先实时核验空闲 checkout/进程/内存，并且只运行一个新的、明确命名的
+168h 根；同机、同线程、同 solver profile 的 Base 对照是记录模块求解性增量的前置条件。
+
 ## 2026-07-27 Base 168h generic-wrapper manifest 门禁已通过
 
 固定服务器在空闲且 clean 的 `c879c99` 上复核后，fast-forward 到已推送的
