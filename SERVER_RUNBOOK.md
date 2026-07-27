@@ -1,5 +1,16 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-27 新 Base：波浪能已整合；服务器尚未部署
+
+当前仅允许两个可运行身份：
+
+1. `base`：风电（含海风）、光伏、严格映射至既有 marine `grid_uid` 的波浪能；`flexible_load=false`。
+2. `flexible_load_comfort_v3_v2g_5pct`：继承上述 Base，并启用 `comfort_envelope_v3` 冷热状态、EV V1G 和因果日内 5% V2G；它仍是参数待校准的敏感性。
+
+提交 `c992550` 删除其余实验性 scenario JSON；不删除历史输出、数据或 Git 证据。两个当前身份都必须先设置 `CISPO_WAVE_ROOT`。本地 1h/24h 均已通过 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True`，完整回归为 `66/66`；但这不构成服务器部署、更不构成 8760h 授权。新 Base 的全年静态预估为 36.47 GiB，柔性覆盖层为 37.63 GiB，不能用来判断 Barrier factorization。
+
+旧服务器 wave-off Base 根一律保留且只作历史证据，不能作为重定义后 Base 的新门禁结果。若用户另行授权服务器测试，先实时复核空闲 checkout/进程/内存，部署精确推送提交，并且仅运行一个全新的、明确命名的 168h 根；固定服务器 8760h 和新付费云端任务仍禁止。
+
 ## 2026-07-27 全模块联合敏感性：本地门禁完成，服务器运行尚未授权
 
 本地新增的 `wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct` 同时启用波浪能、

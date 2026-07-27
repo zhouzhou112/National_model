@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 Base 定义重置为含波浪能；仅本地验证，未部署
+
+- 用户已将 Base 定义为风电（含海风）、光伏和波浪能共同参与的连续 LP。提交 `c992550` 将 `base` 的 `wave_energy=true` 固化，并仅保留一个柔性覆盖层 `flexible_load_comfort_v3_v2g_5pct`：它继承含波浪 Base，再启用 `comfort_envelope_v3`、V1G 和因果日内 5% V2G。旧的 V1、state-v2、单独 wave/comfort 及组合情景 JSON 已删除；历史根和记录保持原样，不能改名为新 Base。
+- 本地设置 `CISPO_WAVE_ROOT` 后回归 `66/66` 通过；两个身份的 1h/24h 新根均为 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True`，所有 hard checks 为真。24h Base/柔性覆盖层的峰值 RSS 分别为 0.735/0.731 GiB；全年静态 preflight 分别为 36.47/37.63 GiB，均只是模型规模估计。
+- 此边界变化尚未部署到固定服务器；先前服务器上的 wave-off Base 168h/744h 结果保留为历史数学、物理 QC 与性能证据，但不是新 Base 的可比求解门禁。此次未写入服务器 checkout、进程、输出，也未修改 ParaCloud 队列或启动新任务。固定服务器 8760h 和新付费云端任务继续禁止。
+
 ## 2026-07-27 本地全模块联合敏感性门禁；未部署到服务器或云端
 
 - 新增本地独立情景 `wave_energy_medium_v1_flexible_load_comfort_v3_v2g_5pct`，在同一连续 LP 中启用既有 marine `grid_uid` 波浪能、`comfort_envelope_v3` 冷热状态、EV V1G 和日内因果 5% V2G。它保持 `EVIDENCE_ANCHORED_PARAMETERS_REQUIRE_SENSITIVITY`，不是 Base；Base 默认开关与任何科学边界均未改变。
