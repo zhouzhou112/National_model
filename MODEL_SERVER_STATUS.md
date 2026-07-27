@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-27 原始 LP 稀疏审计已本地闭合；未部署
+
+- 本地实施提交 `6114157` 新增 `--constraint-family-audit`。它只在 `model.update()` 后读取原始 Gurobi 稀疏矩阵，默认超过 50,000,000 非零元即硬失败；不改变 LP 变量、约束、目标、Base 身份、数据或 solver profile。`constraint_family_audit.json` 记录原始约束/变量族、具体最稠密 25 行/列，并在求解后追加全局 presolve、ordering、factor、Barrier/crossover 指标；该文件被 output catalog 和 SHA256 manifest 正式纳入。Gurobi 不提供 presolved 行到源族的稳定映射，故不得将全局 presolve 缩减归因于某一族。
+- 完整本地回归 `75/75` 通过。新的波浪开启、灵活负荷关闭 Base 根 `outputs/2030_{1h,24h}_v0727_constraint_family_audit_base_v3` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，所有 hard checks 为真。24h raw/presolved 为 `231,074/345,992/1,729,035` 与 `129,335/260,116/1,269,506`（rows/columns/nonzeros）；0.73 s presolve、0.41 s ordering、`AA' NZ=2.200e6`、`Factor NZ=6.284e6`、`Factor Ops=7.399e8`、89 Barrier、57,741 simplex/crossover、29.107 s solver runtime、0.712 GiB 峰值进程树 RSS。
+- 精确高连接行是 `annual_emissions_accounting`（6,697）、`capacity_margin_p65/p15`（6,491/5,736）和 31 个 `co2_source_balance_p*`（各 3,246）；最大列为省级 `storage_capacity_gw`（各 194）。这排除了“水电逐站平衡是当前首要矩阵密集源”的假设，但不构成删除任一物理/碳/可靠性约束的授权。下一步仅准备年度排放会计的代数等价候选并做新的匹配 24h A/B；通过后才可考虑 168h。未连接、写入或部署固定服务器，未查询/修改 ParaCloud，也未启动 744h、8760h、第二个求解或付费云任务。
+
 ## 2026-07-27 孤立梯级节点等价清理已在本地闭合；未部署
 
 - 本地提交 `9787ba7` 保留 142 个源拓扑节点、124 条源边和全部水电站/GRFR 入流/库容/泄流物理，仅将 8 个“无入边、无出边、单站”的节点从逐小时核心梯级行转入已有的向量化独立水库平衡。该节点的上游项为空、局部入流等于站点 GRFR 可用流量，故约束代数等价；有效核心站点行由 146 降至 138。多站孤立节点触发硬失败，避免未来数据刷新静默改变水文聚合。
