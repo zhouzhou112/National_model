@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 2024 数据已部署；服务器 168h Phase A/B 完成
+
+- 固定服务器实际从干净、空闲的 `78a605d` fast-forward 到双端已推送的 `9a3c5e8`。四个 2024 CF stores 以新增归档安装，归档 SHA256 为 `2f70713d7a93633f8478e554b1924be7fdfe1d05ff5674a385461d3fa3045cfc`，文件数与本地一致；既有数据和归档均未删除/覆盖。服务器完整回归 `89/89`。
+- `/data/zz2/National_model/outputs/2030_168h_v0728_2024_dense_reductions_off`：`OPTIMAL + PASS + manifest true`；raw `1,167,956/1,019,192/9,536,283`、presolved `731,124/820,537/7,212,238`，`AA' NZ=2.160e7`、`Factor NZ=1.042e8`、`Factor Ops=8.440e10`，163 Barrier/626.10 s，crossover 72.76 s，229,459 simplex，总 700.50 s，RSS 3.407 GiB。
+- `/data/zz2/National_model/outputs/2030_168h_v0728_2024_dense_dualred_v2`：`OPTIMAL + PASS + manifest true`；presolved `704,597/719,155/7,133,417`，`AA' NZ=1.987e7`、`Factor NZ=1.023e8`、`Factor Ops=8.480e10`，Barrier `performed` 124/475.02 s，crossover 190.62 s 后恢复 Optimal，630,993 simplex，总 668.05 s，RSS 3.411 GiB。
+- 省级碳分层根也闭合，但其 presolved/factor/迭代/work units/目标与 dense v2 完全一致，故不采用。机器可读比较位于 `/data/zz2/National_model/outputs/solver_audit_v0728_2024_phase_ab/phase_ab_168h.{json,csv}`。
+- 当前唯一 744h 候选为 dense + `barrier_16_auto_order_v2`。启动前必须再次确认无进程、可用内存安全和输出根不存在；不得并发或启动 8760h。
+
 ## 2026-07-28 2024 气象与 Phase A/B 仅本地闭合；等待服务器放大
 
 - 本地实现提交为 `1449a4571d2881077f926bbc4116d2c9bdc6b5d5`，尚未部署。固定服务器在本轮写入前实时核验为干净 `4e1999d`、无 CISPO/Gurobi 进程、约 70 GiB 可用内存；CF 根有 2023 stores 但缺少全部四个 2024 stores。因此服务器不得直接运行新配置，必须先以追加方式传输 `onshore_wind/offshore_wind/pv/mixed_wind` 的 2024 Zarr 并校验目录、大小和 hash，不覆盖已有数据。

@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 168h 选择与 744h 唯一候选
+
+服务器 2024 CF 与 `9a3c5e8` 已部署，完整回归及三组 168h 均闭合。省级年度排放分层不改变 presolved/factor/迭代，禁止仅因 raw dense row 消失就将其选为生产 formulation。`PreDual=1`、`PreSparsify=2` 已由 24h 淘汰。
+
+新 744h 只允许：
+
+```text
+formulation: national_dense_v1
+solver: config/solver_profiles/barrier_16_auto_order_v2.json
+hours: 744
+weather: Beijing natural-year aligned 2024
+output: /data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2
+```
+
+选择依据是 168h 总时间 668.05 s 对 700.50 s、`AA' NZ` 低约 8%、`Factor NZ` 低约 1.8%、RSS 持平；风险是 Barrier 只到 `performed`，crossover 190.62 s 对 72.76 s、simplex 630,993 对 229,459。744h 必须监控 build/presolve/ordering/Barrier/crossover、进程树 RSS 和 solver telemetry；若达到 `MEM_LIMIT`、无进展或异常 swap 增长，应保留输出并停止，不得启动并发替代 case。
+
 ## 2026-07-28 2024 VRE 部署与 Phase A/B 放大顺序
 
 当前本地实现提交 `1449a457` 尚未部署；服务器仍为 `4e1999d`，且 `/data/zz2/National_model/data/hourly_cf` 缺少 2024 stores。新代码需要同时读取各技术的 `cf_hourly_*_2023.zarr` 与 `cf_hourly_*_2024.zarr`，覆盖 `onshore_wind`、`offshore_wind`、`pv` 和 `mixed_wind`。
