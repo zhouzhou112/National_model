@@ -123,7 +123,9 @@ def estimate_full_model_scale(
     constraints = int(
         n_vre
         + 2 * p * v * h
-        + 13 * p * k * h
+        # Four simple RUC upper-bound rows are strictly implied by the
+        # retained S4-24, S4-25 and S4-29 rows after domain validation.
+        + 9 * p * k * h
         + 9 * p * s * h
         + 2 * p * h
         + 3 * n_reservoir * h

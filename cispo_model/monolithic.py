@@ -33,6 +33,25 @@ def _vector_sum(terms: list[Any], length: int):
     return result
 
 
+def _validate_reduced_ruc_domain(ruc: pd.DataFrame) -> None:
+    """Validate the assumptions that make four RUC upper bounds redundant.
+
+    The reduced implementation retains S4-24, S4-25 and S4-29.  With
+    nonnegative ``online``, ``startup`` and ``shutdown`` variables, positive
+    minimum up/down times, and ``pmin <= pmax``, those rows imply the omitted
+    S4-22 upper bounds and the generic S4-26 maximum-generation bound exactly.
+    Keep this guard adjacent to the formulation so future parameter changes
+    cannot silently invalidate the algebraic reduction.
+    """
+    required = ("pmin_fraction", "pmax_fraction", "min_up_h", "min_down_h")
+    if ruc[list(required)].isna().any().any():
+        raise ValueError("RUC reduction requires complete pmin/pmax and minimum-time parameters")
+    if (ruc.pmin_fraction > ruc.pmax_fraction + 1e-12).any():
+        raise ValueError("RUC reduction requires pmin_fraction <= pmax_fraction")
+    if (ruc.min_up_h < 1).any() or (ruc.min_down_h < 1).any():
+        raise ValueError("RUC reduction requires min_up_h and min_down_h >= 1")
+
+
 def _attach_vre_availability(
     model: gp.Model,
     config: ModelConfig,
@@ -217,9 +236,6 @@ def build_full_year_monolithic(
     ramp_magnitude = model.addMVar(
         (p_count, k_count, hours), lb=0.0, name="ramp_magnitude_gw"
     )
-    model.addConstr(online <= thermal_capacity[:, :, None], name="online_capacity_limit")
-    model.addConstr(startup <= thermal_capacity[:, :, None], name="startup_capacity_limit")
-    model.addConstr(shutdown <= thermal_capacity[:, :, None], name="shutdown_capacity_limit")
     model.addConstr(
         online[:, :, 0] == online[:, :, -1] + startup[:, :, 0] - shutdown[:, :, 0],
         name="ruc_cyclic_first_hour",
@@ -229,12 +245,23 @@ def build_full_year_monolithic(
         name="ruc_hourly_transition",
     )
     ruc = data.ruc.set_index("technology").reindex(THERMAL_TECHS)
+    _validate_reduced_ruc_domain(ruc)
     pmin = ruc.pmin_fraction.to_numpy(dtype=float)
     pmax = ruc.pmax_fraction.to_numpy(dtype=float)
     loss = ruc.ccs_power_loss_fraction.to_numpy(dtype=float)
     ramp_fraction = ruc.ramp_fraction_per_h.to_numpy(dtype=float)
+
+    # Exact row reduction, not a scientific relaxation:
+    # - S4-24 at t gives online_t <= capacity.  At t-1 it gives
+    #   startup_t <= capacity because online_(t-1) and every shutdown term are
+    #   nonnegative.
+    # - S4-25 at t-1 gives shutdown_t <= online_(t-1), which combines with
+    #   S4-24 to give shutdown_t <= capacity.
+    # - S4-29 is pmax*online - (pmax-pmin)*(startup+next_shutdown), hence it
+    #   is no weaker than gross <= pmax*online when pmin <= pmax.
+    # Therefore do not instantiate duplicate S4-22 upper rows or the generic
+    # S4-26 maximum-generation row.  The lower generation bound remains.
     model.addConstr(gross >= online * pmin[None, :, None], name="thermal_minimum_generation")
-    model.addConstr(gross <= online * pmax[None, :, None], name="thermal_maximum_generation")
     for technology, k in k_index.items():
         up_time = int(ruc.loc[technology, "min_up_h"])
         down_time = int(ruc.loc[technology, "min_down_h"])

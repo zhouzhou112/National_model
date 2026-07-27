@@ -682,6 +682,8 @@ F^{\to}_e+F^{\leftarrow}_e
 \quad \forall g,\; pt\in TP\cup NP,\; t\in T
 ```
 
+> 实现等价化说明（v0.9.41）：保留变量非负下界，但不单独实例化这三组上界行。对周期边界下的每个小时，S4-24 直接蕴含 `u_on,t <= u_tot`，并在前一小时蕴含 `u_su,t <= u_tot`；S4-25 与前述 S4-24 则蕴含 `u_sd,t <= u_tot`。该等价缩减仅在所有技术满足 `min_up_h >= 1`、`min_down_h >= 1` 时有效；实现会在建模前硬校验这些前提。
+
 ### S4-23 在线机组动态平衡
 
 ```math
@@ -730,6 +732,8 @@ u^{load}_{g,pt,t}
 \overline{\phi}_{pt}u^{on}_{g,pt,t},
 \quad \forall g,\; pt\in TP\cup NP,\; t\in T
 ```
+
+> 实现等价化说明（v0.9.41）：最小出力行保持显式。最大出力通用行不单独实例化，因为已保留的 S4-29 右端等于 `pmax*u_on - (pmax-pmin)*(u_su+u_sd,next)`，在 `pmin <= pmax` 和启停变量非负时逐行不大于 `pmax*u_on`。实现会硬校验 `pmin <= pmax`，因此此缩减不改变可行域或目标函数。
 
 ## 5.5.4 爬坡约束
 
