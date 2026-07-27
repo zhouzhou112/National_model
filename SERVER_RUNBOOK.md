@@ -1,5 +1,14 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 当前运行锁
+
+`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 自服务器时间 `03:12:23+08:00` 运行中，wrapper PID `2708836`，checkout `0dadfe9`。在该 PID 退出并完成终态审计前：
+
+- 不得 fast-forward 或切换服务器 checkout；
+- 不得启动第二个 CISPO/Gurobi solve；
+- 不得原地改写输出或 manifest；
+- 不得启动固定服务器 8760h 或任何付费云任务。
+
 ## 2026-07-28 168h 选择与 744h 唯一候选
 
 服务器 2024 CF 与 `9a3c5e8` 已部署，完整回归及三组 168h 均闭合。省级年度排放分层不改变 presolved/factor/迭代，禁止仅因 raw dense row 消失就将其选为生产 formulation。`PreDual=1`、`PreSparsify=2` 已由 24h 淘汰。

@@ -17,6 +17,7 @@ This is the repository's single handoff document for work continued across Codex
 - 求解器全局硬编码已改为 solver-profile-controlled；Base 默认仍保留已验证的 `DualReductions=0 + InfUnbdInfo=1`。新增显式生产候选 `barrier_16_auto_order_v2`（1/0）、`PreSparsify=2`、`PreDual=1/2` 与旧诊断参数 profile。新增可选且严格等价的 `annual_emissions_province_hierarchy_v1`：用 31 条省级年度排放会计替换一条全国全小时行，再由 31 个省级变量进入全国碳上限；它是 formulation A/B，不是新科学情景。
 - 本地完整回归 `89/89` 通过。2024 气象 Base 的两个 1h 根均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，全国式与省级分层式目标完全一致。六个 24h 匹配根也全部 `OPTIMAL + PASS + manifest closed`，目标仅有浮点级差异。省级分层把原始 6,697-NZ 全国排放行拆开，但在 `DualReductions=1` 下 dense/hierarchy 的 presolved 矩阵、`AA' NZ=1.925e6`、`Factor NZ=5.602e6`、`Factor Ops=5.883e8` 完全相同，因此尚无性能收益证据。
 - 服务器完整回归 `89/89`。三组新 168h 根均 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`。旧 0/1 参数为 presolved `731,124/820,537/7,212,238`、`AA' NZ=2.160e7`、`Factor NZ=1.042e8`、`Factor Ops=8.440e10`、163 Barrier/626.10 s、crossover 72.76 s、229,459 simplex、700.50 s、3.407 GiB RSS。dense v2 为 `704,597/719,155/7,133,417`、`1.987e7`、`1.023e8`、`8.480e10`、124 Barrier/475.02 s、crossover 190.62 s、630,993 simplex、668.05 s、3.411 GiB。省级分层 v2 的 presolved/factor/迭代/work units/目标与 dense v2 完全一致，仅墙钟受调度波动，故不采用分层。唯一 744h 候选为 dense + `barrier_16_auto_order_v2`；必须显式保留 crossover 放大风险。
+- 新 744h 已于服务器时间 `2026-07-28 03:12:23+08:00` 单独启动，根为 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2`，wrapper PID `2708836`，运行 checkout 为 `0dadfe9`。当前仍在构建阶段，尚无 `solve_report.json`/QC/manifest，绝不能表述为已通过；未启动第二个求解、8760h 或云任务。运行结束前不得变更服务器 checkout。
 - 当前 Base 为含陆上/海上风电、光伏和严格映射到既有 marine `grid_uid` 的波浪能，`flexible_load=false`；唯一可运行覆盖情景为 `flexible_load_comfort_v3_v2g_5pct`，仍是待校准敏感性。历史 wave-off 744h 仅作历史数学/QC/性能证据，绝不能伪称为当前 Base 门禁。
 - 固定服务器已实时部署到 `9a3c5e8`，运行根使用新增且不覆盖历史的 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727` 与 `/data/zz2/National_model/data/wave_energy_20260727`。`wave_sites.csv`、`wave_input_manifest.json`、`wave_grid.nc` 的 SHA256 分别为 `9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3`、`540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9`、`b2e259862c8bad9a34addf24534a8d1e1c8f66c4e351bdfe13fe9cfca1eb4831`。服务器专用 CISPO 环境补齐了与本地一致的 `xarray==2025.1.2`，并通过 `wave_grid.nc` 打开 smoke test；未记录任何密钥或 license 内容。
 - 先前 2023 气象的固定服务器 Base 输出 `/data/zz2/National_model/outputs/2030_{1h,24h,168h}_v0728_server_wave_base_*` 与 `2030_1h_v0728_server_mga_runner_base` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，且都是 `TEST_ONLY_TRUNCATED_HORIZON`。其 168h raw/presolved 为 `1,167,958/1,019,192/9,486,177` 与 `730,782/820,208/7,174,545`（rows/columns/nonzeros），`AA' NZ=2.150e7`、`Factor NZ=1.045e8`、`Factor Ops=8.532e10`、138 Barrier、411,056 simplex/crossover、690.86 s solver、3.359 GiB process-tree RSS；该证据保留为历史年份对照，不能替代上面的 2024 门禁。
@@ -270,6 +271,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.48 — 2026-07-28 — 单一 2024 Base 744h 已启动
+
+- Git/运行身份：168h 证据提交 `0dadfe9` 已双端推送并部署。服务器在无其他求解、约 70 GiB 可用内存时，于 `03:12:23+08:00` 启动唯一根 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2`；命令显式使用 `--diagnostic-hours 744` 与 `barrier_16_auto_order_v2`，未使用省级碳分层。
+- 当前状态：PID `2708836`/Python child `2708837` 正常存在，尚处于模型构建且没有 Gurobi 日志。此条仅记录启动，不是求解验收。终态必须同时满足 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`。
+- 安全边界：保持单一求解；不改变运行 checkout，不启动固定服务器 8760h、第二个 744h 或付费云任务。结束后再记录 raw/presolved/factor/Barrier/crossover/RSS 与 manifest 终态。
 
 ### v0.9.47 — 2026-07-28 — 固定服务器 2024 数据与 168h Phase A/B
 

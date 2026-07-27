@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 03:12 单一 2024 Base 744h 运行中
+
+- 运行根：`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2`；checkout `0dadfe9`；wrapper/Python PID `2708836/2708837`；显式 solver profile `barrier_16_auto_order_v2`；全国碳会计；2024 Beijing-aligned VRE；Base 波浪开启、灵活负荷关闭。
+- 启动前无其他 CISPO/Gurobi 进程、约 70 GiB 可用内存，输出根不存在。启动后单一进程正常，当前仍在模型构建且无 Gurobi 日志。未产生可验收终态，不能称为通过。
+- 运行结束前禁止 fast-forward 服务器 checkout、启动第二个求解、固定服务器 8760h 或付费云作业。终态按 solve report、全部 QC、result manifest 和阶段/RSS 指标共同验收。
+
 ## 2026-07-28 2024 数据已部署；服务器 168h Phase A/B 完成
 
 - 固定服务器实际从干净、空闲的 `78a605d` fast-forward 到双端已推送的 `9a3c5e8`。四个 2024 CF stores 以新增归档安装，归档 SHA256 为 `2f70713d7a93633f8478e554b1924be7fdfe1d05ff5674a385461d3fa3045cfc`，文件数与本地一致；既有数据和归档均未删除/覆盖。服务器完整回归 `89/89`。
