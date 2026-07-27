@@ -44,6 +44,7 @@ class HydroLinearBlock:
     cascade_edge_target_weights: list[np.ndarray]
     cascade_edge_lag_h: np.ndarray
     cascade_edge_ids: list[str]
+    cascade_isolated_node_ids: list[str]
 
 
 def _split_semicolon_ids(value: object) -> list[str]:
@@ -58,6 +59,40 @@ def _cyclic_shift_previous(values: np.ndarray, lag_h: int) -> np.ndarray:
     if lag == 0:
         return values.copy()
     return np.concatenate([values[-lag:], values[:-lag]])
+
+
+def _connected_cascade_node_ids(
+    cascade_nodes: pd.DataFrame,
+    cascade_edges: pd.DataFrame,
+) -> tuple[set[str], list[str]]:
+    """Return hydraulically connected nodes and validate skipped singleton nodes.
+
+    A topology node with neither an incoming nor outgoing cascade edge has no
+    upstream-release term and, when it represents exactly one reservoir
+    station, its cascade balance is algebraically identical to the vectorized
+    independent-reservoir balance.  Keep it in the source topology for
+    provenance, but do not send it through the per-hour cascade construction.
+    Reject a multi-station isolated node so this optimization cannot silently
+    aggregate or change a hydraulic relationship in a future data refresh.
+    """
+    if cascade_edges.empty:
+        return set(), []
+    connected = set(cascade_edges.source_node_id.astype(str)).union(
+        cascade_edges.target_node_id.astype(str)
+    )
+    isolated: list[str] = []
+    for row in cascade_nodes.itertuples(index=False):
+        node_id = str(row.node_id)
+        if node_id in connected:
+            continue
+        station_ids = _split_semicolon_ids(row.hydrochn_row_ids)
+        if int(row.model_station_count) != 1 or len(station_ids) != 1:
+            raise ValueError(
+                "An isolated cascade node must represent exactly one station "
+                f"before it can use the independent-reservoir balance: {node_id}"
+            )
+        isolated.append(node_id)
+    return connected, sorted(isolated)
 
 
 class HydroProfileReader:
@@ -238,6 +273,9 @@ class HydroProfileReader:
         cascade_edge_ids: list[str] = []
         cascade_edges = getattr(self.data, "hydro_cascade_edges", pd.DataFrame())
         cascade_nodes = getattr(self.data, "hydro_cascade_nodes", pd.DataFrame())
+        connected_cascade_node_ids, isolated_cascade_node_ids = (
+            _connected_cascade_node_ids(cascade_nodes, cascade_edges)
+        )
         if not cascade_edges.empty:
             station_id_to_global = {
                 str(hydro_id): int(row)
@@ -252,6 +290,9 @@ class HydroProfileReader:
             node_to_natural: dict[str, np.ndarray] = {}
             capacity = stations.capacity_potential_gw.to_numpy(dtype=float)
             for row in cascade_nodes.itertuples(index=False):
+                node_id = str(row.node_id)
+                if node_id not in connected_cascade_node_ids:
+                    continue
                 station_ids = _split_semicolon_ids(row.hydrochn_row_ids)
                 local_rows = np.asarray(
                     [
@@ -271,7 +312,6 @@ class HydroProfileReader:
                 if not np.isfinite(weights).all() or weights.sum() <= 0.0:
                     weights = np.ones(len(local_rows), dtype=float)
                 weights = weights / weights.sum()
-                node_id = str(row.node_id)
                 node_to_local_rows[node_id] = local_rows
                 node_to_weights[node_id] = weights.astype(float)
                 node_to_natural[node_id] = reservoir_q_available_station[local_rows[0]].copy()
@@ -345,6 +385,7 @@ class HydroProfileReader:
             cascade_edge_target_weights=cascade_edge_target_weights,
             cascade_edge_lag_h=np.asarray(cascade_edge_lag_h, dtype=np.int64),
             cascade_edge_ids=cascade_edge_ids,
+            cascade_isolated_node_ids=isolated_cascade_node_ids,
         )
 
     def read_block(self, block: TimeBlock, hydro_capacity_gw: np.ndarray) -> HydroBlock:

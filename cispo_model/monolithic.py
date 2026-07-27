@@ -885,6 +885,7 @@ def build_full_year_monolithic(
         cascade_edge_target_weights=hydro.cascade_edge_target_weights,
         cascade_edge_lag_h=hydro.cascade_edge_lag_h,
         cascade_edge_ids=hydro.cascade_edge_ids,
+        cascade_isolated_node_ids=hydro.cascade_isolated_node_ids,
     )
     model.update()
     return artifacts

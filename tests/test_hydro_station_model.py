@@ -3,10 +3,11 @@ from __future__ import annotations
 import unittest
 
 import numpy as np
+import pandas as pd
 
 from cispo_model.config import load_model_config
 from cispo_model.data import load_model_data
-from cispo_model.hydro import HydroProfileReader
+from cispo_model.hydro import HydroProfileReader, _connected_cascade_node_ids
 from cispo_model.timeblocks import TimeBlock
 
 
@@ -115,7 +116,8 @@ class HydroStationModelTests(unittest.TestCase):
         self.assertEqual(len(self.data.hydro_cascade_edges), 124)
         with HydroProfileReader(self.config, self.data) as reader:
             block = reader.read_linear_block(TimeBlock(0, 0, 24))
-        self.assertEqual(len(block.cascade_station_local_rows), 146)
+        self.assertEqual(len(block.cascade_station_local_rows), 138)
+        self.assertEqual(len(block.cascade_isolated_node_ids), 8)
         self.assertEqual(len(block.cascade_edge_ids), 124)
         self.assertEqual(len(block.cascade_edge_lag_h), 124)
         self.assertTrue((block.cascade_edge_lag_h >= 0).all())
@@ -127,6 +129,62 @@ class HydroStationModelTests(unittest.TestCase):
             self.assertGreater(len(source_rows), 0)
             self.assertGreater(len(target_rows), 0)
             self.assertAlmostEqual(float(weights.sum()), 1.0, places=9)
+
+    def test_isolated_single_station_nodes_use_identical_independent_inflow(self):
+        nodes = self.data.hydro_cascade_nodes
+        edges = self.data.hydro_cascade_edges
+        connected, isolated = _connected_cascade_node_ids(nodes, edges)
+        self.assertEqual(len(connected), 134)
+        self.assertEqual(len(isolated), 8)
+        self.assertTrue(
+            nodes.loc[nodes.node_id.isin(isolated), "model_station_count"].eq(1).all()
+        )
+        isolated_station_ids = {
+            str(value)
+            for value in nodes.loc[nodes.node_id.isin(isolated), "hydrochn_row_ids"]
+        }
+        global_rows = np.flatnonzero(
+            self.data.hydro_stations.hydrochn_row_id.astype(str).isin(
+                isolated_station_ids
+            )
+        )
+        with HydroProfileReader(self.config, self.data) as reader:
+            block = reader.read_linear_block(TimeBlock(0, 0, 24))
+            expected_local_inflow = reader._available_flow_for_rows(
+                TimeBlock(0, 0, 24), global_rows
+            )
+        local_by_global = {
+            int(global_row): local_row
+            for local_row, global_row in enumerate(block.reservoir_station_rows)
+        }
+        isolated_local_rows = np.asarray(
+            [local_by_global[int(global_row)] for global_row in global_rows], dtype=int
+        )
+        self.assertFalse(
+            set(isolated_local_rows.tolist()).intersection(
+                set(block.cascade_station_local_rows.tolist())
+            )
+        )
+        np.testing.assert_allclose(
+            block.reservoir_local_inflow_m3s[isolated_local_rows],
+            expected_local_inflow.T,
+            rtol=0.0,
+            atol=0.0,
+        )
+
+    def test_isolated_multi_station_node_is_rejected(self):
+        node_frame = pd.DataFrame(
+            {
+                "node_id": ["connected", "isolated"],
+                "hydrochn_row_ids": ["a", "b;c"],
+                "model_station_count": [1, 2],
+            }
+        )
+        edge_frame = pd.DataFrame(
+            {"source_node_id": ["connected"], "target_node_id": ["connected"]}
+        )
+        with self.assertRaisesRegex(ValueError, "isolated cascade node"):
+            _connected_cascade_node_ids(node_frame, edge_frame)
 
     @staticmethod
     def data_root_timeseries():

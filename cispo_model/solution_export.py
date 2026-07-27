@@ -746,6 +746,9 @@ def export_operational_solution(
         "core_cascade_edges": int(
             len(artifacts.index.get("cascade_edge_ids", []))
         ),
+        "core_cascade_isolated_single_station_nodes_removed": int(
+            len(artifacts.index.get("cascade_isolated_node_ids", []))
+        ),
         "annual_gross_emissions_mtco2": annual_emissions,
         "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,
