@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 2024 气象与 Phase A/B 仅本地闭合；等待服务器放大
+
+- 本地实现提交为 `1449a4571d2881077f926bbc4116d2c9bdc6b5d5`，尚未部署。固定服务器在本轮写入前实时核验为干净 `4e1999d`、无 CISPO/Gurobi 进程、约 70 GiB 可用内存；CF 根有 2023 stores 但缺少全部四个 2024 stores。因此服务器不得直接运行新配置，必须先以追加方式传输 `onshore_wind/offshore_wind/pv/mixed_wind` 的 2024 Zarr 并校验目录、大小和 hash，不覆盖已有数据。
+- 新配置的风电/光伏按北京时间 2024 自然年取 8760 小时：2023 UTC 尾部 8 小时 + 2024 UTC 数据，并删除北京时间 2 月 29 日。波浪 reference year 仍为 2023，水文仍为 2019。完整本地回归 `89/89` 通过。
+- 新 1h 两根和 24h 六根全部达到 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`。全国排放式与 31 省分层式目标一致；分层式消除了 raw 6,697-NZ 行，但 presolve 后矩阵/factor 完全相同。`DualReductions=1` 降低 24h factor 结构却显著增加 crossover，旧 0/1 参数总时间 39.706 s，而生产候选为 56--62 s；`PreDual=1` 和 `PreSparsify=2` 已在短门禁淘汰。
+- 下一步只能顺序执行：推送两远端 → 再次实时核验空闲服务器 → 追加 2024 CF → fast-forward 到精确推送提交 → 完整服务器回归 → 新根 168h 匹配 A/B。全部通过后只选择一个 case 启动新 744h。不得并发、不得覆盖历史根、不得启动固定服务器 8760h 或付费云任务。
+
 ## 2026-07-28 当前 Base/MGA 工程代码已部署；1h/24h/168h 与 basis/MGA 诊断通过门禁
 
 - 写入前已实时复核服务器：无 CISPO/Gurobi 进程，可用内存约 69--70 GiB。干净 checkout 在未替换任何活动 checkout 或任务的前提下由 `01ec6f9` fast-forward 至 `56d166d`，并在本轮新代码通过本地完整回归后 fast-forward 至已推送的 `4e1999d`；服务器不再是旧 `c879c99` 模型实现。

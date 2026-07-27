@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 2024 VRE 部署与 Phase A/B 放大顺序
+
+当前本地实现提交 `1449a457` 尚未部署；服务器仍为 `4e1999d`，且 `/data/zz2/National_model/data/hourly_cf` 缺少 2024 stores。新代码需要同时读取各技术的 `cf_hourly_*_2023.zarr` 与 `cf_hourly_*_2024.zarr`，覆盖 `onshore_wind`、`offshore_wind`、`pv` 和 `mixed_wind`。
+
+2024 数据只能在再次确认无求解进程、目标目录不存在、磁盘足够后追加传输；不得覆盖 2023 stores。传输前后记录每个目录的文件数、总字节和归档 SHA256。然后 fast-forward 到已经同时推送 `origin`/`github` 的精确提交，设置四个数据根，运行完整 discovery 回归。
+
+服务器放大采用顺序匹配门禁，绝不并发：
+
+1. 168h dense + `barrier_16_infeasibility_diagnostic_v1`，复现 `DualReductions=0 + InfUnbdInfo=1`；
+2. 168h dense + `barrier_16_auto_order_v2`，只改变为 1/0；
+3. 仅当第二步 factor/阶段证据有价值时，再运行 168h province hierarchy + 同一 profile；24h 已证明其 presolve 后矩阵与 dense 完全相同；
+4. 每根必须满足 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，并记录 raw/presolved rows、columns、nonzeros、`AA' NZ`、`Factor NZ/Ops`、build/presolve/ordering/Barrier/crossover、迭代、objective、RSS；
+5. 选择唯一胜者后，以全新名称启动一个 744h 根。启动前再次检查无第二个求解及安全可用内存；不得因 744h 压测改变 Base 目标、约束、时空尺度或技术边界。
+
+固定服务器 8760h 继续禁止；ParaCloud 8760h 仍需用户另行确认。
+
 ## 2026-07-28 当前 Base 工程门禁与 basis 复用协议
 
 当前部署 checkout 为 `/data/zz2/National_model/repo` 的 `4e1999d`，仅在实时确认无进程且内存安全后 fast-forward。使用附加的 wave-ready 数据根 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727`、CF 根 `/data/zz2/National_model/data/hourly_cf`、水文根 `/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse` 和波浪根 `/data/zz2/National_model/data/wave_energy_20260727`；不得替换为历史 wave-off 根。

@@ -12,7 +12,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-07-28 的当前模型实现提交为 `4e1999d68614c7c587327ba7c41995a7c45b5af9`，分支为 `codex/cispo-2030-full-lp`，已推送 `origin` 与 `github`，并已部署到固定服务器。本轮新增求解阶段审计、受限 LP basis 复用和受限 MGA 工程契约；未改变 Base 的变量、目标、约束、时空尺度、技术边界或数据筛选。
+- 2026-07-28 的当前本地模型实现提交为 `1449a4571d2881077f926bbc4116d2c9bdc6b5d5`，分支为 `codex/cispo-2030-full-lp`。该提交尚待推送和服务器部署；固定服务器当前仍为已推送的 `4e1999d68614c7c587327ba7c41995a7c45b5af9`，不得把两者误判为同一 checkout。
+- 风电/光伏运行气象年已切换为 2024，并采用显式 `beijing_natural_year_drop_feb29_v1`：模型小时严格覆盖北京时间 2024 自然年，使用 2023 UTC 最后 8 小时衔接 2024 UTC 数据，再删除北京时间 2 月 29 日，最终保持 8760 小时。波浪能仍使用独立的 2023 reference time coordinate，水文仍为 2019；这是明确的混合数据年边界。输入 manifest 会同时锁定 2023/2024 两组 VRE Zarr。服务器尚缺 2024 CF stores，部署前必须追加传输并校验，不得覆盖既有 2023 数据。
+- 求解器全局硬编码已改为 solver-profile-controlled；Base 默认仍保留已验证的 `DualReductions=0 + InfUnbdInfo=1`。新增显式生产候选 `barrier_16_auto_order_v2`（1/0）、`PreSparsify=2`、`PreDual=1/2` 与旧诊断参数 profile。新增可选且严格等价的 `annual_emissions_province_hierarchy_v1`：用 31 条省级年度排放会计替换一条全国全小时行，再由 31 个省级变量进入全国碳上限；它是 formulation A/B，不是新科学情景。
+- 本地完整回归 `89/89` 通过。2024 气象 Base 的两个 1h 根均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，全国式与省级分层式目标完全一致。六个 24h 匹配根也全部 `OPTIMAL + PASS + manifest closed`，目标仅有浮点级差异。省级分层把原始 6,697-NZ 全国排放行拆开，但在 `DualReductions=1` 下 dense/hierarchy 的 presolved 矩阵、`AA' NZ=1.925e6`、`Factor NZ=5.602e6`、`Factor Ops=5.883e8` 完全相同，因此尚无性能收益证据。
+- 24h solver A/B 否定了“矩阵更小必然更快”：旧诊断参数为 presolved `129,419/260,184/1,295,703`、`Factor Ops=6.446e8`、113 Barrier、34,819 simplex、39.706 s；`DualReductions=1` 虽降至 `110,814/227,988/1,264,727` 和 `5.883e8`，但 crossover/simplex 增至约 132,430，使总时间变为 56--62 s。`PreSparsify=2` 为 65.665 s，`PreDual=1` 恶化至 420.872 s，`PreDual=2` 为 51.693 s。故默认不变；下一步只在空闲固定服务器上按新 2024 数据做顺序 168h A/B，随后才选择唯一 744h case。
 - 当前 Base 为含陆上/海上风电、光伏和严格映射到既有 marine `grid_uid` 的波浪能，`flexible_load=false`；唯一可运行覆盖情景为 `flexible_load_comfort_v3_v2g_5pct`，仍是待校准敏感性。历史 wave-off 744h 仅作历史数学/QC/性能证据，绝不能伪称为当前 Base 门禁。
 - 固定服务器已实时部署到相同 `4e1999d`，运行根使用新增且不覆盖历史的 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727` 与 `/data/zz2/National_model/data/wave_energy_20260727`。`wave_sites.csv`、`wave_input_manifest.json`、`wave_grid.nc` 的 SHA256 分别为 `9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3`、`540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9`、`b2e259862c8bad9a34addf24534a8d1e1c8f66c4e351bdfe13fe9cfca1eb4831`。服务器专用 CISPO 环境补齐了与本地一致的 `xarray==2025.1.2`，并通过 `wave_grid.nc` 打开 smoke test；未记录任何密钥或 license 内容。
 - 本地和固定服务器完整回归均为 `82/82` 通过。固定服务器新 Base 输出 `/data/zz2/National_model/outputs/2030_{1h,24h,168h}_v0728_server_wave_base_*` 与 `2030_1h_v0728_server_mga_runner_base` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，且都是 `TEST_ONLY_TRUNCATED_HORIZON`。最后一个 1h 根在 MGA runner 扩展后仍为 81,061 行、238,467 列、463,697 非零元、83 Barrier、2,674 simplex、10.33 s solver、0.463 GiB process-tree RSS；MGA 未启用。168h：raw `1,167,958/1,019,192/9,486,177`、presolved `730,782/820,208/7,174,545`（rows/columns/nonzeros），`AA' NZ=2.150e7`、`Factor NZ=1.045e8`、`Factor Ops=8.532e10`、138 Barrier、411,056 simplex/crossover、690.86 s solver、3.359 GiB process-tree RSS；其中 crossover 为 104.23 s，不能忽略。
@@ -266,6 +270,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.46 — 2026-07-28 — 2024 VRE 自然年契约与本地 Phase A/B
+
+- Git/范围：模型实施提交 `1449a4571d2881077f926bbc4116d2c9bdc6b5d5`；本条文档闭合提交待生成。本里程碑仅在本地完成，固定服务器 checkout 仍为 `4e1999d`。修改 `cispo_model/{config,data,diagnostics,io_contract,master,monolithic,wave_energy}.py`、runner、主配置、参数注册表、新 solver/formulation profiles 与聚焦测试；未暂存或修改本任务范围外的 `supplementary_materials/**`。
+- 数据契约：风电/光伏使用严格的北京时间 2024 自然年，拼接 2023 UTC 尾部与 2024 UTC 主体并删除北京时间闰日；wave 使用独立的 2023 reference coordinate。provenance 同时哈希两年 VRE stores 及可选 formulation profile。
+- 本地验证：完整 discovery `89/89`；两个新 1h 和六个新 24h 根均达到 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`。机器可读比较为 `outputs/solver_ab_v0728_2024_24h.{json,csv}`。
+- 结论：省级碳会计在代数、目标和 QC 上等价，但 Gurobi presolve 重建出与全国式相同的矩阵，故保留为实验 formulation 而不选为默认。开启 dual reductions 虽降低 factor 结构，却因 crossover 增长在 24h 变慢；`PreDual=1` 和 `PreSparsify=2` 已在短门禁淘汰。未启动 744h、8760h 或付费云任务。
+- 下一步：推送两个远端；再次复核服务器空闲后追加并校验四个 2024 CF stores，部署精确推送提交，运行服务器完整回归和顺序匹配 168h A/B。只有唯一胜者通过全部阶段/RSS/QC/manifest 门禁后，才启动一个新命名的 744h 根；固定服务器 8760h 继续禁止。
 
 ### v0.9.45 — 2026-07-28 — 受限 Base MGA 契约及双端回归门禁
 
