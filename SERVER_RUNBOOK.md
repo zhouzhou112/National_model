@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 当前 Base 工程门禁与 basis 复用协议
+
+当前部署 checkout 为 `/data/zz2/National_model/repo` 的 `4e1999d`，仅在实时确认无进程且内存安全后 fast-forward。使用附加的 wave-ready 数据根 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727`、CF 根 `/data/zz2/National_model/data/hourly_cf`、水文根 `/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse` 和波浪根 `/data/zz2/National_model/data/wave_energy_20260727`；不得替换为历史 wave-off 根。
+
+当前 Base 已完成 1h、24h、168h 工程序列，每项均使用新根并满足 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`。168h 根为：
+
+```text
+/data/zz2/National_model/outputs/2030_168h_v0728_server_wave_base_barrier16_v1
+```
+
+它是 `TEST_ONLY_TRUNCATED_HORIZON`，不是年度科学结果。168h 求解耗时 690.86 s，其中 Barrier 584.20 s、crossover 104.23 s；后续性能比较必须同时保留两个阶段、raw/presolved 维度、`AA' NZ`、`Factor NZ`、`Factor Ops`、目标/QC 和峰值 RSS。机器可读的 1h/24h/168h 及 basis A/B 表位于 `/data/zz2/National_model/outputs/solver_audit_v0728/`。
+
+仅限 test-only 的 LP basis 复用：先从 `OPTIMAL + PASS` 诊断根以 `--export-warm-start-basis` 导出。导入时传入 `--basis-in SOURCE_ROOT --allow-basis-reuse`；跨年还必须显式传入 `--allow-cross-year-basis`，并提供相应已验收的 diagnostic `--state-in` 与 `--allow-diagnostic-state-in`。runner 会验证源 result manifest、源终态、git commit、情景、小时数、basis hash、raw dimensions 和完整有序的带名称 LP 结构。它设置 `LPWarmStart=2` 以保留 presolve。该机制不会序列化或复用 Gurobi 模型、Barrier factorization、presolve state 或 crossover tableau。科学全年运行及 raw 非零元超过 50m 的矩阵均被显式禁止自动 basis 复用。
+
+绝不并发运行两个 CISPO 求解。不得触碰历史输出根，尤其是 `/data/zz2/National_model/outputs/2030_744h_v0726_spill_explicit_barrier16_auto_order`。固定服务器 8760h 仍被禁止。新的云端 8760h 必须获得用户单独确认，并具备不可变代码/数据/情景 hash、新门禁、高内存 Slurm 方案、线程/SoftMemLimit、成本预估与停止规则。MGA 必须作为独立的“成本约束后二级目标”工作流实现和运行；不得覆盖或重标 Base 最小成本输出。
+
+`4e1999d` 已提供 MGA runner 选项：`--mga-spec SPEC.json --mga-baseline BASE_ROOT`。它只接受闭合的 `SCIENTIFIC_PRODUCTION + BASE_MINIMUM_COST + OPTIMAL + PASS` 年度 Base 根，且要求同一计划年/边界年、已解析配置和 required-input SHA256；诊断时域、basis 复用、diagnostic state 和既有 MGA 输出均被拒绝。通过后模型保留原年度成本表达式并添加成本上限，再最小化或最大化一个明确筛选的新增容量目标；结果写入 `mga_request.json`/`mga_run.json`，不导出 `planning_state`。当前没有 accepted 年度 Base，故只允许 MGA preflight/契约测试，不得执行 MGA 求解。
+
 ## 2026-07-27 原始 LP 稀疏审计：仅本地闭合，不得据此扩大求解
 
 本地提交 `6114157` 增加可选的 `--constraint-family-audit`。该开关仅在

@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 当前 Base/MGA 工程代码已部署；1h/24h/168h 与 basis/MGA 诊断通过门禁
+
+- 写入前已实时复核服务器：无 CISPO/Gurobi 进程，可用内存约 69--70 GiB。干净 checkout 在未替换任何活动 checkout 或任务的前提下由 `01ec6f9` fast-forward 至 `56d166d`，并在本轮新代码通过本地完整回归后 fast-forward 至已推送的 `4e1999d`；服务器不再是旧 `c879c99` 模型实现。
+- 含波浪 Base 使用附加数据根 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727` 与 `/data/zz2/National_model/data/wave_energy_20260727`，并沿用既有 CF/水文根。服务器 CISPO 环境缺少 `xarray`；仅从本地下载的 wheel 以 `--no-deps` 加入 `xarray==2025.1.2`，`wave_grid.nc` 已 smoke-open 通过。未读取或记录任何密钥。
+- 本地和服务器完整回归均为 `82/82` 通过。服务器新根 `2030_1h_v0728_server_wave_base_basis_source_v1`、`2030_24h_v0728_server_wave_base_phase_audit_v1`、`2030_168h_v0728_server_wave_base_barrier16_v1`、`2030_1h_v0728_server_mga_runner_base` 均为波浪开启、灵活负荷关闭的 Base，且满足 `OPTIMAL`、`solution_qc=PASS`、`scenario_id=base` 和有效科学 result manifest；它们仅是截断时域工程门禁。最后一个 1h 根为 81,061 行、238,467 列、463,697 非零元、83 Barrier、2,674 simplex、10.33 s solver、0.463 GiB RSS，`analysis_mode=BASE_MINIMUM_COST`。
+- 168h 终态证据：raw `1,167,958/1,019,192/9,486,177`；presolved `730,782/820,208/7,174,545`；`AA' NZ=2.150e7`；`Factor NZ=1.045e8`；`Factor Ops=8.532e10`；138 次 Barrier/584.20 s；crossover 104.23 s；411,056 次 simplex；总 solver 时间 690.86 s；进程树峰值 RSS 3.359 GiB。168h 的 crossover 具有实质影响，后续审计必须保留。
+- 受限 crossover-basis 证据保存在新的隔离 1h 根。完全相同的 2030 LP 从 9.43 s/80 次 Barrier 降至 0.25 s/0 次 Barrier；使用源 2030 diagnostic cohort state 时，2040 冷启动为 9.29 s/77 次 Barrier，而跨年 basis 为 0.52 s/0 次 Barrier 加 1,714 次 simplex，目标和全部 QC 一致。此证据只验证受限的 test-only 路径，不验证全年复用或科学结果。
+- 未启动固定服务器 8760h，未触碰历史 744h 文件，未提交或修改 ParaCloud 任务。168h/1h 门禁后服务器空闲。`4e1999d` 的 MGA 只接受闭合的年度 Base 最小成本基线、相同配置/required-input hash，并以硬成本上限加二级目标运行；其输出不得导出递进 state。当前无 accepted 年度 Base，故未运行 MGA。未来 8760h 仍需用户单独确认并满足完整云端协议。
+
 ## 2026-07-27 原始 LP 稀疏审计已本地闭合；未部署
 
 - 本地实施提交 `6114157` 新增 `--constraint-family-audit`。它只在 `model.update()` 后读取原始 Gurobi 稀疏矩阵，默认超过 50,000,000 非零元即硬失败；不改变 LP 变量、约束、目标、Base 身份、数据或 solver profile。`constraint_family_audit.json` 记录原始约束/变量族、具体最稠密 25 行/列，并在求解后追加全局 presolve、ordering、factor、Barrier/crossover 指标；该文件被 output catalog 和 SHA256 manifest 正式纳入。Gurobi 不提供 presolved 行到源族的稳定映射，故不得将全局 presolve 缩减归因于某一族。

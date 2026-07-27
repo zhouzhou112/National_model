@@ -12,6 +12,16 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-28 的当前模型实现提交为 `4e1999d68614c7c587327ba7c41995a7c45b5af9`，分支为 `codex/cispo-2030-full-lp`，已推送 `origin` 与 `github`，并已部署到固定服务器。本轮新增求解阶段审计、受限 LP basis 复用和受限 MGA 工程契约；未改变 Base 的变量、目标、约束、时空尺度、技术边界或数据筛选。
+- 当前 Base 为含陆上/海上风电、光伏和严格映射到既有 marine `grid_uid` 的波浪能，`flexible_load=false`；唯一可运行覆盖情景为 `flexible_load_comfort_v3_v2g_5pct`，仍是待校准敏感性。历史 wave-off 744h 仅作历史数学/QC/性能证据，绝不能伪称为当前 Base 门禁。
+- 固定服务器已实时部署到相同 `4e1999d`，运行根使用新增且不覆盖历史的 `/data/zz2/National_model/data/model_ready_20260723_v0722_city337_wave_20260727` 与 `/data/zz2/National_model/data/wave_energy_20260727`。`wave_sites.csv`、`wave_input_manifest.json`、`wave_grid.nc` 的 SHA256 分别为 `9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3`、`540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9`、`b2e259862c8bad9a34addf24534a8d1e1c8f66c4e351bdfe13fe9cfca1eb4831`。服务器专用 CISPO 环境补齐了与本地一致的 `xarray==2025.1.2`，并通过 `wave_grid.nc` 打开 smoke test；未记录任何密钥或 license 内容。
+- 本地和固定服务器完整回归均为 `82/82` 通过。固定服务器新 Base 输出 `/data/zz2/National_model/outputs/2030_{1h,24h,168h}_v0728_server_wave_base_*` 与 `2030_1h_v0728_server_mga_runner_base` 均为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，且都是 `TEST_ONLY_TRUNCATED_HORIZON`。最后一个 1h 根在 MGA runner 扩展后仍为 81,061 行、238,467 列、463,697 非零元、83 Barrier、2,674 simplex、10.33 s solver、0.463 GiB process-tree RSS；MGA 未启用。168h：raw `1,167,958/1,019,192/9,486,177`、presolved `730,782/820,208/7,174,545`（rows/columns/nonzeros），`AA' NZ=2.150e7`、`Factor NZ=1.045e8`、`Factor Ops=8.532e10`、138 Barrier、411,056 simplex/crossover、690.86 s solver、3.359 GiB process-tree RSS；其中 crossover 为 104.23 s，不能忽略。
+- `solver_audit.py` 现在解析 Barrier 的 `solved` 与 `performed` 分支、crossover 时间、presolve 缩减、factor/AA' 比和 post-Barrier 时间；同机 `1h/24h/168h` 审计表在 `/data/zz2/National_model/outputs/solver_audit_v0728/base_time_expansion_1h_24h_168h.{json,csv}`。24h 的 Barrier 虽为 `performed`，但 crossover 将终态恢复为 `OPTIMAL`，因此终态必须以 `solve_report.json`/QC/manifest 为准。
+- `warm_start_basis.bas` 是仅限 diagnostic 的 crossover 后 LP basis，不是可序列化的 Gurobi 模型、presolve 状态、Barrier factorization 或 crossover tableau。导入前强制验证源 manifest、`OPTIMAL+PASS`、git、情景、小时数、raw dimensions 与全体变量/约束名-方向哈希，跨年还须显式 `--allow-cross-year-basis`；科学全年自动 basis 复用被代码阻止。固定服务器 1h 证据：2030 同年从 9.43 s/80 Barrier 降至 0.25 s/0 Barrier；2030→2040（携带严格 cohort state）从 9.29 s/77 Barrier 降至 0.52 s/0 Barrier，2040 目标一致至浮点误差。它们仅说明工程可行性，不构成全年性能或科学结论。
+- 已保留既有 744h 根且未原地重建 manifest；固定服务器未启动 8760h，ParaCloud 未提交新任务。`4e1999d` 的 MGA 只能接受闭合的 `SCIENTIFIC_PRODUCTION + BASE_MINIMUM_COST + OPTIMAL + PASS` 年度 Base 根，并逐项匹配 resolved config 和 required-input hash；它将原年度成本作为硬上限、以点/省/全国筛选的风光/波浪/水电/储能新增容量为二级目标，并拒绝导出递进 planning state。当前没有 accepted Base 全年结果，故未运行 MGA。任何云端 8760h 仍需用户单独确认。
+
+## Superseded snapshot detail (preserved historical notes)
+
 - 原始 LP 约束族稀疏审计已在本地闭合（2026-07-27，实施提交 `6114157`）：新增只读 `--constraint-family-audit`，在 `model.update()` 后以显式 50,000,000 非零元安全上限读取原始矩阵；它不改变变量、目标、约束、求解器参数或任何科学情景。输出 `constraint_family_audit.json` 纳入 `output_catalog.csv` 与 result manifest，记录稳定命名前缀的约束/变量族、每族矩阵非零元、最稠密的 25 个具体行/列，以及仅能从日志获得的全局 presolve/ordering/Barrier/crossover 指标。Gurobi 不暴露稳定的预处理后来源归属，审计明确禁止将全局 presolve 删除量归因于任一约束族。
 - 新的含波浪、无灵活负荷 Base 根 `outputs/2030_{1h,24h}_v0727_constraint_family_audit_base_v3` 均达到 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，所有 hard checks 为真。24h 原始/预处理矩阵为 `231,074/345,992/1,729,035` 与 `129,335/260,116/1,269,506`（rows/columns/nonzeros）；`AA' NZ=2.200e6`、`Factor NZ=6.284e6`、`Factor Ops=7.399e8`、89 Barrier、57,741 simplex/crossover、29.107 s solver runtime 和 0.712 GiB 峰值进程树 RSS。精确最稠密行依次是 `annual_emissions_accounting`（6,697 个非零元）、`capacity_margin_p65`（6,491）、`capacity_margin_p15`（5,736）以及 31 个 `co2_source_balance_p*`（各 3,246）；最稠密列为省级 `storage_capacity_gw[province,1]`（各 194）。水电逐站库容/泄流/水量平衡并非这次矩阵密集度的首要来源。
 - 审计只确定候选，不允许删除容量裕度、CO2 源汇守恒、年度碳约束或储能物理。下一步仅为 `annual_emissions_accounting` 的省级会计分解准备代数等价证明与匹配 24h A/B；只有目标、全部 QC、manifest、presolved/factor 结构、阶段时间和 RSS 均通过，才可考虑 168h。当前未部署固定服务器或 ParaCloud、未启动任何长任务；既有 744h、所有其他输出和 `supplementary_materials/**` 保持未改。
@@ -256,6 +266,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.45 — 2026-07-28 — 受限 Base MGA 契约及双端回归门禁
+
+- Git/模型范围：实施提交 `4e1999d`（`cispo_model/mga.py`、`scripts/run_cispo_2030_full_year.py`、`cispo_model/solution_export.py`、`cispo_model/result_summary.py`、`cispo_model/master.py`、`cispo_model/io_contract.py`、`config/mga/base_min_onwind_new_national_epsilon_1pct.json` 与 `tests/test_mga.py`）。MGA 不改写 Base 最小成本模型：先按闭合年度 Base manifest、`OPTIMAL+PASS`、`SCIENTIFIC_PRODUCTION`、`BASE_MINIMUM_COST`、相同年度/边界/已解析配置及 required-input SHA256 验证基线，再添加 `Base_cost <= Base_cost* (1+epsilon)`，最后才设置一个显式二级容量目标。
+- 输出/QC：MGA 根记录 `mga_request.json`、`mga_run.json`、基线 manifest SHA256、成本松弛、选择器、候选资产哈希、主成本和二级目标。`solution_qc.json` 按原成本表达式而非求解器的 GW 二级目标检查 cost-component closure，并新增成本上限 hard check；`run_summary.json`/`solve_report.json` 分别保留主成本和二级目标。MGA 输出不导出 `planning_state`，也不能成为后续 MGA 基线。
+- 支持范围：当前仅接受 `base` 年度基线；二级目标可按全国、省或显式点位选择 `vre_new_capacity_gw`（onwind/offwind/pv）、`wave_new_capacity_gw`、`hydro_new_capacity_gw` 或 `storage_new_power_gw`，方向为最小化或最大化。示例 JSON 是在 1% 松弛内最小化全国新增 onwind；它不是已授权的 MGA 求解。
+- 验证/部署：MGA 的小 LP 成本上限测试、闭合基线接受测试、截断基线拒绝测试均通过。本地及固定服务器完整回归均为 `82/82`。在固定服务器空闲、checkout 干净、约 70 GiB 可用内存时，已由 `56d166d` fast-forward 至 `4e1999d`；新根 `/data/zz2/National_model/outputs/2030_1h_v0728_server_mga_runner_base` 为 `OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，波浪开启、灵活负荷关闭、`analysis_mode=BASE_MINIMUM_COST`。本地同类根为 `outputs/2030_1h_v0728_local_mga_runner_base`。两者都只是截断工程门禁。
+- 未决/下一步：当前没有已验收的 2030 Base 8760h，因此不得运行 MGA 或把 1h/24h/168h 诊断根作为其基线。后续先在已授权的全年度 Base 后进行 MGA preflight（不求解）以核验全部身份和成本松弛，再为每个独立的二级目标建立新根和完整 QC；不得启动固定服务器 8760h 或新付费云端任务。
+
+### v0.9.44 — 2026-07-28 — 固定服务器当前 Base 门禁、阶段审计与受限 LP basis 复用
+
+- Git/模型范围：已提交并推送 `56d166d`（`cispo_model/basis_reuse.py`、`cispo_model/diagnostics.py`、`cispo_model/io_contract.py`、`cispo_model/solver_audit.py`、`scripts/run_cispo_2030_full_year.py` 及聚焦测试）。本轮未改变 Base 代数、输入数据契约、情景边界、目标函数或约束；唯一新增的数学模型输出均在隔离的新 test-only 根目录。
+- 部署/环境：fast-forward 前已实时复核服务器 checkout、进程和内存。服务器在无活动 CISPO 进程时由 `01ec6f9` fast-forward 至 `56d166d`。新增的 wave-ready 数据根和 wave 数据根均为附加目录，未覆盖或删除既有根、输出或临时文件。仅以本地 wheel 和 `--no-deps` 补齐缺失的 `xarray==2025.1.2`，随后通过 NetCDF smoke test。
+- 验证：本地及服务器完整 `unittest discover` 均为 `78/78` 通过。服务器新建的 Base 1h、24h、168h 根均闭合科学 result manifest 并通过 QC。阶段比较 JSON/CSV 记录 raw/presolved 维度、ordering、factor 结构、Barrier、crossover、总运行时间和 RSS；不将全局 presolve 缩减归因于任一源约束族。
+- Basis 证据：新的 test-only `.bas` 导出/导入契约会对源 basis 和带名称的 LP 结构哈希。2030 同年及 2030→2040 跨年 1h A/B 都复现了冷启动目标和 QC，并消除了 Barrier；但端到端墙钟仍须完整重建模型和导出结果。全年自动 basis 导出/导入仍受显式 `50m` 非零元带名称身份安全上限及科学运行保护所阻止。
+- 未决/下一步：不得由 168h 推断 8760h 可行性。仅在获得已验收的 Base 科学结果后，以独立 runner 实现 MGA，并保留显式成本上限和基线身份。保持历史 744h 根完全不变；未授权固定服务器 8760h 或新的付费云端运行。
 
 ### v0.9.43 - 2026-07-27 - raw LP constraint-family sparsity audit
 
