@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 M2 boundary audit: local decision closure, no deployment
+
+`379a96a79cf14d7dc08d0a5cfd45b8223f2f4b47` adds a read-only M2 decision register and scenario parameter registry. It validates the locked Base identity, cohort VRE boundary, scenario-only V3/V2G overrides, explicit BECCS evidence status, the duplicate-COMID configuration flag, and MGA-anchor stop condition without building or solving an LP. Its local output is `outputs/m2_model_boundary_audit_20260728_local_v3/` (`9 PASS, 0 OPEN, 0 hard fail`); it does not license a server operation.
+
+The present `static_capacity_potential_share_v1` duplicate-COMID hydrology implementation remains a user-owned uncommitted candidate. Local 1h/24h candidate roots are closed, but the 24h Barrier stage reported numerical trouble before Crossover produced `OPTIMAL`. Until its owner has reviewed and committed it, do not transfer it, fast-forward a server checkout, or infer a 168h/744h/8760h permission. After an explicit accepted commit, the only possible next solver gate is a newly named, isolated **local** 168h cold Base run, one solve at a time, with `barrier_16_auto_order_v2` and `Crossover=1`; record objective, hydro generation, raw/presolved/factor diagnostics, QC, manifest, RSS and the complete solver log. It remains prohibited to use `Crossover=3`, a cross-year basis, a concurrent second solve, fixed-server 744h/8760h, or any paid-cloud task.
+
 ## 2026-07-28 swap 清理判定规则
 
 若 swap 占用高，先只读检查 `Cached/Buffers`、`AnonPages`、主要进程 `VmSwap`、`vmstat si/so` 和 PSI；不可把 `free` 的 buff/cache 或低当前 I/O 误判为“swap 可清”。本次约 `19.1 GiB` swap 已归因于活跃 Python/MATLAB 的匿名页，`drop_caches` 不会降低它。

@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 M2 boundary audit closed locally; no server action
+
+Local implementation commit `379a96a79cf14d7dc08d0a5cfd45b8223f2f4b47` closes M2 Stage A as a read-only decision/parameter audit, not as a solver or deployment milestone. `outputs/m2_model_boundary_audit_20260728_local_v3/` has 11 findings with `9 PASS, 0 OPEN, 0 hard fail`; the parameter audit has `11,717` rows, `26 PASS, 0 WARN, 0 hard fail`, and four retained open risks. It closes scenario-overlay traceability (`M2-PARAM-001`) while leaving Base wave on/flexible load off and leaving all new scientific formulations out of the production LP.
+
+The duplicate-COMID hydrology work currently present in the local worktree is owner-uncommitted and must not be deployed. Its local 1h/24h Base candidate gates are closed (`OPTIMAL + solution_qc=PASS + closed manifest`) and the 24h raw topology remains `231,076/345,992/1,753,119`, but its Barrier log reported numerical trouble before a successful Crossover. This is a review gate, not a server authorization. The last live server check remains the separately time-stamped `701b9bc` / no-CISPO / occupied-swap snapshot below; recheck it live before any future remote action.
+
 ## 2026-07-28 swap 不是 cache；保持暂停
 
 - 实时 `/proc` 诊断：`Cached+Buffers` 仅约 `5.6 GiB`，但匿名页约 `49.5 GiB`、inactive anonymous 页约 `34.6 GiB`。swap `19.1/21 GiB` 主要归属仍在运行的 GPU `wind_power` Python（`VmSwap 8.18 GiB`）和两组 MATLAB（`6.01/2.28 GiB`），不是可由 `drop_caches` 清除的文件缓存。
