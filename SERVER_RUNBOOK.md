@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 V4 冷热/EV 情景的校准与运行前门禁
+
+`3b3de57f` 中的 `flexible_load_comfort_v4_v1g` 与 `flexible_load_comfort_v4_v2g_sensitivity` 是新的 LP topology，不是 Base 或 V3 的 resume/basis 变体。禁止在三者之间复制 `.bas`、planning state 或把某一情景的性能外推给另一情景；V2G 仅在 V1G 校准情景闭合后作为独立敏感性。
+
+在任何 V4 求解（含本地）之前，必须对 2030/2040/2050/2060 同时具备下列项目：
+
+1. `thermal_hourly_envelope`、`thermal_parameters`、`ev_availability_hourly`、`ev_mobility_hourly` 和 `enablement_cost` 五张表，字段/单位符合 `config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md`；
+2. 每张表的 SHA256、非空上游 source manifest 以及 `scripts/validate_flexible_load_v4_inputs.py` 生成并验证的 `flexible_load_v4.manifest.json`；
+3. 年度 EV 基准充电能量、驾驶能耗/效率与 SOC 周期闭合，最低出发 SOC、热状态正负界、舒适债、接入功率和服务签约上界全部通过 QC；
+4. 依次、非并发地完成本地新命名 1h、24h、168h cold gates。它们只证明工程可解性，不替代校准/留出验证，也不构成 744h/8760h 授权。
+
+当前五类输入均未验收，因此 V4 JSON 必须保持 `planned_not_runnable`，不得部署、传输数据、创建远程输出根或启动 server/ParaCloud 求解。Base 继续为 wave on/flexible load off，现有 V3 保留作严格 A/B 历史参照；`Crossover=3` 继续永久拒绝。
+
 ## 2026-07-28 M2 boundary audit: local decision closure, no deployment
 
 `379a96a79cf14d7dc08d0a5cfd45b8223f2f4b47` adds a read-only M2 decision register and scenario parameter registry. It validates the locked Base identity, cohort VRE boundary, scenario-only V3/V2G overrides, explicit BECCS evidence status, the duplicate-COMID configuration flag, and MGA-anchor stop condition without building or solving an LP. Its local output is `outputs/m2_model_boundary_audit_20260728_local_v3/` (`9 PASS, 0 OPEN, 0 hard fail`); it does not license a server operation.

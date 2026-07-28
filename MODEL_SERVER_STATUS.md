@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 冷热/EV V4 仅本地代码与校准契约；没有服务器动作
+
+本地提交 `3b3de57f41a8208b4e6bd0265270a91c77b1c8df` 新增 `flexible_load_comfort_v4_v1g` 与独立的 V2G sensitivity。它使用连续冷热服务状态、带界舒适债、内生服务签约容量，以及单车群 EV mobility/SOC；Base（wave on、flexible load off）和 V3 均未改动。V4 改变 LP topology，不能与 Base/V3 导入或导出 basis。
+
+V4 目前明确为 `planned_not_runnable`：五张省-小时校准表、SHA256 validation sidecar 与非空 source manifest 尚未提供，缺失时本地 loader/preflight 会 fail closed。`122/122` 本地回归和 1 省×4 小时 V4 线性门禁仅证明实现与守恒/QC 合同，不构成校准、情景结果、服务器部署或求解授权。
+
+本里程碑没有读取或更改固定服务器 checkout、进程、内存或 ParaCloud 队列；本文件其他服务器数值仅是先前时间戳快照，不能用于后续动作。后续若输入校准完成，先本地顺序完成 V4 1h/24h/168h 新根门禁；任何远程动作之前仍需重新实时核验 Git、CISPO/Gurobi 进程、RAM/swap 和 ParaCloud，并取得单独授权。
+
 ## 2026-07-28 M2 boundary audit closed locally; no server action
 
 Local implementation commit `379a96a79cf14d7dc08d0a5cfd45b8223f2f4b47` closes M2 Stage A as a read-only decision/parameter audit, not as a solver or deployment milestone. `outputs/m2_model_boundary_audit_20260728_local_v3/` has 11 findings with `9 PASS, 0 OPEN, 0 hard fail`; the parameter audit has `11,717` rows, `26 PASS, 0 WARN, 0 hard fail`, and four retained open risks. It closes scenario-overlay traceability (`M2-PARAM-001`) while leaving Base wave on/flexible load off and leaving all new scientific formulations out of the production LP.
