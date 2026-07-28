@@ -1,13 +1,10 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-07-28 当前运行锁
+## 2026-07-28 744h 运行锁已释放
 
-`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 自服务器时间 `03:12:23+08:00` 运行中，wrapper PID `2708836`，checkout `0dadfe9`。在该 PID 退出并完成终态审计前：
+`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 已达到 `OPTIMAL + PASS + manifest true`，原 wrapper/Python 进程均已退出。运行锁解除仅允许在重新核验 clean checkout、无进程和安全内存后 fast-forward 文档提交；不构成启动第二个 744h、固定服务器 8760h 或付费云任务的授权。
 
-- 不得 fast-forward 或切换服务器 checkout；
-- 不得启动第二个 CISPO/Gurobi solve；
-- 不得原地改写输出或 manifest；
-- 不得启动固定服务器 8760h 或任何付费云任务。
+该根的 crossover 为 5,709.46 s，占 solver 时间约 43%。后续 8760h 方案必须单独处理 crossover 策略和 basis/MGA 需求，不能只按 Barrier 7,543.19 s 外推。
 
 ## 2026-07-28 168h 选择与 744h 唯一候选
 

@@ -1,10 +1,11 @@
 # CISPO 2030 full-year server status
 
-## 2026-07-28 03:12 单一 2024 Base 744h 运行中
+## 2026-07-28 2024 Base 744h 已完成并验收
 
-- 运行根：`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2`；checkout `0dadfe9`；wrapper/Python PID `2708836/2708837`；显式 solver profile `barrier_16_auto_order_v2`；全国碳会计；2024 Beijing-aligned VRE；Base 波浪开启、灵活负荷关闭。
-- 启动前无其他 CISPO/Gurobi 进程、约 70 GiB 可用内存，输出根不存在。启动后单一进程正常，当前仍在模型构建且无 Gurobi 日志。未产生可验收终态，不能称为通过。
-- 运行结束前禁止 fast-forward 服务器 checkout、启动第二个求解、固定服务器 8760h 或付费云作业。终态按 solve report、全部 QC、result manifest 和阶段/RSS 指标共同验收。
+- 根 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 已完成：`OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=(True, [])`；49 项 hard checks 全真。wave 开启、flexible load 关闭、全国碳会计、2024 Beijing-aligned VRE；结果用途为 `TEST_ONLY_TRUNCATED_HORIZON`。
+- raw/presolved：`4,915,427/3,711,992/40,836,493` 与 `3,063,498/2,664,976/31,086,440`（rows/columns/nonzeros）。presolve 173.12 s；ordering 114.19 s；`AA' NZ=6.388e7`；`Factor NZ=7.481e8`；`Factor Ops=4.721e12`。
+- Barrier 211 次/7,543.19 s；crossover 5,709.46 s；simplex 1,437,196；solver 13,268.90 s；端到端 3:47:18；峰值进程树 RSS 20.049 GiB；无 swap。最大功率平衡残差 `3.43e-12 GW`，最大约束/边界/对偶违例 `9.32e-8/2.75e-8/9.35e-8`。
+- 进程已退出，服务器约 70 GiB 可用内存且无活动 CISPO solve。crossover 约占 solver 时间 43%，仍是 8760h 的主要风险。未启动第二个求解、固定服务器 8760h 或付费云任务。
 
 ## 2026-07-28 2024 数据已部署；服务器 168h Phase A/B 完成
 
