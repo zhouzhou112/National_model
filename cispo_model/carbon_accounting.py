@@ -82,3 +82,67 @@ def resolve_beccs_carbon_factors(
     if abs(closure) > 1e-12:
         raise ValueError("BECCS factor mass balance does not close")
     return factors
+
+
+def evaluate_postsolve_beccs_lifecycle_sensitivity(
+    resource_accounting: pd.DataFrame,
+    cases: dict[str, float],
+) -> pd.DataFrame:
+    """Apply lifecycle burdens to a solved BECCS result without re-solving.
+
+    ``cases`` maps a case label to lifecycle emissions expressed as a fraction
+    of physically stored biogenic CO2.  The solved dispatch, capture and
+    storage decisions remain fixed; this is therefore an accounting sensitivity
+    only and must never be reported as a new least-cost optimum.
+    """
+    required = {
+        "province_code",
+        "beccs_stored_co2_mtco2",
+        "beccs_lifecycle_emissions_mtco2",
+        "net_emissions_after_dac_mtco2",
+    }
+    missing = sorted(required.difference(resource_accounting.columns))
+    if missing:
+        raise ValueError(
+            "BECCS lifecycle sensitivity source lacks columns: " + ", ".join(missing)
+        )
+    if not cases:
+        raise ValueError("BECCS lifecycle sensitivity requires at least one case")
+    source = resource_accounting.loc[:, sorted(required)].copy()
+    for column in required.difference({"province_code"}):
+        source[column] = pd.to_numeric(source[column], errors="raise")
+    if (
+        source.province_code.duplicated().any()
+        or not np.isfinite(source.drop(columns="province_code").to_numpy(dtype=float)).all()
+        or source.beccs_stored_co2_mtco2.lt(-1e-10).any()
+        or source.beccs_lifecycle_emissions_mtco2.lt(-1e-10).any()
+    ):
+        raise ValueError("Invalid BECCS lifecycle sensitivity source accounting")
+
+    rows: list[pd.DataFrame] = []
+    for case_id, share in cases.items():
+        share = float(share)
+        if not np.isfinite(share) or not 0.0 <= share <= 1.0:
+            raise ValueError(
+                f"Lifecycle share for {case_id!r} must be finite and in [0, 1]"
+            )
+        frame = source.copy()
+        frame.insert(0, "case_id", str(case_id))
+        frame["lifecycle_share_of_stored_biogenic_co2"] = share
+        frame["assumed_lifecycle_emissions_mtco2"] = (
+            share * frame.beccs_stored_co2_mtco2
+        )
+        frame["adjusted_beccs_net_removal_mtco2"] = (
+            frame.beccs_stored_co2_mtco2
+            - frame.assumed_lifecycle_emissions_mtco2
+        )
+        frame["net_emissions_delta_mtco2"] = (
+            frame.assumed_lifecycle_emissions_mtco2
+            - frame.beccs_lifecycle_emissions_mtco2
+        )
+        frame["adjusted_net_emissions_after_dac_mtco2"] = (
+            frame.net_emissions_after_dac_mtco2
+            + frame.net_emissions_delta_mtco2
+        )
+        rows.append(frame)
+    return pd.concat(rows, ignore_index=True)

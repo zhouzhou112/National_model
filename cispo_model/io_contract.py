@@ -76,7 +76,7 @@ OUTPUT_FILE_ROLES = {
     "reservoir_station_index.csv": "Row index and station metadata for reservoir arrays",
     "result_manifest.json": "SHA256 manifest of scientific result artifacts",
     "run_claim.json": "Atomic output-root ownership claim preventing overwrite or concurrent reuse",
-    "run_identity.json": "Code, configuration, scenario, solver, formulation and data-root identity",
+    "run_identity.json": "Layered scientific case, LP topology, solver-runtime and implementation-bundle identity",
     "run_environment.json": "Software, host, command and data-root provenance",
     "run_scope.json": "Horizon, scientific-use boundary and scale estimate",
     "scenario_manifest.json": "Resolved optional-module scenario and demand-flexibility assumptions",
@@ -95,7 +95,7 @@ OUTPUT_FILE_ROLES = {
     "wave_capacity.csv": "Wave capacity decisions on existing marine optimization grid rows",
     "wave_dispatch.npz": "Province-hour wave availability and dispatch plus grid capacity decisions",
     "warm_start_basis.bas": "Test-only post-crossover Gurobi LP basis for guarded diagnostic reuse",
-    "warm_start_basis_manifest.json": "Integrity and named-structure contract for a test-only LP basis",
+    "warm_start_basis_manifest.json": "Integrity plus exact raw-LP-topology contract for a test-only LP basis",
     "warm_start_input.json": "Verified source and compatibility record for an imported test-only LP basis",
 }
 

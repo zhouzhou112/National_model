@@ -77,13 +77,13 @@ class RunContractTests(unittest.TestCase):
         candidate_identity = configuration_identity(
             candidate, data_root=root / "data"
         )
-        self.assertNotEqual(
-            base_identity["resolved_configuration_sha256"],
-            candidate_identity["resolved_configuration_sha256"],
+        self.assertEqual(
+            base_identity["scientific_case"],
+            candidate_identity["scientific_case"],
         )
         self.assertNotEqual(
-            base_identity["solver_configuration"],
-            candidate_identity["solver_configuration"],
+            base_identity["solver_runtime"],
+            candidate_identity["solver_runtime"],
         )
         self.assertEqual(
             json.dumps(base_identity, sort_keys=True),
@@ -92,8 +92,14 @@ class RunContractTests(unittest.TestCase):
                 sort_keys=True,
             ),
         )
-        self.assertEqual(base_identity["code"]["source_file_count"] > 0, True)
-        self.assertEqual(len(base_identity["code"]["source_bundle_sha256"]), 64)
+        self.assertEqual(
+            base_identity["implementation_bundle"]["source_file_count"] > 0,
+            True,
+        )
+        self.assertEqual(
+            len(base_identity["implementation_bundle"]["source_bundle_sha256"]),
+            64,
+        )
 
     def test_sequence_identity_locks_horizon_and_year_range(self):
         root = Path(__file__).resolve().parents[1]

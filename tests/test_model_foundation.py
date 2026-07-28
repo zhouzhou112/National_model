@@ -2,15 +2,17 @@ from __future__ import annotations
 
 import unittest
 import inspect
+from copy import deepcopy
 
 import numpy as np
 
 from cispo_model.config import (
+    ModelConfig,
     capital_recovery_factor,
     load_model_config,
     resolve_minimum_system_inertia_seconds,
 )
-from cispo_model.data import load_model_data
+from cispo_model.data import _apply_existing_vre_cohort_floors, load_model_data
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.timeblocks import make_time_blocks
 from cispo_model import load_center
@@ -111,11 +113,104 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertIn(
             "unidentified_osm_or_residual_capacity", set(cohorts.provenance)
         )
-        later = load_model_data(self.config.for_planning_year(2040))
-        self.assertLess(
-            float(later.vre_sites.capacity_floor_gw.sum()),
-            float(self.data.vre_sites.capacity_floor_2025_gw.sum()),
+        baseline = self.data.vre_sites.loc[
+            :, ["grid_uid", "technology", "capacity_floor_2025_gw"]
+        ]
+        for planning_year in self.config.planning_years:
+            with self.subTest(planning_year=planning_year):
+                year_data = load_model_data(
+                    self.config.for_planning_year(planning_year)
+                )
+                self.assertEqual(
+                    set(year_data.vre_sites.existing_vre_floor_mode),
+                    {"cohort_survival_v1"},
+                )
+                expected = (
+                    cohorts.loc[cohorts.retire_year.gt(planning_year)]
+                    .groupby(["grid_uid", "technology"], as_index=False)
+                    .capacity_gw.sum()
+                    .rename(columns={"capacity_gw": "expected_floor_gw"})
+                )
+                actual = year_data.vre_sites.loc[
+                    :, ["grid_uid", "technology", "capacity_floor_gw"]
+                ].merge(
+                    expected,
+                    on=["grid_uid", "technology"],
+                    how="left",
+                    validate="one_to_one",
+                )
+                self.assertLessEqual(
+                    float(
+                        (actual.capacity_floor_gw - actual.expected_floor_gw.fillna(0.0))
+                        .abs()
+                        .max()
+                    ),
+                    1e-9,
+                )
+                self.assertTrue(
+                    year_data.vre_sites.capacity_floor_gw.le(
+                        year_data.vre_sites.capacity_floor_2025_gw + 1e-9
+                    ).all()
+                )
+                self.assertTrue(
+                    year_data.vre_sites.capacity_floor_gw.le(
+                        year_data.vre_sites.capacity_upper_gw + 1e-9
+                    ).all()
+                )
+        self.assertGreater(
+            float(baseline.capacity_floor_2025_gw.sum()),
+            float(
+                load_model_data(
+                    self.config.for_planning_year(2040)
+                ).vre_sites.capacity_floor_gw.sum()
+            ),
         )
+
+    def test_fixed_vre_floor_mode_is_explicit_nonretirement_control(self):
+        raw = deepcopy(self.config.raw)
+        raw["planning_sequence"]["existing_vre_retirement"]["mode"] = "fixed_floor_v1"
+        fixed_config = ModelConfig(
+            self.config.path,
+            raw,
+            self.config.scenario_path,
+            self.config.solver_path,
+            self.config.formulation_path,
+        )
+        fixed_config.validate()
+        source_sites = self.data.vre_sites.copy()
+        source_sites["capacity_floor_gw"] = source_sites[
+            "capacity_floor_2025_gw"
+        ].to_numpy(dtype=float)
+        fixed_sites, fixed_cohorts = _apply_existing_vre_cohort_floors(
+            fixed_config, source_sites
+        )
+        self.assertTrue(fixed_cohorts.empty)
+        self.assertEqual(
+            set(fixed_sites.existing_vre_floor_mode), {"fixed_floor_v1"}
+        )
+        self.assertLessEqual(
+            float(
+                (
+                    fixed_sites.capacity_floor_gw
+                    - fixed_sites.capacity_floor_2025_gw
+                )
+                .abs()
+                .max()
+            ),
+            1e-12,
+        )
+
+    def test_base_scientific_case_and_hybrid_weather_bundle_are_explicit(self):
+        scientific_case = self.config.raw["scientific_case"]
+        self.assertEqual(
+            scientific_case["case_id"], "base_2024_vre_wave_on_flex_off_v1"
+        )
+        self.assertEqual(
+            scientific_case["weather_bundle"]["contract_version"],
+            "hybrid_weather_bundle_v1",
+        )
+        self.assertTrue(self.config.raw["features"]["wave_energy"])
+        self.assertFalse(self.config.raw["features"]["flexible_load"])
 
     def test_same_grid_vre_sites_share_the_grid_connection(self):
         """Wind/PV technologies at one grid cell must not create separate routes."""

@@ -123,26 +123,40 @@ class ModelConfig:
         existing_vre_retirement = sequence.get("existing_vre_retirement", {})
         if not isinstance(existing_vre_retirement, dict):
             raise ValueError("planning_sequence.existing_vre_retirement must be a mapping")
-        if existing_vre_retirement.get("mode") != "observed_cohort_boundary_censored_v1":
+        retirement_mode = str(existing_vre_retirement.get("mode", ""))
+        supported_retirement_modes = {
+            "fixed_floor_v1",
+            "cohort_survival_v1",
+            # Compatibility alias for pre-M1 artifacts only.  New production
+            # configuration must use the explicit cohort-survival name.
+            "observed_cohort_boundary_censored_v1",
+        }
+        if retirement_mode not in supported_retirement_modes:
             raise ValueError(
-                "existing_vre_retirement.mode must be observed_cohort_boundary_censored_v1"
+                "existing_vre_retirement.mode must be fixed_floor_v1 or "
+                "cohort_survival_v1"
             )
-        if not str(existing_vre_retirement.get("cohort_file", "")):
-            raise ValueError("existing_vre_retirement.cohort_file must be explicit")
+        if retirement_mode != "fixed_floor_v1" and not str(
+            existing_vre_retirement.get("cohort_file", "")
+        ):
+            raise ValueError(
+                "cohort_survival_v1 requires an explicit existing-VRE cohort_file"
+            )
         if int(existing_vre_retirement.get("baseline_year", 0)) != 2025:
             raise ValueError("existing_vre_retirement.baseline_year must remain 2025")
-        if existing_vre_retirement.get("unknown_start_year_policy") != (
-            "boundary_censored_2025_v1"
-        ):
-            raise ValueError(
-                "existing VRE unknown-start policy must remain boundary_censored_2025_v1"
-            )
-        if existing_vre_retirement.get("site_rebuild_policy") != (
-            "retain_same_site_technical_upper_v1"
-        ):
-            raise ValueError(
-                "existing VRE site rebuild policy must retain the technical upper bound"
-            )
+        if retirement_mode != "fixed_floor_v1":
+            if existing_vre_retirement.get("unknown_start_year_policy") != (
+                "boundary_censored_2025_v1"
+            ):
+                raise ValueError(
+                    "existing VRE unknown-start policy must remain boundary_censored_2025_v1"
+                )
+            if existing_vre_retirement.get("site_rebuild_policy") != (
+                "retain_same_site_technical_upper_v1"
+            ):
+                raise ValueError(
+                    "existing VRE site rebuild policy must retain the technical upper bound"
+                )
         if self.hours != 8760:
             raise ValueError("Production configuration must use all 8760 hours")
         if self.weather_year not in range(2020, 2026):
@@ -162,6 +176,17 @@ class ModelConfig:
             )
         if self.vre_scenario not in {"C", "B", "O"}:
             raise ValueError("vre_scenario must be one of C, B, O")
+        scientific_case = self.raw.get("scientific_case", {})
+        if scientific_case.get("contract_version") != "scientific_case_v1":
+            raise ValueError("scientific_case.contract_version must be scientific_case_v1")
+        if scientific_case.get("case_id") != "base_2024_vre_wave_on_flex_off_v1":
+            raise ValueError("Production Base scientific_case.case_id is not explicit")
+        weather_bundle = scientific_case.get("weather_bundle", {})
+        if weather_bundle.get("contract_version") != "hybrid_weather_bundle_v1":
+            raise ValueError("scientific_case.weather_bundle must be explicit")
+        parameter_registry = scientific_case.get("parameter_registry", {})
+        if parameter_registry.get("path") != "config/critical_parameter_registry.csv":
+            raise ValueError("scientific_case.parameter_registry.path must be explicit")
         if not self.raw["strict_load_balance"]:
             raise ValueError("Production configuration requires strict load balance")
         if self.raw.get("capacity_bound_profile") != (
@@ -276,6 +301,14 @@ class ModelConfig:
         flexible = self.raw.get("flexible_load", {})
         if "flexible_load" not in self.raw.get("features", {}):
             raise ValueError("features.flexible_load must be explicit")
+        if (
+            str(self.raw.get("scenario", {}).get("id")) == "base"
+            and bool(self.raw["features"]["flexible_load"])
+        ):
+            raise ValueError(
+                "Production Base scientific_case requires flexible_load=false; "
+                "use an explicit scenario override"
+            )
         if flexible.get("energy_conservation_window_hours") != 24:
             raise ValueError(
                 "The first flexible-load implementation requires 24-hour energy conservation"

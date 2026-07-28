@@ -371,6 +371,24 @@ def main() -> None:
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
     )
+    # The raw LP is now available: augment the pre-build provenance identity
+    # with the exact topology required by guarded diagnostic basis reuse.
+    from cispo_model.basis_reuse import lp_topology_identity
+
+    lp_topology = lp_topology_identity(artifacts.model)
+    (output_dir / RUN_IDENTITY_FILENAME).write_text(
+        json.dumps(
+            configuration_identity(
+                config,
+                data_root=DATA_ROOT,
+                lp_topology=lp_topology,
+            ),
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     mga_run = None
     if mga_request is not None:
         from cispo_model.mga import apply_mga_secondary_objective

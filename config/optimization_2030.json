@@ -9,7 +9,7 @@
     "retirement_rule": "active_when_planning_year_lt_retire_year",
     "cohort_zero_tolerance": 1e-8,
     "existing_vre_retirement": {
-      "mode": "observed_cohort_boundary_censored_v1",
+      "mode": "cohort_survival_v1",
       "cohort_file": "vre/existing_capacity_cohorts_2025.csv",
       "baseline_year": 2025,
       "unknown_start_year_policy": "boundary_censored_2025_v1",
@@ -32,6 +32,21 @@
     "family": "cispo_replication",
     "description": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
     "evidence_status": "MODEL_BASELINE"
+  },
+  "scientific_case": {
+    "contract_version": "scientific_case_v1",
+    "case_id": "base_2024_vre_wave_on_flex_off_v1",
+    "label": "Base: 2024 VRE; wave enabled; flexible load disabled",
+    "weather_bundle": {
+      "contract_version": "hybrid_weather_bundle_v1",
+      "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+      "wave": "2023 wave_grid.nc reference chronology",
+      "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+    },
+    "parameter_registry": {
+      "path": "config/critical_parameter_registry.csv",
+      "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+    }
   },
   "time_boundary": "cyclic_year",
   "objective_unit": "million_CNY_per_year",

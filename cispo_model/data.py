@@ -555,6 +555,24 @@ def _apply_existing_vre_cohort_floors(
     """
 
     retirement = config.raw["planning_sequence"]["existing_vre_retirement"]
+    mode = str(retirement["mode"])
+    vre_sites = vre_sites.copy()
+    vre_sites["capacity_floor_2025_gw"] = vre_sites.capacity_floor_gw.to_numpy(
+        dtype=float
+    )
+    if mode == "fixed_floor_v1":
+        # Explicit no-retirement control: preserve the observed boundary floor
+        # at every planning snapshot, without fabricating cohort ages.
+        vre_sites["active_observed_capacity_floor_gw"] = vre_sites[
+            "capacity_floor_2025_gw"
+        ].to_numpy(dtype=float)
+        vre_sites["existing_vre_floor_mode"] = mode
+        return vre_sites, pd.DataFrame(columns=sorted(_VRE_COHORT_COLUMNS))
+    if mode not in {
+        "cohort_survival_v1",
+        "observed_cohort_boundary_censored_v1",
+    }:
+        raise ValueError(f"Unsupported existing VRE retirement mode: {mode}")
     cohort_path = str(retirement["cohort_file"])
     cohort = _read(cohort_path)
     require_columns(cohort, _VRE_COHORT_COLUMNS, "Existing VRE cohort table")
@@ -606,10 +624,6 @@ def _apply_existing_vre_cohort_floors(
         .sum()
         .rename(columns={"capacity_gw": "active_observed_capacity_floor_gw"})
     )
-    vre_sites = vre_sites.copy()
-    vre_sites["capacity_floor_2025_gw"] = vre_sites.capacity_floor_gw.to_numpy(
-        dtype=float
-    )
     vre_sites = vre_sites.merge(
         active_floor,
         on=["grid_uid", "technology"],
@@ -622,6 +636,7 @@ def _apply_existing_vre_cohort_floors(
     vre_sites["capacity_floor_gw"] = vre_sites[
         "active_observed_capacity_floor_gw"
     ].to_numpy(dtype=float)
+    vre_sites["existing_vre_floor_mode"] = "cohort_survival_v1"
     if (vre_sites.capacity_floor_gw > vre_sites.capacity_upper_gw + 1e-9).any():
         raise ValueError("Active existing VRE cohort floor exceeds site potential")
     return vre_sites, cohort

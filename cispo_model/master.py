@@ -67,6 +67,9 @@ def export_master_solution(
         intra_site["observed_capacity_2025_gw"] = data.vre_sites[
             "capacity_floor_2025_gw"
         ].to_numpy(dtype=float)
+        intra_site["existing_vre_floor_mode"] = data.vre_sites[
+            "existing_vre_floor_mode"
+        ].astype(str).to_numpy()
         intra_site["active_observed_capacity_floor_gw"] = data.vre_sites[
             "capacity_floor_gw"
         ].to_numpy(dtype=float)
@@ -597,7 +600,10 @@ def build_master(
                 "Inherited wave capacity is outside the active site bounds"
             )
         wave_new = model.addMVar(
-            len(wave_sites), lb=0.0, name="wave_new_gw"
+            len(wave_sites),
+            lb=0.0,
+            ub=wave_upper - wave_floor,
+            name="wave_new_gw",
         )
         wave_capacity = model.addMVar(
             len(wave_sites),
@@ -665,6 +671,9 @@ def build_master(
         (p_count, len(THERMAL_TECHS)), lb=0.0, name="thermal_capacity_gw"
     )
     thermal_cap[:, nuclear_k].UB = nuclear_upper
+    # This is implied exactly by nuclear capacity accounting and the existing
+    # nuclear upper bound; it removes no feasible point.
+    thermal_new[:, nuclear_k].UB = nuclear_upper - thermal_floor[:, nuclear_k]
     ccs_pairs = (
         ("coal", "coalccs"),
         ("cchp", "cchpccs"),
@@ -800,7 +809,12 @@ def build_master(
     hydro_upper = data.hydro_stations.capacity_potential_gw.to_numpy(dtype=float)
     if (hydro_floor < -1e-9).any() or (hydro_floor > hydro_upper + 1e-9).any():
         raise ValueError("Inherited hydropower capacity is outside station bounds")
-    hydro_new = model.addMVar(len(data.hydro_stations), lb=0.0, name="hydro_new_gw")
+    hydro_new = model.addMVar(
+        len(data.hydro_stations),
+        lb=0.0,
+        ub=hydro_upper - hydro_floor,
+        name="hydro_new_gw",
+    )
     hydro_cap = model.addMVar(len(data.hydro_stations), lb=hydro_floor, ub=hydro_upper, name="hydro_capacity_gw")
     model.addConstr(hydro_cap == hydro_floor + hydro_new, name="hydro_capacity_accounting")
     variables.update(hydro_new=hydro_new, hydro_capacity=hydro_cap)
@@ -844,7 +858,15 @@ def build_master(
         or (storage_floor > storage_upper + 1e-9).any()
     ):
         raise ValueError("Inherited storage capacity is outside configured bounds")
-    storage_new = model.addMVar((p_count, len(STORAGE_TECHS)), lb=0.0, name="storage_new_gw")
+    # Finite PHS new-build bounds are exactly ``upper - inherited floor``.
+    # Battery remains unbounded because the Base data contract provides no
+    # technical upper potential for it.
+    storage_new = model.addMVar(
+        (p_count, len(STORAGE_TECHS)),
+        lb=0.0,
+        ub=storage_upper - storage_floor,
+        name="storage_new_gw",
+    )
     storage_cap = model.addMVar(
         (p_count, len(STORAGE_TECHS)),
         lb=storage_floor,
@@ -1001,6 +1023,12 @@ def build_master(
         ["grid_uid", "lon", "lat", injection_field],
     ].reset_index(drop=True)
     co2_ship = model.addMVar((p_count, len(sinks)), lb=0.0, name="co2_ship_mt")
+    sink_injection_upper = sinks[injection_field].to_numpy(dtype=float)
+    # Every nonnegative province-to-sink flow is bounded by the corresponding
+    # sink-column capacity, already enforced by the aggregate sink constraint.
+    # Making it explicit is algebraically redundant and does not change the
+    # feasible set.
+    co2_ship.UB = np.broadcast_to(sink_injection_upper, (p_count, len(sinks)))
     co2_source_constraints = []
     for p in range(p_count):
         co2_source_constraints.append(model.addConstr(
@@ -1010,9 +1038,13 @@ def build_master(
         ))
     constraint_handles["co2_source_balance"] = co2_source_constraints
     constraint_handles["co2_sink_injection_capacity"] = model.addConstr(
-        co2_ship.sum(axis=0) <= sinks[injection_field].to_numpy(dtype=float),
+        co2_ship.sum(axis=0) <= sink_injection_upper,
         name="co2_sink_injection_capacity",
     )
+    # Each DAC capture component is nonnegative and appears in one province
+    # source balance, whose total is bounded by all sink injection capacities.
+    # This finite component-wise UB is therefore implied by existing rows.
+    dac_mass.UB = float(sink_injection_upper.sum())
     variables["co2_ship"] = co2_ship
     province_centers = (
         data.vre_points.groupby("province_code")[["lon", "lat"]]
@@ -1320,6 +1352,16 @@ def build_master(
         "line_capacity_floor_gw": line_floor,
         "dac_asset_ids": dac_asset_ids,
         "dac_capacity_floor_mtpa": dac_floor,
+        "explicit_bound_tightening": {
+            "wave_new_gw": "capacity_upper_minus_inherited_floor",
+            "nuclear_new_gw": "nuclear_upper_minus_inherited_floor",
+            "hydro_new_gw": "capacity_upper_minus_inherited_floor",
+            "phs_new_gw": "capacity_upper_minus_inherited_floor",
+            "co2_ship_mt": "per_sink_injection_capacity",
+            "dac_capture_mt": "total_sink_injection_capacity",
+            "thermal_retrofit_to_ccs_gw": "surviving_source_floor_already_explicit",
+            "spur_trunk": "no finite UB added: installed interface augmentation above minimum remains feasible",
+        },
         "annual_emissions_accounting": emissions_accounting,
         "constraint_handles": constraint_handles,
         **index_extra,

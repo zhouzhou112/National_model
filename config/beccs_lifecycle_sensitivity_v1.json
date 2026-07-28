@@ -1,0 +1,28 @@
+{
+  "contract_version": "beccs_lifecycle_postsolve_sensitivity_v1",
+  "scope": "postsolve accounting only; no LP coefficients, variables, constraints or objective terms are changed",
+  "reference_case": {
+    "id": "cispo_equivalent_zero_lifecycle",
+    "lifecycle_share_of_stored_biogenic_co2": 0.0,
+    "evidence_status": "CISPO_EQUIVALENT_BASELINE",
+    "interpretation": "The current replication case preserves the CISPO reported negative BECCS emission factor and treats lifecycle emissions as zero."
+  },
+  "screening_cases": [
+    {
+      "id": "low",
+      "lifecycle_share_of_stored_biogenic_co2": 0.05,
+      "evidence_status": "SCREENING_ASSUMPTION_REQUIRE_SOURCING"
+    },
+    {
+      "id": "base",
+      "lifecycle_share_of_stored_biogenic_co2": 0.1,
+      "evidence_status": "SCREENING_ASSUMPTION_REQUIRE_SOURCING"
+    },
+    {
+      "id": "high",
+      "lifecycle_share_of_stored_biogenic_co2": 0.2,
+      "evidence_status": "SCREENING_ASSUMPTION_REQUIRE_SOURCING"
+    }
+  ],
+  "interpretation_limit": "Holding solved generation and physical storage fixed is an accounting sensitivity, not evidence that the alternate lifecycle case remains least-cost or carbon-feasible after re-optimization."
+}

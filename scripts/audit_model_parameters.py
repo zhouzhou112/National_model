@@ -34,6 +34,16 @@ TABLES = {
     "ccs": ("technology/ccs_cost_parameters.csv", []),
 }
 
+REQUIRED_REGISTRY_ROWS = {
+    ("scope", "scientific_case"),
+    ("scope", "hybrid_weather_bundle"),
+    ("scope", "weather_year"),
+    ("vre", "existing_retirement_mode"),
+    ("vre", "existing_capacity_cohorts"),
+    ("carbon", "beccs_mass_balance"),
+    ("carbon", "beccs_lifecycle_sensitivity"),
+}
+
 UNIT_BY_FIELD = {
     "capex_yuan_per_kw": "CNY/kW",
     "fixed_om_fraction_capex_per_year": "fraction/year",
@@ -98,6 +108,64 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
     checks: list[dict] = []
     sources: list[dict] = []
     frames: dict[str, pd.DataFrame] = {}
+
+    registry_path = PROJECT_ROOT / str(
+        config.raw["scientific_case"]["parameter_registry"]["path"]
+    )
+    registry = pd.read_csv(registry_path)
+    required_registry_columns = {
+        "parameter_group",
+        "parameter_key",
+        "runtime_authority",
+        "unit",
+        "base_value",
+        "sensitivity_ready",
+        "evidence_status",
+        "notes",
+    }
+    _check(
+        checks,
+        "parameter_registry_columns",
+        required_registry_columns.issubset(registry.columns),
+        sorted(set(registry.columns)),
+        sorted(required_registry_columns),
+    )
+    _check(
+        checks,
+        "parameter_registry_unique_keys",
+        not registry.duplicated(["parameter_group", "parameter_key"]).any(),
+        int(registry.duplicated(["parameter_group", "parameter_key"]).sum()),
+        "0 duplicates",
+    )
+    declared = set(
+        zip(registry.parameter_group.astype(str), registry.parameter_key.astype(str))
+    )
+    _check(
+        checks,
+        "parameter_registry_required_base_rows",
+        REQUIRED_REGISTRY_ROWS.issubset(declared),
+        sorted(REQUIRED_REGISTRY_ROWS.difference(declared)),
+        "all M1 Base registry rows",
+    )
+    missing_authorities = []
+    for authority in registry.runtime_authority.dropna().astype(str).unique():
+        if authority.startswith("$"):
+            # External runtime roots are validated by the normal input manifest.
+            continue
+        candidate = (
+            data_root / Path(authority).relative_to("data")
+            if authority.startswith("data/")
+            else PROJECT_ROOT / authority
+        )
+        if not candidate.is_file():
+            missing_authorities.append(authority)
+    _check(
+        checks,
+        "parameter_registry_runtime_authorities_resolve",
+        not missing_authorities,
+        missing_authorities,
+        "all non-environment runtime authorities exist",
+    )
 
     for module, (relative, keys) in TABLES.items():
         path = data_root / relative
@@ -218,6 +286,11 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
     checks_frame.to_csv(output_dir / "parameter_qc.csv", index=False, encoding="utf-8-sig")
     risks_frame.to_csv(output_dir / "parameter_risk_register.csv", index=False, encoding="utf-8-sig")
     sources_frame.to_csv(output_dir / "source_registry.csv", index=False, encoding="utf-8-sig")
+    registry.to_csv(
+        output_dir / "critical_parameter_registry_snapshot.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
     summary = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "data_root": str(data_root.resolve()),
@@ -226,7 +299,7 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
         "qc_warn": int(checks_frame.status.eq("WARN").sum()),
         "qc_hard_fail": int(checks_frame.status.eq("HARD_FAIL").sum()),
         "open_risks": int(risks_frame.status.ne("CLOSED").sum()),
-        "files": ["model_parameters_long.csv", "parameter_qc.csv", "parameter_risk_register.csv", "source_registry.csv"],
+        "files": ["model_parameters_long.csv", "parameter_qc.csv", "parameter_risk_register.csv", "source_registry.csv", "critical_parameter_registry_snapshot.csv"],
     }
     (output_dir / "parameter_audit_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report = f"""# CISPO 模型运行参数审计
@@ -247,6 +320,7 @@ def build_audit(data_root: Path, output_dir: Path) -> dict:
 - `parameter_qc.csv`：确定性完整性、范围与公式闭合检查。
 - `parameter_risk_register.csv`：未决科学口径及优先级。
 - `source_registry.csv`：运行表中携带的来源字段去重登记。
+- `critical_parameter_registry_snapshot.csv`：Base 科学标签、混合气象包、VRE 退役与 BECCS 非 LP 敏感性注册表快照。
 - `parameter_audit_summary.json`：机器可读摘要。
 
 ## 解释边界

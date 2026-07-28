@@ -11,16 +11,17 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+import numpy as np
 
 from .config import ModelConfig, ROOT
 from .io_contract import sha256_file, validate_result_manifest
 
 
-BASIS_SCHEMA_VERSION = "cispo_lp_basis_reuse_v1"
+BASIS_SCHEMA_VERSION = "cispo_lp_basis_reuse_v2"
 DEFAULT_MAX_IDENTITY_NONZEROS = 50_000_000
 
 
@@ -39,17 +40,32 @@ def _hash_strings(values: list[str], *, tag: str) -> str:
     return digest.hexdigest()
 
 
-def model_structure_identity(
+def _hash_sparse_pattern(matrix: Any) -> str:
+    """Return a canonical hash of CSR row pointers and column indices only."""
+    csr = matrix.tocsr(copy=False)
+    digest = hashlib.sha256()
+    digest.update(b"cispo_lp_raw_csr_pattern_v1\0")
+    digest.update(int(csr.shape[0]).to_bytes(8, "big", signed=False))
+    digest.update(int(csr.shape[1]).to_bytes(8, "big", signed=False))
+    for values in (csr.indptr, csr.indices):
+        canonical = np.ascontiguousarray(np.asarray(values, dtype="<i8"))
+        digest.update(len(canonical).to_bytes(8, "big", signed=False))
+        digest.update(canonical.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def lp_topology_identity(
     model: Any,
     *,
     max_nonzeros: int = DEFAULT_MAX_IDENTITY_NONZEROS,
 ) -> dict[str, Any]:
-    """Hash the ordered named LP structure without inspecting coefficients.
+    """Hash the ordered raw LP topology without inspecting coefficients.
 
     Coefficients and RHS values may legitimately change from 2030 to 2040;
-    names, senses and raw dimensions must not.  The size guard intentionally
-    keeps this diagnostic contract away from the 8760h model until a scalable
-    independently validated identity method is available.
+    variable order, constraint order/directions and the raw sparsity pattern
+    must not.  The size guard intentionally keeps this diagnostic contract away
+    from the 8760h model until a scalable independently validated identity
+    method is available.
     """
     if max_nonzeros < 1:
         raise BasisReuseError("max_nonzeros must be positive")
@@ -66,7 +82,25 @@ def model_structure_identity(
     variable_names = [str(value) for value in model.getAttr("VarName", variables)]
     constraint_names = [str(value) for value in model.getAttr("ConstrName", constraints)]
     constraint_senses = [str(value) for value in model.getAttr("Sense", constraints)]
+    try:
+        matrix = model.getA().tocsr()
+    except Exception as error:
+        raise BasisReuseError(
+            "LP topology requires explicit raw sparse-matrix access; cold solve is required"
+        ) from error
+    expected_shape = (int(model.NumConstrs), int(model.NumVars))
+    if matrix.shape != expected_shape:
+        raise BasisReuseError(
+            "Gurobi matrix dimensions do not match LP dimensions: "
+            f"{matrix.shape} versus {expected_shape}"
+        )
+    if int(matrix.nnz) != nonzeros:
+        raise BasisReuseError(
+            "Gurobi matrix nonzero count does not match LP dimensions: "
+            f"{int(matrix.nnz)} versus {nonzeros}"
+        )
     return {
+        "schema_version": "cispo_lp_topology_v1",
         "variables": int(model.NumVars),
         "constraints": int(model.NumConstrs),
         "nonzeros": nonzeros,
@@ -75,21 +109,18 @@ def model_structure_identity(
             [f"{name}\0{sense}" for name, sense in zip(constraint_names, constraint_senses)],
             tag="constraints",
         ),
+        "raw_csr_pattern_sha256": _hash_sparse_pattern(matrix),
         "identity_limit_nonzeros": int(max_nonzeros),
     }
 
 
-def _current_git_commit() -> str:
-    try:
-        return subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return "UNAVAILABLE"
+def model_structure_identity(
+    model: Any,
+    *,
+    max_nonzeros: int = DEFAULT_MAX_IDENTITY_NONZEROS,
+) -> dict[str, Any]:
+    """Backward-compatible name for the exact LP topology identity."""
+    return lp_topology_identity(model, max_nonzeros=max_nonzeros)
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -122,7 +153,7 @@ def export_warm_start_basis(
         raise BasisReuseError("A CISPO LP basis cannot be exported from a MIP model")
     if int(solve_report.get("solver_parameters", {}).get("crossover", 0)) == 0:
         raise BasisReuseError("Basis export requires crossover to be enabled")
-    identity = model_structure_identity(model, max_nonzeros=max_nonzeros)
+    lp_topology = lp_topology_identity(model, max_nonzeros=max_nonzeros)
     variables = model.getVars()
     constraints = model.getConstrs()
     try:
@@ -140,6 +171,11 @@ def export_warm_start_basis(
         raise BasisReuseError(f"Gurobi did not create expected basis file {basis_path}")
     environment = _read_json(output_root / "run_environment.json")
     snapshot = _read_json(output_root / "model_config_snapshot.json")
+    run_identity = _read_json(output_root / "run_identity.json")
+    if run_identity.get("lp_topology") != lp_topology:
+        raise BasisReuseError(
+            "Run identity and exported LP topology differ; do not export this basis"
+        )
     metadata = {
         "schema_version": BASIS_SCHEMA_VERSION,
         "generated_at": datetime.now().astimezone().isoformat(),
@@ -152,21 +188,25 @@ def export_warm_start_basis(
             "boundary_year": int(config.boundary_year),
             "optimization_hours": int(optimization_hours),
             "result_use": result_use,
-            "scenario_id": str(config.raw["scenario"]["id"]),
             "git_commit": environment.get("git_commit"),
             "configuration_source_sha256": snapshot.get("source_sha256"),
             "scenario_source_sha256": snapshot.get("scenario_source_sha256"),
             "solver_profile_source_sha256": snapshot.get("solver_source_sha256"),
             "gurobi_version": environment.get("packages", {}).get("gurobipy"),
         },
-        "model_structure_identity": identity,
+        "identity_layers": {
+            "scientific_case": run_identity.get("scientific_case"),
+            "lp_topology": lp_topology,
+            "solver_runtime": run_identity.get("solver_runtime"),
+            "implementation_bundle": run_identity.get("implementation_bundle"),
+        },
         "basis_status_counts": {
             "variables": len(variable_basis),
             "constraints": len(constraint_basis),
         },
         "limitations": [
             "Does not serialize a live Gurobi model, presolve state, Barrier factorization, or crossover tableau.",
-            "Only test-only horizons with explicit named-structure checks may import this artifact.",
+            "Only test-only horizons with exact raw LP-topology checks may import this artifact.",
             "A matching basis is an engineering acceleration attempt, not evidence that a changed-year solution is scientifically accepted.",
         ],
     }
@@ -212,10 +252,6 @@ def prepare_basis_reuse(
         raise BasisReuseError("Basis source is not an explicitly test-only result")
     if int(source.get("optimization_hours", -1)) != int(optimization_hours):
         raise BasisReuseError("Basis source and target optimization hours differ")
-    if str(source.get("scenario_id")) != str(config.raw["scenario"]["id"]):
-        raise BasisReuseError("Basis source and target scenario_id differ")
-    if str(source.get("git_commit")) != _current_git_commit():
-        raise BasisReuseError("Basis source git commit differs from the current code")
     source_year = int(source.get("planning_year", -1))
     if source_year != int(config.planning_year) and not allow_cross_year:
         raise BasisReuseError(
@@ -224,11 +260,28 @@ def prepare_basis_reuse(
     basis_path = source_root / str(metadata.get("basis_file", ""))
     if not basis_path.is_file() or sha256_file(basis_path) != metadata.get("basis_sha256"):
         raise BasisReuseError("Basis file is missing or its SHA256 does not match")
-    target_identity = model_structure_identity(model, max_nonzeros=max_nonzeros)
-    if metadata.get("model_structure_identity") != target_identity:
+    target_topology = lp_topology_identity(model, max_nonzeros=max_nonzeros)
+    source_layers = metadata.get("identity_layers", {})
+    source_topology = source_layers.get("lp_topology")
+    if source_topology != target_topology:
         raise BasisReuseError(
-            "Basis source and target named LP structures differ; cold solve is required"
+            "Basis source and target raw LP topologies differ; cold solve is required"
         )
+    from .run_contract import (
+        implementation_bundle_identity,
+        scientific_case_identity,
+        solver_runtime_identity,
+    )
+
+    target_audit_layers = {
+        "scientific_case": scientific_case_identity(config),
+        "solver_runtime": solver_runtime_identity(config),
+        "implementation_bundle": implementation_bundle_identity(),
+    }
+    audit_layer_matches = {
+        name: source_layers.get(name) == value
+        for name, value in target_audit_layers.items()
+    }
     return {
         "schema_version": BASIS_SCHEMA_VERSION,
         "basis_source_output_dir": str(source_root),
@@ -242,8 +295,10 @@ def prepare_basis_reuse(
         "target_planning_year": int(config.planning_year),
         "cross_year": source_year != int(config.planning_year),
         "optimization_hours": int(optimization_hours),
-        "scenario_id": str(config.raw["scenario"]["id"]),
-        "model_structure_identity": target_identity,
+        "source_identity_layers": source_layers,
+        "target_identity_layers": target_audit_layers,
+        "audit_layer_matches": audit_layer_matches,
+        "lp_topology": target_topology,
         "lp_warm_start": 2,
         "limitations": metadata.get("limitations", []),
     }

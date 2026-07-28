@@ -23,7 +23,7 @@ from .io_contract import (
 )
 
 
-RUN_IDENTITY_SCHEMA_VERSION = "cispo_run_identity_v1"
+RUN_IDENTITY_SCHEMA_VERSION = "cispo_run_identity_v2"
 RUN_CLAIM_FILENAME = "run_claim.json"
 RUN_IDENTITY_FILENAME = "run_identity.json"
 SEQUENCE_ACTIVE_CLAIM_FILENAME = "sequence_active_claim.json"
@@ -62,8 +62,14 @@ def _git_commit() -> str:
     return completed.stdout.strip() if completed.returncode == 0 else "UNAVAILABLE"
 
 
-def code_bundle_identity() -> dict[str, Any]:
-    """Hash executable model/runner source independently of docs-only changes."""
+def implementation_bundle_identity() -> dict[str, Any]:
+    """Hash the executable implementation for conservative resume auditing.
+
+    This is deliberately distinct from the scientific case and from the LP
+    topology.  A changed implementation bundle therefore prevents automatic
+    result resume, but never by itself decides whether a diagnostic LP basis is
+    structurally compatible.
+    """
     paths = sorted((ROOT / "cispo_model").rglob("*.py"))
     paths.extend(
         path
@@ -87,6 +93,11 @@ def code_bundle_identity() -> dict[str, Any]:
     }
 
 
+def code_bundle_identity() -> dict[str, Any]:
+    """Backward-compatible alias for the implementation audit bundle."""
+    return implementation_bundle_identity()
+
+
 def runtime_data_roots(data_root: str | Path) -> dict[str, str | None]:
     """Return the exact data-root strings recorded by run provenance."""
     return {
@@ -98,24 +109,84 @@ def runtime_data_roots(data_root: str | Path) -> dict[str, str | None]:
     }
 
 
+def _scientific_configuration_payload(config: ModelConfig) -> dict[str, Any]:
+    """Return resolved assumptions that can change the scientific LP case.
+
+    Numerics and construction mechanics are intentionally excluded: they belong
+    to ``solver_runtime`` and ``implementation_bundle`` respectively.  The
+    resolved object, rather than the whole JSON source file, prevents a
+    documentation-only or numerics-only config edit from changing this layer.
+    """
+    payload = json.loads(json.dumps(config.raw))
+    payload.pop("numerics", None)
+    payload.pop("solver_profile", None)
+    payload.pop("construction", None)
+    return payload
+
+
+def scientific_case_identity(config: ModelConfig) -> dict[str, Any]:
+    """Fingerprint model assumptions and scenario semantics, not runtime knobs."""
+    scientific_configuration = _scientific_configuration_payload(config)
+    return {
+        "schema_version": "cispo_scientific_case_v1",
+        "configuration_path": str(config.path),
+        "resolved_scientific_configuration_sha256": _canonical_json_sha256(
+            scientific_configuration
+        ),
+        "scenario_configuration": _source_identity(config.scenario_path),
+        "formulation_configuration": _source_identity(config.formulation_path),
+        "scenario_id": str(config.raw["scenario"]["id"]),
+        "scenario_family": str(config.raw["scenario"]["family"]),
+        "planning_years": [int(year) for year in config.planning_years],
+        "weather_bundle": {
+            "weather_year": int(config.weather_year),
+            "weather_time_alignment": str(config.weather_time_alignment),
+            "weather_source_years": [int(year) for year in config.weather_source_years],
+            "wave_enabled": bool(config.raw["features"].get("wave_energy", False)),
+            "wave_time_reference_year": (
+                int(config.raw["wave_energy"]["time_reference_year"])
+                if bool(config.raw["features"].get("wave_energy", False))
+                else None
+            ),
+        },
+    }
+
+
+def solver_runtime_identity(config: ModelConfig) -> dict[str, Any]:
+    """Fingerprint solver settings without treating them as scientific inputs."""
+    return {
+        "schema_version": "cispo_solver_runtime_v1",
+        "solver_configuration": _source_identity(config.solver_path),
+        "solver_profile": dict(config.raw.get("solver_profile", {})),
+        "resolved_numerics_sha256": _canonical_json_sha256(
+            config.raw.get("numerics", {})
+        ),
+    }
+
+
 def configuration_identity(
     config: ModelConfig,
     *,
     data_root: str | Path,
+    lp_topology: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Identify scientific/configuration inputs without coupling to docs-only Git."""
-    return {
+    """Build layered identity for provenance and conservative result resume.
+
+    ``lp_topology`` is optional before model construction and is populated once
+    the raw LP exists.  It is intentionally not reconstructed for normal result
+    resume, whose conservative implementation-bundle check is handled by this
+    identity's other layers.
+    """
+    identity = {
         "schema_version": RUN_IDENTITY_SCHEMA_VERSION,
-        "configuration": _source_identity(config.path),
-        "scenario_configuration": _source_identity(config.scenario_path),
-        "solver_configuration": _source_identity(config.solver_path),
-        "formulation_configuration": _source_identity(config.formulation_path),
-        "resolved_configuration_sha256": _canonical_json_sha256(config.raw),
-        "scenario_id": str(config.raw["scenario"]["id"]),
-        "planning_years": [int(year) for year in config.planning_years],
+        "scientific_case": scientific_case_identity(config),
+        "solver_runtime": solver_runtime_identity(config),
+        "implementation_bundle": implementation_bundle_identity(),
         "data_roots": runtime_data_roots(data_root),
-        "code": code_bundle_identity(),
     }
+    if lp_topology is not None:
+        identity["lp_topology"] = lp_topology
+    return identity
 
 
 def capture_input_identity(
@@ -194,24 +265,18 @@ def output_matches_configuration(
     except (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError, OSError):
         return False
     expected = configuration_identity(config, data_root=data_root)
-    if recorded_identity != expected:
+    # ``lp_topology`` is captured only after a model is constructed.  A normal
+    # sequence resume intentionally does not rebuild the LP merely to compare
+    # it; basis reuse performs that stricter comparison at build time.
+    recorded_resume_identity = {
+        key: value for key, value in recorded_identity.items() if key != "lp_topology"
+    }
+    if recorded_resume_identity != expected:
         return False
-    source_pairs = (
-        ("configuration", "source_path", "source_sha256"),
-        ("scenario_configuration", "scenario_source_path", "scenario_source_sha256"),
-        ("solver_configuration", "solver_source_path", "solver_source_sha256"),
-        (
-            "formulation_configuration",
-            "formulation_source_path",
-            "formulation_source_sha256",
-        ),
-    )
-    for identity_key, path_key, sha_key in source_pairs:
-        source = expected[identity_key]
-        if snapshot.get(path_key) != source["path"]:
-            return False
-        if snapshot.get(sha_key) != source["sha256"]:
-            return False
+    # The complete resolved snapshot remains the provenance record.  Resume is
+    # governed by the layered identity above so documentation-only edits and
+    # explicitly separated runtime metadata cannot masquerade as a scientific
+    # input change.
     if snapshot.get("resolved_configuration") != config.raw:
         return False
     if environment.get("data_roots") != expected["data_roots"]:
