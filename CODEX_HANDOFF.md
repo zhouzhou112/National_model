@@ -12,6 +12,23 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-28 技术经济 V2 已获作者批准并由本地实施提交 `29bbf904638fbfa45911bb6d801432d592302e15` 写入生产模型。统一价格合约为 `technoeconomic_2025_cny_v2`：CISPO 国内 2022 年不变人民币轨迹在 2030/2040/2050/2060 各规划年统一乘 `1.004004`，只平移共同价格基准、不改变年际学习比例；核电 CapEx 回到 `2800/2650/2500/2350 USD/kW` 后乘 `7.1429 CNY/USD`；省级燃料按原始 USD/GJ 乘同一汇率；波浪能按 EUR 来源值乘 `8.1185 CNY/EUR`；CCS 捕集/运输/封存为 `261.04104 CNY/tCO2`、`0.50 CNY/tCO2/km`、`45 CNY/tCO2`。物理参数、real WACC、市内数值破简并项及独立灵活负荷情景成本不重基准。
+
+- 本地 Git 外置 `data/` 已由幂等脚本迁移并生成 `data/technology/technoeconomic_price_basis_manifest.json`；第二次执行只校验、不重复换算。带本地原生水文路径、2024 VRE 与 wave 路径的完整回归为 `106/106 PASS`，数据包 smoke test 为 `142/142 PASS`。`config/model_input_files.json` 已升级到 v5 并要求服务器数据包携带该价格合约 sidecar。固定服务器和 ParaCloud 均未部署、未启动求解；Git 推送不等价于外置数据包部署，后续服务器同步须新建版本化数据根并重新运行 readiness/smoke/input-manifest 门禁。
+
+- 2026-07-28 本地 168h 四根 basis 门禁已闭合，全部使用 `barrier_16_auto_order_v2` / `Crossover=1`，仅为 `TEST_ONLY_TRUNCATED_HORIZON`：2030 cold/warm 分别为 solver `576.593/11.406 s`、RSS `2.925/2.262 GiB`；2040 cold/warm 为 `543.965/15.517 s`、RSS `3.030/2.263 GiB`。四根皆为 `OPTIMAL + solution_qc=PASS + validate_result_manifest=(True, [])`。warm 均为 0 Barrier/0 simplex；同年 cold/warm 的 objective 和全部容量 CSV 相同，发电量最大绝对差仅 `3.64e-11`（2030）/`2.91e-11 GWh`（2040）。2040 使用 2030 明确 test-only state bridge，但只导入 2040 自身 cold basis，未跨年 basis reuse。basis sidecar 以 Git/config/profile/命名结构 hash 约束，不能用于全年科学结果。
+
+- 2026-07-28 本地实施已提交为 `282c393fd98e25737631493e19110e38bb49ed28`（`feat: share VRE intra-grid connection and retire cohorts`），尚未推送或部署。提交后即时只读核验固定服务器：HEAD 仍为 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，无 CISPO/Gurobi 进程、约 70 GiB 可用内存，但 swap 已用约 19/21 GiB，另有约 45 GiB RSS 的无关长任务；因此按 runbook 判定为内存压力，未切换 checkout、未传输数据、未启动 168h。ParaCloud `squeue -u a8s001819` 为空。此快照只记录当时状态，任何后续部署前仍须重新实时核验。
+
+- 2026-07-28 本地已完成“同格网风光共享并入 + 既有 VRE 可追溯退役”模型修正，尚未提交或部署。基线为 `codex/cispo-2030-full-lp` 的 `d73eb3390c970b0da6319a03ca8b1d3c30384040`；本次只修改 `cispo_model/{config,data,io_contract,master}.py`、`config/{optimization_2030.json,model_input_files.json}`、`scripts/build_existing_vre_cohorts.py`、两组测试和本交接/服务器文档，既有 `supplementary_materials/**` 用户改动未触碰。对 36,686 个 VRE technology-site 行、16,317 个 `grid_uid` 实测：12,603 个多技术格网全部连接到唯一同一 `substation`。新 spur 严格采用 CISPO S4-18 的 `max_t(cf) × capacity`；风光 trunk 改为 CISPO S4-19 的站级 potential-weighted equivalent peak，避免把风光非同期峰值相加。该设计只增加一次完整 8760 气象 CF 扫描和审计 CSV，不增加逐小时 LP 变量或约束。
+
+- 新的 `data/vre/existing_capacity_cohorts_2025.csv` 由可复现脚本从 GEM operating projects 和已审计的 V3 0.25° 既有容量表构建：15,171 行，SHA256 `e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0`，按技术精确闭合 2025 年 onwind/offwind/UPV/DPV `593/47/670/530 GW`。有有效 GEM 投运年的队列按技术寿命退役；未识别 OSM/残差和边界后才投运的记录显式作 2025 boundary-censored cohort，不虚构年龄。退役只解除 observed-capacity floor，不移除技术 site upper，因此同址再建是优化决策而非强制假定；既有 spur/trunk 代理按显式连接复用规则独立保留。
+
+- 隔离本地 24h Base 根 `outputs/2030_24h_v0728_intra_grid_cohort_smoke_local_v1` 已达到 `OPTIMAL + solution_qc=PASS + closed result_manifest`；wave 开启、flexible load 关闭。raw `231,076/345,992/1,753,119`、presolved `129,500/260,190/1,295,919`（rows/columns/nonzeros），Barrier 99、crossover 53,551 simplex、solver 34.83 s、端到端 58.91 s、峰值 RSS 0.739 GiB。2025 VRE 初始 trunk proxy 从旧 nameplate `1,310.0 GW` 降至共享峰值 `1,069.513 GW`（-18.36%）；这是网络代理成本口径变化，不能由截断时域目标外推科学结论。完整本地回归 `102/102` 通过。固定服务器 checkout、进程、输出和 ParaCloud 队列均未由本里程碑写入；任何部署前必须重新实时核验。
+
+- 2026-07-28 Module 04 的审批前深度审查 v2：15 个实质性审查单元登记 63 个独立来源、104 条证据关联，每单元 6—8 个独立证据组，`table_m04_19_source_count_qa.csv` 全部 PASS。审批前 `candidate_inputs_v2` 中的 `PROPOSED_NOT_APPLIED` 作为历史快照保留，不回写覆盖；其后已按本快照最前两条所述完成授权集成。审批后新增 `production_integration_2025cny_zh.md`、表 M04-24 和 production QA，终止标记为 `FINAL_M04_V2_PRODUCTION_INTEGRATION_PASS`。
+
+- 2026-07-28 补充材料总控与 Module 04 的最初候选阶段保留为历史证据：候选 QA 19/19 PASS，深度 v2 QA 8/8 PASS；后续 v2 授权以核电 USD 币种链和多来源 CCS 中央值替代早期候选，并已按当前快照完成生产落库。电池功率—能量拆分、燃料长期轨迹、技术特定 WACC、既有机组寿命、CCS 有效能耗惩罚及海上风电空间成本仍保持敏感性/结构审查项。
 - 2026-07-28 的当前模型实施提交为 `1449a4571d2881077f926bbc4116d2c9bdc6b5d5`，分支为 `codex/cispo-2030-full-lp`；其后提交仅闭合验证、运行状态和交接文档。744h 实际运行 checkout 为 `0dadfe9566ea69b1105161451a399e476307a4f1`；最新本地/远端/服务器 HEAD 属易变化信息，必须用 Git 实时核验。早先快照所称服务器仍为 `4e1999d` 已被实时证据纠正。
 - 风电/光伏运行气象年已切换为 2024，并采用显式 `beijing_natural_year_drop_feb29_v1`：模型小时严格覆盖北京时间 2024 自然年，使用 2023 UTC 最后 8 小时衔接 2024 UTC 数据，再删除北京时间 2 月 29 日，最终保持 8760 小时。波浪能仍使用独立的 2023 reference time coordinate，水文仍为 2019；这是明确的混合数据年边界。输入 manifest 同时锁定 2023/2024 两组 VRE Zarr。服务器已追加四个 2024 stores；传输 tar 的本地/服务器 SHA256 均为 `2f70713d7a93633f8478e554b1924be7fdfe1d05ff5674a385461d3fa3045cfc`，四个目录文件数与本地逐项一致，既有 2023 数据未覆盖。
 - 求解器全局硬编码已改为 solver-profile-controlled；Base 默认仍保留已验证的 `DualReductions=0 + InfUnbdInfo=1`。新增显式生产候选 `barrier_16_auto_order_v2`（1/0）、`PreSparsify=2`、`PreDual=1/2` 与旧诊断参数 profile。新增可选且严格等价的 `annual_emissions_province_hierarchy_v1`：用 31 条省级年度排放会计替换一条全国全小时行，再由 31 个省级变量进入全国碳上限；它是 formulation A/B，不是新科学情景。
@@ -277,6 +294,73 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.57 — 2026-07-28 — 技术经济 V2 批准落库与 2025 年不变人民币生产合约
+
+- Git implementation: `29bbf904638fbfa45911bb6d801432d592302e15` (`feat: normalize technoeconomic inputs to 2025 CNY`); handoff correction is recorded in the following documentation commit.
+- Scope: 将经 CISPO 原作者逻辑与多来源审查后的 V2 货币参数正式写入运行配置、数据构建器和本地外置数据包；统一 2025 constant CNY，保留审批前 candidate 快照；未改变物理参数、约束边界、目标结构或时间/空间尺度。
+- Main changed files: `config/technoeconomic_price_basis_2025.json`, `config/optimization_2030.json`, `config/technology_parameters.json`, `config/fuel_prices_supplementary_table2.json`, `config/model_input_files.json`, `cispo_model/price_basis.py`, `scripts/apply_technoeconomic_price_basis_v2.py`, `scripts/build_cispo_data_package.py`, `scripts/build_natural_earth_278_network.py`, smoke/unit tests, `cispo_full_lp_model_spec.md` and Module 04.
+- Production rules: domestic 2022 CNY × `1.004004` across the complete planning trajectory; nuclear/source fuel USD × `7.1429`; wave EUR × `8.1185`; CCS central values `261.04104/0.50/45`; numerical and physical exceptions explicitly registered.
+- Verification: migration representative checks 9/9 PASS; idempotent second execution PASS; full local unit tests 106/106 PASS; model-ready data smoke 142/142 PASS. The earlier hydrology failure was an incorrect local `CISPO_HYDRO_ROOT` override forcing two native files into one directory; native indexed paths passed.
+- Data/deployment boundary: repository `data/` is Git-ignored. Local model-ready tables and `technoeconomic_price_basis_manifest.json` are updated, while the pushed commit carries the reproducible config/builder/migration contract. No fixed-server checkout, external data root, output or cloud job was changed.
+- Unresolved: fuel time trajectories, storage duration decomposition, technology-specific WACC, plant age/retirement, CCS energy penalty and offshore spatial cost remain sensitivity priorities. Exact next action is to create a new server data root, apply the migration there, and pass readiness/smoke/1h or 24h gates before any longer solve; this deployment requires a separate explicit request.
+
+### v0.9.56 — 2026-07-28 — intra-grid/cohort 的 168h 同年 basis 四根门禁（本地闭合）
+
+- 范围：实施提交 `282c393fd98e25737631493e19110e38bb49ed28` 的模型/配置/数据契约在本地运行四根新命名的隔离 168h Base 根；另以 2030 warm 根导出一个明确 `TEST_ONLY` diagnostic state bridge，供 2040 cold/warm 的既有容量递进状态输入。未连接、写入或部署固定服务器，未传输 cohort 数据，未修改 ParaCloud，未启动 744h、8760h 或并发第二个求解。
+- 2030：`outputs/2030_168h_v0728_intra_grid_cohort_basis_cold_local_v1` 为 `OPTIMAL + QC PASS + manifest true`，raw/presolved `1,167,956/1,019,192/9,536,286` 与 `697,875/712,434/7,103,801`（rows/columns/nonzeros），180 Barrier、219,076 simplex、solver `576.593 s`、RSS `2.925 GiB`。同身份 warm 根以其 checksummed post-crossover basis 输入，solver `11.406 s`、0 Barrier/0 simplex、RSS `2.262 GiB`；objective 都为 `2,027,739.8896732337 million CNY`，容量 CSV 完全一致，发电 CSV 最大绝对差 `3.64e-11 GWh`。
+- 2040：2030 state bridge 使用 `--allow-diagnostic-state-in`，不构成生产递进 state。`outputs/2040_168h_v0728_intra_grid_cohort_basis_cold_local_v1` 为 `OPTIMAL + QC PASS + manifest true`，raw/presolved `1,167,956/1,019,192/9,536,286` 与 `699,024/715,445/7,173,198`，168 Barrier、221,342 simplex、solver `543.965 s`、RSS `3.030 GiB`；2040 自身 basis 的 warm 根为 `15.517 s`、0 Barrier/0 simplex、RSS `2.263 GiB`。目标都为 `2,008,165.4183561637 million CNY`，容量完全一致、发电最大差 `2.91e-11 GWh`。未使用 `--allow-cross-year-basis`。
+- 共享并网审计：四根均含 manifest/catalog 覆盖的 `intra_grid_vre_site_design.csv` 和 `intra_grid_substation_design.csv`；2025 初始 VRE trunk 均为 `1,069.512666 GW`，旧 nameplate proxy 为 `1,309.999999962 GW`。四根 result manifest 的验证错误列表皆为空。
+- 决策/下一步：同年同结构 basis 工程复用具有明确收益，但不证明跨年或全年 reuse，也不授权 744h。固定服务器即时检查存在 19/21 GiB swap 使用和无关 45 GiB RSS 长任务，故部署和服务器 168h 均暂停。待主机压力解除且用户仍授权时，重新实时核验 HEAD/进程/内存/队列，add-only 安装 cohort CSV/sidecar，部署精确推送提交并完成服务器回归后，才可运行一个新的服务器 168h cold gate；不得复用 `Crossover=3` 或启动 744h/8760h/付费云任务。
+
+### v0.9.55 — 2026-07-28 — 同格网风光共享并入与既有 VRE cohort retirement（本地闭合，未部署）
+
+- Git/范围：起始分支/HEAD 为 `codex/cispo-2030-full-lp` / `d73eb3390c970b0da6319a03ca8b1d3c30384040`。工作树原有 `supplementary_materials/**` 与本交接文档用户改动保留；本次模型工作尚未提交。新增 `scripts/build_existing_vre_cohorts.py`、`tests/test_intra_grid_vre_design.py`，并修改 `cispo_model/config.py`、`cispo_model/data.py`、`cispo_model/io_contract.py`、`cispo_model/master.py`、`config/optimization_2030.json`、`config/model_input_files.json`、`tests/test_model_foundation.py` 及交接文档。没有连接、写入或部署固定服务器，未修改 ParaCloud，未启动 168h/744h/8760h 或第二个求解。
+- 模型边界：逐格网 VRE 仍沿既有 `grid_uid -> substation -> load center` 路由；现场 spur 保留 CISPO S4-18 的 `p_spur >= max_t(cf_site,t) * capacity_site`。共享 wind/PV trunk 由原先的逐 site `max(cf)` 相加，改为 CISPO S4-19 的 `p_trunk >= sum(capacity_site) * max_t[sum(potential_site*cf_site,t)/sum(potential_site)]`，DPV 不引入此输电代理，水电仍按其原有项另加。36,686 行中 12,603 个多技术 `grid_uid` 全部映射同一 substation，零违规。完整 8760 CF 扫描为设计系数，不是 8760 LP 求解，且不增加 LP 变量或逐小时约束。
+- 既有 VRE：新增受 `model_input_files.json` 和 manifest 追踪的 cohort 输入。GEM project 使用可用 `start_year`；unknown/OSM/residual 与 `start_year>2025` 容量以显式 `boundary_censored_2025_v1` 处理。2025 容量按每个 grid-technology 严格闭合，cohort 为 15,171 行、SHA256 `e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0`；退出的 observed cohort 不再构成容量下界，但保留 site technical upper 和独立连接代理，故模型允许而不强迫同址再建。
+- 验证：`CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy conda run -n RL python -m unittest discover -s tests -p 'test_*.py' -v` 为 `102/102 OK`。本地 preflight `outputs/2030_24h_v0728_intra_grid_cohort_preflight_local_v1` PASS；隔离 24h Base 根 `outputs/2030_24h_v0728_intra_grid_cohort_smoke_local_v1` 为 `OPTIMAL + solution_qc=PASS + closed result_manifest`，raw/presolved `231,076/345,992/1,753,119` 与 `129,500/260,190/1,295,919`，objective `1,982,153.352438188 million CNY`，solver `34.83 s`、端到端 `58.91 s`、peak RSS `0.739 GiB`。输出新增 `intra_grid_vre_site_design.csv` 与 `intra_grid_substation_design.csv`，并被 output catalog 和 manifest 覆盖。
+- 下一步：先审查并选择性提交这组非补充材料变更；若获准部署，先重新实时核验服务器 HEAD/空闲进程/内存与 ParaCloud 队列，以 add-only 方式传输 checksummed cohort 输入，fast-forward 到精确提交并完成服务器完整回归。只有上述条件满足，才在新隔离根顺序运行单一匹配 168h Base 门禁（`barrier_16_auto_order_v2`、`Crossover=1`）；不得复用已拒绝的 `Crossover=3`，不得启动 744h/8760h 或付费云任务。
+
+### v0.9.53 — 2026-07-28 — CISPO 驱动的技术经济参数深度综合审查 v2
+
+- Git/授权边界：沿用本轮只读核验的本地基线 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；工作区已有补充材料改动全部保留。本里程碑只新增/修改 Module 04 补充材料、`supplementary-materials` skill 和本交接记录，未修改 `National_model/data`、`config`、模型方程、服务器 checkout、历史输出或求解状态。
+- CISPO 原作者逻辑：逐节恢复 S3.3.4、S3.5.1—3、S3.6.2、S3.7—10 和 S6 的当前成本锚点、相对学习率来源、插值/外推、运行参数、CCS/DAC、WACC 和 1.25× CapEx 不确定性设计。关键结论是原作者对风光采用“中国绝对成本锚点 + 多来源相对下降率”，并未直接导入 NREL 的美国绝对成本。
+- 深度证据：建立 15 个审查单元、63 条唯一来源、104 条参数族—来源关联；主文/SI/代码/数据按一个 `independence_group` 计数，同一机构同版报告不同格式不重复计数。每单元 6—8 个独立来源，最低为 6；`table_m04_19_source_count_qa.csv` 15/15 PASS，并报告中国证据数和最新证据年。
+- 2025 CNY 口径：国内 2022 CNY 值继续乘 `1.004004`；原始外币值必须回到可复现来源币种后按 2025 FX 转换，不再对旧 CNY 折算值机械乘中国 CPI。完整来源年、币种、指数/汇率、公式和解释见 `table_m04_21_2025_price_conversion_ledger.csv`。
+- v2 中央值：核电回到 Bowen/CISPO 原始 USD 路径，2030/2040/2050/2060 为 `2800/2650/2500/2350 USD/kW × 7.1429`，即 `20000.12/18928.69/17857.25/16785.82 CNY/kW`。CCS 运输和封存不再采用 An 等单篇中央值，而按中国多来源综合取 `0.50 CNY/tCO2/km` 与 `45 CNY/tCO2`，敏感性范围约 `0.18—0.80` 与 `25—116`。其余 v1 候选值在五来源以上审查后保留。
+- 产物：新增 `deep_integrated_technoeconomic_review_2025cny_zh.md`、`scripts/generate_deep_integrated_review.py`、`candidate_inputs_v2/` 四张候选表、表 M04-16—23、`qa/deep_integrated_review_validation.csv` 和运行摘要。候选行数为 CapEx 76、燃料 31、派生燃料成本 1550、其他参数 166；全部为 `PROPOSED_NOT_APPLIED`。
+- Skill：`supplementary-materials` 新增强制原作者逻辑恢复、每审查单元至少 5 个独立证据组、中国证据优先、source registry/evidence matrix/source-count QA、外币来源链和 v1→v2 变更表规则。Windows 默认 GBK 首次读取 UTF-8 skill 失败；设置 `PYTHONUTF8=1` 后 `quick_validate.py` 返回 `Skill is valid!`。
+- 验证/下一步：生成脚本成功，8/8 QA PASS，正式标记 `FINAL_M04_DEEP_REVIEW_2025CNY_PASS`。作者下一步校对 v2 三项数值修正及波浪能参考情景边界；批准前不落库。电池功率—能量成本拆分、CCS 有效能耗、既有容量 CapEx 计费、既有机组退役队列等仍为独立 `MODEL_CODE_REVIEW_REQUIRED`，本轮未运行敏感性或优化。
+
+### v0.9.52 — 2026-07-28 — Module 04 最终候选输入、逐参数文献审查与图件重构
+
+- Git/授权边界：只读核验时本地分支 `codex/cispo-2030-full-lp` 的 HEAD 为 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；工作区已有用户补充材料改动全部保留。本里程碑只修改补充材料、`supplementary-materials` skill 和本交接记录，未改 `National_model/data`、`config`、优化方程、服务器 checkout 或任何求解输出。
+- 文献与来源纠正：查明 `province_fuel_prices.csv` 来自 An 等（2025）*Nature Communications* 16, 2311，DOI `10.1038/s41467-025-57559-2`，公开数据/代码 DOI `10.5281/zenodo.14836760`。煤价由 2014—2020 省级指数回归到 2023 全国水平，气价由 2018 省级门站基准加 `0.8 CNY/m3` 构造，生物质价来自其引用的 2022 出厂价研究；先前“燃料价格年未解决”结论被纠正。候选表按 2025 官方平均 `7.1429 CNY/USD` 换算文献所报 USD/GJ，但明确不是统一的 2025 现货观测。
+- 中央候选值：19 技术×4 年 CapEx、绝对 O&M/启停/核燃料/DAC/CCS 捕集/输电等 2022 语境货币量按 CPI `1.004004`转为 2025 CNY；效率、时长、寿命、热耗、排放和容量边界不做价格换算。统一实际 WACC `7.4%`、4 h 电池 `RTE=90.25%`、8 h 抽蓄 `RTE=77.44%`在最新证据对照后保留。CCS 运输和封存建议采用 An 等中央值按 2025 FX 换算的 `0.185715 CNY/tCO2/km` 与 `35.7145 CNY/tCO2`，须作者批准后落库；捕集成本保留 CISPO 并按 CPI 得到 `261.041 CNY/tCO2`。
+- 结构边界：电池不同时长严谨比较需要 `CAPEX=c_P K_P+c_E K_E`；当前 CCS 能耗同时通过热耗率和 5% 净出力损失实现，不能直接抄入单一文献惩罚百分比；目标函数按 CapEx×CRF 对全部在役容量计费。三项均标记 `MODEL_CODE_REVIEW_REQUIRED`，本轮未改代码。实时配置核验确认当前 Base 的 `features.wave_energy=true`；本轮建议最终论文 reference 改为 wave-disabled，把 2025 EUR/CNY 换算与强制敏感性留给独立波浪能情景，该 Base 情景改动同样须作者批准。
+- 产物：新增 `final_candidate_input_review_zh.md`；`candidate_inputs/{technology_capex_by_year_2025_candidate,province_fuel_prices_2025_candidate,province_fuel_generation_cost_by_year_2025_candidate,other_parameter_values_2025_candidate}.csv`；表 M04-11—15（含候选输入 SHA256 清单）；Figure M04-03—06 及机器绘图数据；`scripts/generate_final_candidate_review.py`；`qa/final_candidate_validation.csv` 与运行摘要。原两张四面板审计图保留作历史证据，但已在图注中标记为非优先投稿图。
+- 图件：新图按单一科学问题拆分为风光成本、可调度技术成本、储能外部对照和参数处置决定；每图最多 1—2 面板，不再把全部 CapEx 曲线堆在同一图。所有新图为精确 177.8 mm 宽 PDF + 450 dpi PNG，并有 `figure_data`。
+- Skill：`C:\Users\ZZ\.codex\skills\supplementary-materials\SKILL.md` 新增强制技术经济审查流程，并新增 `references/techno-economic-parameter-review.md`；要求先产出精确中央候选值，再做敏感性；强制来源年/货币/换算/可比性/可靠性/授权状态；区分数据更新与模型结构问题；技术经济图默认 1—2 面板且禁止无证据区间。`python -X utf8 ...\quick_validate.py` 返回 `Skill is valid!`。
+- 验证：两套生成脚本均成功；初始模块 QA 19/19 PASS，候选 QA 19/19 PASS；候选 CapEx 76 行、燃料价 31 行、派生燃料成本 1,550 行；燃料成本逐行满足价格×热耗率；4 张新 PNG 均为 3150 px 宽且 PDF 非空；完成逐图视觉检查并修复裁切、图例遮挡和无来源区间。正式标记 `FINAL_M04_CANDIDATE_INPUT_REVIEW_PASS`。
+- 未决/下一步：作者先校对 `final_candidate_input_review_zh.md` 和表 M04-12/M04-14，并明确批准或拒绝三类数据更新（2025 CNY 重基准、燃料 FX/来源纠正、CCS 运输/封存替换）。只有批准后才更新生产输入和 manifest；任何电池成本拆分、CCS 能耗公式或既有容量投资计费修改都需单独模型代码审查与小样本门禁。敏感性注册已完成，但本轮未运行任何敏感性或优化。
+
+### v0.9.51 — 2026-07-28 — Module 04 技术经济参数与 2025 年价格口径定稿
+
+- Git 基线：本轮只读核验时本地分支 `codex/cispo-2030-full-lp` 的 HEAD 为 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；工作区已有用户补充材料改动，均予保留。本里程碑没有提交、推送、切换服务器 checkout、启动求解或修改生产数据包。
+- 范围：新增 `supplementary_materials/modules/04_thermal_nuclear_storage_technoeconomics/`。以 `cispo_model/data.py`、`master.py`、`monolithic.py`、`config/optimization_2030.json` 和当前实际输入为权威，核对 18 类有效输入、19 技术×4 年 CapEx、11 类火电/核电 RUC 与 O&M、2 类储能、31 省燃料、DAC/CCS/输电、容量上下界和寿命/WACC；并识别 partly stale 的 278 中心 sidecar 及历史审查/计划文档。
+- 价格定稿：补充材料采用 2025 年不变人民币作为共同报告口径。明确或可靠归入 2022 年的货币参数以 2023/2024/2025 CPI `0.2%/0.2%/0.0%` 换算，系数 `1.004004`；生产模型值未覆盖。燃料来源价格年仍未解决，因此保留 `6.9 CNY/USD` 活动值，只以 2025 年平均 `7.1429 CNY/USD` 给出 `1.035203` 汇率对照。波浪能保留 `7.8 CNY/EUR` 说明性基线，`8.1185 CNY/EUR` 只作敏感性。
+- 关键方法边界：核电 pipeline 下界与 110/205/300/300 GW 上界分列；2030 年电池下界 65.85 GW、抽蓄下界/上界 65.94/249.191 GW，最新 160 GW 抽蓄和 300 GW 新型储能只作政策比较。当前目标函数按 `CapEx × CRF × 全部在役容量` 年化，既有容量也计费；四个规划年目标不会自动折现汇总为 2025—2060 NPV。
+- 产物：`technical_archive_zh.md`、`supplementary_methods_zh.md`、`supplementary_tables_zh.md`、`source_references.md`、`figure_legends_zh.md`、10 张 CSV 表、6 个绘图数据文件、`Figure_M04_01_capacity_boundaries_and_capex.{pdf,png}`、`Figure_M04_02_price_basis_and_uncertainty.{pdf,png}`、生成脚本和 QA/运行摘要。顶层 `SUPPLEMENT_WORKFLOW_GUIDE_ZH.md` 与 `SUPPLEMENT_EVIDENCE_REGISTER_ZH.md` 已同步。
+- 验证：`conda run -n RL python modules\04_thermal_nuclear_storage_technoeconomics\scripts\generate_module_outputs.py` 成功；`python -m py_compile` 通过；`qa/formal_closure_validation.csv` 19/19 PASS；两张 PNG 均为 `3150×2497`，两张 PDF 均存在且非空；正式终止标记 `FINAL_M04_TECHNOECONOMIC_CLOSURE_PASS`。两张图已完成人工视觉检查。
+- 未决/下一步：燃料原始美元价格的价格年和正式出处、GEM tracker 精确版本/下载日期/许可、CapEx 图表数字化误差仍需投稿前补齐；海上风电空间成本、技术特定 WACC、电池时长、既有机组寿命和 CCS/DAC 为高优先级敏感性。下一模块固定为 Module 05 水电、水文、环境流量与梯级拓扑。
+
+### v0.9.50 — 2026-07-28 — 补充材料总控刷新与 Module 02 定稿
+
+- Git/范围：实时本地 HEAD `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；工作树原有用户补充材料改动保持未提交。本里程碑只新增/修改 `supplementary_materials/**` 和本交接记录，未改模型、配置、数据包、服务器或运行结果。
+- 输入与口径：直接核对 `optimization_2030.json`、`CapacityFactorStore`、`hourly_cf_index.csv`、`optimization_points.csv` 和 `03_compute_hourly_cf_from_era5V2.py`。生产口径为 2024 北京自然年、删除 2 月 29 日后 8760 h，前 8 h 读取 2023 UTC 年末；波浪能仍为独立 2023 参考年。`city_337`/642 边为生产网络，278/517 只作复现对照。
+- 交付：新增 `modules/02_hourly_vre_capacity_factors/` 的技术档案、正式中文方法、来源表、6 张机器表、图注、5 份绘图数据、可复现 Python 脚本及六面板 PDF/PNG；更新 `SUPPLEMENT_WORKFLOW_GUIDE_ZH.md` 和 `SUPPLEMENT_EVIDENCE_REGISTER_ZH.md` 的剩余路线与易漂移计数。
+- 命令/证据：`conda run -n RL python modules\02_hourly_vre_capacity_factors\scripts\generate_module_outputs.py` 返回 `FINAL_M02_HOURLY_VRE_CLOSURE_PASS`；正式 QA 12/12 PASS，PNG 3150×2497 px，配对 PDF 非空；人工视觉检查后修复曲线截断和色标遮挡并重跑。当前 manifest/source/QA/smoke 为 240/33/90/142 项，构建 QA 74 PASS + 16 WARN + 0 FAIL，smoke 142/142 PASS。
+- 未决/下一步：Module 02 的 2024 单年结果不是长期气候均值，少量格点使用已审计回退；Module 01/03 仍有外部许可与引用缺口。补充材料下一步固定为 Module 04，需把核电 pipeline 下界与 110/205/300/300 GW 上界分列，并完成火电退役、储能和 19 类技术经济参数的来源—表格—图件—QA 闭合。
 
 ### v0.9.49 — 2026-07-28 — 2024 Base 744h 严格验收
 

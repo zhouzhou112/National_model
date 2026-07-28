@@ -1,7 +1,7 @@
 # Module 04 技术档案：火电、核电、储能与技术经济参数
 
 > 定稿日期：2026-07-28  
-> 当前代码快照：`701b9bc225013a5009dcce3f4e97ee2063dcd00f`  
+> 审批前审查快照：`701b9bc225013a5009dcce3f4e97ee2063dcd00f`；生产集成：`29bbf904638fbfa45911bb6d801432d592302e15`  
 > 初始审计终止标记：`FINAL_M04_TECHNOECONOMIC_CLOSURE_PASS`  
 > 最终候选输入终止标记：`FINAL_M04_CANDIDATE_INPUT_REVIEW_PASS`
 
