@@ -12,6 +12,9 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-28 本地 M0/M1 basis 前置建设已由实现提交 `a5e34bf5357301c205b246b0aa2149db0dca9c3b`（`feat: close basis preparation m0 m1`）闭合，尚未推送或部署。M0 将运行身份拆为 `scientific_case`、`lp_topology`、`solver_runtime` 与 `implementation_bundle`：只有变量/约束顺序、约束方向、维度、NNZ 以及原始 CSR sparsity pattern 的精确 `lp_topology` 相等时才允许导入 LP basis；结果 resume 仍保守审计 implementation bundle，科学 case 或实现 bundle 差异只记录审计、绝不把 warm 根提升为科学验收。24h 2030 Base cold/warm 均为 `OPTIMAL + solution_qc=PASS + closed manifest`，objective `1996289.6918468594` 完全一致；warm 为 `LPWarmStart=2`、0 Barrier/0 simplex（`65.237 s` 降至 `1.188 s`）。
+- M1 已明确 Base 科学标签与 `hybrid_weather_bundle_v1`（VRE 2024、wave 2023、hydro 2019），参数 registry 26 项 PASS；VRE retirement 生产模式为 `cohort_survival_v1`，并保留 `fixed_floor_v1` 作为对照，2030/2040/2050/2060 cohort floor 均有测试闭合。BECCS lifecycle 仅为目录外、post-solve low/base/high screening，绝不改变 LP 规模或冒充有来源的生产参数；新增 bound tightening 仅加入可证明不改变可行域的显式上界。M1 24h cold 与 M0 结果 objective、容量、成本与发电量均为零差异，raw LP 仍为 `231,076/345,992/1,753,119`，本地完整回归 `114/114 PASS`。现存旧 168h 四根是 M0/M1 前快照，只可作历史性能证据；下一步必须在当前提交重新运行 2030/2040 cold/warm 四根门禁，不得复用 `Crossover=3`、跨年 basis、固定服务器/8760h 或付费云任务。
+
 - 2026-07-28 技术经济 V2 已获作者批准并由本地实施提交 `29bbf904638fbfa45911bb6d801432d592302e15` 写入生产模型。统一价格合约为 `technoeconomic_2025_cny_v2`：CISPO 国内 2022 年不变人民币轨迹在 2030/2040/2050/2060 各规划年统一乘 `1.004004`，只平移共同价格基准、不改变年际学习比例；核电 CapEx 回到 `2800/2650/2500/2350 USD/kW` 后乘 `7.1429 CNY/USD`；省级燃料按原始 USD/GJ 乘同一汇率；波浪能按 EUR 来源值乘 `8.1185 CNY/EUR`；CCS 捕集/运输/封存为 `261.04104 CNY/tCO2`、`0.50 CNY/tCO2/km`、`45 CNY/tCO2`。物理参数、real WACC、市内数值破简并项及独立灵活负荷情景成本不重基准。
 
 - 本地 Git 外置 `data/` 已由幂等脚本迁移并生成 `data/technology/technoeconomic_price_basis_manifest.json`；第二次执行只校验、不重复换算。带本地原生水文路径、2024 VRE 与 wave 路径的完整回归为 `106/106 PASS`，数据包 smoke test 为 `142/142 PASS`。`config/model_input_files.json` 已升级到 v5 并要求服务器数据包携带该价格合约 sidecar。固定服务器和 ParaCloud 均未部署、未启动求解；Git 推送不等价于外置数据包部署，后续服务器同步须新建版本化数据根并重新运行 readiness/smoke/input-manifest 门禁。
@@ -294,6 +297,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.58 — 2026-07-28 — M0 分层身份与 M1 科学前置闭合（本地）
+
+- Git implementation: `a5e34bf5357301c205b246b0aa2149db0dca9c3b` (`feat: close basis preparation m0 m1`)。范围为 `cispo_model/{run_contract,basis_reuse,config,data,master,carbon_accounting,io_contract}.py`、Base/registry/BECCS screening 配置、两份审计脚本和对应测试；`supplementary_materials/**`、固定服务器和 ParaCloud 均未写入。
+- M0 contract: `run_identity.json` 现在显式保存 `scientific_case`、`solver_runtime`、`implementation_bundle`，建模后附加 `lp_topology`。basis 导入严格要求同 test-only horizon、closed source manifest、`OPTIMAL + PASS`、basis hash 和完整 raw CSR pattern；科学/实现层身份不相同只写入 `audit_layer_matches`，不作为 source basis 的结构兼容性替代，也不授予科学验收。
+- M1 scope: Base 标签和混合气象 bundle 已登记；`cohort_survival_v1` 的 2030--2060 floor 以及 `fixed_floor_v1` 对照均已测试；BECCS lifecycle 是固定结果的 post-solve screening；新增的 wave/nuclear/hydro/PHS/CO2-ship/DAC 上界均有可行域不变论证。参数审计输出 `outputs/parameter_audit_20260728_m1_local_v1`：11,717 行、26 PASS、0 WARN、0 hard fail（4 项待来源研究风险保持显式）。
+- Verification: M0 24h cold/warm 根为 `outputs/2030_24h_v0728_m0_identity_{cold_local_v2,warm_local_v1}`，同一 objective 且 warm 为 0 Barrier/0 simplex；M1 24h cold `outputs/2030_24h_v0728_m1_equivalence_cold_local_v1` 与 M0 zero-diff，跨 implementation-bundle 的 warm 审计根也 closed；`conda run -n RL python -m unittest discover -s tests -p 'test_*.py' -v` 为 `114/114 PASS`。
+- Unresolved/next action: 现存 168h basis 根形成于 M0/M1 前，不能充当新分层契约的 gate。只在本地、一次一个求解地运行当前提交的 2030 cold/warm 与携带明确 2030 diagnostic state bridge 的 2040 cold/warm；四根闭合且端到端收益明确前，不申请隔离 744h basis gate。固定服务器的 swap 压力仍须在任何远程动作前实时复核；`Crossover=3` 永久拒绝。
 
 ### v0.9.57 — 2026-07-28 — 技术经济 V2 批准落库与 2025 年不变人民币生产合约
 

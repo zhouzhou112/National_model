@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 M0/M1 basis 身份协议与当前本地门禁
+
+`a5e34bf5357301c205b246b0aa2149db0dca9c3b` 将运行身份拆为 `scientific_case`、`solver_runtime`、`implementation_bundle`，并在 LP 构建后写入 `lp_topology`。导入 basis 时必须同时满足：source closed manifest、`OPTIMAL + solution_qc=PASS`、相同 diagnostic hours、同规划年（除非代码明确的跨年例外）、basis SHA256，以及变量/约束顺序和方向、维度、NNZ、raw CSR sparsity pattern 的精确 topology 一致。只有 `lp_topology` 是 basis 兼容硬门；scientific/implementation 差异必须留下审计记录，且 warm root 永远不能替代科学 Base 验收。
+
+当前 Base 为 `base_2024_vre_wave_on_flex_off_v1`：VRE 2024 北京自然年、wave 2023、hydro 2019；既有 VRE 生产 mode 为 `cohort_survival_v1`，`fixed_floor_v1` 仅为可重复的对照。BECCS lifecycle low/base/high 只是目录外 post-solve screening，不加 LP 行列、不能声称重新优化的可行性；bound tightening 仅保留已证明不改变可行域的变量上界。
+
+在任何远程动作前，先在当前本地提交上顺序完成五个根：2030 168h cold、2030 warm、2030 state bridge、2040 168h cold、2040 warm。2040 只接收显式 test-only 2030 planning state，且只导入自身 2040 cold basis；任何跨年 basis、`Crossover=3`、第二个并发求解、744h、8760h 和付费云任务均禁止。现有下节 168h 根在本协议之前生成，只能作历史性能参考。
+
+本节不授权部署：若未来确有远程必要性，仍先重新只读核验服务器 HEAD/工作树、CISPO/Gurobi 进程、RAM/swap、数据根和 ParaCloud 队列；swap 压力、非预期 checkout 或任何活动任务都要求停止。只有随后经过 add-only data 安装、完整回归和一个新命名 168h cold 根，才可另行评估下一阶段。
+
 ## 2026-07-28 intra-grid/cohort 168h basis 结果与服务器暂停条件
 
 本地四根 168h Base 门禁已验证同年同结构的 guarded LP basis：2030 cold/warm solver `576.593/11.406 s`，2040 cold/warm `543.965/15.517 s`；均为 `OPTIMAL + solution_qc=PASS + closed manifest`，warm 均为 0 Barrier/0 simplex，cold/warm 容量一致。2040 仅接收明确 diagnostic 的 2030 state bridge，并且只使用 2040 自身 basis；不得以此说明跨年 basis 或生产全年复用。四根均输出并校验 `intra_grid_vre_site_design.csv` / `intra_grid_substation_design.csv`，其中 2025 VRE initial trunk proxy 为 `1,069.512666 GW`，旧 nameplate proxy 为 `1,309.999999962 GW`。

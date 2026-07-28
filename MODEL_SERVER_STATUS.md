@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 M0/M1 仅本地闭合；现有 168h roots 降为历史证据
+
+- 本地实现提交 `a5e34bf5357301c205b246b0aa2149db0dca9c3b` 完成 M0/M1，未推送、未部署。M0 的 `run_identity` 已拆成 `scientific_case`、`lp_topology`、`solver_runtime`、`implementation_bundle`；basis 的唯一硬兼容条件是完整 raw LP topology（变量/约束顺序与方向、维度、NNZ、raw CSR pattern），其余层只作审计。故纯文档提交不会废弃 basis，但活动模型结构变化必定拒绝。
+- M1 已闭合 Base 标签/混合气象、VRE `cohort_survival_v1` 与 `fixed_floor_v1` 对照、BECCS 固定结果 lifecycle screening 和仅限可行域不变的 bound tightening。`outputs/2030_24h_v0728_m1_equivalence_cold_local_v1` 为 `OPTIMAL + PASS + closed manifest`，与 M0 cold objective/容量/成本/发电量 zero-diff；完整本地回归为 `114/114 PASS`。
+- 因此下节所述 M0/M1 前 168h 根不再是当前 basis 门禁，只保留为历史性能记录。下一步只允许本地当前提交的 2030 cold/warm、2030 diagnostic-state bridge、2040 cold/warm；不跨年导入 basis、不使用 `Crossover=3`，也不启动 744h/8760h 或付费云任务。
+- 本条没有重新读取服务器或 ParaCloud。此前 `701b9bc`、swap 压力及空队列只是旧快照；若后续申请远程动作，必须先重新实时核验 Git、CISPO/Gurobi 进程、RAM/swap 与队列。
+
 ## 2026-07-28 intra-grid/cohort 本地 168h basis 四根门禁通过；服务器仍因 swap 压力暂停
 
 - 提交 `282c393fd98e25737631493e19110e38bb49ed28` 的本地 168h Base 冷/暖四根已闭合。2030 cold/warm 为 `576.593/11.406 s`，2040 cold/warm 为 `543.965/15.517 s`；四根全部 `OPTIMAL + solution_qc=PASS + manifest true`。warm 均为 0 Barrier/0 simplex，且同年 cold/warm objective、容量 CSV 一致，发电差仅浮点量级。2040 仅用明确 test-only 2030 diagnostic state bridge；每一年只导入本年自身 cold basis，未跨年复用。
