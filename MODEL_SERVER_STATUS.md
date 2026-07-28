@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 生产运行契约闭合与 Crossover=3 744h 反例
+
+- 固定服务器模型 checkout 已部署 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；本地与服务器完整回归均为 `98/98`。本次工程改动增加运行根/递进序列原子 claim、不可混用的运行身份、当前输入复验和严格成功终态，不改变 Base 数学边界。
+- 服务器数据根以 add-only 方式补齐 `load/flexible_load_envelope_v3.csv.gz` 与 manifest，SHA256 分别为 `b5ebda4344a8f978606c242065159f27a75994a5d976f2cbe06038d66a429a03` 和 `0298256b2c1394f8e5a9e36780d2be279f06b27b291a9eca57daae91dba9a745`；既有文件未覆盖。服务器回归由此从缺少覆盖层输入恢复为 `98/98`。
+- 168h 同结构 A/B 中，`Crossover=3` 的 solver/crossover 为 `594.63/117.67 s`，参考 `Crossover=1` 为 `649.17/190.92 s`；`CrossoverBasis=0` 无收益。这个短时域结论没有直接推广到 744h。
+- 744h `Crossover=3` 根 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_crossover3_v1` 的 raw/presolved/factor 与参考根完全一致，Barrier 从 `7,543.19 s` 降到 `6,981.07 s`，两个 push 阶段也较短；但 primal cleanup 出现 `1e8--1e38` infeasibility 循环。该隔离候选按数值稳定性停止准则优雅中断，终态 `INTERRUPTED`、runtime `10,930.99 s`、crossover `3,947.89 s`、peak RSS `19.828 GiB`、无解/QC/manifest，故明确拒绝为生产 profile。
+- 当前无活动 CISPO/Gurobi 进程；接受的 744h 参考仍为 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` (`OPTIMAL + PASS + manifest true`，`barrier_16_auto_order_v2`/`Crossover=1`)。比较记录为 `/data/zz2/National_model/outputs/solver_ab_v0728_crossover_744h.{json,csv}`。固定服务器 8760h 与新的付费云任务仍禁止。
+
 ## 2026-07-28 2024 Base 744h 已完成并验收
 
 - 根 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 已完成：`OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=(True, [])`；49 项 hard checks 全真。wave 开启、flexible load 关闭、全国碳会计、2024 Beijing-aligned VRE；结果用途为 `TEST_ONLY_TRUNCATED_HORIZON`。

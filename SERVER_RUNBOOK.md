@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 Crossover=3 744h 严格 A/B 已结束：拒绝候选、保留 Crossover=1
+
+`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_crossover3_v1` 是唯一的、隔离的 solver-only A/B 根；它没有覆盖参考根或历史输出。该根在 `701b9bc`、2024 Base、wave on、flexible load off 和相同 raw/presolved/factor 结构下只把 `Crossover=1` 改为 `Crossover=3`。
+
+Barrier 完成于 `6,981.07 s`（211 次），PPush/DPush 分别为 `1,191.93/1,214.00 s`，但 primal simplex cleanup 发生严重 infeasibility 循环。在 `10,930.99 s`、`1,724,960` simplex iterations 时向隔离候选发送一次 `SIGINT`，Gurobi 正常记录 `INTERRUPTED`；其无 solution、`solution_qc.json` 或 `result_manifest.json`，因此绝不可解释为 Base 解或“更快的 744h”。峰值进程树 RSS 为 `19.828 GiB`、无 swap，故失败原因是 crossover 数值路径而非内存。
+
+生产决定：保持接受的参考根
+`/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 与
+`config/solver_profiles/barrier_16_auto_order_v2.json` (`Crossover=1`)；不要把
+`barrier_16_crossover_3_v1.json` 用于任何 744h/8760h/MGA anchor。保留两根和
+`/data/zz2/National_model/outputs/solver_ab_v0728_crossover_744h.{json,csv}` 作为正反对照证据。
+
+后续任何 solver/formulation 候选必须先在新 24h、168h 根上获得
+`OPTIMAL + solution_qc=PASS + scenario_id=base + validate_result_manifest=True`，并记录
+raw/presolved 规模、`AA' NZ`、Factor、全部阶段时间、迭代、objective、QC 与 RSS；只有唯一赢家才可运行一个新的 744h 根。当前服务器无活动求解；不得启动第二个求解、固定服务器 8760h 或新的付费云任务。
+
 ## 2026-07-28 744h 运行锁已释放
 
 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_v2` 已达到 `OPTIMAL + PASS + manifest true`，原 wrapper/Python 进程均已退出。运行锁解除仅允许在重新核验 clean checkout、无进程和安全内存后 fast-forward 文档提交；不构成启动第二个 744h、固定服务器 8760h 或付费云任务的授权。
