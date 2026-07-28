@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 intra-grid/cohort 本地 168h basis 四根门禁通过；服务器仍因 swap 压力暂停
+
+- 提交 `282c393fd98e25737631493e19110e38bb49ed28` 的本地 168h Base 冷/暖四根已闭合。2030 cold/warm 为 `576.593/11.406 s`，2040 cold/warm 为 `543.965/15.517 s`；四根全部 `OPTIMAL + solution_qc=PASS + manifest true`。warm 均为 0 Barrier/0 simplex，且同年 cold/warm objective、容量 CSV 一致，发电差仅浮点量级。2040 仅用明确 test-only 2030 diagnostic state bridge；每一年只导入本年自身 cold basis，未跨年复用。
+- 四根均含新的 site/substation intra-grid CSV，且 2025 VRE 初始共享 trunk proxy 为 `1,069.512666 GW`，相对旧 nameplate `1,309.999999962 GW` 为 -18.36%。这验证 CISPO S4-18 spur 与 S4-19 potential-weighted wind/PV trunk 的本地工程/数值可解性，不是截断时域科学结论，也不证明全年 basis reuse。
+- 即时只读服务器核验：checkout 为 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，无 CISPO/Gurobi 进程，约 70 GiB available RAM；但 swap 已用约 `19/21 GiB`，并有约 45 GiB RSS 的无关长任务。按 runbook 这是内存压力，故没有切换 checkout、安装 cohort 输入或启动服务器 168h。ParaCloud 队列为空。以后服务器状态必须重新读取，不能复用本条快照。
+- 下一步只有在该压力消除后才允许：重新核验服务器/队列，add-only 安装 checksummed cohort CSV/manifest，部署精确提交、跑完整回归，再在全新目录运行一个 168h cold Base 根。`Crossover=3`、744h、8760h 和付费云任务均继续禁止。
+
 ## 2026-07-28 同格网风光共享并入与既有 VRE cohort：仅本地闭合，禁止据此直接放大
 
 - 本地工作树以 `d73eb3390c970b0da6319a03ca8b1d3c30384040` 为基线完成 CISPO S4-18/S4-19 对齐：spur 继续按 site `max_t(cf) × capacity`，而 wind/PV trunk 在共同 substation 按 potential-weighted equivalent peak 建模。36,686 个 VRE site 行中的 12,603 个多技术 `grid_uid` 全部共享唯一的现有 substation；设计系数使用完整 8760 CF 扫描，但不新增 LP 变量或逐小时约束。

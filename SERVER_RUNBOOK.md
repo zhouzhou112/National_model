@@ -1,5 +1,13 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 intra-grid/cohort 168h basis 结果与服务器暂停条件
+
+本地四根 168h Base 门禁已验证同年同结构的 guarded LP basis：2030 cold/warm solver `576.593/11.406 s`，2040 cold/warm `543.965/15.517 s`；均为 `OPTIMAL + solution_qc=PASS + closed manifest`，warm 均为 0 Barrier/0 simplex，cold/warm 容量一致。2040 仅接收明确 diagnostic 的 2030 state bridge，并且只使用 2040 自身 basis；不得以此说明跨年 basis 或生产全年复用。四根均输出并校验 `intra_grid_vre_site_design.csv` / `intra_grid_substation_design.csv`，其中 2025 VRE initial trunk proxy 为 `1,069.512666 GW`，旧 nameplate proxy 为 `1,309.999999962 GW`。
+
+本地门禁不触发服务器部署。2026-07-28 即时只读检查虽未发现 CISPO/Gurobi 进程，且显示约 70 GiB 可用内存，但 swap 已用约 `19/21 GiB`，并有约 45 GiB RSS 的无关任务。因此严禁在该状态下切换 checkout、复制 cohort 输入或启动服务器 168h。ParaCloud 队列当时为空，但这不是后续操作的实时证明。
+
+恢复服务器门禁的必要顺序是：先确认 swap 压力已解除、无求解/无冲突任务，再重新读 HEAD/内存/数据根/ParaCloud；add-only 安装 checksummed cohort CSV/sidecar；fast-forward 到精确推送提交；完整回归；最后在全新目录运行唯一的 168h cold Base 根。任何一步不符即停止。此门禁前后都不得使用 `Crossover=3`、跨年 basis、第二个并发求解、744h、8760h 或付费云任务。
+
 ## 2026-07-28 同格网风光共享并入 / 既有 VRE cohort 的部署前门禁
 
 该本地模型变更对齐 CISPO S4-18/S4-19：site spur 使用 `max_t(cf) × capacity`，共享 wind/PV trunk 使用同一 substation 内 potential-weighted equivalent peak；它不增加逐小时 LP 行/列。既有 VRE 改用可追溯 cohort：已知 GEM 投运年按寿命退出，未知/OSM/残差与边界后投运容量只作 2025 boundary-censored cohort；退出不删除技术 site upper，因而同址再建是可选投资而非强制重建。此变更在本地 24h 通过 QC/manifest 和 `102/102` 回归，但尚未部署。
