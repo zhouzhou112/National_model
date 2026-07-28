@@ -120,6 +120,29 @@ class ModelConfig:
             raise ValueError(
                 "planning_sequence.retirement_rule must remain active_when_planning_year_lt_retire_year"
             )
+        existing_vre_retirement = sequence.get("existing_vre_retirement", {})
+        if not isinstance(existing_vre_retirement, dict):
+            raise ValueError("planning_sequence.existing_vre_retirement must be a mapping")
+        if existing_vre_retirement.get("mode") != "observed_cohort_boundary_censored_v1":
+            raise ValueError(
+                "existing_vre_retirement.mode must be observed_cohort_boundary_censored_v1"
+            )
+        if not str(existing_vre_retirement.get("cohort_file", "")):
+            raise ValueError("existing_vre_retirement.cohort_file must be explicit")
+        if int(existing_vre_retirement.get("baseline_year", 0)) != 2025:
+            raise ValueError("existing_vre_retirement.baseline_year must remain 2025")
+        if existing_vre_retirement.get("unknown_start_year_policy") != (
+            "boundary_censored_2025_v1"
+        ):
+            raise ValueError(
+                "existing VRE unknown-start policy must remain boundary_censored_2025_v1"
+            )
+        if existing_vre_retirement.get("site_rebuild_policy") != (
+            "retain_same_site_technical_upper_v1"
+        ):
+            raise ValueError(
+                "existing VRE site rebuild policy must retain the technical upper bound"
+            )
         if self.hours != 8760:
             raise ValueError("Production configuration must use all 8760 hours")
         if self.weather_year not in range(2020, 2026):
@@ -158,6 +181,27 @@ class ModelConfig:
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
         if "wave_energy" not in self.raw.get("features", {}):
             raise ValueError("features.wave_energy must be explicit")
+        intra_grid = self.raw.get("network", {}).get("intra_grid_vre_connection", {})
+        if intra_grid.get("spur_rule") != "site_full_weather_max_cf_v1":
+            raise ValueError("intra-grid spur rule must be site_full_weather_max_cf_v1")
+        if intra_grid.get("trunk_rule") != (
+            "cispo_potential_weighted_equivalent_peak_cf_v1"
+        ):
+            raise ValueError(
+                "intra-grid trunk rule must be cispo_potential_weighted_equivalent_peak_cf_v1"
+            )
+        if intra_grid.get("initial_vre_interface_rule") != (
+            "same_design_rule_observed_2025_v1"
+        ):
+            raise ValueError(
+                "intra-grid initial VRE interface must use the same observed-2025 design rule"
+            )
+        if intra_grid.get("existing_interface_reuse") != (
+            "proxy_reused_independent_of_generator_cohort_v1"
+        ):
+            raise ValueError(
+                "intra-grid existing-interface reuse policy is not explicit"
+            )
         wave = self.raw.get("wave_energy", {})
         if wave.get("contract_version") != "wave_existing_grid_v2":
             raise ValueError(

@@ -58,6 +58,8 @@ OUTPUT_FILE_ROLES = {
     "hydro_capacity.csv": "Station-level hydropower capacity decisions",
     "hydro_dispatch.npz": "Province-hour run-of-river and hydropower reserve arrays",
     "input_manifest.csv": "Resolved model input files and integrity hashes",
+    "intra_grid_substation_design.csv": "CISPO-style shared wind/PV trunk design factors and capacity decisions by substation",
+    "intra_grid_vre_site_design.csv": "Site-level VRE spur design factors, observed cohort floor and augmentation decisions",
     "load_center_annual_balance.csv": "Annual load-center demand and injection accounting",
     "load_center_annual_generation.csv": "Annual spatial generation assigned to load centers",
     "load_center_intra_transmission.csv": "Annual intraprovincial load-center network decisions and flows",

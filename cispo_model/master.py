@@ -12,11 +12,12 @@ from gurobipy import GRB
 from .config import ModelConfig, capital_recovery_factor
 from .data import (
     DAC_TECHS,
+    INTRA_GRID_VRE_TECHS,
     STORAGE_TECHS,
     THERMAL_TECHS,
     VRE_TECHS,
     ModelData,
-    compute_vre_max_cf,
+    compute_intra_grid_vre_design,
 )
 from .timeblocks import TimeBlock
 from .planning_state import stable_asset_id
@@ -55,6 +56,74 @@ def export_master_solution(
     vre["capacity_gw"] = variables["vre_capacity"].X
     vre["new_capacity_gw"] = variables["vre_new"].X
     vre.to_csv(output_dir / "vre_capacity.csv", index=False, encoding="utf-8-sig")
+    if "spur_augmentation" in variables:
+        intra_site = vre[
+            ["grid_uid", "grid_id", "province_code", "technology"]
+        ].copy()
+        intra_site["substation_id"] = artifacts.index["vre_substation_ids"]
+        intra_site["design_max_cf"] = np.asarray(
+            artifacts.index["vre_max_cf"], dtype=float
+        )
+        intra_site["observed_capacity_2025_gw"] = data.vre_sites[
+            "capacity_floor_2025_gw"
+        ].to_numpy(dtype=float)
+        intra_site["active_observed_capacity_floor_gw"] = data.vre_sites[
+            "capacity_floor_gw"
+        ].to_numpy(dtype=float)
+        intra_site["initial_spur_capacity_gw"] = np.asarray(
+            artifacts.index["vre_spur_floor_gw"], dtype=float
+        )
+        intra_site["spur_augmentation_gw"] = variables["spur_augmentation"].X
+        intra_site["spur_capacity_gw"] = (
+            intra_site.initial_spur_capacity_gw + intra_site.spur_augmentation_gw
+        )
+        intra_site["spur_rule"] = "site_full_weather_max_cf_v1"
+        intra_site.to_csv(
+            output_dir / "intra_grid_vre_site_design.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+
+        intra_substation = data.substations[
+            ["substation_id", "province_code", "trunk_distance_km"]
+        ].copy()
+        intra_substation["potential_weighted_vre_capacity_gw"] = np.asarray(
+            artifacts.index["vre_substation_potential_gw"], dtype=float
+        )
+        intra_substation["equivalent_peak_output_gw"] = np.asarray(
+            artifacts.index["vre_substation_equivalent_peak_gw"], dtype=float
+        )
+        intra_substation["equivalent_peak_cf"] = np.asarray(
+            artifacts.index["vre_substation_equivalent_peak_cf"], dtype=float
+        )
+        intra_substation["observed_vre_capacity_2025_gw"] = np.asarray(
+            artifacts.index["vre_observed_capacity_2025_by_substation_gw"], dtype=float
+        )
+        intra_substation["legacy_nameplate_proxy_gw"] = np.asarray(
+            artifacts.index["legacy_vre_trunk_capacity_floor_gw"], dtype=float
+        )
+        intra_substation["initial_vre_trunk_capacity_gw"] = np.asarray(
+            artifacts.index["trunk_floor_gw"], dtype=float
+        )
+        intra_substation["initial_hydro_trunk_capacity_gw"] = np.asarray(
+            artifacts.index["initial_hydro_trunk_capacity_gw"], dtype=float
+        )
+        intra_substation["trunk_augmentation_gw"] = variables[
+            "trunk_augmentation"
+        ].X
+        intra_substation["trunk_capacity_gw"] = (
+            intra_substation.initial_vre_trunk_capacity_gw
+            + intra_substation.initial_hydro_trunk_capacity_gw
+            + intra_substation.trunk_augmentation_gw
+        )
+        intra_substation["trunk_rule"] = (
+            "cispo_potential_weighted_equivalent_peak_cf_v1"
+        )
+        intra_substation.to_csv(
+            output_dir / "intra_grid_substation_design.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
     if data.wave is not None and "wave_capacity" in variables:
         wave = data.wave.sites[
             [
@@ -482,7 +551,12 @@ def build_master(
     site_upper = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
     if (site_floor < -1e-9).any() or (site_floor > site_upper + 1e-9).any():
         raise ValueError("Inherited VRE capacity is outside the active site bounds")
-    vre_new = model.addMVar(len(data.vre_sites), lb=0.0, name="vre_new_gw")
+    vre_new = model.addMVar(
+        len(data.vre_sites),
+        lb=0.0,
+        ub=site_upper - site_floor,
+        name="vre_new_gw",
+    )
     vre_cap = model.addMVar(len(data.vre_sites), lb=site_floor, ub=site_upper, name="vre_capacity_gw")
     model.addConstr(vre_cap == site_floor + vre_new, name="vre_capacity_accounting")
     variables.update(vre_new=vre_new, vre_capacity=vre_cap)
@@ -1004,12 +1078,48 @@ def build_master(
         )
     constraint_handles["capacity_margin"] = capacity_margin_constraints
 
-    # Intra-grid capacity variables are annual master decisions. Max CF is
-    # precomputed from the full 8760 source, never from sampled hours.
+    # Intra-grid capacity variables are annual master decisions.  The design
+    # factors are calculated from the full 8760 weather source, never from a
+    # truncated diagnostic horizon.  Spur lines retain CISPO Eq. S4-18; the
+    # shared wind/PV trunk uses the potential-weighted equivalent peak in
+    # CISPO Eq. S4-19 rather than summing each site's individual maximum.
     if config.raw["features"]["intra_grid_spur_trunk"]:
-        max_cf = compute_vre_max_cf(config, data) if compute_max_cf else np.ones(len(data.vre_sites))
         connection = data.grid_connections.set_index("grid_uid")
         site_substation = data.vre_sites.grid_uid.map(connection.substation_id).astype(str)
+        substation_ids = data.substations.substation_id.astype(str).tolist()
+        sub_index = {sub: i for i, sub in enumerate(substation_ids)}
+        if compute_max_cf:
+            vre_design = compute_intra_grid_vre_design(
+                config,
+                data,
+                site_substation=site_substation,
+                substation_ids=substation_ids,
+            )
+        else:
+            # Structural tests deliberately skip the full CF scan.  A unit CF
+            # vector is conservative and keeps the test-only topology stable.
+            site_positions = np.full(len(data.vre_sites), -1, dtype=np.int64)
+            connected_mask = data.vre_sites.technology.isin(INTRA_GRID_VRE_TECHS).to_numpy()
+            site_positions[connected_mask] = np.asarray(
+                [sub_index[value] for value in site_substation[connected_mask]],
+                dtype=np.int64,
+            )
+            potential = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
+            substation_potential = np.bincount(
+                site_positions[connected_mask],
+                weights=potential[connected_mask],
+                minlength=len(substation_ids),
+            )
+            from .data import IntraGridVreDesign
+
+            vre_design = IntraGridVreDesign(
+                site_max_cf=np.ones(len(data.vre_sites), dtype=float),
+                site_substation_position=site_positions,
+                substation_potential_gw=substation_potential,
+                substation_equivalent_peak_gw=substation_potential.copy(),
+                substation_equivalent_peak_cf=(substation_potential > 0.0).astype(float),
+            )
+        max_cf = vre_design.site_max_cf
         site_distance = np.zeros(len(data.vre_sites), dtype=float)
         distance_column = {
             "onwind": "onwind_spur_distance_km",
@@ -1020,11 +1130,14 @@ def build_master(
         for technology, group in data.vre_sites.groupby("technology"):
             distances = group.grid_uid.map(connection[distance_column[technology]]).fillna(0.0)
             site_distance[group.index] = distances.to_numpy(dtype=float)
-        initial_spur_lookup = data.initial_spur.set_index(["grid_uid", "technology"]).initial_spur_capacity_gw
-        initial_spur = np.asarray([
-            float(initial_spur_lookup.get((row.grid_uid, row.technology), 0.0))
-            for row in data.vre_sites.itertuples()
-        ])
+        observed_capacity_2025 = data.vre_sites[
+            "capacity_floor_2025_gw"
+        ].to_numpy(dtype=float)
+        initial_spur = np.zeros(len(data.vre_sites), dtype=float)
+        connected_mask = data.vre_sites.technology.isin(INTRA_GRID_VRE_TECHS).to_numpy()
+        initial_spur[connected_mask] = (
+            max_cf[connected_mask] * observed_capacity_2025[connected_mask]
+        )
         initial_spur += data.planning_state.active_adjustment(
             "vre_spur",
             vre_asset_ids,
@@ -1033,7 +1146,7 @@ def build_master(
         )
         spur_new = model.addMVar(len(data.vre_sites), lb=0.0, name="spur_augmentation_gw")
         non_dpv_positions = data.vre_sites.index[
-            ~data.vre_sites.technology.eq("dpv")
+            data.vre_sites.technology.isin(INTRA_GRID_VRE_TECHS)
         ].to_numpy(dtype=int)
         dpv_positions = data.vre_sites.index[
             data.vre_sites.technology.eq("dpv")
@@ -1070,12 +1183,15 @@ def build_master(
             name="hydro_spur_capacity",
         )
 
-        substation_ids = data.substations.substation_id.astype(str).tolist()
-        sub_index = {sub: i for i, sub in enumerate(substation_ids)}
         trunk_new = model.addMVar(len(substation_ids), lb=0.0, name="trunk_augmentation_gw")
         trunk_asset_ids = data.substations.substation_id.astype(str).tolist()
+        observed_vre_by_substation = np.bincount(
+            vre_design.site_substation_position[connected_mask],
+            weights=observed_capacity_2025[connected_mask],
+            minlength=len(substation_ids),
+        )
         initial_trunk = (
-            data.substations.initial_trunk_capacity_gw.to_numpy(dtype=float)
+            vre_design.substation_equivalent_peak_cf * observed_vre_by_substation
             + data.planning_state.active_adjustment(
                 "trunk",
                 trunk_asset_ids,
@@ -1084,7 +1200,9 @@ def build_master(
             )
         )
         vre_by_substation = {
-            str(substation_id): grouped.loc[~grouped.technology.eq("dpv")].index.to_numpy(dtype=int)
+            str(substation_id): grouped.loc[
+                grouped.technology.isin(INTRA_GRID_VRE_TECHS)
+            ].index.to_numpy(dtype=int)
             for substation_id, grouped in data.vre_sites.assign(_sub=site_substation).groupby("_sub")
         }
         hydro_by_substation = {
@@ -1105,7 +1223,10 @@ def build_master(
                 continue
             required = gp.LinExpr()
             if len(vre_positions):
-                required += max_cf[vre_positions] @ vre_cap[vre_positions]
+                required += (
+                    float(vre_design.substation_equivalent_peak_cf[substation_position])
+                    * vre_cap[vre_positions].sum()
+                )
             if len(hydro_positions):
                 required += hydro_cap[hydro_positions].sum()
             model.addConstr(
@@ -1144,6 +1265,18 @@ def build_master(
         index_extra = {
             "substation_ids": substation_ids,
             "vre_max_cf": max_cf,
+            "vre_substation_ids": site_substation.to_numpy(dtype=str),
+            "vre_substation_equivalent_peak_cf": (
+                vre_design.substation_equivalent_peak_cf
+            ),
+            "vre_substation_potential_gw": vre_design.substation_potential_gw,
+            "vre_substation_equivalent_peak_gw": (
+                vre_design.substation_equivalent_peak_gw
+            ),
+            "vre_observed_capacity_2025_by_substation_gw": observed_vre_by_substation,
+            "legacy_vre_trunk_capacity_floor_gw": (
+                data.substations.initial_trunk_capacity_gw.to_numpy(dtype=float)
+            ),
             "initial_hydro_trunk_capacity_gw": initial_hydro_trunk,
             "vre_spur_floor_gw": initial_spur,
             "hydro_spur_floor_gw": hydro_spur_floor,

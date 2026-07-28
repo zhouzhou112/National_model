@@ -1,10 +1,11 @@
 {
-  "contract_version": "v3",
+  "contract_version": "v4",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
     "sets/model_years.csv",
     "vre/optimization_points.csv",
+    "vre/existing_capacity_cohorts_2025.csv",
     "vre/hourly_cf_index.csv",
     "load/hourly_load_2025_2060.csv.gz",
     "thermal/capacity_floor_by_year.csv",
@@ -42,12 +43,14 @@
     "output_manifest.csv",
     "qc_summary.csv",
     "smoke_test_report.json",
-    "source_manifest.csv"
+    "source_manifest.csv",
+    "vre/existing_capacity_cohorts_2025_manifest.json"
   ],
   "roles": {
     "sets/provinces.csv": "Canonical 31-province index and Chinese/English labels",
     "sets/model_years.csv": "Boundary and sequential planning-year definitions",
     "vre/optimization_points.csv": "0.25-degree VRE capacity floors, scenario upper bounds and CCS sink fields",
+    "vre/existing_capacity_cohorts_2025.csv": "Traceable observed 2025 VRE cohorts with GEM start years and boundary-censored unknown-age capacity",
     "vre/hourly_cf_index.csv": "Weather-year capacity-factor store index and time metadata",
     "load/hourly_load_2025_2060.csv.gz": "Chronological 31-province hourly demand and base-residual/heating/cooling/EV components for all modeled years",
     "thermal/capacity_floor_by_year.csv": "Exogenous non-nuclear thermal capacity floors after retirement",

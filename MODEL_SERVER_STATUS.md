@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 同格网风光共享并入与既有 VRE cohort：仅本地闭合，禁止据此直接放大
+
+- 本地工作树以 `d73eb3390c970b0da6319a03ca8b1d3c30384040` 为基线完成 CISPO S4-18/S4-19 对齐：spur 继续按 site `max_t(cf) × capacity`，而 wind/PV trunk 在共同 substation 按 potential-weighted equivalent peak 建模。36,686 个 VRE site 行中的 12,603 个多技术 `grid_uid` 全部共享唯一的现有 substation；设计系数使用完整 8760 CF 扫描，但不新增 LP 变量或逐小时约束。
+- 新的既有容量 cohort 输入有 15,171 行，2025 年按技术严格闭合为 onwind/offwind/UPV/DPV `593/47/670/530 GW`，SHA256 `e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0`。GEM 可用投运年进入寿命队列；未知/OSM/残差和边界后投运容量显式作为 2025 boundary-censored cohort。退役解除 observed floor，但不删除 technical upper，连接代理独立复用；这允许、但不强迫同址再建。
+- 本地隔离 24h Base 根 `outputs/2030_24h_v0728_intra_grid_cohort_smoke_local_v1` 为 `OPTIMAL + solution_qc=PASS + closed result_manifest`，完整回归 `102/102`。站级 VRE 初始 trunk proxy `1,069.513 GW`，相对旧 nameplate `1,310.0 GW` 为 -18.36%；这不是年度科学结果，也不是 744h/8760h 性能外推。
+- 本条不写入固定服务器 checkout、数据根、进程、输出或 ParaCloud 队列；本文件先前记录的服务器状态不可作为部署时的实时证明。后续必须先实时核验 `701b9bc` 是否仍为预期 checkout、主机无 CISPO/Gurobi 进程且内存安全、ParaCloud 队列为空，再以 add-only 方式安装 cohort CSV/manifest、fast-forward 至精确已推送提交、运行完整回归。仅通过后才可运行一个新命名的 168h Base 门禁；`Crossover=3`、744h、8760h 和付费云任务均不在本条授权内。
+
 ## 2026-07-28 生产运行契约闭合与 Crossover=3 744h 反例
 
 - 固定服务器模型 checkout 已部署 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；本地与服务器完整回归均为 `98/98`。本次工程改动增加运行根/递进序列原子 claim、不可混用的运行身份、当前输入复验和严格成功终态，不改变 Base 数学边界。

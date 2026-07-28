@@ -8,7 +8,14 @@
     "state_format": "capacity_cohorts_v2",
     "retirement_rule": "active_when_planning_year_lt_retire_year",
     "cohort_zero_tolerance": 1e-8,
-    "existing_vre_retirement": "not_available_existing_2025_capacity_held_as_exogenous_floor",
+    "existing_vre_retirement": {
+      "mode": "observed_cohort_boundary_censored_v1",
+      "cohort_file": "vre/existing_capacity_cohorts_2025.csv",
+      "baseline_year": 2025,
+      "unknown_start_year_policy": "boundary_censored_2025_v1",
+      "site_rebuild_policy": "retain_same_site_technical_upper_v1",
+      "connection_reuse_policy": "proxy_reused_independent_of_generator_cohort_v1"
+    },
     "existing_hydro_retirement": "paper_assumption_operational_through_2060",
     "model_build_retirement": "technology_lifetime_from_build_year"
   },
@@ -248,7 +255,13 @@
     "trunk_capex_million_yuan_per_gw_km": 1.214,
     "substation_capex_million_yuan_per_gw": 241.0,
     "spur_fixed_om_fraction": 0.01,
-    "trunk_fixed_om_fraction": 0.01
+    "trunk_fixed_om_fraction": 0.01,
+    "intra_grid_vre_connection": {
+      "spur_rule": "site_full_weather_max_cf_v1",
+      "trunk_rule": "cispo_potential_weighted_equivalent_peak_cf_v1",
+      "initial_vre_interface_rule": "same_design_rule_observed_2025_v1",
+      "existing_interface_reuse": "proxy_reused_independent_of_generator_cohort_v1"
+    }
   },
   "load_center_network": {
     "scenario": "city_337",

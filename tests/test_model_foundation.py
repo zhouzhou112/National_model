@@ -97,6 +97,40 @@ class ModelFoundationTests(unittest.TestCase):
         ]
         self.assertEqual(adjusted.province_code.astype(int).tolist(), [31])
 
+    def test_existing_vre_cohorts_close_to_2025_and_retire_by_lifetime(self):
+        cohorts = self.data.vre_existing_cohorts
+        expected = self.data.vre_sites.groupby("technology").capacity_floor_2025_gw.sum()
+        observed = cohorts.groupby("technology").capacity_gw.sum()
+        for technology, value in expected.items():
+            self.assertAlmostEqual(
+                float(observed[technology]), float(value), places=8
+            )
+        self.assertTrue((cohorts.start_year <= self.config.boundary_year).all())
+        self.assertTrue((cohorts.retire_year > cohorts.start_year).all())
+        self.assertIn("identified_gem_project", set(cohorts.provenance))
+        self.assertIn(
+            "unidentified_osm_or_residual_capacity", set(cohorts.provenance)
+        )
+        later = load_model_data(self.config.for_planning_year(2040))
+        self.assertLess(
+            float(later.vre_sites.capacity_floor_gw.sum()),
+            float(self.data.vre_sites.capacity_floor_2025_gw.sum()),
+        )
+
+    def test_same_grid_vre_sites_share_the_grid_connection(self):
+        """Wind/PV technologies at one grid cell must not create separate routes."""
+        grid_to_substation = self.data.grid_connections.set_index("grid_uid").substation_id
+        site_substation = self.data.vre_sites.grid_uid.map(grid_to_substation)
+        self.assertFalse(site_substation.isna().any())
+        mapped = self.data.vre_sites.loc[:, ["grid_uid", "technology"]].assign(
+            substation_id=site_substation.to_numpy()
+        )
+        per_grid_substations = mapped.groupby("grid_uid").substation_id.nunique()
+        self.assertFalse((per_grid_substations > 1).any())
+        self.assertGreater(
+            int(mapped.groupby("grid_uid").technology.nunique().gt(1).sum()), 0
+        )
+
     def test_biomass_and_beccs_fuel_costs_are_positive_and_complete(self):
         biomass_fuel = self.data.fuel.loc[
             self.data.fuel.technology.isin(["bio", "bioccs"])

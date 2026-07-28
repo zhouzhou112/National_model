@@ -9,6 +9,7 @@ from typing import Iterable
 
 import numpy as np
 import pandas as pd
+from scipy.sparse import csr_matrix
 from scipy.spatial import cKDTree
 
 from .config import ModelConfig, ROOT
@@ -18,6 +19,10 @@ from .wave_energy import WaveEnergyData, load_wave_energy_data
 
 DATA_ROOT = Path(os.environ.get("CISPO_DATA_ROOT", str(ROOT / "data")))
 VRE_TECHS = ("onwind", "offwind", "upv", "dpv")
+# DPV is behind its assigned load center in the production contract and does
+# not use the spur/trunk interface.  The other technologies follow CISPO
+# S4.3.4's two-stage intra-grid connection representation.
+INTRA_GRID_VRE_TECHS = ("onwind", "offwind", "upv")
 THERMAL_TECHS = (
     "coal", "coalccs", "cchp", "cchpccs",
     "gas", "gasccs", "gchp", "gchpccs",
@@ -252,6 +257,7 @@ class ModelData:
     flexible_load_envelopes_gw: dict[str, np.ndarray]
     vre_points: pd.DataFrame
     vre_sites: pd.DataFrame
+    vre_existing_cohorts: pd.DataFrame
     thermal_floor: pd.DataFrame
     thermal_floor_all_years: pd.DataFrame
     nuclear_floor: pd.DataFrame
@@ -305,6 +311,150 @@ def compute_vre_max_cf(config: ModelConfig, data: ModelData) -> np.ndarray:
     if not np.isfinite(maxima).all() or (maxima < 0).any() or (maxima > 1 + 1e-9).any():
         raise ValueError("Invalid VRE max-CF vector")
     return maxima
+
+
+@dataclass(frozen=True)
+class IntraGridVreDesign:
+    """Full-weather design factors for the CISPO-style VRE connection layer.
+
+    ``substation_equivalent_peak_cf`` implements Eq. S4-19 using the fixed
+    site potential as the aggregation weight.  It is deliberately a compact
+    annual design coefficient, rather than an hourly trunk-flow formulation.
+    """
+
+    site_max_cf: np.ndarray
+    site_substation_position: np.ndarray
+    substation_potential_gw: np.ndarray
+    substation_equivalent_peak_gw: np.ndarray
+    substation_equivalent_peak_cf: np.ndarray
+
+
+def compute_intra_grid_vre_design(
+    config: ModelConfig,
+    data: ModelData,
+    *,
+    site_substation: Iterable[str],
+    substation_ids: Iterable[str],
+) -> IntraGridVreDesign:
+    """Compute bounded-memory spur and shared-trunk design factors.
+
+    For each site, the spur requirement remains ``max_t(cf) * capacity``
+    (CISPO Eq. S4-18).  For each substation, the wind/PV trunk coefficient is
+
+    ``max_t(sum_z(cf[z, t] * potential[z]) / sum_z(potential[z]))``.
+
+    This is the linear CISPO Eq. S4-19 approximation: it preserves the
+    potential-weighted wind/PV complementarity without adding hourly trunk
+    variables or constraints.  All 8,760 model-weather hours are scanned even
+    when the caller builds a truncated diagnostic LP.
+    """
+
+    substation_ids = np.asarray([str(value) for value in substation_ids], dtype=object)
+    if len(np.unique(substation_ids)) != len(substation_ids):
+        raise ValueError("Intra-grid substation IDs must be unique")
+
+    site_substation = np.asarray([str(value) for value in site_substation], dtype=object)
+    if len(site_substation) != len(data.vre_sites):
+        raise ValueError("VRE-site/substation mapping length mismatch")
+
+    site_technology = data.vre_sites.technology.astype(str).to_numpy()
+    connected_mask = np.isin(site_technology, INTRA_GRID_VRE_TECHS)
+    substation_index = {value: position for position, value in enumerate(substation_ids)}
+    site_substation_position = np.full(len(data.vre_sites), -1, dtype=np.int64)
+    missing = sorted(
+        set(site_substation[connected_mask]).difference(substation_index)
+    )
+    if missing:
+        raise ValueError(
+            "Connected VRE sites reference unknown substations: "
+            + ", ".join(missing[:10])
+        )
+    site_substation_position[connected_mask] = np.asarray(
+        [substation_index[value] for value in site_substation[connected_mask]],
+        dtype=np.int64,
+    )
+
+    potential = data.vre_sites.capacity_upper_gw.to_numpy(dtype=np.float64)
+    if (
+        not np.isfinite(potential).all()
+        or (potential[connected_mask] <= 0.0).any()
+    ):
+        raise ValueError("Connected VRE site potentials must be finite and positive")
+    substation_potential = np.bincount(
+        site_substation_position[connected_mask],
+        weights=potential[connected_mask],
+        minlength=len(substation_ids),
+    )
+
+    group_specs = []
+    for source_technology, group in data.vre_sites.groupby(
+        "cf_source_technology", sort=False
+    ):
+        positions = group.index.to_numpy(dtype=np.int64)
+        connected_positions = positions[connected_mask[positions]]
+        if len(connected_positions):
+            incidence = csr_matrix(
+                (
+                    potential[connected_positions],
+                    (
+                        np.arange(len(connected_positions), dtype=np.int64),
+                        site_substation_position[connected_positions],
+                    ),
+                ),
+                shape=(len(connected_positions), len(substation_ids)),
+            )
+            connected_local = np.isin(positions, connected_positions)
+        else:
+            incidence = None
+            connected_local = np.zeros(len(positions), dtype=bool)
+        group_specs.append(
+            (
+                str(source_technology),
+                positions,
+                group.cf_grid_id.to_numpy(dtype=np.int64),
+                connected_local,
+                incidence,
+            )
+        )
+
+    maxima = np.zeros(len(data.vre_sites), dtype=np.float64)
+    substation_peak = np.zeros(len(substation_ids), dtype=np.float64)
+    chunk = int(config.raw["construction"]["hour_chunk_size"])
+    for start in range(0, config.hours, chunk):
+        stop = min(start + chunk, config.hours)
+        station_output = np.zeros((stop - start, len(substation_ids)), dtype=np.float64)
+        for source_technology, positions, grid_ids, connected_local, incidence in group_specs:
+            block = data.cf.read(source_technology, grid_ids, start, stop)
+            maxima[positions] = np.maximum(maxima[positions], block.max(axis=0))
+            if incidence is not None:
+                station_output += np.asarray(block[:, connected_local] @ incidence)
+        substation_peak = np.maximum(substation_peak, station_output.max(axis=0))
+
+    if (
+        not np.isfinite(maxima).all()
+        or (maxima < 0.0).any()
+        or (maxima > 1.0 + 1e-9).any()
+    ):
+        raise ValueError("Invalid full-weather VRE maximum-CF vector")
+    equivalent_cf = np.divide(
+        substation_peak,
+        substation_potential,
+        out=np.zeros_like(substation_peak),
+        where=substation_potential > 0.0,
+    )
+    if (
+        not np.isfinite(equivalent_cf).all()
+        or (equivalent_cf < -1e-12).any()
+        or (equivalent_cf > 1.0 + 1e-9).any()
+    ):
+        raise ValueError("Invalid substation equivalent peak capacity factors")
+    return IntraGridVreDesign(
+        site_max_cf=maxima,
+        site_substation_position=site_substation_position,
+        substation_potential_gw=substation_potential,
+        substation_equivalent_peak_gw=substation_peak,
+        substation_equivalent_peak_cf=np.clip(equivalent_cf, 0.0, 1.0),
+    )
 
 
 def _resolve_vre_cf_sites(
@@ -379,6 +529,102 @@ def _resolve_vre_cf_sites(
     if sites.cf_grid_id.eq(-1).any():
         raise ValueError("Unresolved VRE capacity-factor sites remain")
     return sites
+
+
+_VRE_COHORT_COLUMNS = {
+    "grid_uid",
+    "technology",
+    "start_year",
+    "retire_year",
+    "capacity_gw",
+    "provenance",
+    "start_year_status",
+}
+
+
+def _apply_existing_vre_cohort_floors(
+    config: ModelConfig,
+    vre_sites: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Replace the static 2025 VRE floor with active observed cohorts.
+
+    Existing wind/PV may retire, but its site remains technically eligible for
+    rebuilding because ``capacity_upper_gw`` is unchanged.  The input cohort
+    table is therefore a lower-bound trajectory only; it never removes the
+    optimiser's ability to build at the original grid cell.
+    """
+
+    retirement = config.raw["planning_sequence"]["existing_vre_retirement"]
+    cohort_path = str(retirement["cohort_file"])
+    cohort = _read(cohort_path)
+    require_columns(cohort, _VRE_COHORT_COLUMNS, "Existing VRE cohort table")
+    cohort = cohort.loc[:, sorted(_VRE_COHORT_COLUMNS)].copy()
+    cohort["grid_uid"] = cohort.grid_uid.astype(str)
+    cohort["technology"] = cohort.technology.astype(str)
+    cohort["start_year"] = pd.to_numeric(cohort.start_year, errors="raise").astype(int)
+    cohort["retire_year"] = pd.to_numeric(cohort.retire_year, errors="raise").astype(int)
+    cohort["capacity_gw"] = pd.to_numeric(cohort.capacity_gw, errors="raise")
+    if not set(cohort.technology).issubset(VRE_TECHS):
+        raise ValueError("Existing VRE cohort table contains unsupported technologies")
+    if (
+        cohort.empty
+        or not np.isfinite(cohort.capacity_gw).all()
+        or (cohort.capacity_gw <= 0.0).any()
+    ):
+        raise ValueError("Existing VRE cohorts must have finite positive capacities")
+    if (cohort.start_year > config.boundary_year).any():
+        raise ValueError("Existing VRE cohorts cannot start after the boundary year")
+    if (cohort.retire_year <= cohort.start_year).any():
+        raise ValueError("Existing VRE cohort retire_year must exceed start_year")
+
+    reference = vre_sites[["grid_uid", "technology", "capacity_floor_gw"]].copy()
+    reference["grid_uid"] = reference.grid_uid.astype(str)
+    reference = reference.rename(columns={"capacity_floor_gw": "capacity_2025_gw"})
+    baseline = (
+        cohort.groupby(["grid_uid", "technology"], as_index=False)["capacity_gw"]
+        .sum()
+        .rename(columns={"capacity_gw": "cohort_capacity_2025_gw"})
+    )
+    closure = reference.merge(
+        baseline,
+        on=["grid_uid", "technology"],
+        how="outer",
+        validate="one_to_one",
+    ).fillna(0.0)
+    unmatched = closure.loc[
+        (closure.capacity_2025_gw - closure.cohort_capacity_2025_gw).abs() > 1e-8
+    ]
+    if not unmatched.empty:
+        raise ValueError(
+            "Existing VRE cohort table does not close to optimization-point "
+            f"capacity floors; mismatched site-technologies={len(unmatched)}"
+        )
+
+    active = cohort.loc[cohort.retire_year.gt(config.planning_year)]
+    active_floor = (
+        active.groupby(["grid_uid", "technology"], as_index=False)["capacity_gw"]
+        .sum()
+        .rename(columns={"capacity_gw": "active_observed_capacity_floor_gw"})
+    )
+    vre_sites = vre_sites.copy()
+    vre_sites["capacity_floor_2025_gw"] = vre_sites.capacity_floor_gw.to_numpy(
+        dtype=float
+    )
+    vre_sites = vre_sites.merge(
+        active_floor,
+        on=["grid_uid", "technology"],
+        how="left",
+        validate="one_to_one",
+    )
+    vre_sites["active_observed_capacity_floor_gw"] = (
+        vre_sites.active_observed_capacity_floor_gw.fillna(0.0)
+    )
+    vre_sites["capacity_floor_gw"] = vre_sites[
+        "active_observed_capacity_floor_gw"
+    ].to_numpy(dtype=float)
+    if (vre_sites.capacity_floor_gw > vre_sites.capacity_upper_gw + 1e-9).any():
+        raise ValueError("Active existing VRE cohort floor exceeds site potential")
+    return vre_sites, cohort
 
 
 def load_model_data(
@@ -541,6 +787,9 @@ def load_model_data(
     vre_sites = pd.concat(site_rows, ignore_index=True)
     if (vre_sites.capacity_floor_gw > vre_sites.capacity_upper_gw + 1e-9).any():
         raise ValueError("VRE floor exceeds scenario upper bound")
+    vre_sites, vre_existing_cohorts = _apply_existing_vre_cohort_floors(
+        config, vre_sites
+    )
 
     cf_index = _read(
         "vre/hourly_cf_index.csv",
@@ -970,6 +1219,7 @@ def load_model_data(
         flexible_load_envelopes_gw=flexible_load_envelopes_gw,
         vre_points=points,
         vre_sites=vre_sites,
+        vre_existing_cohorts=vre_existing_cohorts,
         thermal_floor=thermal_floor,
         thermal_floor_all_years=thermal_floor_all_years,
         nuclear_floor=nuclear_floor,

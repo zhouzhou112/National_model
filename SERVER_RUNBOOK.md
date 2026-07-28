@@ -1,5 +1,17 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 同格网风光共享并入 / 既有 VRE cohort 的部署前门禁
+
+该本地模型变更对齐 CISPO S4-18/S4-19：site spur 使用 `max_t(cf) × capacity`，共享 wind/PV trunk 使用同一 substation 内 potential-weighted equivalent peak；它不增加逐小时 LP 行/列。既有 VRE 改用可追溯 cohort：已知 GEM 投运年按寿命退出，未知/OSM/残差与边界后投运容量只作 2025 boundary-censored cohort；退出不删除技术 site upper，因而同址再建是可选投资而非强制重建。此变更在本地 24h 通过 QC/manifest 和 `102/102` 回归，但尚未部署。
+
+部署前必须按以下顺序执行，且一次只有一个求解：
+
+1. 在本地从精确提交运行 `scripts/build_existing_vre_cohorts.py`，核对 `data/vre/existing_capacity_cohorts_2025.csv` 及 sidecar manifest 的 SHA256；当前已验证 CSV hash 为 `e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0`。服务器数据根只能 add-only 安装这两个文件，不覆盖既有输入。
+2. 实时读取服务器 Git HEAD、`ps`/`pgrep`、`free -h`、目标数据根和 ParaCloud 队列；若有任何活动 CISPO/Gurobi job、内存压力、非预期 checkout 或目标输出根已存在，停止，不切换 checkout。
+3. 仅在空闲服务器 fast-forward 到精确已推送提交，设置全部三个数据根，并先运行完整回归和 preflight。回归、input manifest 或 cohort SHA256 任一不一致即停止，不手工绕过。
+4. 仅在全新隔离目录运行一个匹配 168h Base 门禁，保持 `barrier_16_auto_order_v2` 和 `Crossover=1`。比较 `raw/presolved`、factor 指标、Barrier/crossover、objective、全部 QC、result manifest、进程树 RSS，以及 `intra_grid_vre_site_design.csv` / `intra_grid_substation_design.csv` 的容量闭合。
+5. 不得把历史接受的 744h 根当作该科学边界的 anchor；不得使用已拒绝的 `Crossover=3`，不得并发第二个求解、启动固定服务器 8760h 或提交付费云任务。168h 的单次门禁只有在上述所有证据闭合后才可决定是否申请隔离 744h basis 门禁。
+
 ## 2026-07-28 Crossover=3 744h 严格 A/B 已结束：拒绝候选、保留 Crossover=1
 
 `/data/zz2/National_model/outputs/2030_744h_v0728_2024_dense_dualred_crossover3_v1` 是唯一的、隔离的 solver-only A/B 根；它没有覆盖参考根或历史输出。该根在 `701b9bc`、2024 Base、wave on、flexible load off 和相同 raw/presolved/factor 结构下只把 `Crossover=1` 改为 `Crossover=3`。
