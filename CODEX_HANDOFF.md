@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-28 本轮结束时已重新只读核验远程易变状态：固定服务器 `/data/zz2/National_model/repo` 是干净的 `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，未发现 CISPO/Gurobi 进程，约 `70 GiB` 可用 RAM；但 swap 仍为约 `19.1/21 GiB`，并有约 `43.0 GiB RSS` 的无关 Python 进程。ParaCloud `squeue -u a8s001819` 为空。按 runbook 仍是内存压力状态，未部署 `a5e34bf`/`616acb3`、未传数据、未启动任何远程求解；任一后续远程动作前仍须重新核验。
+
 - 2026-07-28 当前 M1 提交的 168h 四根 basis 门禁已完成，全部使用 `barrier_16_auto_order_v2` / `Crossover=1` 且仅为 `TEST_ONLY_TRUNCATED_HORIZON`。2030 cold/warm 分别为 solver `520.266/10.874 s`、RSS `2.924/2.395 GiB`；2040（仅接收明确 2030 diagnostic state bridge）cold/warm 为 `489.268/14.257 s`、RSS `3.038/2.518 GiB`。四根均为 `OPTIMAL + solution_qc=PASS + validate_result_manifest=(True, [])`，warm 全为 0 Barrier/0 simplex，同年 objective 均完全一致；容量最大差 2030 `0`、2040 `7.11e-15 GW`，成本/发电量仅浮点量级。2040 只导入其自身 cold basis，未跨年导入。虽已证明同构重解加速，但孤立 744h basis gate 必须先额外完成同配置 cold 744h 才能产生 basis；当前没有第二次同构 744h 的端到端需求，故不申请也不启动 744h。
 
 - 2026-07-28 本地 M0/M1 basis 前置建设已由实现提交 `a5e34bf5357301c205b246b0aa2149db0dca9c3b`（`feat: close basis preparation m0 m1`）闭合，尚未推送或部署。M0 将运行身份拆为 `scientific_case`、`lp_topology`、`solver_runtime` 与 `implementation_bundle`：只有变量/约束顺序、约束方向、维度、NNZ 以及原始 CSR sparsity pattern 的精确 `lp_topology` 相等时才允许导入 LP basis；结果 resume 仍保守审计 implementation bundle，科学 case 或实现 bundle 差异只记录审计、绝不把 warm 根提升为科学验收。24h 2030 Base cold/warm 均为 `OPTIMAL + solution_qc=PASS + closed manifest`，objective `1996289.6918468594` 完全一致；warm 为 `LPWarmStart=2`、0 Barrier/0 simplex（`65.237 s` 降至 `1.188 s`）。
@@ -306,6 +308,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Commands/roots: 顺序运行 `outputs/2030_168h_v0728_m1_basis_{cold_local_v1,warm_local_v1}`、`outputs/2030_168h_v0728_m1_statebridge_local_v1`，以及携带该 test-only state 的 `outputs/2040_168h_v0728_m1_basis_{cold_local_v1,warm_local_v1}`。2030/2040 cold 各自导出 `cispo_lp_basis_reuse_v2` basis；2040 warm 仅导入 2040 cold basis，未使用 `--allow-cross-year-basis`。
 - Acceptance evidence: 四根均 `OPTIMAL + solution_qc=PASS + validate_result_manifest=(True, [])`。2030 cold/warm objective `2043256.6580149832`，solver `520.266/10.874 s`，warm 0 Barrier/0 simplex；2040 `2025434.603188973`，solver `489.268/14.257 s`，warm 0/0。cold/warm objective 均 zero-diff；2030 容量 zero-diff、成本/发电最大差 `1.82e-12/2.73e-12`，2040 为 `7.11e-15 GW`、`2.91e-11/4.09e-11`。raw topology 保持 `1,167,956/1,019,192/9,536,286`，CSR pattern SHA256 为 `50220850416e219fb1f3f5130c4c20cb6419cbf6b56d5d22d231491ab383f998`。
 - Decision/next action: 这证明同年、同拓扑的 truncated-horizon warm restart 工程可用，不构成全年科学结果。孤立 744h basis gate 无法在没有先行同构 cold 744h 的情况下产生净端到端收益，故不申请、不运行。下一阶段保持模型边界冻结，等待实际重复同构求解或明确的、获授权的工程需求；远程动作仍须实时核验服务器和 ParaCloud，`Crossover=3` 永久拒绝。
+
+### v0.9.60 — 2026-07-28 — M1 门禁后服务器与 ParaCloud 实时只读复核
+
+- Git/server: 只读核验固定服务器为干净的 `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；`ps` 未发现 CISPO/Gurobi，RAM available 约 `70 GiB`。无需、也没有切换 checkout、传输输入或运行回归。
+- Safety decision: host swap 约 `19.1/21 GiB`，RSS 最大的无关 Python 约 `43.0 GiB`；即使 ParaCloud `squeue -u a8s001819` 为空，也不满足服务器运行门槛。未启动第二个求解、固定服务器 744h/8760h 或任何付费云任务；下一步仍为等待状态变化后重新读取，而非复用本条快照。
 
 ### v0.9.58 — 2026-07-28 — M0 分层身份与 M1 科学前置闭合（本地）
 

@@ -6,6 +6,8 @@
 
 当前不运行 744h basis gate。原因是 basis 需要先有同一 744h cold root；在没有第二个同构 744h 求解需求时，新增 cold root 本身不产生可回收的端到端收益。等待真实的重复同构工程需要或新的、经授权的运行目标；届时先实时核验服务器和 ParaCloud，仍禁止 `Crossover=3`、并发第二求解、固定服务器 8760h 和付费云任务。
 
+本里程碑后的实际只读复核为：服务器干净 HEAD `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，无 CISPO/Gurobi、约 `70 GiB` available RAM，但 swap 约 `19.1/21 GiB` 且有约 `43.0 GiB RSS` 的无关 Python；ParaCloud 队列为空。这个组合仍触发暂停条件：不部署、不复制数据、不启动服务器求解。该快照会变化，任何后续动作必须再次执行同样的只读核验。
+
 ## 2026-07-28 M0/M1 basis 身份协议与当前本地门禁
 
 `a5e34bf5357301c205b246b0aa2149db0dca9c3b` 将运行身份拆为 `scientific_case`、`solver_runtime`、`implementation_bundle`，并在 LP 构建后写入 `lp_topology`。导入 basis 时必须同时满足：source closed manifest、`OPTIMAL + solution_qc=PASS`、相同 diagnostic hours、同规划年（除非代码明确的跨年例外）、basis SHA256，以及变量/约束顺序和方向、维度、NNZ、raw CSR sparsity pattern 的精确 topology 一致。只有 `lp_topology` 是 basis 兼容硬门；scientific/implementation 差异必须留下审计记录，且 warm root 永远不能替代科学 Base 验收。
