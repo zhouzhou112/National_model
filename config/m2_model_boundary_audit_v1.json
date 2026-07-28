@@ -1,0 +1,130 @@
+{
+  "contract_version": "m2_model_boundary_audit_v1",
+  "audit_date": "2026-07-28",
+  "scope": "Scientific-boundary decision audit. It records whether a candidate may enter a future named model case; it does not itself alter Base LP mathematics, data, or solver runtime.",
+  "base_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "source_review": "supplementary_materials/National_model_independent_audit_innovation_parameter_review_20260728.md",
+  "findings": [
+    {
+      "id": "M2-VRE-001",
+      "priority": "P0",
+      "area": "existing_vre_retirement_and_intra_grid_connection",
+      "status": "CLOSED_M1",
+      "scientific_case_impact": true,
+      "lp_topology_impact": false,
+      "basis_rule": "Historical pre-M1 results are not scientific comparators; the current M1 topology gate remains valid only for unchanged active LP structure.",
+      "decision": "Existing VRE now uses cohort_survival_v1 with fixed_floor_v1 control; site technical upper and connection proxy remain after generator retirement. Wind/PV trunk uses the CISPO potential-weighted equivalent peak without hourly LP expansion.",
+      "next_gate": "No further change unless an exact time-coincident shared-export formulation is separately scoped."
+    },
+    {
+      "id": "M2-HYDRO-001",
+      "priority": "P0",
+      "area": "duplicate_comid_hydrology",
+      "status": "LOCAL_GATE_PASS_PENDING_COMMIT",
+      "scientific_case_impact": true,
+      "lp_topology_impact": false,
+      "basis_rule": "A duplicate-COMID flow correction changes hydrology coefficients/RHS but not the named sparsity pattern; never use a warm result across it as scientific acceptance.",
+      "decision": "Candidate static_capacity_potential_share_v1 allocates each GRFR reach discharge once across co-mapped stations using exogenous technical-potential shares. It prevents duplicate water while retaining LP linearity. The current uncommitted worktree passed the dedicated hydro tests, full local regression, and isolated 1h/24h Base cold gates.",
+      "next_gate": "Commit after owner review; then treat it as a new scientific case and decide whether a fresh 168h gate is warranted."
+    },
+    {
+      "id": "M2-HYDRO-002",
+      "priority": "P1",
+      "area": "environmental_flow_and_phs_water_boundary",
+      "status": "DEFERRED_DATA",
+      "scientific_case_impact": true,
+      "lp_topology_impact": false,
+      "basis_rule": "A replacement inflow/environmental-flow dataset changes the scientific case even if the LP topology remains unchanged.",
+      "decision": "The current monthly_environmental_flow_2019_p30 is an explicit single-year proxy; formal multi-year P30 and open-/closed-loop PHS water pairing are not yet supported.",
+      "next_gate": "Acquire and validate the required hydrology inputs before proposing a named sensitivity or Base replacement."
+    },
+    {
+      "id": "M2-PARAM-001",
+      "priority": "P0",
+      "area": "scenario_parameter_registry",
+      "status": "CLOSED_M2",
+      "scientific_case_impact": false,
+      "lp_topology_impact": false,
+      "basis_rule": "Registry-only corrections do not invalidate a structurally compatible basis, but every result must carry the resolved scenario parameter snapshot.",
+      "decision": "The Base registry remains limited to inactive Base flexibility values. The active comfort_envelope_v3_v2g_5pct override is now enumerated in an additive scenario registry and checked against the resolved configuration.",
+      "next_gate": "Keep evidence status and low/base/high sensitivity requirements explicit; no LP solve is required for registry-only changes."
+    },
+    {
+      "id": "M2-BECCS-001",
+      "priority": "P1",
+      "area": "beccs_lifecycle_emissions",
+      "status": "OPEN_EVIDENCE",
+      "scientific_case_impact": true,
+      "lp_topology_impact": false,
+      "basis_rule": "Post-solve lifecycle accounting is not a re-optimized carbon-feasibility result. A sourced lifecycle factor entering the carbon constraint changes the scientific case.",
+      "decision": "The CISPO-equivalent zero-lifecycle baseline and 5/10/20% post-solve screens are correctly separated, but the nonzero values remain SCREENING_ASSUMPTION_REQUIRE_SOURCING.",
+      "next_gate": "Build an evidence table with China-relevant biomass supply, processing, transport, capture, storage and leakage bounds before any LP integration decision."
+    },
+    {
+      "id": "M2-ADEQ-001",
+      "priority": "P1",
+      "area": "energy_limited_adequacy_and_deliverability",
+      "status": "FORMULATION_DESIGN",
+      "scientific_case_impact": true,
+      "lp_topology_impact": true,
+      "basis_rule": "Any endogenous duration/SOC/deliverability adequacy formulation changes LP topology and requires a fresh basis family.",
+      "decision": "The 5% provincial capacity margin, static capacity credits and deterministic reserve proxy remain explicit model assumptions. They are not multi-weather ELCC, EUE or LOLE evidence.",
+      "next_gate": "First design a fixed-capacity post-solve adequacy audit; only then decide whether a sparse planning LP formulation is justified."
+    },
+    {
+      "id": "M2-FLEX-001",
+      "priority": "P1",
+      "area": "heating_cooling_flexibility",
+      "status": "DEFERRED_DATA",
+      "scientific_case_impact": false,
+      "lp_topology_impact": true,
+      "basis_rule": "Base keeps flexible_load=false. A calibrated flexible-load scenario has a separate topology and must never reuse a Base scientific result.",
+      "decision": "The existing comfort-envelope V3 is a sensitivity with daily boundaries and province-generic thermal parameters, not a calibrated building-service model or endogenous flexibility purchase decision.",
+      "next_gate": "Obtain building thermal/participation/cost evidence, then evaluate a separately named low/base/high scenario; do not alter Base."
+    },
+    {
+      "id": "M2-EV-001",
+      "priority": "P1",
+      "area": "ev_availability_and_mobility_soc",
+      "status": "DEFERRED_DATA",
+      "scientific_case_impact": false,
+      "lp_topology_impact": true,
+      "basis_rule": "Fleet-physical V1G/V2G changes the scenario topology and requires an isolated gate.",
+      "decision": "The current V1G backlog and daily-cyclic V2G are causally constrained sensitivities, but do not represent observed connection availability, driving withdrawal or departure SOC.",
+      "next_gate": "Create province-hour availability, charging-power, driving-energy and departure-SOC inputs before promoting any EV case."
+    },
+    {
+      "id": "M2-NETWORK-001",
+      "priority": "P1",
+      "area": "city_network_and_co2_network_scope",
+      "status": "SCOPE_LIMIT",
+      "scientific_case_impact": false,
+      "lp_topology_impact": true,
+      "basis_rule": "A city-hourly or route-resolved CO2 network is a new formulation family, not a basis optimization.",
+      "decision": "city_337 is an annual intra-provincial proxy and the CO2 system is province-to-sink accounting. Results must not be described as city-hourly congestion or route-topology planning.",
+      "next_gate": "Only implement if the research question requires those claims; otherwise preserve the stated interpretation boundary."
+    },
+    {
+      "id": "M2-WAVE-001",
+      "priority": "P1",
+      "area": "wave_base_boundary",
+      "status": "BASE_LOCKED",
+      "scientific_case_impact": true,
+      "lp_topology_impact": false,
+      "basis_rule": "Changing wave activation, potential or shared-export treatment changes the scientific case; do not call it a solver-only comparison.",
+      "decision": "The user-declared Base remains wave enabled and flexible load disabled. Wave potential/cost are explicit sensitivity risks; a CISPO-compatible reference, if needed for the paper, must be a separate named scenario rather than a silent Base change.",
+      "next_gate": "No Base change. Define a separately named reference only when the paper comparison question is fixed."
+    },
+    {
+      "id": "M2-MGA-001",
+      "priority": "P0",
+      "area": "mga_anchor_requirement",
+      "status": "BLOCKED_ANCHOR",
+      "scientific_case_impact": false,
+      "lp_topology_impact": false,
+      "basis_rule": "MGA is prohibited until a closed accepted scientific full-year Base anchor with matching resolved configuration and inputs exists.",
+      "decision": "Persistent runner design and small-scale gates may continue, but no production MGA result is admissible from truncated roots.",
+      "next_gate": "Wait for an accepted full-year Base anchor; do not use the historical truncated 744h evidence as a substitute."
+    }
+  ]
+}
