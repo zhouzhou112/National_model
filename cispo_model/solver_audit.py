@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .io_contract import validate_result_manifest
+
 
 _NUMBER = r"([0-9]+(?:\.[0-9]+)?(?:e[+-]?[0-9]+)?)"
 
@@ -46,6 +48,19 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
         r"Solved in ([0-9,]+) iterations and ([0-9.]+) seconds",
         text,
     )
+    push_records = [
+        {
+            "remaining": int(match.group(1).replace(",", "")),
+            "phase": "dual" if match.group(2).upper() == "D" else "primal",
+            "runtime_seconds": float(match.group(3)),
+        }
+        for match in re.finditer(
+            r"^\s*([0-9,]+)\s+([DP])Pushes remaining with [DP]Inf "
+            r"[^\s]+\s+([0-9]+(?:\.[0-9]+)?)s\s*$",
+            text,
+            flags=re.IGNORECASE | re.MULTILINE,
+        )
+    ]
     result: dict[str, Any] = {
         "presolve_seconds": _match(
             text, rf"Presolve time:\s*{_NUMBER}s"
@@ -103,6 +118,39 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
             simplex_iterations=int(solved.group(1).replace(",", "")),
             total_solver_log_seconds=float(solved.group(2)),
         )
+    if push_records:
+        phase_summary: dict[str, dict[str, Any]] = {}
+        for phase in ("dual", "primal"):
+            records = [row for row in push_records if row["phase"] == phase]
+            if records:
+                phase_summary[phase] = {
+                    "samples": len(records),
+                    "first_remaining": records[0]["remaining"],
+                    "last_remaining": records[-1]["remaining"],
+                    "first_runtime_seconds": records[0]["runtime_seconds"],
+                    "last_runtime_seconds": records[-1]["runtime_seconds"],
+                }
+        ordered_phases = sorted(
+            phase_summary,
+            key=lambda phase: phase_summary[phase]["first_runtime_seconds"],
+        )
+        result["crossover_push_order"] = "_then_".join(ordered_phases)
+        result["crossover_push_phases"] = phase_summary
+        barrier_seconds = result.get("barrier_solve_seconds")
+        if barrier_seconds is not None:
+            phase_start = float(barrier_seconds)
+            for phase in ordered_phases:
+                phase_end = float(phase_summary[phase]["last_runtime_seconds"])
+                result[f"crossover_{phase}_push_seconds"] = max(
+                    0.0, phase_end - phase_start
+                )
+                phase_start = phase_end
+            crossover_seconds = result.get("crossover_seconds")
+            if crossover_seconds is not None:
+                crossover_end = float(barrier_seconds) + float(crossover_seconds)
+                result["crossover_cleanup_seconds"] = max(
+                    0.0, crossover_end - phase_start
+                )
     original_rows = result.get("original_rows")
     original_columns = result.get("original_columns")
     original_nonzeros = result.get("original_nonzeros")
@@ -175,6 +223,10 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         default=None,
     )
     statistics = solve.get("model_statistics") or build.get("statistics") or {}
+    solver_parameters = solve.get("solver_parameters") or {}
+    warm_start = solve.get("warm_start") or build.get("warm_start") or {}
+    manifest_valid, manifest_failures = validate_result_manifest(root)
+    hard_checks = qc.get("hard_checks") or {}
     largest_constraint_family = next(
         iter(structure.get("constraint_families", [])), {}
     )
@@ -191,7 +243,23 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "result_use": solve.get("result_use", scope.get("result_use")),
         "status": solve.get("status"),
         "solution_qc_status": qc.get("status"),
+        "hard_check_count": len(hard_checks),
+        "hard_check_failure_count": sum(
+            not bool(value) for value in hard_checks.values()
+        ),
+        "result_manifest_valid": manifest_valid,
+        "result_manifest_failure_count": len(manifest_failures),
         "solver_profile_id": solve.get("solver_profile_id"),
+        "solver_method": solver_parameters.get("method"),
+        "solver_crossover": solver_parameters.get("crossover"),
+        "solver_crossover_basis": solver_parameters.get("crossover_basis"),
+        "solver_lp_warm_start": solver_parameters.get("lp_warm_start"),
+        "solver_dual_reductions": solver_parameters.get("dual_reductions"),
+        "solver_inf_unbd_info": solver_parameters.get("inf_unbd_info"),
+        "warm_start_cross_year": warm_start.get("cross_year"),
+        "warm_start_source_planning_year": warm_start.get(
+            "source_planning_year"
+        ),
         "git_commit": environment.get("git_commit"),
         "configuration_source_sha256": config_snapshot.get("source_sha256"),
         "scenario_source_sha256": config_snapshot.get("scenario_source_sha256"),

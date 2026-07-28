@@ -43,6 +43,10 @@ Ordering time: 0.30s
  Factor NZ  : 4.000e+04 (roughly 1 GB of memory)
  Factor Ops : 2.000e+06
 Barrier performed 99 iterations in 35.96 seconds
+  1000 DPushes remaining with DInf 1.0e-03                36s
+     0 DPushes remaining with DInf 1.0e-03                37s
+   500 PPushes remaining with PInf 2.0e-03                38s
+     0 PPushes remaining with PInf 2.0e-03                39s
 Crossover time: 3.01 seconds (2.89 work units)
 Solved in 73826 iterations and 39.39 seconds
 """
@@ -51,6 +55,13 @@ Solved in 73826 iterations and 39.39 seconds
         self.assertEqual(parsed["barrier_iterations"], 99)
         self.assertEqual(parsed["dense_columns"], 12)
         self.assertEqual(parsed["crossover_seconds"], 3.01)
+        self.assertEqual(parsed["crossover_push_order"], "dual_then_primal")
+        self.assertAlmostEqual(parsed["crossover_dual_push_seconds"], 1.04)
+        self.assertAlmostEqual(parsed["crossover_primal_push_seconds"], 2.0)
+        self.assertAlmostEqual(parsed["crossover_cleanup_seconds"], 0.0)
+        self.assertEqual(
+            parsed["crossover_push_phases"]["dual"]["last_remaining"], 0
+        )
         self.assertAlmostEqual(parsed["post_barrier_solver_seconds"], 3.43)
         self.assertAlmostEqual(parsed["presolve_nonzero_reduction_fraction"], 0.5)
         self.assertEqual(parsed["factor_to_aa_nonzero_ratio"], 4.0)
@@ -65,6 +76,14 @@ Solved in 73826 iterations and 39.39 seconds
                         "status": "OPTIMAL",
                         "objective_value": 1.0,
                         "solver_runtime_seconds": 2.0,
+                        "solver_parameters": {
+                            "method": 2,
+                            "crossover": 3,
+                            "crossover_basis": 0,
+                            "lp_warm_start": 2,
+                            "dual_reductions": 1,
+                            "inf_unbd_info": 0,
+                        },
                         "model_statistics": {
                             "variables": 3,
                             "constraints": 2,
@@ -101,6 +120,9 @@ Solved in 73826 iterations and 39.39 seconds
         self.assertEqual(collected["largest_raw_constraint_family_nonzeros"], 12)
         self.assertEqual(collected["largest_raw_variable_family"], "ruc")
         self.assertEqual(collected["largest_raw_variable_family_nonzeros"], 10)
+        self.assertEqual(collected["solver_crossover"], 3)
+        self.assertEqual(collected["solver_crossover_basis"], 0)
+        self.assertEqual(collected["solver_lp_warm_start"], 2)
 
 
 if __name__ == "__main__":

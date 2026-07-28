@@ -1,0 +1,15 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_crossover_2_v1",
+  "description": "Matched 16-thread Barrier diagnostic using dual-then-primal pushes and dual-simplex crossover cleanup.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

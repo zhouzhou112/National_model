@@ -423,6 +423,10 @@ class ModelConfig:
             )
         if int(numerics.get("crossover", -1)) not in {-1, 0, 1, 2, 3, 4}:
             raise ValueError("numerics.crossover is outside the Gurobi-supported range")
+        if int(numerics.get("crossover_basis", -1)) not in {-1, 0, 1}:
+            raise ValueError(
+                "numerics.crossover_basis is outside the Gurobi-supported range"
+            )
         if int(numerics.get("dual_reductions", 1)) not in {0, 1}:
             raise ValueError("numerics.dual_reductions must be 0 or 1")
         if int(numerics.get("inf_unbd_info", 0)) not in {0, 1}:

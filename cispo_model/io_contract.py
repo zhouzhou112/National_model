@@ -73,6 +73,8 @@ OUTPUT_FILE_ROLES = {
     "reservoir_dispatch.npz": "Station-hour reservoir operation and hydrology arrays",
     "reservoir_station_index.csv": "Row index and station metadata for reservoir arrays",
     "result_manifest.json": "SHA256 manifest of scientific result artifacts",
+    "run_claim.json": "Atomic output-root ownership claim preventing overwrite or concurrent reuse",
+    "run_identity.json": "Code, configuration, scenario, solver, formulation and data-root identity",
     "run_environment.json": "Software, host, command and data-root provenance",
     "run_scope.json": "Horizon, scientific-use boundary and scale estimate",
     "scenario_manifest.json": "Resolved optional-module scenario and demand-flexibility assumptions",
@@ -620,4 +622,54 @@ def validate_result_manifest(output_dir: str | Path) -> tuple[bool, list[str]]:
             continue
         if sha256_file(item) != row["sha256"]:
             failures.append(f"sha256:{row['path']}")
+    return not failures, failures
+
+
+def validate_input_manifest(
+    manifest_path: str | Path,
+) -> tuple[bool, list[str]]:
+    """Verify that every recorded input still has the same on-disk identity."""
+    manifest_path = Path(manifest_path)
+    if not manifest_path.is_file():
+        return False, ["input_manifest.csv is missing"]
+    try:
+        manifest = pd.read_csv(manifest_path)
+    except (pd.errors.EmptyDataError, UnicodeDecodeError, OSError) as error:
+        return False, [f"input_manifest.csv is unreadable: {error}"]
+    failures: list[str] = []
+    for row in manifest.itertuples(index=False):
+        logical_path = str(row.logical_path)
+        resolved = Path(str(row.resolved_path))
+        recorded_exists = str(row.exists).strip().lower() == "true"
+        required = str(row.required).strip().lower() == "true"
+        method = str(row.integrity_method)
+        if method.startswith("zarr_metadata_sha256:"):
+            current_exists = resolved.is_dir()
+        else:
+            current_exists = resolved.is_file()
+        if current_exists != recorded_exists:
+            failures.append(f"exists:{logical_path}")
+            continue
+        if not current_exists:
+            if required:
+                failures.append(f"missing:{logical_path}")
+            continue
+        if method == "sha256_file":
+            if pd.notna(row.size_bytes) and resolved.stat().st_size != int(
+                row.size_bytes
+            ):
+                failures.append(f"size:{logical_path}")
+                continue
+            if sha256_file(resolved) != str(row.sha256):
+                failures.append(f"sha256:{logical_path}")
+        elif method.startswith("zarr_metadata_sha256:"):
+            fingerprint, metadata_files = _zarr_metadata_fingerprint(resolved)
+            expected_method = f"zarr_metadata_sha256:{metadata_files}_files"
+            if method != expected_method:
+                failures.append(f"zarr_metadata_count:{logical_path}")
+                continue
+            if fingerprint != str(row.sha256):
+                failures.append(f"zarr_metadata_sha256:{logical_path}")
+        else:
+            failures.append(f"unsupported_integrity_method:{logical_path}")
     return not failures, failures

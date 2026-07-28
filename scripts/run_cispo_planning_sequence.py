@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import json
 import subprocess
 import sys
@@ -16,9 +17,19 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from cispo_model.config import load_model_config
+from cispo_model.data import DATA_ROOT
 from cispo_model.io_contract import validate_result_manifest
 from cispo_model.planning_state import PlanningState
 from cispo_model.result_summary import _svg_lines
+from cispo_model.run_contract import (
+    SEQUENCE_ACTIVE_CLAIM_FILENAME,
+    SEQUENCE_CLAIM_HISTORY_DIRNAME,
+    capture_input_identity,
+    claim_sequence_directory,
+    output_matches_configuration,
+    release_sequence_directory,
+    sequence_identity,
+)
 
 
 def _predecessor_matches_manifest(output_dir: Path, expected_state_in: Path) -> bool:
@@ -58,6 +69,8 @@ def accepted(
     expected_state_in: Path | None = None,
     expected_run_id: str | None = None,
     expected_scenario_id: str | None = None,
+    expected_planning_year: int | None = None,
+    expected_config=None,
 ) -> bool:
     solve_path = output_dir / "solve_report.json"
     qc_path = output_dir / "solution_qc.json"
@@ -76,6 +89,16 @@ def accepted(
         and (state_path.is_file() or not require_state)
     )
     if not accepted_core:
+        return False
+    if expected_planning_year is not None and int(
+        solve.get("planning_year", -1)
+    ) != int(expected_planning_year):
+        return False
+    if expected_config is not None and not output_matches_configuration(
+        output_dir,
+        expected_config,
+        data_root=DATA_ROOT,
+    ):
         return False
     if expected_scenario_id is not None:
         scenario_id = solve.get("scenario_id")
@@ -215,6 +238,14 @@ def main() -> None:
         "--scenario-config",
         help="Optional v1 scenario override forwarded unchanged to every planning year.",
     )
+    parser.add_argument(
+        "--solver-config",
+        help="Optional numerics-only solver profile forwarded unchanged to every year.",
+    )
+    parser.add_argument(
+        "--formulation-config",
+        help="Optional algebraically equivalent formulation profile for every year.",
+    )
     parser.add_argument("--output-root", default="outputs/planning_sequence")
     parser.add_argument("--start-year", type=int, default=2030)
     parser.add_argument("--end-year", type=int, default=2060)
@@ -224,6 +255,14 @@ def main() -> None:
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--recover-stale-sequence-lock",
+        action="store_true",
+        help=(
+            "Archive and replace a stale sequence wrapper claim after verifying "
+            "that its recorded local process is no longer active."
+        ),
+    )
     parser.add_argument(
         "--diagnostic-hours",
         type=int,
@@ -236,7 +275,12 @@ def main() -> None:
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
 
-    config = load_model_config(args.config, args.scenario_config)
+    config = load_model_config(
+        args.config,
+        args.scenario_config,
+        args.solver_config,
+        args.formulation_config,
+    )
     years = [
         year
         for year in config.planning_years
@@ -247,11 +291,78 @@ def main() -> None:
     if years[0] != config.planning_years[0] and not args.state_in:
         raise SystemExit("--state-in is required when the sequence starts after 2030")
 
+    first_year_config = config.for_planning_year(years[0])
+    initial_state = (
+        PlanningState.load(
+            args.state_in,
+            expected_boundary_year=first_year_config.boundary_year,
+            allow_test_only=args.diagnostic_hours is not None,
+        )
+        if args.state_in
+        else PlanningState.empty(first_year_config.boundary_year)
+    )
+    input_identity = capture_input_identity(
+        first_year_config,
+        data_root=DATA_ROOT,
+        planning_state=initial_state,
+    )
     output_root = Path(args.output_root)
     if not output_root.is_absolute():
         output_root = PROJECT_ROOT / output_root
-    output_root.mkdir(parents=True, exist_ok=True)
-    prior_state = Path(args.state_in).resolve() if args.state_in else None
+    try:
+        sequence_claim_token = claim_sequence_directory(
+            output_root,
+            recover_stale=bool(args.recover_stale_sequence_lock),
+        )
+    except RuntimeError as error:
+        raise SystemExit(f"HARD_FAIL: {error}") from error
+    atexit.register(
+        release_sequence_directory,
+        output_root,
+        sequence_claim_token,
+    )
+    identity = sequence_identity(
+        config,
+        data_root=DATA_ROOT,
+        input_identity=input_identity,
+        start_year=args.start_year,
+        end_year=args.end_year,
+        diagnostic_hours=args.diagnostic_hours,
+    )
+    identity_path = output_root / "sequence_identity.json"
+    if identity_path.is_file():
+        try:
+            recorded_identity = json.loads(identity_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError) as error:
+            raise SystemExit(f"Invalid sequence identity: {identity_path}") from error
+        if recorded_identity != identity:
+            raise SystemExit(
+                "Refusing mixed-identity sequence resume; configuration, profile, "
+                "formulation, scenario, or data roots changed"
+            )
+        if not args.resume:
+            raise SystemExit(
+                f"Sequence root already exists: {output_root}; use --resume only "
+                "for an accepted matching chain or choose a new root"
+            )
+    else:
+        allowed_claim_entries = {
+            SEQUENCE_ACTIVE_CLAIM_FILENAME,
+            SEQUENCE_CLAIM_HISTORY_DIRNAME,
+        }
+        if output_root.exists() and any(
+            item.name not in allowed_claim_entries
+            for item in output_root.iterdir()
+        ):
+            raise SystemExit(
+                f"Refusing non-empty sequence root without identity: {output_root}"
+            )
+        output_root.mkdir(parents=True, exist_ok=True)
+        identity_path.write_text(
+            json.dumps(identity, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+    prior_state = initial_state.root
     sequence_report = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "years": years,
@@ -263,17 +374,38 @@ def main() -> None:
         ),
         "diagnostic_hours": args.diagnostic_hours,
         "scenario_id": config.raw["scenario"]["id"],
+        "sequence_identity_path": str(identity_path),
         "runs": [],
     }
     expected_result_use = sequence_report["result_use"]
 
     for year in years:
+        current_identity = sequence_identity(
+            config,
+            data_root=DATA_ROOT,
+            input_identity=capture_input_identity(
+                first_year_config,
+                data_root=DATA_ROOT,
+                planning_state=initial_state,
+            ),
+            start_year=args.start_year,
+            end_year=args.end_year,
+            diagnostic_hours=args.diagnostic_hours,
+        )
+        if current_identity != identity:
+            raise SystemExit(
+                "Sequence code, configuration, execution scope, initial state, "
+                "or input data changed after the sequence was claimed"
+            )
         output_dir = output_root / str(year)
+        year_config = config.for_planning_year(year)
         if args.resume and accepted(
             output_dir,
             expected_result_use=expected_result_use,
             expected_state_in=prior_state,
             expected_scenario_id=config.raw["scenario"]["id"],
+            expected_planning_year=year,
+            expected_config=year_config,
         ):
             sequence_report["runs"].append(
                 {"planning_year": year, "status": "RESUMED_ACCEPTED", "output_dir": str(output_dir)}
@@ -292,6 +424,10 @@ def main() -> None:
         ]
         if args.scenario_config:
             command.extend(["--scenario-config", args.scenario_config])
+        if args.solver_config:
+            command.extend(["--solver-config", args.solver_config])
+        if args.formulation_config:
+            command.extend(["--formulation-config", args.formulation_config])
         if args.diagnostic_hours is None:
             command.extend(["--horizon", "full_year"])
         else:
@@ -360,6 +496,8 @@ def main() -> None:
                 expected_state_in=prior_state,
                 expected_run_id=run_id,
                 expected_scenario_id=config.raw["scenario"]["id"],
+                expected_planning_year=year,
+                expected_config=year_config,
             )
             else "HARD_FAIL"
         )

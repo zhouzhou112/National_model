@@ -15,8 +15,14 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from cispo_model.config import ROOT, load_model_config
 from cispo_model.data import DATA_ROOT, load_model_data
-from cispo_model.io_contract import write_run_provenance
+from cispo_model.io_contract import validate_result_manifest, write_run_provenance
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
+from cispo_model.run_contract import (
+    RUN_IDENTITY_FILENAME,
+    claim_output_directory,
+    configuration_identity,
+    solver_result_is_accepted,
+)
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
@@ -242,7 +248,10 @@ def main() -> None:
     )
     if not output_dir.is_absolute():
         output_dir = ROOT / output_dir
-    output_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        claim_output_directory(output_dir)
+    except RuntimeError as error:
+        raise SystemExit(f"HARD_FAIL: {error}") from error
 
     available_gb = psutil.virtual_memory().available / 1024**3
     write_run_provenance(
@@ -250,6 +259,15 @@ def main() -> None:
         config,
         data_root=DATA_ROOT,
         planning_state=planning_state,
+    )
+    (output_dir / RUN_IDENTITY_FILENAME).write_text(
+        json.dumps(
+            configuration_identity(config, data_root=DATA_ROOT),
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
     )
     data = load_model_data(config, planning_state=planning_state)
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
@@ -536,10 +554,18 @@ def main() -> None:
             output_dir,
             state_use=scope_report["result_use"],
         )
+    manifest_valid = False
     if artifacts.model.SolCount:
         write_output_catalog(output_dir)
         finalize_result_manifest(output_dir, config)
+        manifest_valid, _ = validate_result_manifest(output_dir)
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    if not solver_result_is_accepted(
+        report,
+        qc,
+        result_manifest_valid=manifest_valid,
+    ):
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import json
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -23,6 +26,79 @@ from cispo_model.result_summary import finalize_result_manifest
 
 
 class PlanningSequenceTests(unittest.TestCase):
+    def test_dry_run_forwards_profiles_and_locks_sequence_identity(self):
+        root = Path(__file__).resolve().parents[1]
+        solver = (
+            root
+            / "config"
+            / "solver_profiles"
+            / "barrier_16_crossover_3_v1.json"
+        )
+        formulation = (
+            root
+            / "config"
+            / "formulation_profiles"
+            / "annual_emissions_province_hierarchy_v1.json"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            output_root = Path(temporary) / "sequence"
+            command = [
+                sys.executable,
+                str(root / "scripts" / "run_cispo_planning_sequence.py"),
+                "--output-root",
+                str(output_root),
+                "--start-year",
+                "2030",
+                "--end-year",
+                "2030",
+                "--diagnostic-hours",
+                "1",
+                "--solver-config",
+                str(solver),
+                "--formulation-config",
+                str(formulation),
+                "--dry-run",
+            ]
+            first = subprocess.run(
+                command,
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(first.returncode, 0, first.stderr)
+            report = json.loads(
+                (output_root / "sequence_report.json").read_text(encoding="utf-8")
+            )
+            child = report["runs"][0]["command"]
+            self.assertIn("--solver-config", child)
+            self.assertIn(str(solver), child)
+            self.assertIn("--formulation-config", child)
+            self.assertIn(str(formulation), child)
+            self.assertTrue((output_root / "sequence_identity.json").is_file())
+
+            different_solver = (
+                root
+                / "config"
+                / "solver_profiles"
+                / "barrier_16_crossover_2_v1.json"
+            )
+            mismatch = subprocess.run(
+                [
+                    *command[:-5],
+                    "--solver-config",
+                    str(different_solver),
+                    "--formulation-config",
+                    str(formulation),
+                    "--dry-run",
+                    "--resume",
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(mismatch.returncode, 0)
+            self.assertIn("mixed-identity", mismatch.stderr)
+
     def test_year_specific_boundaries_are_exact(self):
         base = load_model_config()
         expected = {2030: 2025, 2040: 2030, 2050: 2040, 2060: 2050}

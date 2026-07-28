@@ -36,6 +36,32 @@ class SolverProfileTests(unittest.TestCase):
         )
         self.assertEqual(production.raw["numerics"]["dual_reductions"], 1)
         self.assertEqual(production.raw["numerics"]["inf_unbd_info"], 0)
+        crossover_profiles = {
+            "barrier_16_crossover_2_v1.json": (2, None),
+            "barrier_16_crossover_3_v1.json": (3, None),
+            "barrier_16_crossover_4_v1.json": (4, None),
+            "barrier_16_crossover_fast_basis_v1.json": (1, 0),
+            "barrier_16_crossover_stable_basis_v1.json": (1, 1),
+        }
+        for filename, (strategy, basis_strategy) in crossover_profiles.items():
+            with self.subTest(filename=filename):
+                candidate = load_model_config(
+                    solver_path=profile_path.parent / filename
+                )
+                self.assertEqual(candidate.raw["scenario"], base.raw["scenario"])
+                self.assertEqual(candidate.raw["numerics"]["method"], 2)
+                self.assertEqual(candidate.raw["numerics"]["threads"], 16)
+                self.assertEqual(candidate.raw["numerics"]["presolve"], 2)
+                self.assertEqual(candidate.raw["numerics"]["crossover"], strategy)
+                self.assertEqual(candidate.raw["numerics"]["dual_reductions"], 1)
+                self.assertEqual(candidate.raw["numerics"]["inf_unbd_info"], 0)
+                if basis_strategy is None:
+                    self.assertNotIn("crossover_basis", candidate.raw["numerics"])
+                else:
+                    self.assertEqual(
+                        candidate.raw["numerics"]["crossover_basis"],
+                        basis_strategy,
+                    )
         sparsified = load_model_config(
             solver_path=profile_path.parent / "barrier_16_presparsify_lp_v1.json"
         )
@@ -93,6 +119,24 @@ class SolverProfileTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(
                 ValueError, "Unsupported solver-profile numerics keys"
+            ):
+                load_model_config(solver_path=path)
+
+    def test_solver_profile_rejects_invalid_crossover_basis(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "invalid_crossover_basis.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "solver_profile_version": "v1",
+                        "profile_id": "invalid_crossover_basis",
+                        "numerics": {"crossover_basis": 2},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError, "crossover_basis is outside"
             ):
                 load_model_config(solver_path=path)
 
