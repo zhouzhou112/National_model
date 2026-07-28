@@ -1,0 +1,167 @@
+﻿parameter_family,parameter,active_value,candidate_final_value,unit,candidate_price_basis,conversion_or_selection_rule,implementation_status
+thermal_ruc,bio.startup_yuan_per_mw,500.0,502.00199999999995,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.shutdown_yuan_per_mw,500.0,502.00199999999995,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.pmin_fraction,0.35,0.35,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.fuel_load_mj_per_kwh,9.0,9.0,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bio.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.startup_yuan_per_mw,500.0,502.00199999999995,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.shutdown_yuan_per_mw,500.0,502.00199999999995,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.pmin_fraction,0.35,0.35,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.fuel_load_mj_per_kwh,10.3,10.3,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,bioccs.ccs_power_loss_fraction,0.05,0.05,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.startup_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.shutdown_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.pmin_fraction,0.4,0.4,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.fuel_load_mj_per_kwh,9.0,9.0,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coal.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.startup_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.shutdown_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.pmin_fraction,0.4,0.4,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.fuel_load_mj_per_kwh,11.25,11.25,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,coalccs.ccs_power_loss_fraction,0.05,0.05,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.startup_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.shutdown_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.pmin_fraction,0.6,0.6,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.pmax_fraction,0.9,0.9,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.fuel_load_mj_per_kwh,9.47,9.47,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchp.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.startup_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.shutdown_yuan_per_mw,1100.0,1104.4044,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.pmin_fraction,0.6,0.6,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.pmax_fraction,0.9,0.9,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.min_up_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.min_down_h,8.0,8.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.ramp_fraction_per_h,0.25,0.25,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.fuel_load_mj_per_kwh,11.25,11.25,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,cchpccs.ccs_power_loss_fraction,0.05,0.05,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.startup_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.shutdown_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.pmin_fraction,0.3,0.3,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.min_up_h,4.0,4.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.min_down_h,2.0,2.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.ramp_fraction_per_h,0.5,0.5,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.fuel_load_mj_per_kwh,6.31,6.31,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gas.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.startup_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.shutdown_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.pmin_fraction,0.3,0.3,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.min_up_h,4.0,4.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.min_down_h,2.0,2.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.ramp_fraction_per_h,0.5,0.5,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.fuel_load_mj_per_kwh,7.83,7.83,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gasccs.ccs_power_loss_fraction,0.05,0.05,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.startup_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.shutdown_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.pmin_fraction,0.3,0.3,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.min_up_h,4.0,4.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.min_down_h,2.0,2.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.ramp_fraction_per_h,0.5,0.5,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.fuel_load_mj_per_kwh,6.31,6.31,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchp.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.startup_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.shutdown_yuan_per_mw,300.0,301.2012,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.pmin_fraction,0.3,0.3,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.min_up_h,4.0,4.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.min_down_h,2.0,2.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.ramp_fraction_per_h,0.5,0.5,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.fuel_load_mj_per_kwh,7.83,7.83,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,gchpccs.ccs_power_loss_fraction,0.05,0.05,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.startup_yuan_per_mw,2200.0,2208.8088,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.shutdown_yuan_per_mw,2200.0,2208.8088,2025 CNY/MW-event,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.pmin_fraction,0.85,0.85,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.pmax_fraction,1.0,1.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.min_up_h,22.0,22.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.min_down_h,22.0,22.0,h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.ramp_fraction_per_h,0.05,0.05,fraction/h,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.fuel_load_mj_per_kwh,10.0,10.0,MJ/kWh,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_ruc,nuclear.ccs_power_loss_fraction,0.0,0.0,fraction,physical parameter,retain current CISPO value after literature review,PROPOSED_NOT_APPLIED
+thermal_om,coal.fixed_om_fraction_capex_per_year,0.02,0.02,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,coal.variable_om,31.0,31.124124,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,coalccs.fixed_om_fraction_capex_per_year,0.025,0.025,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,coalccs.variable_om,58.0,58.232231999999996,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,cchp.fixed_om_fraction_capex_per_year,0.02,0.02,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,cchp.variable_om,31.0,31.124124,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,cchpccs.fixed_om_fraction_capex_per_year,0.025,0.025,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,cchpccs.variable_om,58.0,58.232231999999996,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,gas.fixed_om_fraction_capex_per_year,0.02,0.02,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,gas.variable_om,23.0,23.092091999999997,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,gasccs.fixed_om_fraction_capex_per_year,0.025,0.025,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,gasccs.variable_om,46.0,46.184183999999995,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,gchp.fixed_om_fraction_capex_per_year,0.02,0.02,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,gchp.variable_om,23.0,23.092091999999997,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,gchpccs.fixed_om_fraction_capex_per_year,0.025,0.025,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,gchpccs.variable_om,46.0,46.184183999999995,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,bio.fixed_om_fraction_capex_per_year,0.02,0.02,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,bio.variable_om,35.0,35.140139999999995,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,bioccs.fixed_om_fraction_capex_per_year,0.025,0.025,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,bioccs.variable_om,60.0,60.24023999999999,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_om,nuclear.fixed_om_fraction_capex_per_year,0.015,0.015,fraction/year,dimensionless,retain current CISPO value,PROPOSED_NOT_APPLIED
+thermal_om,nuclear.variable_om,14.0,14.056055999999998,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+storage,phs.charge_efficiency,0.88,0.88,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.discharge_efficiency,0.88,0.88,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.round_trip_efficiency,0.7744,0.7744,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.duration_h,8.0,8.0,h,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.lifetime_years,40.0,40.0,year,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.fixed_om_fraction_capex_per_year,0.015,0.015,fraction/year,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,phs.variable_om,1.5,1.5060059999999997,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+storage,battery.charge_efficiency,0.95,0.95,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.discharge_efficiency,0.95,0.95,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.round_trip_efficiency,0.9025,0.9025,fraction,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.duration_h,4.0,4.0,h,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.lifetime_years,15.0,15.0,year,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.fixed_om_fraction_capex_per_year,0.01,0.01,fraction/year,physical parameter,retain current value; duration/site classes remain sensitivity,PROPOSED_NOT_APPLIED
+storage,battery.variable_om,20.0,20.08008,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+ccs,capture_cost,260.0,261.04103999999995,2025 CNY/tCO2,2025 constant CNY,"retain CISPO cost because An et al. reports retrofit CAPEX, not CNY/t capture",PROPOSED_NOT_APPLIED
+ccs,transport_cost,0.8,0.1857154,2025 CNY/tCO2/km,2025 FX conversion,An et al. (2025) central value 0.026 USD/tCO2/km,PROPOSED_NOT_APPLIED
+ccs,storage_cost,116.0,35.7145,2025 CNY/tCO2,2025 FX conversion,An et al. (2025) central value 5 USD/tCO2,PROPOSED_NOT_APPLIED
+finance,real_wacc_fraction,0.074,0.074,fraction,real rate,retain 7.4%; modern nominal international-financier data are not directly comparable,PROPOSED_NOT_APPLIED
+finance,onwind.lifetime,25.0,25.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,offwind.lifetime,25.0,25.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,upv.lifetime,25.0,25.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,dpv.lifetime,25.0,25.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,csp.lifetime,25.0,25.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,hydro.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,coal.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,coalccs.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,cchp.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,cchpccs.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,gas.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,gasccs.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,gchp.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,gchpccs.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,bio.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,bioccs.lifetime,30.0,30.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,nuclear.lifetime,60.0,60.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,battery.lifetime,15.0,15.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,phs.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,transmission.lifetime,50.0,50.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,spur.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+finance,trunk.lifetime,40.0,40.0,year,physical parameter,retain current value; existing-fleet lifetime tested separately,PROPOSED_NOT_APPLIED
+thermal_system,ramping_cost_yuan_per_mwh,1.0,1.004004,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+thermal_system,nuclear_fuel_yuan_per_mwh,69.0,69.276276,2025 CNY/MWh,2025 constant CNY,2022 CNY x 1.004004 CPI,PROPOSED_NOT_APPLIED
+wave_optional_only,capex_2030,21660.6,22545.0745,2025 CNY/kW,2025 FX conversion,sensitivity only; recommend changing the current wave-enabled Base to a wave-disabled reference,PROPOSED_NOT_APPLIED
+wave_optional_only,capex_2040,15693.6,16334.421999999999,2025 CNY/kW,2025 FX conversion,sensitivity only; recommend changing the current wave-enabled Base to a wave-disabled reference,PROPOSED_NOT_APPLIED
+wave_optional_only,capex_2050,13501.8,14053.123499999998,2025 CNY/kW,2025 FX conversion,sensitivity only; recommend changing the current wave-enabled Base to a wave-disabled reference,PROPOSED_NOT_APPLIED

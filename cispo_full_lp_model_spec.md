@@ -11,7 +11,7 @@
 1. **模型类型**：优先复现 CISPO 的连续线性规划 / relaxed unit commitment 版本。所有机组组合变量 `u_tot, u_on, u_su, u_sd, u_load` 默认是连续非负变量，不得改成 binary / integer，除非用户另行要求。
 2. **时间分辨率**：每个规划年默认使用完整 8760 小时：`T = {0, 1, ..., 8759}`。不得擅自换成典型日、代表周或抽样小时。工程测试可显式选择连续前 744 小时（1 个月）或 4344 小时（1—6 月），但两者均采用截断区间周期边界，且年度投资成本、碳约束和生物质约束不缩放，只能用于代码与求解器测试，不能作为规划结果。
 3. **空间分辨率**：风电、光伏、CSP 的基本决策单元为 0.25° × 0.25° 网格；水电为坝址；储能、火电、核电、DAC 为省级电网层面。
-4. **单位统一**：功率用 GW，电量用 GWh，CO2 用 MtCO2，成本用 yuan 或 CNY，距离用 km，时间步长 `Delta_t = 1 h`，水电流量公式中 `Delta_t = 3600 s`。
+4. **单位与价格基准统一**：功率用 GW，电量用 GWh，CO2 用 MtCO2，成本统一为 2025 年不变人民币（2025 constant CNY），距离用 km，时间步长 `Delta_t = 1 h`，水电流量公式中 `Delta_t = 3600 s`。
 5. **不得隐式引入失负荷变量**。CISPO 的负荷平衡是严格等式。如果为了调试必须加入 load shedding，只能作为 debug mode，且必须使用极高罚值并在结果中明确报告。
 6. **不得删除备用、惯量、碳约束、储能 SOC 周期约束、输电容量约束**。若因为数据缺失暂时无法实现，必须在代码中显式标记 `TODO_SOURCE_DATA_REQUIRED`，不能静默跳过。
 7. **目标函数中所有成本项必须按公式模块化实现**，并输出分项成本：VRE、hydro、thermal/nuclear capex、fuel、startup/shutdown、ramping、storage、inter-grid transmission、spur line、trunk line、DAC、CCS capture、CO2 transport/injection、other。
@@ -176,6 +176,16 @@
 
 ### 3.2 成本参数
 
+生产输入遵循 `config/technoeconomic_price_basis_2025.json` 的
+`technoeconomic_2025_cny_v2` 合约。CISPO 原始 2022 年不变人民币轨迹
+（包括 2030、2040、2050、2060 各节点）统一乘以 `1.004004`；这只改变共同
+价格基准，不改变规划年间的相对技术学习幅度。原始外币参数不对历史人民币
+换算值重复使用中国 CPI：核电和省级燃料价格回到 USD 来源值后按
+`7.1429 CNY/USD` 换算，波浪能的 2024 EUR 来源值按 `8.1185 CNY/EUR`
+换算。效率、热耗、寿命、WACC、比例约束及作为数值破简并项的市内
+`0.001 CNY/MWh` 不做价格平减。燃料表体现结构性省际价差并按实值保持至
+2060 年，不能解释为 2025 年现货价格预测。
+
 - `kappa^{cap}_{pt}`：电源投资成本，yuan/GW。
 - `kappa^{cap}_{st}`：储能投资成本，yuan/GW。
 - `kappa^{cap}_{l}`：输电线路投资成本，yuan/(GW·km)。
@@ -296,7 +306,7 @@ C_{trans\_DC} =
 \sum_{t\in T}\kappa^{vom}_l f^{DC,\to}_{l,t}\right]
 ```
 
-> CISPO 中 `kappa_vom_l` 取 `0.001 yuan/kWh = 1 yuan/MWh`，用于避免交流线路同小时双向流动，并避免 AC/DC 人工偏好。实现中必须按 `yuan/MWh` 配置为 `1.0`，不能误写为 `0.001 yuan/MWh`。
+> CISPO 原始 `kappa_vom_l` 取 `0.001 yuan/kWh = 1 yuan/MWh`。生产输入按统一价格基准换算为 `1.004004`（2025 CNY/MWh），用于避免交流线路同小时双向流动，并避免 AC/DC 人工偏好；不能误写为 `0.001 yuan/MWh`。负荷中心网络另设的 `0.001 CNY/MWh` 是纯数值破简并项，不属于 CISPO 经济成本，故不平减。
 
 ### 4.10 风光/CSP/水电接入线 spur line 成本
 
@@ -669,7 +679,7 @@ F^{\to}_e+F^{\leftarrow}_e
 
 默认 `rho_design=0.5`。该值是显式软假设，必须做敏感性分析。初始容量使用2025同时铭牌压力下的空间平衡代理，不得解释为观测额定容量。
 
-成本采用 EES Table S20 和 Figure S44 的 `AC_500kV` 参数，而非单独的550 kV线路类型：变电站159 yuan/kW、架空线2640 thousand yuan/km，线路参考传输能力随距离变化。中心间直线距离是工程走廊代理。为保持省级小时平衡与年度中心平衡严格闭合，第一版省内损耗设为0；非零损耗必须先作为附加用电反馈到小时平衡。
+成本采用 EES Table S20 和 Figure S44 的 `AC_500kV` 参数，而非单独的550 kV线路类型：原始 2022 年价为变电站159 yuan/kW、架空线2640 thousand yuan/km；生产输入分别换算为159.636636 yuan/kW和2650.57056 thousand 2025 yuan/km。线路参考传输能力随距离变化。中心间直线距离是工程走廊代理。为保持省级小时平衡与年度中心平衡严格闭合，第一版省内损耗设为0；非零损耗必须先作为附加用电反馈到小时平衡。
 
 ---
 
@@ -1481,7 +1491,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 碳约束 | `data/carbon/emissions_limits_by_scenario.csv` | 2025 不启用上限；默认 Base 路径为 2030/2040/2050/2060 = 4000/1300/-100/-550 MtCO2/yr |
 | DAC | `data/technology/dac_parameters_by_year.csv` | 四类技术，包含年度成本、CRF、直接电耗、热耗、COP换算后总电耗 |
 | CapEx | `data/technology/technology_capex_by_year.csv` | 19 类技术 × 2030/2040/2050/2060；来自用户提取的 CISPO 图表目测值，yuan/kW；CHP 使用对应燃料与 CCS 曲线，水电锚点保持不变 |
-| 煤气价格 | `data/technology/province_fuel_prices.csv` | Supplementary Table 2 截图的 31 省煤炭/天然气价格；6.9 yuan/USD 转换；蒙东/蒙西算术平均；截图未注明价格年，暂保持 2025–2060 不变 |
+| 煤气价格 | `data/technology/province_fuel_prices.csv` | Supplementary Table 2 的 31 省煤炭/天然气 USD/GJ 值；按 7.1429 CNY/USD 转为 2025 年不变人民币；蒙东/蒙西算术平均；作为结构性省际价差保持 2025–2060 实值不变，不解释为 2025 现货预测 |
 | 发电燃料成本 | `data/technology/province_fuel_generation_cost_by_year.csv` | 由省级 yuan/GJ 与 RUC fuel load 计算为 yuan/MWh；北京、西藏煤价缺失，煤类技术不允许调度或新增 |
 | 技术参数 | `data/technology/` | VRE/水电成本锚点、thermal/nuclear RUC、储能、输电、CCS与排放因子 |
 | 337中心正式输入 | `data/load_center_network/city_337/load_centers.csv` | 一市一点、2022 城市用电省内份额；31省份额分别闭合到1 |

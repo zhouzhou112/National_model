@@ -1,0 +1,10 @@
+﻿parameter_family,active_basis,source_price_year_status,2025_treatment,factor_or_rule,decision
+"VRE, thermal, nuclear, hydro and storage CapEx",CISPO 2022-base-year China anchors and projected decline rates,ASSIGNED_2022_FROM_METHOD_CONTEXT,report CPI-normalized comparator; do not overwrite active model in this module,1.004004,NORMALIZE_FOR_REPORTING_AND_FUTURE_SCENARIO
+Absolute variable O&M and startup/shutdown costs,CISPO SI monetary inputs,ASSIGNED_2022_FROM_METHOD_CONTEXT,multiply by cumulative 2022-2025 China CPI,1.004004,NORMALIZE_FOR_REPORTING_AND_FUTURE_SCENARIO
+"Fixed O&M fractions, efficiencies, durations, lifetimes and emission factors",dimensionless or physical,NOT_APPLICABLE,unchanged,1.0,DO_NOT_PRICE_NORMALIZE
+"Provincial coal, gas and biomass prices",An et al. (2025) Supplementary Table 2 USD/GJ converted at 6.9 CNY/USD and held constant,COAL_2023_INFERRED; GAS_2018_BENCHMARK_CONSTRUCTION; BIOMASS_2022_SOURCE,final candidate converts published USD/GJ at official 2025 average 7.1429 CNY/USD; require fuel-price trajectories,1.035203,CORRECT_PROVENANCE_AND_FX_IN_CANDIDATE
+"CCS capture, transport and storage",CISPO SI scalar costs,ASSIGNED_2022_FROM_METHOD_CONTEXT,CPI-normalized comparator plus high/low sensitivity,1.004004,PROVISIONAL_NORMALIZATION
+DAC,explicit 2022 cost anchor,EXPLICIT_2022,multiply CapEx and O&M by cumulative 2022-2025 China CPI,1.004004,NORMALIZE
+Transmission and substation costs,CISPO SI voltage-specific costs,ASSIGNED_2022_FROM_METHOD_CONTEXT,CPI-normalized comparator; retain engineering-cost sensitivity,1.004004,PROVISIONAL_NORMALIZATION
+Wave-energy CapEx,EUR/kW converted at fixed 7.8 CNY/EUR; illustrative scenario,SOURCE_YEAR_NOT_EXPLICIT_IN_CONFIG,retain active baseline; compare with 2025 annual-average 8.1185 CNY/EUR,1.040833,FX_SENSITIVITY_NOT_BASE_REPLACEMENT
+Real WACC,uniform 7.4% real,NOT_A_PRICE_LEVEL,unchanged baseline; test technology-specific or 4-9% range,not applicable,SENSITIVITY_REQUIRED

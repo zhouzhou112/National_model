@@ -1,0 +1,50 @@
+{
+  "contract_version": "technoeconomic_2025_cny_v2",
+  "approval_date": "2026-07-28",
+  "approval_status": "APPROVED_FOR_PRODUCTION",
+  "target_price_basis": "2025 constant CNY",
+  "domestic_cny_source_basis": "2022 constant CNY",
+  "domestic_cny_to_2025_factor": 1.004004,
+  "domestic_cpi_components": {
+    "2023": 0.002,
+    "2024": 0.002,
+    "2025": 0.0,
+    "formula": "(1 + CPI_2023) * (1 + CPI_2024) * (1 + CPI_2025)"
+  },
+  "foreign_exchange_2025": {
+    "usd_to_cny": 7.1429,
+    "eur_to_cny": 8.1185
+  },
+  "nuclear_capex": {
+    "source_currency": "2025 USD per kW",
+    "source_values_by_year": {
+      "2030": 2800.0,
+      "2040": 2650.0,
+      "2050": 2500.0,
+      "2060": 2350.0
+    },
+    "conversion_rule": "source USD value multiplied by 2025 USD/CNY; do not apply China CPI to the historical CNY conversion"
+  },
+  "ccs": {
+    "capture_yuan_per_tco2_2022": 260.0,
+    "capture_conversion_rule": "multiply by domestic_cny_to_2025_factor",
+    "transport_yuan_per_tco2_km_2025": 0.5,
+    "storage_yuan_per_tco2_2025": 45.0
+  },
+  "fuel_prices": {
+    "source_currency": "USD per GJ",
+    "conversion_rule": "source USD values multiplied by 2025 USD/CNY and held constant in real terms through 2060",
+    "temporal_interpretation": "structural provincial fuel-cost assumptions, not a 2025 spot-price forecast"
+  },
+  "wave_energy": {
+    "source_currency": "2024 EUR per kW",
+    "conversion_rule": "source EUR values multiplied by 2025 EUR/CNY; do not apply China CPI"
+  },
+  "excluded_from_price_rebasing": [
+    "physical and technical parameters",
+    "fractions, efficiencies, heat rates, lifetimes and WACC",
+    "load-center numerical flow regularization",
+    "illustrative flexible-load scenario costs"
+  ],
+  "planning_year_rule": "Apply one common source-to-target price-basis conversion to every planning-year value in a trajectory. Do not inflate 2030, 2040, 2050 or 2060 separately."
+}

@@ -1,0 +1,105 @@
+﻿family_id,review_unit,source_id,independence_group,publication_year,geography,source_role,integrated_conclusion
+F01,风电、光伏与光热 CapEx/O&M/学习率,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S02,CREEI,2023,China,CHINA_TRIANGULATION,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S03,SUN_2023,2023,China,CHINA_TRIANGULATION,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S04,LI_2024,2024,China,CHINA_TRIANGULATION,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S05,NREL_ATB_2024,2024,United States,INTERNATIONAL_COMPARATOR,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S06,IRENA_RPGC_2024,2025,Global,INTERNATIONAL_COMPARATOR,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S07,IRENA_RPGC_2025,2026,Global,INTERNATIONAL_COMPARATOR,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F01,风电、光伏与光热 CapEx/O&M/学习率,S08,WANG_VRE_2023,2023,China,CHINA_TRIANGULATION,保留 CISPO 的中国初始成本与相对下降率；按 2025 CNY 重基准。全球值只作可比性检查。
+F02,常规水电 CapEx/O&M/寿命,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F02,常规水电 CapEx/O&M/寿命,S06,IRENA_RPGC_2024,2025,Global,INTERNATIONAL_COMPARATOR,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F02,常规水电 CapEx/O&M/寿命,S07,IRENA_RPGC_2025,2026,Global,INTERNATIONAL_COMPARATOR,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F02,常规水电 CapEx/O&M/寿命,S32,IEA_HYDRO_2021,2021,Global,INTERNATIONAL_COMPARATOR,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F02,常规水电 CapEx/O&M/寿命,S34,XU_HYDRO_2023,2023,China,CHINA_TRIANGULATION,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F02,常规水电 CapEx/O&M/寿命,S52,LIU_HE_2023,2023,China,CHINA_TRIANGULATION,"保留 13,319 CNY/kW 的 CISPO 中国口径并按 CPI 重基准；站点异质性单列局限。"
+F03,煤气生物质与核电 CapEx/O&M,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S09,ZHANG_CHEN_2022,2022,China,CHINA_TRIANGULATION,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S10,BOWEN_CGEP_2023,2023,China,CHINA_TRIANGULATION,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S11,NREL_NUCLEAR_2024,2024,United States,INTERNATIONAL_COMPARATOR,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S12,IAEA_2024,2024,Global,INTERNATIONAL_COMPARATOR,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S13,CHEN_JOULE_2021,2021,China,CHINA_TRIANGULATION,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F03,煤气生物质与核电 CapEx/O&M,S17,AN_2025,2025,China,CHINA_TRIANGULATION,非核技术保留 CISPO 轨迹并按 CPI 重基准；核电回到原始 USD 路径后按 2025 FX 重算。
+F04,火电核电 RUC 与运行技术参数,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S04,LI_2024,2024,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S13,CHEN_JOULE_2021,2021,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S14,FAN_2023,2023,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S15,HAN_RUC_2019,2019,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S16,YANG_2018,2018,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F04,火电核电 RUC 与运行技术参数,S17,AN_2025,2025,China,CHINA_TRIANGULATION,保留 CISPO 中央值；煤电 pmin 采用 0.30/0.40/0.50 敏感性。
+F05,省级煤气生物质燃料价格,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S17,AN_2025,2025,China,CHINA_TRIANGULATION,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S18,NDRC_COAL_2020,2020,China,CHINA_TRIANGULATION,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S19,CNCA_2022,2022,China,CHINA_TRIANGULATION,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S20,NDRC_GAS_2019,2019,China,CHINA_TRIANGULATION,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S21,YUAN_BIOMASS_2022,2022,China,CHINA_TRIANGULATION,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S22,IEA_COAL_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F05,省级煤气生物质燃料价格,S23,IEA_GAS_2025,2025,Global,INTERNATIONAL_COMPARATOR,保留 An 等的省际结构并按 2025 FX 换算；明确其是异年份构造的规划价格而非 2025 现货。
+F06,4 h 锂电池成本、效率、寿命与时长,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S24,PENG_BATTERY_2023,2023,China,CHINA_TRIANGULATION,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S25,NEA_STORAGE_2025,2025,China,CHINA_TRIANGULATION,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S26,NREL_BATTERY_2025,2025,United States,INTERNATIONAL_COMPARATOR,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S27,IEA_BATTERIES_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S28,SCHMIDT_2019,2019,Global,INTERNATIONAL_COMPARATOR,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S29,ZAKERI_2015,2015,Global,INTERNATIONAL_COMPARATOR,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F06,4 h 锂电池成本、效率、寿命与时长,S07,IRENA_RPGC_2025,2026,Global,INTERNATIONAL_COMPARATOR,保留 4 h CISPO 基线；确认其为偏积极的中国成本情景；2/4/8/12 h 需拆分功率和能量成本。
+F07,抽水蓄能成本、效率、寿命与时长,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S30,NREL_PSH_2024,2024,United States,INTERNATIONAL_COMPARATOR,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S31,NEA_PSH_2021,2021,China,CHINA_TRIANGULATION,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S32,IEA_HYDRO_2021,2021,Global,INTERNATIONAL_COMPARATOR,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S33,HUNT_PSH_2020,2020,Global,INTERNATIONAL_COMPARATOR,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S34,XU_HYDRO_2023,2023,China,CHINA_TRIANGULATION,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F07,抽水蓄能成本、效率、寿命与时长,S06,IRENA_RPGC_2024,2025,Global,INTERNATIONAL_COMPARATOR,保留 77.44% RTE、8 h、40 y 中央值；场址类型与 8/12/24 h 为高优先级敏感性。
+F08,CCS 捕集成本、捕集率与有效能耗,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S14,FAN_2023,2023,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S17,AN_2025,2025,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S35,WANG_CCS_2022,2022,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S36,CHINA_CCUS_2023,2023,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S37,CHINA_CCUS_PATH_2022,2022,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S38,CHINA_CCUS_KEY_2022,2022,China,CHINA_TRIANGULATION,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F08,CCS 捕集成本、捕集率与有效能耗,S40,IEA_CCUS_2020,2020,Global,INTERNATIONAL_COMPARATOR,保留 90% 捕集率和 260 CNY/tCO2 捕集费重基准；先核算热耗率与 5% 净出力损失的合成惩罚。
+F09,CO2 运输与封存成本,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S17,AN_2025,2025,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S35,WANG_CCS_2022,2022,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S36,CHINA_CCUS_2023,2023,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S37,CHINA_CCUS_PATH_2022,2022,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S38,CHINA_CCUS_KEY_2022,2022,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S39,CHINA_PIPELINE_2012,2012,China,CHINA_TRIANGULATION,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F09,CO2 运输与封存成本,S40,IEA_CCUS_2020,2020,Global,INTERNATIONAL_COMPARATOR,采用中国多来源中心值：0.50 CNY/tCO2/km 与 45 CNY/tCO2；保留宽范围敏感性。
+F10,DAC CapEx/O&M/能源需求/学习率,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S41,YOUNG_DAC_2023,2023,Global/China,CHINA_TRIANGULATION,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S42,IEA_DAC_2022,2022,Global,INTERNATIONAL_COMPARATOR,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S43,SHOREY_DAC_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S44,NATCOMM_DAC_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S45,COMMENG_DAC_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F10,DAC CapEx/O&M/能源需求/学习率,S46,NATCOMM_DAC_2020,2020,Global,INTERNATIONAL_COMPARATOR,保留 CISPO/Young 技术分型与学习率作为研究情景；不得将乐观路径描述为商业现状。
+F11,输电线路、变电站、损耗与寿命,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F11,输电线路、变电站、损耗与寿命,S47,CHINA_GRID_2020,2020,China,CHINA_TRIANGULATION,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F11,输电线路、变电站、损耗与寿命,S48,IEA_WEI_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F11,输电线路、变电站、损耗与寿命,S49,HAN_UHV_2021,2021,China,CHINA_TRIANGULATION,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F11,输电线路、变电站、损耗与寿命,S50,XU_GRID_2017,2017,China,CHINA_TRIANGULATION,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F11,输电线路、变电站、损耗与寿命,S13,CHEN_JOULE_2021,2021,China,CHINA_TRIANGULATION,保留中国电压等级成本与预优化网络口径；材料价格和走廊工程不确定性进入敏感性。
+F12,实际 WACC 与融资口径,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F12,实际 WACC 与融资口径,S13,CHEN_JOULE_2021,2021,China,CHINA_TRIANGULATION,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F12,实际 WACC 与融资口径,S51,HATTON_WACC_2025,2025,Global/China,CHINA_TRIANGULATION,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F12,实际 WACC 与融资口径,S52,LIU_HE_2023,2023,China,CHINA_TRIANGULATION,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F12,实际 WACC 与融资口径,S53,NREL_FINANCE_2024,2024,United States,INTERNATIONAL_COMPARATOR,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F12,实际 WACC 与融资口径,S11,NREL_NUCLEAR_2024,2024,United States,INTERNATIONAL_COMPARATOR,保留统一 7.4% real WACC；外部 nominal/technology-specific 数据不能直接替换，采用 4/7.4/9%。
+F13,技术寿命与既有机组退役寿命,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F13,技术寿命与既有机组退役寿命,S09,ZHANG_CHEN_2022,2022,China,CHINA_TRIANGULATION,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F13,技术寿命与既有机组退役寿命,S11,NREL_NUCLEAR_2024,2024,United States,INTERNATIONAL_COMPARATOR,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F13,技术寿命与既有机组退役寿命,S12,IAEA_2024,2024,Global,INTERNATIONAL_COMPARATOR,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F13,技术寿命与既有机组退役寿命,S13,CHEN_JOULE_2021,2021,China,CHINA_TRIANGULATION,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F13,技术寿命与既有机组退役寿命,S32,IEA_HYDRO_2021,2021,Global,INTERNATIONAL_COMPARATOR,保留新建技术经济寿命；既有机组 30/40/50 y 必须通过队列重建测试，不能只改 CRF。
+F14,2025 年不变人民币换算与价格账本,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F14,2025 年不变人民币换算与价格账本,S54,NBS_2023,2024,China,CHINA_TRIANGULATION,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F14,2025 年不变人民币换算与价格账本,S55,NBS_2024,2025,China,CHINA_TRIANGULATION,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F14,2025 年不变人民币换算与价格账本,S56,NBS_2025,2026,China,CHINA_TRIANGULATION,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F14,2025 年不变人民币换算与价格账本,S57,OENB_FX_2025,2026,International,INTERNATIONAL_COMPARATOR,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F14,2025 年不变人民币换算与价格账本,S58,IMF_2025,2025,Global,INTERNATIONAL_COMPARATOR,国内 2022 CNY 乘 1.004004；原始外币数值按来源币种和 2025 FX 转换，逐行保留公式。
+F15,波浪能成本、成熟度与参考情景边界,S59,APPLIED_ENERGY_WAVE_2024,2024,Global,INTERNATIONAL_COMPARATOR,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。
+F15,波浪能成本、成熟度与参考情景边界,S60,EU_BLUE_2025,2025,Europe,INTERNATIONAL_COMPARATOR,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。
+F15,波浪能成本、成熟度与参考情景边界,S61,IRENA_OCEAN_2020,2020,Global,INTERNATIONAL_COMPARATOR,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。
+F15,波浪能成本、成熟度与参考情景边界,S62,IRENA_OCEAN_2023,2023,Global,INTERNATIONAL_COMPARATOR,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。
+F15,波浪能成本、成熟度与参考情景边界,S63,OES_2024,2024,Global,INTERNATIONAL_COMPARATOR,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。
+F15,波浪能成本、成熟度与参考情景边界,S01,PRIMARY_MODEL_LINEAGE,2025,China,CISPO_ORIGINAL_LINEAGE,成本仅用于独立情景；技术尚未商业收敛，不能仅凭乐观学习曲线进入 reference。

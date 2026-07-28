@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -25,6 +26,10 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import linprog
 from scipy.sparse.csgraph import minimum_spanning_tree
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from cispo_model.price_basis import domestic_2022_cny_to_2025
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,8 +52,8 @@ AC_500_FIT_SAMPLES = [
     (1.0, 3.00), (2.0, 2.48), (3.0, 2.10), (4.0, 1.82), (5.0, 1.60),
     (6.0, 1.43), (7.0, 1.30), (8.0, 1.20), (9.0, 1.11), (10.0, 1.04),
 ]
-AC_500_SUBSTATION_YUAN_PER_KW = 159.0
-AC_500_LINE_THOUSAND_YUAN_PER_KM = 2640.0
+AC_500_SUBSTATION_YUAN_PER_KW = domestic_2022_cny_to_2025(159.0)
+AC_500_LINE_THOUSAND_YUAN_PER_KM = domestic_2022_cny_to_2025(2640.0)
 
 
 def sha256(path: Path) -> str:
@@ -237,6 +242,8 @@ def build_edges(centers: pd.DataFrame) -> pd.DataFrame:
                     "technology": "AC_500kV",
                     "reference_capacity_gw": reference_capacity,
                     "unit_cost_yuan_per_kw": unit_cost,
+                    "monetary_price_basis": "2025 constant CNY",
+                    "price_basis_contract": "technoeconomic_2025_cny_v2",
                     "initial_capacity_gw": 0.0,
                     "candidate_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",
                     "distance_validity": (

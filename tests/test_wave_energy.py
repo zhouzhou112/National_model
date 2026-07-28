@@ -112,9 +112,9 @@ class WaveEnergyTests(unittest.TestCase):
             }
         )
         capex, fixed_om, lifetime = wave_cost_parameters(config, sites)
-        self.assertAlmostEqual(capex[0], 2777.0 * 7.8)
+        self.assertAlmostEqual(capex[0], 2777.0 * 8.1185)
         self.assertAlmostEqual(
-            capex[1], (2777.0 + 0.66 * 100.0 + 2.97 * 50.0) * 7.8
+            capex[1], (2777.0 + 0.66 * 100.0 + 2.97 * 50.0) * 8.1185
         )
         self.assertAlmostEqual(fixed_om, 0.027)
         self.assertAlmostEqual(lifetime, 25.0)

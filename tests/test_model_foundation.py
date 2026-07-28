@@ -293,10 +293,10 @@ class ModelFoundationTests(unittest.TestCase):
             self.assertEqual(visited, node_ids, msg=f"disconnected province {province_code}")
 
     def test_interprovincial_flow_regularization_matches_cispo_units(self):
-        # CISPO specifies 0.001 yuan/kWh, which is exactly 1 yuan/MWh.
+        # CISPO's 2022-CNY value is 1 yuan/MWh; production uses 2025 CNY.
         self.assertEqual(
             float(self.config.raw["network"]["flow_regularization_yuan_per_mwh"]),
-            1.0,
+            1.004004,
         )
         technologies = set(
             self.data.lines.preset_technology.astype(str).str.upper()

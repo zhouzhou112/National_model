@@ -1,0 +1,9 @@
+﻿parameter,system_impact_score,evidence_strength_score,priority
+Fuel price year/trajectory,5.0,1.0,High
+Offshore spatial cost,4.8,2.0,High
+Battery duration/cost,4.5,2.2,High
+Uniform WACC,4.0,2.6,High
+Existing-fleet lifetime,3.8,2.5,High
+CCS/DAC cost,4.3,2.0,High
+CHP CapEx mapping,3.0,2.0,Medium
+Hydro CapEx trajectory,2.0,3.0,Medium

@@ -1,0 +1,7 @@
+﻿item,v1_candidate,v2_candidate,reason,authorization_or_action
+nuclear CapEx 2030/2040/2050/2060,19377.28/18373.27/17319.07/16315.06,20000.12/18928.69/17857.25/16785.82 CNY/kW,return to original USD path and apply 2025 FX,DATA_TABLE_AFTER_APPROVAL
+CCS transport,0.185715 CNY/tCO2/km,0.50 CNY/tCO2/km,China multi-source central estimate; avoid one-paper dominance,DATA_TABLE_AFTER_APPROVAL
+CCS storage,35.7145 CNY/tCO2,45 CNY/tCO2,midpoint of China 2030 evidence; retain 25-116 range,DATA_TABLE_AFTER_APPROVAL
+all other v1 candidate values,v1,unchanged,five-source review did not justify a more comparable replacement,NO_CHANGE
+battery power-energy split,single CNY/kW and fixed 4 h,not changed in v2,requires formulation/interface review,MODEL_CODE_REVIEW_REQUIRED
+CCS effective energy penalty,heat rate plus 5% output loss,not changed in v2,requires formula-consistent effective-penalty audit,MODEL_CODE_REVIEW_REQUIRED

@@ -1,0 +1,8 @@
+﻿monetary_block,source_price_year,source_currency,target_price_year,target_currency,index_or_fx,formula,interpretation
+Domestic CISPO CapEx except nuclear,2022,CNY,2025,CNY,"China CPI 2023=0.2%, 2024=0.2%, 2025=0.0%",C_2025=C_2022*1.004004,Retain real technology trajectory; change reporting price level only
+Nuclear CapEx,source USD path,USD,2025,CNY,2025 average USD/CNY=7.1429,C_2025CNY=C_sourceUSD*7.1429,2030/2040/2050/2060 USD/kW=2800/2650/2500/2350
+Provincial coal/gas/biomass planning prices,mixed constructed years,USD/GJ,2025,CNY/GJ,2025 average USD/CNY=7.1429,P_CNY=P_publishedUSD*7.1429,Currency conversion only; not a 2025 spot-price observation
+CCS capture cost,2022 model basis,CNY/tCO2,2025,CNY/tCO2,China CPI cumulative=1.004004,260*1.004004=261.041,Retained CISPO central value
+CCS transport cost,multi-year evidence synthesis,CNY/tCO2/km,2025,CNY/tCO2/km,direct China evidence synthesis,central=0.50,Sensitivity approximately 0.18/0.50/0.80
+CCS storage cost,multi-year evidence synthesis,CNY/tCO2,2025,CNY/tCO2,direct China evidence synthesis,central=45,Sensitivity 25/45/116
+Absolute O&M/startup/shutdown/DAC monetary terms,2022 model basis,CNY,2025,CNY,China CPI cumulative=1.004004,C_2025=C_2022*1.004004,Physical parameters are not price-normalized

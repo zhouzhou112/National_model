@@ -1,0 +1,13 @@
+{
+  "module": "04_thermal_nuclear_storage_technoeconomics",
+  "package": "final_candidate_review",
+  "generated_at": "2026-07-28",
+  "production_inputs_modified": false,
+  "candidate_price_basis": "2025 constant CNY",
+  "candidate_input_files": 4,
+  "new_review_tables": 5,
+  "new_figures": 4,
+  "qa_pass": 19,
+  "qa_fail": 0,
+  "terminal_marker": "FINAL_M04_CANDIDATE_INPUT_REVIEW_PASS"
+}

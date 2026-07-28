@@ -4,6 +4,12 @@
     "document_identity": "CISPO Supplementary Information, Energy & Environmental Science, 2025",
     "inventory": "D:/codeenv/pycharmproject/National_RL/tech_economic/outputs/techno_economic_parameter_inventory.tsv"
   },
+  "price_basis_normalization": {
+    "contract_version": "technoeconomic_2025_cny_v2",
+    "target_price_basis": "2025 constant CNY",
+    "rules_file": "config/technoeconomic_price_basis_2025.json",
+    "raw_value_policy": "Values below preserve CISPO/source evidence; production builders normalize monetary fields by source currency."
+  },
   "finance": {
     "real_wacc_fraction": 0.074,
     "source_page": 69
@@ -87,8 +93,8 @@
     {"parameter": "CapEx figure-digitization uncertainty and price basis", "status": "SOFT_ASSUMPTION", "reason": "The workbook states visual estimates in yuan/kW; exact digitization error and real/nominal price basis are not provided."},
     {"parameter": "CHP CapEx mapping", "status": "SOFT_ASSUMPTION", "reason": "Coal/gas CHP and CCS-CHP use the corresponding fuel and CCS CapEx curves because no separate extracted CHP rows were supplied."},
     {"parameter": "hydropower CapEx trajectory", "status": "SOFT_ASSUMPTION", "reason": "The explicit 13,319 yuan/kW CISPO anchor is held constant for 2030-2060 because the CapEx workbook has no hydro row."},
-    {"parameter": "provincial coal and gas fuel prices", "status": "RESOLVED_USER_SCREENSHOT", "reason": "Use the user-provided Supplementary Table 2 screenshot, converted from USD/GJ to yuan/GJ at 6.9 yuan/USD."},
-    {"parameter": "fuel-price year and temporal trajectory", "status": "SOFT_ASSUMPTION", "reason": "The screenshot does not state a price year or future trajectory; converted prices are held constant from 2025 through 2060 without inflation escalation."},
+    {"parameter": "provincial coal and gas fuel prices", "status": "RESOLVED_V2_2025_CNY", "reason": "Use the published Supplementary Table 2 USD/GJ values and convert at 7.1429 CNY/USD under technoeconomic_2025_cny_v2."},
+    {"parameter": "fuel-price year and temporal trajectory", "status": "SOFT_ASSUMPTION", "reason": "Published values represent mixed source years and structural provincial differentials rather than a 2025 spot forecast; converted 2025-CNY values are held constant in real terms through 2060."},
     {"parameter": "Beijing and Tibet coal fuel price", "status": "CONSTRAINT_REQUIRED", "reason": "Coal price is blank in the screenshot and existing 2025 coal capacity is zero; new coal/coal-CCS/coal-CHP capacity is disabled in these provinces unless a price is supplied."},
     {"parameter": "Inner Mongolia fuel-price aggregation", "status": "SOFT_ASSUMPTION", "reason": "31-province implementation uses the arithmetic mean of East and West Inner Mongolia screenshot values."},
     {"parameter": "2025 carbon emissions limit", "status": "NOT_APPLICABLE_BASE_YEAR", "reason": "CISPO carbon pathways begin in 2030; 2025 is retained as an unconstrained fixed calibration year."},

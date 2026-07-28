@@ -1,0 +1,7 @@
+﻿parameter_family,current_state,proposed_state,candidate_or_model_location,authorization_status
+technology CapEx and absolute O&M,all current 2022-basis values,multiply by 1.004004,candidate_inputs/technology_capex_by_year_2025_candidate.csv; candidate_inputs/other_parameter_values_2025_candidate.csv,APPROVAL_REQUIRED_DATA_UPDATE
+provincial fuel price and derived generation cost,Table S2 x 6.9; provenance label incomplete,Table S2 x 7.1429; exact article/price construction recorded,candidate_inputs/province_fuel_prices_2025_candidate.csv; candidate_inputs/province_fuel_generation_cost_by_year_2025_candidate.csv,APPROVAL_REQUIRED_DATA_UPDATE
+CCS transport and storage,0.8 CNY/t/km; 116 CNY/t,0.1857 CNY/t/km; 35.7145 CNY/t,candidate_inputs/other_parameter_values_2025_candidate.csv,APPROVAL_REQUIRED_DATA_UPDATE
+battery cost representation,single CNY/kW CapEx and fixed 4 h,retain for candidate baseline; later split cP*Kp + cE*Ke,model formulation,CODE_CHANGE_REQUIRES_SEPARATE_APPROVAL
+objective investment accounting,annualized CapEx charged to all in-service capacity,disclose now; review sunk-existing-capacity treatment before final solves,cispo_model/master.py; cispo_model/monolithic.py,CODE_CHANGE_REQUIRES_SEPARATE_APPROVAL
+wave,current Base has features.wave_energy=true,change final reference to disabled; 2025 FX only in independent sensitivity,scenario overlay,BASE_SCENARIO_CHANGE_REQUIRES_APPROVAL

@@ -1,0 +1,3 @@
+﻿technology,duration_h,charge_efficiency,discharge_efficiency,round_trip_efficiency,self_discharge_fraction_per_day,lifetime_years,fixed_om_fraction_capex_per_year,variable_om_yuan_per_mwh_active,variable_om_2025_cny_per_mwh_reporting,capex_2030_yuan_per_kw_active,capacity_floor_2030_gw,capacity_upper_2030_gw,latest_policy_comparator_gw,policy_comparator_scope
+phs,8,0.88000000,0.88000000,0.77440000,0.00000000,40,0.01500000,1.50000000,1.50600600,5260.00000000,65.94000000,249.19100000,160.00000000,national pumped-storage installed capacity
+battery,4,0.95000000,0.95000000,0.90250000,0.00070000,15,0.01000000,20.00000000,20.08008000,3300.00000000,65.85000000,,300.00000000,"all new storage, not a mandatory battery floor"

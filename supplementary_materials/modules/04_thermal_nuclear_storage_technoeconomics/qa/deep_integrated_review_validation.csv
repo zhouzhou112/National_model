@@ -1,0 +1,9 @@
+﻿check,status,observed,expected
+all_review_units_have_at_least_five_independent_sources,PASS,6,>=5
+review_unit_count,PASS,15,15
+source_registry_unique_ids,PASS,63,all unique
+candidate_v2_capex_rows,PASS,76,76
+nuclear_uses_original_usd_path_at_2025_fx,PASS,20000.12/18928.69/17857.25/16785.81,20000.12/18928.69/17857.25/16785.82
+ccs_transport_multisource_central,PASS,0.5,0.5
+ccs_storage_multisource_central,PASS,45.0,45.0
+all_v2_candidates_not_applied,PASS,PROPOSED_NOT_APPLIED,PROPOSED_NOT_APPLIED

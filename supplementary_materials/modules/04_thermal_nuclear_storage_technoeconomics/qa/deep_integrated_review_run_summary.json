@@ -1,0 +1,15 @@
+{
+  "module": "04_thermal_nuclear_storage_technoeconomics",
+  "package": "deep_integrated_review_v2",
+  "generated_at": "2026-07-28",
+  "price_basis": "2025 constant CNY",
+  "production_inputs_modified": false,
+  "review_units": 15,
+  "unique_sources": 63,
+  "evidence_associations": 104,
+  "minimum_independent_sources_per_review_unit": 6,
+  "candidate_files": 4,
+  "qa_pass": 8,
+  "qa_fail": 0,
+  "terminal_marker": "FINAL_M04_DEEP_REVIEW_2025CNY_PASS"
+}

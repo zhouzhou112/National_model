@@ -1,0 +1,19 @@
+﻿cispo_section,parameter_block,original_author_logic,original_source_lineage,interpretation_for_current_review
+S3.3.4,"onshore/offshore wind, UPV, DPV current CapEx",2022 China current-cost anchors,CREEI 2022 report,China-specific absolute cost
+S3.3.4,wind/PV/CSP future CapEx,apply literature decline rates to China current cost; do not import NREL absolute USD cost,Sun 2023; Li 2024; NREL ATB 2024; Zhang 2024,hybrid China-anchor/relative-learning method
+S3.3.4,VRE FOM,"wind 1.5%, PV 0.5%, CSP 1.0% of CapEx",CISPO synthesis,dimensionless ratio
+S3.5.1,hydropower CapEx/FOM/lifetime,"13,319 CNY/kW; 2%; 40 y",CISPO hydropower sources,national planning scalar
+S3.5.2,thermal/nuclear RUC,"technology-specific pmin, ramp, minimum up/down, start/shutdown and heat rate",six China-system sources,continuous relaxed UC
+S3.5.2 Table S14,CCS technical performance,90% capture; higher heat rate plus 5% net-output loss,CISPO synthesis,compound implemented penalty
+S3.5.3,thermal and CCS CapEx,Zhang & Chen trajectories; stable after 2040,Zhang & Chen 2022,China pathway source
+S3.5.3,nuclear CapEx,"2,800 USD/kW in 2030 and 2,500 USD/kW in 2050; linear decrease extended to 2060",Bowen et al. 2023,original USD path
+S3.5.3,FOM/VOM,coal/gas 2%; CCS 2.5%; nuclear 1.5%; technology-specific VOM,CISPO synthesis,CapEx fraction plus absolute VOM
+S3.5.3,coal price,Jan-2020 provincial prices scaled to 2022 national 722/543 ratio,NDRC; CNCA 2020/2022,constructed provincial planning price
+S3.5.3,gas/biomass/nuclear fuel,regulated provincial gas benchmark; biomass 700 CNY/t; nuclear 0.069 CNY/kWh,NDRC and China literature,mixed source years
+S3.6.2,PHS technical/economic parameters,8 h; 0.88/0.88; 40 y; FOM 1.5%; VOM 1.5 CNY/MWh,China PHS literature and plan,national scalar
+S3.6.2,battery technical/economic parameters,4 h; 0.95/0.95; 15 y; FOM 1%; VOM 20 CNY/MWh,Zhang & Chen; storage literature,fixed-duration aggregate CapEx
+S3.7,transmission,voltage-specific line/substation cost; line 50 y; substation 25 y; 0.0032%/km loss,China grid report and engineering studies,preoptimized corridor design
+S3.8,CCS cost,capture 260 CNY/t; transport 0.8 CNY/t/km; storage 116 CNY/t,Wang et al. 2022,separate capture/T/S terms
+S3.9,DAC,four process routes; explicit CapEx/FOM/VOM/electricity/heat and conservative uptake learning ratios,Young et al. 2023,"research scenario, not observed market cost"
+S3.10,WACC,uniform 7.4% real,CISPO China-system comparators,single real social-planning rate
+S6,CapEx uncertainty,"1.25x for wind, PV, CSP, PHS, battery and BECCS",CISPO sensitivity design,one-sided high-cost scenario

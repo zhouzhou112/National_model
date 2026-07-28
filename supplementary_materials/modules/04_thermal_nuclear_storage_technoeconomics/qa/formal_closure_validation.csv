@@ -1,0 +1,20 @@
+﻿check,status,observed,expected
+active_input_register_rows,PASS,18,18
+technology_capex_rows,PASS,76,76
+technology_capex_unique,PASS,0,0
+technology_capex_positive,PASS,1500.0,>0
+cpi_normalization_exact,PASS,1.004004,1.004004
+capacity_boundary_years,PASS,"[2025, 2030, 2040, 2050, 2060]","[2025, 2030, 2040, 2050, 2060]"
+nuclear_floor_not_above_upper,PASS,-3.235999999999976,<=0 GW
+battery_2030_floor,PASS,65.85,65.85
+phs_floor_not_above_upper,PASS,-183.251,<=0 GW
+ruc_om_technology_rows,PASS,11,11
+storage_technology_rows,PASS,2,2
+dac_rows,PASS,20,20
+fuel_province_rows,PASS,31,31
+fuel_external_provenance_resolved,PASS,An et al. (2025) Supplementary Table 2 screenshot traced externally,all 31 rows share the traced Table S2 evidence
+outdated_network_statement_detected,PASS,2,2
+Figure_M04_01_capacity_boundaries_and_capex_png_dimensions,PASS,3150x2497,3150x2497
+Figure_M04_01_capacity_boundaries_and_capex_pdf_exists,PASS,57888,>0 bytes
+Figure_M04_02_price_basis_and_uncertainty_png_dimensions,PASS,3150x2497,3150x2497
+Figure_M04_02_price_basis_and_uncertainty_pdf_exists,PASS,55814,>0 bytes

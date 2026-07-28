@@ -16,6 +16,7 @@ import gzip
 import json
 import math
 import re
+import sys
 from collections import defaultdict, deque
 from pathlib import Path
 
@@ -23,6 +24,8 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 from scipy.sparse import csr_matrix
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from data_package_common import (
     CODE_TO_EN,
@@ -40,6 +43,11 @@ from build_v0719_capacity_bounds import (
     build_battery_floor as build_v0719_battery_floor,
     build_biomass_upper as build_v0719_biomass_upper,
     build_nuclear_upper as build_v0719_nuclear_upper,
+)
+from cispo_model.price_basis import (
+    domestic_2022_cny_to_2025,
+    load_price_basis_config,
+    nuclear_capex_2025_cny,
 )
 
 
@@ -1114,6 +1122,11 @@ def build_transmission(config: dict, qc: list[dict]) -> None:
             "preset_source", "existing_line_ids",
         ]
     ].copy()
+    candidate_out["preset_unit_cost_yuan_per_kw"] = (
+        candidate_out["preset_unit_cost_yuan_per_kw"] * domestic_2022_cny_to_2025(1.0)
+    )
+    candidate_out["monetary_price_basis"] = "2025 constant CNY"
+    candidate_out["price_basis_contract"] = "technoeconomic_2025_cny_v2"
     write_csv(candidate_out, DATA_ROOT / "transmission" / "candidate_corridors.csv")
     add_qc(qc, "transmission_existing_segment_rows", len(existing_out), "PASS", "Forward representation; AC directionality retained in is_bidirectional")
     add_qc(qc, "transmission_candidate_pairs", len(candidate_out), "PASS" if len(candidate_out) == 465 else "FAIL", "All unordered pairs among 31 provinces")
@@ -1272,16 +1285,26 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
         tech = json.load(stream)
     source_pdf = tech["source"]["document"]
     base_year = int(config["base_year"])
+    price_basis = load_price_basis_config()
+    price_contract = price_basis["contract_version"]
+    target_basis = price_basis["target_price_basis"]
 
     vre = pd.DataFrame(tech["vre_cost_anchor"])
+    vre["capex_yuan_per_kw"] = vre["capex_yuan_per_kw"].map(domestic_2022_cny_to_2025)
     vre["model_anchor_year"] = base_year
     vre["source_document"] = source_pdf
     vre["future_cost_status"] = "AVAILABLE_AS_USER_VISUAL_ESTIMATE"
+    vre["monetary_price_basis"] = target_basis
+    vre["price_basis_contract"] = price_contract
     write_csv(vre, DATA_ROOT / "technology" / "vre_hydro_cost_anchor.csv")
 
     ruc = pd.DataFrame(tech["thermal_ruc"])
+    for column in ("startup_yuan_per_mw", "shutdown_yuan_per_mw"):
+        ruc[column] = ruc[column].map(domestic_2022_cny_to_2025)
     ruc["source_page"] = 59
     ruc["source_document"] = source_pdf
+    ruc["monetary_price_basis"] = target_basis
+    ruc["price_basis_contract"] = price_contract
     write_csv(ruc, DATA_ROOT / "technology" / "thermal_nuclear_ruc_parameters.csv")
 
     economic = tech["thermal_economic"]
@@ -1291,9 +1314,13 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
             {
                 "technology": technology,
                 "fixed_om_fraction_capex_per_year": fom,
-                "variable_om_yuan_per_mwh": economic["variable_om_yuan_per_mwh"][technology],
+                "variable_om_yuan_per_mwh": domestic_2022_cny_to_2025(
+                    economic["variable_om_yuan_per_mwh"][technology]
+                ),
                 "source_page": economic["source_page"],
                 "source_document": source_pdf,
+                "monetary_price_basis": target_basis,
+                "price_basis_contract": price_contract,
             }
         )
     write_csv(pd.DataFrame(economic_rows), DATA_ROOT / "technology" / "thermal_nuclear_om_parameters.csv")
@@ -1330,16 +1357,27 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
             if technology in {"cchp", "cchpccs", "gchp", "gchpccs"}:
                 mapping = "CHP mapped to corresponding fuel and CCS curve"
             for year in config["capacity_expansion_years"]:
+                capex_value = float(
+                    getattr(row, f"_{list(config['capacity_expansion_years']).index(year) + 1}")
+                )
+                if technology == "nuclear":
+                    capex_value = nuclear_capex_2025_cny(int(year))
+                    extraction_method = "approved USD trajectory converted at 2025 USD/CNY"
+                else:
+                    capex_value = domestic_2022_cny_to_2025(capex_value)
+                    extraction_method = "user visual estimate from CISPO figure scale; rebased from 2022 to 2025 constant CNY"
                 capex_rows.append(
                     {
                         "technology": technology,
                         "year": int(year),
-                        "capex_yuan_per_kw": float(getattr(row, f"_{list(config['capacity_expansion_years']).index(year) + 1}")),
+                        "capex_yuan_per_kw": capex_value,
                         "source_technology": source_name,
                         "source_figure": row.source_figure,
-                        "extraction_method": "user visual estimate from CISPO figure scale",
+                        "extraction_method": extraction_method,
                         "mapping_assumption": mapping,
                         "source_workbook": str(config["sources"]["capex_predictions_workbook"]),
+                        "monetary_price_basis": target_basis,
+                        "price_basis_contract": price_contract,
                     }
                 )
     hydro_anchor = float(vre.loc[vre.technology.eq("hydro"), "capex_yuan_per_kw"].iloc[0])
@@ -1354,6 +1392,8 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
                 "extraction_method": "explicit SI anchor held constant",
                 "mapping_assumption": "no hydro trajectory supplied in CapEx workbook",
                 "source_workbook": source_pdf,
+                "monetary_price_basis": target_basis,
+                "price_basis_contract": price_contract,
             }
         )
     capex = pd.DataFrame(capex_rows).sort_values(["technology", "year"])
@@ -1383,22 +1423,48 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
     write_csv(pd.DataFrame(nuclear_rows), DATA_ROOT / "technology" / "nuclear_capex_by_year.csv")
 
     storage = pd.DataFrame(tech["storage"])
+    storage["variable_om_yuan_per_mwh"] = storage["variable_om_yuan_per_mwh"].map(
+        domestic_2022_cny_to_2025
+    )
     storage["round_trip_efficiency"] = storage.charge_efficiency * storage.discharge_efficiency
     storage["capex_status"] = "AVAILABLE_IN_TECHNOLOGY_CAPEX_BY_YEAR_AS_VISUAL_ESTIMATE"
     storage["source_page"] = 64
     storage["source_document"] = source_pdf
+    storage["monetary_price_basis"] = target_basis
+    storage["price_basis_contract"] = price_contract
     write_csv(storage, DATA_ROOT / "technology" / "storage_technical_parameters.csv")
     build_phs_capacity_bounds(config, qc)
 
     transmission = pd.DataFrame(tech["transmission"]["voltage_options"])
+    for column in ("substation_yuan_per_kw", "overhead_line_thousand_yuan_per_km"):
+        transmission[column] = transmission[column].map(domestic_2022_cny_to_2025)
     transmission["loss_fraction_per_km"] = tech["transmission"]["loss_fraction_per_km"]
     transmission["substation_lifetime_years"] = tech["transmission"]["substation_lifetime_years"]
     transmission["overhead_line_lifetime_years"] = tech["transmission"]["overhead_line_lifetime_years"]
     transmission["source_page"] = tech["transmission"]["source_page"]
     transmission["source_document"] = source_pdf
+    transmission["monetary_price_basis"] = target_basis
+    transmission["price_basis_contract"] = price_contract
     write_csv(transmission, DATA_ROOT / "technology" / "transmission_cost_parameters.csv")
 
-    ccs = pd.DataFrame([{**tech["ccs"], "source_document": source_pdf}])
+    ccs_values = price_basis["ccs"]
+    ccs = pd.DataFrame(
+        [
+            {
+                **tech["ccs"],
+                "capture_yuan_per_tco2": domestic_2022_cny_to_2025(
+                    ccs_values["capture_yuan_per_tco2_2022"]
+                ),
+                "transport_yuan_per_tco2_km": ccs_values[
+                    "transport_yuan_per_tco2_km_2025"
+                ],
+                "storage_yuan_per_tco2": ccs_values["storage_yuan_per_tco2_2025"],
+                "source_document": source_pdf,
+                "monetary_price_basis": target_basis,
+                "price_basis_contract": price_contract,
+            }
+        ]
+    )
     write_csv(ccs, DATA_ROOT / "technology" / "ccs_cost_parameters.csv")
 
     emissions = tech["emissions"]
@@ -1437,14 +1503,16 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
             year = int(year)
             if year == base_year:
                 ratio = 1.0
-                method = "2022 cost anchor held to fixed non-investment 2025 base year"
+                method = "2022 cost anchor rebased to 2025 constant CNY for fixed non-investment base year"
             else:
                 ratio = float(technology["ratios"][str(year)])
                 method = "Table S23 conservative Low-uptake projection ratio"
             direct_electricity = float(technology["direct_electricity_gj_per_tco2"]) * gj_per_t_to_gwh_per_mt
             direct_heat = float(technology["direct_heat_gj_per_tco2"]) * gj_per_t_to_gwh_per_mt
             total_electricity = direct_electricity + direct_heat / float(dac["heat_pump_cop"])
-            projected_capex = float(technology["capex_yuan_per_tco2_per_year_capacity"]) * ratio
+            projected_capex = domestic_2022_cny_to_2025(
+                float(technology["capex_yuan_per_tco2_per_year_capacity"]) * ratio
+            )
             dac_rows.append(
                 {
                     "technology": technology["technology"],
@@ -1453,8 +1521,12 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
                     "cost_projection_ratio_to_2022": ratio,
                     "capex_million_yuan_per_mtco2_per_year_capacity": projected_capex,
                     "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year": projected_capex * dac_crf,
-                    "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": float(technology["fixed_om_yuan_per_tco2_per_year_capacity"]) * ratio,
-                    "variable_om_yuan_per_tco2": float(technology["variable_om_yuan_per_tco2"]) * ratio,
+                    "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": domestic_2022_cny_to_2025(
+                        float(technology["fixed_om_yuan_per_tco2_per_year_capacity"]) * ratio
+                    ),
+                    "variable_om_yuan_per_tco2": domestic_2022_cny_to_2025(
+                        float(technology["variable_om_yuan_per_tco2"]) * ratio
+                    ),
                     "direct_electricity_gwh_per_mtco2": direct_electricity,
                     "direct_heat_gwh_per_mtco2": direct_heat,
                     "heat_pump_cop": float(dac["heat_pump_cop"]),
@@ -1466,6 +1538,8 @@ def build_technology_parameters(config: dict, qc: list[dict]) -> None:
                     "source_method": method,
                     "source_pages": dac["source_pages"],
                     "source_document": source_pdf,
+                    "monetary_price_basis": target_basis,
+                    "price_basis_contract": price_contract,
                 }
             )
     dac_out = pd.DataFrame(dac_rows)
@@ -1523,6 +1597,8 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
     model["biomass_fuel_available"] = model.biomass_yuan_per_gj.notna()
     model["usd_to_yuan"] = exchange_rate
     model["price_basis_year"] = fuel_config["price_basis_year"]
+    model["monetary_price_basis"] = "2025 constant CNY"
+    model["price_basis_contract"] = "technoeconomic_2025_cny_v2"
     model["temporal_method"] = fuel_config["temporal_method"]
     model["merge_method"] = np.where(
         model.province_name_en.eq("Inner Mongolia"),
@@ -1540,6 +1616,7 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
                 "coal_yuan_per_gj", "gas_yuan_per_gj", "coal_fuel_available",
                 "biomass_yuan_per_gj", "gas_fuel_available",
                 "biomass_fuel_available", "usd_to_yuan", "price_basis_year",
+                "monetary_price_basis", "price_basis_contract",
                 "temporal_method", "merge_method", "source_evidence",
             ]
         ],
@@ -1575,6 +1652,8 @@ def build_fuel_prices(config: dict, qc: list[dict]) -> None:
                         "dispatch_allowed": bool(available),
                         "new_capacity_allowed": bool(available) and int(year) in config["capacity_expansion_years"],
                         "price_temporal_method": fuel_config["temporal_method"],
+                        "monetary_price_basis": "2025 constant CNY",
+                        "price_basis_contract": "technoeconomic_2025_cny_v2",
                         "source_evidence": fuel_config["source_evidence"],
                     }
                 )
@@ -2517,7 +2596,8 @@ def write_readme(config: dict) -> None:
 - 年份：`{config['base_year']}` 为固定存量与 8760 小时校准年；容量扩张决策年为 {', '.join(map(str, config['capacity_expansion_years']))}。
 - 默认 VRE 情景：`{config['default_vre_scenario']}`；默认气象年：`{config['default_weather_year']}`。
 - UPV 与 DPV 保留分项；二者共享网格 PV CF，但资源上限、既有容量、CapEx 和接入距离口径不同。
-- 燃料价格：采用用户提供的 Supplementary Table 2 截图，单位由 USD/GJ 按 6.9 yuan/USD 转换；因截图未注明价格年与未来轨迹，2025–2060 暂保持不变。
+- 价格基准：全部经济输入统一为 2025 年不变人民币。CISPO 的 2022-CNY 轨迹整体乘 1.004004；核电和燃料回到 USD 来源值按 7.1429 CNY/USD 换算；波浪能 EUR 来源值按 8.1185 CNY/EUR 换算。
+- 燃料价格：采用 Supplementary Table 2 的 USD/GJ 省际结构值，转换后 2025–2060 按实值保持不变；该表不是 2025 年现货价格预测。
 - 内蒙古燃料价格：蒙东与蒙西算术平均。北京、西藏煤价为空，不作插补，并禁用当地煤类技术调度与新增容量。
 - 技术 CapEx：采用 `Energy_Technologies_CapEx_Predictions.xlsx` 中 2030/2040/2050/2060 的图表目测提取值，单位 yuan/kW。
 - CHP CapEx：映射到同燃料、同 CCS 状态的非 CHP 曲线；水电 13,319 yuan/kW 锚点保持不变。这两项均为显式软假设。

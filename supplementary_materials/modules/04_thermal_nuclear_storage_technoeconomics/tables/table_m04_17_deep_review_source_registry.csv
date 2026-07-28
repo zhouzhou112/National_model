@@ -1,0 +1,64 @@
+﻿source_id,short_name,publication_year,geography,source_type,title_or_scope,url_or_doi,independence_group
+S01,CISPO_EES_2025,2025,China,peer_reviewed,"Integrated modeling for the transition pathway of China's power system, main paper and SI",https://doi.org/10.1039/D5EE00355E,PRIMARY_MODEL_LINEAGE
+S02,CREEI_Report_2022,2023,China,official_industry_report,China Renewable Energy Development Report 2022,,CREEI
+S03,Sun_cost_projection_2023,2023,China,peer_reviewed,"Cost prediction of China's wind, solar and CSP technologies",,SUN_2023
+S04,Li_dispatchability_2024,2024,China,peer_reviewed,China power-system dispatchability and transition pathways,,LI_2024
+S05,NREL_ATB_2024,2024,United States,official_technical_report,Annual Technology Baseline 2024,https://atb.nrel.gov/electricity/2024/,NREL_ATB_2024
+S06,IRENA_RPGC_2024,2025,Global,intergovernmental_report,Renewable Power Generation Costs in 2024,https://www.irena.org/Publications/2025/Jul/Renewable-power-generation-costs-in-2024,IRENA_RPGC_2024
+S07,IRENA_RPGC_2025,2026,Global,intergovernmental_report,"Renewable Power Generation Costs in 2025, executive summary",https://www.irena.org/-/media/Files/IRENA/Agency/Publication/2026/Jul/IRENA_TEC_RPGC_2025_Executive_summary_2026.pdf,IRENA_RPGC_2025
+S08,Wang_accelerating_VRE_2023,2023,China,peer_reviewed,Accelerating the deployment of wind and solar in China,https://doi.org/10.1038/s41586-023-06180-8,WANG_VRE_2023
+S09,Zhang_Chen_transition_2022,2022,China,peer_reviewed,Probabilistic transition pathways for China's power system,https://doi.org/10.1038/s41467-022-31260-0,ZHANG_CHEN_2022
+S10,Bowen_nuclear_2023,2023,China,research_report,China's nuclear power development and construction-cost assumptions,https://www.energypolicy.columbia.edu/publications/,BOWEN_CGEP_2023
+S11,NREL_ATB_nuclear_2024,2024,United States,official_technical_report,Annual Technology Baseline 2024: nuclear,https://atb.nrel.gov/electricity/2024/nuclear,NREL_NUCLEAR_2024
+S12,IAEA_nuclear_cost_2024,2024,Global,intergovernmental_report,Nuclear energy economics and financing evidence,https://www.iaea.org/topics/economics,IAEA_2024
+S13,Chen_Joule_2021,2021,China,peer_reviewed,Carbon-neutral China power-system pathways,https://doi.org/10.1016/j.joule.2021.06.011,CHEN_JOULE_2021
+S14,Fan_cofiring_CCS_2023,2023,China,peer_reviewed,"Coal flexibility, biomass co-firing and CCS in China",https://doi.org/10.1038/s41558-023-01795-7,FAN_2023
+S15,Han_RUC_2019,2019,China,peer_reviewed,Relaxed unit commitment validation for China power-system planning,,HAN_RUC_2019
+S16,Yang_regional_model_2018,2018,China,peer_reviewed,Regional China power-system planning and unit-operation parameters,,YANG_2018
+S17,An_coal_repositioning_2025,2025,China,peer_reviewed,Repositioning coal power to accelerate net-zero transition of China's power system,https://doi.org/10.1038/s41467-025-57559-2,AN_2025
+S18,NDRC_coal_price_2020,2020,China,government_source,Provincial coal-price monitoring and benchmark information,,NDRC_COAL_2020
+S19,CNCA_coal_report_2022,2022,China,official_industry_report,China Coal Industry Annual Report 2022,,CNCA_2022
+S20,NDRC_gas_benchmark_2019,2019,China,government_source,Provincial benchmark city-gate natural-gas prices,https://www.ndrc.gov.cn/xxgk/zcfb/tz/201903/t20190329_962412.html,NDRC_GAS_2019
+S21,Yuan_biomass_price_2022,2022,China,peer_reviewed,Provincial biomass ex-factory fuel-price evidence,,YUAN_BIOMASS_2022
+S22,IEA_Coal_2024,2024,Global,intergovernmental_report,Coal 2024,https://www.iea.org/reports/coal-2024/executive-summary,IEA_COAL_2024
+S23,IEA_Gas_Q1_2025,2025,Global,intergovernmental_report,Gas Market Report Q1 2025,https://www.iea.org/reports/gas-market-report-q1-2025,IEA_GAS_2025
+S24,Peng_battery_2023,2023,China,peer_reviewed,Heterogeneous effects of battery storage deployment in China,https://doi.org/10.1038/s41467-023-40337-3,PENG_BATTERY_2023
+S25,NEA_storage_report_2025,2025,China,government_report,China New Energy Storage Development Report 2025,https://www.nea.gov.cn/20250731/1d40d09f75714280a9218d5bea178fbd/c.html,NEA_STORAGE_2025
+S26,NREL_battery_2025,2025,United States,official_technical_report,Cost Projections for Utility-Scale Battery Storage: 2025 Update,https://research-hub.nrel.gov/en/publications/cost-projections-for-utility-scale-battery-storage-2025-update/,NREL_BATTERY_2025
+S27,IEA_batteries_2024,2024,Global,intergovernmental_report,Batteries and Secure Energy Transitions,https://www.iea.org/reports/batteries-and-secure-energy-transitions/executive-summary,IEA_BATTERIES_2024
+S28,Schmidt_storage_2019,2019,Global,peer_reviewed,Projecting the future levelized cost of electricity storage,https://doi.org/10.1016/j.joule.2018.12.008,SCHMIDT_2019
+S29,Zakeri_Syri_2015,2015,Global,peer_reviewed,Electrical energy storage life-cycle cost review,https://doi.org/10.1016/j.rser.2014.10.011,ZAKERI_2015
+S30,NREL_PSH_2024,2024,United States,official_technical_report,Annual Technology Baseline 2024: pumped storage hydropower,https://atb.nrel.gov/electricity/2024/pumped_storage_hydropower,NREL_PSH_2024
+S31,NEA_PSH_plan_2021,2021,China,government_plan,Medium- and Long-term Development Plan for Pumped Storage (2021-2035),https://www.nea.gov.cn/2021-09/09/c_1310177087.htm,NEA_PSH_2021
+S32,IEA_hydropower_2021,2021,Global,intergovernmental_report,Hydropower Special Market Report,https://www.iea.org/reports/hydropower-special-market-report/executive-summary,IEA_HYDRO_2021
+S33,Hunt_seasonal_PSH_2020,2020,Global,peer_reviewed,Global resource potential of seasonal pumped hydropower storage,https://doi.org/10.1038/s41467-020-14555-y,HUNT_PSH_2020
+S34,Xu_hydropower_2023,2023,China,peer_reviewed,China hydropower operation and water constraints,https://doi.org/10.1038/s44221-023-00073-0,XU_HYDRO_2023
+S35,Wang_coal_phase_down_2022,2022,China,peer_reviewed,Alternative coal phase-down and CCUS pathways in China,https://doi.org/10.1021/acs.est.1c07992,WANG_CCS_2022
+S36,China_CCUS_report_2023,2023,China,government_report,China CCUS Annual Report 2023,https://www.most.gov.cn/kjbgz/202307/t20230714_187011.html,CHINA_CCUS_2023
+S37,China_CCUS_pathways_2022,2022,China,peer_reviewed,Technology pathways and cost evolution of CCUS in China,https://doi.org/10.1080/17583004.2022.2117648,CHINA_CCUS_PATH_2022
+S38,China_CCUS_key_issues_2022,2022,China,peer_reviewed,Several key issues for CCUS deployment in China,https://doi.org/10.1007/s43979-022-00019-3,CHINA_CCUS_KEY_2022
+S39,China_CO2_pipeline_2012,2012,China,peer_reviewed,Economics of CO2 pipeline transport in China,https://doi.org/10.1016/j.enconman.2011.10.022,CHINA_PIPELINE_2012
+S40,IEA_CCUS_2020,2020,Global,intergovernmental_report,CCUS in Clean Energy Transitions,https://www.iea.org/reports/ccus-in-clean-energy-transitions,IEA_CCUS_2020
+S41,Young_DAC_2023,2023,Global/China,peer_reviewed,Global and regional direct-air-capture technology pathways,https://doi.org/10.1016/j.oneear.2023.05.010,YOUNG_DAC_2023
+S42,IEA_DAC_2022,2022,Global,intergovernmental_report,Direct Air Capture 2022,https://www.iea.org/reports/direct-air-capture-2022/executive-summary,IEA_DAC_2022
+S43,Shorey_DAC_2024,2024,Global,peer_reviewed,Spatially resolved energy and cost requirements of direct air capture,https://doi.org/10.1038/s43247-024-01773-1,SHOREY_DAC_2024
+S44,NatCommun_DAC_2024,2024,Global,peer_reviewed,Process-level cost assessment of direct air capture,https://doi.org/10.1038/s41467-024-53961-4,NATCOMM_DAC_2024
+S45,CommEng_DAC_2024,2024,Global,peer_reviewed,Off-grid direct air capture systems,https://doi.org/10.1038/s44172-023-00152-6,COMMENG_DAC_2024
+S46,NatCommun_DAC_materials_2020,2020,Global,peer_reviewed,Material and energy constraints for direct air capture,https://doi.org/10.1038/s41467-020-17203-7,NATCOMM_DAC_2020
+S47,Zhang_Cao_grid_report_2020,2020,China,official_industry_report,China Grid Development Report 2020,,CHINA_GRID_2020
+S48,IEA_World_Energy_Investment_2024,2024,Global,intergovernmental_report,World Energy Investment 2024,https://www.iea.org/reports/world-energy-investment-2024/overview-and-key-findings,IEA_WEI_2024
+S49,Han_UHV_loss_2021,2021,China,technical_article,UHV transmission loss and engineering parameters,,HAN_UHV_2021
+S50,Xu_offshore_grid_2017,2017,China,peer_reviewed,Offshore integration and transmission topology in China,,XU_GRID_2017
+S51,Hatton_WACC_2025,2025,Global/China,peer_reviewed_dataset,Historical and projected costs of capital for ten energy technologies,https://doi.org/10.1038/s41597-025-06177-0,HATTON_WACC_2025
+S52,Liu_He_hydro_finance_2023,2023,China,peer_reviewed,Financing and operational risk for hydropower,https://doi.org/10.1038/s44221-023-00111-x,LIU_HE_2023
+S53,NREL_finance_2024,2024,United States,official_technical_report,ATB financial cases and methods,https://atb.nrel.gov/electricity/2024b/financial_cases_%26_methods,NREL_FINANCE_2024
+S54,NBS_2023,2024,China,government_statistics,2023 National Economic and Social Development Statistical Communiqué,https://www.stats.gov.cn/sj/zxfb/202402/t20240228_1947915.html,NBS_2023
+S55,NBS_2024,2025,China,government_statistics,2024 National Economic and Social Development Statistical Communiqué,https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html,NBS_2024
+S56,NBS_2025,2026,China,government_statistics,2025 National Economic and Social Development Statistical Communiqué,https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html,NBS_2025
+S57,OeNB_FX_2025,2026,International,official_statistics,2025 annual average exchange-rate statistics,https://www.oenb.at/isawebstat/stabfrage/createReport?lang=EN&report=2.14.5,OENB_FX_2025
+S58,IMF_price_statistics,2025,Global,intergovernmental_statistics,Consumer price and exchange-rate methodological comparator,https://www.imf.org/en/Publications/WEO/weo-database/2025/April,IMF_2025
+S59,AppliedEnergy_wave_2024,2024,Global,peer_reviewed,Wave-energy learning and cost projections,https://doi.org/10.1016/j.apenergy.2024.123119,APPLIED_ENERGY_WAVE_2024
+S60,EU_Blue_Economy_2025,2025,Europe,government_report,EU Blue Economy Report 2025: marine renewable energy,https://op.europa.eu/webpub/mare/eu-blue-economy-report-2025/blue-economic-sectors/marine-renewable-energy.html,EU_BLUE_2025
+S61,IRENA_ocean_outlook_2020,2020,Global,intergovernmental_report,Innovation Outlook: Ocean Energy Technologies,https://www.irena.org/publications/2020/Dec/Innovation-Outlook-Ocean-Energy-Technologies,IRENA_OCEAN_2020
+S62,IRENA_ocean_investment_2023,2023,Global,intergovernmental_report,Scaling up investments in ocean energy technologies,https://www.irena.org/Publications/2023/Mar/Scaling-up-investments-in-ocean-energy-technologies,IRENA_OCEAN_2023
+S63,OES_annual_report_2024,2024,Global,intergovernmental_report,Ocean Energy Systems Annual Report 2024,https://www.ocean-energy-systems.org/publications/oes-annual-reports/,OES_2024

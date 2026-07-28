@@ -403,9 +403,9 @@ def main() -> None:
     checks.check("technology_capex_technology_count", capex.technology.nunique() == 19, capex.technology.nunique(), "19")
     checks.check("technology_capex_years", sorted(capex.year.unique().tolist()) == [2030, 2040, 2050, 2060], sorted(capex.year.unique().tolist()), "2030, 2040, 2050, 2060")
     capex_lookup = capex.set_index(["technology", "year"]).capex_yuan_per_kw
-    checks.check("technology_capex_onwind_2030", np.isclose(capex_lookup.loc[("onwind", 2030)], 5500.0), float(capex_lookup.loc[("onwind", 2030)]), "5500 yuan/kW")
-    checks.check("technology_capex_nuclear_2040", np.isclose(capex_lookup.loc[("nuclear", 2040)], 18300.0), float(capex_lookup.loc[("nuclear", 2040)]), "18300 yuan/kW")
-    checks.check("technology_capex_battery_2060", np.isclose(capex_lookup.loc[("battery", 2060)], 2400.0), float(capex_lookup.loc[("battery", 2060)]), "2400 yuan/kW")
+    checks.check("technology_capex_onwind_2030", np.isclose(capex_lookup.loc[("onwind", 2030)], 5522.022), float(capex_lookup.loc[("onwind", 2030)]), "5522.022 yuan/kW in 2025 constant CNY")
+    checks.check("technology_capex_nuclear_2040", np.isclose(capex_lookup.loc[("nuclear", 2040)], 18928.685), float(capex_lookup.loc[("nuclear", 2040)]), "18928.685 yuan/kW in 2025 constant CNY")
+    checks.check("technology_capex_battery_2060", np.isclose(capex_lookup.loc[("battery", 2060)], 2409.6096), float(capex_lookup.loc[("battery", 2060)]), "2409.6096 yuan/kW in 2025 constant CNY")
 
     fuel = pd.read_csv(DATA / "technology" / "province_fuel_prices.csv")
     checks.check("province_fuel_price_rows", len(fuel) == 31, len(fuel), "31")
@@ -413,8 +413,8 @@ def main() -> None:
     checks.check("province_fuel_missing_coal", set(fuel.loc[fuel.coal_yuan_per_gj.isna(), "province_code"]) == {11, 54}, sorted(fuel.loc[fuel.coal_yuan_per_gj.isna(), "province_code"].tolist()), "Beijing=11 and Tibet=54")
     checks.check("province_fuel_gas_complete", fuel.gas_yuan_per_gj.notna().all(), int(fuel.gas_yuan_per_gj.isna().sum()), "0 missing")
     inner = fuel.loc[fuel.province_code.eq(15)].iloc[0]
-    checks.check("inner_mongolia_coal_mean", np.isclose(inner.coal_usd_per_gj, 2.56) and np.isclose(inner.coal_yuan_per_gj, 17.664), f"{inner.coal_usd_per_gj}, {inner.coal_yuan_per_gj}", "2.56 USD/GJ, 17.664 yuan/GJ")
-    checks.check("inner_mongolia_gas_mean", np.isclose(inner.gas_usd_per_gj, 7.51) and np.isclose(inner.gas_yuan_per_gj, 51.819), f"{inner.gas_usd_per_gj}, {inner.gas_yuan_per_gj}", "7.51 USD/GJ, 51.819 yuan/GJ")
+    checks.check("inner_mongolia_coal_mean", np.isclose(inner.coal_usd_per_gj, 2.56) and np.isclose(inner.coal_yuan_per_gj, 18.285824), f"{inner.coal_usd_per_gj}, {inner.coal_yuan_per_gj}", "2.56 USD/GJ, 18.285824 yuan/GJ")
+    checks.check("inner_mongolia_gas_mean", np.isclose(inner.gas_usd_per_gj, 7.51) and np.isclose(inner.gas_yuan_per_gj, 53.643179), f"{inner.gas_usd_per_gj}, {inner.gas_yuan_per_gj}", "7.51 USD/GJ, 53.643179 yuan/GJ")
     fuel_cost = pd.read_csv(DATA / "technology" / "province_fuel_generation_cost_by_year.csv")
     expected_fuel_technologies = {
         "coal", "coalccs", "cchp", "cchpccs", "gas",

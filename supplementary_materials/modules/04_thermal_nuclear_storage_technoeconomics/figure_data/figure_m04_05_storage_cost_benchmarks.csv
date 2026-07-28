@@ -1,0 +1,15 @@
+﻿year,cny_per_kwh,series,metric,value_percent
+2030.0,828.3032999999999,CISPO candidate,battery_cost,
+2040.0,763.0430399999999,CISPO candidate,battery_cost,
+2050.0,692.76276,CISPO candidate,battery_cost,
+2060.0,602.4024,CISPO candidate,battery_cost,
+2035.0,1085.7208,NREL 2025 Low,battery_cost,
+2035.0,1764.2963,NREL 2025 Mid,battery_cost,
+2035.0,2492.8721,NREL 2025 High,battery_cost,
+2050.0,792.8619,NREL 2025 Low,battery_cost,
+2050.0,1314.2936,NREL 2025 Mid,battery_cost,
+2050.0,2378.5857,NREL 2025 High,battery_cost,
+2024.0,1371.4368,IRENA 2024,battery_cost,
+,,CISPO PHS RTE,phs_rte,77.44
+,,NREL/literature RTE low,phs_rte,70.0
+,,NREL/literature RTE high,phs_rte,87.0

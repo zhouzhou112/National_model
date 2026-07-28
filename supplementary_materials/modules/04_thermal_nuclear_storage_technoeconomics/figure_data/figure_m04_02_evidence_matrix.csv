@@ -1,0 +1,9 @@
+﻿parameter_family,source_year_explicit,currency_or_dimension_explicit,effective_use_verified,deterministic_2025_conversion
+Technology CapEx,1.0,1,1,1.0
+O&M / start-stop,1.0,1,1,1.0
+Fuel prices,0.0,1,1,0.0
+CCS,0.5,1,1,0.5
+DAC,1.0,1,1,1.0
+Transmission,0.5,1,1,0.5
+Wave energy,0.0,1,1,0.0
+Real WACC,1.0,1,1,0.5

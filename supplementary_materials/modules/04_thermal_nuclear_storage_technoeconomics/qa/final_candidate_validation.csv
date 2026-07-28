@@ -1,0 +1,20 @@
+﻿check,status,observed,expected
+candidate_capex_rows,PASS,76,76
+candidate_fuel_rows,PASS,31,31
+candidate_fuel_cost_rows,PASS,1550,1550
+candidate_capex_factor,PASS,1.004004,1.004004
+fuel_cost_identity,PASS,all finite rows,price x heat rate
+fuel_fx,PASS,7.1429,7.1429
+reference_wave_disabled_decision,PASS,false,false
+Figure_M04_03_vre_cost_trajectories_png_width,PASS,3150,3100-3200 px
+Figure_M04_03_vre_cost_trajectories_png_height,PASS,1507,>=1400 px
+Figure_M04_03_vre_cost_trajectories_pdf_exists,PASS,35975,>0 bytes
+Figure_M04_04_dispatchable_cost_trajectories_png_width,PASS,3150,3100-3200 px
+Figure_M04_04_dispatchable_cost_trajectories_png_height,PASS,1620,>=1400 px
+Figure_M04_04_dispatchable_cost_trajectories_pdf_exists,PASS,39013,>0 bytes
+Figure_M04_05_storage_cost_benchmarks_png_width,PASS,3150,3100-3200 px
+Figure_M04_05_storage_cost_benchmarks_png_height,PASS,1485,>=1400 px
+Figure_M04_05_storage_cost_benchmarks_pdf_exists,PASS,41144,>0 bytes
+Figure_M04_06_parameter_review_decisions_png_width,PASS,3150,3100-3200 px
+Figure_M04_06_parameter_review_decisions_png_height,PASS,1710,>=1400 px
+Figure_M04_06_parameter_review_decisions_pdf_exists,PASS,31135,>0 bytes

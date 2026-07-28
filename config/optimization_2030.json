@@ -35,6 +35,12 @@
   },
   "time_boundary": "cyclic_year",
   "objective_unit": "million_CNY_per_year",
+  "monetary_price_basis": {
+    "contract_version": "technoeconomic_2025_cny_v2",
+    "target": "2025 constant CNY",
+    "source_config": "config/technoeconomic_price_basis_2025.json",
+    "planning_year_rule": "common source-to-2025 conversion applied to the full trajectory; no year-specific inflation escalation"
+  },
   "strict_load_balance": true,
   "allow_debug_slacks": false,
   "features": {
@@ -82,7 +88,8 @@
     "maximum_distance_to_shore_km": null,
     "maximum_water_depth_m": null,
     "exclude_imputed_cf": false,
-    "eur_to_cny": 7.8,
+    "eur_to_cny": 8.1185,
+    "currency_basis": "2024 EUR source values converted at the approved 2025 EUR/CNY rate",
     "capex_eur_per_kw_by_year": {
       "2030": 2777,
       "2040": 2012,
@@ -117,6 +124,7 @@
   },
   "flexible_load": {
     "contract_version": "v1",
+    "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
     "energy_conservation_window_hours": 24,
     "shift_throughput_cost_yuan_per_mwh": 2.0,
     "degradation_cost_yuan_per_mwh": 50.0,
@@ -224,8 +232,8 @@
   "thermal": {
     "biomass_minimum_online_fraction": 0.5,
     "chp_winter_months": [1, 2, 11, 12],
-    "nuclear_fuel_yuan_per_mwh": 69.0,
-    "ramping_cost_yuan_per_mwh": 1.0
+    "nuclear_fuel_yuan_per_mwh": 69.276276,
+    "ramping_cost_yuan_per_mwh": 1.004004
   },
   "hydro": {
     "reservoir_efficiency": 0.85,
@@ -250,10 +258,10 @@
     "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data"
   },
   "network": {
-    "flow_regularization_yuan_per_mwh": 1.0,
-    "spur_capex_million_yuan_per_gw_km": 1.214,
-    "trunk_capex_million_yuan_per_gw_km": 1.214,
-    "substation_capex_million_yuan_per_gw": 241.0,
+    "flow_regularization_yuan_per_mwh": 1.004004,
+    "spur_capex_million_yuan_per_gw_km": 1.218860856,
+    "trunk_capex_million_yuan_per_gw_km": 1.218860856,
+    "substation_capex_million_yuan_per_gw": 241.964964,
     "spur_fixed_om_fraction": 0.01,
     "trunk_fixed_om_fraction": 0.01,
     "intra_grid_vre_connection": {
@@ -274,6 +282,7 @@
     "voltage_class": "AC_500kV",
     "design_utilization_fraction": 0.5,
     "flow_regularization_yuan_per_mwh": 0.001,
+    "flow_regularization_status": "numerical tie-breaker; excluded from economic price rebasing",
     "intra_loss_fraction_per_km": 0.0,
     "partial_horizon_interpretation": "test-period aggregate energy only; scientific interpretation requires full_year"
   },

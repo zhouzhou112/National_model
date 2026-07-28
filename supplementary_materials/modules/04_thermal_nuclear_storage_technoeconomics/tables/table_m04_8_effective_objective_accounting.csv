@@ -1,0 +1,5 @@
+﻿accounting_item,implemented_equation,implementation_scope,interpretation,limitation
+Capacity investment,CapEx × CRF × total in-service capacity,"VRE, thermal/nuclear, hydro, storage and transmission",annualized planning-year system cost; existing capacity is also charged,not an incremental-only investment ledger
+Fixed O&M,CapEx × fixed-O&M fraction × total in-service capacity,"VRE, thermal/nuclear, hydro, storage and wave",annual planning-year fixed cost,inherits the same price-basis requirement as CapEx
+Variable operation,yuan/MWh × annual hourly activity,"thermal, fuel, storage, startup/shutdown, ramping and flows",annual operating cost for each planning-year solve,fuel prices are constructed from different source years and held constant through 2060
+Planning sequence,"2030, 2040, 2050 and 2060 solved sequentially with cohort transfer",four annual planning snapshots,state-consistent sequence,objectives are not automatically discounted and summed to a 2025-2060 NPV

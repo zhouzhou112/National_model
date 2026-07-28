@@ -1,0 +1,13 @@
+check_id,expected,actual,status
+price_basis_contract,technoeconomic_2025_cny_v2,technoeconomic_2025_cny_v2,PASS
+domestic_rebase_factor,1.004004,1.004004,PASS
+onwind_2030_CNY_per_kW,5522.022,5522.022,PASS
+battery_2060_CNY_per_kW,2409.6096,2409.6096,PASS
+nuclear_2040_CNY_per_kW,18928.685,18928.685,PASS
+CCS_capture_CNY_per_tCO2,261.04104,261.04104,PASS
+CCS_transport_CNY_per_tCO2_km,0.5,0.5,PASS
+CCS_storage_CNY_per_tCO2,45,45,PASS
+fuel_USD_CNY,7.1429,7.1429,PASS
+wave_EUR_CNY,8.1185,8.1185,PASS
+migration_idempotency,second_run_no_numeric_change,ALREADY_APPLIED_validation_PASS,PASS
+overall,all_checks_PASS,all_checks_PASS,PASS

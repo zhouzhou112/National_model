@@ -1,5 +1,5 @@
 {
-  "contract_version": "v4",
+  "contract_version": "v5",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
@@ -44,7 +44,8 @@
     "qc_summary.csv",
     "smoke_test_report.json",
     "source_manifest.csv",
-    "vre/existing_capacity_cohorts_2025_manifest.json"
+    "vre/existing_capacity_cohorts_2025_manifest.json",
+    "technology/technoeconomic_price_basis_manifest.json"
   ],
   "roles": {
     "sets/provinces.csv": "Canonical 31-province index and Chinese/English labels",
@@ -73,7 +74,8 @@
     "technology/province_fuel_generation_cost_by_year.csv": "Province-year fuel generation costs and availability flags",
     "technology/emission_factors_by_year.csv": "Year-specific fossil residual and BECCS emission factors",
     "technology/dac_parameters_by_year.csv": "DAC capacity, cost, energy and lifetime parameters",
-    "technology/ccs_cost_parameters.csv": "CO2 capture, transport and injection costs",
+    "technology/ccs_cost_parameters.csv": "CO2 capture, transport and injection costs in 2025 constant CNY",
+    "technology/technoeconomic_price_basis_manifest.json": "Auditable production marker for technoeconomic_2025_cny_v2 conversion",
     "load_center_network/city_337/load_centers.csv": "337 city load centers and province demand shares",
     "load_center_network/city_337/vre_routes.csv": "Jointly optimized VRE-site to substation/city-center routing",
     "load_center_network/city_337/hydro_routes.csv": "Jointly optimized hydropower-station to substation/city-center routing",

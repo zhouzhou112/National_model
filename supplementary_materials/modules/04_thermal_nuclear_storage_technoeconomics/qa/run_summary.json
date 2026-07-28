@@ -1,0 +1,22 @@
+{
+  "module": "04_thermal_nuclear_storage_technoeconomics",
+  "generated_at": "2026-07-28",
+  "git_head_at_audit": "701b9bc225013a5009dcce3f4e97ee2063dcd00f",
+  "price_reporting_basis": "2025 constant CNY",
+  "cpi_2022_to_2025_factor": 1.004004,
+  "active_model_inputs_mutated": false,
+  "table_count": 15,
+  "figure_data_count": 10,
+  "figure_count": 12,
+  "qa_pass": 19,
+  "qa_fail": 0,
+  "key_active_values": {
+    "real_wacc_fraction": 0.074,
+    "battery_2030_floor_gw": 65.85,
+    "phs_2030_floor_gw": 65.94,
+    "phs_2030_upper_gw": 249.191,
+    "nuclear_2030_floor_gw": 106.76400000000001,
+    "nuclear_2030_upper_gw": 109.99999999999999
+  },
+  "formal_terminal_marker": "FINAL_M04_TECHNOECONOMIC_CLOSURE_PASS"
+}

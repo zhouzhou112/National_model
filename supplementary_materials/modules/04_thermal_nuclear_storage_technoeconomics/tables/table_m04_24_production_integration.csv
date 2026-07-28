@@ -1,0 +1,11 @@
+parameter_family,source_basis,conversion_rule,production_value_or_scope,runtime_authority,implementation_status
+domestic_CISPO_cost_trajectories,2022 constant CNY,multiply every planning-year value by 1.004004,2030/2040/2050/2060 all transformed once,config/technoeconomic_price_basis_2025.json,APPLIED_PRODUCTION
+nuclear_capex,source USD/kW,multiply 2800/2650/2500/2350 by 7.1429,20000.12/18928.685/17857.25/16785.815 CNY/kW,data/technology/technology_capex_by_year.csv,APPLIED_PRODUCTION
+provincial_fuel_prices,published USD/GJ,multiply by 7.1429 and hold real values through 2060,31-province structural planning prices,data/technology/province_fuel_prices.csv,APPLIED_PRODUCTION
+CCS_capture,2022 CNY/tCO2,multiply 260 by 1.004004,261.04104 CNY/tCO2,data/technology/ccs_cost_parameters.csv,APPLIED_PRODUCTION
+CCS_transport,multi-source 2025-CNY synthesis,direct central value,0.50 CNY/tCO2/km,data/technology/ccs_cost_parameters.csv,APPLIED_PRODUCTION
+CCS_storage,multi-source 2025-CNY synthesis,direct central value,45 CNY/tCO2,data/technology/ccs_cost_parameters.csv,APPLIED_PRODUCTION
+wave_energy,2024 EUR source,multiply source EUR values by 8.1185,all wave CapEx and adders,config/optimization_2030.json,APPLIED_PRODUCTION
+technical_parameters,physical or dimensionless,no monetary rebasing,efficiency heat-rate lifetime WACC constraints,existing runtime inputs,UNCHANGED
+load_center_regularization,numerical tie-breaker,no monetary rebasing,0.001 CNY/MWh,config/optimization_2030.json,EXPLICIT_EXCEPTION
+flexible_load_costs,illustrative research scenario,no CISPO rebasing,2 and 50 CNY/MWh when scenario enabled,config/optimization_2030.json,EXPLICIT_EXCEPTION
