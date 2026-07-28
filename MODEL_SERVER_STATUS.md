@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 当前 M1 168h 四根 basis 门禁闭合；不申请 744h
+
+- 本地当前提交顺序完成 2030 cold/warm、2030 diagnostic-state bridge、2040 cold/warm。四根都是 `OPTIMAL + solution_qc=PASS + closed manifest`，同年 objective 完全相同；2030 solver `520.266 → 10.874 s`，2040 `489.268 → 14.257 s`，warm 均为 0 Barrier/0 simplex。2040 只接受标注为 test-only 的 2030 state，basis 只来自 2040 cold；没有跨年 basis。
+- 这给出同构 168h 重解的明确加速证据，但不能授权 744h：孤立 744h warm 必须先额外运行同配置 cold 744h 才会有 source basis，当前没有第二个同构 744h 目标，因而无净端到端收益。结论是“不申请、不启动”，而不是将 168h 优势外推为全年表现。
+- 本里程碑只写入本地 outputs 和交接记录；没有重新读取或改变固定服务器、ParaCloud 或任何远程数据。远程状态仍为易变信息，若未来出现已授权的重复运行需求，须从 Git/进程/RAM/swap/队列的实时只读核验重新开始。
+
 ## 2026-07-28 M0/M1 仅本地闭合；现有 168h roots 降为历史证据
 
 - 本地实现提交 `a5e34bf5357301c205b246b0aa2149db0dca9c3b` 完成 M0/M1，未推送、未部署。M0 的 `run_identity` 已拆成 `scientific_case`、`lp_topology`、`solver_runtime`、`implementation_bundle`；basis 的唯一硬兼容条件是完整 raw LP topology（变量/约束顺序与方向、维度、NNZ、raw CSR pattern），其余层只作审计。故纯文档提交不会废弃 basis，但活动模型结构变化必定拒绝。
