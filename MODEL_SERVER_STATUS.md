@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-28 swap 不是 cache；保持暂停
+
+- 实时 `/proc` 诊断：`Cached+Buffers` 仅约 `5.6 GiB`，但匿名页约 `49.5 GiB`、inactive anonymous 页约 `34.6 GiB`。swap `19.1/21 GiB` 主要归属仍在运行的 GPU `wind_power` Python（`VmSwap 8.18 GiB`）和两组 MATLAB（`6.01/2.28 GiB`），不是可由 `drop_caches` 清除的文件缓存。
+- 5 秒 `vmstat` 的 `si/so=0` 且 memory/IO PSI 均为 0，表明此刻没有持续换页；但这些 swapped pages 仍属于活跃作业。虽有约 `70 GiB` available RAM，`swapoff/swapon` 会进行约 19 GiB 主机级页面回迁并干扰其工作负荷，未取得明确授权前不执行。无 CISPO/Gurobi，但服务器仍暂停部署和求解。
+
+## 2026-07-28 重复 COMID 水量守恒修复仅在本地闭合；服务器未部署
+
+- 本地工作树基于 `ed72ba08ff52025cb372fc5c16583c3e05bd38b5`，将同一 GRFR `COMID` 映射的全部水电站改为按 `capacity_potential_gw` 静态份额共享一次扣除环境流量后的河段径流；梯级节点使用成员站分配流量之和。146 个重复河段、319 条共映射站点记录逐组份额和均为 1。实现尚未提交、推送或部署。
+- 完整本地回归 `116/116 PASS`。隔离 1 h/24 h Base 根 `outputs/2030_{1h,24h}_v0728_hydro_comid_flow_share_base_v1` 均为 `OPTIMAL + solution_qc=PASS + closed manifest`；24 h 根为 test-only，不能作为年度水电量或系统成本结论。
+- 18:15 后只读服务器核验：checkout 为干净的 `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`；未发现真实 CISPO/Gurobi 进程，约 `70 GiB` available RAM，swap 仍约 `19/21 GiB`。本里程碑没有传输代码/数据、切换 checkout 或启动求解；既有服务器结果全部早于该水量口径修复。
+
 ## 2026-07-28 当前 M1 168h 四根 basis 门禁闭合；不申请 744h
 
 - 本地当前提交顺序完成 2030 cold/warm、2030 diagnostic-state bridge、2040 cold/warm。四根都是 `OPTIMAL + solution_qc=PASS + closed manifest`，同年 objective 完全相同；2030 solver `520.266 → 10.874 s`，2040 `489.268 → 14.257 s`，warm 均为 0 Barrier/0 simplex。2040 只接受标注为 test-only 的 2030 state，basis 只来自 2040 cold；没有跨年 basis。

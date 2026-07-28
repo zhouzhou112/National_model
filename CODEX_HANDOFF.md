@@ -12,6 +12,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-28 对固定服务器 swap 的实时只读诊断否定了“只是 cache”的假设：`Cached + Buffers` 仅约 `5.6 GiB`，而 `AnonPages` 约 `49.5 GiB`、`Inactive(anon)` 约 `34.6 GiB`。约 `19.1 GiB` swap 属于仍在运行的匿名页：活跃 GPU `wind_power` Python（RSS 约 `43.0 GiB`、`VmSwap 8.18 GiB`）及两组 MATLAB（`VmSwap 6.01/2.28 GiB`）已解释约 `16.5 GiB`。`vmstat` 的 `si/so` 和 memory/IO PSI 当前为零，说明没有持续换页，但不表示这些匿名页可丢弃。`drop_caches` 无法降低 swap；`swapoff/swapon` 技术上可在约 70 GiB available RAM 下回迁页面，却会扰动这些活跃的非 CISPO 作业，未获明确主机级授权前不得执行。
+
+- 2026-07-28 已完成常规水电/抽水蓄能的 Module 05（投稿 S6）代码—数据—文档联合审查。本地工作树基于 `ed72ba08ff52025cb372fc5c16583c3e05bd38b5`，实现尚未提交、推送或部署。硬修复为：全部重复 `COMID` 的站点按 `capacity_potential_gw` 静态份额共享一次扣除环境流量后的河段径流；146 个重复 `COMID`、319 条共映射站点记录逐组份额和均闭合为 1，梯级节点改为汇总成员站分配流量。完整本地回归 `116/116 PASS`；新的 1 h 与 24 h Base 根均为 `OPTIMAL + solution_qc=PASS + closed manifest`。24 h 相对修复前参考根的水电发电量减少 `31.509 GWh`、目标增加 `14,149.223 million CNY`（`+0.714%`），仅作为截断工程信号，不能外推年度结论。
+- Module 05 / S6 可复现包位于 `supplementary_materials/modules/05_hydropower_and_pumped_storage`，包含中文方法、15 张表、四联图及 PNG/PDF/SVG、图件源数据、技术档案、风险登记和输出 manifest；生成器不运行优化器，9/9 formal closure checks 通过。当前三个未闭合 P0 是：常规水电清单只形成 297.890 GW 的已识别站点下限而非全国总量、环境流量仍为 2019 单年 monthly P30 运行代理、Base 仍为 VRE 2024/wave 2023/hydro 2019 的混合气象年。不得恢复未去重的省级残差站点分摊，也不得把这些代理写成观测真值。
+- 2026-07-28 18:15 后再次只读核验固定服务器：`/data/zz2/National_model/repo` 为干净的 `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，未发现真实 CISPO/Gurobi 求解进程，约 `70 GiB` 可用 RAM；swap 仍约 `19/21 GiB`。本轮没有切换 checkout、传输输入或启动远程求解，任何未来部署仍须重新实时核验并使用新命名输出根。
 - 2026-07-28 本轮结束时已重新只读核验远程易变状态：固定服务器 `/data/zz2/National_model/repo` 是干净的 `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，未发现 CISPO/Gurobi 进程，约 `70 GiB` 可用 RAM；但 swap 仍为约 `19.1/21 GiB`，并有约 `43.0 GiB RSS` 的无关 Python 进程。ParaCloud `squeue -u a8s001819` 为空。按 runbook 仍是内存压力状态，未部署 `a5e34bf`/`616acb3`、未传数据、未启动任何远程求解；任一后续远程动作前仍须重新核验。
 
 - 2026-07-28 当前 M1 提交的 168h 四根 basis 门禁已完成，全部使用 `barrier_16_auto_order_v2` / `Crossover=1` 且仅为 `TEST_ONLY_TRUNCATED_HORIZON`。2030 cold/warm 分别为 solver `520.266/10.874 s`、RSS `2.924/2.395 GiB`；2040（仅接收明确 2030 diagnostic state bridge）cold/warm 为 `489.268/14.257 s`、RSS `3.038/2.518 GiB`。四根均为 `OPTIMAL + solution_qc=PASS + validate_result_manifest=(True, [])`，warm 全为 0 Barrier/0 simplex，同年 objective 均完全一致；容量最大差 2030 `0`、2040 `7.11e-15 GW`，成本/发电量仅浮点量级。2040 只导入其自身 cold basis，未跨年导入。虽已证明同构重解加速，但孤立 744h basis gate 必须先额外完成同配置 cold 744h 才能产生 basis；当前没有第二次同构 744h 的端到端需求，故不申请也不启动 744h。
@@ -301,6 +306,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.61 — 2026-07-28 — 固定服务器 swap 归因与清理停止条件
+
+- Read-only evidence: `free` 显示约 `70 GiB` available RAM、swap `19.1/21 GiB`；`Cached+Buffers` 仅约 `5.6 GiB`，并非 cache 累积。`/proc` 显示活跃 `wind_power` Python 的 `VmSwap=8.18 GiB`，两组 MATLAB 为 `6.01/2.28 GiB`；`vmstat` 5 秒采样 `si/so=0`，memory/IO PSI 均为 0。
+- Decision: 当前 swap 是未被访问但仍归属于活跃匿名内存的页面。不得使用 `drop_caches`（不能释放 swap）或在未获主机级授权下运行 `swapoff/swapon`（会将约 19 GiB 页面回迁并扰动活动 GPU/MATLAB 作业）。未停止、重启、修改或清理任何非 CISPO 进程；服务器继续不满足 CISPO 部署/求解门槛。
+
+### v0.9.61 — 2026-07-28 — 重复 COMID 水量守恒修复与 Module 05 / S6 审查包
+
+- Git/scope: 本地基线 `ed72ba08ff52025cb372fc5c16583c3e05bd38b5`；本里程碑尚未创建提交。模型改动限于 `cispo_model/{hydro,config}.py`、`config/optimization_2030.json`、`tests/test_hydro_station_model.py` 与 `cispo_full_lp_model_spec.md`；补充材料新增 `supplementary_materials/modules/05_hydropower_and_pumped_storage/**`。既有用户文档和其他模块未覆盖。
+- Root cause/fix: 2,030 条站点记录中有 146 个重复 `COMID`，涉及 319 条站点记录，其中 44 个河段同时映射径流式和水库式站点；旧实现会在非梯级或混合类型映射中重复使用同一 GRFR 河段序列。新配置锁定 `static_capacity_potential_share_v1`，先扣除 2019 monthly P30 环境流，再按技术容量上限分配；逐河段份额和硬校验为 1，梯级节点改为汇总成员站分配流量。该静态规则保持 LP 线性，但候选站未建时不会动态转移份额，已登记为敏感性边界。
+- Commands/evidence: focused hydro tests `10/10 PASS`；`CISPO_WAVE_ROOT` 指向当前 wave 输入后执行完整 `unittest` 为 `116/116 PASS`。隔离根 `outputs/2030_1h_v0728_hydro_comid_flow_share_base_v1` 与 `outputs/2030_24h_v0728_hydro_comid_flow_share_base_v1` 均为 `OPTIMAL + solution_qc=PASS + validate_result_manifest=True`。24 h 新根 raw/presolved 为 `231,076/345,992/1,753,119` 与 `129,500/260,190/1,295,919`，solver `41.70 s`、峰值 RSS `0.742 GiB`；相对修复前参考根，水电发电量 `380.062 → 348.553 GWh`，目标 `+0.714%`。两根均为 `TEST_ONLY_TRUNCATED_HORIZON`。
+- Supplement evidence: Module 05 / S6 生成器只读当前输入和已闭合诊断根，不运行优化器；产出中文方法、15 张表、四联图及 PNG/PDF/SVG、6 份 figure-data CSV、技术档案、来源登记、图注、风险表、QA 与 SHA256 manifest。formal closure `9/9 PASS`，包括 142 节点/124 边的 Kahn 有向无环检验。
+- Unresolved/next action: P0 保持为常规水电清单覆盖不足、正式多年环境流量缺失、混合气象年协方差边界；另需对 115/750 MW 分类代理、22 条非 PASS 梯级时滞、PHS 8 h/效率/省级聚合及水电备用持续时间做敏感性。先由作者审阅风险处置口径并决定是否补建多年 P30 与清单覆盖层；未经批准不恢复旧省级残差、不改变 PHS 功率语义、不部署服务器或放大到 168/744/8760 h。
 
 ### v0.9.59 — 2026-07-28 — M1 168h 四根 basis 工程门禁闭合（本地）
 

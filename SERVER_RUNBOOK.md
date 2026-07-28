@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-28 swap 清理判定规则
+
+若 swap 占用高，先只读检查 `Cached/Buffers`、`AnonPages`、主要进程 `VmSwap`、`vmstat si/so` 和 PSI；不可把 `free` 的 buff/cache 或低当前 I/O 误判为“swap 可清”。本次约 `19.1 GiB` swap 已归因于活跃 Python/MATLAB 的匿名页，`drop_caches` 不会降低它。
+
+只有确认没有会受影响的非 CISPO 作业，或获得主机级明确授权并确认约 `70 GiB` available RAM 仍充足时，才可在维护窗口使用受监控的 `swapoff/swapon` 回迁页面；完成后必须重新核验 RAM、swap、进程与 PSI。当前不满足前一条件，故不执行清理、不部署、不启动 CISPO。
+
+## 2026-07-28 重复 COMID 水量修复的部署前门禁
+
+本地 `static_capacity_potential_share_v1` 修复改变水电可用流量系数但不增加 LP 行列：同一 `COMID` 的站点按 `capacity_potential_gw` 静态份额共享一次扣除环境流量后的河段径流，梯级节点汇总成员站份额。该实现和 Module 05 / S6 审查包已通过 `116/116` 本地回归、1 h/24 h `OPTIMAL + PASS + closed manifest` 与 9/9 补充材料 formal closure；这些都只是本地截断工程证据。
+
+本节不授权部署。18:15 后只读核验的服务器仍为干净 `701b9bc225013a5009dcce3f4e97ee2063dcd00f`、无真实 CISPO/Gurobi 进程、约 70 GiB available RAM，但 swap 约 19/21 GiB；因此继续停止。若未来单独授权部署，必须：
+
+1. 先提交并推送精确实现，确认本地工作树中不混入补充材料或用户无关改动；服务器再次实时核验 clean checkout、进程、RAM/swap 和目标输出根。
+2. fast-forward 到精确提交，并同时设置当前 `CISPO_DATA_ROOT`、`CISPO_CF_ROOT`、`CISPO_HYDRO_ROOT`、`CISPO_WAVE_ROOT`；先运行完整回归和输入 manifest 校验，确认配置项 `duplicate_comid_flow_allocation=static_capacity_potential_share_v1`。
+3. 只在一个全新隔离根运行匹配 24 h，再由作者决定是否需要一个 168 h cold Base 门禁；比较水电发电量、目标、raw/presolved 结构、全部 QC、manifest 与峰值 RSS。不得复用任何旧输出根或把旧 744 h 结果重标为新口径。
+4. 不得由本门禁启动固定服务器 744/8760 h、第二个并发求解或付费云任务。正式多年 P30、清单覆盖、PHS 水力配对和容量语义属于独立科学决策，不能在部署时静默修改。
+
 ## 2026-07-28 M1 168h 四根 basis gate 已闭合后的停止条件
 
 在本地 `a5e34bf` 实现、`barrier_16_auto_order_v2` / `Crossover=1` 下，2030 和 2040 的 cold/warm 四根均已达到 `OPTIMAL + PASS + closed manifest`，同年 objective 完全一致，warm 均为 0 Barrier/0 simplex。2040 仅接收 `2030_168h_v0728_m1_statebridge_local_v1` 的显式 diagnostic state，且只导入其自身 `2040 cold` basis。它们只证明同年、同 raw CSR topology 的截断 LP 可加速，不能转化为年度科学结果或跨年 basis 许可。
