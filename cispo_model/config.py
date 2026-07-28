@@ -320,11 +320,52 @@ class ModelConfig:
             "daily_energy_shift_v1",
             "state_envelope_v2",
             "comfort_envelope_v3",
+            "service_constrained_v4",
         }:
             raise ValueError(
                 "flexible_load.formulation must be daily_energy_shift_v1 "
-                "or state_envelope_v2 or comfort_envelope_v3"
+                "or state_envelope_v2 or comfort_envelope_v3 or "
+                "service_constrained_v4"
             )
+        if flexible_formulation == "service_constrained_v4":
+            if flexible.get("contract_version") != "v4":
+                raise ValueError("service_constrained_v4 requires contract_version=v4")
+            required_v4_files = (
+                "thermal_hourly_envelope_file",
+                "thermal_parameters_file",
+                "ev_availability_hourly_file",
+                "ev_mobility_hourly_file",
+                "enablement_cost_file",
+                "input_manifest_file",
+            )
+            v4_files = flexible.get("v4_input_files", {})
+            missing_v4_files = [
+                key for key in required_v4_files
+                if not str(v4_files.get(key, "")).strip()
+            ]
+            if missing_v4_files:
+                raise ValueError(
+                    "service_constrained_v4 requires v4_input_files: "
+                    + ", ".join(missing_v4_files)
+                )
+            if flexible.get("state_boundary") != "periodic_selected_horizon_v1":
+                raise ValueError(
+                    "service_constrained_v4 requires "
+                    "state_boundary=periodic_selected_horizon_v1"
+                )
+            if float(
+                flexible.get("v4_reference_energy_closure_tolerance_fraction", 0.0)
+            ) < 0.0:
+                raise ValueError(
+                    "service_constrained_v4 EV reference-energy tolerance must be nonnegative"
+                )
+            for component in ("heating", "cooling"):
+                if not bool(flexible.get(component, {}).get("enabled", False)):
+                    raise ValueError(
+                        f"service_constrained_v4 requires flexible_load.{component}.enabled=true"
+                    )
+            if not bool(flexible.get("ev_v1g", {}).get("enabled", False)):
+                raise ValueError("service_constrained_v4 requires ev_v1g.enabled=true")
         if flexible_formulation == "comfort_envelope_v3":
             envelope_file = str(flexible.get("hourly_envelope_file", "")).strip()
             if not envelope_file:
@@ -345,7 +386,7 @@ class ModelConfig:
                         f"flexible_load.{component}."
                         "equivalent_storage_duration_hours must be positive"
                     )
-            else:
+            elif flexible_formulation != "service_constrained_v4":
                 reduction = float(
                     settings.get("maximum_reduction_fraction", -1.0)
                 )
@@ -396,6 +437,14 @@ class ModelConfig:
                     "flexible_load.ev_v1g.maximum_queue_duration_hours must be positive"
                 )
         ev_v2g = flexible.get("ev_v2g", {})
+        if (
+            flexible_formulation == "service_constrained_v4"
+            and ev_v2g.get("state_boundary") != "periodic_selected_horizon_v1"
+        ):
+            raise ValueError(
+                "service_constrained_v4 requires "
+                "ev_v2g.state_boundary=periodic_selected_horizon_v1"
+            )
         for key in ("charge_efficiency", "discharge_efficiency"):
             if not 0.0 < float(ev_v2g.get(key, 0.0)) <= 1.0:
                 raise ValueError(f"flexible_load.ev_v2g.{key} must be in (0, 1]")

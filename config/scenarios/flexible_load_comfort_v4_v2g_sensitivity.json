@@ -1,0 +1,42 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "flexible_load_comfort_v4_v2g_sensitivity",
+  "scenario_family": "demand_flexibility_service_constrained",
+  "description": "V4 V2G sensitivity using the same continuous thermal and fleet-mobility contract as V4 V1G. It is not Base and cannot run until the V4 calibration inputs are supplied and accepted.",
+  "evidence_status": "CALIBRATION_INPUT_CONTRACT_REQUIRED",
+  "overrides": {
+    "features": {
+      "flexible_load": true
+    },
+    "flexible_load": {
+      "contract_version": "v4",
+      "formulation": "service_constrained_v4",
+      "state_boundary": "periodic_selected_horizon_v1",
+      "v4_reference_energy_closure_tolerance_fraction": 0.000001,
+      "v4_input_files": {
+        "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v4.csv.gz",
+        "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v4.csv",
+        "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v4.csv.gz",
+        "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v4.csv.gz",
+        "enablement_cost_file": "flexibility/flex_enablement_cost_v4.csv",
+        "input_manifest_file": "flexibility/flexible_load_v4.manifest.json"
+      },
+      "heating": {
+        "enabled": true
+      },
+      "cooling": {
+        "enabled": true
+      },
+      "ev_v1g": {
+        "enabled": true
+      },
+      "ev_v2g": {
+        "enabled": true,
+        "state_boundary": "periodic_selected_horizon_v1"
+      },
+      "parameter_status": {
+        "v2g_scope": "Sensitivity only: a single fleet SOC must satisfy driving withdrawals and departure minima before any V2G discharge can be credited; 300/600/1100 CNY/MWh degradation and compensation cases belong in the V4 cost input, not in Base."
+      }
+    }
+  }
+}

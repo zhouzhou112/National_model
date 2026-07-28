@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
+import json
 import os
 from pathlib import Path
 from pathlib import PureWindowsPath
@@ -37,6 +39,14 @@ def _read(relative_path: str, **kwargs) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(path)
     return pd.read_csv(path, **kwargs)
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def require_columns(frame: pd.DataFrame, columns: Iterable[str], label: str) -> None:
@@ -249,12 +259,25 @@ class CapacityFactorStore:
 
 
 @dataclass
+class FlexibleLoadV4Data:
+    """Validated V4 service-contract inputs in canonical province-hour order."""
+
+    thermal_envelopes_gw: dict[str, np.ndarray]
+    thermal_availability: dict[str, np.ndarray]
+    thermal_parameters: dict[str, dict[str, np.ndarray]]
+    ev_availability: dict[str, np.ndarray]
+    ev_mobility: dict[str, np.ndarray]
+    service_costs: dict[str, dict[str, np.ndarray]]
+
+
+@dataclass
 class ModelData:
     provinces: pd.DataFrame
     load: pd.DataFrame
     load_gw: np.ndarray
     load_components_gw: dict[str, np.ndarray]
     flexible_load_envelopes_gw: dict[str, np.ndarray]
+    flexible_load_v4: FlexibleLoadV4Data | None
     vre_points: pd.DataFrame
     vre_sites: pd.DataFrame
     vre_existing_cohorts: pd.DataFrame
@@ -263,6 +286,8 @@ class ModelData:
     nuclear_floor: pd.DataFrame
     nuclear_upper: pd.DataFrame
     hydro_stations: pd.DataFrame
+    hydro_aggregate_capacity: pd.DataFrame
+    hydro_aggregate_availability_cf: np.ndarray
     hydro_cascade_nodes: pd.DataFrame
     hydro_cascade_edges: pd.DataFrame
     biomass: pd.DataFrame
@@ -642,6 +667,306 @@ def _apply_existing_vre_cohort_floors(
     return vre_sites, cohort
 
 
+def _load_flexible_load_v4_data(
+    config: ModelConfig,
+    *,
+    provinces: pd.DataFrame,
+    load_components_gw: dict[str, np.ndarray],
+    expected_rows: int,
+    require_manifest: bool = True,
+) -> FlexibleLoadV4Data:
+    """Load the explicit V4 thermal-service and EV-mobility data contract.
+
+    The contract is intentionally fail-closed: an hourly uncontrolled EV load
+    profile cannot stand in for connection availability, battery energy,
+    driving withdrawals, or departure service.
+    """
+    flexible = config.raw["flexible_load"]
+    files = flexible.get("v4_input_files", {})
+    required_files = (
+        "thermal_hourly_envelope_file",
+        "thermal_parameters_file",
+        "ev_availability_hourly_file",
+        "ev_mobility_hourly_file",
+        "enablement_cost_file",
+        "input_manifest_file",
+    )
+    missing_files = [key for key in required_files if not str(files.get(key, "")).strip()]
+    if missing_files:
+        raise ValueError(
+            "service_constrained_v4 missing v4_input_files: "
+            + ", ".join(missing_files)
+        )
+    if require_manifest:
+        manifest_path = DATA_ROOT / str(files["input_manifest_file"])
+        if not manifest_path.is_file():
+            raise FileNotFoundError(
+                "service_constrained_v4 requires a V4 calibration manifest: "
+                f"{manifest_path}"
+            )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("contract_version") != "flexible_load_v4":
+            raise ValueError("V4 calibration manifest has an unsupported contract_version")
+        source_manifests = manifest.get("source_manifests")
+        if not isinstance(source_manifests, list) or not source_manifests:
+            raise ValueError("V4 calibration manifest must record nonempty source_manifests")
+        generated_files = manifest.get("generated_files", {})
+        if not isinstance(generated_files, dict):
+            raise ValueError("V4 calibration manifest is missing generated_files")
+        for key in required_files:
+            if key == "input_manifest_file":
+                continue
+            logical_path = str(files[key])
+            record = generated_files.get(logical_path, {})
+            expected_sha = str(record.get("sha256", ""))
+            resolved = DATA_ROOT / logical_path
+            if not expected_sha or not resolved.is_file():
+                raise ValueError(
+                    f"V4 calibration manifest does not close generated input {logical_path}"
+                )
+            if _sha256_file(resolved) != expected_sha:
+                raise ValueError(
+                    f"V4 calibration manifest SHA256 mismatch for {logical_path}"
+                )
+    province_order = provinces.province_code.astype(int).tolist()
+    hours = config.hours
+
+    def hourly_matrix(
+        frame: pd.DataFrame,
+        *,
+        value: str,
+        label: str,
+        lower: float = 0.0,
+        upper: float | None = None,
+    ) -> np.ndarray:
+        selected = frame.loc[frame.year.eq(config.planning_year)].copy()
+        if len(selected) != expected_rows:
+            raise ValueError(
+                f"{config.planning_year} {label} rows={len(selected)}; "
+                f"expected {expected_rows}"
+            )
+        if selected.duplicated(["province_code", "hour_index"]).any():
+            raise ValueError(f"Duplicate province-hour rows in {label}")
+        pivot = selected.pivot(
+            index="province_code", columns="hour_index", values=value
+        ).reindex(index=province_order, columns=range(hours))
+        values = pivot.to_numpy(dtype=np.float64)
+        if not np.isfinite(values).all() or (values < lower - 1e-12).any():
+            raise ValueError(f"{label}.{value} contains non-finite or below-bound values")
+        if upper is not None and (values > upper + 1e-12).any():
+            raise ValueError(f"{label}.{value} exceeds {upper}")
+        return values
+
+    envelope_columns = {
+        "heating_up": "heating_increase_limit_gw",
+        "heating_down": "heating_reduction_limit_gw",
+        "cooling_up": "cooling_increase_limit_gw",
+        "cooling_down": "cooling_reduction_limit_gw",
+        "heating_availability": "heating_availability_fraction",
+        "cooling_availability": "cooling_availability_fraction",
+    }
+    envelope = _read(
+        str(files["thermal_hourly_envelope_file"]),
+        usecols=["province_code", "year", "hour_index", *envelope_columns.values()],
+    )
+    require_columns(envelope, ["province_code", "year", "hour_index"], "V4 thermal envelope")
+    thermal_values = {
+        name: hourly_matrix(
+            envelope,
+            value=column,
+            label="V4 thermal envelope",
+            upper=1.0 if name.endswith("availability") else None,
+        )
+        for name, column in envelope_columns.items()
+    }
+    thermal_envelopes = {
+        "heating_up": thermal_values["heating_up"],
+        "heating_down": thermal_values["heating_down"],
+        "cooling_up": thermal_values["cooling_up"],
+        "cooling_down": thermal_values["cooling_down"],
+    }
+    thermal_availability = {
+        "heating": thermal_values["heating_availability"],
+        "cooling": thermal_values["cooling_availability"],
+    }
+    for component in ("heating", "cooling"):
+        if float(
+            (thermal_envelopes[f"{component}_down"] - load_components_gw[component]).max()
+        ) > 1e-9:
+            raise ValueError(f"V4 {component} reduction envelope exceeds baseline load")
+        active = np.maximum(
+            thermal_envelopes[f"{component}_up"],
+            thermal_envelopes[f"{component}_down"],
+        ) > 1e-12
+        if (active & (thermal_availability[component] <= 1e-12)).any():
+            raise ValueError(
+                f"V4 {component} has a positive envelope with zero availability"
+            )
+
+    thermal_parameter_columns = (
+        "retention_per_hour",
+        "charge_efficiency",
+        "discharge_efficiency",
+        "positive_state_duration_hours",
+        "negative_state_duration_hours",
+    )
+    thermal_parameters_raw = _read(
+        str(files["thermal_parameters_file"]),
+        usecols=["province_code", "year", "component", *thermal_parameter_columns],
+    )
+    selected_parameters = thermal_parameters_raw.loc[
+        thermal_parameters_raw.year.eq(config.planning_year)
+        & thermal_parameters_raw.component.isin(["heating", "cooling"])
+    ].copy()
+    expected_parameter_rows = len(province_order) * 2
+    if len(selected_parameters) != expected_parameter_rows:
+        raise ValueError(
+            f"V4 thermal parameter rows={len(selected_parameters)}; "
+            f"expected {expected_parameter_rows}"
+        )
+    if selected_parameters.duplicated(["province_code", "component"]).any():
+        raise ValueError("Duplicate province-component rows in V4 thermal parameters")
+    thermal_parameters: dict[str, dict[str, np.ndarray]] = {}
+    for component in ("heating", "cooling"):
+        subset = selected_parameters.loc[
+            selected_parameters.component.eq(component)
+        ].set_index("province_code").reindex(province_order)
+        if subset.isna().any().any():
+            raise ValueError(f"Missing province rows in V4 {component} parameters")
+        values = {
+            column: subset[column].to_numpy(dtype=np.float64)
+            for column in thermal_parameter_columns
+        }
+        if not (np.isfinite(np.stack(tuple(values.values()))).all()):
+            raise ValueError(f"Non-finite V4 {component} parameters")
+        if not ((values["retention_per_hour"] > 0.0) & (values["retention_per_hour"] <= 1.0)).all():
+            raise ValueError(f"V4 {component} retention_per_hour must be in (0, 1]")
+        for column in (
+            "charge_efficiency",
+            "discharge_efficiency",
+        ):
+            if not ((values[column] > 0.0) & (values[column] <= 1.0)).all():
+                raise ValueError(f"V4 {component} {column} must be in (0, 1]")
+        for column in (
+            "positive_state_duration_hours",
+            "negative_state_duration_hours",
+        ):
+            if not (values[column] > 0.0).all():
+                raise ValueError(f"V4 {component} {column} must be positive")
+        thermal_parameters[component] = values
+
+    availability_columns = (
+        "connected_vehicle_fraction",
+        "available_charge_power_gw",
+        "available_discharge_power_gw",
+        "fleet_energy_capacity_gwh",
+    )
+    ev_availability_raw = _read(
+        str(files["ev_availability_hourly_file"]),
+        usecols=["province_code", "year", "hour_index", *availability_columns],
+    )
+    ev_availability = {
+        column: hourly_matrix(
+            ev_availability_raw,
+            value=column,
+            label="V4 EV availability",
+            upper=1.0 if column == "connected_vehicle_fraction" else None,
+        )
+        for column in availability_columns
+    }
+    if (
+        ev_availability["available_charge_power_gw"]
+        + 1e-12
+        < load_components_gw["ev"]
+    ).any():
+        raise ValueError(
+            "V4 EV available_charge_power_gw must retain the immutable "
+            "uncontrolled EV baseline as a feasible reference"
+        )
+
+    mobility_columns = (
+        "driving_energy_withdrawal_gwh",
+        "minimum_departure_energy_gwh",
+    )
+    ev_mobility_raw = _read(
+        str(files["ev_mobility_hourly_file"]),
+        usecols=["province_code", "year", "hour_index", *mobility_columns],
+    )
+    ev_mobility = {
+        column: hourly_matrix(
+            ev_mobility_raw,
+            value=column,
+            label="V4 EV mobility",
+        )
+        for column in mobility_columns
+    }
+    if (
+        ev_mobility["minimum_departure_energy_gwh"]
+        > ev_availability["fleet_energy_capacity_gwh"] + 1e-9
+    ).any():
+        raise ValueError("V4 EV minimum departure energy exceeds fleet energy capacity")
+    eta_charge = float(flexible["ev_v2g"]["charge_efficiency"])
+    reference_grid_energy = load_components_gw["ev"].sum(axis=1)
+    reconstructed_grid_energy = (
+        ev_mobility["driving_energy_withdrawal_gwh"].sum(axis=1) / eta_charge
+    )
+    closure_fraction = np.divide(
+        np.abs(reconstructed_grid_energy - reference_grid_energy),
+        np.maximum(reference_grid_energy, 1e-9),
+    )
+    tolerance_fraction = float(
+        flexible.get("v4_reference_energy_closure_tolerance_fraction", 1e-6)
+    )
+    if (closure_fraction > tolerance_fraction).any():
+        raise ValueError(
+            "V4 EV mobility withdrawals do not close to the immutable EV "
+            f"baseline within {tolerance_fraction:g}"
+        )
+
+    service_columns = (
+        "enablement_cost_yuan_per_kw_year",
+        "activation_cost_yuan_per_mwh",
+        "comfort_debt_cost_yuan_per_gwh_hour",
+    )
+    service_cost_raw = _read(
+        str(files["enablement_cost_file"]),
+        usecols=["province_code", "year", "service", *service_columns],
+    )
+    selected_cost = service_cost_raw.loc[
+        service_cost_raw.year.eq(config.planning_year)
+        & service_cost_raw.service.isin(["heating", "cooling", "ev_v1g", "ev_v2g"])
+    ].copy()
+    expected_cost_rows = len(province_order) * 4
+    if len(selected_cost) != expected_cost_rows:
+        raise ValueError(
+            f"V4 service-cost rows={len(selected_cost)}; expected {expected_cost_rows}"
+        )
+    if selected_cost.duplicated(["province_code", "service"]).any():
+        raise ValueError("Duplicate province-service rows in V4 service costs")
+    service_costs: dict[str, dict[str, np.ndarray]] = {}
+    for service in ("heating", "cooling", "ev_v1g", "ev_v2g"):
+        subset = selected_cost.loc[selected_cost.service.eq(service)].set_index(
+            "province_code"
+        ).reindex(province_order)
+        values = {
+            column: subset[column].to_numpy(dtype=np.float64)
+            for column in service_columns
+        }
+        if not np.isfinite(np.stack(tuple(values.values()))).all() or any(
+            (value < 0.0).any() for value in values.values()
+        ):
+            raise ValueError(f"V4 {service} costs must be finite and nonnegative")
+        service_costs[service] = values
+    return FlexibleLoadV4Data(
+        thermal_envelopes_gw=thermal_envelopes,
+        thermal_availability=thermal_availability,
+        thermal_parameters=thermal_parameters,
+        ev_availability=ev_availability,
+        ev_mobility=ev_mobility,
+        service_costs=service_costs,
+    )
+
+
 def load_model_data(
     config: ModelConfig,
     planning_state: PlanningState | None = None,
@@ -698,6 +1023,7 @@ def load_model_data(
         )
 
     flexible_load_envelopes_gw: dict[str, np.ndarray] = {}
+    flexible_load_v4: FlexibleLoadV4Data | None = None
     flexible_formulation = str(
         config.raw["flexible_load"].get("formulation", "daily_energy_shift_v1")
     )
@@ -772,6 +1098,16 @@ def load_model_data(
                     f"{component} reduction envelope exceeds baseline load by "
                     f"{float(violation.max()):.6g} GW"
                 )
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and flexible_formulation == "service_constrained_v4"
+    ):
+        flexible_load_v4 = _load_flexible_load_v4_data(
+            config,
+            provinces=provinces,
+            load_components_gw=load_components_gw,
+            expected_rows=expected_load_rows,
+        )
 
     point_columns = [
         "grid_uid", "grid_id", "province_code", "lon", "lat", "is_land",
@@ -868,6 +1204,133 @@ def load_model_data(
             "operation_type_scope", "river_group_stage2", "stage2_issue_flags",
         ],
     )
+    hydro_config = config.raw["hydro"]
+    hydro_aggregate_capacity = _read(
+        str(hydro_config["provincial_aggregate_capacity_file"]),
+        usecols=[
+            "province_code",
+            "province_name_en",
+            "province_name_zh",
+            "identified_station_capacity_gw",
+            "non_additive_union_floor_gw",
+            "harmonized_conventional_capacity_gw",
+            "provincial_aggregate_capacity_gw",
+            "station_technical_upper_gw",
+            "harmonized_future_technical_upper_gw",
+            "allocation_method",
+            "aggregate_physical_scope",
+        ],
+    ).sort_values("province_code").reset_index(drop=True)
+    if (
+        len(hydro_aggregate_capacity) != len(provinces)
+        or hydro_aggregate_capacity.duplicated("province_code").any()
+        or set(hydro_aggregate_capacity.province_code) != set(province_order)
+    ):
+        raise ValueError(
+            "Provincial aggregate hydropower capacity must cover all 31 provinces"
+        )
+    hydro_aggregate_capacity = (
+        provinces.merge(
+            hydro_aggregate_capacity,
+            on=["province_code", "province_name_en", "province_name_zh"],
+            how="left",
+            validate="one_to_one",
+        )
+        .sort_values("province_code")
+        .reset_index(drop=True)
+    )
+    aggregate_capacity = hydro_aggregate_capacity[
+        "provincial_aggregate_capacity_gw"
+    ].to_numpy(dtype=float)
+    harmonized_capacity = hydro_aggregate_capacity[
+        "harmonized_conventional_capacity_gw"
+    ].to_numpy(dtype=float)
+    if (
+        not np.isfinite(aggregate_capacity).all()
+        or (aggregate_capacity < -1e-9).any()
+        or not np.isfinite(harmonized_capacity).all()
+    ):
+        raise ValueError("Provincial aggregate hydropower capacity is invalid")
+    station_capacity_by_province = (
+        hydro.groupby("province_code").existing_capacity_gw.sum()
+        .reindex(province_order, fill_value=0.0)
+        .to_numpy(dtype=float)
+    )
+    table_station_capacity = hydro_aggregate_capacity[
+        "identified_station_capacity_gw"
+    ].to_numpy(dtype=float)
+    if not np.allclose(
+        table_station_capacity,
+        station_capacity_by_province,
+        rtol=0.0,
+        atol=1e-9,
+    ):
+        raise ValueError(
+            "Provincial aggregate hydropower table does not match the station floor"
+        )
+    national_target = float(
+        hydro_config["provincial_aggregate_national_conventional_target_gw"]
+    )
+    if (
+        not np.isclose(harmonized_capacity.sum(), national_target, atol=1e-8)
+        or not np.allclose(
+            station_capacity_by_province + aggregate_capacity,
+            harmonized_capacity,
+            rtol=0.0,
+            atol=1e-9,
+        )
+    ):
+        raise ValueError(
+            "Station plus provincial aggregate hydropower does not close to "
+            f"{national_target:g} GW"
+        )
+    hydro_aggregate_profile = _read(
+        str(hydro_config["provincial_aggregate_monthly_profile_file"]),
+        usecols=[
+            "province_code",
+            "month",
+            "availability_capacity_factor",
+            "profile_source",
+            "hydrology_year",
+            "environmental_flow_method",
+            "dispatch_treatment",
+        ],
+    )
+    if (
+        len(hydro_aggregate_profile) != len(provinces) * 12
+        or hydro_aggregate_profile.duplicated(["province_code", "month"]).any()
+        or set(hydro_aggregate_profile.province_code) != set(province_order)
+        or set(hydro_aggregate_profile.month) != set(range(1, 13))
+    ):
+        raise ValueError(
+            "Provincial aggregate hydropower profile requires 12 months for "
+            "each of 31 provinces"
+        )
+    aggregate_profile_pivot = hydro_aggregate_profile.pivot(
+        index="province_code",
+        columns="month",
+        values="availability_capacity_factor",
+    ).reindex(index=province_order, columns=range(1, 13))
+    aggregate_profile_values = aggregate_profile_pivot.to_numpy(dtype=float)
+    if (
+        not np.isfinite(aggregate_profile_values).all()
+        or (aggregate_profile_values < 0.0).any()
+        or (aggregate_profile_values > 1.0).any()
+    ):
+        raise ValueError(
+            "Provincial aggregate hydropower availability factors must be in [0, 1]"
+        )
+    model_time = (
+        load[["hour_index", "datetime_bj"]]
+        .drop_duplicates("hour_index")
+        .sort_values("hour_index")
+    )
+    if len(model_time) != config.hours:
+        raise ValueError(
+            "Provincial aggregate hydropower cannot resolve the model time axis"
+        )
+    model_month = pd.to_datetime(model_time.datetime_bj).dt.month.to_numpy(dtype=int)
+    hydro_aggregate_availability_cf = aggregate_profile_values[:, model_month - 1]
     try:
         hydro_cascade_nodes = _read(
             "hydro/cascade_topology_nodes.csv",
@@ -1232,6 +1695,7 @@ def load_model_data(
         load_gw=load_pivot.to_numpy(dtype=np.float64),
         load_components_gw=load_components_gw,
         flexible_load_envelopes_gw=flexible_load_envelopes_gw,
+        flexible_load_v4=flexible_load_v4,
         vre_points=points,
         vre_sites=vre_sites,
         vre_existing_cohorts=vre_existing_cohorts,
@@ -1240,6 +1704,8 @@ def load_model_data(
         nuclear_floor=nuclear_floor,
         nuclear_upper=nuclear_upper,
         hydro_stations=hydro,
+        hydro_aggregate_capacity=hydro_aggregate_capacity,
+        hydro_aggregate_availability_cf=hydro_aggregate_availability_cf,
         hydro_cascade_nodes=hydro_cascade_nodes,
         hydro_cascade_edges=hydro_cascade_edges,
         biomass=biomass,

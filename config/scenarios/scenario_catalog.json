@@ -4,5 +4,16 @@
     {"scenario_id": "base", "config": "config/scenarios/base.json"},
     {"scenario_id": "flexible_load_comfort_v3_v2g_5pct", "config": "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"}
   ],
-  "planned_not_runnable": []
+  "planned_not_runnable": [
+    {
+      "scenario_id": "flexible_load_comfort_v4_v1g",
+      "config": "config/scenarios/flexible_load_comfort_v4_v1g.json",
+      "reason": "province-year thermal-service, EV availability/mobility and enablement-cost calibration inputs"
+    },
+    {
+      "scenario_id": "flexible_load_comfort_v4_v2g_sensitivity",
+      "config": "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json",
+      "reason": "same V4 input acceptance; V2G remains sensitivity-only"
+    }
+  ]
 }

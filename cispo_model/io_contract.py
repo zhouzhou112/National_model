@@ -129,10 +129,18 @@ NPZ_DIMENSIONS = {
         "ev_v1g_shift_down_gw": "province,hour",
         "heating_state_gwh": "province,hour",
         "cooling_state_gwh": "province,hour",
+        "heating_comfort_debt_gwh": "province,hour",
+        "cooling_comfort_debt_gwh": "province,hour",
         "ev_v1g_backlog_gwh": "province,hour",
         "ev_v2g_charge_gw": "province,hour",
         "ev_v2g_discharge_gw": "province,hour",
         "ev_v2g_soc_gwh": "province,hour",
+        "ev_mobility_charge_gw": "province,hour",
+        "ev_mobility_discharge_gw": "province,hour",
+        "ev_mobility_soc_gwh": "province,hour",
+        "ev_mobility_charge_deviation_gw": "province,hour",
+        "flexible_service_capacity_gw": "province,service",
+        "flexible_service_names": "service",
         "province_codes": "province",
         "hour_index": "hour",
     },
@@ -390,6 +398,37 @@ def write_run_provenance(
                 .with_suffix(".manifest.json")
             ),
             envelope_manifest,
+            True,
+        )
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and str(
+            config.raw["flexible_load"].get(
+                "formulation", "daily_energy_shift_v1"
+            )
+        )
+        == "service_constrained_v4"
+    ):
+        v4_files = config.raw["flexible_load"].get("v4_input_files", {})
+        for key in (
+            "thermal_hourly_envelope_file",
+            "thermal_parameters_file",
+            "ev_availability_hourly_file",
+            "ev_mobility_hourly_file",
+            "enablement_cost_file",
+        ):
+            logical_path = str(v4_files[key])
+            add_file(
+                "scenario_model_table",
+                logical_path,
+                data_root / logical_path,
+                True,
+            )
+        manifest_logical_path = str(v4_files["input_manifest_file"])
+        add_file(
+            "scenario_validation_sidecar",
+            manifest_logical_path,
+            data_root / manifest_logical_path,
             True,
         )
     if bool(config.raw["features"].get("wave_energy", False)):

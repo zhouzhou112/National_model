@@ -64,7 +64,26 @@ def export_operational_solution(
     ev_down = _value(variables.get("ev_v1g_shift_down", zero_load))
     heating_state = _value(variables.get("heating_state", zero_load))
     cooling_state = _value(variables.get("cooling_state", zero_load))
+    heating_comfort_debt = _value(
+        variables.get("heating_comfort_debt", zero_load)
+    )
+    cooling_comfort_debt = _value(
+        variables.get("cooling_comfort_debt", zero_load)
+    )
     ev_backlog = _value(variables.get("ev_v1g_backlog", zero_load))
+    ev_mobility_charge = _value(
+        variables.get("ev_mobility_charge", zero_load)
+    )
+    ev_mobility_discharge = _value(
+        variables.get("ev_mobility_discharge", zero_load)
+    )
+    ev_mobility_soc = _value(variables.get("ev_mobility_soc", zero_load))
+    ev_mobility_charge_deviation = _value(
+        variables.get("ev_mobility_charge_deviation", zero_load)
+    )
+    flexible_service_capacity = _value(
+        variables.get("flexible_service_capacity", np.zeros((p_count, 4)))
+    )
     ev_grid_charge_power_ub = _value(
         variables.get("ev_grid_charge_power_ub", baseline_components["ev"])
     )
@@ -257,9 +276,113 @@ def export_operational_solution(
             float(np.abs(values).max())
             for values in backlog_terminal_residuals
         )
+    v4_formulation = flexible_formulation == "service_constrained_v4"
+    v4_thermal_transition_max = {"heating": 0.0, "cooling": 0.0}
+    v4_thermal_periodic_max = {"heating": 0.0, "cooling": 0.0}
+    v4_thermal_positive_bound_violation = {"heating": 0.0, "cooling": 0.0}
+    v4_thermal_negative_bound_violation = {"heating": 0.0, "cooling": 0.0}
+    v4_thermal_debt_violation = {"heating": 0.0, "cooling": 0.0}
+    v4_ev_transition_max = 0.0
+    v4_ev_departure_violation = 0.0
+    v4_ev_soc_upper_violation = 0.0
+    v4_ev_charge_power_violation = 0.0
+    v4_ev_discharge_power_violation = 0.0
+    if v4_formulation:
+        if data.flexible_load_v4 is None:
+            raise ValueError("V4 solution export requires validated V4 input data")
+        v4 = data.flexible_load_v4
+        capacity_index = {"heating": 0, "cooling": 1, "ev_v1g": 2, "ev_v2g": 3}
+        for component, state, charge, discharge, debt in (
+            ("heating", heating_state, heating_up, heating_down, heating_comfort_debt),
+            ("cooling", cooling_state, cooling_up, cooling_down, cooling_comfort_debt),
+        ):
+            parameters = v4.thermal_parameters[component]
+            retention = parameters["retention_per_hour"][:, None]
+            eta_c = parameters["charge_efficiency"][:, None]
+            eta_d = parameters["discharge_efficiency"][:, None]
+            periodic = (
+                state[:, 0]
+                - retention[:, 0] * state[:, -1]
+                - eta_c[:, 0] * charge[:, 0]
+                + discharge[:, 0] / eta_d[:, 0]
+            )
+            transitions = [periodic]
+            if hours > 1:
+                transitions.append(
+                    state[:, 1:]
+                    - retention * state[:, :-1]
+                    - eta_c * charge[:, 1:]
+                    + discharge[:, 1:] / eta_d
+                )
+            k = flexible_service_capacity[:, capacity_index[component]][:, None]
+            positive = parameters["positive_state_duration_hours"][:, None] * k
+            negative = parameters["negative_state_duration_hours"][:, None] * k
+            v4_thermal_transition_max[component] = max(
+                float(np.abs(values).max()) for values in transitions
+            )
+            v4_thermal_periodic_max[component] = float(np.abs(periodic).max())
+            v4_thermal_positive_bound_violation[component] = float(
+                np.maximum(state - positive, 0.0).max()
+            )
+            v4_thermal_negative_bound_violation[component] = float(
+                np.maximum(-negative - state, 0.0).max()
+            )
+            v4_thermal_debt_violation[component] = float(
+                np.maximum(-state - debt, 0.0).max()
+            )
+        ev_settings = config.raw["flexible_load"]["ev_v2g"]
+        eta_c = float(ev_settings["charge_efficiency"])
+        eta_d = float(ev_settings["discharge_efficiency"])
+        retention = 1.0 - float(ev_settings["self_discharge_fraction_per_hour"])
+        withdrawal = v4.ev_mobility["driving_energy_withdrawal_gwh"][:, :hours]
+        periodic = (
+            ev_mobility_soc[:, 0]
+            - retention * ev_mobility_soc[:, -1]
+            - eta_c * ev_mobility_charge[:, 0]
+            + ev_mobility_discharge[:, 0] / eta_d
+            + withdrawal[:, 0]
+        )
+        transitions = [periodic]
+        if hours > 1:
+            transitions.append(
+                ev_mobility_soc[:, 1:]
+                - retention * ev_mobility_soc[:, :-1]
+                - eta_c * ev_mobility_charge[:, 1:]
+                + ev_mobility_discharge[:, 1:] / eta_d
+                + withdrawal[:, 1:]
+            )
+        v4_ev_transition_max = max(float(np.abs(values).max()) for values in transitions)
+        v4_ev_departure_violation = float(
+            np.maximum(
+                v4.ev_mobility["minimum_departure_energy_gwh"][:, :hours]
+                - ev_mobility_soc,
+                0.0,
+            ).max()
+        )
+        v4_ev_soc_upper_violation = float(
+            np.maximum(
+                ev_mobility_soc
+                - v4.ev_availability["fleet_energy_capacity_gwh"][:, :hours],
+                0.0,
+            ).max()
+        )
+        v4_ev_charge_power_violation = float(
+            np.maximum(
+                ev_mobility_charge
+                - v4.ev_availability["available_charge_power_gw"][:, :hours],
+                0.0,
+            ).max()
+        )
+        v4_ev_discharge_power_violation = float(
+            np.maximum(
+                ev_mobility_discharge
+                - v4.ev_availability["available_discharge_power_gw"][:, :hours],
+                0.0,
+            ).max()
+        )
     v2g_transition_max = 0.0
     v2g_terminal_max = 0.0
-    if bool(config.raw["features"]["flexible_load"]) and bool(
+    if (not v4_formulation) and bool(config.raw["features"]["flexible_load"]) and bool(
         config.raw["flexible_load"]["ev_v2g"]["enabled"]
     ):
         v2g_config = config.raw["flexible_load"]["ev_v2g"]
@@ -662,6 +785,41 @@ def export_operational_solution(
         ),
         "maximum_ev_v2g_transition_residual_gwh": v2g_transition_max,
         "maximum_ev_v2g_daily_terminal_state_gwh": v2g_terminal_max,
+        "maximum_v4_heating_state_transition_residual_gwh": (
+            v4_thermal_transition_max["heating"]
+        ),
+        "maximum_v4_cooling_state_transition_residual_gwh": (
+            v4_thermal_transition_max["cooling"]
+        ),
+        "maximum_v4_heating_periodic_boundary_residual_gwh": (
+            v4_thermal_periodic_max["heating"]
+        ),
+        "maximum_v4_cooling_periodic_boundary_residual_gwh": (
+            v4_thermal_periodic_max["cooling"]
+        ),
+        "maximum_v4_heating_positive_state_bound_violation_gwh": (
+            v4_thermal_positive_bound_violation["heating"]
+        ),
+        "maximum_v4_cooling_positive_state_bound_violation_gwh": (
+            v4_thermal_positive_bound_violation["cooling"]
+        ),
+        "maximum_v4_heating_negative_state_bound_violation_gwh": (
+            v4_thermal_negative_bound_violation["heating"]
+        ),
+        "maximum_v4_cooling_negative_state_bound_violation_gwh": (
+            v4_thermal_negative_bound_violation["cooling"]
+        ),
+        "maximum_v4_heating_comfort_debt_violation_gwh": (
+            v4_thermal_debt_violation["heating"]
+        ),
+        "maximum_v4_cooling_comfort_debt_violation_gwh": (
+            v4_thermal_debt_violation["cooling"]
+        ),
+        "maximum_v4_ev_soc_transition_residual_gwh": v4_ev_transition_max,
+        "maximum_v4_ev_departure_soc_violation_gwh": v4_ev_departure_violation,
+        "maximum_v4_ev_soc_upper_violation_gwh": v4_ev_soc_upper_violation,
+        "maximum_v4_ev_charge_power_violation_gw": v4_ev_charge_power_violation,
+        "maximum_v4_ev_discharge_power_violation_gw": v4_ev_discharge_power_violation,
         "maximum_ev_combined_grid_charging_power_violation_gw": float(
             np.maximum(
                 actual_components["ev"]
@@ -824,6 +982,14 @@ def export_operational_solution(
         "effective_load_nonnegative": qc["minimum_effective_load_gw"] >= -tolerance,
         "heating_service_accounting": (
             (
+                qc["maximum_v4_heating_state_transition_residual_gwh"] <= tolerance
+                and qc["maximum_v4_heating_periodic_boundary_residual_gwh"] <= tolerance
+                and qc["maximum_v4_heating_positive_state_bound_violation_gwh"] <= tolerance
+                and qc["maximum_v4_heating_negative_state_bound_violation_gwh"] <= tolerance
+                and qc["maximum_v4_heating_comfort_debt_violation_gwh"] <= tolerance
+            )
+            if v4_formulation
+            else (
                 qc["maximum_heating_state_transition_residual_gwh"] <= tolerance
                 and qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
                 and qc["minimum_heating_daily_net_energy_change_gwh"] >= -tolerance
@@ -833,6 +999,14 @@ def export_operational_solution(
         ),
         "cooling_service_accounting": (
             (
+                qc["maximum_v4_cooling_state_transition_residual_gwh"] <= tolerance
+                and qc["maximum_v4_cooling_periodic_boundary_residual_gwh"] <= tolerance
+                and qc["maximum_v4_cooling_positive_state_bound_violation_gwh"] <= tolerance
+                and qc["maximum_v4_cooling_negative_state_bound_violation_gwh"] <= tolerance
+                and qc["maximum_v4_cooling_comfort_debt_violation_gwh"] <= tolerance
+            )
+            if v4_formulation
+            else (
                 qc["maximum_cooling_state_transition_residual_gwh"] <= tolerance
                 and qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
                 and qc["minimum_cooling_daily_net_energy_change_gwh"] >= -tolerance
@@ -866,7 +1040,7 @@ def export_operational_solution(
         ),
         "ev_v1g_daily_energy_conservation": qc[
             "maximum_ev_v1g_daily_energy_residual_gwh"
-        ] <= tolerance,
+        ] <= tolerance if not v4_formulation else True,
         "ev_v1g_backlog_transition": (
             not thermal_state_formulation
             or qc["maximum_ev_v1g_backlog_transition_residual_gwh"] <= tolerance
@@ -881,9 +1055,19 @@ def export_operational_solution(
             or qc["maximum_ev_v2g_daily_terminal_state_gwh"] <= tolerance
         ),
         "ev_combined_grid_charging_power": (
-            flexible_formulation != "comfort_envelope_v3"
+            flexible_formulation not in {"comfort_envelope_v3", "service_constrained_v4"}
             or qc["maximum_ev_combined_grid_charging_power_violation_gw"]
             <= tolerance
+        ),
+        "v4_ev_mobility_service": (
+            not v4_formulation
+            or (
+                qc["maximum_v4_ev_soc_transition_residual_gwh"] <= tolerance
+                and qc["maximum_v4_ev_departure_soc_violation_gwh"] <= tolerance
+                and qc["maximum_v4_ev_soc_upper_violation_gwh"] <= tolerance
+                and qc["maximum_v4_ev_charge_power_violation_gw"] <= tolerance
+                and qc["maximum_v4_ev_discharge_power_violation_gw"] <= tolerance
+            )
         ),
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
@@ -968,6 +1152,9 @@ def export_operational_solution(
             "ev_load_gw": actual_components["ev"].ravel(),
             "ev_v2g_charge_gw": v2g_charge.ravel(),
             "ev_v2g_discharge_gw": v2g_discharge.ravel(),
+            "ev_mobility_charge_gw": ev_mobility_charge.ravel(),
+            "ev_mobility_discharge_gw": ev_mobility_discharge.ravel(),
+            "ev_mobility_soc_gwh": ev_mobility_soc.ravel(),
             "vre_generation_gw": vre_generation.sum(axis=1).ravel(),
             "wave_generation_gw": wave_generation.ravel(),
             "thermal_net_generation_gw": thermal_net.sum(axis=1).ravel(),
@@ -1338,10 +1525,20 @@ def export_operational_solution(
         ev_v1g_shift_down_gw=ev_down,
         heating_state_gwh=heating_state,
         cooling_state_gwh=cooling_state,
+        heating_comfort_debt_gwh=heating_comfort_debt,
+        cooling_comfort_debt_gwh=cooling_comfort_debt,
         ev_v1g_backlog_gwh=ev_backlog,
         ev_v2g_charge_gw=v2g_charge,
         ev_v2g_discharge_gw=v2g_discharge,
         ev_v2g_soc_gwh=v2g_soc,
+        ev_mobility_charge_gw=ev_mobility_charge,
+        ev_mobility_discharge_gw=ev_mobility_discharge,
+        ev_mobility_soc_gwh=ev_mobility_soc,
+        ev_mobility_charge_deviation_gw=ev_mobility_charge_deviation,
+        flexible_service_capacity_gw=flexible_service_capacity,
+        flexible_service_names=np.asarray(
+            ("heating", "cooling", "ev_v1g", "ev_v2g")
+        ),
         province_codes=provinces,
         hour_index=hour_index,
     )
@@ -1368,6 +1565,14 @@ def export_operational_solution(
                 "ev_v1g_shift_down_gwh": float(ev_down[p].sum()),
                 "heating_state_peak_gwh": float(heating_state[p].max()),
                 "cooling_state_peak_gwh": float(cooling_state[p].max()),
+                "heating_state_minimum_gwh": float(heating_state[p].min()),
+                "cooling_state_minimum_gwh": float(cooling_state[p].min()),
+                "heating_comfort_debt_gwh_hours": float(
+                    heating_comfort_debt[p].sum()
+                ),
+                "cooling_comfort_debt_gwh_hours": float(
+                    cooling_comfort_debt[p].sum()
+                ),
                 "heating_net_energy_change_gwh": float(
                     actual_components["heating"][p].sum()
                     - baseline_components["heating"][p].sum()
@@ -1379,6 +1584,24 @@ def export_operational_solution(
                 "ev_v1g_backlog_peak_gwh": float(ev_backlog[p].max()),
                 "ev_v2g_charge_gwh": float(v2g_charge[p].sum()),
                 "ev_v2g_discharge_gwh": float(v2g_discharge[p].sum()),
+                "ev_mobility_charge_gwh": float(ev_mobility_charge[p].sum()),
+                "ev_mobility_discharge_gwh": float(ev_mobility_discharge[p].sum()),
+                "ev_mobility_soc_peak_gwh": float(ev_mobility_soc[p].max()),
+                "ev_mobility_charge_deviation_gwh": float(
+                    ev_mobility_charge_deviation[p].sum()
+                ),
+                "contracted_heating_flexibility_gw": float(
+                    flexible_service_capacity[p, 0]
+                ),
+                "contracted_cooling_flexibility_gw": float(
+                    flexible_service_capacity[p, 1]
+                ),
+                "contracted_ev_v1g_flexibility_gw": float(
+                    flexible_service_capacity[p, 2]
+                ),
+                "contracted_ev_v2g_flexibility_gw": float(
+                    flexible_service_capacity[p, 3]
+                ),
                 "net_load_energy_change_gwh": float(
                     load[p].sum() - baseline_load[p].sum()
                 ),

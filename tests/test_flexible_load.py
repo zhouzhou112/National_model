@@ -1,17 +1,22 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
 import unittest
 
+import gurobipy as gp
 import numpy as np
 
 from cispo_model.config import load_model_config
+from cispo_model.data import FlexibleLoadV4Data
 from cispo_model.flexible_load import (
+    _capacity_upper_from_profile,
     _ev_backlog_bounds,
     _ev_deadline_backlog_bounds,
     _ev_v1g_shift_bounds,
     _thermal_envelope_state_bounds,
     _thermal_state_bounds,
     _thermal_shift_bounds,
+    attach_flexible_load,
     make_day_slices,
 )
 
@@ -39,6 +44,98 @@ class FlexibleLoadContractTests(unittest.TestCase):
                 "power_fraction_of_daily_baseline_peak"
             ],
             0.05,
+        )
+
+    def test_v4_is_separate_with_v1g_central_and_v2g_sensitivity(self):
+        v4_v1g = load_model_config(
+            scenario_path="config/scenarios/flexible_load_comfort_v4_v1g.json"
+        )
+        v4_v2g = load_model_config(
+            scenario_path=(
+                "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json"
+            )
+        )
+        self.assertEqual(
+            v4_v1g.raw["flexible_load"]["formulation"],
+            "service_constrained_v4",
+        )
+        self.assertEqual(
+            v4_v1g.raw["flexible_load"]["state_boundary"],
+            "periodic_selected_horizon_v1",
+        )
+        self.assertFalse(v4_v1g.raw["flexible_load"]["ev_v2g"]["enabled"])
+        self.assertTrue(v4_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])
+
+    def test_v4_contract_capacity_upper_follows_connection_availability(self):
+        upper = _capacity_upper_from_profile(
+            np.asarray([[0.0, 2.0, 1.0]]),
+            np.asarray([[0.0, 0.5, 0.25]]),
+            label="test",
+        )
+        np.testing.assert_allclose(upper, [4.0])
+
+    def test_v4_single_fleet_soc_small_linear_gate(self):
+        config = load_model_config(
+            scenario_path="config/scenarios/flexible_load_comfort_v4_v1g.json"
+        )
+        shape = (1, 4)
+        thermal_parameters = {
+            component: {
+                "retention_per_hour": np.asarray([1.0]),
+                "charge_efficiency": np.asarray([1.0]),
+                "discharge_efficiency": np.asarray([1.0]),
+                "positive_state_duration_hours": np.asarray([2.0]),
+                "negative_state_duration_hours": np.asarray([2.0]),
+            }
+            for component in ("heating", "cooling")
+        }
+        service_costs = {
+            service: {
+                "enablement_cost_yuan_per_kw_year": np.asarray([1.0]),
+                "activation_cost_yuan_per_mwh": np.asarray([1.0]),
+                "comfort_debt_cost_yuan_per_gwh_hour": np.asarray([1.0]),
+            }
+            for service in ("heating", "cooling", "ev_v1g", "ev_v2g")
+        }
+        v4 = FlexibleLoadV4Data(
+            thermal_envelopes_gw={
+                "heating_up": np.ones(shape),
+                "heating_down": np.ones(shape),
+                "cooling_up": np.ones(shape),
+                "cooling_down": np.ones(shape),
+            },
+            thermal_availability={"heating": np.ones(shape), "cooling": np.ones(shape)},
+            thermal_parameters=thermal_parameters,
+            ev_availability={
+                "connected_vehicle_fraction": np.ones(shape),
+                "available_charge_power_gw": np.full(shape, 2.0),
+                "available_discharge_power_gw": np.full(shape, 1.0),
+                "fleet_energy_capacity_gwh": np.full(shape, 10.0),
+            },
+            ev_mobility={
+                "driving_energy_withdrawal_gwh": np.full(shape, 0.95),
+                "minimum_departure_energy_gwh": np.zeros(shape),
+            },
+            service_costs=service_costs,
+        )
+        data = SimpleNamespace(
+            load_gw=np.full(shape, 3.0),
+            load_components_gw={
+                "base_residual": np.ones(shape),
+                "heating": np.zeros(shape),
+                "cooling": np.zeros(shape),
+                "ev": np.ones(shape),
+            },
+            flexible_load_v4=v4,
+        )
+        model = gp.Model("v4_small_gate")
+        model.Params.OutputFlag = 0
+        block = attach_flexible_load(model, config, data, hours=shape[1])
+        model.setObjective(gp.quicksum(block.costs.values()), gp.GRB.MINIMIZE)
+        model.optimize()
+        self.assertEqual(model.Status, gp.GRB.OPTIMAL)
+        np.testing.assert_allclose(
+            block.variables["ev_mobility_charge"].X.sum(), 4.0, atol=1e-8
         )
 
     def test_day_slices_cover_partial_horizon_once(self):

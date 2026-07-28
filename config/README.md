@@ -28,7 +28,7 @@ python scripts/run_cispo_2030_full_year.py \
   --output-dir outputs/base_wave_2030
 ```
 
-唯一的柔性情景 `flexible_load_comfort_v3_v2g_5pct` 继承含波浪的 Base，并仅额外开启
+当前唯一可运行的柔性情景 `flexible_load_comfort_v3_v2g_5pct` 继承含波浪的 Base，并仅额外开启
 `comfort_envelope_v3`：冷热等效状态、12 h 因果 EV V1G 待充队列、日内因果 V2G，后者
 功率上限为各省每日基线 EV 峰值的 5%。
 
@@ -66,3 +66,9 @@ V1G 共用充电功率上限。
 `planning_state/`；`scenario_manifest.json`、`model_config_snapshot.json`、输入/输出
 manifest 共同锁定身份。24h、168h、744h 是工程门禁；仅完整 8760h 且 manifest 闭合的
 结果可用于科学解释。
+
+`flexible_load_comfort_v4_v1g` 与
+`flexible_load_comfort_v4_v2g_sensitivity` 已登记为 `planned_not_runnable`。它们采用全年连续
+热服务状态、带舒适债界的内生 `Kflex`，以及同一 EV 车群的接入/驾驶/出发 SOC 合同；在
+`data/flexibility/` 的五张校准输入通过闭合与 provenance 检查前，加载器会拒绝构建。完整字段、
+方程和校准门禁见 `config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md`。

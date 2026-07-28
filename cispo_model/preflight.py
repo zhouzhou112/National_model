@@ -60,11 +60,20 @@ def estimate_full_model_scale(
     )
     flexible_variable_multiplier = 0
     flexible_daily_modules = 0
+    flexible_capacity_variables = 0
+    v4_formulation = flex_formulation == "service_constrained_v4"
     state_formulation = flex_formulation in {
         "state_envelope_v2",
         "comfort_envelope_v3",
     }
-    if flex_enabled:
+    if flex_enabled and v4_formulation:
+        # Two signed thermal-service blocks (up/down/state/debt), one EV fleet
+        # charge/SOC/deviation block, optional V2G discharge, and four annual
+        # contracted-capacity decisions.  This is intentionally separate from
+        # the legacy daily-reset count below.
+        flexible_variable_multiplier = 11 + int(bool(flex["ev_v2g"]["enabled"]))
+        flexible_capacity_variables = 4 * p
+    elif flex_enabled:
         for component in ("heating", "cooling"):
             if bool(flex[component]["enabled"]):
                 flexible_variable_multiplier += (
@@ -78,9 +87,16 @@ def estimate_full_model_scale(
             flexible_daily_modules += 1
         if bool(flex["ev_v2g"]["enabled"]):
             flexible_variable_multiplier += 3
-    flexible_variables = flexible_variable_multiplier * p * h
+    flexible_variables = flexible_variable_multiplier * p * h + flexible_capacity_variables
     flexible_constraints = 0
-    if flex_enabled:
+    if flex_enabled and v4_formulation:
+        # effective-load non-negativity (1), two thermal components each with
+        # two contracted-power rows, two signed-state rows, debt and transition
+        # (12 total), and EV contract/departure/deviation/transition rows (5).
+        flexible_constraints = p * h * (
+            18 + int(bool(flex["ev_v2g"]["enabled"]))
+        )
+    elif flex_enabled:
         days = int(np.ceil(h / 24))
         if state_formulation:
             # Effective-load nonnegativity plus hourly state/queue transitions
@@ -250,6 +266,33 @@ def run_preflight(config: ModelConfig, data: ModelData, output_path: Path | None
         load_component_error,
         "<= 1e-9 GW",
     )
+    if (
+        bool(config.raw["features"]["flexible_load"])
+        and str(config.raw["flexible_load"].get("formulation"))
+        == "service_constrained_v4"
+    ):
+        v4 = data.flexible_load_v4
+        check(
+            "v4_calibration_contract_loaded",
+            v4 is not None,
+            v4 is not None,
+            "validated province-year thermal, EV and cost inputs",
+        )
+        if v4 is not None:
+            expected_v4_shape = (len(data.provinces), config.hours)
+            for label, values in {
+                **v4.thermal_envelopes_gw,
+                "heating_availability": v4.thermal_availability["heating"],
+                "cooling_availability": v4.thermal_availability["cooling"],
+                **v4.ev_availability,
+                **v4.ev_mobility,
+            }.items():
+                check(
+                    f"v4_{label}_shape",
+                    values.shape == expected_v4_shape,
+                    str(values.shape),
+                    str(expected_v4_shape),
+                )
     check("vre_sites", len(data.vre_sites) > 0, len(data.vre_sites), "> 0")
     check("vre_bounds", bool((data.vre_sites.capacity_floor_gw <= data.vre_sites.capacity_upper_gw + 1e-9).all()), int((data.vre_sites.capacity_floor_gw > data.vre_sites.capacity_upper_gw + 1e-9).sum()), "0 violations")
     check("vre_cf_mapping", bool(data.vre_sites.cf_grid_id.ge(0).all()), int(data.vre_sites.cf_grid_id.lt(0).sum()), "0 unresolved")
