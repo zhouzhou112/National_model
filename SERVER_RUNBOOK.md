@@ -1,5 +1,9 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-29 23:21+08:00 当前逐年状态
+
+2030 已由 sequence 严格接受并传递 test-only planning state；2040 正在 Barrier iteration 107。当前无故障、无资源压力，不需要人工动作。继续按下一节只读监控；不得因 2030 accepted 将 744 h 解释为年度科学结果，也不得手工跳过 2040、启动并发任务或修改活动 checkout。
+
 ## 2026-07-29 18:45+08:00 四年 744 h sequence 活动监控合同
 
 活动输出根为 `/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，控制根为 `/data/zz2/National_model/run_control/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，运行 checkout `5d31b51b350a581287fc8eb13e73216c11fc7543`。初始 wrapper/Python PID 为 `1463763/1463765`，2030 runner 为 `1463870`。

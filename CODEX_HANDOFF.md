@@ -12,6 +12,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-29 23:21:48+08:00 四年 744 h sequence 已完成首个逐年里程碑：2030 `ACCEPTED`，2040 正在 Barrier。2030 为 `OPTIMAL + solution_qc=PASS + 53/53 + current input manifest + valid result manifest`，solver runtime `12,268.312 s`，Crossover 后 `914,501` simplex iterations，objective `2,331,204.529 million CNY`；年度 `sequence_stderr.log` 为 0 bytes，运行监控 peak process-tree RSS `20.385 GiB`。53 项 hard checks 显式覆盖冷热服务/状态、EV V1G/V2G、wave、水电聚合与梯级水量、PHS/储能、网络方向、备用、惯量、容量充裕、碳/CCS/BECCS 与 objective components。2040 runner PID `1717598`，Barrier iteration `107`，runtime `3,572.896 s`，primal/dual infeasibility `0.008370/0.000821`、complementarity `1.8373`，current/max solver memory `13.174/22.222 GiB`；终态三文件尚不存在。主机 available RAM 约 95 GiB、swap `781 MiB/2 GiB` 且 `si/so=0`、memory PSI 0，ParaCloud 队列空。运行 checkout 继续冻结在 clean `5d31b51b350a581287fc8eb13e73216c11fc7543`；本地/origin/GitHub 文档 tip 为 `b0a3f3b26ff77a8b5357ccc9f423605fc3a1d2e8`，PID 存在期间不追平服务器文档。
 - 2026-07-29 18:45:08+08:00 已在固定服务器 checkout `5d31b51b350a581287fc8eb13e73216c11fc7543` 启动唯一串行 2030→2060 744 h V4 V1G diagnostic sequence。输出根 `/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，控制根 `/data/zz2/National_model/run_control/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`；wrapper/Python PID 初始为 `1463763/1463765`，2030 runner PID `1463870`。`sequence_report.json` 已锁定 `RUNNING + TEST_ONLY_TRUNCATED_HORIZON + diagnostic_hours=744 + flexible_load_comfort_v4_v1g`，无 basis。18:45:49 首次快照仍在构建，尚无 telemetry/Gurobi/终态三文件；available RAM 约 113 GiB、swap `781 MiB/2 GiB` 且 `si/so=0`、memory PSI 0、ParaCloud 队列空。PID 存在期间只读监控，不再切换服务器 checkout；每年必须严格 accepted 后才允许 runner 串行进入下一年。
 - 2026-07-29 18:42+08:00 固定服务器已 fast-forward 到干净 `codex/cispo-2030-full-lp` / `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。权威 v4 数据根下 release contract、readiness、水电 380 GW 容量审计和 V4 输入验证全部 PASS，完整回归 `135/135 PASS`；`technology/technoeconomic_price_basis_manifest.json` SHA256 为冻结值 `397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75`。服务器全新 1 h/24 h 中央 V4 V1G 根 `2030_1h_v0729_identity_hydro_v4_v1g_server_v1` 与 `2030_24h_v0729_identity_hydro_v4_v1g_server_v1` 均为 `OPTIMAL + solution_qc=PASS + 53/53 hard checks + current input manifest + valid result manifest`，且均生成 `hydro_cascade_reconciliation_audit.json`；24 h solver runtime `84.230 s`，wrapper wall `2:07.62`、peak RSS `0.813 GiB`、swaps `0`。下一步仅在再次确认无 solver、资源安全、新 sequence 输出/控制根不存在且 ParaCloud 空队列后，启动唯一串行 2030→2060 744 h V4 V1G sequence。
 - 2026-07-29 18:27+08:00 新模型实现里程碑已提交为 `cea78ae1546b19754f7859982ae82dbf66820fdc`（父提交 `96e989f22a74c621ad6642a287738befa5ea6c6f`），尚未部署固定服务器。它修复 8760 h runner 在求解前无条件 `getA()` 的阻断：常规运行只记录 Gurobi `Fingerprint`、变量/约束/非零元，只有显式 diagnostic basis import/export 才物化完整 CSR。运行身份升级为 `baseline_contract + analysis_case`；Base、中央反事实、敏感性、遗留验证和模板均有显式角色，scenario overlay 只能修改白名单根。
@@ -340,6 +341,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-29 — 四年 744 h：2030 accepted，2040 Barrier
+
+- 2030 终态：`OPTIMAL + PASS + 53/53 + current input + valid result manifest`，sequence 记录 `ACCEPTED` 并只传递显式 test-only planning state。
+- 完整 scope：冷热、EV、wave、水电/梯级、PHS/储能、网络、备用、惯量、容量充裕、碳/CCS/BECCS、成本目标均由 hard checks 通过；年度 stderr 为空。
+- 2040 实时状态：Barrier iteration 107，尚无终态报告；资源与队列安全。
+- 精确下一步：继续只读监控 2040，只有 runner 自身严格接受后才允许串行进入 2050。
 
 ### 2026-07-29 — 启动唯一串行四年 744 h diagnostic sequence
 

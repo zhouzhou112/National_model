@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-29 23:21+08:00 2030 已接受，2040 Barrier iteration 107
+
+- sequence 仍为唯一活动任务。2030 已 `ACCEPTED`：`OPTIMAL + PASS + 53/53 + current input + valid result manifest`，solver runtime `12,268.312 s`，objective `2,331,204.529 million CNY`，peak process-tree RSS `20.385 GiB`，年度 stderr 为空。
+- 当前 2040 runner PID `1717598`；Barrier iteration `107`、runtime `3,572.896 s`，primal/dual infeasibility `0.008370/0.000821`、complementarity `1.8373`，solver current/max memory `13.174/22.222 GiB`。`solve_report.json`、`solution_qc.json`、`result_manifest.json` 尚不存在，故当前只能判定为 Barrier 进行中。
+- 主机 available RAM 约 95 GiB，swap 781 MiB 且无实时进出，memory PSI 0；ParaCloud 队列空。运行 checkout clean `5d31b51`，不追平活动运行期间新增的文档提交。
+
 ## 2026-07-29 18:45+08:00 四年 744 h sequence 已启动，当前 2030 构建中
 
 - 唯一任务：`/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，控制根同名位于 `run_control`；运行 checkout `5d31b51b350a581287fc8eb13e73216c11fc7543`。
