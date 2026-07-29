@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-29 18:45+08:00 四年 744 h sequence 活动监控合同
+
+活动输出根为 `/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，控制根为 `/data/zz2/National_model/run_control/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，运行 checkout `5d31b51b350a581287fc8eb13e73216c11fc7543`。初始 wrapper/Python PID 为 `1463763/1463765`，2030 runner 为 `1463870`。
+
+PID 存在时只读检查进程树、`sequence_report.json`、当前年份 `solver_telemetry.jsonl`/`gurobi.log`、RAM/swap/vmstat/PSI、终态三文件和 ParaCloud；不得 fetch/merge/切换 checkout，不得启动第二求解。runner 只有在当前年份 `OPTIMAL + PASS + 53/53 + current input + valid result manifest` 时才会串行接续。任何 HARD_FAIL 或异常退出均保持现场并执行严格终态审计，不得自动补跑。
+
 ## 2026-07-29 18:42+08:00 新实现服务器门禁完成，待启动四年 744 h
 
 固定服务器已部署 clean `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。`/data/zz2/National_model/run_control/deployment_03e77cc_v1` 记录的 release/readiness/hydro/V4 validators 全 PASS，完整 unittest `135/135 PASS`。全新 1 h/24 h 中央 V4 V1G roots 均通过 `OPTIMAL + PASS + 53/53 + current input + valid result manifest + hydro reconciliation audit`。启动 sequence 前必须再次执行下面的只读核验，并确认新根不存在：

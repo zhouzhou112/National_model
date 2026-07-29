@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-29 18:45+08:00 四年 744 h sequence 已启动，当前 2030 构建中
+
+- 唯一任务：`/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`，控制根同名位于 `run_control`；运行 checkout `5d31b51b350a581287fc8eb13e73216c11fc7543`。
+- wrapper/Python/2030 runner 初始 PID `1463763/1463765/1463870`。身份为 `RUNNING + TEST_ONLY_TRUNCATED_HORIZON + 744 h + flexible_load_comfort_v4_v1g`，无 basis；首次快照尚在 build，故 telemetry、Gurobi log 和终态报告均未出现。
+- 初始资源为约 113 GiB available RAM、781 MiB/2 GiB swap、`si/so=0`、memory PSI 0；ParaCloud 队列空。PID 存在时只读监控，不切 checkout、不启动任何其他任务。
+
 ## 2026-07-29 18:42+08:00 新实现已部署，权威回归与 1 h/24 h 门禁通过
 
 - 固定服务器为 clean `codex/cispo-2030-full-lp` / `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。部署证据根 `/data/zz2/National_model/run_control/deployment_03e77cc_v1` 中 release contract、readiness、380 GW hydro audit、V4 input validation 全部 PASS；完整回归 `135/135 PASS`。
