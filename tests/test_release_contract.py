@@ -1,14 +1,19 @@
 from __future__ import annotations
 
 import json
+import os
 import unittest
+from pathlib import Path
 
 from scripts.audit_release_contract import PROJECT_ROOT, build_audit
 
 
 class ReleaseContractTests(unittest.TestCase):
     def test_current_code_and_external_data_match_release_contract(self) -> None:
-        report = build_audit(PROJECT_ROOT / "data")
+        data_root = Path(
+            os.environ.get("CISPO_DATA_ROOT", str(PROJECT_ROOT / "data"))
+        )
+        report = build_audit(data_root)
         self.assertEqual(report["status"], "PASS", report["failures"])
 
     def test_v4_upstream_manifest_is_in_server_bundle_contract(self) -> None:
@@ -36,6 +41,11 @@ class ReleaseContractTests(unittest.TestCase):
         )
         self.assertIn(
             "load/flexible_load_envelope_v3.manifest.json",
+            contract["server_validation_sidecars"],
+        )
+        self.assertIn("wave/wave_sites.csv", contract["required_model_tables"])
+        self.assertIn(
+            "wave/wave_input_manifest.json",
             contract["server_validation_sidecars"],
         )
 

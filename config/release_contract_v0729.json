@@ -84,6 +84,14 @@
       "sha256": "0298256b2c1394f8e5a9e36780d2be279f06b27b291a9eca57daae91dba9a745"
     },
     {
+      "path": "wave/wave_sites.csv",
+      "sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
+    },
+    {
+      "path": "wave/wave_input_manifest.json",
+      "sha256": "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9"
+    },
+    {
       "path": "vre/existing_capacity_cohorts_2025.csv",
       "sha256": "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0"
     },

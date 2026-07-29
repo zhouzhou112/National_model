@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -87,7 +88,9 @@ class SensitivitySuiteTests(unittest.TestCase):
             "independent_power_energy_v1",
         )
         with (
-            PROJECT_ROOT / "data" / "technology" / "technology_capex_by_year.csv"
+            Path(os.environ.get("CISPO_DATA_ROOT", str(PROJECT_ROOT / "data")))
+            / "technology"
+            / "technology_capex_by_year.csv"
         ).open(encoding="utf-8-sig", newline="") as handle:
             phs_2030_capex = next(
                 float(row["capex_yuan_per_kw"])
