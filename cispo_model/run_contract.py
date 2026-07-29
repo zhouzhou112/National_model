@@ -23,7 +23,7 @@ from .io_contract import (
 )
 
 
-RUN_IDENTITY_SCHEMA_VERSION = "cispo_run_identity_v2"
+RUN_IDENTITY_SCHEMA_VERSION = "cispo_run_identity_v3"
 RUN_CLAIM_FILENAME = "run_claim.json"
 RUN_IDENTITY_FILENAME = "run_identity.json"
 SEQUENCE_ACTIVE_CLAIM_FILENAME = "sequence_active_claim.json"
@@ -124,19 +124,41 @@ def _scientific_configuration_payload(config: ModelConfig) -> dict[str, Any]:
     return payload
 
 
-def scientific_case_identity(config: ModelConfig) -> dict[str, Any]:
-    """Fingerprint model assumptions and scenario semantics, not runtime knobs."""
-    scientific_configuration = _scientific_configuration_payload(config)
+def baseline_contract_identity(config: ModelConfig) -> dict[str, Any]:
+    """Return the immutable scientific reference inherited by every analysis."""
+    baseline = json.loads(json.dumps(config.raw["scientific_case"]))
     return {
-        "schema_version": "cispo_scientific_case_v1",
+        "schema_version": "cispo_baseline_contract_v1",
+        "case_id": str(baseline["case_id"]),
+        "label": str(baseline.get("label", "")),
+        "contract_sha256": _canonical_json_sha256(baseline),
+        "weather_bundle": dict(baseline.get("weather_bundle", {})),
+        "parameter_registry": dict(baseline.get("parameter_registry", {})),
+    }
+
+
+def analysis_case_identity(config: ModelConfig) -> dict[str, Any]:
+    """Fingerprint the resolved case actually sent to the optimizer."""
+    scientific_configuration = _scientific_configuration_payload(config)
+    scenario = config.raw["scenario"]
+    baseline = baseline_contract_identity(config)
+    return {
+        "schema_version": "cispo_analysis_case_v1",
         "configuration_path": str(config.path),
         "resolved_scientific_configuration_sha256": _canonical_json_sha256(
             scientific_configuration
         ),
         "scenario_configuration": _source_identity(config.scenario_path),
         "formulation_configuration": _source_identity(config.formulation_path),
-        "scenario_id": str(config.raw["scenario"]["id"]),
-        "scenario_family": str(config.raw["scenario"]["family"]),
+        "case_id": str(scenario["id"]),
+        "scenario_id": str(scenario["id"]),
+        "scenario_family": str(scenario["family"]),
+        "analysis_role": str(scenario["analysis_role"]),
+        "publication_status": str(scenario["publication_status"]),
+        "evidence_status": str(scenario["evidence_status"]),
+        "parent_baseline_case_id": scenario.get("parent_baseline_case_id"),
+        "supersedes": scenario.get("supersedes"),
+        "baseline_contract_case_id": baseline["case_id"],
         "planning_years": [int(year) for year in config.planning_years],
         "weather_bundle": {
             "weather_year": int(config.weather_year),
@@ -150,6 +172,11 @@ def scientific_case_identity(config: ModelConfig) -> dict[str, Any]:
             ),
         },
     }
+
+
+def scientific_case_identity(config: ModelConfig) -> dict[str, Any]:
+    """Backward-compatible alias for the resolved analysis-case identity."""
+    return analysis_case_identity(config)
 
 
 def solver_runtime_identity(config: ModelConfig) -> dict[str, Any]:
@@ -168,6 +195,7 @@ def configuration_identity(
     config: ModelConfig,
     *,
     data_root: str | Path,
+    lp_model: dict[str, Any] | None = None,
     lp_topology: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build layered identity for provenance and conservative result resume.
@@ -177,13 +205,21 @@ def configuration_identity(
     resume, whose conservative implementation-bundle check is handled by this
     identity's other layers.
     """
+    baseline_contract = baseline_contract_identity(config)
+    analysis_case = analysis_case_identity(config)
     identity = {
         "schema_version": RUN_IDENTITY_SCHEMA_VERSION,
-        "scientific_case": scientific_case_identity(config),
+        "baseline_contract": baseline_contract,
+        "analysis_case": analysis_case,
+        # Retained for readers of v2 artifacts. New code must use
+        # ``baseline_contract`` and ``analysis_case`` explicitly.
+        "scientific_case": analysis_case,
         "solver_runtime": solver_runtime_identity(config),
         "implementation_bundle": implementation_bundle_identity(),
         "data_roots": runtime_data_roots(data_root),
     }
+    if lp_model is not None:
+        identity["lp_model"] = lp_model
     if lp_topology is not None:
         identity["lp_topology"] = lp_topology
     return identity
@@ -269,7 +305,9 @@ def output_matches_configuration(
     # sequence resume intentionally does not rebuild the LP merely to compare
     # it; basis reuse performs that stricter comparison at build time.
     recorded_resume_identity = {
-        key: value for key, value in recorded_identity.items() if key != "lp_topology"
+        key: value
+        for key, value in recorded_identity.items()
+        if key not in {"lp_model", "lp_topology"}
     }
     if recorded_resume_identity != expected:
         return False

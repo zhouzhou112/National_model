@@ -1,8 +1,8 @@
 {
   "scenario_override_version": "v1",
-  "scenario_id": "flexible_load_comfort_v4_v2g_sensitivity",
+  "scenario_id": "flexible_load_comfort_v4_v1g_effective_peak_sensitivity",
   "scenario_family": "demand_flexibility_service_constrained",
-  "description": "V4 V2G sensitivity using the same data-supported thermal and aggregate EV service inventory as V4 V1G. It is not Base and does not claim observed connection or departure behavior.",
+  "description": "V4 V1G engineering sensitivity in which the planning capacity-margin requirement follows every endogenous effective-load hour. This isolates the capacity value of demand flexibility; Base and the central V4 case retain baseline-peak adequacy.",
   "evidence_status": "ENGINEERING_SENSITIVITY_ONLY",
   "analysis_role": "SENSITIVITY",
   "publication_status": "ENGINEERING_SENSITIVITY_ONLY",
@@ -11,6 +11,9 @@
   "overrides": {
     "features": {
       "flexible_load": true
+    },
+    "security": {
+      "capacity_margin_load_basis": "effective_peak_endogenous_v1"
     },
     "flexible_load": {
       "contract_version": "v4",
@@ -37,14 +40,20 @@
         "maximum_power_to_daily_average_ratio": 2.0
       },
       "ev_v2g": {
-        "enabled": true,
+        "enabled": false,
         "state_boundary": "periodic_selected_horizon_v1",
         "charge_efficiency": 0.94,
         "discharge_efficiency": 0.94,
         "self_discharge_fraction_per_hour": 0.0
       },
+      "reliability_treatment": {
+        "planning_capacity_margin_uses_baseline_peak": false
+      },
       "parameter_status": {
-        "v2g_scope": "Sensitivity only: the same aggregate service inventory must first satisfy the 25% schedulable charging service; V2G power is capped from a 10% participation assumption and charged 180 CNY/MWh in the central parameter file."
+        "thermal_service": "Same data-supported V4 thermal service contract as the central V1G case.",
+        "ev_mobility": "Same aggregate V4 EV service contract as the central V1G case.",
+        "enablement_cost": "Same engineering assumptions and sensitivity ranges as the central V1G case.",
+        "v2g_scope": "V1G only; this scenario changes capacity-margin accounting, not EV technology."
       }
     }
   }

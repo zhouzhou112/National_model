@@ -41,8 +41,10 @@ def resolve_project_path(path: str | Path) -> Path:
 def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
     catalog_path = resolve_project_path(path)
     payload = json.loads(catalog_path.read_text(encoding="utf-8"))
-    if payload.get("catalog_version") not in {"v1", "v2"}:
-        raise ValueError("Scenario catalog must declare catalog_version=v1 or v2")
+    if payload.get("catalog_version") not in {"v1", "v2", "v3"}:
+        raise ValueError(
+            "Scenario catalog must declare catalog_version=v1, v2 or v3"
+        )
 
     implemented = payload.get("implemented")
     planned = payload.get("planned_not_runnable")
@@ -84,6 +86,10 @@ def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
                 "scenario_family": scenario_payload.get("scenario_family"),
                 "description": scenario_payload.get("description"),
                 "evidence_status": scenario_payload.get("evidence_status"),
+                "analysis_role": scenario_payload.get("analysis_role"),
+                "publication_status": scenario_payload.get(
+                    "publication_status"
+                ),
             }
         )
 
@@ -119,7 +125,12 @@ def select_scenarios(
         for row in catalog["planned_not_runnable"]
     }
     if not requested:
-        return list(catalog["implemented"])
+        return [
+            row
+            for row in catalog["implemented"]
+            if row.get("analysis_role")
+            in {"BASELINE", "CENTRAL_COUNTERFACTUAL"}
+        ]
 
     selected: list[dict[str, Any]] = []
     seen: set[str] = set()

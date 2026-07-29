@@ -29,6 +29,7 @@ class SensitivitySuiteTests(unittest.TestCase):
                 "flexible_load_comfort_v3_v2g_5pct",
                 "hydro_aggregate_flex_v1",
                 "flexible_load_comfort_v4_v1g",
+                "flexible_load_comfort_v4_v1g_effective_peak_sensitivity",
                 "flexible_load_comfort_v4_v2g_sensitivity",
                 "phs_power_energy_separated_central_v1",
                 "phs_power_energy_separated_low_energy_cost_v1",
@@ -56,6 +57,20 @@ class SensitivitySuiteTests(unittest.TestCase):
             2050,
         )
         self.assertFalse(base.raw["features"]["flexible_load"])
+        self.assertEqual(base.raw["scenario"]["analysis_role"], "BASELINE")
+        self.assertEqual(
+            implemented["flexible_load_comfort_v4_v1g"]["analysis_role"],
+            "CENTRAL_COUNTERFACTUAL",
+        )
+        effective_peak = load_model_config(
+            scenario_path=implemented[
+                "flexible_load_comfort_v4_v1g_effective_peak_sensitivity"
+            ]["config_path"]
+        )
+        self.assertEqual(
+            effective_peak.raw["security"]["capacity_margin_load_basis"],
+            "effective_peak_endogenous_v1",
+        )
         self.assertTrue(comfort_v2g.raw["features"]["wave_energy"])
         self.assertTrue(comfort_v2g.raw["features"]["flexible_load"])
         self.assertTrue(comfort_v2g.raw["flexible_load"]["ev_v2g"]["enabled"])

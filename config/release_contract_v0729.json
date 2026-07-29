@@ -9,6 +9,7 @@
     "features.flexible_load": false,
     "planning_sequence.existing_vre_retirement.mode": "cohort_survival_v1",
     "hydro.duplicate_comid_flow_allocation": "static_capacity_potential_share_v1",
+    "hydro.cascade_inflow_reconciliation": "target_bounded_proportional_transfer_v1",
     "hydro.provincial_aggregate_mode": "fixed_existing_monthly_profile_v1",
     "hydro.provincial_aggregate_national_conventional_target_gw": 380.0,
     "hydro.provincial_aggregate_up_reserve_credit": 0.0,
@@ -18,7 +19,8 @@
     "hydro.provincial_aggregate_connection_treatment": "province_non_spatial_existing_no_spur_trunk",
     "storage_design.phs_energy_capacity_mode": "fixed_duration_v1",
     "storage_design.phs_existing_duration_h": 8.0,
-    "monetary_price_basis.target": "2025 constant CNY"
+    "monetary_price_basis.target": "2025 constant CNY",
+    "security.capacity_margin_load_basis": "baseline_peak_v1"
   },
   "production_solver_profile": {
     "path": "config/solver_profiles/barrier_16_auto_order_v2.json",
@@ -29,16 +31,18 @@
   },
   "implemented_scenarios": [
     "base",
-    "flexible_load_comfort_v3_v2g_5pct",
-    "hydro_aggregate_flex_v1",
     "flexible_load_comfort_v4_v1g",
+    "flexible_load_comfort_v4_v1g_effective_peak_sensitivity",
     "flexible_load_comfort_v4_v2g_sensitivity",
+    "hydro_aggregate_flex_v1",
     "phs_power_energy_separated_central_v1",
     "phs_power_energy_separated_low_energy_cost_v1",
-    "phs_power_energy_separated_high_energy_cost_v1"
+    "phs_power_energy_separated_high_energy_cost_v1",
+    "flexible_load_comfort_v3_v2g_5pct"
   ],
   "base_exclusions": [
     "flexible_load_comfort_v4_v1g",
+    "flexible_load_comfort_v4_v1g_effective_peak_sensitivity",
     "flexible_load_comfort_v4_v2g_sensitivity",
     "hydro_aggregate_flex_v1",
     "phs_power_energy_separated_central_v1",
@@ -116,7 +120,7 @@
       "v4_input_validation",
       "base_v4_168h_ab"
     ],
-    "fixed_server_next": "one isolated 744h flexible_load_comfort_v4_v1g gate",
+    "fixed_server_next": "one isolated sequential 2030-2060 744h Base/V4 engineering gate after local A/B closure",
     "forbidden": [
       "fixed_server_8760h",
       "paid_cloud",

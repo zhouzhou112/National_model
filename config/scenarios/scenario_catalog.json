@@ -1,14 +1,15 @@
 {
-  "catalog_version": "v2",
+  "catalog_version": "v3",
   "implemented": [
-    {"scenario_id": "base", "config": "config/scenarios/base.json"},
-    {"scenario_id": "flexible_load_comfort_v3_v2g_5pct", "config": "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"},
-    {"scenario_id": "hydro_aggregate_flex_v1", "config": "config/scenarios/hydro_aggregate_flex_v1.json"},
-    {"scenario_id": "flexible_load_comfort_v4_v1g", "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"},
-    {"scenario_id": "flexible_load_comfort_v4_v2g_sensitivity", "config": "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json"},
-    {"scenario_id": "phs_power_energy_separated_central_v1", "config": "config/scenarios/phs_power_energy_separated_central_v1.json"},
-    {"scenario_id": "phs_power_energy_separated_low_energy_cost_v1", "config": "config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json"},
-    {"scenario_id": "phs_power_energy_separated_high_energy_cost_v1", "config": "config/scenarios/phs_power_energy_separated_high_energy_cost_v1.json"}
+    {"scenario_id": "base", "analysis_role": "BASELINE", "config": "config/scenarios/base.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v1g", "analysis_role": "CENTRAL_COUNTERFACTUAL", "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v1g_effective_peak_sensitivity", "analysis_role": "SENSITIVITY", "config": "config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v2g_sensitivity", "analysis_role": "SENSITIVITY", "config": "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json"},
+    {"scenario_id": "hydro_aggregate_flex_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/hydro_aggregate_flex_v1.json"},
+    {"scenario_id": "phs_power_energy_separated_central_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/phs_power_energy_separated_central_v1.json"},
+    {"scenario_id": "phs_power_energy_separated_low_energy_cost_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json"},
+    {"scenario_id": "phs_power_energy_separated_high_energy_cost_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/phs_power_energy_separated_high_energy_cost_v1.json"},
+    {"scenario_id": "flexible_load_comfort_v3_v2g_5pct", "analysis_role": "LEGACY_VALIDATION", "config": "config/scenarios/flexible_load_comfort_v3_v2g_5pct.json"}
   ],
   "planned_not_runnable": [
     {

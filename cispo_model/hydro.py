@@ -43,8 +43,11 @@ class HydroLinearBlock:
     cascade_edge_target_local_rows: list[np.ndarray]
     cascade_edge_target_weights: list[np.ndarray]
     cascade_edge_lag_h: np.ndarray
+    cascade_edge_transfer_fraction: list[np.ndarray]
     cascade_edge_ids: list[str]
     cascade_isolated_node_ids: list[str]
+    cascade_reconciliation_audit: dict[str, object]
+    cascade_reconciliation_node_rows: list[dict[str, object]]
 
 
 def _split_semicolon_ids(value: object) -> list[str]:
@@ -59,6 +62,140 @@ def _cyclic_shift_previous(values: np.ndarray, lag_h: int) -> np.ndarray:
     if lag == 0:
         return values.copy()
     return np.concatenate([values[-lag:], values[:-lag]])
+
+
+def _reconcile_cascade_natural_inflow(
+    node_to_natural: dict[str, np.ndarray],
+    edges: list[tuple[str, str, int, str]],
+) -> tuple[
+    dict[str, np.ndarray],
+    list[np.ndarray],
+    dict[str, object],
+    list[dict[str, object]],
+]:
+    """Reconcile inconsistent reach series without creating water.
+
+    GRFR natural discharge at a downstream COMID can be lower than the sum of
+    lagged upstream COMIDs.  For each target node and hour, proportionally
+    retain the incoming transfers at ``min(1, target / incoming)`` and define
+    local inflow as the non-negative remainder.  The same transfer fractions
+    are later applied to endogenous turbine and spill releases.
+    """
+    outgoing_count: dict[str, int] = {}
+    incoming_by_target: dict[str, list[int]] = {}
+    shifted_by_edge: list[np.ndarray] = []
+    for edge_index, (source, target, lag, edge_id) in enumerate(edges):
+        if source not in node_to_natural or target not in node_to_natural:
+            raise ValueError(
+                f"Cascade edge {edge_id} references a node without reservoir flow"
+            )
+        outgoing_count[source] = outgoing_count.get(source, 0) + 1
+        incoming_by_target.setdefault(target, []).append(edge_index)
+        shifted_by_edge.append(
+            _cyclic_shift_previous(node_to_natural[source], lag)
+        )
+    branching = sorted(
+        node_id for node_id, count in outgoing_count.items() if count > 1
+    )
+    if branching:
+        raise ValueError(
+            "Cascade source nodes with multiple downstream edges require "
+            "explicit branch shares: " + ", ".join(branching)
+        )
+
+    local = {
+        node_id: values.copy() for node_id, values in node_to_natural.items()
+    }
+    transfer_fraction = [
+        np.ones_like(values, dtype=float) for values in shifted_by_edge
+    ]
+    node_rows: list[dict[str, object]] = []
+    raw_negative_count = 0
+    raw_negative_min = 0.0
+    raw_clip_volume_million_m3 = 0.0
+    adjusted_transfer_volume_million_m3 = 0.0
+    for target, edge_indexes in incoming_by_target.items():
+        incoming = np.sum(
+            [shifted_by_edge[index] for index in edge_indexes], axis=0
+        )
+        target_natural = node_to_natural[target]
+        raw_local = target_natural - incoming
+        negative = raw_local < 0.0
+        factor = np.ones_like(target_natural, dtype=float)
+        positive_incoming = incoming > 0.0
+        factor[positive_incoming] = np.minimum(
+            1.0,
+            np.divide(
+                target_natural[positive_incoming],
+                incoming[positive_incoming],
+            ),
+        )
+        reconciled_incoming = factor * incoming
+        reconciled_local = target_natural - reconciled_incoming
+        tolerance = 1e-10
+        if float(reconciled_local.min(initial=0.0)) < -tolerance:
+            raise ValueError(
+                f"Cascade reconciliation produced negative local inflow at {target}"
+            )
+        reconciled_local[np.abs(reconciled_local) <= tolerance] = 0.0
+        local[target] = reconciled_local
+        for index in edge_indexes:
+            transfer_fraction[index] = factor.copy()
+        negative_count = int(negative.sum())
+        clipped_volume = float((-raw_local[negative]).sum() * 3600.0 / 1.0e6)
+        adjusted_volume = float(
+            (incoming - reconciled_incoming).sum() * 3600.0 / 1.0e6
+        )
+        raw_negative_count += negative_count
+        raw_negative_min = min(
+            raw_negative_min, float(raw_local.min(initial=0.0))
+        )
+        raw_clip_volume_million_m3 += clipped_volume
+        adjusted_transfer_volume_million_m3 += adjusted_volume
+        node_rows.append(
+            {
+                "target_node_id": target,
+                "incoming_edge_count": len(edge_indexes),
+                "raw_negative_node_hours": negative_count,
+                "raw_min_local_inflow_m3s": float(raw_local.min(initial=0.0)),
+                "raw_clip_equivalent_volume_million_m3": clipped_volume,
+                "adjusted_transfer_volume_million_m3": adjusted_volume,
+                "minimum_transfer_fraction": float(factor.min(initial=1.0)),
+                "adjusted_hours": int((factor < 1.0).sum()),
+                "maximum_reconciliation_residual_m3s": float(
+                    np.abs(
+                        target_natural
+                        - reconciled_incoming
+                        - reconciled_local
+                    ).max(initial=0.0)
+                ),
+            }
+        )
+    audit: dict[str, object] = {
+        "schema_version": "cispo_hydro_cascade_reconciliation_v1",
+        "method": "target_bounded_proportional_transfer_v1",
+        "raw_negative_node_hours": raw_negative_count,
+        "raw_min_local_inflow_m3s": raw_negative_min,
+        "raw_clip_equivalent_volume_million_m3": (
+            raw_clip_volume_million_m3
+        ),
+        "adjusted_transfer_volume_million_m3": (
+            adjusted_transfer_volume_million_m3
+        ),
+        "nodes_with_adjustment": int(
+            sum(int(row["adjusted_hours"]) > 0 for row in node_rows)
+        ),
+        "maximum_reconciliation_residual_m3s": float(
+            max(
+                (
+                    float(row["maximum_reconciliation_residual_m3s"])
+                    for row in node_rows
+                ),
+                default=0.0,
+            )
+        ),
+    }
+    return local, transfer_fraction, audit, node_rows
 
 
 def _connected_cascade_node_ids(
@@ -146,6 +283,14 @@ class HydroProfileReader:
             raise ValueError(
                 "Unsupported duplicate-COMID hydrology allocation rule: "
                 f"{allocation_rule!r}"
+            )
+        reconciliation = str(
+            config.raw["hydro"].get("cascade_inflow_reconciliation", "")
+        )
+        if reconciliation != "target_bounded_proportional_transfer_v1":
+            raise ValueError(
+                "Unsupported cascade inflow reconciliation: "
+                f"{reconciliation!r}"
             )
         self.station_flow_share = _station_flow_share_by_comid(
             data.hydro_stations
@@ -322,7 +467,19 @@ class HydroProfileReader:
         cascade_edge_target_local_rows: list[np.ndarray] = []
         cascade_edge_target_weights: list[np.ndarray] = []
         cascade_edge_lag_h: list[int] = []
+        cascade_edge_transfer_fraction: list[np.ndarray] = []
         cascade_edge_ids: list[str] = []
+        cascade_reconciliation_audit: dict[str, object] = {
+            "schema_version": "cispo_hydro_cascade_reconciliation_v1",
+            "method": "target_bounded_proportional_transfer_v1",
+            "raw_negative_node_hours": 0,
+            "raw_min_local_inflow_m3s": 0.0,
+            "raw_clip_equivalent_volume_million_m3": 0.0,
+            "adjusted_transfer_volume_million_m3": 0.0,
+            "nodes_with_adjustment": 0,
+            "maximum_reconciliation_residual_m3s": 0.0,
+        }
+        cascade_reconciliation_node_rows: list[dict[str, object]] = []
         cascade_edges = getattr(self.data, "hydro_cascade_edges", pd.DataFrame())
         cascade_nodes = getattr(self.data, "hydro_cascade_nodes", pd.DataFrame())
         connected_cascade_node_ids, isolated_cascade_node_ids = (
@@ -371,26 +528,31 @@ class HydroProfileReader:
                 ].sum(axis=0)
                 cascade_station_local_rows.update(int(local) for local in local_rows)
 
-            node_local_inflow = {
-                node_id: values.copy() for node_id, values in node_to_natural.items()
-            }
+            edge_contracts: list[tuple[str, str, int, str]] = []
             for row in cascade_edges.itertuples(index=False):
                 source = str(row.source_node_id)
                 target = str(row.target_node_id)
-                if source not in node_to_natural or target not in node_local_inflow:
-                    continue
                 lag = int(row.travel_lag_h)
-                node_local_inflow[target] -= _cyclic_shift_previous(
-                    node_to_natural[source], lag
-                )
+                edge_id = str(row.edge_id)
+                edge_contracts.append((source, target, lag, edge_id))
                 cascade_edge_source_local_rows.append(node_to_local_rows[source])
                 cascade_edge_target_local_rows.append(node_to_local_rows[target])
                 cascade_edge_target_weights.append(node_to_weights[target])
                 cascade_edge_lag_h.append(lag)
-                cascade_edge_ids.append(str(row.edge_id))
+                cascade_edge_ids.append(edge_id)
+
+            (
+                node_local_inflow,
+                cascade_edge_transfer_fraction,
+                cascade_reconciliation_audit,
+                cascade_reconciliation_node_rows,
+            ) = _reconcile_cascade_natural_inflow(
+                node_to_natural,
+                edge_contracts,
+            )
 
             for node_id, local_rows in node_to_local_rows.items():
-                local = np.maximum(node_local_inflow[node_id], 0.0)
+                local = node_local_inflow[node_id]
                 weights = node_to_weights[node_id]
                 for row_position, local_row in enumerate(local_rows):
                     reservoir_local_inflow_m3s[local_row] = local * weights[row_position]
@@ -438,8 +600,11 @@ class HydroProfileReader:
             cascade_edge_target_local_rows=cascade_edge_target_local_rows,
             cascade_edge_target_weights=cascade_edge_target_weights,
             cascade_edge_lag_h=np.asarray(cascade_edge_lag_h, dtype=np.int64),
+            cascade_edge_transfer_fraction=cascade_edge_transfer_fraction,
             cascade_edge_ids=cascade_edge_ids,
             cascade_isolated_node_ids=isolated_cascade_node_ids,
+            cascade_reconciliation_audit=cascade_reconciliation_audit,
+            cascade_reconciliation_node_rows=cascade_reconciliation_node_rows,
         )
 
     def read_block(self, block: TimeBlock, hydro_capacity_gw: np.ndarray) -> HydroBlock:

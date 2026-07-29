@@ -92,6 +92,15 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--export-scientific-solver-artifacts",
+        action="store_true",
+        help=(
+            "After an accepted full-year Base solve, export selective .sol, "
+            ".bas, .prm and lightweight fingerprint artifacts. Never valid "
+            "for truncated horizons, non-Base cases or MGA outputs."
+        ),
+    )
+    parser.add_argument(
         "--basis-in",
         help=(
             "Accepted diagnostic output directory containing warm_start_basis.bas "
@@ -189,6 +198,21 @@ def main() -> None:
         args.diagnostic_hours is not None
         or config.horizon(args.horizon)["test_only"]
     )
+    if args.export_scientific_solver_artifacts and requested_test_only:
+        raise SystemExit(
+            "--export-scientific-solver-artifacts requires the full-year horizon"
+        )
+    if (
+        args.export_scientific_solver_artifacts
+        and base_config.raw["scenario"].get("analysis_role") != "BASELINE"
+    ):
+        raise SystemExit(
+            "--export-scientific-solver-artifacts is restricted to Base"
+        )
+    if args.export_scientific_solver_artifacts and args.mga_spec:
+        raise SystemExit(
+            "--export-scientific-solver-artifacts cannot be used for MGA"
+        )
     if args.allow_diagnostic_state_in and not requested_test_only:
         raise SystemExit(
             "--allow-diagnostic-state-in cannot be used for a scientific full-year run"
@@ -291,6 +315,9 @@ def main() -> None:
         "planning_year": config.planning_year,
         "scenario_id": config.raw["scenario"]["id"],
         "scenario_family": config.raw["scenario"]["family"],
+        "analysis_role": config.raw["scenario"]["analysis_role"],
+        "publication_status": config.raw["scenario"]["publication_status"],
+        "baseline_contract_case_id": config.raw["scientific_case"]["case_id"],
         "formulation_profile_id": config.raw.get("formulation_profile", {}).get(
             "id"
         ),
@@ -312,6 +339,9 @@ def main() -> None:
         },
         "analysis_mode": "BASE_MINIMUM_COST",
         "mga": None,
+        "scientific_solver_artifacts_requested": bool(
+            args.export_scientific_solver_artifacts
+        ),
     }
     (output_dir / "run_scope.json").write_text(
         json.dumps(scope_report, ensure_ascii=False, indent=2) + "\n",
@@ -371,16 +401,26 @@ def main() -> None:
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
     )
-    # The raw LP is now available: augment the pre-build provenance identity
-    # with the exact topology required by guarded diagnostic basis reuse.
-    from cispo_model.basis_reuse import lp_topology_identity
+    # Every run records a constant-memory Gurobi identity. Exact ordered names
+    # and the raw CSR pattern are materialized only for explicit guarded basis
+    # import/export, never merely because a long-horizon solve was requested.
+    from cispo_model.basis_reuse import (
+        lightweight_lp_identity,
+        lp_topology_identity,
+    )
 
-    lp_topology = lp_topology_identity(artifacts.model)
+    lp_model = lightweight_lp_identity(artifacts.model)
+    lp_topology = (
+        lp_topology_identity(artifacts.model)
+        if args.basis_in or args.export_warm_start_basis
+        else None
+    )
     (output_dir / RUN_IDENTITY_FILENAME).write_text(
         json.dumps(
             configuration_identity(
                 config,
                 data_root=DATA_ROOT,
+                lp_model=lp_model,
                 lp_topology=lp_topology,
             ),
             ensure_ascii=False,
@@ -486,6 +526,9 @@ def main() -> None:
         planning_year=config.planning_year,
         scenario_id=config.raw["scenario"]["id"],
         scenario_family=config.raw["scenario"]["family"],
+        analysis_role=config.raw["scenario"]["analysis_role"],
+        publication_status=config.raw["scenario"]["publication_status"],
+        baseline_contract_case_id=config.raw["scientific_case"]["case_id"],
         horizon=horizon_name,
         optimization_hours=optimization_hours,
         result_use=scope_report["result_use"],
@@ -537,6 +580,26 @@ def main() -> None:
             solution_qc=qc,
             optimization_hours=optimization_hours,
             result_use=scope_report["result_use"],
+        )
+    if (
+        args.export_scientific_solver_artifacts
+        and qc is not None
+        and report["status"] == "OPTIMAL"
+        and qc["status"] == "PASS"
+    ):
+        from cispo_model.solver_artifacts import (
+            export_scientific_base_solver_artifacts,
+        )
+
+        report["scientific_solver_artifacts"] = (
+            export_scientific_base_solver_artifacts(
+                artifacts.model,
+                config,
+                output_dir,
+                solve_report=report,
+                solution_qc=qc,
+                result_use=scope_report["result_use"],
+            )
         )
     if artifacts.model.SolCount:
         report["result_manifest_path"] = str(output_dir / "result_manifest.json")

@@ -101,6 +101,36 @@ class RunContractTests(unittest.TestCase):
             64,
         )
 
+    def test_baseline_contract_is_immutable_while_analysis_case_changes(self):
+        root = Path(__file__).resolve().parents[1]
+        base = load_model_config(
+            scenario_path=root / "config" / "scenarios" / "base.json"
+        )
+        effective = load_model_config(
+            scenario_path=(
+                root
+                / "config"
+                / "scenarios"
+                / "flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json"
+            )
+        )
+        base_identity = configuration_identity(base, data_root=root / "data")
+        effective_identity = configuration_identity(
+            effective, data_root=root / "data"
+        )
+        self.assertEqual(
+            base_identity["baseline_contract"],
+            effective_identity["baseline_contract"],
+        )
+        self.assertNotEqual(
+            base_identity["analysis_case"],
+            effective_identity["analysis_case"],
+        )
+        self.assertEqual(
+            effective_identity["analysis_case"]["parent_baseline_case_id"],
+            base_identity["baseline_contract"]["case_id"],
+        )
+
     def test_sequence_identity_locks_horizon_and_year_range(self):
         root = Path(__file__).resolve().parents[1]
         config = load_model_config()

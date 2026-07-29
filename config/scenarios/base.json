@@ -4,6 +4,10 @@
   "scenario_family": "cispo_replication",
   "description": "Explicit wave-integrated baseline with demand flexibility disabled; equivalent to running without --scenario-config.",
   "evidence_status": "MODEL_BASELINE",
+  "analysis_role": "BASELINE",
+  "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+  "parent_baseline_case_id": null,
+  "supersedes": null,
   "overrides": {
     "features": {
       "flexible_load": false,

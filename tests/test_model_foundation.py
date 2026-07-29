@@ -66,11 +66,11 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertTrue(self.config.raw["features"]["wave_energy"])
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 24).variables,
-            345_992,
+            346_023,
         )
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 8760).variables,
-            41_186_792,
+            41_186_823,
         )
 
     def test_nuclear_biomass_and_battery_bounds_are_explicit(self):

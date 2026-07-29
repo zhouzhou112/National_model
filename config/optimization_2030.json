@@ -31,7 +31,11 @@
     "id": "base",
     "family": "cispo_replication",
     "description": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
-    "evidence_status": "MODEL_BASELINE"
+    "evidence_status": "MODEL_BASELINE",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "parent_baseline_case_id": null,
+    "supersedes": null
   },
   "scientific_case": {
     "contract_version": "scientific_case_v1",
@@ -214,6 +218,7 @@
     "up_reserve_vre_fraction": 0.05,
     "down_reserve_vre_fraction": 0.05,
     "capacity_margin_fraction": 0.05,
+    "capacity_margin_load_basis": "baseline_peak_v1",
     "inertia_reference_seconds": 3.5,
     "inertia_tolerance_fraction": 1.0,
     "capacity_credit": {
@@ -267,6 +272,7 @@
     "reservoir_flow_variable_scale_m3s": 1000.0,
     "reservoir_volume_variable_scale_m3": 1000000.0,
     "hydrology_flow_zero_tolerance_m3s": 0.0001,
+    "cascade_inflow_reconciliation": "target_bounded_proportional_transfer_v1",
     "classification_column": "operation_type_model",
     "installed_type_rule": "use_assigned_GHT_or_115MW_proxy_label_regardless_of_confidence",
     "potential_reservoir_threshold_mw": 750.0,

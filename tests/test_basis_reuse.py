@@ -11,6 +11,7 @@ from scipy import sparse
 from cispo_model.basis_reuse import (
     BASIS_SCHEMA_VERSION,
     BasisReuseError,
+    lightweight_lp_identity,
     lp_topology_identity,
     prepare_basis_reuse,
 )
@@ -24,6 +25,8 @@ class _FakeModel:
         self.NumVars = 3
         self.NumConstrs = 2
         self.NumNZs = 4
+        self.Fingerprint = 12345
+        self.get_a_calls = 0
         self._sense = sense
         matrices = {
             "reference": [[1.0, 1.0, 0.0], [0.0, 1.0, 1.0]],
@@ -50,10 +53,18 @@ class _FakeModel:
         raise AssertionError(name)
 
     def getA(self):
+        self.get_a_calls += 1
         return self._matrix
 
 
 class BasisReuseTests(unittest.TestCase):
+    def test_lightweight_identity_never_materializes_sparse_matrix(self):
+        model = _FakeModel()
+        identity = lightweight_lp_identity(model)
+        self.assertEqual(identity["gurobi_fingerprint"], 12345)
+        self.assertFalse(identity["matrix_materialized"])
+        self.assertEqual(model.get_a_calls, 0)
+
     def test_named_structure_identity_is_sensitive_to_constraint_sense(self):
         equal_identity = lp_topology_identity(_FakeModel(sense="="))
         less_identity = lp_topology_identity(_FakeModel(sense="<"))

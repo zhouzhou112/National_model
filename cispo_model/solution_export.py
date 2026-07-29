@@ -547,9 +547,22 @@ def export_operational_solution(
                 float(config.raw["wave_energy"]["capacity_credit"])
                 * wave_capacity[rows].sum()
             )
+    capacity_margin_load_basis = str(
+        config.raw["security"]["capacity_margin_load_basis"]
+    )
+    baseline_peak_load = data.load_gw.max(axis=1)
+    effective_peak_load = load.max(axis=1)
+    if capacity_margin_load_basis == "baseline_peak_v1":
+        selected_peak_load = baseline_peak_load
+    elif capacity_margin_load_basis == "effective_peak_endogenous_v1":
+        selected_peak_load = effective_peak_load
+    else:
+        raise ValueError(
+            f"Unsupported capacity-margin load basis: {capacity_margin_load_basis}"
+        )
     capacity_margin_required = (
         1.0 + float(config.raw["security"]["capacity_margin_fraction"])
-    ) * data.load_gw.max(axis=1)
+    ) * selected_peak_load
     capacity_margin = credited_capacity - capacity_margin_required
 
     pmin = ruc_table.pmin_fraction.to_numpy(dtype=float)
@@ -591,11 +604,13 @@ def export_operational_solution(
     )
 
     upstream_release = np.zeros_like(reservoir_volume)
-    for source_rows, target_rows, target_weights, lag in zip(
+    routed_release_loss_m3s = np.zeros(hours, dtype=float)
+    for source_rows, target_rows, target_weights, lag, transfer_fraction in zip(
         artifacts.index.get("cascade_edge_source_local_rows", []),
         artifacts.index.get("cascade_edge_target_local_rows", []),
         artifacts.index.get("cascade_edge_target_weights", []),
         artifacts.index.get("cascade_edge_lag_h", []),
+        artifacts.index.get("cascade_edge_transfer_fraction", []),
     ):
         source_rows = np.asarray(source_rows, dtype=int)
         target_rows = np.asarray(target_rows, dtype=int)
@@ -605,6 +620,9 @@ def export_operational_solution(
             + reservoir_spill_flow[source_rows, :].sum(axis=0)
         )
         shifted = np.roll(release, int(lag) % hours)
+        transfer_fraction = np.asarray(transfer_fraction, dtype=float)
+        routed_release_loss_m3s += shifted * (1.0 - transfer_fraction)
+        shifted = shifted * transfer_fraction
         for target_row, weight in zip(target_rows, target_weights):
             upstream_release[int(target_row), :] += float(weight) * shifted
     reservoir_cycle_residual = np.empty_like(reservoir_volume)
@@ -630,6 +648,12 @@ def export_operational_solution(
         )
         * 3600.0
     )
+    cascade_reconciliation_audit = dict(
+        artifacts.index.get("cascade_reconciliation_audit", {})
+    )
+    cascade_reconciliation_audit[
+        "actual_routed_release_adjustment_volume_million_m3"
+    ] = float(routed_release_loss_m3s.sum() * 3600.0 / 1.0e6)
 
     line_capacity = _value(variables["line_capacity"])
     line_violation = flow_forward + flow_reverse - line_capacity[:, None]
@@ -988,6 +1012,29 @@ def export_operational_solution(
         "core_cascade_isolated_single_station_nodes_removed": int(
             len(artifacts.index.get("cascade_isolated_node_ids", []))
         ),
+        "cascade_raw_negative_local_inflow_node_hours": int(
+            cascade_reconciliation_audit.get("raw_negative_node_hours", 0)
+        ),
+        "cascade_raw_clip_equivalent_volume_million_m3": float(
+            cascade_reconciliation_audit.get(
+                "raw_clip_equivalent_volume_million_m3", 0.0
+            )
+        ),
+        "cascade_adjusted_transfer_volume_million_m3": float(
+            cascade_reconciliation_audit.get(
+                "adjusted_transfer_volume_million_m3", 0.0
+            )
+        ),
+        "cascade_actual_routed_release_adjustment_volume_million_m3": float(
+            cascade_reconciliation_audit[
+                "actual_routed_release_adjustment_volume_million_m3"
+            ]
+        ),
+        "maximum_cascade_reconciliation_residual_m3s": float(
+            cascade_reconciliation_audit.get(
+                "maximum_reconciliation_residual_m3s", 0.0
+            )
+        ),
         "annual_gross_emissions_mtco2": annual_emissions,
         "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,
@@ -1183,6 +1230,9 @@ def export_operational_solution(
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,
         "storage_soc": qc["maximum_storage_soc_upper_violation_gwh"] <= tolerance,
         "reservoir_transition": qc["maximum_reservoir_transition_residual_m3"] <= reservoir_volume_tolerance_m3,
+        "cascade_inflow_reconciliation": qc[
+            "maximum_cascade_reconciliation_residual_m3s"
+        ] <= tolerance,
         "reservoir_energy": qc["maximum_reservoir_energy_upper_violation_gwh"] <= tolerance,
         "reservoir_active_storage": qc["maximum_reservoir_active_storage_upper_violation_m3"] <= reservoir_volume_tolerance_m3,
         "carbon": qc["carbon_limit_margin_mtco2"] >= -tolerance,
@@ -1209,6 +1259,17 @@ def export_operational_solution(
         )
     qc["hard_checks"] = hard_checks
     qc["status"] = "PASS" if all(hard_checks.values()) else "HARD_FAIL"
+    _write_json(
+        cascade_reconciliation_audit,
+        output_dir / "hydro_cascade_reconciliation_audit.json",
+    )
+    pd.DataFrame(
+        artifacts.index.get("cascade_reconciliation_node_rows", [])
+    ).to_csv(
+        output_dir / "hydro_cascade_reconciliation_by_node.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
     _write_json(qc, output_dir / "solution_qc.json")
 
     province_hour = pd.DataFrame(
@@ -1394,11 +1455,12 @@ def export_operational_solution(
                 "CNY_per_GJ",
             )
         for province_code, handle in zip(provinces, handles["capacity_margin"]):
+            pi = np.asarray(handle.Pi, dtype=float)
             add_dual(
                 "capacity_margin",
                 "province_code",
                 int(province_code),
-                float(handle.Pi),
+                float(pi.sum()),
                 ">=",
                 "CNY_per_kW_credited_capacity",
             )
@@ -1454,7 +1516,11 @@ def export_operational_solution(
     pd.DataFrame(
         {
             "province_code": provinces,
-            "peak_load_gw": data.load_gw.max(axis=1),
+            "capacity_margin_load_basis": capacity_margin_load_basis,
+            "baseline_peak_load_gw": baseline_peak_load,
+            "effective_peak_load_gw": effective_peak_load,
+            "selected_peak_load_gw": selected_peak_load,
+            "peak_load_gw": selected_peak_load,
             "capacity_margin_fraction": float(
                 config.raw["security"]["capacity_margin_fraction"]
             ),
@@ -1769,6 +1835,7 @@ def export_operational_solution(
                 "capacity_margin_fraction": float(
                     config.raw["security"]["capacity_margin_fraction"]
                 ),
+                "capacity_margin_load_basis": capacity_margin_load_basis,
                 "inertia_reference_seconds": config.raw["security"].get(
                     "inertia_reference_seconds"
                 ),

@@ -10,9 +10,30 @@ from cispo_model.data import load_model_data
 from cispo_model.hydro import (
     HydroProfileReader,
     _connected_cascade_node_ids,
+    _reconcile_cascade_natural_inflow,
     _station_flow_share_by_comid,
 )
 from cispo_model.timeblocks import TimeBlock
+
+
+class HydroReconciliationUnitTests(unittest.TestCase):
+    def test_cascade_reconciliation_is_mass_closed_and_never_adds_water(self):
+        node_flow = {
+            "upstream": np.asarray([10.0, 20.0, 5.0]),
+            "downstream": np.asarray([8.0, 25.0, 5.0]),
+        }
+        local, fractions, audit, rows = _reconcile_cascade_natural_inflow(
+            node_flow,
+            [("upstream", "downstream", 0, "edge_1")],
+        )
+        np.testing.assert_allclose(fractions[0], [0.8, 1.0, 1.0])
+        np.testing.assert_allclose(local["downstream"], [0.0, 5.0, 0.0])
+        np.testing.assert_allclose(
+            fractions[0] * node_flow["upstream"] + local["downstream"],
+            node_flow["downstream"],
+        )
+        self.assertEqual(audit["raw_negative_node_hours"], 1)
+        self.assertEqual(rows[0]["adjusted_hours"], 1)
 
 
 class HydroStationModelTests(unittest.TestCase):

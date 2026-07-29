@@ -10,6 +10,20 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "config" / "optimization_2030.json"
+ALLOWED_SCENARIO_OVERRIDE_ROOTS = {
+    "features",
+    "flexible_load",
+    "hydro",
+    "security",
+    "storage_design",
+}
+ANALYSIS_ROLES = {
+    "BASELINE",
+    "CENTRAL_COUNTERFACTUAL",
+    "SENSITIVITY",
+    "LEGACY_VALIDATION",
+    "TEMPLATE",
+}
 
 
 @dataclass(frozen=True)
@@ -201,6 +215,37 @@ class ModelConfig:
         capacity_margin = float(security.get("capacity_margin_fraction", -1.0))
         if not 0.0 <= capacity_margin <= 1.0:
             raise ValueError("security.capacity_margin_fraction must be in [0, 1]")
+        capacity_margin_load_basis = str(
+            security.get("capacity_margin_load_basis", "")
+        )
+        if capacity_margin_load_basis not in {
+            "baseline_peak_v1",
+            "effective_peak_endogenous_v1",
+        }:
+            raise ValueError(
+                "security.capacity_margin_load_basis must be "
+                "baseline_peak_v1 or effective_peak_endogenous_v1"
+            )
+        reliability = self.raw.get("flexible_load", {}).get(
+            "reliability_treatment", {}
+        )
+        legacy_baseline_flag = bool(
+            reliability.get("planning_capacity_margin_uses_baseline_peak", True)
+        )
+        if legacy_baseline_flag != (
+            capacity_margin_load_basis == "baseline_peak_v1"
+        ):
+            raise ValueError(
+                "flexible_load.reliability_treatment legacy baseline-peak flag "
+                "must agree with security.capacity_margin_load_basis"
+            )
+        if (
+            capacity_margin_load_basis == "effective_peak_endogenous_v1"
+            and not bool(self.raw["features"].get("flexible_load", False))
+        ):
+            raise ValueError(
+                "effective_peak_endogenous_v1 requires features.flexible_load=true"
+            )
         resolve_minimum_system_inertia_seconds(security)
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
@@ -770,15 +815,46 @@ def load_model_config(
             raise ValueError("Scenario override must declare scenario_override_version=v1")
         if not payload.get("scenario_id") or not payload.get("scenario_family"):
             raise ValueError("Scenario override requires scenario_id and scenario_family")
+        analysis_role = str(payload.get("analysis_role", "")).strip()
+        publication_status = str(payload.get("publication_status", "")).strip()
+        if analysis_role not in ANALYSIS_ROLES:
+            raise ValueError(
+                "Scenario override requires an explicit supported analysis_role"
+            )
+        if not publication_status:
+            raise ValueError(
+                "Scenario override requires an explicit publication_status"
+            )
+        parent_baseline_case_id = payload.get("parent_baseline_case_id")
+        if analysis_role == "BASELINE":
+            if parent_baseline_case_id is not None:
+                raise ValueError("A BASELINE scenario cannot declare a parent baseline")
+        elif parent_baseline_case_id != raw["scientific_case"]["case_id"]:
+            raise ValueError(
+                "Non-Base scenario parent_baseline_case_id must match the "
+                "immutable scientific_case.case_id"
+            )
         overrides = payload.get("overrides")
         if not isinstance(overrides, dict):
             raise ValueError("Scenario override requires an object-valued overrides field")
+        unknown_roots = sorted(
+            set(overrides).difference(ALLOWED_SCENARIO_OVERRIDE_ROOTS)
+        )
+        if unknown_roots:
+            raise ValueError(
+                "Scenario override changes disallowed model roots: "
+                + ", ".join(unknown_roots)
+            )
         raw = _deep_merge(raw, overrides)
         raw["scenario"] = {
             "id": str(payload["scenario_id"]),
             "family": str(payload["scenario_family"]),
             "description": str(payload.get("description", "")),
             "evidence_status": str(payload.get("evidence_status", "UNSPECIFIED")),
+            "analysis_role": analysis_role,
+            "publication_status": publication_status,
+            "parent_baseline_case_id": parent_baseline_case_id,
+            "supersedes": payload.get("supersedes"),
         }
         resolved_scenario = resolved_scenario.resolve()
     resolved_solver: Path | None = None

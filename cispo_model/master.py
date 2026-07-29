@@ -1260,11 +1260,26 @@ def build_master(
     )
     costs["co2_transport_injection"] = (transport_cost * co2_ship).sum()
 
-    # Capacity margin is imposed on annual capacity decisions.
+    # Capacity margin is imposed on annual capacity decisions.  The credited
+    # capacity expression is built here because all capacity variables live in
+    # the master.  An endogenous effective-load right-hand side is attached
+    # later, after the flexible-load block exists in ``monolithic.py``.
     credit = config.raw["security"]["capacity_credit"]
     peak = data.load_gw.max(axis=1)
     margin = 1.0 + float(config.raw["security"]["capacity_margin_fraction"])
+    capacity_margin_load_basis = str(
+        config.raw["security"]["capacity_margin_load_basis"]
+    )
+    credited_capacity_variable = model.addMVar(
+        len(provinces),
+        lb=0.0,
+        name="capacity_margin_credited_capacity_gw",
+    )
+    variables["capacity_margin_credited_capacity"] = (
+        credited_capacity_variable
+    )
     capacity_margin_constraints = []
+    capacity_margin_accounting_constraints = []
     for province_code, p in p_index.items():
         expr = gp.LinExpr()
         for technology in THERMAL_TECHS:
@@ -1295,12 +1310,23 @@ def build_master(
                     float(config.raw["wave_energy"]["capacity_credit"])
                     * variables["wave_capacity"][wave_rows].sum()
                 )
-        capacity_margin_constraints.append(
+        capacity_margin_accounting_constraints.append(
             model.addConstr(
-                expr >= margin * peak[p], name=f"capacity_margin_p{province_code}"
+                credited_capacity_variable[p] == expr,
+                name=f"capacity_margin_credited_capacity_account_p{province_code}",
             )
         )
+        if capacity_margin_load_basis == "baseline_peak_v1":
+            capacity_margin_constraints.append(
+                model.addConstr(
+                    credited_capacity_variable[p] >= margin * peak[p],
+                    name=f"capacity_margin_p{province_code}",
+                )
+            )
     constraint_handles["capacity_margin"] = capacity_margin_constraints
+    constraint_handles["capacity_margin_credited_capacity_accounting"] = (
+        capacity_margin_accounting_constraints
+    )
 
     # Intra-grid capacity variables are annual master decisions.  The design
     # factors are calculated from the full 8760 weather source, never from a
@@ -1577,6 +1603,7 @@ def build_master(
             "thermal_retrofit_to_ccs_gw": "surviving_source_floor_already_explicit",
             "spur_trunk": "no finite UB added: installed interface augmentation above minimum remains feasible",
         },
+        "capacity_margin_load_basis": capacity_margin_load_basis,
         "annual_emissions_accounting": emissions_accounting,
         "constraint_handles": constraint_handles,
         **index_extra,

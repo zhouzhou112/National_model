@@ -4,6 +4,10 @@
   "scenario_family": "demand_flexibility_service_constrained",
   "description": "Data-supported V4 demand-flexibility scenario: existing BAIT +/-1 C thermal envelopes, non-negative continuous thermal service inventories, and aggregate EV service inventory tied exactly to 25% of the existing EV charging baseline. It is not Base; V1G is the central case.",
   "evidence_status": "ENGINEERING_CENTRAL_REQUIRES_LOW_HIGH_SENSITIVITY",
+  "analysis_role": "CENTRAL_COUNTERFACTUAL",
+  "publication_status": "REQUIRES_LOW_HIGH_AND_FULL_YEAR_ACCEPTANCE",
+  "parent_baseline_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "supersedes": "flexible_load_comfort_v3_v2g_5pct",
   "overrides": {
     "features": {
       "flexible_load": true

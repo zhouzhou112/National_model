@@ -33,6 +33,11 @@ RUNTIME_MANAGED_FILES = {
 }
 
 OUTPUT_FILE_ROLES = {
+    "base_basis.bas.gz": "Accepted full-year Base post-crossover LP basis checkpoint",
+    "base_model_fingerprint.json": "Constant-memory Gurobi model identity and basis-status census",
+    "base_solution.sol.gz": "Accepted full-year Base continuous solution checkpoint",
+    "base_solver.prm": "Active Gurobi parameter checkpoint for the accepted full-year Base",
+    "base_solver_artifact_manifest.json": "Integrity and reuse-scope contract for selective Base solver artifacts",
     "annual_adequacy_by_province.csv": "Province peak-load capacity-credit and planning-reserve-margin accounting",
     "annual_capacity_by_province_technology.csv": "Province-technology installed and new capacity",
     "annual_capacity_by_technology.csv": "National installed and new capacity by technology",
@@ -60,6 +65,8 @@ OUTPUT_FILE_ROLES = {
         "Fixed province-level conventional-hydropower residual and accounting"
     ),
     "hydro_dispatch.npz": "Province-hour run-of-river and hydropower reserve arrays",
+    "hydro_cascade_reconciliation_audit.json": "Full-horizon cascade natural-flow reconciliation and routed-release adjustment audit",
+    "hydro_cascade_reconciliation_by_node.csv": "Node-level cascade reconciliation counts, volumes and transfer fractions",
     "input_manifest.csv": "Resolved model input files and integrity hashes",
     "intra_grid_substation_design.csv": "CISPO-style shared wind/PV trunk design factors and capacity decisions by substation",
     "intra_grid_vre_site_design.csv": "Site-level VRE spur design factors, observed cohort floor and augmentation decisions",

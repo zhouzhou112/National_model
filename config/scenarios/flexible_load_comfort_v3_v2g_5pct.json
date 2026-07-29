@@ -4,6 +4,10 @@
   "scenario_family": "demand_flexibility_v2g",
   "description": "Demand-flexibility overlay on the wave-integrated Base: comfort-envelope V3 with causal V2G capped at 5% of each province-day baseline EV peak.",
   "evidence_status": "EVIDENCE_ANCHORED_PARAMETERS_REQUIRE_SENSITIVITY",
+  "analysis_role": "LEGACY_VALIDATION",
+  "publication_status": "RETIRED_SUPERSEDED_BY_V4",
+  "parent_baseline_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "supersedes": null,
   "overrides": {
     "features": {
       "flexible_load": true

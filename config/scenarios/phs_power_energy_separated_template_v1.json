@@ -4,6 +4,10 @@
   "scenario_family": "storage_representation_candidate",
   "description": "Non-runnable template for independent province-level PHS power and energy planning. Populate source-reviewed power and energy CAPEX paths for all planning years; the 8-hour reference total must close to the active aggregate PHS CAPEX.",
   "evidence_status": "PROPOSED_NOT_APPLIED_REQUIRES_COST_REVIEW",
+  "analysis_role": "TEMPLATE",
+  "publication_status": "NOT_RUNNABLE_TEMPLATE",
+  "parent_baseline_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "supersedes": null,
   "overrides": {
     "storage_design": {
       "phs_energy_capacity_mode": "independent_power_energy_v1",

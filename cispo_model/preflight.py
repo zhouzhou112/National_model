@@ -125,6 +125,7 @@ def estimate_full_model_scale(
         "transmission_capacity_and_flow": 2 * e + (e + e_reverse) * h,
         "dac_capacity_and_capture": 3 * p * d,
         "annual_resource_accounts": 2 * p + 1,
+        "capacity_margin_credited_capacity": p,
         "co2_source_sink_flow": p * c,
         "spur_and_trunk_capacity": n_vre + n_hydro + n_sub,
         "annual_load_center_network": (
@@ -136,6 +137,12 @@ def estimate_full_model_scale(
         ),
     }
     variables = int(sum(blocks.values()))
+    capacity_margin_constraints = p + (
+        p
+        if config.raw["security"]["capacity_margin_load_basis"]
+        == "baseline_peak_v1"
+        else p * h
+    )
     constraints = int(
         n_vre
         + 2 * p * v * h
@@ -150,6 +157,7 @@ def estimate_full_model_scale(
         + 3 * p * h
         + p * k
         + p * c
+        + capacity_margin_constraints
         + n_vre
         + n_hydro
         + n_sub

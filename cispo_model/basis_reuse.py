@@ -29,6 +29,34 @@ class BasisReuseError(ValueError):
     """Raised when a basis artifact cannot be safely reused."""
 
 
+def lightweight_lp_identity(model: Any) -> dict[str, Any]:
+    """Return a constant-memory LP identity suitable for long-horizon runs.
+
+    This deliberately avoids ``getA()``, ordered name materialization and CSR
+    hashing.  It is provenance evidence, not a basis-compatibility contract.
+    Guarded basis import/export continues to use :func:`lp_topology_identity`.
+    """
+    model.update()
+    try:
+        fingerprint = int(model.Fingerprint)
+    except (AttributeError, TypeError, ValueError):
+        try:
+            fingerprint = int(model.getAttr("Fingerprint"))
+        except Exception as error:
+            raise BasisReuseError(
+                "Gurobi did not expose a model Fingerprint for lightweight identity"
+            ) from error
+    return {
+        "schema_version": "cispo_lp_lightweight_identity_v1",
+        "variables": int(model.NumVars),
+        "constraints": int(model.NumConstrs),
+        "nonzeros": int(model.NumNZs),
+        "gurobi_fingerprint": fingerprint,
+        "basis_compatible": False,
+        "matrix_materialized": False,
+    }
+
+
 def _hash_strings(values: list[str], *, tag: str) -> str:
     digest = hashlib.sha256()
     digest.update(tag.encode("utf-8"))
@@ -195,6 +223,8 @@ def export_warm_start_basis(
             "gurobi_version": environment.get("packages", {}).get("gurobipy"),
         },
         "identity_layers": {
+            "baseline_contract": run_identity.get("baseline_contract"),
+            "analysis_case": run_identity.get("analysis_case"),
             "scientific_case": run_identity.get("scientific_case"),
             "lp_topology": lp_topology,
             "solver_runtime": run_identity.get("solver_runtime"),

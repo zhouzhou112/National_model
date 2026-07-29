@@ -200,6 +200,29 @@ def build_full_year_monolithic(
     baseline_load = data.load_gw[:, :hours]
     flexible_load = attach_flexible_load(model, config, data, hours=hours)
     load = flexible_load.effective_load_gw
+    capacity_margin_load_basis = str(
+        artifacts.index["capacity_margin_load_basis"]
+    )
+    if capacity_margin_load_basis == "effective_peak_endogenous_v1":
+        margin = 1.0 + float(
+            config.raw["security"]["capacity_margin_fraction"]
+        )
+        capacity_margin_constraints = []
+        credited_capacity = variables[
+            "capacity_margin_credited_capacity"
+        ]
+        for p, province_code in enumerate(provinces):
+            capacity_margin_constraints.append(
+                model.addConstr(
+                    credited_capacity[p] >= margin * load[p, :],
+                    name=f"capacity_margin_effective_p{province_code}",
+                )
+            )
+        constraint_handles["capacity_margin"] = capacity_margin_constraints
+    elif capacity_margin_load_basis != "baseline_peak_v1":
+        raise ValueError(
+            f"Unsupported capacity-margin load basis: {capacity_margin_load_basis}"
+        )
 
     vre_capacity = variables["vre_capacity"]
     thermal_capacity = variables["thermal_capacity"]
@@ -645,29 +668,45 @@ def build_full_year_monolithic(
                 * flow_to_volume_scaled,
                 name="reservoir_independent_hourly_transition",
             )
-    upstream_terms_by_target: dict[int, list[tuple[np.ndarray, float, int]]] = {
+    upstream_terms_by_target: dict[
+        int, list[tuple[np.ndarray, float, int, np.ndarray]]
+    ] = {
         int(row): [] for row in cascade_rows
     }
-    for source_rows, target_rows, target_weights, lag in zip(
+    for source_rows, target_rows, target_weights, lag, transfer_fraction in zip(
         hydro.cascade_edge_source_local_rows,
         hydro.cascade_edge_target_local_rows,
         hydro.cascade_edge_target_weights,
         hydro.cascade_edge_lag_h,
+        hydro.cascade_edge_transfer_fraction,
     ):
         for target_row, weight in zip(target_rows, target_weights):
             upstream_terms_by_target.setdefault(int(target_row), []).append(
-                (source_rows, float(weight), int(lag))
+                (
+                    source_rows,
+                    float(weight),
+                    int(lag),
+                    np.asarray(transfer_fraction, dtype=float),
+                )
             )
     for target_row in cascade_rows:
         terms = upstream_terms_by_target.get(int(target_row), [])
         for t in range(hours):
             previous_t = (t - 1) % hours
             upstream_release = gp.LinExpr()
-            for source_rows, weight, lag in terms:
+            for source_rows, weight, lag, transfer_fraction in terms:
                 source_t = (t - lag) % hours
-                upstream_release += weight * (
-                    reservoir_turbine_flow[source_rows, source_t].sum()
-                    + reservoir_spill_flow[source_rows, source_t].sum()
+                upstream_release += (
+                    float(transfer_fraction[t])
+                    * weight
+                    * (
+                        reservoir_turbine_flow[
+                            source_rows, source_t
+                        ].sum()
+                        + reservoir_spill_flow[
+                            source_rows, source_t
+                        ].sum()
+                    )
                 )
             model.addConstr(
                 reservoir_volume[target_row, t]
@@ -1005,8 +1044,11 @@ def build_full_year_monolithic(
         cascade_edge_target_local_rows=hydro.cascade_edge_target_local_rows,
         cascade_edge_target_weights=hydro.cascade_edge_target_weights,
         cascade_edge_lag_h=hydro.cascade_edge_lag_h,
+        cascade_edge_transfer_fraction=hydro.cascade_edge_transfer_fraction,
         cascade_edge_ids=hydro.cascade_edge_ids,
         cascade_isolated_node_ids=hydro.cascade_isolated_node_ids,
+        cascade_reconciliation_audit=hydro.cascade_reconciliation_audit,
+        cascade_reconciliation_node_rows=hydro.cascade_reconciliation_node_rows,
     )
     model.update()
     return artifacts
