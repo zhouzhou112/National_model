@@ -2,8 +2,8 @@
   "scenario_override_version": "v1",
   "scenario_id": "flexible_load_comfort_v4_v2g_sensitivity",
   "scenario_family": "demand_flexibility_service_constrained",
-  "description": "V4 V2G sensitivity using the same continuous thermal and fleet-mobility contract as V4 V1G. It is not Base and cannot run until the V4 calibration inputs are supplied and accepted.",
-  "evidence_status": "CALIBRATION_INPUT_CONTRACT_REQUIRED",
+  "description": "V4 V2G sensitivity using the same data-supported thermal and aggregate EV service inventory as V4 V1G. It is not Base and does not claim observed connection or departure behavior.",
+  "evidence_status": "ENGINEERING_SENSITIVITY_ONLY",
   "overrides": {
     "features": {
       "flexible_load": true
@@ -28,14 +28,19 @@
         "enabled": true
       },
       "ev_v1g": {
-        "enabled": true
+        "enabled": true,
+        "shiftable_energy_fraction": 0.25,
+        "maximum_power_to_daily_average_ratio": 2.0
       },
       "ev_v2g": {
         "enabled": true,
-        "state_boundary": "periodic_selected_horizon_v1"
+        "state_boundary": "periodic_selected_horizon_v1",
+        "charge_efficiency": 0.94,
+        "discharge_efficiency": 0.94,
+        "self_discharge_fraction_per_hour": 0.0
       },
       "parameter_status": {
-        "v2g_scope": "Sensitivity only: a single fleet SOC must satisfy driving withdrawals and departure minima before any V2G discharge can be credited; 300/600/1100 CNY/MWh degradation and compensation cases belong in the V4 cost input, not in Base."
+        "v2g_scope": "Sensitivity only: the same aggregate service inventory must first satisfy the 25% schedulable charging service; V2G power is capped from a 10% participation assumption and charged 180 CNY/MWh in the central parameter file."
       }
     }
   }

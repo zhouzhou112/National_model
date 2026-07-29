@@ -31,6 +31,7 @@ def attach_annual_load_center_network(
     hydro_capacity: gp.MVar,
     ror_generation: gp.MVar,
     reservoir_generation: gp.MVar,
+    hydro_aggregate_generation: gp.MVar,
     interprovincial_flow_forward: gp.MVar,
     interprovincial_flow_reverse_ac: gp.MVar,
     interprovincial_reverse_edge_rows: np.ndarray,
@@ -287,7 +288,8 @@ def attach_annual_load_center_network(
         model.addConstr(
             province_non_spatial_injection[p]
             == actual_thermal[p, :, :].sum()
-            + storage_discharge[p, :, :].sum(),
+            + storage_discharge[p, :, :].sum()
+            + hydro_aggregate_generation[p, :].sum(),
             name=f"province_annual_non_spatial_injection_p{province_code}",
         )
         model.addConstr(

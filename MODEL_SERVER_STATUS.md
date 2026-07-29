@@ -1,12 +1,26 @@
 # CISPO 2030 full-year server status
 
-## 2026-07-28 冷热/EV V4 仅本地代码与校准契约；没有服务器动作
+## 2026-07-29 多智能体改动已统一为本地 release candidate；等待精确提交和实时服务器复核
 
-本地提交 `3b3de57f41a8208b4e6bd0265270a91c77b1c8df` 新增 `flexible_load_comfort_v4_v1g` 与独立的 V2G sensitivity。它使用连续冷热服务状态、带界舒适债、内生服务签约容量，以及单车群 EV mobility/SOC；Base（wave on、flexible load off）和 V3 均未改动。V4 改变 LP topology，不能与 Base/V3 导入或导出 basis。
+- `b87b3b6` 的干净提交不是可部署版本：它已有省级聚合水电 loader，但漏掉同一功能的配置、LP、导出和测试。当前工作树已通过 `config/release_contract_v0729.json` 把 Base、水电 380 GW、V4、PHS sensitivities、scenario catalog、production solver profile 与 11 个外置数据 SHA256 统一锁定；release audit PASS。
+- 本地当前工作树顺序完成 `outputs/planning_sequence_168h_v0729_{base_current,flexible_load_v4_v1g_current}_local_v1`。2030→2040→2050→2060 八个根均为 `OPTIMAL + solution_qc=PASS + 52/52 hard checks + closed result manifest + current input manifest PASS`，两条序列 resume 后均为四年 `RESUMED_ACCEPTED`；没有 basis 复用、并发求解或远程计算。
+- V4 相对 Base 增加 `4.59%` variables、`6.24%` constraints、`3.27%` nonzeros，峰值 RSS 增量不超过约 `0.27 GiB`，未显示工程性能失控。EV 在四年均有实质重排；冷热吞吐为零；波浪能 enabled、候选和上限已加载，但装机/发电为零。上述均是 168 h 机制证据，不是年度价值或年度技术淘汰结论。
+- 统一审计修复 aggregate-hydro 备用 QC 重复计数/安全表遗漏、V4 年化成本分类和 gzip 非确定性。完整本地回归 `129/129 PASS`；参数 audit `11,727/26/0/0`（rows/pass/warn/hard-fail）；四个全新 2030 1 h Base/V4/hydro-flex/PHS-central 根均为 `OPTIMAL + QC PASS + manifests valid`。省级水电 up/down 安全表 closure 最大误差为 `1.42e-14/7.11e-15 GW`。
+- 作者现已授权代码/数据统一后启动一个固定服务器 744 h 或两个月门禁；当前计划选择标准 744 h V4 V1G cold。它仍须等待精确 commit/push、版本化数据根、服务器实时 Git/进程/RAM/swap/PSI 与 ParaCloud 复核，以及服务器 release/input/readiness + 1 h/24 h 门禁。不得运行 8760 h、付费云、并发第二求解、basis reuse 或 `Crossover=3`。下文 `701b9bc`/RAM/swap 是旧快照，不能直接沿用。
 
-V4 目前明确为 `planned_not_runnable`：五张省-小时校准表、SHA256 validation sidecar 与非空 source manifest 尚未提供，缺失时本地 loader/preflight 会 fail closed。`122/122` 本地回归和 1 省×4 小时 V4 线性门禁仅证明实现与守恒/QC 合同，不构成校准、情景结果、服务器部署或求解授权。
+## 2026-07-28 常规水电 380 GW 省级闭合仅在本地；服务器未部署
 
-本里程碑没有读取或更改固定服务器 checkout、进程、内存或 ParaCloud 队列；本文件其他服务器数值仅是先前时间戳快照，不能用于后续动作。后续若输入校准完成，先本地顺序完成 V4 1h/24h/168h 新根门禁；任何远程动作之前仍需重新实时核验 Git、CISPO/Gurobi 进程、RAM/swap 和 ParaCloud，并取得单独授权。
+- 当前本地未提交水电候选已从重复 `COMID` 修复扩展为“297.8895 GW 站点 + 82.1105 GW 固定省级聚合”常规水电表示，并严格闭合国家能源局 2025 年末 380 GW 分项；PHS 下限保持 65.94 GW。聚合层增加 LP 变量和输入文件，旧 duplicate-COMID-only 门禁的矩阵、目标和 basis 均不再代表当前 topology。
+- 新的本地 1 h/24 h 根 `outputs/2030_{1h,24h}_v0728_hydro_provincial_closure_base_v2` 均为 `OPTIMAL + solution_qc=PASS + closed manifest`。24 h raw 为 `231,076 rows / 346,736 columns / 1,754,607 nonzeros`，聚合水电 97.768506 GWh 严格等于该窗口可用量、违反量为 0，最大功率平衡残差 `1.12e-12 GW`。这些是 `TEST_ONLY_TRUNCATED_HORIZON`，不能解释为年度发电量或系统成本。
+- 本里程碑没有读取、切换或修改固定服务器 checkout，没有传输 `provincial_aggregate_capacity_2025.csv` 或月曲线，没有启动 CISPO/Gurobi，也没有查询或提交 ParaCloud 作业。下文服务器 RAM/swap/进程数值均是旧时间戳快照，未来任何远程动作前必须重新实时核验并取得授权。
+
+## 2026-07-28 冷热/EV V4 数据支撑型本地门禁闭合；没有服务器动作
+
+当前未提交工作树基于 `b87b3b6a76e9b6a3683087105e3251daff22cfad`，已把 `flexible_load_comfort_v4_v1g` 收敛为数据支撑型工程中心情景，并保留独立的 V2G sensitivity。P0 修复覆盖多省周期状态广播、多省目标标量化、禁用 V2G cost 导出类型、V4 smart-charge QC/上界，以及不具物理支撑的负舒适债。冷热现在是非负连续服务库存；EV 是既有 EV 基线的 75% 固定负荷与 25% 可调服务库存，不声称车辆接桩率、行程链、出发 SOC 或物理车队 SOC。Base（wave on、flexible load off）和 V3 均未改动；V4 改变 LP topology，不能与 Base/V3 导入或导出 basis。
+
+五张省-小时输入已由现有负荷/V3 BAIT envelope 生成，中心/低/高参数、来源登记和独立证据计数齐全；四规划年 runtime-loader 审计 PASS。2026-07-29 修复 gzip 时间戳后，连续两次完整 build+validate 的六个输出字节一致，当前 sidecar SHA256 为 `ad46c7610903726a059b92255332056935021763ca11433b0b866b6dd1ac144a`。当前输入身份下的 V1G 1 h/24 h 与 V2G 1 h 新根均为 `OPTIMAL + solution_qc=PASS + closed manifest + current input_manifest PASS`；24 h raw 为 `241,492/353,556/1,799,247`（rows/columns/nonzeros），solver `43.13 s`、峰值 RSS `0.760 GiB`。它们只证明本地截断工程可解性；中心参数仍是 `ENGINEERING_CENTRAL_REQUIRES_LOW_HIGH_SENSITIVITY`，不是论文校准结果。
+
+本里程碑结束时只读复核：固定服务器仍为 clean `codex/cispo-2030-full-lp` / `701b9bc225013a5009dcce3f4e97ee2063dcd00f`，没有真实 CISPO/Gurobi 求解进程，约 `70.9 GiB` available RAM，swap 仍使用约 `19.1/21.5 GiB`；ParaCloud `squeue -u a8s001819` 为空。本轮没有更改固定服务器 checkout、数据、进程或队列。下一步必须先由作者接受当前边界，之后至多运行一个隔离的本地 168 h V1G gate；不得自动进入 basis、744h/8760h 或远程阶段。任何未来远程动作之前仍须重新实时核验 Git、CISPO/Gurobi、RAM/swap/PSI 和 ParaCloud，并取得单独授权。
 
 ## 2026-07-28 M2 boundary audit closed locally; no server action
 

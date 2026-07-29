@@ -250,6 +250,16 @@
     "nuclear_fuel_yuan_per_mwh": 69.276276,
     "ramping_cost_yuan_per_mwh": 1.004004
   },
+  "storage_design": {
+    "phs_energy_capacity_mode": "fixed_duration_v1",
+    "phs_existing_duration_h": 8.0,
+    "phs_new_duration_min_h": 4.0,
+    "phs_new_duration_max_h": 48.0,
+    "phs_reference_duration_h": 8.0,
+    "phs_power_capex_yuan_per_kw_by_planning_year": {},
+    "phs_energy_capex_yuan_per_kwh_by_planning_year": {},
+    "phs_reference_capex_closure_tolerance_fraction": 0.000001
+  },
   "hydro": {
     "reservoir_efficiency": 0.85,
     "water_density_kg_per_m3": 1000.0,
@@ -268,9 +278,19 @@
     "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
     "cascade_max_lag_h": 168,
     "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split",
+    "duplicate_comid_flow_allocation": "static_capacity_potential_share_v1",
     "environmental_flow_dataset": "monthly_environmental_flow_2019_p30",
     "environmental_flow_variable": "monthly_p30_proxy_m3s",
-    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data"
+    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data",
+    "provincial_aggregate_mode": "fixed_existing_monthly_profile_v1",
+    "provincial_aggregate_capacity_file": "hydro/provincial_aggregate_capacity_2025.csv",
+    "provincial_aggregate_monthly_profile_file": "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+    "provincial_aggregate_national_conventional_target_gw": 380.0,
+    "provincial_aggregate_up_reserve_credit": 0.0,
+    "provincial_aggregate_down_reserve_credit": 0.0,
+    "provincial_aggregate_capacity_credit": 0.0,
+    "provincial_aggregate_inertia_seconds": 0.0,
+    "provincial_aggregate_connection_treatment": "province_non_spatial_existing_no_spur_trunk"
   },
   "network": {
     "flow_regularization_yuan_per_mwh": 1.004004,

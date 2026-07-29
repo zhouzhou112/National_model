@@ -204,6 +204,75 @@ class ModelConfig:
         resolve_minimum_system_inertia_seconds(security)
         if self.raw["features"].get("csp", False):
             raise ValueError("CSP cannot be enabled until site potential and hourly profiles exist")
+        storage_design = self.raw.get("storage_design", {})
+        phs_energy_mode = storage_design.get("phs_energy_capacity_mode")
+        if phs_energy_mode not in {
+            "fixed_duration_v1",
+            "independent_power_energy_v1",
+        }:
+            raise ValueError(
+                "storage_design.phs_energy_capacity_mode must be "
+                "fixed_duration_v1 or independent_power_energy_v1"
+            )
+        phs_existing_duration = float(
+            storage_design.get("phs_existing_duration_h", 0.0)
+        )
+        phs_min_duration = float(
+            storage_design.get("phs_new_duration_min_h", 0.0)
+        )
+        phs_max_duration = float(
+            storage_design.get("phs_new_duration_max_h", 0.0)
+        )
+        phs_reference_duration = float(
+            storage_design.get("phs_reference_duration_h", 0.0)
+        )
+        if min(
+            phs_existing_duration,
+            phs_min_duration,
+            phs_max_duration,
+            phs_reference_duration,
+        ) <= 0.0:
+            raise ValueError("All PHS duration parameters must be positive")
+        if phs_min_duration > phs_existing_duration + 1e-12:
+            raise ValueError(
+                "PHS minimum duration cannot exceed the inherited-fleet duration"
+            )
+        if phs_min_duration > phs_max_duration:
+            raise ValueError("PHS minimum duration cannot exceed maximum duration")
+        closure_tolerance = float(
+            storage_design.get(
+                "phs_reference_capex_closure_tolerance_fraction",
+                0.0,
+            )
+        )
+        if not 0.0 < closure_tolerance <= 1e-3:
+            raise ValueError(
+                "PHS reference-CAPEX closure tolerance must be in (0, 1e-3]"
+            )
+        if phs_energy_mode == "independent_power_energy_v1":
+            expected_years = {str(year) for year in years}
+            for key in (
+                "phs_power_capex_yuan_per_kw_by_planning_year",
+                "phs_energy_capex_yuan_per_kwh_by_planning_year",
+            ):
+                values = storage_design.get(key)
+                if not isinstance(values, dict) or set(values) != expected_years:
+                    raise ValueError(
+                        f"storage_design.{key} must contain exactly "
+                        f"{sorted(expected_years)}"
+                    )
+                try:
+                    numeric_values = [
+                        float(value) for value in values.values()
+                    ]
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"storage_design.{key} values must be sourced positive numbers"
+                    ) from exc
+                if any(value <= 0.0 for value in numeric_values):
+                    raise ValueError(
+                        f"storage_design.{key} values must be positive"
+                    )
         if "wave_energy" not in self.raw.get("features", {}):
             raise ValueError("features.wave_energy must be explicit")
         intra_grid = self.raw.get("network", {}).get("intra_grid_vre_connection", {})
@@ -530,10 +599,92 @@ class ModelConfig:
             raise ValueError("reservoir_volume_variable_scale_m3 must be positive")
         if float(hydro.get("hydrology_flow_zero_tolerance_m3s", -1.0)) < 0.0:
             raise ValueError("hydrology_flow_zero_tolerance_m3s must be nonnegative")
+        if hydro.get("duplicate_comid_flow_allocation") != (
+            "static_capacity_potential_share_v1"
+        ):
+            raise ValueError(
+                "Hydropower duplicate-COMID flow allocation must remain "
+                "static_capacity_potential_share_v1"
+            )
         if hydro.get("environmental_flow_dataset") != "monthly_environmental_flow_2019_p30":
             raise ValueError("Hydropower environmental-flow dataset must remain monthly_environmental_flow_2019_p30")
         if hydro.get("environmental_flow_variable") != "monthly_p30_proxy_m3s":
             raise ValueError("Hydropower environmental-flow variable must remain monthly_p30_proxy_m3s")
+        aggregate_mode = hydro.get("provincial_aggregate_mode")
+        supported_aggregate_modes = {
+            "fixed_existing_monthly_profile_v1",
+            "fixed_existing_monthly_energy_budget_v2",
+        }
+        if aggregate_mode not in supported_aggregate_modes:
+            raise ValueError(
+                "Unsupported hydro.provincial_aggregate_mode; expected "
+                "fixed_existing_monthly_profile_v1 or "
+                "fixed_existing_monthly_energy_budget_v2"
+            )
+        for key in (
+            "provincial_aggregate_capacity_file",
+            "provincial_aggregate_monthly_profile_file",
+        ):
+            if not str(hydro.get(key, "")).strip():
+                raise ValueError(f"hydro.{key} must be explicit")
+        if not 0.0 < float(
+            hydro.get(
+                "provincial_aggregate_national_conventional_target_gw",
+                0.0,
+            )
+        ):
+            raise ValueError(
+                "Provincial aggregate national conventional-hydro target "
+                "must be positive"
+            )
+        aggregate_up_credit = float(
+            hydro.get("provincial_aggregate_up_reserve_credit", -1.0)
+        )
+        aggregate_down_credit = float(
+            hydro.get("provincial_aggregate_down_reserve_credit", -1.0)
+        )
+        aggregate_capacity_credit = float(
+            hydro.get("provincial_aggregate_capacity_credit", -1.0)
+        )
+        aggregate_inertia_seconds = float(
+            hydro.get("provincial_aggregate_inertia_seconds", -1.0)
+        )
+        for key, value in (
+            ("provincial_aggregate_up_reserve_credit", aggregate_up_credit),
+            ("provincial_aggregate_down_reserve_credit", aggregate_down_credit),
+            ("provincial_aggregate_capacity_credit", aggregate_capacity_credit),
+        ):
+            if not 0.0 <= value <= 1.0:
+                raise ValueError(f"hydro.{key} must be in [0, 1]")
+        if aggregate_inertia_seconds < 0.0:
+            raise ValueError(
+                "hydro.provincial_aggregate_inertia_seconds must be nonnegative"
+            )
+        if aggregate_mode == "fixed_existing_monthly_profile_v1" and any(
+            abs(value) > 1e-12
+            for value in (
+                aggregate_up_credit,
+                aggregate_down_credit,
+                aggregate_capacity_credit,
+                aggregate_inertia_seconds,
+            )
+        ):
+            raise ValueError(
+                "fixed_existing_monthly_profile_v1 requires zero reserve, "
+                "capacity-margin and inertia credits"
+            )
+        if abs(aggregate_capacity_credit) > 1e-12:
+            raise ValueError(
+                "Provincial aggregate hydropower capacity-margin credit must "
+                "remain zero until an adequacy/ELCC calibration is available"
+            )
+        if hydro.get("provincial_aggregate_connection_treatment") != (
+            "province_non_spatial_existing_no_spur_trunk"
+        ):
+            raise ValueError(
+                "Provincial aggregate hydropower must remain a non-spatial "
+                "existing injection without spur/trunk construction"
+            )
         numerics = self.raw.get("numerics", {})
         coefficient_tolerance = float(
             numerics.get("coefficient_zero_tolerance", 0.0)

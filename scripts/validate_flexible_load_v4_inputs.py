@@ -1,10 +1,8 @@
-"""Validate and manifest calibrated V4 demand-flexibility inputs.
+"""Validate and manifest data-supported V4 demand-flexibility inputs.
 
-This command does not synthesize availability, mobility, SOC, thermal-response
-or compensation values.  It validates the five calibrated tables against the
-same fail-closed loader contract used by the model, then writes the mandatory
-SHA256 provenance sidecar.  Use it before moving a V4 scenario out of
-``planned_not_runnable``.
+This command does not modify or synthesize the five input tables. It validates
+the generator outputs against the same fail-closed loader contract used by the
+model, then writes the mandatory SHA256 provenance sidecar.
 """
 from __future__ import annotations
 
@@ -12,7 +10,7 @@ import argparse
 import hashlib
 import json
 import os
-from datetime import datetime
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +19,8 @@ import pandas as pd
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 def sha256_file(path: Path) -> str:
@@ -29,6 +29,15 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def portable_source_path(path: Path) -> str:
+    """Keep a stable provenance label instead of a machine-specific root."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(PROJECT_ROOT.resolve()).as_posix()
+    except ValueError:
+        return resolved.name
 
 
 def load_components(data_root: Path, config: Any) -> tuple[pd.DataFrame, dict[str, np.ndarray]]:
@@ -72,7 +81,7 @@ def load_components(data_root: Path, config: Any) -> tuple[pd.DataFrame, dict[st
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Validate all calibrated V4 flexibility tables and write their provenance manifest."
+        description="Validate all data-supported V4 flexibility tables and write their provenance manifest."
     )
     parser.add_argument(
         "--scenario-config",
@@ -123,7 +132,10 @@ def main() -> None:
         path = Path(value).resolve()
         if not path.is_file():
             raise FileNotFoundError(path)
-        source_manifests.append({"path": str(path), "sha256": sha256_file(path)})
+        source_manifests.append(
+            {"path": portable_source_path(path), "sha256": sha256_file(path)}
+        )
+    source_manifests.sort(key=lambda item: item["path"])
 
     per_year: dict[str, Any] = {}
     for planning_year in config.planning_years:
@@ -142,7 +154,9 @@ def main() -> None:
             "heating_envelope_max_gw": float(v4.thermal_envelopes_gw["heating_up"].max()),
             "cooling_envelope_max_gw": float(v4.thermal_envelopes_gw["cooling_up"].max()),
             "ev_charge_power_max_gw": float(v4.ev_availability["available_charge_power_gw"].max()),
-            "ev_fleet_energy_max_gwh": float(v4.ev_availability["fleet_energy_capacity_gwh"].max()),
+            "ev_service_inventory_capacity_max_gwh": float(
+                v4.ev_availability["fleet_energy_capacity_gwh"].max()
+            ),
         }
 
     generated_files = {}
@@ -167,9 +181,9 @@ def main() -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "contract_version": "flexible_load_v4",
-        "generated_at": datetime.now().astimezone().isoformat(),
+        "manifest_generation": "deterministic_content_v1",
         "scenario_config": {
-            "path": str(scenario_path.resolve()),
+            "path": portable_source_path(scenario_path),
             "sha256": sha256_file(scenario_path),
         },
         "source_manifests": source_manifests,
@@ -177,7 +191,7 @@ def main() -> None:
         "year_qc": per_year,
         "qc": {
             "loader_contract": "PASS",
-            "immutable_ev_reference_energy_closure": "PASS",
+            "flexible_ev_service_energy_closure": "PASS",
             "thermal_and_ev_schema_coverage": "PASS",
             "generated_file_sha256_recorded": "PASS",
         },

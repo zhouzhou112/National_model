@@ -1,5 +1,5 @@
 {
-  "contract_version": "v5",
+  "contract_version": "v6",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
@@ -12,6 +12,8 @@
     "thermal/nuclear_capacity_floor_by_year.csv",
     "thermal/nuclear_capacity_upper_by_year.csv",
     "hydro/hydro_stations.csv",
+    "hydro/provincial_aggregate_capacity_2025.csv",
+    "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
     "hydro/cascade_topology_nodes.csv",
     "hydro/cascade_topology_edges.csv",
     "hydro/timeseries_index.csv",
@@ -58,6 +60,8 @@
     "thermal/nuclear_capacity_floor_by_year.csv": "Province-year nuclear committed/pipeline lower bounds",
     "thermal/nuclear_capacity_upper_by_year.csv": "Province-year nuclear scenario upper bounds",
     "hydro/hydro_stations.csv": "Station capacity, type, hydraulic and spatial attributes",
+    "hydro/provincial_aggregate_capacity_2025.csv": "Fixed 2025 province-level conventional-hydropower residual closing station inventory to 380 GW",
+    "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv": "Monthly natural-availability upper bounds for fixed province-level aggregate hydropower",
     "hydro/cascade_topology_nodes.csv": "Core-cascade node-to-station mapping",
     "hydro/cascade_topology_edges.csv": "Core-cascade direction and travel-lag topology",
     "hydro/timeseries_index.csv": "Hydrology NetCDF paths, variables, dimensions and source hashes",

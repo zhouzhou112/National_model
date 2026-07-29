@@ -95,10 +95,61 @@ def _connected_cascade_node_ids(
     return connected, sorted(isolated)
 
 
+def _station_flow_share_by_comid(stations: pd.DataFrame) -> np.ndarray:
+    """Allocate one reach-level discharge series across co-mapped stations.
+
+    GRFR provides one natural-discharge series per COMID.  When multiple
+    HydroCHN rows map to the same COMID, assigning that full series to every
+    row would duplicate the same reach-level water.  Use the station technical
+    potential as a static allocation proxy, consistent with the existing
+    within-node cascade split.  The allocation is intentionally independent
+    of endogenous build decisions so the optimization remains linear.
+    """
+    required = {"comid", "capacity_potential_gw"}
+    missing = sorted(required.difference(stations.columns))
+    if missing:
+        raise ValueError(
+            "Cannot allocate duplicate-COMID discharge without columns: "
+            + ", ".join(missing)
+        )
+    comid = pd.to_numeric(stations.comid, errors="coerce")
+    capacity = pd.to_numeric(
+        stations.capacity_potential_gw, errors="coerce"
+    ).to_numpy(dtype=float)
+    if comid.isna().any():
+        raise ValueError("Every hydropower station must have a finite COMID")
+    if not np.isfinite(capacity).all() or (capacity <= 0.0).any():
+        raise ValueError(
+            "capacity_potential_gw must be finite and positive for COMID flow allocation"
+        )
+    capacity_series = pd.Series(capacity, index=stations.index)
+    group_total = capacity_series.groupby(comid, sort=False).transform("sum")
+    share = (capacity_series / group_total).to_numpy(dtype=float)
+    if not np.isfinite(share).all() or (share <= 0.0).any():
+        raise ValueError("Invalid duplicate-COMID station flow share")
+    group_share = pd.Series(share, index=stations.index).groupby(
+        comid, sort=False
+    ).sum()
+    if not np.allclose(group_share.to_numpy(dtype=float), 1.0, rtol=0.0, atol=1e-12):
+        raise ValueError("Station flow shares must sum to one within every COMID")
+    return share
+
+
 class HydroProfileReader:
     def __init__(self, config: ModelConfig, data: ModelData):
         self.config = config
         self.data = data
+        allocation_rule = str(
+            config.raw["hydro"].get("duplicate_comid_flow_allocation", "")
+        )
+        if allocation_rule != "static_capacity_potential_share_v1":
+            raise ValueError(
+                "Unsupported duplicate-COMID hydrology allocation rule: "
+                f"{allocation_rule!r}"
+            )
+        self.station_flow_share = _station_flow_share_by_comid(
+            data.hydro_stations
+        )
         index = pd.read_csv(DATA_ROOT / "hydro" / "timeseries_index.csv")
         discharge_indexed = str(index.loc[index.dataset.eq("hourly_discharge_2019"), "path"].iloc[0])
         hydro_config = config.raw["hydro"]
@@ -210,6 +261,7 @@ class HydroProfileReader:
             self.config.raw["hydro"]["hydrology_flow_zero_tolerance_m3s"]
         )
         available[available < tolerance] = 0.0
+        available *= self.station_flow_share[station_rows][None, :]
         return available
 
     def read_linear_block(self, block: TimeBlock) -> HydroLinearBlock:
@@ -314,7 +366,9 @@ class HydroProfileReader:
                 weights = weights / weights.sum()
                 node_to_local_rows[node_id] = local_rows
                 node_to_weights[node_id] = weights.astype(float)
-                node_to_natural[node_id] = reservoir_q_available_station[local_rows[0]].copy()
+                node_to_natural[node_id] = reservoir_q_available_station[
+                    local_rows
+                ].sum(axis=0)
                 cascade_station_local_rows.update(int(local) for local in local_rows)
 
             node_local_inflow = {

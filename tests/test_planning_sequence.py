@@ -267,6 +267,7 @@ class PlanningSequenceTests(unittest.TestCase):
                 "thermal_index": {t: i for i, t in enumerate(THERMAL_TECHS)},
                 "ccs_pairs": ccs_pairs,
                 "storage_index": {t: i for i, t in enumerate(STORAGE_TECHS)},
+                "phs_energy_capacity_mode": "fixed_duration_v1",
                 "dac_index": {t: i for i, t in enumerate(DAC_TECHS)},
             },
         )

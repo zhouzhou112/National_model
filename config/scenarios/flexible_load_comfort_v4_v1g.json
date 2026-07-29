@@ -2,8 +2,8 @@
   "scenario_override_version": "v1",
   "scenario_id": "flexible_load_comfort_v4_v1g",
   "scenario_family": "demand_flexibility_service_constrained",
-  "description": "Separate V4 service-constrained demand-flexibility scenario: year-continuous signed thermal service states, endogenous contracted flexibility, and fleet-mobility-constrained smart EV charging. It is not Base and is not runnable until every V4 calibration input has passed its data manifest and closure gates.",
-  "evidence_status": "CALIBRATION_INPUT_CONTRACT_REQUIRED",
+  "description": "Data-supported V4 demand-flexibility scenario: existing BAIT +/-1 C thermal envelopes, non-negative continuous thermal service inventories, and aggregate EV service inventory tied exactly to 25% of the existing EV charging baseline. It is not Base; V1G is the central case.",
+  "evidence_status": "ENGINEERING_CENTRAL_REQUIRES_LOW_HIGH_SENSITIVITY",
   "overrides": {
     "features": {
       "flexible_load": true
@@ -28,17 +28,22 @@
         "enabled": true
       },
       "ev_v1g": {
-        "enabled": true
+        "enabled": true,
+        "shiftable_energy_fraction": 0.25,
+        "maximum_power_to_daily_average_ratio": 2.0
       },
       "ev_v2g": {
         "enabled": false,
-        "state_boundary": "periodic_selected_horizon_v1"
+        "state_boundary": "periodic_selected_horizon_v1",
+        "charge_efficiency": 0.94,
+        "discharge_efficiency": 0.94,
+        "self_discharge_fraction_per_hour": 0.0
       },
       "parameter_status": {
-        "thermal_service": "Province-year retention, signed service bounds, envelope availability, comfort-debt price and contracted power are read from auditable V4 inputs; no daily reset is allowed.",
-        "ev_mobility": "Connected fraction, charge/discharge power, fleet energy, driving withdrawal and departure minimum SOC are required province-hour inputs; ev_hour_weight is not a proxy for any of them.",
-        "enablement_cost": "Enablement and activation prices are explicit province-year inputs, not free flexibility or an implicit battery substitute.",
-        "v2g_scope": "V1G is the central V4 case. V2G is retained only in the separate V4 sensitivity after the same mobility contract is calibrated."
+        "thermal_service": "The accepted Power_curve_V2 BAIT +/-1 C envelope is scaled by explicit 25% heating and 20% cooling enrollment. The state is non-negative and continuous over the selected horizon; no comfort debt or daily reset is allowed.",
+        "ev_mobility": "The existing EV charging baseline is split into 75% immutable and 25% schedulable service. The latter has exact hourly energy withdrawal and one-day aggregate inventory. No connection probability, trip chain or departure SOC is fabricated; ev_hour_weight is used only through the existing baseline.",
+        "enablement_cost": "Enablement and activation prices are explicit engineering scenario assumptions with registered low/high ranges.",
+        "v2g_scope": "V1G is the central V4 case. V2G remains only the separate V4 sensitivity."
       }
     }
   }

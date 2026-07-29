@@ -16,6 +16,14 @@ class M2ModelBoundaryAuditTests(unittest.TestCase):
                 Path(temporary),
             )
             self.assertEqual(summary["finding_count"], 11)
+            self.assertEqual(
+                summary["snapshot_status"],
+                "HISTORICAL_20260728_SUPERSEDED",
+            )
+            self.assertEqual(
+                summary["superseded_by"],
+                "config/release_contract_v0729.json",
+            )
             self.assertEqual(summary["contract_checks"]["hard_fail"], 0)
             self.assertEqual(summary["contract_checks"]["open"], 0)
             self.assertTrue((Path(temporary) / "m2_decision_register.csv").is_file())

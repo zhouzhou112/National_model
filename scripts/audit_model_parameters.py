@@ -42,6 +42,16 @@ REQUIRED_REGISTRY_ROWS = {
     ("vre", "existing_capacity_cohorts"),
     ("carbon", "beccs_mass_balance"),
     ("carbon", "beccs_lifecycle_sensitivity"),
+    ("scope", "scenario_catalog"),
+    ("scope", "flexible_load_v4_parameter_registry"),
+    ("hydro", "duplicate_comid_flow_allocation"),
+    ("hydro", "provincial_aggregate_mode"),
+    ("hydro", "provincial_aggregate_national_conventional_target_gw"),
+    ("hydro", "provincial_aggregate_capacity"),
+    ("hydro", "provincial_aggregate_monthly_profile"),
+    ("hydro", "provincial_aggregate_reliability_credit"),
+    ("storage", "phs_energy_capacity_mode"),
+    ("storage", "phs_power_energy_separated_sensitivities"),
 }
 
 UNIT_BY_FIELD = {

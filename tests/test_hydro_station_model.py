@@ -7,7 +7,11 @@ import pandas as pd
 
 from cispo_model.config import load_model_config
 from cispo_model.data import load_model_data
-from cispo_model.hydro import HydroProfileReader, _connected_cascade_node_ids
+from cispo_model.hydro import (
+    HydroProfileReader,
+    _connected_cascade_node_ids,
+    _station_flow_share_by_comid,
+)
 from cispo_model.timeblocks import TimeBlock
 
 
@@ -67,10 +71,7 @@ class HydroStationModelTests(unittest.TestCase):
         positive = block.reservoir_local_inflow_m3s[
             block.reservoir_local_inflow_m3s > 0.0
         ]
-        self.assertGreaterEqual(
-            float(positive.min()),
-            float(self.config.raw["hydro"]["hydrology_flow_zero_tolerance_m3s"]),
-        )
+        self.assertGreater(float(positive.min()), 0.0)
 
     def test_reservoir_variable_scaling_preserves_physical_equations(self):
         hydro = self.config.raw["hydro"]
@@ -110,6 +111,109 @@ class HydroStationModelTests(unittest.TestCase):
             timeseries.dataset.eq("monthly_environmental_flow_2019_p30")
         ].iloc[0]
         self.assertIn("monthly_p30_proxy_m3s", str(row.variables))
+
+    def test_provincial_aggregate_capacity_closes_2025_conventional_hydro(self):
+        aggregate = self.data.hydro_aggregate_capacity
+        station_capacity = float(
+            self.data.hydro_stations.existing_capacity_gw.sum()
+        )
+        aggregate_capacity = float(
+            aggregate.provincial_aggregate_capacity_gw.sum()
+        )
+        harmonized_capacity = float(
+            aggregate.harmonized_conventional_capacity_gw.sum()
+        )
+        self.assertEqual(len(aggregate), 31)
+        self.assertAlmostEqual(station_capacity, 297.8895, places=9)
+        self.assertAlmostEqual(aggregate_capacity, 82.1105, places=9)
+        self.assertAlmostEqual(harmonized_capacity, 380.0, places=9)
+        self.assertAlmostEqual(
+            station_capacity + aggregate_capacity,
+            harmonized_capacity,
+            places=9,
+        )
+
+    def test_provincial_aggregate_profile_and_reliability_scope(self):
+        availability = self.data.hydro_aggregate_availability_cf
+        self.assertEqual(availability.shape, (31, self.config.hours))
+        self.assertTrue(np.isfinite(availability).all())
+        self.assertTrue((availability >= 0.0).all())
+        self.assertTrue((availability <= 1.0).all())
+        hydro = self.config.raw["hydro"]
+        self.assertEqual(
+            hydro["provincial_aggregate_mode"],
+            "fixed_existing_monthly_profile_v1",
+        )
+        for key in (
+            "provincial_aggregate_up_reserve_credit",
+            "provincial_aggregate_down_reserve_credit",
+            "provincial_aggregate_capacity_credit",
+            "provincial_aggregate_inertia_seconds",
+        ):
+            self.assertEqual(float(hydro[key]), 0.0)
+        self.assertEqual(
+            hydro["provincial_aggregate_connection_treatment"],
+            "province_non_spatial_existing_no_spur_trunk",
+        )
+
+    def test_duplicate_comid_flow_shares_are_explicit_and_conservative(self):
+        hydro = self.data.hydro_stations
+        self.assertEqual(
+            self.config.raw["hydro"]["duplicate_comid_flow_allocation"],
+            "static_capacity_potential_share_v1",
+        )
+        shares = _station_flow_share_by_comid(hydro)
+        grouped = pd.Series(shares).groupby(hydro.comid.to_numpy()).sum()
+        np.testing.assert_allclose(
+            grouped.to_numpy(dtype=float),
+            np.ones(len(grouped), dtype=float),
+            rtol=0.0,
+            atol=1e-12,
+        )
+        counts = hydro.groupby("comid").size()
+        duplicate_comids = counts[counts > 1].index
+        duplicate_rows = hydro.comid.isin(duplicate_comids).to_numpy()
+        self.assertEqual(len(duplicate_comids), 146)
+        self.assertEqual(int(duplicate_rows.sum()), 319)
+        self.assertTrue((shares[duplicate_rows] < 1.0).all())
+
+    def test_duplicate_comid_available_flow_is_allocated_once(self):
+        hydro = self.data.hydro_stations
+        counts = hydro.groupby("comid").size()
+        duplicate_comid = int(counts[counts > 1].index[0])
+        rows = np.flatnonzero(hydro.comid.eq(duplicate_comid).to_numpy())
+        block = TimeBlock(0, 0, 24)
+        with HydroProfileReader(self.config, self.data) as reader:
+            allocated = reader._available_flow_for_rows(block, rows)
+            position = int(reader.comid_position[duplicate_comid])
+            qout = np.asarray(
+                reader.discharge.variables["qout_model_m3s"][
+                    block.hour_start:block.hour_stop, position
+                ],
+                dtype=float,
+            )
+            month = int(reader.datetime.month.iloc[0])
+            month_position = {
+                int(value): i for i, value in enumerate(reader.month_values)
+            }[month]
+            environmental_flow = float(
+                reader.environment.variables[reader.environment_variable][
+                    month_position, position
+                ]
+            )
+        expected = np.maximum(qout - environmental_flow, 0.0)
+        expected[
+            expected
+            < float(
+                self.config.raw["hydro"]["hydrology_flow_zero_tolerance_m3s"]
+            )
+        ] = 0.0
+        np.testing.assert_allclose(
+            allocated.sum(axis=1),
+            expected,
+            rtol=0.0,
+            atol=1e-10,
+        )
 
     def test_core_cascade_topology_loads(self):
         self.assertEqual(len(self.data.hydro_cascade_nodes), 142)

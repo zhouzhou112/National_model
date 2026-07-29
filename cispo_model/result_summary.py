@@ -171,6 +171,17 @@ def export_result_summary(
         capacity_rows.append(
             {"asset_group": "generation", "technology": label, "unit": "GW", "capacity": hydro_capacity[rows].sum(), "new_capacity": hydro_new[rows].sum()}
         )
+    capacity_rows.append(
+        {
+            "asset_group": "generation",
+            "technology": "hydro_aggregate",
+            "unit": "GW",
+            "capacity": float(
+                data.hydro_aggregate_capacity.provincial_aggregate_capacity_gw.sum()
+            ),
+            "new_capacity": 0.0,
+        }
+    )
     storage_capacity = _value(variables["storage_capacity"])
     storage_new = _value(variables["storage_new"])
     for technology, s in artifacts.index["storage_index"].items():
@@ -242,6 +253,23 @@ def export_result_summary(
                     "new_capacity": float(hydro_new[rows].sum()),
                 }
             )
+        province_capacity_rows.append(
+            {
+                "province_code": int(province_code),
+                "asset_group": "generation",
+                "technology": "hydro_aggregate",
+                "unit": "GW",
+                "capacity": float(
+                    data.hydro_aggregate_capacity.loc[
+                        data.hydro_aggregate_capacity.province_code.eq(
+                            province_code
+                        ),
+                        "provincial_aggregate_capacity_gw",
+                    ].iloc[0]
+                ),
+                "new_capacity": 0.0,
+            }
+        )
         for technology, s in artifacts.index["storage_index"].items():
             province_capacity_rows.append(
                 {
@@ -263,6 +291,9 @@ def export_result_summary(
     thermal_generation = _value(variables["actual_thermal_generation"])
     ror_generation = _value(variables["ror_generation"])
     reservoir_generation = _value(variables["reservoir_generation"])
+    hydro_aggregate_generation = _value(
+        variables["hydro_aggregate_generation"]
+    )
     generation_series: dict[str, np.ndarray] = {}
     for technology, position in zip(VRE_TECHS, range(len(VRE_TECHS))):
         generation_series[technology] = vre_generation[:, position, :].sum(axis=0)
@@ -274,6 +305,7 @@ def export_result_summary(
         generation_series[technology] = thermal_generation[:, k, :].sum(axis=0)
     generation_series["ror"] = ror_generation.sum(axis=0)
     generation_series["reservoir"] = reservoir_generation.sum(axis=0)
+    generation_series["hydro_aggregate"] = hydro_aggregate_generation.sum(axis=0)
     generation = pd.DataFrame(
         [
             {"technology": technology, "generation_gwh": float(values.sum())}
@@ -349,6 +381,9 @@ def export_result_summary(
             ),
             "ror_generation_gw": generation_series["ror"],
             "reservoir_generation_gw": generation_series["reservoir"],
+            "hydro_aggregate_generation_gw": generation_series[
+                "hydro_aggregate"
+            ],
             "storage_charge_gw": storage_charge,
             "storage_discharge_gw": storage_discharge,
             "net_interprovincial_injection_gw": network_injection,
@@ -387,6 +422,9 @@ def export_result_summary(
 
     vre_available = _value(variables["vre_available"])
     ror_available = _value(variables["ror_available"])
+    hydro_aggregate_available = np.asarray(
+        artifacts.index["hydro_aggregate_available_gw"], dtype=float
+    )
     flow_forward = _value(variables["flow_forward"])
     reverse_edge_rows = np.asarray(
         artifacts.index["interprovincial_reverse_edge_rows"], dtype=int
@@ -431,6 +469,9 @@ def export_result_summary(
         ),
         "period_vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "period_ror_curtailment_gwh": float((ror_available - ror_generation).sum()),
+        "period_hydro_aggregate_curtailment_gwh": float(
+            (hydro_aggregate_available - hydro_aggregate_generation).sum()
+        ),
         "period_storage_charge_gwh": float(storage_charge.sum()),
         "period_storage_discharge_gwh": float(storage_discharge.sum()),
         "period_interprovincial_transmission_losses_gwh": transmission_losses,
@@ -441,6 +482,9 @@ def export_result_summary(
         "annual_generation_gwh": float(generation.generation_gwh.sum()),
         "vre_curtailment_gwh": float((vre_available - vre_generation).sum()),
         "ror_curtailment_gwh": float((ror_available - ror_generation).sum()),
+        "hydro_aggregate_curtailment_gwh": float(
+            (hydro_aggregate_available - hydro_aggregate_generation).sum()
+        ),
         "storage_charge_gwh": float(storage_charge.sum()),
         "storage_discharge_gwh": float(storage_discharge.sum()),
         "interprovincial_transmission_losses_gwh": transmission_losses,
@@ -488,6 +532,7 @@ def export_result_summary(
         [
             "load_gw", "vre_generation_gw", "thermal_nuclear_generation_gw",
             "ror_generation_gw", "reservoir_generation_gw",
+            "hydro_aggregate_generation_gw",
         ],
         title=f"CISPO {config.planning_year} national dispatch (first {len(first_week)} h)",
         path=figure_dir / "national_dispatch_first_week.svg",

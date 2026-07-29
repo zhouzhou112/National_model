@@ -1,6 +1,8 @@
 {
   "contract_version": "m2_model_boundary_audit_v1",
   "audit_date": "2026-07-28",
+  "snapshot_status": "HISTORICAL_20260728_SUPERSEDED",
+  "superseded_by": "config/release_contract_v0729.json",
   "scope": "Scientific-boundary decision audit. It records whether a candidate may enter a future named model case; it does not itself alter Base LP mathematics, data, or solver runtime.",
   "base_case_id": "base_2024_vre_wave_on_flex_off_v1",
   "source_review": "supplementary_materials/National_model_independent_audit_innovation_parameter_review_20260728.md",

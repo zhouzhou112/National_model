@@ -12,10 +12,10 @@ hourly service deadline, and supports an explicitly optional causal V2G
 sensitivity. Base and previously accepted formulations are unchanged.
 
 ``service_constrained_v4`` is deliberately a separate contract.  It uses a
-year-continuous signed thermal service state, endogenous contracted flexible
-power, and one fleet-level EV state of charge (SOC) with exogenous connection,
-mobility-withdrawal and departure-service inputs.  It must never be silently
-substituted for V3 or for the production Base.
+selected-horizon periodic, non-negative thermal service inventory, endogenous
+contracted flexible power, and one fleet-level EV state of charge (SOC) with
+exogenous availability and mobility-withdrawal inputs.  It must never be
+silently substituted for V3 or for the production Base.
 """
 from __future__ import annotations
 
@@ -280,12 +280,30 @@ def _periodic_transition(
     """
     if state.shape[1] <= 0:
         raise ValueError("Periodic state requires at least one hour")
+    # Province-specific parameters are stored as one-dimensional vectors.
+    # Gurobi/NumPy would otherwise broadcast ``(p,)`` against ``(p, 1)`` to
+    # ``(p, p)`` for the first-hour slice, silently creating cross-province
+    # transition rows.  Normalise every such vector to a province column.
+    def province_column(value: float | np.ndarray) -> float | np.ndarray:
+        array = np.asarray(value)
+        if array.ndim == 1:
+            if array.shape[0] != state.shape[0]:
+                raise ValueError(
+                    f"{name} parameter length {array.shape[0]} does not match "
+                    f"province count {state.shape[0]}"
+                )
+            return array[:, None]
+        return value
+
+    retention = province_column(retention)
+    charge_efficiency = province_column(charge_efficiency)
+    discharge_efficiency = province_column(discharge_efficiency)
     model.addConstr(
-        state[:, 0]
-        == retention * state[:, -1]
-        + charge_efficiency * charge[:, 0]
-        - discharge[:, 0] / discharge_efficiency
-        - withdrawal[:, 0],
+        state[:, 0:1]
+        == retention * state[:, -1:]
+        + charge_efficiency * charge[:, 0:1]
+        - discharge[:, 0:1] / discharge_efficiency
+        - withdrawal[:, 0:1],
         name=f"{name}_periodic_first_transition",
     )
     if state.shape[1] > 1:
@@ -403,7 +421,6 @@ def _attach_service_constrained_v4(
     variables["flexible_service_capacity"] = capacity
 
     thermal_activation_terms: dict[str, Any] = {}
-    thermal_debt_terms: dict[str, Any] = {}
     for column, component in enumerate(("heating", "cooling")):
         params = v4.thermal_parameters[component]
         up_ub = thermal_envelopes[f"{component}_up"]
@@ -411,12 +428,8 @@ def _attach_service_constrained_v4(
         availability = thermal_availability[component]
         k_service = capacity[:, column].reshape((p_count, 1))
         positive_duration = params["positive_state_duration_hours"]
-        negative_duration = params["negative_state_duration_hours"]
         state_ub = np.broadcast_to(
             positive_duration[:, None] * capacity_ub[:, column, None], shape
-        ).copy()
-        debt_ub = np.broadcast_to(
-            negative_duration[:, None] * capacity_ub[:, column, None], shape
         ).copy()
         up = model.addMVar(shape, lb=0.0, ub=up_ub, name=f"{component}_shift_up_gw")
         down = model.addMVar(
@@ -424,12 +437,9 @@ def _attach_service_constrained_v4(
         )
         state = model.addMVar(
             shape,
-            lb=-debt_ub,
+            lb=0.0,
             ub=state_ub,
             name=f"{component}_state_gwh",
-        )
-        debt = model.addMVar(
-            shape, lb=0.0, ub=debt_ub, name=f"{component}_comfort_debt_gwh"
         )
         model.addConstr(
             up <= availability * k_service,
@@ -442,14 +452,6 @@ def _attach_service_constrained_v4(
         model.addConstr(
             state <= positive_duration[:, None] * k_service,
             name=f"{component}_positive_service_bound",
-        )
-        model.addConstr(
-            state >= -negative_duration[:, None] * k_service,
-            name=f"{component}_negative_service_bound",
-        )
-        model.addConstr(
-            debt >= -state,
-            name=f"{component}_comfort_debt_definition",
         )
         _periodic_transition(
             model,
@@ -468,13 +470,14 @@ def _attach_service_constrained_v4(
                 f"{component}_shift_up": up,
                 f"{component}_shift_down": down,
                 f"{component}_state": state,
-                f"{component}_comfort_debt": debt,
             }
         )
-        thermal_activation_terms[component] = up.sum() + down.sum()
-        thermal_debt_terms[component] = debt.sum()
+        thermal_activation_terms[component] = up.sum(axis=1) + down.sum(axis=1)
 
     ev_settings = settings["ev_v2g"]
+    shiftable_fraction = float(settings["ev_v1g"]["shiftable_energy_fraction"])
+    flexible_ev_baseline = shiftable_fraction * components["ev"]
+    fixed_ev_baseline = components["ev"] - flexible_ev_baseline
     connected = ev_availability["connected_vehicle_fraction"]
     charge_ub = ev_availability["available_charge_power_gw"]
     discharge_ub = ev_availability["available_discharge_power_gw"]
@@ -511,11 +514,11 @@ def _attach_service_constrained_v4(
         )
     model.addConstr(soc >= minimum_departure, name="ev_mobility_departure_soc")
     model.addConstr(
-        charge_deviation >= charge - components["ev"],
+        charge_deviation >= charge - flexible_ev_baseline,
         name="ev_mobility_charge_deviation_positive",
     )
     model.addConstr(
-        charge_deviation >= components["ev"] - charge,
+        charge_deviation >= flexible_ev_baseline - charge,
         name="ev_mobility_charge_deviation_negative",
     )
     _periodic_transition(
@@ -529,7 +532,7 @@ def _attach_service_constrained_v4(
         discharge_efficiency=float(ev_settings["discharge_efficiency"]),
         name="ev_mobility_soc",
     )
-    actual_components["ev"] = charge
+    actual_components["ev"] = fixed_ev_baseline + charge
     variables.update(
         ev_mobility_charge=charge,
         ev_mobility_discharge=discharge,
@@ -540,7 +543,7 @@ def _attach_service_constrained_v4(
         # battery layered on top of V1G.
         ev_v2g_discharge=discharge,
         ev_v2g_soc=soc,
-        ev_grid_charge_power_ub=charge_ub,
+        ev_grid_charge_power_ub=fixed_ev_baseline + charge_ub,
     )
 
     effective_load = (
@@ -561,31 +564,36 @@ def _attach_service_constrained_v4(
 
     service_costs = v4.service_costs
     enablement_cost = gp.quicksum(
-        service_costs[service]["enablement_cost_yuan_per_kw_year"]
-        * capacity[:, column]
+        (
+            service_costs[service]["enablement_cost_yuan_per_kw_year"]
+            * capacity[:, column]
+        ).sum()
         for column, service in enumerate(V4_CAPACITY_SERVICES)
     )
     thermal_activation_cost = gp.quicksum(
-        1e-3
-        * service_costs[component]["activation_cost_yuan_per_mwh"]
-        * thermal_activation_terms[component]
+        (
+            1e-3
+            * service_costs[component]["activation_cost_yuan_per_mwh"]
+            * thermal_activation_terms[component]
+        ).sum()
         for component in ("heating", "cooling")
     )
-    thermal_comfort_cost = gp.quicksum(
-        1e-6
-        * service_costs[component]["comfort_debt_cost_yuan_per_gwh_hour"]
-        * thermal_debt_terms[component]
-        for component in ("heating", "cooling")
-    )
+    thermal_comfort_cost = gp.LinExpr(0.0)
     ev_relocation_cost = (
-        1e-3
-        * service_costs["ev_v1g"]["activation_cost_yuan_per_mwh"]
-        * charge_deviation.sum()
+        (
+            1e-3
+            * service_costs["ev_v1g"]["activation_cost_yuan_per_mwh"]
+            * charge_deviation.sum(axis=1)
+        ).sum()
     )
     ev_v2g_cost = (
-        1e-3
-        * service_costs["ev_v2g"]["activation_cost_yuan_per_mwh"]
-        * discharge.sum()
+        (
+            1e-3
+            * service_costs["ev_v2g"]["activation_cost_yuan_per_mwh"]
+            * discharge.sum(axis=1)
+        ).sum()
+        if v2g_enabled
+        else gp.LinExpr(0.0)
     )
     return FlexibleLoadBlock(
         effective_load_gw=effective_load,

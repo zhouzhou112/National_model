@@ -32,6 +32,17 @@ class MasterArtifacts:
     index: dict[str, Any]
 
 
+def cost_component_accounting_scope(name: str) -> str:
+    """Classify cost rows without changing the legacy value column."""
+    if name == "annual_operation":
+        return "COMPOSITE_SEE_COMPONENT_ROWS"
+    if name == "operating_flexible_load_v4_enablement":
+        return "ANNUALIZED_PLANNING_COST"
+    if name.startswith("operating_"):
+        return "SELECTED_HORIZON_OPERATION_COST"
+    return "ANNUALIZED_PLANNING_COST"
+
+
 def export_master_solution(
     artifacts: MasterArtifacts,
     data: ModelData,
@@ -223,6 +234,25 @@ def export_master_solution(
         artifacts.index["storage_exogenous_floor_gw"]
     )
     storage_upper = np.asarray(artifacts.index["storage_capacity_upper_gw"])
+    storage_duration = (
+        data.storage.set_index("technology")
+        .reindex(list(artifacts.index["storage_index"]))
+        .duration_h.to_numpy(dtype=float)
+    )
+    storage_energy_capacity = capacity * storage_duration[None, :]
+    storage_energy_floor = storage_floor * storage_duration[None, :]
+    if artifacts.index["phs_energy_capacity_mode"] == (
+        "independent_power_energy_v1"
+    ):
+        phs_index = artifacts.index["storage_index"]["phs"]
+        storage_energy_capacity[:, phs_index] = np.asarray(
+            variables["phs_energy_capacity"].X,
+            dtype=float,
+        )
+        storage_energy_floor[:, phs_index] = np.asarray(
+            artifacts.index["phs_energy_capacity_floor_gwh"],
+            dtype=float,
+        )
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, s in artifacts.index["storage_index"].items():
             storage_rows.append(
@@ -237,6 +267,22 @@ def export_master_solution(
                     "capacity_upper_gw": storage_upper[p, s],
                     "capacity_gw": capacity[p, s],
                     "new_capacity_gw": new_capacity[p, s],
+                    "energy_capacity_floor_gwh": storage_energy_floor[p, s],
+                    "energy_capacity_gwh": storage_energy_capacity[p, s],
+                    "new_energy_capacity_gwh": (
+                        storage_energy_capacity[p, s]
+                        - storage_energy_floor[p, s]
+                    ),
+                    "effective_duration_h": (
+                        storage_energy_capacity[p, s] / capacity[p, s]
+                        if capacity[p, s] > 1e-12
+                        else 0.0
+                    ),
+                    "energy_capacity_mode": (
+                        artifacts.index["phs_energy_capacity_mode"]
+                        if technology == "phs"
+                        else "fixed_duration_v1"
+                    ),
                 }
             )
     pd.DataFrame(storage_rows).to_csv(
@@ -259,6 +305,34 @@ def export_master_solution(
     hydro["capacity_gw"] = variables["hydro_capacity"].X
     hydro["new_capacity_gw"] = variables["hydro_new"].X
     hydro.to_csv(output_dir / "hydro_capacity.csv", index=False, encoding="utf-8-sig")
+    hydro_aggregate = data.hydro_aggregate_capacity.copy()
+    hydro_aggregate["capacity_floor_gw"] = hydro_aggregate[
+        "provincial_aggregate_capacity_gw"
+    ]
+    hydro_aggregate["capacity_gw"] = hydro_aggregate[
+        "provincial_aggregate_capacity_gw"
+    ]
+    hydro_aggregate["new_capacity_gw"] = 0.0
+    hydro_aggregate["dispatch_mode"] = (
+        artifacts.index["hydro_aggregate_mode"]
+    )
+    hydro_aggregate["up_reserve_credit"] = float(
+        artifacts.index["hydro_aggregate_up_reserve_credit"]
+    )
+    hydro_aggregate["down_reserve_credit"] = float(
+        artifacts.index["hydro_aggregate_down_reserve_credit"]
+    )
+    hydro_aggregate["capacity_margin_credit"] = float(
+        artifacts.index["hydro_aggregate_capacity_credit"]
+    )
+    hydro_aggregate["inertia_seconds"] = float(
+        artifacts.index["hydro_aggregate_inertia_seconds"]
+    )
+    hydro_aggregate.to_csv(
+        output_dir / "hydro_aggregate_capacity.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
 
     dac_rows = []
     dac_capacity = variables["dac_capacity"].X
@@ -356,6 +430,13 @@ def export_master_solution(
         vre_generation = variables["load_center_vre_generation"].X
         ror_generation = variables["load_center_ror_generation"].X
         reservoir_generation = variables["load_center_reservoir_generation"].X
+        hydro_aggregate_generation = variables[
+            "hydro_aggregate_generation"
+        ].X.sum(axis=1)
+        aggregate_generation_by_province = {
+            int(province_code): float(hydro_aggregate_generation[p])
+            for p, province_code in enumerate(artifacts.index["province_codes"])
+        }
         for center_position, center in data.load_centers.reset_index(drop=True).iterrows():
             for technology_position, technology in enumerate(VRE_TECHS):
                 generation_rows.append(
@@ -380,6 +461,19 @@ def export_master_solution(
                         "annual_generation_gwh": values[center_position],
                     }
                 )
+            generation_rows.append(
+                {
+                    "load_center_id": center.load_center_id,
+                    "province_code": int(center.province_code),
+                    "technology": "hydro_aggregate",
+                    "annual_generation_gwh": (
+                        float(center.annual_demand_share_in_province)
+                        * aggregate_generation_by_province[
+                            int(center.province_code)
+                        ]
+                    ),
+                }
+            )
             if "load_center_wave_generation" in variables:
                 generation_rows.append(
                     {
@@ -479,11 +573,26 @@ def export_master_solution(
         ):
             raise RuntimeError(f"Load-center solution QC failed: {qc}")
 
+    optimization_hours = int(
+        artifacts.index.get("optimization_hours", data.load_gw.shape[1])
+    )
+    configured_hours = int(
+        artifacts.index.get("configured_hours", optimization_hours)
+    )
+    result_use = (
+        "SCIENTIFIC_PRODUCTION"
+        if optimization_hours == configured_hours
+        else "TEST_ONLY_TRUNCATED_HORIZON"
+    )
     cost_frame = pd.DataFrame(
         [
             {
                 "cost_component": name,
                 "value_million_cny_per_year": expression.getValue(),
+                "value_million_cny_model_accounting_period": expression.getValue(),
+                "accounting_scope": cost_component_accounting_scope(name),
+                "optimization_hours": optimization_hours,
+                "result_use": result_use,
                 "included_directly_in_objective": not name.startswith("operating_"),
                 "included_in_primary_cost": not name.startswith("operating_"),
                 "included_directly_in_solver_objective": (
@@ -820,8 +929,12 @@ def build_master(
     variables.update(hydro_new=hydro_new, hydro_capacity=hydro_cap)
     hydro_capex = float(capex_2030["hydro"])
     hydro_crf = capital_recovery_factor(wacc, float(lifetimes["hydro"]))
-    costs["hydro_investment"] = hydro_capex * hydro_crf * hydro_cap.sum()
-    costs["hydro_fixed_om"] = hydro_capex * 0.02 * hydro_cap.sum()
+    hydro_aggregate_existing_gw = float(
+        data.hydro_aggregate_capacity.provincial_aggregate_capacity_gw.sum()
+    )
+    hydro_accounted_capacity = hydro_cap.sum() + hydro_aggregate_existing_gw
+    costs["hydro_investment"] = hydro_capex * hydro_crf * hydro_accounted_capacity
+    costs["hydro_fixed_om"] = hydro_capex * 0.02 * hydro_accounted_capacity
 
     # Province-level PHS retains the GHT 2026 operating floor and is capped by
     # projects available by the planning year. Battery potential remains open.
@@ -879,14 +992,93 @@ def build_master(
     )
     variables.update(storage_new=storage_new, storage_capacity=storage_cap)
     storage_params = data.storage.set_index("technology")
+    storage_design = config.raw["storage_design"]
+    phs_energy_mode = storage_design["phs_energy_capacity_mode"]
+    phs_energy_capacity = None
+    phs_energy_floor = (
+        storage_exogenous_floor[:, phs_index]
+        * float(storage_design["phs_existing_duration_h"])
+    )
+    phs_energy_asset_ids = [
+        stable_asset_id(province_code, "phs_energy")
+        for province_code in provinces
+    ]
+    if phs_energy_mode == "independent_power_energy_v1":
+        phs_energy_inherited = data.planning_state.active_adjustment(
+            "phs_energy",
+            phs_energy_asset_ids,
+            planning_year=config.planning_year,
+            unit="GWh",
+        )
+        phs_energy_floor = phs_energy_floor + phs_energy_inherited
+        phs_energy_capacity = model.addMVar(
+            p_count,
+            lb=phs_energy_floor,
+            name="phs_energy_capacity_gwh",
+        )
+        model.addConstr(
+            phs_energy_capacity
+            >= float(storage_design["phs_new_duration_min_h"])
+            * storage_cap[:, phs_index],
+            name="phs_minimum_duration",
+        )
+        model.addConstr(
+            phs_energy_capacity
+            <= float(storage_design["phs_new_duration_max_h"])
+            * storage_cap[:, phs_index],
+            name="phs_maximum_duration",
+        )
+        variables["phs_energy_capacity"] = phs_energy_capacity
     storage_investment = gp.LinExpr()
     storage_fom = gp.LinExpr()
     for technology in STORAGE_TECHS:
         s = s_index[technology]
         capex = float(capex_2030[technology])
         crf = capital_recovery_factor(wacc, float(lifetimes[technology]))
-        storage_investment += capex * crf * storage_cap[:, s].sum()
-        storage_fom += capex * float(storage_params.loc[technology, "fixed_om_fraction_capex_per_year"]) * storage_cap[:, s].sum()
+        if (
+            technology == "phs"
+            and phs_energy_mode == "independent_power_energy_v1"
+        ):
+            power_capex = float(
+                storage_design[
+                    "phs_power_capex_yuan_per_kw_by_planning_year"
+                ][str(config.planning_year)]
+            )
+            energy_capex = float(
+                storage_design[
+                    "phs_energy_capex_yuan_per_kwh_by_planning_year"
+                ][str(config.planning_year)]
+            )
+            reference_total = (
+                power_capex
+                + float(storage_design["phs_reference_duration_h"])
+                * energy_capex
+            )
+            closure_fraction = abs(reference_total - capex) / capex
+            if closure_fraction > float(
+                storage_design[
+                    "phs_reference_capex_closure_tolerance_fraction"
+                ]
+            ):
+                raise ValueError(
+                    "Separated PHS power/energy CAPEX does not close to the "
+                    f"active {config.planning_year} 8-hour total CAPEX: "
+                    f"{reference_total} versus {capex} CNY/kW"
+                )
+            annualized_capex = (
+                power_capex * storage_cap[:, s].sum()
+                + energy_capex * phs_energy_capacity.sum()
+            )
+            storage_investment += crf * annualized_capex
+            storage_fom += float(
+                storage_params.loc[
+                    technology,
+                    "fixed_om_fraction_capex_per_year",
+                ]
+            ) * annualized_capex
+        else:
+            storage_investment += capex * crf * storage_cap[:, s].sum()
+            storage_fom += capex * float(storage_params.loc[technology, "fixed_om_fraction_capex_per_year"]) * storage_cap[:, s].sum()
     costs["storage_investment"] = storage_investment
     costs["storage_fixed_om"] = storage_fom
 
@@ -1344,10 +1536,33 @@ def build_master(
         "biomass_pair_capacity_upper_gw": biomass_pair_upper,
         "hydro_asset_ids": hydro_asset_ids,
         "hydro_capacity_floor_gw": hydro_floor,
+        "hydro_aggregate_existing_capacity_gw": (
+            data.hydro_aggregate_capacity.provincial_aggregate_capacity_gw.to_numpy(
+                dtype=float
+            )
+        ),
+        "hydro_aggregate_mode": config.raw["hydro"][
+            "provincial_aggregate_mode"
+        ],
+        "hydro_aggregate_up_reserve_credit": float(
+            config.raw["hydro"]["provincial_aggregate_up_reserve_credit"]
+        ),
+        "hydro_aggregate_down_reserve_credit": float(
+            config.raw["hydro"]["provincial_aggregate_down_reserve_credit"]
+        ),
+        "hydro_aggregate_capacity_credit": float(
+            config.raw["hydro"]["provincial_aggregate_capacity_credit"]
+        ),
+        "hydro_aggregate_inertia_seconds": float(
+            config.raw["hydro"]["provincial_aggregate_inertia_seconds"]
+        ),
         "storage_asset_ids": storage_asset_ids,
         "storage_exogenous_floor_gw": storage_exogenous_floor,
         "storage_capacity_floor_gw": storage_floor,
         "storage_capacity_upper_gw": storage_upper,
+        "phs_energy_capacity_mode": phs_energy_mode,
+        "phs_energy_asset_ids": phs_energy_asset_ids,
+        "phs_energy_capacity_floor_gwh": phs_energy_floor,
         "line_asset_ids": line_asset_ids,
         "line_capacity_floor_gw": line_floor,
         "dac_asset_ids": dac_asset_ids,

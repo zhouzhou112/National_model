@@ -365,7 +365,30 @@ def build_full_year_monolithic(
     ) ** (1.0 / 24.0)
     model.addConstr(charge <= storage_capacity[:, :, None], name="storage_charge_power")
     model.addConstr(discharge <= storage_capacity[:, :, None], name="storage_discharge_power")
-    model.addConstr(soc <= storage_capacity[:, :, None] * duration[None, :, None], name="storage_energy")
+    phs_energy_mode = artifacts.index["phs_energy_capacity_mode"]
+    battery_index = s_index["battery"]
+    phs_index = s_index["phs"]
+    model.addConstr(
+        soc[:, battery_index, :]
+        <= storage_capacity[:, battery_index, None]
+        * duration[battery_index],
+        name="battery_storage_energy",
+    )
+    if phs_energy_mode == "independent_power_energy_v1":
+        phs_energy_capacity = variables["phs_energy_capacity"]
+        model.addConstr(
+            soc[:, phs_index, :] <= phs_energy_capacity[:, None],
+            name="phs_storage_energy",
+        )
+    else:
+        phs_energy_capacity = (
+            storage_capacity[:, phs_index] * duration[phs_index]
+        )
+        model.addConstr(
+            soc[:, phs_index, :]
+            <= storage_capacity[:, phs_index, None] * duration[phs_index],
+            name="phs_storage_energy",
+        )
     model.addConstr(
         soc[:, :, 0]
         == (1.0 - self_discharge[None, :]) * soc[:, :, -1]
@@ -412,28 +435,90 @@ def build_full_year_monolithic(
         name="storage_projected_down_power_limit",
     )
     model.addConstr(
-        storage_down[:, :, 0]
-        <= discharge[:, :, 0]
-        + (storage_capacity * duration[None, :] - soc[:, :, -1]) / eta_c[None, :]
-        - charge[:, :, 0],
-        name="storage_projected_down_energy_first",
+        storage_down[:, battery_index, 0]
+        <= discharge[:, battery_index, 0]
+        + (
+            storage_capacity[:, battery_index] * duration[battery_index]
+            - soc[:, battery_index, -1]
+        )
+        / eta_c[battery_index]
+        - charge[:, battery_index, 0],
+        name="battery_projected_down_energy_first",
+    )
+    model.addConstr(
+        storage_down[:, phs_index, 0]
+        <= discharge[:, phs_index, 0]
+        + (phs_energy_capacity - soc[:, phs_index, -1])
+        / eta_c[phs_index]
+        - charge[:, phs_index, 0],
+        name="phs_projected_down_energy_first",
     )
     if hours > 1:
         model.addConstr(
-            storage_down[:, :, 1:]
-            <= discharge[:, :, 1:]
+            storage_down[:, battery_index, 1:]
+            <= discharge[:, battery_index, 1:]
             + (
-                storage_capacity[:, :, None] * duration[None, :, None]
-                - soc[:, :, :-1]
+                storage_capacity[:, battery_index, None]
+                * duration[battery_index]
+                - soc[:, battery_index, :-1]
             )
-            / eta_c[None, :, None]
-            - charge[:, :, 1:],
-            name="storage_projected_down_energy",
+            / eta_c[battery_index]
+            - charge[:, battery_index, 1:],
+            name="battery_projected_down_energy",
+        )
+        model.addConstr(
+            storage_down[:, phs_index, 1:]
+            <= discharge[:, phs_index, 1:]
+            + (
+                phs_energy_capacity[:, None]
+                - soc[:, phs_index, :-1]
+            )
+            / eta_c[phs_index]
+            - charge[:, phs_index, 1:],
+            name="phs_projected_down_energy",
         )
 
     # Hydro coefficients preserve station-level investment decisions.
     with HydroProfileReader(config, data) as hydro_reader:
         hydro = hydro_reader.read_linear_block(block)
+    hydro_aggregate_capacity = data.hydro_aggregate_capacity[
+        "provincial_aggregate_capacity_gw"
+    ].to_numpy(dtype=float)
+    hydro_aggregate_available = (
+        hydro_aggregate_capacity[:, None]
+        * data.hydro_aggregate_availability_cf[:, :hours]
+    )
+    hydro_aggregate_mode = config.raw["hydro"]["provincial_aggregate_mode"]
+    hydro_aggregate_upper = (
+        hydro_aggregate_available
+        if hydro_aggregate_mode == "fixed_existing_monthly_profile_v1"
+        else np.broadcast_to(
+            hydro_aggregate_capacity[:, None],
+            (p_count, hours),
+        )
+    )
+    hydro_aggregate_generation = model.addMVar(
+        (p_count, hours),
+        lb=0.0,
+        ub=hydro_aggregate_upper,
+        name="hydro_aggregate_generation_gw",
+    )
+    hydro_aggregate_month_slices: list[np.ndarray] = []
+    if hydro_aggregate_mode == "fixed_existing_monthly_energy_budget_v2":
+        selected_months = (
+            pd.to_datetime(dates.datetime_bj)
+            .dt.to_period("M")
+            .astype(str)
+            .to_numpy()[:hours]
+        )
+        for month in pd.unique(selected_months):
+            month_hours = np.flatnonzero(selected_months == month)
+            hydro_aggregate_month_slices.append(month_hours)
+            model.addConstr(
+                hydro_aggregate_generation[:, month_hours].sum(axis=1)
+                <= hydro_aggregate_available[:, month_hours].sum(axis=1),
+                name=f"hydro_aggregate_monthly_energy_budget_{month}",
+            )
     ror_available = model.addMVar(
         (p_count, hours), lb=0.0, name="ror_available_gw"
     )
@@ -644,6 +729,7 @@ def build_full_year_monolithic(
             vre_generation[p].sum(axis=0) + wave_generation[p]
             + actual_thermal[p].sum(axis=0)
             + ror_generation[p] + reservoir_generation_by_province[p]
+            + hydro_aggregate_generation[p]
             + discharge[p].sum(axis=0) - charge[p].sum(axis=0)
             + network_injection[p]
             == load[p] + dac_load[p],
@@ -670,6 +756,7 @@ def build_full_year_monolithic(
             hydro_capacity=hydro_capacity,
             ror_generation=ror_generation,
             reservoir_generation=reservoir_generation,
+            hydro_aggregate_generation=hydro_aggregate_generation,
             interprovincial_flow_forward=flow_forward,
             interprovincial_flow_reverse_ac=flow_reverse_ac,
             interprovincial_reverse_edge_rows=ac_edge_rows,
@@ -693,6 +780,18 @@ def build_full_year_monolithic(
         + ror_available
         - ror_generation
     )
+    aggregate_up_credit = float(
+        hydro_constants["provincial_aggregate_up_reserve_credit"]
+    )
+    aggregate_down_credit = float(
+        hydro_constants["provincial_aggregate_down_reserve_credit"]
+    )
+    hydro_aggregate_up = aggregate_up_credit * (
+        hydro_aggregate_capacity[:, None] - hydro_aggregate_generation
+    )
+    hydro_aggregate_down = (
+        aggregate_down_credit * hydro_aggregate_generation
+    )
     storage_up_by_province = storage_up.sum(axis=1)
     storage_down_by_province = storage_down.sum(axis=1)
     vre_dispatch = vre_generation.sum(axis=1)
@@ -703,7 +802,8 @@ def build_full_year_monolithic(
         else 0.0
     )
     constraint_handles["up_reserve"] = model.addConstr(
-        thermal_up + vre_up + hydro_up + storage_up_by_province
+        thermal_up + vre_up + hydro_up + hydro_aggregate_up
+        + storage_up_by_province
         >= float(security["up_reserve_load_fraction"]) * load
         + float(security["up_reserve_vre_fraction"]) * vre_dispatch
         + wave_reserve_requirement,
@@ -711,6 +811,7 @@ def build_full_year_monolithic(
     )
     constraint_handles["down_reserve"] = model.addConstr(
         thermal_down + ror_generation + reservoir_generation_by_province
+        + hydro_aggregate_down
         + storage_down_by_province
         >= float(security["down_reserve_load_fraction"]) * load
         + float(security["down_reserve_vre_fraction"]) * vre_dispatch
@@ -728,6 +829,10 @@ def build_full_year_monolithic(
             expression += float(non_sync["ror"]) * hydro_capacity[ror_rows].sum()
         if len(reservoir_rows_p):
             expression += float(non_sync["reservoir"]) * hydro_capacity[reservoir_rows_p].sum()
+        expression += (
+            float(hydro_constants["provincial_aggregate_inertia_seconds"])
+            * hydro_aggregate_capacity[p]
+        )
         hydro_inertia[p] = expression
     storage_inertia = np.asarray([float(non_sync[t]) for t in STORAGE_TECHS])
     minimum_inertia_seconds = resolve_minimum_system_inertia_seconds(security)
@@ -840,6 +945,7 @@ def build_full_year_monolithic(
         storage_reserve_up_technology=storage_up,
         storage_reserve_down_technology=storage_down,
         ror_available=ror_available, ror_generation=ror_generation,
+        hydro_aggregate_generation=hydro_aggregate_generation,
         reservoir_station_rows=reservoir_rows,
         reservoir_capacity_by_province=reservoir_capacity_by_province,
         reservoir_generation=reservoir_generation,
@@ -851,7 +957,10 @@ def build_full_year_monolithic(
         flow_forward=flow_forward, flow_reverse_ac=flow_reverse_ac,
         network_injection=network_injection, dac_load=dac_load,
         thermal_reserve_up=thermal_up, thermal_reserve_down=thermal_down,
-        vre_reserve_up=vre_up, hydro_reserve_up=hydro_up,
+        vre_reserve_up=vre_up,
+        hydro_reserve_up=hydro_up + hydro_aggregate_up,
+        hydro_aggregate_reserve_up=hydro_aggregate_up,
+        hydro_aggregate_reserve_down=hydro_aggregate_down,
         storage_reserve_up=storage_up_by_province,
         storage_reserve_down=storage_down_by_province,
         hydro_inertia=hydro_inertia,
@@ -871,6 +980,7 @@ def build_full_year_monolithic(
         line_efficiency=line_efficiency,
         architecture="full_year_monolithic_lp",
         optimization_hours=hours,
+        configured_hours=config.hours,
         selected_load_gw=load,
         baseline_load_gw=baseline_load,
         baseline_load_components_gw={
@@ -887,6 +997,9 @@ def build_full_year_monolithic(
         reservoir_flow_scale_m3s=reservoir_flow_scale_m3s,
         reservoir_volume_scale_m3=reservoir_volume_scale_m3,
         reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
+        hydro_aggregate_available_gw=hydro_aggregate_available,
+        hydro_aggregate_power_upper_gw=hydro_aggregate_upper,
+        hydro_aggregate_month_slices=hydro_aggregate_month_slices,
         cascade_station_local_rows=hydro.cascade_station_local_rows,
         cascade_edge_source_local_rows=hydro.cascade_edge_source_local_rows,
         cascade_edge_target_local_rows=hydro.cascade_edge_target_local_rows,

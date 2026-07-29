@@ -1,0 +1,28 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "phs_power_energy_separated_template_v1",
+  "scenario_family": "storage_representation_candidate",
+  "description": "Non-runnable template for independent province-level PHS power and energy planning. Populate source-reviewed power and energy CAPEX paths for all planning years; the 8-hour reference total must close to the active aggregate PHS CAPEX.",
+  "evidence_status": "PROPOSED_NOT_APPLIED_REQUIRES_COST_REVIEW",
+  "overrides": {
+    "storage_design": {
+      "phs_energy_capacity_mode": "independent_power_energy_v1",
+      "phs_existing_duration_h": 8.0,
+      "phs_new_duration_min_h": 4.0,
+      "phs_new_duration_max_h": 48.0,
+      "phs_reference_duration_h": 8.0,
+      "phs_power_capex_yuan_per_kw_by_planning_year": {
+        "2030": null,
+        "2040": null,
+        "2050": null,
+        "2060": null
+      },
+      "phs_energy_capex_yuan_per_kwh_by_planning_year": {
+        "2030": null,
+        "2040": null,
+        "2050": null,
+        "2060": null
+      }
+    }
+  }
+}

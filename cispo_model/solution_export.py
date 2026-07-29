@@ -112,6 +112,18 @@ def export_operational_solution(
     ramp_magnitude = _value(variables["ramp_magnitude"])
     ror_generation = _value(variables["ror_generation"])
     ror_available = _value(variables["ror_available"])
+    hydro_aggregate_generation = _value(
+        variables["hydro_aggregate_generation"]
+    )
+    hydro_aggregate_available = np.asarray(
+        artifacts.index["hydro_aggregate_available_gw"], dtype=float
+    )
+    hydro_aggregate_power_upper = np.asarray(
+        artifacts.index["hydro_aggregate_power_upper_gw"], dtype=float
+    )
+    hydro_aggregate_month_slices = artifacts.index[
+        "hydro_aggregate_month_slices"
+    ]
     reservoir_generation = _value(variables["reservoir_generation"])
     reservoir_by_province = _value(variables["reservoir_generation_by_province"])
     reservoir_soc = _value(variables["reservoir_soc"])
@@ -172,6 +184,7 @@ def export_operational_solution(
         + thermal_net.sum(axis=1)
         + ror_generation
         + reservoir_by_province
+        + hydro_aggregate_generation
         + storage_discharge.sum(axis=1)
         - storage_charge.sum(axis=1)
         + network_injection
@@ -425,7 +438,10 @@ def export_operational_solution(
     thermal_up = _value(variables["thermal_reserve_up"])
     thermal_down = _value(variables["thermal_reserve_down"])
     vre_up = _value(variables["vre_reserve_up"])
-    hydro_up = _value(variables["hydro_reserve_up"])
+    # monolithic.py exports station and provincial-aggregate hydro reserve-up
+    # as one total array.  Adding the aggregate component again below would
+    # make the QC margin falsely optimistic in aggregate-flex sensitivities.
+    hydro_up_total = _value(variables["hydro_reserve_up"])
     storage_up = _value(variables["storage_reserve_up"])
     storage_down = _value(variables["storage_reserve_down"])
     security = config.raw["security"]
@@ -445,9 +461,16 @@ def export_operational_solution(
         )
         up_requirement += wave_requirement
         down_requirement += wave_requirement
-    up_margin = thermal_up + vre_up + hydro_up + storage_up - up_requirement
+    aggregate_down_credit = float(
+        config.raw["hydro"]["provincial_aggregate_down_reserve_credit"]
+    )
+    hydro_aggregate_down = (
+        aggregate_down_credit * hydro_aggregate_generation
+    )
+    up_margin = thermal_up + vre_up + hydro_up_total + storage_up - up_requirement
     down_margin = (
-        thermal_down + ror_generation + reservoir_by_province + storage_down
+        thermal_down + ror_generation + reservoir_by_province
+        + hydro_aggregate_down + storage_down
         - down_requirement
     )
 
@@ -540,6 +563,16 @@ def export_operational_solution(
     storage_table = data.storage.set_index("technology").reindex(STORAGE_TECHS)
     eta_c = storage_table.charge_efficiency.to_numpy(dtype=float)
     eta_d = storage_table.discharge_efficiency.to_numpy(dtype=float)
+    storage_energy_capacity = (
+        storage_capacity
+        * storage_table.duration_h.to_numpy(dtype=float)[None, :]
+    )
+    if artifacts.index["phs_energy_capacity_mode"] == (
+        "independent_power_energy_v1"
+    ):
+        storage_energy_capacity[:, artifacts.index["storage_index"]["phs"]] = (
+            _value(variables["phs_energy_capacity"])
+        )
     self_discharge = 1.0 - (
         1.0 - storage_table.self_discharge_fraction_per_day.to_numpy(dtype=float)
     ) ** (1.0 / 24.0)
@@ -617,6 +650,19 @@ def export_operational_solution(
     )
     vre_violation = vre_generation - vre_available
     wave_violation = wave_generation - wave_available
+    hydro_aggregate_violation = (
+        hydro_aggregate_generation - hydro_aggregate_power_upper
+    )
+    hydro_aggregate_monthly_energy_violation = np.asarray(
+        [
+            (
+                hydro_aggregate_generation[:, month_hours].sum(axis=1)
+                - hydro_aggregate_available[:, month_hours].sum(axis=1)
+            )
+            for month_hours in hydro_aggregate_month_slices
+        ],
+        dtype=float,
+    )
     annual_emissions = float(_value(variables["annual_emissions"]).sum())
     dac_removed = float(_value(variables["dac_capture"]).sum())
     net_emissions = annual_emissions - dac_removed
@@ -842,8 +888,17 @@ def export_operational_solution(
              & (ev_down > flow_direction_tolerance_gw)).sum()
         ),
         "ev_v2g_simultaneous_charge_discharge_province_hours": int(
-            ((v2g_charge > flow_direction_tolerance_gw)
-             & (v2g_discharge > flow_direction_tolerance_gw)).sum()
+            (
+                (
+                    (
+                        ev_mobility_charge
+                        if v4_formulation
+                        else v2g_charge
+                    )
+                    > flow_direction_tolerance_gw
+                )
+                & (v2g_discharge > flow_direction_tolerance_gw)
+            ).sum()
         ),
         "minimum_up_reserve_margin_gw": float(up_margin.min()),
         "minimum_down_reserve_margin_gw": float(down_margin.min()),
@@ -881,6 +936,17 @@ def export_operational_solution(
         "maximum_wave_availability_violation_gw": float(
             np.maximum(wave_violation, 0.0).max()
         ),
+        "maximum_hydro_aggregate_availability_violation_gw": float(
+            np.maximum(hydro_aggregate_violation, 0.0).max()
+        ),
+        "maximum_hydro_aggregate_monthly_energy_budget_violation_gwh": float(
+            np.maximum(
+                hydro_aggregate_monthly_energy_violation,
+                0.0,
+            ).max()
+            if hydro_aggregate_monthly_energy_violation.size
+            else 0.0
+        ),
         "maximum_line_capacity_violation_gw": float(np.maximum(line_violation, 0.0).max()),
         "maximum_nuclear_capacity_floor_violation_gw": float(
             np.maximum(thermal_floor[:, nuclear_k] - thermal_capacity[:, nuclear_k], 0.0).max()
@@ -902,8 +968,7 @@ def export_operational_solution(
         "maximum_storage_soc_upper_violation_gwh": float(
             np.maximum(
                 storage_soc
-                - storage_capacity[:, :, None]
-                * storage_table.duration_h.to_numpy(float)[None, :, None],
+                - storage_energy_capacity[:, :, None],
                 0.0,
             ).max()
         ),
@@ -1087,6 +1152,16 @@ def export_operational_solution(
         "wave_availability": (
             qc["maximum_wave_availability_violation_gw"] <= tolerance
         ),
+        "hydro_aggregate_availability": (
+            qc["maximum_hydro_aggregate_availability_violation_gw"]
+            <= tolerance
+        ),
+        "hydro_aggregate_monthly_energy_budget": (
+            qc[
+                "maximum_hydro_aggregate_monthly_energy_budget_violation_gwh"
+            ]
+            <= tolerance
+        ),
         "line_capacity": qc["maximum_line_capacity_violation_gw"] <= tolerance,
         "nuclear_capacity_floor": qc[
             "maximum_nuclear_capacity_floor_violation_gw"
@@ -1160,6 +1235,9 @@ def export_operational_solution(
             "thermal_net_generation_gw": thermal_net.sum(axis=1).ravel(),
             "ror_generation_gw": ror_generation.ravel(),
             "reservoir_generation_gw": reservoir_by_province.ravel(),
+            "hydro_aggregate_generation_gw": (
+                hydro_aggregate_generation.ravel()
+            ),
             "storage_charge_gw": storage_charge.sum(axis=1).ravel(),
             "storage_discharge_gw": storage_discharge.sum(axis=1).ravel(),
             "network_injection_gw": network_injection.ravel(),
@@ -1187,12 +1265,16 @@ def export_operational_solution(
             "up_reserve_requirement_gw": up_requirement.ravel(),
             "up_reserve_thermal_gw": thermal_up.ravel(),
             "up_reserve_vre_gw": vre_up.ravel(),
-            "up_reserve_hydro_gw": hydro_up.ravel(),
+            "up_reserve_hydro_gw": hydro_up_total.ravel(),
             "up_reserve_storage_gw": storage_up.ravel(),
             "up_reserve_margin_gw": up_margin.ravel(),
             "down_reserve_requirement_gw": down_requirement.ravel(),
             "down_reserve_thermal_gw": thermal_down.ravel(),
-            "down_reserve_hydro_gw": (ror_generation + reservoir_by_province).ravel(),
+            "down_reserve_hydro_gw": (
+                ror_generation
+                + reservoir_by_province
+                + hydro_aggregate_down
+            ).ravel(),
             "down_reserve_storage_gw": storage_down.ravel(),
             "down_reserve_margin_gw": down_margin.ravel(),
             "inertia_required_gw_s": inertia_required.ravel(),
@@ -1424,6 +1506,13 @@ def export_operational_solution(
                     "technology": "reservoir",
                     "generation_gwh": float(reservoir_by_province[p, :].sum()),
                 },
+                {
+                    "province_code": int(province_code),
+                    "technology": "hydro_aggregate",
+                    "generation_gwh": float(
+                        hydro_aggregate_generation[p, :].sum()
+                    ),
+                },
             ]
         )
     pd.DataFrame(generation_rows).to_csv(
@@ -1501,6 +1590,7 @@ def export_operational_solution(
         soc_gwh=storage_soc,
         reserve_up_gw=storage_reserve_up_technology,
         reserve_down_gw=storage_reserve_down_technology,
+        energy_capacity_gwh=storage_energy_capacity,
         province_codes=provinces,
         technologies=np.asarray(STORAGE_TECHS),
         hour_index=hour_index,
@@ -1626,6 +1716,29 @@ def export_operational_solution(
             "flexible_load_parameters": config.raw["flexible_load"],
             "wave_energy_enabled": data.wave is not None,
             "wave_energy_parameters": config.raw["wave_energy"],
+            "hydro_provincial_aggregate_parameters": {
+                key: value
+                for key, value in config.raw["hydro"].items()
+                if key.startswith("provincial_aggregate_")
+            },
+            "hydro_provincial_aggregate_data_summary": {
+                "province_rows": int(len(data.hydro_aggregate_capacity)),
+                "identified_station_capacity_gw": float(
+                    data.hydro_aggregate_capacity[
+                        "identified_station_capacity_gw"
+                    ].sum()
+                ),
+                "aggregate_capacity_gw": float(
+                    data.hydro_aggregate_capacity[
+                        "provincial_aggregate_capacity_gw"
+                    ].sum()
+                ),
+                "harmonized_conventional_capacity_gw": float(
+                    data.hydro_aggregate_capacity[
+                        "harmonized_conventional_capacity_gw"
+                    ].sum()
+                ),
+            },
             "wave_energy_data_summary": (
                 {
                     "active_grid_rows": int(len(data.wave.sites)),
@@ -1711,7 +1824,9 @@ def export_operational_solution(
         ror_generation_gw=ror_generation,
         ror_available_gw=ror_available,
         reservoir_generation_gw=reservoir_by_province,
-        reserve_up_gw=hydro_up,
+        aggregate_generation_gw=hydro_aggregate_generation,
+        aggregate_available_gw=hydro_aggregate_available,
+        reserve_up_gw=hydro_up_total,
         province_codes=provinces,
         hour_index=hour_index,
     )

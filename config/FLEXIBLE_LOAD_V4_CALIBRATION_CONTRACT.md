@@ -1,137 +1,149 @@
-# `service_constrained_v4` calibration and input contract
+# `service_constrained_v4` data-supported contract
 
-## Status and scientific boundary
+## Status and boundary
 
-`service_constrained_v4` is an independent demand-flexibility scenario
-contract.  It does not modify `base`, `comfort_envelope_v3`, the accepted
-744-hour Base result, the planning capacity-margin peak, or any solver basis.
-The central V4 case is `flexible_load_comfort_v4_v1g`; V2G is only the separate
-`flexible_load_comfort_v4_v2g_sensitivity` case.
+V4 is an independent flexibility scenario. It does not modify Base, V3, the
+accepted 744 h Base result, capacity-margin peak load, or any solver basis.
+`flexible_load_comfort_v4_v1g` is the central engineering case; V2G is only
+`flexible_load_comfort_v4_v2g_sensitivity`.
 
-The V4 JSON files are deliberately listed as `planned_not_runnable` until all
-five tables below are calibrated, generated, and input-manifest checked.  A
-missing field, a duplicate province-hour, an EV-energy closure error, or a
-baseline charging profile above the declared available charging power is a hard
-failure.  `ev_hour_weight` remains an uncontrolled-charging shape and must not
-be inserted into any availability field.
+The design deliberately converges on data that already exist:
 
-## Model equations
+- `hourly_load_2025_2060.csv.gz` supplies immutable province-hour
+  `base_residual`, `heating`, `cooling`, and `ev`;
+- `flexible_load_envelope_v3.csv.gz` supplies the audited BAIT `+/-1 C`
+  heating/cooling power envelope;
+- the Power_curve_V2 EV stock, daily energy and `ev_hour_weight` are already
+  embodied in the immutable EV baseline.
 
-For province `p`, hour `t`, and thermal service `c in {heating, cooling}`, V4
-has one signed state rather than a positive/negative state pair:
+The retained inputs do not observe vehicle connection sessions, trip chains or
+departure SOC. V4 therefore does not fabricate them and does not call
+`ev_hour_weight` a connection probability. The EV state is an aggregate
+schedulable-service inventory, not a physical fleet SOC estimate.
+
+## Thermal equations
+
+For province `p`, component `c in {heating,cooling}`, and hour `t`:
 
 ```text
 S[p,c,t] = rho[p,c] * S[p,c,t-1]
            + eta_charge[p,c] * P_up[p,c,t]
            - P_down[p,c,t] / eta_discharge[p,c]
 
--H_minus[p,c] * K[p,c] <= S[p,c,t] <= H_plus[p,c] * K[p,c]
-D[p,c,t] >= -S[p,c,t]
-0 <= P_up[p,c,t], P_down[p,c,t]
-   <= envelope[p,c,t]
-0 <= P_up[p,c,t], P_down[p,c,t]
-   <= availability[p,c,t] * K[p,c]
+0 <= S[p,c,t] <= duration[p,c] * K[p,c]
+0 <= P_up[p,c,t], P_down[p,c,t] <= envelope[p,c,t]
+0 <= P_up[p,c,t], P_down[p,c,t] <= K[p,c]
+P_actual[p,c,t] = P_baseline[p,c,t] + P_up[p,c,t] - P_down[p,c,t]
 ```
 
-`S[p,c,0]` is linked to `S[p,c,T-1]` by the same recurrence.  Thus the full
-8,760-hour solve has an annual periodic boundary; a short gate is periodic only
-over its declared test window and cannot be interpreted as annual operation.
-`D` is a non-negative comfort-debt accounting variable.  It is bounded through
-the signed state and carries an explicit state-hour cost, so comfort debt cannot
-become an unpriced, unlimited negative inventory.
+The envelope is the accepted BAIT `+/-1 C` envelope multiplied by explicit
+enrolment (`0.25` heating, `0.20` cooling central). `S` is non-negative:
+curtailment must be backed by prior preheating/precooling inventory. There is no
+negative comfort debt and no daily reset. The first hour is linked to the last
+selected hour; only an 8,760 h solve has annual scientific meaning.
 
-The EV formulation has one fleet SOC for V1G and V2G together:
+## EV equations
+
+Let `f_smart=0.25` and `L_ev` be the immutable EV charging baseline:
 
 ```text
-SOC[p,t] = (1-self_discharge) * SOC[p,t-1]
-           + eta_charge * P_charge[p,t]
-           - P_discharge[p,t] / eta_discharge
-           - E_drive[p,t]
+L_fixed[p,t] = (1-f_smart) * L_ev[p,t]
+E_service[p,t] = eta_charge * f_smart * L_ev[p,t]
 
-0 <= SOC[p,t] <= E_fleet[p,t]
-SOC[p,t] >= E_departure_min[p,t]
-P_charge[p,t] <= min(P_charge_available[p,t], connected[p,t] * K[p,ev_v1g])
-P_discharge[p,t] <= min(P_discharge_available[p,t], connected[p,t] * K[p,ev_v2g])
+SOC_service[p,t] = SOC_service[p,t-1]
+                   + eta_charge * P_smart[p,t]
+                   - P_v2g[p,t] / eta_discharge
+                   - E_service[p,t]
+
+0 <= SOC_service[p,t] <= E_service_cap[p,t]
+0 <= P_smart[p,t] <= P_smart_cap[p,t]
+0 <= P_v2g[p,t] <= P_v2g_cap[p,t]
+L_ev_actual[p,t] = L_fixed[p,t] + P_smart[p,t]
 ```
 
-V1G sets `P_discharge=0` and fixes `K[p,ev_v2g]=0`.  V2G does not create a
-second deviation battery: it can discharge only from the same SOC after driving
-withdrawals and departure minima are met.  No V4 flexible capacity receives
-firm-capacity or operating-reserve credit in the current model boundary.
+The central inventory cap is one day of flexible service. Charge power is the
+larger of the flexible baseline and twice its daily-average proxy. The V2G
+power cap uses a separate `0.10` participation assumption and exists only in
+the sensitivity case. `minimum_departure_energy_gwh` is retained as a legacy
+schema field but must equal zero. Likewise,
+`connected_vehicle_fraction` must equal one and is only an aggregate service
+normalisation; neither field is interpreted as observed mobility behaviour.
 
-The annual objective adds, in million CNY/year:
+This construction guarantees that `P_smart=f_smart*L_ev`, `P_v2g=0`, and
+`SOC_service=0` reproduce the immutable EV baseline exactly. Loader QC checks
+this closure for every province and planning year.
+
+## Objective
+
+The objective stores all values in million CNY, but their accounting periods
+are different in truncated engineering gates.  The enablement term is an
+annualized planning cost; activation, relocation and degradation terms cover
+only the selected optimization hours:
 
 ```text
-sum[p,c](enablement_CNY_per_kW_year[p,c] * K[p,c])
-+ 1e-3 * sum[p,t,c](activation_CNY_per_MWh[p,c] * throughput[p,c,t])
-+ 1e-6 * sum[p,t,c in thermal](comfort_debt_CNY_per_GWh_hour[p,c] * D[p,c,t])
+sum[p,s](enablement_CNY_per_kW_year[p,s] * K[p,s])
++ 1e-3 * sum[p,t,c](thermal_activation_CNY_per_MWh[p,c]
+                     * (P_up[p,c,t] + P_down[p,c,t]))
++ 1e-3 * sum[p,t](v1g_activation_CNY_per_MWh[p]
+                   * abs(P_smart[p,t] - f_smart*L_ev[p,t]))
++ 1e-3 * sum[p,t](v2g_degradation_CNY_per_MWh[p] * P_v2g[p,t])
 ```
 
-The `1e-3` converts `CNY/MWh * GWh` to million CNY; a `CNY/kW-year` coefficient
-times `GW` is already numerically million CNY/year.
+Central values and mandatory low/high ranges are in
+`flexible_load_v4_central_parameters.csv`. They are engineering scenario
+assumptions, not observations. Source mapping is in
+`flexible_load_v4_source_registry.csv`; evidence-count QA is in
+`flexible_load_v4_source_count_qa.csv`.
 
-## Required files and columns
+`cost_components.csv` therefore labels V4 enablement as
+`ANNUALIZED_PLANNING_COST` and hourly terms as
+`SELECTED_HORIZON_OPERATION_COST`.  Their sum may be optimized in a truncated
+gate, but it must not be reported as an annual net-benefit estimate.
 
-All files are under `CISPO_DATA_ROOT/flexibility/`, have non-leap
-`hour_index=0..8759`, and must cover each model year and all 31 canonical
-provinces.
+## Generated inputs
 
-| File | Required columns | Calibration target and hard checks |
-|---|---|---|
-| `thermal_hourly_envelope_v4.csv.gz` | `province_code`, `year`, `hour_index`, `heating_increase_limit_gw`, `heating_reduction_limit_gw`, `cooling_increase_limit_gw`, `cooling_reduction_limit_gw`, `heating_availability_fraction`, `cooling_availability_fraction` | BAIT/balance-point envelope remains the power boundary.  Availability is the enrolled service fraction, in `[0,1]`; it must be positive whenever the corresponding envelope is positive.  A reduction limit cannot exceed immutable heating/cooling baseline load. |
-| `thermal_parameters_by_province_v4.csv` | `province_code`, `year`, `component`, `retention_per_hour`, `charge_efficiency`, `discharge_efficiency`, `positive_state_duration_hours`, `negative_state_duration_hours` | Province-year building-climate archetype identification.  Fit/validate against building stock, heating/cooling technology shares, a temperature-response or RC simulation, and the retained hourly thermal series.  All efficiencies and retention are in `(0,1]`; both durations are positive. |
-| `ev_availability_hourly_v4.csv.gz` | `province_code`, `year`, `hour_index`, `connected_vehicle_fraction`, `available_charge_power_gw`, `available_discharge_power_gw`, `fleet_energy_capacity_gwh` | Charging-session or home/work/public/fleet archetype calibration.  `connected_vehicle_fraction` is `[0,1]`; power and energy are non-negative.  Declared charge power must contain the immutable uncontrolled EV baseline at every hour, so the reference service is feasible. |
-| `ev_mobility_hourly_v4.csv.gz` | `province_code`, `year`, `hour_index`, `driving_energy_withdrawal_gwh`, `minimum_departure_energy_gwh` | Trip-chain/departure calibration.  Driving withdrawals are non-negative and annually close to `eta_charge * baseline_EV_grid_energy` for every province.  Departure minima cannot exceed fleet energy capacity. |
-| `flex_enablement_cost_v4.csv` | `province_code`, `year`, `service`, `enablement_cost_yuan_per_kw_year`, `activation_cost_yuan_per_mwh`, `comfort_debt_cost_yuan_per_gwh_hour` | Contract, aggregator, device-control, user-compensation and V2G degradation costs.  Required services are `heating`, `cooling`, `ev_v1g`, `ev_v2g`; all values are finite and non-negative.  V2G low/base/high degradation or compensation cases must be encoded here, never hidden in code. |
+`scripts/build_flexible_load_v4_inputs.py` creates five files under
+`CISPO_DATA_ROOT/flexibility/`:
 
-`flexible_load_v4.manifest.json` is the sixth required provenance artifact.  It
-must record source manifests, preprocessing versions, all five output SHA256
-hashes, province/year/hour coverage, parameter-registry revision and the
-results of the table-level checks above.  The runtime input manifest includes
-all six artifacts for V4 but never requires them for Base or V3.
+| File | Purpose |
+|---|---|
+| `thermal_hourly_envelope_v4.csv.gz` | enrolled BAIT `+/-1 C` hourly bounds |
+| `thermal_parameters_by_province_v4.csv` | retention, efficiency, duration |
+| `ev_availability_hourly_v4.csv.gz` | smart-charge/V2G power and service-inventory caps |
+| `ev_mobility_hourly_v4.csv.gz` | exact flexible-service withdrawal; zero legacy departure floor |
+| `flex_enablement_cost_v4.csv` | enablement, activation and V2G degradation costs |
 
-After the five calibrated tables have been placed under the selected data root,
-create the sidecar with at least one frozen upstream provenance manifest:
+The three compressed tables use gzip with fixed `mtime=0`; two builds from
+unchanged sources must be byte-identical before deployment.
+
+The generator also writes `flexible_load_v4.manifest.json` with upstream and
+generated-file SHA256. The sidecar is content-deterministic and uses portable
+logical paths, so an unchanged input package retains the same identity across
+repeated validation and deployment roots. The independent validator reloads
+all five planning years through the runtime loader:
 
 ```powershell
-python scripts/validate_flexible_load_v4_inputs.py `
-  --scenario-config config/scenarios/flexible_load_comfort_v4_v1g.json `
-  --source-manifest D:\path\to\building_and_ev_source_manifest.json
+conda run -n RL python scripts/build_flexible_load_v4_inputs.py
+
+conda run -n RL python scripts/validate_flexible_load_v4_inputs.py `
+  --source-manifest data/load/flexible_load_envelope_v3.manifest.json `
+  --source-manifest config/flexible_load_v4_source_registry.csv `
+  --source-manifest config/flexible_load_v4_central_parameters.csv `
+  --source-manifest config/flexible_load_v4_source_count_qa.csv
 ```
 
-The command validates every planning year, applies the same loader checks as a
-model build, and only then writes `flexible_load_v4.manifest.json`.  It does not
-invent calibration values.
+## Acceptance gates
 
-## Calibration evidence protocol
+Required before interpreting any result:
 
-1. Freeze a source manifest for every raw building, charger/session, vehicle
-   stock, battery, trip and compensation source.  Record source date, coverage,
-   province mapping, units, preprocessing and SHA256.
-2. Estimate thermal parameters by province-year archetype, then hold out at
-   least one weather period or province group.  The result may be an archetype
-   calibration, but must not be called an observed indoor-temperature series.
-3. Construct EV connection and mobility profiles from observed sessions where
-   available.  Provinces without observations may use a disclosed
-   home/work/public/fleet transfer model, but must be labelled as transferred
-   archetypes and receive low/base/high sensitivity cases.
-4. Reconcile vehicle stock, usable battery energy, daily driving energy and
-   charging efficiency.  The annual grid-energy closure is mandatory before a
-   V4 case can build.
-5. Separate one-time/device enablement, hourly activation, user compensation
-   and battery degradation.  Do not charge baseline EV driving energy as a
-   flexibility activation merely because it passes through `P_charge`.
-6. Run input QC, a 1-hour algebra gate, a 24-hour formulation gate and a
-   168-hour memory/solver gate before requesting an isolated 744-hour V4 gate.
-   The fixed server must remain on its accepted Base checkout until that request
-   is explicitly approved.
+1. input manifest and all five planning-year loader checks pass;
+2. `2 provinces x 4 hours` algebra test proves scalar objective and no
+   cross-province periodic broadcasting;
+3. local 1 h and 24 h V1G gates are `OPTIMAL`, `solution_qc=PASS`, and have
+   closed manifests;
+4. 168 h is a later isolated engineering gate; no 744 h/8,760 h run follows
+   without explicit authorization;
+5. low/high enrolment, duration/retention and cost sensitivities are required
+   before paper claims. V2G can never replace the V1G central case.
 
-## Output and acceptance QC
-
-`solution_qc.json` reports V4 thermal transition and periodic-boundary
-residuals, signed-state bounds, comfort-debt definition, EV SOC recurrence,
-departure/SOC/power violations, and the existing effective-load reconstruction.
-`flexible_load_dispatch.npz` additionally exports signed thermal states,
-comfort debt, mobility charge/discharge/SOC, charge deviation and contracted
-service capacity.  A V4 run is invalid if any of these hard checks exceeds the
-standard numerical tolerance.
+No V4 capacity receives firm-capacity, reserve or inertia credit.

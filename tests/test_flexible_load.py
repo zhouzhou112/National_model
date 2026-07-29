@@ -74,26 +74,26 @@ class FlexibleLoadContractTests(unittest.TestCase):
         )
         np.testing.assert_allclose(upper, [4.0])
 
-    def test_v4_single_fleet_soc_small_linear_gate(self):
+    def test_v4_two_province_fleet_soc_small_linear_gate(self):
         config = load_model_config(
             scenario_path="config/scenarios/flexible_load_comfort_v4_v1g.json"
         )
-        shape = (1, 4)
+        shape = (2, 4)
         thermal_parameters = {
             component: {
-                "retention_per_hour": np.asarray([1.0]),
-                "charge_efficiency": np.asarray([1.0]),
-                "discharge_efficiency": np.asarray([1.0]),
-                "positive_state_duration_hours": np.asarray([2.0]),
-                "negative_state_duration_hours": np.asarray([2.0]),
+                "retention_per_hour": np.asarray([1.0, 1.0]),
+                "charge_efficiency": np.asarray([1.0, 1.0]),
+                "discharge_efficiency": np.asarray([1.0, 1.0]),
+                "positive_state_duration_hours": np.asarray([2.0, 2.0]),
+                "negative_state_duration_hours": np.asarray([2.0, 2.0]),
             }
             for component in ("heating", "cooling")
         }
         service_costs = {
             service: {
-                "enablement_cost_yuan_per_kw_year": np.asarray([1.0]),
-                "activation_cost_yuan_per_mwh": np.asarray([1.0]),
-                "comfort_debt_cost_yuan_per_gwh_hour": np.asarray([1.0]),
+                "enablement_cost_yuan_per_kw_year": np.asarray([1.0, 2.0]),
+                "activation_cost_yuan_per_mwh": np.asarray([1.0, 2.0]),
+                "comfort_debt_cost_yuan_per_gwh_hour": np.asarray([1.0, 2.0]),
             }
             for service in ("heating", "cooling", "ev_v1g", "ev_v2g")
         }
@@ -113,7 +113,7 @@ class FlexibleLoadContractTests(unittest.TestCase):
                 "fleet_energy_capacity_gwh": np.full(shape, 10.0),
             },
             ev_mobility={
-                "driving_energy_withdrawal_gwh": np.full(shape, 0.95),
+                "driving_energy_withdrawal_gwh": np.full(shape, 0.235),
                 "minimum_departure_energy_gwh": np.zeros(shape),
             },
             service_costs=service_costs,
@@ -131,11 +131,20 @@ class FlexibleLoadContractTests(unittest.TestCase):
         model = gp.Model("v4_small_gate")
         model.Params.OutputFlag = 0
         block = attach_flexible_load(model, config, data, hours=shape[1])
+        model.update()
+        self.assertTrue(
+            all(hasattr(expression, "getValue") for expression in block.costs.values())
+        )
+        # A correct two-province formulation has no accidental p-by-p
+        # first-hour transition block.
+        self.assertEqual(model.NumConstrs, 56 * shape[0])
         model.setObjective(gp.quicksum(block.costs.values()), gp.GRB.MINIMIZE)
         model.optimize()
         self.assertEqual(model.Status, gp.GRB.OPTIMAL)
         np.testing.assert_allclose(
-            block.variables["ev_mobility_charge"].X.sum(), 4.0, atol=1e-8
+            block.variables["ev_mobility_charge"].X.sum(axis=1),
+            [1.0, 1.0],
+            atol=1e-8,
         )
 
     def test_day_slices_cover_partial_horizon_once(self):

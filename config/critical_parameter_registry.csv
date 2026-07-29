@@ -2,7 +2,9 @@ parameter_group,parameter_key,runtime_authority,unit,base_value,sensitivity_read
 scope,weather_year,config/optimization_2030.json,year,2024,yes,MODEL_CHOICE,Wind and PV use the 2024 Beijing natural year; the mapping uses the final 8 UTC hours of 2023 plus 2024 UTC data and removes Beijing 29 February so all cases retain 8760 hours
 scope,scientific_case,config/optimization_2030.json,category,base_2024_vre_wave_on_flex_off_v1,yes,MODEL_BASELINE,Explicit Base label; wave is enabled and flexible load is disabled
 scope,hybrid_weather_bundle,config/optimization_2030.json,category,hybrid_weather_bundle_v1,yes,MODEL_BOUNDARY,VRE uses the 2024 Beijing natural year; wave retains its explicit 2023 chronology and hydro retains its 2019 GRFR chronology
-scope,scenario_parameter_registry,config/scenario_parameter_registry.csv,registry,flexible_load_comfort_v3_v2g_5pct,yes,TRACEABILITY_CONTRACT,Active non-Base scenario overrides are registered separately and must match their resolved configuration
+scope,scenario_parameter_registry,config/scenario_parameter_registry.csv,registry,flexible_load_comfort_v3_v2g_5pct,yes,HISTORICAL_TRACEABILITY_CONTRACT,Retained V3 override registry; current runnable scenario membership is controlled by scenario_catalog
+scope,scenario_catalog,config/scenarios/scenario_catalog.json,registry,v2,yes,CURRENT_TRACEABILITY_CONTRACT,All runnable overlays and planned non-runnable templates are explicitly separated
+scope,flexible_load_v4_parameter_registry,config/flexible_load_v4_central_parameters.csv,registry,central plus low high,yes,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,V4 assumptions are centralized with source IDs and bounded sensitivity values
 scope,vre_scenario,config/optimization_2030.json,category,B,yes,MODEL_CHOICE,C/B/O suitability upper-bound scenario
 scope,carbon_scenario,config/optimization_2030.json,category,Base_-550Mt,yes,MODEL_CHOICE,Selects one row per planning year from the carbon table
 finance,real_wacc_fraction,config/optimization_2030.json,fraction,0.074,yes,SOURCE_REVIEWED,Real WACC is dimensionless and is not price-rebased
@@ -17,7 +19,15 @@ security,up_reserve_vre_fraction,config/optimization_2030.json,fraction,0.05,yes
 network,flow_regularization_yuan_per_mwh,config/optimization_2030.json,2025 CNY/MWh,1.004004,yes,CISPO_ALIGNED,Original 1.0 CNY/MWh rebased from 2022 to 2025 constant CNY
 network,load_center_network.design_utilization_fraction,config/optimization_2030.json,fraction,0.5,yes,SOFT_ASSUMPTION,Annual AC500 proxy sizing factor
 hydro,reservoir_efficiency,config/optimization_2030.json,fraction,0.85,yes,MODEL_ASSUMPTION,Station-level reservoir conversion
+hydro,duplicate_comid_flow_allocation,config/optimization_2030.json,category,static_capacity_potential_share_v1,yes,MODEL_BOUNDARY,Rows sharing one COMID split the single available flow by installed or potential capacity share before cascade aggregation
+hydro,provincial_aggregate_mode,config/optimization_2030.json,category,fixed_existing_monthly_profile_v1,yes,MODEL_BOUNDARY,Unidentified conventional hydro is an existing province-level monthly-profile generator in Base
+hydro,provincial_aggregate_national_conventional_target_gw,config/optimization_2030.json,GW,380.0,yes,SOURCE_RECONCILED,Station-level and province-level aggregate capacity close exactly to the 2025 national conventional-hydro target
+hydro,provincial_aggregate_capacity,data/hydro/provincial_aggregate_capacity_2025.csv,GW,table,yes,VERIFIED,Province-level residual capacity after subtracting identified station capacity from the harmonized 380 GW allocation
+hydro,provincial_aggregate_monthly_profile,data/hydro/provincial_aggregate_monthly_capacity_factor_2019.csv,fraction,table,yes,VERIFIED,Province-month profile derived from retained 2019 hydro chronology
+hydro,provincial_aggregate_reliability_credit,config/optimization_2030.json,category,zero_reserve_inertia_capacity_credit,yes,CONSERVATIVE,Base aggregate hydro supplies energy only and receives no reserve inertia or capacity-margin credit
 hydro,environmental_flow_dataset,config/optimization_2030.json,category,monthly_environmental_flow_2019_p30,no,PROXY,Formal multi-year P30 data still required
+storage,phs_energy_capacity_mode,config/optimization_2030.json,category,fixed_duration_v1,yes,MODEL_BASELINE,Base retains the existing fixed 8-hour aggregate PHS representation
+storage,phs_power_energy_separated_sensitivities,config/scenarios/scenario_catalog.json,category,central low high,yes,SOURCE_REVIEWED_COST_CALIBRATED,Independent power and energy capacity is confined to registered cost sensitivities whose 8-hour CAPEX closes to Base
 flexibility,heating.maximum_reduction_fraction,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
 flexibility,heating.maximum_increase_fraction_of_daily_peak,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base
 flexibility,cooling.maximum_reduction_fraction,config/optimization_2030.json,fraction,0.15,yes,ILLUSTRATIVE,Inactive in Base

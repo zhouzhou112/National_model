@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import unittest
+from copy import deepcopy
 
 import numpy as np
 
-from cispo_model.config import load_model_config
+from cispo_model.config import ModelConfig, load_model_config
 from cispo_model.data import load_model_data
 from cispo_model.monolithic import build_full_year_monolithic
 
@@ -85,6 +86,56 @@ class BoundTighteningTests(unittest.TestCase):
             self.artifacts.index["explicit_bound_tightening"]["spur_trunk"],
             "no finite UB added: installed interface augmentation above minimum remains feasible",
         )
+
+    def test_independent_phs_energy_adds_only_province_level_annual_variables(self):
+        raw = deepcopy(self.config.raw)
+        phs_total_capex = {
+            "2030": 5281.06104,
+            "2040": 4758.9789599999995,
+            "2050": 4758.9789599999995,
+            "2060": 4256.97696,
+        }
+        raw["storage_design"]["phs_energy_capacity_mode"] = (
+            "independent_power_energy_v1"
+        )
+        raw["storage_design"][
+            "phs_power_capex_yuan_per_kw_by_planning_year"
+        ] = {
+            year: value / 2.0
+            for year, value in phs_total_capex.items()
+        }
+        raw["storage_design"][
+            "phs_energy_capex_yuan_per_kwh_by_planning_year"
+        ] = {
+            year: value / 16.0
+            for year, value in phs_total_capex.items()
+        }
+        separated = ModelConfig(
+            self.config.path,
+            raw,
+            self.config.scenario_path,
+            self.config.solver_path,
+            self.config.formulation_path,
+        )
+        separated.validate()
+        artifacts = build_full_year_monolithic(
+            separated,
+            self.data,
+            compute_max_cf=False,
+            optimization_hours=1,
+        )
+        try:
+            self.assertIn("phs_energy_capacity", artifacts.variables)
+            self.assertEqual(
+                artifacts.variables["phs_energy_capacity"].shape,
+                (len(self.data.provinces),),
+            )
+            self.assertEqual(
+                artifacts.model.NumVars - self.artifacts.model.NumVars,
+                len(self.data.provinces),
+            )
+        finally:
+            artifacts.model.dispose()
 
 
 if __name__ == "__main__":

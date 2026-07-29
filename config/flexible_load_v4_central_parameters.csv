@@ -1,0 +1,20 @@
+parameter_id,central_value,low_value,high_value,unit,evidence_status,source_ids,model_use
+thermal.heating.enrolled_fraction,0.25,0.10,0.40,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"LOCAL_ENVELOPE_V3;GPTPRO_20260728;IEA_EBC_67",scales the existing BAIT +/-1 C heating power envelope
+thermal.cooling.enrolled_fraction,0.20,0.10,0.40,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"LOCAL_ENVELOPE_V3;GPTPRO_20260728;IEA_EBC_67",scales the existing BAIT +/-1 C cooling power envelope
+thermal.heating.retention_per_hour,0.94,0.90,0.98,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;APPLIED_ENERGY_2016_TES;IEA_EBC_67",equivalent heating-service inventory retention
+thermal.cooling.retention_per_hour,0.92,0.85,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;ENBUILD_2019_AC;ECM_2023_COOL",equivalent cooling-service inventory retention
+thermal.heating.duration_hours,4,2,8,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;APPLIED_ENERGY_2017_HVAC",upper energy-to-power duration
+thermal.cooling.duration_hours,5,2,10,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;APPLIED_ENERGY_2017_HVAC;ECM_2023_COOL",upper energy-to-power duration
+thermal.charge_efficiency,1.0,1.0,1.0,fraction,MODEL_CONVENTION,"GPTPRO_20260728",avoids double-counting thermal loss already represented by retention
+thermal.discharge_efficiency,1.0,1.0,1.0,fraction,MODEL_CONVENTION,"GPTPRO_20260728",avoids double-counting thermal loss already represented by retention
+thermal.enablement_cost,40,10,120,CNY_per_kW_year,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_DEMAND_FLEX",annual contracted-control cost
+thermal.activation_cost,10,2,30,CNY_per_MWh,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_DEMAND_FLEX",absolute thermal adjustment throughput cost
+ev.v1g_participation_fraction,0.25,0.10,0.50,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;NDRC_VGI_2023;NDRC_VGI_PILOT_2025",share of the existing EV charging baseline moved into service inventory
+ev.v2g_participation_fraction,0.10,0.05,0.30,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;NDRC_VGI_2023;NDRC_VGI_PILOT_2025",share of the EV charging baseline setting V2G power availability
+ev.charge_efficiency,0.94,0.90,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_V2G",grid-to-service inventory efficiency
+ev.discharge_efficiency,0.94,0.90,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_V2G",service-inventory-to-grid efficiency
+ev.charge_power_to_daily_average_ratio,2.0,1.5,3.0,ratio,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;POWER_CURVE_EV",flexible charge upper bound
+ev.service_inventory_duration_hours,24,12,36,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;POWER_CURVE_EV",maximum schedulable service inventory equal to one day in the central case
+ev.enablement_cost,60,20,180,CNY_per_kW_year,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_V2G;NDRC_VGI_2023",annual smart or bidirectional control cost
+ev.v1g_activation_cost,10,2,30,CNY_per_MWh,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_DEMAND_FLEX",absolute relocation cost relative to flexible baseline charging
+ev.v2g_degradation_cost,180,80,400,CNY_per_MWh,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"GPTPRO_20260728;IEA_V2G",V2G discharged-energy degradation and compensation cost

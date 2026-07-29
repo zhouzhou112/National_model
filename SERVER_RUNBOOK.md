@@ -1,17 +1,66 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-07-28 V4 冷热/EV 情景的校准与运行前门禁
+## 2026-07-29 统一 release candidate 的固定服务器 744 h 门禁
 
-`3b3de57f` 中的 `flexible_load_comfort_v4_v1g` 与 `flexible_load_comfort_v4_v2g_sensitivity` 是新的 LP topology，不是 Base 或 V3 的 resume/basis 变体。禁止在三者之间复制 `.bas`、planning state 或把某一情景的性能外推给另一情景；V2G 仅在 V1G 校准情景闭合后作为独立敏感性。
+当前本地匹配 Base/V4 V1G 的 2030→2040→2050→2060 168 h 序列已全部闭合，机器审计为 `outputs/planning_sequence_168h_v0729_ab_audit/planning_sequence_ab_audit.{json,csv}`。它证明递进 state、冷热/EV 输入、波浪输入、全模型 QC 和当前资源占用稳定；不证明年度价值。任何比较必须同时确认 `result_use=TEST_ONLY_TRUNCATED_HORIZON`，不得把年化 planning/enablement cost 与 168 h operation benefit 的差直接称为年度净收益。
 
-在任何 V4 求解（含本地）之前，必须对 2030/2040/2050/2060 同时具备下列项目：
+作者已授权代码/外置数据口径统一后启动一个固定服务器 744 h 或两个月门禁。当前选择
+标准 `one_month=744 h` 的 `flexible_load_comfort_v4_v1g` cold gate；它是既有支持时域，
+同时覆盖新 Base 水电、wave 与 V4，且不需要新建时域接口。必须按以下顺序执行：
 
-1. `thermal_hourly_envelope`、`thermal_parameters`、`ev_availability_hourly`、`ev_mobility_hourly` 和 `enablement_cost` 五张表，字段/单位符合 `config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md`；
-2. 每张表的 SHA256、非空上游 source manifest 以及 `scripts/validate_flexible_load_v4_inputs.py` 生成并验证的 `flexible_load_v4.manifest.json`；
-3. 年度 EV 基准充电能量、驾驶能耗/效率与 SOC 周期闭合，最低出发 SOC、热状态正负界、舒适债、接入功率和服务签约上界全部通过 QC；
-4. 依次、非并发地完成本地新命名 1h、24h、168h cold gates。它们只证明工程可解性，不替代校准/留出验证，也不构成 744h/8760h 授权。
+1. 本地 `scripts/audit_release_contract.py`、完整 unittest、V4 input validator、hydro input
+   validator 和四个 1 h 模块根全部通过；精确暂存不得包含 `supplementary_materials/**` 或
+   `.codex_tmp/**`。提交并推送后以 commit SHA 作为部署身份。
+2. 实时核验固定服务器 checkout/dirty state、CISPO/Gurobi 进程、RAM/swap、`vmstat`、PSI、
+   磁盘和目标输出根；同时核验 ParaCloud 队列。存在第二求解或内存持续换页时停止。
+3. 从既有 model-ready 数据根复制出全新版本化根，只向新根安装 release contract 的外置
+   文件；不得覆盖历史数据根。逐文件 SHA256 必须与 `release_contract_v0729.json` 相同。
+4. 在精确 checkout 和新数据根运行 release audit、readiness、input-manifest、完整 tests，
+   然后依次运行全新 1 h 与 24 h V4 cold；任一项不是
+   `OPTIMAL + solution_qc=PASS + closed result/input manifests` 即停止，不启动 744 h。
+5. 只启动一个全新命名的 2030 V4 V1G `--horizon one_month` cold root，显式使用
+   `barrier_16_auto_order_v2` / `Crossover=1`，不传 `--basis-in`。持续记录 Barrier/crossover、
+   raw/presolved/factor、RSS/swap/PSI、冷热/EV、wave、水电、成本 scope 和所有 hard checks。
+6. 744 h 仍为 `TEST_ONLY_TRUNCATED_HORIZON`。不得启动 8760 h、付费云、并发第二求解、
+   Base/V3/PHS/hydro-flex basis reuse 或 `Crossover=3`；MGA 仍等待完整 accepted Base anchor。
+   V4 low/high 是论文参数敏感性的后续任务，不是本次工程稳定性门禁的前置条件。
 
-当前五类输入均未验收，因此 V4 JSON 必须保持 `planned_not_runnable`，不得部署、传输数据、创建远程输出根或启动 server/ParaCloud 求解。Base 继续为 wave on/flexible load off，现有 V3 保留作严格 A/B 历史参照；`Crossover=3` 继续永久拒绝。
+截断成本输出必须同时保留旧兼容列和以下解释字段：`value_million_cny_model_accounting_period`、`accounting_scope`、`optimization_hours`、`result_use`。`ANNUALIZED_PLANNING_COST` 是年化规划口径，`SELECTED_HORIZON_OPERATION_COST` 只覆盖当前求解窗口。缺少这些元数据的旧结果可以做数值/机制审计，但不能直接用于年度成本图表。
+
+此前固定服务器 `701b9bc`、约 `70 GiB` available、swap 约 `19/21 GiB` 与空 ParaCloud
+队列只是旧快照，不能作为本次启动证据；必须在部署和 744 h 启动前分别重新核验。
+
+## 2026-07-28 常规水电 380 GW 省级聚合层的部署前门禁
+
+当前本地未提交候选增加 `data/hydro/provincial_aggregate_capacity_2025.csv` 和 `data/hydro/provincial_aggregate_monthly_capacity_factor_2019.csv`，并将 `config/model_input_files.json` 升级为 v6。它把 297.8895 GW 站点级常规水电与 82.1105 GW 固定省级聚合容量闭合为 380 GW。省级聚合层是新的 LP topology：其发电变量进入省级平衡和 337 负荷中心年度注入，但不进入站点水文、梯级、备用、惯量、容量充裕性或 spur/trunk。不得导入任何旧 Base、duplicate-COMID-only 或跨年 `.bas`。
+
+本节不授权服务器或云端动作。作者审阅并提交精确实现后，如单独批准部署，必须按下列顺序执行：
+
+1. 本地工作树先分离并保留用户无关改动；提交/推送精确模型与生成脚本。核对两张新 CSV、31 省、372 省月行、全国 `297.8895 + 82.1105 = 380 GW`、PHS `65.94 GW` 以及输入 manifest v6 的 SHA256/role。
+2. 远程实时核验 clean checkout、无 CISPO/Gurobi、RAM/swap/PSI 和输出根；把现有 model-ready 数据根复制到全新版本化根，只 add-only 安装两张新水电表及 v6 manifest，禁止覆盖旧根或把 82.1105 GW 写成伪站点。
+3. 同时设置与新数据包匹配的 `CISPO_DATA_ROOT`、`CISPO_CF_ROOT`、`CISPO_HYDRO_ROOT` 和 `CISPO_WAVE_ROOT`，运行数据包 readiness、输入 manifest、focused hydro tests 和完整回归。注意本地原生水文索引分散在既有绝对路径时应保持 `CISPO_HYDRO_ROOT` 未设置；不要用错误的统一根覆盖索引路径。
+4. 只运行全新、隔离、非并发的 1 h 和 24 h cold Base 根；要求 `OPTIMAL + solution_qc=PASS + closed manifest`，并核对 `hydro_aggregate_capacity.csv`、31×hours 的聚合发电、availability hard check、337 负荷中心聚合注入总量、成本分解、raw/presolved/factor 指标和 RSS。
+5. 24 h 仍只是截断门禁。不得据此启动 168h/744h/8760h、复用 basis、覆盖旧输出或提交付费云任务；更长门禁必须由作者基于新的 topology、内存证据和科学敏感性另行授权。
+
+## 2026-07-28 V4 冷热/EV 数据支撑型情景的运行门禁
+
+当前未提交工作树中的 `flexible_load_comfort_v4_v1g` 与 `flexible_load_comfort_v4_v2g_sensitivity` 是新的 LP topology，不是 Base 或 V3 的 resume/basis 变体。禁止在三者之间复制 `.bas`、planning state 或把某一情景的性能外推给另一情景；V1G 是工程中心情景，V2G 仅作独立敏感性。
+
+五张数据表已由已有 `hourly_load_2025_2060.csv.gz` 和 `flexible_load_envelope_v3.csv.gz` 生成。重新构建与验收使用：
+
+```powershell
+conda run -n RL python scripts/build_flexible_load_v4_inputs.py
+
+conda run -n RL python scripts/validate_flexible_load_v4_inputs.py `
+  --source-manifest data/load/flexible_load_envelope_v3.manifest.json `
+  --source-manifest config/flexible_load_v4_source_registry.csv `
+  --source-manifest config/flexible_load_v4_central_parameters.csv `
+  --source-manifest config/flexible_load_v4_source_count_qa.csv
+```
+
+验收必须确认四个规划年均通过 loader energy closure、五张表的 SHA256 与 source manifest 非空；`connected_vehicle_fraction` 只能为聚合服务归一化 1，`minimum_departure_energy_gwh` 必须为 0，不得把二者重标为实测车辆行为。builder 必须使用固定 gzip `mtime=0`；连续两次完整 build+validate 的输出应逐文件字节一致，当前 sidecar SHA256 为 `ad46c7610903726a059b92255332056935021763ca11433b0b866b6dd1ac144a`。当前本地成功根为 `outputs/2030_1h_v0728_flexible_load_v4_data_supported_v3`、`outputs/2030_24h_v0728_flexible_load_v4_data_supported_v2` 和 `outputs/2030_1h_v0728_flexible_load_v4_v2g_data_supported_v2`，均须同时通过 result manifest 与当前 input manifest；失败的 `outputs/2030_1h_v0728_flexible_load_v4_data_supported_v1` 必须保留为 export 类型 bug 证据，不得 resume 或重标。
+
+当前停止条件是作者审阅。若作者接受公式和中心值，下一步只运行一个全新、隔离、非并发的本地 168 h V1G cold root，并记录 raw/presolved/factor、Barrier/crossover、QC、manifest 和 RSS。该门禁只证明工程可解性；论文结论前仍须执行参数登记中的 low/high。不得由此启动 basis 工程、固定服务器 744h/8760h、付费云任务或并发第二个求解；`Crossover=3` 永久拒绝。
 
 ## 2026-07-28 M2 boundary audit: local decision closure, no deployment
 

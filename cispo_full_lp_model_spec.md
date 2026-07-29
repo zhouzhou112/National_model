@@ -10,7 +10,7 @@
 
 1. **模型类型**：优先复现 CISPO 的连续线性规划 / relaxed unit commitment 版本。所有机组组合变量 `u_tot, u_on, u_su, u_sd, u_load` 默认是连续非负变量，不得改成 binary / integer，除非用户另行要求。
 2. **时间分辨率**：每个规划年默认使用完整 8760 小时：`T = {0, 1, ..., 8759}`。不得擅自换成典型日、代表周或抽样小时。工程测试可显式选择连续前 744 小时（1 个月）或 4344 小时（1—6 月），但两者均采用截断区间周期边界，且年度投资成本、碳约束和生物质约束不缩放，只能用于代码与求解器测试，不能作为规划结果。
-3. **空间分辨率**：风电、光伏、CSP 的基本决策单元为 0.25° × 0.25° 网格；水电为坝址；储能、火电、核电、DAC 为省级电网层面。
+3. **空间分辨率**：风电、光伏、CSP 的基本决策单元为 0.25° × 0.25° 网格；可识别水电为坝址，清单外常规水电仅作为固定省级聚合容量；储能、火电、核电、DAC 为省级电网层面。
 4. **单位与价格基准统一**：功率用 GW，电量用 GWh，CO2 用 MtCO2，成本统一为 2025 年不变人民币（2025 constant CNY），距离用 km，时间步长 `Delta_t = 1 h`，水电流量公式中 `Delta_t = 3600 s`。
 5. **不得隐式引入失负荷变量**。CISPO 的负荷平衡是严格等式。如果为了调试必须加入 load shedding，只能作为 debug mode，且必须使用极高罚值并在结果中明确报告。
 6. **不得删除备用、惯量、碳约束、储能 SOC 周期约束、输电容量约束**。若因为数据缺失暂时无法实现，必须在代码中显式标记 `TODO_SOURCE_DATA_REQUIRED`，不能静默跳过。
@@ -63,6 +63,7 @@
 
 - `p_{g,z,pt}`：技术 `pt` 在站点 `z` 的优化装机容量，GW。
 - `I_{g,pt,t}`：技术 `pt` 在省级电网 `g`、小时 `t` 的并网出力，GW。
+- `I^{hydro,agg}_{g,t}`：缺少坝址水力属性的省级聚合常规水电出力，GW；容量外生固定。
 - `stoe^{csp}_{g,t}`：省级电网 `g` 中 CSP 热储能等效电能，GWh。
 
 ### 2.2 水库水电变量
@@ -233,8 +234,14 @@ C_{hydro} =
 \sum_g\sum_{pt\in HP}\sum_{z\in Z_{g,pt}}
 \left(\chi_{pt}\kappa^{cap}_{pt}+\kappa^{fom}_{pt}\right)p_{g,z,pt}
 +
+\sum_g
+\left(\chi_{hydro}\kappa^{cap}_{hydro}+\kappa^{fom}_{hydro}\right)
+\overline p^{hydro,agg}_g
++
 \sum_g\sum_{pt\in HP}\sum_{t\in T}\kappa^{vom}_{pt}I_{g,pt,t}
 ```
+
+其中 \(\overline p^{hydro,agg}_g\) 为固定的 2025 年省级聚合常规水电容量。当前实现沿用 CISPO 对总装机计收年化 CapEx 与固定运维的会计口径；该项在同一规划年和容量口径下是常数，不表示对既有聚合机组的新增建设投资。
 
 ### 4.3 火电与核电投资、固定运维、可变运维成本
 
@@ -438,6 +445,25 @@ I_{g,ror,t}\le \sum_{z\in Z_{g,ror}}cf_{g,z,ror,t}p_{g,z,ror},
 \quad \forall g,\; t\in T
 ```
 
+### S4-9a 重复河段水量的站间分配
+
+`hydro_stations.csv` 允许多个站点记录映射到同一 `COMID`。GRFR 提供的是河段流量而不是逐站独立来水，因此同一河段扣除环境流量后的可用流量只能计入一次。当前生产规则
+`static_capacity_potential_share_v1` 按站点技术容量上限给出静态份额：
+
+```math
+s_i=
+\frac{\overline p_i}
+{\sum_{j:\;COMID_j=COMID_i}\overline p_j},
+\qquad
+q^{avail}_{i,t}
+=
+s_i\max\left(q^{out}_{r,t}-q^{env}_{r,m(t)},0\right),
+\qquad
+\sum_{i:\;COMID_i=r}s_i=1.
+```
+
+该分配同时适用于径流式、水库式及两类混合映射，避免同一河段序列被重复用于多个站点。它是保持 LP 线性的保守静态规则：若共享河段中的候选站点未建设，其份额不会自动转移给其他站点，因此需要作为容量权重敏感性而不是实测分水关系解释。
+
 ## 5.3.2 水库式水电
 
 ### S4-10 水库水电装机上下界
@@ -515,8 +541,8 @@ v_{g,z,t}=v_{g,z,t-1}+\left(q^{in}_{g,z,t}-q^{gen}_{g,z,t}-q^{spill}_{g,z,t}\rig
 
 当前实现分为两类：
 
-1. 非核心干流水库站仍按站点级独立水量平衡建模，`q^{in}_{g,z,t}` 来自该站 GRFR 可用流量。
-2. Stage2 推荐核心干流梯级站进入梯级水量平衡。核心范围来自 `hydro_model_2019_stage2_classification_cascade_20260630` 的 5 个推荐梯级组，生成到 `data/hydro/cascade_topology_nodes.csv` 和 `data/hydro/cascade_topology_edges.csv`。边的河道传播时滞 `\tau_{u,z}` 由 2019 GRFR 小时 `qout_model_m3s` 按 3 h 倍数做上下游互相关估计，搜索窗上限为 168 h。
+1. 非核心干流水库站仍按站点级独立水量平衡建模，`q^{in}_{g,z,t}` 来自 S4-9a 分配后的站点 GRFR 可用流量。
+2. Stage2 推荐核心干流梯级站进入梯级水量平衡。核心范围来自 `hydro_model_2019_stage2_classification_cascade_20260630` 的 5 个推荐梯级组，生成到 `data/hydro/cascade_topology_nodes.csv` 和 `data/hydro/cascade_topology_edges.csv`。每个拓扑节点的自然流量等于该节点全部成员站点经 S4-9a 分配后的流量之和；边的河道传播时滞 `\tau_{u,z}` 由 2019 GRFR 小时 `qout_model_m3s` 按 3 h 倍数做上下游互相关估计，搜索窗上限为 168 h。
 
 2026-07-27 的构建瘦身不删除任何水电站、拓扑源记录、来水、库容、泄流变量或水量平衡：源拓扑仍为 142 个节点、124 条边。仅对已核验为“无入边、无出边且 `model_station_count=1`”的 8 个孤立节点，实施时不再逐小时构造核心梯级行，而是送入上述站点级独立 S4-17 向量化平衡；有效核心梯级站点行因此由 146 变为 138。对这些节点 `U_z=\varnothing` 且本地增量入流等于该站 GRFR 可用流量，故两种写法代数完全相同。若未来源数据出现多站孤立节点，建模会硬失败，禁止静默套用该等价转换。结果 QC 输出保留有效核心行数、124 条边和 8 个转入独立平衡的节点数。
 
@@ -547,7 +573,43 @@ q^{local}_{g,z,t}
 \right]\Delta t
 ```
 
-重复 COMID 节点中的多个电站按 `capacity_potential_gw` 权重分摊本地增量入流和上游到达流量。当前环境流量为 2019 单年 monthly P30 代理；正式 1980-2019 多年 P30 环境流和开环/闭环抽水蓄能水库配对尚未接入。
+重复 COMID 的站点先在读取水文序列时统一执行 S4-9a；梯级节点随后汇总其成员站份额并计算本地增量入流和上游到达流量，不再复制河段流量。当前环境流量为 2019 单年 monthly P30 代理；正式 1980-2019 多年 P30 环境流和开环/闭环抽水蓄能水库配对尚未接入。
+
+## 5.3.3 省级聚合常规水电
+
+2025 年末常规水电容量以国家能源局 380 GW 分项为约束。当前可追溯站点容量为 297.8895 GW；其余 82.1105 GW 不具备可核验的坝址、水头、额定流量、库容或 COMID，因此不得伪装成站点，也不得进入 S4-9a 或 S4-17。省级聚合容量只作为固定既有容量：
+
+```math
+p^{hydro,agg}_g=\overline p^{hydro,agg}_g,
+\qquad
+\sum_g\left(
+\sum_{z\in Z_{g,HP}}p^{exist}_{g,z}
++\overline p^{hydro,agg}_g
+\right)=380\ \mathrm{GW}.
+```
+
+Base 中的小时出力受逐月天然可用上限约束：
+
+```math
+0\le I^{hydro,agg}_{g,t}
+\le
+\overline p^{hydro,agg}_g\,cf^{hydro,agg}_{g,m(t)}.
+```
+
+`cf^{hydro,agg}_{g,m}` 由同省已识别既有站点的 2019 自然可用出力按容量加权形成，只是逐月代理。Base 中该变量可弃发，但没有跨时段蓄水、梯级耦合、扩张、站点 spur/trunk、向上/向下备用、惯量或容量充裕性信用。省内年度发电按负荷中心年度需求份额分配。
+
+独立情景 `hydro_aggregate_flex_v1` 将同一逐月代理解释为月度电量预算，而不是每个小时均相同的功率上限：
+
+```math
+0\le I^{hydro,agg}_{g,t}\le \overline p^{hydro,agg}_g,
+\qquad
+\sum_{t\in T_m}I^{hydro,agg}_{g,t}
+\le
+\sum_{t\in T_m}\overline p^{hydro,agg}_g
+cf^{hydro,agg}_{g,m(t)}.
+```
+
+该表达不增加小时运行变量，只对每个省—月增加一条电量预算约束；截断门禁按所选时段内的同月小时构造预算。情景中的向上和向下备用分别为未利用功率和当前出力，系数均为 1；惯量代理沿用站点级水电的 3 s 装机口径。容量充裕性信用仍为 0，且不增加启停、最小出力、爬坡、库容或跨月水量状态。因此它是“聚合可调水电”敏感性，不是对清单外坝址和水库调度的重建。
 
 ---
 
@@ -656,7 +718,7 @@ p^{exist}_{g,z,pt}cf_{g,z,pt,t}
 
 本层不增加 `lc × hour` 变量。对完整年度，所有量均为 GWh；截短时段只用于代码测试。
 
-风光与水电的实际省级发电量通过年度归属变量分配到空间连接的负荷中心，并受相应点位/电站在选定时段内的可发电量上界约束。火电、核电、生物质、储能充放电、DAC及省际受入电量按固定年度需求份额分配。
+风光与站点级水电的实际省级发电量通过年度归属变量分配到空间连接的负荷中心，并受相应点位/电站在选定时段内的可发电量上界约束。省级聚合常规水电因不存在可审计的站点路线，按固定年度需求份额分配，不增加 spur/trunk。火电、核电、生物质、储能充放电、DAC及省际受入电量同样按固定年度需求份额分配。
 
 ```math
 J_{lc}+\sum_{e\in IN(lc)}F_e
@@ -1055,9 +1117,9 @@ f^{AC,\to}_{l,t}+f^{AC,\leftarrow}_{l,t}\le p^{AC}_{l},
 
 CISPO 负荷平衡在省级电网 `g` 与小时 `t` 层面闭合。
 
-### 5.8.0 唯一需求柔性覆盖：`comfort_envelope_v3_v2g_5pct`
+### 5.8.0 Base 与独立需求柔性情景
 
-运行时负荷表同时保存 `base_residual_gw`、`heating_gw`、`cooling_gw` 和 `ev_gw`，并硬校验四分量逐省逐时之和等于 `dem_{g,t}`。Base 直接使用 `dem_{g,t}`，不创建任何柔性变量。唯一保留的柔性 JSON `flexible_load_comfort_v3_v2g_5pct.json` 在 Base 上使 `features.flexible_load=true`；供暖、制冷和 EV 充电分别引入非负上调、下调变量：
+运行时负荷表同时保存 `base_residual_gw`、`heating_gw`、`cooling_gw` 和 `ev_gw`，并硬校验四分量逐省逐时之和等于 `dem_{g,t}`。Base 直接使用 `dem_{g,t}`，不创建任何柔性变量。历史 V3 覆盖 `flexible_load_comfort_v3_v2g_5pct.json` 在 Base 上使 `features.flexible_load=true`；供暖、制冷和 EV 充电分别引入非负上调、下调变量：
 
 \[
 d^{x,act}_{g,t}=d^{x,base}_{g,t}+d^{x,+}_{g,t}-d^{x,-}_{g,t},
@@ -1084,7 +1146,60 @@ d^{eff}_{g,t}=d^{base}_{g,t}+d^{heat,act}_{g,t}+d^{cool,act}_{g,t}
 +d^{EV,act}_{g,t}+p^{V2G,c}_{g,t}-p^{V2G,d}_{g,t}\ge0.
 \]
 
-移峰吞吐与 V2G 充放电吞吐均进入目标函数。小时功率平衡、备用、惯量和年度负荷中心闭合使用 `d^{eff}`；规划容量裕度仍使用 Base 峰值，且需求柔性不提供备用或容量信用。该处理故意保守，并防止未校准的需求侧参数削弱可靠性边界。热工、车辆连接率、可用电池、出发 SOC 和响应成本仍属显式敏感性假设，不得作为 CISPO 原始参数引用。
+移峰吞吐与 V2G 充放电吞吐均进入目标函数。小时功率平衡、备用、惯量和年度负荷中心闭合使用 `d^{eff}`；规划容量裕度仍使用 Base 峰值，且需求柔性不提供备用或容量信用。该处理故意保守，并防止未校准的需求侧参数削弱可靠性边界。V3 的热工、车辆连接率、可用电池、出发 SOC 和响应成本仍属历史敏感性假设，不得作为 CISPO 原始参数引用。
+
+### 5.8.0a V4 数据支撑型冷热与 EV 服务库存
+
+`flexible_load_comfort_v4_v1g` 是独立的工程中心情景，`flexible_load_comfort_v4_v2g_sensitivity` 仅作 V2G 敏感性；二者都不是 Base，也不能与 Base/V3 互用 basis。V4 最大限度复用既有 `Power_curve_V2` 结果：不可变负荷表给出逐省逐时冷热/EV 基线，已审计的 BAIT `+/-1 C` 表给出冷热功率包络。中心情景把该包络分别乘以供暖 25%、制冷 20% 的明确参与率。
+
+冷热服务库存为非负连续状态：
+
+\[
+S^{c}_{g,t}=\rho^c_g S^{c}_{g,t-1}
+ +\eta^{c,+}_g P^{c,+}_{g,t}
+ -P^{c,-}_{g,t}/\eta^{c,-}_g,
+\qquad c\in\{heat,cool\},
+\]
+\[
+0\le S^{c}_{g,t}\le H^c_g K^c_g,\qquad
+0\le P^{c,+}_{g,t},P^{c,-}_{g,t}
+\le \min(\bar P^c_{g,t},K^c_g).
+\]
+
+状态首尾在所选时域上周期连接，不再使用逐日 reset，也不允许负值“舒适债”；因而削减负荷必须由更早的预热或预冷支撑。只有 8,760 h 求解才可解释为年度科学结果，1 h/24 h/168 h 仅是工程门禁。
+
+EV 基线按 `f^{smart}=0.25` 拆为不可调部分和可调服务：
+
+\[
+L^{EV,fixed}_{g,t}=(1-f^{smart})L^{EV,base}_{g,t},\qquad
+E^{service}_{g,t}=\eta_c f^{smart}L^{EV,base}_{g,t},
+\]
+\[
+S^{EV}_{g,t}=S^{EV}_{g,t-1}
++\eta_cP^{smart}_{g,t}
+-P^{V2G}_{g,t}/\eta_d
+-E^{service}_{g,t},
+\]
+\[
+L^{EV,act}_{g,t}=L^{EV,fixed}_{g,t}+P^{smart}_{g,t}.
+\]
+
+中心服务库存上限为一天的可调服务量，充电功率上限取可调基线与其逐日平均值两倍中的较大者。`P^{smart}=f^{smart}L^{EV,base}`、`P^{V2G}=0`、`S^{EV}=0` 时严格复现原 EV 基线。现有数据不含车辆接桩会话、行程链或出发 SOC，因此 V4 不虚构这些观测量；`connected_vehicle_fraction=1` 仅为服务归一化，`minimum_departure_energy_gwh=0` 为兼容旧 schema，EV 状态应解释为聚合可调服务库存而不是物理车队 SOC。
+
+所有参与率、状态时长/保留率和响应成本均有中心/低/高登记；它们是可直接运行的工程情景假设，不是已观测的中国省级校准值。V1G 是中心情景，V2G 仅独立敏感性；二者均不提供容量、备用或惯量信用。完整公式、来源映射与输入生成/校验合同见 `config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md`。
+
+### 5.8.0b 截断时域的价值核算与当前验证边界
+
+对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：
+
+- `value_million_cny_model_accounting_period`：该行在当前模型核算期内实际进入的数值；
+- `accounting_scope=ANNUALIZED_PLANNING_COST`：全年年化投资、固定运维或年度服务开通成本；
+- `accounting_scope=SELECTED_HORIZON_OPERATION_COST`：只覆盖当前所选小时的燃料、可变运维、移峰等运行成本；
+- `optimization_hours` 与 `result_use`：强制携带时域和结果用途。
+
+匹配 Base/V4 的 2030→2040→2050→2060 168 h 本地序列已验证：递进 planning state、全部硬 QC、输入/结果 manifest 和 resume 均闭合；V4 相对 Base 的 raw variables/constraints/nonzeros 仅增加约 `4.59%/6.24%/3.27%`。四年均出现 EV 充电重排，但中心参数下冷热服务未被购买；波浪能候选已进入模型和 QC，但没有最优装机或发电。这些结果只能证明实现、数据传递和机制响应，不能证明冷热或波浪能在全年无价值，也不能把 V4 目标差写成年度净成本。
+
+科学闭环的最小后续是独立 low/high V4 overlays 的参数敏感性，先检查 2030 与 2060 的匹配 168 h 端点。只有该门禁稳定且长时域收益明确后，才可申请隔离 744 h；完整 accepted Base anchor 之前不得运行 MGA。此阶段不再增加新的冷热/EV 状态、车辆行为或数据校准需求。
 
 ## 5.8.1 本省负荷满足方程
 
@@ -1482,9 +1597,10 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 模型年份 | `data/sets/model_years.csv` | 2025 为固定校准年；2030/2040/2050/2060 为容量扩张决策年 |
 | 小时容量因子 | `data/vre/hourly_cf_index.csv` | 索引 `D:\National_model\Data\Gis\Hourly_cf` 下 2020–2025 Zarr；默认气象年为 2023 |
 | 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW；总负荷与 base residual/heating/cooling/EV 四分量逐时闭合 |
+| V4 需求柔性 | `data/flexibility/{thermal_hourly_envelope_v4.csv.gz,thermal_parameters_by_province_v4.csv,ev_availability_hourly_v4.csv.gz,ev_mobility_hourly_v4.csv.gz,flex_enablement_cost_v4.csv,flexible_load_v4.manifest.json}` | 独立工程情景输入；由既有冷热/EV 基线和 BAIT `+/-1 C` 包络生成，四规划年 loader/SHA256 闭合；中心/低/高参数是需敏感性的工程假设，不进入 Base |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
 | 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv`、`data/thermal/nuclear_capacity_upper_by_year.csv` | GEM committed/pipeline 下界；V0719 全国上界 2030/2040/2050/2060 = 110/205/300/300 GW，省级按管线权重分配 |
-| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv` | 现有站使用当前分配标签，不按置信度剔除；潜在坝址按论文 `>750 MW` 为水库式、其余为径流式；Stage2 推荐核心干流梯级站使用本地 GRFR 增量入流 + 上游发电/弃水时滞到达，其余水库站保持独立水量平衡；环境流量为 2019 单年 monthly P30 代理，正式多年 P30 尚未接入 |
+| 水电 | `data/hydro/hydro_stations.csv`、`data/hydro/timeseries_index.csv`、`data/hydro/cascade_topology_nodes.csv`、`data/hydro/cascade_topology_edges.csv`、`data/hydro/provincial_aggregate_capacity_2025.csv`、`data/hydro/provincial_aggregate_monthly_capacity_factor_2019.csv` | 297.8895 GW 可识别站点与 82.1105 GW 固定省级聚合容量闭合至 2025 年常规水电 380 GW；站点层使用当前分类、重复 `COMID` 静态份额、GRFR 2019 与核心梯级水量平衡；聚合层只有可弃的逐月自然可用上限，不具有站点水力属性、扩张、备用、惯量、容量信用或 spur/trunk；环境流量仍为 2019 单年 monthly P30 代理 |
 | 生物质 | `data/biomass/fuel_potential_by_province_year.csv`、`data/biomass/capacity_upper_by_province_year.csv` | 省级热值同时进入年度燃料约束和 bio+bioccs 共享容量上界；2030/2040 线性插值，2060 保持 2050 |
 | 电池 | `data/storage/battery_capacity_floor_by_province_year.csv` | CISPO Table S17 的 2025 省级目标作为 2030 功率下界；Mengdong/Mengxi 合并后全国 65.85 GW；2040+ 不重复锁定该 15 年寿命 cohort |
 | 输电 | `data/transmission/existing_lines.csv`、`data/transmission/candidate_corridors.csv` | 2025 既有通道和 31 省全组合候选走廊 |
@@ -1496,7 +1612,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | 技术参数 | `data/technology/` | VRE/水电成本锚点、thermal/nuclear RUC、储能、输电、CCS与排放因子 |
 | 337中心正式输入 | `data/load_center_network/city_337/load_centers.csv` | 一市一点、2022 城市用电省内份额；31省份额分别闭合到1 |
 | 风光省内接入 | `data/load_center_network/city_337/vre_routes.csv` | 16,609个优化格点的联合最小spur+trunk路线；DPV接入距离为0 |
-| 水电省内接入 | `data/load_center_network/city_337/hydro_routes.csv` | 2,030个水电站经同省联合最优变电站连接到最近市级中心 |
+| 水电省内接入 | `data/load_center_network/city_337/hydro_routes.csv` | 2,030个站点级水电经同省联合最优变电站连接到最近市级中心；省级聚合水电无站点路线，按需求份额分配且不增加 spur/trunk |
 | Spur 初始容量 | `data/load_center_network/city_337/initial_spur_capacity_2025.csv` | 337路线下的2025逐点逐技术名义装机压力初值 |
 | Trunk/变电站初值 | `data/load_center_network/city_337/substation_initial_capacity_2025.csv` | 6,294个OSM变电站的VRE接口需求代理；水电既有容量在模型中另行加入初始trunk |
 | 省内中心网络 | `data/load_center_network/city_337/intra_edges.csv` | 642条省内MST+3NN无向边、AC500成本，203条边具有2025正初始容量 |
@@ -1764,7 +1880,15 @@ distance_to_shore_km`，其中参数来自 DOI
 
 Battery 的 2030 省级 exogenous capacity floor 来自 `data/storage/battery_capacity_floor_by_province_year.csv`，全国合计 65.85 GW。当前 battery 为固定 4h 功率-能量比，因此不能直接把异质时长的新型储能统计功率全部写成下界；后续应将 GW 与 GWh 分开建模。
 
-PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 operating projects，capacity upper 来自 `available_from_year <= planning_year` 的项目池。当前不表示 open-loop/closed-loop reservoir pairing。
+Base 中 PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 operating projects，capacity upper 来自 `available_from_year <= planning_year` 的项目池。当前不表示 open-loop/closed-loop reservoir pairing。
+
+代码另提供 `independent_power_energy_v1` 结构：保留现有省—小时充电、放电、SOC 和备用数组，只增加每省一个年度能量容量变量 \(K^{PHS,E}_g\)，并以
+
+```math
+D^{min}K^{PHS,P}_g\le K^{PHS,E}_g\le D^{max}K^{PHS,P}_g
+```
+
+替代固定 \(K^{PHS,E}_g=8K^{PHS,P}_g\)。投资成本写为 \(c_PK^{PHS,P}+c_EK^{PHS,E}\)，且配置必须使 \(c_P+8c_E\) 在每个规划年严格闭合当前 8h 总 CAPEX；否则模型硬失败。来源审查后提供低、中、高三条候选路径，8 h 能量侧成本占比分别为 30%、36.5% 和 45%；中央值由 DOE/PNNL 与 ANU 两组直接分项证据的 31.69% 和 41.35% 取中点并取整得到。三条配置均为 `PROPOSED_NOT_APPLIED_COST_CALIBRATED`，只用于敏感性门禁；Base 在取得年度与长时域证据前继续固定 8 h。
 
 ### 14.3 储能备用的精确投影
 
@@ -1781,7 +1905,7 @@ PHS 维持省级 8h storage 形式。省级 capacity floor 来自 GHT 2026 opera
 
 ### 14.5 成本口径
 
-与本文件 CISPO 目标函数保持一致，VRE、thermal/nuclear、hydro、storage 和 transmission 的 annualized CapEx 均按当期 total installed capacity 计算。对固定的既有容量，这部分是当期常数；对新增/继承 cohort，边际系数与技术 CapEx/CRF 一致。
+与本文件 CISPO 目标函数保持一致，VRE、thermal/nuclear、hydro、storage 和 transmission 的 annualized CapEx 均按当期 total installed capacity 计算。对固定的既有容量（包括 82.1105 GW 省级聚合常规水电），这部分是当期常数；对新增/继承 cohort，边际系数与技术 CapEx/CRF 一致。
 
 ### 14.6 生产输出和停止规则
 

@@ -67,11 +67,11 @@ def estimate_full_model_scale(
         "comfort_envelope_v3",
     }
     if flex_enabled and v4_formulation:
-        # Two signed thermal-service blocks (up/down/state/debt), one EV fleet
+        # Two non-negative thermal-service blocks (up/down/state), one EV fleet
         # charge/SOC/deviation block, optional V2G discharge, and four annual
         # contracted-capacity decisions.  This is intentionally separate from
         # the legacy daily-reset count below.
-        flexible_variable_multiplier = 11 + int(bool(flex["ev_v2g"]["enabled"]))
+        flexible_variable_multiplier = 9 + int(bool(flex["ev_v2g"]["enabled"]))
         flexible_capacity_variables = 4 * p
     elif flex_enabled:
         for component in ("heating", "cooling"):
@@ -91,10 +91,10 @@ def estimate_full_model_scale(
     flexible_constraints = 0
     if flex_enabled and v4_formulation:
         # effective-load non-negativity (1), two thermal components each with
-        # two contracted-power rows, two signed-state rows, debt and transition
-        # (12 total), and EV contract/departure/deviation/transition rows (5).
+        # two contracted-power rows, one state-bound row and one transition
+        # (8 total), and EV contract/departure/deviation/transition rows (5).
         flexible_constraints = p * h * (
-            18 + int(bool(flex["ev_v2g"]["enabled"]))
+            14 + int(bool(flex["ev_v2g"]["enabled"]))
         )
     elif flex_enabled:
         days = int(np.ceil(h / 24))

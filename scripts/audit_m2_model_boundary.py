@@ -1,7 +1,9 @@
-"""Audit the M2 scientific-boundary decision register without building an LP.
+"""Audit the historical M2 scientific-boundary register without building an LP.
 
 The audit evaluates configuration and evidence-registration contracts only.  It
-does not construct a Gurobi model, mutate inputs, or authorize a solve.
+does not construct a Gurobi model, mutate inputs, or authorize a solve.  The
+2026-07-28 v1 register is retained as evidence; the current release authority is
+``config/release_contract_v0729.json``.
 """
 from __future__ import annotations
 
@@ -143,12 +145,17 @@ def build_audit(decision_register: Path, output_dir: Path) -> dict[str, Any]:
         f"findings={len(identifiers)}, unique={len(set(identifiers))}",
     )
 
-    source_review = PROJECT_ROOT / str(register["source_review"])
+    source_review_reference = str(register.get("source_review", "")).strip()
     _check(
         checks,
-        "independent_review_present",
-        "PASS" if source_review.is_file() else "HARD_FAIL",
-        str(source_review),
+        "independent_review_reference_declared",
+        "PASS"
+        if source_review_reference.startswith("supplementary_materials/")
+        else "HARD_FAIL",
+        (
+            f"{source_review_reference}; external protected evidence reference, "
+            "not a current release artifact"
+        ),
     )
 
     base = load_model_config()
@@ -243,6 +250,8 @@ def build_audit(decision_register: Path, output_dir: Path) -> dict[str, Any]:
     summary = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "contract_version": register["contract_version"],
+        "snapshot_status": register.get("snapshot_status"),
+        "superseded_by": register.get("superseded_by"),
         "base_case_id": register["base_case_id"],
         "finding_count": int(len(finding_frame)),
         "finding_status_counts": dict(sorted(status_counts.items())),
@@ -264,9 +273,13 @@ def build_audit(decision_register: Path, output_dir: Path) -> dict[str, Any]:
         f"| `{row.check}` | {row.status} | {row.detail} |"
         for row in check_frame.itertuples(index=False)
     )
-    report = f"""# M2 模型边界审计
+    report = f"""# M2 模型边界审计（历史快照）
 
 生成时间：{summary['generated_at']}
+
+> 本报告对应 2026-07-28 的 `m2_model_boundary_audit_v1`，已由
+> `{summary['superseded_by']}` 取代为当前发布口径。下列状态只用于还原
+> M2 Stage A 当时的决策，不得当作 2026-07-29 当前模型状态。
 
 ## 审计边界
 
@@ -274,7 +287,7 @@ def build_audit(decision_register: Path, output_dir: Path) -> dict[str, Any]:
 
 ## 决策登记
 
-| ID | 优先级 | 当前状态 | 范围 | 下一门禁 |
+| ID | 优先级 | 快照状态 | 范围 | 当时的下一门禁 |
 |---|---|---|---|---|
 {report_rows}
 
@@ -284,12 +297,14 @@ def build_audit(decision_register: Path, output_dir: Path) -> dict[str, Any]:
 |---|---|---|
 {check_rows}
 
-## 当前结论
+## 快照解释
 
-- `M2-HYDRO-001` 已通过当前本地工作树的 1h/24h gate，但尚待 owner 提交；它改变水文 RHS，不能与 M1 结果混称。
-- `M2-PARAM-001` 已由独立 scenario registry 与 resolved-config 逐项一致性检查闭合；其中的参数仍保留为需要 low/base/high 敏感性的非 Base 假设。
-- BECCS、adequacy、热状态和 EV mobility 均未获得足以写入 Base 的新数据；其 status 保持显式，不得通过 basis 工程绕过科学审计。
-- Base 继续为 wave on、flexible load off；任何改变均必须是新的具名 scientific case。
+- `M2-HYDRO-001`、`M2-FLEX-001` 与 `M2-EV-001` 的文字记录的是
+  2026-07-28 当时状态；它们后续是否实现，应以当前 release contract、Git 和
+  新输出证据判断。
+- `M2-PARAM-001` 只覆盖历史 V3 overlay registry，不是当前全部可运行情景目录。
+- BECCS lifecycle 与 adequacy 的未决科学边界仍需单独的数据或方法学证据。
+- Base 是否保持 wave on、flexible load off，应由当前配置与 release audit 核验。
 """
     (output_dir / "M2_AUDIT_REPORT_ZH.md").write_text(report, encoding="utf-8-sig")
     return summary

@@ -1,0 +1,31 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "phs_power_energy_separated_high_energy_cost_v1",
+  "scenario_family": "storage_representation_candidate",
+  "description": "Cost-calibrated PHS power-energy separation with a high 8-hour energy-side cost share. The 8-hour total CAPEX closes exactly to the active aggregate PHS trajectory.",
+  "evidence_status": "PROPOSED_NOT_APPLIED_COST_CALIBRATED",
+  "calibration_case": "high_energy_cost",
+  "reference_duration_h": 8.0,
+  "energy_cost_share_at_reference_duration": 0.45,
+  "overrides": {
+    "storage_design": {
+      "phs_energy_capacity_mode": "independent_power_energy_v1",
+      "phs_existing_duration_h": 8.0,
+      "phs_new_duration_min_h": 4.0,
+      "phs_new_duration_max_h": 48.0,
+      "phs_reference_duration_h": 8.0,
+      "phs_power_capex_yuan_per_kw_by_planning_year": {
+        "2030": 2904.583572,
+        "2040": 2617.438428,
+        "2050": 2617.438428,
+        "2060": 2341.337328
+      },
+      "phs_energy_capex_yuan_per_kwh_by_planning_year": {
+        "2030": 297.059684,
+        "2040": 267.692567,
+        "2050": 267.692567,
+        "2060": 239.454954
+      }
+    }
+  }
+}

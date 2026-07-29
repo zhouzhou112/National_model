@@ -56,6 +56,9 @@ OUTPUT_FILE_ROLES = {
     "hourly_province_balance.csv.gz": "Chronological provincial power balance",
     "hourly_province_security.csv.gz": "Chronological reserve and inertia accounting",
     "hydro_capacity.csv": "Station-level hydropower capacity decisions",
+    "hydro_aggregate_capacity.csv": (
+        "Fixed province-level conventional-hydropower residual and accounting"
+    ),
     "hydro_dispatch.npz": "Province-hour run-of-river and hydropower reserve arrays",
     "input_manifest.csv": "Resolved model input files and integrity hashes",
     "intra_grid_substation_design.csv": "CISPO-style shared wind/PV trunk design factors and capacity decisions by substation",
@@ -179,6 +182,8 @@ NPZ_DIMENSIONS = {
         "ror_generation_gw": "province,hour",
         "ror_available_gw": "province,hour",
         "reservoir_generation_gw": "province,hour",
+        "aggregate_generation_gw": "province,hour",
+        "aggregate_available_gw": "province,hour",
         "reserve_up_gw": "province,hour",
         "province_codes": "province",
         "hour_index": "hour",

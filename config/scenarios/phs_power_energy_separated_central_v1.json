@@ -1,0 +1,31 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "phs_power_energy_separated_central_v1",
+  "scenario_family": "storage_representation_candidate",
+  "description": "Central cost-calibrated PHS power-energy separation. The 36.5% energy-side share is the rounded midpoint of the DOE/PNNL and ANU 8-hour split evidence; the 8-hour total CAPEX closes to the active aggregate PHS trajectory.",
+  "evidence_status": "PROPOSED_NOT_APPLIED_COST_CALIBRATED",
+  "calibration_case": "central",
+  "reference_duration_h": 8.0,
+  "energy_cost_share_at_reference_duration": 0.365,
+  "overrides": {
+    "storage_design": {
+      "phs_energy_capacity_mode": "independent_power_energy_v1",
+      "phs_existing_duration_h": 8.0,
+      "phs_new_duration_min_h": 4.0,
+      "phs_new_duration_max_h": 48.0,
+      "phs_reference_duration_h": 8.0,
+      "phs_power_capex_yuan_per_kw_by_planning_year": {
+        "2030": 3353.473760,
+        "2040": 3021.951640,
+        "2050": 3021.951640,
+        "2060": 2703.180370
+      },
+      "phs_energy_capex_yuan_per_kwh_by_planning_year": {
+        "2030": 240.948410,
+        "2040": 217.128415,
+        "2050": 217.128415,
+        "2060": 194.224574
+      }
+    }
+  }
+}

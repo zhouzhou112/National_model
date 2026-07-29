@@ -675,11 +675,12 @@ def _load_flexible_load_v4_data(
     expected_rows: int,
     require_manifest: bool = True,
 ) -> FlexibleLoadV4Data:
-    """Load the explicit V4 thermal-service and EV-mobility data contract.
+    """Load the explicit V4 thermal and aggregate EV-service contract.
 
-    The contract is intentionally fail-closed: an hourly uncontrolled EV load
-    profile cannot stand in for connection availability, battery energy,
-    driving withdrawals, or departure service.
+    The contract is intentionally fail-closed.  The retained upstream data do
+    not observe connection sessions, trip chains or departure SOC, so V4 uses
+    an aggregate schedulable-service inventory that closes exactly to an
+    explicit share of the immutable EV charging baseline.
     """
     flexible = config.raw["flexible_load"]
     files = flexible.get("v4_input_files", {})
@@ -874,14 +875,23 @@ def _load_flexible_load_v4_data(
         )
         for column in availability_columns
     }
+    if not np.allclose(
+        ev_availability["connected_vehicle_fraction"], 1.0, atol=1e-12
+    ):
+        raise ValueError(
+            "Data-supported V4 requires connected_vehicle_fraction=1 as a "
+            "service-normalisation field; it is not a measured connection profile"
+        )
+    shiftable_fraction = float(flexible["ev_v1g"]["shiftable_energy_fraction"])
+    flexible_ev_baseline = shiftable_fraction * load_components_gw["ev"]
     if (
         ev_availability["available_charge_power_gw"]
         + 1e-12
-        < load_components_gw["ev"]
+        < flexible_ev_baseline
     ).any():
         raise ValueError(
             "V4 EV available_charge_power_gw must retain the immutable "
-            "uncontrolled EV baseline as a feasible reference"
+            "shiftable share of the EV baseline as a feasible reference"
         )
 
     mobility_columns = (
@@ -905,8 +915,15 @@ def _load_flexible_load_v4_data(
         > ev_availability["fleet_energy_capacity_gwh"] + 1e-9
     ).any():
         raise ValueError("V4 EV minimum departure energy exceeds fleet energy capacity")
+    if not np.allclose(
+        ev_mobility["minimum_departure_energy_gwh"], 0.0, atol=1e-12
+    ):
+        raise ValueError(
+            "Data-supported V4 forbids fabricated departure-SOC floors; "
+            "minimum_departure_energy_gwh must be zero"
+        )
     eta_charge = float(flexible["ev_v2g"]["charge_efficiency"])
-    reference_grid_energy = load_components_gw["ev"].sum(axis=1)
+    reference_grid_energy = flexible_ev_baseline.sum(axis=1)
     reconstructed_grid_energy = (
         ev_mobility["driving_energy_withdrawal_gwh"].sum(axis=1) / eta_charge
     )

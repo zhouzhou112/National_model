@@ -1,0 +1,16 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "hydro_aggregate_flex_v1",
+  "scenario_family": "hydropower_representation_sensitivity",
+  "description": "Province-aggregate conventional hydropower sensitivity with hourly installed-power limits, selected-horizon monthly energy budgets, symmetric dispatch-headroom reserve credit, and the same 3 s inertia convention as station-level hydropower. No capacity-margin credit is assigned.",
+  "evidence_status": "ENGINEERING_SENSITIVITY_REQUIRES_RESULT_COMPARISON",
+  "overrides": {
+    "hydro": {
+      "provincial_aggregate_mode": "fixed_existing_monthly_energy_budget_v2",
+      "provincial_aggregate_up_reserve_credit": 1.0,
+      "provincial_aggregate_down_reserve_credit": 1.0,
+      "provincial_aggregate_capacity_credit": 0.0,
+      "provincial_aggregate_inertia_seconds": 3.0
+    }
+  }
+}

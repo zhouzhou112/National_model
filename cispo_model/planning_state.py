@@ -455,6 +455,28 @@ def export_solution_planning_state(
                 lifetimes[technology],
                 "new_build",
             )
+    if artifacts.index["phs_energy_capacity_mode"] == (
+        "independent_power_energy_v1"
+    ):
+        phs_energy_capacity = np.asarray(
+            variables["phs_energy_capacity"].X,
+            dtype=float,
+        )
+        phs_energy_floor = np.asarray(
+            artifacts.index["phs_energy_capacity_floor_gwh"],
+            dtype=float,
+        )
+        for p, province_code in enumerate(provinces):
+            append(
+                "phs_energy",
+                stable_asset_id(province_code, "phs_energy"),
+                province_code,
+                "phs_energy",
+                phs_energy_capacity[p] - phs_energy_floor[p],
+                "GWh",
+                lifetimes["phs"],
+                "new_build",
+            )
 
     line_new = np.asarray(variables["line_new"].X, dtype=float)
     for position, line in data.lines.iterrows():

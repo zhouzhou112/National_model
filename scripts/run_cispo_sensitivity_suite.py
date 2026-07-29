@@ -41,8 +41,8 @@ def resolve_project_path(path: str | Path) -> Path:
 def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
     catalog_path = resolve_project_path(path)
     payload = json.loads(catalog_path.read_text(encoding="utf-8"))
-    if payload.get("catalog_version") != "v1":
-        raise ValueError("Scenario catalog must declare catalog_version=v1")
+    if payload.get("catalog_version") not in {"v1", "v2"}:
+        raise ValueError("Scenario catalog must declare catalog_version=v1 or v2")
 
     implemented = payload.get("implemented")
     planned = payload.get("planned_not_runnable")
