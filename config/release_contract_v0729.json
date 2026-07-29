@@ -84,6 +84,10 @@
       "sha256": "0298256b2c1394f8e5a9e36780d2be279f06b27b291a9eca57daae91dba9a745"
     },
     {
+      "path": "load/flexible_load_envelope_v3.csv.gz",
+      "sha256": "b5ebda4344a8f978606c242065159f27a75994a5d976f2cbe06038d66a429a03"
+    },
+    {
       "path": "wave/wave_sites.csv",
       "sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
     },

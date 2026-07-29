@@ -43,6 +43,10 @@ class ReleaseContractTests(unittest.TestCase):
             "load/flexible_load_envelope_v3.manifest.json",
             contract["server_validation_sidecars"],
         )
+        self.assertIn(
+            "load/flexible_load_envelope_v3.csv.gz",
+            contract["required_model_tables"],
+        )
         self.assertIn("wave/wave_sites.csv", contract["required_model_tables"])
         self.assertIn(
             "wave/wave_input_manifest.json",
