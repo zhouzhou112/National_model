@@ -17,6 +17,23 @@ class ReleaseContractTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
+        deployable = set(contract["required_model_tables"])
+        deployable.update(contract["server_validation_sidecars"])
+        scenario = json.loads(
+            (
+                PROJECT_ROOT
+                / "config"
+                / "scenarios"
+                / "flexible_load_comfort_v4_v1g.json"
+            ).read_text(encoding="utf-8")
+        )
+        scenario_files = set(
+            scenario["overrides"]["flexible_load"]["v4_input_files"].values()
+        )
+        self.assertTrue(
+            scenario_files.issubset(deployable),
+            scenario_files - deployable,
+        )
         self.assertIn(
             "load/flexible_load_envelope_v3.manifest.json",
             contract["server_validation_sidecars"],
