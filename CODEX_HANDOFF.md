@@ -12,6 +12,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-29 18:42+08:00 固定服务器已 fast-forward 到干净 `codex/cispo-2030-full-lp` / `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。权威 v4 数据根下 release contract、readiness、水电 380 GW 容量审计和 V4 输入验证全部 PASS，完整回归 `135/135 PASS`；`technology/technoeconomic_price_basis_manifest.json` SHA256 为冻结值 `397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75`。服务器全新 1 h/24 h 中央 V4 V1G 根 `2030_1h_v0729_identity_hydro_v4_v1g_server_v1` 与 `2030_24h_v0729_identity_hydro_v4_v1g_server_v1` 均为 `OPTIMAL + solution_qc=PASS + 53/53 hard checks + current input manifest + valid result manifest`，且均生成 `hydro_cascade_reconciliation_audit.json`；24 h solver runtime `84.230 s`，wrapper wall `2:07.62`、peak RSS `0.813 GiB`、swaps `0`。下一步仅在再次确认无 solver、资源安全、新 sequence 输出/控制根不存在且 ParaCloud 空队列后，启动唯一串行 2030→2060 744 h V4 V1G sequence。
 - 2026-07-29 18:27+08:00 新模型实现里程碑已提交为 `cea78ae1546b19754f7859982ae82dbf66820fdc`（父提交 `96e989f22a74c621ad6642a287738befa5ea6c6f`），尚未部署固定服务器。它修复 8760 h runner 在求解前无条件 `getA()` 的阻断：常规运行只记录 Gurobi `Fingerprint`、变量/约束/非零元，只有显式 diagnostic basis import/export 才物化完整 CSR。运行身份升级为 `baseline_contract + analysis_case`；Base、中央反事实、敏感性、遗留验证和模板均有显式角色，scenario overlay 只能修改白名单根。
 - 容量充裕口径现有两个互斥合同：Base 与中央 V4 V1G 保持 `baseline_peak_v1`，新情景 `flexible_load_comfort_v4_v1g_effective_peak_sensitivity` 使用 `effective_peak_endogenous_v1`。后者采用每省一个 `capacity_margin_credited_capacity_gw` 辅助变量和逐小时两非零元约束，避免复制省级容量表达式。匹配 24 h 门禁均为 `OPTIMAL + solution_qc=PASS + 53/53 hard checks + valid result manifest`；baseline/effective 的 raw LP 分别为 `241,523/353,587/1,799,111` 与 `242,236/353,587/1,803,544`（rows/columns/nonzeros），effective 仅增加 `713` rows、`4,433` nonzeros（约 `0.246%`），solver runtime `55.253/53.021 s`。截断窗口的全国逐省峰值和发电侧总装机分别从 `1793.402 GW/3998.172 GW` 降到 `1255.373 GW/3785.672 GW`；这只证明容量价值通道真实且工程开销很小，不能把 24 h 差值解释为年度容量价值。
 - 梯级水电不再把负本地入流静默截零。`target_bounded_proportional_transfer_v1` 对每个下游节点逐时按 `min(1, target natural flow / lagged upstream natural flow)` 显式调和上游转移，并把同一系数用于优化得到的 turbine+spill release；未来任何一源多下游拓扑在缺少 branch shares 时 hard fail。当前 8760 h 输入审计为 `335,304` 个原始负本地入流 node-hours、最小 `-5701.463 m3/s`、需显式调和 `158,199.650 million m3`、94 个节点，调和后最大水量恒等式残差 `4.55e-13 m3/s`。容量口径仍严格为站点 `297.8895 GW` + 省级聚合 `82.1105 GW` = `380 GW`。
@@ -338,6 +339,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-29 — 固定服务器部署与 1 h/24 h 新实现门禁
+
+- 部署身份：`03e77ccc8d2ef3813b7cc5c0d727b068d008090d`，固定服务器 checkout clean。
+- 命令/输出：权威四数据根环境下运行 release/readiness/hydro/V4 validators、完整 unittest，并依次执行中央 V4 V1G 1 h/24 h cold gates；部署证据根为 `/data/zz2/National_model/run_control/deployment_03e77cc_v1`，求解根见 current snapshot。
+- 验证证据：validators 全 PASS，`135/135` tests；两根均 `OPTIMAL + PASS + 53/53 + current input + valid result manifest + hydro reconciliation audit`。
+- 未决问题与下一步：再次实时核验后启动唯一串行 2030→2060 744 h；该 sequence 仍是 `TEST_ONLY_TRUNCATED_HORIZON`，任一年失败必须停止。
 
 ### 2026-07-29 — effective-peak、梯级水量调和与 8760 runner 阻断修复
 

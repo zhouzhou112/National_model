@@ -1,5 +1,11 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-29 18:42+08:00 新实现已部署，权威回归与 1 h/24 h 门禁通过
+
+- 固定服务器为 clean `codex/cispo-2030-full-lp` / `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。部署证据根 `/data/zz2/National_model/run_control/deployment_03e77cc_v1` 中 release contract、readiness、380 GW hydro audit、V4 input validation 全部 PASS；完整回归 `135/135 PASS`。
+- 全新中央 V4 V1G 1 h/24 h 根分别为 `/data/zz2/National_model/outputs/2030_1h_v0729_identity_hydro_v4_v1g_server_v1` 和 `/data/zz2/National_model/outputs/2030_24h_v0729_identity_hydro_v4_v1g_server_v1`；均 `OPTIMAL + PASS + 53/53 + current input manifest + valid result manifest + hydro reconciliation audit`。24 h solver runtime `84.230 s`，wrapper wall `2:07.62`，peak RSS `852,644 KiB`，swaps `0`。
+- 尚未启动四年 744 h sequence。启动前仍须重新核验唯一进程、RAM/swap/vmstat/PSI、服务器 checkout、目标根不存在和 ParaCloud 队列；禁止项不变。
+
 ## 2026-07-29 18:27+08:00 新实现已本地闭合，待推送/部署；服务器仍保持旧 checkout
 
 - 新实现提交 `cea78ae1546b19754f7859982ae82dbf66820fdc` 已完成：8760 runner 常规路径不再调用 `getA()`；双层身份 `baseline_contract + analysis_case`；Base/中央 V4 保持 baseline peak，独立 sensitivity 使用 effective peak；梯级水电使用显式比例转移调和；accepted full-year Base 可 opt-in 输出精选 `.sol/.bas/.prm/fingerprint`。

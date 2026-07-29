@@ -1,6 +1,15 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-07-29 新实现部署与四年 744 h sequence（当前未部署、未启动）
+## 2026-07-29 18:42+08:00 新实现服务器门禁完成，待启动四年 744 h
+
+固定服务器已部署 clean `03e77ccc8d2ef3813b7cc5c0d727b068d008090d`。`/data/zz2/National_model/run_control/deployment_03e77cc_v1` 记录的 release/readiness/hydro/V4 validators 全 PASS，完整 unittest `135/135 PASS`。全新 1 h/24 h 中央 V4 V1G roots 均通过 `OPTIMAL + PASS + 53/53 + current input + valid result manifest + hydro reconciliation audit`。启动 sequence 前必须再次执行下面的只读核验，并确认新根不存在：
+
+- 输出根：`/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`
+- 控制根：`/data/zz2/National_model/run_control/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1`
+
+sequence 命令继续使用下一节第 5 项的精确参数，保持 serial、cold/no-basis、`barrier_16_auto_order_v2` / `Crossover=1`。任一年未达到全部接受条件，runner 必须停止，不得启动替代求解。
+
+## 2026-07-29 新实现部署与四年 744 h sequence 合同（部署已完成，sequence 待启动）
 
 目标实现提交为 `cea78ae1546b19754f7859982ae82dbf66820fdc`，最终部署应使用随后包含三份交接文档的分支 tip。该实现把常规 run identity 改为轻量 Gurobi fingerprint，修复全年构建后因 >50m nonzeros 调用 `getA()` 而在 optimize 前退出的问题；只有显式 test-only basis 工程可使用完整 CSR topology。Base/中央 V4 继续 `baseline_peak_v1`；`effective_peak_endogenous_v1` 仅在独立 sensitivity 中使用。水电新增 `target_bounded_proportional_transfer_v1` 与两张审计输出，solution QC 由 52 项增至 53 项。
 
