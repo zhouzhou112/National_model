@@ -2,6 +2,10 @@
 
 ## 2026-07-29 统一 release candidate 的固定服务器 744 h 门禁
 
+执行状态（2026-07-29）：门禁 1--4 已在干净服务器提交 `7c56622c266e673037bd6afaa70c85aa57e6cb13` 和最终数据根 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4` 上完成；服务器完整回归 `130/130 PASS`，1 h/24 h V4 cold 均为 `OPTIMAL + QC PASS + 52/52 hard checks + valid input/result manifests`。唯一 744 h 根 `2030_744h_v0729_unified_v4_v1g_cold_v1` 已按第 5 条启动，控制目录为 `/data/zz2/National_model/run_control/2030_744h_v0729_unified_v4_v1g_cold_v1`。在它退出并完成严格验收前，任何新的 solve 都违反运行锁。
+
+本轮隔离部署把 `config/model_input_files.json` 升级为 v10；标准包必须包含 42 张运行表、12 个 server sidecar，归档中另含 `model_input_files.json`，合计 55 个条目。必须特别保留 `load/flexible_load_envelope_v3.{csv.gz,manifest.json}`、五张 V4 表、`flexibility/flexible_load_v4.manifest.json`、`wave/wave_sites.csv` 与 `wave/wave_input_manifest.json`。只传 V4 表而漏来源、只传 manifest 而漏 V3/wave 本体，都会在服务器回归或场景 dry-run 中失败。
+
 当前本地匹配 Base/V4 V1G 的 2030→2040→2050→2060 168 h 序列已全部闭合，机器审计为 `outputs/planning_sequence_168h_v0729_ab_audit/planning_sequence_ab_audit.{json,csv}`。它证明递进 state、冷热/EV 输入、波浪输入、全模型 QC 和当前资源占用稳定；不证明年度价值。任何比较必须同时确认 `result_use=TEST_ONLY_TRUNCATED_HORIZON`，不得把年化 planning/enablement cost 与 168 h operation benefit 的差直接称为年度净收益。
 
 作者已授权代码/外置数据口径统一后启动一个固定服务器 744 h 或两个月门禁。当前选择

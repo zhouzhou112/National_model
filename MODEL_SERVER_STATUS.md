@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-29 统一候选已部署；唯一 V4 V1G 744 h cold gate 正在运行
+
+- 当前固定服务器 checkout 为干净 `codex/cispo-2030-full-lp` / `7c56622c266e673037bd6afaa70c85aa57e6cb13`；代码已推送 `origin` 与 `github`。最终外置输入根为 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`，标准归档 SHA256 `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。`model_input_files.json` v10 包含 42 张运行表和 12 个 sidecar，显式覆盖 wave、V3、V4 和其来源 manifest。
+- 服务器审计根 `/data/zz2/National_model/outputs/release_contract_v0729_server_7c56622_v5`：readiness PASS、release contract PASS、聚合水电 `297.8895 + 82.1105 = 380 GW` PASS、V4 四规划年 loader PASS、完整 unittest `130/130 PASS`。隔离部署过程中发现并修复 hydro audit NumPy 标量序列化、V4 source/运行表漏包、wave 表漏包、V3 implemented 表漏包与测试写死 `repo/data`；失败的 v1--v3 数据根/审计目录保留作证据，不是当前输入。
+- 服务器 V4 小门禁 `2030_{1h,24h}_v0729_unified_v4_v1g_server_v1` 均为 `OPTIMAL + solution_qc=PASS + 52/52 hard checks + valid input/result manifests`。1 h solver 4.136 s、peak RSS 0.485 GiB；24 h solver 82.272 s、peak RSS 0.819 GiB。24 h Barrier 报 numerical trouble，`Crossover=1` 恢复 Optimal；这强化而不是削弱对 `Crossover=3` 的拒绝。
+- 唯一活动根 `/data/zz2/National_model/outputs/2030_744h_v0729_unified_v4_v1g_cold_v1` 使用 `--horizon one_month`、`flexible_load_comfort_v4_v1g`、`barrier_16_auto_order_v2`，没有 basis。控制 PID/日志在 `/data/zz2/National_model/run_control/2030_744h_v0729_unified_v4_v1g_cold_v1`。raw 为 `5,238,323/3,942,756/42,266,264`，presolved 为 `3,234,057/2,812,319/31,818,664`，presolve/ordering `177.00/108.70 s`，`AA' NZ=6.236e7`、`Factor NZ=8.124e8`、`Factor Ops=5.567e12`。本条写入时 Barrier 正常推进，进程/solver max memory 约 `19/23 GiB`，约 `95 GiB` available、swap 无新增、memory PSI=0。
+- 当前运行锁：不得启动第二个 CISPO/Gurobi、固定服务器 8760 h、付费云、basis gate 或 `Crossover=3`。本条 Barrier iteration 会迅速过期；继续前必须读取 `solver_telemetry.jsonl`、进程、RSS/swap/PSI 与终态文件，不能把“正在运行”重标为成功。
+
 ## 2026-07-29 多智能体改动已统一为本地 release candidate；等待精确提交和实时服务器复核
 
 - `b87b3b6` 的干净提交不是可部署版本：它已有省级聚合水电 loader，但漏掉同一功能的配置、LP、导出和测试。统一实现已提交为 `1d04f07565c3039ed467ec4080f276bd0da90786`，并由 `config/release_contract_v0729.json` 把 Base、水电 380 GW、V4、PHS sensitivities、scenario catalog、production solver profile 与 11 个外置数据 SHA256 锁定；detached 精确提交的 release audit PASS、完整回归 `129/129 PASS`。
