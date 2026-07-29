@@ -4,6 +4,12 @@
 
 执行状态（2026-07-29）：门禁 1--4 已在干净服务器提交 `7c56622c266e673037bd6afaa70c85aa57e6cb13` 和最终数据根 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4` 上完成；服务器完整回归 `130/130 PASS`，1 h/24 h V4 cold 均为 `OPTIMAL + QC PASS + 52/52 hard checks + valid input/result manifests`。唯一 744 h 根 `2030_744h_v0729_unified_v4_v1g_cold_v1` 已按第 5 条启动，控制目录为 `/data/zz2/National_model/run_control/2030_744h_v0729_unified_v4_v1g_cold_v1`。在它退出并完成严格验收前，任何新的 solve 都违反运行锁。
 
+窗口收束 live checkpoint（2026-07-29 13:43:13+08:00）：服务器 checkout 仍为 clean `7c56622`，核验时本地/固定服务器 bare `origin`/GitHub 同步于模型实现基线 `7aac739`；本次后续仅增加交接文档，不要在活动进程期间仅为追平文档而切换 checkout。wrapper/Python PID 为 `1004972/1004975`，Barrier iteration `87`、solver runtime `2994.35 s`、current/max solver memory `13.56/23.13 GiB`。主机约 `95 GiB` available、swap `781 MiB/2.0 GiB`，`vmstat si/so=0`、memory PSI=0；三个终态 JSON 均尚不存在。ParaCloud 队列为空，历史 build-only/OOM/timeout 状态未变。所有这些数值都可能过期，下一窗口必须重新读取。
+
+任务边界：当前命令是 `scripts/run_cispo_2030_full_year.py --planning-year 2030 --horizon one_month`，仅运行一个 2030 V4 V1G cold gate；它不是、也不会自动转入 `2030→2040→2050→2060` 接续求解。服务器代码包含 `scripts/run_cispo_planning_sequence.py`，但该 runner 当前未调用。744 h 是 `TEST_ONLY_TRUNCATED_HORIZON`，不能成为正式 2040 科学状态 anchor；只有未来独立授权且逐年满足接受合同的 sequence 才能进行状态传递。
+
+生产货币口径同样属于本 release：`technoeconomic_2025_cny_v2` 已在代码、服务器数据 sidecar、活动 input manifest 和 resolved config 中闭合，正确实施提交为 `29bbf90d9edde4e74e3e095b807f2fa1ffaab6a6`。后续不得回到旧 2022-CNY/旧 FX 表或把说明性 V4 成本机械重平减。
+
 本轮隔离部署把 `config/model_input_files.json` 升级为 v10；标准包必须包含 42 张运行表、12 个 server sidecar，归档中另含 `model_input_files.json`，合计 55 个条目。必须特别保留 `load/flexible_load_envelope_v3.{csv.gz,manifest.json}`、五张 V4 表、`flexibility/flexible_load_v4.manifest.json`、`wave/wave_sites.csv` 与 `wave/wave_input_manifest.json`。只传 V4 表而漏来源、只传 manifest 而漏 V3/wave 本体，都会在服务器回归或场景 dry-run 中失败。
 
 当前本地匹配 Base/V4 V1G 的 2030→2040→2050→2060 168 h 序列已全部闭合，机器审计为 `outputs/planning_sequence_168h_v0729_ab_audit/planning_sequence_ab_audit.{json,csv}`。它证明递进 state、冷热/EV 输入、波浪输入、全模型 QC 和当前资源占用稳定；不证明年度价值。任何比较必须同时确认 `result_use=TEST_ONLY_TRUNCATED_HORIZON`，不得把年化 planning/enablement cost 与 168 h operation benefit 的差直接称为年度净收益。
@@ -30,6 +36,13 @@
 6. 744 h 仍为 `TEST_ONLY_TRUNCATED_HORIZON`。不得启动 8760 h、付费云、并发第二求解、
    Base/V3/PHS/hydro-flex basis reuse 或 `Crossover=3`；MGA 仍等待完整 accepted Base anchor。
    V4 low/high 是论文参数敏感性的后续任务，不是本次工程稳定性门禁的前置条件。
+
+下一窗口接续顺序固定为：
+
+1. 完整读取 `AGENTS.md`、`CODEX_HANDOFF.md`、`cispo_full_lp_model_spec.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`。
+2. 只读复核本地/双远端 Git，固定服务器 checkout/dirty state、唯一 PID/子进程、`solver_telemetry.jsonl`、`free -h`、`vmstat`、memory PSI、三个终态 JSON 与 ParaCloud `squeue`。
+3. 若 PID 仍存在，仅监控，不改 checkout、不启动任何求解。若 PID 已退出，不以退出码或日志结尾单独验收；必须读取并交叉验证 `solve_report.json`、`solution_qc.json`、`result_manifest.json`、当前 `input_manifest.csv`、wrapper stderr/time 和全部模块输出。
+4. 只有 `OPTIMAL + QC PASS + 52/52 hard checks + current input/result manifests valid` 才把该 744 h 工程门禁标为接受；随后更新三份交接文档。科学上仍保留 V4 low/high、完整 accepted Base anchor、basis/MGA 等开放项。
 
 截断成本输出必须同时保留旧兼容列和以下解释字段：`value_million_cny_model_accounting_period`、`accounting_scope`、`optimization_hours`、`result_use`。`ANNUALIZED_PLANNING_COST` 是年化规划口径，`SELECTED_HORIZON_OPERATION_COST` 只覆盖当前求解窗口。缺少这些元数据的旧结果可以做数值/机制审计，但不能直接用于年度成本图表。
 
