@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-29 18:27+08:00 新实现已本地闭合，待推送/部署；服务器仍保持旧 checkout
+
+- 新实现提交 `cea78ae1546b19754f7859982ae82dbf66820fdc` 已完成：8760 runner 常规路径不再调用 `getA()`；双层身份 `baseline_contract + analysis_case`；Base/中央 V4 保持 baseline peak，独立 sensitivity 使用 effective peak；梯级水电使用显式比例转移调和；accepted full-year Base 可 opt-in 输出精选 `.sol/.bas/.prm/fingerprint`。
+- 当前固定服务器尚未部署该提交，仍须在部署前实时复核 `/data/zz2/National_model/repo` 的 checkout/dirty state、唯一 CISPO/Gurobi 进程、RAM/swap/vmstat/PSI、旧/新目标根与 ParaCloud。权威数据根仍为 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`；其 technoeconomic manifest SHA256 已实时复核为 `397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75`。
+- 本地优化后的 24 h baseline/effective A/B：raw nonzeros `1,799,111/1,803,544`（effective 仅 `+0.246%`），runtime `55.253/53.021 s`，发电侧总容量 `3998.172/3785.672 GW`，两根均 `OPTIMAL + PASS + 53/53 + valid manifest`。容量差只能作为截断工程证据，不能作为年度结论。
+- 水电全年输入审计保持 `297.8895 + 82.1105 = 380 GW`，并显式记录原始负本地入流 `335,304` node-hours、`158,199.650 million m3` 调和量和 `4.55e-13 m3/s` 最大闭合残差。全新四年 1 h V4 sequence 已 `PASS`。
+- 下一步只允许：推送文档 tip后重新只读核验；服务器 fast-forward；权威数据根完整回归 + 1 h/24 h；随后启动唯一串行 2030→2060 744 h V4 V1G diagnostic sequence。禁止 8760 h、付费云、并发第二求解、basis/MGA gate 和 `Crossover=3`。
+
 ## 2026-07-29 统一候选已部署；唯一 2030 V4 V1G 744 h cold gate 已严格接受
 
 - 当前固定服务器 checkout 为干净 `codex/cispo-2030-full-lp` / `7c56622c266e673037bd6afaa70c85aa57e6cb13`；终态审计前，本地、固定服务器 bare `origin` 与 GitHub 文档 tip 均为 `5ffee8a79b090dd8493e9b38da78464f3312ec6f`，唯一模型实现基线为 `7aac739e03646edfed14bbf48ac77869ba66cbef`。本次只增加交接文档；无需切换服务器 checkout。最终外置输入根为 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`，标准归档 SHA256 `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。`model_input_files.json` v10 包含 42 张运行表和 12 个 sidecar，显式覆盖 wave、V3、V4 和其来源 manifest。

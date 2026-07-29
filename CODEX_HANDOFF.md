@@ -12,6 +12,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-29 18:27+08:00 新模型实现里程碑已提交为 `cea78ae1546b19754f7859982ae82dbf66820fdc`（父提交 `96e989f22a74c621ad6642a287738befa5ea6c6f`），尚未部署固定服务器。它修复 8760 h runner 在求解前无条件 `getA()` 的阻断：常规运行只记录 Gurobi `Fingerprint`、变量/约束/非零元，只有显式 diagnostic basis import/export 才物化完整 CSR。运行身份升级为 `baseline_contract + analysis_case`；Base、中央反事实、敏感性、遗留验证和模板均有显式角色，scenario overlay 只能修改白名单根。
+- 容量充裕口径现有两个互斥合同：Base 与中央 V4 V1G 保持 `baseline_peak_v1`，新情景 `flexible_load_comfort_v4_v1g_effective_peak_sensitivity` 使用 `effective_peak_endogenous_v1`。后者采用每省一个 `capacity_margin_credited_capacity_gw` 辅助变量和逐小时两非零元约束，避免复制省级容量表达式。匹配 24 h 门禁均为 `OPTIMAL + solution_qc=PASS + 53/53 hard checks + valid result manifest`；baseline/effective 的 raw LP 分别为 `241,523/353,587/1,799,111` 与 `242,236/353,587/1,803,544`（rows/columns/nonzeros），effective 仅增加 `713` rows、`4,433` nonzeros（约 `0.246%`），solver runtime `55.253/53.021 s`。截断窗口的全国逐省峰值和发电侧总装机分别从 `1793.402 GW/3998.172 GW` 降到 `1255.373 GW/3785.672 GW`；这只证明容量价值通道真实且工程开销很小，不能把 24 h 差值解释为年度容量价值。
+- 梯级水电不再把负本地入流静默截零。`target_bounded_proportional_transfer_v1` 对每个下游节点逐时按 `min(1, target natural flow / lagged upstream natural flow)` 显式调和上游转移，并把同一系数用于优化得到的 turbine+spill release；未来任何一源多下游拓扑在缺少 branch shares 时 hard fail。当前 8760 h 输入审计为 `335,304` 个原始负本地入流 node-hours、最小 `-5701.463 m3/s`、需显式调和 `158,199.650 million m3`、94 个节点，调和后最大水量恒等式残差 `4.55e-13 m3/s`。容量口径仍严格为站点 `297.8895 GW` + 省级聚合 `82.1105 GW` = `380 GW`。
+- 新增 opt-in 的 accepted full-year Base solver artifact 合同：只保存压缩 `.sol`、post-crossover `.bas`、`.prm`、轻量 fingerprint 与 hash manifest；不全量导出 RC/slack/SA 范围、不计算 `KappaExact`，也不允许自动跨年或改变矩阵后复用。MGA 仍须等待 accepted full-year Base；本里程碑不启动 MGA 或 basis gate。
+- 本地验证：聚焦测试 `58/58 PASS`；完整 discovery `135` 项中 `134 PASS`，唯一失败是本地忽略数据中的 `technology/technoeconomic_price_basis_manifest.json` hash `f89241...` 与冻结服务器 v4 数据包的权威 hash `397297...` 不同，服务器文件已实时复核仍为 `397297...`，因此未篡改 release contract 或用户本地数据。全新 1 h/24 h baseline/effective 四根全部 `OPTIMAL + PASS + 53/53 + closed manifest`；全新四年 1 h V4 V1G planning sequence 为 `PASS`，四年均 `ACCEPTED`，无 basis。下一步：文档提交并推送两端；再次实时核验服务器/ParaCloud；仅在无 solver、资源安全时 fast-forward，运行服务器权威数据根下完整回归与 1 h/24 h 门禁，然后按授权启动唯一、串行的 2030→2060 744 h V4 V1G diagnostic sequence。不得启动 8760 h、付费云、并发第二求解、basis gate 或 `Crossover=3`。
 - 2026-07-29 固定服务器已部署并完成统一候选的隔离 744 h 门禁。当前代码身份为 `7c56622c266e673037bd6afaa70c85aa57e6cb13`，服务器 checkout 干净；外置表使用全新根 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`，标准数据归档 SHA256 为 `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。`model_input_files.json` 已升级到 v10（42 张运行表、12 个 sidecar），显式覆盖 Base、wave、V3、V4 与全部来源 manifest。服务器 `release_contract/readiness/hydro/V4-loader` 全部 PASS，完整回归 `130/130 PASS`。全新 V4 V1G 1 h/24 h 根均为 `OPTIMAL + solution_qc=PASS + 52/52 hard checks + current input/result manifests valid`；24 h 的 Barrier numerical trouble 由生产 `Crossover=1` 恢复为最优解，不能据此改用已拒绝的 `Crossover=3`。
 - 当前唯一模型实现基线为 `codex/cispo-2030-full-lp` / `7aac739e03646edfed14bbf48ac77869ba66cbef`；本次终态审计只在其上增加交接文档，不改变模型、配置或数据合同。固定服务器 checkout 保持 clean `7c56622c266e673037bd6afaa70c85aa57e6cb13`，无需为追平文档而切换；本地工作树仅保留用户拥有的 `supplementary_materials/**` 与 `.codex_tmp/**` 修改/未跟踪文件，后续必须继续选择性暂存并保护。
 - `/data/zz2/National_model/outputs/2030_744h_v0729_unified_v4_v1g_cold_v1` 已完成并通过严格工程验收。它是单独的 `--planning-year 2030 --horizon one_month`、`flexible_load_comfort_v4_v1g`、`barrier_16_auto_order_v2` (`Crossover=1`) cold gate，无 basis，未调用 planning-sequence runner。Gurobi 在 Barrier `313` 次后完成 Crossover，终态为 `OPTIMAL`，objective `2,330,214.449430 million CNY`，solver runtime `12,984.854 s`，simplex `832,655` 次；wrapper exit `0`、wall `3:42:57`、peak process-tree RSS `21.484 GiB`、swaps `0`，stderr 只有 `/usr/bin/time` 统计。`solution_qc.json=PASS`、`52/52` hard checks、current input manifest 和 result manifest 的运行时 validator 均为 `(True, [])`；最终 constraint/bound/dual violation 均低于 `1e-7`。求解 PID 已退出，未产生并发第二求解。
@@ -333,6 +338,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-29 — effective-peak、梯级水量调和与 8760 runner 阻断修复
+
+- 实现提交：`cea78ae1546b19754f7859982ae82dbf66820fdc`。
+- 变更范围：`cispo_model/{basis_reuse,config,hydro,io_contract,master,monolithic,preflight,run_contract,solution_export,solver_artifacts}.py`，`config/optimization_2030.json`、release/scenario contracts，full-year/sensitivity runners 与相关测试。
+- 验证证据：本地 1 h/24 h matched baseline/effective gates、四年 1 h sequence、8760 h hydro input-only audit、聚焦 `58/58 PASS`、完整 `134/135`（唯一差异为本地 ignored technoeconomic manifest 与服务器权威数据包 hash）。
+- 未决问题：V4 low/high、accepted full-year Base、full-year solver artifact 实际生成、MGA batch、年度 effective-peak 容量价值均未闭合；24 h 结果始终 `TEST_ONLY_TRUNCATED_HORIZON`。
+- 精确下一步：推送文档 tip；实时核验并部署固定服务器；服务器权威数据根完整回归和 1 h/24 h 后，启动唯一 2030→2060 744 h V4 V1G sequence。
 
 ### v0.9.75 - 2026-07-29 - 统一候选 744 h 工程门禁终态接受
 

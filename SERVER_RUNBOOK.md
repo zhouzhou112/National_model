@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-29 新实现部署与四年 744 h sequence（当前未部署、未启动）
+
+目标实现提交为 `cea78ae1546b19754f7859982ae82dbf66820fdc`，最终部署应使用随后包含三份交接文档的分支 tip。该实现把常规 run identity 改为轻量 Gurobi fingerprint，修复全年构建后因 >50m nonzeros 调用 `getA()` 而在 optimize 前退出的问题；只有显式 test-only basis 工程可使用完整 CSR topology。Base/中央 V4 继续 `baseline_peak_v1`；`effective_peak_endogenous_v1` 仅在独立 sensitivity 中使用。水电新增 `target_bounded_proportional_transfer_v1` 与两张审计输出，solution QC 由 52 项增至 53 项。
+
+部署前后严格顺序：
+
+1. 实时核验本地、bare `origin`、GitHub branch/HEAD；服务器 checkout/dirty state；所有 CISPO/Gurobi/Python wrapper；RAM、swap、`vmstat`、memory PSI；旧目标根报告；ParaCloud `squeue -u a8s001819`。任何 solver 存在时只监控，不切换 checkout。
+2. 仅在服务器空闲时 fast-forward 到已同时推送 origin/GitHub 的精确文档 tip。保持数据根 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`、CF 根 `/data/zz2/National_model/data/hourly_cf`、hydro 根 `/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse` 与既有 wave 根。
+3. 先运行 release contract、readiness、hydro/V4 validators 和完整 unittest。服务器权威 technoeconomic manifest 必须为 `397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75`；本地 ignored manifest 的不同时间戳 hash 不得覆盖服务器数据。
+4. 在全新根顺序运行 1 h 与 24 h `flexible_load_comfort_v4_v1g` + `barrier_16_auto_order_v2`，要求 `OPTIMAL + solution_qc=PASS + 53/53 + current input manifest + valid result manifest`，并核对 `hydro_cascade_reconciliation_audit.json`。
+5. 以上全闭合后，使用 `scripts/run_cispo_planning_sequence.py --start-year 2030 --end-year 2060 --diagnostic-hours 744 --scenario-config config/scenarios/flexible_load_comfort_v4_v1g.json --solver-config config/solver_profiles/barrier_16_auto_order_v2.json` 启动唯一串行 sequence。新输出根和控制根必须先确认不存在；wrapper 使用 `/usr/bin/time -v`、独立 stdout/stderr、PID 与 sequence claim。不得传入 basis。
+6. 每年只在 `OPTIMAL + PASS + 53/53 + current input + valid result manifest` 后传递显式 `TEST_ONLY_TRUNCATED_HORIZON` planning state。任一年失败即停止，不能跳年或启动替代求解。四年 744 h 仍不是年度科学结果或正式 state anchor。
+
+禁止项不变：固定服务器 8760 h、付费云、并发第二求解、basis gate、MGA、Dual Simplex/PDHG 付费 A/B 与 `Crossover=3`。
+
 ## 2026-07-29 统一 release candidate 的固定服务器 744 h 门禁
 
 执行状态（2026-07-29）：门禁 1--4 已在干净服务器提交 `7c56622c266e673037bd6afaa70c85aa57e6cb13` 和最终数据根 `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4` 上完成；服务器完整回归 `130/130 PASS`，1 h/24 h V4 cold 均为 `OPTIMAL + QC PASS + 52/52 hard checks + valid input/result manifests`。唯一 744 h 根 `2030_744h_v0729_unified_v4_v1g_cold_v1` 也已完成严格验收，控制证据保存在 `/data/zz2/National_model/run_control/2030_744h_v0729_unified_v4_v1g_cold_v1`。运行锁已从“活动求解保护”转为“不得由本门禁自动启动任何后续求解”。
