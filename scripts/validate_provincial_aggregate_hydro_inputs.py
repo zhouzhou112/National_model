@@ -38,10 +38,14 @@ def _check(
     value: Any,
     expected: Any,
 ) -> None:
+    if isinstance(value, np.generic):
+        value = value.item()
+    if isinstance(expected, np.generic):
+        expected = expected.item()
     checks.append(
         {
             "check": name,
-            "status": "PASS" if passed else "HARD_FAIL",
+            "status": "PASS" if bool(passed) else "HARD_FAIL",
             "value": value,
             "expected": expected,
         }

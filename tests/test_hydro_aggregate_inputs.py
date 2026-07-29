@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 
 from scripts.validate_provincial_aggregate_hydro_inputs import (
@@ -23,6 +24,7 @@ class ProvincialAggregateHydroInputTests(unittest.TestCase):
             380.0,
             places=6,
         )
+        json.dumps(report)
 
 
 if __name__ == "__main__":
