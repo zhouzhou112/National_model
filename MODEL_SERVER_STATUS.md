@@ -2,7 +2,7 @@
 
 ## 2026-07-29 多智能体改动已统一为本地 release candidate；等待精确提交和实时服务器复核
 
-- `b87b3b6` 的干净提交不是可部署版本：它已有省级聚合水电 loader，但漏掉同一功能的配置、LP、导出和测试。当前工作树已通过 `config/release_contract_v0729.json` 把 Base、水电 380 GW、V4、PHS sensitivities、scenario catalog、production solver profile 与 11 个外置数据 SHA256 统一锁定；release audit PASS。
+- `b87b3b6` 的干净提交不是可部署版本：它已有省级聚合水电 loader，但漏掉同一功能的配置、LP、导出和测试。统一实现已提交为 `1d04f07565c3039ed467ec4080f276bd0da90786`，并由 `config/release_contract_v0729.json` 把 Base、水电 380 GW、V4、PHS sensitivities、scenario catalog、production solver profile 与 11 个外置数据 SHA256 锁定；detached 精确提交的 release audit PASS、完整回归 `129/129 PASS`。
 - 本地当前工作树顺序完成 `outputs/planning_sequence_168h_v0729_{base_current,flexible_load_v4_v1g_current}_local_v1`。2030→2040→2050→2060 八个根均为 `OPTIMAL + solution_qc=PASS + 52/52 hard checks + closed result manifest + current input manifest PASS`，两条序列 resume 后均为四年 `RESUMED_ACCEPTED`；没有 basis 复用、并发求解或远程计算。
 - V4 相对 Base 增加 `4.59%` variables、`6.24%` constraints、`3.27%` nonzeros，峰值 RSS 增量不超过约 `0.27 GiB`，未显示工程性能失控。EV 在四年均有实质重排；冷热吞吐为零；波浪能 enabled、候选和上限已加载，但装机/发电为零。上述均是 168 h 机制证据，不是年度价值或年度技术淘汰结论。
 - 统一审计修复 aggregate-hydro 备用 QC 重复计数/安全表遗漏、V4 年化成本分类和 gzip 非确定性。完整本地回归 `129/129 PASS`；参数 audit `11,727/26/0/0`（rows/pass/warn/hard-fail）；四个全新 2030 1 h Base/V4/hydro-flex/PHS-central 根均为 `OPTIMAL + QC PASS + manifests valid`。省级水电 up/down 安全表 closure 最大误差为 `1.42e-14/7.11e-15 GW`。

@@ -6,7 +6,9 @@
 
 作者已授权代码/外置数据口径统一后启动一个固定服务器 744 h 或两个月门禁。当前选择
 标准 `one_month=744 h` 的 `flexible_load_comfort_v4_v1g` cold gate；它是既有支持时域，
-同时覆盖新 Base 水电、wave 与 V4，且不需要新建时域接口。必须按以下顺序执行：
+同时覆盖新 Base 水电、wave 与 V4，且不需要新建时域接口。统一实现提交为
+`1d04f07565c3039ed467ec4080f276bd0da90786`；部署时使用包含本节交接更新的最新分支 tip，
+并确认相对该实现只增加文档变更。必须按以下顺序执行：
 
 1. 本地 `scripts/audit_release_contract.py`、完整 unittest、V4 input validator、hydro input
    validator 和四个 1 h 模块根全部通过；精确暂存不得包含 `supplementary_materials/**` 或

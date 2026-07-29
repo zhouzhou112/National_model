@@ -12,7 +12,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-07-29 对 7.28—7.29 多智能体改动完成首轮统一审计。发现 `3b3de57`/`b87b3b6` 的干净提交只含省级聚合水电 loader、漏掉配置/约束/输出，不能直接部署；当前工作树已把常规水电 380 GW 闭合、重复 COMID 水量分配、V4 冷热/EV、PHS 功率—能量敏感性、成本会计和输出/QC 合并为一个可测试候选。`config/release_contract_v0729.json` 冻结 Base、solver profile、情景 catalog 与 11 个外置数据 SHA256；`scripts/audit_release_contract.py` 当前为 PASS。历史 `m2_model_boundary_audit_v1.json` 已显式标为 superseded，不能再代表当前模型。
+- 2026-07-29 对 7.28—7.29 多智能体改动完成首轮统一审计并形成实现提交 `1d04f07565c3039ed467ec4080f276bd0da90786`。发现 `3b3de57`/`b87b3b6` 的干净提交只含省级聚合水电 loader、漏掉配置/约束/输出，不能直接部署；当前提交已把常规水电 380 GW 闭合、重复 COMID 水量分配、V4 冷热/EV、PHS 功率—能量敏感性、成本会计和输出/QC 合并为一个可测试候选。`config/release_contract_v0729.json` 冻结 Base、solver profile、情景 catalog 与 11 个外置数据 SHA256；`scripts/audit_release_contract.py` 当前为 PASS。历史 `m2_model_boundary_audit_v1.json` 已显式标为 superseded，不能再代表当前模型。
 - 统一审计额外修复三项真实问题：`hydro_aggregate_flex_v1` 的向上备用 QC 曾重复计入省级聚合水电，已改为只使用模型导出的总水电备用；小时安全表的向下水电备用已包含聚合层，重新计算的 up/down closure 最大误差分别为 `1.42e-14/7.11e-15 GW`。V4 年化 enablement 成本不再误标为 selected-horizon cost，混合总项 `annual_operation` 标为 `COMPOSITE_SEE_COMPONENT_ROWS`。V4 gzip builder 固定 `mtime=0`，连续两次完整 build+validate 的六个输出逐文件字节一致，sidecar SHA256 为 `ad46c7610903726a059b92255332056935021763ca11433b0b866b6dd1ac144a`。
 - 当前统一候选的 `py_compile` 通过，完整本地回归为 `129/129 PASS`；参数审计为 `11,727 rows / 26 PASS / 0 WARN / 0 hard fail`，保留 4 个已知科学风险；省级水电输入审计确认 `31` 省、`372` 省月行、`297.8895 + 82.1105 = 380 GW`。全新 2030 1 h Base、V4 V1G、hydro flex、PHS central 均为 `OPTIMAL + solution_qc=PASS + current input/result manifests valid`。首次 Base `_v1` 在 OPTIMAL 后因统一重命名漏改一处 export 字段失败，已保留作故障证据；修复后的 `_v2` 与 hydro flex `_v3` 闭合。
 - 2026-07-29 已在本地当前工作树顺序完成匹配的 2030→2040→2050→2060 168 h Base 与 `flexible_load_comfort_v4_v1g` 两条 planning sequence；每年只接收上一年的显式 diagnostic state，不复用 basis。八个求解全部达到 `OPTIMAL + solution_qc=PASS + 52/52 hard checks + closed result manifest + current input manifest PASS`，两条序列 resume 后四年均为 `RESUMED_ACCEPTED`。Base/V4 raw LP 分别为 `1,167,956/1,024,400/9,546,696` 与 `1,240,868/1,071,396/9,859,176`（rows/columns/nonzeros）；V4 增量为 `+6.24%/+4.59%/+3.27%`，峰值 RSS 仅增加约 `0.12--0.27 GiB`，未出现内存或可行性退化。机器审计位于 `outputs/planning_sequence_168h_v0729_ab_audit/planning_sequence_ab_audit.{json,csv}`。
@@ -326,6 +326,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### v0.9.70 - 2026-07-29 - 多智能体改动统一、release contract 与干净提交复验
+
+- Git：模型/配置/测试实现提交为 `1d04f07565c3039ed467ec4080f276bd0da90786`（`feat: unify 0729 model release candidate`）。选择性暂存 52 个模型、配置、脚本、测试和交接文件；`supplementary_materials/**`、`.codex_tmp/**` 与全部历史 outputs 均未进入提交。
+- 统一内容：闭合常规水电 `297.8895 + 82.1105 = 380 GW`、重复 COMID 一次水量分配、V4 冷热/EV 数据合同、PHS 功率/能量分离 sensitivities、scenario catalog、成本 accounting scope 与完整输出/QC；新增 `release_contract_v0729.json`、release/hydro input auditors 和确定性 V4 builder。
+- 修复：聚合水电 up-reserve QC 不再重复计数，down-reserve 安全表不再漏项；V4 年化 enablement 与 selected-horizon 运行成本分列；gzip `mtime=0`；M2 v1 标为历史 superseded。精确提交第一次 detached 复验还发现 M2 历史 audit 依赖受保护未跟踪 review 文件，已改为校验外部证据引用登记，避免主工作树假阳性。
+- 验证：V4 连续两次完整 build+validate 六文件字节一致；release audit PASS；参数 audit `11,727 rows / 26 PASS / 0 WARN / 0 hard fail`；hydro input audit `31 provinces / 372 province-month rows / 380 GW closure`；本地四个全新 1 h Base/V4/hydro-flex/PHS-central 均 `OPTIMAL + solution_qc=PASS + current input/result manifests valid`；detached 精确提交在外置数据 junction 下 `129/129 PASS`。
+- 未决/下一步：外置 `data/` 未由 Git 携带，服务器必须按 release contract 新建版本化根并逐文件核对 SHA256。实现提交尚未部署，固定服务器与 ParaCloud 的旧状态不得沿用。下一步先 push，再实时核验服务器和队列、部署新数据根、运行服务器 release/readiness/1 h/24 h 门禁；全部通过后只启动一个 2030 V4 V1G 744 h cold gate。禁止 8760 h、付费云、并发第二求解、basis reuse 和 `Crossover=3`。
 
 ### v0.9.69 - 2026-07-29 - V4/Base 四年 168 h 配对序列、机制审计与成本口径修复（本地）
 
