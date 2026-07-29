@@ -80,6 +80,10 @@
       "sha256": "ad46c7610903726a059b92255332056935021763ca11433b0b866b6dd1ac144a"
     },
     {
+      "path": "load/flexible_load_envelope_v3.manifest.json",
+      "sha256": "0298256b2c1394f8e5a9e36780d2be279f06b27b291a9eca57daae91dba9a745"
+    },
+    {
       "path": "vre/existing_capacity_cohorts_2025.csv",
       "sha256": "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0"
     },
