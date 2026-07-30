@@ -717,6 +717,66 @@ class ModelConfig:
                         "flexible_load.activation_costs_yuan_per_mwh."
                         f"{key} must be nonnegative"
                     )
+        network = self.raw.get("network", {})
+        if float(network.get("flow_regularization_yuan_per_mwh", -1.0)) < 0.0:
+            raise ValueError(
+                "network.flow_regularization_yuan_per_mwh must be nonnegative"
+            )
+        direction_warning = network.get(
+            "diagnostic_bidirectional_flow_warning", {}
+        )
+        if not isinstance(direction_warning.get("enabled"), bool):
+            raise ValueError(
+                "network.diagnostic_bidirectional_flow_warning.enabled "
+                "must be boolean"
+            )
+        if int(direction_warning.get("reference_hours", 0)) <= 0:
+            raise ValueError(
+                "network.diagnostic_bidirectional_flow_warning.reference_hours "
+                "must be positive"
+            )
+        if int(
+            direction_warning.get("maximum_edge_hours_per_reference", -1)
+        ) < 0:
+            raise ValueError(
+                "network.diagnostic_bidirectional_flow_warning."
+                "maximum_edge_hours_per_reference must be nonnegative"
+            )
+        for key in (
+            "maximum_opposing_flow_gw",
+            "maximum_opposing_fraction_of_line_capacity",
+            "maximum_opposing_energy_gwh_per_reference",
+            "maximum_excess_loss_gwh_per_reference",
+            "maximum_opposing_share_of_gross_flow",
+            "maximum_excess_loss_share_of_system_load",
+        ):
+            if float(direction_warning.get(key, -1.0)) < 0.0:
+                raise ValueError(
+                    "network.diagnostic_bidirectional_flow_warning."
+                    f"{key} must be nonnegative"
+                )
+        if float(
+            direction_warning[
+                "maximum_opposing_fraction_of_line_capacity"
+            ]
+        ) > 1.0:
+            raise ValueError(
+                "network.diagnostic_bidirectional_flow_warning."
+                "maximum_opposing_fraction_of_line_capacity must be <= 1"
+            )
+        if direction_warning.get("scope") != (
+            "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY"
+        ):
+            raise ValueError(
+                "Diagnostic bidirectional-flow relaxation must remain "
+                "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY"
+            )
+        if direction_warning.get("full_year_policy") != (
+            "STRICT_ZERO_ABOVE_1E-6_GW"
+        ):
+            raise ValueError(
+                "Full-year interprovincial directionality must remain strict"
+            )
         if not self.raw["features"].get("annual_load_center_transmission", False):
             raise ValueError("Production requires the annual load-center transmission layer")
         center_network = self.raw.get("load_center_network", {})

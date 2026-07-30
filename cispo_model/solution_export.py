@@ -31,6 +31,156 @@ def _write_json(payload: dict[str, Any], path: Path) -> None:
     )
 
 
+def assess_interprovincial_bidirectionality(
+    *,
+    flow_forward: np.ndarray,
+    flow_reverse: np.ndarray,
+    line_capacity_gw: np.ndarray,
+    line_efficiency: np.ndarray,
+    system_load_gwh: float,
+    optimization_hours: int,
+    configured_hours: int,
+    tolerance_gw: float,
+    warning_contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Classify AC counterflow without weakening full-year scientific QC.
+
+    The directional-flow LP can use simultaneous opposite flows as a small
+    lossy sink under deep negative prices.  Truncated engineering gates may
+    retain such a solution only as an explicit warning when every power,
+    energy, loss and prevalence budget below is satisfied.  A full-year run
+    always requires strict zero counterflow above ``tolerance_gw``.
+    """
+    forward = np.asarray(flow_forward, dtype=float)
+    reverse = np.asarray(flow_reverse, dtype=float)
+    if forward.shape != reverse.shape or forward.ndim != 2:
+        raise ValueError("Directional transmission arrays must be matching 2-D arrays")
+    capacity = np.asarray(line_capacity_gw, dtype=float)
+    efficiency = np.asarray(line_efficiency, dtype=float)
+    if capacity.shape != (forward.shape[0],):
+        raise ValueError("line_capacity_gw must have one value per corridor")
+    if efficiency.shape != (forward.shape[0],):
+        raise ValueError("line_efficiency must have one value per corridor")
+    if (
+        not np.isfinite(forward).all()
+        or not np.isfinite(reverse).all()
+        or not np.isfinite(capacity).all()
+        or not np.isfinite(efficiency).all()
+    ):
+        raise ValueError("Directionality assessment requires finite inputs")
+    if (capacity < 0.0).any() or (efficiency <= 0.0).any() or (efficiency > 1.0).any():
+        raise ValueError("Invalid line capacity or efficiency")
+    if optimization_hours <= 0 or configured_hours <= 0:
+        raise ValueError("Optimization and configured hours must be positive")
+    if tolerance_gw < 0.0 or system_load_gwh < 0.0:
+        raise ValueError("Directionality tolerance and system load must be nonnegative")
+
+    mask = (forward > tolerance_gw) & (reverse > tolerance_gw)
+    opposing = np.where(mask, np.minimum(forward, reverse), 0.0)
+    positive_capacity = np.where(capacity > tolerance_gw, capacity, np.inf)
+    opposing_fraction = opposing / positive_capacity[:, None]
+    excess_loss = 2.0 * (1.0 - efficiency[:, None]) * opposing
+    gross_flow_gwh = float((forward + reverse).sum())
+    opposing_energy_gwh = float(opposing.sum())
+    excess_loss_gwh = float(excess_loss.sum())
+    strict_pass = bool(not mask.any())
+
+    reference_hours = int(warning_contract["reference_hours"])
+    horizon_scale = float(optimization_hours) / float(reference_hours)
+    limits = {
+        "maximum_edge_hours": int(
+            np.ceil(
+                float(warning_contract["maximum_edge_hours_per_reference"])
+                * horizon_scale
+            )
+        ),
+        "maximum_opposing_flow_gw": float(
+            warning_contract["maximum_opposing_flow_gw"]
+        ),
+        "maximum_opposing_fraction_of_line_capacity": float(
+            warning_contract["maximum_opposing_fraction_of_line_capacity"]
+        ),
+        "maximum_opposing_energy_gwh": float(
+            warning_contract["maximum_opposing_energy_gwh_per_reference"]
+        )
+        * horizon_scale,
+        "maximum_excess_loss_gwh": float(
+            warning_contract["maximum_excess_loss_gwh_per_reference"]
+        )
+        * horizon_scale,
+        "maximum_opposing_share_of_gross_flow": float(
+            warning_contract["maximum_opposing_share_of_gross_flow"]
+        ),
+        "maximum_excess_loss_share_of_system_load": float(
+            warning_contract["maximum_excess_loss_share_of_system_load"]
+        ),
+    }
+    observed = {
+        "edge_hours": int(mask.sum()),
+        "maximum_opposing_flow_gw": float(
+            opposing[mask].max() if mask.any() else 0.0
+        ),
+        "maximum_opposing_fraction_of_line_capacity": float(
+            opposing_fraction[mask].max() if mask.any() else 0.0
+        ),
+        "opposing_energy_gwh": opposing_energy_gwh,
+        "excess_loss_gwh": excess_loss_gwh,
+        "opposing_share_of_gross_flow": (
+            opposing_energy_gwh / gross_flow_gwh if gross_flow_gwh > 0.0 else 0.0
+        ),
+        "excess_loss_share_of_system_load": (
+            excess_loss_gwh / float(system_load_gwh)
+            if system_load_gwh > 0.0
+            else 0.0
+        ),
+    }
+    within_warning_budget = bool(
+        observed["edge_hours"] <= limits["maximum_edge_hours"]
+        and observed["maximum_opposing_flow_gw"]
+        <= limits["maximum_opposing_flow_gw"]
+        and observed["maximum_opposing_fraction_of_line_capacity"]
+        <= limits["maximum_opposing_fraction_of_line_capacity"]
+        and observed["opposing_energy_gwh"]
+        <= limits["maximum_opposing_energy_gwh"]
+        and observed["excess_loss_gwh"] <= limits["maximum_excess_loss_gwh"]
+        and observed["opposing_share_of_gross_flow"]
+        <= limits["maximum_opposing_share_of_gross_flow"]
+        and observed["excess_loss_share_of_system_load"]
+        <= limits["maximum_excess_loss_share_of_system_load"]
+    )
+    diagnostic_scope = optimization_hours < configured_hours
+    warning_applied = bool(
+        not strict_pass
+        and diagnostic_scope
+        and bool(warning_contract["enabled"])
+        and within_warning_budget
+    )
+    accepted = bool(strict_pass or warning_applied)
+    if strict_pass:
+        classification = "STRICT_PASS"
+    elif warning_applied:
+        classification = "TEST_ONLY_DE_MINIMIS_WARNING"
+    else:
+        classification = "HARD_FAIL"
+    return {
+        "accepted": accepted,
+        "strict_pass": strict_pass,
+        "warning_applied": warning_applied,
+        "within_warning_budget": within_warning_budget,
+        "classification": classification,
+        "acceptance_scope": (
+            "STRICT_FULL_YEAR"
+            if optimization_hours == configured_hours
+            else "TEST_ONLY_TRUNCATED_HORIZON"
+        ),
+        "tolerance_gw": float(tolerance_gw),
+        "reference_hours": reference_hours,
+        "horizon_scale": horizon_scale,
+        "limits": limits,
+        "observed": observed,
+    }
+
+
 def export_operational_solution(
     artifacts: MasterArtifacts,
     data: ModelData,
@@ -850,6 +1000,21 @@ def export_operational_solution(
         & (flow_reverse > flow_direction_tolerance_gw)
     )
     bidirectional_minimum_flow = np.minimum(flow_forward, flow_reverse)
+    directionality_assessment = assess_interprovincial_bidirectionality(
+        flow_forward=flow_forward,
+        flow_reverse=flow_reverse,
+        line_capacity_gw=line_capacity,
+        line_efficiency=np.asarray(
+            artifacts.index["line_efficiency"], dtype=float
+        ),
+        system_load_gwh=float(load.sum()),
+        optimization_hours=hours,
+        configured_hours=config.hours,
+        tolerance_gw=flow_direction_tolerance_gw,
+        warning_contract=config.raw["network"][
+            "diagnostic_bidirectional_flow_warning"
+        ],
+    )
     dc_edge_mask = (
         data.lines.preset_technology.astype(str).str.upper().eq("DC").to_numpy()
     )
@@ -1182,6 +1347,13 @@ def export_operational_solution(
         "total_bidirectional_minimum_flow_gwh": float(
             bidirectional_minimum_flow[bidirectional_mask].sum()
         ),
+        "interprovincial_directionality_assessment": directionality_assessment,
+        "strict_unidirectional_interprovincial_flow": directionality_assessment[
+            "strict_pass"
+        ],
+        "diagnostic_bidirectional_flow_warning_applied": directionality_assessment[
+            "warning_applied"
+        ],
         "dc_fixed_direction_edge_count": int(dc_edge_mask.sum()),
         "maximum_dc_reverse_flow_gw": maximum_dc_reverse_flow,
     }
@@ -1344,9 +1516,9 @@ def export_operational_solution(
         "storage_capacity_floor": qc[
             "maximum_storage_capacity_floor_violation_gw"
         ] <= tolerance,
-        "unidirectional_interprovincial_flow": qc[
-            "bidirectional_interprovincial_edge_hours"
-        ] == 0,
+        "unidirectional_interprovincial_flow": directionality_assessment[
+            "accepted"
+        ],
         "dc_fixed_direction": qc["maximum_dc_reverse_flow_gw"]
         <= flow_direction_tolerance_gw,
         "storage_transition": qc["maximum_storage_transition_residual_gwh"] <= tolerance,

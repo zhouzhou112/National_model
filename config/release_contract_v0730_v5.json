@@ -1,7 +1,7 @@
 {
   "contract_version": "national_model_release_v0730_v5",
   "inherits": "config/release_contract_v0729.json",
-  "release_status": "V5_CANDIDATE_REQUIRES_LOCAL_GATES_AND_FIXED_SERVER_744H_SEQUENCE",
+  "release_status": "V5_CANDIDATE_REQUIRES_FIXED_SERVER_168H_BASE_V5_AND_1008H_V5_GATES",
   "primary_scenarios": [
     "base",
     "flex_integrated_v5_central"
@@ -59,10 +59,13 @@
     "local_required": [
       "full_unittest",
       "v5_parameter_and_input_audit",
+      "directionality_warning_scope_and_budget_tests"
+    ],
+    "fixed_server_required_before_long_gate": [
       "base_v5_1h_24h_closed_manifest_ab",
       "four_year_168h_base_v5_sequence"
     ],
-    "fixed_server_next": "one isolated sequential 2030-2060 744h Base/V5 engineering gate after local closure",
+    "fixed_server_next": "one isolated sequential 2030-2060 1008h flex_integrated_v5_central engineering gate after fixed-server 168h Base/V5 closure",
     "forbidden": [
       "fixed_server_8760h",
       "paid_cloud",

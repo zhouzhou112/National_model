@@ -393,6 +393,16 @@ class ModelFoundationTests(unittest.TestCase):
             float(self.config.raw["network"]["flow_regularization_yuan_per_mwh"]),
             1.004004,
         )
+        warning = self.config.raw["network"][
+            "diagnostic_bidirectional_flow_warning"
+        ]
+        self.assertTrue(warning["enabled"])
+        self.assertEqual(
+            warning["scope"], "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY"
+        )
+        self.assertEqual(
+            warning["full_year_policy"], "STRICT_ZERO_ABOVE_1E-6_GW"
+        )
         technologies = set(
             self.data.lines.preset_technology.astype(str).str.upper()
         )

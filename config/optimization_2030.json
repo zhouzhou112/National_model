@@ -300,6 +300,19 @@
   },
   "network": {
     "flow_regularization_yuan_per_mwh": 1.004004,
+    "diagnostic_bidirectional_flow_warning": {
+      "enabled": true,
+      "reference_hours": 168,
+      "maximum_edge_hours_per_reference": 4,
+      "maximum_opposing_flow_gw": 0.25,
+      "maximum_opposing_fraction_of_line_capacity": 0.15,
+      "maximum_opposing_energy_gwh_per_reference": 0.75,
+      "maximum_excess_loss_gwh_per_reference": 0.025,
+      "maximum_opposing_share_of_gross_flow": 5e-5,
+      "maximum_excess_loss_share_of_system_load": 1e-7,
+      "scope": "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY",
+      "full_year_policy": "STRICT_ZERO_ABOVE_1E-6_GW"
+    },
     "spur_capex_million_yuan_per_gw_km": 1.218860856,
     "trunk_capex_million_yuan_per_gw_km": 1.218860856,
     "substation_capex_million_yuan_per_gw": 241.964964,
