@@ -23,9 +23,44 @@ from cispo_model.planning_state import (
     write_planning_state,
 )
 from cispo_model.result_summary import finalize_result_manifest
+from scripts.run_cispo_planning_sequence import accepted
 
 
 class PlanningSequenceTests(unittest.TestCase):
+    def test_sequence_acceptance_requires_explicit_passing_hard_checks(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            (output_dir / "solve_report.json").write_text(
+                json.dumps(
+                    {
+                        "status": "OPTIMAL",
+                        "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            for hard_checks in (
+                None,
+                {},
+                {"power_balance": False},
+            ):
+                qc = {"status": "PASS"}
+                if hard_checks is not None:
+                    qc["hard_checks"] = hard_checks
+                (output_dir / "solution_qc.json").write_text(
+                    json.dumps(qc),
+                    encoding="utf-8",
+                )
+                self.assertFalse(
+                    accepted(
+                        output_dir,
+                        require_state=False,
+                        expected_result_use=(
+                            "TEST_ONLY_TRUNCATED_HORIZON"
+                        ),
+                    )
+                )
+
     def test_dry_run_forwards_profiles_and_locks_sequence_identity(self):
         root = Path(__file__).resolve().parents[1]
         solver = (

@@ -62,6 +62,27 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
         )
     ]
     result: dict[str, Any] = {
+        "numerical_trouble_count": len(
+            re.findall(
+                r"Numerical trouble encountered",
+                text,
+                flags=re.IGNORECASE,
+            )
+        ),
+        "restart_crossover_count": len(
+            re.findall(
+                r"Restart crossover",
+                text,
+                flags=re.IGNORECASE,
+            )
+        ),
+        "suboptimal_termination_warning": bool(
+            re.search(
+                r"Sub-optimal termination",
+                text,
+                flags=re.IGNORECASE,
+            )
+        ),
         "presolve_seconds": _match(
             text, rf"Presolve time:\s*{_NUMBER}s"
         ),
@@ -89,6 +110,9 @@ def parse_gurobi_log(text: str) -> dict[str, Any]:
             text, rf"Crossover time:\s*{_NUMBER}\s+seconds"
         ),
     }
+    result["numerical_trouble_encountered"] = bool(
+        result["numerical_trouble_count"]
+    )
     if original:
         result.update(
             original_rows=int(original.group(1).replace(",", "")),
@@ -214,6 +238,42 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         row for row in telemetry_records if row.get("event") == "solver_progress"
     ]
     last_progress = progress[-1] if progress else {}
+    telemetry_event_counts: dict[str, int] = {}
+    for row in telemetry_records:
+        event = str(row.get("event", "UNKNOWN"))
+        telemetry_event_counts[event] = telemetry_event_counts.get(event, 0) + 1
+    telemetry_phase_summaries: dict[str, dict[str, Any]] = {}
+    for phase in sorted(
+        {str(row.get("phase")) for row in progress if row.get("phase")}
+    ):
+        rows = [row for row in progress if str(row.get("phase")) == phase]
+        primal = [
+            float(row["primal_infeasibility"])
+            for row in rows
+            if row.get("primal_infeasibility") is not None
+        ]
+        positive_primal = [value for value in primal if value > 0.0]
+        dual = [
+            float(row["dual_infeasibility"])
+            for row in rows
+            if row.get("dual_infeasibility") is not None
+        ]
+        telemetry_phase_summaries[phase] = {
+            "samples": len(rows),
+            "first_iteration": rows[0].get("iteration"),
+            "last_iteration": rows[-1].get("iteration"),
+            "first_runtime_seconds": rows[0].get("runtime_seconds"),
+            "last_runtime_seconds": rows[-1].get("runtime_seconds"),
+            "minimum_positive_primal_infeasibility": (
+                min(positive_primal) if positive_primal else None
+            ),
+            "maximum_primal_infeasibility": max(primal) if primal else None,
+            "last_primal_infeasibility": (
+                rows[-1].get("primal_infeasibility")
+            ),
+            "maximum_dual_infeasibility": max(dual) if dual else None,
+            "last_dual_infeasibility": rows[-1].get("dual_infeasibility"),
+        }
     max_solver_memory = max(
         (
             float(row["max_memory_used_gb"])
@@ -225,6 +285,12 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
     statistics = solve.get("model_statistics") or build.get("statistics") or {}
     solver_parameters = solve.get("solver_parameters") or {}
     warm_start = solve.get("warm_start") or build.get("warm_start") or {}
+    solution_quality = solve.get("solution_quality") or {}
+    numerical_compatibility = (
+        build.get("solver_numerical_compatibility")
+        or scope.get("solver_numerical_compatibility_prebuild")
+        or {}
+    )
     manifest_valid, manifest_failures = validate_result_manifest(root)
     hard_checks = qc.get("hard_checks") or {}
     largest_constraint_family = next(
@@ -253,9 +319,25 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "solver_method": solver_parameters.get("method"),
         "solver_crossover": solver_parameters.get("crossover"),
         "solver_crossover_basis": solver_parameters.get("crossover_basis"),
+        "solver_aggregate": solver_parameters.get("aggregate"),
+        "solver_agg_fill": solver_parameters.get("agg_fill"),
+        "solver_pre_sparsify": solver_parameters.get("pre_sparsify"),
+        "solver_bar_homogeneous": solver_parameters.get("bar_homogeneous"),
+        "solver_bar_correctors": solver_parameters.get("bar_correctors"),
+        "solver_numeric_focus": solver_parameters.get("numeric_focus"),
+        "solver_scale_flag": solver_parameters.get("scale_flag"),
         "solver_lp_warm_start": solver_parameters.get("lp_warm_start"),
         "solver_dual_reductions": solver_parameters.get("dual_reductions"),
         "solver_inf_unbd_info": solver_parameters.get("inf_unbd_info"),
+        "solver_numerical_compatibility_status": (
+            numerical_compatibility.get("status")
+        ),
+        "solver_aggregate_zero_required": (
+            numerical_compatibility.get("aggregate_zero_required")
+        ),
+        "solver_stable_crossover_required": (
+            numerical_compatibility.get("stable_crossover_required")
+        ),
         "warm_start_cross_year": warm_start.get("cross_year"),
         "warm_start_source_planning_year": warm_start.get(
             "source_planning_year"
@@ -268,6 +350,19 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
             "objective_value_million_cny"
         ),
         "runtime_seconds": solve.get("runtime_seconds"),
+        "maximum_constraint_violation": solution_quality.get(
+            "maximum_constraint_violation"
+        ),
+        "maximum_bound_violation": solution_quality.get(
+            "maximum_bound_violation"
+        ),
+        "maximum_dual_violation": solution_quality.get(
+            "maximum_dual_violation"
+        ),
+        "solution_kappa": solution_quality.get("kappa"),
+        "kappa_exact_computed": solution_quality.get(
+            "kappa_exact_computed"
+        ),
         "build_elapsed_seconds": build_elapsed,
         "peak_process_tree_rss_gib": solve.get("runtime_memory", {}).get(
             "peak_process_tree_rss_gib",
@@ -277,6 +372,8 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "telemetry_last_phase": last_progress.get("phase"),
         "telemetry_last_iteration": last_progress.get("iteration"),
         "telemetry_last_runtime_seconds": last_progress.get("runtime_seconds"),
+        "telemetry_event_counts": telemetry_event_counts,
+        "telemetry_phase_summaries": telemetry_phase_summaries,
         "variables": statistics.get("variables"),
         "constraints": statistics.get("constraints"),
         "nonzeros": statistics.get("nonzeros"),

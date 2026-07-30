@@ -5,6 +5,7 @@ import unittest
 
 import gurobipy as gp
 import numpy as np
+import pandas as pd
 
 from cispo_model.config import load_model_config
 from cispo_model.data import FlexibleLoadV4Data
@@ -13,15 +14,251 @@ from cispo_model.flexible_load import (
     _ev_backlog_bounds,
     _ev_deadline_backlog_bounds,
     _ev_v1g_shift_bounds,
+    _attach_compressed_thermal_state_transitions,
+    _add_sparse_hourly_control,
     _thermal_envelope_state_bounds,
     _thermal_state_bounds,
     _thermal_shift_bounds,
     attach_flexible_load,
     make_day_slices,
+    SparseThermalStateView,
+)
+from cispo_model.flexible_load_numerics import (
+    _compressed_thermal_state_audit,
+    _compressed_thermal_state_mask,
+    _maximum_cyclic_true_run,
+    _retained_transition_incoming_gaps,
+    _service_effective_load_lower_bound,
+    assess_flexible_load_solver_compatibility,
+    prebuild_flexible_load_solver_compatibility,
 )
 
 
 class FlexibleLoadContractTests(unittest.TestCase):
+    def test_cyclic_run_and_solver_compatibility_gate_are_explicit(self):
+        self.assertEqual(
+            _maximum_cyclic_true_run(
+                np.array([True, True, False, True])
+            ),
+            3,
+        )
+        structural_audit = {
+            "formulation": "integrated_service_constrained_v5",
+            "heating_state_chain_numerical_risk": {
+                "aggregate_zero_required_for_solve": False,
+                "automatic_presolve_aggregation_risk": False,
+            },
+            "cooling_state_chain_numerical_risk": {
+                "aggregate_zero_required_for_solve": False,
+                "automatic_presolve_aggregation_risk": True,
+                "automatic_presolve_aggregation_risk_mitigated": True,
+            },
+        }
+        blocked = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {},
+        )
+        self.assertEqual(blocked["status"], "BLOCKED")
+        self.assertEqual(blocked["aggregate_parameter"], 1)
+        passed = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {
+                "crossover": 1,
+                "crossover_basis": 1,
+            },
+        )
+        self.assertEqual(passed["status"], "PASS")
+        self.assertFalse(passed["aggregate_zero_required"])
+        self.assertEqual(
+            passed["required_long_horizon_settings"]["aggregate"],
+            "automatic_allowed",
+        )
+        legacy = assess_flexible_load_solver_compatibility(
+            {
+                "formulation": "service_constrained_v4",
+                "cooling_state_chain_numerical_risk": {
+                    "automatic_presolve_aggregation_risk": True,
+                    "aggregate_zero_required_for_solve": True,
+                },
+            },
+            {},
+        )
+        self.assertEqual(legacy["status"], "PASS")
+        self.assertFalse(legacy["stable_crossover_required"])
+
+    def test_prebuild_base_has_no_v5_numerical_contract(self):
+        base = load_model_config()
+        result = prebuild_flexible_load_solver_compatibility(
+            base,
+            SimpleNamespace(),
+            hours=168,
+        )
+        self.assertEqual(result["status"], "PASS")
+        self.assertIsNone(result["formulation"])
+        self.assertFalse(result["stable_crossover_required"])
+
+    def test_prebuild_v5_gate_detects_selected_horizon_chain_risk(self):
+        service = SimpleNamespace(
+            contract_version="v5",
+            thermal_envelopes_gw={
+                "heating_up": np.array([[1.0, 0.0, 0.0, 0.0, 0.0]]),
+                "heating_down": np.zeros((1, 5)),
+                "cooling_up": np.ones((1, 5)),
+                "cooling_down": np.zeros((1, 5)),
+            },
+            thermal_parameters={
+                "heating": {"retention_per_hour": np.array([0.1])},
+                "cooling": {"retention_per_hour": np.array([0.9])},
+            },
+        )
+        data = SimpleNamespace(
+            flexible_load_v4=service,
+            provinces=pd.DataFrame({"province_code": [11]}),
+        )
+        common_raw = {
+            "features": {"flexible_load": True},
+            "flexible_load": {
+                "formulation": "integrated_service_constrained_v5",
+            },
+        }
+        unsafe = SimpleNamespace(
+            raw={**common_raw, "numerics": {}},
+        )
+        blocked = prebuild_flexible_load_solver_compatibility(
+            unsafe,
+            data,
+            hours=5,
+        )
+        self.assertEqual(blocked["status"], "BLOCKED")
+        self.assertFalse(blocked["aggregate_zero_required"])
+        self.assertTrue(blocked["stable_crossover_required"])
+
+        stable = SimpleNamespace(
+            raw={
+                **common_raw,
+                "numerics": {
+                    "crossover": 1,
+                    "crossover_basis": 1,
+                },
+            },
+        )
+        passed = prebuild_flexible_load_solver_compatibility(
+            stable,
+            data,
+            hours=5,
+        )
+        self.assertEqual(passed["status"], "PASS")
+        self.assertFalse(passed["aggregate_zero_required"])
+
+    def test_sparse_hourly_control_omits_exact_zero_bound_variables(self):
+        model = gp.Model("sparse_hourly_control")
+        model.Params.OutputFlag = 0
+        upper = np.array([[1.0, 0.0], [0.0, 2.0]])
+        expression, active, mask = _add_sparse_hourly_control(
+            model,
+            upper_bound=upper,
+            name="test_control",
+        )
+        model.update()
+        self.assertEqual(expression.shape, upper.shape)
+        self.assertIsNotNone(active)
+        self.assertEqual(active.shape, (2,))
+        self.assertEqual(model.NumVars, 2)
+        np.testing.assert_array_equal(mask, upper > 0.0)
+
+    def test_compressed_thermal_state_eliminates_only_zero_control_hours(self):
+        support = np.array(
+            [
+                [True, False, False, True, False, False],
+                [False, False, False, False, False, False],
+            ]
+        )
+        retained = _compressed_thermal_state_mask(
+            support,
+            np.array([0.9, 0.9]),
+            minimum_transition_coefficient=0.5,
+        )
+        self.assertTrue(np.all(retained[support]))
+        self.assertFalse(retained[1].any())
+        audit = _compressed_thermal_state_audit(
+            support,
+            retained,
+            np.array([0.9, 0.9]),
+        )
+        self.assertEqual(audit["control_support_state_variables"], 2)
+        self.assertGreaterEqual(
+            audit["minimum_retained_transition_coefficient"],
+            0.5,
+        )
+        self.assertEqual(
+            audit["retained_state_variables"]
+            + audit["redundant_inactive_state_variables_omitted"],
+            support.size,
+        )
+
+    def test_sparse_thermal_state_view_reconstructs_hourly_decay(self):
+        retained = np.array([[True, False, True, False]])
+        view = SparseThermalStateView(
+            active=SimpleNamespace(X=np.array([4.0, 2.0])),
+            retained_mask=retained,
+            retention_per_hour=np.array([0.5]),
+        )
+        np.testing.assert_allclose(
+            view.getValue(),
+            np.array([[4.0, 2.0, 2.0, 1.0]]),
+        )
+
+    def test_compressed_state_uses_predecessor_to_current_cyclic_gaps(self):
+        np.testing.assert_array_equal(
+            _retained_transition_incoming_gaps(
+                np.array([0, 1, 4]),
+                6,
+            ),
+            np.array([2, 1, 3]),
+        )
+
+    def test_compressed_state_matrix_uses_nonuniform_incoming_gaps(self):
+        model = gp.Model("compressed_nonuniform_gaps")
+        model.Params.OutputFlag = 0
+        state = model.addMVar(3, name="state")
+        capacity = model.addMVar(1, name="capacity")
+        zero_control = gp.MLinExpr.zeros((1, 6))
+        _attach_compressed_thermal_state_transitions(
+            model,
+            active_state=state,
+            retained_state_mask=np.array(
+                [[True, True, False, False, True, False]]
+            ),
+            retention_per_hour=np.array([0.5]),
+            charge=zero_control,
+            discharge=zero_control,
+            charge_efficiency=np.array([1.0]),
+            discharge_efficiency=np.array([1.0]),
+            capacity=capacity,
+            positive_duration_hours=np.array([1.0]),
+            name="thermal",
+        )
+        model.update()
+        expected_predecessor_coefficients = (0.25, 0.5, 0.125)
+        predecessor_names = ("state[2]", "state[0]", "state[1]")
+        for row, expected, predecessor_name in zip(
+            range(3),
+            expected_predecessor_coefficients,
+            predecessor_names,
+        ):
+            constraint = model.getConstrByName(
+                f"thermal_compressed_transition_p0[{row}]"
+            )
+            expression = model.getRow(constraint)
+            coefficients = {
+                expression.getVar(index).VarName: expression.getCoeff(index)
+                for index in range(expression.size())
+            }
+            self.assertAlmostEqual(
+                coefficients[predecessor_name],
+                -expected,
+            )
+
     def test_wave_integrated_base_and_v3_v2g_overlay_are_explicit(self):
         base = load_model_config()
         comfort_v2g = load_model_config(
@@ -119,6 +356,7 @@ class FlexibleLoadContractTests(unittest.TestCase):
             service_costs=service_costs,
         )
         data = SimpleNamespace(
+            provinces=pd.DataFrame({"province_code": [11, 12]}),
             load_gw=np.full(shape, 3.0),
             load_components_gw={
                 "base_residual": np.ones(shape),
@@ -132,6 +370,9 @@ class FlexibleLoadContractTests(unittest.TestCase):
         model.Params.OutputFlag = 0
         block = attach_flexible_load(model, config, data, hours=shape[1])
         model.update()
+        self.assertIn(
+            "ev_mobility_charge_deviation", block.variables
+        )
         self.assertTrue(
             all(hasattr(expression, "getValue") for expression in block.costs.values())
         )
@@ -214,9 +455,10 @@ class FlexibleLoadContractTests(unittest.TestCase):
             contract_version="v5",
         )
         data = SimpleNamespace(
-            load_gw=np.full(shape, 3.0),
+            provinces=pd.DataFrame({"province_code": [11, 12]}),
+            load_gw=np.full(shape, 5.0),
             load_components_gw={
-                "base_residual": np.ones(shape),
+                "base_residual": np.full(shape, 3.0),
                 "heating": np.full(shape, 0.5),
                 "cooling": np.full(shape, 0.5),
                 "ev": np.ones(shape),
@@ -247,17 +489,53 @@ class FlexibleLoadContractTests(unittest.TestCase):
         self.assertEqual(model.Status, gp.GRB.OPTIMAL)
         capacities = block.variables["flexible_service_capacity"].X
         self.assertTrue(np.all(capacities[:, 3] <= capacities[:, 2] + 1e-9))
+        np.testing.assert_array_less(
+            block.variables["ev_mobility_charge"].X
+            + block.variables["ev_mobility_discharge"].X,
+            np.broadcast_to(
+                capacities[:, 2, None],
+                block.variables["ev_mobility_charge"].shape,
+            )
+            + 1e-8,
+        )
+        self.assertEqual(
+            block.structural_audit[
+                "ev_shared_connection_power_contract"
+            ],
+            "charge_plus_discharge_within_nested_smart_charging_contract_v1",
+        )
         firm = block.variables["firm_flexible_capacity_credit"].X
         upper = block.variables["firm_flexible_capacity_credit_upper"]
         self.assertTrue(np.all(firm <= upper + 1e-9))
+        self.assertNotIn(
+            "ev_mobility_charge_deviation", block.variables
+        )
+        derived_charge_deviation = np.abs(
+            block.variables["ev_mobility_charge"].X
+            - 0.15 * data.load_components_gw["ev"]
+        )
         self.assertGreater(
-            float(block.variables["ev_mobility_charge_deviation"].X.sum()),
+            float(derived_charge_deviation.sum()),
+            0.0,
+        )
+        expected_v1g_relocated = np.maximum(
+            0.15 * data.load_components_gw["ev"]
+            - block.variables["ev_mobility_charge"].X,
             0.0,
         )
         np.testing.assert_allclose(
             block.variables["ev_mobility_v1g_relocated"].X,
-            0.0,
+            expected_v1g_relocated,
             atol=1e-8,
+        )
+        expected_v1g_relocation_cost = float(
+            (
+                1e-3
+                * service_costs["ev_v1g"][
+                    "activation_cost_yuan_per_mwh"
+                ]
+                * expected_v1g_relocated.sum(axis=1)
+            ).sum()
         )
         self.assertAlmostEqual(
             float(
@@ -265,9 +543,64 @@ class FlexibleLoadContractTests(unittest.TestCase):
                     "flexible_load_v5_ev_v1g_relocation"
                 ].getValue()
             ),
-            0.0,
-            places=8,
+            expected_v1g_relocation_cost,
+            places=10,
         )
+        self.assertEqual(
+            block.structural_audit[
+                "ev_charge_deviation_representation"
+            ],
+            "postsolve_derived_absolute_deviation",
+        )
+        self.assertEqual(
+            block.structural_audit[
+                "ev_charge_deviation_variables_omitted"
+            ],
+            8,
+        )
+        self.assertEqual(
+            block.structural_audit[
+                "ev_charge_deviation_constraints_omitted"
+            ],
+            16,
+        )
+        self.assertEqual(
+            block.structural_audit[
+                "departure_soc_constraint_rows_omitted_as_redundant"
+            ],
+            8,
+        )
+        self.assertEqual(
+            block.structural_audit[
+                "effective_load_nonnegative_constraint_rows_omitted"
+            ],
+            8,
+        )
+        self.assertEqual(
+            block.structural_audit["net_raw_variables_removed"],
+            8,
+        )
+        self.assertEqual(
+            block.structural_audit["net_raw_constraint_rows_removed"],
+            32,
+        )
+
+    def test_v5_effective_load_nonnegative_row_can_be_proven_redundant(self):
+        shape = (2, 3)
+        lower = _service_effective_load_lower_bound(
+            components={
+                "base_residual": np.full(shape, 2.0),
+                "heating": np.full(shape, 0.5),
+                "cooling": np.full(shape, 0.5),
+            },
+            thermal_down_upper={
+                "heating": np.full(shape, 0.1),
+                "cooling": np.full(shape, 0.2),
+            },
+            fixed_ev_baseline=np.full(shape, 0.4),
+            ev_discharge_upper=np.full(shape, 0.3),
+        )
+        np.testing.assert_allclose(lower, np.full(shape, 2.8))
 
     def test_day_slices_cover_partial_horizon_once(self):
         slices = make_day_slices(25, 24)

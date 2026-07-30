@@ -50,6 +50,9 @@ _FAMILY_RULES: tuple[tuple[str, str], ...] = (
     ("dac_", "dac_annual_accounting"),
     ("spur_", "spatial_connection"),
     ("trunk_", "spatial_connection"),
+    ("flexible_service_", "demand_and_flexibility"),
+    ("firm_flexible_", "demand_and_flexibility"),
+    ("v5_", "demand_and_flexibility"),
     ("effective_load", "demand_and_flexibility"),
     ("heating_", "demand_and_flexibility"),
     ("cooling_", "demand_and_flexibility"),
@@ -126,6 +129,85 @@ def _largest_matrix_entries(
     ]
 
 
+def _variable_status_audit(
+    names: list[str],
+    nonzeros: list[int],
+    lower_bounds: list[float],
+    upper_bounds: list[float],
+    objective: list[float],
+) -> tuple[
+    dict[str, int],
+    dict[str, dict[str, int]],
+    dict[str, list[dict[str, Any]]],
+    dict[str, dict[str, list[dict[str, Any]]]],
+]:
+    totals = {
+        "fixed_variables": 0,
+        "fixed_zero_variables": 0,
+        "zero_matrix_nonzero_variables": 0,
+        "one_matrix_nonzero_variables": 0,
+        "unconstrained_zero_objective_variables": 0,
+        "nonzero_objective_variables": 0,
+    }
+    by_family: dict[str, dict[str, int]] = defaultdict(
+        lambda: {key: 0 for key in totals}
+    )
+    examples: dict[str, list[dict[str, Any]]] = {
+        key: [] for key in totals
+    }
+    examples_by_family: dict[
+        str, dict[str, list[dict[str, Any]]]
+    ] = defaultdict(lambda: {key: [] for key in totals})
+    for name, count, lower, upper, coefficient in zip(
+        names,
+        nonzeros,
+        lower_bounds,
+        upper_bounds,
+        objective,
+    ):
+        family = family_for_name(name)
+        fixed = lower == upper
+        fixed_zero = fixed and lower == 0.0
+        zero_matrix = count == 0
+        one_matrix = count == 1
+        nonzero_objective = coefficient != 0.0
+        unconstrained_zero_objective = (
+            zero_matrix and not fixed and not nonzero_objective
+        )
+        flags = {
+            "fixed_variables": fixed,
+            "fixed_zero_variables": fixed_zero,
+            "zero_matrix_nonzero_variables": zero_matrix,
+            "one_matrix_nonzero_variables": one_matrix,
+            "unconstrained_zero_objective_variables": (
+                unconstrained_zero_objective
+            ),
+            "nonzero_objective_variables": nonzero_objective,
+        }
+        for key, enabled in flags.items():
+            if enabled:
+                totals[key] += 1
+                by_family[family][key] += 1
+                record = {
+                    "variable_name": name,
+                    "family": family,
+                    "matrix_nonzeros": int(count),
+                    "lower_bound": float(lower),
+                    "upper_bound": float(upper),
+                    "objective_coefficient": float(coefficient),
+                }
+                if len(examples[key]) < 25:
+                    examples[key].append(record)
+                if len(examples_by_family[family][key]) < 10:
+                    examples_by_family[family][key].append(record)
+    return (
+        totals,
+        dict(by_family),
+        examples,
+        dict(examples_by_family),
+    )
+
+
 def audit_model_structure(
     model: gp.Model,
     *,
@@ -161,6 +243,15 @@ def audit_model_structure(
     variables = model.getVars()
     constraint_names = list(model.getAttr("ConstrName", constraints))
     variable_names = list(model.getAttr("VarName", variables))
+    lower_bounds = [
+        float(value) for value in model.getAttr("LB", variables)
+    ]
+    upper_bounds = [
+        float(value) for value in model.getAttr("UB", variables)
+    ]
+    objective = [
+        float(value) for value in model.getAttr("Obj", variables)
+    ]
     row_nonzeros = [int(value) for value in matrix.getnnz(axis=1)]
     column_nonzeros = [int(value) for value in matrix.getnnz(axis=0)]
     constraint_families, unclassified_constraints = _summarize_families(
@@ -175,6 +266,20 @@ def audit_model_structure(
         count_key="variables",
         nonzero_key="matrix_nonzeros",
     )
+    (
+        variable_status,
+        variable_status_by_family,
+        variable_status_examples,
+        variable_status_examples_by_family,
+    ) = _variable_status_audit(
+        variable_names,
+        column_nonzeros,
+        lower_bounds,
+        upper_bounds,
+        objective,
+    )
+    for row in variable_families:
+        row.update(variable_status_by_family.get(str(row["family"]), {}))
     return {
         "schema_version": "constraint_family_audit_v2",
         "scope": "raw_model_before_presolve",
@@ -186,6 +291,11 @@ def audit_model_structure(
         },
         "constraint_families": constraint_families,
         "variable_families": variable_families,
+        "variable_status": variable_status,
+        "variable_status_examples": variable_status_examples,
+        "variable_status_examples_by_family": (
+            variable_status_examples_by_family
+        ),
         "largest_constraints": _largest_matrix_entries(
             constraint_names,
             row_nonzeros,

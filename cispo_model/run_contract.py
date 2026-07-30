@@ -442,9 +442,17 @@ def solver_result_is_accepted(
     result_manifest_valid: bool,
 ) -> bool:
     """Return the exact success condition expected by wrappers and Slurm."""
+    hard_checks = (
+        solution_qc.get("hard_checks")
+        if solution_qc is not None
+        else None
+    )
     return bool(
         solve_report.get("status") == "OPTIMAL"
         and solution_qc is not None
         and solution_qc.get("status") == "PASS"
+        and isinstance(hard_checks, dict)
+        and bool(hard_checks)
+        and all(bool(value) for value in hard_checks.values())
         and result_manifest_valid
     )

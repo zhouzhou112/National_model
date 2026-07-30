@@ -39,7 +39,7 @@ class RunContractTests(unittest.TestCase):
 
     def test_solver_success_requires_optimal_qc_and_manifest(self):
         report = {"status": "OPTIMAL"}
-        qc = {"status": "PASS"}
+        qc = {"status": "PASS", "hard_checks": {"power_balance": True}}
         self.assertTrue(
             solver_result_is_accepted(
                 report, qc, result_manifest_valid=True
@@ -48,6 +48,13 @@ class RunContractTests(unittest.TestCase):
         for changed_report, changed_qc, manifest in (
             ({"status": "TIME_LIMIT"}, qc, True),
             (report, {"status": "FAIL"}, True),
+            (
+                report,
+                {"status": "PASS", "hard_checks": {"power_balance": False}},
+                True,
+            ),
+            (report, {"status": "PASS", "hard_checks": {}}, True),
+            (report, {"status": "PASS"}, True),
             (report, qc, False),
             (report, None, True),
         ):

@@ -85,6 +85,29 @@ class SolverProfileTests(unittest.TestCase):
         )
         self.assertEqual(diagnostic.raw["numerics"]["dual_reductions"], 0)
         self.assertEqual(diagnostic.raw["numerics"]["inf_unbd_info"], 1)
+        auto_stable = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_auto_order_stable_basis_v3.json"
+            )
+        )
+        self.assertEqual(auto_stable.raw["numerics"]["method"], 2)
+        self.assertEqual(auto_stable.raw["numerics"]["threads"], 16)
+        self.assertEqual(auto_stable.raw["numerics"]["presolve"], 2)
+        self.assertNotIn("aggregate", auto_stable.raw["numerics"])
+        self.assertEqual(auto_stable.raw["numerics"]["crossover"], 1)
+        self.assertEqual(
+            auto_stable.raw["numerics"]["crossover_basis"],
+            1,
+        )
+        self.assertEqual(
+            auto_stable.raw["numerics"]["dual_reductions"],
+            1,
+        )
+        self.assertEqual(
+            auto_stable.raw["numerics"]["inf_unbd_info"],
+            0,
+        )
 
         limited = load_model_config(
             solver_path=(
@@ -137,6 +160,25 @@ class SolverProfileTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(
                 ValueError, "crossover_basis is outside"
+            ):
+                load_model_config(solver_path=path)
+
+    def test_solver_profile_rejects_invalid_aggregate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "invalid_aggregate.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "solver_profile_version": "v1",
+                        "profile_id": "invalid_aggregate",
+                        "numerics": {"aggregate": 3},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                "numerics.aggregate is outside",
             ):
                 load_model_config(solver_path=path)
 

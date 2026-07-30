@@ -21,6 +21,18 @@ class ModelStructureAuditTests(unittest.TestCase):
             family_for_name("dac_capacity_accounting[0,0]"),
             "dac_annual_accounting",
         )
+        self.assertEqual(
+            family_for_name("flexible_service_capacity_gw[0,0]"),
+            "demand_and_flexibility",
+        )
+        self.assertEqual(
+            family_for_name("firm_flexible_capacity_credit_gw[0,0]"),
+            "demand_and_flexibility",
+        )
+        self.assertEqual(
+            family_for_name("v5_ev_v2g_firm_credit_contract_bound[0]"),
+            "demand_and_flexibility",
+        )
         self.assertEqual(family_for_name("unknown_row"), "other_unclassified")
 
     def test_audit_counts_raw_rows_columns_and_nonzeros(self):
@@ -68,6 +80,41 @@ class ModelStructureAuditTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "safety limit"):
             audit_model_structure(model, max_matrix_nonzeros=1)
+
+    def test_audit_reports_fixed_and_unconstrained_variables(self):
+        model = gp.Model("structure_audit_variable_status_test")
+        model.Params.OutputFlag = 0
+        model.addVar(
+            lb=0.0,
+            ub=0.0,
+            name="heating_shift_up_gw",
+        )
+        model.addVar(
+            lb=0.0,
+            ub=1.0,
+            name="ev_mobility_charge_gw",
+        )
+        audit = audit_model_structure(model, max_matrix_nonzeros=1)
+        self.assertEqual(audit["variable_status"]["fixed_variables"], 1)
+        self.assertEqual(audit["variable_status"]["fixed_zero_variables"], 1)
+        self.assertEqual(
+            audit["variable_status"][
+                "unconstrained_zero_objective_variables"
+            ],
+            1,
+        )
+        self.assertEqual(
+            audit["variable_status_examples"]["fixed_zero_variables"][0][
+                "variable_name"
+            ],
+            "heating_shift_up_gw",
+        )
+        self.assertEqual(
+            audit["variable_status_examples"][
+                "unconstrained_zero_objective_variables"
+            ][0]["variable_name"],
+            "ev_mobility_charge_gw",
+        )
 
 
 if __name__ == "__main__":

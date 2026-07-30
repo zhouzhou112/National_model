@@ -63,6 +63,12 @@ def _load_components(
 def build_audit(data_root: Path) -> dict[str, Any]:
     from cispo_model import data as data_module
     from cispo_model.config import load_model_config
+    from cispo_model.flexible_load_numerics import (
+        _compressed_thermal_state_audit,
+        _compressed_thermal_state_mask,
+        _service_effective_load_lower_bound,
+        _thermal_state_chain_numerical_risks,
+    )
 
     scenario_path = (
         PROJECT_ROOT
@@ -89,14 +95,211 @@ def build_audit(data_root: Path) -> dict[str, Any]:
                 "national_contracted_power_cap_gw_by_planning_year"
             ][str(planning_year)]
         )
+        shiftable_fraction = float(
+            year_config.raw["flexible_load"]["ev_v1g"][
+                "shiftable_energy_fraction"
+            ]
+        )
+        effective_load_lower_bound = _service_effective_load_lower_bound(
+            components=components,
+            thermal_down_upper={
+                component: service.thermal_envelopes_gw[
+                    f"{component}_down"
+                ]
+                for component in ("heating", "cooling")
+            },
+            fixed_ev_baseline=(
+                (1.0 - shiftable_fraction) * components["ev"]
+            ),
+            ev_discharge_upper=service.ev_availability[
+                "available_discharge_power_gw"
+            ],
+        )
+        thermal_state_chain_risk = (
+            _thermal_state_chain_numerical_risks(
+                thermal_envelopes=service.thermal_envelopes_gw,
+                thermal_parameters=service.thermal_parameters,
+                province_codes=provinces.province_code.to_numpy(
+                    dtype=int
+                ),
+                enforce_aggregate_zero=True,
+                compress_zero_control_states=True,
+            )
+        )
+        thermal_state_compression = {}
+        for component in ("heating", "cooling"):
+            support = (
+                service.thermal_envelopes_gw[f"{component}_up"] > 0.0
+            ) | (
+                service.thermal_envelopes_gw[f"{component}_down"] > 0.0
+            )
+            retained = _compressed_thermal_state_mask(
+                support,
+                service.thermal_parameters[component][
+                    "retention_per_hour"
+                ],
+            )
+            thermal_state_compression[component] = (
+                _compressed_thermal_state_audit(
+                    support,
+                    retained,
+                    service.thermal_parameters[component][
+                        "retention_per_hour"
+                    ],
+                )
+            )
+        fixed_zero_hourly_cells = {
+            "heating_shift_up": int(
+                np.count_nonzero(
+                    service.thermal_envelopes_gw["heating_up"] == 0.0
+                )
+            ),
+            "heating_shift_down": int(
+                np.count_nonzero(
+                    service.thermal_envelopes_gw["heating_down"] == 0.0
+                )
+            ),
+            "cooling_shift_up": int(
+                np.count_nonzero(
+                    service.thermal_envelopes_gw["cooling_up"] == 0.0
+                )
+            ),
+            "cooling_shift_down": int(
+                np.count_nonzero(
+                    service.thermal_envelopes_gw["cooling_down"] == 0.0
+                )
+            ),
+            "heating_state": int(
+                np.count_nonzero(
+                    ~(
+                        (
+                            service.thermal_envelopes_gw["heating_up"]
+                            > 0.0
+                        )
+                        | (
+                            service.thermal_envelopes_gw["heating_down"]
+                            > 0.0
+                        )
+                    ).any(axis=1)
+                )
+                * year_config.hours
+            ),
+            "cooling_state": int(
+                np.count_nonzero(
+                    ~(
+                        (
+                            service.thermal_envelopes_gw["cooling_up"]
+                            > 0.0
+                        )
+                        | (
+                            service.thermal_envelopes_gw["cooling_down"]
+                            > 0.0
+                        )
+                    ).any(axis=1)
+                )
+                * year_config.hours
+            ),
+            "ev_charge": int(
+                np.count_nonzero(
+                    service.ev_availability[
+                        "available_charge_power_gw"
+                    ]
+                    == 0.0
+                )
+            ),
+            "ev_discharge": int(
+                np.count_nonzero(
+                    service.ev_availability[
+                        "available_discharge_power_gw"
+                    ]
+                    == 0.0
+                )
+            ),
+            "ev_soc": int(
+                np.count_nonzero(
+                    service.ev_availability[
+                        "fleet_energy_capacity_gwh"
+                    ]
+                    == 0.0
+                )
+            ),
+            "ev_v1g_relocated": int(
+                np.count_nonzero(
+                    shiftable_fraction * components["ev"] == 0.0
+                )
+            ),
+        }
+        thermal_controls_omitted = sum(
+            fixed_zero_hourly_cells[key]
+            for key in (
+                "heating_shift_up",
+                "heating_shift_down",
+                "cooling_shift_up",
+                "cooling_shift_down",
+            )
+        )
+        thermal_states_eliminated = sum(
+            int(
+                thermal_state_compression[component][
+                    "redundant_inactive_state_variables_omitted"
+                ]
+            )
+            for component in ("heating", "cooling")
+        )
+        cell_count = len(provinces) * year_config.hours
+        departure_rows_omitted = int(
+            np.count_nonzero(
+                service.ev_mobility[
+                    "minimum_departure_energy_gwh"
+                ]
+                <= 0.0
+            )
+        )
+        effective_load_rows_omitted = int(
+            np.count_nonzero(effective_load_lower_bound >= 1e-6)
+        )
+        implemented_structural_reduction = {
+            "raw_variables_removed": int(
+                thermal_controls_omitted
+                + thermal_states_eliminated
+                + cell_count
+            ),
+            "raw_constraint_rows_removed": int(
+                thermal_controls_omitted
+                + 2 * thermal_states_eliminated
+                + 2 * cell_count
+                + departure_rows_omitted
+                + effective_load_rows_omitted
+            ),
+            "thermal_fixed_zero_control_variables_removed": int(
+                thermal_controls_omitted
+            ),
+            "thermal_fixed_zero_state_variables_removed": int(
+                sum(
+                    fixed_zero_hourly_cells[key]
+                    for key in ("heating_state", "cooling_state")
+                )
+            ),
+            "thermal_redundant_state_variables_eliminated": int(
+                thermal_states_eliminated
+            ),
+            "unused_ev_charge_deviation_variables_removed": int(
+                cell_count
+            ),
+            "unused_ev_charge_deviation_rows_removed": int(
+                2 * cell_count
+            ),
+            "redundant_departure_soc_rows_removed": (
+                departure_rows_omitted
+            ),
+            "redundant_effective_load_nonnegative_rows_removed": (
+                effective_load_rows_omitted
+            ),
+        }
         per_year[str(planning_year)] = {
             "province_count": len(provinces),
             "hours_per_province": year_config.hours,
-            "v1g_shiftable_energy_fraction": float(
-                year_config.raw["flexible_load"]["ev_v1g"][
-                    "shiftable_energy_fraction"
-                ]
-            ),
+            "v1g_shiftable_energy_fraction": shiftable_fraction,
             "v2g_national_contracted_power_cap_gw": cap,
             "maximum_ev_charge_power_gw": float(
                 service.ev_availability[
@@ -107,6 +310,22 @@ def build_audit(data_root: Path) -> dict[str, Any]:
                 service.ev_availability[
                     "available_discharge_power_gw"
                 ].max()
+            ),
+            "minimum_static_effective_load_gw": float(
+                effective_load_lower_bound.min()
+            ),
+            "fixed_zero_hourly_variable_cells": (
+                fixed_zero_hourly_cells
+            ),
+            "fixed_zero_hourly_variable_cells_total": int(
+                sum(fixed_zero_hourly_cells.values())
+            ),
+            "thermal_state_chain_presolve_risk": (
+                thermal_state_chain_risk
+            ),
+            "thermal_state_compression": thermal_state_compression,
+            "implemented_structural_reduction": (
+                implemented_structural_reduction
             ),
         }
 
@@ -224,6 +443,19 @@ def build_audit(data_root: Path) -> dict[str, Any]:
         "v1g_central_participation_is_15_percent": all(
             np.isclose(row["v1g_shiftable_energy_fraction"], 0.15)
             for row in per_year.values()
+        ),
+        "effective_load_static_lower_bound_positive_all_years": all(
+            row["minimum_static_effective_load_gw"] >= 1e-6
+            for row in per_year.values()
+        ),
+        "compressed_thermal_state_transitions_well_scaled_all_years": all(
+            bool(
+                row["thermal_state_chain_presolve_risk"][component][
+                    "zero_control_state_compression_well_scaled"
+                ]
+            )
+            for row in per_year.values()
+            for component in ("heating", "cooling")
         ),
     }
     failures = [name for name, passed in checks.items() if not passed]

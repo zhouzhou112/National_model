@@ -13,6 +13,9 @@ from cispo_model.config import (
     resolve_minimum_system_inertia_seconds,
 )
 from cispo_model.data import _apply_existing_vre_cohort_floors, load_model_data
+from cispo_model.flexible_load_numerics import (
+    _compressed_thermal_state_mask,
+)
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.timeblocks import make_time_blocks
 from cispo_model import load_center
@@ -71,6 +74,66 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertEqual(
             estimate_full_model_scale(self.config, self.data, 8760).variables,
             41_186_823,
+        )
+
+    def test_v5_scale_estimate_matches_service_contract_structure(self):
+        v5_config = load_model_config(
+            scenario_path="config/scenarios/flex_integrated_v5_central.json"
+        )
+        v5_data = load_model_data(v5_config)
+        base = estimate_full_model_scale(self.config, self.data, 168)
+        v5 = estimate_full_model_scale(v5_config, v5_data, 168)
+        zero_thermal_controls = sum(
+            int(
+                np.count_nonzero(
+                    v5_data.flexible_load_v4.thermal_envelopes_gw[
+                        f"{component}_{direction}"
+                    ][:, :168]
+                    == 0.0
+                )
+            )
+            for component in ("heating", "cooling")
+            for direction in ("up", "down")
+        )
+        redundant_thermal_states = 0
+        for component in ("heating", "cooling"):
+            support = (
+                v5_data.flexible_load_v4.thermal_envelopes_gw[
+                    f"{component}_up"
+                ][:, :168]
+                > 0.0
+            ) | (
+                v5_data.flexible_load_v4.thermal_envelopes_gw[
+                    f"{component}_down"
+                ][:, :168]
+                > 0.0
+            )
+            retained = _compressed_thermal_state_mask(
+                support,
+                v5_data.flexible_load_v4.thermal_parameters[component][
+                    "retention_per_hour"
+                ],
+            )
+            redundant_thermal_states += int(
+                retained.size - retained.sum()
+            )
+        self.assertGreater(zero_thermal_controls, 0)
+        self.assertGreater(redundant_thermal_states, 0)
+        self.assertEqual(
+            v5.variables - base.variables,
+            52_328 - zero_thermal_controls - redundant_thermal_states,
+        )
+        self.assertEqual(
+            v5.constraints - base.constraints,
+            62_652
+            - zero_thermal_controls
+            - 2 * redundant_thermal_states,
+        )
+        preflight = run_preflight(v5_config, v5_data)
+        checks = {row["check"]: row for row in preflight["checks"]}
+        self.assertEqual(
+            checks["v5_calibration_contract_loaded"]["status"],
+            "PASS",
         )
 
     def test_nuclear_biomass_and_battery_bounds_are_explicit(self):

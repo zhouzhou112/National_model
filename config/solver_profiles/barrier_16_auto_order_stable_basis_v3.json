@@ -1,0 +1,16 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_auto_order_stable_basis_v3",
+  "description": "Diagnostic 16-thread Barrier candidate retaining automatic presolve after exact V5 zero-control state elimination and requesting the more robust crossover basis construction.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "crossover_basis": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import signal
 from datetime import datetime
@@ -331,6 +332,8 @@ def solve_and_report(
             "optimality_tolerance": float(model.Params.OptimalityTol),
             "barrier_convergence_tolerance": float(model.Params.BarConvTol),
             "pdhg_gpu": int(getattr(model.Params, "PDHGGPU", 0)),
+            "bar_homogeneous": int(model.Params.BarHomogeneous),
+            "bar_correctors": int(model.Params.BarCorrectors),
             "bar_order": int(model.Params.BarOrder),
             "pre_sparsify": int(model.Params.PreSparsify),
             "aggregate": int(model.Params.Aggregate),
@@ -351,10 +354,20 @@ def solve_and_report(
         },
     }
     if model.SolCount:
+        kappa: float | None = None
+        if not model.IsMIP:
+            try:
+                candidate = float(model.Kappa)
+                if math.isfinite(candidate):
+                    kappa = candidate
+            except (AttributeError, gp.GurobiError):
+                kappa = None
         report["solution_quality"] = {
             "maximum_constraint_violation": float(model.ConstrVio),
             "maximum_bound_violation": float(model.BoundVio),
             "maximum_dual_violation": float(model.DualVio),
+            "kappa": kappa,
+            "kappa_exact_computed": False,
         }
     if model.Status == GRB.INFEASIBLE and compute_iis:
         model.computeIIS()

@@ -1188,7 +1188,56 @@ L^{EV,act}_{g,t}=L^{EV,fixed}_{g,t}+P^{smart}_{g,t}.
 
 所有参与率、状态时长/保留率和响应成本均有中心/低/高登记；它们是可直接运行的工程情景假设，不是已观测的中国省级校准值。V1G 是中心情景，V2G 仅独立敏感性；二者均不提供容量、备用或惯量信用。完整公式、来源映射与输入生成/校验合同见 `config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md`。
 
-### 5.8.0b 截断时域的价值核算与当前验证边界
+### 5.8.0b V5 集成需求柔性与数值等价稀疏化
+
+正式比较集只保留不可变 Base 与一个集成中央反事实。Base 不创建需求柔性变量；`flex_integrated_v5_central` 同时启用数据支撑的冷热服务包络、付费 V1G、内生付费 V2G 合同及折减后的 firm-flexibility capacity credit。中央 V1G 仅把不可变 EV 充电基线的 15% 作为可调服务，其余 85% 固定；V2G 合同满足
+
+\[
+0\le K^{V2G}_g\le K^{V1G}_g,\qquad
+\sum_g K^{V2G}_g\le \overline K^{V2G}_y,
+\]
+
+且共享同一批签约充电接口：
+
+\[
+P^{charge}_{g,t}+P^{discharge}_{g,t}
+\le a^{EV}_{g,t}K^{V1G}_g,\qquad
+P^{discharge}_{g,t}\le a^{EV}_{g,t}K^{V2G}_g.
+\]
+
+该聚合车队包络允许不同车辆同时充、放电，但禁止充电与放电分别占满两套嵌套合同而重复使用双向接口；实现上以该行替换原充电单向合同，不增加逐小时约束数量。V2G 分别支付年度可用性、双向基础设施、车主参与及放电退化成本。V1G 也不是免费资源：合同容量支付年度控制/聚合成本，原无序充电基线被向下移走的电量支付激活成本。额外用于补偿 V2G 放电损耗的充电不重复计入 V1G relocation。
+
+V5 不使用可由模型自由压低的内生 effective peak 替换容量裕度峰值。容量充裕性仍以完整 8,760 h 不可变 Base 各省峰值为右端，仅允许合同容量、峰值四小时窗口可交付功率/能量包络及透明 derating 共同限定的 firm credit：
+
+\[
+C^{supply}_g+\sum_{s\in FLEX}F^{firm}_{g,s}
+\ge (1+m)\max_{t\in T_{8760}}L^0_{g,t}.
+\]
+
+冷热、V1G 与 V2G 的中央 derating 分别为 0.60、0.60、0.50 和 0.50；这些是需做范围敏感性的工程假设，不是中国省级 ELCC 估计。需求柔性不获得备用或惯量信用。完整参数、来源和确定性输入合同见 `config/FLEXIBLE_LOAD_V5_CONTRACT.md`。
+
+生产构模只允许数学等价的结构稀疏化。逐省逐时控制变量仅在经校验的物理上界严格大于零时创建。冷热状态只在上调或下调具有正物理上界的小时及少量纯衰减锚点创建。若相邻保留节点为 \(t_{i-1}\) 和 \(t_i\)，两者间控制严格固定为零，则原逐小时递推被精确消元为
+
+\[
+S_{g,t_i}=\rho_g^{\Delta_i}S_{g,t_{i-1}}
++\eta^{in}_gP^{up}_{g,t_i}
+-P^{down}_{g,t_i}/\eta^{out}_g,\qquad
+\Delta_i=(t_i-t_{i-1})\bmod |T|.
+\]
+
+纯衰减锚点保证所有保留转移系数不低于 0.1；未显式创建的小时按 \(S_{g,t_i+k}=\rho_g^kS_{g,t_i}\) 解后重建。由于 \(0<\rho_g\le1\) 且状态上界在所选时域内不随小时变化，中间状态的非负下界和上界均由前一保留节点蕴含，因此该消元不改变可行域。上下调上界在完整时域恒为零的省份不创建任何对应状态节点。
+
+`minimum_departure_energy_gwh=0` 的兼容行不进入 LP。V5 目标函数使用单边 V1G relocation，因此不参与目标或任何约束的双边 charge-deviation epigraph 从 LP 删除，其绝对偏差仅在解后重建。仅当所有控制变量的保守界共同证明
+
+\[
+\underline L^{eff}_{g,t}>10^{-6}\ {\rm GW}
+\]
+
+时，才省略该单元的 \(L^{eff}_{g,t}\ge0\) 行；否则保留显式约束。上述删减不改变可行域、目标函数、输出单位或 QC 重建。
+
+未压缩的周期冷热状态在长时间零控制区间内会被自动 presolve 逆向消去并累积大系数。runner 因此在建模前和建模后分别审计原链风险、稀疏状态表示和 solver contract，二者不一致即拒绝 `optimize()`。状态精确消元后允许继续使用自动 aggregation；当前诊断候选 `barrier_16_auto_order_stable_basis_v3` 仍显式采用 `Crossover=1` 和较稳健的 `CrossoverBasis=1`。`Aggregate=0` 保留为未来矩阵审计再次发现系数放大时的保守回退，而不是默认生产设置。候选 profile 只有通过匹配 1 h、24 h、168 h 和授权长时域门禁后才能升级，不能仅凭 presolve 结果称为 production。
+
+### 5.8.0c 截断时域的价值核算与当前验证边界
 
 对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：
 
@@ -1197,9 +1246,9 @@ L^{EV,act}_{g,t}=L^{EV,fixed}_{g,t}+P^{smart}_{g,t}.
 - `accounting_scope=SELECTED_HORIZON_OPERATION_COST`：只覆盖当前所选小时的燃料、可变运维、移峰等运行成本；
 - `optimization_hours` 与 `result_use`：强制携带时域和结果用途。
 
-匹配 Base/V4 的 2030→2040→2050→2060 168 h 本地序列已验证：递进 planning state、全部硬 QC、输入/结果 manifest 和 resume 均闭合；V4 相对 Base 的 raw variables/constraints/nonzeros 仅增加约 `4.59%/6.24%/3.27%`。四年均出现 EV 充电重排，但中心参数下冷热服务未被购买；波浪能候选已进入模型和 QC，但没有最优装机或发电。这些结果只能证明实现、数据传递和机制响应，不能证明冷热或波浪能在全年无价值，也不能把 V4 目标差写成年度净成本。
+匹配 Base/V4 的历史 2030→2040→2050→2060 168 h 本地序列曾验证递进 planning state、硬 QC、输入/结果 manifest 和 resume；它只保留为旧 formulation 的复现证据，不能替代 V5 门禁。四年截断结果中出现的 EV 重排、未购买冷热服务或零波浪装机都只能说明对应窗口内的机制响应，不能证明这些技术在全年无价值，也不能把目标差写成年度净成本。
 
-科学闭环的最小后续是独立 low/high V4 overlays 的参数敏感性，先检查 2030 与 2060 的匹配 168 h 端点。只有该门禁稳定且长时域收益明确后，才可申请隔离 744 h；完整 accepted Base anchor 之前不得运行 MGA。此阶段不再增加新的冷热/EV 状态、车辆行为或数据校准需求。
+当前科学闭环必须重新对 Base 与唯一 V5 中央反事实做匹配门禁。只有 V5 在相同代码、数据、参数和数值 profile 下获得完整 8,760 h 的 `OPTIMAL`、全部 hard checks、当前 input manifest、有效 result manifest 及完整成本核算，才可解释年度容量与系统价值。V5 参数登记中的 low/high 只在中央反事实工程闭合后执行；完整 accepted Base anchor 之前不得运行 MGA。
 
 ## 5.8.1 本省负荷满足方程
 

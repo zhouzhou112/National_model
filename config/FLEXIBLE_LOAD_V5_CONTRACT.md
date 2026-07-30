@@ -53,13 +53,21 @@ Each service uses a non-negative equivalent inventory \(S_{p,t}\):
 
 \[
 S_{p,t}=\rho_p S_{p,t-1}
- \eta^{in}_p P^{up}_{p,t}
+ +\eta^{in}_p P^{up}_{p,t}
  -P^{down}_{p,t}/\eta^{out}_p.
 \]
 
 The state is periodic over the selected horizon. Only an 8760-hour accepted
 run may be interpreted as an annual scientific result; truncated runs are
 `TEST_ONLY_TRUNCATED_HORIZON`.
+
+Implementation removes hours whose increase and reduction controls are both
+fixed to zero. Consecutive retained state nodes use the exact compounded
+coefficient \(\rho_p^{\Delta t}\); sparse decay anchors keep this coefficient
+at or above 0.1. Omitted hourly states are reconstructed after solve. Because
+\(0<\rho_p\le1\) and the contracted state bound is time invariant, every
+intermediate non-negativity and upper-bound row is implied by its predecessor.
+This is an algebraic elimination, not a relaxation of the comfort envelope.
 
 ## 4. V1G smart charging
 
@@ -95,6 +103,19 @@ V2G is an endogenous incremental contract:
 0\le K^{V2G}_p\le K^{V1G}_p,\qquad
 \sum_p K^{V2G}_p\le \overline K^{V2G}_y.
 \]
+
+The bidirectional subset shares the same contracted connection interface:
+
+\[
+P^{charge}_{p,t}+P^{discharge}_{p,t}
+\le a^{EV}_{p,t}K^{V1G}_p,\qquad
+P^{discharge}_{p,t}\le a^{EV}_{p,t}K^{V2G}_p.
+\]
+
+This aggregate-fleet envelope permits different vehicles to charge and
+discharge concurrently, but forbids double use of the contracted charger
+portfolio. It replaces the previous charge-only contract row and therefore
+does not add an hourly constraint family.
 
 The 2030 scenario upper bound of 10 GW is anchored to the national policy goal
 of ten-gigawatt-scale bidirectional flexibility. It is a conservative
@@ -164,6 +185,11 @@ The minimum gate sequence is:
 3. fresh 24-hour Base/V5 mechanism gates;
 4. four-year 168-hour planning-sequence gates;
 5. one authorized 2030/744-hour cold engineering gate.
+
+The current long-horizon diagnostic solver candidate is
+`barrier_16_auto_order_stable_basis_v3`: automatic presolve is retained after
+state-chain elimination, while `Crossover=1` and `CrossoverBasis=1` request a
+basic solution through the more robust crossover-basis construction.
 
 No truncated gate is an annual scientific result or a valid 2040 planning
 anchor. Full-year interpretation additionally requires `OPTIMAL`,

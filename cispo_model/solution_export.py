@@ -205,6 +205,11 @@ def export_operational_solution(
         name: _value(values)
         for name, values in artifacts.index["actual_load_components_gw"].items()
     }
+    flexible_formulation = str(
+        config.raw["flexible_load"].get(
+            "formulation", "daily_energy_shift_v1"
+        )
+    )
     zero_load = np.zeros_like(baseline_load)
     heating_up = _value(variables.get("heating_shift_up", zero_load))
     heating_down = _value(variables.get("heating_shift_down", zero_load))
@@ -228,9 +233,24 @@ def export_operational_solution(
         variables.get("ev_mobility_discharge", zero_load)
     )
     ev_mobility_soc = _value(variables.get("ev_mobility_soc", zero_load))
-    ev_mobility_charge_deviation = _value(
-        variables.get("ev_mobility_charge_deviation", zero_load)
-    )
+    if "ev_mobility_charge_deviation" in variables:
+        ev_mobility_charge_deviation = _value(
+            variables["ev_mobility_charge_deviation"]
+        )
+    elif flexible_formulation == "integrated_service_constrained_v5":
+        flexible_ev_baseline = (
+            float(
+                config.raw["flexible_load"]["ev_v1g"][
+                    "shiftable_energy_fraction"
+                ]
+            )
+            * baseline_components["ev"]
+        )
+        ev_mobility_charge_deviation = np.abs(
+            ev_mobility_charge - flexible_ev_baseline
+        )
+    else:
+        ev_mobility_charge_deviation = zero_load.copy()
     ev_mobility_v1g_relocated = _value(
         variables.get("ev_mobility_v1g_relocated", zero_load)
     )
@@ -371,11 +391,6 @@ def export_operational_solution(
         )
         for component in ("heating", "cooling", "ev")
     }
-    flexible_formulation = str(
-        config.raw["flexible_load"].get(
-            "formulation", "daily_energy_shift_v1"
-        )
-    )
     thermal_state_formulation = flexible_formulation in {
         "state_envelope_v2",
         "comfort_envelope_v3",
@@ -747,6 +762,17 @@ def export_operational_solution(
     )
     storage_overlap = np.minimum(storage_charge, storage_discharge)
     startup_shutdown_overlap = np.minimum(startup, shutdown)
+    heating_overlap = np.minimum(heating_up, heating_down)
+    cooling_overlap = np.minimum(cooling_up, cooling_down)
+    ev_grid_charge_for_overlap = (
+        ev_mobility_charge
+        if service_contract_formulation
+        else v2g_charge
+    )
+    ev_v2g_overlap = np.minimum(
+        ev_grid_charge_for_overlap,
+        v2g_discharge,
+    )
 
     storage_table = data.storage.set_index("technology").reindex(STORAGE_TECHS)
     eta_c = storage_table.charge_efficiency.to_numpy(dtype=float)
@@ -1033,6 +1059,7 @@ def export_operational_solution(
         else 0.0
     )
     v5_national_v2g_cap_violation = 0.0
+    v5_shared_connection_power_violation = 0.0
     if v5_formulation:
         national_v2g_cap = float(
             config.raw["flexible_load"]["ev_v2g"][
@@ -1042,6 +1069,22 @@ def export_operational_solution(
         v5_national_v2g_cap_violation = max(
             float(flexible_service_capacity[:, 3].sum()) - national_v2g_cap,
             0.0,
+        )
+        if data.flexible_load_v4 is None:
+            raise ValueError("V5 shared-connection QC requires V5 inputs")
+        connected = data.flexible_load_v4.ev_availability[
+            "connected_vehicle_fraction"
+        ][:, :hours]
+        shared_connection_power = (
+            connected * flexible_service_capacity[:, 2, None]
+        )
+        v5_shared_connection_power_violation = float(
+            np.maximum(
+                ev_mobility_charge
+                + ev_mobility_discharge
+                - shared_connection_power,
+                0.0,
+            ).max()
         )
     v5_firm_credit_bound_violation = (
         float(
@@ -1056,6 +1099,9 @@ def export_operational_solution(
     )
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
+        "flexible_load_structural_audit": artifacts.index.get(
+            "flexible_load_structural_audit", {}
+        ),
         "optimization_hours": hours,
         "maximum_power_balance_residual_gw": float(np.abs(balance_residual).max()),
         "maximum_load_component_input_closure_error_gw": float(
@@ -1142,6 +1188,9 @@ def export_operational_solution(
         "maximum_v5_national_v2g_cap_violation_gw": (
             v5_national_v2g_cap_violation
         ),
+        "maximum_v5_shared_connection_power_violation_gw": (
+            v5_shared_connection_power_violation
+        ),
         "maximum_v5_firm_capacity_credit_bound_violation_gw": (
             v5_firm_credit_bound_violation
         ),
@@ -1161,9 +1210,21 @@ def export_operational_solution(
             ((heating_up > flow_direction_tolerance_gw)
              & (heating_down > flow_direction_tolerance_gw)).sum()
         ),
+        "maximum_heating_up_down_overlap_gw": float(
+            heating_overlap.max()
+        ),
+        "total_heating_up_down_overlap_gwh": float(
+            heating_overlap.sum()
+        ),
         "cooling_simultaneous_up_down_province_hours": int(
             ((cooling_up > flow_direction_tolerance_gw)
              & (cooling_down > flow_direction_tolerance_gw)).sum()
+        ),
+        "maximum_cooling_up_down_overlap_gw": float(
+            cooling_overlap.max()
+        ),
+        "total_cooling_up_down_overlap_gwh": float(
+            cooling_overlap.sum()
         ),
         "ev_v1g_simultaneous_up_down_province_hours": int(
             ((ev_up > flow_direction_tolerance_gw)
@@ -1173,14 +1234,18 @@ def export_operational_solution(
             (
                 (
                     (
-                        ev_mobility_charge
-                        if service_contract_formulation
-                        else v2g_charge
+                        ev_grid_charge_for_overlap
                     )
                     > flow_direction_tolerance_gw
                 )
                 & (v2g_discharge > flow_direction_tolerance_gw)
             ).sum()
+        ),
+        "maximum_ev_v2g_charge_discharge_overlap_gw": float(
+            ev_v2g_overlap.max()
+        ),
+        "total_ev_v2g_charge_discharge_overlap_gwh": float(
+            ev_v2g_overlap.sum()
         ),
         "minimum_up_reserve_margin_gw": float(up_margin.min()),
         "minimum_down_reserve_margin_gw": float(down_margin.min()),
@@ -1468,6 +1533,11 @@ def export_operational_solution(
         "v5_v2g_national_power_cap": (
             not v5_formulation
             or qc["maximum_v5_national_v2g_cap_violation_gw"]
+            <= tolerance
+        ),
+        "v5_shared_bidirectional_connection_power": (
+            not v5_formulation
+            or qc["maximum_v5_shared_connection_power_violation_gw"]
             <= tolerance
         ),
         "v5_firm_capacity_credit_physical_bound": (

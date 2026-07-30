@@ -910,6 +910,18 @@ class ModelConfig:
             raise ValueError(
                 "numerics.crossover_basis is outside the Gurobi-supported range"
             )
+        if int(numerics.get("aggregate", 1)) not in {0, 1, 2}:
+            raise ValueError(
+                "numerics.aggregate is outside the Gurobi-supported range"
+            )
+        if int(numerics.get("agg_fill", -1)) < -1:
+            raise ValueError(
+                "numerics.agg_fill must be -1 or a nonnegative integer"
+            )
+        if int(numerics.get("pre_sparsify", -1)) not in {-1, 0, 1, 2}:
+            raise ValueError(
+                "numerics.pre_sparsify is outside the Gurobi-supported range"
+            )
         if int(numerics.get("dual_reductions", 1)) not in {0, 1}:
             raise ValueError("numerics.dual_reductions must be 0 or 1")
         if int(numerics.get("inf_unbd_info", 0)) not in {0, 1}:

@@ -1057,6 +1057,7 @@ def build_full_year_monolithic(
         },
         actual_load_components_gw=flexible_load.actual_components_gw,
         flexible_load_day_slices=flexible_load.day_slices,
+        flexible_load_structural_audit=flexible_load.structural_audit,
         interprovincial_reverse_edge_rows=ac_edge_rows,
         reservoir_inflow_gwh=hydro.reservoir_inflow_gwh,
         reservoir_energy_upper_gwh=hydro.reservoir_energy_upper_gwh,

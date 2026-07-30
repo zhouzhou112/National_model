@@ -41,7 +41,9 @@ Ordering time: 0.30s
  Dense cols : 12
  AA' NZ     : 1.000e+04
  Factor NZ  : 4.000e+04 (roughly 1 GB of memory)
- Factor Ops : 2.000e+06
+Factor Ops : 2.000e+06
+Numerical trouble encountered
+Restart crossover...
 Barrier performed 99 iterations in 35.96 seconds
   1000 DPushes remaining with DInf 1.0e-03                36s
      0 DPushes remaining with DInf 1.0e-03                37s
@@ -52,6 +54,10 @@ Solved in 73826 iterations and 39.39 seconds
 """
         )
         self.assertEqual(parsed["barrier_termination"], "PERFORMED")
+        self.assertTrue(parsed["numerical_trouble_encountered"])
+        self.assertEqual(parsed["numerical_trouble_count"], 1)
+        self.assertEqual(parsed["restart_crossover_count"], 1)
+        self.assertFalse(parsed["suboptimal_termination_warning"])
         self.assertEqual(parsed["barrier_iterations"], 99)
         self.assertEqual(parsed["dense_columns"], 12)
         self.assertEqual(parsed["crossover_seconds"], 3.01)
@@ -80,9 +86,23 @@ Solved in 73826 iterations and 39.39 seconds
                             "method": 2,
                             "crossover": 3,
                             "crossover_basis": 0,
+                            "aggregate": 0,
+                            "agg_fill": -1,
+                            "pre_sparsify": 2,
+                            "bar_homogeneous": 1,
+                            "bar_correctors": -1,
+                            "numeric_focus": 2,
+                            "scale_flag": 2,
                             "lp_warm_start": 2,
                             "dual_reductions": 1,
                             "inf_unbd_info": 0,
+                        },
+                        "solution_quality": {
+                            "maximum_constraint_violation": 1e-8,
+                            "maximum_bound_violation": 2e-9,
+                            "maximum_dual_violation": 3e-8,
+                            "kappa": 42.0,
+                            "kappa_exact_computed": False,
                         },
                         "model_statistics": {
                             "variables": 3,
@@ -96,8 +116,56 @@ Solved in 73826 iterations and 39.39 seconds
             (root / "solution_qc.json").write_text(
                 json.dumps({"status": "PASS"}), encoding="utf-8"
             )
-            (root / "build_report.json").write_text("{}", encoding="utf-8")
+            (root / "build_report.json").write_text(
+                json.dumps(
+                    {
+                        "solver_numerical_compatibility": {
+                            "status": "PASS",
+                            "aggregate_zero_required": True,
+                            "stable_crossover_required": True,
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
             (root / "run_scope.json").write_text("{}", encoding="utf-8")
+            (root / "solver_telemetry.jsonl").write_text(
+                "\n".join(
+                    json.dumps(row)
+                    for row in (
+                        {
+                            "event": "solver_progress",
+                            "phase": "barrier",
+                            "iteration": 1,
+                            "runtime_seconds": 1.0,
+                            "primal_infeasibility": 10.0,
+                            "dual_infeasibility": 2.0,
+                            "max_memory_used_gb": 1.0,
+                        },
+                        {
+                            "event": "solver_progress",
+                            "phase": "simplex",
+                            "iteration": 100,
+                            "runtime_seconds": 2.0,
+                            "primal_infeasibility": 5.0,
+                            "dual_infeasibility": 0.0,
+                            "max_memory_used_gb": 1.5,
+                        },
+                        {
+                            "event": "solver_progress",
+                            "phase": "simplex",
+                            "iteration": 200,
+                            "runtime_seconds": 3.0,
+                            "primal_infeasibility": 8.0,
+                            "dual_infeasibility": 0.0,
+                            "max_memory_used_gb": 1.5,
+                        },
+                        {"event": "solver_finished", "status": "OPTIMAL"},
+                    )
+                )
+                + "\n",
+                encoding="utf-8",
+            )
             (root / "constraint_family_audit.json").write_text(
                 json.dumps(
                     {
@@ -122,7 +190,26 @@ Solved in 73826 iterations and 39.39 seconds
         self.assertEqual(collected["largest_raw_variable_family_nonzeros"], 10)
         self.assertEqual(collected["solver_crossover"], 3)
         self.assertEqual(collected["solver_crossover_basis"], 0)
+        self.assertEqual(collected["solver_aggregate"], 0)
+        self.assertEqual(collected["solver_pre_sparsify"], 2)
+        self.assertEqual(collected["solver_bar_homogeneous"], 1)
+        self.assertEqual(
+            collected["solver_numerical_compatibility_status"], "PASS"
+        )
+        self.assertTrue(collected["solver_aggregate_zero_required"])
+        self.assertTrue(collected["solver_stable_crossover_required"])
         self.assertEqual(collected["solver_lp_warm_start"], 2)
+        self.assertEqual(collected["solution_kappa"], 42.0)
+        self.assertFalse(collected["kappa_exact_computed"])
+        self.assertEqual(
+            collected["telemetry_event_counts"]["solver_progress"], 3
+        )
+        simplex = collected["telemetry_phase_summaries"]["simplex"]
+        self.assertEqual(simplex["samples"], 2)
+        self.assertEqual(
+            simplex["minimum_positive_primal_infeasibility"], 5.0
+        )
+        self.assertEqual(simplex["last_primal_infeasibility"], 8.0)
 
 
 if __name__ == "__main__":

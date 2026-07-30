@@ -15,6 +15,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from cispo_model.config import ROOT, load_model_config
 from cispo_model.data import DATA_ROOT, load_model_data
+from cispo_model.flexible_load_numerics import (
+    assess_flexible_load_solver_compatibility,
+    prebuild_flexible_load_solver_compatibility,
+)
 from cispo_model.io_contract import validate_result_manifest, write_run_provenance
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
 from cispo_model.run_contract import (
@@ -295,6 +299,13 @@ def main() -> None:
         encoding="utf-8",
     )
     data = load_model_data(config, planning_state=planning_state)
+    prebuild_solver_numerical_compatibility = (
+        prebuild_flexible_load_solver_compatibility(
+            config,
+            data,
+            hours=optimization_hours,
+        )
+    )
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
     if preflight["status"] != "PASS":
         raise SystemExit("Preflight HARD_FAIL; model was not built")
@@ -348,6 +359,9 @@ def main() -> None:
         "scientific_solver_artifacts_requested": bool(
             args.export_scientific_solver_artifacts
         ),
+        "solver_numerical_compatibility_prebuild": (
+            prebuild_solver_numerical_compatibility
+        ),
     }
     (output_dir / "run_scope.json").write_text(
         json.dumps(scope_report, ensure_ascii=False, indent=2) + "\n",
@@ -382,7 +396,19 @@ def main() -> None:
         )
     if args.preflight_only:
         print(json.dumps(scope_report, ensure_ascii=False, indent=2))
+        if prebuild_solver_numerical_compatibility["status"] != "PASS":
+            raise SystemExit(
+                "Preflight numerical compatibility HARD_FAIL: "
+                + str(prebuild_solver_numerical_compatibility["reason"])
+            )
         return
+    if (
+        not args.build_only
+        and prebuild_solver_numerical_compatibility["status"] != "PASS"
+    ):
+        raise RuntimeError(
+            str(prebuild_solver_numerical_compatibility["reason"])
+        )
     if available_gb < required_gb:
         raise SystemExit(
             f"HARD_FAIL: available memory {available_gb:.1f} GiB < "
@@ -472,6 +498,24 @@ def main() -> None:
             encoding="utf-8",
         )
     statistics = model_statistics(artifacts.model)
+    flexible_load_structural_audit = artifacts.index.get(
+        "flexible_load_structural_audit", {}
+    )
+    flexible_formulation = str(
+        config.raw["flexible_load"].get("formulation")
+    )
+    compatibility_structural_audit = (
+        flexible_load_structural_audit
+        if bool(config.raw["features"]["flexible_load"])
+        and flexible_formulation == "integrated_service_constrained_v5"
+        else {}
+    )
+    solver_numerical_compatibility = (
+        assess_flexible_load_solver_compatibility(
+            compatibility_structural_audit,
+            config.raw["numerics"],
+        )
+    )
     build_report = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "build_started_at": started.isoformat(),
@@ -499,6 +543,19 @@ def main() -> None:
                 else None
             ),
         },
+        "flexible_load_structural_audit": (
+            flexible_load_structural_audit
+        ),
+        "solver_numerical_compatibility": (
+            solver_numerical_compatibility
+        ),
+        "solver_numerical_compatibility_prebuild": (
+            prebuild_solver_numerical_compatibility
+        ),
+        "solver_numerical_compatibility_gate_consistent": (
+            solver_numerical_compatibility
+            == prebuild_solver_numerical_compatibility
+        ),
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
         "warm_start": warm_start,
@@ -520,6 +577,25 @@ def main() -> None:
         )
         print(json.dumps(build_report, ensure_ascii=False, indent=2))
         return
+    if not build_report["solver_numerical_compatibility_gate_consistent"]:
+        build_report["memory_at_exit"] = memory_monitor.stop()
+        (output_dir / "build_report.json").write_text(
+            json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        raise RuntimeError(
+            "Flexible-load numerical compatibility changed between "
+            "prebuild and postbuild audits"
+        )
+    if solver_numerical_compatibility["status"] != "PASS":
+        build_report["memory_at_exit"] = memory_monitor.stop()
+        (output_dir / "build_report.json").write_text(
+            json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        raise RuntimeError(
+            str(solver_numerical_compatibility["reason"])
+        )
     report = solve_and_report(
         artifacts.model,
         config,

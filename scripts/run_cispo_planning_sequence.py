@@ -82,10 +82,14 @@ def accepted(
         qc = json.loads(qc_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError, OSError):
         return False
+    hard_checks = qc.get("hard_checks")
     accepted_core = bool(
         solve.get("status") == "OPTIMAL"
         and solve.get("result_use") == expected_result_use
         and qc.get("status") == "PASS"
+        and isinstance(hard_checks, dict)
+        and bool(hard_checks)
+        and all(bool(value) for value in hard_checks.values())
         and (state_path.is_file() or not require_state)
     )
     if not accepted_core:

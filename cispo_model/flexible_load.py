@@ -23,7 +23,7 @@ exposes only derated peak-deliverable flexibility to planning adequacy.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import gurobipy as gp
@@ -31,6 +31,13 @@ import numpy as np
 
 from .config import ModelConfig
 from .data import ModelData
+from .flexible_load_numerics import (
+    _compressed_thermal_state_audit,
+    _compressed_thermal_state_mask,
+    _retained_transition_incoming_gaps,
+    _service_effective_load_lower_bound,
+    _thermal_state_chain_numerical_risks,
+)
 
 
 @dataclass
@@ -41,6 +48,43 @@ class FlexibleLoadBlock:
     variables: dict[str, Any]
     costs: dict[str, Any]
     day_slices: tuple[slice, ...]
+    structural_audit: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class SparseThermalStateView:
+    """Reconstruct a full hourly thermal state from retained state nodes."""
+
+    active: Any | None
+    retained_mask: np.ndarray
+    retention_per_hour: np.ndarray
+
+    @property
+    def shape(self) -> tuple[int, int]:
+        return tuple(self.retained_mask.shape)
+
+    def getValue(self) -> np.ndarray:
+        retained = np.asarray(self.retained_mask, dtype=bool)
+        values = np.zeros(retained.shape, dtype=float)
+        if self.active is None:
+            return values
+        values[retained] = np.asarray(self.active.X, dtype=float)
+        hours = retained.shape[1]
+        for province_position in range(retained.shape[0]):
+            retained_hours = np.flatnonzero(retained[province_position])
+            if not len(retained_hours):
+                continue
+            rho = float(self.retention_per_hour[province_position])
+            cyclic_hours = np.concatenate(
+                (retained_hours, [int(retained_hours[0]) + hours])
+            )
+            for start, stop in zip(cyclic_hours[:-1], cyclic_hours[1:]):
+                predecessor = values[province_position, int(start) % hours]
+                for hour in range(int(start) + 1, int(stop)):
+                    values[province_position, hour % hours] = (
+                        rho ** (hour - int(start))
+                    ) * predecessor
+        return values
 
 
 def make_day_slices(hours: int, window_hours: int = 24) -> tuple[slice, ...]:
@@ -194,6 +238,142 @@ def _ev_deadline_backlog_bounds(
 
 def _zero(shape: tuple[int, int]) -> np.ndarray:
     return np.zeros(shape, dtype=float)
+
+
+def _add_sparse_hourly_control(
+    model: gp.Model,
+    *,
+    upper_bound: np.ndarray,
+    name: str,
+) -> tuple[Any, Any | None, np.ndarray]:
+    """Create variables only where an hourly control has a positive bound.
+
+    The returned ``MLinExpr`` preserves the full province-hour shape for all
+    downstream equations and exports. Exact-zero cells are constants rather
+    than fixed Gurobi variables, so their tautological contracted-power rows
+    can also be omitted before presolve.
+    """
+    upper = np.asarray(upper_bound, dtype=float)
+    if upper.ndim != 2:
+        raise ValueError(f"{name} upper bound must be two-dimensional")
+    if not np.isfinite(upper).all() or (upper < 0.0).any():
+        raise ValueError(f"{name} upper bound must be finite and non-negative")
+    active_mask = upper > 0.0
+    expression = gp.MLinExpr.zeros(upper.shape)
+    active_count = int(active_mask.sum())
+    if active_count == 0:
+        return expression, None, active_mask
+    active = model.addMVar(
+        active_count,
+        lb=0.0,
+        ub=upper[active_mask],
+        name=f"{name}_active",
+    )
+    expression[active_mask] = active
+    return expression, active, active_mask
+
+
+def _add_compressed_thermal_state(
+    model: gp.Model,
+    *,
+    upper_bound: np.ndarray,
+    control_support: np.ndarray,
+    retention_per_hour: np.ndarray,
+    name: str,
+) -> tuple[
+    SparseThermalStateView,
+    Any | None,
+    np.ndarray,
+    dict[str, Any],
+]:
+    """Create only controllable thermal states and exact decay anchors."""
+    upper = np.asarray(upper_bound, dtype=float)
+    support = np.asarray(control_support, dtype=bool)
+    retention = np.asarray(retention_per_hour, dtype=float)
+    if upper.shape != support.shape:
+        raise ValueError(f"{name} upper-bound/support shape mismatch")
+    retained = _compressed_thermal_state_mask(support, retention)
+    if np.any(retained & (upper <= 0.0)):
+        raise ValueError(
+            f"{name} retained state has no positive state-capacity bound"
+        )
+    active_count = int(retained.sum())
+    active = (
+        model.addMVar(
+            active_count,
+            lb=0.0,
+            ub=upper[retained],
+            name=f"{name}_retained",
+        )
+        if active_count
+        else None
+    )
+    view = SparseThermalStateView(
+        active=active,
+        retained_mask=retained,
+        retention_per_hour=retention,
+    )
+    return (
+        view,
+        active,
+        retained,
+        _compressed_thermal_state_audit(support, retained, retention),
+    )
+
+
+def _attach_compressed_thermal_state_transitions(
+    model: gp.Model,
+    *,
+    active_state: Any,
+    retained_state_mask: np.ndarray,
+    retention_per_hour: np.ndarray,
+    charge: Any,
+    discharge: Any,
+    charge_efficiency: np.ndarray,
+    discharge_efficiency: np.ndarray,
+    capacity: Any,
+    positive_duration_hours: np.ndarray,
+    name: str,
+) -> None:
+    """Attach exact cyclic transitions between retained thermal states."""
+    retained = np.asarray(retained_state_mask, dtype=bool)
+    hours = retained.shape[1]
+    cursor = 0
+    for province_position in range(retained.shape[0]):
+        retained_hours = np.flatnonzero(retained[province_position])
+        count = int(len(retained_hours))
+        if not count:
+            continue
+        state = active_state[cursor : cursor + count]
+        predecessor = gp.MLinExpr.zeros(count)
+        predecessor[0] = state[-1]
+        if count > 1:
+            predecessor[1:] = state[:-1]
+        gaps = _retained_transition_incoming_gaps(
+            retained_hours,
+            hours,
+        ).astype(float)
+        predecessor_coefficients = (
+            float(retention_per_hour[province_position]) ** gaps
+        )
+        model.addConstr(
+            state
+            == predecessor_coefficients * predecessor
+            + float(charge_efficiency[province_position])
+            * charge[province_position, retained_hours]
+            - discharge[province_position, retained_hours]
+            / float(discharge_efficiency[province_position]),
+            name=f"{name}_compressed_transition_p{province_position}",
+        )
+        model.addConstr(
+            state
+            <= float(positive_duration_hours[province_position])
+            * capacity[province_position],
+            name=f"{name}_compressed_positive_bound_p{province_position}",
+        )
+        cursor += count
+    if cursor != int(retained.sum()):
+        raise AssertionError(f"{name} retained-state indexing mismatch")
 
 
 def _attach_daily_reset_state(
@@ -381,6 +561,7 @@ def _attach_service_constrained_v4(
         )
     shape = baseline.shape
     p_count = shape[0]
+    cell_count = int(np.prod(shape))
     if shape[1] != hours:
         raise ValueError("V4 load shape does not match requested horizon")
 
@@ -401,6 +582,24 @@ def _attach_service_constrained_v4(
         for key, value in service_data.ev_mobility.items()
     }
     variables: dict[str, Any] = {}
+    structural_audit: dict[str, Any] = {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": str(settings.get("formulation")),
+        "contract_version": expected_contract,
+        "province_count": int(p_count),
+        "optimization_hours": int(hours),
+    }
+    state_chain_numerical_risks = (
+        _thermal_state_chain_numerical_risks(
+            thermal_envelopes=thermal_envelopes,
+            thermal_parameters=service_data.thermal_parameters,
+            province_codes=data.provinces.province_code.to_numpy(
+                dtype=int
+            ),
+            enforce_aggregate_zero=v5_formulation,
+            compress_zero_control_states=v5_formulation,
+        )
+    )
     actual_components: dict[str, Any] = {
         "base_residual": components["base_residual"],
     }
@@ -534,6 +733,9 @@ def _attach_service_constrained_v4(
         variables["firm_flexible_capacity_credit_upper"] = firm_ub
 
     thermal_activation_terms: dict[str, Any] = {}
+    thermal_fixed_zero_controls_omitted = 0
+    thermal_fixed_zero_states_omitted = 0
+    thermal_redundant_states_eliminated = 0
     for column, component in enumerate(("heating", "cooling")):
         params = service_data.thermal_parameters[component]
         up_ub = thermal_envelopes[f"{component}_up"]
@@ -544,39 +746,145 @@ def _attach_service_constrained_v4(
         state_ub = np.broadcast_to(
             positive_duration[:, None] * capacity_ub[:, column, None], shape
         ).copy()
-        up = model.addMVar(shape, lb=0.0, ub=up_ub, name=f"{component}_shift_up_gw")
-        down = model.addMVar(
-            shape, lb=0.0, ub=down_ub, name=f"{component}_shift_down_gw"
-        )
-        state = model.addMVar(
-            shape,
-            lb=0.0,
-            ub=state_ub,
-            name=f"{component}_state_gwh",
-        )
-        model.addConstr(
-            up <= availability * k_service,
-            name=f"{component}_contracted_increase_power",
-        )
-        model.addConstr(
-            down <= availability * k_service,
-            name=f"{component}_contracted_reduction_power",
-        )
-        model.addConstr(
-            state <= positive_duration[:, None] * k_service,
-            name=f"{component}_positive_service_bound",
-        )
-        _periodic_transition(
-            model,
-            state=state,
-            charge=up,
-            discharge=down,
-            withdrawal=np.zeros(shape, dtype=float),
-            retention=params["retention_per_hour"][:, None],
-            charge_efficiency=params["charge_efficiency"][:, None],
-            discharge_efficiency=params["discharge_efficiency"][:, None],
-            name=f"{component}_state",
-        )
+        if v5_formulation:
+            up, up_active, up_active_mask = _add_sparse_hourly_control(
+                model,
+                upper_bound=up_ub,
+                name=f"{component}_shift_up_gw",
+            )
+            down, down_active, down_active_mask = (
+                _add_sparse_hourly_control(
+                    model,
+                    upper_bound=down_ub,
+                    name=f"{component}_shift_down_gw",
+                )
+            )
+        else:
+            up = model.addMVar(
+                shape,
+                lb=0.0,
+                ub=up_ub,
+                name=f"{component}_shift_up_gw",
+            )
+            down = model.addMVar(
+                shape,
+                lb=0.0,
+                ub=down_ub,
+                name=f"{component}_shift_down_gw",
+            )
+            up_active = None
+            down_active = None
+            up_active_mask = np.ones(shape, dtype=bool)
+            down_active_mask = np.ones(shape, dtype=bool)
+        if v5_formulation:
+            control_support = up_active_mask | down_active_mask
+            (
+                state,
+                state_active,
+                retained_state_mask,
+                compressed_state_audit,
+            ) = _add_compressed_thermal_state(
+                model,
+                upper_bound=state_ub,
+                control_support=control_support,
+                retention_per_hour=params["retention_per_hour"],
+                name=f"{component}_state_gwh",
+            )
+            state_active_provinces = retained_state_mask.any(axis=1)
+        else:
+            state = model.addMVar(
+                shape,
+                lb=0.0,
+                ub=state_ub,
+                name=f"{component}_state_gwh",
+            )
+            state_active = state
+            state_active_provinces = np.ones(p_count, dtype=bool)
+            retained_state_mask = np.ones(shape, dtype=bool)
+            compressed_state_audit = {
+                "representation": "full_hourly_state_v4",
+                "possible_state_variables": cell_count,
+                "control_support_state_variables": cell_count,
+                "decay_anchor_state_variables": 0,
+                "retained_state_variables": cell_count,
+                "redundant_inactive_state_variables_omitted": 0,
+                "retained_transition_rows": cell_count,
+                "redundant_inactive_transition_rows_omitted": 0,
+                "maximum_retained_transition_gap_hours": 1,
+                "minimum_retained_transition_coefficient": float(
+                    np.min(params["retention_per_hour"])
+                ),
+                "mathematical_equivalence": "native_full_hourly_state",
+            }
+        if v5_formulation:
+            if up_active is not None:
+                up_provinces = np.nonzero(up_active_mask)[0]
+                model.addConstr(
+                    up_active
+                    <= availability[up_active_mask]
+                    * capacity[up_provinces, column],
+                    name=f"{component}_contracted_increase_power",
+                )
+            if down_active is not None:
+                down_provinces = np.nonzero(down_active_mask)[0]
+                model.addConstr(
+                    down_active
+                    <= availability[down_active_mask]
+                    * capacity[down_provinces, column],
+                    name=f"{component}_contracted_reduction_power",
+                )
+        else:
+            model.addConstr(
+                up <= availability * k_service,
+                name=f"{component}_contracted_increase_power",
+            )
+            model.addConstr(
+                down <= availability * k_service,
+                name=f"{component}_contracted_reduction_power",
+            )
+        if v5_formulation and state_active is not None:
+            _attach_compressed_thermal_state_transitions(
+                model,
+                active_state=state_active,
+                retained_state_mask=retained_state_mask,
+                retention_per_hour=params["retention_per_hour"],
+                charge=up,
+                discharge=down,
+                charge_efficiency=params["charge_efficiency"],
+                discharge_efficiency=params["discharge_efficiency"],
+                capacity=capacity[:, column],
+                positive_duration_hours=positive_duration,
+                name=f"{component}_state",
+            )
+        elif state_active is not None:
+            active_count = int(state_active_provinces.sum())
+            active_shape = (active_count, hours)
+            active_capacity = capacity[state_active_provinces, column].reshape(
+                (active_count, 1)
+            )
+            model.addConstr(
+                state_active
+                <= positive_duration[state_active_provinces, None]
+                * active_capacity,
+                name=f"{component}_positive_service_bound",
+            )
+            _periodic_transition(
+                model,
+                state=state_active,
+                charge=up[state_active_provinces, :],
+                discharge=down[state_active_provinces, :],
+                withdrawal=np.zeros(active_shape, dtype=float),
+                retention=params["retention_per_hour"][
+                    state_active_provinces
+                ],
+                charge_efficiency=params["charge_efficiency"][
+                    state_active_provinces
+                ],
+                discharge_efficiency=params["discharge_efficiency"][
+                    state_active_provinces
+                ],
+                name=f"{component}_state",
+            )
         actual_components[component] = components[component] + up - down
         variables.update(
             {
@@ -586,6 +894,59 @@ def _attach_service_constrained_v4(
             }
         )
         thermal_activation_terms[component] = up.sum(axis=1) + down.sum(axis=1)
+        structural_audit[f"{component}_sparse_hourly_control"] = {
+            "possible_up_variables": cell_count,
+            "active_up_variables": int(up_active_mask.sum()),
+            "fixed_zero_up_variables_omitted": int(
+                np.size(up_active_mask) - up_active_mask.sum()
+            ),
+            "possible_down_variables": int(np.prod(shape)),
+            "active_down_variables": int(down_active_mask.sum()),
+            "fixed_zero_down_variables_omitted": int(
+                np.size(down_active_mask) - down_active_mask.sum()
+            ),
+        }
+        redundant_state_variables = int(
+            cell_count - retained_state_mask.sum()
+        )
+        fixed_zero_state_variables = int(
+            (~state_active_provinces).sum() * hours
+        )
+        structural_audit[f"{component}_sparse_state"] = {
+            **compressed_state_audit,
+            "active_state_variables": int(retained_state_mask.sum()),
+            "inactive_provinces_omitted": int(
+                (~state_active_provinces).sum()
+            ),
+            "fixed_zero_state_variables_omitted": (
+                fixed_zero_state_variables if v5_formulation else 0
+            ),
+            "redundant_state_variables_eliminated": (
+                redundant_state_variables if v5_formulation else 0
+            ),
+            "redundant_state_bound_rows_omitted": (
+                redundant_state_variables if v5_formulation else 0
+            ),
+            "redundant_state_transition_rows_omitted": (
+                redundant_state_variables if v5_formulation else 0
+            ),
+        }
+        structural_audit[f"{component}_state_chain_numerical_risk"] = {
+            **state_chain_numerical_risks[component],
+        }
+        thermal_fixed_zero_controls_omitted += int(
+            np.size(up_active_mask)
+            - up_active_mask.sum()
+            + np.size(down_active_mask)
+            - down_active_mask.sum()
+        )
+        if v5_formulation:
+            thermal_fixed_zero_states_omitted += (
+                fixed_zero_state_variables
+            )
+            thermal_redundant_states_eliminated += (
+                redundant_state_variables
+            )
 
     ev_settings = settings["ev_v2g"]
     shiftable_fraction = float(settings["ev_v1g"]["shiftable_energy_fraction"])
@@ -607,13 +968,15 @@ def _attach_service_constrained_v4(
         else _zero(shape)
     )
     soc = model.addMVar(shape, lb=0.0, ub=fleet_energy_ub, name="ev_mobility_soc_gwh")
-    deviation_ub = charge_ub + components["ev"]
-    charge_deviation = model.addMVar(
-        shape,
-        lb=0.0,
-        ub=deviation_ub,
-        name="ev_mobility_charge_deviation_gw",
-    )
+    charge_deviation: Any | None = None
+    if not v5_formulation:
+        deviation_ub = charge_ub + components["ev"]
+        charge_deviation = model.addMVar(
+            shape,
+            lb=0.0,
+            ub=deviation_ub,
+            name="ev_mobility_charge_deviation_gw",
+        )
     v1g_relocated: Any = (
         model.addMVar(
             shape,
@@ -626,24 +989,54 @@ def _attach_service_constrained_v4(
     )
     k_charge = capacity[:, 2].reshape((p_count, 1))
     k_v2g = capacity[:, 3].reshape((p_count, 1))
-    model.addConstr(
-        charge <= connected * k_charge,
-        name="ev_mobility_contracted_charge_power",
-    )
+    if v5_formulation and v2g_enabled:
+        model.addConstr(
+            charge + discharge <= connected * k_charge,
+            name="v5_ev_shared_bidirectional_connection_power",
+        )
+        structural_audit["ev_shared_connection_power_contract"] = (
+            "charge_plus_discharge_within_nested_smart_charging_contract_v1"
+        )
+    else:
+        model.addConstr(
+            charge <= connected * k_charge,
+            name="ev_mobility_contracted_charge_power",
+        )
+        structural_audit["ev_shared_connection_power_contract"] = (
+            "charge_only_legacy_contract"
+        )
     if v2g_enabled:
         model.addConstr(
             discharge <= connected * k_v2g,
             name="ev_mobility_contracted_discharge_power",
         )
-    model.addConstr(soc >= minimum_departure, name="ev_mobility_departure_soc")
-    model.addConstr(
-        charge_deviation >= charge - flexible_ev_baseline,
-        name="ev_mobility_charge_deviation_positive",
+    minimum_departure_positive_mask = minimum_departure > 0.0
+    minimum_departure_positive_cells = int(
+        minimum_departure_positive_mask.sum()
     )
-    model.addConstr(
-        charge_deviation >= flexible_ev_baseline - charge,
-        name="ev_mobility_charge_deviation_negative",
-    )
+    if not v5_formulation:
+        model.addConstr(soc >= minimum_departure, name="ev_mobility_departure_soc")
+        departure_soc_constraint_rows_added = cell_count
+    elif minimum_departure_positive_cells:
+        model.addConstr(
+            soc[minimum_departure_positive_mask]
+            >= minimum_departure[minimum_departure_positive_mask],
+            name="ev_mobility_departure_soc",
+        )
+        departure_soc_constraint_rows_added = (
+            minimum_departure_positive_cells
+        )
+    else:
+        departure_soc_constraint_rows_added = 0
+    if charge_deviation is not None:
+        model.addConstr(
+            charge_deviation >= charge - flexible_ev_baseline,
+            name="ev_mobility_charge_deviation_positive",
+        )
+        model.addConstr(
+            charge_deviation >= flexible_ev_baseline - charge,
+            name="ev_mobility_charge_deviation_negative",
+        )
     if v5_formulation:
         model.addConstr(
             v1g_relocated >= flexible_ev_baseline - charge,
@@ -665,7 +1058,6 @@ def _attach_service_constrained_v4(
         ev_mobility_charge=charge,
         ev_mobility_discharge=discharge,
         ev_mobility_soc=soc,
-        ev_mobility_charge_deviation=charge_deviation,
         ev_mobility_v1g_relocated=v1g_relocated,
         # Compatibility aliases make the existing V2G output series usable,
         # while V4 still has one physical fleet SOC rather than a deviation
@@ -674,6 +1066,8 @@ def _attach_service_constrained_v4(
         ev_v2g_soc=soc,
         ev_grid_charge_power_ub=fixed_ev_baseline + charge_ub,
     )
+    if charge_deviation is not None:
+        variables["ev_mobility_charge_deviation"] = charge_deviation
 
     effective_load = (
         actual_components["base_residual"]
@@ -682,7 +1076,162 @@ def _attach_service_constrained_v4(
         + actual_components["ev"]
         - discharge
     )
-    model.addConstr(effective_load >= 0.0, name="effective_load_nonnegative")
+    effective_load_lower_bound = _service_effective_load_lower_bound(
+        components=components,
+        thermal_down_upper={
+            component: thermal_envelopes[f"{component}_down"]
+            for component in ("heating", "cooling")
+        },
+        fixed_ev_baseline=fixed_ev_baseline,
+        ev_discharge_upper=(
+            discharge_ub if v2g_enabled else np.zeros(shape, dtype=float)
+        ),
+    )
+    effective_load_redundancy_safety_margin_gw = 1e-6
+    effective_load_requires_explicit_row = (
+        effective_load_lower_bound
+        < effective_load_redundancy_safety_margin_gw
+    )
+    if not v5_formulation:
+        model.addConstr(effective_load >= 0.0, name="effective_load_nonnegative")
+        effective_load_nonnegative_constraint_rows_added = cell_count
+    elif effective_load_requires_explicit_row.any():
+        model.addConstr(
+            effective_load[effective_load_requires_explicit_row] >= 0.0,
+            name="effective_load_nonnegative",
+        )
+        effective_load_nonnegative_constraint_rows_added = int(
+            effective_load_requires_explicit_row.sum()
+        )
+    else:
+        effective_load_nonnegative_constraint_rows_added = 0
+    effective_load_naturally_nonnegative = (
+        effective_load_nonnegative_constraint_rows_added == 0
+    )
+    departure_soc_constraint_rows_omitted = (
+        cell_count - departure_soc_constraint_rows_added
+        if v5_formulation
+        else 0
+    )
+    effective_load_nonnegative_constraint_rows_omitted = (
+        cell_count - effective_load_nonnegative_constraint_rows_added
+        if v5_formulation
+        else 0
+    )
+    structural_audit.update(
+        {
+            "ev_charge_deviation_representation": (
+                "postsolve_derived_absolute_deviation"
+                if v5_formulation
+                else "optimization_epigraph_variable"
+            ),
+            "ev_charge_deviation_variables_omitted": (
+                cell_count if v5_formulation else 0
+            ),
+            "ev_charge_deviation_constraints_omitted": (
+                2 * cell_count if v5_formulation else 0
+            ),
+            "minimum_departure_energy_min_gwh": float(
+                np.min(minimum_departure)
+            ),
+            "minimum_departure_energy_max_gwh": float(
+                np.max(minimum_departure)
+            ),
+            "minimum_departure_positive_cells": (
+                minimum_departure_positive_cells
+            ),
+            "departure_soc_constraint_rows_added": (
+                departure_soc_constraint_rows_added
+            ),
+            "departure_soc_constraint_rows_omitted_as_redundant": (
+                departure_soc_constraint_rows_omitted
+            ),
+            "effective_load_static_lower_bound_min_gw": float(
+                np.min(effective_load_lower_bound)
+            ),
+            "effective_load_redundancy_safety_margin_gw": (
+                effective_load_redundancy_safety_margin_gw
+            ),
+            "effective_load_naturally_nonnegative": (
+                effective_load_naturally_nonnegative
+            ),
+            "effective_load_nonnegative_enforcement": (
+                "inherent_static_lower_bound"
+                if v5_formulation and effective_load_naturally_nonnegative
+                else (
+                    "sparse_explicit_constraint_rows"
+                    if v5_formulation
+                    else "explicit_constraint_rows"
+                )
+            ),
+            "effective_load_nonnegative_constraint_rows_added": (
+                effective_load_nonnegative_constraint_rows_added
+            ),
+            "effective_load_nonnegative_constraint_rows_omitted": (
+                effective_load_nonnegative_constraint_rows_omitted
+            ),
+            "redundant_raw_variables_omitted": (
+                cell_count
+                + thermal_fixed_zero_controls_omitted
+                + thermal_redundant_states_eliminated
+                if v5_formulation
+                else 0
+            ),
+            "net_raw_variables_removed": (
+                cell_count
+                + thermal_fixed_zero_controls_omitted
+                + thermal_redundant_states_eliminated
+                if v5_formulation
+                else 0
+            ),
+            "thermal_fixed_zero_raw_variables_omitted": (
+                thermal_fixed_zero_controls_omitted
+                if v5_formulation
+                else 0
+            ),
+            "thermal_fixed_zero_state_variables_omitted": (
+                thermal_fixed_zero_states_omitted
+                if v5_formulation
+                else 0
+            ),
+            "thermal_redundant_state_variables_eliminated": (
+                thermal_redundant_states_eliminated
+                if v5_formulation
+                else 0
+            ),
+            "thermal_tautological_contracted_power_rows_omitted": (
+                thermal_fixed_zero_controls_omitted
+                if v5_formulation
+                else 0
+            ),
+            "redundant_raw_constraint_rows_omitted": (
+                (2 * cell_count if v5_formulation else 0)
+                + departure_soc_constraint_rows_omitted
+                + effective_load_nonnegative_constraint_rows_omitted
+                + (
+                    thermal_fixed_zero_controls_omitted
+                    if v5_formulation
+                    else 0
+                )
+                + (
+                    2 * thermal_redundant_states_eliminated
+                    if v5_formulation
+                    else 0
+                )
+            ),
+            "net_raw_constraint_rows_removed": (
+                (
+                    (2 * cell_count)
+                    + departure_soc_constraint_rows_omitted
+                    + effective_load_nonnegative_constraint_rows_omitted
+                    + thermal_fixed_zero_controls_omitted
+                    + 2 * thermal_redundant_states_eliminated
+                )
+                if v5_formulation
+                else 0
+            ),
+        }
+    )
     variables.update(
         effective_load=effective_load,
         actual_heating_load=actual_components["heating"],
@@ -708,15 +1257,17 @@ def _attach_service_constrained_v4(
         for component in ("heating", "cooling")
     )
     thermal_comfort_cost = gp.LinExpr(0.0)
+    if v5_formulation:
+        ev_relocation_measure = v1g_relocated
+    else:
+        if charge_deviation is None:
+            raise AssertionError("V4 charge-deviation variable was not created")
+        ev_relocation_measure = charge_deviation
     ev_relocation_cost = (
         (
             1e-3
             * service_costs["ev_v1g"]["activation_cost_yuan_per_mwh"]
-            * (
-                v1g_relocated.sum(axis=1)
-                if v5_formulation
-                else charge_deviation.sum(axis=1)
-            )
+            * ev_relocation_measure.sum(axis=1)
         ).sum()
     )
     ev_v2g_participation_cost = (
@@ -779,6 +1330,7 @@ def _attach_service_constrained_v4(
         variables=variables,
         costs=costs,
         day_slices=day_slices,
+        structural_audit=structural_audit,
     )
 
 
