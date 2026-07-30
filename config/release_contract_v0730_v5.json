@@ -31,10 +31,6 @@
   ],
   "external_data_files_additional": [
     {
-      "path": "technology/technoeconomic_price_basis_manifest.json",
-      "sha256": "f89241c99bcb04f79e897bba0f97718fd78392591a342c223667b701d2f014e1"
-    },
-    {
       "path": "flexibility/thermal_hourly_envelope_v5.csv.gz",
       "sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd"
     },
