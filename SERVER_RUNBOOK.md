@@ -1,5 +1,39 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 05:14+08:00 V5 168 h 门禁闭合后的下一阶段
+
+实现 `fead34334153eca32bbf7ec3651f3388038ac04b` 已在 clean
+`22e19c154148fcfcb137d5a7e882ff69abd2b7c8` 服务器完成全部短门禁。
+Base/V5 1 h、24 h 及唯一 V5 168 h 均严格闭合；168 h 是
+`OPTIMAL + PASS + 58/58 + current input + valid result manifest`，
+solver 1005.194 s、Barrier/Crossover `819.54/176.79 s`、RSS
+3.511 GiB、swaps 0。`CrossoverBasis=1` 成功把 Barrier 的
+`Sub-optimal` 状态恢复为 `Optimal`，但 `Kappa≈1.62e10`，不得直接升格
+为全年 production profile。
+
+下一阶段固定顺序：
+
+1. 重新核验本地/origin/GitHub/server HEAD、服务器 clean/idle、
+   RAM/swap/`vmstat`/PSI、目标根不存在和 ParaCloud 空队列。
+2. 只运行一个全新 2030 Base 168 h cold root，使用相同数据和
+   `barrier_16_auto_order_stable_basis_v3.json`，无 basis。要求
+   `OPTIMAL + PASS + 58/58 + current input + valid result manifest +
+   wrapper exit 0`，并记录 raw/presolved/factor、Barrier/crossover、
+   Kappa、violations、RSS 与 swap。
+3. 并行求解仍禁止；共享 numerical debt 只允许先做 build/presolve
+   数值审计。重点为 `load_center_ror_availability`、ROR/VRE
+   availability 和年度会计。不得未经等价证明提高 CF 零阈值、删掉
+   availability variables、启用 `BarHomogeneous` 或强制
+   `Aggregate=0`。
+4. 修正 V5 QC 输出语义：旧式
+   `maximum_ev_v1g_daily_energy_residual_gwh` 对带 SOC、效率和驾驶取能
+   的车群模型应显式标为不适用，并以 SOC transition/periodic/service
+   accounting 作为 hard evidence。不得因此放松任何现有 EV 物理约束。
+5. Base 168 h 与上述审计闭合后，形成 744/1008 h 的单一停止条件与资源
+   预算，再由作者决定是否启动。任何截断根仍是
+   `TEST_ONLY_TRUNCATED_HORIZON`；本节不授权 8760 h、付费云、basis/MGA、
+   并发第二求解或 `Crossover=3`。
+
 ## 2026-07-31 04:21+08:00 V5 数值稳定化部署与分级门禁
 
 部署身份必须是

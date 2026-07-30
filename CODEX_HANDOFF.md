@@ -12,6 +12,58 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 05:14+08:00 固定服务器数值稳定化门禁已严格闭合。实现提交
+  `fead34334153eca32bbf7ec3651f3388038ac04b` 与前一文档 tip
+  `22e19c154148fcfcb137d5a7e882ff69abd2b7c8` 已双端推送，服务器 checkout
+  为 clean `22e19c1`。服务器完整回归 `159/159 PASS`，readiness、release、
+  V5 input、水电输入与 `297.8895 + 82.1105 = 380.0000 GW` 审计均 PASS。
+  新建的 2030 Base/V5 1 h 与 24 h 四根全部达到
+  `OPTIMAL + solution_qc=PASS + 58/58 + current input manifest +
+  valid result manifest + wrapper exit 0`。1 h Base/V5 solver runtime 为
+  `7.707/7.316 s`；24 h 为 `408.850/421.015 s`，V5 相对 Base 只增加
+  5,321 variables、5,934 rows、30,045 nonzeros、约 3.0% solver time 和
+  0.032 GiB RSS。24 h 两根仍在 Barrier 后报告共同的
+  `Numerical trouble`，随后由 `Crossover=1` 严格恢复，故该共享数值债不能
+  归因于 V5 新增结构。
+- 唯一 2030/V5 168 h cold 根
+  `/data/zz2/National_model/outputs/2030_168h_v0731_v5_numeric_central_22e19c1_server_v1`
+  已为 `OPTIMAL + solution_qc=PASS + 58/58`；input/result manifest
+  validator 均返回 `(True, [])`，wrapper exit `0`、wall `18:38.92`、
+  peak process-tree RSS `3.511 GiB`、swaps `0`。服务器实际 raw 矩阵为
+  `1,209,095 rows / 1,060,576 vars / 9,755,329 nz`，presolved 为
+  `737,850 / 751,223 / 7,386,987`；最大矩阵系数仍为 6,250，presolve
+  amplification 为 `1.0`。Barrier 运行 232 次、819.54 s 后以
+  `Sub-optimal` 结束，但没有出现 `Numerical trouble encountered`；
+  `CrossoverBasis=1` 在 176.79 s 内将状态改为 `Optimal`，最终
+  258,814 simplex iterations、solver `1005.194 s`，无 restart。
+  最大 constraint/bound/dual violation 为
+  `8.339e-8 / 2.609e-8 / 6.047e-8`。
+- 本轮严格 QC 未发现新增钻空子：冷热 up/down、EV charge/discharge、
+  储能 charge/discharge、火电 startup/shutdown、AC 对冲流均为零；
+  V1G/V2G nested、全国 V2G cap、共享连接功率、firm-credit 物理上界、
+  备用、惯量、网络、水电/梯级、碳/CCS/BECCS 与成本 component 全部通过。
+  2030 firm flexibility credit 为 `2.891320 GW`，诊断碳上限按
+  `168/8760` 缩放至 `76.712329 MtCO2` 并 binding。输出中的
+  `maximum_ev_v1g_daily_energy_residual_gwh=5.999958` 是旧式“每日充电
+  量等于不受控基线”指标；V5 使用带效率、驾驶取能和周期 SOC 的车群服务
+  守恒，该旧指标不适用，真正的车群 SOC transition residual 为
+  `2.537e-13 GWh`。后续应清理该输出名称/适用性，避免论文审计误读，
+  但不得把它误判为当前 LP 漏约束。
+- 与旧 V5 168 h `TIME_LIMIT` 根相比，新根把“6 h、3,488,935 次
+  simplex、无解/QC/manifest”改为约 16.8 min solver 严格最优，证明本轮
+  精确冷热状态压缩修复了已复现的 V5 presolve 放大和数值循环。它仍不是
+  8760 h 可解性证明：解的估计 `Kappa=1.6198e10`，共享模型最差 row
+  scaling 仍来自 `load_center_ror_availability`、ROR/VRE availability
+  与年度会计；直接消去 availability variables 曾增加 presolved
+  nonzeros，盲目提高 CF 零阈值又会改变科学输入。因此
+  `barrier_16_auto_order_stable_basis_v3` 只升级为“168 h V5 诊断通过”，
+  仍不是 production profile。服务器当前无 CISPO/Gurobi 进程、约
+  111 GiB available、`vmstat si/so=0`、memory PSI 0；ParaCloud 队列空。
+  下一步先以相同提交/数据/profile 运行一个全新、匹配的 2030 Base 168 h
+  cold gate，并在不求解的矩阵审计中量化共享小系数的可证明等价候选；
+  两者闭合前不启动 744/1008/8760 h。继续禁止付费云、并发第二求解、
+  basis/MGA 和 `Crossover=3`。
+
 - 2026-07-31 04:21+08:00 已提交 V5 长时域数值稳定化实现
   `fead34334153eca32bbf7ec3651f3388038ac04b`。旧服务器根
   `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_direction_warning_v5_cf265f3_server_v1`
@@ -391,6 +443,43 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — V5 数值修复的固定服务器 1 h/24 h/168 h 严格验收
+
+- Git/identity: 模型实现为
+  `fead34334153eca32bbf7ec3651f3388038ac04b`，部署文档 tip 为
+  `22e19c154148fcfcb137d5a7e882ff69abd2b7c8`；本地、origin、GitHub 与
+  clean 固定服务器 checkout 已核对一致。数据根为
+  `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`，
+  solver 候选为
+  `config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`。
+- Commands/outputs: 服务器依次执行 `159/159` regression、readiness、
+  release/V5/hydro validators、Base/V5 1 h、Base/V5 24 h，最后只运行
+  `scripts/run_cispo_2030_full_year.py --planning-year 2030
+  --diagnostic-hours 168 --scenario-config
+  config/scenarios/flex_integrated_v5_central.json --solver-config
+  config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`。全部
+  输出根隔离，无 basis、无并发第二求解。
+- 168 h evidence: 输出根
+  `/data/zz2/National_model/outputs/2030_168h_v0731_v5_numeric_central_22e19c1_server_v1`
+  为 `OPTIMAL + PASS + 58/58 + current input + valid result manifest`。
+  raw/presolved 为 `1,209,095/1,060,576/9,755,329` 与
+  `737,850/751,223/7,386,987`；Barrier 232/819.54 s，
+  Crossover 176.79 s，solver 1005.194 s，258,814 simplex，peak RSS
+  3.511 GiB，swaps 0。Crossover 将 `Sub-optimal` interior status 改为
+  `Optimal`，日志无 `Numerical trouble`，所有物理、服务、网络、安全、
+  碳/CCS 与成本 QC 均通过。
+- Interpretation/unresolved: 该证据接受本轮“V5 精确稀疏化 +
+  `CrossoverBasis=1`”作为 168 h 诊断路径，但不接受为 8760 h production
+  solver。`Kappa≈1.62e10` 与 24 h Base/V5 的共同 Barrier recovery 表明
+  ROR/VRE availability 和年度会计仍有共享 conditioning debt。旧式
+  `maximum_ev_v1g_daily_energy_residual_gwh` 对 V5 车群 SOC 服务模型不
+  适用，需在下一代码里显式标记 N/A/替换为服务账户指标，避免误读。
+- Exact next action: 先运行同身份、同 profile 的单一 2030 Base 168 h
+  匹配根；同时只做共享小系数的 build/presolve 数值审计，任何稀疏化必须
+  证明不改变科学可行域且同时改善 presolved/factor 证据。未闭合前不得
+  启动 744/1008/8760 h、付费云、basis/MGA、并发第二求解或
+  `Crossover=3`。
 
 ### 2026-07-31 — V5 长时域精确稀疏化与数值兼容门禁
 

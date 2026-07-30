@@ -1,5 +1,41 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 05:14+08:00 V5 168 h 数值稳定化门禁严格通过
+
+- 当前本地/origin/GitHub/固定服务器部署基线均为
+  `22e19c154148fcfcb137d5a7e882ff69abd2b7c8`，服务器 checkout clean；
+  模型实现提交为 `fead34334153eca32bbf7ec3651f3388038ac04b`。服务器
+  `159/159` regression、readiness、release、V5 input、hydro 与 380 GW
+  容量审计全部 PASS。
+- 新建 Base/V5 1 h 与 24 h 四根均为
+  `OPTIMAL + solution_qc=PASS + 58/58 + current input + valid result
+  manifest + wrapper exit 0`。24 h Base/V5 solver runtime 为
+  `408.850/421.015 s`，两者均有 Barrier `Numerical trouble` 后的严格
+  crossover 恢复；V5 的规模/时间增量仅为
+  `+5,321 vars / +5,934 rows / +30,045 nz / +3.0% solver time`。
+- 唯一 168 h V5 根
+  `/data/zz2/National_model/outputs/2030_168h_v0731_v5_numeric_central_22e19c1_server_v1`
+  已严格接受：`OPTIMAL + PASS + 58/58`，current input/result manifest
+  均 `(True, [])`，wrapper exit 0、wall `18:38.92`、RSS `3.511 GiB`、
+  swaps 0。raw/presolved 矩阵为
+  `1,209,095/1,060,576/9,755,329` 与
+  `737,850/751,223/7,386,987`。Barrier 232 次/819.54 s 后
+  `Sub-optimal`，但无 `Numerical trouble`；`CrossoverBasis=1` 用
+  176.79 s 改为 `Optimal`，最终 solver 1005.194 s、258,814 simplex，
+  最大 constraint/bound/dual violation 为
+  `8.339e-8/2.609e-8/6.047e-8`。
+- 冷热、EV 共享连接、V1G/V2G nesting/全国上限、firm credit、网络方向、
+  水电/梯级、储能、备用、惯量、碳/CCS/BECCS、成本 scope 均无 hard
+  failure；诊断碳限额 `76.712329 MtCO2` binding。旧式 V1G daily-energy
+  residual 对 V5 的 SOC/驾驶取能服务账户不适用，实际 SOC transition
+  residual 为 `2.537e-13 GWh`；需后续修正输出语义，不是本次解的漏约束。
+- 当前无 CISPO/Gurobi 进程，约 111 GiB available，swap 约 780 MiB
+  但 `vmstat si/so=0`、memory PSI 0；ParaCloud `squeue` 为空。该根仍是
+  `TEST_ONLY_TRUNCATED_HORIZON`，`Kappa≈1.62e10`，候选 profile 还不是
+  production。下一步只允许同身份匹配 Base 168 h 与只读矩阵缩放审计；
+  不自动启动 744/1008/8760 h、付费云、basis/MGA、第二求解或
+  `Crossover=3`。
+
 ## 2026-07-31 04:21+08:00 V5 数值根因已结构修复，待部署服务器短门禁
 
 - 本地实现提交为 `fead34334153eca32bbf7ec3651f3388038ac04b`；当前
