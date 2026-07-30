@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 16:05+08:00 集成需求侧灵活性 V5 的分阶段门禁合同
+
+候选实现提交为 `57ad4c5`。Base 不变，正式对比只允许 Base 与一个集成中央反事实；中央反事实同时包含冷热负荷服务、付费 V1G、内生付费 V2G 和折减 firm capacity credit。论文补充材料源文件为 `supplementary_materials/modules/06_integrated_demand_flexibility/integrated_demand_flexibility_methods_en.tex`，技术合同见同目录中文版本和 `config/FLEXIBLE_LOAD_V5_CONTRACT.md`。
+
+部署或扩大求解前必须依次满足：
+
+1. 精确候选下完整 unittest、V5 input audit 和 release audit 均 PASS；
+2. 当前身份的全新 1 h/24 h Base/V5 根均满足 `OPTIMAL + solution_qc=PASS + 57/57 + current input manifest + valid result manifest`；
+3. 全新、串行四年 168 h Base sequence 逐年 accepted 后，才运行 V5 sequence；任何失败根不得复用；
+4. 只在上述全部闭合后，才可部署固定服务器并启动唯一、串行的四年 744 h Base/V5 工程门禁；所有截断时域结果仍标记 `TEST_ONLY_TRUNCATED_HORIZON`。
+
+当前本地 168 h 首次尝试在建模前因 `6.07 GiB < 8 GiB` 可用 RAM 被拒绝。不得降低 `minimum_available_memory_gb`，不得关闭作者应用或清理用户进程，除非得到明确指示。固定服务器虽然无 solver 且资源安全，但遗留 release-audit wrapper PID `976320`/子进程 `976713` 仍存在；PID 存在期间不得 fetch/fast-forward/切换 checkout，也不得启动新任务。若作者授权处理该 PID，必须先确认它不是 solver、记录 `ps`/子进程/输出根证据，再终止并重新核验 clean checkout、进程、RAM/swap/vmstat/PSI、目标根不存在和 ParaCloud 空队列。
+
+24 h 已暴露共同数值风险：Base/V5 都在 Barrier 后报告 numerical trouble，并由 `Crossover=1` 的 `507,293/546,950` 次 simplex 修复为最优解。不得据此切换到已拒绝的 `Crossover=3`；168 h/744 h 必须记录 Barrier、crossover/simplex、终态解质量、RSS、swap 和 wall time。继续禁止 8760 h、付费云、basis/MGA 和并发第二求解。
+
 ## 2026-07-30 11:26+08:00 诊断时域年度流量缩放部署合同
 
 候选实现为 `d3b6f1485d5ef88762e9d8d0ac8ca87db15dc244`。短时域统一使用 `f=optimization_hours/8760`：净碳 RHS、DAC 捕集 throughput、生物质燃料和 CO2 sink 注入能力乘 `f`；DAC 小时负荷由窗口捕集量除以 `f` 后的年化速率计算。annualized capacity/fixed cost 不缩放，故短门禁仍是 `TEST_ONLY_TRUNCATED_HORIZON`；8760 h 的 `f=1`。

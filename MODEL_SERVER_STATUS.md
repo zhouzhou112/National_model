@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 16:05+08:00 V5 已提交；本地 168 h 被内存门禁阻止，服务器暂不部署
+
+- 集成需求侧灵活性 V5 实现与中英文补充材料提交为 `57ad4c5`。Base 不变；唯一中央反事实联合冷热、付费 V1G、内生付费 V2G 和四小时峰值可交付的折减 firm capacity credit。完整本地回归 `140/140 PASS`，V5 输入/release 审计均 PASS。
+- 1 h 当前输出合同 V5 根 `outputs/2030_1h_v0730_flex_v5_central_gate_v3` 为 `OPTIMAL + PASS + 57/57 + current input + valid result manifest`。24 h Base/V5 数学根均 `OPTIMAL + PASS + 57/57 + closed manifests`；V5 的 selected-window peak/firm credit/generation-capacity changes 分别为 `-2.3211/+2.8913/-2.8913 GW`。两根均在 Barrier 数值困难后由 `Crossover=1` 修复，V5 耗时 `727.286 s`。
+- 本地 `outputs/planning_sequence_168h_v0730_flex_v5_base_v1` 在求解前因 available RAM `6.07 GiB < 8 GiB` hard fail；没有建模、求解或 state 传递。禁止降低门槛或复用失败根。
+- 固定服务器实时 checkout 为 clean `c19e35b87fb5295101d918b29815ea79424e50a5`，无 CISPO/Gurobi solver，available RAM 约 `114 GiB`、swap `780 MiB` 且 `si/so=0`、memory PSI 0；ParaCloud `squeue` 为空。但 2026-07-29 遗留的非 solver release-audit wrapper PID `976320` 与 `grep` 子进程 `976713` 仍存在。按 PID 保护合同，不切换 checkout、不部署 V5、不启动新服务器任务，等待作者明确授权处理该遗留进程。
+- 下一步：本地释放至少 2 GiB 后，以全新根重跑当前提交的 24 h Base/V5 和四年 168 h Base/V5；全部闭合后才允许新的服务器 744 h。8760 h、付费云、basis/MGA、并发第二求解和 `Crossover=3` 继续禁止。
+
 ## 2026-07-30 11:26+08:00 年度流量缩放已本地闭合，服务器未部署
 
 - 新模型提交 `d3b6f1485d5ef88762e9d8d0ac8ca87db15dc244` 将诊断时域碳上限、DAC throughput、生物质年度燃料和 CO2 年注入能力统一按 `optimization_hours/8760` 缩放；DAC 功率按年化捕集速率计算。8760 h 的比例为 1，不改变全年方程；annualized capacity/fixed cost 不缩放。
