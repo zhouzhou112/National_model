@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 16:58+08:00 V5 服务器预门禁与 24 h A/B 已闭合
+
+- 固定服务器 clean checkout 为 `af390fad22dc4e3ec4636edadfb56295e4907234`，数据根为 `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。跨 Windows/Linux 的 V5 五表和 manifest 已由 `4f717de` 固定为逐字节一致；`af390fa` 恢复继承权威技术经济 manifest。V5 manifest SHA256 为 `a324430713e0eb3a1671c9b9ba6c127c34c5e0d7c2e21f090cbcd9394f061831`。
+- 本地/服务器完整回归均 `141/141 PASS`；服务器 readiness、V5 input、release、水电审计均 PASS。水电容量闭合为 `297.8895 + 82.1105 = 380.0000 GW`。
+- 2030/24 h Base/V5 根均为 `OPTIMAL + PASS + 57/57 + current input + valid result manifest + wrapper exit 0`。solver runtime `405.882/434.896 s`，peak RSS `0.759/0.797 GiB`，swaps 0。两者 Barrier 均 numerical trouble 后由 `Crossover=1` 修复，simplex `503,365/519,659`。
+- V5 相对 Base 的 objective、firm credit、发电装机变化分别为 `-347.394 million CNY`、`+2.891320 GW`、`-2.891320 GW`；显式 flexibility cost `785.531 million CNY`。领先 24 h 的全国 effective peak 只下降 `2.1692 GW`，不可解释为年度峰值价值，因为 capacity adequacy 使用完整 8760 h 各省 baseline-peak 服务窗口。
+- 下一步：服务器 checkout 保持 `af390fa` 冻结，先运行唯一串行四年 168 h Base；严格闭合后再运行 V5。168 h A/B 未全部接受前不启动 744 h；继续禁止 8760 h、付费云、basis/MGA、并发第二求解和 `Crossover=3`。
+
 ## 2026-07-30 16:05+08:00 V5 已提交；本地 168 h 被内存门禁阻止，服务器暂不部署
 
 - 集成需求侧灵活性 V5 实现与中英文补充材料提交为 `57ad4c5`。Base 不变；唯一中央反事实联合冷热、付费 V1G、内生付费 V2G 和四小时峰值可交付的折减 firm capacity credit。完整本地回归 `140/140 PASS`，V5 输入/release 审计均 PASS。

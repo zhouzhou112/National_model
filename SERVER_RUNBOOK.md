@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 16:58+08:00 V5 当前服务器身份与 168 h 启动边界
+
+当前冻结模型 checkout 为 `af390fad22dc4e3ec4636edadfb56295e4907234`，数据根为 `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。V5 manifest SHA256 必须为 `a324430713e0eb3a1671c9b9ba6c127c34c5e0d7c2e21f090cbcd9394f061831`，技术经济 manifest 必须继承 V0729 的 `397297ec...`。任何服务器重建都必须得到与本地完全相同的六项 V5 hashes；不能接受“解析后数值相同但压缩文件 hash 不同”。
+
+服务器 `141/141` regression、readiness、V5 input、release 和 hydro audits 已 PASS。匹配 24 h Base/V5 根：
+
+- `/data/zz2/National_model/outputs/2030_24h_v0730_flex_v5_base_af390fa_server_v1`
+- `/data/zz2/National_model/outputs/2030_24h_v0730_flex_v5_central_af390fa_server_v1`
+
+两根均为 `OPTIMAL + solution_qc=PASS + 57/57 + current input + valid result manifest + wrapper exit 0`。两者 Barrier 都报告 numerical trouble，必须保留 `Crossover=1`；不得因 24 h 成功改为 `Crossover=3`。Base/V5 solver runtime 为 `405.882/434.896 s`，simplex 为 `503,365/519,659`，peak RSS 为 `0.759/0.797 GiB`。
+
+下一步只允许以全新输出/控制根串行运行 `scripts/run_cispo_planning_sequence.py --start-year 2030 --end-year 2060 --diagnostic-hours 168 --solver-config config/solver_profiles/barrier_16_auto_order_v2.json`。先 Base，逐年接受且 immediate `--resume` PASS 后，才以 `--scenario-config config/scenarios/flex_integrated_v5_central.json` 运行 V5。每年必须检查 OPTIMAL、57/57、current input/result manifests、state chain、wrapper stderr/time、RSS/swap，以及冷热、V1G/V2G、firm credit、wave、水电、PHS/储能、网络、备用、惯量、碳/CCS 和成本口径。任何失败根不得复用。
+
+容量解释边界：短时域 output 的 `effective_peak_load_gw` 只来自所选领先小时；V5 firm credit 则按完整 8760 h 各省不可变 baseline peak 的四小时窗口、合同容量、功率/能量包络和 derating 计算。因此 24/168/744 h 只能验证工程实现，不能给出年度 effective-peak、ELCC 或科学价值结论。168 h A/B 全闭合后才可启动新的串行 744 h，且仍标记 `TEST_ONLY_TRUNCATED_HORIZON`。
+
 ## 2026-07-30 16:05+08:00 集成需求侧灵活性 V5 的分阶段门禁合同
 
 候选实现提交为 `57ad4c5`。Base 不变，正式对比只允许 Base 与一个集成中央反事实；中央反事实同时包含冷热负荷服务、付费 V1G、内生付费 V2G 和折减 firm capacity credit。论文补充材料源文件为 `supplementary_materials/modules/06_integrated_demand_flexibility/integrated_demand_flexibility_methods_en.tex`，技术合同见同目录中文版本和 `config/FLEXIBLE_LOAD_V5_CONTRACT.md`。
