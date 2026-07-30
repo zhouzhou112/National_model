@@ -1,5 +1,40 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 04:21+08:00 V5 数值稳定化部署与分级门禁
+
+部署身份必须是
+`fead34334153eca32bbf7ec3651f3388038ac04b`。该提交把 V5 零控制冷热
+状态链精确压缩为“控制小时 + 衰减锚点”，将 168 h presolve 最大系数放大
+从 51.094 倍降为 1.0；同时删除冗余变量/约束并增加 V1G/V2G 共享连接
+hard QC。`barrier_16_auto_order_stable_basis_v3` 是诊断候选，不是已接受
+production profile。
+
+部署前必须重新核验服务器无 CISPO/Gurobi/sequence 进程、checkout clean、
+RAM/swap/`vmstat`/memory PSI 正常且 ParaCloud 队列为空。随后：
+
+1. fast-forward 到精确 `fead343`；设置
+   `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`、
+   `CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf`、
+   `CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse`
+   与 `CISPO_WAVE_ROOT=/data/zz2/National_model/data/wave_energy_20260727`。
+2. 运行完整 `unittest`、`check_server_readiness.py`、V5 input audit、
+   release audit 和水电审计；任一失败即停止。确认常规水电仍为
+   `297.8895 + 82.1105 = 380.0000 GW`。
+3. 使用全新输出根和
+   `config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`，
+   无 `--basis-in`，依次运行 2030 Base 1 h、V5 1 h、Base 24 h、V5
+   24 h。每次结束后核对 `OPTIMAL`、`solution_qc=PASS`、58/58 hard
+   checks、current input manifest、valid result manifest、wrapper
+   stderr/time、raw/presolved/factor、Barrier/Crossover、RSS/swap/PSI。
+4. 只有四个短门禁都接受后，才启动一个全新 2030/V5 168 h cold root；
+   不启动 Base sequence 或后续年份。重点比较 `Numerical trouble`、
+   Barrier residual、Crossover iterations、Kappa、最大 primal/bound/dual
+   violation、共享 EV 连接、冷热状态、网络方向性与全部 accounting scope。
+5. 168 h 始终是 `TEST_ONLY_TRUNCATED_HORIZON`。本节不授权 744 h、
+   8760 h、四年 sequence、付费云、并发第二求解、basis/MGA 或
+   `Crossover=3`。不得以 34.3 GiB 全年静态估计替代 Barrier factorization
+   内存和可解性证据。
+
 ## 2026-07-30 21:29+08:00 有界方向性 warning 的部署与 1008 h V5 授权
 
 实现提交为 `9b6e72a456b0dc8f0123f90b07195f94ca902c9a`。该实现不调大 `1e-6 GW` 检测阈值、不改变 LP 或输电成本；仅允许截断工程根在七项配置预算全部满足时以 `TEST_ONLY_DE_MINIMIS_WARNING` 通过。QC 必须同时保留 `strict_unidirectional_interprovincial_flow=false`、`diagnostic_bidirectional_flow_warning_applied=true`、原始观测值、按时域缩放的限额和 `acceptance_scope=TEST_ONLY_TRUNCATED_HORIZON`。任何全年根都不得应用 warning。

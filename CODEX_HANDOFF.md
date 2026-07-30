@@ -12,6 +12,44 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 04:21+08:00 已提交 V5 长时域数值稳定化实现
+  `fead34334153eca32bbf7ec3651f3388038ac04b`。旧服务器根
+  `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_direction_warning_v5_cf265f3_server_v1`
+  已严格归类为数值 `HARD_FAIL`：2030 在 21,600 s 达到 `TIME_LIMIT`，
+  Barrier 210 后出现 `Numerical trouble encountered`，Crossover/Simplex
+  累计 3,488,935 次仍无可行解；无 `solution_qc.json`、无
+  `result_manifest.json`，2040--2060 未启动。失败不是内存或队列导致：
+  wrapper 峰值 RSS 约 3.47 GiB、swaps 0，终态服务器约 114 GiB available、
+  `vmstat si/so=0`、memory PSI 0，ParaCloud 队列为空。
+- 根因已由 168 h 原始/预求解矩阵复现：旧完整冷热状态链被 presolve
+  反向聚合后，最大系数由 6,250 放大到 319,337.737（51.094 倍），最差
+  家族为 `cooling_positive_service_bound`。新实现仅在有非零控制的小时
+  保留冷热状态，并以衰减锚点限制相邻保留节点的系数不低于 0.1；被省略
+  小时的控制严格为零、状态上界不随时间变化且 `0 < rho <= 1`，因此使用
+  `S_t = rho^Delta S_prev + eta_c u_t - d_t/eta_d` 是精确消元，不改变可行域
+  或目标。还删除 V5 未进入目标/QC 的 EV 绝对偏差 epigraph、零上界冷热
+  控制变量、零 departure rows 以及可由静态正下界证明冗余的
+  `effective_load >= 0` rows；全年共减少 1,227,241 个原始变量和
+  2,348,964 个原始约束。新增 `charge + discharge <= connected * K_v1g`
+  以禁止 V1G/V2G 同时重复占用同一签约连接，并新增对应 hard QC。
+- 最终本地证据：完整回归 `159/159 PASS`，V5 input audit、release audit、
+  compileall 与 `git diff --check` 均 PASS；水电仍为
+  `297.8895 + 82.1105 = 380.0000 GW`。最终 2030/168 h V5 数值审计为
+  raw `1,209,095 rows / 1,060,576 vars / 9,755,331 nz`，presolved
+  `737,850 / 751,222 / 7,386,903`，raw/presolved 最大系数均为 6,250，
+  放大比严格为 1.0。8760 h 静态 preflight 为约 42.95M variables、
+  57.92M constraints、503.13M nonzeros、34.3 GiB；它不是 Barrier
+  factorization 或可解性证据。本地 1 h 求解在 `optimize()` 前因 available
+  RAM 约 7.9 GiB 低于 8 GiB 安全门槛而停止，不得降低门槛。
+- 新的 `barrier_16_auto_order_stable_basis_v3` 只是诊断候选：
+  `Method=2`、`Threads=16`、`Presolve=2`、`Crossover=1`、
+  `CrossoverBasis=1`，不设置 `Aggregate=0`。下一精确步骤是推送
+  `fead343`，在服务器无进程且 clean 时 fast-forward，运行完整回归、
+  readiness/release/V5/hydro audits，再串行运行全新 2030 Base/V5 1 h
+  与 24 h cold gates；均严格闭合后，才启动唯一 2030/168 h V5 cold
+  candidate。不得自动启动 744 h、8760 h、四年 sequence、付费云、basis、
+  MGA、并发第二求解或 `Crossover=3`。
+
 - 2026-07-30 21:29+08:00 作者已决定不让系统级影响极小的 AC 对冲流阻断截断时域排错，限定 warning 实现提交为 `9b6e72a456b0dc8f0123f90b07195f94ca902c9a`。该提交不改变 LP 方程、目标、输电成本、流量数组或 `1e-6 GW` 原始检测阈值；只对 `TEST_ONLY_TRUNCATED_HORIZON` 增加七重 warning budget：每 168 h 最多 4 个 edge-hours、单小时较小方向不超过 `0.25 GW`、不超过线路容量 `15%`、累计较小方向不超过 `0.75 GWh`、额外损耗不超过 `0.025 GWh`、累计较小方向占毛输电量不超过 `5e-5`、额外损耗占系统负荷不超过 `1e-7`，其中小时/电量/损耗预算随诊断小时线性缩放。任一超限仍 hard fail；8760 h `SCIENTIFIC_PRODUCTION` 继续要求 `1e-6 GW` 以上严格零对冲。原 2050/168 h 现场在新评估器下为 `TEST_ONLY_DE_MINIMIS_WARNING`：3 edge-hours、`0.176374 GW`、线路占比 `0.107153`、`0.381006 GWh`、额外损耗 `0.011489 GWh`、毛流占比 `1.3823e-5`、负荷占比 `4.0100e-8`，所有原始值和限额均保留在 QC。
 - 本地新增方向性解析测试后完整回归 `146/146 PASS`，V5 input audit 与 release audit 均 PASS；本机 available RAM 约 `7.48 GiB < 8 GiB`，因此未降低门槛或启动本地 solver。21:28 实时复核固定服务器仍为 clean `af390fa`、无 CISPO/Gurobi/sequence 进程、约 `114 GiB` available、swap `780 MiB` 且 `si/so=0`、memory PSI 0，ParaCloud 队列空。下一步提交文档并双端推送后，在服务器空闲现场 fast-forward 精确 tip，运行 `146/146`、release/readiness/V5/hydro audits 及全新 1 h/24 h Base/V5；随后依次运行全新四年 168 h Base 和 V5。全部闭合后，作者授权的长门禁为唯一串行四年 `1008 h` `flex_integrated_v5_central`（42 天，强于 744 h），继续使用 `barrier_16_auto_order_v2`、cold/no-basis。仍禁止 8760 h、付费云、并发第二求解、basis/MGA 和 `Crossover=3`。
 - 2026-07-30 19:38+08:00 固定服务器四年 168 h Base sequence 已在 2050 年按物理 hard QC 正确停止，不能接受或续接。输出根 `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1` 的 `sequence_report.json=HARD_FAIL`：2030/2040 均为 `OPTIMAL + solution_qc=PASS + 57/57 + current input + valid result manifest`，2050 的 Gurobi 求解虽为 `OPTIMAL`（solver runtime `849.053 s`、Barrier `128`、Crossover/simplex `340,040`、最大 constraint/bound/dual violation `4.889e-10/1.193e-8/9.313e-8`），但 `solution_qc=HARD_FAIL`，仅 `unidirectional_interprovincial_flow` 一项失败；2050 无 `result_manifest.json`/planning state，2060 未启动，V5 sequence 也未启动。违规严格局限于 `CORRIDOR_0153`（吉林 `22`—黑龙江 `23`，AC，既有容量 `1.646 GW`）的 3 个小时：最大较小方向流量 `0.176374 GW`、累计较小方向流量 `0.381006 GWh`，不是 `1e-6 GW` 数值尾差。对应 2050 窗口净碳上限按 `168/8760` 缩放至 `-1.917808 MtCO2` 并精确 binding，碳影子价格 `3589.731 CNY/tCO2`，违规小时吉林/黑龙江边际电价约 `-1405` 至 `-3650 CNY/MWh`；模型利用 AC 正反向流的额外输电损耗吸收 BECCS 驱动的局部过剩电量。这说明现有 `1.004004 CNY/MWh` 毛流量成本在深度负价下不再足以保证无对冲流，硬 QC 拒绝是正确行为，禁止通过调大 `1e-6 GW` 阈值重标结果。
@@ -353,6 +391,31 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — V5 长时域精确稀疏化与数值兼容门禁
+
+- Git commit:
+  `fead34334153eca32bbf7ec3651f3388038ac04b`。
+- Scope/changed files: `cispo_model/flexible_load.py` 与新增
+  `cispo_model/flexible_load_numerics.py` 实施零控制冷热状态的精确消元、
+  稀疏控制变量和 EV 共享连接约束；`preflight.py`、runner、diagnostics、
+  solver/model-structure audits 与 `solution_export.py` 增加规模、数值风险、
+  硬验收和 QC 证据；新增
+  `config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`；同步更新
+  V5 合同、模型规范及对应测试。
+- Commands/evidence:
+  `CISPO_WAVE_ROOT=...\wave_energy conda run -n RL python -m unittest discover
+  -s tests -p 'test_*.py' -v` 为 `159/159 PASS`；V5 input/release audits PASS；
+  `scripts/audit_model_numerics.py --hours 168 --presolve` 得到 raw
+  `1,209,095/1,060,576/9,755,331` 与 presolved
+  `737,850/751,222/7,386,903`（rows/vars/nonzeros），最大矩阵系数放大比
+  `1.0`。全年 preflight 估计 `42,946,990` variables、
+  `57,924,850` constraints、`503,133,030` nonzeros、`34.3 GiB`。
+- Unresolved/next action: 当前提交尚未经过固定服务器 1 h/24 h 或 168 h
+  求解验证；`CrossoverBasis=1` 尚不能标为 production。推送后只允许在
+  clean/idle 固定服务器依次执行回归、readiness/release/V5/hydro、
+  Base/V5 1 h、Base/V5 24 h 和单个 2030/V5 168 h。禁止把静态规模或
+  truncated gates 外推为 8760 h 可解性或年度科学结果。
 
 ### 2026-07-30 — bounded test-only AC counterflow warning contract
 

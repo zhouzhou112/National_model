@@ -1,5 +1,30 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 04:21+08:00 V5 数值根因已结构修复，待部署服务器短门禁
+
+- 本地实现提交为 `fead34334153eca32bbf7ec3651f3388038ac04b`；当前
+  origin/GitHub 与固定服务器仍为 clean
+  `cf265f365c85f8bb9aa8c18880cba04f095fc982`，尚未部署新提交。
+- 旧 V5 2030/168 h 终态是 `TIME_LIMIT + Numerical trouble`，不是可接受
+  结果：Barrier 210、solver 21,600.187 s、simplex 3,488,935、无解、
+  无 QC、无 result manifest；wrapper 峰值 RSS 约 3.47 GiB、swaps 0。
+  2040--2060 未启动。
+- 最终本地 168 h 矩阵审计：raw
+  `1,209,095 rows / 1,060,576 vars / 9,755,331 nz`，presolved
+  `737,850 / 751,222 / 7,386,903`；raw/presolved 最大系数同为 6,250，
+  presolve amplification `1.0`。旧模型对应放大比为 `51.094`。
+  完整回归 `159/159 PASS`，V5 input/release/hydro audits PASS。
+- 04:12 实时服务器为 clean `cf265f3`、无真实 CISPO/Gurobi 进程、约
+  114 GiB available、swap 780 MiB/2 GiB 且 `vmstat si/so=0`、memory
+  PSI 0；ParaCloud `squeue -u a8s001819` 为空。本地 Windows 只有约
+  7.9 GiB available，1 h gate 在 `optimize()` 前由 8 GiB 门槛拒绝。
+- 下一步：推送后再次实时核验，再 fast-forward 到精确提交；先跑服务器
+  `159/159`、readiness/release/V5/hydro，再串行运行全新 Base/V5
+  1 h 与 24 h，全部达到 `OPTIMAL + QC PASS + 58/58 + current input +
+  valid result manifest` 后，才允许单独启动 2030/V5 168 h。仍禁止
+  744 h、8760 h、四年 sequence、付费云、basis/MGA、并发第二求解和
+  `Crossover=3`。
+
 ## 2026-07-30 21:29+08:00 test-only 对冲流 warning 已实现，待部署
 
 - 实现提交 `9b6e72a` 保持模型与 `1e-6 GW` 检测不变，只把同时满足七项上限的截断时域微小 AC 对冲流标为 `TEST_ONLY_DE_MINIMIS_WARNING`；任一上限超限仍 hard fail，8760 h 始终 strict zero。原 2050 事件对应额外损耗仅 `0.011489 GWh`、占系统负荷 `4.0100e-8`，在新合同内，但不会被写成“严格单向”。
