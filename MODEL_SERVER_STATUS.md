@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 09:18+08:00 四年 744 h sequence 已 PASS，服务器空闲
+
+- `/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1` 于 `09:12:33+08:00` 完成，sequence `PASS`；2030/2040/2050/2060 全部 `ACCEPTED`。
+- 四年均 `OPTIMAL + solution_qc=PASS + 53/53 + current input manifest + valid result manifest + hydro reconciliation audit`。objective 依次为 `2,331,204.529 / 2,380,260.669 / 2,564,163.188 / 2,808,392.706 million CNY`；solver runtime 依次为 `12,268.312 / 10,701.027 / 12,557.989 / 14,954.122 s`。
+- 顶层 wrapper exit 0、wall `14:27:23`、maximum RSS `21,927,236 KiB`、swaps 0；年度 stderr 全空。当前无 CISPO/Gurobi/planning-sequence PID，available RAM 约 114 GiB，swap 无实时进出，memory PSI 0；ParaCloud 队列空。
+- 744 h 仍为 `TEST_ONLY_TRUNCATED_HORIZON`。服务器不得自动启动 8760 h、basis、MGA、付费云或第二求解。
+
 ## 2026-07-29 23:21+08:00 2030 已接受，2040 Barrier iteration 107
 
 - sequence 仍为唯一活动任务。2030 已 `ACCEPTED`：`OPTIMAL + PASS + 53/53 + current input + valid result manifest`，solver runtime `12,268.312 s`，objective `2,331,204.529 million CNY`，peak process-tree RSS `20.385 GiB`，年度 stderr 为空。

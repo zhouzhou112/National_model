@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 09:18+08:00 四年 744 h 终态与停止条件
+
+活动 sequence 已正常结束，`sequence_report.json=PASS`，四年全部 `ACCEPTED`。每年均满足 `OPTIMAL + PASS + 53/53 + current input + valid result manifest`，顶层 wrapper exit 0。当前服务器空闲；本 744 h 工程测试的监控任务应停止。
+
+不得把四年 test-only planning state 用作正式年度 anchor，不得自动调用 8760 h、basis/MGA、付费云或第二求解。后续任何年度科学运行必须基于单独批准的完整 Base/low/high/effective-peak 合同重新执行部署前门禁。
+
 ## 2026-07-29 23:21+08:00 当前逐年状态
 
 2030 已由 sequence 严格接受并传递 test-only planning state；2040 正在 Barrier iteration 107。当前无故障、无资源压力，不需要人工动作。继续按下一节只读监控；不得因 2030 accepted 将 744 h 解释为年度科学结果，也不得手工跳过 2040、启动并发任务或修改活动 checkout。
