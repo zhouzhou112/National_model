@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 19:38+08:00 168 h Base HARD_FAIL 现场与恢复边界
+
+失败根为 `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1`，控制根为 `/data/zz2/National_model/run_control/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1`。必须原样保留。2030/2040 已 accepted；2050 Gurobi `OPTIMAL` 但 production QC 因 3 个 material AC bidirectional edge-hours hard fail，故 2050 没有 result manifest/state，2060 未启动。不得调用 `--resume`，不得手工补 manifest，不得跳年。
+
+违规位于 `CORRIDOR_0153`（吉林—黑龙江，AC，容量 `1.646 GW`）的 hour 28/94/95，最大/累计 opposing minimum flow 为 `0.176374 GW`/`0.381006 GWh`。2050 缩放碳上限 binding 且节点电价深度为负，说明线路损耗被用作 BECCS 过剩电量的隐式 sink。现有 `1.004004 CNY/MWh` flow cost 只在常规非负边际条件下足以破除正反向退化；不得把这次失败归为 solver residual，也不得提高 `1e-6 GW` QC tolerance。
+
+恢复顺序固定为：
+
+1. 保持服务器 checkout/output 不动，完成方向性方案审查；方案必须显式说明 LP/MILP 边界、输电损耗、负价、BECCS/碳约束、普通潮流经济性和 8760 h 规模影响。
+2. 不允许仅把全体输电流成本提高到高于负节点价格；这种做法会改变所有正常输电、扩建和调度经济性。也不允许新增未审计的自由弃电变量来隐藏同一问题。
+3. 方案批准后先做解析单元测试和故意制造负价/过剩电量的最小回归；随后在全新根运行 1 h/24 h Base，并要求原有 57 项 hard checks 全部 PASS、AC counterflow 为 0、input/result manifests 闭合。
+4. 再从 2030 开始运行全新四年 168 h Base；不得复用 2030/2040 planning state，因为实现身份已变化。只有 Base 四年完全 accepted 后才允许 V5 168 h。
+5. Base/V5 168 h 全闭合前禁止 744 h；继续禁止 8760 h、付费云、basis/MGA、并发第二求解和 `Crossover=3`。
+
 ## 2026-07-30 16:58+08:00 V5 当前服务器身份与 168 h 启动边界
 
 当前冻结模型 checkout 为 `af390fad22dc4e3ec4636edadfb56295e4907234`，数据根为 `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。V5 manifest SHA256 必须为 `a324430713e0eb3a1671c9b9ba6c127c34c5e0d7c2e21f090cbcd9394f061831`，技术经济 manifest 必须继承 V0729 的 `397297ec...`。任何服务器重建都必须得到与本地完全相同的六项 V5 hashes；不能接受“解析后数值相同但压缩文件 hash 不同”。

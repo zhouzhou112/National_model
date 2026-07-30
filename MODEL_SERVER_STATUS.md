@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 19:38+08:00 168 h Base 在 2050 网络方向 hard QC 停止
+
+- 当前无 CISPO/Gurobi/planning-sequence 进程。固定服务器保持 clean `af390fad22dc4e3ec4636edadfb56295e4907234`，约 `114 GiB` available RAM，swap `780 MiB/2.0 GiB` 且 `vmstat si/so=0`、memory PSI 0；ParaCloud `squeue -u a8s001819` 为空。本地/origin/GitHub 文档 tip 均为 `134af0f`。
+- Base 输出根 `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1` 为 `sequence_report=HARD_FAIL`。2030/2040 已 accepted，input/result manifests 均由当前 runtime validator 返回 `(True, [])`；2050 Gurobi 为 `OPTIMAL`，但 `solution_qc=HARD_FAIL`，缺少 `result_manifest.json` 和 planning state，2060 未启动。V5 尚未启动。
+- 2050 唯一失败 hard check 为 `unidirectional_interprovincial_flow`。`CORRIDOR_0153`（吉林—黑龙江、AC、`1.646 GW`）在 hour 28/94/95 同时有正反向流：较小方向分别为 `0.083989/0.176374/0.120643 GW`，累计 `0.381006 GWh`。这远高于 `1e-6 GW` QC 容差，不能放宽阈值。
+- 机制证据：2050 `168/8760` 缩放后的净碳上限 `-1.917808 MtCO2` 精确 binding，碳 scarcity `3589.731 CNY/tCO2`；违规小时吉林/黑龙江电价约 `-1405/-2338/-3650 CNY/MWh`。少量对冲流通过额外线路损耗消纳 BECCS 驱动的过剩电量，现有 `1.004004 CNY/MWh` 毛流量成本不足以阻止该行为。
+- wrapper exit 1、wall `49:20.77`、MaxRSS `3,741,888 KiB`、swaps 0；2030/2040 stderr 为 0 bytes，2050 stderr 明确为 production QC RuntimeError。保留失败根，不续跑、不补写 manifest、不重标。下一步必须先评审 AC 方向性修复；严禁自动启动 V5、744 h、8760 h、付费云、basis/MGA、第二求解或 `Crossover=3`。
+
 ## 2026-07-30 16:58+08:00 V5 服务器预门禁与 24 h A/B 已闭合
 
 - 固定服务器 clean checkout 为 `af390fad22dc4e3ec4636edadfb56295e4907234`，数据根为 `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。跨 Windows/Linux 的 V5 五表和 manifest 已由 `4f717de` 固定为逐字节一致；`af390fa` 恢复继承权威技术经济 manifest。V5 manifest SHA256 为 `a324430713e0eb3a1671c9b9ba6c127c34c5e0d7c2e21f090cbcd9394f061831`。
