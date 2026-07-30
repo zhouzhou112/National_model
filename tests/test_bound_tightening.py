@@ -67,11 +67,15 @@ class BoundTighteningTests(unittest.TestCase):
         sinks = self.artifacts.index["ccs_sinks"]
         injection_field = self.config.raw["ccs_injection_field"]
         sink_capacity = sinks[injection_field].to_numpy(dtype=float)
+        selected_horizon_sink_capacity = (
+            sink_capacity
+            * float(self.artifacts.index["annual_flow_scaling_factor"])
+        )
         self.assertTrue(
             np.allclose(
                 np.asarray(self.artifacts.variables["co2_ship"].UB),
                 np.broadcast_to(
-                    sink_capacity,
+                    selected_horizon_sink_capacity,
                     np.asarray(self.artifacts.variables["co2_ship"].UB).shape,
                 ),
             )
@@ -79,12 +83,36 @@ class BoundTighteningTests(unittest.TestCase):
         self.assertTrue(
             np.allclose(
                 np.asarray(self.artifacts.variables["dac_capture"].UB),
-                float(sink_capacity.sum()),
+                float(selected_horizon_sink_capacity.sum()),
             )
         )
         self.assertEqual(
             self.artifacts.index["explicit_bound_tightening"]["spur_trunk"],
             "no finite UB added: installed interface augmentation above minimum remains feasible",
+        )
+
+    def test_annual_flow_accounts_are_scaled_to_selected_horizon(self):
+        index = self.artifacts.index
+        fraction = 1.0 / float(self.config.hours)
+        self.assertAlmostEqual(index["annual_flow_scaling_factor"], fraction)
+        self.assertAlmostEqual(
+            index["selected_horizon_carbon_limit_mtco2"],
+            index["annual_carbon_limit_mtco2_per_year"] * fraction,
+        )
+        self.assertTrue(
+            np.allclose(
+                index["selected_horizon_biomass_limit_pj"],
+                np.asarray(index["annual_biomass_limit_pj_per_year"]) * fraction,
+            )
+        )
+        self.assertTrue(
+            np.allclose(
+                index["selected_horizon_co2_sink_injection_upper_mtco2"],
+                np.asarray(
+                    index["annual_co2_sink_injection_upper_mtco2_per_year"]
+                )
+                * fraction,
+            )
         )
 
     def test_independent_phs_energy_adds_only_province_level_annual_variables(self):

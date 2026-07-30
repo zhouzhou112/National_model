@@ -7,7 +7,7 @@ This repository implements a continuous linear capacity-expansion and chronologi
 - `2025` is a fixed boundary state, not an optimization year.
 - Planning years are solved sequentially as `2030 -> 2040 -> 2050 -> 2060`.
 - Each planning year is a separate 8760-hour LP. Accepted model-built cohorts pass to the next year and retire by technology lifetime.
-- `744h` and `4344h` horizons are engineering gates only. Their annual capacity/policy terms are not rescaled, so their objective and energy totals are not planning results.
+- `24h`, `744h` and `4344h` horizons are engineering gates only. Annual flow accounts (net-carbon limit, DAC throughput, biomass fuel and CO2 sink injection) use `optimization_hours/8760` scaling, while annualized capacity and fixed costs remain unscaled. Leading-hour diagnostics are not representative years, so their capacities, objective and energy totals are not planning results.
 - The production formulation is `full_year_monolithic_lp`; representative periods and decomposition are not used.
 
 The full mathematical specification is in [cispo_full_lp_model_spec.md](cispo_full_lp_model_spec.md). Current validated implementation and server evidence are in [CODEX_HANDOFF.md](CODEX_HANDOFF.md).

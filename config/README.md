@@ -20,14 +20,24 @@
 $env:CISPO_WAVE_ROOT = 'D:\codeenv\pycharmproject\National_RL\wave_energy'
 ```
 
-`scenario_catalog.json` 是当前情景入口清单。`implemented` 表示代码和输入合同已闭合、
-可以运行工程门禁，并不表示已成为论文 Base 或已经完成全国全年校准。当前实现包括：
+`scenario_catalog.json` 是代码能力清单，不是论文主情景清单。`implemented` 仅表示代码和
+输入合同已闭合、可以运行工程门禁；一次求解只会加载命令行指定的一个 overlay。当前
+论文主分析只保留两个身份：
 
-- `flexible_load_comfort_v3_v2g_5pct`：保留的历史 V3 工程对照；
-- `flexible_load_comfort_v4_v1g`：数据支持的连续冷热状态与 EV V1G 中心情景；
+- `base`：非灵活性基准；
+- `flexible_load_comfort_v4_v1g`：数据支持的连续冷热状态与 EV V1G 中心反事实。
+
+其余文件按用途隔离：
+
+- `flexible_load_comfort_v4_v1g_effective_peak_sensitivity`：仅检验需求柔性是否获得容量充裕信用；
 - `flexible_load_comfort_v4_v2g_sensitivity`：同一 V4 车群的 V2G 敏感性；
 - `hydro_aggregate_flex_v1`：省级未识别常规水电参与调节的敏感性；
-- 三个 `phs_power_energy_separated_*_v1`：抽蓄功率/能量容量分离的成本敏感性。
+- 三个 `phs_power_energy_separated_*_v1`：抽蓄功率/能量容量分离的低/中/高成本敏感性；
+- `flexible_load_comfort_v3_v2g_5pct`：已由 V4 替代，只保留作历史回归；
+- `phs_power_energy_separated_template_v1`：不可运行模板。
+
+因此 `scenario=flexible_load_comfort_v4_v1g` 在四个规划年重复出现，表示同一个中心
+overlay 被 2030、2040、2050、2060 串行复用，并不表示同时叠加了多个 scenario。
 
 V4 168 h 工程门禁示例：
 

@@ -41,9 +41,10 @@ def resolve_project_path(path: str | Path) -> Path:
 def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
     catalog_path = resolve_project_path(path)
     payload = json.loads(catalog_path.read_text(encoding="utf-8"))
-    if payload.get("catalog_version") not in {"v1", "v2", "v3"}:
+    catalog_version = payload.get("catalog_version")
+    if catalog_version not in {"v1", "v2", "v3", "v4"}:
         raise ValueError(
-            "Scenario catalog must declare catalog_version=v1, v2 or v3"
+            "Scenario catalog must declare catalog_version=v1, v2, v3 or v4"
         )
 
     implemented = payload.get("implemented")
@@ -93,6 +94,25 @@ def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
             }
         )
 
+    normalized_by_id = {
+        row["scenario_id"]: row for row in normalized_implemented
+    }
+    primary_rows = payload.get("primary_analysis", [])
+    if catalog_version == "v4" and not isinstance(primary_rows, list):
+        raise ValueError("Scenario catalog v4 requires a primary_analysis list")
+    normalized_primary: list[dict[str, Any]] = []
+    primary_seen: set[str] = set()
+    for row in primary_rows:
+        scenario_id = str(row.get("scenario_id", "")).strip()
+        if scenario_id not in normalized_by_id:
+            raise ValueError(
+                f"Primary scenario must also be implemented: {scenario_id}"
+            )
+        if scenario_id in primary_seen:
+            raise ValueError(f"Duplicate primary scenario_id: {scenario_id}")
+        primary_seen.add(scenario_id)
+        normalized_primary.append(normalized_by_id[scenario_id])
+
     normalized_planned: list[dict[str, Any]] = []
     for row in planned:
         scenario_id = str(row.get("scenario_id", "")).strip()
@@ -111,6 +131,7 @@ def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
     return {
         "catalog_path": catalog_path,
         "catalog_sha256": sha256_file(catalog_path),
+        "primary_analysis": normalized_primary,
         "implemented": normalized_implemented,
         "planned_not_runnable": normalized_planned,
     }

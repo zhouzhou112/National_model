@@ -1,5 +1,17 @@
 {
-  "catalog_version": "v3",
+  "catalog_version": "v4",
+  "primary_analysis": [
+    {
+      "scenario_id": "base",
+      "analysis_role": "BASELINE",
+      "config": "config/scenarios/base.json"
+    },
+    {
+      "scenario_id": "flexible_load_comfort_v4_v1g",
+      "analysis_role": "CENTRAL_COUNTERFACTUAL",
+      "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"
+    }
+  ],
   "implemented": [
     {"scenario_id": "base", "analysis_role": "BASELINE", "config": "config/scenarios/base.json"},
     {"scenario_id": "flexible_load_comfort_v4_v1g", "analysis_role": "CENTRAL_COUNTERFACTUAL", "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"},

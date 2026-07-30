@@ -760,7 +760,10 @@ def build_full_year_monolithic(
     dac_power = data.dac.set_index("technology").reindex(
         list(artifacts.index["dac_index"])
     ).average_power_gw_per_mtco2_per_year.to_numpy(dtype=float)
-    dac_load = dac_capture @ dac_power
+    annual_flow_scaling_factor = float(
+        artifacts.index["annual_flow_scaling_factor"]
+    )
+    dac_load = dac_capture @ (dac_power / annual_flow_scaling_factor)
     province_emissions: list[gp.LinExpr] = []
     power_balance_constraints = []
     for p in range(p_count):

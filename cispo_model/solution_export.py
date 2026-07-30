@@ -177,6 +177,7 @@ def export_operational_solution(
     flow_reverse[reverse_edge_rows, :] = _value(variables["flow_reverse_ac"])
     network_injection = _value(variables["network_injection"])
     dac_load = _value(variables["dac_load"])
+    dac_capacity = _value(variables["dac_capacity"])
 
     generation_total = (
         vre_generation.sum(axis=1)
@@ -690,12 +691,23 @@ def export_operational_solution(
     annual_emissions = float(_value(variables["annual_emissions"]).sum())
     dac_removed = float(_value(variables["dac_capture"]).sum())
     net_emissions = annual_emissions - dac_removed
-    carbon_limit = float(data.carbon.emissions_limit_mtco2_per_year)
+    annual_flow_scaling_factor = float(
+        artifacts.index["annual_flow_scaling_factor"]
+    )
+    annual_carbon_limit = float(
+        artifacts.index["annual_carbon_limit_mtco2_per_year"]
+    )
+    carbon_limit = float(
+        artifacts.index["selected_horizon_carbon_limit_mtco2"]
+    )
     annual_biomass = _value(variables["annual_biomass"]).sum(axis=0)
-    biomass_limit = (
-        data.biomass.set_index("province_code")
-        .thermcal_gj_per_year.reindex(provinces).to_numpy(dtype=float)
-        / 1.0e6
+    annual_biomass_limit = np.asarray(
+        artifacts.index["annual_biomass_limit_pj_per_year"],
+        dtype=float,
+    )
+    biomass_limit = np.asarray(
+        artifacts.index["selected_horizon_biomass_limit_pj"],
+        dtype=float,
     )
     captured = _value(variables["annual_captured"]).sum(axis=0)
     dac_by_province = _value(variables["dac_capture"]).sum(axis=1)
@@ -703,7 +715,19 @@ def export_operational_solution(
     co2_source_residual = co2_ship.sum(axis=1) - captured - dac_by_province
     injection_field = str(config.raw["ccs_injection_field"])
     sinks = data.vre_points.loc[data.vre_points[injection_field].gt(0)]
-    co2_sink_violation = co2_ship.sum(axis=0) - sinks[injection_field].to_numpy(float)
+    selected_horizon_sink_injection_upper = np.asarray(
+        artifacts.index[
+            "selected_horizon_co2_sink_injection_upper_mtco2"
+        ],
+        dtype=float,
+    )
+    co2_sink_violation = (
+        co2_ship.sum(axis=0) - selected_horizon_sink_injection_upper
+    )
+    dac_selected_horizon_capacity_violation = (
+        _value(variables["dac_capture"])
+        - annual_flow_scaling_factor * dac_capacity
+    )
 
     thermal_energy = thermal_gross.sum(axis=2)
     emission_table = data.emissions.set_index("technology")
@@ -1039,8 +1063,17 @@ def export_operational_solution(
         "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,
         "annual_net_emissions_mtco2": net_emissions,
+        "annual_flow_scaling_factor": annual_flow_scaling_factor,
+        "annual_carbon_limit_mtco2_per_year": annual_carbon_limit,
+        "selected_horizon_carbon_limit_mtco2": carbon_limit,
         "carbon_limit_mtco2": carbon_limit,
         "carbon_limit_margin_mtco2": carbon_limit - net_emissions,
+        "maximum_dac_selected_horizon_capacity_violation_mtco2": float(
+            np.maximum(
+                dac_selected_horizon_capacity_violation,
+                0.0,
+            ).max()
+        ),
         "maximum_biomass_limit_violation_pj": float(
             np.maximum(annual_biomass - biomass_limit, 0.0).max()
         ),
@@ -1236,6 +1269,9 @@ def export_operational_solution(
         "reservoir_energy": qc["maximum_reservoir_energy_upper_violation_gwh"] <= tolerance,
         "reservoir_active_storage": qc["maximum_reservoir_active_storage_upper_violation_m3"] <= reservoir_volume_tolerance_m3,
         "carbon": qc["carbon_limit_margin_mtco2"] >= -tolerance,
+        "dac_selected_horizon_capacity": qc[
+            "maximum_dac_selected_horizon_capacity_violation_mtco2"
+        ] <= tolerance,
         "biomass": qc["maximum_biomass_limit_violation_pj"] <= tolerance,
         "co2_source": qc["maximum_co2_source_balance_residual_mt"] <= tolerance,
         "co2_sink": qc["maximum_co2_sink_capacity_violation_mt"] <= tolerance,
@@ -1604,6 +1640,9 @@ def export_operational_solution(
                 emissions_before_dac_by_province - dac_by_province
             ),
             "biomass_fuel_pj": biomass_by_province,
+            "annual_biomass_limit_pj_per_year": annual_biomass_limit,
+            "selected_horizon_biomass_limit_pj": biomass_limit,
+            "annual_flow_scaling_factor": annual_flow_scaling_factor,
             "dac_electricity_gwh": dac_load * hours,
         }
     ).to_csv(
@@ -1906,11 +1945,21 @@ def export_operational_solution(
     )
 
     carbon = {
+        "accounting_scope": (
+            "FULL_YEAR"
+            if hours == config.hours
+            else "SELECTED_HORIZON_ANNUAL_FLOW_SCALED"
+        ),
+        "optimization_hours": hours,
+        "configured_hours": int(config.hours),
+        "annual_flow_scaling_factor": annual_flow_scaling_factor,
         "annual_gross_emissions_mtco2": annual_emissions,
         "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_fossil_unabated_emissions_mtco2": float(fossil_unabated.sum()),
         "annual_dac_removed_mtco2": dac_removed,
         "annual_net_emissions_mtco2": net_emissions,
+        "annual_carbon_limit_mtco2_per_year": annual_carbon_limit,
+        "selected_horizon_carbon_limit_mtco2": carbon_limit,
         "carbon_limit_mtco2": carbon_limit,
         "annual_captured_mtco2": float(captured.sum()),
         "annual_co2_shipped_mtco2": float(co2_ship.sum()),

@@ -43,6 +43,22 @@ def cost_component_accounting_scope(name: str) -> str:
     return "ANNUALIZED_PLANNING_COST"
 
 
+def selected_horizon_annual_fraction(
+    configured_hours: int,
+    blocks: list[TimeBlock],
+) -> float:
+    """Return the represented fraction of the configured chronological year."""
+    configured_hours = int(configured_hours)
+    selected_hours = sum(int(block.hours) for block in blocks)
+    if configured_hours <= 0:
+        raise ValueError("configured_hours must be positive")
+    if selected_hours <= 0 or selected_hours > configured_hours:
+        raise ValueError(
+            "Selected chronological hours must be in [1, configured_hours]"
+        )
+    return float(selected_hours) / float(configured_hours)
+
+
 def export_master_solution(
     artifacts: MasterArtifacts,
     data: ModelData,
@@ -339,6 +355,9 @@ def export_master_solution(
     dac_new = variables["dac_new"].X
     dac_capture = variables["dac_capture"].X
     dac_floor = np.asarray(artifacts.index["dac_capacity_floor_mtpa"])
+    annual_flow_scaling_factor = float(
+        artifacts.index["annual_flow_scaling_factor"]
+    )
     for p, province_code in enumerate(artifacts.index["province_codes"]):
         for technology, d in artifacts.index["dac_index"].items():
             dac_rows.append(
@@ -349,6 +368,14 @@ def export_master_solution(
                     "capacity_mtpa": dac_capacity[p, d],
                     "new_capacity_mtpa": dac_new[p, d],
                     "capture_mtco2": dac_capture[p, d],
+                    "selected_horizon_capture_mtco2": dac_capture[p, d],
+                    "annualized_capture_rate_mtpa": (
+                        dac_capture[p, d] / annual_flow_scaling_factor
+                    ),
+                    "selected_horizon_capture_upper_mtco2": (
+                        annual_flow_scaling_factor * dac_capacity[p, d]
+                    ),
+                    "annual_flow_scaling_factor": annual_flow_scaling_factor,
                 }
             )
     pd.DataFrame(dac_rows).to_csv(
@@ -641,6 +668,10 @@ def build_master(
     d_index = {tech: i for i, tech in enumerate(DAC_TECHS)}
     b_count = len(blocks)
     p_count = len(provinces)
+    annual_flow_scaling_factor = selected_horizon_annual_fraction(
+        config.hours,
+        blocks,
+    )
 
     variables: dict[str, Any] = {}
     costs: dict[str, gp.LinExpr] = {}
@@ -1152,7 +1183,10 @@ def build_master(
     dac_cap = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capacity_mtpa")
     dac_mass = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capture_mt")
     model.addConstr(dac_cap == dac_floor + dac_new, name="dac_capacity_accounting")
-    model.addConstr(dac_mass <= dac_cap, name="dac_annual_capacity")
+    constraint_handles["dac_selected_horizon_capacity"] = model.addConstr(
+        dac_mass <= annual_flow_scaling_factor * dac_cap,
+        name="dac_selected_horizon_capacity",
+    )
     variables.update(dac_new=dac_new, dac_capacity=dac_cap, dac_capture=dac_mass)
     dac_table = data.dac.set_index("technology")
     dac_cost = gp.LinExpr()
@@ -1191,19 +1225,25 @@ def build_master(
         annual_captured=annual_captured,
     )
 
-    carbon_limit = float(data.carbon.emissions_limit_mtco2_per_year)
+    annual_carbon_limit = float(data.carbon.emissions_limit_mtco2_per_year)
+    selected_horizon_carbon_limit = (
+        annual_flow_scaling_factor * annual_carbon_limit
+    )
     effective_dac = dac_mass.sum()
     constraint_handles["annual_net_carbon_limit"] = model.addConstr(
-        annual_emissions.sum() - effective_dac <= carbon_limit,
+        annual_emissions.sum() - effective_dac <= selected_horizon_carbon_limit,
         name="annual_net_carbon_limit",
     )
-    biomass_limit = (
+    annual_biomass_limit = (
         data.biomass.set_index("province_code")
         .thermcal_gj_per_year.reindex(provinces).to_numpy(dtype=float)
         / 1.0e6
     )
+    selected_horizon_biomass_limit = (
+        annual_flow_scaling_factor * annual_biomass_limit
+    )
     constraint_handles["annual_biomass_fuel_limit"] = model.addConstr(
-        annual_biomass.sum(axis=0) <= biomass_limit,
+        annual_biomass.sum(axis=0) <= selected_horizon_biomass_limit,
         name="annual_biomass_fuel_limit",
     )
 
@@ -1215,12 +1255,18 @@ def build_master(
         ["grid_uid", "lon", "lat", injection_field],
     ].reset_index(drop=True)
     co2_ship = model.addMVar((p_count, len(sinks)), lb=0.0, name="co2_ship_mt")
-    sink_injection_upper = sinks[injection_field].to_numpy(dtype=float)
+    annual_sink_injection_upper = sinks[injection_field].to_numpy(dtype=float)
+    selected_horizon_sink_injection_upper = (
+        annual_flow_scaling_factor * annual_sink_injection_upper
+    )
     # Every nonnegative province-to-sink flow is bounded by the corresponding
     # sink-column capacity, already enforced by the aggregate sink constraint.
     # Making it explicit is algebraically redundant and does not change the
     # feasible set.
-    co2_ship.UB = np.broadcast_to(sink_injection_upper, (p_count, len(sinks)))
+    co2_ship.UB = np.broadcast_to(
+        selected_horizon_sink_injection_upper,
+        (p_count, len(sinks)),
+    )
     co2_source_constraints = []
     for p in range(p_count):
         co2_source_constraints.append(model.addConstr(
@@ -1230,13 +1276,13 @@ def build_master(
         ))
     constraint_handles["co2_source_balance"] = co2_source_constraints
     constraint_handles["co2_sink_injection_capacity"] = model.addConstr(
-        co2_ship.sum(axis=0) <= sink_injection_upper,
+        co2_ship.sum(axis=0) <= selected_horizon_sink_injection_upper,
         name="co2_sink_injection_capacity",
     )
     # Each DAC capture component is nonnegative and appears in one province
     # source balance, whose total is bounded by all sink injection capacities.
     # This finite component-wise UB is therefore implied by existing rows.
-    dac_mass.UB = float(sink_injection_upper.sum())
+    dac_mass.UB = float(selected_horizon_sink_injection_upper.sum())
     variables["co2_ship"] = co2_ship
     province_centers = (
         data.vre_points.groupby("province_code")[["lon", "lat"]]
@@ -1550,6 +1596,17 @@ def build_master(
         "blocks": blocks,
         "ccs_sinks": sinks,
         "co2_transport_distance_km": transport_distance,
+        "annual_flow_scaling_factor": annual_flow_scaling_factor,
+        "annual_carbon_limit_mtco2_per_year": annual_carbon_limit,
+        "selected_horizon_carbon_limit_mtco2": selected_horizon_carbon_limit,
+        "annual_biomass_limit_pj_per_year": annual_biomass_limit,
+        "selected_horizon_biomass_limit_pj": selected_horizon_biomass_limit,
+        "annual_co2_sink_injection_upper_mtco2_per_year": (
+            annual_sink_injection_upper
+        ),
+        "selected_horizon_co2_sink_injection_upper_mtco2": (
+            selected_horizon_sink_injection_upper
+        ),
         "vre_asset_ids": vre_asset_ids,
         "wave_asset_ids": wave_asset_ids,
         "wave_capacity_floor_gw": wave_floor,

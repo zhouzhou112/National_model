@@ -3,7 +3,7 @@ scope,weather_year,config/optimization_2030.json,year,2024,yes,MODEL_CHOICE,Wind
 scope,scientific_case,config/optimization_2030.json,category,base_2024_vre_wave_on_flex_off_v1,yes,MODEL_BASELINE,Explicit Base label; wave is enabled and flexible load is disabled
 scope,hybrid_weather_bundle,config/optimization_2030.json,category,hybrid_weather_bundle_v1,yes,MODEL_BOUNDARY,VRE uses the 2024 Beijing natural year; wave retains its explicit 2023 chronology and hydro retains its 2019 GRFR chronology
 scope,scenario_parameter_registry,config/scenario_parameter_registry.csv,registry,flexible_load_comfort_v3_v2g_5pct,yes,HISTORICAL_TRACEABILITY_CONTRACT,Retained V3 override registry; current runnable scenario membership is controlled by scenario_catalog
-scope,scenario_catalog,config/scenarios/scenario_catalog.json,registry,v2,yes,CURRENT_TRACEABILITY_CONTRACT,All runnable overlays and planned non-runnable templates are explicitly separated
+scope,scenario_catalog,config/scenarios/scenario_catalog.json,registry,v4,yes,CURRENT_TRACEABILITY_CONTRACT,Primary Base and V4 V1G analysis identities are explicitly separated from runnable sensitivities legacy validation and planned non-runnable templates
 scope,flexible_load_v4_parameter_registry,config/flexible_load_v4_central_parameters.csv,registry,central plus low high,yes,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,V4 assumptions are centralized with source IDs and bounded sensitivity values
 scope,vre_scenario,config/optimization_2030.json,category,B,yes,MODEL_CHOICE,C/B/O suitability upper-bound scenario
 scope,carbon_scenario,config/optimization_2030.json,category,Base_-550Mt,yes,MODEL_CHOICE,Selects one row per planning year from the carbon table

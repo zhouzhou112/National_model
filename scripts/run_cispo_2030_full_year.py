@@ -72,7 +72,8 @@ def main() -> None:
         type=int,
         help=(
             "Build/solve an exact leading-hour diagnostic in [1, 8759]. "
-            "Annual costs and policy limits are not rescaled; never interpret it scientifically."
+            "Annual flow policy/resource limits use hours/8760 scaling, while "
+            "annualized planning costs remain unscaled; never interpret it scientifically."
         ),
     )
     parser.add_argument(
@@ -306,9 +307,14 @@ def main() -> None:
         "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
         "annual_cost_and_policy_scaling": (
-            "not rescaled; truncated horizons exist only for code and solver testing"
+            "annualized planning costs unscaled; annual flow policy and resource "
+            "accounts scaled by optimization_hours/configured_full_year_hours"
             if test_only
             else "full annual accounting"
+        ),
+        "annualized_planning_cost_scaling_factor": 1.0,
+        "annual_flow_policy_resource_scaling_factor": (
+            float(optimization_hours) / float(config.hours)
         ),
         "time_boundary": "cyclic_over_selected_horizon",
         "boundary_year": config.boundary_year,

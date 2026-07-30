@@ -23,6 +23,10 @@ class SensitivitySuiteTests(unittest.TestCase):
         )
         implemented = {row["scenario_id"]: row for row in catalog["implemented"]}
         self.assertEqual(
+            [row["scenario_id"] for row in catalog["primary_analysis"]],
+            ["base", "flexible_load_comfort_v4_v1g"],
+        )
+        self.assertEqual(
             set(implemented),
             {
                 "base",
