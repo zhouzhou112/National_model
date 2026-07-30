@@ -36,7 +36,11 @@ def cost_component_accounting_scope(name: str) -> str:
     """Classify cost rows without changing the legacy value column."""
     if name == "annual_operation":
         return "COMPOSITE_SEE_COMPONENT_ROWS"
-    if name == "operating_flexible_load_v4_enablement":
+    if name in {
+        "operating_flexible_load_v4_enablement",
+        "operating_flexible_load_v5_enablement",
+        "operating_flexible_load_v5_v2g_infrastructure",
+    }:
         return "ANNUALIZED_PLANNING_COST"
     if name.startswith("operating_"):
         return "SELECTED_HORIZON_OPERATION_COST"

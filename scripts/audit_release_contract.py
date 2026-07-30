@@ -1,4 +1,4 @@
-"""Audit the frozen 2026-07-29 National_model code/data release contract."""
+"""Audit the active inherited National_model code/data release contract."""
 from __future__ import annotations
 
 import argparse
@@ -21,7 +21,7 @@ from scripts.validate_provincial_aggregate_hydro_inputs import (  # noqa: E402
 )
 
 
-DEFAULT_CONTRACT = PROJECT_ROOT / "config" / "release_contract_v0729.json"
+DEFAULT_CONTRACT = PROJECT_ROOT / "config" / "release_contract_v0730_v5.json"
 
 
 def _sha256(path: Path) -> str:
@@ -37,6 +37,33 @@ def _nested(payload: dict[str, Any], dotted: str) -> Any:
     for key in dotted.split("."):
         value = value[key]
     return value
+
+
+def _load_contract(path: Path) -> dict[str, Any]:
+    contract = json.loads(path.read_text(encoding="utf-8"))
+    inherited = contract.get("inherits")
+    if not inherited:
+        return contract
+    inherited_path = Path(str(inherited))
+    if not inherited_path.is_absolute():
+        inherited_path = PROJECT_ROOT / inherited_path
+    parent = _load_contract(inherited_path.resolve())
+    merged = dict(parent)
+    for key, value in contract.items():
+        if key not in {"inherits", "external_data_files_additional"}:
+            merged[key] = value
+    external_by_path = {
+        row["path"]: row for row in parent.get("external_data_files", [])
+    }
+    external_by_path.update(
+        {
+            row["path"]: row
+            for row in contract.get("external_data_files_additional", [])
+        }
+    )
+    merged["external_data_files"] = list(external_by_path.values())
+    merged["inherits"] = str(inherited)
+    return merged
 
 
 def _check(
@@ -61,7 +88,7 @@ def build_audit(
     contract_path: Path = DEFAULT_CONTRACT,
     require_clean_git: bool = False,
 ) -> dict[str, Any]:
-    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    contract = _load_contract(contract_path)
     checks: list[dict[str, Any]] = []
     base = load_model_config().raw
     for dotted, expected in contract["base_expectations"].items():
@@ -89,6 +116,17 @@ def build_audit(
         scenario_ids,
         expected_ids,
     )
+    if "primary_scenarios" in contract:
+        primary_ids = [
+            row["scenario_id"] for row in catalog["primary_analysis"]
+        ]
+        _check(
+            checks,
+            "scenario_catalog_primary_membership",
+            primary_ids == contract["primary_scenarios"],
+            primary_ids,
+            contract["primary_scenarios"],
+        )
     _check(
         checks,
         "base_exclusions_not_overlaid_on_base",

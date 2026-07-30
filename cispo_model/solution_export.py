@@ -81,8 +81,21 @@ def export_operational_solution(
     ev_mobility_charge_deviation = _value(
         variables.get("ev_mobility_charge_deviation", zero_load)
     )
+    ev_mobility_v1g_relocated = _value(
+        variables.get("ev_mobility_v1g_relocated", zero_load)
+    )
     flexible_service_capacity = _value(
         variables.get("flexible_service_capacity", np.zeros((p_count, 4)))
+    )
+    firm_flexible_capacity_credit = _value(
+        variables.get(
+            "firm_flexible_capacity_credit", np.zeros((p_count, 4))
+        )
+    )
+    firm_flexible_capacity_credit_upper = _value(
+        variables.get(
+            "firm_flexible_capacity_credit_upper", np.zeros((p_count, 4))
+        )
     )
     ev_grid_charge_power_ub = _value(
         variables.get("ev_grid_charge_power_ub", baseline_components["ev"])
@@ -291,6 +304,10 @@ def export_operational_solution(
             for values in backlog_terminal_residuals
         )
     v4_formulation = flexible_formulation == "service_constrained_v4"
+    v5_formulation = (
+        flexible_formulation == "integrated_service_constrained_v5"
+    )
+    service_contract_formulation = v4_formulation or v5_formulation
     v4_thermal_transition_max = {"heating": 0.0, "cooling": 0.0}
     v4_thermal_periodic_max = {"heating": 0.0, "cooling": 0.0}
     v4_thermal_positive_bound_violation = {"heating": 0.0, "cooling": 0.0}
@@ -301,7 +318,7 @@ def export_operational_solution(
     v4_ev_soc_upper_violation = 0.0
     v4_ev_charge_power_violation = 0.0
     v4_ev_discharge_power_violation = 0.0
-    if v4_formulation:
+    if service_contract_formulation:
         if data.flexible_load_v4 is None:
             raise ValueError("V4 solution export requires validated V4 input data")
         v4 = data.flexible_load_v4
@@ -396,7 +413,7 @@ def export_operational_solution(
         )
     v2g_transition_max = 0.0
     v2g_terminal_max = 0.0
-    if (not v4_formulation) and bool(config.raw["features"]["flexible_load"]) and bool(
+    if (not service_contract_formulation) and bool(config.raw["features"]["flexible_load"]) and bool(
         config.raw["flexible_load"]["ev_v2g"]["enabled"]
     ):
         v2g_config = config.raw["flexible_load"]["ev_v2g"]
@@ -555,8 +572,15 @@ def export_operational_solution(
     effective_peak_load = load.max(axis=1)
     if capacity_margin_load_basis == "baseline_peak_v1":
         selected_peak_load = baseline_peak_load
+        adequacy_available_capacity = credited_capacity
     elif capacity_margin_load_basis == "effective_peak_endogenous_v1":
         selected_peak_load = effective_peak_load
+        adequacy_available_capacity = credited_capacity
+    elif capacity_margin_load_basis == "firm_flexibility_derated_v1":
+        selected_peak_load = baseline_peak_load
+        adequacy_available_capacity = (
+            credited_capacity + firm_flexible_capacity_credit.sum(axis=1)
+        )
     else:
         raise ValueError(
             f"Unsupported capacity-margin load basis: {capacity_margin_load_basis}"
@@ -564,7 +588,7 @@ def export_operational_solution(
     capacity_margin_required = (
         1.0 + float(config.raw["security"]["capacity_margin_fraction"])
     ) * selected_peak_load
-    capacity_margin = credited_capacity - capacity_margin_required
+    capacity_margin = adequacy_available_capacity - capacity_margin_required
 
     pmin = ruc_table.pmin_fraction.to_numpy(dtype=float)
     pmax = ruc_table.pmax_fraction.to_numpy(dtype=float)
@@ -832,6 +856,39 @@ def export_operational_solution(
     maximum_dc_reverse_flow = float(
         flow_reverse[dc_edge_mask, :].max() if dc_edge_mask.any() else 0.0
     )
+    v5_nested_v2g_contract_violation = (
+        float(
+            np.maximum(
+                flexible_service_capacity[:, 3]
+                - flexible_service_capacity[:, 2],
+                0.0,
+            ).max()
+        )
+        if v5_formulation
+        else 0.0
+    )
+    v5_national_v2g_cap_violation = 0.0
+    if v5_formulation:
+        national_v2g_cap = float(
+            config.raw["flexible_load"]["ev_v2g"][
+                "national_contracted_power_cap_gw_by_planning_year"
+            ][str(config.planning_year)]
+        )
+        v5_national_v2g_cap_violation = max(
+            float(flexible_service_capacity[:, 3].sum()) - national_v2g_cap,
+            0.0,
+        )
+    v5_firm_credit_bound_violation = (
+        float(
+            np.maximum(
+                firm_flexible_capacity_credit
+                - firm_flexible_capacity_credit_upper,
+                0.0,
+            ).max()
+        )
+        if v5_formulation
+        else 0.0
+    )
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "optimization_hours": hours,
@@ -914,6 +971,18 @@ def export_operational_solution(
         "maximum_v4_ev_soc_upper_violation_gwh": v4_ev_soc_upper_violation,
         "maximum_v4_ev_charge_power_violation_gw": v4_ev_charge_power_violation,
         "maximum_v4_ev_discharge_power_violation_gw": v4_ev_discharge_power_violation,
+        "maximum_v5_nested_v2g_contract_violation_gw": (
+            v5_nested_v2g_contract_violation
+        ),
+        "maximum_v5_national_v2g_cap_violation_gw": (
+            v5_national_v2g_cap_violation
+        ),
+        "maximum_v5_firm_capacity_credit_bound_violation_gw": (
+            v5_firm_credit_bound_violation
+        ),
+        "total_v5_firm_capacity_credit_gw": float(
+            firm_flexible_capacity_credit.sum()
+        ),
         "maximum_ev_combined_grid_charging_power_violation_gw": float(
             np.maximum(
                 actual_components["ev"]
@@ -940,7 +1009,7 @@ def export_operational_solution(
                 (
                     (
                         ev_mobility_charge
-                        if v4_formulation
+                        if service_contract_formulation
                         else v2g_charge
                     )
                     > flow_direction_tolerance_gw
@@ -1133,7 +1202,7 @@ def export_operational_solution(
                 and qc["maximum_v4_heating_negative_state_bound_violation_gwh"] <= tolerance
                 and qc["maximum_v4_heating_comfort_debt_violation_gwh"] <= tolerance
             )
-            if v4_formulation
+            if service_contract_formulation
             else (
                 qc["maximum_heating_state_transition_residual_gwh"] <= tolerance
                 and qc["maximum_heating_daily_terminal_state_gwh"] <= tolerance
@@ -1150,7 +1219,7 @@ def export_operational_solution(
                 and qc["maximum_v4_cooling_negative_state_bound_violation_gwh"] <= tolerance
                 and qc["maximum_v4_cooling_comfort_debt_violation_gwh"] <= tolerance
             )
-            if v4_formulation
+            if service_contract_formulation
             else (
                 qc["maximum_cooling_state_transition_residual_gwh"] <= tolerance
                 and qc["maximum_cooling_daily_terminal_state_gwh"] <= tolerance
@@ -1185,7 +1254,7 @@ def export_operational_solution(
         ),
         "ev_v1g_daily_energy_conservation": qc[
             "maximum_ev_v1g_daily_energy_residual_gwh"
-        ] <= tolerance if not v4_formulation else True,
+        ] <= tolerance if not service_contract_formulation else True,
         "ev_v1g_backlog_transition": (
             not thermal_state_formulation
             or qc["maximum_ev_v1g_backlog_transition_residual_gwh"] <= tolerance
@@ -1200,12 +1269,17 @@ def export_operational_solution(
             or qc["maximum_ev_v2g_daily_terminal_state_gwh"] <= tolerance
         ),
         "ev_combined_grid_charging_power": (
-            flexible_formulation not in {"comfort_envelope_v3", "service_constrained_v4"}
+            flexible_formulation
+            not in {
+                "comfort_envelope_v3",
+                "service_constrained_v4",
+                "integrated_service_constrained_v5",
+            }
             or qc["maximum_ev_combined_grid_charging_power_violation_gw"]
             <= tolerance
         ),
         "v4_ev_mobility_service": (
-            not v4_formulation
+            not service_contract_formulation
             or (
                 qc["maximum_v4_ev_soc_transition_residual_gwh"] <= tolerance
                 and qc["maximum_v4_ev_departure_soc_violation_gwh"] <= tolerance
@@ -1213,6 +1287,21 @@ def export_operational_solution(
                 and qc["maximum_v4_ev_charge_power_violation_gw"] <= tolerance
                 and qc["maximum_v4_ev_discharge_power_violation_gw"] <= tolerance
             )
+        ),
+        "v5_v2g_contract_nesting": (
+            not v5_formulation
+            or qc["maximum_v5_nested_v2g_contract_violation_gw"]
+            <= tolerance
+        ),
+        "v5_v2g_national_power_cap": (
+            not v5_formulation
+            or qc["maximum_v5_national_v2g_cap_violation_gw"]
+            <= tolerance
+        ),
+        "v5_firm_capacity_credit_physical_bound": (
+            not v5_formulation
+            or qc["maximum_v5_firm_capacity_credit_bound_violation_gw"]
+            <= tolerance
         ),
         "up_reserve": qc["minimum_up_reserve_margin_gw"] >= -tolerance,
         "down_reserve": qc["minimum_down_reserve_margin_gw"] >= -tolerance,
@@ -1562,6 +1651,12 @@ def export_operational_solution(
             ),
             "credited_capacity_required_gw": capacity_margin_required,
             "credited_capacity_available_gw": credited_capacity,
+            "firm_flexible_capacity_credit_gw": (
+                firm_flexible_capacity_credit.sum(axis=1)
+            ),
+            "adequacy_available_capacity_including_flex_gw": (
+                adequacy_available_capacity
+            ),
             "capacity_margin_gw": capacity_margin,
         }
     ).to_csv(
@@ -1730,7 +1825,12 @@ def export_operational_solution(
         ev_mobility_discharge_gw=ev_mobility_discharge,
         ev_mobility_soc_gwh=ev_mobility_soc,
         ev_mobility_charge_deviation_gw=ev_mobility_charge_deviation,
+        ev_mobility_v1g_relocated_gw=ev_mobility_v1g_relocated,
         flexible_service_capacity_gw=flexible_service_capacity,
+        firm_flexible_capacity_credit_gw=firm_flexible_capacity_credit,
+        firm_flexible_capacity_credit_upper_gw=(
+            firm_flexible_capacity_credit_upper
+        ),
         flexible_service_names=np.asarray(
             ("heating", "cooling", "ev_v1g", "ev_v2g")
         ),
@@ -1785,6 +1885,9 @@ def export_operational_solution(
                 "ev_mobility_charge_deviation_gwh": float(
                     ev_mobility_charge_deviation[p].sum()
                 ),
+                "ev_mobility_v1g_relocated_gwh": float(
+                    ev_mobility_v1g_relocated[p].sum()
+                ),
                 "contracted_heating_flexibility_gw": float(
                     flexible_service_capacity[p, 0]
                 ),
@@ -1797,6 +1900,18 @@ def export_operational_solution(
                 "contracted_ev_v2g_flexibility_gw": float(
                     flexible_service_capacity[p, 3]
                 ),
+                "firm_heating_flexibility_credit_gw": float(
+                    firm_flexible_capacity_credit[p, 0]
+                ),
+                "firm_cooling_flexibility_credit_gw": float(
+                    firm_flexible_capacity_credit[p, 1]
+                ),
+                "firm_ev_v1g_flexibility_credit_gw": float(
+                    firm_flexible_capacity_credit[p, 2]
+                ),
+                "firm_ev_v2g_flexibility_credit_gw": float(
+                    firm_flexible_capacity_credit[p, 3]
+                ),
                 "net_load_energy_change_gwh": float(
                     load[p].sum() - baseline_load[p].sum()
                 ),
@@ -1807,6 +1922,51 @@ def export_operational_solution(
         index=False,
         encoding="utf-8-sig",
     )
+    if v5_formulation:
+        v2g_definition = (
+            "one physical EV-fleet state of charge with endogenous smart-charging "
+            "and nested bidirectional-power contracts; V2G receives no reserve "
+            "credit, while separately bounded and derated peak-deliverable service "
+            "may receive firm capacity credit"
+        )
+        state_definition = (
+            "periodic non-negative heating/cooling service inventories and one "
+            "periodic physical EV-fleet state of charge with exogenous driving "
+            "withdrawals and minimum departure energy"
+        )
+        ev_energy_flow_accounting = {
+            "ev_mobility_charge_gwh": (
+                "total optimized grid charging of the flexible EV-fleet share; "
+                "mobility energy and V2G round-trip replenishment are not uniquely "
+                "separable within the single physical state of charge"
+            ),
+            "ev_mobility_discharge_gwh": (
+                "total V2G export from the integrated EV fleet"
+            ),
+            "ev_v2g_charge_gwh": (
+                "legacy deviation-storage field; not applicable and zero under "
+                "the integrated V5 fleet formulation"
+            ),
+            "ev_v2g_discharge_gwh": (
+                "compatibility alias of ev_mobility_discharge_gwh under V5"
+            ),
+        }
+    else:
+        v2g_definition = (
+            "incremental daily-cyclic virtual storage around the EV charging "
+            "service; no reserve or capacity-margin credit"
+        )
+        state_definition = (
+            "daily-reset equivalent heating/cooling inventories and causal EV "
+            "charging backlog; Power_curve_V2 ev_hour_weight is an uncontrolled "
+            "charging baseline and is not interpreted as vehicle plug availability"
+        )
+        ev_energy_flow_accounting = {
+            "ev_v2g_charge_gwh": "charge into the separate V2G deviation store",
+            "ev_v2g_discharge_gwh": (
+                "discharge from the separate V2G deviation store"
+            ),
+        }
     _write_json(
         {
             "scenario": config.raw["scenario"],
@@ -1860,15 +2020,12 @@ def export_operational_solution(
             "baseline_load_definition": (
                 "base_residual + heating + cooling + EV; source table values remain immutable"
             ),
-            "v2g_definition": (
-                "incremental daily-cyclic virtual storage around the EV charging service; "
-                "no reserve or capacity-margin credit"
-            ),
-            "state_envelope_v2_definition": (
-                "daily-reset equivalent heating/cooling inventories and causal EV "
-                "charging backlog; Power_curve_V2 ev_hour_weight is an uncontrolled "
-                "charging baseline and is not interpreted as vehicle plug availability"
-            ),
+            "v2g_definition": v2g_definition,
+            # Retain the established key for downstream readers while the
+            # formulation-neutral name becomes the preferred field.
+            "state_envelope_v2_definition": state_definition,
+            "state_envelope_definition": state_definition,
+            "ev_energy_flow_accounting": ev_energy_flow_accounting,
             "reliability_treatment": config.raw["flexible_load"]["reliability_treatment"],
             "security_parameters": {
                 "capacity_margin_fraction": float(

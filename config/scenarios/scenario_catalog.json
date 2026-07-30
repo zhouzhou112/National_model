@@ -1,5 +1,5 @@
 {
-  "catalog_version": "v4",
+  "catalog_version": "v5",
   "primary_analysis": [
     {
       "scenario_id": "base",
@@ -7,16 +7,17 @@
       "config": "config/scenarios/base.json"
     },
     {
-      "scenario_id": "flexible_load_comfort_v4_v1g",
+      "scenario_id": "flex_integrated_v5_central",
       "analysis_role": "CENTRAL_COUNTERFACTUAL",
-      "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"
+      "config": "config/scenarios/flex_integrated_v5_central.json"
     }
   ],
   "implemented": [
-    {"scenario_id": "base", "analysis_role": "BASELINE", "config": "config/scenarios/base.json"},
-    {"scenario_id": "flexible_load_comfort_v4_v1g", "analysis_role": "CENTRAL_COUNTERFACTUAL", "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"},
-    {"scenario_id": "flexible_load_comfort_v4_v1g_effective_peak_sensitivity", "analysis_role": "SENSITIVITY", "config": "config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json"},
-    {"scenario_id": "flexible_load_comfort_v4_v2g_sensitivity", "analysis_role": "SENSITIVITY", "config": "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json"},
+    {"scenario_id": "base", "analysis_role": "BASELINE", "catalog_status": "PRIMARY", "config": "config/scenarios/base.json"},
+    {"scenario_id": "flex_integrated_v5_central", "analysis_role": "CENTRAL_COUNTERFACTUAL", "catalog_status": "PRIMARY", "config": "config/scenarios/flex_integrated_v5_central.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v1g", "analysis_role": "CENTRAL_COUNTERFACTUAL", "catalog_status": "LEGACY_ENGINEERING", "config": "config/scenarios/flexible_load_comfort_v4_v1g.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v1g_effective_peak_sensitivity", "analysis_role": "SENSITIVITY", "catalog_status": "LEGACY_ENGINEERING", "config": "config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json"},
+    {"scenario_id": "flexible_load_comfort_v4_v2g_sensitivity", "analysis_role": "SENSITIVITY", "catalog_status": "LEGACY_ENGINEERING", "config": "config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json"},
     {"scenario_id": "hydro_aggregate_flex_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/hydro_aggregate_flex_v1.json"},
     {"scenario_id": "phs_power_energy_separated_central_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/phs_power_energy_separated_central_v1.json"},
     {"scenario_id": "phs_power_energy_separated_low_energy_cost_v1", "analysis_role": "SENSITIVITY", "config": "config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json"},

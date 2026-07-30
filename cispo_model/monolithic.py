@@ -219,6 +219,32 @@ def build_full_year_monolithic(
                 )
             )
         constraint_handles["capacity_margin"] = capacity_margin_constraints
+    elif capacity_margin_load_basis == "firm_flexibility_derated_v1":
+        margin = 1.0 + float(
+            config.raw["security"]["capacity_margin_fraction"]
+        )
+        credited_capacity = variables[
+            "capacity_margin_credited_capacity"
+        ]
+        firm_flexibility = flexible_load.variables.get(
+            "firm_flexible_capacity_credit"
+        )
+        if firm_flexibility is None:
+            raise ValueError(
+                "firm_flexibility_derated_v1 requires explicit V5 firm "
+                "flexibility credit variables"
+            )
+        full_year_baseline_peak = data.load_gw.max(axis=1)
+        capacity_margin_constraints = []
+        for p, province_code in enumerate(provinces):
+            capacity_margin_constraints.append(
+                model.addConstr(
+                    credited_capacity[p] + firm_flexibility[p, :].sum()
+                    >= margin * full_year_baseline_peak[p],
+                    name=f"capacity_margin_firm_flex_p{province_code}",
+                )
+            )
+        constraint_handles["capacity_margin"] = capacity_margin_constraints
     elif capacity_margin_load_basis != "baseline_peak_v1":
         raise ValueError(
             f"Unsupported capacity-margin load basis: {capacity_margin_load_basis}"

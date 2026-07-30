@@ -260,7 +260,11 @@ class CapacityFactorStore:
 
 @dataclass
 class FlexibleLoadV4Data:
-    """Validated V4 service-contract inputs in canonical province-hour order."""
+    """Validated V4/V5 service-contract inputs in province-hour order.
+
+    The class name is retained for API compatibility with the accepted V4
+    implementation. ``contract_version`` makes the V5 identity explicit.
+    """
 
     thermal_envelopes_gw: dict[str, np.ndarray]
     thermal_availability: dict[str, np.ndarray]
@@ -268,6 +272,7 @@ class FlexibleLoadV4Data:
     ev_availability: dict[str, np.ndarray]
     ev_mobility: dict[str, np.ndarray]
     service_costs: dict[str, dict[str, np.ndarray]]
+    contract_version: str = "v4"
 
 
 @dataclass
@@ -675,7 +680,7 @@ def _load_flexible_load_v4_data(
     expected_rows: int,
     require_manifest: bool = True,
 ) -> FlexibleLoadV4Data:
-    """Load the explicit V4 thermal and aggregate EV-service contract.
+    """Load an explicit V4 or V5 thermal and aggregate EV-service contract.
 
     The contract is intentionally fail-closed.  The retained upstream data do
     not observe connection sessions, trip chains or departure SOC, so V4 uses
@@ -683,7 +688,15 @@ def _load_flexible_load_v4_data(
     explicit share of the immutable EV charging baseline.
     """
     flexible = config.raw["flexible_load"]
-    files = flexible.get("v4_input_files", {})
+    contract_version = str(flexible.get("contract_version", "v4"))
+    if contract_version not in {"v4", "v5"}:
+        raise ValueError(
+            "Service-constrained flexible-load inputs require contract_version "
+            "v4 or v5"
+        )
+    contract_label = contract_version.upper()
+    files_key = f"{contract_version}_input_files"
+    files = flexible.get(files_key, {})
     required_files = (
         "thermal_hourly_envelope_file",
         "thermal_parameters_file",
@@ -695,19 +708,22 @@ def _load_flexible_load_v4_data(
     missing_files = [key for key in required_files if not str(files.get(key, "")).strip()]
     if missing_files:
         raise ValueError(
-            "service_constrained_v4 missing v4_input_files: "
+            f"{contract_label} service contract missing {files_key}: "
             + ", ".join(missing_files)
         )
     if require_manifest:
         manifest_path = DATA_ROOT / str(files["input_manifest_file"])
         if not manifest_path.is_file():
             raise FileNotFoundError(
-                "service_constrained_v4 requires a V4 calibration manifest: "
+                f"{contract_label} service contract requires a calibration manifest: "
                 f"{manifest_path}"
             )
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("contract_version") != "flexible_load_v4":
-            raise ValueError("V4 calibration manifest has an unsupported contract_version")
+        if manifest.get("contract_version") != f"flexible_load_{contract_version}":
+            raise ValueError(
+                f"{contract_label} calibration manifest has an unsupported "
+                "contract_version"
+            )
         source_manifests = manifest.get("source_manifests")
         if not isinstance(source_manifests, list) or not source_manifests:
             raise ValueError("V4 calibration manifest must record nonempty source_manifests")
@@ -932,7 +948,10 @@ def _load_flexible_load_v4_data(
         np.maximum(reference_grid_energy, 1e-9),
     )
     tolerance_fraction = float(
-        flexible.get("v4_reference_energy_closure_tolerance_fraction", 1e-6)
+        flexible.get(
+            f"{contract_version}_reference_energy_closure_tolerance_fraction",
+            1e-6,
+        )
     )
     if (closure_fraction > tolerance_fraction).any():
         raise ValueError(
@@ -940,15 +959,25 @@ def _load_flexible_load_v4_data(
             f"baseline within {tolerance_fraction:g}"
         )
 
-    service_columns = (
+    base_service_columns = (
         "enablement_cost_yuan_per_kw_year",
         "activation_cost_yuan_per_mwh",
         "comfort_debt_cost_yuan_per_gwh_hour",
     )
-    service_cost_raw = _read(
-        str(files["enablement_cost_file"]),
-        usecols=["province_code", "year", "service", *service_columns],
+    optional_service_columns = (
+        "infrastructure_cost_yuan_per_kw_year",
+        "degradation_cost_yuan_per_mwh",
     )
+    service_columns = base_service_columns + optional_service_columns
+    service_cost_raw = _read(str(files["enablement_cost_file"]))
+    require_columns(
+        service_cost_raw,
+        ["province_code", "year", "service", *base_service_columns],
+        f"{contract_label} service cost",
+    )
+    for column in optional_service_columns:
+        if column not in service_cost_raw:
+            service_cost_raw[column] = 0.0
     selected_cost = service_cost_raw.loc[
         service_cost_raw.year.eq(config.planning_year)
         & service_cost_raw.service.isin(["heating", "cooling", "ev_v1g", "ev_v2g"])
@@ -981,6 +1010,7 @@ def _load_flexible_load_v4_data(
         ev_availability=ev_availability,
         ev_mobility=ev_mobility,
         service_costs=service_costs,
+        contract_version=contract_version,
     )
 
 
@@ -1117,7 +1147,8 @@ def load_model_data(
                 )
     if (
         bool(config.raw["features"]["flexible_load"])
-        and flexible_formulation == "service_constrained_v4"
+        and flexible_formulation
+        in {"service_constrained_v4", "integrated_service_constrained_v5"}
     ):
         flexible_load_v4 = _load_flexible_load_v4_data(
             config,

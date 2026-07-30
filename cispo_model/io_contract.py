@@ -149,6 +149,7 @@ NPZ_DIMENSIONS = {
         "ev_mobility_discharge_gw": "province,hour",
         "ev_mobility_soc_gwh": "province,hour",
         "ev_mobility_charge_deviation_gw": "province,hour",
+        "ev_mobility_v1g_relocated_gw": "province,hour",
         "flexible_service_capacity_gw": "province,service",
         "flexible_service_names": "service",
         "province_codes": "province",

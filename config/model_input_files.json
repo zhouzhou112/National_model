@@ -1,5 +1,5 @@
 {
-  "contract_version": "v10",
+  "contract_version": "v11",
   "description": "Minimal table set read by the sequential CISPO production model; hydrology NetCDF and CF Zarr stores are transferred separately.",
   "required_model_tables": [
     "sets/provinces.csv",
@@ -15,6 +15,11 @@
     "flexibility/ev_availability_hourly_v4.csv.gz",
     "flexibility/ev_mobility_hourly_v4.csv.gz",
     "flexibility/flex_enablement_cost_v4.csv",
+    "flexibility/thermal_hourly_envelope_v5.csv.gz",
+    "flexibility/thermal_parameters_by_province_v5.csv",
+    "flexibility/ev_availability_hourly_v5.csv.gz",
+    "flexibility/ev_mobility_hourly_v5.csv.gz",
+    "flexibility/flex_enablement_cost_v5.csv",
     "thermal/capacity_floor_by_year.csv",
     "thermal/nuclear_capacity_floor_by_year.csv",
     "thermal/nuclear_capacity_upper_by_year.csv",
@@ -55,6 +60,7 @@
     "source_manifest.csv",
     "load/flexible_load_envelope_v3.manifest.json",
     "flexibility/flexible_load_v4.manifest.json",
+    "flexibility/flexible_load_v5.manifest.json",
     "wave/wave_input_manifest.json",
     "vre/existing_capacity_cohorts_2025_manifest.json",
     "technology/technoeconomic_price_basis_manifest.json"
@@ -66,6 +72,11 @@
     "vre/existing_capacity_cohorts_2025.csv": "Traceable observed 2025 VRE cohorts with GEM start years and boundary-censored unknown-age capacity",
     "vre/hourly_cf_index.csv": "Weather-year capacity-factor store index and time metadata",
     "load/hourly_load_2025_2060.csv.gz": "Chronological 31-province hourly demand and base-residual/heating/cooling/EV components for all modeled years",
+    "flexibility/thermal_hourly_envelope_v5.csv.gz": "Integrated V5 province-year-hour BAIT +/-1 C thermal service envelopes",
+    "flexibility/thermal_parameters_by_province_v5.csv": "Integrated V5 province-year thermal service-state parameters",
+    "flexibility/ev_availability_hourly_v5.csv.gz": "Integrated V5 smart-charging and V2G power/energy availability envelopes",
+    "flexibility/ev_mobility_hourly_v5.csv.gz": "Integrated V5 aggregate EV mobility-service withdrawals with no fabricated departure SOC",
+    "flexibility/flex_enablement_cost_v5.csv": "Integrated V5 2025-constant-CNY enablement, activation, infrastructure and degradation costs",
     "thermal/capacity_floor_by_year.csv": "Exogenous non-nuclear thermal capacity floors after retirement",
     "thermal/nuclear_capacity_floor_by_year.csv": "Province-year nuclear committed/pipeline lower bounds",
     "thermal/nuclear_capacity_upper_by_year.csv": "Province-year nuclear scenario upper bounds",

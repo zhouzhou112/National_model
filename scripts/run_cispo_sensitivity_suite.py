@@ -42,9 +42,9 @@ def load_scenario_catalog(path: str | Path) -> dict[str, Any]:
     catalog_path = resolve_project_path(path)
     payload = json.loads(catalog_path.read_text(encoding="utf-8"))
     catalog_version = payload.get("catalog_version")
-    if catalog_version not in {"v1", "v2", "v3", "v4"}:
+    if catalog_version not in {"v1", "v2", "v3", "v4", "v5"}:
         raise ValueError(
-            "Scenario catalog must declare catalog_version=v1, v2, v3 or v4"
+            "Scenario catalog must declare catalog_version=v1 through v5"
         )
 
     implemented = payload.get("implemented")
@@ -146,12 +146,7 @@ def select_scenarios(
         for row in catalog["planned_not_runnable"]
     }
     if not requested:
-        return [
-            row
-            for row in catalog["implemented"]
-            if row.get("analysis_role")
-            in {"BASELINE", "CENTRAL_COUNTERFACTUAL"}
-        ]
+        return list(catalog["primary_analysis"])
 
     selected: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -225,7 +220,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--scenario",
         action="append",
-        help="Implemented scenario_id to run; repeat as needed. Defaults to all implemented.",
+        help=(
+            "Implemented scenario_id to run; repeat as needed. Defaults exactly "
+            "to catalog.primary_analysis."
+        ),
     )
     parser.add_argument(
         "--output-root",

@@ -16,6 +16,10 @@ selected-horizon periodic, non-negative thermal service inventory, endogenous
 contracted flexible power, and one fleet-level EV state of charge (SOC) with
 exogenous availability and mobility-withdrawal inputs.  It must never be
 silently substituted for V3 or for the production Base.
+
+``integrated_service_constrained_v5`` retains that physical service model but
+integrates paid V1G and V2G, nests the V2G contract inside smart charging, and
+exposes only derated peak-deliverable flexibility to planning adequacy.
 """
 from __future__ import annotations
 
@@ -352,7 +356,7 @@ def _attach_service_constrained_v4(
     day_slices: tuple[slice, ...],
     hours: int,
 ) -> FlexibleLoadBlock:
-    """Attach the V4 thermal-service and fleet-mobility formulation.
+    """Attach the V4/V5 thermal-service and fleet-mobility formulation.
 
     V4 intentionally has no daily energy-conservation or daily-reset
     constraint.  Thermal and EV states are periodic over the selected
@@ -360,10 +364,21 @@ def _attach_service_constrained_v4(
     annual interpretation.  The loader validates every V4 input before this
     builder is reached.
     """
-    v4 = data.flexible_load_v4
-    if v4 is None:
-        raise ValueError("service_constrained_v4 requires validated V4 input data")
+    service_data = data.flexible_load_v4
+    if service_data is None:
+        raise ValueError(
+            "Service-constrained flexibility requires validated input data"
+        )
     settings = config.raw["flexible_load"]
+    v5_formulation = (
+        str(settings.get("formulation")) == "integrated_service_constrained_v5"
+    )
+    expected_contract = "v5" if v5_formulation else "v4"
+    if service_data.contract_version != expected_contract:
+        raise ValueError(
+            f"{expected_contract.upper()} formulation received "
+            f"{service_data.contract_version.upper()} input data"
+        )
     shape = baseline.shape
     p_count = shape[0]
     if shape[1] != hours:
@@ -371,19 +386,19 @@ def _attach_service_constrained_v4(
 
     thermal_envelopes = {
         key: value[:, :hours]
-        for key, value in v4.thermal_envelopes_gw.items()
+        for key, value in service_data.thermal_envelopes_gw.items()
     }
     thermal_availability = {
         key: value[:, :hours]
-        for key, value in v4.thermal_availability.items()
+        for key, value in service_data.thermal_availability.items()
     }
     ev_availability = {
         key: value[:, :hours]
-        for key, value in v4.ev_availability.items()
+        for key, value in service_data.ev_availability.items()
     }
     ev_mobility = {
         key: value[:, :hours]
-        for key, value in v4.ev_mobility.items()
+        for key, value in service_data.ev_mobility.items()
     }
     variables: dict[str, Any] = {}
     actual_components: dict[str, Any] = {
@@ -419,10 +434,108 @@ def _attach_service_constrained_v4(
         name="flexible_service_capacity_gw",
     )
     variables["flexible_service_capacity"] = capacity
+    if v5_formulation:
+        model.addConstr(
+            capacity[:, 3] <= capacity[:, 2],
+            name="v5_v2g_contract_nested_in_smart_charging",
+        )
+        national_cap = float(
+            settings["ev_v2g"][
+                "national_contracted_power_cap_gw_by_planning_year"
+            ][str(config.planning_year)]
+        )
+        model.addConstr(
+            capacity[:, 3].sum() <= national_cap,
+            name="v5_v2g_national_contracted_power_cap",
+        )
+
+        firm_settings = settings["firm_capacity_credit"]
+        derating = firm_settings["derating_fraction"]
+        peak_hours = np.asarray(data.load_gw.argmax(axis=1), dtype=int)
+        rows = np.arange(p_count, dtype=int)
+        event_duration = float(
+            firm_settings["required_event_duration_hours"]
+        )
+        event_hours_count = int(round(event_duration))
+        event_offsets = np.arange(event_hours_count, dtype=int) - (
+            (event_hours_count - 1) // 2
+        )
+        event_hours = (
+            peak_hours[:, None] + event_offsets[None, :]
+        ) % int(data.load_gw.shape[1])
+        event_rows = rows[:, None]
+        full_thermal_down = {
+            component: service_data.thermal_envelopes_gw[
+                f"{component}_down"
+            ][event_rows, event_hours].min(axis=1)
+            for component in ("heating", "cooling")
+        }
+        full_thermal_availability = {
+            component: service_data.thermal_availability[component][
+                event_rows, event_hours
+            ].min(axis=1)
+            for component in ("heating", "cooling")
+        }
+        full_flexible_ev_at_peak = (
+            float(settings["ev_v1g"]["shiftable_energy_fraction"])
+            * data.load_components_gw["ev"][
+                event_rows, event_hours
+            ].min(axis=1)
+        )
+        full_v2g_power_at_peak = service_data.ev_availability[
+            "available_discharge_power_gw"
+        ][event_rows, event_hours].min(axis=1)
+        full_v2g_energy_at_peak = service_data.ev_availability[
+            "fleet_energy_capacity_gwh"
+        ][event_rows, event_hours].min(axis=1)
+
+        firm_ub = np.zeros_like(capacity_ub)
+        for column, component in enumerate(("heating", "cooling")):
+            alpha = float(derating[component])
+            firm_ub[:, column] = alpha * np.minimum(
+                capacity_ub[:, column],
+                full_thermal_down[component],
+            )
+        firm_ub[:, 2] = float(derating["ev_v1g"]) * np.minimum(
+            capacity_ub[:, 2], full_flexible_ev_at_peak
+        )
+        firm_ub[:, 3] = float(derating["ev_v2g"]) * np.minimum.reduce(
+            (
+                capacity_ub[:, 3],
+                full_v2g_power_at_peak,
+                full_v2g_energy_at_peak / event_duration,
+            )
+        )
+        firm_credit = model.addMVar(
+            (p_count, len(V4_CAPACITY_SERVICES)),
+            lb=0.0,
+            ub=firm_ub,
+            name="firm_flexible_capacity_credit_gw",
+        )
+        for column, component in enumerate(("heating", "cooling")):
+            model.addConstr(
+                firm_credit[:, column]
+                <= float(derating[component])
+                * full_thermal_availability[component]
+                * capacity[:, column],
+                name=f"v5_{component}_firm_credit_contract_bound",
+            )
+        model.addConstr(
+            firm_credit[:, 2]
+            <= float(derating["ev_v1g"]) * capacity[:, 2],
+            name="v5_ev_v1g_firm_credit_contract_bound",
+        )
+        model.addConstr(
+            firm_credit[:, 3]
+            <= float(derating["ev_v2g"]) * capacity[:, 3],
+            name="v5_ev_v2g_firm_credit_contract_bound",
+        )
+        variables["firm_flexible_capacity_credit"] = firm_credit
+        variables["firm_flexible_capacity_credit_upper"] = firm_ub
 
     thermal_activation_terms: dict[str, Any] = {}
     for column, component in enumerate(("heating", "cooling")):
-        params = v4.thermal_parameters[component]
+        params = service_data.thermal_parameters[component]
         up_ub = thermal_envelopes[f"{component}_up"]
         down_ub = thermal_envelopes[f"{component}_down"]
         availability = thermal_availability[component]
@@ -501,6 +614,16 @@ def _attach_service_constrained_v4(
         ub=deviation_ub,
         name="ev_mobility_charge_deviation_gw",
     )
+    v1g_relocated: Any = (
+        model.addMVar(
+            shape,
+            lb=0.0,
+            ub=flexible_ev_baseline,
+            name="ev_mobility_v1g_relocated_gw",
+        )
+        if v5_formulation
+        else _zero(shape)
+    )
     k_charge = capacity[:, 2].reshape((p_count, 1))
     k_v2g = capacity[:, 3].reshape((p_count, 1))
     model.addConstr(
@@ -521,6 +644,11 @@ def _attach_service_constrained_v4(
         charge_deviation >= flexible_ev_baseline - charge,
         name="ev_mobility_charge_deviation_negative",
     )
+    if v5_formulation:
+        model.addConstr(
+            v1g_relocated >= flexible_ev_baseline - charge,
+            name="ev_mobility_v1g_relocated_lower",
+        )
     _periodic_transition(
         model,
         state=soc,
@@ -538,6 +666,7 @@ def _attach_service_constrained_v4(
         ev_mobility_discharge=discharge,
         ev_mobility_soc=soc,
         ev_mobility_charge_deviation=charge_deviation,
+        ev_mobility_v1g_relocated=v1g_relocated,
         # Compatibility aliases make the existing V2G output series usable,
         # while V4 still has one physical fleet SOC rather than a deviation
         # battery layered on top of V1G.
@@ -562,7 +691,7 @@ def _attach_service_constrained_v4(
         ev_v2g_charge=_zero(shape),
     )
 
-    service_costs = v4.service_costs
+    service_costs = service_data.service_costs
     enablement_cost = gp.quicksum(
         (
             service_costs[service]["enablement_cost_yuan_per_kw_year"]
@@ -583,10 +712,14 @@ def _attach_service_constrained_v4(
         (
             1e-3
             * service_costs["ev_v1g"]["activation_cost_yuan_per_mwh"]
-            * charge_deviation.sum(axis=1)
+            * (
+                v1g_relocated.sum(axis=1)
+                if v5_formulation
+                else charge_deviation.sum(axis=1)
+            )
         ).sum()
     )
-    ev_v2g_cost = (
+    ev_v2g_participation_cost = (
         (
             1e-3
             * service_costs["ev_v2g"]["activation_cost_yuan_per_mwh"]
@@ -595,18 +728,56 @@ def _attach_service_constrained_v4(
         if v2g_enabled
         else gp.LinExpr(0.0)
     )
+    ev_v2g_infrastructure_cost = (
+        (
+            service_costs["ev_v2g"][
+                "infrastructure_cost_yuan_per_kw_year"
+            ]
+            * capacity[:, 3]
+        ).sum()
+        if v5_formulation
+        else gp.LinExpr(0.0)
+    )
+    ev_v2g_degradation_cost = (
+        (
+            1e-3
+            * service_costs["ev_v2g"]["degradation_cost_yuan_per_mwh"]
+            * discharge.sum(axis=1)
+        ).sum()
+        if v5_formulation
+        else gp.LinExpr(0.0)
+    )
+    if v5_formulation:
+        costs = {
+            "flexible_load_v5_enablement": enablement_cost,
+            "flexible_load_v5_v2g_infrastructure": (
+                ev_v2g_infrastructure_cost
+            ),
+            "flexible_load_v5_thermal_activation": thermal_activation_cost,
+            "flexible_load_v5_ev_v1g_relocation": ev_relocation_cost,
+            "flexible_load_v5_ev_v2g_participation": (
+                ev_v2g_participation_cost
+            ),
+            "flexible_load_v5_ev_v2g_degradation": (
+                ev_v2g_degradation_cost
+            ),
+        }
+    else:
+        costs = {
+            "flexible_load_v4_enablement": enablement_cost,
+            "flexible_load_v4_thermal_activation": thermal_activation_cost,
+            "flexible_load_v4_comfort_debt": thermal_comfort_cost,
+            "flexible_load_v4_ev_v1g_relocation": ev_relocation_cost,
+            "flexible_load_v4_ev_v2g_discharge": (
+                ev_v2g_participation_cost
+            ),
+        }
     return FlexibleLoadBlock(
         effective_load_gw=effective_load,
         baseline_load_gw=baseline,
         actual_components_gw=actual_components,
         variables=variables,
-        costs={
-            "flexible_load_v4_enablement": enablement_cost,
-            "flexible_load_v4_thermal_activation": thermal_activation_cost,
-            "flexible_load_v4_comfort_debt": thermal_comfort_cost,
-            "flexible_load_v4_ev_v1g_relocation": ev_relocation_cost,
-            "flexible_load_v4_ev_v2g_discharge": ev_v2g_cost,
-        },
+        costs=costs,
         day_slices=day_slices,
     )
 
@@ -640,7 +811,10 @@ def attach_flexible_load(
 
     settings = config.raw["flexible_load"]
     formulation = str(settings.get("formulation", "daily_energy_shift_v1"))
-    if formulation == "service_constrained_v4":
+    if formulation in {
+        "service_constrained_v4",
+        "integrated_service_constrained_v5",
+    }:
         return _attach_service_constrained_v4(
             model,
             config,

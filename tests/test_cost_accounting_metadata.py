@@ -14,6 +14,18 @@ class CostAccountingMetadataTests(unittest.TestCase):
             "ANNUALIZED_PLANNING_COST",
         )
         self.assertEqual(
+            cost_component_accounting_scope(
+                "operating_flexible_load_v5_enablement"
+            ),
+            "ANNUALIZED_PLANNING_COST",
+        )
+        self.assertEqual(
+            cost_component_accounting_scope(
+                "operating_flexible_load_v5_v2g_infrastructure"
+            ),
+            "ANNUALIZED_PLANNING_COST",
+        )
+        self.assertEqual(
             cost_component_accounting_scope("operating_fuel"),
             "SELECTED_HORIZON_OPERATION_COST",
         )

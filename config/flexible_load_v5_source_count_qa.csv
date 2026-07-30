@@ -1,0 +1,4 @@
+review_unit,independent_source_groups,china_specific_groups,peer_reviewed_groups,required_minimum,status
+thermal_service_and_cost,11,5,4,5,PASS
+ev_v1g_v2g_and_cost,10,7,4,5,PASS
+firm_capacity_accreditation,9,5,2,5,PASS

@@ -221,10 +221,12 @@ class ModelConfig:
         if capacity_margin_load_basis not in {
             "baseline_peak_v1",
             "effective_peak_endogenous_v1",
+            "firm_flexibility_derated_v1",
         }:
             raise ValueError(
                 "security.capacity_margin_load_basis must be "
-                "baseline_peak_v1 or effective_peak_endogenous_v1"
+                "baseline_peak_v1, effective_peak_endogenous_v1, or "
+                "firm_flexibility_derated_v1"
             )
         reliability = self.raw.get("flexible_load", {}).get(
             "reliability_treatment", {}
@@ -233,18 +235,20 @@ class ModelConfig:
             reliability.get("planning_capacity_margin_uses_baseline_peak", True)
         )
         if legacy_baseline_flag != (
-            capacity_margin_load_basis == "baseline_peak_v1"
+            capacity_margin_load_basis
+            in {"baseline_peak_v1", "firm_flexibility_derated_v1"}
         ):
             raise ValueError(
                 "flexible_load.reliability_treatment legacy baseline-peak flag "
                 "must agree with security.capacity_margin_load_basis"
             )
         if (
-            capacity_margin_load_basis == "effective_peak_endogenous_v1"
+            capacity_margin_load_basis
+            in {"effective_peak_endogenous_v1", "firm_flexibility_derated_v1"}
             and not bool(self.raw["features"].get("flexible_load", False))
         ):
             raise ValueError(
-                "effective_peak_endogenous_v1 requires features.flexible_load=true"
+                f"{capacity_margin_load_basis} requires features.flexible_load=true"
             )
         resolve_minimum_system_inertia_seconds(security)
         if self.raw["features"].get("csp", False):
@@ -435,11 +439,12 @@ class ModelConfig:
             "state_envelope_v2",
             "comfort_envelope_v3",
             "service_constrained_v4",
+            "integrated_service_constrained_v5",
         }:
             raise ValueError(
                 "flexible_load.formulation must be daily_energy_shift_v1 "
                 "or state_envelope_v2 or comfort_envelope_v3 or "
-                "service_constrained_v4"
+                "service_constrained_v4 or integrated_service_constrained_v5"
             )
         if flexible_formulation == "service_constrained_v4":
             if flexible.get("contract_version") != "v4":
@@ -480,6 +485,98 @@ class ModelConfig:
                     )
             if not bool(flexible.get("ev_v1g", {}).get("enabled", False)):
                 raise ValueError("service_constrained_v4 requires ev_v1g.enabled=true")
+        if flexible_formulation == "integrated_service_constrained_v5":
+            if flexible.get("contract_version") != "v5":
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires contract_version=v5"
+                )
+            required_v5_files = (
+                "thermal_hourly_envelope_file",
+                "thermal_parameters_file",
+                "ev_availability_hourly_file",
+                "ev_mobility_hourly_file",
+                "enablement_cost_file",
+                "input_manifest_file",
+            )
+            v5_files = flexible.get("v5_input_files", {})
+            missing_v5_files = [
+                key
+                for key in required_v5_files
+                if not str(v5_files.get(key, "")).strip()
+            ]
+            if missing_v5_files:
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires v5_input_files: "
+                    + ", ".join(missing_v5_files)
+                )
+            if flexible.get("state_boundary") != "periodic_selected_horizon_v1":
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires "
+                    "state_boundary=periodic_selected_horizon_v1"
+                )
+            if float(
+                flexible.get(
+                    "v5_reference_energy_closure_tolerance_fraction", 0.0
+                )
+            ) < 0.0:
+                raise ValueError(
+                    "integrated_service_constrained_v5 EV reference-energy "
+                    "tolerance must be nonnegative"
+                )
+            for component in ("heating", "cooling"):
+                if not bool(flexible.get(component, {}).get("enabled", False)):
+                    raise ValueError(
+                        "integrated_service_constrained_v5 requires "
+                        f"flexible_load.{component}.enabled=true"
+                    )
+            if not bool(flexible.get("ev_v1g", {}).get("enabled", False)):
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires ev_v1g.enabled=true"
+                )
+            if not bool(flexible.get("ev_v2g", {}).get("enabled", False)):
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires ev_v2g.enabled=true"
+                )
+            if capacity_margin_load_basis != "firm_flexibility_derated_v1":
+                raise ValueError(
+                    "integrated_service_constrained_v5 requires "
+                    "security.capacity_margin_load_basis="
+                    "firm_flexibility_derated_v1"
+                )
+            firm = flexible.get("firm_capacity_credit", {})
+            if firm.get("contract_version") != "derated_peak_service_v1":
+                raise ValueError(
+                    "V5 firm capacity credit contract must be "
+                    "derated_peak_service_v1"
+                )
+            event_duration = float(
+                firm.get("required_event_duration_hours", 0.0)
+            )
+            if (
+                event_duration <= 0.0
+                or event_duration > self.hours
+                or not event_duration.is_integer()
+            ):
+                raise ValueError(
+                    "V5 firm capacity credit event duration must be a positive "
+                    "integer no greater than the configured full year"
+                )
+            derating = firm.get("derating_fraction", {})
+            for service in ("heating", "cooling", "ev_v1g", "ev_v2g"):
+                value = float(derating.get(service, -1.0))
+                if not 0.0 <= value <= 1.0:
+                    raise ValueError(
+                        f"V5 firm derating for {service} must be in [0, 1]"
+                    )
+            caps = flexible["ev_v2g"].get(
+                "national_contracted_power_cap_gw_by_planning_year", {}
+            )
+            if set(caps) != {str(year) for year in years}:
+                raise ValueError(
+                    "V5 V2G national power caps must cover all planning years"
+                )
+            if any(float(value) < 0.0 for value in caps.values()):
+                raise ValueError("V5 V2G national power caps must be nonnegative")
         if flexible_formulation == "comfort_envelope_v3":
             envelope_file = str(flexible.get("hourly_envelope_file", "")).strip()
             if not envelope_file:
@@ -500,7 +597,10 @@ class ModelConfig:
                         f"flexible_load.{component}."
                         "equivalent_storage_duration_hours must be positive"
                     )
-            elif flexible_formulation != "service_constrained_v4":
+            elif flexible_formulation not in {
+                "service_constrained_v4",
+                "integrated_service_constrained_v5",
+            }:
                 reduction = float(
                     settings.get("maximum_reduction_fraction", -1.0)
                 )
@@ -552,11 +652,12 @@ class ModelConfig:
                 )
         ev_v2g = flexible.get("ev_v2g", {})
         if (
-            flexible_formulation == "service_constrained_v4"
+            flexible_formulation
+            in {"service_constrained_v4", "integrated_service_constrained_v5"}
             and ev_v2g.get("state_boundary") != "periodic_selected_horizon_v1"
         ):
             raise ValueError(
-                "service_constrained_v4 requires "
+                "service-constrained flexibility requires "
                 "ev_v2g.state_boundary=periodic_selected_horizon_v1"
             )
         for key in ("charge_efficiency", "discharge_efficiency"):

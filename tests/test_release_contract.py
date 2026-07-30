@@ -16,7 +16,7 @@ class ReleaseContractTests(unittest.TestCase):
         report = build_audit(data_root)
         self.assertEqual(report["status"], "PASS", report["failures"])
 
-    def test_v4_upstream_manifest_is_in_server_bundle_contract(self) -> None:
+    def test_v4_v5_upstream_manifests_are_in_server_bundle_contract(self) -> None:
         contract = json.loads(
             (PROJECT_ROOT / "config" / "model_input_files.json").read_text(
                 encoding="utf-8"
@@ -52,6 +52,20 @@ class ReleaseContractTests(unittest.TestCase):
             "wave/wave_input_manifest.json",
             contract["server_validation_sidecars"],
         )
+        v5_scenario = json.loads(
+            (
+                PROJECT_ROOT
+                / "config"
+                / "scenarios"
+                / "flex_integrated_v5_central.json"
+            ).read_text(encoding="utf-8")
+        )
+        v5_files = set(
+            v5_scenario["overrides"]["flexible_load"][
+                "v5_input_files"
+            ].values()
+        )
+        self.assertTrue(v5_files.issubset(deployable), v5_files - deployable)
 
 
 if __name__ == "__main__":

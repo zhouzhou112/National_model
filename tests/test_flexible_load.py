@@ -147,6 +147,128 @@ class FlexibleLoadContractTests(unittest.TestCase):
             atol=1e-8,
         )
 
+    def test_v5_integrates_paid_v1g_v2g_and_derated_firm_credit(self):
+        config = load_model_config(
+            scenario_path="config/scenarios/flex_integrated_v5_central.json"
+        )
+        self.assertEqual(
+            config.raw["flexible_load"]["shift_throughput_cost_yuan_per_mwh"],
+            300.0,
+        )
+        self.assertEqual(
+            config.raw["flexible_load"]["degradation_cost_yuan_per_mwh"],
+            400.0,
+        )
+        shape = (2, 4)
+        thermal_parameters = {
+            component: {
+                "retention_per_hour": np.asarray([1.0, 1.0]),
+                "charge_efficiency": np.asarray([1.0, 1.0]),
+                "discharge_efficiency": np.asarray([1.0, 1.0]),
+                "positive_state_duration_hours": np.asarray([2.0, 2.0]),
+                "negative_state_duration_hours": np.asarray([2.0, 2.0]),
+            }
+            for component in ("heating", "cooling")
+        }
+        service_costs = {
+            service: {
+                "enablement_cost_yuan_per_kw_year": np.asarray([1.0, 2.0]),
+                "activation_cost_yuan_per_mwh": np.asarray([1.0, 2.0]),
+                "comfort_debt_cost_yuan_per_gwh_hour": np.zeros(2),
+                "infrastructure_cost_yuan_per_kw_year": (
+                    np.asarray([1.0, 2.0])
+                    if service == "ev_v2g"
+                    else np.zeros(2)
+                ),
+                "degradation_cost_yuan_per_mwh": (
+                    np.asarray([1.0, 2.0])
+                    if service == "ev_v2g"
+                    else np.zeros(2)
+                ),
+            }
+            for service in ("heating", "cooling", "ev_v1g", "ev_v2g")
+        }
+        v5 = FlexibleLoadV4Data(
+            thermal_envelopes_gw={
+                "heating_up": np.ones(shape),
+                "heating_down": np.ones(shape),
+                "cooling_up": np.ones(shape),
+                "cooling_down": np.ones(shape),
+            },
+            thermal_availability={
+                "heating": np.ones(shape),
+                "cooling": np.ones(shape),
+            },
+            thermal_parameters=thermal_parameters,
+            ev_availability={
+                "connected_vehicle_fraction": np.ones(shape),
+                "available_charge_power_gw": np.full(shape, 2.0),
+                "available_discharge_power_gw": np.full(shape, 1.0),
+                "fleet_energy_capacity_gwh": np.full(shape, 10.0),
+            },
+            ev_mobility={
+                "driving_energy_withdrawal_gwh": np.full(shape, 0.141),
+                "minimum_departure_energy_gwh": np.zeros(shape),
+            },
+            service_costs=service_costs,
+            contract_version="v5",
+        )
+        data = SimpleNamespace(
+            load_gw=np.full(shape, 3.0),
+            load_components_gw={
+                "base_residual": np.ones(shape),
+                "heating": np.full(shape, 0.5),
+                "cooling": np.full(shape, 0.5),
+                "ev": np.ones(shape),
+            },
+            flexible_load_v4=v5,
+        )
+        model = gp.Model("v5_small_gate")
+        model.Params.OutputFlag = 0
+        block = attach_flexible_load(model, config, data, hours=shape[1])
+        model.update()
+        self.assertEqual(
+            set(block.costs),
+            {
+                "flexible_load_v5_enablement",
+                "flexible_load_v5_v2g_infrastructure",
+                "flexible_load_v5_thermal_activation",
+                "flexible_load_v5_ev_v1g_relocation",
+                "flexible_load_v5_ev_v2g_participation",
+                "flexible_load_v5_ev_v2g_degradation",
+            },
+        )
+        model.addConstr(
+            block.variables["ev_mobility_discharge"][0, 0] >= 0.1,
+            name="force_v2g_replenishment_test",
+        )
+        model.setObjective(gp.quicksum(block.costs.values()), gp.GRB.MINIMIZE)
+        model.optimize()
+        self.assertEqual(model.Status, gp.GRB.OPTIMAL)
+        capacities = block.variables["flexible_service_capacity"].X
+        self.assertTrue(np.all(capacities[:, 3] <= capacities[:, 2] + 1e-9))
+        firm = block.variables["firm_flexible_capacity_credit"].X
+        upper = block.variables["firm_flexible_capacity_credit_upper"]
+        self.assertTrue(np.all(firm <= upper + 1e-9))
+        self.assertGreater(
+            float(block.variables["ev_mobility_charge_deviation"].X.sum()),
+            0.0,
+        )
+        np.testing.assert_allclose(
+            block.variables["ev_mobility_v1g_relocated"].X,
+            0.0,
+            atol=1e-8,
+        )
+        self.assertAlmostEqual(
+            float(
+                block.costs[
+                    "flexible_load_v5_ev_v1g_relocation"
+                ].getValue()
+            ),
+            0.0,
+            places=8,
+        )
+
     def test_day_slices_cover_partial_horizon_once(self):
         slices = make_day_slices(25, 24)
         covered = [hour for item in slices for hour in range(item.start, item.stop)]

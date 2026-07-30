@@ -1,0 +1,808 @@
+\documentclass[UTF8,fontset=fandol,12pt]{ctexart}
+
+\usepackage[a4paper,margin=2.35cm]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={CISPO 补充材料 S6：综合需求侧灵活性},
+  pdfauthor={National\_model project}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.25em}
+\setlist{nosep,leftmargin=2.2em}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\casebase}{\code{base}}
+\newcommand{\casev}{\code{flex_integrated_v5_central}}
+\newcommand{\status}[1]{\nolinkurl{#1}}
+
+\renewcommand{\thesection}{S6.\arabic{section}}
+\renewcommand{\thesubsection}{S6.\arabic{section}.\arabic{subsection}}
+\renewcommand{\theequation}{S6.\arabic{equation}}
+\renewcommand{\thetable}{S6.\arabic{table}}
+\renewcommand{\thefigure}{S6.\arabic{figure}}
+
+\title{\textbf{补充材料 S6：综合需求侧灵活性负荷的重建、物理约束、成本与可靠容量价值}}
+\author{CISPO National\_model}
+\date{2026 年 7 月 30 日方法版本}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+本节给出 CISPO 全国电力系统规划模型中综合需求侧灵活性情景
+\casev{} 的完整方法合同。该情景在不改变 Base 年度需求、负荷分解、供给技术、
+网络、安全约束和成本边界的前提下，将供暖、制冷、有序充电（V1G）、
+双向车网互动（V2G）以及经降额的可靠容量信用放入同一个线性规划。
+冷热与电动汽车均以显式服务状态约束能量搬移；V1G、V2G 和建筑侧控制均支付
+非零真实资源成本；容量充裕度仍以全年不可变基线峰值为分母，只允许在包含该
+峰值的连续四小时窗口内可交付的灵活服务获得降额信用。因此，本情景不是把
+``effective peak'' 直接替换为一个可被模型任意压低的峰值，也不把补贴和电价
+转移重复计入社会成本。中央参数均登记了低值和高值；其中参与率、服务持续时间
+和容量降额系数属于待敏感性检验的工程假设，而非中国实证 ELCC。所有不足
+8760 小时的运行均仅用于工程门禁，不能解释为年度科学结果。
+\end{abstract}
+
+\noindent\textbf{状态说明。}
+本稿描述当前 V5 模型与输入合同，不报告仍在门禁过程中的数值结果。
+只有满足 \status{OPTIMAL}、\status{solution_qc=PASS}、全部 hard checks、
+当前 input manifest 和有效 result manifest 的 8760 小时结果，才可进入正文
+年度比较。
+
+\section{研究问题、情景身份与不可变边界}
+
+\subsection{只保留一个 Base 和一个综合灵活性主情景}
+
+正式主分析集合严格包含两个情景：
+\begin{enumerate}
+  \item \casebase：需求不可调，所有供暖、制冷和 EV 充电均按外生逐小时曲线
+  进入电力平衡；
+  \item \casev：在相同年度需求和相同基础系统上，同时启用冷热服务、
+  付费 V1G、内生付费 V2G 与降额可靠容量信用。
+\end{enumerate}
+
+二者共享同一 baseline contract
+\code{base_2024_vre_wave_on_flex_off_v1}。V5 是 analysis case overlay，
+其 \code{parent_baseline_case_id} 指向上述 baseline contract，而不是另一个
+科学基线。历史 V3/V4、单独 V2G、单独 effective-peak 等配置仅作为工程演进
+记录保留，不进入默认论文情景组。双层身份的目的，是把``共同不变的科学基线''
+与``本次反事实分析改变了什么''分开记录，避免非 Base 文件仍携带 Base 标签，
+也避免 overlay 意外改写固定科学边界。
+
+\subsection{V5 不改变的内容}
+
+V5 不改变：
+\begin{itemize}
+  \item 31 个省级区域、规划年份、8760 小时时间轴及省际网络；
+  \item 年度需求总量、基础残余负荷、供暖、制冷和 EV 四分量的上游重建；
+  \item 风、光、波浪、水电、抽蓄、储能、火电、核电和碳移除技术集合；
+  \item 逐小时功率平衡、网络约束、备用、惯量、碳约束和 CCS accounting；
+  \item 全部货币量的 2025 年不变价人民币口径。
+\end{itemize}
+
+因此，Base 与 V5 的差异仅来自需求服务能否在物理边界内跨时移位、是否允许
+有限 V2G 放电、这些服务是否支付成本，以及其在峰值窗口能否提供可靠容量。
+
+\section{从逐小时负荷曲线到可调服务分量}
+
+\subsection{历史总负荷锚点和春节形状校正}
+
+上游负荷模块首先构建 2020--2024 年省级北京时间逐小时历史序列。论文来源的
+原始总负荷作为不可变锚点；春节校正仅调整小时形状，并在每个省--年满足
+\begin{equation}
+  \sum_t L^{\mathrm{spr}}_{p,t}
+  =
+  \sum_t L^{\mathrm{author}}_{p,t}.
+\end{equation}
+因此，春节处理不创造或删除年度电量。该处理发生在 V5 之前，V5 不重新拟合
+春节系数。
+
+\subsection{BAIT 气象暴露与冷热分解}
+
+供暖和制冷分量由省内用电权重聚合的 ERA5 气象暴露以及 BAIT 结构得到
+（英文全称为 building-adjusted indoor temperature）。先计算室外体感指标
+\begin{align}
+  \mathrm{oBAIT}_{p,t}
+  &=
+  T_{p,t}
+  +0.012\!\left(S_{p,t}-k_{S,p,t}\right)
+  -0.2\!\left(W_{p,t}-k_{W,p,t}\right) \nonumber\\
+  &\quad
+  +0.05\!\left(H_{p,t}-k_{H,p,t}\right)
+  \operatorname{sign}(T_{p,t}-16),\\
+  k_{S,p,t}&=100+7T_{p,t},\\
+  k_{W,p,t}&=4.5-0.025T_{p,t},\\
+  k_{H,p,t}&=\exp(1+0.06T_{p,t}),
+\end{align}
+再经 48 小时指数记忆和室内--室外温度混合得到 BAIT。集中供暖区和非集中供暖区
+采用不同的 HDD/CDD 阈值。供暖和制冷是同一总负荷的内部拆分，并非叠加到
+总负荷上的新增需求。
+
+V5 的冷热物理包络来自同一 BAIT 模型在温度舒适边界
+$\pm1\,^{\circ}\mathrm{C}$ 下的逐省逐时差分。这样，允许的上调和下调首先由
+气象、原始负荷和舒适边界确定，再乘以显式签约比例；它不是按系统需要自由生成
+的储能容量。建筑热惯性和舒适状态采用等效储能表述，相关文献表明该表述适合
+刻画建筑负荷的功率、能量和持续时间边界
+\cite{IEAEBC67,Stinner2016,Klein2017,HuangWu2019,Chen2023Cooling}。
+
+\subsection{EV 外生充电曲线与未来投影}
+
+历史 EV 分量由省级新能源汽车保有量、月度单车日充电电量和归一化的
+96 点充电行为概率生成。未来情景采用省级中情景 NEV 保有量：
+\begin{equation}
+  L^{\mathrm{EV},0}_{p,h,y}
+  =
+  \frac{
+    N^{\mathrm{EV}}_{p,y}\,
+    e_{m(h)}\,
+    \pi_h
+  }{1000},
+\end{equation}
+其中 $N^{\mathrm{EV}}_{p,y}$ 为车辆数，$e_{m(h)}$ 为月度单车日充电电量
+（kWh vehicle$^{-1}$ day$^{-1}$），$\pi_h$ 为对应小时行为权重。
+V5 不修改车辆渗透率、年度交通电量或原始充电曲线，只把其中一个显式比例分为
+可被聚合商管理的服务。
+
+\subsection{四分量年度闭合}
+
+不可变基线负荷分解为
+\begin{equation}
+  L^0_{p,t}
+  =
+  L^{\mathrm{res}}_{p,t}
+  +L^{\mathrm{heat},0}_{p,t}
+  +L^{\mathrm{cool},0}_{p,t}
+  +L^{\mathrm{EV},0}_{p,t}.
+  \label{eq:baseline}
+\end{equation}
+未来基础残余负荷的年度电量由目标总电量扣除冷热与 EV 年电量后得到，再按
+历史 8760 小时模板分配。若残余年度电量为负，数据构建过程 fail closed。
+V5 只读取已经闭合的四分量；模型中的任何灵活调度都不得反向改变式
+\eqref{eq:baseline} 的输入或 manifest。
+
+\section{供暖和制冷：有签约成本的服务状态模型}
+
+\subsection{签约容量与逐时包络}
+
+令 $s\in\{\mathrm{heat},\mathrm{cool}\}$，$K^{s}_p$ 为省级内生签约功率
+（GW），$a^s_{p,t}$ 为逐时可用率，$\overline P^{s,+}_{p,t}$ 和
+$\overline P^{s,-}_{p,t}$ 为 BAIT $\pm1\,^{\circ}\mathrm{C}$ 包络乘以
+签约参与比例后的上调、下调上限。模型约束
+\begin{align}
+  0\le P^{s,+}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{s,+}_{p,t},
+  a^s_{p,t}K^s_p\right\},\\
+  0\le P^{s,-}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{s,-}_{p,t},
+  a^s_{p,t}K^s_p\right\}.
+\end{align}
+其中 $P^{s,+}$ 表示为了预热或预冷而增加的电负荷，$P^{s,-}$ 表示相对基线
+减少的电负荷。中央签约比例为供暖 25\%、制冷 20\%；10\%--40\% 的低高值
+用于敏感性分析。国家需求侧管理制度、地方空调负荷调节目标与需求响应实施规则
+证明该类可签约资源具有现实制度基础，但并不直接给出全国统一参与率
+\cite{NDRCDemand2023,ShanghaiHVAC2025,AnhuiDR2025,ZhejiangHVAC2025}。
+
+\subsection{非负等效服务库存与周期边界}
+
+建筑服务状态 $S^s_{p,t}$（GWh$_\mathrm{service}$）满足
+\begin{equation}
+  S^s_{p,t}
+  =
+  \rho^s_p S^s_{p,t-1}
+  +\eta^{s,+}_p P^{s,+}_{p,t}
+  -\frac{P^{s,-}_{p,t}}{\eta^{s,-}_p},
+  \label{eq:thermalstate}
+\end{equation}
+\begin{equation}
+  0\le S^s_{p,t}\le d^s_p K^s_p.
+\end{equation}
+中央保持率为供暖 0.94 h$^{-1}$、制冷 0.92 h$^{-1}$；持续时间分别为
+4 h 和 5 h。$\eta^{s,+}=\eta^{s,-}=1$ 是避免与保持率重复计损的模型约定。
+
+状态在所选求解时域首尾周期闭合。该边界能防止在末小时无偿积累舒适债务，
+但 24 h、168 h 或 744 h 的周期状态并不等价于全年季节边界，故全部短时运行
+必须标记 \status{TEST_ONLY_TRUNCATED_HORIZON}。逐时实际冷热负荷为
+\begin{equation}
+  \widetilde L^s_{p,t}
+  =
+  L^{s,0}_{p,t}+P^{s,+}_{p,t}-P^{s,-}_{p,t}.
+\end{equation}
+
+\section{V1G：有序充电不是免费灵活性}
+
+\subsection{固定与可调充电份额}
+
+中央情景将不可变 EV 充电基线的 $\alpha^{\mathrm{V1G}}=0.15$ 纳入有序充电：
+\begin{align}
+  L^{\mathrm{EV,flex},0}_{p,t}
+  &=\alpha^{\mathrm{V1G}}L^{\mathrm{EV},0}_{p,t},\\
+  L^{\mathrm{EV,fixed}}_{p,t}
+  &=(1-\alpha^{\mathrm{V1G}})L^{\mathrm{EV},0}_{p,t}.
+\end{align}
+低值和高值为 0.10 与 0.25。北京有序充电试验显示，激励可以改变参与和充电
+电量；价格补贴研究也表明驾驶者反应具有显著异质性
+\cite{Liu2021OrderlyCharging,Zhao2026Charging}。因此 15\% 是由现实量级约束的
+中央情景假设，而不是全国未来参与率的点预测。
+
+\subsection{移动服务状态与功率约束}
+
+令 $P^{\mathrm{ch}}_{p,t}$ 为被管理车队从电网充电的功率，
+$D^{\mathrm{mob}}_{p,t}$ 为外生驾驶能量提取，$E^{\mathrm{EV}}_{p,t}$ 为聚合
+移动服务状态。V1G 与 V2G 共用一个物理状态：
+\begin{equation}
+  E^{\mathrm{EV}}_{p,t}
+  =
+  E^{\mathrm{EV}}_{p,t-1}
+  +\eta^{\mathrm{ch}}P^{\mathrm{ch}}_{p,t}
+  -D^{\mathrm{mob}}_{p,t}
+  -\frac{P^{\mathrm{V2G,out}}_{p,t}}{\eta^{\mathrm{dis}}}.
+  \label{eq:evstate}
+\end{equation}
+同时满足逐时车队能量上限、最低出发能量和周期首尾闭合。充电功率受外生
+逐时可用包络和内生 V1G 签约容量 $K^{\mathrm{V1G}}_p$ 共同约束：
+\begin{equation}
+  0\le P^{\mathrm{ch}}_{p,t}
+  \le
+  \min\left\{
+    \overline P^{\mathrm{ch}}_{p,t},
+    a^{\mathrm{EV}}_{p,t}K^{\mathrm{V1G}}_p
+  \right\}.
+\end{equation}
+输入中的 \code{connected_vehicle_fraction=1} 仅是``已签约服务的可用率归一化''，
+不是对全国车辆逐时插枪概率的实证估计。当前上游数据没有逐车出行链、接入会话
+或出发 SOC，因此使用聚合服务包络，并将功率比、状态时长和参与率均登记为
+待敏感性参数。
+
+\subsection{只对原始充电的向下搬移计费一次}
+
+有序充电不免费。签约容量支付年度控制、计量、聚合和可用性成本。
+此外，引入非负变量
+\begin{equation}
+  R^{\mathrm{V1G}}_{p,t}
+  \ge
+  L^{\mathrm{EV,flex},0}_{p,t}
+  -P^{\mathrm{ch}}_{p,t},
+  \qquad
+  R^{\mathrm{V1G}}_{p,t}\ge0.
+  \label{eq:v1grelocation}
+\end{equation}
+只有把原始无序充电从参考小时移走的电量才支付 V1G activation/inconvenience
+成本。由于 V2G 放电会引起额外回充，若直接使用
+$|P^{\mathrm{ch}}-L^{\mathrm{EV,flex},0}|$，会把 V2G 补能误计为 V1G 搬移；
+式 \eqref{eq:v1grelocation} 避免这一双重计费。中央年度签约成本为
+60 CNY kW$^{-1}$ y$^{-1}$，搬移成本为 300 CNY MWh$^{-1}$。
+
+\section{V2G：嵌套在 V1G 内的内生付费合同}
+
+\subsection{合同嵌套与全国规模上限}
+
+V2G 不是对全部 EV 车队无偿调用的电池。省级内生 V2G 合同功率满足
+\begin{equation}
+  0\le K^{\mathrm{V2G}}_p
+  \le K^{\mathrm{V1G}}_p,
+  \qquad
+  \sum_p K^{\mathrm{V2G}}_p
+  \le \overline K^{\mathrm{V2G}}_y.
+  \label{eq:v2gcontract}
+\end{equation}
+中央全国上限为 2030/2040/2050/2060 年的 10/20/30/40 GW。中国车网互动
+政策提出到 2030 年形成千万千瓦级双向互动能力，2025 年首批试点覆盖
+9 个城市和 30 个项目
+\cite{NDRCVGI2023,NDRCVGIPilot2025}。因此 2030 年 10 GW 仅作为与政策量级
+一致的情景上限，不是法律容量上限；2040--2060 年数值是显式外推，必须与
+低高情景共同解释。
+
+\subsection{放电、能量和出行边界}
+
+V2G 放电满足
+\begin{equation}
+  0\le P^{\mathrm{V2G,out}}_{p,t}
+  \le
+  \min\left\{
+    \overline P^{\mathrm{V2G}}_{p,t},
+    a^{\mathrm{EV}}_{p,t}K^{\mathrm{V2G}}_p
+  \right\},
+\end{equation}
+并通过式 \eqref{eq:evstate} 同时受到车队状态上限、最低出发能量、充放电效率
+和驾驶提取约束。中央充电与放电效率均为 0.94。中国城市真实出行研究表明，
+V2G 价值与停留时间、接入条件、用户意愿、补偿和电池退化同时相关，而不能只用
+静态电池容量代表
+\cite{Li2025V2G}。本模型用聚合线性包络保留这些约束的最低必要结构，但不宣称
+复现逐车行为。
+
+\subsection{V2G 四类真实资源成本}
+
+V2G 支付四类成本：
+\begin{enumerate}
+  \item 增量年度可用性合同；
+  \item 双向充电桩、通信平台和维护的年化基础设施成本；
+  \item 按实际放电量支付的车主参与/不便成本；
+  \item 按实际放电量计提的电池退化成本。
+\end{enumerate}
+中央参数分别为 60 CNY kW$^{-1}$ y$^{-1}$、
+40 CNY kW$^{-1}$ y$^{-1}$、150 CNY MWh$^{-1}$ 和
+400 CNY MWh$^{-1}$。中国 V2G 激励研究给出了不同场景下的参与补偿量级，
+电池退化研究则说明循环损耗必须独立核算
+\cite{Wan2026V2G,Sagaria2025V2G,IEAV2G2026}。
+
+零售分时电价和政府补贴属于消费者、聚合商和财政之间的转移支付，不额外加入
+社会系统成本；控制设备、平台、参与不便和电池寿命损耗属于真实资源成本，必须
+进入目标函数。回充电量及其损耗通过逐小时电力平衡和式 \eqref{eq:evstate}
+自然承担发电成本，不能再次作为独立购电费用重复计费。
+
+\section{有效负荷、逐时安全约束和容量充裕度}
+
+\subsection{有效负荷只用于运行约束}
+
+V5 的实际电网负荷为
+\begin{align}
+  L^{\mathrm{eff}}_{p,t}
+  &=
+  L^{\mathrm{res}}_{p,t}
+  +\widetilde L^{\mathrm{heat}}_{p,t}
+  +\widetilde L^{\mathrm{cool}}_{p,t} \nonumber\\
+  &\quad
+  +L^{\mathrm{EV,fixed}}_{p,t}
+  +P^{\mathrm{ch}}_{p,t}
+  -P^{\mathrm{V2G,out}}_{p,t}.
+  \label{eq:effective}
+\end{align}
+逐小时功率平衡、上/下备用需求和惯量相关的运行负荷均使用
+$L^{\mathrm{eff}}$，并强制其非负。需求侧灵活性不获得备用容量信用，避免同一
+可调功率同时被容量充裕度和备用约束重复占用。
+
+\subsection{为何不直接使用 endogenous effective peak}
+
+若把容量充裕度分母从 $\max_t L^0_{p,t}$ 改成
+$\max_t L^{\mathrm{eff}}_{p,t}$，模型可能通过跨小时重排负荷减少装机需求。
+这确实是需求灵活性潜在价值的一部分，但若缺少连续事件时长、逐时可用率和
+服务恢复约束，单个峰值变量会给出过高容量信用。V5 因此采用保守的
+``baseline peak + physically bounded firm credit''：
+\begin{equation}
+  C^{\mathrm{credit}}_p
+  +\sum_s F^{s,\mathrm{firm}}_p
+  \ge
+  (1+m)\max_t L^0_{p,t},
+  \label{eq:adequacy}
+\end{equation}
+其中 $C^{\mathrm{credit}}_p$ 是按既有容量信用系数计算的供给侧容量，
+$m$ 为容量裕度，$F^{s,\mathrm{firm}}_p$ 是灵活服务的可靠容量信用。
+这样既保留需求侧减少发电装机的通道，又不允许它仅凭压低单小时峰值获得无限
+容量价值。
+
+\subsection{连续四小时峰值窗口的物理降额}
+
+对每个省，令
+\begin{equation}
+  t^\star_p=\arg\max_t L^0_{p,t},\qquad
+  \mathcal W_p=\{t^\star_p-1,t^\star_p,t^\star_p+1,t^\star_p+2\},
+\end{equation}
+并按全年时间轴循环处理边界。冷热容量信用受签约容量、四小时窗口内最小下调
+包络和最小可用率约束；V1G 受签约容量和窗口内最小可削减基线充电约束；
+V2G 还受窗口内最小放电包络及能量/4 h 约束。可写为
+\begin{align}
+ F^{s,\mathrm{firm}}_p
+ &\le
+ \delta_s\min\left\{
+ K^s_p,
+ \min_{t\in\mathcal W_p}\overline P^{s,-}_{p,t}
+ \right\},
+ \quad s\in\{\mathrm{heat},\mathrm{cool}\},\\
+ F^{\mathrm{V1G},\mathrm{firm}}_p
+ &\le
+ \delta_{\mathrm{V1G}}\min\left\{
+ K^{\mathrm{V1G}}_p,
+ \min_{t\in\mathcal W_p}L^{\mathrm{EV,flex},0}_{p,t}
+ \right\},\\
+ F^{\mathrm{V2G},\mathrm{firm}}_p
+ &\le
+ \delta_{\mathrm{V2G}}\min\left\{
+ K^{\mathrm{V2G}}_p,
+ \min_{t\in\mathcal W_p}\overline P^{\mathrm{V2G}}_{p,t},
+ \frac{\min_{t\in\mathcal W_p}\overline E^{\mathrm{fleet}}_{p,t}}{4}
+ \right\}.
+ \label{eq:firm}
+\end{align}
+实际实现还将冷热信用乘以窗口内最小可用率与内生签约容量。
+
+中央降额系数为冷热 0.60、V1G/V2G 0.50，低高值分别为
+0.30--0.80 和 0.20--0.70。资源充裕度文献强调容量认证应反映事件期间可交付性、
+技术之间的相互依赖和系统风险，而不能直接采用铭牌功率
+\cite{NREL2024RA,ESIG2023Capacity,Mantegna2024RA}。中国规划文献支持将需求响应
+和储能容量价值纳入扩张规划
+\cite{Huang2023DRCapacity}，但尚不足以校准全国省级逐时 ELCC。因此上述系数
+明确标为 \status{ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC}；监管机构的 ELCC
+处理仅作为外部方法参照
+\cite{CPUC2026IRP}。
+
+\section{目标函数与成本 accounting scope}
+
+\subsection{社会成本边界}
+
+V5 在既有系统总成本上增加
+\begin{align}
+ C^{\mathrm{flex}}
+ &=
+ \sum_{p,s}c^{\mathrm{ena}}_s K^s_p
+ +10^{-3}\sum_{p,t,s\in\{\mathrm{heat},\mathrm{cool}\}}
+ c^{\mathrm{act}}_s
+ \left(P^{s,+}_{p,t}+P^{s,-}_{p,t}\right) \nonumber\\
+ &\quad
+ +10^{-3}\sum_{p,t}c^{\mathrm{reloc}}_{\mathrm{V1G}}
+ R^{\mathrm{V1G}}_{p,t}
+ +\sum_p c^{\mathrm{infra}}_{\mathrm{V2G}}K^{\mathrm{V2G}}_p \nonumber\\
+ &\quad
+ +10^{-3}\sum_{p,t}
+ \left(c^{\mathrm{owner}}_{\mathrm{V2G}}
+ c^{\mathrm{deg}}_{\mathrm{V2G}}\right)
+ P^{\mathrm{V2G,out}}_{p,t}.
+ \label{eq:flexcost}
+\end{align}
+当功率单位为 GW、逐时能量为 GWh 时，年度 CNY/kW 成本乘以 GW，以及
+$10^{-3}$ 乘以 CNY/MWh 变动成本，均得到模型内部的 million CNY。
+IEA 对需求灵活性的综述同样强调，自动化、聚合、市场接入和用户激励具有非零
+实施成本
+\cite{IEADemandFlex2025}。
+
+\subsection{避免免费容量和重复计费}
+
+成本与容量约束共同关闭四条潜在``钻空子''通道：
+\begin{enumerate}
+  \item 无法无限签约：所有服务受逐省外生功率/能量包络约束；
+  \item 无法免费获得灵活性：冷热、V1G、V2G 均有年度成本，实际激活另行计费；
+  \item 无法把 V2G 补能重复算成 V1G 搬移：只对式
+  \eqref{eq:v1grelocation} 的向下位移计费；
+  \item 无法仅压低一个小时就减少装机：容量信用必须在连续四小时窗口可交付并
+  经过降额。
+\end{enumerate}
+
+\section{中央参数、低高区间与证据等级}
+
+\begin{landscape}
+\small
+\begin{longtable}{
+  >{\raggedright\arraybackslash}p{5.2cm}
+  >{\centering\arraybackslash}p{2.0cm}
+  >{\centering\arraybackslash}p{2.8cm}
+  >{\raggedright\arraybackslash}p{3.2cm}
+  >{\raggedright\arraybackslash}p{7.4cm}}
+\caption{V5 中央参数、敏感性区间与解释边界。完整机器可读值见
+\code{config/flexible_load_v5_central_parameters.csv}。}
+\label{tab:parameters}\\
+\toprule
+参数 & 中央值 & 低值--高值 & 证据等级 & 用途与解释边界\\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\small 表 \thetable{}（续）}\\
+\toprule
+参数 & 中央值 & 低值--高值 & 证据等级 & 用途与解释边界\\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{续下页}\\
+\endfoot
+\bottomrule
+\endlastfoot
+供暖签约比例 & 0.25 & 0.10--0.40 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+缩放 BAIT $\pm1\,^{\circ}$C 供暖包络，不改变供暖基线\\
+制冷签约比例 & 0.20 & 0.10--0.40 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+缩放 BAIT $\pm1\,^{\circ}$C 制冷包络，不改变制冷基线\\
+供暖/制冷保持率 & 0.94/0.92 & 0.90--0.98/0.85--0.97 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+等效服务库存逐小时保持率\\
+供暖/制冷持续时间 & 4/5 h & 2--8/2--10 h &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+服务能量上限与签约功率的比值\\
+冷热年度 enablement cost & 40 & 10--120 CNY/kW-y &
+\status{ENGINEERING_ASSUMPTION} &
+控制、计量、聚合和可用性真实资源成本\\
+冷热 activation cost & 300 & 100--1000 CNY/MWh &
+\status{ENGINEERING_ASSUMPTION} &
+服务调用和舒适不便成本；地方补贴仅作量级参照\\
+V1G 参与率 & 0.15 & 0.10--0.25 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+不可变 EV 基线中纳入有序充电的比例\\
+V2G 参与率 & 0.10 & 0.05--0.30 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+构造省级 V2G 逐时功率包络；不等于逐时插枪概率\\
+EV 充/放电效率 & 0.94/0.94 & 0.90--0.97 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+电网与聚合移动服务状态之间的能量损耗\\
+V1G 充电功率/日均功率比 & 2.0 & 1.5--3.0 &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+有序充电功率上限\\
+EV 服务库存持续时间 & 24 h & 12--36 h &
+\status{SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY} &
+聚合车队服务状态上限，不是单车电池容量\\
+V1G enablement cost & 60 & 20--180 CNY/kW-y &
+\status{ENGINEERING_ASSUMPTION} &
+年度智能充电控制、聚合和可用性成本\\
+V1G relocation cost & 300 & 100--400 CNY/MWh &
+\status{ENGINEERING_ASSUMPTION} &
+仅对原始充电向下搬移计费一次\\
+V2G availability cost & 60 & 20--180 CNY/kW-y &
+\status{ENGINEERING_ASSUMPTION} &
+在 V1G 合同之外的增量 V2G 可用性成本\\
+V2G infrastructure cost & 40 & 20--100 CNY/kW-y &
+\status{ENGINEERING_DERIVATION} &
+双向充电桩、平台及维护的年化真实资源成本\\
+V2G owner compensation & 150 & 100--300 CNY/MWh &
+\status{ENGINEERING_ASSUMPTION} &
+按放电量计算的参与不便成本，不含退化\\
+V2G degradation cost & 400 & 250--500 CNY/MWh &
+\status{ENGINEERING_DERIVATION} &
+按放电量计算的电池退化成本\\
+冷热 firm derating & 0.60 & 0.30--0.80 &
+\status{ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC} &
+四小时峰值窗口可交付功率的降额；不是中国 ELCC\\
+V1G/V2G firm derating & 0.50/0.50 & 0.20--0.70 &
+\status{ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC} &
+四小时峰值窗口充电削减/放电的降额\\
+firm event duration & 4 h & 2--6 h &
+\status{ENGINEERING_ASSUMPTION} &
+决定容量认证窗口和 V2G 能量/功率约束\\
+V2G 全国上限（2030） & 10 GW & 5--10 GW &
+\status{POLICY_SCALE_ANCHORED_SCENARIO_CAP} &
+与 2030 年千万千瓦级政策目标量级一致，不是法定上限\\
+V2G 全国上限（2040/2050/2060） & 20/30/40 GW &
+10--30/15--50/20--70 GW &
+\status{SCENARIO_EXTRAPOLATION} &
+远期外推，必须做敏感性解释\\
+\end{longtable}
+\end{landscape}
+
+参数证据分为四类：（i）可复现的本地上游曲线和 manifest；
+（ii）中国政策、试点和同行评审文献；（iii）国际官方/技术方法；
+（iv）明确登记的工程推导。来源注册表逐个解析 parameter source ID，并分别
+计算独立来源数、中国证据数和同行评审证据数。``来源存在''不等于``参数已经
+校准''；参与率、成本和降额仍必须通过低/中央/高敏感性报告。
+
+\section{输入生成、manifest 和结果审计}
+
+\subsection{确定性输入生成}
+
+V5 小时输入包括：
+\begin{itemize}
+  \item 省--年--小时冷热上/下调包络；
+  \item 省级冷热保持率、效率和持续时间；
+  \item EV 逐时充电/放电功率包络、车队服务能量上限和连接归一化；
+  \item 外生驾驶能量提取与最低出发能量；
+  \item 四类服务的年度和逐能量成本。
+\end{itemize}
+构建器 \code{scripts/build_flexible_load_v5_inputs.py} 从已接受的负荷分解、
+V3 舒适包络和中央参数表确定性生成上述文件，并写入 SHA256 manifest。
+验证器 \code{scripts/validate_flexible_load_v5_inputs.py} 不信任手写 PASS：
+它重新解析每个 source ID、重算证据计数、核对四个规划年、参数顺序、
+省份--年份--小时完整性、能量闭合和 manifest 哈希，任何不一致均 fail closed。
+
+\subsection{优化结果必须输出的 V5 专用证据}
+
+除既有供给、网络、备用、惯量、碳、CCS 和成本结果外，V5 至少输出：
+\begin{itemize}
+  \item 基线与有效负荷、冷热实际负荷和服务状态；
+  \item V1G 签约功率、实际充电、向下搬移量和车队服务状态；
+  \item V2G 签约功率、放电量、全国上限和合同嵌套残差；
+  \item 四类 firm capacity credit 及各自物理上界；
+  \item enablement、thermal activation、V1G relocation、V2G
+  infrastructure、owner participation 和 degradation 成本分项；
+  \item 状态转移、周期边界、有效负荷重建、同时充放电、容量信用上界等 hard
+  checks。
+\end{itemize}
+
+\subsection{分级工程门禁}
+
+代码与输入合同完成后依次执行：
+\begin{enumerate}
+  \item 单元测试、输入审计和 release-contract 审计；
+  \item 新输出根下的 1 h Base/V5 结构门禁；
+  \item 新输出根下的 24 h Base/V5 机制门禁；
+  \item 2030--2060 四年 168 h Base/V5 planning sequence；
+  \item 经明确授权的单个 2030/744 h cold engineering gate。
+\end{enumerate}
+所有运行必须串行，不允许第二个并发求解、basis gate 或已拒绝的
+\code{Crossover=3}。744 h 仍为 \status{TEST_ONLY_TRUNCATED_HORIZON}，
+不能作为年度结果或 2040 state anchor。通过 744 h 也不自动启动 8760 h。
+
+\section{结果解释框架与限制}
+
+\subsection{Base--V5 比较应报告什么}
+
+完整年度结果应至少同时报告：
+\begin{itemize}
+  \item 总系统成本及 V5 六项增量成本；
+  \item 发电、储能、输电和 V2G 合同容量变化；
+  \item 基线峰值、有效峰值及四类 firm capacity credit；
+  \item 逐小时负荷转移、V2G 放电/回充损耗和未满足服务检查；
+  \item 碳约束、备用、惯量、网络和水电运行是否仍满足；
+  \item 中央值相对低/高参与率、成本和 derating 的敏感性。
+\end{itemize}
+``容量减少''只有在式 \eqref{eq:adequacy} 与式 \eqref{eq:firm} 同时通过、
+成本分项完整、且 Base/V5 使用相同输入 manifest 时，才能解释为灵活性资源的
+可靠容量价值。仅观察有效峰值下降不能证明可替代发电装机。
+
+\subsection{当前限制}
+
+\begin{enumerate}
+  \item 建筑舒适包络来自聚合 BAIT $\pm1\,^{\circ}$C，不是逐建筑热工模拟；
+  \item EV 使用省级聚合服务状态，未显式表示逐车出行链、接入会话、充电站
+  配电容量或单车 SOC；
+  \item 远期 V2G 全国上限和全部 derating 系数是情景参数，不是预测；
+  \item 四小时窗口是透明的工程容量认证近似，不替代概率型 ELCC/LOLE 计算；
+  \item 周期时域边界适合工程门禁和全年闭合，但短时门禁会人为连接时域首尾；
+  \item 需求侧资源当前不提供备用信用，可能低估其部分运行价值，但能避免容量
+  与备用双重计数；
+  \item 只有 8760 h accepted Base 与 V5 才能支撑论文年度结论；短时求解只能
+  排查代码、数据、数值稳定性和 accounting 漏洞。
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{IEAEBC67}
+IEA Energy in Buildings and Communities Programme.
+\newblock Annex 67: Energy Flexible Buildings.
+\newblock International Energy Agency, 2019.
+\newblock \url{https://www.iea-ebc.org/projects/project?AnnexID=67}.
+
+\bibitem{Stinner2016}
+Stinner S, Huchtemann K, Müller D.
+\newblock Quantifying the operational flexibility of building energy systems
+with thermal energy storages.
+\newblock \emph{Applied Energy}, 181:140--154, 2016.
+\newblock \url{https://doi.org/10.1016/j.apenergy.2016.08.055}.
+
+\bibitem{Klein2017}
+Klein K, Herkel S, Henning H-M, Felsmann C.
+\newblock Load shifting using the heating and cooling system of an office
+building: quantitative potential evaluation for different flexibility and
+storage options.
+\newblock \emph{Applied Energy}, 203:917--937, 2017.
+\newblock \url{https://doi.org/10.1016/j.apenergy.2017.06.073}.
+
+\bibitem{HuangWu2019}
+Huang S, Wu D.
+\newblock Validation on aggregate flexibility from residential air
+conditioning systems for building-to-grid integration.
+\newblock \emph{Energy and Buildings}, 200:58--67, 2019.
+\newblock \url{https://doi.org/10.1016/j.enbuild.2019.07.043}.
+
+\bibitem{Chen2023Cooling}
+Chen Q, Kuang Z, Liu X, Zhang T.
+\newblock Techno-economic comparison of cooling storage and battery for
+electricity flexibility.
+\newblock \emph{Energy Conversion and Management}, 289:117183, 2023.
+\newblock \url{https://doi.org/10.1016/j.enconman.2023.117183}.
+
+\bibitem{NDRCDemand2023}
+国家发展和改革委员会.
+\newblock 《电力需求侧管理办法（2023 年版）》, 2023.
+\newblock \url{https://www.ndrc.gov.cn/xxgk/zcfb/ghxwj/202309/t20230927_1360902.html}.
+
+\bibitem{ShanghaiHVAC2025}
+上海市人民政府.
+\newblock 《关于做好本市 2025 年空调负荷调控能力建设有关工作的通知》,
+2025.
+\newblock \url{https://www.shanghai.gov.cn/qtsj/20250617/9db446ddad1744b6af10b6f7205d8aab.html}.
+
+\bibitem{AnhuiDR2025}
+安徽省能源局.
+\newblock 《安徽省电力需求响应实施细则》, 2025.
+\newblock \url{https://www.ahjd.gov.cn/Jczwgk/show/3553986.html}.
+
+\bibitem{ZhejiangHVAC2025}
+衢州市人民政府.
+\newblock 《大科创专项政策实施细则（2025 年版）》, 2025.
+\newblock \url{https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web3084/site/attach/0/adde479fede6497d921889690afad168.pdf}.
+
+\bibitem{IEADemandFlex2025}
+International Energy Agency.
+\newblock \emph{The Value of Demand Flexibility}.
+\newblock IEA, Paris, 2025.
+\newblock \url{https://www.iea.org/reports/the-value-of-demand-flexibility}.
+
+\bibitem{NDRCVGI2023}
+国家发展和改革委员会, 国家能源局等.
+\newblock 《关于加强新能源汽车与电网融合互动的实施意见》, 2023.
+\newblock \url{https://zfxxgk.nea.gov.cn/2023-12/13/c_1310758710.htm}.
+
+\bibitem{NDRCVGIPilot2025}
+国家发展和改革委员会, 国家能源局等.
+\newblock 《首批车网互动规模化应用试点》, 2025.
+\newblock \url{https://www.ndrc.gov.cn/xxgk/zcfb/tz/202504/t20250402_1396958.html}.
+
+\bibitem{Liu2021OrderlyCharging}
+Liu X, Li X, Chen H, Xu H.
+\newblock Aggregate electric vehicles in demand side for ancillary service.
+\newblock In: \emph{34th International Electric Vehicle Symposium and
+Exhibition (EVS34)}, Nanjing, 2021.
+\newblock \url{https://www.citelec.org/EVS34/download.php?f=papers/evs34-5010511.pdf}.
+
+\bibitem{Zhao2026Charging}
+Zhao X, Chen H, Qiu Y, Deng Y.
+\newblock Impact of charging price subsidies on the charging behavior of
+heterogeneous electric vehicle drivers: evidence from Beijing.
+\newblock \emph{Journal of the Association of Environmental and Resource
+Economists}, 13(3):713--754, 2026.
+\newblock \url{https://doi.org/10.1086/739399}.
+
+\bibitem{IEAV2G2026}
+International Energy Agency.
+\newblock \emph{Vehicle-to-Grid Technology}.
+\newblock IEA, Paris, 2026.
+\newblock \url{https://www.iea.org/reports/vehicle-to-grid-technology}.
+
+\bibitem{Li2025V2G}
+Li K, Li X, Xiong Z, Tao S, Zhao G, Jiang Y, Qi H, Zhang Y.
+\newblock Unlocking vehicle-to-grid potential of load shifting in China's
+megacities considering comprehensive real-world behaviors.
+\newblock \emph{Nature Communications}, 16:10087, 2025.
+\newblock \url{https://doi.org/10.1038/s41467-025-65073-8}.
+
+\bibitem{Wan2026V2G}
+Wan M, Xia L, Huo Y, Gong Y, Geng G, Jiang Q.
+\newblock Case study of vehicle-to-grid incentive design under multiple
+scenarios: a policy-making perspective.
+\newblock \emph{IET Generation, Transmission \& Distribution},
+20(1):e70254, 2026.
+\newblock \url{https://doi.org/10.1049/gtd2.70254}.
+
+\bibitem{Sagaria2025V2G}
+Sagaria S, van der Kam M, Boström C.
+\newblock Vehicle-to-grid impact on battery degradation and estimation of V2G
+economic compensation.
+\newblock \emph{Applied Energy}, 377:124546, 2025.
+\newblock \url{https://doi.org/10.1016/j.apenergy.2024.124546}.
+
+\bibitem{NREL2024RA}
+National Renewable Energy Laboratory.
+\newblock \emph{Explained: Fundamentals of Power Grid Reliability and Clean
+Electricity}. NREL/TP-6A40-85880, 2024.
+\newblock \url{https://docs.nrel.gov/docs/fy24osti/85880.pdf}.
+
+\bibitem{ESIG2023Capacity}
+Energy Systems Integration Group.
+\newblock \emph{Ensuring Efficient Reliability: New Design Principles for
+Capacity Accreditation}, 2023.
+\newblock \url{https://www.esig.energy/wp-content/uploads/2023/02/ESIG-Design-principles-capacity-accreditation-report-2023.pdf}.
+
+\bibitem{Mantegna2024RA}
+Mantegna G, Huang Z, Van Caelenberg G, Frew B, Lynch M, O'Malley M.
+\newblock Maintaining reliability while navigating unprecedented uncertainty:
+a synthesis of and guide to advances in electric sector resource adequacy.
+\newblock \emph{arXiv:2412.00533}, 2024.
+\newblock \url{https://doi.org/10.48550/arXiv.2412.00533}.
+
+\bibitem{Huang2023DRCapacity}
+Huang Y, Zhang Y, Xia Z, Wang H, Wu M, Wang N, Chen Q, Zhu T, Chen X.
+\newblock Power system planning considering demand response resources and
+capacity value of energy storage.
+\newblock \emph{Journal of Shanghai Jiao Tong University},
+57(4):432--441, 2023.
+\newblock \url{https://doi.org/10.16183/j.cnki.jsjtu.2021.477}.
+
+\bibitem{CPUC2026IRP}
+California Public Utilities Commission.
+\newblock Inputs and assumptions for 2026 integrated resource planning, 2026.
+\newblock \url{https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-power-procurement/long-term-procurement-planning/2024-26-irp-cycle-events-and-materials}.
+
+\end{thebibliography}
+
+\end{document}

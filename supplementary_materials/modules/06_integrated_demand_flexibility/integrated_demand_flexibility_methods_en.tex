@@ -1,0 +1,469 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,margin=2.35cm]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs,longtable,array}
+\usepackage{pdflscape}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{fancyhdr}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={Integrated demand-side flexibility},
+  pdfauthor={CISPO}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\renewcommand{\arraystretch}{1.18}
+\renewcommand{\thesection}{S6.\arabic{section}}
+\renewcommand{\theequation}{S6-\arabic{equation}}
+\renewcommand{\thetable}{S6-\arabic{table}}
+
+\pagestyle{fancy}
+\setlength{\headheight}{14.5pt}
+\fancyhf{}
+\fancyhead[L]{\small S6 INTEGRATED DEMAND-SIDE FLEXIBILITY}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\title{\textbf{S6 Integrated demand-side flexibility}}
+\author{}
+\date{}
+
+\begin{document}
+
+\section*{S6 Integrated demand-side flexibility}
+\addcontentsline{toc}{section}{S6 Integrated demand-side flexibility}
+
+We represent demand-side flexibility as a set of energy-service constraints
+rather than as an unconstrained reduction in electricity demand. The
+reference system retains the reconstructed hourly demand profiles, whereas
+the flexibility case allows selected heating, cooling and electric-vehicle
+(EV) services to be shifted in time and permits a limited amount of
+vehicle-to-grid (V2G) discharge. Both cases have identical annual electricity
+demand, generation and network technologies, security constraints and
+economic boundaries. Flexible services incur explicit enabling and
+activation costs, and their contribution to resource adequacy is restricted
+to the derated power that remains deliverable throughout a four-hour peak
+window. This formulation allows demand flexibility to reduce operating costs
+and, where physically justified, firm generation requirements without
+treating flexible demand as a free or perfectly reliable resource.
+
+\section{Demand reconstruction and flexible-service envelopes}
+
+Hourly electricity demand is reconstructed for each province and decomposed
+into residual, space-heating, space-cooling and EV-charging components:
+\begin{equation}
+  L^{0}_{p,t}
+  =
+  L^{\mathrm{res}}_{p,t}
+  +L^{\mathrm{heat},0}_{p,t}
+  +L^{\mathrm{cool},0}_{p,t}
+  +L^{\mathrm{EV},0}_{p,t},
+  \label{eq:loaddecomposition}
+\end{equation}
+where $p$ and $t$ denote province and hour, respectively. The decomposition is
+closed by construction: heating, cooling and EV charging are internal
+components of total demand rather than additions to it. Historical hourly
+profiles are anchored to provincial electricity demand, with the Spring
+Festival correction modifying intrayear shape while preserving annual
+electricity consumption. Future residual demand is obtained by subtracting
+projected heating, cooling and EV electricity from provincial annual demand
+and distributing the remainder over the retained 8,760-hour residual-load
+profile.
+
+Heating and cooling loads are derived from population- and electricity-
+weighted ERA5 meteorology \cite{Hersbach2020ERA5}. Temperature, solar
+irradiance, wind speed and humidity are combined in a building-adjusted
+temperature index with a 48-hour exponentially weighted memory, after which
+region-specific heating- and cooling-degree thresholds are applied. For each
+province and hour, the response of the reconstructed thermal load to a
+$\pm1\,^{\circ}\mathrm{C}$ comfort perturbation defines the maximum upward
+and downward modulation. These weather- and load-dependent envelopes prevent
+the optimization from creating thermal storage independently of the
+underlying end use. The use of an equivalent energy state to represent
+aggregated building flexibility is consistent with established
+characterizations of thermal mass and controlled heating, ventilation and
+air-conditioning loads
+\cite{IEAEBC67,Stinner2016,Klein2017,HuangWu2019,Chen2023Cooling}.
+
+The exogenous EV-charging profile is constructed from provincial new-energy
+vehicle stocks, monthly electricity use per vehicle and normalized intraday
+charging probabilities. For planning year $y$,
+\begin{equation}
+  L^{\mathrm{EV},0}_{p,h,y}
+  =
+  \frac{
+    N^{\mathrm{EV}}_{p,y}\,
+    e_{m(h)}\,
+    \pi_h
+  }{1000},
+  \label{eq:evbaseline}
+\end{equation}
+where $N^{\mathrm{EV}}_{p,y}$ is the provincial vehicle stock,
+$e_{m(h)}$ is daily charging electricity per vehicle in month $m$, and
+$\pi_h$ is the normalized hourly charging probability. Coordinated charging
+does not alter vehicle stocks, annual mobility energy or the uncontrolled
+charging reference. Instead, a prescribed share of this reference is made
+schedulable within power, energy and departure-service limits.
+
+The central case enrolls 25\% of heating demand, 20\% of cooling demand and
+15\% of EV charging in flexible-service contracts. These fractions scale the
+physical envelopes rather than the underlying demand. They are treated as
+scenario parameters because national demand-response measures and local
+air-conditioning programmes establish the institutional feasibility of
+contracted flexibility, but do not provide nationally representative
+participation rates
+\cite{NDRCDemand2023,ShanghaiHVAC2025,AnhuiDR2025,ZhejiangHVAC2025}.
+Observed responses in Chinese coordinated-charging programmes similarly
+support a non-zero schedulable EV share while revealing substantial
+heterogeneity in participation and price response
+\cite{Liu2021OrderlyCharging,Zhao2026Charging}.
+
+\section{Joint thermal-load and electric-vehicle flexibility model}
+
+For thermal service $s\in\{\mathrm{heat},\mathrm{cool}\}$, the optimization
+chooses contracted capacity $K^s_p$, upward modulation $P^{s,+}_{p,t}$ and
+downward modulation $P^{s,-}_{p,t}$. The hourly decisions are bounded by the
+comfort-derived envelopes, $\overline P^{s,+}_{p,t}$ and
+$\overline P^{s,-}_{p,t}$, and by the contracted power available at that
+hour, $a^s_{p,t}K^s_p$:
+\begin{align}
+  0\le P^{s,+}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{s,+}_{p,t},a^s_{p,t}K^s_p\right\},\\
+  0\le P^{s,-}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{s,-}_{p,t},a^s_{p,t}K^s_p\right\}.
+  \label{eq:thermalpower}
+\end{align}
+An equivalent thermal-service state $S^s_{p,t}$ tracks the intertemporal
+consequence of pre-heating or pre-cooling:
+\begin{equation}
+  S^s_{p,t}
+  =
+  \rho^s_p S^s_{p,t-1}
+  +\eta^{s,+}_p P^{s,+}_{p,t}
+  -\frac{P^{s,-}_{p,t}}{\eta^{s,-}_p},
+  \qquad
+  0\le S^s_{p,t}\le d^s_p K^s_p.
+  \label{eq:thermalstate}
+\end{equation}
+Here, $\rho^s_p$ is hourly service retention and $d^s_p$ is the maximum
+energy-to-power duration. The state is non-negative and periodic over the
+modelled year, precluding terminal comfort debt. The resulting electrical
+load is
+$\widetilde L^s_{p,t}=L^{s,0}_{p,t}+P^{s,+}_{p,t}-P^{s,-}_{p,t}$.
+Central hourly retention is 0.94 for heating and 0.92 for cooling, with
+corresponding service durations of 4 and 5 hours.
+
+EV flexibility is represented by a single aggregate mobility-service state
+rather than by superimposing a second battery on coordinated charging. A
+fraction $\alpha^{\mathrm{V1G}}$ of the uncontrolled EV load is schedulable,
+whereas the remainder is fixed:
+\begin{equation}
+  L^{\mathrm{EV,flex},0}_{p,t}
+  =
+  \alpha^{\mathrm{V1G}}L^{\mathrm{EV},0}_{p,t},
+  \qquad
+  L^{\mathrm{EV,fixed}}_{p,t}
+  =
+  (1-\alpha^{\mathrm{V1G}})L^{\mathrm{EV},0}_{p,t}.
+\end{equation}
+Let $P^{\mathrm{ch}}_{p,t}$ and $P^{\mathrm{out}}_{p,t}$ denote flexible
+charging and V2G discharge, respectively. The fleet-service state evolves as
+\begin{equation}
+  E^{\mathrm{EV}}_{p,t}
+  =
+  E^{\mathrm{EV}}_{p,t-1}
+  +\eta^{\mathrm{ch}}P^{\mathrm{ch}}_{p,t}
+  -D^{\mathrm{mob}}_{p,t}
+  -\frac{P^{\mathrm{out}}_{p,t}}{\eta^{\mathrm{dis}}},
+  \label{eq:evstate}
+\end{equation}
+where $D^{\mathrm{mob}}_{p,t}$ is exogenous driving-energy withdrawal. The
+state is bounded by the hourly fleet-energy envelope and by a minimum
+departure-energy requirement, and it is periodic over the modelled year.
+Charging and discharge are further constrained by exogenous hourly power
+envelopes and endogenous contracted capacities:
+\begin{align}
+  0\le P^{\mathrm{ch}}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{\mathrm{ch}}_{p,t},
+  a^{\mathrm{EV}}_{p,t}K^{\mathrm{V1G}}_p\right\},\\
+  0\le P^{\mathrm{out}}_{p,t}
+  &\le
+  \min\!\left\{\overline P^{\mathrm{out}}_{p,t},
+  a^{\mathrm{EV}}_{p,t}K^{\mathrm{V2G}}_p\right\},\\
+  0\le K^{\mathrm{V2G}}_p
+  &\le K^{\mathrm{V1G}}_p.
+  \label{eq:evpower}
+\end{align}
+Thus, bidirectional participation is nested within the coordinated-charging
+contract. It cannot exceed either the participating fleet or its hourly
+power and energy availability. Charge and discharge efficiencies are both
+0.94 in the central case.
+
+The national sum of contracted V2G power is capped at 10, 20, 30 and 40 GW in
+2030, 2040, 2050 and 2060, respectively. The 2030 value is anchored to
+China's policy objective of establishing bidirectional interaction at the
+ten-gigawatt scale, and the subsequent values are explicit planning
+extrapolations rather than forecasts. The national vehicle--grid policy and
+the first large-scale pilot programme, covering nine cities and 30 projects,
+provide the deployment context
+\cite{NDRCVGI2023,NDRCVGIPilot2025}. The aggregate representation deliberately
+retains conservative service constraints because city-scale evidence shows
+that mobility, dwell time, connection, compensation, range requirements and
+battery degradation jointly determine usable V2G potential
+\cite{IEAV2G2026,Li2025V2G}.
+
+\section{System integration, economic accounting and capacity adequacy}
+
+The hourly load entering the power balance is
+\begin{align}
+  L^{\mathrm{eff}}_{p,t}
+  &=
+  L^{\mathrm{res}}_{p,t}
+  +\widetilde L^{\mathrm{heat}}_{p,t}
+  +\widetilde L^{\mathrm{cool}}_{p,t} \nonumber\\
+  &\quad
+  +L^{\mathrm{EV,fixed}}_{p,t}
+  +P^{\mathrm{ch}}_{p,t}
+  -P^{\mathrm{out}}_{p,t}.
+  \label{eq:effectiveload}
+\end{align}
+This effective load is used consistently in hourly power balance and in
+load-dependent operating-security requirements. Flexible demand receives no
+additional reserve credit, which avoids using the same deliverable power
+simultaneously for resource adequacy and operating reserves.
+
+All flexible services incur real-resource costs. Thermal flexibility pays an
+annual enabling cost and an activation cost on both upward and downward
+modulation. Coordinated EV charging pays an annual control and aggregation
+cost and an inconvenience cost on charging energy displaced from its
+uncontrolled hour. To prevent V2G replenishment from being misclassified as
+coordinated-charging activity, relocated energy is defined by
+\begin{equation}
+  R^{\mathrm{V1G}}_{p,t}
+  \ge
+  L^{\mathrm{EV,flex},0}_{p,t}-P^{\mathrm{ch}}_{p,t},
+  \qquad
+  R^{\mathrm{V1G}}_{p,t}\ge0.
+  \label{eq:relocation}
+\end{equation}
+V2G additionally pays for availability, annualized bidirectional charging
+infrastructure, owner participation per unit of discharge and battery
+degradation per unit of discharge. The incremental flexibility cost is
+\begin{align}
+ C^{\mathrm{flex}}
+ &=
+ \sum_{p,s}c^{\mathrm{ena}}_s K^s_p
+ +10^{-3}\sum_{p,t,s\in\{\mathrm{heat},\mathrm{cool}\}}
+ c^{\mathrm{act}}_s
+ \left(P^{s,+}_{p,t}+P^{s,-}_{p,t}\right) \nonumber\\
+ &\quad
+ +10^{-3}\sum_{p,t}c^{\mathrm{reloc}}_{\mathrm{V1G}}
+ R^{\mathrm{V1G}}_{p,t}
+ +\sum_p c^{\mathrm{infra}}_{\mathrm{V2G}}
+ K^{\mathrm{V2G}}_p \nonumber\\
+ &\quad
+ +10^{-3}\sum_{p,t}
+ \left(c^{\mathrm{owner}}_{\mathrm{V2G}}
+ c^{\mathrm{deg}}_{\mathrm{V2G}}\right)
+ P^{\mathrm{out}}_{p,t}.
+  \label{eq:flexcost}
+\end{align}
+Costs are expressed in 2025 constant CNY. Time-of-use tariffs and public
+subsidies are treated as transfers and are not added to social system cost;
+metering, control, aggregation, infrastructure, inconvenience and battery
+wear are treated as real resource costs. Charging electricity and conversion
+losses remain endogenous in the system energy balance and are therefore not
+charged a second time. This accounting follows the broader evidence that the
+system value of demand flexibility depends on non-zero enabling,
+interoperability and participation costs
+\cite{IEADemandFlex2025,Wan2026V2G,Sagaria2025V2G}.
+
+Resource adequacy is assessed against the immutable annual provincial peak,
+rather than against an endogenous peak that could be reduced without a
+deliverability test:
+\begin{equation}
+  C^{\mathrm{credit}}_p
+  +\sum_s F^{s,\mathrm{firm}}_p
+  \ge
+  (1+m)\max_t L^{0}_{p,t},
+  \label{eq:adequacy}
+\end{equation}
+where $C^{\mathrm{credit}}_p$ is supply-side accredited capacity, $m$ is the
+planning margin and $F^{s,\mathrm{firm}}_p$ is the accredited contribution of
+flexible service $s$. For each province, the deliverability window comprises
+the annual peak hour, the preceding hour and the following two hours. Thermal
+and coordinated-charging credits are bounded by contracted power and the
+minimum reduction envelope throughout this four-hour window. V2G credit is
+additionally bounded by the minimum fleet energy in the window divided by
+four hours:
+\begin{align}
+ F^{s,\mathrm{firm}}_p
+ &\le
+ \delta_s\min\left\{
+ K^s_p,\min_{t\in\mathcal W_p}\overline P^{s,-}_{p,t}
+ \right\},
+ &&s\in\{\mathrm{heat},\mathrm{cool}\},\\
+ F^{\mathrm{V1G},\mathrm{firm}}_p
+ &\le
+ \delta_{\mathrm{V1G}}\min\left\{
+ K^{\mathrm{V1G}}_p,
+ \min_{t\in\mathcal W_p}L^{\mathrm{EV,flex},0}_{p,t}
+ \right\},\\
+ F^{\mathrm{V2G},\mathrm{firm}}_p
+ &\le
+ \delta_{\mathrm{V2G}}\min\left\{
+ K^{\mathrm{V2G}}_p,
+ \min_{t\in\mathcal W_p}\overline P^{\mathrm{out}}_{p,t},
+ \frac{\min_{t\in\mathcal W_p}\overline E^{\mathrm{fleet}}_{p,t}}{4}
+ \right\}.
+  \label{eq:firmcredit}
+\end{align}
+Central derating factors are 0.60 for heating and cooling and 0.50 for
+coordinated charging and V2G. This approach preserves the capacity value of
+demand flexibility while preventing a one-hour reduction in effective load
+from being interpreted as perfectly firm capacity. It is consistent with the
+principle that capacity accreditation should reflect sustained,
+system-specific deliverability
+\cite{NREL2024RA,ESIG2023Capacity,Mantegna2024RA}. Demand response and storage
+capacity value have also been incorporated in Chinese expansion-planning
+research \cite{Huang2023DRCapacity}; however, the adopted derating factors are
+engineering assumptions, not empirically estimated provincial ELCC values.
+Regulatory ELCC treatments are used only as methodological comparators
+\cite{CPUC2026IRP}.
+
+\clearpage
+\begin{landscape}
+\section{Parameter evidence, sensitivities and interpretation}
+
+Table \ref{tab:flexparameters} summarizes the central assumptions and the
+prespecified ranges used to evaluate structural uncertainty. The parameter
+set combines reproducible end-use envelopes with Chinese policy and
+behavioural evidence, peer-reviewed technology studies and international
+resource-adequacy guidance. Policy targets and compensation rules are used to
+establish feasibility and scale, rather than being transferred directly into
+national social-cost parameters.
+
+\small
+\begin{longtable}{
+  >{\raggedright\arraybackslash}p{5.1cm}
+  >{\centering\arraybackslash}p{2.7cm}
+  >{\centering\arraybackslash}p{3.2cm}
+  >{\raggedright\arraybackslash}p{9.2cm}}
+\caption{Central assumptions and prespecified sensitivity ranges for
+integrated demand-side flexibility. Monetary values are in 2025 constant
+CNY.}
+\label{tab:flexparameters}\\
+\toprule
+Parameter & Central value & Sensitivity range & Evidence and interpretation\\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\small Table \thetable{} continued}\\
+\toprule
+Parameter & Central value & Sensitivity range & Evidence and interpretation\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Heating and cooling enrollment & 0.25; 0.20 & 0.10--0.40 &
+Applied to weather- and comfort-derived envelopes. Chinese demand-response
+rules and local air-conditioning programmes establish feasibility but not a
+national participation rate
+\cite{NDRCDemand2023,ShanghaiHVAC2025,AnhuiDR2025,ZhejiangHVAC2025}.\\
+Heating and cooling hourly retention & 0.94; 0.92 &
+0.90--0.98; 0.85--0.97 &
+Equivalent-service representation informed by building thermal-flexibility
+studies \cite{Stinner2016,HuangWu2019,Chen2023Cooling}.\\
+Heating and cooling duration & 4 h; 5 h & 2--8 h; 2--10 h &
+Energy-to-power limit for thermal service, evaluated across the range reported
+for controlled HVAC and thermal mass \cite{IEAEBC67,Klein2017}.\\
+Thermal enabling cost & 40 CNY/kW-y & 10--120 CNY/kW-y &
+Control, metering, aggregation and availability; treated as a real-resource
+cost \cite{IEADemandFlex2025,NDRCDemand2023}.\\
+Thermal activation cost & 300 CNY/MWh & 100--1000 CNY/MWh &
+Service activation and comfort cost. Local compensation schedules provide
+scale comparators but are not added as fiscal transfers
+\cite{AnhuiDR2025,ZhejiangHVAC2025}.\\
+Coordinated-charging enrollment & 0.15 & 0.10--0.25 &
+Share of uncontrolled EV charging that can be rescheduled; informed by
+Chinese pilot participation and price-response evidence
+\cite{Liu2021OrderlyCharging,Zhao2026Charging}.\\
+V2G participation envelope & 0.10 & 0.05--0.30 &
+Scales the provincial discharge envelope; does not represent an hourly
+plug-in probability \cite{NDRCVGI2023,Li2025V2G}.\\
+Charging and discharge efficiencies & 0.94; 0.94 & 0.90--0.97 &
+Grid-to-fleet and fleet-to-grid conversion efficiencies
+\cite{IEAV2G2026,Li2025V2G}.\\
+Coordinated-charging power ratio and service duration & 2.0; 24 h &
+1.5--3.0; 12--36 h &
+Aggregate power and energy limits evaluated as scenario uncertainty; the
+service state is not interpreted as nameplate vehicle-battery capacity.\\
+Coordinated-charging enabling and relocation costs &
+60 CNY/kW-y; 300 CNY/MWh &
+20--180 CNY/kW-y; 100--400 CNY/MWh &
+Control and aggregation cost plus participant inconvenience on charging
+energy displaced once \cite{Liu2021OrderlyCharging,Zhao2026Charging}.\\
+V2G availability and infrastructure costs &
+60; 40 CNY/kW-y &
+20--180; 20--100 CNY/kW-y &
+Incremental availability and annualized bidirectional equipment/platform
+costs \cite{IEAV2G2026,Wan2026V2G}.\\
+V2G owner and degradation costs &
+150; 400 CNY/MWh &
+100--300; 250--500 CNY/MWh &
+Participation compensation and battery wear are represented separately
+\cite{Wan2026V2G,Sagaria2025V2G}.\\
+Thermal firm-capacity derating & 0.60 & 0.30--0.80 &
+Applied only to four-hour deliverable reduction; not a China-specific ELCC
+estimate \cite{NREL2024RA,ESIG2023Capacity,Mantegna2024RA}.\\
+Coordinated-charging and V2G firm-capacity derating & 0.50; 0.50 &
+0.20--0.70 &
+Applied to four-hour power and energy deliverability; not a China-specific
+ELCC estimate \cite{Huang2023DRCapacity,CPUC2026IRP}.\\
+National V2G contracted-power ceiling &
+10/20/30/40 GW & 5--10/10--30/15--50/20--70 GW &
+2030 is anchored to China's ten-gigawatt-scale objective; later values are
+planning extrapolations \cite{NDRCVGI2023,NDRCVGIPilot2025}.\\
+\end{longtable}
+\end{landscape}
+
+The integrated formulation is intended to identify mechanisms rather than to
+assign a deterministic forecast to demand-side participation. Its results
+should therefore be interpreted jointly with the low and high assumptions in
+Table \ref{tab:flexparameters}. In particular, a reduction in generation
+capacity is attributable to demand-side flexibility only when the associated
+four-hour firm-credit constraint is binding and the full enabling,
+activation, infrastructure and degradation costs are included. A reduction
+in the unconstrained effective peak alone is not sufficient evidence of firm
+capacity substitution.
+
+Several limitations remain. Building flexibility is represented by
+province-level comfort envelopes rather than building-by-building thermal
+models. EV mobility and connection are aggregated, and the model does not
+resolve individual trip chains, charger locations or distribution-network
+constraints. The four-hour accreditation window is a transparent
+deterministic approximation and does not replace a probabilistic
+loss-of-load or ELCC assessment. Finally, periodic service states are
+appropriate for an annual planning model but should not be interpreted as
+evidence about behaviour beyond the represented horizon. These limitations
+motivate sensitivity analysis of participation, duration, costs and capacity
+derating, and constrain scientific interpretation to complete annual
+simulations.
+
+{\small\sloppy\input{bibliography_manual_en.tex}}
+
+\end{document}

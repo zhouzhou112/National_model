@@ -79,7 +79,12 @@ def _flex_metrics(output_dir: Path) -> dict[str, float]:
             "cooling_shift_down_gw",
         )
         thermal = sum(float(np.abs(values[key]).sum()) for key in thermal_keys)
-        ev_relocation = float(values["ev_mobility_charge_deviation_gw"].sum())
+        relocation_key = (
+            "ev_mobility_v1g_relocated_gw"
+            if "ev_mobility_v1g_relocated_gw" in values
+            else "ev_mobility_charge_deviation_gw"
+        )
+        ev_relocation = float(values[relocation_key].sum())
         baseline_peak = float(values["baseline_total_load_gw"].sum(axis=0).max())
         effective_peak = float(values["effective_total_load_gw"].sum(axis=0).max())
     return {

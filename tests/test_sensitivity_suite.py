@@ -13,6 +13,7 @@ from cispo_model.config import load_model_config
 from scripts.run_cispo_sensitivity_suite import (
     PROJECT_ROOT,
     load_scenario_catalog,
+    select_scenarios,
 )
 
 
@@ -24,12 +25,20 @@ class SensitivitySuiteTests(unittest.TestCase):
         implemented = {row["scenario_id"]: row for row in catalog["implemented"]}
         self.assertEqual(
             [row["scenario_id"] for row in catalog["primary_analysis"]],
-            ["base", "flexible_load_comfort_v4_v1g"],
+            ["base", "flex_integrated_v5_central"],
+        )
+        self.assertEqual(
+            [
+                row["scenario_id"]
+                for row in select_scenarios(catalog, requested=None)
+            ],
+            ["base", "flex_integrated_v5_central"],
         )
         self.assertEqual(
             set(implemented),
             {
                 "base",
+                "flex_integrated_v5_central",
                 "flexible_load_comfort_v3_v2g_5pct",
                 "hydro_aggregate_flex_v1",
                 "flexible_load_comfort_v4_v1g",
@@ -63,9 +72,23 @@ class SensitivitySuiteTests(unittest.TestCase):
         self.assertFalse(base.raw["features"]["flexible_load"])
         self.assertEqual(base.raw["scenario"]["analysis_role"], "BASELINE")
         self.assertEqual(
-            implemented["flexible_load_comfort_v4_v1g"]["analysis_role"],
+            implemented["flex_integrated_v5_central"]["analysis_role"],
             "CENTRAL_COUNTERFACTUAL",
         )
+        integrated_v5 = load_model_config(
+            scenario_path=implemented["flex_integrated_v5_central"][
+                "config_path"
+            ]
+        )
+        self.assertEqual(
+            integrated_v5.raw["flexible_load"]["formulation"],
+            "integrated_service_constrained_v5",
+        )
+        self.assertEqual(
+            integrated_v5.raw["security"]["capacity_margin_load_basis"],
+            "firm_flexibility_derated_v1",
+        )
+        self.assertTrue(integrated_v5.raw["flexible_load"]["ev_v2g"]["enabled"])
         effective_peak = load_model_config(
             scenario_path=implemented[
                 "flexible_load_comfort_v4_v1g_effective_peak_sensitivity"
@@ -131,6 +154,11 @@ class SensitivitySuiteTests(unittest.TestCase):
     def test_dry_run_writes_isolated_suite_reports(self):
         with tempfile.TemporaryDirectory() as temporary:
             output_root = Path(temporary) / "suite"
+            environment = os.environ.copy()
+            environment.setdefault(
+                "CISPO_WAVE_ROOT",
+                str((PROJECT_ROOT.parent / "wave_energy").resolve()),
+            )
             completed = subprocess.run(
                 [
                     sys.executable,
@@ -149,6 +177,7 @@ class SensitivitySuiteTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 check=False,
+                env=environment,
             )
             self.assertEqual(completed.returncode, 0, completed.stderr)
             report = json.loads(
@@ -194,6 +223,7 @@ class SensitivitySuiteTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 check=False,
+                env=environment,
             )
             self.assertNotEqual(resume.returncode, 0)
             self.assertIn("mismatched fields: mode", resume.stderr)
