@@ -9,7 +9,9 @@ The builder is deterministic and writes a fail-closed SHA256 manifest.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
+import io
 import json
 from pathlib import Path
 
@@ -19,6 +21,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 YEARS = (2025, 2030, 2040, 2050, 2060)
+CSV_FLOAT_FORMAT = "%.17g"
+CSV_LINE_TERMINATOR = "\n"
 
 
 def sha256_file(path: Path) -> str:
@@ -27,6 +31,39 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def write_canonical_csv(
+    frame: pd.DataFrame,
+    path: Path,
+    *,
+    compressed: bool,
+) -> None:
+    """Write byte-stable UTF-8 CSV across supported Python/pandas platforms."""
+    csv_options = {
+        "index": False,
+        "float_format": CSV_FLOAT_FORMAT,
+        "lineterminator": CSV_LINE_TERMINATOR,
+    }
+    if not compressed:
+        with path.open("w", encoding="utf-8", newline="") as handle:
+            frame.to_csv(handle, **csv_options)
+        return
+
+    with path.open("wb") as raw_handle:
+        with gzip.GzipFile(
+            filename="",
+            mode="wb",
+            compresslevel=6,
+            fileobj=raw_handle,
+            mtime=0,
+        ) as gzip_handle:
+            with io.TextIOWrapper(
+                gzip_handle,
+                encoding="utf-8",
+                newline="",
+            ) as text_handle:
+                frame.to_csv(text_handle, **csv_options)
 
 
 def parameters(path: Path) -> dict[str, float]:
@@ -100,10 +137,10 @@ def main() -> None:
         )
         thermal[f"{component}_availability_fraction"] = 1.0
     thermal_output = output_root / "thermal_hourly_envelope_v5.csv.gz"
-    thermal.to_csv(
+    write_canonical_csv(
+        thermal,
         thermal_output,
-        index=False,
-        compression={"method": "gzip", "compresslevel": 6, "mtime": 0},
+        compressed=True,
     )
 
     parameter_rows = []
@@ -133,8 +170,10 @@ def main() -> None:
     thermal_parameter_output = (
         output_root / "thermal_parameters_by_province_v5.csv"
     )
-    pd.DataFrame(parameter_rows).to_csv(
-        thermal_parameter_output, index=False
+    write_canonical_csv(
+        pd.DataFrame(parameter_rows),
+        thermal_parameter_output,
+        compressed=False,
     )
 
     ev_fraction = p["ev.v1g_participation_fraction"]
@@ -166,10 +205,10 @@ def main() -> None:
     availability["available_discharge_power_gw"] = discharge_cap
     availability["fleet_energy_capacity_gwh"] = inventory_cap
     availability_output = output_root / "ev_availability_hourly_v5.csv.gz"
-    availability.to_csv(
+    write_canonical_csv(
+        availability,
         availability_output,
-        index=False,
-        compression={"method": "gzip", "compresslevel": 6, "mtime": 0},
+        compressed=True,
     )
 
     mobility = ev[key].copy()
@@ -178,10 +217,10 @@ def main() -> None:
     )
     mobility["minimum_departure_energy_gwh"] = 0.0
     mobility_output = output_root / "ev_mobility_hourly_v5.csv.gz"
-    mobility.to_csv(
+    write_canonical_csv(
+        mobility,
         mobility_output,
-        index=False,
-        compression={"method": "gzip", "compresslevel": 6, "mtime": 0},
+        compressed=True,
     )
 
     cost_rows = []
@@ -226,7 +265,11 @@ def main() -> None:
                     }
                 )
     cost_output = output_root / "flex_enablement_cost_v5.csv"
-    pd.DataFrame(cost_rows).to_csv(cost_output, index=False)
+    write_canonical_csv(
+        pd.DataFrame(cost_rows),
+        cost_output,
+        compressed=False,
+    )
 
     generated = (
         thermal_output,
@@ -252,7 +295,15 @@ def main() -> None:
     )
     manifest = {
         "contract_version": "flexible_load_v5",
-        "manifest_generation": "deterministic_content_v1",
+        "manifest_generation": "deterministic_content_v2_cross_environment_csv",
+        "serialization": {
+            "encoding": "utf-8",
+            "line_terminator": "LF",
+            "float_format": CSV_FLOAT_FORMAT,
+            "gzip_compresslevel": 6,
+            "gzip_mtime": 0,
+            "gzip_filename": "",
+        },
         "builder": "scripts/build_flexible_load_v5_inputs.py",
         "scientific_boundary": (
             "Integrated aggregate thermal, V1G and V2G service inventory. "
@@ -333,9 +384,10 @@ def main() -> None:
     if "HARD_FAIL" in manifest["qc"].values():
         raise ValueError(f"V5 input generation QC failed: {manifest['qc']}")
     manifest_output = output_root / "flexible_load_v5.manifest.json"
-    manifest_output.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+    manifest_output.write_bytes(
+        (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode(
+            "utf-8"
+        )
     )
     print(
         json.dumps(

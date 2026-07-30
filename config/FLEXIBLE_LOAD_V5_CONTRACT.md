@@ -144,6 +144,12 @@ Parameter values and ranges are centralized in:
 
 `scripts/build_flexible_load_v5_inputs.py` deterministically generates the
 hourly inputs and `flexible_load_v5.manifest.json`.
+
+The generated CSV contract is byte-stable across the supported Windows and
+Linux environments: UTF-8 encoding, LF line endings, `%.17g` floating-point
+formatting, and gzip level 6 with an empty filename and `mtime=0`. This avoids
+changing release hashes solely because the builder is executed with a
+different pandas, NumPy, Python, or host operating-system version.
 `scripts/validate_flexible_load_v5_inputs.py` resolves every cited source ID,
 recomputes independent/China-specific/peer-reviewed evidence counts, validates
 all four planning years, and fails closed on a manifest or parameter-order

@@ -36,27 +36,27 @@
     },
     {
       "path": "flexibility/thermal_hourly_envelope_v5.csv.gz",
-      "sha256": "7919cd58e943e15f26cfd3f683e48557cc7fa8ef8cff60bb15323aa97e1c5fbb"
+      "sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd"
     },
     {
       "path": "flexibility/thermal_parameters_by_province_v5.csv",
-      "sha256": "1e0660cf67c19fbdba95123ad412d9a81f7b6e4548c92e8a95c14abf0f398ee3"
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
     },
     {
       "path": "flexibility/ev_availability_hourly_v5.csv.gz",
-      "sha256": "8668e7653278b45895432d320de6d4b2ddb550d5f05514089a8f669418621bd8"
+      "sha256": "ee139e81b044de35f101d20fe54b6ccac5b02e71b4c3293ac2267b8ba30c3adf"
     },
     {
       "path": "flexibility/ev_mobility_hourly_v5.csv.gz",
-      "sha256": "cda18346a6d24d856216e7538ca9ea391ddff7152fff4426dc33bb9e564249ca"
+      "sha256": "26bc3ed75aca8447c06a2d87c79de307ecb750438aec220560c6dcc2a9021472"
     },
     {
       "path": "flexibility/flex_enablement_cost_v5.csv",
-      "sha256": "0e27e20c77a9304e4d404476a0d37893a4cc56a3358d5aa974b4cb8022971ace"
+      "sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a"
     },
     {
       "path": "flexibility/flexible_load_v5.manifest.json",
-      "sha256": "350fce0051d5e79494f2f71e2c28a620385f868de7596baac6dfd3e39260a108"
+      "sha256": "a324430713e0eb3a1671c9b9ba6c127c34c5e0d7c2e21f090cbcd9394f061831"
     }
   ],
   "gate_policy": {
