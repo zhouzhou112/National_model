@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 21:29+08:00 test-only 对冲流 warning 已实现，待部署
+
+- 实现提交 `9b6e72a` 保持模型与 `1e-6 GW` 检测不变，只把同时满足七项上限的截断时域微小 AC 对冲流标为 `TEST_ONLY_DE_MINIMIS_WARNING`；任一上限超限仍 hard fail，8760 h 始终 strict zero。原 2050 事件对应额外损耗仅 `0.011489 GWh`、占系统负荷 `4.0100e-8`，在新合同内，但不会被写成“严格单向”。
+- 本地 `146/146 PASS`，V5 input/release audits PASS。本机约 `7.48 GiB` available，低于 8 GiB solver gate，故没有强行本地求解。
+- 服务器尚未部署，仍为 clean `af390fa`；21:28 实时无 CISPO/Gurobi/sequence，约 `114 GiB` available、swap 无进出、PSI 0，ParaCloud 空。代码/文档双端推送后才允许 fast-forward。
+- 部署后顺序固定为 server regression/audits → 新 1 h/24 h Base/V5 → 新四年 168 h Base → 新四年 168 h V5。全部接受后启动一个四年 `1008 h` V5 串行门禁；不得跳过短门禁或复用失败 state。仍禁止 8760 h、付费云、basis/MGA、第二求解和 `Crossover=3`。
+
 ## 2026-07-30 19:38+08:00 168 h Base 在 2050 网络方向 hard QC 停止
 
 - 当前无 CISPO/Gurobi/planning-sequence 进程。固定服务器保持 clean `af390fad22dc4e3ec4636edadfb56295e4907234`，约 `114 GiB` available RAM，swap `780 MiB/2.0 GiB` 且 `vmstat si/so=0`、memory PSI 0；ParaCloud `squeue -u a8s001819` 为空。本地/origin/GitHub 文档 tip 均为 `134af0f`。

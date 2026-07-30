@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 21:29+08:00 有界方向性 warning 的部署与 1008 h V5 授权
+
+实现提交为 `9b6e72a456b0dc8f0123f90b07195f94ca902c9a`。该实现不调大 `1e-6 GW` 检测阈值、不改变 LP 或输电成本；仅允许截断工程根在七项配置预算全部满足时以 `TEST_ONLY_DE_MINIMIS_WARNING` 通过。QC 必须同时保留 `strict_unidirectional_interprovincial_flow=false`、`diagnostic_bidirectional_flow_warning_applied=true`、原始观测值、按时域缩放的限额和 `acceptance_scope=TEST_ONLY_TRUNCATED_HORIZON`。任何全年根都不得应用 warning。
+
+服务器执行顺序：
+
+1. 重新核验本地/origin/GitHub tip、服务器 clean/idle、RAM/swap/vmstat/PSI、目标根不存在和 ParaCloud 空队列；只有三端提交一致且无 solver 时 fast-forward。
+2. 在现有 V5 数据根运行完整 `146` 项回归、release/readiness/V5/hydro audits；任何失败即停止。
+3. 使用全新根依次运行 2030/1 h、24 h Base/V5，均要求 `OPTIMAL + solution_qc=PASS + 57/57 + current input + valid result manifest`；若出现 warning，必须逐项打印七项 observed/limit，不能只报告 PASS。
+4. 从 2030 重新运行四年 168 h Base，不能复用 `af390fa` 失败根的 2030/2040 state；随后以新根运行四年 168 h V5。每年必须闭合 state、碳/CCS/BECCS、冷热、V1G/V2G、firm credit、水电、储能、网络、备用、惯量和成本。
+5. 以上全部通过后，作者授权启动唯一串行四年 `1008 h` `flex_integrated_v5_central` sequence。它覆盖连续 42 天，强于 744 h，但仍是 `TEST_ONLY_TRUNCATED_HORIZON`；solver 保持 `barrier_16_auto_order_v2`、cold、no-basis。任一年 timeout、SoftMemLimit、QC、manifest 或 state 失败立即停止，不自动更换 profile 或补跑。
+
+禁止项不变：固定服务器 8760 h、付费云、并发第二求解、basis/MGA 和 `Crossover=3`。
+
 ## 2026-07-30 19:38+08:00 168 h Base HARD_FAIL 现场与恢复边界
 
 失败根为 `/data/zz2/National_model/outputs/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1`，控制根为 `/data/zz2/National_model/run_control/planning_sequence_168h_v0730_flex_v5_base_af390fa_server_v1`。必须原样保留。2030/2040 已 accepted；2050 Gurobi `OPTIMAL` 但 production QC 因 3 个 material AC bidirectional edge-hours hard fail，故 2050 没有 result manifest/state，2060 未启动。不得调用 `--resume`，不得手工补 manifest，不得跳年。
