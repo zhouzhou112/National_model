@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-30 11:26+08:00 诊断时域年度流量缩放部署合同
+
+候选实现为 `d3b6f1485d5ef88762e9d8d0ac8ca87db15dc244`。短时域统一使用 `f=optimization_hours/8760`：净碳 RHS、DAC 捕集 throughput、生物质燃料和 CO2 sink 注入能力乘 `f`；DAC 小时负荷由窗口捕集量除以 `f` 后的年化速率计算。annualized capacity/fixed cost 不缩放，故短门禁仍是 `TEST_ONLY_TRUNCATED_HORIZON`；8760 h 的 `f=1`。
+
+本地已通过 1 h/24 h 中央 V4 V1G 门禁，均为 `OPTIMAL + PASS + 54/54 + current input + valid result manifest`，且缩放后的 2030 碳约束 binding。部署前不得复用或覆盖 2026-07-29 的旧 744 h 根；必须使用全新输出/控制根，并先完成：
+
+1. 核验本地、origin、GitHub 精确 HEAD；
+2. 核验服务器 checkout/dirty state、唯一 CISPO/Gurobi 进程、RAM/swap/vmstat/PSI 和 ParaCloud 队列；
+3. fast-forward 后在冻结权威数据根运行 release/readiness、完整回归及全新 1 h/24 h；
+4. 明确作者授权后，才可运行新的串行四年 744 h，无 basis、无并发第二求解。
+
+`scenario_catalog v4` 的主分析仅为 `base` 和 `flexible_load_comfort_v4_v1g`。effective-peak、V2G、水电聚合调节与 PHS low/central/high 必须分别以独立输出根调用；V3 仅用于 legacy validation，PHS template 不可运行。不得启动 8760 h、付费云、basis/MGA 或 `Crossover=3`。
+
 ## 2026-07-30 09:18+08:00 四年 744 h 终态与停止条件
 
 活动 sequence 已正常结束，`sequence_report.json=PASS`，四年全部 `ACCEPTED`。每年均满足 `OPTIMAL + PASS + 53/53 + current input + valid result manifest`，顶层 wrapper exit 0。当前服务器空闲；本 744 h 工程测试的监控任务应停止。

@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-30 11:26+08:00 年度流量缩放已本地闭合，服务器未部署
+
+- 新模型提交 `d3b6f1485d5ef88762e9d8d0ac8ca87db15dc244` 将诊断时域碳上限、DAC throughput、生物质年度燃料和 CO2 年注入能力统一按 `optimization_hours/8760` 缩放；DAC 功率按年化捕集速率计算。8760 h 的比例为 1，不改变全年方程；annualized capacity/fixed cost 不缩放。
+- 本地 1 h/24 h 中央 V4 V1G 根 `outputs/2030_{1h,24h}_v0730_annual_flow_scaled_v4_v1g_v1` 均 `OPTIMAL + PASS + 54/54 + current input + valid result manifest`。2030 窗口碳上限分别为 `0.456621/10.958904 MtCO2`，均 binding，DAC capacity violation 为 0；24 h solver runtime `270.653 s`。
+- 完整本地回归 `138/139 PASS`；唯一失败是已知的本地 ignored technoeconomic manifest hash 与冻结服务器数据包不一致，本次未改动外置数据或 release contract。
+- `scenario_catalog v4` 显式把主分析限制为 `base` 与 `flexible_load_comfort_v4_v1g`。其他 runnable overlay 仍是独立 sensitivity/legacy validation，并未进入本次 1 h/24 h 求解。
+- 固定服务器与 ParaCloud 本次未操作。服务器上的旧 744 h 根属于旧的未缩放实现，必须保留原身份；不得原地覆盖或重标。若作者授权新 744 h，须先实时核验 checkout、进程、资源、目标根和队列，再部署新提交并运行全新串行根。
+
 ## 2026-07-30 09:18+08:00 四年 744 h sequence 已 PASS，服务器空闲
 
 - `/data/zz2/National_model/outputs/planning_sequence_744h_v0729_identity_hydro_v4_v1g_v1` 于 `09:12:33+08:00` 完成，sequence `PASS`；2030/2040/2050/2060 全部 `ACCEPTED`。
