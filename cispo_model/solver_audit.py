@@ -319,6 +319,13 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "solver_method": solver_parameters.get("method"),
         "solver_crossover": solver_parameters.get("crossover"),
         "solver_crossover_basis": solver_parameters.get("crossover_basis"),
+        "solver_solution_target": solver_parameters.get("solution_target"),
+        "solution_contract_mode": (solve.get("solution_contract") or {}).get(
+            "mode"
+        ),
+        "solution_contract_acceptance_status": (
+            solve.get("solution_contract") or {}
+        ).get("acceptance_status"),
         "solver_aggregate": solver_parameters.get("aggregate"),
         "solver_agg_fill": solver_parameters.get("agg_fill"),
         "solver_pre_sparsify": solver_parameters.get("pre_sparsify"),

@@ -466,6 +466,14 @@ class ModelFoundationTests(unittest.TestCase):
         self.assertEqual(
             warning["full_year_policy"], "STRICT_ZERO_ABOVE_1E-6_GW"
         )
+        self.assertEqual(
+            float(
+                self.config.raw["load_center_network"][
+                    "bidirectional_flow_tolerance_gwh"
+                ]
+            ),
+            1e-4,
+        )
         technologies = set(
             self.data.lines.preset_technology.astype(str).str.upper()
         )

@@ -338,8 +338,10 @@ def assess_flexible_load_solver_compatibility(
     automatic row aggregation can eliminate them in the inverse direction and
     create very large coefficients. V5 removes zero-control states exactly;
     an uncompressed formulation must instead use ``Aggregate=0``. A
-    conservative crossover-basis construction remains required for the
-    diagnostic candidate until matched gates establish production evidence.
+    conservative crossover-basis construction remains one accepted diagnostic
+    route.  A second route may deliberately request an optimal primal-dual
+    interior solution without a basis; it is accepted only with Method=2,
+    Crossover=0, SolutionTarget=1 and a tighter barrier convergence target.
     """
     component_risks = {
         component: structural_audit.get(
@@ -351,6 +353,11 @@ def assess_flexible_load_solver_compatibility(
     aggregate = int(numerics.get("aggregate", 1))
     crossover = int(numerics.get("crossover", -1))
     crossover_basis = int(numerics.get("crossover_basis", -1))
+    solution_target = int(numerics.get("solution_target", -1))
+    method = int(numerics.get("method", -1))
+    barrier_tolerance = float(
+        numerics.get("barrier_convergence_tolerance", 1e-8)
+    )
     v5_formulation = (
         structural_audit.get("formulation")
         == "integrated_service_constrained_v5"
@@ -364,10 +371,22 @@ def assess_flexible_load_solver_compatibility(
         for risk in component_risks.values()
     )
     stable_crossover_required = bool(long_chain_numerical_care_required)
+    stable_basic_route = bool(
+        crossover == 1 and crossover_basis == 1
+    )
+    strict_nonbasic_primal_dual_route = bool(
+        method == 2
+        and crossover == 0
+        and solution_target == 1
+        and barrier_tolerance <= 1e-9
+    )
     stable_long_horizon_settings = (
         (not aggregate_zero_required or aggregate == 0)
-        and (not stable_crossover_required or crossover == 1)
-        and (not stable_crossover_required or crossover_basis == 1)
+        and (
+            not stable_crossover_required
+            or stable_basic_route
+            or strict_nonbasic_primal_dual_route
+        )
     )
     passed = (
         not long_chain_numerical_care_required
@@ -386,9 +405,9 @@ def assess_flexible_load_solver_compatibility(
             )
         else:
             reason = (
-                "Zero-control thermal states were eliminated exactly; "
-                "Crossover=1 and CrossoverBasis=1 retain the stable-basis "
-                "long-horizon contract without disabling aggregation."
+                "Zero-control thermal states were eliminated exactly; the "
+                "selected solver follows either the stable-basis route or "
+                "the strict optimal primal-dual nonbasic route."
             )
     else:
         if aggregate_zero_required:
@@ -400,8 +419,9 @@ def assess_flexible_load_solver_compatibility(
         else:
             reason = (
                 "Refusing optimize(): structurally compressed V5 long-chain "
-                "states require Crossover=1 and CrossoverBasis=1 until "
-                "matched long-horizon gates establish production evidence."
+                "states require either Crossover=1/CrossoverBasis=1 or "
+                "Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 "
+                "until matched long-horizon gates establish evidence."
             )
     return {
         "schema_version": "cispo_solver_numerical_compatibility_v1",
@@ -417,10 +437,29 @@ def assess_flexible_load_solver_compatibility(
         "stable_crossover_required": stable_crossover_required,
         "crossover_parameter": crossover,
         "crossover_basis_parameter": crossover_basis,
+        "solution_target_parameter": solution_target,
+        "barrier_convergence_tolerance": barrier_tolerance,
+        "stable_basic_route": stable_basic_route,
+        "strict_nonbasic_primal_dual_route": (
+            strict_nonbasic_primal_dual_route
+        ),
         "required_long_horizon_settings": {
             "aggregate": 0 if aggregate_zero_required else "automatic_allowed",
-            "crossover": 1,
-            "crossover_basis": 1,
+            "accepted_solver_routes": [
+                {
+                    "method": 2,
+                    "crossover": 1,
+                    "crossover_basis": 1,
+                    "solution_form": "basic",
+                },
+                {
+                    "method": 2,
+                    "crossover": 0,
+                    "solution_target": 1,
+                    "maximum_barrier_convergence_tolerance": 1e-9,
+                    "solution_form": "primal_dual_nonbasic",
+                },
+            ],
         },
         "inverse_decay_amplification_log10_threshold": (
             INVERSE_DECAY_LOG10_RISK_THRESHOLD

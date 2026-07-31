@@ -1,0 +1,18 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_nonbasic_primal_dual_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Diagnostic 16-thread Barrier profile that requires an optimal primal-dual interior solution but deliberately skips basic-solution crossover. It is eligible only for strict no-basis scientific/QC outputs and cannot be used for basis reuse or MGA.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-10,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

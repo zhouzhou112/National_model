@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import gurobipy as gp
+import numpy as np
 from gurobipy import GRB
 
 from .config import ModelConfig
@@ -182,6 +183,18 @@ class GracefulSolverTermination:
 
 def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> None:
     numerics = config.raw["numerics"]
+    minimum_major = int(
+        config.raw.get("solver_profile", {}).get(
+            "minimum_gurobi_major_version"
+        )
+        or 0
+    )
+    installed_major = int(gp.gurobi.version()[0])
+    if installed_major < minimum_major:
+        raise RuntimeError(
+            f"Solver profile requires Gurobi >= {minimum_major}; "
+            f"installed major version is {installed_major}"
+        )
     log_path.parent.mkdir(parents=True, exist_ok=True)
     model.Params.LogFile = str(log_path)
     model.Params.FeasibilityTol = float(numerics["feasibility_tolerance"])
@@ -222,6 +235,7 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         "pre_dual": ("PreDual", int),
         "pre_passes": ("PrePasses", int),
         "pre_sparsify": ("PreSparsify", int),
+        "solution_target": ("SolutionTarget", int),
     }
     for config_key, (parameter_name, converter) in optional_parameters.items():
         if config_key in numerics:
@@ -293,6 +307,21 @@ def solve_and_report(
         GRB.INTERRUPTED: "INTERRUPTED",
         GRB.SUBOPTIMAL: "SUBOPTIMAL",
     }.get(model.Status, str(model.Status))
+    crossover = int(model.Params.Crossover)
+    solution_target = int(model.Params.SolutionTarget)
+    nonbasic_primal_dual_contract = bool(
+        not model.IsMIP
+        and int(model.Params.Method) == 2
+        and crossover == 0
+        and solution_target == 1
+    )
+    barrier_status_code: int | None = None
+    try:
+        barrier_status_code = int(model.BarStatus)
+    except (AttributeError, gp.GurobiError):
+        # BarStatus was introduced in Gurobi 13.  Model.Status plus the
+        # strict quality gate below remains the portable acceptance evidence.
+        barrier_status_code = None
     report = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": status_name,
@@ -326,6 +355,7 @@ def solve_and_report(
             "threads": int(model.Params.Threads),
             "available_logical_cpus": int(os.cpu_count() or 1),
             "crossover": int(model.Params.Crossover),
+            "solution_target": solution_target,
             "numeric_focus": int(model.Params.NumericFocus),
             "scale_flag": int(model.Params.ScaleFlag),
             "feasibility_tolerance": float(model.Params.FeasibilityTol),
@@ -352,6 +382,18 @@ def solve_and_report(
             "barrier": int(model.BarIterCount),
             "pdhg": int(getattr(model, "PDHGIterCount", 0)),
         },
+        "solution_contract": {
+            "contract_version": "cispo_lp_solution_contract_v1",
+            "mode": (
+                "OPTIMAL_PRIMAL_DUAL_NONBASIC"
+                if nonbasic_primal_dual_contract
+                else "OPTIMAL_BASIC_OR_DEFAULT"
+            ),
+            "basis_required": not nonbasic_primal_dual_contract,
+            "barrier_status_code": barrier_status_code,
+            "strict_quality_pass": None,
+            "acceptance_status": "PENDING_OR_NO_SOLUTION",
+        },
     }
     if model.SolCount:
         kappa: float | None = None
@@ -362,13 +404,64 @@ def solve_and_report(
                     kappa = candidate
             except (AttributeError, gp.GurobiError):
                 kappa = None
-        report["solution_quality"] = {
+        solution_quality = {
             "maximum_constraint_violation": float(model.ConstrVio),
             "maximum_bound_violation": float(model.BoundVio),
             "maximum_dual_violation": float(model.DualVio),
+            "maximum_complementarity_violation": float(model.ComplVio),
+            "maximum_violation": float(model.MaxVio),
             "kappa": kappa,
             "kappa_exact_computed": False,
         }
+        report["solution_quality"] = solution_quality
+        if nonbasic_primal_dual_contract:
+            primal_limit = max(
+                10.0 * float(model.Params.FeasibilityTol),
+                1e-8,
+            )
+            dual_limit = max(
+                10.0 * float(model.Params.OptimalityTol),
+                1e-8,
+            )
+            strict_quality_pass = bool(
+                float(model.ConstrVio) <= primal_limit
+                and float(model.BoundVio) <= primal_limit
+                and float(model.DualVio) <= dual_limit
+                and status_name == "OPTIMAL"
+            )
+            barrier_primal_difference: float | None = None
+            try:
+                solution = np.asarray(
+                    model.getAttr("X", model.getVars()),
+                    dtype=float,
+                )
+                barrier_solution = np.asarray(
+                    model.getAttr("BarX", model.getVars()),
+                    dtype=float,
+                )
+                barrier_primal_difference = float(
+                    np.max(np.abs(solution - barrier_solution))
+                ) if len(solution) else 0.0
+            except (AttributeError, gp.GurobiError, ValueError):
+                barrier_primal_difference = None
+            report["solution_contract"].update(
+                strict_quality_pass=strict_quality_pass,
+                acceptance_status=(
+                    "PASS" if strict_quality_pass else "HARD_FAIL"
+                ),
+                maximum_primal_quality_limit=primal_limit,
+                maximum_dual_quality_limit=dual_limit,
+                maximum_x_barx_difference=barrier_primal_difference,
+                dual_attribute="BarPi",
+            )
+        else:
+            report["solution_contract"].update(
+                strict_quality_pass=(status_name == "OPTIMAL"),
+                acceptance_status=(
+                    "PASS" if status_name == "OPTIMAL" else "HARD_FAIL"
+                ),
+                dual_attribute="Pi",
+            )
     if model.Status == GRB.INFEASIBLE and compute_iis:
         model.computeIIS()
         model.write(str(output_dir / "iis.ilp"))

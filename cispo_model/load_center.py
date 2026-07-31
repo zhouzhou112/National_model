@@ -412,6 +412,11 @@ def attach_annual_load_center_network(
         load_center_index=center_index,
         intra_load_center_edge_ids=edges.intra_edge_id.astype(str).tolist(),
         intra_load_center_design_hours=design_hours,
+        intra_load_center_bidirectional_flow_tolerance_gwh=float(
+            config.raw["load_center_network"][
+                "bidirectional_flow_tolerance_gwh"
+            ]
+        ),
     )
     regularization = float(
         config.raw["load_center_network"]["flow_regularization_yuan_per_mwh"]

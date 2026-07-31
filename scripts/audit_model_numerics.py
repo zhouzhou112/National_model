@@ -300,6 +300,12 @@ def main() -> None:
     parser.add_argument("--solver-config")
     parser.add_argument("--planning-year", type=int)
     parser.add_argument("--hours", type=int, default=24)
+    parser.add_argument(
+        "--diagnostic-start-hour",
+        type=int,
+        default=0,
+        help="Zero-based first model hour of the contiguous audit window.",
+    )
     parser.add_argument("--output-dir", default="outputs/model_numerical_audit")
     parser.add_argument("--skip-full-max-cf", action="store_true")
     parser.add_argument(
@@ -344,6 +350,12 @@ def main() -> None:
     args = parser.parse_args()
     if not 1 <= args.hours <= 8760:
         raise SystemExit("--hours must be in [1, 8760]")
+    if args.diagnostic_start_hour < 0:
+        raise SystemExit("--diagnostic-start-hour must be nonnegative")
+    if args.diagnostic_start_hour + args.hours > 8760:
+        raise SystemExit(
+            "--diagnostic-start-hour + --hours must not exceed 8760"
+        )
     if args.presolve_agg_fill is not None and args.presolve_agg_fill < 0:
         raise SystemExit("--presolve-agg-fill must be non-negative")
     if args.max_estimated_nonzeros < 1:
@@ -389,6 +401,7 @@ def main() -> None:
         data,
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=args.hours,
+        optimization_start_hour=args.diagnostic_start_hour,
     )
     report, family_frame = audit_model(artifacts.model)
     output_dir = Path(args.output_dir)
@@ -482,6 +495,10 @@ def main() -> None:
         ),
         planning_year=int(config.planning_year),
         audit_hours=args.hours,
+        audit_start_hour=args.diagnostic_start_hour,
+        audit_stop_hour_exclusive=(
+            args.diagnostic_start_hour + args.hours
+        ),
         scale_estimate=scale_estimate.__dict__,
         max_estimated_nonzeros=int(args.max_estimated_nonzeros),
         oversized_matrix_audit_explicitly_allowed=bool(

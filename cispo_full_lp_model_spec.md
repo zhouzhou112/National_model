@@ -743,6 +743,8 @@ F^{\to}_e+F^{\leftarrow}_e
 
 成本采用 EES Table S20 和 Figure S44 的 `AC_500kV` 参数，而非单独的550 kV线路类型：原始 2022 年价为变电站159 yuan/kW、架空线2640 thousand yuan/km；生产输入分别换算为159.636636 yuan/kW和2650.57056 thousand 2025 yuan/km。线路参考传输能力随距离变化。中心间直线距离是工程走廊代理。为保持省级小时平衡与年度中心平衡严格闭合，第一版省内损耗设为0；非零损耗必须先作为附加用电反馈到小时平衡。
 
+省内年度流量采用正、反两个非负变量。内点解可能在已由正流量破简并成本压制的方向上保留极小的互逆数值尘埃；QC 因此显式记录每条边的 opposing minimum flow、全国总量和阈值。当前阈值为 `0.0001 GWh`（每条边 0.1 MWh），仅用于年度负荷中心代理；任一边超过阈值仍为硬失败。该阈值不改变 LP、成本、容量或省际逐小时方向性门禁，也不得用于隐藏具有系统意义的循环流。
+
 ---
 
 ## 5.5 火电与核电 RUC 约束
@@ -1235,7 +1237,7 @@ S_{g,t_i}=\rho_g^{\Delta_i}S_{g,t_{i-1}}
 
 时，才省略该单元的 \(L^{eff}_{g,t}\ge0\) 行；否则保留显式约束。上述删减不改变可行域、目标函数、输出单位或 QC 重建。
 
-未压缩的周期冷热状态在长时间零控制区间内会被自动 presolve 逆向消去并累积大系数。runner 因此在建模前和建模后分别审计原链风险、稀疏状态表示和 solver contract，二者不一致即拒绝 `optimize()`。状态精确消元后允许继续使用自动 aggregation；当前诊断候选 `barrier_16_auto_order_stable_basis_v3` 仍显式采用 `Crossover=1` 和较稳健的 `CrossoverBasis=1`。`Aggregate=0` 保留为未来矩阵审计再次发现系数放大时的保守回退，而不是默认生产设置。候选 profile 只有通过匹配 1 h、24 h、168 h 和授权长时域门禁后才能升级，不能仅凭 presolve 结果称为 production。
+未压缩的周期冷热状态在长时间零控制区间内会被自动 presolve 逆向消去并累积大系数。runner 因此在建模前和建模后分别审计原链风险、稀疏状态表示和 solver contract，二者不一致即拒绝 `optimize()`。状态精确消元后允许继续使用自动 aggregation；已验证的 basic 路线 `barrier_16_auto_order_stable_basis_v3` 显式采用 `Crossover=1` 和较稳健的 `CrossoverBasis=1`。另设 Gurobi 13+ 专用诊断候选 `barrier_16_nonbasic_primal_dual_v1`：`Method=2`、`Crossover=0`、`SolutionTarget=1`、`BarConvTol=1e-10`，只接受同时满足 `OPTIMAL` 与严格 primal/dual violation 门禁的非基内点解，影子价格读取 `BarPi`。该路线不生成/复用 basis，禁止 scientific `.bas`、MGA 和 basis warm start；任何非 `OPTIMAL` 或质量门禁失败的解都不得进入科学输出、dashboard、planning state 或 result manifest。Gurobi 12 的同参数路径存在已知 suboptimal unscaling 风险，profile 因而显式拒绝 13 以下版本。`Aggregate=0` 保留为未来矩阵审计再次发现系数放大时的保守回退，而不是默认生产设置。任一候选只有通过匹配 1 h、24 h、168 h 和授权长时域门禁后才能升级，不能仅凭 Barrier 日志或 presolve 结果称为 production。
 
 ### 5.8.0c 截断时域的价值核算与当前验证边界
 
@@ -1988,7 +1990,7 @@ evidence 是车群 SOC transition、departure SOC、SOC 上界、充放电功率
 
 成本强度的分母统一采用柔性调度前的不可变基准用电量，以保证 Base 与 V5 可比；因 \(1\ \mathrm{million\ CNY}/\mathrm{GWh}=1\ \mathrm{CNY}/\mathrm{kWh}\)，无需额外换算因子。只有 `SCIENTIFIC_PRODUCTION` 的 8760 h 结果可以把年化规划成本与全年运行成本相加并报告“总系统成本强度”。1 h/24 h/168 h/744 h 的 `TEST_ONLY_TRUNCATED_HORIZON` 必须分别报告“年化规划成本/全年基准负荷”和“所选时域运行成本/同期基准负荷”，不得相加、不得标记为 LCOE，也不得当作年度科学结果。`annual_operation` 仅为 composite roll-up；详细成本求和时必须排除该行，并硬校验 scope-aware 明细能够重构目标值。
 
-744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status 或 QC 不通过，不得自动放松约束或写出下一期 planning state。
+744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status、solution contract 或 QC 不通过，不得导出看似完整的科学结果、封存 result manifest、自动放松约束或写出下一期 planning state。
 
 ### 14.7 原始 LP 结构审计合同
 

@@ -107,6 +107,18 @@ class FlexibleLoadContractTests(unittest.TestCase):
             passed["required_long_horizon_settings"]["aggregate"],
             "automatic_allowed",
         )
+        nonbasic = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {
+                "method": 2,
+                "crossover": 0,
+                "solution_target": 1,
+                "barrier_convergence_tolerance": 1e-10,
+            },
+        )
+        self.assertEqual(nonbasic["status"], "PASS")
+        self.assertTrue(nonbasic["strict_nonbasic_primal_dual_route"])
+        self.assertFalse(nonbasic["stable_basic_route"])
         legacy = assess_flexible_load_solver_compatibility(
             {
                 "formulation": "service_constrained_v4",
@@ -183,6 +195,27 @@ class FlexibleLoadContractTests(unittest.TestCase):
         )
         self.assertEqual(passed["status"], "PASS")
         self.assertFalse(passed["aggregate_zero_required"])
+
+        nonbasic = SimpleNamespace(
+            raw={
+                **common_raw,
+                "numerics": {
+                    "method": 2,
+                    "crossover": 0,
+                    "solution_target": 1,
+                    "barrier_convergence_tolerance": 1e-10,
+                },
+            },
+        )
+        nonbasic_passed = prebuild_flexible_load_solver_compatibility(
+            nonbasic,
+            data,
+            hours=5,
+        )
+        self.assertEqual(nonbasic_passed["status"], "PASS")
+        self.assertTrue(
+            nonbasic_passed["strict_nonbasic_primal_dual_route"]
+        )
 
     def test_sparse_hourly_control_omits_exact_zero_bound_variables(self):
         model = gp.Model("sparse_hourly_control")

@@ -86,6 +86,7 @@ Solved in 73826 iterations and 39.39 seconds
                             "method": 2,
                             "crossover": 3,
                             "crossover_basis": 0,
+                            "solution_target": 1,
                             "aggregate": 0,
                             "agg_fill": -1,
                             "pre_sparsify": 2,
@@ -103,6 +104,10 @@ Solved in 73826 iterations and 39.39 seconds
                             "maximum_dual_violation": 3e-8,
                             "kappa": 42.0,
                             "kappa_exact_computed": False,
+                        },
+                        "solution_contract": {
+                            "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+                            "acceptance_status": "PASS",
                         },
                         "model_statistics": {
                             "variables": 3,
@@ -190,6 +195,15 @@ Solved in 73826 iterations and 39.39 seconds
         self.assertEqual(collected["largest_raw_variable_family_nonzeros"], 10)
         self.assertEqual(collected["solver_crossover"], 3)
         self.assertEqual(collected["solver_crossover_basis"], 0)
+        self.assertEqual(collected["solver_solution_target"], 1)
+        self.assertEqual(
+            collected["solution_contract_mode"],
+            "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+        )
+        self.assertEqual(
+            collected["solution_contract_acceptance_status"],
+            "PASS",
+        )
         self.assertEqual(collected["solver_aggregate"], 0)
         self.assertEqual(collected["solver_pre_sparsify"], 2)
         self.assertEqual(collected["solver_bar_homogeneous"], 1)

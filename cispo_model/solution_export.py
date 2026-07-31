@@ -1770,25 +1770,52 @@ def export_operational_solution(
         encoding="utf-8-sig",
     )
 
+    use_barrier_duals = bool(
+        int(artifacts.model.Params.Method) == 2
+        and int(artifacts.model.Params.Crossover) == 0
+        and int(artifacts.model.Params.SolutionTarget) == 1
+    )
+    dual_attribute = "BarPi" if use_barrier_duals else "Pi"
     dual_status: dict[str, Any] = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "available": False,
         "model_class": "continuous_linear_program",
+        "dual_attribute": dual_attribute,
+        "solution_form": (
+            "optimal_primal_dual_nonbasic"
+            if use_barrier_duals
+            else "basic_or_default"
+        ),
         "note": (
-            "Gurobi Pi is the derivative of the objective with respect to the "
-            "constraint RHS. Equality power-balance Pi is reported as an energy "
-            "price; inequality scarcity values use the documented tightening sign."
+            f"Gurobi {dual_attribute} is the derivative of the objective with "
+            "respect to the constraint RHS for the accepted solution form. "
+            "Equality power-balance duals are reported as energy prices; "
+            "inequality scarcity values use the documented tightening sign."
         ),
     }
     try:
         handles = artifacts.index["constraint_handles"]
+
+        def dual_value(handle: Any) -> Any:
+            return getattr(handle, dual_attribute)
+
         power_balance_pi = np.vstack(
-            [np.asarray(handle.Pi, dtype=float) for handle in handles["strict_power_balance"]]
+            [
+                np.asarray(dual_value(handle), dtype=float)
+                for handle in handles["strict_power_balance"]
+            ]
         )
-        up_reserve_pi = np.asarray(handles["up_reserve"].Pi, dtype=float)
-        down_reserve_pi = np.asarray(handles["down_reserve"].Pi, dtype=float)
+        up_reserve_pi = np.asarray(
+            dual_value(handles["up_reserve"]), dtype=float
+        )
+        down_reserve_pi = np.asarray(
+            dual_value(handles["down_reserve"]), dtype=float
+        )
         inertia_pi = np.vstack(
-            [np.asarray(handle.Pi, dtype=float) for handle in handles["inertia"]]
+            [
+                np.asarray(dual_value(handle), dtype=float)
+                for handle in handles["inertia"]
+            ]
         )
         if any(
             value.shape != (p_count, hours)
@@ -1855,13 +1882,16 @@ def export_operational_solution(
             "annual_net_carbon_limit",
             "national",
             "China",
-            float(handles["annual_net_carbon_limit"].Pi),
+            float(dual_value(handles["annual_net_carbon_limit"])),
             "<=",
             "CNY_per_tCO2",
         )
         for province_code, pi in zip(
             provinces,
-            np.asarray(handles["annual_biomass_fuel_limit"].Pi, dtype=float),
+            np.asarray(
+                dual_value(handles["annual_biomass_fuel_limit"]),
+                dtype=float,
+            ),
         ):
             add_dual(
                 "annual_biomass_fuel_limit",
@@ -1872,7 +1902,7 @@ def export_operational_solution(
                 "CNY_per_GJ",
             )
         for province_code, handle in zip(provinces, handles["capacity_margin"]):
-            pi = np.asarray(handle.Pi, dtype=float)
+            pi = np.asarray(dual_value(handle), dtype=float)
             add_dual(
                 "capacity_margin",
                 "province_code",
@@ -1883,7 +1913,10 @@ def export_operational_solution(
             )
         for province_code, pi in zip(
             provinces,
-            np.asarray(handles["biomass_beccs_capacity_upper"].Pi, dtype=float),
+            np.asarray(
+                dual_value(handles["biomass_beccs_capacity_upper"]),
+                dtype=float,
+            ),
         ):
             add_dual(
                 "biomass_beccs_capacity_upper",
@@ -1900,12 +1933,12 @@ def export_operational_solution(
                 "co2_source_balance",
                 "province_code",
                 int(province_code),
-                float(handle.Pi),
+                float(dual_value(handle)),
                 "=",
                 "CNY_per_tCO2",
             )
         sink_pi = np.asarray(
-            handles["co2_sink_injection_capacity"].Pi, dtype=float
+            dual_value(handles["co2_sink_injection_capacity"]), dtype=float
         )
         for sink_uid, pi in zip(sinks.grid_uid.astype(str), sink_pi):
             add_dual(

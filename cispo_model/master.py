@@ -572,6 +572,13 @@ def export_master_solution(
             forward + reverse
             - design_hours * variables["intra_load_center_capacity"].X
         )
+        direction_tolerance_gwh = float(
+            artifacts.index[
+                "intra_load_center_bidirectional_flow_tolerance_gwh"
+            ]
+        )
+        opposing_flow = np.minimum(forward, reverse)
+        bidirectional_mask = opposing_flow > direction_tolerance_gwh
         dpv_rows = data.vre_sites.technology.eq("dpv").to_numpy()
         dpv_spur_max = (
             float(variables["spur_augmentation"].X[dpv_rows].max())
@@ -585,9 +592,14 @@ def export_master_solution(
             "maximum_intra_capacity_violation_gwh": float(
                 np.maximum(capacity_residual, 0.0).max()
             ),
-            "bidirectional_active_edge_count": int(
-                ((forward > 1e-7) & (reverse > 1e-7)).sum()
+            "bidirectional_flow_tolerance_gwh": direction_tolerance_gwh,
+            "maximum_bidirectional_minimum_flow_gwh": float(
+                opposing_flow.max() if len(opposing_flow) else 0.0
             ),
+            "total_bidirectional_minimum_flow_gwh": float(
+                opposing_flow.sum()
+            ),
+            "bidirectional_active_edge_count": int(bidirectional_mask.sum()),
             "dpv_spur_augmentation_max_gw": dpv_spur_max,
         }
         pd.DataFrame([qc]).to_csv(

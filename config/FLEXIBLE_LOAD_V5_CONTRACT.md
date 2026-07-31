@@ -186,10 +186,24 @@ The minimum gate sequence is:
 4. four-year 168-hour planning-sequence gates;
 5. one authorized 2030/744-hour cold engineering gate.
 
-The current long-horizon diagnostic solver candidate is
+The validated basic-solution route remains
 `barrier_16_auto_order_stable_basis_v3`: automatic presolve is retained after
 state-chain elimination, while `Crossover=1` and `CrossoverBasis=1` request a
-basic solution through the more robust crossover-basis construction.
+basic solution through the more robust crossover-basis construction.  A
+separate Gurobi-13-or-newer diagnostic candidate,
+`barrier_16_nonbasic_primal_dual_v1`, requests `Method=2`, `Crossover=0`,
+`SolutionTarget=1`, and `BarConvTol=1e-10`.  It is acceptable only if Gurobi
+returns `OPTIMAL`, the explicit primal/dual quality contract passes, every
+scientific QC check passes, `BarPi` dual export succeeds, and the result
+manifest closes.  The nonbasic route cannot export/import a basis, enter MGA,
+or produce the scientific `.bas` artifact.  A solver result that fails this
+contract is not exported as a complete solution.
+
+The annual city-level load-centre proxy also records any opposing directional
+flow.  Interior-point numerical dust up to `0.0001 GWh` (0.1 MWh) per edge is
+reported but not counted as a physical counterflow; any edge above this limit
+is a hard failure.  This tolerance does not apply to hourly interprovincial
+flows and does not modify the optimization model.
 
 No truncated gate is an annual scientific result or a valid 2040 planning
 anchor. Full-year interpretation additionally requires `OPTIMAL`,

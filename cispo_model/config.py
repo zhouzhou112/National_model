@@ -791,6 +791,14 @@ class ModelConfig:
         utilization = float(center_network.get("design_utilization_fraction", 0.0))
         if not 0.0 < utilization <= 1.0:
             raise ValueError("load-center design_utilization_fraction must be in (0, 1]")
+        center_direction_tolerance = float(
+            center_network.get("bidirectional_flow_tolerance_gwh", -1.0)
+        )
+        if not 0.0 < center_direction_tolerance <= 1e-3:
+            raise ValueError(
+                "load-center bidirectional_flow_tolerance_gwh must be in "
+                "(0, 1e-3]"
+            )
         if float(center_network.get("intra_loss_fraction_per_km", -1.0)) != 0.0:
             raise ValueError(
                 "The annual layer currently requires zero intra loss; nonzero loss must first be "
@@ -909,6 +917,10 @@ class ModelConfig:
         if int(numerics.get("crossover_basis", -1)) not in {-1, 0, 1}:
             raise ValueError(
                 "numerics.crossover_basis is outside the Gurobi-supported range"
+            )
+        if int(numerics.get("solution_target", -1)) not in {-1, 0, 1}:
+            raise ValueError(
+                "numerics.solution_target is outside the Gurobi-supported range"
             )
         if int(numerics.get("aggregate", 1)) not in {0, 1, 2}:
             raise ValueError(
@@ -1061,6 +1073,7 @@ def load_model_config(
             "pre_dual",
             "pre_passes",
             "pre_sparsify",
+            "solution_target",
         }
         allowed = set(raw["numerics"]).union(allowed_optional)
         unknown = set(overrides).difference(allowed)
@@ -1070,9 +1083,19 @@ def load_model_config(
                 + ", ".join(sorted(unknown))
             )
         raw["numerics"] = _deep_merge(raw["numerics"], overrides)
+        minimum_gurobi_major_version = int(
+            payload.get("minimum_gurobi_major_version", 0)
+        )
+        if minimum_gurobi_major_version < 0:
+            raise ValueError(
+                "minimum_gurobi_major_version must be nonnegative"
+            )
         raw["solver_profile"] = {
             "id": str(payload["profile_id"]),
             "description": str(payload.get("description", "")),
+            "minimum_gurobi_major_version": (
+                minimum_gurobi_major_version or None
+            ),
         }
         resolved_solver = resolved_solver.resolve()
     resolved_formulation: Path | None = None

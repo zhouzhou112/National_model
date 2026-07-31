@@ -45,8 +45,26 @@ class RunContractTests(unittest.TestCase):
                 report, qc, result_manifest_valid=True
             )
         )
+        self.assertTrue(
+            solver_result_is_accepted(
+                {
+                    "status": "OPTIMAL",
+                    "solution_contract": {"acceptance_status": "PASS"},
+                },
+                qc,
+                result_manifest_valid=True,
+            )
+        )
         for changed_report, changed_qc, manifest in (
             ({"status": "TIME_LIMIT"}, qc, True),
+            (
+                {
+                    "status": "OPTIMAL",
+                    "solution_contract": {"acceptance_status": "HARD_FAIL"},
+                },
+                qc,
+                True,
+            ),
             (report, {"status": "FAIL"}, True),
             (
                 report,

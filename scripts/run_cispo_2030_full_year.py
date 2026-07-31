@@ -226,6 +226,22 @@ def main() -> None:
         args.diagnostic_hours is not None
         or config.horizon(args.horizon)["test_only"]
     )
+    numerics = config.raw["numerics"]
+    nonbasic_primal_dual_requested = bool(
+        int(numerics.get("method", -1)) == 2
+        and int(numerics.get("crossover", -1)) == 0
+        and int(numerics.get("solution_target", -1)) == 1
+    )
+    if nonbasic_primal_dual_requested and (
+        args.basis_in
+        or args.export_warm_start_basis
+        or args.export_scientific_solver_artifacts
+        or args.mga_spec
+    ):
+        raise SystemExit(
+            "The optimal primal-dual nonbasic contract cannot be combined "
+            "with basis import/export, scientific .bas artifacts, or MGA"
+        )
     if args.export_scientific_solver_artifacts and requested_test_only:
         raise SystemExit(
             "--export-scientific-solver-artifacts requires the full-year horizon"
@@ -392,6 +408,17 @@ def main() -> None:
         "memory_gate_pass": available_gb >= required_gb,
         "scale_estimate": selected_scale.__dict__,
         "gurobi_required_for_build": True,
+        "solution_contract_requested": {
+            "mode": (
+                "OPTIMAL_PRIMAL_DUAL_NONBASIC"
+                if nonbasic_primal_dual_requested
+                else "OPTIMAL_BASIC_OR_DEFAULT"
+            ),
+            "basis_required": not nonbasic_primal_dual_requested,
+            "dual_attribute": (
+                "BarPi" if nonbasic_primal_dual_requested else "Pi"
+            ),
+        },
         "basis_reuse_request": {
             "basis_in": str(args.basis_in) if args.basis_in else None,
             "allow_basis_reuse": bool(args.allow_basis_reuse),
@@ -672,13 +699,22 @@ def main() -> None:
     )
     export_state = False
     qc = None
-    if artifacts.model.SolCount:
+    solver_solution_accepted = bool(
+        report["status"] == "OPTIMAL"
+        and report.get("solution_contract", {}).get(
+            "acceptance_status"
+        ) == "PASS"
+    )
+    if artifacts.model.SolCount and solver_solution_accepted:
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
         export_result_summary(artifacts, data, config, output_dir)
         export_state = bool(
             (not test_only or args.export_diagnostic_state)
             and report["status"] == "OPTIMAL"
+            and report.get("solution_contract", {}).get(
+                "acceptance_status"
+            ) == "PASS"
             and qc["status"] == "PASS"
             and mga_request is None
         )
@@ -696,6 +732,11 @@ def main() -> None:
             report["planning_state_path"] = str(output_dir / "planning_state")
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
+        report["solution_export_status"] = "COMPLETE"
+    elif artifacts.model.SolCount:
+        report["solution_export_status"] = (
+            "SKIPPED_UNACCEPTED_SOLVER_RESULT"
+        )
     report["runtime_memory"] = memory_monitor.stop()
     if (
         args.export_warm_start_basis
@@ -735,7 +776,7 @@ def main() -> None:
                 result_use=scope_report["result_use"],
             )
         )
-    if artifacts.model.SolCount:
+    if qc is not None:
         report["result_manifest_path"] = str(output_dir / "result_manifest.json")
     (output_dir / "solve_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
@@ -770,7 +811,7 @@ def main() -> None:
             state_use=scope_report["result_use"],
         )
     manifest_valid = False
-    if artifacts.model.SolCount:
+    if qc is not None:
         build_result_dashboard(output_dir)
         write_output_catalog(output_dir)
         finalize_result_manifest(output_dir, config)

@@ -447,8 +447,14 @@ def solver_result_is_accepted(
         if solution_qc is not None
         else None
     )
+    solution_contract = solve_report.get("solution_contract") or {}
+    solution_contract_accepted = (
+        not solution_contract
+        or solution_contract.get("acceptance_status") == "PASS"
+    )
     return bool(
         solve_report.get("status") == "OPTIMAL"
+        and solution_contract_accepted
         and solution_qc is not None
         and solution_qc.get("status") == "PASS"
         and isinstance(hard_checks, dict)

@@ -5,7 +5,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import gurobipy as gp
+import numpy as np
+
 from cispo_model.config import load_model_config
+from cispo_model.diagnostics import solve_and_report
 
 
 class SolverProfileTests(unittest.TestCase):
@@ -109,6 +113,26 @@ class SolverProfileTests(unittest.TestCase):
             0,
         )
 
+        nonbasic = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_nonbasic_primal_dual_v1.json"
+            )
+        )
+        self.assertEqual(nonbasic.raw["numerics"]["method"], 2)
+        self.assertEqual(nonbasic.raw["numerics"]["crossover"], 0)
+        self.assertEqual(nonbasic.raw["numerics"]["solution_target"], 1)
+        self.assertEqual(
+            nonbasic.raw["solver_profile"][
+                "minimum_gurobi_major_version"
+            ],
+            13,
+        )
+        self.assertLessEqual(
+            nonbasic.raw["numerics"]["barrier_convergence_tolerance"],
+            1e-9,
+        )
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent
@@ -181,6 +205,84 @@ class SolverProfileTests(unittest.TestCase):
                 "numerics.aggregate is outside",
             ):
                 load_model_config(solver_path=path)
+
+    def test_solver_profile_rejects_invalid_solution_target(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "invalid_solution_target.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "solver_profile_version": "v1",
+                        "profile_id": "invalid_solution_target",
+                        "numerics": {"solution_target": 2},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                "numerics.solution_target is outside",
+            ):
+                load_model_config(solver_path=path)
+
+    def test_nonbasic_primal_dual_contract_solves_without_basis(self):
+        root = Path(__file__).resolve().parents[1]
+        config = load_model_config(
+            solver_path=(
+                root
+                / "config"
+                / "solver_profiles"
+                / "barrier_16_nonbasic_primal_dual_v1.json"
+            )
+        )
+        model = gp.Model("nonbasic_primal_dual_contract")
+        x = model.addMVar(2, lb=0.0, name="x")
+        constraints = model.addMConstr(
+            np.asarray([[1.0, 1.0]]),
+            x,
+            ">",
+            np.asarray([1.0]),
+            name="demand",
+        )
+        model.setObjective(x[0] + 2.0 * x[1], gp.GRB.MINIMIZE)
+        temporary = tempfile.TemporaryDirectory()
+        try:
+            if gp.gurobi.version()[0] < 13:
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "requires Gurobi >= 13",
+                ):
+                    solve_and_report(
+                        model,
+                        config,
+                        Path(temporary.name),
+                        compute_iis=False,
+                    )
+                return
+            report = solve_and_report(
+                model,
+                config,
+                Path(temporary.name),
+                compute_iis=False,
+            )
+            self.assertEqual(report["status"], "OPTIMAL")
+            self.assertEqual(
+                report["solution_contract"]["mode"],
+                "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+            )
+            self.assertFalse(report["solution_contract"]["basis_required"])
+            self.assertEqual(
+                report["solution_contract"]["acceptance_status"],
+                "PASS",
+            )
+            self.assertEqual(
+                report["solution_contract"]["dual_attribute"],
+                "BarPi",
+            )
+            self.assertTrue(float(constraints.BarPi[0]) > 0.0)
+        finally:
+            model.dispose()
+            temporary.cleanup()
 
     def test_formulation_profile_is_structural_only_and_traced(self):
         root = Path(__file__).resolve().parents[1]

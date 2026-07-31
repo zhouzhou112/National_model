@@ -337,6 +337,8 @@
     "design_utilization_fraction": 0.5,
     "flow_regularization_yuan_per_mwh": 0.001,
     "flow_regularization_status": "numerical tie-breaker; excluded from economic price rebasing",
+    "bidirectional_flow_tolerance_gwh": 0.0001,
+    "bidirectional_flow_tolerance_status": "numerical-dust threshold for the annual load-center proxy; maximum opposing flow above 0.1 MWh per edge remains a hard failure",
     "intra_loss_fraction_per_km": 0.0,
     "partial_horizon_interpretation": "test-period aggregate energy only; scientific interpretation requires full_year"
   },
