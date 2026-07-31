@@ -415,11 +415,13 @@ def build_full_year_monolithic(
             config.raw["thermal"]["chp_winter_months"],
         )
     )
-    for technology in ("cchp", "cchpccs", "gchp", "gchpccs"):
-        model.addConstr(
-            online[:, k_index[technology], winter] == thermal_capacity[:, k_index[technology], None],
-            name=f"chp_winter_{technology}",
-        )
+    if len(winter):
+        for technology in ("cchp", "cchpccs", "gchp", "gchpccs"):
+            model.addConstr(
+                online[:, k_index[technology], winter]
+                == thermal_capacity[:, k_index[technology], None],
+                name=f"chp_winter_{technology}",
+            )
     for technology in ("bio", "bioccs"):
         model.addConstr(
             online[:, k_index[technology], :]

@@ -20,6 +20,7 @@ class BoundTighteningTests(unittest.TestCase):
             cls.data,
             compute_max_cf=False,
             optimization_hours=1,
+            optimization_start_hour=3960,
         )
 
     @classmethod
@@ -113,6 +114,20 @@ class BoundTighteningTests(unittest.TestCase):
                 )
                 * fraction,
             )
+        )
+
+    def test_nonwinter_offset_build_uses_exact_selected_hour(self):
+        self.assertEqual(
+            self.artifacts.index["optimization_start_hour"],
+            3960,
+        )
+        self.assertEqual(
+            self.artifacts.index["optimization_stop_hour_exclusive"],
+            3961,
+        )
+        np.testing.assert_allclose(
+            self.artifacts.index["baseline_load_gw"],
+            self.data.load_gw[:, 3960:3961],
         )
 
     def test_independent_phs_energy_adds_only_province_level_annual_variables(self):
