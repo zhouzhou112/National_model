@@ -31,6 +31,29 @@ def _write_json(payload: dict[str, Any], path: Path) -> None:
     )
 
 
+def _ev_v1g_daily_energy_residual_for_qc(
+    residual: np.ndarray,
+    *,
+    service_contract_formulation: bool,
+) -> tuple[float | None, str]:
+    """Return the legacy V1G residual only where its identity applies.
+
+    Service-constrained V4/V5 uses a physical fleet-SOC transition with driving
+    withdrawals, efficiencies and a periodic boundary. Comparing its grid
+    charging directly with the uncontrolled reference is therefore not an
+    energy-conservation identity and must not be reported as a residual.
+    """
+    if service_contract_formulation:
+        return (
+            None,
+            "NOT_APPLICABLE_SERVICE_CONSTRAINED_EV_SOC_ACCOUNTING",
+        )
+    return (
+        float(np.abs(np.asarray(residual, dtype=float)).max()),
+        "APPLICABLE_LEGACY_DAILY_CHARGING_ENERGY_ACCOUNTING",
+    )
+
+
 def assess_interprovincial_bidirectionality(
     *,
     flow_forward: np.ndarray,
@@ -1097,6 +1120,13 @@ def export_operational_solution(
         if v5_formulation
         else 0.0
     )
+    (
+        ev_v1g_daily_energy_residual,
+        ev_v1g_daily_energy_residual_applicability,
+    ) = _ev_v1g_daily_energy_residual_for_qc(
+        daily_energy_residuals["ev"],
+        service_contract_formulation=service_contract_formulation,
+    )
     qc = {
         "generated_at": datetime.now().astimezone().isoformat(),
         "flexible_load_structural_audit": artifacts.index.get(
@@ -1117,8 +1147,11 @@ def export_operational_solution(
         "maximum_cooling_daily_energy_residual_gwh": float(
             np.abs(daily_energy_residuals["cooling"]).max()
         ),
-        "maximum_ev_v1g_daily_energy_residual_gwh": float(
-            np.abs(daily_energy_residuals["ev"]).max()
+        "maximum_ev_v1g_daily_energy_residual_gwh": (
+            ev_v1g_daily_energy_residual
+        ),
+        "ev_v1g_daily_energy_residual_applicability": (
+            ev_v1g_daily_energy_residual_applicability
         ),
         "flexible_load_formulation": flexible_formulation,
         "maximum_heating_state_transition_residual_gwh": (

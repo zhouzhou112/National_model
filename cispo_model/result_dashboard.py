@@ -483,6 +483,20 @@ def _format_number(value: Any, digits: int = 2, *, na: str = "N/A") -> str:
     return f"{number:,.{digits}f}"
 
 
+def _format_energy_gwh(value: Any) -> str:
+    """Preserve the distinction between exact zero and sub-MWh energy."""
+    number = _finite_float(value)
+    if number is None:
+        return "N/A"
+    if abs(number) <= 1e-12:
+        return "0"
+    if 0.0 < number < 1e-3:
+        return "<0.001"
+    if -1e-3 < number < 0.0:
+        return ">-0.001"
+    return f"{number:,.1f}"
+
+
 def _svg_text(
     x: float,
     y: float,
@@ -726,8 +740,8 @@ def _write_svg_dashboard(payload: dict[str, Any], path: Path) -> None:
         ),
         (
             "Storage charge / discharge",
-            f"{_format_number(system['selected_horizon_storage_charge_gwh'], 1)} / "
-            f"{_format_number(system['selected_horizon_storage_discharge_gwh'], 1)} GWh",
+            f"{_format_energy_gwh(system['selected_horizon_storage_charge_gwh'])} / "
+            f"{_format_energy_gwh(system['selected_horizon_storage_discharge_gwh'])} GWh",
         ),
         (
             "VRE curtailment",
@@ -1028,8 +1042,8 @@ def _write_matplotlib_dashboard(
         ),
         (
             "Storage charge / discharge",
-            f"{_format_number(system['selected_horizon_storage_charge_gwh'], 1)} / "
-            f"{_format_number(system['selected_horizon_storage_discharge_gwh'], 1)} GWh",
+            f"{_format_energy_gwh(system['selected_horizon_storage_charge_gwh'])} / "
+            f"{_format_energy_gwh(system['selected_horizon_storage_discharge_gwh'])} GWh",
         ),
         (
             "VRE curtailment",

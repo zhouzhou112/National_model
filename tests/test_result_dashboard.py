@@ -8,12 +8,18 @@ from pathlib import Path
 import pandas as pd
 
 from cispo_model.result_dashboard import (
+    _format_energy_gwh,
     build_result_dashboard,
     collect_result_dashboard,
 )
 
 
 class ResultDashboardTests(unittest.TestCase):
+    def test_storage_energy_format_distinguishes_zero_and_sub_mwh(self) -> None:
+        self.assertEqual(_format_energy_gwh(0.0), "0")
+        self.assertEqual(_format_energy_gwh(8.822131305009281e-6), "<0.001")
+        self.assertEqual(_format_energy_gwh(3.25), "3.2")
+
     def _write_fixture(
         self,
         root: Path,

@@ -72,6 +72,15 @@ standalone `scripts/build_result_dashboard.py` can render PNG/PDF copies in an
 external analysis directory on a workstation with Matplotlib; it must not
 modify an already accepted historical result root.
 
+For service-constrained V4/V5 EV fleets,
+`maximum_ev_v1g_daily_energy_residual_gwh` is JSON `null` and
+`ev_v1g_daily_energy_residual_applicability` is
+`NOT_APPLICABLE_SERVICE_CONSTRAINED_EV_SOC_ACCOUNTING`. Their governing hard
+evidence is the physical fleet-SOC transition, departure requirement, SOC
+upper bound, charge/discharge power bounds and periodic boundary. The legacy
+daily charging-energy residual remains numeric only for formulations where
+grid charging must reproduce the uncontrolled daily reference.
+
 ## 6. Carbon terminology
 
 The historical field `annual_gross_emissions_mtco2` is retained for compatibility, but the model quantity includes residual fossil emissions and BECCS net emissions before DAC. New outputs use the precise name `emissions_before_dac_mtco2`, alongside fossil-unabated emissions, CO2 captured for storage, DAC removal and final net emissions. The CISPO-equivalent BECCS baseline additionally exports `beccs_gross_biogenic_co2_mtco2`, `beccs_captured_biogenic_co2_mtco2`, `beccs_stored_co2_mtco2`, `beccs_uncaptured_biogenic_co2_mtco2`, `beccs_lifecycle_emissions_mtco2` and `beccs_net_removal_mtco2`. Baseline lifecycle emissions are explicitly zero; hard QC closes capture, storage, net carbon and total captured-CO2 reconstruction.
