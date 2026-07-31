@@ -150,23 +150,47 @@ class BoundTighteningTests(unittest.TestCase):
             self.data.load_gw[:, 3960:3961],
         )
 
-    def test_reservoir_flow_bounds_are_finite_without_extra_constraints(self):
+    def test_reservoir_bounds_are_finite_without_extra_constraints(self):
         variables = self.artifacts.variables
         turbine = variables["reservoir_turbine_flow"]
         spill = variables["reservoir_spill_flow"]
+        volume = variables["reservoir_volume"]
         self.assertEqual(turbine.shape, spill.shape)
+        self.assertEqual(volume.shape, spill.shape)
         turbine_upper = np.asarray(turbine.UB, dtype=float)
         spill_upper = np.asarray(spill.UB, dtype=float)
+        volume_upper = np.asarray(volume.UB, dtype=float)
         self.assertTrue(np.isfinite(turbine_upper).all())
         self.assertTrue(np.isfinite(spill_upper).all())
+        self.assertTrue(np.isfinite(volume_upper).all())
         self.assertTrue((turbine_upper >= 0.0).all())
         self.assertTrue((spill_upper >= 0.0).all())
+        self.assertTrue((volume_upper >= 0.0).all())
         self.assertTrue((turbine_upper <= spill_upper).all())
+        np.testing.assert_allclose(
+            volume_upper,
+            self.artifacts.index["reservoir_active_storage_m3"][:, None]
+            / float(self.artifacts.index["reservoir_volume_scale_m3"]),
+            rtol=0.0,
+            atol=0.0,
+        )
         audit = self.artifacts.index["reservoir_flow_bound_audit"]
         self.assertTrue(audit["all_bounds_finite"])
         self.assertEqual(
+            audit["schema_version"],
+            "cispo_reservoir_bound_audit_v2",
+        )
+        self.assertEqual(
             audit["method"],
             "cyclic_total_plus_hourly_storage_cascade_v1",
+        )
+        self.assertEqual(
+            audit["active_storage_upper_encoding"],
+            "native_variable_upper_bound_v1",
+        )
+        self.assertEqual(
+            audit["active_storage_constraint_rows_omitted"],
+            int(np.prod(volume.shape)),
         )
         model_variable_names = {
             variable.VarName for variable in self.artifacts.model.getVars()
@@ -181,6 +205,14 @@ class BoundTighteningTests(unittest.TestCase):
             any(
                 constraint.ConstrName.startswith(
                     "reservoir_turbine_within_total_release"
+                )
+                for constraint in self.artifacts.model.getConstrs()
+            )
+        )
+        self.assertFalse(
+            any(
+                constraint.ConstrName.startswith(
+                    "reservoir_s4_12_active_storage"
                 )
                 for constraint in self.artifacts.model.getConstrs()
             )

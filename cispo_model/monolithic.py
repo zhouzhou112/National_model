@@ -770,17 +770,33 @@ def build_full_year_monolithic(
         reservoir_capacity_flow_upper[:, None],
         reservoir_release_upper,
     )
+    reservoir_volume_upper = (
+        hydro.reservoir_active_storage_m3[:, None]
+        / reservoir_volume_scale_m3
+    )
+    if (
+        not np.isfinite(reservoir_volume_upper).all()
+        or (reservoir_volume_upper < 0.0).any()
+    ):
+        raise ValueError("Reservoir active-storage upper bounds are invalid")
     reservoir_flow_bound_audit = {
-        "schema_version": "cispo_reservoir_flow_bound_audit_v1",
+        "schema_version": "cispo_reservoir_bound_audit_v2",
         "method": "cyclic_total_plus_hourly_storage_cascade_v1",
         "all_bounds_finite": bool(
             np.isfinite(reservoir_release_upper).all()
             and np.isfinite(reservoir_turbine_upper).all()
+            and np.isfinite(reservoir_volume_upper).all()
         ),
         "release_upper_scaled_min": float(reservoir_release_upper.min()),
         "release_upper_scaled_max": float(reservoir_release_upper.max()),
         "turbine_upper_scaled_min": float(reservoir_turbine_upper.min()),
         "turbine_upper_scaled_max": float(reservoir_turbine_upper.max()),
+        "volume_upper_scaled_min": float(reservoir_volume_upper.min()),
+        "volume_upper_scaled_max": float(reservoir_volume_upper.max()),
+        "active_storage_upper_encoding": "native_variable_upper_bound_v1",
+        "active_storage_constraint_rows_omitted": int(
+            reservoir_count * hours
+        ),
     }
     reservoir_turbine_flow = model.addMVar(
         (reservoir_count, hours),
@@ -794,12 +810,13 @@ def build_full_year_monolithic(
         ub=reservoir_release_upper,
         name="reservoir_spill_flow_1000m3s",
     )
-    del reservoir_release_upper, reservoir_turbine_upper
     reservoir_volume = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
+        ub=reservoir_volume_upper,
         name="reservoir_active_storage_million_m3",
     )
+    del reservoir_release_upper, reservoir_turbine_upper, reservoir_volume_upper
     scaled_volume_to_energy = (
         conversion * reservoir_volume_scale_m3 / 3600.0
     )
@@ -854,11 +871,6 @@ def build_full_year_monolithic(
     model.addConstr(
         reservoir_generation <= hydro_capacity[reservoir_rows, None],
         name="reservoir_station_power",
-    )
-    model.addConstr(
-        reservoir_volume
-        <= hydro.reservoir_active_storage_m3[:, None] / reservoir_volume_scale_m3,
-        name="reservoir_s4_12_active_storage",
     )
     cascade_rows = np.asarray(hydro.cascade_station_local_rows, dtype=np.int64)
     all_reservoir_local_rows = np.arange(reservoir_count, dtype=np.int64)
