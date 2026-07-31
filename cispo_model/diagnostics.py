@@ -16,6 +16,9 @@ from gurobipy import GRB
 from .config import ModelConfig
 
 
+SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS = 6_000_000
+
+
 class SolverTelemetry:
     """Persist low-overhead solver progress that survives a later hard kill."""
 
@@ -264,6 +267,86 @@ def model_statistics(model: gp.Model) -> dict:
     }
 
 
+def _safe_solution_attribute(item: object, name: str) -> float | None:
+    try:
+        return float(getattr(item, name))
+    except (AttributeError, gp.GurobiError, TypeError, ValueError):
+        return None
+
+
+def _solution_quality_location(
+    model: gp.Model,
+    attribute: str,
+    *,
+    kind: str,
+    variables: list[gp.Var] | None,
+    constraints: list[gp.Constr] | None,
+) -> dict[str, object] | None:
+    """Resolve a quality-index attribute to the responsible named object."""
+    try:
+        index = int(getattr(model, attribute))
+    except (AttributeError, gp.GurobiError, TypeError, ValueError):
+        return None
+    variable_count = int(model.NumVars)
+    constraint_count = int(model.NumConstrs)
+    if kind == "dual" and index >= variable_count:
+        constraint_index = index - variable_count
+        if not 0 <= constraint_index < constraint_count:
+            return None
+        if constraints is None:
+            return {
+                "kind": "constraint_slack",
+                "index": constraint_index,
+                "name": None,
+                "lookup_status": "SKIPPED_MODEL_SIZE",
+            }
+        constraint = constraints[constraint_index]
+        return {
+            "kind": "constraint_slack",
+            "index": constraint_index,
+            "name": constraint.ConstrName,
+        }
+    if kind == "constraint":
+        if not 0 <= index < constraint_count:
+            return None
+        if constraints is None:
+            return {
+                "kind": "constraint",
+                "index": index,
+                "name": None,
+                "lookup_status": "SKIPPED_MODEL_SIZE",
+            }
+        constraint = constraints[index]
+        return {
+            "kind": "constraint",
+            "index": index,
+            "name": constraint.ConstrName,
+            "sense": constraint.Sense,
+            "rhs": float(constraint.RHS),
+            "slack": _safe_solution_attribute(constraint, "Slack"),
+        }
+    if not 0 <= index < variable_count:
+        return None
+    if variables is None:
+        return {
+            "kind": "variable",
+            "index": index,
+            "name": None,
+            "lookup_status": "SKIPPED_MODEL_SIZE",
+        }
+    variable = variables[index]
+    return {
+        "kind": "variable",
+        "index": index,
+        "name": variable.VarName,
+        "lower_bound": float(variable.LB),
+        "upper_bound": float(variable.UB),
+        "value": _safe_solution_attribute(variable, "X"),
+        "barrier_value": _safe_solution_attribute(variable, "BarX"),
+        "reduced_cost": _safe_solution_attribute(variable, "RC"),
+    }
+
+
 def solve_and_report(
     model: gp.Model,
     config: ModelConfig,
@@ -414,6 +497,55 @@ def solve_and_report(
             "kappa_exact_computed": False,
         }
         report["solution_quality"] = solution_quality
+        variables_for_locations = (
+            model.getVars()
+            if int(model.NumVars) <= SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS
+            else None
+        )
+        constraints_for_locations = (
+            model.getConstrs()
+            if int(model.NumConstrs) <= SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS
+            else None
+        )
+        report["solution_quality_location_lookup"] = {
+            "maximum_objects_per_collection": (
+                SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS
+            ),
+            "variable_names_resolved": variables_for_locations is not None,
+            "constraint_names_resolved": constraints_for_locations is not None,
+        }
+        report["solution_quality_locations"] = {
+            "maximum_bound_violation": _solution_quality_location(
+                model,
+                "BoundVioIndex",
+                kind="variable",
+                variables=variables_for_locations,
+                constraints=constraints_for_locations,
+            ),
+            "maximum_constraint_violation": _solution_quality_location(
+                model,
+                "ConstrVioIndex",
+                kind="constraint",
+                variables=variables_for_locations,
+                constraints=constraints_for_locations,
+            ),
+            "maximum_dual_violation": _solution_quality_location(
+                model,
+                "DualVioIndex",
+                kind="dual",
+                variables=variables_for_locations,
+                constraints=constraints_for_locations,
+            ),
+            "maximum_complementarity_violation": (
+                _solution_quality_location(
+                    model,
+                    "ComplVioIndex",
+                    kind="variable",
+                    variables=variables_for_locations,
+                    constraints=constraints_for_locations,
+                )
+            ),
+        }
         if nonbasic_primal_dual_contract:
             primal_limit = max(
                 10.0 * float(model.Params.FeasibilityTol),
@@ -430,20 +562,25 @@ def solve_and_report(
                 and status_name == "OPTIMAL"
             )
             barrier_primal_difference: float | None = None
-            try:
-                solution = np.asarray(
-                    model.getAttr("X", model.getVars()),
-                    dtype=float,
-                )
-                barrier_solution = np.asarray(
-                    model.getAttr("BarX", model.getVars()),
-                    dtype=float,
-                )
-                barrier_primal_difference = float(
-                    np.max(np.abs(solution - barrier_solution))
-                ) if len(solution) else 0.0
-            except (AttributeError, gp.GurobiError, ValueError):
-                barrier_primal_difference = None
+            barrier_primal_difference_status = "COLLECTED"
+            if variables_for_locations is None:
+                barrier_primal_difference_status = "SKIPPED_MODEL_SIZE"
+            else:
+                try:
+                    solution = np.asarray(
+                        model.getAttr("X", variables_for_locations),
+                        dtype=float,
+                    )
+                    barrier_solution = np.asarray(
+                        model.getAttr("BarX", variables_for_locations),
+                        dtype=float,
+                    )
+                    barrier_primal_difference = float(
+                        np.max(np.abs(solution - barrier_solution))
+                    ) if len(solution) else 0.0
+                except (AttributeError, gp.GurobiError, ValueError):
+                    barrier_primal_difference = None
+                    barrier_primal_difference_status = "UNAVAILABLE"
             report["solution_contract"].update(
                 strict_quality_pass=strict_quality_pass,
                 acceptance_status=(
@@ -452,6 +589,9 @@ def solve_and_report(
                 maximum_primal_quality_limit=primal_limit,
                 maximum_dual_quality_limit=dual_limit,
                 maximum_x_barx_difference=barrier_primal_difference,
+                maximum_x_barx_difference_status=(
+                    barrier_primal_difference_status
+                ),
                 dual_attribute="BarPi",
             )
         else:

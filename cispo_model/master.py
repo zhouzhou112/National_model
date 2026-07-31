@@ -710,13 +710,27 @@ def build_master(
     site_upper = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
     if (site_floor < -1e-9).any() or (site_floor > site_upper + 1e-9).any():
         raise ValueError("Inherited VRE capacity is outside the active site bounds")
+    site_headroom = site_upper - site_floor
+    # Capacity floors and potentials originate from independently aggregated
+    # decimal tables. Snap sub-watt residual headroom to exact zero so roundoff
+    # cannot create negative upper bounds or effectively fixed expansion
+    # columns. The 1e-12 GW threshold is far below the source-data precision.
+    site_headroom[np.abs(site_headroom) <= 1e-12] = 0.0
+    if (site_headroom < 0.0).any():
+        raise ValueError("VRE capacity headroom is negative after tolerance closure")
+    site_effective_upper = site_floor + site_headroom
     vre_new = model.addMVar(
         len(data.vre_sites),
         lb=0.0,
-        ub=site_upper - site_floor,
+        ub=site_headroom,
         name="vre_new_gw",
     )
-    vre_cap = model.addMVar(len(data.vre_sites), lb=site_floor, ub=site_upper, name="vre_capacity_gw")
+    vre_cap = model.addMVar(
+        len(data.vre_sites),
+        lb=site_floor,
+        ub=site_effective_upper,
+        name="vre_capacity_gw",
+    )
     model.addConstr(vre_cap == site_floor + vre_new, name="vre_capacity_accounting")
     variables.update(vre_new=vre_new, vre_capacity=vre_cap)
 
@@ -1627,6 +1641,7 @@ def build_master(
         "wave_asset_ids": wave_asset_ids,
         "wave_capacity_floor_gw": wave_floor,
         "vre_capacity_floor_gw": site_floor,
+        "vre_capacity_effective_upper_gw": site_effective_upper,
         "thermal_asset_ids": thermal_asset_ids,
         "thermal_exogenous_floor_gw": thermal_exogenous_floor,
         "thermal_capacity_floor_gw": thermal_floor,

@@ -33,6 +33,137 @@ def _vector_sum(terms: list[Any], length: int):
     return result
 
 
+def _reservoir_release_upper_scaled(
+    hydro: Any,
+    *,
+    flow_scale_m3s: float,
+) -> np.ndarray:
+    """Return provably valid cyclic-horizon bounds on hourly total release.
+
+    Summing each reservoir water balance over the cyclic horizon cancels the
+    storage terms. Hence any nonnegative hourly turbine-plus-spill release is
+    bounded by the reservoir's total selected-horizon inflow. The hourly water
+    balance also bounds release by local and upstream inflow plus the entire
+    active storage. Both bounds are propagated through the cascade in
+    topological order and their minimum is retained. A small outward numerical
+    pad ensures that floating-point summation cannot cut a feasible solution.
+    """
+    local = np.asarray(hydro.reservoir_local_inflow_m3s, dtype=float)
+    if local.ndim != 2 or flow_scale_m3s <= 0.0:
+        raise ValueError("Reservoir release bounds require a positive flow scale")
+    if not np.isfinite(local).all() or (local < 0.0).any():
+        raise ValueError("Reservoir release bounds require finite nonnegative inflow")
+    reservoir_count, hours = (int(value) for value in local.shape)
+    storage_release = np.asarray(
+        hydro.reservoir_active_storage_m3, dtype=float
+    ) / (float(flow_scale_m3s) * 3600.0)
+    if (
+        storage_release.shape != (reservoir_count,)
+        or not np.isfinite(storage_release).all()
+        or (storage_release < 0.0).any()
+    ):
+        raise ValueError("Reservoir release bounds require valid active storage")
+    local_scaled = local / float(flow_scale_m3s)
+    aggregate_upper = local_scaled.sum(axis=1)
+    hourly_upper = local_scaled + storage_release[:, None]
+    hourly_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
+    cascade_row_values = np.asarray(
+        hydro.cascade_station_local_rows, dtype=np.int64
+    ).reshape(-1)
+    if (
+        (cascade_row_values < 0).any()
+        or (cascade_row_values >= reservoir_count).any()
+    ):
+        raise ValueError("Cascade release bounds contain an invalid station row")
+    cascade_rows = {int(row) for row in cascade_row_values}
+    incoming: dict[int, list[tuple[np.ndarray, float, int, np.ndarray]]] = {
+        row: [] for row in cascade_rows
+    }
+    edge_columns = (
+        hydro.cascade_edge_source_local_rows,
+        hydro.cascade_edge_target_local_rows,
+        hydro.cascade_edge_target_weights,
+        hydro.cascade_edge_lag_h,
+        hydro.cascade_edge_transfer_fraction,
+    )
+    if len({len(values) for values in edge_columns}) != 1:
+        raise ValueError("Cascade release-bound edge arrays have unequal lengths")
+    for (
+        source_rows,
+        target_rows,
+        target_weights,
+        lag_h,
+        transfer_fraction,
+    ) in zip(*edge_columns):
+        sources = np.asarray(source_rows, dtype=np.int64)
+        targets = np.asarray(target_rows, dtype=np.int64)
+        weights = np.asarray(target_weights, dtype=float)
+        transfer = np.asarray(transfer_fraction, dtype=float)
+        lag = int(lag_h)
+        if (
+            not len(sources)
+            or not len(targets)
+            or lag < 0
+            or len(targets) != len(weights)
+            or transfer.shape != (hours,)
+            or (sources < 0).any()
+            or (sources >= reservoir_count).any()
+            or (targets < 0).any()
+            or (targets >= reservoir_count).any()
+            or not set(int(target) for target in targets).issubset(cascade_rows)
+            or not np.isfinite(weights).all()
+            or (weights < 0.0).any()
+            or not np.isfinite(transfer).all()
+            or (transfer < 0.0).any()
+        ):
+            raise ValueError("Cascade release bounds require valid edge weights")
+        for target, weight in zip(targets, weights):
+            incoming.setdefault(int(target), []).append(
+                (sources, float(weight), lag, transfer)
+            )
+
+    resolved = set(range(reservoir_count)).difference(cascade_rows)
+    unresolved = set(cascade_rows)
+    while unresolved:
+        progressed = False
+        for target in sorted(unresolved):
+            terms = incoming.get(target, [])
+            dependencies = {
+                int(source)
+                for source_rows, _, _, _ in terms
+                for source in source_rows
+            }
+            if not dependencies.issubset(resolved):
+                continue
+            for source_rows, weight, lag, transfer in terms:
+                source_aggregate = float(aggregate_upper[source_rows].sum())
+                source_hourly = hourly_upper[source_rows].sum(axis=0)
+                transferred_hourly = transfer * np.roll(source_hourly, lag)
+                aggregate_from_maximum_fraction = (
+                    float(transfer.max()) * source_aggregate
+                )
+                aggregate_upper[target] += weight * min(
+                    aggregate_from_maximum_fraction,
+                    float(transferred_hourly.sum()),
+                )
+                hourly_upper[target] += weight * transferred_hourly
+            hourly_upper[target] = np.minimum(
+                hourly_upper[target], aggregate_upper[target]
+            )
+            resolved.add(target)
+            unresolved.remove(target)
+            progressed = True
+        if not progressed:
+            raise ValueError(
+                "Cascade release-bound graph is cyclic or has unresolved rows"
+            )
+    release_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
+    release_upper = release_upper * (1.0 + 1.0e-12) + 1.0e-12
+    if not np.isfinite(release_upper).all() or (release_upper < 0.0).any():
+        raise ValueError("Reservoir release upper bounds are invalid")
+    return release_upper
+
+
 def _validate_reduced_ruc_domain(ruc: pd.DataFrame) -> None:
     """Validate the assumptions that make four RUC upper bounds redundant.
 
@@ -619,23 +750,56 @@ def build_full_year_monolithic(
     flow_to_volume_scaled = (
         reservoir_flow_scale_m3s * 3600.0 / reservoir_volume_scale_m3
     )
+    conversion = hydro.reservoir_generation_conversion_gw_per_m3s
+    scaled_flow_to_power = conversion * reservoir_flow_scale_m3s
+    if not np.isfinite(scaled_flow_to_power).all() or (
+        scaled_flow_to_power <= 0.0
+    ).any():
+        raise ValueError("Reservoir flow-to-power conversion must be positive")
+    reservoir_release_upper = _reservoir_release_upper_scaled(
+        hydro,
+        flow_scale_m3s=reservoir_flow_scale_m3s,
+    )
+    reservoir_capacity_upper = data.hydro_stations.capacity_potential_gw.to_numpy(
+        dtype=float
+    )[reservoir_rows]
+    reservoir_capacity_flow_upper = (
+        reservoir_capacity_upper / scaled_flow_to_power
+    )
+    reservoir_turbine_upper = np.minimum(
+        reservoir_capacity_flow_upper[:, None],
+        reservoir_release_upper,
+    )
+    reservoir_flow_bound_audit = {
+        "schema_version": "cispo_reservoir_flow_bound_audit_v1",
+        "method": "cyclic_total_plus_hourly_storage_cascade_v1",
+        "all_bounds_finite": bool(
+            np.isfinite(reservoir_release_upper).all()
+            and np.isfinite(reservoir_turbine_upper).all()
+        ),
+        "release_upper_scaled_min": float(reservoir_release_upper.min()),
+        "release_upper_scaled_max": float(reservoir_release_upper.max()),
+        "turbine_upper_scaled_min": float(reservoir_turbine_upper.min()),
+        "turbine_upper_scaled_max": float(reservoir_turbine_upper.max()),
+    }
     reservoir_turbine_flow = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
+        ub=reservoir_turbine_upper,
         name="reservoir_turbine_flow_1000m3s",
     )
     reservoir_spill_flow = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
+        ub=reservoir_release_upper,
         name="reservoir_spill_flow_1000m3s",
     )
+    del reservoir_release_upper, reservoir_turbine_upper
     reservoir_volume = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
         name="reservoir_active_storage_million_m3",
     )
-    conversion = hydro.reservoir_generation_conversion_gw_per_m3s
-    scaled_flow_to_power = conversion * reservoir_flow_scale_m3s
     scaled_volume_to_energy = (
         conversion * reservoir_volume_scale_m3 / 3600.0
     )
@@ -1102,6 +1266,7 @@ def build_full_year_monolithic(
         reservoir_active_storage_m3=hydro.reservoir_active_storage_m3,
         reservoir_flow_scale_m3s=reservoir_flow_scale_m3s,
         reservoir_volume_scale_m3=reservoir_volume_scale_m3,
+        reservoir_flow_bound_audit=reservoir_flow_bound_audit,
         reservoir_generation_conversion_gw_per_m3s=hydro.reservoir_generation_conversion_gw_per_m3s,
         hydro_aggregate_available_gw=hydro_aggregate_available,
         hydro_aggregate_power_upper_gw=hydro_aggregate_upper,

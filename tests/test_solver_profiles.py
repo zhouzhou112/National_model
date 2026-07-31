@@ -279,6 +279,15 @@ class SolverProfileTests(unittest.TestCase):
                 report["solution_contract"]["dual_attribute"],
                 "BarPi",
             )
+            self.assertEqual(
+                set(report["solution_quality_locations"]),
+                {
+                    "maximum_bound_violation",
+                    "maximum_constraint_violation",
+                    "maximum_dual_violation",
+                    "maximum_complementarity_violation",
+                },
+            )
             self.assertTrue(float(constraints.BarPi[0]) > 0.0)
         finally:
             model.dispose()
