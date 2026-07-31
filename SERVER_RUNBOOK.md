@@ -1,5 +1,66 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 10:15+08:00 每轮固定结果数据与图表合同
+
+实现身份为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，解释修正为
+`bdb57b2cb4e3f4781cfd53c087c7cc1a780d73a5`。正常 runner 在最终
+`solve_report.json` 和 `solution_qc.json` 形成后、output catalog 与
+result manifest 定稿前，自动生成：
+
+```text
+result_dashboard_summary.json
+result_analysis_metrics.csv
+visualizations/core_result_dashboard.svg
+```
+
+这三项必须同时出现在 `output_catalog.csv` 和
+`result_manifest.json`；缺失、成本重构失败或 hash 失配均不得接受运行。
+SVG 是服务器无 Matplotlib/Pillow 环境下的保证产物。需要 PNG/PDF 时必须
+在历史结果根之外执行：
+
+```text
+python scripts/build_result_dashboard.py \
+  --result-dir <accepted_result_root> \
+  --output-dir <external_analysis_dir> \
+  --formats svg,png,pdf
+```
+
+固定查阅顺序：
+
+1. 先看标题行的 solver status、QC status、hard-check count 与
+   `result_use`；图片不能替代 input/result manifest 和 wrapper 审计。
+2. 查看 installed capacity、selected-horizon generation、灵活性/系统
+   margins、碳限额和 curtailment；随后在 tidy CSV/JSON 中读取精确值。
+3. 成本统一以不可变 baseline demand 为分母。`1 million CNY/GWh =
+   1 CNY/kWh`。截断时域分别报告 annualized-planning intensity 和
+   selected-horizon operating intensity，禁止相加，full-year total
+   必须为 N/A/null，也不得标为 LCOE。
+4. 只有 accepted 8760 h scientific run 才允许把年化规划成本与全年运行
+   成本相加并输出 total system cost intensity。仍需披露该指标的系统边界，
+   不能自动等同于发电技术 LCOE。
+5. firm flexibility credit 来自各省完整 8760 h immutable baseline peak
+   windows、服务包络和 derating；截断时域全国
+   `baseline -> effective peak` 是另一个指标，二者不得直接比较。
+
+最终服务器验证根为
+`/data/zz2/National_model/outputs/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`，
+控制根为
+`/data/zz2/National_model/run_control/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`。
+它达到 `OPTIMAL + PASS + 58/58 + current input + valid result manifest`，
+wrapper `exit=0/stderr=0/wall=0:39.10/MaxRSS=597624 KiB/swaps=0`。三项
+dashboard 产物均被最终 manifest 覆盖；成本 objective 重构残差
+`-9.779e-9 million CNY`。本根仅为 `TEST_ONLY_TRUNCATED_HORIZON`。
+
+模型边界必须明确：本 dashboard 提交不增删任何 LP 变量、约束、目标或
+solver 参数；冷热与 EV 灵活性模式未变。前一数值稳定化的零控制状态/冗余
+行列删除是代数等价变换，而
+`charge + discharge <= connected * K_v1g` 是唯一新增的共享接入物理
+约束，用于阻止 V1G/V2G 重复占用签约连接，不能误写成纯性能改动。
+
+当前固定服务器空闲、资源安全，ParaCloud 队列为空。下一次经作者选择的
+24 h、168 h 或更长门禁直接使用这一合同并逐根验收；不自动启动
+744/1008/8760 h、付费云、basis/MGA、并发第二求解或 `Crossover=3`。
+
 ## 2026-07-31 05:14+08:00 V5 168 h 门禁闭合后的下一阶段
 
 实现 `fead34334153eca32bbf7ec3651f3388038ac04b` 已在 clean

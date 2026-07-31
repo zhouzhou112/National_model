@@ -12,6 +12,56 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 10:15+08:00 固定结果查阅环节已实现并通过最终服务器门禁。
+  实现提交为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，最终解释修正为
+  `bdb57b2cb4e3f4781cfd53c087c7cc1a780d73a5`。每个正常完成的运行现在
+  在 result manifest 定稿前自动生成
+  `result_dashboard_summary.json`、`result_analysis_metrics.csv` 与
+  `visualizations/core_result_dashboard.svg`，三项均进入
+  `output_catalog.csv` 和最终 SHA256 `result_manifest.json`。独立脚本
+  `scripts/build_result_dashboard.py` 可在不改动历史结果根的外部目录
+  补充渲染 SVG/PNG/PDF。
+- 本轮结果查阅实现不创建或修改任何 LP 变量、约束、目标系数、输入参数或
+  solver 参数。此前数值稳定化仍保持冷热服务库存、V1G 充电调度、V2G
+  SOC/驾驶取能、付费合同和 firm capacity credit 的既定模式；零控制状态和
+  严格冗余行/列是代数等价消元。需要精确区分的是，数值稳定化里唯一新增的
+  物理不等式为 `charge + discharge <= connected * K_v1g`，用于禁止
+  V1G/V2G 同时重复占用同一签约连接；它不改变服务定义，但确实封闭了原来
+  缺失的共享接入上限，且已有独立 hard QC。
+- 成本强度分母固定为不可变 baseline electricity demand，保证 Base/V5
+  可比，换算恒等式为 `1 million CNY / GWh = 1 CNY/kWh`。8760 h 才允许
+  报告“年化规划成本 + 全年运行成本”的 total system cost intensity；
+  截断门禁只分别报告 annualized-planning intensity 与
+  selected-horizon operating intensity，二者不得相加或称为 LCOE。
+  成本明细会排除 composite `annual_operation` 重复汇总项，并要求详细成本
+  对 objective 的重构残差在容差内，否则 dashboard 生成失败。
+- 本地完整回归在正确 `CISPO_WAVE_ROOT` 下为 `162/162 PASS`；本机当时
+  available RAM `7.64 GiB < 8 GiB`，故没有降低内存门槛或强行启动新本地
+  solver。既有 24 h V5 输出只读复演已在外部目录成功生成 SVG/PNG/PDF。
+  固定服务器在 `bdb57b2` 上运行的最终 2030/V5 1 h 根
+  `/data/zz2/National_model/outputs/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`
+  为 `OPTIMAL + solution_qc=PASS + 58/58`，input/result manifest
+  validator 均为 `(True, [])`，wrapper exit `0`、stderr `0 bytes`、wall
+  `0:39.10`、MaxRSS `597,624 KiB`、swaps `0`。solver runtime
+  `7.352116 s`，Barrier/simplex 为 `96/1,716`，最大
+  constraint/bound/dual violation 为
+  `0/4.441e-16/0`。
+- 最终 dashboard 的规划成本强度为 `0.2003156 CNY/kWh`，所选 1 h
+  运行成本强度为 `0.3141334 CNY/kWh`，全年综合值为 `null`；objective
+  重构残差仅 `-9.779e-9 million CNY`。所选 1 h 全国 baseline/effective
+  peak 都是 `1150.7158 GW`，而 `2.8741 GW` firm credit 来自各省完整
+  8760 h baseline peak windows 与折减率，dashboard 已明确说明两者不能
+  直接比较。冷热状态、EV SOC、V1G/V2G nesting/共享连接、储能、网络、
+  备用、惯量、碳/CCS、梯级水电和成本 hard checks 全部通过。
+- 2026-07-31 10:15 实时复核服务器 checkout clean、无 CISPO/Gurobi
+  进程、available RAM 约 `114 GiB`、swap `780 MiB/2 GiB` 且第二个
+  `vmstat` 样本 `si/so=0/0`、memory PSI 0；ParaCloud
+  `squeue -u a8s001819` 为空。该 1 h 根仍严格标记
+  `TEST_ONLY_TRUNCATED_HORIZON`。结果查阅 bug 已闭合，但它不证明
+  8760 h 可解性；下一次获准的 24/168/更长门禁应直接复用该固定输出环节，
+  不自动启动 744/1008/8760 h、付费云、basis/MGA、并发第二求解或
+  `Crossover=3`。
+
 - 2026-07-31 05:14+08:00 固定服务器数值稳定化门禁已严格闭合。实现提交
   `fead34334153eca32bbf7ec3651f3388038ac04b` 与前一文档 tip
   `22e19c154148fcfcb137d5a7e882ff69abd2b7c8` 已双端推送，服务器 checkout
@@ -443,6 +493,52 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — 固定、scope-aware 的结果数据与图表环节
+
+- Git commits: `336116b493cf92eb461d1a2aab490678fd2dbac5`
+  实现固定结果 dashboard；`bdb57b2cb4e3f4781cfd53c087c7cc1a780d73a5`
+  将 firm flexibility credit 明确标为“full-year provincial peak-window
+  accreditation”，避免与截断时域全国峰值变化混读。
+- Scope/changed files: 新增 `cispo_model/result_dashboard.py`、
+  `scripts/build_result_dashboard.py` 与 `tests/test_result_dashboard.py`；
+  更新 `cispo_model/result_summary.py`、`cispo_model/io_contract.py`、
+  `scripts/run_cispo_2030_full_year.py`、`MODEL_IO_CONTRACT.md` 和
+  `cispo_full_lp_model_spec.md`。自动产物为 JSON、tidy CSV 和无外部依赖
+  SVG；外部重渲染支持 SVG/PNG/PDF。dashboard 在最终 solve report 与 QC
+  已存在后、output catalog/result manifest 之前生成，因此自身也被严格
+  checksummed。
+- Model boundary: dashboard-only 提交对 LP 变量、约束、目标、输入和 solver
+  参数的改动均为零。前一数值稳定化的冷热/EV 服务模式保持不变；其代数
+  等价消元与唯一新增的 V1G/V2G 共享接入功率约束必须分别解释，不能笼统
+  写成“全程没有约束变化”。
+- Verification: 本地完整回归 `162/162 PASS`；既有 24 h V5 输出只读复演
+  的成本重构通过并成功渲染三种格式。本机新求解由未修改的 8 GiB 内存门槛
+  安全阻止。服务器 `336116b` 完整回归同为 `162/162 PASS`，readiness、
+  release、V5 input、hydro audits 均 PASS；最终 `bdb57b2` 聚焦 dashboard
+  回归 `3/3 PASS`。
+- Server command/output:
+  `/home/zz2/.local/envs/cispo-2030/bin/python
+  scripts/run_cispo_2030_full_year.py --planning-year 2030
+  --diagnostic-hours 1 --scenario-config
+  config/scenarios/flex_integrated_v5_central.json --solver-config
+  config/solver_profiles/barrier_16_auto_order_v2.json --output-dir
+  /data/zz2/National_model/outputs/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`。
+  对应控制根为
+  `/data/zz2/National_model/run_control/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`。
+  终态为 `OPTIMAL + PASS + 58/58 + current input + valid result manifest`，
+  wrapper `exit=0/stderr=0/wall=0:39.10/MaxRSS=597624 KiB/swaps=0`。
+- Interpretation/unresolved: 1 h 的 `0.2003156 CNY/kWh` 是用全年 baseline
+  demand 作分母的年化规划成本强度；`0.3141334 CNY/kWh` 是用所选 1 h
+  baseline demand 作分母的运行成本强度。它们时域不同，不能相加，全年
+  total 字段因此强制为 `null`。只有 8760 h accepted scientific run 才会
+  输出可比较的 total system cost intensity；即便如此也不自动等同于文献
+  中边界各异的 LCOE。
+- Exact next action: 保持服务器空闲。下一次经作者选择的 Base/V5
+  24 h、168 h 或更长工程门禁直接使用这一输出合同，并以图表作为固定查阅
+  入口；仍需逐根严格验收 QC/manifest/wrapper，而不是以图片替代审计。
+  不自动启动 744/1008/8760 h、付费云、basis/MGA、并发第二求解或
+  `Crossover=3`。
 
 ### 2026-07-31 — V5 数值修复的固定服务器 1 h/24 h/168 h 严格验收
 

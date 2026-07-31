@@ -1,5 +1,37 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 10:15+08:00 固定结果 dashboard 已部署并闭合
+
+- 结果查阅实现提交为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，
+  最终解释修正为 `bdb57b2cb4e3f4781cfd53c087c7cc1a780d73a5`。
+  dashboard 本身不改变 LP、数据、目标或 solver；冷热、V1G、V2G 与 firm
+  credit 的服务模式保持不变。前一数值稳定化中唯一新增的物理约束仍是
+  V1G/V2G 共享签约连接功率上限，不应与本轮图表改造混为一谈。
+- 本地完整回归 `162/162 PASS`；可用内存 `7.64 GiB < 8 GiB`，没有绕过
+  门槛启动本地 solver。服务器在 `336116b` 上完整回归 `162/162 PASS`，
+  readiness、release、V5 input、hydro audits 均 PASS，常规水电仍为
+  `297.8895 + 82.1105 = 380.0000 GW`；最终 `bdb57b2` 的 dashboard
+  聚焦测试 `3/3 PASS`。
+- 最终服务器根
+  `/data/zz2/National_model/outputs/2030_1h_v0731_dashboard_v5_bdb57b2_server_v1`
+  为 `OPTIMAL + solution_qc=PASS + 58/58`，current input/result manifest
+  均 `(True, [])`，result manifest 的 Git identity 精确为 `bdb57b2`。
+  wrapper exit 0、stderr 0 bytes、wall `0:39.10`、MaxRSS
+  `597,624 KiB`、swaps 0；solver runtime `7.352116 s`，Barrier
+  96、simplex 1,716，最大 constraint/bound/dual violation
+  `0/4.441e-16/0`。
+- `result_dashboard_summary.json`、`result_analysis_metrics.csv` 和
+  `visualizations/core_result_dashboard.svg` 均存在、进入 output catalog，
+  并由最终 result manifest 校验。1 h 的规划/运行成本强度分别为
+  `0.2003156/0.3141334 CNY/kWh`；由于时域不同，全年 total 强制为
+  `null`，不得相加或表述为 LCOE。objective 重构残差为
+  `-9.779e-9 million CNY`。
+- 当前服务器 checkout clean，无 CISPO/Gurobi 进程，available RAM 约
+  114 GiB、swap 780 MiB/2 GiB、实时 `si/so=0`、memory PSI 0；
+  ParaCloud 队列为空。该输出仍是 `TEST_ONLY_TRUNCATED_HORIZON`。
+  下一次获准的门禁直接复用固定 dashboard 合同；不自动启动
+  744/1008/8760 h、付费云、basis/MGA、并发求解或 `Crossover=3`。
+
 ## 2026-07-31 05:14+08:00 V5 168 h 数值稳定化门禁严格通过
 
 - 当前本地/origin/GitHub/固定服务器部署基线均为
