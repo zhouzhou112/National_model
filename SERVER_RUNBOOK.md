@@ -1,5 +1,35 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 13:27+08:00 summer 744 h 唯一启动候选
+
+前置小门禁已经严格闭合：summer 1 h Base v2 与 24 h V5 v2 均为
+`OPTIMAL + PASS + 58/58 + current input + valid result manifest +
+wrapper exit 0/stderr 0`，且时间索引从 model hour 3960 开始。长门禁只能使用：
+
+```text
+output:
+/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1
+
+control:
+/data/zz2/National_model/run_control/2030_744h_v0731_summer_offset_a7c6715_v5_v1
+
+arguments:
+--planning-year 2030
+--diagnostic-start-hour 3960
+--diagnostic-hours 744
+--scenario-config config/scenarios/flex_integrated_v5_central.json
+--solver-config config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json
+```
+
+启动前重新核验 local/origin/GitHub/server HEAD、server clean/idle、
+RAM/swap/`vmstat`/memory PSI、两个目标根不存在和 ParaCloud 空队列。
+必须设置当前 V5 data/CF/hydro/raw-GRFR/wave roots；不得传入
+`--basis-in`。只允许一个 wrapper/Python/Gurobi 链。启动后立即核对
+`run_scope.json` 的 `[3960,4704)` 与北京时戳；PID 存在时只读监控，不切换
+checkout、不启动任何新任务。PID 退出后必须验收 solve/QC/58 hard checks、
+current input/valid result manifests、wrapper stderr/time、dashboard 和全部
+物理/accounting scope。该根始终标记 `TEST_ONLY_TRUNCATED_HORIZON`。
+
 ## 2026-07-31 13:18+08:00 summer 1 h 空 winter bug 恢复点
 
 失败根 `2030_1h_v0731_summer_offset_985983b_base_v1` 必须原样保留且不得

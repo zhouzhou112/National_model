@@ -12,6 +12,38 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 13:27+08:00 summer-offset 恢复链已闭合：固定服务器已部署
+  `11c682076869e30e0ed24db038bf3c12ecdbb1ae`，完整回归 `167/167 PASS`。
+  全新 1 h Base v2 根
+  `/data/zz2/National_model/outputs/2030_1h_v0731_summer_offset_a7c6715_base_v2`
+  达到 `OPTIMAL + solution_qc=PASS + 58/58 + current input + valid result
+  manifest + wrapper exit 0/stderr 0`；`time_index.csv` 精确从 model hour 3960、
+  `2030-06-15 00:00` 开始。solver runtime `4.966 s`，Barrier/simplex
+  `92/1,134`，wall `0:34.02`，MaxRSS `498,444 KiB`，swaps 0。
+- 同起点全新 24 h V5 v2 根
+  `/data/zz2/National_model/outputs/2030_24h_v0731_summer_offset_a7c6715_v5_v2`
+  也达到全部严格接受条件；时间范围为 model hour `[3960,3984)`，
+  `2030-06-15 00:00--23:00`。solver runtime `115.226 s`，Barrier/simplex
+  `243/29,002`，wall `2:38.15`，MaxRSS `962,928 KiB`，swaps 0；Barrier
+  的 sub-optimal warning 由 `Crossover=1` 恢复为 `Optimal`，无
+  `Numerical trouble`，最大 constraint/bound/dual violation 为
+  `3.242e-8/2.980e-11/2.025e-13`。
+- 24 h 夏季 V5 已实质激活 cooling：up/down/net
+  `2.1335/1.6170/+0.5165 GWh`，contracted cooling `6.4145 GW`；
+  storage charge/discharge `187.9103/162.4830 GWh` 且 simultaneous
+  charge/discharge 为 0；EV mobility charge `152.998 GWh`、V1G relocated
+  `43.3376 GWh`，本日最优解 V2G export 为 0。按 `24/8760` 缩放的碳上限
+  `10.958904 MtCO2` binding。selected-horizon effective peak 比 baseline
+  peak 高 `4.985 GW`，不应与基于完整 8760 h 各省峰窗计算的
+  `5.7441 GW` firm credit 直接比较。全部输出仍为
+  `TEST_ONLY_TRUNCATED_HORIZON`。
+- 精确下一步：在再次确认固定服务器 clean/idle、资源正常、目标根不存在且
+  ParaCloud 队列为空后，把服务器 fast-forward 到包含本条记录的精确文档
+  tip；随后只启动一个 model hour `[3960,4704)`、2030-06-15 至
+  2030-07-15 的 V5 744 h cold gate，使用
+  `barrier_16_auto_order_stable_basis_v3.json`、无 basis、无并发。
+  PID 存在时只读监控；不启动 8760 h、付费云、MGA、basis gate 或
+  `Crossover=3`。
 - 2026-07-31 13:18+08:00 首个 summer-offset 1 h Base 在 build 阶段暴露并
   修复空季节索引 bug。失败根
   `/data/zz2/National_model/outputs/2030_1h_v0731_summer_offset_985983b_base_v1`
@@ -599,6 +631,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 - summer-offset 1 h/24 h 恢复门禁严格闭合
+
+- Git: 模型实现 `a7c67153d9b90055b60ed2704ef6bba702086ae4`；恢复记录基线
+  `11c682076869e30e0ed24db038bf3c12ecdbb1ae`。
+- Scope: 部署空 winter CHP 约束修复，执行固定服务器完整回归，并以全新输出根
+  串行重跑 summer hour 3960 的 1 h Base 与 24 h
+  `flex_integrated_v5_central`。
+- Changed files: 本里程碑仅更新 `CODEX_HANDOFF.md`、
+  `MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`；模型改动已在
+  `a7c6715` 记录。
+- Verification: server regression `167/167 PASS`；1 h Base 与 24 h V5
+  均为 `OPTIMAL + PASS + 58/58`，input/result manifest validators 均为
+  `(True, [])`，wrapper exit 0、stderr 0、swaps 0。时间索引分别精确覆盖
+  `[3960,3961)` 与 `[3960,3984)`；24 h cooling、storage 与 EV 服务均按
+  既定 V5 约束闭合，碳上限按实际小时缩放且 binding。
+- Unresolved: 24 h 只证明非首时段切片、夏季服务与短门禁闭合；不能证明 744 h
+  数值稳定、全年可解或年度科学结论。单日 V2G export 为 0 是最优调度结果，
+  仍需在更长窗口观察。
+- Exact next action: 部署本记录 tip 后，按 runbook 启动唯一 summer 744 h V5
+  cold gate；运行期间仅监控，退出后执行完整终态审计。
 
 ### 2026-07-31 — summer 空 CHP 季节索引修复
 

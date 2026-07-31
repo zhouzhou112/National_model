@@ -1,5 +1,31 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 13:27+08:00 summer 1 h/24 h 小门禁已严格接受
+
+- 固定服务器部署 `11c682076869e30e0ed24db038bf3c12ecdbb1ae` 后完整回归
+  `167/167 PASS`。全新 summer 1 h Base v2 与 24 h V5 v2 均达到
+  `OPTIMAL + solution_qc=PASS + 58/58 + current input + valid result
+  manifest + wrapper exit 0/stderr 0`，失败 v1 未复用。
+- 1 h Base v2 solver runtime `4.966 s`、Barrier/simplex `92/1,134`、
+  wall `0:34.02`、MaxRSS `498,444 KiB`、swaps 0；`time_index.csv`
+  从 model hour 3960、`2030-06-15 00:00` 开始。
+- 24 h V5 v2 solver runtime `115.226 s`、Barrier/simplex `243/29,002`、
+  wall `2:38.15`、MaxRSS `962,928 KiB`、swaps 0。Barrier 的
+  sub-optimal warning 由 crossover 恢复为 `Optimal`，无
+  `Numerical trouble`；最大 constraint/bound/dual violation
+  `3.242e-8/2.980e-11/2.025e-13`。
+- 24 h V5 cooling up/down `2.1335/1.6170 GWh`，storage
+  charge/discharge `187.9103/162.4830 GWh` 且无同充同放；EV mobility
+  charge `152.998 GWh`、V1G relocated `43.3376 GWh`、本日 V2G export
+  为 0。缩放碳上限 `10.958904 MtCO2` binding。全部 58 项 hard QC
+  覆盖冷热、EV、wave、水电、PHS/储能、网络、备用、惯量、碳/CCS/BECCS
+  和成本 accounting scope。
+- 下一步只允许部署包含本记录的文档 tip 后启动一个
+  `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`
+  cold gate；窗口 `[3960,4704)`，profile
+  `barrier_16_auto_order_stable_basis_v3.json`，no-basis、
+  no-concurrency。仍禁止 8760 h、付费云、basis/MGA 与 `Crossover=3`。
+
 ## 2026-07-31 13:18+08:00 首个 summer 1 h build failure 已最小修复
 
 - `985983b` 已部署且 server `166/166` regression、readiness、release、
