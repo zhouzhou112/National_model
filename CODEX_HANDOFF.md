@@ -12,6 +12,27 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 13:29+08:00 已获准并启动唯一 summer-offset 2030/V5 744 h
+  cold gate。输出根为
+  `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`，
+  控制根为对应 `run_control` 路径；wrapper/Python PID 初始为
+  `674143/674145`，启动时间 `2026-07-31T13:27:06+08:00`。服务器为 clean
+  `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`，与启动时 local/origin/GitHub
+  一致；运行期间不得切换 checkout。
+- 实时 `run_scope.json` 已确认 model hour `[3960,4704)`、北京时间
+  `2030-06-15 00:00--2030-07-15 23:00`、744 h、V5 central、
+  `TEST_ONLY_TRUNCATED_HORIZON`、annual-flow scaling
+  `744/8760=0.08493150684931507`、no-basis，以及
+  `Crossover=1/CrossoverBasis=1` 的 long-horizon compatibility PASS。
+  13:29 时仍处于模型构建：Python RSS 约 `1.68 GiB`，尚无
+  `build_report/solver_telemetry/gurobi.log`，stderr 0；host available RAM
+  约 `112 GiB`、swap `780 MiB/2 GiB`、第二个 `vmstat si/so=0/0`、
+  memory PSI 0，ParaCloud 队列为空。
+- 当前精确动作是只读监控该唯一任务。PID 退出前不修改服务器 checkout、不启动
+  第二求解；PID 退出后不能凭日志或 Gurobi status 验收，必须执行
+  solve/QC/58 hard checks/current input/valid result manifest/wrapper 与完整
+  物理和 accounting scope 审计。仍禁止 8760 h、付费云、basis/MGA 与
+  `Crossover=3`。
 - 2026-07-31 13:27+08:00 summer-offset 恢复链已闭合：固定服务器已部署
   `11c682076869e30e0ed24db038bf3c12ecdbb1ae`，完整回归 `167/167 PASS`。
   全新 1 h Base v2 根
@@ -631,6 +652,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 - 启动唯一 summer-offset 744 h V5 cold gate
+
+- Git/runtime identity: 启动提交
+  `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`；server clean 且启动时与
+  local/origin/GitHub 一致。
+- Scope: 在通过 summer 1 h Base 与 24 h V5 小门禁后，只启动一个
+  2030/V5 744 h cold gate；没有 basis、并发任务、付费云或后续年份。
+- Changed files: 本条仅更新三份交接文档；求解使用已验证模型实现
+  `a7c67153d9b90055b60ed2704ef6bba702086ae4`。
+- Command: `scripts/run_cispo_2030_full_year.py --planning-year 2030
+  --diagnostic-start-hour 3960 --diagnostic-hours 744 --scenario-config
+  config/scenarios/flex_integrated_v5_central.json --solver-config
+  config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`。
+- Output/control: `2030_744h_v0731_summer_offset_a7c6715_v5_v1` 的固定
+  outputs/run_control 根；wrapper/Python PID 初始为 `674143/674145`。
+- Verification: `run_scope.json` 精确确认 `[3960,4704)`、summer 北京时戳、
+  V5 central、正确缩放、no-basis 和 long-horizon numerical compatibility
+  PASS；启动后 stderr 0、资源无压力、ParaCloud 空。
+- Unresolved/exact next: 当前仍处于 build，尚不能判断 Barrier、Crossover 或
+  终态。只读监控到 PID 退出，再按严格终态合同审计；不得启动任何后续任务。
 
 ### 2026-07-31 - summer-offset 1 h/24 h 恢复门禁严格闭合
 

@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 13:29+08:00 summer 744 h V5 cold gate 正在构建
+
+- 唯一活动输出/控制根均为
+  `2030_744h_v0731_summer_offset_a7c6715_v5_v1`；启动提交为 clean
+  `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`，wrapper/Python PID 初始
+  `674143/674145`，启动于 `2026-07-31T13:27:06+08:00`。
+- 实时 scope 为 model hour `[3960,4704)`，北京时间 2030-06-15 00:00 至
+  07-15 23:00，V5 central、744 h carbon/resource scaling、no-basis、
+  `Crossover=1/CrossoverBasis=1` 均正确。
+- 13:29 仍处于 build，Python RSS 约 `1.68 GiB`；尚无
+  `build_report/solver_telemetry/gurobi.log`，stderr 0。available RAM
+  约 `112 GiB`、swap `780 MiB/2 GiB`、实时 `si/so=0/0`、memory PSI 0，
+  ParaCloud 队列为空。
+- PID 存在时仅监控，不修改服务器 checkout、不启动第二任务。该根仍为
+  `TEST_ONLY_TRUNCATED_HORIZON`；终态必须执行完整严格审计。
+
 ## 2026-07-31 13:27+08:00 summer 1 h/24 h 小门禁已严格接受
 
 - 固定服务器部署 `11c682076869e30e0ed24db038bf3c12ecdbb1ae` 后完整回归

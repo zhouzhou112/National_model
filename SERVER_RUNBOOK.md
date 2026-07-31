@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 13:29+08:00 summer 744 h 活动运行监控点
+
+活动根为 `2030_744h_v0731_summer_offset_a7c6715_v5_v1`，server checkout
+固定在 `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`。初始 wrapper/Python
+PID 为 `674143/674145`，`run_scope.json` 已确认 `[3960,4704)` 与正确北京
+时戳。PID 存在时执行以下只读合同：
+
+1. 每次重新核验 local/origin/GitHub HEAD，并确认 server 仍为 clean 启动提交；
+2. 核对唯一 wrapper/Python/Gurobi 链、`solver_telemetry.jsonl`、
+   `gurobi.log`、RAM/swap/两个 `vmstat` 样本/memory PSI；
+3. 核对 `solve_report.json`、`solution_qc.json`、`result_manifest.json`
+   是否出现，但不得在 PID 存在时据中间文件宣告接受；
+4. 核对 ParaCloud `squeue -u a8s001819` 仍为空；
+5. 不切换 checkout，不启动 8760 h、第二求解、付费云、basis/MGA 或
+   `Crossover=3`。
+
+PID 退出后按下一节的完整终态合同审计。若 build 阶段退出，保留根并精确诊断；
+若进入 solver，则同时判定 Barrier/Crossover、数值稳定性与最终 artifacts。
+
 ## 2026-07-31 13:27+08:00 summer 744 h 唯一启动候选
 
 前置小门禁已经严格闭合：summer 1 h Base v2 与 24 h V5 v2 均为
