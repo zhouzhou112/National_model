@@ -12,6 +12,76 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 12:45+08:00 当前输出语义修复与匹配 24 h/168 h
+  Base--V5 门禁已在固定服务器闭合。当前本地、`origin`、GitHub 与服务器
+  checkout 一致为 clean task identity
+  `ae3356391ec55376b041d6a356ea2d1f26be88bc`；本地工作树仍仅保留用户拥有的
+  `supplementary_materials/**`、`.codex_tmp/**` 等无关改动。该提交把
+  service-constrained V4/V5 不适用的旧式
+  `maximum_ev_v1g_daily_energy_residual_gwh` 显式输出为 `null`，新增
+  applicability 字段，并修正 dashboard 对严格零与小于 0.001 GWh 数值的
+  显示；没有改变 LP 变量、约束、目标、输入或 solver 参数。
+- 本地与服务器完整回归均为 `165/165 PASS`；readiness、release contract、
+  V5 input 与水电审计全部 PASS。常规水电仍精确闭合为
+  `297.8895 + 82.1105 = 380.0000 GW`。本机 available RAM 约
+  `7.91 GiB < 8 GiB`，故没有降低门槛或强行在 Windows 本机启动 solver。
+- 当前提交的 2030/24 h Base 与 V5 production-profile 根分别为
+  `/data/zz2/National_model/outputs/2030_24h_v0731_ae33563_base_v2prod_v1`
+  和
+  `/data/zz2/National_model/outputs/2030_24h_v0731_ae33563_v5_v2prod_v1`。
+  两根均为 `OPTIMAL + solution_qc=PASS + 58/58 + current input +
+  valid result manifest + wrapper exit 0/stderr 0`；solver runtime 为
+  `407.321/420.232 s`，整轮 wall 为 `7:28.51/7:44.38`，peak
+  process-tree RSS 为 `0.761/0.794 GiB`。V5 相对 Base 的 24 h solver
+  增量约 3.2%，没有出现新增的数值爆炸。
+- 当前 2030/168 h 匹配根为
+  `/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_base_v2prod_v1`、
+  `/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_base_v3stable_v1`
+  与
+  `/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_v5_v3stable_v1`。
+  三根全部达到 `OPTIMAL + PASS + 58/58 + current input + valid result
+  manifest + wrapper exit 0/stderr 0`。Base v2、Base v3、V5 v3 的 solver
+  runtime 分别为 `907.672/917.121/1024.510 s`，wall 为
+  `16:54.30/17:03.75/18:54.89`，peak process-tree RSS 为
+  `3.336/3.328/3.508 GiB`；Barrier/simplex 分别为
+  `213/211003`、`213/185333`、`232/258814`。Base v2/v3 objective
+  仅差 `2.9e-7 million CNY`，证明 `CrossoverBasis=1` 没有改变科学解。
+- 结构压缩 V5 的 168 h optimize() 仍由代码合同要求
+  `CrossoverBasis=1`。一次显式的 V5/v2 尝试在求解前按预期被 guard
+  拒绝，控制根
+  `/data/zz2/National_model/run_control/2030_168h_v0731_ae33563_v5_v2prod_v1`
+  记录 `exit=1`、wall `0:09.41` 与精确 RuntimeError；它不是失败求解或
+  可接受结果，不得补写 result manifest。V5 的可用长时段候选仍是
+  `barrier_16_auto_order_stable_basis_v3`，尚未自动晋升为全年
+  production profile。
+- 同 profile 的 168 h V5 相对 Base：objective 降低
+  `298.097 million CNY`，bio/coal/gas 发电容量合计减少约
+  `2.915 GW`，对应保守 firm-flex credit `2.891320 GW`；所选窗口全国
+  effective peak 下降 `1.663365 GW`。adequacy 仍以完整 8760 h immutable
+  baseline peak 为基准，只允许折减 firm credit，不直接以 effective peak
+  降容。V5 的物理 EV fleet 充电 `756.192 GWh`、V1G relocated
+  `193.242 GWh`、V2G export `1.178 GWh`；兼容字段
+  `ev_v2g_charge_gwh=0` 在 V5 明确不适用，能量由同一 fleet SOC 与
+  mobility charging 闭合，SOC transition residual 为
+  `2.537e-13 GWh`。
+- 冷热、EV、wave、水电/梯级、PHS/储能、网络、备用、惯量、碳/CCS/BECCS
+  与成本 accounting scope 均通过 hard QC。电池/PHS 在 168 h 内均有非零
+  充放电且同充同放为零；水电 380 GW 闭合；网络对冲流与 DC 反向流为零；
+  碳上限按 `168/8760` 缩放至 `76.712329 MtCO2` 并 binding；objective
+  component residual 为 `-1.774e-7 million CNY`。wave 已启用但本窗口
+  最优装机/发电为零，不是缺少输入。需保留两项解释边界：首周冬季没有实际
+  冷热移峰，但广东 cooling 合同仍从完整全年峰窗获得 `0.3044 GW` firm
+  credit；梯级水文审计虽代数闭合，raw negative-local-inflow clipping
+  等价水量仍为 `974.405 million m3`、实际 routed adjustment 为
+  `669.451 million m3`，属于后续科学数据敏感性而非本轮 solver bug。
+- 终态实时复核：服务器 clean `ae33563`、无 CISPO/Gurobi 进程、available
+  RAM 约 `114 GiB`、swap `780 MiB/2 GiB`、第二个 `vmstat` 样本
+  `si/so=0/0`、memory PSI 0；ParaCloud `squeue -u a8s001819` 为空。
+  所有 24 h/168 h 根仍严格标记 `TEST_ONLY_TRUNCATED_HORIZON`。精确下一步
+  是由作者决定是否在 `stable_basis_v3` 上运行全新、串行的四年 168 h
+  Base/V5 sequence，或据此批准单一更长门禁；本里程碑不自动启动
+  744/1008/8760 h、付费云、basis/MGA、并发第二求解或 `Crossover=3`。
+
 - 2026-07-31 10:15+08:00 固定结果查阅环节已实现并通过最终服务器门禁。
   实现提交为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，最终解释修正为
   `bdb57b2cb4e3f4781cfd53c087c7cc1a780d73a5`。每个正常完成的运行现在
@@ -493,6 +563,38 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — 输出语义修复与 24 h/168 h Base--V5 匹配门禁
+
+- Git/changed files: `ae3356391ec55376b041d6a356ea2d1f26be88bc`
+  更新 `cispo_model/solution_export.py`、`cispo_model/result_dashboard.py`、
+  `tests/test_solution_qc_semantics.py`、`tests/test_result_dashboard.py`、
+  `MODEL_IO_CONTRACT.md` 与 `cispo_full_lp_model_spec.md`。修改仅涉及
+  QC/展示语义：V4/V5 的旧 V1G daily-energy residual 标为不适用，
+  dashboard 区分精确零和小于 0.001 GWh 的非零量；LP 与 solver 配置不变。
+- Commands/verification: 本地和服务器均运行
+  `python -m unittest discover -s tests -p 'test_*.py' -v`，结果
+  `165/165 PASS`；服务器另运行 readiness、release、V5 input 与 hydro
+  audits，全部 PASS。服务器按串行、cold、no-basis 运行当前快照中的两根
+  24 h 与三根 168 h；每个有效根均为
+  `OPTIMAL + PASS + 58/58 + current input + valid result manifest +
+  wrapper exit 0/stderr 0`。V5/v2 的 168 h 尝试由预期 guard 在 optimize
+  前拒绝，作为合同证据保留，不重标为 solver result。
+- Evidence: 24 h Base/V5 solver 为 `407.321/420.232 s`；168 h
+  Base-v2/Base-v3/V5-v3 为 `907.672/917.121/1024.510 s`。V5-v3 最大
+  constraint/bound/dual violation 为
+  `8.339e-8/2.609e-8/6.047e-8`，peak process-tree RSS `3.508 GiB`，
+  swaps 0。Base-v2/v3 objective 在 `2.9e-7 million CNY` 内一致。
+- Scientific audit: 168 h V5 的容量变化、firm credit、EV fleet SOC、
+  PHS/储能、水电 380 GW、网络方向、可靠性、碳/CCS/BECCS 与成本闭合均
+  通过。未发现凭空 V2G 能量或以 selected-horizon effective peak 直接
+  降容。首周冷热未实际调度却存在全年峰窗 cooling credit，以及非零梯级
+  negative-inflow clipping 水量，均已登记为截断解释/后续科学敏感性。
+- Unresolved/exact next action: `stable_basis_v3` 已有匹配 2030 Base/V5
+  168 h 工程证据，但 V5 `Kappa≈1.62e10`，不能据此宣称 8760 h 可解或把
+  168 h 价值外推全年。保持服务器空闲；下一步由作者选择全新四年 168 h
+  Base/V5 sequence 或一个明确命名的更长测试。继续禁止自动启动
+  8760 h、付费云、basis/MGA、并发第二求解与 `Crossover=3`。
 
 ### 2026-07-31 — 固定、scope-aware 的结果数据与图表环节
 

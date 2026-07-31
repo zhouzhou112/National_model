@@ -1,5 +1,43 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 12:45+08:00 当前提交的 24 h/168 h 匹配门禁闭合
+
+- 当前本地、`origin`、GitHub 与固定服务器任务身份均为
+  `ae3356391ec55376b041d6a356ea2d1f26be88bc`；服务器 checkout clean。
+  本地/服务器完整回归均 `165/165 PASS`，服务器 readiness、release、
+  V5 input 与 hydro audits 全部 PASS，水电容量为
+  `297.8895 + 82.1105 = 380.0000 GW`。本机 `7.91 GiB < 8 GiB`，未绕过
+  内存门槛启动 Windows solver。
+- 当前提交的 24 h Base/V5 production-profile 根均为
+  `OPTIMAL + PASS + 58/58 + current input + valid result manifest +
+  wrapper exit 0/stderr 0`。solver runtime `407.321/420.232 s`，
+  wall `7:28.51/7:44.38`，RSS `0.761/0.794 GiB`。
+- 168 h Base-v2、Base-v3、V5-v3 三根也全部严格接受。solver runtime
+  `907.672/917.121/1024.510 s`，wall
+  `16:54.30/17:03.75/18:54.89`，RSS `3.336/3.328/3.508 GiB`，
+  Barrier/simplex `213/211003`、`213/185333`、`232/258814`。
+  Base 两 profile 的 objective 仅差 `2.9e-7 million CNY`。
+- V5 168 h 使用
+  `config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`。
+  production-v2 尝试在 optimize 前被既有 guard 正确拒绝，控制根
+  `/data/zz2/National_model/run_control/2030_168h_v0731_ae33563_v5_v2prod_v1`
+  记录 `exit=1` 与 RuntimeError；无 solve/QC/manifest，不是求解失败根。
+- 同 profile V5 相对 Base objective `-298.097 million CNY`，发电容量
+  `-2.915 GW`，firm credit `2.891320 GW`，所选窗口 effective peak
+  `-1.663365 GW`。adequacy 仍使用完整 8760 h immutable baseline peak，
+  未直接使用 effective peak 降容。V5 EV fleet charge/V1G relocated/V2G
+  export 为 `756.192/193.242/1.178 GWh`；周期 SOC 与驾驶取能闭合。
+- 全部 58 项 hard QC 覆盖冷热/EV、wave、水电/梯级、PHS/储能、网络、
+  备用、惯量、碳/CCS/BECCS 与成本。碳限额 `76.712329 MtCO2` binding；
+  objective residual `-1.774e-7 million CNY`。截断解释边界仍包括：
+  冬季首周无冷热实际移峰却存在全年峰窗 cooling credit；水文 raw clip
+  等价量 `974.405 million m3`，需后续科学敏感性。
+- 终态服务器无 CISPO/Gurobi，available RAM 约 `114 GiB`，swap
+  `780 MiB/2 GiB`、`si/so=0`、memory PSI 0；ParaCloud 队列为空。
+  全部结果仍为 `TEST_ONLY_TRUNCATED_HORIZON`。下一步由作者决定四年
+  168 h Base/V5 sequence 或单一更长门禁；不自动启动 744/1008/8760 h、
+  付费云、basis/MGA、并发第二求解或 `Crossover=3`。
+
 ## 2026-07-31 10:15+08:00 固定结果 dashboard 已部署并闭合
 
 - 结果查阅实现提交为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，

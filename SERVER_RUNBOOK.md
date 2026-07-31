@@ -1,5 +1,56 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 12:45+08:00 `ae33563` 匹配门禁后的执行边界
+
+当前严格验证身份为
+`ae3356391ec55376b041d6a356ea2d1f26be88bc`，数据根为
+`/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。
+服务器 `165/165` regression、readiness、release、V5 input、hydro
+audits 均 PASS。当前可复用的严格根为：
+
+```text
+/data/zz2/National_model/outputs/2030_24h_v0731_ae33563_base_v2prod_v1
+/data/zz2/National_model/outputs/2030_24h_v0731_ae33563_v5_v2prod_v1
+/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_base_v2prod_v1
+/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_base_v3stable_v1
+/data/zz2/National_model/outputs/2030_168h_v0731_ae33563_v5_v3stable_v1
+```
+
+五根均满足 `OPTIMAL + solution_qc=PASS + 58/58 + current input +
+valid result manifest + wrapper exit 0/stderr 0`。V5 的长链结构在
+`diagnostic-hours >= 168` 时仍必须使用 `Crossover=1` 且
+`CrossoverBasis=1`；不要用 `barrier_16_auto_order_v2` 绕过 guard。
+对应的预优化拒绝根
+`/data/zz2/National_model/run_control/2030_168h_v0731_ae33563_v5_v2prod_v1`
+只保留为合同证据，不得补写 solve/QC/manifest。
+
+后续执行固定规则：
+
+1. 每次先实时核验四端 Git、服务器 clean/idle、RAM/swap/`vmstat`/PSI、
+   目标根不存在和 ParaCloud 队列；严格串行，不复用失败根。
+2. Base 可以用 `barrier_16_auto_order_v2` 或匹配诊断用
+   `barrier_16_auto_order_stable_basis_v3`；长时段 V5 只能用后者，直到
+   新证据和代码合同共同完成 production 晋级。两者都保持
+   `Crossover=1`，禁止 `Crossover=3`。
+3. 每根必须验收 solve/QC、当前 input/result manifests、wrapper
+   stderr/time/RSS/swap、dashboard，以及冷热、EV fleet SOC、firm credit、
+   wave、水电/梯级、PHS/储能、网络、备用、惯量、碳/CCS/BECCS和成本。
+4. 截断时域 adequacy 的 firm credit 来自完整 8760 h immutable baseline
+   peak windows；selected-horizon effective peak 只用于诊断。冬季 168 h
+   可出现“实际 cooling shift 为零但全年峰窗 cooling credit 非零”，禁止
+   把它表述为已验证的年度价值。
+5. V5 的 `ev_v2g_charge_gwh` 是旧兼容字段，在单一物理 fleet SOC 下为零；
+   能量审计读取 `ev_mobility_charge_gwh`、`ev_mobility_discharge_gwh`、
+   SOC transition、departure、功率上限和 periodic boundary，不能把兼容
+   字段误判为凭空放电。
+6. 水电工程门禁要求 380 GW、aggregate monthly budget 与 cascade
+   reconciliation 全部通过；同时单独登记 raw negative-local-inflow clip
+   与 routed adjustment。它们非零时，工程 PASS 不等于水文敏感性已闭合。
+7. 当前可选下一步是全新四年 168 h Base/V5 sequence，或经作者明确批准的
+   一个更长门禁。全部截断根仍是 `TEST_ONLY_TRUNCATED_HORIZON`。本节不
+   授权自动启动 744/1008/8760 h、付费云、basis/MGA、并发第二求解或
+   `Crossover=3`。
+
 ## 2026-07-31 10:15+08:00 每轮固定结果数据与图表合同
 
 实现身份为 `336116b493cf92eb461d1a2aab490678fd2dbac5`，解释修正为
