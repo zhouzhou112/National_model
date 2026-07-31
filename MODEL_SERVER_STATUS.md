@@ -1,5 +1,32 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-01 05:52+08:00 reservoir-native Base 744 h 已 TIME_LIMIT；V5 未启动
+
+- 当前 local/origin/GitHub/server 均为
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`；固定服务器 branch
+  `codex/cispo-2030-full-lp`、worktree clean、无 CISPO/Gurobi 进程。
+- Base 输出根
+  `/data/zz2/National_model/outputs/2030_744h_v0731_reservoir_native_ub_7a1520e_base_stablebasis_v1`
+  已结束。`solve_report.json` 为 `TIME_LIMIT/status_code=9`、`SolCount=0`、
+  solver `21,601.01 s`；wrapper exit 2、wall `6:05:29`、stderr 0、MaxRSS
+  `19,702,352 KiB`、process swaps 0。
+- Barrier 为 218 iterations/`6,900.02 s`/objective `2,352,092.16 million CNY`；
+  Crossover 重启后 push phase 仍有 `PInf=6.459046`、`DInf=1.0102534e5`，
+  cleanup 报告 basis variable drop 与 quad precision，最终 crossover
+  `14,528.04 s`、746,438 simplex iterations，并把 Barrier `Optimal` 改为
+  `TIME_LIMIT`。
+- `input_manifest.csv` 当前且 validator 为 `(True, [])`，SHA256
+  `99842464c22371d15e757bcc6db76490060a74bbb944961ed1be6cbdef40d6e4`；无
+  `solution_qc.json`，故 58 项 solution hard checks 未执行；无
+  `result_manifest.json`，validator 返回 missing。所有解后 physics/accounting
+  输出均未形成，不能审计或解释。
+- 候选 V5 输出/控制根均不存在，不得启动。Base 自身已复现同类 crossover
+  blocker，说明它不是 V5 独有问题。available RAM 约 `114 GiB`、系统 swap
+  `447 MiB/2 GiB`、实时 `si/so=0/0`、memory PSI 0，ParaCloud 队列为空。
+- 下一步只允许保留失败根并做 shared-core 数值诊断；重新通过匹配
+  1 h/24 h/168 h Base/V5 门禁前，不运行新的 744 h。继续禁止 8760 h、付费云、
+  并发、basis/MGA 与 `Crossover=3`。
+
 ## 2026-07-31 20:41+08:00 summer 744 h 已 TIME_LIMIT；nonbasic 修复待部署
 
 - 旧活动根

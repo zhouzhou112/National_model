@@ -1,5 +1,38 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-01 reservoir-native Base 744 h 失败后的恢复边界
+
+Base 根
+`/data/zz2/National_model/outputs/2030_744h_v0731_reservoir_native_ub_7a1520e_base_stablebasis_v1`
+已以 `TIME_LIMIT + SolCount=0 + wrapper exit 2` 终止。Barrier 在 218 iterations、
+`6,900.02 s` 报告 interior optimal，但 `Crossover=1/CrossoverBasis=1` 的
+cleanup 经 basis variable drop、quad precision 与 746,438 simplex iterations 后，
+在总 solver `21,601.01 s` 超时。无 `solution_qc.json`、58 项 solution hard
+checks、`result_manifest.json` 或解后物理/成本输出。current input manifest 有效。
+
+当前执行边界固定为：
+
+1. 原样保留上述 output/control 根；禁止 resume、删除、补写 QC/manifest、从
+   Barrier interior point 手工导出结果或把日志中的 `Optimal objective` 重标为
+   可接受解。
+2. 候选 V5 根 `2030_744h_v0731_reservoir_native_ub_7a1520e_v5_stablebasis_v1`
+   未创建且不得启动。Base 已复现 shared-core crossover blocker，因此先诊断
+   basic-solution 数值路径，不把问题归因于 V5，也不把 V5 视为已验证。
+3. 后续修改必须以 `7a1520e` 为可追溯起点，明确区分数学等价 bound tightening、
+   solver profile 和科学约束变更。不得仅增加 TimeLimit、放松 primal/dual/QC、
+   启用 `Crossover=3` 或删除物理约束来绕过失败。
+4. 任一新候选先运行完整 regression/readiness/release/input/hydro audits，再在
+   全新根串行通过同窗 1 h、24 h、168 h Base/V5；每根仍要求
+   `OPTIMAL + solution_qc=PASS + 58/58 + current input + valid result manifest +
+   wrapper exit 0/stderr 0`。短门禁只能证明工程可运行，不能代替 744 h 证据。
+5. 只有作者审查新方案且上述成对门禁全部闭合后，才可重新申请 Base 744 h；
+   Base 接受后才允许 V5 744 h，绝不并发。所有截断根继续标记
+   `TEST_ONLY_TRUNCATED_HORIZON`。
+
+仍禁止固定服务器 8760 h、付费云、basis/MGA、并发第二求解和
+`Crossover=3`。当前服务器 clean/idle、资源正常、ParaCloud 空队列，不构成
+自动启动任何新任务的授权。
+
 ## 2026-07-31 20:41+08:00 strict nonbasic 部署与同窗 Base/V5 门禁
 
 旧 summer V5 744 h 已以 `TIME_LIMIT + SolCount=0` 结束；不得 resume、补写

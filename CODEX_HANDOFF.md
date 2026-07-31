@@ -12,47 +12,46 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-07-31 20:41+08:00：summer-offset 2030/V5 744 h 根
-  `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`
-  已正式终止为 `TIME_LIMIT`，不是活动任务，也不是可接受解。Barrier 在
-  233 iterations、`7,414.52 s` 达到其内点最优点；随后 Crossover/simplex
-  共消耗到 `21,600.80 s`，其中 `Crossover time=13,917.15 s`，终态
-  `status=TIME_LIMIT`、`SolCount=0`、1,069,484 simplex iterations。
-  `solution_qc.json` 与 `result_manifest.json` 均不存在；wrapper exit `2`、
-  wall `6:05:39`、MaxRSS `22,364,408 KiB`、swaps 0、stderr 0。该根必须原样
-  保留为 Crossover 工程失败证据。
-- 当前修复实现提交为 `8de7a8e5bf4712bac30472fc4a564f47462fd9cd`。
-  它没有改变冷热、V1G、V2G、effective-load、可靠性或成本方程；新增的
-  `barrier_16_nonbasic_primal_dual_v1` 仅是 Gurobi 13+ 诊断候选，要求
-  `Method=2/Crossover=0/SolutionTarget=1/BarConvTol=1e-10`、`OPTIMAL`、
-  严格 primal/dual quality PASS，并以 `BarPi` 导出 dual。该路线禁止 basis、
-  scientific `.bas` 与 MGA；任何未接受 solver result 均不再导出完整科学结果、
-  dashboard、planning state 或 result manifest。
-- annual load-center proxy 的双向 QC 仅将每条边不超过 `0.0001 GWh`
-  （0.1 MWh）的 opposing flow 认定为数值尘埃，同时输出最大值和总量；超过
-  阈值仍硬失败。省际逐小时方向性、物理约束与 LP 目标未放松。首个本地 1 h
-  nonbasic Base 失败根的最大/总 opposing flow 仅为
-  `1.1481e-5/9.1083e-4 GWh`；阈值化后的全新 1 h Base/V5 均达到
-  `OPTIMAL + solution_qc=PASS + 58/58 + BarPi available + valid result manifest`。
-- 本机 Gurobi 12.0.1 的同候选在夏季 24 h Base 返回 `SUBOPTIMAL`，严格
-  solution contract 已判 `HARD_FAIL`；其错误反缩放属性不允许导出。profile
-  已因此设置最低 Gurobi major version 13。正确设置 `CISPO_WAVE_ROOT` 后，
-  当前完整本地回归为 `169/169 PASS`。
-- 20:41 实时状态：local HEAD 为 `8de7a8e`；origin/GitHub 仍为
-  `12ce1ce8554325a61bc9ea7a34242e4f4032219a`，等待本次文档提交后一并推送。
-  固定服务器 checkout 为 clean `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`，
-  无 CISPO/Gurobi/National_model 进程；available RAM 约 `114 GiB`，swap
-  `447 MiB/2 GiB`，实时 `vmstat si/so=0/0`、memory PSI 0；ParaCloud
-  `squeue -u a8s001819` 为空。
-- 精确下一步：提交并双端推送本记录；再次核验四端与服务器 idle/clean 后，
-  fast-forward 到文档 tip，在服务器 Gurobi 13.0.2 上先运行完整回归与输入审计，
-  再串行运行同一 summer window（start hour 3960）的 1 h、24 h Base/V5
-  nonbasic 门禁。任一门禁不是 `OPTIMAL + PASS + 58/58 + current input +
-  valid manifest + wrapper exit 0/stderr 0` 即拒绝该候选，不启动 744 h。
-  24 h 成对闭合后才运行成对 168 h；168 h 闭合后才依次运行 Base 744 h、
-  V5 744 h，绝不并发。所有截断结果继续标记
-  `TEST_ONLY_TRUNCATED_HORIZON`；仍禁止 8760 h、付费云、basis/MGA 与
-  `Crossover=3`。
+- 2026-08-01 05:52+08:00：当前四端与固定服务器 checkout 均为
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，branch
+  `codex/cispo-2030-full-lp`；服务器 worktree clean、无 CISPO/Gurobi 进程。
+  该实现包含 `e004703` 的 reservoir/VRE/thermal/storage bound tightening 与
+  `7a1520e` 的 reservoir storage native-bound 编码；本轮没有 basis、并发任务、
+  付费云或后续年份。
+- summer-offset 2030 Base 744 h 根
+  `/data/zz2/National_model/outputs/2030_744h_v0731_reservoir_native_ub_7a1520e_base_stablebasis_v1`
+  已正式终止为 `TIME_LIMIT`，不是可接受解。窗口为 model hour
+  `[3960,4704)`、北京时间 `2030-06-15 00:00--2030-07-15 23:00`，scenario
+  为 `base`，solver 为 `barrier_16_auto_order_stable_basis_v3`，并严格标记
+  `TEST_ONLY_TRUNCATED_HORIZON`。
+- Barrier 在 218 iterations、`6,900.02 s` 报告 interior optimal objective
+  `2,352,092.16 million CNY`；末行 primal/dual infeasibility 与
+  complementarity 为 `1.48e-4/1.69e-8/1.74e-9`。随后 crossover 重启，push
+  phase 在 `10,249 s` 以 `PInf=6.459046`、`DInf=1.0102534e5` 结束；simplex
+  cleanup 在 iteration 721,237 出现 `PInf=1.4119e-2`、`DInf=6.1797e19`，
+  Gurobi 报告一个变量从 basis 丢弃并切换 quad precision。最终
+  `Crossover time=14,528.04 s`、746,438 simplex iterations、solver
+  `21,601.01 s`，状态从 Barrier `Optimal` 变为 `TIME_LIMIT`，`SolCount=0`。
+- 严格终态审计结论为拒绝：`solve_report.json.status=TIME_LIMIT`；无
+  `solution_qc.json`，因此 58 项 solution hard checks 未执行而不是通过；无
+  `result_manifest.json`、dashboard、科学结果表或 planning state。当前
+  `input_manifest.csv` validator 为 `(True, [])`，SHA256 为
+  `99842464c22371d15e757bcc6db76490060a74bbb944961ed1be6cbdef40d6e4`；result
+  validator 明确返回 `result_manifest.json is missing`。wrapper exit `2`、
+  stderr 空、wall `6:05:29`、MaxRSS `19,702,352 KiB`、process-tree peak
+  `18.667 GiB`、process swaps 0。由于无解，冷热、EV、wave、水电、PHS/储能、
+  网络、备用、惯量、碳/CCS/BECCS 与成本 accounting 只能确认 build/preflight
+  scope 存在，不能完成解后审计或作科学解释。
+- 同窗 Base 在不启用灵活负荷时仍复现 crossover 失败，说明该 744 h blocker
+  不依赖 V5 新增灵活性方程；但这不证明 V5 已通过。候选 V5 输出/控制根均未创建，
+  且不得启动。服务器 available RAM 约 `114 GiB`、swap `447 MiB/2 GiB`、实时
+  `vmstat si/so=0/0`、memory PSI 0；ParaCloud 队列为空，故终止不是 RAM、swap
+  或外部并发造成。
+- 精确下一步：原样保留 Base 失败根，停止当前 Base→V5 串行门禁；不得 resume、
+  补写 QC/manifest 或启动 V5/8760 h/付费云/basis/MGA/`Crossover=3`。下一轮
+  代码工作必须先针对 shared-core crossover 数值路径形成可审查方案，在全新根上
+  重新通过 1 h/24 h/168 h 的匹配 Base/V5 门禁与当前 manifests，再由作者批准
+  是否重跑 744 h；不能仅提高 TimeLimit 后直接放大。
 
 ## Superseded current-snapshot archive (through 2026-07-31 16:49+08:00)
 
@@ -719,6 +718,32 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-01 - reservoir native bounds 后同窗 Base 744 h 终态拒绝
+
+- Git/runtime identity: `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，包含
+  `e004703` 与 `7a1520e` 的等价 bound tightening；branch
+  `codex/cispo-2030-full-lp`，终态复核时 local/origin/GitHub/server 四端一致，
+  server clean/idle。
+- Scope/command: 只运行 summer hour `[3960,4704)` 的 2030 Base，命令为
+  `scripts/run_cispo_2030_full_year.py --planning-year 2030
+  --diagnostic-start-hour 3960 --diagnostic-hours 744 --scenario-config
+  config/scenarios/base.json --solver-config
+  config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`；无 basis、无
+  V5、无并发或后续年份。
+- Terminal evidence: Barrier 218 iterations/`6,900.02 s`；crossover
+  `14,528.04 s`，发生 basis variable drop、quad precision 与大幅 primal/dual
+  振荡；最终 `TIME_LIMIT + SolCount=0`、746,438 simplex iterations、wrapper
+  exit 2/wall `6:05:29`/stderr 0/process swaps 0。
+- Contract audit: current input manifest validator `(True, [])`；无 QC，故 58 项
+  solution hard checks 未运行；无 valid result manifest 或解后模块输出。该根为
+  `TEST_ONLY_TRUNCATED_HORIZON` 且严格拒绝，不能用于容量、成本或物理结论。
+- Changed files: `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、
+  `SERVER_RUNBOOK.md`；未触碰用户拥有的 `supplementary_materials/**`、
+  `.codex_tmp/**` 或历史 outputs。
+- Unresolved/exact next action: Base 已证明 shared-core basic crossover 本身仍是
+  744 h blocker；不得启动候选 V5。先形成并验证新的数值恢复方案，重过匹配的
+  1 h/24 h/168 h Base/V5 门禁后，再单独申请 744 h 重跑授权。
 
 ### 2026-07-31 - Crossover 失败闭合与 strict nonbasic 诊断合同
 
