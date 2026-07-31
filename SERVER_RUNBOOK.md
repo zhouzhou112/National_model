@@ -1,5 +1,35 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 13:10+08:00 非年初 summer-offset 门禁执行合同
+
+实现身份为 `077bce0eca16b1025130143122aee0a05559c3e0`。夏季窗口只能
+使用显式参数：
+
+```text
+--diagnostic-start-hour 3960 --diagnostic-hours 744
+```
+
+这对应 2030-06-15 00:00 至 2030-07-15 23:00。不得用
+`--horizon one_month` 冒充该窗口，因为后者仍从 hour 0 开始。执行顺序：
+
+1. 实时核验四端 HEAD、server checkout clean、无 CISPO/Gurobi、资源正常、
+   新输出/控制根不存在、ParaCloud 队列为空；任一不满足即停止。
+2. fast-forward 到同时存在于 origin/GitHub 的精确文档 tip，并设置当前
+   V5 data/CF/hydro/wave roots。运行完整 regression、readiness、release、
+   V5 input 与 hydro audits。
+3. 串行运行 summer hour 3960 的 1 h Base cold gate；严格接受后运行
+   同起点 24 h V5 cold gate。每根必须满足
+   `OPTIMAL + solution_qc=PASS + 58/58 + current input + valid result
+   manifest + wrapper exit 0/stderr 0`，并核对 `time_index.csv` 的
+   `model_hour_index`、北京时间、冷热/EV/wave/水电/储能/网络/安全/碳与成本。
+4. 两个小门禁全部接受后，启动唯一 2030/V5 744 h cold gate，solver 为
+   `barrier_16_auto_order_stable_basis_v3.json`，无 `--basis-in`、无并发。
+   监控 Barrier/Crossover、telemetry、RAM/swap/vmstat/PSI；PID 存在时只读。
+5. PID 退出后按完整终态合同审计 solve/QC/58 hard checks/manifests/wrapper、
+   dashboard 与全部物理 accounting scope。744 h 始终标为
+   `TEST_ONLY_TRUNCATED_HORIZON`。不自动继续四年、8760 h、付费云、
+   basis/MGA 或 `Crossover=3`。
+
 ## 2026-07-31 12:45+08:00 `ae33563` 匹配门禁后的执行边界
 
 当前严格验证身份为

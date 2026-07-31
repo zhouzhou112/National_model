@@ -1,5 +1,23 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 13:10+08:00 summer-offset 744 h 候选待部署
+
+- 实现提交 `077bce0eca16b1025130143122aee0a05559c3e0` 为诊断 runner
+  增加一致的非年初连续窗口合同；不改变冷热、V1G、V2G、firm credit、
+  年度流量缩放或 solver 科学边界。夏季 744 h 定义为 model hour
+  `[3960,4704)`，对应 2030-06-15 00:00 至 2030-07-15 23:00。
+- 本地完整回归在正确 wave 根下为 `166/166 PASS`；窗口数据核验 cooling
+  为 `147,056.322 GWh`，显著高于年初 744 h 的 `68.469 GWh`。该证据只
+  说明测试覆盖更强，不构成结果接受。
+- 当前服务器尚未部署该提交，也尚未启动新任务。部署前必须重新核验
+  本地/origin/GitHub/server HEAD、server clean/idle、RAM/swap/vmstat/PSI、
+  目标根不存在与 ParaCloud 空队列。部署后先串行运行 1 h Base 和 24 h V5
+  offset gates；两根严格接受后才允许一个 2030/V5 744 h cold gate。
+  长时段 V5 固定使用
+  `config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json`，
+  no-basis、no-concurrency。744 h 仍为 `TEST_ONLY_TRUNCATED_HORIZON`；
+  禁止 8760 h、付费云、basis/MGA 和 `Crossover=3`。
+
 ## 2026-07-31 12:45+08:00 当前提交的 24 h/168 h 匹配门禁闭合
 
 - 当前本地、`origin`、GitHub 与固定服务器任务身份均为

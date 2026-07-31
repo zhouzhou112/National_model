@@ -12,6 +12,28 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 13:10+08:00 已实现非年初连续诊断窗口，模型实现提交为
+  `077bce0eca16b1025130143122aee0a05559c3e0`。runner 新增
+  `--diagnostic-start-hour`，并把同一 `hour_start:hour_stop` 一致用于
+  baseline/冷热/EV、风光 CF、wave CF、站点及省级水电、CHP 季节约束、
+  QC、`time_index.csv` 和结果摘要；容量充裕度仍使用完整 8760 h immutable
+  baseline peak。冷热、V1G、V2G、firm credit、碳缩放和成本口径均未改变。
+  basis manifest 现在拒绝跨 start-hour 复用。
+- 夏季 744 h 工程窗口固定为 2030-06-15 00:00 至
+  2030-07-15 23:00，即 model hour `[3960, 4704)`。本地数据核验该窗口
+  cooling 为 `147,056.322 GWh`，而年初 744 h 仅 `68.469 GWh`，因此它比
+  固定 1 月窗口更适合暴露 cooling/V5 约束和数值问题。该选择仍是
+  `TEST_ONLY_TRUNCATED_HORIZON`，不是年度科学结果。
+- 正确设置 `CISPO_WAVE_ROOT` 后本地完整回归为 `166/166 PASS`；
+  未设置 wave 根时出现的 4 个 setup error 与 1 个 provenance dry-run
+  failure 已确认是缺少必需环境变量，不是代码回归。新增测试覆盖非年初
+  负荷切片和跨窗口 basis 拒绝。精确下一步：推送该实现和本交接，实时复核
+  固定服务器后部署；先串行运行 summer-offset 1 h Base 和 24 h V5，
+  只有两根达到 `OPTIMAL + PASS + 58/58 + current input + valid result
+  manifest + wrapper exit 0/stderr 0` 才启动唯一 2030/V5 summer 744 h
+  cold gate，使用 `barrier_16_auto_order_stable_basis_v3.json`、无 basis、
+  无并发。继续禁止 8760 h、付费云、MGA、`Crossover=3`。
+
 - 2026-07-31 12:45+08:00 当前输出语义修复与匹配 24 h/168 h
   Base--V5 门禁已在固定服务器闭合。当前本地、`origin`、GitHub 与服务器
   checkout 一致为 clean task identity
@@ -563,6 +585,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — 非年初连续诊断窗口与 summer 744 h 前置门禁
+
+- Git/changed files: `077bce0eca16b1025130143122aee0a05559c3e0`
+  修改 `scripts/run_cispo_2030_full_year.py`、`cispo_model/monolithic.py`、
+  `flexible_load.py`、`flexible_load_numerics.py`、`solution_export.py`、
+  `result_summary.py`、`basis_reuse.py` 及两项回归测试。未修改
+  `supplementary_materials/**`、`.codex_tmp/**` 或历史 outputs。
+- Commands/verification: `py_compile` PASS；focused flexible-load/basis
+  回归 `22/22 + 5/5 PASS`；设置
+  `CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`
+  后完整 `unittest discover` 为 `166/166 PASS`；`git diff --check` PASS。
+  数据实读确认 hour 3960/4703 分别为
+  `2030-06-15 00:00`/`2030-07-15 23:00`。
+- Unresolved/next: 尚未部署服务器、尚未形成 offset solve/QC/manifest
+  证据。先完成四端 identity 与服务器 idle/resource/queue 复核，再部署并
+  执行 1 h Base、24 h V5 小门禁；全部严格接受后才运行单一 744 h V5。
+  不启动四年 sequence、8760 h、付费云、basis/MGA 或并发第二求解。
 
 ### 2026-07-31 — 输出语义修复与 24 h/168 h Base--V5 匹配门禁
 
