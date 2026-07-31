@@ -412,6 +412,11 @@ def collect_result_dashboard(
             "firm_flexible_capacity_credit_gw": _finite_float(
                 qc.get("total_v5_firm_capacity_credit_gw")
             ),
+            "firm_capacity_credit_interpretation": (
+                "Derived from province-specific full-year immutable baseline "
+                "peak windows and configured derating; it is not the selected-"
+                "horizon national peak change."
+            ),
             "ev_v2g_charge_gwh": _sum_columns(
                 flexible,
                 ["ev_v2g_charge_gwh"],
@@ -710,7 +715,7 @@ def _write_svg_dashboard(payload: dict[str, Any], path: Path) -> None:
             f"{_format_number(flex['selected_horizon_effective_peak_load_gw'], 1)} GW",
         ),
         (
-            "Firm flexibility capacity credit",
+            "Firm flex credit (annual peak windows)",
             f"{_format_number(flex['firm_flexible_capacity_credit_gw'], 2)} GW",
         ),
         (
@@ -869,7 +874,7 @@ def _write_metrics_csv(payload: dict[str, Any], path: Path) -> None:
             flex["firm_flexible_capacity_credit_gw"],
             "GW",
             "planning_adequacy",
-            "",
+            flex["firm_capacity_credit_interpretation"],
         ),
         (
             "system",
@@ -1018,7 +1023,7 @@ def _write_matplotlib_dashboard(
             f"{_format_number(flex['selected_horizon_effective_peak_load_gw'], 1)} GW",
         ),
         (
-            "Firm flexibility credit",
+            "Firm flex credit (annual peak windows)",
             f"{_format_number(flex['firm_flexible_capacity_credit_gw'], 2)} GW",
         ),
         (

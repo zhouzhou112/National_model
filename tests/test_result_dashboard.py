@@ -174,6 +174,12 @@ class ResultDashboardTests(unittest.TestCase):
                 costs["composite_operation_rollup_million_cny_excluded_from_sum"],
                 30.0,
             )
+            self.assertIn(
+                "not the selected-horizon national peak change",
+                payload["demand_and_flexibility"][
+                    "firm_capacity_credit_interpretation"
+                ],
+            )
             self.assertAlmostEqual(
                 costs["objective_reconstruction_residual_million_cny"],
                 0.0,
