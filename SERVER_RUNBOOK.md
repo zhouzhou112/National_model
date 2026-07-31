@@ -1,6 +1,43 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-07-31 16:49+08:00 活动运行 Crossover 监控点
+## 2026-07-31 20:41+08:00 strict nonbasic 部署与同窗 Base/V5 门禁
+
+旧 summer V5 744 h 已以 `TIME_LIMIT + SolCount=0` 结束；不得 resume、补写
+QC/manifest 或重标。实现提交 `8de7a8e` 增加 Gurobi 13+ 专用的
+`barrier_16_nonbasic_primal_dual_v1.json`。它不要求 basic solution，但必须
+同时满足 `OPTIMAL`、strict primal/dual quality、58/58 hard checks、current
+input、valid result manifest、`BarPi` dual available、wrapper exit 0/stderr 0。
+它禁止 basis import/export、scientific `.bas` 与 MGA。
+
+执行顺序必须为：
+
+1. 确认 local/origin/GitHub 为同一文档 tip；固定服务器 checkout clean、无
+   CISPO/Gurobi/National_model 进程，RAM/swap/vmstat/PSI 正常，ParaCloud
+   `squeue -u a8s001819` 为空。任一不满足即停止。
+2. fast-forward 固定服务器到精确 tip，设置当前
+   `CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`
+   及匹配 CF/hydro/raw-GRFR/wave roots；核验 Gurobi major version 为 13，运行
+   完整 regression、readiness、release、V5 input 与 hydro audits。
+3. 使用全新根依次运行 summer start hour 3960 的 1 h Base、1 h V5、24 h
+   Base、24 h V5；profile 均为
+   `config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json`。建议根名：
+   `2030_{1h,24h}_v0731_summer_nonbasic_8de7a8e_{base,v5}_v1`。一次只允许
+   一个 wrapper/Python/Gurobi 链。
+4. 每根必须检查 solver contract、`solve_report.json`、`solution_qc.json`、
+   58/58 hard checks、dual export、current input/valid result manifests、
+   dashboard、load-center opposing-flow 最大值/总量、冷热/EV/wave/水电/储能/
+   网络/备用/惯量/碳/CCS/成本，以及 wrapper stderr/time。任一失败即淘汰
+   nonbasic 候选，不运行后续长门禁。
+5. 四个小门禁全部闭合后，先串行运行同窗 168 h Base/V5。二者闭合后才可
+   依次运行 `[3960,4704)` 的 Base 744 h 与 V5 744 h；Base 是用户要求的同月
+   求解难度/容量对照，绝不与 V5 并发。744 h 均为
+   `TEST_ONLY_TRUNCATED_HORIZON`，不导出 basis，不自动续接 2040。
+
+仍禁止固定服务器 8760 h、付费云、并发第二求解、basis/MGA 和
+`Crossover=3`。若 nonbasic 被淘汰，保留全部失败根，回到已验证 basic profile
+做针对性结构诊断，不得放松 primal/dual 或物理 QC。
+
+## 2026-07-31 16:49+08:00 活动运行 Crossover 监控点（已由上节终态取代）
 
 Barrier 已在 233 iterations、`7,414.52 s` 报告 optimal；当前不是 Barrier，
 而是 `Crossover=1/CrossoverBasis=1` 后的 simplex cleanup。16:48 监控点为

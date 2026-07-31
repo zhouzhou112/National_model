@@ -1,6 +1,31 @@
 # CISPO 2030 full-year server status
 
-## 2026-07-31 16:49+08:00 summer 744 h 正在 Crossover/simplex cleanup
+## 2026-07-31 20:41+08:00 summer 744 h 已 TIME_LIMIT；nonbasic 修复待部署
+
+- 旧活动根
+  `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`
+  已终止：`TIME_LIMIT`、`SolCount=0`、solver `21,600.80 s`、Barrier
+  `233/7,414.52 s`、Crossover `13,917.15 s`、simplex 1,069,484。
+  无 `solution_qc.json`、无 `result_manifest.json`；wrapper exit 2、wall
+  `6:05:39`、MaxRSS `22,364,408 KiB`、swaps 0、stderr 0。结论是
+  Crossover cleanup 工程失败，不是 Barrier、RAM 或 swap 失败。
+- 本地实现提交 `8de7a8e5bf4712bac30472fc4a564f47462fd9cd` 新增 Gurobi 13+
+  strict optimal primal-dual nonbasic 诊断路线、`BarPi` dual、未接受解的
+  fail-closed 导出合同，以及 annual load-center 每边 0.1 MWh 的显式数值尘埃
+  阈值；没有改变冷热/EV/可靠性/成本模型。完整回归 `169/169 PASS`。
+- 本地 Gurobi 12 的 1 h Base/V5 可严格闭合，但 24 h Base 返回
+  `SUBOPTIMAL/HARD_FAIL`；该 profile 因已知版本风险明确要求 Gurobi 13。
+  因而尚未声称该路线适用于 744/8760 h。
+- 20:41 服务器仍为 clean `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`，
+  无 CISPO/Gurobi/National_model 进程；available RAM `114 GiB`、swap
+  `447 MiB/2 GiB`、实时 `si/so=0/0`、memory PSI 0；ParaCloud 队列空。
+- 下一步：待文档 tip 推送后重新核验，fast-forward 并运行服务器完整回归/
+  readiness/release/input audits；随后串行执行 hour 3960 起点的 1 h 与 24 h
+  Base/V5 nonbasic 配对。任一失败即淘汰候选并停止；成功后才执行配对 168 h，
+  再依次执行 same-window Base/V5 744 h。禁止 8760 h、付费云、并发、basis/
+  MGA 与 `Crossover=3`。
+
+## 2026-07-31 16:49+08:00 summer 744 h 正在 Crossover/simplex cleanup（已由上节终态取代）
 
 - Barrier 已在 iteration `233`、runtime `7,414.52 s` 报告 optimal objective
   `2,351,134.66 million CNY`；末行 primal/dual infeasibility 与

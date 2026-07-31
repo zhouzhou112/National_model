@@ -12,6 +12,50 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 20:41+08:00：summer-offset 2030/V5 744 h 根
+  `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`
+  已正式终止为 `TIME_LIMIT`，不是活动任务，也不是可接受解。Barrier 在
+  233 iterations、`7,414.52 s` 达到其内点最优点；随后 Crossover/simplex
+  共消耗到 `21,600.80 s`，其中 `Crossover time=13,917.15 s`，终态
+  `status=TIME_LIMIT`、`SolCount=0`、1,069,484 simplex iterations。
+  `solution_qc.json` 与 `result_manifest.json` 均不存在；wrapper exit `2`、
+  wall `6:05:39`、MaxRSS `22,364,408 KiB`、swaps 0、stderr 0。该根必须原样
+  保留为 Crossover 工程失败证据。
+- 当前修复实现提交为 `8de7a8e5bf4712bac30472fc4a564f47462fd9cd`。
+  它没有改变冷热、V1G、V2G、effective-load、可靠性或成本方程；新增的
+  `barrier_16_nonbasic_primal_dual_v1` 仅是 Gurobi 13+ 诊断候选，要求
+  `Method=2/Crossover=0/SolutionTarget=1/BarConvTol=1e-10`、`OPTIMAL`、
+  严格 primal/dual quality PASS，并以 `BarPi` 导出 dual。该路线禁止 basis、
+  scientific `.bas` 与 MGA；任何未接受 solver result 均不再导出完整科学结果、
+  dashboard、planning state 或 result manifest。
+- annual load-center proxy 的双向 QC 仅将每条边不超过 `0.0001 GWh`
+  （0.1 MWh）的 opposing flow 认定为数值尘埃，同时输出最大值和总量；超过
+  阈值仍硬失败。省际逐小时方向性、物理约束与 LP 目标未放松。首个本地 1 h
+  nonbasic Base 失败根的最大/总 opposing flow 仅为
+  `1.1481e-5/9.1083e-4 GWh`；阈值化后的全新 1 h Base/V5 均达到
+  `OPTIMAL + solution_qc=PASS + 58/58 + BarPi available + valid result manifest`。
+- 本机 Gurobi 12.0.1 的同候选在夏季 24 h Base 返回 `SUBOPTIMAL`，严格
+  solution contract 已判 `HARD_FAIL`；其错误反缩放属性不允许导出。profile
+  已因此设置最低 Gurobi major version 13。正确设置 `CISPO_WAVE_ROOT` 后，
+  当前完整本地回归为 `169/169 PASS`。
+- 20:41 实时状态：local HEAD 为 `8de7a8e`；origin/GitHub 仍为
+  `12ce1ce8554325a61bc9ea7a34242e4f4032219a`，等待本次文档提交后一并推送。
+  固定服务器 checkout 为 clean `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`，
+  无 CISPO/Gurobi/National_model 进程；available RAM 约 `114 GiB`，swap
+  `447 MiB/2 GiB`，实时 `vmstat si/so=0/0`、memory PSI 0；ParaCloud
+  `squeue -u a8s001819` 为空。
+- 精确下一步：提交并双端推送本记录；再次核验四端与服务器 idle/clean 后，
+  fast-forward 到文档 tip，在服务器 Gurobi 13.0.2 上先运行完整回归与输入审计，
+  再串行运行同一 summer window（start hour 3960）的 1 h、24 h Base/V5
+  nonbasic 门禁。任一门禁不是 `OPTIMAL + PASS + 58/58 + current input +
+  valid manifest + wrapper exit 0/stderr 0` 即拒绝该候选，不启动 744 h。
+  24 h 成对闭合后才运行成对 168 h；168 h 闭合后才依次运行 Base 744 h、
+  V5 744 h，绝不并发。所有截断结果继续标记
+  `TEST_ONLY_TRUNCATED_HORIZON`；仍禁止 8760 h、付费云、basis/MGA 与
+  `Crossover=3`。
+
+## Superseded current-snapshot archive (through 2026-07-31 16:49+08:00)
+
 - 2026-07-31 16:49+08:00 summer-offset 744 h 已完成 Barrier，当前处于
   Crossover 后的 simplex cleanup，尚未终止。Barrier 在 iteration `233`、
   runtime `7,414.52 s` 达到 `Optimal objective 2,351,134.66 million CNY`；
@@ -675,6 +719,30 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 - Crossover 失败闭合与 strict nonbasic 诊断合同
+
+- Implementation commit: `8de7a8e5bf4712bac30472fc4a564f47462fd9cd`.
+- Scope/files: `cispo_model/{config,diagnostics,flexible_load_numerics,load_center,master,run_contract,solution_export,solver_audit}.py`、
+  `scripts/{audit_model_numerics,run_cispo_2030_full_year}.py`、
+  `config/optimization_2030.json`、新 solver profile、V5 contract、full LP spec
+  与对应 tests。未触碰/暂存用户拥有的 `supplementary_materials/**`、
+  `.codex_tmp/**` 或历史 outputs。
+- Commands/evidence: `py_compile` 通过；设置
+  `CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy` 后
+  `python -m unittest discover -s tests -p 'test_*.py'` 为 `169/169 PASS`。
+  新 1 h Base/V5 根分别为
+  `outputs/2030_1h_v0731_nonbasic_primal_dual_local_base_v2` 与
+  `outputs/2030_1h_v0731_nonbasic_primal_dual_local_v5_v1`，均严格闭合；
+  24 h Gurobi-12 Base 根
+  `outputs/2030_24h_v0731_nonbasic_primal_dual_local_base_v1` 为
+  `SUBOPTIMAL/HARD_FAIL`，无 QC/manifest 接受资格。
+- Server evidence: 旧 summer 744 h V5 为 `TIME_LIMIT + SolCount=0`，无 QC/
+  manifest；固定服务器 clean/idle，资源正常，ParaCloud 空队列。
+- Unresolved/exact next action: 只有服务器 Gurobi 13 的匹配 1 h/24 h Base/V5
+  能判定 nonbasic 候选是否可用。严格小门禁失败即淘汰；成功后才进入 168 h，
+  再决定串行的 same-window Base/V5 744 h。禁止 8760 h、付费云、并发、basis/
+  MGA 和 `Crossover=3`。
 
 ### 2026-07-31 - summer-offset 744 h 进入 Crossover/simplex cleanup
 
