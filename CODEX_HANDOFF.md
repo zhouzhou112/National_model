@@ -12,6 +12,29 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 16:49+08:00 summer-offset 744 h 已完成 Barrier，当前处于
+  Crossover 后的 simplex cleanup，尚未终止。Barrier 在 iteration `233`、
+  runtime `7,414.52 s` 达到 `Optimal objective 2,351,134.66 million CNY`；
+  末行 primal/dual infeasibility 与 complementarity 为
+  `2.26e-4/2.27e-8/1.82e-9`。日志没有 `Numerical trouble`。
+- `Crossover=1/CrossoverBasis=1` 在约 `7,680 s` 进入 crossover；push phase
+  于 `9,652 s` 完成，当时 `PInf=0.79097523`、`DInf=1.4466055e5`。16:48
+  最新 simplex iteration 为 `912,630`，runtime `11,752.76 s`，objective
+  `2,351,203.328 million CNY`，primal infeasibility 为 0，dual
+  infeasibility 为 `2.014e6`；近期 dual infeasibility 在约 `2.18e4--1.36e10`
+  间显著波动，因此当前只能判定为“crossover 数值恢复仍在进行”，不能判成功，
+  也尚无正式失败状态。
+- 唯一 wrapper/Python 链仍存活，server 保持 clean 启动提交
+  `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`；本地/origin/GitHub
+  `36ca08c46a3720e6e867124d7e32f29e032ea04a` 仅比它多活动运行交接文档，
+  运行期间不得部署。Python RSS 约 `14.2 GiB`；solver current/max memory
+  `16.36/23.50 GiB`，host available RAM 约 `100 GiB`，swap
+  `780 MiB/2 GiB` 且实时 `si/so=0/0`，memory PSI 0，stderr 0，
+  ParaCloud 队列为空。`solve_report.json`、`solution_qc.json` 和
+  `result_manifest.json` 均尚不存在。
+- 精确下一步继续只读监控。profile 的 solver `TimeLimit=21,600 s`，当前尚余
+  约 `9,847 s`；不得把 Barrier 的 optimal line 当作最终接受，也不得因当前
+  dual oscillation 提前修改运行。PID 退出后执行完整终态审计。
 - 2026-07-31 13:29+08:00 已获准并启动唯一 summer-offset 2030/V5 744 h
   cold gate。输出根为
   `/data/zz2/National_model/outputs/2030_744h_v0731_summer_offset_a7c6715_v5_v1`，
@@ -652,6 +675,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 - summer-offset 744 h 进入 Crossover/simplex cleanup
+
+- Runtime identity: server clean
+  `aaf16cc49a5a3d5bb07d214a957a3a4065ac3f07`；唯一输出/控制根为
+  `2030_744h_v0731_summer_offset_a7c6715_v5_v1`。
+- Milestone: Barrier 233 iterations、`7,414.52 s` 后报告 optimal objective
+  `2,351,134.66 million CNY`；随后完成 crossover basis build 与
+  DPush/PPush，进入 simplex cleanup。
+- Live evidence: 16:48 runtime `11,752.76 s`、simplex iteration `912,630`、
+  primal infeasibility 0、dual infeasibility `2.014e6`；近期 dual 指标大幅
+  波动，但日志无 `Numerical trouble` 或终态。stderr 0，资源无压力，
+  ParaCloud 空。
+- Changed files: 本条仅更新三份交接文档，不部署到活动 server checkout，
+  不修改模型、配置或求解。
+- Unresolved/exact next: 结果未完成且无 solve/QC/result manifest。继续只读
+  监控到 PID 退出；只有完整终态合同通过后才能接受。
 
 ### 2026-07-31 - 启动唯一 summer-offset 744 h V5 cold gate
 

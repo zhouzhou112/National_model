@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 16:49+08:00 活动运行 Crossover 监控点
+
+Barrier 已在 233 iterations、`7,414.52 s` 报告 optimal；当前不是 Barrier，
+而是 `Crossover=1/CrossoverBasis=1` 后的 simplex cleanup。16:48 监控点为
+iteration `912,630`、runtime `11,752.76 s`、primal infeasibility 0、dual
+infeasibility `2.014e6`。dual 指标近期大幅振荡，但尚无 `Numerical trouble`
+或终态。
+
+继续执行只读规则：
+
+1. 不把 Barrier 的 `Optimal objective` 当成最终 `OPTIMAL`；
+2. 不因中间 dual oscillation 中断或更改参数，除非进程形成正式终态；
+3. 每次检查剩余 `21,600 s` time limit、iteration/objective、primal/dual
+   infeasibility、solver/host memory、swap、PSI 和 stderr；
+4. PID 退出后才读取并联合验收 solve/QC/result manifest 与 wrapper time；
+5. server checkout 固定在 `aaf16cc`，本地后续文档提交不得在运行中部署。
+
 ## 2026-07-31 13:29+08:00 summer 744 h 活动运行监控点
 
 活动根为 `2030_744h_v0731_summer_offset_a7c6715_v5_v1`，server checkout

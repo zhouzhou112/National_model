@@ -1,5 +1,22 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 16:49+08:00 summer 744 h 正在 Crossover/simplex cleanup
+
+- Barrier 已在 iteration `233`、runtime `7,414.52 s` 报告 optimal objective
+  `2,351,134.66 million CNY`；末行 primal/dual infeasibility 与
+  complementarity 为 `2.26e-4/2.27e-8/1.82e-9`，日志无
+  `Numerical trouble`。
+- crossover basis 构建后 DPush/PPush 于 `9,652 s` 完成；16:48 最新
+  simplex iteration `912,630`、runtime `11,752.76 s`、objective
+  `2,351,203.328 million CNY`、primal infeasibility 0、dual
+  infeasibility `2.014e6`。近期 dual 指标显著振荡，当前未收敛，也尚无正式
+  失败状态。
+- 唯一 PID 链仍存活；server clean `aaf16cc`，stderr 0。solver current/max
+  memory `16.36/23.50 GiB`，host available RAM 约 `100 GiB`，swap
+  实时 `si/so=0/0`，memory PSI 0；ParaCloud 空。
+- `solve_report.json`、`solution_qc.json`、`result_manifest.json` 均不存在。
+  `TimeLimit=21,600 s`；继续只读监控，禁止改 checkout 或启动第二任务。
+
 ## 2026-07-31 13:29+08:00 summer 744 h V5 cold gate 正在构建
 
 - 唯一活动输出/控制根均为
