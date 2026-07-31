@@ -1,5 +1,14 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-07-31 13:18+08:00 summer 1 h 空 winter bug 恢复点
+
+失败根 `2030_1h_v0731_summer_offset_985983b_base_v1` 必须原样保留且不得
+resume。它在 build 阶段退出，未调用 `optimize()`。恢复身份必须为
+`a7c67153d9b90055b60ed2704ef6bba702086ae4` 或包含它的精确文档 tip。
+部署后先完整回归，再用新根
+`2030_1h_v0731_summer_offset_a7c6715_base_v2` 重跑同一 hour 3960。
+若 v2 未严格接受，停止，不运行 24 h/744 h。
+
 ## 2026-07-31 13:10+08:00 非年初 summer-offset 门禁执行合同
 
 实现身份为 `077bce0eca16b1025130143122aee0a05559c3e0`。夏季窗口只能

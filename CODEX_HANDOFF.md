@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-07-31 13:18+08:00 首个 summer-offset 1 h Base 在 build 阶段暴露并
+  修复空季节索引 bug。失败根
+  `/data/zz2/National_model/outputs/2030_1h_v0731_summer_offset_985983b_base_v1`
+  只形成 provenance/preflight，无 `build_report`、solve/QC/manifest；
+  wrapper exit `1`、wall `0:23.75`、MaxRSS `493,580 KiB`、swaps 0。
+  精确错误为夏季窗口 `winter=[]` 时 Gurobi 空 MVar 索引广播
+  `AssertionError`，未进入 `optimize()`。
+- 最小修复提交 `a7c67153d9b90055b60ed2704ef6bba702086ae4` 仅在无 winter
+  hour 时省略空的 CHP winter 约束；有冬季小时的现有约束、全部冷热/EV
+  服务、目标与参数不变。`test_bound_tightening.py` 的完整模型 1 h 构建已
+  改为 hour 3960，并显式核对 baseline 切片；本地完整回归
+  `167/167 PASS`。下一步推送/部署该修复，服务器重新运行完整回归后用全新
+  `v2` 根重跑 summer 1 h Base；失败 `v1` 永不复用。
+
 - 2026-07-31 13:10+08:00 已实现非年初连续诊断窗口，模型实现提交为
   `077bce0eca16b1025130143122aee0a05559c3e0`。runner 新增
   `--diagnostic-start-hour`，并把同一 `hour_start:hour_stop` 一致用于
@@ -585,6 +599,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-07-31 — summer 空 CHP 季节索引修复
+
+- Git/changed files: `a7c67153d9b90055b60ed2704ef6bba702086ae4`
+  修改 `cispo_model/monolithic.py` 与 `tests/test_bound_tightening.py`。
+  当所选窗口没有冬季小时，跳过空 CHP winter rows；非空窗口方程保持原样。
+- Failure/evidence: `985983b` 的首次 server summer 1 h Base 在 build
+  阶段因 `winter=[]` 的 Gurobi 空索引广播退出，未调用 solver；失败根和
+  控制日志原样保留。修复后的 focused 5/5 与完整 `167/167` 本地回归 PASS。
+- Next: 双端推送、server fast-forward、完整 regression 后以新 `v2` 根重跑
+  1 h Base。只有 1 h Base 和后续 24 h V5 严格接受后才启动 744 h V5。
 
 ### 2026-07-31 — 非年初连续诊断窗口与 summer 744 h 前置门禁
 

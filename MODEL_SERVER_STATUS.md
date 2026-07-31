@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-07-31 13:18+08:00 首个 summer 1 h build failure 已最小修复
+
+- `985983b` 已部署且 server `166/166` regression、readiness、release、
+  V5 input 与 hydro audits 全 PASS；但首次 summer hour 3960 Base 1 h
+  在 build 阶段因空 CHP winter 索引触发 Gurobi `AssertionError`。无
+  `build_report/solve_report/solution_qc/result_manifest`，不是 solver
+  失败或可接受根。
+- 失败输出/控制根以 `...summer_offset_985983b_base_v1` 原样保留，wrapper
+  exit 1、wall `0:23.75`、MaxRSS `493,580 KiB`、swaps 0。
+- 修复提交 `a7c67153d9b90055b60ed2704ef6bba702086ae4` 仅跳过空 winter
+  constraint set，并把完整模型测试固定到 hour 3960；本地
+  `167/167 PASS`。部署后必须用全新 `v2` 根重跑，禁止复用 v1。
+
 ## 2026-07-31 13:10+08:00 summer-offset 744 h 候选待部署
 
 - 实现提交 `077bce0eca16b1025130143122aee0a05559c3e0` 为诊断 runner
