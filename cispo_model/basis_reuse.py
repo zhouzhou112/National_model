@@ -167,6 +167,7 @@ def export_warm_start_basis(
     solution_qc: dict[str, Any],
     optimization_hours: int,
     result_use: str,
+    optimization_start_hour: int = 0,
     max_nonzeros: int = DEFAULT_MAX_IDENTITY_NONZEROS,
 ) -> dict[str, Any]:
     """Write a crossover basis plus self-contained compatibility metadata."""
@@ -215,6 +216,7 @@ def export_warm_start_basis(
             "planning_year": int(config.planning_year),
             "boundary_year": int(config.boundary_year),
             "optimization_hours": int(optimization_hours),
+            "optimization_start_hour": int(optimization_start_hour),
             "result_use": result_use,
             "git_commit": environment.get("git_commit"),
             "configuration_source_sha256": snapshot.get("source_sha256"),
@@ -256,6 +258,7 @@ def prepare_basis_reuse(
     optimization_hours: int,
     result_use: str,
     allow_cross_year: bool,
+    optimization_start_hour: int = 0,
     max_nonzeros: int = DEFAULT_MAX_IDENTITY_NONZEROS,
 ) -> dict[str, Any]:
     """Validate a source result and return a basis record ready for Gurobi."""
@@ -282,6 +285,12 @@ def prepare_basis_reuse(
         raise BasisReuseError("Basis source is not an explicitly test-only result")
     if int(source.get("optimization_hours", -1)) != int(optimization_hours):
         raise BasisReuseError("Basis source and target optimization hours differ")
+    if int(source.get("optimization_start_hour", 0)) != int(
+        optimization_start_hour
+    ):
+        raise BasisReuseError(
+            "Basis source and target diagnostic start hours differ"
+        )
     source_year = int(source.get("planning_year", -1))
     if source_year != int(config.planning_year) and not allow_cross_year:
         raise BasisReuseError(
@@ -325,6 +334,7 @@ def prepare_basis_reuse(
         "target_planning_year": int(config.planning_year),
         "cross_year": source_year != int(config.planning_year),
         "optimization_hours": int(optimization_hours),
+        "optimization_start_hour": int(optimization_start_hour),
         "source_identity_layers": source_layers,
         "target_identity_layers": target_audit_layers,
         "audit_layer_matches": audit_layer_matches,

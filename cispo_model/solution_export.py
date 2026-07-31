@@ -215,6 +215,9 @@ def export_operational_solution(
     output_dir.mkdir(parents=True, exist_ok=True)
     variables = artifacts.variables
     hours = int(artifacts.index["optimization_hours"])
+    hour_start = int(artifacts.index.get("optimization_start_hour", 0))
+    hour_stop = hour_start + hours
+    selected_hours = slice(hour_start, hour_stop)
     provinces = np.asarray(artifacts.index["province_codes"], dtype=int)
     p_count = len(provinces)
     hour_index = np.arange(hours, dtype=int)
@@ -553,7 +556,9 @@ def export_operational_solution(
         eta_c = float(ev_settings["charge_efficiency"])
         eta_d = float(ev_settings["discharge_efficiency"])
         retention = 1.0 - float(ev_settings["self_discharge_fraction_per_hour"])
-        withdrawal = v4.ev_mobility["driving_energy_withdrawal_gwh"][:, :hours]
+        withdrawal = v4.ev_mobility["driving_energy_withdrawal_gwh"][
+            :, selected_hours
+        ]
         periodic = (
             ev_mobility_soc[:, 0]
             - retention * ev_mobility_soc[:, -1]
@@ -573,7 +578,9 @@ def export_operational_solution(
         v4_ev_transition_max = max(float(np.abs(values).max()) for values in transitions)
         v4_ev_departure_violation = float(
             np.maximum(
-                v4.ev_mobility["minimum_departure_energy_gwh"][:, :hours]
+                v4.ev_mobility["minimum_departure_energy_gwh"][
+                    :, selected_hours
+                ]
                 - ev_mobility_soc,
                 0.0,
             ).max()
@@ -581,21 +588,27 @@ def export_operational_solution(
         v4_ev_soc_upper_violation = float(
             np.maximum(
                 ev_mobility_soc
-                - v4.ev_availability["fleet_energy_capacity_gwh"][:, :hours],
+                - v4.ev_availability["fleet_energy_capacity_gwh"][
+                    :, selected_hours
+                ],
                 0.0,
             ).max()
         )
         v4_ev_charge_power_violation = float(
             np.maximum(
                 ev_mobility_charge
-                - v4.ev_availability["available_charge_power_gw"][:, :hours],
+                - v4.ev_availability["available_charge_power_gw"][
+                    :, selected_hours
+                ],
                 0.0,
             ).max()
         )
         v4_ev_discharge_power_violation = float(
             np.maximum(
                 ev_mobility_discharge
-                - v4.ev_availability["available_discharge_power_gw"][:, :hours],
+                - v4.ev_availability["available_discharge_power_gw"][
+                    :, selected_hours
+                ],
                 0.0,
             ).max()
         )
@@ -684,12 +697,14 @@ def export_operational_solution(
         data.load[["hour_index", "datetime_bj"]]
         .drop_duplicates("hour_index")
         .sort_values("hour_index")
-        .iloc[:hours]
+        .iloc[selected_hours]
         .copy()
     )
     if len(dates) != hours:
         raise ValueError(f"Time index rows={len(dates)}; expected {hours}")
     dates["datetime_bj"] = pd.to_datetime(dates.datetime_bj)
+    dates = dates.rename(columns={"hour_index": "model_hour_index"})
+    dates.insert(0, "hour_index", hour_index)
     dates["month"] = dates.datetime_bj.dt.month
     dates["day_of_year"] = dates.datetime_bj.dt.dayofyear
     dates["hour_of_day"] = dates.datetime_bj.dt.hour
@@ -1097,7 +1112,7 @@ def export_operational_solution(
             raise ValueError("V5 shared-connection QC requires V5 inputs")
         connected = data.flexible_load_v4.ev_availability[
             "connected_vehicle_fraction"
-        ][:, :hours]
+        ][:, selected_hours]
         shared_connection_power = (
             connected * flexible_service_capacity[:, 2, None]
         )
@@ -1133,6 +1148,8 @@ def export_operational_solution(
             "flexible_load_structural_audit", {}
         ),
         "optimization_hours": hours,
+        "optimization_start_hour": hour_start,
+        "optimization_stop_hour_exclusive": hour_stop,
         "maximum_power_balance_residual_gw": float(np.abs(balance_residual).max()),
         "maximum_load_component_input_closure_error_gw": float(
             np.abs(component_input_closure).max()

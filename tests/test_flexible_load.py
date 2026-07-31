@@ -35,6 +35,40 @@ from cispo_model.flexible_load_numerics import (
 
 
 class FlexibleLoadContractTests(unittest.TestCase):
+    def test_disabled_flexibility_selects_exact_nonleading_window(self):
+        config = load_model_config()
+        load = np.arange(12, dtype=float).reshape(2, 6)
+        components = {
+            "base_residual": load.copy(),
+            "heating": np.zeros_like(load),
+            "cooling": np.zeros_like(load),
+            "ev": np.zeros_like(load),
+        }
+        data = SimpleNamespace(
+            load_gw=load,
+            load_components_gw=components,
+        )
+        model = gp.Model("nonleading_flexible_load_window")
+        model.Params.OutputFlag = 0
+        try:
+            block = attach_flexible_load(
+                model,
+                config,
+                data,
+                hours=3,
+                hour_start=2,
+            )
+            np.testing.assert_array_equal(
+                block.baseline_load_gw,
+                load[:, 2:5],
+            )
+            np.testing.assert_array_equal(
+                block.actual_components_gw["base_residual"],
+                load[:, 2:5],
+            )
+        finally:
+            model.dispose()
+
     def test_cyclic_run_and_solver_compatibility_gate_are_explicit(self):
         self.assertEqual(
             _maximum_cyclic_true_run(

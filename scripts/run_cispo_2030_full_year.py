@@ -76,9 +76,18 @@ def main() -> None:
         "--diagnostic-hours",
         type=int,
         help=(
-            "Build/solve an exact leading-hour diagnostic in [1, 8759]. "
+            "Build/solve an exact contiguous-hour diagnostic in [1, 8759]. "
             "Annual flow policy/resource limits use hours/8760 scaling, while "
             "annualized planning costs remain unscaled; never interpret it scientifically."
+        ),
+    )
+    parser.add_argument(
+        "--diagnostic-start-hour",
+        type=int,
+        default=0,
+        help=(
+            "Zero-based model-year start hour for --diagnostic-hours. "
+            "The selected window must remain within [0, 8760); default 0."
         ),
     )
     parser.add_argument(
@@ -174,6 +183,19 @@ def main() -> None:
         raise SystemExit("--preflight-only cannot be combined with build/write options")
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
+    if args.diagnostic_start_hour < 0:
+        raise SystemExit("--diagnostic-start-hour must be nonnegative")
+    if args.diagnostic_hours is None and args.diagnostic_start_hour != 0:
+        raise SystemExit(
+            "--diagnostic-start-hour requires --diagnostic-hours"
+        )
+    if (
+        args.diagnostic_hours is not None
+        and args.diagnostic_start_hour + args.diagnostic_hours > 8760
+    ):
+        raise SystemExit(
+            "--diagnostic-start-hour + --diagnostic-hours must not exceed 8760"
+        )
     if args.export_diagnostic_state and args.diagnostic_hours is None:
         raise SystemExit("--export-diagnostic-state requires --diagnostic-hours")
     if args.export_warm_start_basis and args.diagnostic_hours is None:
@@ -259,16 +281,19 @@ def main() -> None:
         horizon_name = args.horizon
         horizon = config.horizon(args.horizon)
         optimization_hours = int(horizon["hours"])
+        optimization_start_hour = 0
         test_only = bool(horizon["test_only"])
         definition = str(horizon["definition"])
         required_gb = float(horizon["minimum_available_memory_gb"])
     else:
         horizon_name = f"diagnostic_{args.diagnostic_hours}h"
         optimization_hours = int(args.diagnostic_hours)
+        optimization_start_hour = int(args.diagnostic_start_hour)
         test_only = True
         definition = (
-            f"first {optimization_hours} chronological hours; cyclic over the "
-            "selected diagnostic horizon"
+            f"{optimization_hours} chronological hours starting at zero-based "
+            f"model hour {optimization_start_hour}; cyclic over the selected "
+            "diagnostic horizon"
         )
         required_gb = float(
             config.horizon("one_month")["minimum_available_memory_gb"]
@@ -300,11 +325,25 @@ def main() -> None:
         encoding="utf-8",
     )
     data = load_model_data(config, planning_state=planning_state)
+    time_rows = (
+        data.load[["hour_index", "datetime_bj"]]
+        .drop_duplicates("hour_index")
+        .sort_values("hour_index")
+    )
+    optimization_stop_hour = optimization_start_hour + optimization_hours
+    selected_time_rows = time_rows.iloc[
+        optimization_start_hour:optimization_stop_hour
+    ]
+    if len(selected_time_rows) != optimization_hours:
+        raise SystemExit("Selected diagnostic time window is incomplete")
+    selected_time_start_bj = str(selected_time_rows.datetime_bj.iloc[0])
+    selected_time_end_bj = str(selected_time_rows.datetime_bj.iloc[-1])
     prebuild_solver_numerical_compatibility = (
         prebuild_flexible_load_solver_compatibility(
             config,
             data,
             hours=optimization_hours,
+            hour_start=optimization_start_hour,
         )
     )
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
@@ -315,6 +354,10 @@ def main() -> None:
         "generated_at": datetime.now().astimezone().isoformat(),
         "horizon": horizon_name,
         "optimization_hours": optimization_hours,
+        "optimization_start_hour": optimization_start_hour,
+        "optimization_stop_hour_exclusive": optimization_stop_hour,
+        "selected_time_start_bj": selected_time_start_bj,
+        "selected_time_end_bj": selected_time_end_bj,
         "configured_full_year_hours": config.hours,
         "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
@@ -433,6 +476,7 @@ def main() -> None:
         data,
         compute_max_cf=not args.skip_full_max_cf,
         optimization_hours=optimization_hours,
+        optimization_start_hour=optimization_start_hour,
     )
     # Every run records a constant-memory Gurobi identity. Exact ordered names
     # and the raw CSR pattern are materialized only for explicit guarded basis
@@ -480,6 +524,7 @@ def main() -> None:
             artifacts.model,
             config,
             optimization_hours=optimization_hours,
+            optimization_start_hour=optimization_start_hour,
             result_use=scope_report["result_use"],
             allow_cross_year=bool(args.allow_cross_year_basis),
         )
@@ -532,6 +577,10 @@ def main() -> None:
         ],
         "horizon": horizon_name,
         "optimization_hours": optimization_hours,
+        "optimization_start_hour": optimization_start_hour,
+        "optimization_stop_hour_exclusive": optimization_stop_hour,
+        "selected_time_start_bj": selected_time_start_bj,
+        "selected_time_end_bj": selected_time_end_bj,
         "result_use": scope_report["result_use"],
         "available_memory_gb_before_build": round(available_gb, 2),
         "full_max_cf_used": not args.skip_full_max_cf,
@@ -614,6 +663,7 @@ def main() -> None:
         baseline_contract_case_id=config.raw["scientific_case"]["case_id"],
         horizon=horizon_name,
         optimization_hours=optimization_hours,
+        optimization_start_hour=optimization_start_hour,
         result_use=scope_report["result_use"],
     )
     (output_dir / "solve_report.json").write_text(
@@ -662,6 +712,7 @@ def main() -> None:
             solve_report=report,
             solution_qc=qc,
             optimization_hours=optimization_hours,
+            optimization_start_hour=optimization_start_hour,
             result_use=scope_report["result_use"],
         )
     if (

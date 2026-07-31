@@ -535,6 +535,7 @@ def _attach_service_constrained_v4(
     components: dict[str, np.ndarray],
     day_slices: tuple[slice, ...],
     hours: int,
+    hour_start: int,
 ) -> FlexibleLoadBlock:
     """Attach the V4/V5 thermal-service and fleet-mobility formulation.
 
@@ -565,20 +566,22 @@ def _attach_service_constrained_v4(
     if shape[1] != hours:
         raise ValueError("V4 load shape does not match requested horizon")
 
+    hour_stop = int(hour_start) + int(hours)
+    selected_hours = slice(int(hour_start), hour_stop)
     thermal_envelopes = {
-        key: value[:, :hours]
+        key: value[:, selected_hours]
         for key, value in service_data.thermal_envelopes_gw.items()
     }
     thermal_availability = {
-        key: value[:, :hours]
+        key: value[:, selected_hours]
         for key, value in service_data.thermal_availability.items()
     }
     ev_availability = {
-        key: value[:, :hours]
+        key: value[:, selected_hours]
         for key, value in service_data.ev_availability.items()
     }
     ev_mobility = {
-        key: value[:, :hours]
+        key: value[:, selected_hours]
         for key, value in service_data.ev_mobility.items()
     }
     variables: dict[str, Any] = {}
@@ -588,6 +591,8 @@ def _attach_service_constrained_v4(
         "contract_version": expected_contract,
         "province_count": int(p_count),
         "optimization_hours": int(hours),
+        "optimization_start_hour": int(hour_start),
+        "optimization_stop_hour_exclusive": int(hour_stop),
     }
     state_chain_numerical_risks = (
         _thermal_state_chain_numerical_risks(
@@ -1340,11 +1345,17 @@ def attach_flexible_load(
     data: ModelData,
     *,
     hours: int,
+    hour_start: int = 0,
 ) -> FlexibleLoadBlock:
     """Attach optional demand flexibility and return the effective hourly load."""
-    baseline = data.load_gw[:, :hours]
+    hour_start = int(hour_start)
+    hour_stop = hour_start + int(hours)
+    if hour_start < 0 or hour_stop > data.load_gw.shape[1]:
+        raise ValueError("Flexible-load time window is outside the model year")
+    selected_hours = slice(hour_start, hour_stop)
+    baseline = data.load_gw[:, selected_hours]
     components = {
-        name: values[:, :hours]
+        name: values[:, selected_hours]
         for name, values in data.load_components_gw.items()
     }
     day_slices = make_day_slices(
@@ -1375,6 +1386,7 @@ def attach_flexible_load(
             components=components,
             day_slices=day_slices,
             hours=hours,
+            hour_start=hour_start,
         )
     variables: dict[str, Any] = {}
     shift_terms: list[Any] = []
@@ -1389,10 +1401,10 @@ def attach_flexible_load(
         if bool(component_settings["enabled"]):
             if formulation == "comfort_envelope_v3":
                 up_ub = data.flexible_load_envelopes_gw[f"{component}_up"][
-                    :, :hours
+                    :, selected_hours
                 ]
                 down_ub = data.flexible_load_envelopes_gw[f"{component}_down"][
-                    :, :hours
+                    :, selected_hours
                 ]
                 state_ub = _thermal_envelope_state_bounds(
                     up_ub,

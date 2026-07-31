@@ -60,6 +60,7 @@ def _attach_vre_availability(
     generation: gp.MVar,
     province_index: dict[int, int],
     hours: int,
+    hour_start: int,
 ) -> tuple[gp.MVar, np.ndarray]:
     """Build exact site-CF availability once to preserve matrix sparsity."""
     available = model.addMVar(
@@ -86,8 +87,8 @@ def _attach_vre_availability(
                 coefficients = data.cf.read(
                     str(source),
                     source_rows.cf_grid_id.to_numpy(dtype=np.int64),
-                    start,
-                    stop,
+                    int(hour_start) + start,
+                    int(hour_start) + stop,
                 )
                 tolerance = float(config.raw["numerics"]["coefficient_zero_tolerance"])
                 coefficients[np.abs(coefficients) < tolerance] = 0.0
@@ -115,6 +116,7 @@ def _attach_wave_generation(
     capacity: gp.MVar,
     province_index: dict[int, int],
     hours: int,
+    hour_start: int,
 ) -> tuple[gp.MVar, np.ndarray]:
     """Attach grid-CF wave dispatch without a duplicate availability MVar.
 
@@ -140,7 +142,11 @@ def _attach_wave_generation(
         grid_ids = group.wave_source_grid_id.to_numpy(dtype=np.int64)
         for start in range(0, hours, chunk):
             stop = min(start + chunk, hours)
-            coefficients = data.wave.cf.read(grid_ids, start, stop)
+            coefficients = data.wave.cf.read(
+                grid_ids,
+                int(hour_start) + start,
+                int(hour_start) + stop,
+            )
             coefficients[np.abs(coefficients) < tolerance] = 0.0
             site_cf_hours[positions] += coefficients.sum(axis=0)
             model.addConstr(
@@ -177,14 +183,26 @@ def build_full_year_monolithic(
     *,
     compute_max_cf: bool = True,
     optimization_hours: int | None = None,
+    optimization_start_hour: int = 0,
 ) -> MasterArtifacts:
-    """Build one chronological LP over the selected number of leading hours."""
+    """Build one chronological LP over a selected contiguous time window."""
     if config.raw["construction"]["architecture"] != "full_year_monolithic_lp":
         raise ValueError("Refusing to build a non-monolithic production configuration")
     hours = config.hours if optimization_hours is None else int(optimization_hours)
-    if hours <= 0 or hours > config.hours:
-        raise ValueError("optimization_hours must be in [1, 8760]")
-    block = TimeBlock(block_id=0, hour_start=0, hour_stop=hours)
+    hour_start = int(optimization_start_hour)
+    hour_stop = hour_start + hours
+    if hours <= 0 or hour_start < 0 or hour_stop > config.hours:
+        raise ValueError(
+            "optimization window must satisfy 0 <= start < stop <= 8760"
+        )
+    if optimization_hours is None and hour_start != 0:
+        raise ValueError("A full-year optimization must start at hour 0")
+    selected_hours = slice(hour_start, hour_stop)
+    block = TimeBlock(
+        block_id=0,
+        hour_start=hour_start,
+        hour_stop=hour_stop,
+    )
     artifacts = build_master(config, data, [block], compute_max_cf=compute_max_cf)
     model = artifacts.model
     variables = artifacts.variables
@@ -197,8 +215,14 @@ def build_full_year_monolithic(
     k_count = len(THERMAL_TECHS)
     s_count = len(STORAGE_TECHS)
     v_count = len(VRE_TECHS)
-    baseline_load = data.load_gw[:, :hours]
-    flexible_load = attach_flexible_load(model, config, data, hours=hours)
+    baseline_load = data.load_gw[:, selected_hours]
+    flexible_load = attach_flexible_load(
+        model,
+        config,
+        data,
+        hours=hours,
+        hour_start=hour_start,
+    )
     load = flexible_load.effective_load_gw
     capacity_margin_load_basis = str(
         artifacts.index["capacity_margin_load_basis"]
@@ -262,7 +286,14 @@ def build_full_year_monolithic(
         (p_count, v_count, hours), lb=0.0, name="vre_generation_gw"
     )
     vre_available, vre_site_cf_hours = _attach_vre_availability(
-        model, config, data, vre_capacity, vre_generation, p_index, hours
+        model,
+        config,
+        data,
+        vre_capacity,
+        vre_generation,
+        p_index,
+        hours,
+        hour_start,
     )
     if data.wave is not None:
         wave_generation, wave_site_cf_hours = _attach_wave_generation(
@@ -272,6 +303,7 @@ def build_full_year_monolithic(
             variables["wave_capacity"],
             p_index,
             hours,
+            hour_start,
         )
     else:
         wave_generation = np.zeros((p_count, hours), dtype=float)
@@ -376,9 +408,10 @@ def build_full_year_monolithic(
         .drop_duplicates("hour_index")
         .sort_values("hour_index")
     )
+    selected_dates = dates.iloc[selected_hours]
     winter = np.flatnonzero(
         np.isin(
-            pd.to_datetime(dates.datetime_bj).dt.month.to_numpy()[:hours],
+            pd.to_datetime(selected_dates.datetime_bj).dt.month.to_numpy(),
             config.raw["thermal"]["chp_winter_months"],
         )
     )
@@ -535,7 +568,7 @@ def build_full_year_monolithic(
     ].to_numpy(dtype=float)
     hydro_aggregate_available = (
         hydro_aggregate_capacity[:, None]
-        * data.hydro_aggregate_availability_cf[:, :hours]
+        * data.hydro_aggregate_availability_cf[:, selected_hours]
     )
     hydro_aggregate_mode = config.raw["hydro"]["provincial_aggregate_mode"]
     hydro_aggregate_upper = (
@@ -555,10 +588,10 @@ def build_full_year_monolithic(
     hydro_aggregate_month_slices: list[np.ndarray] = []
     if hydro_aggregate_mode == "fixed_existing_monthly_energy_budget_v2":
         selected_months = (
-            pd.to_datetime(dates.datetime_bj)
+            pd.to_datetime(selected_dates.datetime_bj)
             .dt.to_period("M")
             .astype(str)
-            .to_numpy()[:hours]
+            .to_numpy()
         )
         for month in pd.unique(selected_months):
             month_hours = np.flatnonzero(selected_months == month)
@@ -1048,11 +1081,13 @@ def build_full_year_monolithic(
         line_efficiency=line_efficiency,
         architecture="full_year_monolithic_lp",
         optimization_hours=hours,
+        optimization_start_hour=hour_start,
+        optimization_stop_hour_exclusive=hour_stop,
         configured_hours=config.hours,
         selected_load_gw=load,
         baseline_load_gw=baseline_load,
         baseline_load_components_gw={
-            name: values[:, :hours]
+            name: values[:, selected_hours]
             for name, values in data.load_components_gw.items()
         },
         actual_load_components_gw=flexible_load.actual_components_gw,

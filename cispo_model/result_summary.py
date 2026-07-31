@@ -134,6 +134,9 @@ def export_result_summary(
     figure_dir.mkdir(parents=True, exist_ok=True)
     variables = artifacts.variables
     hours = int(artifacts.index["optimization_hours"])
+    hour_start = int(artifacts.index.get("optimization_start_hour", 0))
+    hour_stop = hour_start + hours
+    selected_hours = slice(hour_start, hour_stop)
 
     capacity_rows: list[dict] = []
     vre_capacity = _value(variables["vre_capacity"])
@@ -365,7 +368,7 @@ def export_result_summary(
         data.load[["hour_index", "datetime_bj"]]
         .drop_duplicates("hour_index")
         .sort_values("hour_index")
-        .iloc[:hours]
+        .iloc[selected_hours]
     )
     national = pd.DataFrame(
         {
@@ -451,6 +454,14 @@ def export_result_summary(
         "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
         "wave_energy_enabled": data.wave is not None,
         "optimization_hours": hours,
+        "optimization_start_hour": hour_start,
+        "optimization_stop_hour_exclusive": hour_stop,
+        "selected_time_start_bj": (
+            pd.to_datetime(dates.datetime_bj).iloc[0].isoformat()
+        ),
+        "selected_time_end_bj": (
+            pd.to_datetime(dates.datetime_bj).iloc[-1].isoformat()
+        ),
         "configured_hours": int(config.hours),
         "result_use": "SCIENTIFIC_PRODUCTION" if full_year else "TEST_ONLY_TRUNCATED_HORIZON",
         "energy_scope": "full_year" if full_year else "selected_test_horizon",

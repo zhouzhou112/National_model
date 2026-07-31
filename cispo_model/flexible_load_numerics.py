@@ -435,6 +435,7 @@ def prebuild_flexible_load_solver_compatibility(
     data: ModelData,
     *,
     hours: int,
+    hour_start: int = 0,
 ) -> dict[str, Any]:
     """Assess the V5 numerical contract before allocating the full LP."""
     settings = config.raw["flexible_load"]
@@ -448,6 +449,7 @@ def prebuild_flexible_load_solver_compatibility(
             {
                 "formulation": formulation,
                 "optimization_hours": int(hours),
+                "optimization_start_hour": int(hour_start),
             }
         )
         service = data.flexible_load_v4
@@ -455,9 +457,17 @@ def prebuild_flexible_load_solver_compatibility(
             raise ValueError(
                 "V5 solver compatibility requires validated V5 inputs"
             )
+        hour_stop = int(hour_start) + int(hours)
+        available_hours = next(
+            iter(service.thermal_envelopes_gw.values())
+        ).shape[1]
+        if int(hour_start) < 0 or hour_stop > available_hours:
+            raise ValueError(
+                "Flexible-load numerical-audit window is outside the model year"
+            )
         risks = _thermal_state_chain_numerical_risks(
             thermal_envelopes={
-                key: value[:, :hours]
+                key: value[:, int(hour_start):hour_stop]
                 for key, value in service.thermal_envelopes_gw.items()
             },
             thermal_parameters=service.thermal_parameters,

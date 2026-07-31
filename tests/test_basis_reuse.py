@@ -150,6 +150,19 @@ class BasisReuseTests(unittest.TestCase):
             self.assertTrue(prepared["cross_year"])
             self.assertEqual(prepared["lp_warm_start"], 2)
             self.assertFalse(prepared["audit_layer_matches"]["implementation_bundle"])
+            with self.assertRaisesRegex(
+                BasisReuseError,
+                "diagnostic start hours differ",
+            ):
+                prepare_basis_reuse(
+                    root,
+                    _FakeModel(),
+                    config,
+                    optimization_hours=1,
+                    optimization_start_hour=1,
+                    result_use="TEST_ONLY_TRUNCATED_HORIZON",
+                    allow_cross_year=True,
+                )
 
     def test_prepare_rejects_same_size_different_sparse_pattern(self):
         config = load_model_config().for_planning_year(2030)
