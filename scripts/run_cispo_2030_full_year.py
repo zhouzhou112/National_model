@@ -21,6 +21,7 @@ from cispo_model.flexible_load_numerics import (
 )
 from cispo_model.io_contract import validate_result_manifest, write_run_provenance
 from cispo_model.preflight import estimate_full_model_scale, run_preflight
+from cispo_model.result_dashboard import build_result_dashboard
 from cispo_model.run_contract import (
     RUN_IDENTITY_FILENAME,
     claim_output_directory,
@@ -719,6 +720,7 @@ def main() -> None:
         )
     manifest_valid = False
     if artifacts.model.SolCount:
+        build_result_dashboard(output_dir)
         write_output_catalog(output_dir)
         finalize_result_manifest(output_dir, config)
         manifest_valid, _ = validate_result_manifest(output_dir)

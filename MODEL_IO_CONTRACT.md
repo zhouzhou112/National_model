@@ -29,6 +29,7 @@ All model power variables use GW, hourly energy sums use GWh, storage energy use
 | Demand flexibility | `scenario_manifest.json`, `flexible_load_dispatch.npz`, `annual_flexible_load_by_province.csv` | Baseline/optimized load components, shifts, V2G, peaks, losses and scenario assumptions |
 | Readable hourly tables | `time_index.csv`, `hourly_national_balance.csv.gz`, `hourly_province_balance.csv.gz`, `hourly_province_security.csv.gz` | Plotting, balance checks, adequacy and flexibility metrics |
 | Annual/monthly analysis | `annual_generation_by_province_technology.csv`, `annual_resource_accounting_by_province.csv`, `annual_adequacy_by_province.csv`, `annual_constraint_shadow_prices.csv`, `monthly_energy_by_technology.csv`, `cost_components.csv` | Paper tables, regional mechanisms, adequacy, shadow prices, carbon/resource and cost decomposition |
+| Fixed result review | `result_dashboard_summary.json`, `result_analysis_metrics.csv`, `visualizations/core_result_dashboard.svg` | One stable post-run review step covering acceptance, capacity, generation, scope-aware costs, flexibility, carbon and security margins |
 | Spatial network | `load_center_*.csv`, `province_annual_load_center_accounts.csv`, `co2_source_sink_flows.csv` | 337-city annual load-center allocation, intraprovincial transmission proxy and CCS routing; the 278-node Natural Earth package is retained only for replication/sensitivity |
 | Acceptance | `solve_report.json`, `solution_qc.json`, `output_catalog.csv`, `output_data_dictionary.csv`, `result_manifest.json` | Numerical status, physical validity, schema discovery and integrity |
 | Cross-year | `planning_state/state_metadata.json`, `capacity_cohorts.csv.gz`, `state_transition_summary.csv` | Exact cohort inheritance and lifetime retirement |
@@ -47,18 +48,42 @@ NPZ files are saved with numeric arrays and fixed-width Unicode identifiers, so 
 
 The optimization does not contain site-hour VRE dispatch variables. It dispatches VRE at province-technology-hour resolution while retaining site-level capacity and exact site CF coefficients. Therefore no artificial site-level curtailment allocation is exported. Site potential generation can be recomputed from the saved capacity decision and immutable CF input without rerunning optimization.
 
-## 5. Carbon terminology
+## 5. Scope-aware cost intensity
+
+The fixed dashboard uses immutable baseline electricity demand as its
+denominator so Base and flexibility cases remain directly comparable. Because
+`1 million CNY / GWh = 1 CNY/kWh`, no additional factor is applied.
+
+- For `SCIENTIFIC_PRODUCTION`, total system cost intensity is the sum of
+  annualized planning cost and full-year operating cost divided by full-year
+  baseline demand.
+- For `TEST_ONLY_TRUNCATED_HORIZON`, the dashboard reports annualized planning
+  cost intensity against full-year baseline demand and selected-horizon
+  operating cost intensity against selected-horizon baseline demand as two
+  separate quantities. They must not be added, labelled as LCOE, or interpreted
+  as a scientific annual result.
+- `annual_operation` is a composite roll-up and is excluded when the detailed
+  `SELECTED_HORIZON_OPERATION_COST` rows are summed. Dashboard generation
+  fails closed if detailed scope rows do not reconstruct the reported
+  objective within numerical tolerance.
+
+The dependency-free SVG is part of the checksummed scientific output. The
+standalone `scripts/build_result_dashboard.py` can render PNG/PDF copies in an
+external analysis directory on a workstation with Matplotlib; it must not
+modify an already accepted historical result root.
+
+## 6. Carbon terminology
 
 The historical field `annual_gross_emissions_mtco2` is retained for compatibility, but the model quantity includes residual fossil emissions and BECCS net emissions before DAC. New outputs use the precise name `emissions_before_dac_mtco2`, alongside fossil-unabated emissions, CO2 captured for storage, DAC removal and final net emissions. The CISPO-equivalent BECCS baseline additionally exports `beccs_gross_biogenic_co2_mtco2`, `beccs_captured_biogenic_co2_mtco2`, `beccs_stored_co2_mtco2`, `beccs_uncaptured_biogenic_co2_mtco2`, `beccs_lifecycle_emissions_mtco2` and `beccs_net_removal_mtco2`. Baseline lifecycle emissions are explicitly zero; hard QC closes capture, storage, net carbon and total captured-CO2 reconstruction.
 
 For the current continuous LP, `hourly_marginal_prices.csv.gz` exports provincial power-balance, reserve and inertia `Pi`, while `annual_constraint_shadow_prices.csv` exports carbon, biomass, capacity-margin and CCS scarcity values. `dual_export_status.json` records whether duals were available. A future nonconvex QCP/MIQCP must not interpret these LP duals as if they remain valid; Gurobi may not provide comparable shadow prices for a nonconvex solution.
 
-## 6. Cross-year acceptance
+## 7. Cross-year acceptance
 
 Only `OPTIMAL + solution_qc=PASS + SCIENTIFIC_PRODUCTION` creates a planning state. State metadata contains SHA256 for the cohort table, transition summary, source QC and final solve report. Resume logic also validates the complete result manifest. A 744h/4344h test can never create a transferable state.
 
 Existing 2025 VRE is currently held as an exogenous floor because plant-level commission/retirement ages are unavailable; existing hydropower is assumed operational through 2060. These are explicit long-term assumptions in `config/optimization_2030.json`, not inferred state-transfer behavior. Model-built cohorts retire by technology lifetime.
 
-## 7. Multi-year architecture
+## 8. Multi-year architecture
 
 The default is myopic sequential planning, not a joint perfect-foresight solve. This requires four solves in total but keeps peak memory close to one 8760-hour model and permits validation between years. A joint four-year model would generally be much harder, not lighter: chronological blocks, RUC/storage/hydrology/network variables and inter-year capacity couplings would coexist in memory. A perfect-foresight variant should therefore be treated as a separate research formulation and first tested on reduced spatial/temporal instances.

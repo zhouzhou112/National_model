@@ -451,6 +451,7 @@ def export_result_summary(
         "flexible_load_enabled": bool(config.raw["features"]["flexible_load"]),
         "wave_energy_enabled": data.wave is not None,
         "optimization_hours": hours,
+        "configured_hours": int(config.hours),
         "result_use": "SCIENTIFIC_PRODUCTION" if full_year else "TEST_ONLY_TRUNCATED_HORIZON",
         "energy_scope": "full_year" if full_year else "selected_test_horizon",
         "objective_interpretation": (
@@ -459,8 +460,18 @@ def export_result_summary(
             else "mixed annual capacity/policy terms plus truncated operating terms; not a planning result"
         ),
         "objective_million_cny_per_year": primary_objective,
+        "full_year_reference_baseline_load_gwh": float(data.load_gw.sum()),
+        "full_year_reference_baseline_peak_load_gw": float(
+            data.load_gw.sum(axis=0).max()
+        ),
+        "reference_load_definition": (
+            "immutable baseline electricity demand before demand-flexibility "
+            "redispatch; used for Base/V5 cost-intensity comparability"
+        ),
         "period_load_gwh": float(load.sum()),
         "period_baseline_load_gwh": float(baseline_load.sum()),
+        "period_effective_peak_load_gw": float(load.max()),
+        "period_baseline_peak_load_gw": float(baseline_load.max()),
         "period_generation_gwh": float(generation.generation_gwh.sum()),
         "period_wave_generation_gwh": float(
             _value(variables["wave_generation"]).sum()

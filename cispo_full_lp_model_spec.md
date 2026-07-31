@@ -1976,7 +1976,11 @@ D^{min}K^{PHS,P}_g\le K^{PHS,E}_g\le D^{max}K^{PHS,P}_g
 
 ### 14.6 生产输出和停止规则
 
-生产输出必须包含容量、逐小时运行、碳/CCS、成本分解、`solution_qc.json`、SHA256 manifest 和简要 SVG。744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status 或 QC 不通过，不得自动放松约束或写出下一期 planning state。
+生产输出必须包含容量、逐小时运行、碳/CCS、成本分解、`solution_qc.json`、SHA256 manifest 和简要 SVG。每个成功求解还必须在 manifest 封存前生成固定结果查阅合同：`result_dashboard_summary.json`、`result_analysis_metrics.csv` 与 `visualizations/core_result_dashboard.svg`，统一显示 solver/QC/hard checks、容量、所选时域发电、灵活性、碳约束和安全裕度。
+
+成本强度的分母统一采用柔性调度前的不可变基准用电量，以保证 Base 与 V5 可比；因 \(1\ \mathrm{million\ CNY}/\mathrm{GWh}=1\ \mathrm{CNY}/\mathrm{kWh}\)，无需额外换算因子。只有 `SCIENTIFIC_PRODUCTION` 的 8760 h 结果可以把年化规划成本与全年运行成本相加并报告“总系统成本强度”。1 h/24 h/168 h/744 h 的 `TEST_ONLY_TRUNCATED_HORIZON` 必须分别报告“年化规划成本/全年基准负荷”和“所选时域运行成本/同期基准负荷”，不得相加、不得标记为 LCOE，也不得当作年度科学结果。`annual_operation` 仅为 composite roll-up；详细成本求和时必须排除该行，并硬校验 scope-aware 明细能够重构目标值。
+
+744h 只作为求解门槛；8760 是唯一可用于论文结果的时段。若 infeasible，应输出 IIS；若 memory gate、solver status 或 QC 不通过，不得自动放松约束或写出下一期 planning state。
 
 ### 14.7 原始 LP 结构审计合同
 

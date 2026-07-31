@@ -85,6 +85,9 @@ OUTPUT_FILE_ROLES = {
     "reservoir_dispatch.npz": "Station-hour reservoir operation and hydrology arrays",
     "reservoir_station_index.csv": "Row index and station metadata for reservoir arrays",
     "result_manifest.json": "SHA256 manifest of scientific result artifacts",
+    "result_analysis_metrics.csv": "Scope-aware headline metrics for fixed post-run review",
+    "result_dashboard_summary.json": "Machine-readable source for the fixed core-result dashboard",
+    "core_result_dashboard.svg": "Dependency-free fixed core-result dashboard with scientific-use boundary",
     "run_claim.json": "Atomic output-root ownership claim preventing overwrite or concurrent reuse",
     "run_identity.json": "Layered scientific case, LP topology, solver-runtime and implementation-bundle identity",
     "run_environment.json": "Software, host, command and data-root provenance",
@@ -536,8 +539,12 @@ def write_run_provenance(
 def _infer_unit(field: str) -> str:
     lower = field.lower()
     suffixes = (
+        ("_cny_per_kwh", "CNY/kWh"),
         ("_million_cny_per_year", "million CNY/year"),
+        ("_million_cny", "million CNY"),
         ("_yuan_per_mwh", "CNY/MWh"),
+        ("_seconds", "second"),
+        ("_gib", "GiB"),
         ("_mtco2_per_year", "MtCO2/year"),
         ("_mtco2", "MtCO2"),
         ("_mtpa", "MtCO2/year"),
