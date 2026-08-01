@@ -1,0 +1,18 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_nonbasic_primal_dual_long_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Fixed-server long-horizon Barrier-first profile. It requires an optimal primal-dual interior solution, skips inline crossover, allows 24 hours of solver time, and retains a 16 GiB host reserve when used behind the 96 GiB full-year memory gate on a 128 GiB server.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-10,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 86400,
+    "soft_mem_limit_gb": 80
+  }
+}

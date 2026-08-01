@@ -235,6 +235,7 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         "bar_homogeneous": ("BarHomogeneous", int),
         "bar_order": ("BarOrder", int),
         "crossover_basis": ("CrossoverBasis", int),
+        "lp_warm_start": ("LPWarmStart", int),
         "pre_dual": ("PreDual", int),
         "pre_passes": ("PrePasses", int),
         "pre_sparsify": ("PreSparsify", int),
@@ -354,13 +355,20 @@ def solve_and_report(
     *,
     compute_iis: bool = True,
     warm_start: dict | None = None,
+    primal_dual_start: dict | None = None,
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
+    if warm_start is not None and primal_dual_start is not None:
+        raise ValueError("Basis and primal/dual starts cannot be combined")
     configure_gurobi(model, config, output_dir / "gurobi.log")
     if warm_start is not None:
         from .basis_reuse import apply_basis_reuse
 
         apply_basis_reuse(model, warm_start)
+    if primal_dual_start is not None:
+        from .primal_dual_checkpoint import apply_primal_dual_crossover_start
+
+        apply_primal_dual_crossover_start(model, primal_dual_start)
     before = model_statistics(model)
     telemetry = SolverTelemetry(output_dir / "solver_telemetry.jsonl")
     telemetry.write_event(
@@ -460,6 +468,7 @@ def solve_and_report(
             "bar_iter_limit": int(model.Params.BarIterLimit),
         },
         "warm_start": warm_start,
+        "primal_dual_start": primal_dual_start,
         "iteration_counts": {
             "simplex": float(model.IterCount),
             "barrier": int(model.BarIterCount),

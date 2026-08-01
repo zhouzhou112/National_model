@@ -1,0 +1,18 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_deferred_crossover_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Optional exact-LP deferred crossover profile. It requires a separately accepted BarX/BarPi checkpoint, maps full PStart/DStart information through presolve with LPWarmStart=2, and never replaces the Barrier-first source result.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 1,
+    "crossover_basis": 1,
+    "lp_warm_start": 2,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 86400,
+    "soft_mem_limit_gb": 80
+  }
+}

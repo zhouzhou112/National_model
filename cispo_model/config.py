@@ -922,6 +922,10 @@ class ModelConfig:
             raise ValueError(
                 "numerics.solution_target is outside the Gurobi-supported range"
             )
+        if int(numerics.get("lp_warm_start", -1)) not in {-1, 0, 1, 2}:
+            raise ValueError(
+                "numerics.lp_warm_start is outside the Gurobi-supported range"
+            )
         if int(numerics.get("aggregate", 1)) not in {0, 1, 2}:
             raise ValueError(
                 "numerics.aggregate is outside the Gurobi-supported range"
@@ -1069,6 +1073,7 @@ def load_model_config(
             "crossover_basis",
             "dual_reductions",
             "inf_unbd_info",
+            "lp_warm_start",
             "pdhg_gpu",
             "pre_dual",
             "pre_passes",

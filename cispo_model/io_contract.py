@@ -33,6 +33,10 @@ RUNTIME_MANAGED_FILES = {
 }
 
 OUTPUT_FILE_ROLES = {
+    "barrier_checkpoint_manifest.json": "Barrier-first ordered primal/dual checkpoint identity and deferred-crossover contract",
+    "primal_barx.npy": "Ordered raw-LP primal values from the accepted best Barrier iterate",
+    "dual_barpi.npy": "Ordered raw-LP dual values from the accepted best Barrier iterate",
+    "primal_dual_start_input.json": "Verified accepted Barrier checkpoint used for an exact-LP deferred crossover",
     "base_basis.bas.gz": "Accepted full-year Base post-crossover LP basis checkpoint",
     "base_model_fingerprint.json": "Constant-memory Gurobi model identity and basis-status census",
     "base_solution.sol.gz": "Accepted full-year Base continuous solution checkpoint",

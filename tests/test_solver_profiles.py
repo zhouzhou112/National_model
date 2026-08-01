@@ -132,6 +132,26 @@ class SolverProfileTests(unittest.TestCase):
             nonbasic.raw["numerics"]["barrier_convergence_tolerance"],
             1e-9,
         )
+        nonbasic_long = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_nonbasic_primal_dual_long_v1.json"
+            )
+        )
+        self.assertEqual(nonbasic_long.raw["numerics"]["crossover"], 0)
+        self.assertEqual(nonbasic_long.raw["numerics"]["solution_target"], 1)
+        self.assertEqual(nonbasic_long.raw["numerics"]["time_limit_seconds"], 86400)
+        self.assertEqual(nonbasic_long.raw["numerics"]["soft_mem_limit_gb"], 80)
+        deferred = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_deferred_crossover_v1.json"
+            )
+        )
+        self.assertEqual(deferred.raw["numerics"]["method"], 2)
+        self.assertEqual(deferred.raw["numerics"]["crossover"], 1)
+        self.assertEqual(deferred.raw["numerics"]["crossover_basis"], 1)
+        self.assertEqual(deferred.raw["numerics"]["lp_warm_start"], 2)
 
         limited = load_model_config(
             solver_path=(

@@ -31,6 +31,15 @@ from cispo_model.run_contract import (
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
+def diagnostic_memory_requirement_gb(config, hours: int) -> float:
+    """Map an arbitrary diagnostic length to the next validated memory tier."""
+    for name in ("one_month", "six_months", "full_year"):
+        horizon = config.horizon(name)
+        if int(hours) <= int(horizon["hours"]):
+            return float(horizon["minimum_available_memory_gb"])
+    raise ValueError(f"Diagnostic horizon {hours} exceeds the configured full year")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Sequential CISPO planning-year expansion plus chronological operation"
@@ -113,6 +122,34 @@ def main() -> None:
             "After an accepted full-year Base solve, export selective .sol, "
             ".bas, .prm and lightweight fingerprint artifacts. Never valid "
             "for truncated horizons, non-Base cases or MGA outputs."
+        ),
+    )
+    parser.add_argument(
+        "--export-barrier-checkpoint",
+        action="store_true",
+        help=(
+            "Export ordered BarX/BarPi arrays after an accepted Crossover=0 "
+            "solve. This is automatic for horizons longer than 744h."
+        ),
+    )
+    parser.add_argument(
+        "--primal-dual-checkpoint-in",
+        help=(
+            "Accepted Barrier-first output root used to seed a separate exact-LP "
+            "deferred crossover run. Never overwrites the source result."
+        ),
+    )
+    parser.add_argument(
+        "--allow-primal-dual-crossover",
+        action="store_true",
+        help="Explicitly acknowledge exact-LP deferred crossover from BarX/BarPi.",
+    )
+    parser.add_argument(
+        "--allow-inline-crossover",
+        action="store_true",
+        help=(
+            "Explicitly permit Barrier and crossover in one solve for horizons "
+            "longer than 744h. The default long-horizon contract is Barrier-first."
         ),
     )
     parser.add_argument(
@@ -206,6 +243,14 @@ def main() -> None:
         raise SystemExit("--allow-basis-reuse requires --basis-in")
     if args.allow_cross_year_basis and not args.basis_in:
         raise SystemExit("--allow-cross-year-basis requires --basis-in")
+    if args.primal_dual_checkpoint_in and not args.allow_primal_dual_crossover:
+        raise SystemExit(
+            "--primal-dual-checkpoint-in requires --allow-primal-dual-crossover"
+        )
+    if args.allow_primal_dual_crossover and not args.primal_dual_checkpoint_in:
+        raise SystemExit(
+            "--allow-primal-dual-crossover requires --primal-dual-checkpoint-in"
+        )
     if bool(args.mga_spec) != bool(args.mga_baseline):
         raise SystemExit("--mga-spec and --mga-baseline must be supplied together")
     if args.constraint_family_audit_max_nonzeros < 1:
@@ -232,6 +277,11 @@ def main() -> None:
         and int(numerics.get("crossover", -1)) == 0
         and int(numerics.get("solution_target", -1)) == 1
     )
+    requested_optimization_hours = int(
+        args.diagnostic_hours
+        if args.diagnostic_hours is not None
+        else config.horizon(args.horizon)["hours"]
+    )
     if nonbasic_primal_dual_requested and (
         args.basis_in
         or args.export_warm_start_basis
@@ -241,6 +291,38 @@ def main() -> None:
         raise SystemExit(
             "The optimal primal-dual nonbasic contract cannot be combined "
             "with basis import/export, scientific .bas artifacts, or MGA"
+        )
+    if args.export_barrier_checkpoint and not nonbasic_primal_dual_requested:
+        raise SystemExit(
+            "--export-barrier-checkpoint requires Method=2, Crossover=0, "
+            "SolutionTarget=1"
+        )
+    if args.primal_dual_checkpoint_in:
+        if args.basis_in or args.mga_spec or nonbasic_primal_dual_requested:
+            raise SystemExit(
+                "Deferred primal/dual crossover cannot be combined with a basis, "
+                "MGA, or another Crossover=0 solve"
+            )
+        if (
+            int(numerics.get("method", -1)) != 2
+            or int(numerics.get("crossover", 0)) <= 0
+            or int(numerics.get("lp_warm_start", -1)) != 2
+        ):
+            raise SystemExit(
+                "Deferred crossover requires Method=2, Crossover>0 and LPWarmStart=2"
+            )
+    if (
+        requested_optimization_hours > 744
+        and not args.preflight_only
+        and not args.build_only
+        and int(numerics.get("crossover", 0)) > 0
+        and not args.primal_dual_checkpoint_in
+        and not args.allow_inline_crossover
+    ):
+        raise SystemExit(
+            "HARD_FAIL: horizons longer than 744h use Barrier-first acceptance. "
+            "Select the nonbasic primal/dual profile, seed a deferred crossover, "
+            "or explicitly pass --allow-inline-crossover."
         )
     if args.export_scientific_solver_artifacts and requested_test_only:
         raise SystemExit(
@@ -311,8 +393,8 @@ def main() -> None:
             f"model hour {optimization_start_hour}; cyclic over the selected "
             "diagnostic horizon"
         )
-        required_gb = float(
-            config.horizon("one_month")["minimum_available_memory_gb"]
+        required_gb = diagnostic_memory_requirement_gb(
+            config, optimization_hours
         )
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
@@ -424,6 +506,24 @@ def main() -> None:
             "allow_basis_reuse": bool(args.allow_basis_reuse),
             "allow_cross_year_basis": bool(args.allow_cross_year_basis),
             "export_warm_start_basis": bool(args.export_warm_start_basis),
+        },
+        "barrier_first_workflow": {
+            "nonbasic_primal_dual_requested": nonbasic_primal_dual_requested,
+            "primary_checkpoint_requested": bool(
+                nonbasic_primal_dual_requested
+                and (
+                    args.export_barrier_checkpoint
+                    or optimization_hours > 744
+                )
+            ),
+            "deferred_crossover_source": (
+                str(args.primal_dual_checkpoint_in)
+                if args.primal_dual_checkpoint_in
+                else None
+            ),
+            "inline_crossover_explicitly_allowed": bool(
+                args.allow_inline_crossover
+            ),
         },
         "analysis_mode": "BASE_MINIMUM_COST",
         "mga": None,
@@ -559,6 +659,25 @@ def main() -> None:
             json.dumps(warm_start, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
+    primal_dual_start = None
+    if args.primal_dual_checkpoint_in:
+        from cispo_model.primal_dual_checkpoint import (
+            prepare_primal_dual_crossover,
+        )
+
+        primal_dual_start = prepare_primal_dual_crossover(
+            args.primal_dual_checkpoint_in,
+            output_dir,
+            artifacts.model,
+            config,
+            optimization_hours=optimization_hours,
+            optimization_start_hour=optimization_start_hour,
+            result_use=scope_report["result_use"],
+        )
+        (output_dir / "primal_dual_start_input.json").write_text(
+            json.dumps(primal_dual_start, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
     structure_audit_path = output_dir / "constraint_family_audit.json"
     structure_audit = None
     if args.constraint_family_audit:
@@ -636,6 +755,7 @@ def main() -> None:
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
         "warm_start": warm_start,
+        "primal_dual_start": primal_dual_start,
         "mga": mga_run,
     }
     (output_dir / "build_report.json").write_text(
@@ -679,6 +799,7 @@ def main() -> None:
         output_dir,
         compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
         warm_start=warm_start,
+        primal_dual_start=primal_dual_start,
     )
     report.update(
         boundary_year=config.boundary_year,
@@ -697,6 +818,48 @@ def main() -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    if (
+        int(report.get("solver_parameters", {}).get("method", -1)) == 2
+        and int(report.get("solver_parameters", {}).get("crossover", 0)) > 0
+        and report.get("solution_contract", {}).get("barrier_status_code") == 2
+        and report.get("status") != "OPTIMAL"
+    ):
+        try:
+            from cispo_model.primal_dual_checkpoint import (
+                CHECKPOINT_DIRECTORY,
+                CHECKPOINT_MANIFEST,
+                export_barrier_primal_dual_checkpoint,
+            )
+
+            recovery = export_barrier_primal_dual_checkpoint(
+                artifacts.model,
+                config,
+                output_dir,
+                solve_report=report,
+                optimization_hours=optimization_hours,
+                optimization_start_hour=optimization_start_hour,
+                result_use=scope_report["result_use"],
+                solution_qc=None,
+                accepted_primary=False,
+            )
+            report["barrier_checkpoint"] = {
+                "status": recovery["checkpoint_status"],
+                "scientifically_accepted": False,
+                "path": str(
+                    output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
+                ),
+            }
+        except Exception as error:
+            checkpoint_error = {
+                "status": "RECOVERY_CHECKPOINT_EXPORT_FAILED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+            }
+            (output_dir / "barrier_checkpoint_error.json").write_text(
+                json.dumps(checkpoint_error, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            report["barrier_checkpoint"] = checkpoint_error
     export_state = False
     qc = None
     solver_solution_accepted = bool(
@@ -711,6 +874,7 @@ def main() -> None:
         export_result_summary(artifacts, data, config, output_dir)
         export_state = bool(
             (not test_only or args.export_diagnostic_state)
+            and not nonbasic_primal_dual_requested
             and report["status"] == "OPTIMAL"
             and report.get("solution_contract", {}).get(
                 "acceptance_status"
@@ -718,6 +882,10 @@ def main() -> None:
             and qc["status"] == "PASS"
             and mga_request is None
         )
+        if nonbasic_primal_dual_requested:
+            report["planning_state_export_status"] = (
+                "DEFERRED_UNTIL_OPTIONAL_CROSSOVER_OR_SEPARATE_ANCHOR_DECISION"
+            )
         if mga_request is not None:
             report["solver_secondary_objective_value_gw"] = report[
                 "objective_value_million_cny"
@@ -737,6 +905,49 @@ def main() -> None:
         report["solution_export_status"] = (
             "SKIPPED_UNACCEPTED_SOLVER_RESULT"
         )
+    primary_checkpoint_requested = bool(
+        nonbasic_primal_dual_requested
+        and (args.export_barrier_checkpoint or optimization_hours > 744)
+    )
+    if primary_checkpoint_requested and qc is not None and qc.get("status") == "PASS":
+        try:
+            from cispo_model.primal_dual_checkpoint import (
+                CHECKPOINT_DIRECTORY,
+                CHECKPOINT_MANIFEST,
+                export_barrier_primal_dual_checkpoint,
+            )
+
+            checkpoint = export_barrier_primal_dual_checkpoint(
+                artifacts.model,
+                config,
+                output_dir,
+                solve_report=report,
+                optimization_hours=optimization_hours,
+                optimization_start_hour=optimization_start_hour,
+                result_use=scope_report["result_use"],
+                solution_qc=qc,
+                accepted_primary=True,
+            )
+            report["barrier_checkpoint"] = {
+                "status": checkpoint["checkpoint_status"],
+                "scientifically_accepted": True,
+                "deferred_crossover_eligible": True,
+                "path": str(
+                    output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
+                ),
+            }
+        except Exception as error:
+            checkpoint_error = {
+                "status": "PRIMARY_CHECKPOINT_EXPORT_FAILED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "scientific_solution_remains_eligible_for_normal_acceptance": True,
+            }
+            (output_dir / "barrier_checkpoint_error.json").write_text(
+                json.dumps(checkpoint_error, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            report["barrier_checkpoint"] = checkpoint_error
     report["runtime_memory"] = memory_monitor.stop()
     if (
         args.export_warm_start_basis
