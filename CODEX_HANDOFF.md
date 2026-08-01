@@ -12,6 +12,45 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-01 12:20+08:00：Barrier-first 实现提交为
+  `19b5754bb0db12818975344e5365777674698c47`。它没有改变冷热、EV、水电、储能、
+  网络、可靠性、碳/CCS 或成本约束；只改变求解阶段顺序、检查点/验收工作流和
+  长时域运行安全门禁。超过 744 h 默认要求先用 Gurobi 13
+  `Method=2/Crossover=0/SolutionTarget=1` 取得严格接受的内点解；744 h 可显式
+  `--export-barrier-checkpoint`。接受条件仍为 `OPTIMAL + strict primal/dual
+  contract + solution_qc=PASS + 全部 hard checks + current input + valid result
+  manifest`，没有放松科学 QC。
+- 接受后的 `barrier_checkpoint/{primal_barx.npy,dual_barpi.npy,
+  barrier_checkpoint_manifest.json}` 保存完整原 LP 顺序的 `BarX/BarPi`。独立
+  `barrier_16_deferred_crossover_v1` 可在 exact-LP 身份、input SHA256、Fingerprint
+  和向量长度全部一致时以 `PStart/DStart + LPWarmStart=2` 执行可选 Crossover；
+  它绝不覆盖第一阶段结果。非基第一阶段不自动导出 `planning_state`，需由独立
+  Crossover 或另行批准的容量 anchor 决策闭合后才能进入下一规划年。
+- runner 现默认拒绝 `>744 h` 的 inline Crossover，除非显式
+  `--allow-inline-crossover`；Gurobi 13 若在 `BarStatus=OPTIMAL` 后 inline
+  Crossover 失败，会尽力保留 `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`，但该
+  recovery 没有完整 QC，不能重标为科学接受结果。任意 diagnostic 的内存门禁已从
+  错误的固定 8 GiB 改为 `<=744:8`、`745--4344:32`、`>4344:96 GiB`；长 profile
+  为 `TimeLimit=86400 s/SoftMemLimit=80 GiB`，禁止越过 host memory/swap/PSI
+  门禁。
+- 本地在 `CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`
+  下完整回归 `174/174 PASS`；真实 Gurobi 小模型已验证 memmap `BarX/BarPi` 能
+  注入 `PStart/DStart` 并完成 `LPWarmStart=2` deferred crossover。`py_compile`
+  与 `git diff --check` 通过。
+- 12:20 实时四端/服务器核验：实现提交前 local/origin/GitHub 均为文档 tip
+  `36d77237d496ceceb34c7300a338b4f715928b2e`；固定服务器仍为 clean
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，无 CISPO/Gurobi/planning-sequence
+  求解进程，available RAM 约 `113 GiB`、swap `447 MiB/2 GiB`、最新
+  `vmstat si/so=0/0`、memory PSI 0；ParaCloud `squeue -u a8s001819` 为空。
+  本窗口没有部署或启动任何求解。
+- 精确下一步：先推送实现与本交接 tip；下一窗口重新实时核验后部署精确提交，完成
+  server full regression/readiness/release/Base+V5 input/hydro audits。随后严格串行运行
+  2030 Base→V5 的五组 744 h 季节窗口：start hour `0/2160/3960/4344/6552`，
+  全部使用 nonbasic profile 和 barrier checkpoint。五组全闭合后再运行 Base-only
+  `1008/1488/2160/2976/4344 h` 长度阶梯，并只在最大安全 Base 长度上配对一个
+  V5。`>4344 h`、四年 sequence、8760 h、付费云、MGA/basis、并发第二求解和
+  `Crossover=3` 均不自动启动；详细停止规则见 `SERVER_RUNBOOK.md` 顶节。
+
 - 2026-08-01 05:52+08:00：当前四端与固定服务器 checkout 均为
   `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，branch
   `codex/cispo-2030-full-lp`；服务器 worktree clean、无 CISPO/Gurobi 进程。
@@ -718,6 +757,33 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-01 - Barrier-first 正式验收、完整内点检查点与递增长时域门禁
+
+- Implementation commit: `19b5754bb0db12818975344e5365777674698c47`。
+- Scope/files：新增 `cispo_model/primal_dual_checkpoint.py`、
+  `barrier_16_nonbasic_primal_dual_long_v1.json`、
+  `barrier_16_deferred_crossover_v1.json` 与 checkpoint tests；修改 runner、
+  solver config/diagnostics、output catalog 和 full LP spec。没有改变模型变量、目标或
+  物理约束，也没有触碰/暂存用户拥有的 `supplementary_materials/**`、
+  `.codex_tmp/**` 或历史 outputs。
+- Workflow：accepted nonbasic Barrier 先导出全部科学结果和 `BarPi`，再保存完整
+  ordered `BarX/BarPi`；deferred crossover 只在 exact LP/input/code identity
+  相同时启用 `PStart/DStart + LPWarmStart=2`。nonbasic primary 不写 planning
+  state；inline crossover failure 的 recovery artifact 明确为未接受。
+- Kill-condition audit：修复 arbitrary diagnostic 永远按 8 GiB 放行的 OOM 风险；
+  `>744 h` inline crossover 改为 explicit opt-in；长 profile 使用 24 h solver limit/
+  80 GiB soft memory。SIGKILL、OOM killer、Slurm cgroup OOM/节点重启仍不可恢复，
+  未来云 walltime 必须大于 solver limit 并保留导出/TERM grace headroom。
+- Commands/evidence：`py_compile`、`git diff --check` 通过；设置正确 wave root 后
+  `python -m unittest discover -s tests -p 'test_*.py' -v` 为 `174/174 PASS`；
+  真实 Gurobi checkpoint round-trip PASS。12:20 server clean/idle、113 GiB
+  available、无实时换页/PSI，ParaCloud 空队列；未部署、未启动 solver。
+- Unresolved/exact next action：服务器仍在 `7a1520e`，必须等文档 tip 双推送后由
+  下一窗口实时复核并部署。先完成五个季节 744 h Base/V5 配对，再按
+  `1008→1488→2160→2976→4344 h` 做 Base-only 阶梯和一个最大安全 V5 配对；
+  任何一步失败即保留现场并停，不自动改 profile、补跑 inline Crossover 或扩大到
+  `>4344/8760 h`。
 
 ### 2026-08-01 - reservoir native bounds 后同窗 Base 744 h 终态拒绝
 

@@ -1,5 +1,104 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-01 Barrier-first 验收、检查点与下一轮压力测试合同
+
+对应实现提交为 `19b5754bb0db12818975344e5365777674698c47`；在部署前必须确认
+local、origin、GitHub 已包含该提交及随后交接提交，固定服务器不得在活动 PID 上
+切换 checkout。
+
+本节取代“所有成功运行都必须先完成 inline Crossover”这一过严工作流，但**不放松**
+任何科学或物理门禁。超过 744 h 的默认第一阶段必须使用
+`barrier_16_nonbasic_primal_dual_long_v1.json`；744 h 季节窗口使用
+`barrier_16_nonbasic_primal_dual_v1.json --export-barrier-checkpoint`。第一阶段只在
+`OPTIMAL + OPTIMAL_PRIMAL_DUAL_NONBASIC/PASS + solution_qc=PASS + 全部 hard
+checks + current input manifest + valid result manifest + wrapper exit 0` 时接受。
+`BarPi` 是此阶段的 dual；不要求 basis、RC 或 SA attributes。所有截断根仍是
+`TEST_ONLY_TRUNCATED_HORIZON`。
+
+通过后，输出根中的 `barrier_checkpoint/` 保存 `primal_barx.npy`、
+`dual_barpi.npy` 和 `barrier_checkpoint_manifest.json`。manifest 锁定 baseline/
+analysis identity、implementation bundle、data roots、input manifest、规划年、窗口、
+Gurobi Fingerprint、原 LP 尺寸和文件 SHA256。非基第一阶段不自动导出
+`planning_state`，避免退化容量空间中的弥散内点未经审查地成为下一规划年 anchor。
+若需要 basis、RC、SA sensitivity、MGA warm start 或正式跨年容量 anchor，必须用
+全新输出根、完全相同 LP 和
+`barrier_16_deferred_crossover_v1.json --primal-dual-checkpoint-in SOURCE
+--allow-primal-dual-crossover` 单独执行；该 profile 以 `PStart/DStart +
+LPWarmStart=2 + Crossover=1/CrossoverBasis=1` 重建 presolved start。派生 Crossover
+失败不得删除、覆盖或降级第一阶段结果。
+
+旧式 `Crossover>0` 在 `>744 h` 默认被 runner 拒绝；诊断时必须显式传入
+`--allow-inline-crossover`。若 Gurobi 13 已有 `BarStatus=OPTIMAL` 而 inline
+Crossover 后 `TIME_LIMIT/MEM_LIMIT`，runner 会尽力保存
+`RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT` 原始向量。该 recovery 根没有完整 QC，
+不得用于科学解释或直接进入正式 deferred crossover。
+
+### 会直接损失结果的条件审计
+
+1. 原 `--diagnostic-hours` 无论多长都按 8 GiB 放行，现已修为向上匹配内存层级：
+   `<=744 h: 8 GiB`、`745--4344 h: 32 GiB`、`4345--8760 h: 96 GiB`。
+   这是防 OOM 的收紧，禁止回退。
+2. Gurobi `TimeLimit` 和 `SoftMemLimit` 通常会让 `optimize()` 返回，因而可以执行
+   报告/检查点导出；长 profile 将 solver 时间从 6 h 提至 24 h、soft memory 从
+   48 GiB 提至 80 GiB，但仍须保留至少 16 GiB host available、`si/so=0` 和
+   memory PSI=0。不得用更大 soft limit 越过 host memory gate。
+3. `SIGINT/SIGTERM` 已由 telemetry/graceful termination 捕获；`SIGKILL`、Linux
+   OOM killer、Slurm cgroup OOM 和节点重启不可被 Python 捕获。付费云脚本在未来
+   重新批准前必须保证 scheduler walltime 大于 Gurobi TimeLimit 加 build/export
+   headroom，并配置 TERM grace period；旧 24 h scheduler + 24 h solver 组合不得复用。
+4. 检查点不保存 Barrier factorization，不能从某次 Barrier iteration 继续；它只允许
+   exact-LP deferred crossover。8760 h 的两条 float64 向量原始规模约 0.9 GB，
+   但导入时 Python/Gurobi 对象列表会产生额外瞬时内存，必须计入资源余量。
+5. 不放松 `Status=OPTIMAL`、primal/dual quality、58/58（或当前版本实际 hard-check
+   总数）、物理/成本 QC、input/result manifest 与 wrapper stderr/time。Barrier 日志中的
+   `Optimal objective`、recovery checkpoint 或单独 `BarStatus=OPTIMAL` 均不是验收。
+
+### 下一窗口实验顺序
+
+1. 先实时核验 local/origin/GitHub、服务器 checkout/dirty、唯一进程、Gurobi 13、
+   数据根、RAM/swap/vmstat/PSI、磁盘和 ParaCloud；部署精确新提交并完成全回归、
+   readiness、release、Base/V5 input 与 hydro audits。不得在活动 PID 上部署。
+2. 以 2030 单年、cold/no-basis、严格串行方式运行五个 744 h 窗口的 Base→V5
+   配对：`start-hour=0`（Jan）、`2160`（Apr）、`3960`（已知 Jun-15 blocker）、
+   `4344`（Jul）、`6552`（Oct）。每个 Base 只有严格接受后才启动同窗 V5；任一失败
+   保留现场并停止该窗口，不能自动补跑、改 profile 或转 inline Crossover。
+
+   744 h runner 模板（wrapper 仍须按既有 `/usr/bin/time -v`、独立 control root、
+   stdout/stderr/PID 合同封装）：
+
+   ```bash
+   python scripts/run_cispo_2030_full_year.py \
+     --planning-year 2030 \
+     --diagnostic-start-hour START \
+     --diagnostic-hours 744 \
+     --scenario-config SCENARIO_JSON \
+     --solver-config config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json \
+     --export-barrier-checkpoint \
+     --output-dir OUTPUT_ROOT
+   ```
+
+   `SCENARIO_JSON` 只取 `config/scenarios/base.json` 或
+   `config/scenarios/flex_integrated_v5_central.json`；禁止传入 state/basis/MGA。
+   建议根名为
+   `2030_744h_v0801_barrierfirst_19b5754_{jan,apr,jun15,jul,oct}_{base,v5}_v1`。
+3. 五组闭合后才做 Base-only 长度阶梯：`1008 h@3960`、`1488 h@3624`、
+   `2160 h@2880`、`2976 h@2160`、`4344 h@2160`，使用 long profile。每一级
+   必须完成严格终态审计与资源趋势复核后才进入下一级。最大 Base 接受长度确定后，
+   只运行一个同长度 V5 配对；若 V5 资源预测不安全，则退回最近较短已接受长度。
+
+   长度阶梯把上面模板的 hours/start/profile 改为该级参数与
+   `barrier_16_nonbasic_primal_dual_long_v1.json`；`>744 h` checkpoint 自动导出，
+   不需要 `--export-barrier-checkpoint`。输出名使用
+   `2030_{hours}h_v0801_barrierfirst_19b5754_{base,v5}_v1`，每一级开始前再次确认
+   output/control 根不存在。
+4. `>4344 h` 不自动启动。只有 4344 h 严格接受、solver peak <=72 GiB、process-tree
+   peak <=88 GiB、host available >=96 GiB、无 swap-in/out/PSI、剩余磁盘充足，且
+   作者再次审查后，才可提出下一候选（先 5088 h，仍不得直接 8760 h）。largest
+   accepted horizon 只是该服务器工程上限证据，不是年度科学结果。
+5. 本轮不运行四年 planning sequence、固定服务器 8760 h、付费云、MGA、basis
+   gate、`Crossover=3` 或并发第二求解。若以后需要 2030→2060 state chain，先用
+   accepted checkpoint 的独立 Crossover 闭合容量 anchor，再另行批准。
+
 ## 2026-08-01 reservoir-native Base 744 h 失败后的恢复边界
 
 Base 根

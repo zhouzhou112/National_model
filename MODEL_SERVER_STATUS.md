@@ -1,5 +1,25 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-01 12:20+08:00 Barrier-first 实现已提交；服务器仍 idle、尚未部署
+
+- 新实现提交为 `19b5754bb0db12818975344e5365777674698c47`。它把 `>744 h`
+  默认工作流改为先接受严格 `Crossover=0/SolutionTarget=1` 内点解并保存完整
+  `BarX/BarPi`，可选 Crossover 在全新根以 `PStart/DStart + LPWarmStart=2`
+  独立执行；科学/物理 QC 没有放松，模型约束没有改变。
+- 本地正确设置 wave root 后完整回归 `174/174 PASS`，真实 Gurobi checkpoint
+  round-trip PASS，`py_compile`/`git diff --check` PASS。新的 long profile 为
+  `TimeLimit=86400 s/SoftMemLimit=80 GiB`；diagnostic memory gate 按
+  8/32/96 GiB 阶梯向上匹配，避免长 diagnostic 被错误的 8 GiB 门禁放行。
+- 12:20 实时固定服务器仍为 branch `codex/cispo-2030-full-lp`、clean
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，尚未部署 `19b5754`；只读进程复核
+  仅看到审计命令自身，无 CISPO/Gurobi/planning-sequence solver。host 总内存
+  `125 GiB`、available 约 `113 GiB`、swap `447 MiB/2 GiB`，最新
+  `vmstat si/so=0/0`、memory PSI avg10/60/300 均为 0。ParaCloud 队列为空。
+- 本窗口没有启动 Base/V5、744 h、长时域、8760 h 或付费云任务。下一窗口必须先
+  等 local/origin/GitHub 文档 tip 一致，再实时核验并 fast-forward 服务器、运行完整
+  audits；详细五季节 744 h 配对和长度阶梯见 `SERVER_RUNBOOK.md` 顶节。任何 PID
+  存在时只读监控，仍禁止并发第二求解、`Crossover=3`、MGA/basis 和自动 8760 h。
+
 ## 2026-08-01 05:52+08:00 reservoir-native Base 744 h 已 TIME_LIMIT；V5 未启动
 
 - 当前 local/origin/GitHub/server 均为
