@@ -12,20 +12,30 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-08-01 12:20+08:00：Barrier-first 实现提交为
-  `19b5754bb0db12818975344e5365777674698c47`。它没有改变冷热、EV、水电、储能、
-  网络、可靠性、碳/CCS 或成本约束；只改变求解阶段顺序、检查点/验收工作流和
-  长时域运行安全门禁。超过 744 h 默认要求先用 Gurobi 13
-  `Method=2/Crossover=0/SolutionTarget=1` 取得严格接受的内点解；744 h 可显式
-  `--export-barrier-checkpoint`。接受条件仍为 `OPTIMAL + strict primal/dual
-  contract + solution_qc=PASS + 全部 hard checks + current input + valid result
-  manifest`，没有放松科学 QC。
+- 2026-08-01 13:58+08:00：Barrier-primary sequence 实现提交为
+  `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`，建立在
+  `19b5754bb0db12818975344e5365777674698c47` 的 Barrier checkpoint 工作流上。
+  它没有改变冷热、EV、水电、储能、网络、可靠性、碳/CCS 或成本方程；只修改
+  求解阶段、checkpoint、planning-state provenance、sequence 窗口和验收合同。
+  主线使用 Gurobi 13 `Method=2/Crossover=0/SolutionTarget=1`；接受条件仍为
+  `OPTIMAL + strict primal/dual contract + solution_qc=PASS + 全部 hard checks +
+  current input + valid result manifest`，没有放松科学 QC。
 - 接受后的 `barrier_checkpoint/{primal_barx.npy,dual_barpi.npy,
-  barrier_checkpoint_manifest.json}` 保存完整原 LP 顺序的 `BarX/BarPi`。独立
-  `barrier_16_deferred_crossover_v1` 可在 exact-LP 身份、input SHA256、Fingerprint
-  和向量长度全部一致时以 `PStart/DStart + LPWarmStart=2` 执行可选 Crossover；
-  它绝不覆盖第一阶段结果。非基第一阶段不自动导出 `planning_state`，需由独立
-  Crossover 或另行批准的容量 anchor 决策闭合后才能进入下一规划年。
+  barrier_checkpoint_manifest.json}` 保存完整原 LP 顺序的 `BarX/BarPi`。planning
+  sequence 现在显式传入 `--export-barrier-checkpoint
+  --allow-nonbasic-planning-state`；只有 accepted checkpoint 完整时，才将该最优
+  内点容量解登记为 `ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE` 并续接下一
+  规划年。state metadata 锁定 source contract、checkpoint SHA256、cohort tolerance
+  和被忽略的微小容量统计。该策略承认多重最优时内点容量分布可能较弥散，但它仍是
+  满足全部约束的最优解；论文必须把这种 sequential cohort policy 明示为方法定义。
+- Crossover 已从年度/序列门禁中完全移除。所有 case/year 的 accepted Barrier
+  主线完成后，作者才按研究需要选择年份，用 exact-LP `PStart/DStart +
+  LPWarmStart=2` 独立生成 basic derivative。该 derivative 不写 `planning_state`、
+  不回溯改变已完成路径，也不覆盖源结果。容量、调度、成本、碳核算及 `BarPi`
+  影子价格和连续 LP reduced cost 不需要 Crossover；`VBasis/CBasis`、`.bas`、
+  `SAObj*`/`SARHS*` 等 basis sensitivity 才依赖 Crossover。退化 LP 的 dual/RC
+  可能不唯一。MGA 数学上不要求所有年份先 Crossover，basis 仅是所选年份的
+  可选加速/深入分析资产。
 - runner 现默认拒绝 `>744 h` 的 inline Crossover，除非显式
   `--allow-inline-crossover`；Gurobi 13 若在 `BarStatus=OPTIMAL` 后 inline
   Crossover 失败，会尽力保留 `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`，但该
@@ -34,22 +44,25 @@ This is the repository's single handoff document for work continued across Codex
   为 `TimeLimit=86400 s/SoftMemLimit=80 GiB`，禁止越过 host memory/swap/PSI
   门禁。
 - 本地在 `CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`
-  下完整回归 `174/174 PASS`；真实 Gurobi 小模型已验证 memmap `BarX/BarPi` 能
+  下完整回归 `175/175 PASS`；真实 Gurobi 小模型已验证 memmap `BarX/BarPi` 能
   注入 `PStart/DStart` 并完成 `LPWarmStart=2` deferred crossover。`py_compile`
   与 `git diff --check` 通过。
-- 12:20 实时四端/服务器核验：实现提交前 local/origin/GitHub 均为文档 tip
-  `36d77237d496ceceb34c7300a338b4f715928b2e`；固定服务器仍为 clean
+- 13:58 实时核验：本地已形成实现提交 `53a5873`；提交前 origin/GitHub 均为
+  `1465a2bd8f4a0fcbd52fcb2fb296db5eade52672`。固定服务器仍为 clean
   `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，无 CISPO/Gurobi/planning-sequence
-  求解进程，available RAM 约 `113 GiB`、swap `447 MiB/2 GiB`、最新
+  求解进程，available RAM 约 `114 GiB`、swap `447 MiB/2 GiB`、最新两次
   `vmstat si/so=0/0`、memory PSI 0；ParaCloud `squeue -u a8s001819` 为空。
   本窗口没有部署或启动任何求解。
-- 精确下一步：先推送实现与本交接 tip；下一窗口重新实时核验后部署精确提交，完成
-  server full regression/readiness/release/Base+V5 input/hydro audits。随后严格串行运行
-  2030 Base→V5 的五组 744 h 季节窗口：start hour `0/2160/3960/4344/6552`，
-  全部使用 nonbasic profile 和 barrier checkpoint。五组全闭合后再运行 Base-only
-  `1008/1488/2160/2976/4344 h` 长度阶梯，并只在最大安全 Base 长度上配对一个
-  V5。`>4344 h`、四年 sequence、8760 h、付费云、MGA/basis、并发第二求解和
-  `Crossover=3` 均不自动启动；详细停止规则见 `SERVER_RUNBOOK.md` 顶节。
+- 精确下一步：先推送实现与本交接 tip；下一窗口实时核验后部署精确 tip，完成 server
+  regression/readiness/release/Base+V5 input/hydro audits。先在 summer 起点串行闭合
+  1 h/24 h/168 h Base/V5 四年 nonbasic sequence，再运行 Jan、Jun-15、Oct 三个
+  start hour `0/3960/6552` 的 2030→2060 Base/V5 744 h sequences。全部通过后再做
+  2030 Base `1008/1488/2160/2976/4344 h` 长度阶梯、最大安全长度 V5 配对，并由
+  作者决定是否在该长度追加四年 sequence。主线不运行 Crossover；`>4344 h`、
+  8760 h、付费云、MGA/basis、并发第二求解和 `Crossover=3` 均不自动启动；详细
+  停止规则见 `SERVER_RUNBOOK.md` 顶节。
+
+### Historical 2026-08-01 05:52 snapshot（仅保留失败证据，已被上节取代）
 
 - 2026-08-01 05:52+08:00：当前四端与固定服务器 checkout 均为
   `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，branch
@@ -757,6 +770,40 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-01 - Barrier 主线跨年续接与人工后置 Crossover 合同
+
+- Implementation commit：`53a5873156bfe4e81abfaa258d02b3f3ff664bbd`，父实现为
+  `19b5754bb0db12818975344e5365777674698c47`。修改文件为
+  `cispo_model/{planning_state,primal_dual_checkpoint,run_contract}.py`、两个 runner、
+  nonbasic profiles、V5/full-LP 合同和三组 tests；没有改变任何科学变量、目标、
+  物理约束、输入或单位，也未暂存用户的 `supplementary_materials/**`、
+  `.codex_tmp/**` 或历史 outputs。
+- Workflow：`run_cispo_planning_sequence.py` 现在支持
+  `--diagnostic-start-hour`，并为 nonbasic profile 自动、显式传递
+  `--export-barrier-checkpoint --allow-nonbasic-planning-state`。只有
+  `OPTIMAL + strict primal/dual PASS + QC PASS + all hard checks + accepted
+  checkpoint` 才写跨年 state；sequence identity 锁定窗口起点，resume 同时核对
+  `optimization_start_hour`。
+- Provenance：nonbasic state metadata 保存 source solution contract、capacity-state
+  policy、checkpoint manifest SHA256、cohort zero tolerance 及被忽略微小容量的行数/
+  单位汇总；load/resume 会重新校验 solve/QC/result/input manifests、identity layers
+  和两条向量的路径、大小、SHA256、shape/dtype。checkpoint 不闭合时，科学解仍可
+  保留，但 sequence 不会假装 state 已可续接。
+- Crossover policy：accepted Barrier 是容量、调度、成本、碳与 `BarPi` 结论的主
+  结果。Crossover 仅在全部主线完成后按作者选择的年份重建 exact LP；派生任务不导出
+  `planning_state`、不回写既有路径。basis statuses/SA sensitivity 依赖该派生过程；MGA
+  不要求所有年份先有 basis，是否做 Crossover 是按研究问题和算力决定的人工选择。
+- Verification：`py_compile` PASS；针对性 checkpoint/planning sequence/solver profile/
+  run-contract tests PASS；正确 wave root 下完整 discovery `175/175 PASS`，真实 Gurobi
+  `BarX/BarPi -> PStart/DStart -> LPWarmStart=2` 往返 PASS；`git diff --check` PASS。
+- Live evidence：13:58 local implementation 为 `53a5873`，其形成前 origin/GitHub
+  均为 `1465a2b`；server clean `7a1520e`、无 CISPO/Gurobi/sequence 进程、available
+  RAM 约 114 GiB、swap 447 MiB/2 GiB、连续 `si/so=0/0`、memory PSI 0、磁盘
+  3.7 TiB available，ParaCloud 队列空。本窗口未部署或求解。
+- Exact next action：推送实现与本交接 tip；下一窗口按 `SERVER_RUNBOOK.md` 顶节部署、
+  小门禁、三季节 Base/V5 四年 744 h sequences 和递增长时段压力测试。任何主线任务
+  都不自动进入 Crossover/MGA/basis/8760 h/付费云。
 
 ### 2026-08-01 - Barrier-first 正式验收、完整内点检查点与递增长时域门禁
 

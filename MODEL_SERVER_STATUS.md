@@ -1,5 +1,31 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-01 13:58+08:00 Barrier 主线续接实现完成；服务器仍 idle、未部署
+
+- 新实现提交为 `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`，父提交
+  `19b5754bb0db12818975344e5365777674698c47`。主线现在严格接受并保存
+  `Crossover=0` 的 Barrier 最优内点解；planning sequence 在 accepted checkpoint
+  闭合后显式导出 nonbasic cohort state 并继续 2030→2060，不再等待 Crossover。
+- 后置 Crossover 仅由作者在全部主线完成后选择年份执行。它重建 exact LP，以
+  `PStart/DStart + LPWarmStart=2` 构造 basic derivative，不写 `planning_state`、
+  不回溯替换序列路径。容量、调度、成本、碳和 `BarPi` dual 不以 Crossover 为门禁；
+  `VBasis/CBasis`、`.bas` 和 SA sensitivity 才需要它；连续 LP 的 RC 可从非基解
+  读取，但与 dual 一样在退化问题中可能不唯一。
+- sequence runner 新增并锁定 `--diagnostic-start-hour`，nonbasic sequence 自动显式
+  传递 checkpoint/state flags；state load 会复核 solve/QC/input/result manifests、
+  checkpoint 两条向量与 identity，并记录微小 cohort 截断统计。模型方程、数据、
+  Base/V5 参数和 58 项（或当前实际总数）科学 QC 均未放松。
+- 本地正确 wave root 下完整回归 `175/175 PASS`，真实 Gurobi checkpoint round-trip、
+  `py_compile` 和 `git diff --check` 均 PASS。
+- 13:58 固定服务器仍为 branch `codex/cispo-2030-full-lp`、clean
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，无 CISPO/Gurobi/planning-sequence
+  进程；host available 约 `114 GiB`、swap `447 MiB/2 GiB`、连续采样
+  `si/so=0/0`、memory PSI 0，`/data` available `3.7 TiB`。ParaCloud 队列为空。
+- 本窗口没有部署或启动任何求解。下一窗口先完成四端/资源/数据实时核验和服务器
+  regression/readiness/release/input/hydro audits，再按 `SERVER_RUNBOOK.md` 顶节
+  严格串行运行小门禁、三季节 Base/V5 四年 744 h sequences 与长时段阶梯；主线
+  禁止自动 Crossover、MGA、basis、8760 h、付费云或并发第二求解。
+
 ## 2026-08-01 12:20+08:00 Barrier-first 实现已提交；服务器仍 idle、尚未部署
 
 - 新实现提交为 `19b5754bb0db12818975344e5365777674698c47`。它把 `>744 h`

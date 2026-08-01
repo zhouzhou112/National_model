@@ -1,5 +1,125 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-01 13:58 Barrier-primary 跨年主线与人工后置 Crossover
+
+对应实现提交为 `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`。本节取代下方
+12:20 节中“nonbasic primary 不写 planning state”“先做单年五季节、暂不做四年
+sequence”的执行安排；12:20 节的 kill-condition、内存阶梯和 recovery 风险仍有效。
+
+### 主线验收与跨年状态
+
+1. 每个 case/year 的首要产物是 Gurobi 13
+   `Method=2/Crossover=0/SolutionTarget=1` 的最优内点解。只有同时满足
+   `OPTIMAL + OPTIMAL_PRIMAL_DUAL_NONBASIC/PASS + solution_qc=PASS + 全部 hard
+   checks + current input manifest + accepted BarX/BarPi checkpoint + valid result
+   manifest + wrapper exit 0` 才能成为 sequence predecessor。不得凭 Barrier 日志中
+   的 objective、`BarStatus` 或 recovery-only checkpoint 续接。
+2. `run_cispo_planning_sequence.py` 对 nonbasic profile 自动、显式传入
+   `--export-barrier-checkpoint --allow-nonbasic-planning-state`。接受后以该解的容量
+   决策形成下一年的 additive cohort state；`state_metadata.json` 必须记录
+   `ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE`、source contract、checkpoint
+   manifest SHA256、cohort zero tolerance 和微小容量截断统计。state load/resume
+   重新验证 source solve/QC/input/result manifests、identity layers 和两条 `.npy`
+   向量完整性。
+3. 内点容量状态是可行且最优的规划决策，但在线性规划多重最优空间中可能比 extreme
+   point 更弥散。此处把它作为明确的 sequential cohort policy，而不是宣称容量分布
+   唯一。Base 与 V5 必须各自形成独立的 2030→2060 state chain，不能让 V5 读取
+   Base predecessor，也不能跨窗口混用 state。
+4. 截断时域 sequence 的 state 只允许 `TEST_ONLY_TRUNCATED_HORIZON` 链内部测试；
+   不能进入未来正式 8760 h production chain，也不能被论文解释为年度容量路径。
+
+### Crossover 的人工边界
+
+- Crossover 不是任何年度、case 或 sequence 的必需验收项。容量、逐小时调度、成本、
+  碳/CCS、可靠性和 `BarPi` shadow prices 均从 accepted Barrier 解直接导出。
+- 只有 `VBasis/CBasis`、`.bas`、`SAObjLow/Up`、`SARHSLow/Up` 等
+  basis-dependent sensitivity 需要 basic solution。连续 LP 的 RC 可从 nonbasic
+  解读取，但 RC 与 `BarPi` 在退化问题中可能不唯一。MGA 数学上不要求所有年份先
+  Crossover；basis 只可能帮助选定年份的 re-optimization，是否值得使用须单独验证。
+- 所有主线完成后，作者才能选择少数 source roots，使用
+  `barrier_16_deferred_crossover_v1.json --primal-dual-checkpoint-in SOURCE
+  --allow-primal-dual-crossover` 在全新 target root 重建 exact LP。必须提供 source
+  当年原来使用的 predecessor `--state-in`（若非 2030），使 input manifest 和 LP
+  identity 完全一致。派生输出不写 planning state、不改写原 sequence；失败不影响
+  accepted source。
+- 当前下一轮实验**不自动运行任何 Crossover**。完成后只建立 accepted checkpoint
+  inventory，交由作者按论文问题选择年份。
+
+### 下一窗口严格串行执行顺序
+
+#### Phase 0：身份、部署和环境门禁
+
+1. 完整阅读五份合同，实时核验 local/origin/GitHub branch/HEAD、服务器 checkout/
+   dirty、唯一 CISPO/Gurobi 进程、Gurobi major version、数据根和 release SHA、RAM/
+   swap/vmstat/memory PSI、磁盘、目标根及 ParaCloud `squeue`。PID 存在即只监控。
+2. 仅在服务器 clean/idle 时 fast-forward 到包含 `53a5873` 的精确文档 tip；随后运行
+   server full regression、readiness、release contract、Base/V5 input manifest、
+   hydropower 380 GW closure 和 1 h build audit。任一失败即停止，不启动 solver。
+3. 所有任务继续由 `/usr/bin/time -v`、独立 output/control/stdout/stderr/PID 包装，
+   一次只允许一个 Python/Gurobi solve；历史根永不覆盖。
+
+#### Phase 1：summer 小规模四年 sequence 门禁
+
+依次运行 `1 h → 24 h → 168 h`，每个长度先完整 Base sequence，再完整 V5 sequence；
+起点统一为 `3960`。只有前一根 `sequence_report.json=PASS` 且四个年份分别满足全部
+终态合同时，才进入下一根。
+
+```bash
+python scripts/run_cispo_planning_sequence.py \
+  --start-year 2030 --end-year 2060 \
+  --diagnostic-start-hour 3960 \
+  --diagnostic-hours HOURS \
+  --scenario-config SCENARIO_JSON \
+  --solver-config config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json \
+  --output-root SEQUENCE_ROOT
+```
+
+`SCENARIO_JSON` 只取 `config/scenarios/base.json` 或
+`config/scenarios/flex_integrated_v5_central.json`。建议根名：
+`planning_sequence_2030_2060_{1,24,168}h_start3960_53a5873_{base,v5}_v1`。
+
+#### Phase 2：三季节 Base/V5 四年 744 h sequence
+
+Phase 1 全部闭合后，严格串行运行：
+
+1. Jan：`start-hour=0`，Base→V5；
+2. Jun-15：`start-hour=3960`，Base→V5；
+3. Oct：`start-hour=6552`，Base→V5。
+
+命令沿用上面模板，把 `HOURS=744`；建议根名：
+`planning_sequence_2030_2060_744h_{jan0,jun15_3960,oct6552}_53a5873_{base,v5}_v1`。
+这是 6 条独立 sequence、24 个逐年 solve，绝不并发。任一年度失败时 sequence 必须
+停在该年并保留现场；只有 exact identity 且已有年份全部 accepted 才可 `--resume`。
+每个年度审计容量/发电、冷热、V1G/V2G、wave、水电、PHS/储能、网络、备用、惯量、
+碳/CCS/BECCS、成本、state transition、checkpoint 和微小 cohort census。三季节
+根始终为 `TEST_ONLY_TRUNCATED_HORIZON`。
+
+#### Phase 3：固定服务器最大安全时段阶梯
+
+三季节 744 h 全部通过后，先只做单年 2030 Base cold ladder：
+
+1. `1008 h @ start 3960`；
+2. `1488 h @ start 3624`；
+3. `2160 h @ start 2880`；
+4. `2976 h @ start 2160`；
+5. `4344 h @ start 2160`。
+
+使用 `barrier_16_nonbasic_primal_dual_long_v1.json` 和
+`scripts/run_cispo_2030_full_year.py`；每一级都导出 checkpoint（`>744 h` 自动），但
+不导出 diagnostic state。每级记录 build/Barrier/export walltime、raw/presolved LP、
+Barrier iterations、solver/process-tree peak memory、swap/PSI、checkpoint bytes、输出
+总大小和完整 QC。只有一级严格接受且资源恢复正常才进下一级。
+
+最大安全 Base 时段确定后，运行同窗口单年 V5。Base/V5 均通过且满足 solver peak
+`<=72 GiB`、process-tree peak `<=88 GiB`、新任务前 host available `>=96 GiB`、
+持续 `si/so=0/0`、memory PSI 0、磁盘余量充分，才允许作者决定是否在该最大时段
+追加一对四年 Base→V5 sequences。不得由自动化自行作此决定。
+
+`>4344 h`、5088 h 和 8760 h 均不在本轮授权内。不得启动付费云、MGA、basis gate、
+inline Crossover、`Crossover=3` 或并发第二求解。所有实质里程碑都更新
+`CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，选择性提交并
+双推送；用户拥有的 supplementary、`.codex_tmp` 和历史 outputs 继续保护。
+
 ## 2026-08-01 Barrier-first 验收、检查点与下一轮压力测试合同
 
 对应实现提交为 `19b5754bb0db12818975344e5365777674698c47`；在部署前必须确认
@@ -20,7 +140,7 @@ checks + current input manifest + valid result manifest + wrapper exit 0` 时接
 analysis identity、implementation bundle、data roots、input manifest、规划年、窗口、
 Gurobi Fingerprint、原 LP 尺寸和文件 SHA256。非基第一阶段不自动导出
 `planning_state`，避免退化容量空间中的弥散内点未经审查地成为下一规划年 anchor。
-若需要 basis、RC、SA sensitivity、MGA warm start 或正式跨年容量 anchor，必须用
+若需要 basis、SA sensitivity 或 MGA warm-start 工程，必须用
 全新输出根、完全相同 LP 和
 `barrier_16_deferred_crossover_v1.json --primal-dual-checkpoint-in SOURCE
 --allow-primal-dual-crossover` 单独执行；该 profile 以 `PStart/DStart +

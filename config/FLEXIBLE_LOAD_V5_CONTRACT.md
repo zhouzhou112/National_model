@@ -201,8 +201,8 @@ The nonbasic profile itself cannot export/import a basis, directly run MGA, or
 produce a scientific `.bas` artifact. After the primary sequence is complete,
 an author-selected year may be rebuilt as an exact LP and supplied with the
 saved `BarX`/`BarPi` as `PStart`/`DStart` for a separate crossover derivative.
-That derivative may support basis-dependent reduced costs, sensitivity ranges,
-or MGA engineering, but it does not replace the accepted source result and
+That derivative may support explicit basis statuses, basis-dependent
+sensitivity ranges, or MGA engineering, but it does not replace the accepted source result and
 does not rewrite the already propagated planning state. A solver result that
 fails the primary Barrier contract is not exported as a complete solution.
 
