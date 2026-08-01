@@ -1,0 +1,19 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "tuning_barrier_nonbasic_aggregate0_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Matched cold tuning candidate for the changed model: disable presolve aggregation before Barrier, with no crossover.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "aggregate": 0,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-10,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

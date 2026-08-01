@@ -153,6 +153,26 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(deferred.raw["numerics"]["crossover_basis"], 1)
         self.assertEqual(deferred.raw["numerics"]["lp_warm_start"], 2)
 
+        tuning_profiles = sorted(profile_path.parent.glob("tuning_barrier_nonbasic_*.json"))
+        self.assertEqual(len(tuning_profiles), 8)
+        for tuning_profile in tuning_profiles:
+            with self.subTest(tuning_profile=tuning_profile.name):
+                candidate = load_model_config(solver_path=tuning_profile)
+                self.assertEqual(candidate.raw["scenario"], base.raw["scenario"])
+                self.assertEqual(candidate.raw["numerics"]["method"], 2)
+                self.assertEqual(candidate.raw["numerics"]["crossover"], 0)
+                self.assertEqual(candidate.raw["numerics"]["solution_target"], 1)
+                self.assertLessEqual(
+                    candidate.raw["numerics"]["barrier_convergence_tolerance"],
+                    1e-9,
+                )
+                self.assertEqual(
+                    candidate.raw["solver_profile"][
+                        "minimum_gurobi_major_version"
+                    ],
+                    13,
+                )
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent

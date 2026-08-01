@@ -1,0 +1,19 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "tuning_barrier_nonbasic_predual1_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Matched cold tuning candidate for the changed model: force presolve to form the dual LP before Barrier, with no crossover.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "pre_dual": 1,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-10,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}

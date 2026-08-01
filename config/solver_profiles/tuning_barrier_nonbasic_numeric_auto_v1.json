@@ -1,0 +1,20 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "tuning_barrier_nonbasic_numeric_auto_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Matched cold tuning candidate for the changed model: use Gurobi automatic scaling and default numeric focus while retaining strict tolerances and no crossover.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "numeric_focus": 0,
+    "scale_flag": -1,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-10,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}
