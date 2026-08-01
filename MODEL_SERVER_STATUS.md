@@ -1,5 +1,26 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-01 16:53+08:00 Phase 0 完成；Barrier-only 路线被严格门禁拒绝
+
+- 固定服务器已部署 clean `5e7db6835db60170fad7a1a13283e2a4d16792f4`；Phase 0 的
+  `175/175` 回归、readiness、显式 data-root release、Base/V5 input、hydropower 380 GW
+  和 Base/V5 1 h build audit 全部 PASS。1 h build 的 Base/V5 规模分别为
+  `238,529 vars/79,979 rows/452,433 nnz` 和
+  `238,978 vars/80,363 rows/453,968 nnz`，process-tree peak 分别约
+  `0.429/0.462 GiB`。
+- 24 h Base 两轮串行参数诊断已结束，当前无活动 CISPO/Gurobi process。20 个 Barrier-only
+  配置均无法同时满足严格 primal/dual contract，故无 accepted `BarPi`、QC 或 result
+  manifest。`ScaleFlag=0/1/3`、`NumericFocus=3`、`Aggregate=0`、`Presolve=0/1`、
+  `PreDual=1/2`、`PreSparsify=2`、threads `8/32` 和 `BarOrder=1` 均未解除 blocker。
+- 同一 24 h Base LP 的 `tuning2_dual_simplex16_v1` 严格通过：solver
+  `795.205647945404 s`，`524,890` simplex iterations，process-tree peak
+  `0.692 GiB`，`OPTIMAL_BASIC_OR_DEFAULT/PASS`、QC `58/58`、input/result manifest
+  validators 均 PASS，dual attribute 为 `Pi`。这证明模型可行，问题局限于当前 Barrier
+  数值路径。
+- 下一步只串行测试 current-tip matched `Crossover=1/2/4 + CrossoverBasis=1`；不会运行
+  `Crossover=3`、8760 h、付费云、并发第二求解、`.bas` reuse 或 MGA。通过 24 h 和 168 h
+  配对门禁后才开始 Phase 1/2。
+
 ## 2026-08-01 14:18+08:00 0729 统一候选 744 h 历史根复核通过；服务器仍 idle
 
 - 历史根

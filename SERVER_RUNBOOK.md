@@ -1,5 +1,31 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-01 16:53 参数重评后的 Phase 1/2 执行覆盖条款
+
+本节取代下方 13:58 节中“Barrier-only 是当前主线、Crossover 不进入门禁”的安排；物理、
+accounting、manifest、QC、资源与串行执行门禁均不放松。Phase 0 已在服务器提交
+`5e7db6835db60170fad7a1a13283e2a4d16792f4` 上完成并通过。
+
+1. 当前模型的 24 h Base 已对 20 个 Barrier-only 组合完成串行诊断。所有组合都未同时达到
+   strict primal/dual acceptance，因此其 `BarPi` 即使存在也不得进入科学输出或 planning
+   state。无 Crossover 并不等于没有影子价格：已验收的 dual simplex 根直接导出标准 `Pi`；
+   但它在 24 h 上需 `795.206 s`，只作为严格可行 fallback，不直接宣称为最终性能优胜者。
+2. 下一轮只比较 `Crossover=1/2/4 + CrossoverBasis=1`，每个候选先 24 h Base，再做 V5；
+   优胜候选继续 168 h Base/V5。`Crossover=3` 由于既有数值失稳证据永久拒绝。候选间不复用
+   `.bas`、不运行独立 basis gate，也不并发。
+3. production profile 只有在 current-tip matched 24 h/168 h Base/V5 均满足
+   `OPTIMAL + acceptance PASS + solution_qc PASS + all hard checks + current input manifest +
+   valid result manifest + wrapper exit 0` 后才可冻结。任何 `TIME_LIMIT`、`SUBOPTIMAL`、
+   missing manifest 或资源异常都 fail closed。
+4. profile 冻结后，Phase 1 仍按 `start-hour=3960` 串行运行 1 h、24 h、168 h 四年
+   Base sequence，再运行对应 V5 sequence。Phase 1 全闭合后，Phase 2 严格串行运行
+   `744 h @ start-hour 0/3960/6552`，每个起点先 Base 四年 sequence，再 V5 四年 sequence。
+   每个 744 h 根仍标记 `TEST_ONLY_TRUNCATED_HORIZON`，不得作为年度科学结果或正式
+   2040 state anchor。
+5. 仍禁止 8760 h、付费云、并发第二求解、MGA 和 `Crossover=3`。每个 solve 前后继续审计
+   PID、RAM/swap/vmstat/memory PSI、磁盘、wrapper stderr/time、solve/QC/result manifests
+   及 ParaCloud `squeue`；失败即保留现场并停止该 sequence。
+
 ## 2026-08-01 14:18 0729 历史 744 h 根的只读复核边界
 
 统一候选根 `2030_744h_v0729_unified_v4_v1g_cold_v1` 已再次确认严格终态为

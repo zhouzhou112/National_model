@@ -12,6 +12,34 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-01 16:53+08:00：固定服务器已 clean/idle 部署到实现提交
+  `5e7db6835db60170fad7a1a13283e2a4d16792f4`。Phase 0 已闭合：服务器完整回归
+  `175/175 PASS`，readiness/release/Base/V5 input/hydropower 380 GW/1 h build audits
+  均通过；显式数据根仍为
+  `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`，数据归档 SHA256
+  仍为 `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。
+  Phase 1/2 尚未启动，也没有 8760 h、付费云、并发第二求解、MGA 或 `Crossover=3`。
+- 当前模型已经否定旧的 Barrier-only 主线假设。24 h Base 上，基准和两轮共 20 个
+  `Method=2/Crossover=0/SolutionTarget=1` Barrier 配置均未通过严格原始可行性；典型最大
+  constraint violation 为 `4.26e-2`，即使 `PreDual=1` 最好约 `7.60e-8`，dual violation
+  仍为 `1.29e-5`，均不能验收。失败根的 `BarPi` 不得作为科学影子价格或 sequence state。
+  这不是 LP 不可行：同一 LP 的 `Method=1` dual simplex 在 `795.206 s`、`524,890`
+  iterations 后严格 `OPTIMAL`，`solution_qc=PASS`、`58/58 hard checks`、current input 与
+  result manifests 均有效；最大 constraint/bound/dual violation 分别为
+  `3.24e-8/1.66e-10/2.47e-8`，并成功导出标准 `Pi` 影子价格。因此“不做 Crossover”
+  可以保留影子价格，但当前可接受实现是 simplex `Pi`，不是未验收 Barrier 根的 `BarPi`。
+- 参数候选实现分别为 `a3a078e20be8a480dc63cae7964a56c01451d8df`（首轮 8 个单因素）和
+  `5e7db6835db60170fad7a1a13283e2a4d16792f4`（第二轮 scaling/presolve/dual-simplex）。
+  首轮/第二轮证据根分别为
+  `/data/zz2/National_model/outputs/solver_tuning_v0801_a3a078e_24h_base_candidates_v3`
+  和
+  `/data/zz2/National_model/outputs/solver_tuning_v0801_5e7db68_24h_base_round2_v1`。
+  direct dual-simplex 成功根位于后者的 `tuning2_dual_simplex16_v1/`。
+- 精确下一步：在当前 tip 上串行比较 `Crossover=1/2/4 + CrossoverBasis=1` 的 24 h
+  Base/V5；`Crossover=3` 永久拒绝。优胜候选再做 168 h Base/V5。冻结 production profile、
+  完整回归和交接后，才进入 Phase 1 的 1/24/168 h 四年 Base→V5 sequences，再串行执行
+  Phase 2 三个季节起点的 744 h Base→V5 sequences。全过程不复用 `.bas`，也不另开并发求解。
+
 - 2026-08-01 14:18+08:00 对 2026-07-29 统一候选 2030/744 h V4 V1G cold gate
   完成实时只读复核。历史 PID `1004972/1004975` 已退出，终态仍为
   `OPTIMAL + solution_qc=PASS + 52/52 hard checks + valid result manifest +
@@ -793,6 +821,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-01 16:53+08:00 — Phase 0 与两轮 solver 参数诊断闭合
+
+- Git：参数候选实现提交
+  `a3a078e20be8a480dc63cae7964a56c01451d8df`、
+  `5e7db6835db60170fad7a1a13283e2a4d16792f4`；本条同步
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`。
+- 变更：新增首轮 8 个 Barrier 单因素 profile，以及第二轮 11 个 Barrier scaling/presolve
+  profile 和 1 个 dual-simplex profile；扩展 `tests/test_solver_profiles.py` 的 profile contract。
+  未改变模型目标、约束、单位、数据、Base/V5 情景或时间/空间边界。
+- 命令与输出：服务器完整回归、readiness/release/input/hydro/build audits 位于
+  `/data/zz2/National_model/run_control/phase0_4d3ace6_v1`；两轮 24 h Base 串行 tuning
+  输出位于 snapshot 所列两个 output roots。所有任务均由独立 output/control/stdout/stderr
+  包装，未并发。
+- 验证证据：`175/175 PASS`；Phase 0 audits PASS；20 个 Barrier-only 路径均严格拒绝；
+  `tuning2_dual_simplex16_v1` 为 `OPTIMAL`、acceptance PASS、QC `58/58`、current input 与
+  result manifest validators PASS，并导出 `Pi`。运行后 available RAM 约 `114 GiB`、swap
+  约 `447 MiB/2 GiB`、`si/so=0/0`、memory PSI 0。
+- 未决：尚未在当前 tip 上完成 `Crossover=1/2/4` 的 24 h/168 h Base/V5 配对比较；
+  Phase 1/2 均未启动。失败 Barrier 根的 `BarPi` 不可用于科学分析。
+- 精确下一步：新增并验证 `Crossover=2/4 + CrossoverBasis=1` 候选，与既有稳定
+  `Crossover=1` profile 串行比较；冻结通过配对门禁的 production profile 后执行 Phase 1，
+  再执行 Phase 2。永久排除 `Crossover=3`。
 
 ### 2026-08-01 - 0729 统一候选 744 h 历史根实时终态复核
 
