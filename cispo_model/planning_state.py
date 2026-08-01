@@ -143,6 +143,54 @@ class PlanningState:
             raise ValueError("Planning-state use does not match source solve result_use")
         if int(source_solve.get("planning_year", -1)) != int(expected_boundary_year):
             raise ValueError("Planning-state source solve planning_year mismatch")
+        source_contract = source_solve.get("solution_contract") or {}
+        source_contract_mode = source_contract.get("mode")
+        recorded_contract_mode = metadata.get("source_solution_contract_mode")
+        if (
+            recorded_contract_mode is not None
+            and recorded_contract_mode != source_contract_mode
+        ):
+            raise ValueError("Planning-state source solution-contract mode mismatch")
+        if source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+            if metadata.get("source_capacity_state_policy") != (
+                "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+            ):
+                raise ValueError(
+                    "Nonbasic planning state lacks the explicit Barrier anchor policy"
+                )
+            checkpoint_relative = metadata.get(
+                "source_barrier_checkpoint_manifest"
+            )
+            checkpoint_sha256 = metadata.get(
+                "source_barrier_checkpoint_manifest_sha256"
+            )
+            if not checkpoint_relative or not checkpoint_sha256:
+                raise ValueError(
+                    "Nonbasic planning state lacks Barrier checkpoint provenance"
+                )
+            checkpoint_path = root.parent / str(checkpoint_relative)
+            if (
+                not checkpoint_path.is_file()
+                or sha256_file(checkpoint_path) != checkpoint_sha256
+            ):
+                raise ValueError(
+                    "Nonbasic planning-state Barrier checkpoint SHA256 mismatch"
+                )
+            from .primal_dual_checkpoint import (
+                validate_barrier_primal_dual_checkpoint,
+            )
+
+            checkpoint_valid, checkpoint_failures = (
+                validate_barrier_primal_dual_checkpoint(
+                    root.parent,
+                    require_result_manifest=True,
+                )
+            )
+            if not checkpoint_valid:
+                raise ValueError(
+                    "Nonbasic planning-state Barrier checkpoint is invalid: "
+                    + ", ".join(checkpoint_failures[:10])
+                )
         from .io_contract import validate_result_manifest
 
         manifest_ok, manifest_failures = validate_result_manifest(root.parent)
@@ -223,21 +271,25 @@ def write_planning_state(
     if missing:
         raise ValueError(f"New cohorts missing columns: {', '.join(missing)}")
     tolerance = float(config.raw["planning_sequence"]["cohort_zero_tolerance"])
-    retained = previous_state.cohorts.loc[
-        previous_state.cohorts.retire_year.gt(config.planning_year)
-    ].copy()
-    additions = new_cohorts.loc[
-        new_cohorts.capacity_delta.abs().gt(tolerance), STATE_COLUMNS
-    ].copy()
-    numeric_additions = additions[
+    candidate_numeric = new_cohorts[
         ["build_year", "retire_year", "capacity_delta"]
     ].apply(pd.to_numeric, errors="coerce")
     if (
-        numeric_additions.isna().any().any()
-        or not np.isfinite(numeric_additions.to_numpy(dtype=float)).all()
-        or (numeric_additions.retire_year <= numeric_additions.build_year).any()
+        candidate_numeric.isna().any().any()
+        or not np.isfinite(candidate_numeric.to_numpy(dtype=float)).all()
+        or (candidate_numeric.retire_year <= candidate_numeric.build_year).any()
     ):
         raise ValueError("New planning-state cohorts contain invalid numeric values")
+    new_cohorts = new_cohorts.copy()
+    new_cohorts[["build_year", "retire_year", "capacity_delta"]] = (
+        candidate_numeric
+    )
+    retained = previous_state.cohorts.loc[
+        previous_state.cohorts.retire_year.gt(config.planning_year)
+    ].copy()
+    retained_mask = new_cohorts.capacity_delta.abs().gt(tolerance)
+    additions = new_cohorts.loc[retained_mask, STATE_COLUMNS].copy()
+    omitted_small = new_cohorts.loc[~retained_mask, STATE_COLUMNS].copy()
     frames = [frame for frame in (retained, additions) if not frame.empty]
     cohorts = (
         pd.concat(frames, ignore_index=True)
@@ -289,6 +341,46 @@ def write_planning_state(
         raise FileNotFoundError(
             "Planning state requires source solution_qc.json and solve_report.json"
         )
+    source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
+    source_contract = source_solve.get("solution_contract") or {}
+    source_contract_mode = source_contract.get("mode")
+    checkpoint_relative: str | None = None
+    checkpoint_sha256: str | None = None
+    source_capacity_state_policy = "ACCEPTED_OPTIMAL_BASIC_OR_DEFAULT_CAPACITY_STATE"
+    if source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+        from .primal_dual_checkpoint import (
+            CHECKPOINT_DIRECTORY,
+            CHECKPOINT_MANIFEST,
+            validate_barrier_primal_dual_checkpoint,
+        )
+
+        checkpoint_valid, checkpoint_failures = (
+            validate_barrier_primal_dual_checkpoint(
+                output_dir,
+                require_result_manifest=False,
+            )
+        )
+        if not checkpoint_valid:
+            raise ValueError(
+                "Nonbasic planning state requires an accepted Barrier checkpoint: "
+                + ", ".join(checkpoint_failures[:10])
+            )
+        checkpoint_path = (
+            output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
+        )
+        checkpoint_relative = checkpoint_path.relative_to(output_dir).as_posix()
+        checkpoint_sha256 = sha256_file(checkpoint_path)
+        source_capacity_state_policy = (
+            "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+        )
+    omitted_by_unit = {
+        str(unit): {
+            "rows": int(len(frame)),
+            "signed_capacity_delta": float(frame.capacity_delta.sum()),
+            "absolute_capacity_delta": float(frame.capacity_delta.abs().sum()),
+        }
+        for unit, frame in omitted_small.groupby("unit", dropna=False)
+    }
     metadata = {
         "format": STATE_FORMAT,
         "state_use": state_use,
@@ -300,8 +392,18 @@ def write_planning_state(
         "source_solution_qc": source_solution_qc,
         "source_solution_qc_sha256": sha256_file(source_qc_path),
         "source_solve_report_sha256": sha256_file(source_solve_path),
+        "source_solution_contract_mode": source_contract_mode,
+        "source_solution_basis_required": source_contract.get("basis_required"),
+        "source_capacity_state_policy": source_capacity_state_policy,
+        "source_barrier_checkpoint_manifest": checkpoint_relative,
+        "source_barrier_checkpoint_manifest_sha256": checkpoint_sha256,
+        "posthoc_crossover_required_for_state": False,
         "cohort_rows": int(len(cohorts)),
+        "candidate_new_cohort_rows": int(len(new_cohorts)),
         "new_cohort_rows": int(len(additions)),
+        "cohort_zero_tolerance": tolerance,
+        "omitted_small_new_cohort_rows": int(len(omitted_small)),
+        "omitted_small_capacity_by_unit": omitted_by_unit,
         "active_next_planning_year_rows": int(len(active_next)),
         "capacity_cohorts_sha256": sha256_file(cohorts_path),
         "state_transition_summary_sha256": sha256_file(state_dir / STATE_SUMMARY),

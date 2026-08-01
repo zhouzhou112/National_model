@@ -2,7 +2,7 @@
   "solver_profile_version": "v1",
   "profile_id": "barrier_16_nonbasic_primal_dual_long_v1",
   "minimum_gurobi_major_version": 13,
-  "description": "Fixed-server long-horizon Barrier-first profile. It requires an optimal primal-dual interior solution, skips inline crossover, allows 24 hours of solver time, and retains a 16 GiB host reserve when used behind the 96 GiB full-year memory gate on a 128 GiB server.",
+  "description": "Fixed-server long-horizon Barrier-first primary profile. It requires an optimal primal-dual interior solution, saves a reusable BarX/BarPi checkpoint, skips inline crossover, allows 24 hours of solver time, and retains a 16 GiB host reserve when used behind the 96 GiB full-year memory gate on a 128 GiB server. A planning sequence may explicitly propagate the accepted capacity state; crossover remains a later human-selected derivative.",
   "numerics": {
     "method": 2,
     "threads": 16,

@@ -32,6 +32,16 @@ from cispo_model.run_contract import (
 )
 
 
+def uses_nonbasic_barrier_primary(config) -> bool:
+    """Return whether the sequence profile requests the strict Barrier-only route."""
+    numerics = config.raw["numerics"]
+    return bool(
+        int(numerics.get("method", -1)) == 2
+        and int(numerics.get("crossover", -1)) == 0
+        and int(numerics.get("solution_target", -1)) == 1
+    )
+
+
 def _predecessor_matches_manifest(output_dir: Path, expected_state_in: Path) -> bool:
     try:
         manifest = pd.read_csv(output_dir / "input_manifest.csv")
@@ -70,6 +80,7 @@ def accepted(
     expected_run_id: str | None = None,
     expected_scenario_id: str | None = None,
     expected_planning_year: int | None = None,
+    expected_optimization_start_hour: int | None = None,
     expected_config=None,
 ) -> bool:
     solve_path = output_dir / "solve_report.json"
@@ -97,6 +108,10 @@ def accepted(
     if expected_planning_year is not None and int(
         solve.get("planning_year", -1)
     ) != int(expected_planning_year):
+        return False
+    if expected_optimization_start_hour is not None and int(
+        solve.get("optimization_start_hour", -1)
+    ) != int(expected_optimization_start_hour):
         return False
     if expected_config is not None and not output_matches_configuration(
         output_dir,
@@ -275,9 +290,31 @@ def main() -> None:
             "horizon. Diagnostic states can never enter a production run."
         ),
     )
+    parser.add_argument(
+        "--diagnostic-start-hour",
+        type=int,
+        default=0,
+        help=(
+            "Zero-based start hour forwarded to every year of a diagnostic "
+            "sequence; default 0."
+        ),
+    )
     args = parser.parse_args()
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
+    if args.diagnostic_start_hour < 0:
+        raise SystemExit("--diagnostic-start-hour must be non-negative")
+    if args.diagnostic_hours is None and args.diagnostic_start_hour != 0:
+        raise SystemExit(
+            "--diagnostic-start-hour requires --diagnostic-hours"
+        )
+    if (
+        args.diagnostic_hours is not None
+        and args.diagnostic_start_hour + args.diagnostic_hours > 8760
+    ):
+        raise SystemExit(
+            "--diagnostic-start-hour + --diagnostic-hours must not exceed 8760"
+        )
 
     config = load_model_config(
         args.config,
@@ -332,6 +369,7 @@ def main() -> None:
         start_year=args.start_year,
         end_year=args.end_year,
         diagnostic_hours=args.diagnostic_hours,
+        diagnostic_start_hour=args.diagnostic_start_hour,
     )
     identity_path = output_root / "sequence_identity.json"
     if identity_path.is_file():
@@ -377,11 +415,23 @@ def main() -> None:
             else "SCIENTIFIC_PRODUCTION"
         ),
         "diagnostic_hours": args.diagnostic_hours,
+        "diagnostic_start_hour": (
+            args.diagnostic_start_hour
+            if args.diagnostic_hours is not None
+            else None
+        ),
         "scenario_id": config.raw["scenario"]["id"],
         "sequence_identity_path": str(identity_path),
         "runs": [],
     }
     expected_result_use = sequence_report["result_use"]
+    nonbasic_barrier_primary = uses_nonbasic_barrier_primary(config)
+    sequence_report["barrier_first_primary"] = nonbasic_barrier_primary
+    sequence_report["planning_state_policy"] = (
+        "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+        if nonbasic_barrier_primary
+        else "ACCEPTED_OPTIMAL_BASIC_OR_DEFAULT_CAPACITY_STATE"
+    )
 
     for year in years:
         current_identity = sequence_identity(
@@ -395,6 +445,7 @@ def main() -> None:
             start_year=args.start_year,
             end_year=args.end_year,
             diagnostic_hours=args.diagnostic_hours,
+            diagnostic_start_hour=args.diagnostic_start_hour,
         )
         if current_identity != identity:
             raise SystemExit(
@@ -409,6 +460,11 @@ def main() -> None:
             expected_state_in=prior_state,
             expected_scenario_id=config.raw["scenario"]["id"],
             expected_planning_year=year,
+            expected_optimization_start_hour=(
+                args.diagnostic_start_hour
+                if args.diagnostic_hours is not None
+                else 0
+            ),
             expected_config=year_config,
         ):
             sequence_report["runs"].append(
@@ -432,6 +488,13 @@ def main() -> None:
             command.extend(["--solver-config", args.solver_config])
         if args.formulation_config:
             command.extend(["--formulation-config", args.formulation_config])
+        if nonbasic_barrier_primary:
+            command.extend(
+                [
+                    "--export-barrier-checkpoint",
+                    "--allow-nonbasic-planning-state",
+                ]
+            )
         if args.diagnostic_hours is None:
             command.extend(["--horizon", "full_year"])
         else:
@@ -439,6 +502,8 @@ def main() -> None:
                 [
                     "--diagnostic-hours",
                     str(args.diagnostic_hours),
+                    "--diagnostic-start-hour",
+                    str(args.diagnostic_start_hour),
                     "--export-diagnostic-state",
                 ]
             )
@@ -478,6 +543,11 @@ def main() -> None:
                     "started_at": datetime.now().astimezone().isoformat(),
                     "expected_result_use": expected_result_use,
                     "expected_scenario_id": config.raw["scenario"]["id"],
+                    "expected_optimization_start_hour": (
+                        args.diagnostic_start_hour
+                        if args.diagnostic_hours is not None
+                        else 0
+                    ),
                     "state_in": str(prior_state) if prior_state is not None else None,
                 },
                 ensure_ascii=False,
@@ -501,6 +571,11 @@ def main() -> None:
                 expected_run_id=run_id,
                 expected_scenario_id=config.raw["scenario"]["id"],
                 expected_planning_year=year,
+                expected_optimization_start_hour=(
+                    args.diagnostic_start_hour
+                    if args.diagnostic_hours is not None
+                    else 0
+                ),
                 expected_config=year_config,
             )
             else "HARD_FAIL"

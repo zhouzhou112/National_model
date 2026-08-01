@@ -168,10 +168,12 @@ class RunContractTests(unittest.TestCase):
             "start_year": 2030,
             "end_year": 2060,
             "diagnostic_hours": 168,
+            "diagnostic_start_hour": 3960,
         }
         reference = sequence_identity(config, **kwargs)
         for changed in (
             {"diagnostic_hours": 24},
+            {"diagnostic_start_hour": 4344},
             {"start_year": 2040},
             {"end_year": 2050},
             {

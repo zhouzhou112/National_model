@@ -133,6 +133,15 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--allow-nonbasic-planning-state",
+        action="store_true",
+        help=(
+            "Explicitly allow an accepted Crossover=0 Barrier capacity solution "
+            "with a closed BarX/BarPi checkpoint to form the next-year cohort "
+            "state. Planning sequences set this flag deliberately."
+        ),
+    )
+    parser.add_argument(
         "--primal-dual-checkpoint-in",
         help=(
             "Accepted Barrier-first output root used to seed a separate exact-LP "
@@ -296,6 +305,25 @@ def main() -> None:
         raise SystemExit(
             "--export-barrier-checkpoint requires Method=2, Crossover=0, "
             "SolutionTarget=1"
+        )
+    if args.allow_nonbasic_planning_state and not nonbasic_primal_dual_requested:
+        raise SystemExit(
+            "--allow-nonbasic-planning-state requires Method=2, Crossover=0, "
+            "SolutionTarget=1"
+        )
+    if args.allow_nonbasic_planning_state and requested_test_only and not (
+        args.export_diagnostic_state
+    ):
+        raise SystemExit(
+            "A diagnostic nonbasic planning state also requires "
+            "--export-diagnostic-state"
+        )
+    if args.allow_nonbasic_planning_state and not (
+        args.export_barrier_checkpoint or requested_optimization_hours > 744
+    ):
+        raise SystemExit(
+            "A nonbasic planning state requires an accepted Barrier checkpoint; "
+            "pass --export-barrier-checkpoint for horizons up to 744h"
         )
     if args.primal_dual_checkpoint_in:
         if args.basis_in or args.mga_spec or nonbasic_primal_dual_requested:
@@ -523,6 +551,18 @@ def main() -> None:
             ),
             "inline_crossover_explicitly_allowed": bool(
                 args.allow_inline_crossover
+            ),
+            "nonbasic_planning_state_explicitly_allowed": bool(
+                args.allow_nonbasic_planning_state
+            ),
+            "planning_state_policy": (
+                "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+                if args.allow_nonbasic_planning_state
+                else (
+                    "POSTHOC_CROSSOVER_ANALYSIS_DERIVATIVE_NO_STATE"
+                    if args.primal_dual_checkpoint_in
+                    else "DEFAULT_BASIC_OR_NO_STATE"
+                )
             ),
         },
         "analysis_mode": "BASE_MINIMUM_COST",
@@ -861,6 +901,7 @@ def main() -> None:
             )
             report["barrier_checkpoint"] = checkpoint_error
     export_state = False
+    state_export_requested = False
     qc = None
     solver_solution_accepted = bool(
         report["status"] == "OPTIMAL"
@@ -872,9 +913,8 @@ def main() -> None:
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
         export_result_summary(artifacts, data, config, output_dir)
-        export_state = bool(
+        state_export_requested = bool(
             (not test_only or args.export_diagnostic_state)
-            and not nonbasic_primal_dual_requested
             and report["status"] == "OPTIMAL"
             and report.get("solution_contract", {}).get(
                 "acceptance_status"
@@ -882,9 +922,24 @@ def main() -> None:
             and qc["status"] == "PASS"
             and mga_request is None
         )
-        if nonbasic_primal_dual_requested:
+        export_state = bool(
+            state_export_requested
+            and not nonbasic_primal_dual_requested
+            and not args.primal_dual_checkpoint_in
+        )
+        if nonbasic_primal_dual_requested and not (
+            args.allow_nonbasic_planning_state
+        ):
             report["planning_state_export_status"] = (
-                "DEFERRED_UNTIL_OPTIONAL_CROSSOVER_OR_SEPARATE_ANCHOR_DECISION"
+                "NOT_REQUESTED_NONBASIC_STATE_REQUIRES_EXPLICIT_SEQUENCE_POLICY"
+            )
+        elif nonbasic_primal_dual_requested and state_export_requested:
+            report["planning_state_export_status"] = (
+                "PENDING_ACCEPTED_BARRIER_CHECKPOINT"
+            )
+        if args.primal_dual_checkpoint_in and state_export_requested:
+            report["planning_state_export_status"] = (
+                "NOT_EXPORTED_POSTHOC_CROSSOVER_ANALYSIS_DERIVATIVE"
             )
         if mga_request is not None:
             report["solver_secondary_objective_value_gw"] = report[
@@ -896,8 +951,6 @@ def main() -> None:
                 json.dumps(qc["mga"], ensure_ascii=False, indent=2) + "\n",
                 encoding="utf-8",
             )
-        if export_state:
-            report["planning_state_path"] = str(output_dir / "planning_state")
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
         report["solution_export_status"] = "COMPLETE"
@@ -948,6 +1001,22 @@ def main() -> None:
                 encoding="utf-8",
             )
             report["barrier_checkpoint"] = checkpoint_error
+    if (
+        state_export_requested
+        and nonbasic_primal_dual_requested
+        and args.allow_nonbasic_planning_state
+    ):
+        checkpoint_status = report.get("barrier_checkpoint", {}).get("status")
+        export_state = bool(
+            checkpoint_status == "ACCEPTED_PRIMARY_BARRIER_SOLUTION"
+        )
+        report["planning_state_export_status"] = (
+            "ACCEPTED_NONBASIC_BARRIER_CAPACITY_STATE"
+            if export_state
+            else "BLOCKED_MISSING_ACCEPTED_BARRIER_CHECKPOINT"
+        )
+    if export_state:
+        report["planning_state_path"] = str(output_dir / "planning_state")
     report["runtime_memory"] = memory_monitor.stop()
     if (
         args.export_warm_start_basis

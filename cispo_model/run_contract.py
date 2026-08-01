@@ -261,6 +261,7 @@ def sequence_identity(
     start_year: int,
     end_year: int,
     diagnostic_hours: int | None,
+    diagnostic_start_hour: int = 0,
 ) -> dict[str, Any]:
     """Lock the complete execution scope of a sequential planning chain."""
     identity = configuration_identity(config, data_root=data_root)
@@ -269,6 +270,11 @@ def sequence_identity(
         "end_year": int(end_year),
         "diagnostic_hours": (
             int(diagnostic_hours) if diagnostic_hours is not None else None
+        ),
+        "diagnostic_start_hour": (
+            int(diagnostic_start_hour)
+            if diagnostic_hours is not None
+            else None
         ),
         "result_use": (
             "TEST_ONLY_TRUNCATED_HORIZON"

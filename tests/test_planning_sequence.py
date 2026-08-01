@@ -134,6 +134,55 @@ class PlanningSequenceTests(unittest.TestCase):
             self.assertNotEqual(mismatch.returncode, 0)
             self.assertIn("mixed-identity", mismatch.stderr)
 
+    def test_nonbasic_sequence_explicitly_exports_checkpoint_and_state(self):
+        root = Path(__file__).resolve().parents[1]
+        solver = (
+            root
+            / "config"
+            / "solver_profiles"
+            / "barrier_16_nonbasic_primal_dual_v1.json"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            output_root = Path(temporary) / "nonbasic_sequence"
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(root / "scripts" / "run_cispo_planning_sequence.py"),
+                    "--output-root",
+                    str(output_root),
+                    "--start-year",
+                    "2030",
+                    "--end-year",
+                    "2030",
+                    "--diagnostic-hours",
+                    "744",
+                    "--diagnostic-start-hour",
+                    "3960",
+                    "--solver-config",
+                    str(solver),
+                    "--dry-run",
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            report = json.loads(
+                (output_root / "sequence_report.json").read_text(encoding="utf-8")
+            )
+            child = report["runs"][0]["command"]
+            self.assertIn("--export-barrier-checkpoint", child)
+            self.assertIn("--allow-nonbasic-planning-state", child)
+            self.assertIn("--export-diagnostic-state", child)
+            start_position = child.index("--diagnostic-start-hour")
+            self.assertEqual(child[start_position + 1], "3960")
+            self.assertTrue(report["barrier_first_primary"])
+            self.assertEqual(report["diagnostic_start_hour"], 3960)
+            self.assertEqual(
+                report["planning_state_policy"],
+                "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE",
+            )
+
     def test_year_specific_boundaries_are_exact(self):
         base = load_model_config()
         expected = {2030: 2025, 2040: 2030, 2050: 2040, 2060: 2050}

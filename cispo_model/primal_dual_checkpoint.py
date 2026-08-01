@@ -218,6 +218,111 @@ def export_barrier_primal_dual_checkpoint(
     return metadata
 
 
+def validate_barrier_primal_dual_checkpoint(
+    source_output_dir: str | Path,
+    *,
+    require_result_manifest: bool = True,
+) -> tuple[bool, list[str]]:
+    """Validate an accepted Barrier checkpoint without rebuilding the LP.
+
+    This is the integrity gate used by planning-state export and sequence
+    resume.  Exact-LP compatibility for a later crossover is intentionally a
+    second gate in :func:`prepare_primal_dual_crossover`.
+    """
+    source_root = Path(source_output_dir).resolve()
+    failures: list[str] = []
+    if require_result_manifest:
+        manifest_valid, manifest_failures = validate_result_manifest(source_root)
+        if not manifest_valid:
+            failures.extend(
+                f"result_manifest:{failure}" for failure in manifest_failures
+            )
+    try:
+        solve = _read_json(source_root / "solve_report.json")
+        qc = _read_json(source_root / "solution_qc.json")
+        run_identity = _read_json(source_root / "run_identity.json")
+        checkpoint_root = source_root / CHECKPOINT_DIRECTORY
+        metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
+    except PrimalDualCheckpointError as error:
+        failures.append(str(error))
+        return False, failures
+
+    contract = solve.get("solution_contract", {})
+    hard_checks = qc.get("hard_checks")
+    if solve.get("status") != "OPTIMAL":
+        failures.append("solve_status")
+    if contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+        failures.append("solution_contract_mode")
+    if contract.get("acceptance_status") != "PASS":
+        failures.append("solution_contract_acceptance")
+    if qc.get("status") != "PASS":
+        failures.append("solution_qc_status")
+    if (
+        not isinstance(hard_checks, dict)
+        or not hard_checks
+        or not all(bool(value) for value in hard_checks.values())
+    ):
+        failures.append("solution_qc_hard_checks")
+    if metadata.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
+        failures.append("schema_version")
+    if metadata.get("checkpoint_status") != "ACCEPTED_PRIMARY_BARRIER_SOLUTION":
+        failures.append("checkpoint_status")
+    if not metadata.get("scientifically_accepted"):
+        failures.append("scientifically_accepted")
+    if not metadata.get("deferred_crossover_eligible"):
+        failures.append("deferred_crossover_eligible")
+
+    input_manifest = source_root / "input_manifest.csv"
+    input_valid, input_failures = validate_input_manifest(input_manifest)
+    if not input_valid:
+        failures.extend(f"input_manifest:{failure}" for failure in input_failures)
+    elif metadata.get("source", {}).get("input_manifest_sha256") != sha256_file(
+        input_manifest
+    ):
+        failures.append("input_manifest_sha256")
+
+    source_layers = metadata.get("identity_layers", {})
+    for name in (
+        "baseline_contract",
+        "analysis_case",
+        "scientific_case",
+        "implementation_bundle",
+        "data_roots",
+        "lp_model",
+    ):
+        if source_layers.get(name) != run_identity.get(name):
+            failures.append(f"identity_layer:{name}")
+
+    for role, attribute in (("primal", "BarX"), ("dual", "BarPi")):
+        row = metadata.get("vectors", {}).get(role, {})
+        relative = Path(str(row.get("path", "")))
+        if relative.is_absolute() or len(relative.parts) != 1:
+            failures.append(f"vector_path:{role}")
+            continue
+        path = checkpoint_root / relative
+        if not path.is_file():
+            failures.append(f"vector_missing:{role}")
+            continue
+        if row.get("attribute") != attribute:
+            failures.append(f"vector_attribute:{role}")
+        if int(row.get("bytes", -1)) != int(path.stat().st_size):
+            failures.append(f"vector_bytes:{role}")
+        if str(row.get("sha256")) != sha256_file(path):
+            failures.append(f"vector_sha256:{role}")
+        try:
+            array = np.load(path, mmap_mode="r", allow_pickle=False)
+            if (
+                array.ndim != 1
+                or int(array.size) != int(row.get("entries", -1))
+                or array.dtype != np.dtype("<f8")
+            ):
+                failures.append(f"vector_shape_or_dtype:{role}")
+            del array
+        except (OSError, ValueError, TypeError):
+            failures.append(f"vector_unreadable:{role}")
+    return not failures, failures
+
+
 def prepare_primal_dual_crossover(
     source_output_dir: str | Path,
     target_output_dir: str | Path,
@@ -231,10 +336,13 @@ def prepare_primal_dual_crossover(
     """Validate an accepted checkpoint against the exact rebuilt target LP."""
     source_root = Path(source_output_dir).resolve()
     target_root = Path(target_output_dir).resolve()
-    manifest_valid, failures = validate_result_manifest(source_root)
-    if not manifest_valid:
+    checkpoint_valid, failures = validate_barrier_primal_dual_checkpoint(
+        source_root,
+        require_result_manifest=True,
+    )
+    if not checkpoint_valid:
         raise PrimalDualCheckpointError(
-            "Checkpoint source result manifest is not closed: "
+            "Checkpoint source is not a closed accepted Barrier result: "
             + "; ".join(failures)
         )
     source_qc = _read_json(source_root / "solution_qc.json")

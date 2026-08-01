@@ -2,7 +2,7 @@
   "solver_profile_version": "v1",
   "profile_id": "barrier_16_nonbasic_primal_dual_v1",
   "minimum_gurobi_major_version": 13,
-  "description": "Diagnostic 16-thread Barrier profile that requires an optimal primal-dual interior solution but deliberately skips basic-solution crossover. It is eligible only for strict no-basis scientific/QC outputs and cannot be used for basis reuse or MGA.",
+  "description": "Barrier-first 16-thread profile that requires an optimal primal-dual interior solution and deliberately skips inline crossover. Accepted results are primary scientific outputs; planning sequences may explicitly propagate their capacity cohorts with a closed BarX/BarPi checkpoint. The profile itself cannot export a basis or run MGA, while selected years may undergo a separate post-hoc crossover later.",
   "numerics": {
     "method": 2,
     "threads": 16,

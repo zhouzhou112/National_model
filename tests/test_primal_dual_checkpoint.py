@@ -8,15 +8,24 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import numpy as np
+import pandas as pd
 import gurobipy as gp
 
 from cispo_model.config import load_model_config
+from cispo_model.planning_state import (
+    DIAGNOSTIC_STATE_USE,
+    PlanningState,
+    STATE_COLUMNS,
+    write_planning_state,
+)
 from cispo_model.primal_dual_checkpoint import (
     CHECKPOINT_DIRECTORY,
     apply_primal_dual_crossover_start,
     export_barrier_primal_dual_checkpoint,
     prepare_primal_dual_crossover,
+    validate_barrier_primal_dual_checkpoint,
 )
+from cispo_model.result_summary import finalize_result_manifest
 from scripts.run_cispo_2030_full_year import diagnostic_memory_requirement_gb
 
 
@@ -99,6 +108,8 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             solve_report = {
                 "status": "OPTIMAL",
                 "status_code": 2,
+                "planning_year": 2030,
+                "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
                 "runtime_seconds": 1.0,
                 "iteration_counts": {"barrier": 4},
                 "solution_contract": {
@@ -156,10 +167,68 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     optimization_start_hour=3960,
                     result_use="TEST_ONLY_TRUNCATED_HORIZON",
                 )
+                checkpoint_valid, checkpoint_failures = (
+                    validate_barrier_primal_dual_checkpoint(
+                        source,
+                        require_result_manifest=True,
+                    )
+                )
+            self.assertTrue(checkpoint_valid, checkpoint_failures)
             apply_primal_dual_crossover_start(target_model, prepared)
             np.testing.assert_allclose(target_model.assigned["PStart"], [1, 2, 3])
             np.testing.assert_allclose(target_model.assigned["DStart"], [-4, 5])
             self.assertEqual(target_model.Params.LPWarmStart, 2)
+
+            new_cohorts = pd.DataFrame(
+                [
+                    {
+                        "asset_class": "vre",
+                        "asset_id": "site-1",
+                        "province_code": 11,
+                        "technology": "onwind",
+                        "build_year": 2030,
+                        "retire_year": 2055,
+                        "capacity_delta": 1.25,
+                        "unit": "GW",
+                        "action": "new_build",
+                    }
+                ],
+                columns=STATE_COLUMNS,
+            )
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                state_dir = write_planning_state(
+                    source,
+                    config=self.config,
+                    previous_state=PlanningState.empty(2025),
+                    new_cohorts=new_cohorts,
+                    source_solution_qc="solution_qc.json",
+                    state_use=DIAGNOSTIC_STATE_USE,
+                )
+            state_metadata = json.loads(
+                (state_dir / "state_metadata.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                state_metadata["source_capacity_state_policy"],
+                "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE",
+            )
+            self.assertFalse(state_metadata["posthoc_crossover_required_for_state"])
+            self.assertTrue(
+                state_metadata["source_barrier_checkpoint_manifest_sha256"]
+            )
+            finalize_result_manifest(source, self.config)
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                loaded = PlanningState.load(
+                    state_dir,
+                    expected_boundary_year=2030,
+                    allow_test_only=True,
+                )
+            self.assertAlmostEqual(float(loaded.cohorts.capacity_delta.sum()), 1.25)
 
     def test_real_gurobi_accepts_memmapped_pstart_and_dstart(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
