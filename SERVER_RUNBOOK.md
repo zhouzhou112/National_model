@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-01 14:18 0729 历史 744 h 根的只读复核边界
+
+统一候选根 `2030_744h_v0729_unified_v4_v1g_cold_v1` 已再次确认严格终态为
+`OPTIMAL + QC PASS + 52/52 + valid result manifest + wrapper exit 0`。PID 已退出，
+当前固定服务器 clean/idle；不得继续监控为活动任务，也不得由该根自动启动任何后续
+solve。它仍是 `TEST_ONLY_TRUNCATED_HORIZON`，不进入 2040 state。
+
+历史输入复核必须区分两层：
+
+1. 当前 checkout 上直接运行 `validate_input_manifest()` 会因 3 个 repo 配置文件已随
+   后续提交改变而返回 size drift；不得伪报 `(True, [])`。
+2. 必须用 `result_manifest.json`、`run_identity.json.git_commit=7c56622` 和
+   `git show 7c56622:<path>` 复核 immutable run identity。本次 3 个 Git blob 与
+   manifest 的 size/SHA256 完全一致，其余 75 个输入仍在原路径通过，故历史根没有
+   损坏。未来 historical-root auditor 应显式实现这种 commit-aware 配置复核，不能要求
+   固定服务器永远停留在旧 checkout。
+
+本次没有 fast-forward、部署、resume 或启动新求解。后续动作仍从下节 Phase 0 开始；
+禁止 8760 h、付费云、basis/MGA、inline Crossover、并发第二求解和 `Crossover=3`。
+
 ## 2026-08-01 13:58 Barrier-primary 跨年主线与人工后置 Crossover
 
 对应实现提交为 `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`。本节取代下方

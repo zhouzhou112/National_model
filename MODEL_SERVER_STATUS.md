@@ -1,5 +1,33 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-01 14:18+08:00 0729 统一候选 744 h 历史根复核通过；服务器仍 idle
+
+- 历史根
+  `/data/zz2/National_model/outputs/2030_744h_v0729_unified_v4_v1g_cold_v1`
+  的 PID 已退出；终态再次确认是 `OPTIMAL + solution_qc=PASS + 52/52 + valid
+  result manifest + wrapper exit 0`，不是仍在 Barrier/Crossover、数值失败或异常退出。
+  solver `12,984.854 s`、Barrier/simplex `313/832,655`、Crossover
+  `3,573.87 s`、wall `3:42:57`、process-tree peak `21.484 GiB`、swaps 0。
+- 运行提交/情景/数据身份仍为 clean `7c56622`、
+  `flexible_load_comfort_v4_v1g`、744 h January cyclic window、
+  `barrier_16_auto_order_v2`、no-basis，以及
+  `/data/zz2/National_model/data/model_ready_20260729_unified_7c56622_v4`。
+  数据归档 SHA256 复算为
+  `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。
+- `validate_result_manifest=(True, [])`。当前 server checkout 已前进，因此直接运行
+  `validate_input_manifest` 对 3 个 repo 配置文件报告 size drift；其余 75/78 输入仍
+  通过，且运行提交 `7c56622` 的 3 个 Git blob size/SHA256 与 manifest 完全一致。
+  该差异是历史 run identity 与当前 checkout 的正常分离，不是结果损坏；历史验收不变，
+  但不得把当前 runtime validator 误报为全绿。
+- 实时 local/origin/GitHub tip 均为 `fb7cec37b552f31dcf365b859c93f2734241bb53`；
+  固定服务器仍为 branch `codex/cispo-2030-full-lp`、clean `7a1520e`，无真实
+  CISPO/Gurobi/planning-sequence 进程。available RAM 约 114 GiB、swap
+  447 MiB/2 GiB、连续实时 `si/so=0/0`、memory PSI 0、`/data` available
+  3.7 TiB；ParaCloud 队列为空。本轮没有部署或启动任何任务。
+- 0729 根仍是 `TEST_ONLY_TRUNCATED_HORIZON`，不得作为年度科学结果或 2040
+  state anchor。下一步继续按 `SERVER_RUNBOOK.md` 顶节执行 Barrier-primary Phase 0；
+  不自动启动 8760 h、付费云、basis/MGA、并发第二求解或 `Crossover=3`。
+
 ## 2026-08-01 13:58+08:00 Barrier 主线续接实现完成；服务器仍 idle、未部署
 
 - 新实现提交为 `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`，父提交

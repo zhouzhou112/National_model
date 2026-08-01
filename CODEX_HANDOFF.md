@@ -12,6 +12,29 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-01 14:18+08:00 对 2026-07-29 统一候选 2030/744 h V4 V1G cold gate
+  完成实时只读复核。历史 PID `1004972/1004975` 已退出，终态仍为
+  `OPTIMAL + solution_qc=PASS + 52/52 hard checks + valid result manifest +
+  wrapper exit 0`；solver `12,984.854 s`、Barrier/simplex `313/832,655`、
+  Crossover `3,573.87 s`、wall `3:42:57`、process-tree peak `21.484 GiB`、
+  swaps 0。全部冷热/EV、wave、水电、PHS/储能、网络、备用、惯量、碳/CCS/BECCS
+  和成本 scope 仍由封存输出与 52 项 hard checks 覆盖。该根继续只属于
+  `TEST_ONLY_TRUNCATED_HORIZON`，不是年度科学结果或正式 2040 state anchor。
+- 当前 checkout 已前进，直接对历史 `input_manifest.csv` 调用 runtime validator 会对
+  repo 内 `optimization_2030.json`、V4 scenario JSON 和
+  `model_input_files.json` 返回 3 个 size drift；其余 75/78 项仍通过。逐项只读
+  `git show 7c56622:<path>` 复核确认这 3 个运行提交 blob 的字节数与 SHA256 均与
+  manifest 完全一致，故这是当前 worktree 与历史 immutable run identity 的预期差异，
+  不是历史输入或结果损坏；不得把当前 checkout 的 `(False, ...)` 误记成运行当时的
+  current-input PASS，也不得因此改写历史根。标准数据归档 SHA256 仍为
+  `f3e6cc0f810d0f4e1ccf8fd10907fb25b8859546be397f21035cd072cdb9d261`。
+- 14:18 实时状态：本地、origin、GitHub branch tip 均为
+  `fb7cec37b552f31dcf365b859c93f2734241bb53`；固定服务器保持 clean
+  `7a1520eb723db7717b6ce4dd41646916c34bb0cf`，比当前 tip 落后 5 个提交，且无真实
+  CISPO/Gurobi/planning-sequence 进程。host available RAM 约 `114 GiB`、swap
+  `447 MiB/2 GiB`，最新两个 `vmstat si/so=0/0`、memory PSI 0、`/data`
+  available `3.7 TiB`；ParaCloud `squeue -u a8s001819` 为空。本次没有部署、切换
+  server checkout 或启动任何求解；下一步仍是下述 Barrier-primary Phase 0。
 - 2026-08-01 13:58+08:00：Barrier-primary sequence 实现提交为
   `53a5873156bfe4e81abfaa258d02b3f3ff664bbd`，建立在
   `19b5754bb0db12818975344e5365777674698c47` 的 Barrier checkpoint 工作流上。
@@ -770,6 +793,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-01 - 0729 统一候选 744 h 历史根实时终态复核
+
+- Scope：只读复核
+  `/data/zz2/National_model/outputs/2030_744h_v0729_unified_v4_v1g_cold_v1`
+  及对应 control root、四端 Git、固定服务器资源/进程和 ParaCloud 队列；没有修改模型、
+  数据、服务器 checkout、历史输出或任何求解状态。
+- Terminal evidence：PID 已退出；`solve_report.json=OPTIMAL`、
+  `solution_qc.json=PASS`、52/52 hard checks 全真、`validate_result_manifest=(True, [])`、
+  wrapper exit 0/stderr 仅含 `/usr/bin/time -v`、wall `3:42:57`、MaxRSS
+  `22,527,656 KiB`、swaps 0。solver objective 为
+  `2,330,214.449430 million CNY`，Barrier/simplex 为 `313/832,655`，最大
+  constraint/bound/dual violation 为 `9.10e-8/4.55e-8/9.65e-8`。
+- Input provenance：当前 checkout 前进使通用 input validator 对 3 个 repo 配置文件
+  返回 size drift；75 个外置/其余输入仍通过。运行提交 `7c56622` 中对应 3 个 Git blob
+  的 size/SHA256 与 manifest 完全一致，数据归档 SHA256 也复算一致。因此历史 gate
+  保持 accepted engineering evidence，但当前 checkout 不得伪报 input validator 全绿。
+- Live environment：local/origin/GitHub=`fb7cec3`；server clean/idle=`7a1520e`；
+  Gurobi `13.0.2`；available RAM 约 114 GiB、swap 447 MiB/2 GiB、实时无换页、
+  memory PSI 0、ParaCloud 空。本轮没有部署或启动新任务。
+- Exact next action：保持历史 0729 根不变，继续执行 `SERVER_RUNBOOK.md` 顶节的
+  Barrier-primary Phase 0；不得由本复核启动 8760 h、付费云、basis/MGA、inline
+  Crossover、并发第二求解或 `Crossover=3`。
 
 ### 2026-08-01 - Barrier 主线跨年续接与人工后置 Crossover 合同
 
