@@ -193,6 +193,22 @@ class SolverProfileTests(unittest.TestCase):
                     self.assertEqual(candidate.raw["numerics"]["crossover"], 0)
                     self.assertEqual(candidate.raw["numerics"]["solution_target"], 1)
 
+        tuning3_profiles = sorted(profile_path.parent.glob("tuning3_*.json"))
+        self.assertEqual(len(tuning3_profiles), 3)
+        for crossover, tuning_profile in zip((1, 2, 4), tuning3_profiles):
+            with self.subTest(tuning3_profile=tuning_profile.name):
+                candidate = load_model_config(solver_path=tuning_profile)
+                self.assertEqual(candidate.raw["scenario"], base.raw["scenario"])
+                self.assertEqual(candidate.raw["numerics"]["method"], 2)
+                self.assertEqual(candidate.raw["numerics"]["crossover"], crossover)
+                self.assertEqual(candidate.raw["numerics"]["crossover_basis"], 1)
+                self.assertEqual(
+                    candidate.raw["solver_profile"][
+                        "minimum_gurobi_major_version"
+                    ],
+                    13,
+                )
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent

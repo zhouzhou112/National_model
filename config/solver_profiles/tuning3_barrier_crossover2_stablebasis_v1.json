@@ -1,0 +1,17 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "tuning3_barrier_crossover2_stablebasis_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Round-3 matched Barrier candidate using dual-then-primal pushes, dual-simplex cleanup, and robust basis construction.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 21600,
+    "soft_mem_limit_gb": 48
+  }
+}
