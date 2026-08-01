@@ -173,6 +173,26 @@ class SolverProfileTests(unittest.TestCase):
                     13,
                 )
 
+        tuning2_profiles = sorted(profile_path.parent.glob("tuning2_*.json"))
+        self.assertEqual(len(tuning2_profiles), 12)
+        for tuning_profile in tuning2_profiles:
+            with self.subTest(tuning2_profile=tuning_profile.name):
+                candidate = load_model_config(solver_path=tuning_profile)
+                self.assertEqual(candidate.raw["scenario"], base.raw["scenario"])
+                self.assertEqual(
+                    candidate.raw["solver_profile"][
+                        "minimum_gurobi_major_version"
+                    ],
+                    13,
+                )
+                if "dual_simplex" in tuning_profile.name:
+                    self.assertEqual(candidate.raw["numerics"]["method"], 1)
+                    self.assertEqual(candidate.raw["numerics"]["solution_target"], 0)
+                else:
+                    self.assertEqual(candidate.raw["numerics"]["method"], 2)
+                    self.assertEqual(candidate.raw["numerics"]["crossover"], 0)
+                    self.assertEqual(candidate.raw["numerics"]["solution_target"], 1)
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent
