@@ -1,5 +1,19 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 19:53+08:00 168 h V5 调优闭合；等待共享 RAM 恢复
+
+- `d190c23` 在正确生产数据环境下专项 `30/30`、完整回归 `175/175 PASS`。一次漏设 data
+  env 的完整回归调用产生 missing-file failures，显式修正五个 roots 后通过。
+- 168 h V5 Crossover=2/4 均 strict PASS；solver 分别 `2021.046/2122.079 s`，simplex
+  `382,382/383,134`，峰值约 `3.65 GiB`。production winner 为 Crossover=2；4 为 fallback，
+  direct dual simplex 为无 Crossover fallback，3 禁止。
+- 新 long production profile 为
+  `barrier_16_crossover2_stable_basis_long_v1`：16 threads、Presolve=2、Crossover=2、
+  CrossoverBasis=1、TimeLimit=86400 s、SoftMemLimit=80 GiB。
+- 当前无 CISPO/Gurobi 进程，但 available RAM 约 `93 GiB < 96 GiB`。外部用户多条 wind-power
+  worker 正在占用 RAM；swap `449 MiB/2 GiB`、`si/so=0/0`、PSI=0。不得终止外部任务；
+  Phase 1 等资源恢复后才启动。
+
 ## 2026-08-02 18:35+08:00 24 h 配对通过；168 h Base 通过、V5 被旧 guard 拦截
 
 - 服务器 clean/idle `eb4d5591723d5ed528c8326898731591937ec645`，available RAM

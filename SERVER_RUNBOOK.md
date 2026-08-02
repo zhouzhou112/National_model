@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 19:53 production solver freeze 与资源等待条款
+
+当前 production profile 冻结为
+`config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json`：
+`Method=2/Threads=16/Presolve=2/Crossover=2/CrossoverBasis=1/TimeLimit=86400/
+SoftMemLimit=80`，其余严格 numerics 继承基线。它已完成 24 h Base/V5、168 h Base/V5 matched
+门禁；Crossover=4 仅作已验证 fallback，不自动切换；direct dual simplex 仅作无 Crossover
+strict fallback；Crossover=3 禁止。不得复用 `.bas`。
+
+任何新 Phase 1/2 solve 前必须同时满足：无 CISPO/Gurobi PID、server checkout clean 且为双推送
+tip、available RAM `>=96 GiB`、最新 `vmstat si/so=0/0`、memory PSI 0、磁盘充足、ParaCloud
+队列核验完成。2026-08-02 19:53 available 约 93 GiB，原因是外部用户 wind-power workers；
+不得触碰它们，资源未恢复前只监控。Phase 1/2 顺序和 strict acceptance contract 不变。
+
 ## 2026-08-02 18:35 V5 solver-route guard 更正
 
 现行数据根是

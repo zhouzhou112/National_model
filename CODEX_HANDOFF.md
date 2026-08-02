@@ -12,6 +12,27 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 19:53+08:00：提交 `d190c23f5bcdaf0414b9d630ef8181039dfd214e`
+  已在固定服务器通过专项 `30/30` 与正确生产数据环境下完整回归 `175/175 PASS`。
+  第一次完整回归命令漏设外部 data/CF/hydro roots，产生预期 missing-file failures；随后显式
+  设置五个生产数据根重跑通过。该命令错误已保留，不得误报为代码回归失败。
+- 全新 168 h V5 Crossover=2/4 根均严格通过：2 为 `2021.046 s`、Barrier/simplex
+  `171/382,382`、Crossover `1312.02 s`；4 为 `2122.079 s`、`171/383,134`、
+  Crossover `1362.02 s`。两根均 `OPTIMAL/PASS`、QC `58/58`、current input/result
+  manifests PASS、dual=`Pi`，process-tree peak 约 `3.65 GiB`。2 的最大
+  constraint/bound/dual violations 为 `9.51e-8/1.94e-8/9.43e-8`，4 为
+  `9.95e-8/4.80e-8/8.53e-8`。
+- production winner 冻结为 `Crossover=2/CrossoverBasis=1/Threads=16/Presolve=2`。
+  理由是它在更难的 168 h V5 上快约 101 s、少 752 simplex iterations、质量不劣；
+  Crossover=4 保留为已验证 fallback，direct dual simplex 保留为无 Crossover 严格 fallback，
+  `Crossover=3` 永久拒绝。新增 long profile 使用 `TimeLimit=86400 s/SoftMemLimit=80 GiB`，
+  不复用 `.bas`。
+- 19:53 任务结束后服务器 available RAM 约 `93 GiB`，swap `449 MiB/2 GiB`、
+  `si/so=0/0`、memory PSI 0。下降来自另一用户的多条
+  `wind_power.round6.leakage_compare` workers，并非 CISPO；不得触碰外部进程。因低于新任务
+  `>=96 GiB` 门禁，Phase 1 尚未启动。精确下一步是提交/双推送/deploy production profile，
+  等待 available 恢复后再串行启动 Phase 1。
+
 - 2026-08-02 18:35+08:00 实时复核：固定服务器 clean/idle，checkout
   `eb4d5591723d5ed528c8326898731591937ec645`，available RAM `113 GiB`、swap
   `447 MiB/2 GiB`、连续 `vmstat si/so=0/0`、memory PSI 0。现行 Base/V5 共用数据根是
@@ -840,6 +861,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 19:53+08:00 — 168 h V5 调优闭合并冻结 Crossover=2
+
+- Git：V5 route contract 修订 `d190c23f5bcdaf0414b9d630ef8181039dfd214e`；本里程碑新增
+  `config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json`，更新 profile test
+  与三份交接文档。
+- 输出/控制根：
+  `/data/zz2/National_model/{outputs,run_control}/solver_tuning_v0802_d190c23_168h_v5_round3_v1`。
+- 验证：专项 `30/30`、完整 `175/175`；Crossover 2/4 两根均完整 strict PASS。参数冻结
+  依据见 current snapshot；没有改模型方程、数据、单位、情景或时间边界。
+- 未决：Phase 1/2 均未启动；shared-server available RAM 暂为 93 GiB，低于新任务门禁。
+- 下一步：部署 production profile 后只监控资源；恢复到 `>=96 GiB`、`si/so=0/0`、PSI=0
+  且无 CISPO 进程时，按 Phase 1 顺序启动 1/24/168 h Base→V5 四年 sequences。
 
 ### 2026-08-02 18:35+08:00 — 24 h/168 h crossover 调优与 V5 旧门禁更正
 

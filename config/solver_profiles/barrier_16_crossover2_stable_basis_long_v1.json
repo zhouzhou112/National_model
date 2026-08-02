@@ -1,0 +1,17 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_crossover2_stable_basis_long_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Validated production profile for current Base/V5 sequences: 16-thread Barrier, dual-then-primal crossover pushes, robust basis construction, 24-hour time budget, and 80 GiB soft memory limit.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 86400,
+    "soft_mem_limit_gb": 80
+  }
+}

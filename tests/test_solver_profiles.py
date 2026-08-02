@@ -209,6 +209,27 @@ class SolverProfileTests(unittest.TestCase):
                     13,
                 )
 
+        production_crossover = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_crossover2_stable_basis_long_v1.json"
+            )
+        )
+        self.assertEqual(production_crossover.raw["numerics"]["method"], 2)
+        self.assertEqual(production_crossover.raw["numerics"]["threads"], 16)
+        self.assertEqual(production_crossover.raw["numerics"]["crossover"], 2)
+        self.assertEqual(
+            production_crossover.raw["numerics"]["crossover_basis"], 1
+        )
+        self.assertEqual(
+            production_crossover.raw["numerics"]["time_limit_seconds"],
+            86400,
+        )
+        self.assertEqual(
+            production_crossover.raw["numerics"]["soft_mem_limit_gb"],
+            80,
+        )
+
         limited = load_model_config(
             solver_path=(
                 profile_path.parent
