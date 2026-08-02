@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-03 03:17+08:00 Phase 1 完整闭合；Phase 2 等待资源
+
+- `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 已写出 `PHASE1_DONE`；总 stderr
+  为 0。1/24/168 h Base/V5 六条四年 sequences 均 rc 0，六个 time wrapper 均 exit 0。
+- 三组 A/B audits 全部 `PASS`；`phase1_strict_audit.json` 复核 24/24 年度根均为
+  `OPTIMAL + contract/QC PASS + 58/58 + current input/valid result manifests + Pi`，零 failures。
+  24 根 storage/V2G overlap 均为零。仅 168 h Base/V5 的 2050 各有 7 个预算内 de-minimis
+  counterflow edge-hours；其余 counterflow 为 strict zero。
+- 当前无 CISPO/Gurobi/sequence PID。固定服务器 clean checkout
+  `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`；available RAM 约 `87 GiB`、swap
+  `449 MiB/2 GiB`、`vmstat si/so=0/0`、memory PSI 0、磁盘余 `3.7 TiB`；ParaCloud 队列为空。
+- Phase 2 仍要求新任务前 available `>=96 GiB`。当前只等待外部资源恢复，不降低门槛、不终止
+  外部任务。满足后才部署双推送文档 tip，并严格串行执行 `744 h @ start 0/3960/6552`，每个窗口
+  Base 四年后 V5 四年；继续禁止并发、basis、Crossover=3、8760 h、付费云和 MGA。
+
 ## 2026-08-02 23:16+08:00 Phase 1 已进入 168 h Base
 
 - 1 h Base/V5 与 24 h Base/V5 四条四年 sequences 均 `rc=0`；逐根

@@ -12,6 +12,27 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-03 03:17+08:00：Phase 1 已完整结束并严格审计通过。control root
+  `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 写出 `PHASE1_DONE`，总 stderr
+  为 0 字节；六条 Base/V5 `1/24/168 h` 四年 sequences 均 `rc=0`，六个 `/usr/bin/time -v`
+  wrapper 均 `Exit status: 0`。三组 `audit_planning_sequence_ab.py` 均 `PASS`，新生成的
+  `phase1_strict_audit.json` 对 6 个 sequence、24 个年度根复核为 `24/24 accepted`、零
+  failures：逐根 `OPTIMAL + contract PASS + strict quality + solution_qc PASS + 58/58 +
+  current input manifest + valid result manifest + Pi dual + TEST_ONLY_TRUNCATED_HORIZON`。
+- 168 h Base/V5 的 2030/2040/2060 counterflow 均为 `STRICT_PASS`；2050 两根为显式
+  `TEST_ONLY_DE_MINIMIS_WARNING`。Base 2050 为 7 edge-hours、`0.177690 GW`、`1.029728 GWh`、
+  `0.031052 GWh` excess loss；V5 2050 为 7 edge-hours、`0.140848 GW`、`0.721842 GWh`、
+  `0.021767 GWh`。两者七项指标都在已批准 warning budgets 内；24 根的 storage 与 EV V2G
+  simultaneous charge/discharge 均为零，不增加网络方向互斥结构。
+- 03:17 实时四端状态：本地、origin、GitHub branch tip 均为文档基线 `b0b6d402e24a45dadcca077c882424a75f14d4c9`；
+  固定服务器 clean/idle checkout 为运行提交 `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`。
+  available RAM 约 `87 GiB`、swap `449 MiB/2 GiB`、最新 `vmstat si/so=0/0`、memory PSI 0、
+  `/data` available `3.7 TiB`；ParaCloud `squeue -u a8s001819` 为空。Phase 2 的新任务门禁仍为
+  available `>=96 GiB`，当前只因资源未达标而等待；不得降低阈值或触碰外部进程。资源恢复后
+  先双推送本里程碑文档、fast-forward clean server，再按 `start-hour=0/3960/6552` 严格串行
+  执行每个窗口 Base 四年→V5 四年，共 24 个 744 h solve；不并发、不复用 basis、不运行
+  `Crossover=3`、8760 h、付费云或 MGA。
+
 - 2026-08-02 23:16+08:00：新 Phase 1 的 1 h Base/V5 与 24 h Base/V5 四条四年
   sequences 均已 `rc=0`；逐根 `solve_report=OPTIMAL`、`solution_qc=PASS`，结果
   manifests 均已生成，storage 与 EV V2G simultaneous charge/discharge 均为零，24 h
@@ -925,6 +946,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-03 03:17+08:00 — Phase 1 24/24 严格闭合；Phase 2 等待 96 GiB
+
+- Git/run identity：模型与全部 Phase 1 结果身份为
+  `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`；本里程碑只更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，不修改模型、数据、
+  solver profile、历史 outputs 或用户 supplementary/.codex_tmp 文件。
+- 命令/输出：六条 sequence 由
+  `/data/zz2/National_model/run_control/phase1_b2206d9_v1/phase1_runner.sh` 严格串行完成；
+  运行三次 `scripts/audit_planning_sequence_ab.py`，输出 `ab_audit_{1h,24h,168h}.{json,csv}`；
+  另对 24 根运行 input/result manifest、contract、QC、dual、overlap 与 counterflow 汇总，
+  输出 `phase1_strict_audit.json`。
+- 验证证据：A/B audits 三项均 `PASS`；strict audit 为 `24/24 accepted`、零 failures；所有年度
+  根均 `OPTIMAL/PASS/58/58`、input/result manifests 有效、manifest commit 为 `b2206d9`、
+  dual=`Pi`。storage/V2G overlap 全零；仅 Base/V5 2050 各有一个预算内 de-minimis warning。
+  六个 wrapper 与总 wrapper 均 rc 0；168 h Base/V5 wall 分别 `1:55:01/2:01:00`，最大 RSS
+  `3,621,576/3,870,496 KiB`。
+- 资源/未决/下一步：03:17 server clean/idle、available 约 `87 GiB`、`si/so=0/0`、PSI 0、
+  磁盘余 `3.7 TiB`，ParaCloud 空队列。唯一未决是 Phase 2 新任务 `>=96 GiB` 资源门禁；继续
+  轮询而不降门槛。资源满足后部署双推送文档 tip，重验 clean/idle/queue/目标根，再启动三季节
+  744 h Base→V5 四年 sequences；任一根失败即停，全部结果仍为测试时域。
 
 ### 2026-08-02 23:16+08:00 — Phase 1 的 1 h/24 h 配对完成并进入 168 h
 

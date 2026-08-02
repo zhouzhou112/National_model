@@ -1,5 +1,26 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-03 03:17 Phase 1 终态与 Phase 2 资源等待
+
+1. Phase 1 control root `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 已完成；
+   `phase1.stdout` 末尾为 `PHASE1_DONE`，`phase1.stderr` 为 0 字节，六个 sequence wrapper
+   均 `Exit status: 0`。不得再把 PID `1314144` 当作活动任务或 resume 任一 Phase 1 root。
+2. `ab_audit_{1h,24h,168h}.json` 均 `PASS`；`phase1_strict_audit.json` 为 24/24 accepted、
+   零 failures。逐根仍必须保留 solve/QC/58 checks/input/result manifests/dual/state 证据。
+   168 h Base/V5 的 2050 de-minimis warnings 已显式保留 observed/limits，不得报告为 strict zero；
+   其余根 strict zero，全部 storage/V2G overlap 为零。
+3. Phase 2 不因 Phase 1 完成而忽略资源门禁。每个新 744 h sequence 前重新确认：无 CISPO/
+   Gurobi PID、server checkout clean 且为双推送 tip、available `>=96 GiB`、最新
+   `vmstat si/so=0/0`、memory PSI 0、磁盘充足、目标 output/control root 不存在、ParaCloud
+   `squeue -u a8s001819` 已核验。03:17 available 约 `87 GiB`，故当前只等待。
+4. 资源满足后 Phase 2 仍严格串行：`start-hour=0` Jan Base→V5，`3960` Jun-15 Base→V5，
+   `6552` Oct Base→V5；每条均为 2030→2060 四年 sequence，共 24 个 solve。沿用已冻结的
+   `barrier_16_crossover2_stable_basis_long_v1.json`，不复用 `.bas`，不在活动 run 中切参。
+5. 任一年度不是 `OPTIMAL + acceptance/QC PASS + 58/58 + current input + valid result manifest +
+   Pi + wrapper rc 0`，立即停止对应 sequence 并保留现场。所有 744 h 根仍是
+   `TEST_ONLY_TRUNCATED_HORIZON`；继续禁止 Crossover=3、并发第二求解、8760 h、付费云、
+   basis gate 和 MGA。
+
 ## 2026-08-02 23:16 活动 Phase 1 更新
 
 - 1 h 与 24 h 的 Base/V5 已全部 `rc=0`；当前唯一活动求解为 168 h Base，仍由 wrapper
