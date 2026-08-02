@@ -103,6 +103,7 @@ class FlexibleLoadContractTests(unittest.TestCase):
         )
         self.assertEqual(passed["status"], "PASS")
         self.assertFalse(passed["aggregate_zero_required"])
+        self.assertEqual(passed["accepted_basic_crossover_orders"], [1, 2, 4])
         self.assertEqual(
             passed["required_long_horizon_settings"]["aggregate"],
             "automatic_allowed",
@@ -119,6 +120,28 @@ class FlexibleLoadContractTests(unittest.TestCase):
         self.assertEqual(nonbasic["status"], "PASS")
         self.assertTrue(nonbasic["strict_nonbasic_primal_dual_route"])
         self.assertFalse(nonbasic["stable_basic_route"])
+        for crossover in (2, 4):
+            with self.subTest(crossover=crossover):
+                alternative_basic = assess_flexible_load_solver_compatibility(
+                    structural_audit,
+                    {
+                        "method": 2,
+                        "crossover": crossover,
+                        "crossover_basis": 1,
+                    },
+                )
+                self.assertEqual(alternative_basic["status"], "PASS")
+                self.assertTrue(alternative_basic["stable_basic_route"])
+        rejected_crossover_three = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {
+                "method": 2,
+                "crossover": 3,
+                "crossover_basis": 1,
+            },
+        )
+        self.assertEqual(rejected_crossover_three["status"], "BLOCKED")
+        self.assertFalse(rejected_crossover_three["stable_basic_route"])
         legacy = assess_flexible_load_solver_compatibility(
             {
                 "formulation": "service_constrained_v4",

@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 18:35+08:00 24 h 配对通过；168 h Base 通过、V5 被旧 guard 拦截
+
+- 服务器 clean/idle `eb4d5591723d5ed528c8326898731591937ec645`，available RAM
+  `113 GiB`、swap `447 MiB/2 GiB`、`si/so=0/0`、memory PSI 0。现行数据根为
+  `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`。
+- Crossover 1/2/4 的 24 h Base/V5 六根全部 strict PASS。168 h Base 的 Crossover 2/4
+  也 strict PASS，solver runtime 分别 `2044.630/1822.354 s`，Crossover=4 当前总耗时更短。
+- 168 h V5 两个候选没有进入 Gurobi optimize：旧代码只把 Crossover=1 识别为 stable
+  basic route，均在 prebuild 后约 9.5 s fail closed。正在把允许集合最小扩展为已经 matched
+  24 h 验证的 `{1,2,4}`，保留 `CrossoverBasis=1` 并永久拒绝 3。部署后用全新输出根重跑，
+  不 resume 两个 prebuild-failed 根。
+- Phase 1/2 尚未启动；没有 8760 h、付费云、并发第二求解、basis reuse 或 MGA。
+
 ## 2026-08-01 16:53+08:00 Phase 0 完成；Barrier-only 路线被严格门禁拒绝
 
 - 固定服务器已部署 clean `5e7db6835db60170fad7a1a13283e2a4d16792f4`；Phase 0 的

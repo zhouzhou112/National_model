@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 18:35 V5 solver-route guard 更正
+
+现行数据根是
+`/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`；0729 unified 根只用于
+历史 744 h root 审计。24 h matched Base/V5 已证明 Gurobi 的 Crossover 1、2、4 在当前模型上
+都能生成严格 accepted basic solution；168 h Base 又验证了 2/4。故 V5 长链的 basic route
+允许集合从硬编码的 `{1}` 扩展为 `{1,2,4}`，并继续要求 `CrossoverBasis=1`。Crossover=3 仍因
+既有 744 h 数值失稳证据永久拒绝，不得试跑。
+
+168 h V5 在旧 guard 下产生的两个 `rc=1` 根只包含 prebuild 证据，不得 resume、补写 QC 或
+结果 manifest。新 contract 通过回归并部署后，必须用新输出/控制根串行重跑 Crossover=2、4；
+只有两根都满足完整 strict contract 才冻结 profile。其余 Phase 1/2 顺序与 2026-08-01 16:53
+覆盖条款不变。
+
 ## 2026-08-01 16:53 参数重评后的 Phase 1/2 执行覆盖条款
 
 本节取代下方 13:58 节中“Barrier-only 是当前主线、Crossover 不进入门禁”的安排；物理、

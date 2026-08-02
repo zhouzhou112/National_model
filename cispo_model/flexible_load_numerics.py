@@ -371,8 +371,13 @@ def assess_flexible_load_solver_compatibility(
         for risk in component_risks.values()
     )
     stable_crossover_required = bool(long_chain_numerical_care_required)
+    # Gurobi's documented crossover push-order choices 1, 2 and 4 all
+    # produce a basic solution.  Crossover=3 is intentionally excluded: it
+    # has already failed the matched 744 h numerical gate for this model.
+    accepted_basic_crossover_orders = (1, 2, 4)
     stable_basic_route = bool(
-        crossover == 1 and crossover_basis == 1
+        crossover in accepted_basic_crossover_orders
+        and crossover_basis == 1
     )
     strict_nonbasic_primal_dual_route = bool(
         method == 2
@@ -401,7 +406,7 @@ def assess_flexible_load_solver_compatibility(
         if aggregate_zero_required:
             reason = (
                 "Selected-horizon V5 inverse-decay risk is protected by "
-                "Aggregate=0, Crossover=1 and CrossoverBasis=1."
+                "Aggregate=0, Crossover in {1,2,4} and CrossoverBasis=1."
             )
         else:
             reason = (
@@ -414,12 +419,13 @@ def assess_flexible_load_solver_compatibility(
             reason = (
                 "Refusing optimize(): selected-horizon V5 state chains can "
                 "create inverse-decay coefficient amplification; use "
-                "Aggregate=0, Crossover=1 and CrossoverBasis=1."
+                "Aggregate=0, Crossover in {1,2,4} and CrossoverBasis=1."
             )
         else:
             reason = (
                 "Refusing optimize(): structurally compressed V5 long-chain "
-                "states require either Crossover=1/CrossoverBasis=1 or "
+                "states require either Crossover in {1,2,4} with "
+                "CrossoverBasis=1 or "
                 "Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 "
                 "until matched long-horizon gates establish evidence."
             )
@@ -440,6 +446,9 @@ def assess_flexible_load_solver_compatibility(
         "solution_target_parameter": solution_target,
         "barrier_convergence_tolerance": barrier_tolerance,
         "stable_basic_route": stable_basic_route,
+        "accepted_basic_crossover_orders": list(
+            accepted_basic_crossover_orders
+        ),
         "strict_nonbasic_primal_dual_route": (
             strict_nonbasic_primal_dual_route
         ),
@@ -448,7 +457,7 @@ def assess_flexible_load_solver_compatibility(
             "accepted_solver_routes": [
                 {
                     "method": 2,
-                    "crossover": 1,
+                    "crossover": list(accepted_basic_crossover_orders),
                     "crossover_basis": 1,
                     "solution_form": "basic",
                 },

@@ -12,6 +12,25 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 18:35+08:00 实时复核：固定服务器 clean/idle，checkout
+  `eb4d5591723d5ed528c8326898731591937ec645`，available RAM `113 GiB`、swap
+  `447 MiB/2 GiB`、连续 `vmstat si/so=0/0`、memory PSI 0。现行 Base/V5 共用数据根是
+  `/data/zz2/National_model/data/model_ready_20260730_flex_v5_4f717de_v1`；下方 16:53
+  snapshot 把历史 0729 unified 根误写为现行根，本条明确纠正，历史 0729 根本身不改写。
+- current-tip matched 24 h Base/V5 的 `Crossover=1/2/4 + CrossoverBasis=1` 六项全部
+  `OPTIMAL`、acceptance/QC/manifests PASS 并导出 `Pi`。Crossover=4 在 Base/V5 分别为
+  `62.076/109.042 s`，略快于 2 的 `62.531/109.488 s` 和 1 的
+  `62.158/110.236 s`；差距很小。
+- 168 h Base 的 Crossover=2/4 也严格通过。2 为 `2044.630 s`、Barrier/simplex
+  `159/372,666`、Crossover `953.98 s`；4 为 `1822.354 s`、`159/359,356`、
+  Crossover `1201.85 s`。两者均 QC `58/58`、current input/result manifests PASS，峰值
+  process tree 约 `3.45 GiB`。Crossover=4 总 runtime 快约 10.9%，暂列优胜。
+- 168 h V5 的 2/4 尚未进入 optimize：旧 `flexible_load_numerics` 硬编码仅允许
+  Crossover=1，两个 wrapper 均在约 9.5 s prebuild 后 `rc=1`。这不是 Gurobi/模型失败，
+  而是已过时的 solver-route 门禁。当前最小修订把有 Gurobi 定义且已完成 24 h matched gate
+  的 basic routes 扩展为 `{1,2,4} + CrossoverBasis=1`，继续显式拒绝 3；待测试、提交、
+  双推送和服务器部署后重跑全新 168 h V5 根。Phase 1/2 尚未启动。
+
 - 2026-08-01 16:53+08:00：固定服务器已 clean/idle 部署到实现提交
   `5e7db6835db60170fad7a1a13283e2a4d16792f4`。Phase 0 已闭合：服务器完整回归
   `175/175 PASS`，readiness/release/Base/V5 input/hydropower 380 GW/1 h build audits
@@ -821,6 +840,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 18:35+08:00 — 24 h/168 h crossover 调优与 V5 旧门禁更正
+
+- Git 基线：`eb4d5591723d5ed528c8326898731591937ec645`。本里程碑修改
+  `cispo_model/flexible_load_numerics.py`、`tests/test_flexible_load.py` 及三份交接文档；
+  implementation commit 以本条后的 Git tip 为准。
+- 命令/输出：24 h Base/V5 roots 为
+  `/data/zz2/National_model/outputs/solver_tuning_v0801_eb4d559_24h_{base,v5}_round3_v1`；
+  168 h root 为
+  `/data/zz2/National_model/outputs/solver_tuning_v0801_eb4d559_168h_round3_v1`。
+- 验证：24 h 六根和 168 h Base 两根均满足完整 strict contract；168 h V5 两次只触发旧
+  prebuild guard，未调用 optimize。资源无异常、无并发、无 Crossover=3。
+- 更正：现行数据根为 `model_ready_20260730_flex_v5_4f717de_v1`，0729 unified 根仅用于
+  历史根审计。
+- 未决/下一步：服务器回归验证扩展后的 `{1,2,4}` contract 与 3 的拒绝，然后以全新根
+  串行重跑 168 h V5 Crossover=2/4；冻结优胜 production profile 后再进入 Phase 1/2。
 
 ### 2026-08-01 16:53+08:00 — Phase 0 与两轮 solver 参数诊断闭合
 
