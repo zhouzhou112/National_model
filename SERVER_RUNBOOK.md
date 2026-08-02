@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 22:49 截断时域轻微对冲流推进覆盖条款
+
+本节按作者决策覆盖下方 22:19 的“必须先做 network formulation change”要求；下方失败现场
+和不得 resume/补 manifest 的规定继续有效。
+
+1. 不引入 binary direction、MILP、逐小时方向锁、自由弃电或更高输电成本。LP 方程、损耗、
+   碳/BECCS/DAC、solver 与 state contract 保持不变。
+2. `TEST_ONLY_TRUNCATED_HORIZON` 每 168 h warning budgets 更新为：8 edge-hours、
+   `0.25 GW` 最大 opposing flow、线路容量 `15%`、`1.25 GWh` opposing energy、
+   `0.04 GWh` excess loss、毛输电占比 `5e-5`、系统负荷占比 `1e-7`。小时/绝对电量预算
+   继续随诊断时长线性缩放；任一超限 hard fail。
+3. 8760 h `SCIENTIFIC_PRODUCTION` 不应用 warning，仍要求 AC `1e-6 GW` 以上零对冲。
+   warning 根必须保留 observed/limits，不能报告为 strict directionality。
+4. 配置变更形成新 implementation identity，故旧 `fc2c500` 168 h 根不得 resume 或重标。
+   部署后先完成 server regression/config/release audits，再以全新 roots 串行重做 matched
+   1 h、24 h Base/V5 和四年 168 h Base/V5。只有全部 sequence accepted 才进入 Phase 2。
+5. 每年仍单独检查 storage/V2G overlap、对冲流七项指标、solve/QC/input/result manifests、
+   state、wrapper exit 与资源。继续禁止 8760 h、付费云、并发第二求解、basis reuse、MGA
+   和 `Crossover=3`。
+
 ## 2026-08-02 22:19 Phase 1 网络方向性失败后的覆盖条款
 
 本节覆盖下方 Phase 1 自动续接安排，直到新的 network-formulation milestone 完整闭合。

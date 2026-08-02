@@ -10,11 +10,11 @@ from cispo_model.solution_export import assess_interprovincial_bidirectionality
 CONTRACT = {
     "enabled": True,
     "reference_hours": 168,
-    "maximum_edge_hours_per_reference": 4,
+    "maximum_edge_hours_per_reference": 8,
     "maximum_opposing_flow_gw": 0.25,
     "maximum_opposing_fraction_of_line_capacity": 0.15,
-    "maximum_opposing_energy_gwh_per_reference": 0.75,
-    "maximum_excess_loss_gwh_per_reference": 0.025,
+    "maximum_opposing_energy_gwh_per_reference": 1.25,
+    "maximum_excess_loss_gwh_per_reference": 0.04,
     "maximum_opposing_share_of_gross_flow": 5e-5,
     "maximum_excess_loss_share_of_system_load": 1e-7,
 }
@@ -72,6 +72,57 @@ class DirectionalityQcTests(unittest.TestCase):
             result["classification"], "TEST_ONLY_DE_MINIMIS_WARNING"
         )
         self.assertEqual(result["observed"]["edge_hours"], 3)
+
+    def test_seven_hour_current_gate_regression_is_warning_only(self) -> None:
+        forward = np.full((411, 168), 0.44)
+        reverse = np.zeros((411, 168))
+        event_hours = [4, 28, 52, 76, 100, 124, 148]
+        opposing = np.array(
+            [0.177690, 0.177690, 0.130739, 0.144863, 0.136732, 0.121496, 0.140517]
+        )
+        forward[153, event_hours] = opposing
+        reverse[153, event_hours] = 1.646 - opposing
+        capacity = np.full(411, 2.0)
+        capacity[153] = 1.646
+        result = assess(
+            forward,
+            reverse,
+            capacity=capacity,
+            load_gwh=317_940.0,
+        )
+        self.assertTrue(result["accepted"])
+        self.assertFalse(result["strict_pass"])
+        self.assertTrue(result["warning_applied"])
+        self.assertEqual(
+            result["classification"], "TEST_ONLY_DE_MINIMIS_WARNING"
+        )
+        self.assertEqual(result["observed"]["edge_hours"], 7)
+        self.assertLessEqual(
+            result["observed"]["opposing_energy_gwh"],
+            result["limits"]["maximum_opposing_energy_gwh"],
+        )
+        self.assertLessEqual(
+            result["observed"]["excess_loss_gwh"],
+            result["limits"]["maximum_excess_loss_gwh"],
+        )
+
+    def test_nine_counterflow_hours_exceed_revised_prevalence_budget(self) -> None:
+        forward = np.full((411, 168), 0.44)
+        reverse = np.zeros((411, 168))
+        event_hours = list(range(9))
+        forward[153, event_hours] = 0.13
+        reverse[153, event_hours] = 1.516
+        capacity = np.full(411, 2.0)
+        capacity[153] = 1.646
+        result = assess(
+            forward,
+            reverse,
+            capacity=capacity,
+            load_gwh=317_940.0,
+        )
+        self.assertFalse(result["accepted"])
+        self.assertFalse(result["within_warning_budget"])
+        self.assertEqual(result["observed"]["edge_hours"], 9)
 
     def test_same_counterflow_fails_full_year_scientific_scope(self) -> None:
         forward = np.full((1, 8760), 100.0)

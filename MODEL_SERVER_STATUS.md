@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 22:49+08:00 轻微对冲流 warning 合同已在本地闭合
+
+- 作者决定保持 current full-LP 网络结构，不为截断时域极小系统影响的 AC 对冲流增加
+  MILP/方向锁复杂度。2050/168 h storage 与 EV V2G overlap 均为零，唯一异常仍是
+  7 个 AC counterflow edge-hours；其 excess-loss/load 与 opposing/gross-flow 分别仅
+  `9.7667e-8`、`3.4079e-5`。
+- 仅将 test-only 每 168 h 的绝对 warning budgets 调整为
+  `8 edge-hours / 1.25 GWh opposing / 0.04 GWh excess loss`；单小时功率、线路占比和两个
+  相对系统影响门禁不变，full-year 继续 strict zero。模型与 solver 参数不变。
+- 本地方向性 `7/7`、完整回归 `177/177 PASS`。服务器尚未部署本修订，也没有从旧失败根
+  resume；部署与新 Phase1 roots 必须等待提交、双推送及实时 server 门禁。
+
 ## 2026-08-02 22:19+08:00 Phase 1 在 168 h Base 2050 fail closed
 
 - Phase1 wrapper 与本项目 Python/Gurobi 均已退出。1 h Base/V5、24 h Base/V5 四条四年

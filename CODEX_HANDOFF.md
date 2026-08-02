@@ -12,6 +12,23 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 22:49+08:00：作者明确决定不因系统影响极小的截断时域 AC 对冲流引入
+  MILP、逐小时方向锁或其他高复杂度结构；在储能同时充放与输电对冲均不严重时优先推进。
+  当前 2050/168 h 根的 storage overlap 为 `0 asset-hours / 0 GW / 0 GWh`，EV V2G overlap
+  也全为 0；对冲流额外损耗占系统负荷 `9.7667e-8`，opposing energy 占毛输电量
+  `3.4079e-5`，其余 `57/58` hard checks 全部通过。
+- 最小合同修订只把 `TEST_ONLY_TRUNCATED_HORIZON` 每 168 h 的三个绝对 warning budgets
+  从 `4 edge-hours / 0.75 GWh opposing / 0.025 GWh excess loss` 调整为
+  `8 / 1.25 / 0.04`；单小时 `0.25 GW`、线路容量占比 `15%`、毛输电量占比 `5e-5`、
+  系统负荷占比 `1e-7` 均保持。8760 h `SCIENTIFIC_PRODUCTION` 仍要求 `1e-6 GW`
+  以上严格零对冲。模型变量、功率平衡、输电损耗、流成本、碳/BECCS/DAC、目标函数、
+  solver profile 和 state contract 均未改变。
+- 新增解析回归复现当前 7 小时事件并要求 warning acceptance，同时证明 9 小时事件仍
+  hard fail、相同事件在 full-year scope 仍 hard fail。方向性专项 `7/7 PASS`；设置生产 wave
+  root 后本地完整回归 `177/177 PASS`。下一步是提交/双推送、服务器空闲部署与完整回归，
+  然后用全新 roots 重做 Phase 1 的 matched 1/24/168 h Base/V5；不得重标或 resume
+  `fc2c500` 失败根。Phase 1 完整接受后才允许 Phase 2。
+
 - 2026-08-02 22:19+08:00：Phase 1 已按 strict fail-closed 合同停止，不再自动执行。
   wrapper `/data/zz2/National_model/run_control/phase1_fc2c500_v1` 已退出；1 h Base/V5 与
   24 h Base/V5 四条四年 sequence 全部 `sequence_report=PASS`。逐年重验的 16 个根均为
@@ -891,6 +908,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 22:49+08:00 — 截断时域轻微对冲流按作者边界降为 warning
+
+- Git 基线/文件：基线 `34b61daa5c145b37d53f7a4dedfe6d0b3ed01dcd`；修改
+  `config/optimization_2030.json`、`tests/test_directionality_qc.py`、
+  `cispo_full_lp_model_spec.md` 及三份交接文档。未修改 LP 方程、solver profile、数据或
+  历史输出；用户 supplementary/.codex_tmp 文件未纳入任务。
+- 决策/范围：仅把 168 h warning 的 edge-hours/opposing-energy/excess-loss 绝对预算调整为
+  `8/1.25 GWh/0.04 GWh`，其余四项严重度阈值和 full-year strict-zero contract 不变。
+- 验证：当前失败根的储能及 V2G 同时充放均为零；方向性专项 `7/7`、完整本地回归
+  `177/177 PASS`。新增测试接受当前 7-hour 事件为显式 warning，并拒绝 9-hour 与 full-year
+  事件。
+- 未决/下一步：提交双推送，在 idle/clean server 部署后完成服务器回归与配置审计；使用
+  新 implementation identity 从 1 h/24 h matched gates 开始，随后重跑全新 168 h Base/V5。
+  只有 Phase 1 全闭合后才启动 Phase 2；仍禁止 8760 h、付费云、并发、basis/MGA 和
+  `Crossover=3`。
 
 ### 2026-08-02 22:19+08:00 — Phase 1 在 168 h Base 2050 网络方向性 QC 处闭锁
 
