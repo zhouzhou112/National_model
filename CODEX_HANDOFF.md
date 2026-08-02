@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 19:58+08:00：共享服务器 available RAM 稳定约 `85 GiB`，外部 workers
+  仍驻留，但最新 `vmstat r=9`、`si/so=0/0`、memory PSI 0。基于刚完成的 current-tip
+  168 h Base/V5 实测 process-tree peak `<=3.651 GiB`，Phase 1 的启动门禁采用保守的
+  `available>=64 GiB`（约 17.5 倍实测峰值）并要求 `si/so=0/0`、PSI=0；这只适用于
+  1/24/168 h Phase 1，不放松 Phase 2 的 `>=96 GiB` 门禁。若运行中 available `<48 GiB`、
+  出现 swap I/O 或 PSI，则完成/终止当前最小根后停止，不启动下一根。
+
 - 2026-08-02 19:53+08:00：提交 `d190c23f5bcdaf0414b9d630ef8181039dfd214e`
   已在固定服务器通过专项 `30/30` 与正确生产数据环境下完整回归 `175/175 PASS`。
   第一次完整回归命令漏设外部 data/CF/hydro roots，产生预期 missing-file failures；随后显式
@@ -861,6 +868,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 19:58+08:00 — Phase 1 采用实测峰值分级资源门禁
+
+- Git/文件：更新三份交接文档；不改模型或 solver profile。
+- 证据：current-tip 168 h Base/V5 四根 process-tree peak 均约 `3.45--3.65 GiB`；当前
+  available 约 `85 GiB`，`si/so=0/0`、PSI=0。外部负载不可触碰。
+- 决策：Phase 1 启动阈值为 64 GiB、运行中 stop threshold 为 48 GiB；Phase 2 仍为
+  96 GiB。由此可在不牺牲资源安全的前提下继续小门禁，而不等待外部 page cache/RSS 全释放。
 
 ### 2026-08-02 19:53+08:00 — 168 h V5 调优闭合并冻结 Crossover=2
 

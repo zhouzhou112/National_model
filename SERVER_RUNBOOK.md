@@ -1,5 +1,13 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 19:58 Phase 1 分级资源门禁
+
+上节统一 `available>=96 GiB` 门禁按实测规模细化：Phase 1 的 1/24/168 h current-tip matched
+roots 已证明 process-tree peak `<=3.651 GiB`，故 Phase 1 新 sequence 可在 available
+`>=64 GiB`、最新 `vmstat si/so=0/0`、memory PSI 0 时启动。运行中若 available `<48 GiB`、
+出现非零 swap I/O 或 memory PSI，则不启动下一 sequence/root。Phase 2 的 744 h 仍要求
+available `>=96 GiB`，本条不授权降低。外部用户进程不得终止、nice 或修改。
+
 ## 2026-08-02 19:53 production solver freeze 与资源等待条款
 
 当前 production profile 冻结为

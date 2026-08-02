@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 19:58+08:00 Phase 1 分级内存门禁生效
+
+- 当前 available RAM 约 `85 GiB`、`si/so=0/0`、PSI=0；外部 wind-power workers 仍在。
+- current-tip 168 h 实测 process-tree peak `<=3.651 GiB`，因此仅 Phase 1 的 1/24/168 h
+  允许在 `available>=64 GiB` 时启动；运行中低于 48 GiB 或出现 swap I/O/PSI 即停止后续根。
+  Phase 2 仍要求 `>=96 GiB`，未放松。
+
 ## 2026-08-02 19:53+08:00 168 h V5 调优闭合；等待共享 RAM 恢复
 
 - `d190c23` 在正确生产数据环境下专项 `30/30`、完整回归 `175/175 PASS`。一次漏设 data
