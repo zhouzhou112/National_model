@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 22:55+08:00 全新 Phase 1 活动中
+
+- fixed server clean deployed `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`；生产环境
+  `177/177`、readiness、release、V5 input 和 hydro 380 GW audits 全部 PASS。
+- wrapper PID `1314144`，control root
+  `/data/zz2/National_model/run_control/phase1_b2206d9_v1`；22:55 正在 1 h Base，后续按
+  1 h V5、24 h Base/V5、168 h Base/V5 严格串行。
+- 启动 available `91,919,056 KiB`、`si/so=0/0`、memory PSI 0；无第二 CISPO solve，
+  ParaCloud 队列为空。PID 存在期间不 fast-forward、不改 checkout、不启动 Phase 2。
+
 ## 2026-08-02 22:49+08:00 轻微对冲流 warning 合同已在本地闭合
 
 - 作者决定保持 current full-LP 网络结构，不为截断时域极小系统影响的 AC 对冲流增加

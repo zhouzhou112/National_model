@@ -1,5 +1,16 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 22:55 活动 Phase 1 监控对象
+
+- checkout/run identity：`b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`。
+- control root：`/data/zz2/National_model/run_control/phase1_b2206d9_v1`；wrapper PID
+  `1314144`。
+- output roots：
+  `planning_sequence_2030_2060_{1,24,168}h_start3960_b2206d9_{base,v5}_v1`。
+- PID 存在时只读 `phase1.stdout`、当前年度 logs/reports、RAM/swap/vmstat/PSI；不得更新
+  server checkout、启动第二求解或 Phase 2。wrapper 任一非零返回即由 `set -e` 停止，
+  不手工跳过。
+
 ## 2026-08-02 22:49 截断时域轻微对冲流推进覆盖条款
 
 本节按作者决策覆盖下方 22:19 的“必须先做 network formulation change”要求；下方失败现场

@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 22:55+08:00：提交 `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7` 已双推送并
+  部署到 clean fixed server。服务器在正确五个生产数据根下完整回归 `177/177 PASS`；
+  readiness、release、V5 input 与水电 380 GW audits 全部 PASS，四项 audit stderr 为零。
+  全新 Phase 1 control root `/data/zz2/National_model/run_control/phase1_b2206d9_v1`
+  已启动，wrapper PID `1314144`；当前从 1 h Base 开始，依次串行 Base/V5 的
+  `1 h → 24 h → 168 h` 四年 sequences。启动时 available `91,919,056 KiB`、
+  `si/so=0/0`、PSI=0；活动期间只监控，不修改 server checkout 或启动第二求解。
+
 - 2026-08-02 22:49+08:00：作者明确决定不因系统影响极小的截断时域 AC 对冲流引入
   MILP、逐小时方向锁或其他高复杂度结构；在储能同时充放与输电对冲均不严重时优先推进。
   当前 2050/168 h 根的 storage overlap 为 `0 asset-hours / 0 GW / 0 GWh`，EV V2G overlap
@@ -908,6 +916,18 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 22:55+08:00 — warning 合同部署并启动全新 Phase 1
+
+- Git/部署：`b2206d9c899c8008d7b6dabdf15cc50dd286e8b7` 已推送 origin/GitHub，固定服务器
+  clean fast-forward 到同一提交。
+- 验证：服务器生产环境 `177/177 PASS`；readiness/full-license、release、V5 input、
+  hydropower `297.8895 + 82.1105 = 380 GW` 均 PASS，审计 stderr 全零。
+- 运行：control root `/data/zz2/National_model/run_control/phase1_b2206d9_v1`，wrapper PID
+  `1314144`；输出根按 `planning_sequence_2030_2060_{1,24,168}h_start3960_b2206d9_{base,v5}_v1`
+  命名。无 basis、无并发、无 Crossover=3。
+- 下一步：PID 存在期间只读监控；逐根审计 strict/warning QC、storage/V2G overlap、manifests、
+  state 与资源。Phase 1 全部 accepted 后才按 96 GiB 新任务门禁进入 Phase 2。
 
 ### 2026-08-02 22:49+08:00 — 截断时域轻微对冲流按作者边界降为 warning
 
