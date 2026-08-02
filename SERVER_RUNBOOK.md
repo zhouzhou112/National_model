@@ -1,5 +1,29 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 22:19 Phase 1 网络方向性失败后的覆盖条款
+
+本节覆盖下方 Phase 1 自动续接安排，直到新的 network-formulation milestone 完整闭合。
+
+1. `/data/zz2/National_model/run_control/phase1_fc2c500_v1` 已退出；不得把它当作仍在运行的
+   wrapper，也不得手工补写 `END`、`result_manifest.json` 或 planning state。
+2. 1 h/24 h Base/V5 四条 sequence 已严格完成。168 h Base 只接受 2030、2040；2050
+   虽为 solver `OPTIMAL`，但因 `unidirectional_interprovincial_flow=false` 而
+   `solution_qc=HARD_FAIL`，2060 未运行。168 h V5 和 Phase 2 未启动。
+3. 保留失败根
+   `/data/zz2/National_model/outputs/planning_sequence_2030_2060_168h_start3960_fc2c500_base_v1/2050`。
+   复核时必须同时读取 `transmission_flows.npz`、`transmission_capacity.csv`、
+   `time_index.csv`、`hourly_marginal_prices.csv.gz` 和 `solution_qc.json`。当前证据固定为
+   吉林—黑龙江 `CORRIDOR_0153` 在 7 个连续日 04:00 出现 `0.121496--0.177690 GW`
+   opposing flow；这不是 `1e-6 GW` 级数值噪声。
+4. 禁止通过增加 warning budgets、把 `HARD_FAIL` 改为 warning、后处理净流量、resume 或
+   更换 Crossover 参数来绕过。下一步必须先审查 directional variables、shared AC capacity、
+   losses、`flow_regularization_yuan_per_mwh` 与深度负价/最小出力之间的机制，形成最小模型
+   修订及其目标/约束/价格口径说明。
+5. 任一修订都视为 network formulation change：先运行相关 unit/regression tests，再以全新
+   roots 串行重做 matched 1 h、24 h、168 h Base/V5。只有六条四年 sequence 全部满足 strict
+   acceptance，方可另建新的 Phase 2 wrapper。继续禁止 8760 h、付费云、并发第二求解、
+   basis reuse、MGA 和 `Crossover=3`。
+
 ## 2026-08-02 19:58 Phase 1 分级资源门禁
 
 上节统一 `available>=96 GiB` 门禁按实测规模细化：Phase 1 的 1/24/168 h current-tip matched

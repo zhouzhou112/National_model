@@ -12,6 +12,29 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 22:19+08:00：Phase 1 已按 strict fail-closed 合同停止，不再自动执行。
+  wrapper `/data/zz2/National_model/run_control/phase1_fc2c500_v1` 已退出；1 h Base/V5 与
+  24 h Base/V5 四条四年 sequence 全部 `sequence_report=PASS`。逐年重验的 16 个根均为
+  `OPTIMAL + solution_qc=PASS + 58/58 hard checks + current input/result manifests PASS`。
+  168 h Base 的 2030、2040 也严格接受，但 2050 虽为 Gurobi `OPTIMAL`、solver acceptance
+  PASS、标准 `Pi` 已导出，`solution_qc=HARD_FAIL`（`57/58`），因此没有
+  `result_manifest.json` 或 accepted planning state；2060、168 h V5 与整个 Phase 2 均未启动。
+- 2050 blocker 是可复现的 AC 同时双向潮流，不是求解残差：仅
+  `CORRIDOR_0153`（吉林 `22`—黑龙江 `23`，AC，容量 `1.646 GW`）在 2050-06-15 至
+  2050-06-21 每天 04:00 共 7 个 edge-hours 出现 counterflow。opposing flow 为
+  `0.121496--0.177690 GW`，总 opposing energy `1.029728 GWh`、额外损耗
+  `0.031052 GWh`；分别超过当前 168 h test-only warning budgets 的 `4 edge-hours`、
+  `0.75 GWh`、`0.025 GWh`。对应两省边际能量价格为
+  `-1976.01-- -3412.05 CNY/MWh`，与 directional-flow LP 在深度负价下把同时对流用作
+  lossy sink 的已知机制一致。不得通过放宽 QC、补写 manifest 或 resume 绕过。
+- 22:19 实时状态：本地、origin、GitHub 和固定服务器均为 clean-tracked baseline
+  `fc2c5002d774e80853f4059c506a55d2befc08f0`（本地仅有受保护的 supplementary/.codex_tmp
+  用户文件）；服务器没有本项目 Python/Gurobi/Phase1 进程，available RAM 约 `87 GiB`、
+  swap `449 MiB/2 GiB`、最新 `vmstat si/so=0/0`、memory PSI 0；ParaCloud `squeue` 为空。
+  精确下一步是在不启动 solve 的前提下审查/修正 interprovincial AC directional-flow
+  formulation 或其深度负价 sink 机制，并从 1 h/24 h/168 h matched Base/V5 重新闭合；
+  未经该闭合不得继续 Phase 1 或进入 Phase 2。
+
 - 2026-08-02 19:58+08:00：共享服务器 available RAM 稳定约 `85 GiB`，外部 workers
   仍驻留，但最新 `vmstat r=9`、`si/so=0/0`、memory PSI 0。基于刚完成的 current-tip
   168 h Base/V5 实测 process-tree peak `<=3.651 GiB`，Phase 1 的启动门禁采用保守的
@@ -868,6 +891,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 22:19+08:00 — Phase 1 在 168 h Base 2050 网络方向性 QC 处闭锁
+
+- Git/文件：运行与审计基线为 `fc2c5002d774e80853f4059c506a55d2befc08f0`；本里程碑仅更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，未改模型、配置、数据
+  或历史输出。
+- 命令/输出：审计 control root
+  `/data/zz2/National_model/run_control/phase1_fc2c500_v1`、四条已完成的 1/24 h roots，以及
+  `/data/zz2/National_model/outputs/planning_sequence_2030_2060_168h_start3960_fc2c500_base_v1`；
+  用 current-tip `validate_input_manifest()`、`validate_result_manifest()` 逐根复验 1/24 h
+  16 个年度输出，并直接读取 2050 `transmission_flows.npz`、capacity/time/price/QC 文件。
+- 验证：1/24 h Base/V5 共 16 个年度根全部 strict PASS；168 h Base 2030/2040 PASS。
+  2050 solver 为 `OPTIMAL`，runtime `1757.735 s`、Barrier/simplex `144/286,354`，最大
+  constraint/bound/dual violation `9.897e-8/7.286e-9/3.876e-12`，但网络 hard check 因
+  吉林—黑龙江同一 AC 走廊 7 个每日 04:00 counterflow hours 超出三个 warning budgets 而
+  `HARD_FAIL`。server idle、内存/交换/PSI 正常，ParaCloud 队列为空。
+- 未决/下一步：这是物理/表述层面的 lossy-sink degeneracy，不是 Gurobi 未收敛；不放宽阈值、
+  不 resume、不运行 2060/V5/Phase 2。先形成最小、可审计的 AC net-flow/损耗或负价吸收机制
+  修订，明确目标函数与约束影响，再从 matched 1/24/168 h Base/V5 门禁重新验证。
 
 ### 2026-08-02 19:58+08:00 — Phase 1 采用实测峰值分级资源门禁
 

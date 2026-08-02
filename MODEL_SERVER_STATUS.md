@@ -1,5 +1,22 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 22:19+08:00 Phase 1 在 168 h Base 2050 fail closed
+
+- Phase1 wrapper 与本项目 Python/Gurobi 均已退出。1 h Base/V5、24 h Base/V5 四条四年
+  sequence 全部 PASS；逐年复验共 16 个输出均满足 `OPTIMAL + QC PASS + 58/58 + current
+  input/result manifests PASS`。
+- 168 h Base：2030、2040 strict PASS；2050 的 Gurobi solve/solver acceptance 均 PASS，
+  但 `solution_qc=HARD_FAIL`、hard checks `57/58`。因此 runner 未生成 result manifest 或
+  accepted state，并正确停止在 2050；2060、168 h V5、Phase 2 都未启动。
+- 唯一失败项为 `unidirectional_interprovincial_flow`。吉林—黑龙江
+  `CORRIDOR_0153`（AC，`1.646 GW`）在一周内每天 04:00 共 7 次同时双向流，opposing
+  energy `1.029728 GWh`、excess loss `0.031052 GWh`，超过 168 h test-only budgets
+  `4/0.75/0.025`；最大 opposing flow `0.177690 GW`，远高于 `1e-6 GW` 数值容差。
+  对应边际价最低约 `-3412.05 CNY/MWh`，与负价下 lossy-sink 机制一致，不能按数值尾差放行。
+- 实时 server checkout clean `fc2c5002d774e80853f4059c506a55d2befc08f0`；available RAM
+  约 `87 GiB`、swap `449 MiB/2 GiB`、`si/so=0/0`、memory PSI 0；ParaCloud 队列为空。
+  当前状态是“审计阻塞”，不是资源阻塞。保持现场，不 resume、不启动 Phase 2。
+
 ## 2026-08-02 19:58+08:00 Phase 1 分级内存门禁生效
 
 - 当前 available RAM 约 `85 GiB`、`si/so=0/0`、PSI=0；外部 wind-power workers 仍在。
