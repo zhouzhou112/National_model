@@ -1,5 +1,16 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-02 23:16 活动 Phase 1 更新
+
+- 1 h 与 24 h 的 Base/V5 已全部 `rc=0`；当前唯一活动求解为 168 h Base，仍由 wrapper
+  PID `1314144` 串行管理。
+- 24 h 实证显示 Barrier 可能以 sub-optimal 结束，而 Crossover=2 可恢复严格 optimal；
+  活动 Phase 1 不得切换 profile 或关闭 crossover。
+- 继续只读检查当前年度 `solver_telemetry.jsonl`、`gurobi.log`、三份终态报告、overlap/
+  counterflow 与资源。不得并发运行 A/B audit、Phase 2、basis、MGA 或第二求解。
+- 168 h Base/V5 全部结束后，先验证 wrapper rc、四年 strict/QC/input/result manifests 与
+  A/B audit；随后重新检查 available `>=96 GiB`、`si/so=0/0`、PSI=0 才可启动 Phase 2。
+
 ## 2026-08-02 22:55 活动 Phase 1 监控对象
 
 - checkout/run identity：`b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`。

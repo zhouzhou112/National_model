@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-02 23:16+08:00：新 Phase 1 的 1 h Base/V5 与 24 h Base/V5 四条四年
+  sequences 均已 `rc=0`；逐根 `solve_report=OPTIMAL`、`solution_qc=PASS`，结果
+  manifests 均已生成，storage 与 EV V2G simultaneous charge/discharge 均为零，24 h
+  interprovincial counterflow 亦为零。24 h 多个根的 Barrier 以 sub-optimal 结束，但
+  `Crossover=2` 将其恢复为 primal/dual feasible optimal，因此当前生产 profile 不得在
+  Phase 1 中途切换为 no-crossover。23:16 已串行进入 168 h Base；wrapper PID 仍为
+  `1314144`，启动 available `91,891,228 KiB`、`si/so=0/0`、PSI=0。PID 存在期间继续
+  只读监控，不运行并发审计或 Phase 2。
+
 - 2026-08-02 22:55+08:00：提交 `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7` 已双推送并
   部署到 clean fixed server。服务器在正确五个生产数据根下完整回归 `177/177 PASS`；
   readiness、release、V5 input 与水电 380 GW audits 全部 PASS，四项 audit stderr 为零。
@@ -916,6 +925,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-02 23:16+08:00 — Phase 1 的 1 h/24 h 配对完成并进入 168 h
+
+- Git/run identity：模型 checkout 保持 clean `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`；
+  control root `/data/zz2/National_model/run_control/phase1_b2206d9_v1`，wrapper PID
+  `1314144`。
+- 完成证据：1 h Base/V5、24 h Base/V5 四条 sequences 均 `rc=0`，覆盖 2030/2040/
+  2050/2060。逐根均为 `OPTIMAL/PASS` 且完整导出；storage、V2G overlap 为零，24 h
+  counterflow 为零。
+- solver 证据：24 h 部分根的 Barrier status 为 sub-optimal，Crossover=2 后最终 primal/
+  dual infeasibility 为零并转为 optimal，证明当前 run 不应中途关闭 crossover。
+- 当前运行：23:16:52 启动 168 h Base；启动 available `91,891,228 KiB`、`si/so=0/0`、
+  memory PSI=0。下一步仅监控 168 h Base/V5，Phase 1 全部退出后再运行严格 A/B audit，
+  并仅在 available RAM `>=96 GiB` 时启动 Phase 2。
 
 ### 2026-08-02 22:55+08:00 — warning 合同部署并启动全新 Phase 1
 

@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-02 23:16+08:00 Phase 1 已进入 168 h Base
+
+- 1 h Base/V5 与 24 h Base/V5 四条四年 sequences 均 `rc=0`；逐根
+  `OPTIMAL/PASS`，result manifests 完整，storage/V2G overlap 与 24 h counterflow 为零。
+- 24 h 部分 Barrier 根以 sub-optimal 结束，但 Crossover=2 成功恢复 primal/dual feasible
+  optimal；当前不关闭 crossover。
+- wrapper PID `1314144` 仍活动，23:16:52 开始 168 h Base。启动 available
+  `91,891,228 KiB`、`si/so=0/0`、PSI=0；无第二 CISPO solve，ParaCloud 为空。
+- PID 存在期间只读监控。168 h Base/V5 均 accepted 后才执行 Phase 1 总审计；Phase 2
+  仍须重新满足 available `>=96 GiB`。
+
 ## 2026-08-02 22:55+08:00 全新 Phase 1 活动中
 
 - fixed server clean deployed `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`；生产环境
