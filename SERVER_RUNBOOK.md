@@ -1,5 +1,26 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-03 08:51 Phase 2 744 h 资源门槛修订与立即启动合同
+
+本节按作者最新决策取代下方所有 Phase 2 `available>=96 GiB` 与“禁止并发第二求解”的旧条款；
+旧条款保留为历史记录，不再控制本轮 Phase 2。模型、solver/QC 和科学边界没有改变。
+
+1. 历史 744 h 的 process-tree peak 为 `21.484--21.92 GiB`，solver max memory 曾约
+   `23.13 GiB`；运行规划按每实例 `24 GiB`，不得声称硬上界为 20 GiB。
+2. 第一条新 744 h sequence 的启动门禁为：checkout clean 且为双推送 tip、无 CISPO/Gurobi
+   PID、available `>=64 GiB`、最新 `vmstat si/so=0/0`、memory PSI 0、磁盘充足、目标根不存在、
+   ParaCloud 队列已核验。运行中 available `<48 GiB` 时不得启动下一条 sequence。
+3. 立即先启动 `start-hour=0` Jan Base 四年 sequence。第二条并发 sequence 只有在首实例当前
+   solver/process-tree 内存 `<=24 GiB`、按 `24 GiB` 估计第二条启动后 available 仍 `>=32 GiB`、
+   `si/so=0/0`、PSI 0、CPU/磁盘正常时才可启动；最多两个 CISPO solves，绝不启动第三个。
+4. 每个窗口仍保持 Base 四年 accepted 后才启动同窗 V5；并发只能发生在不同窗口的独立 sequence
+   之间，不得打乱单一 sequence 内 2030→2040→2050→2060 state chain。任一年度不是
+   `OPTIMAL + acceptance/QC PASS + 58/58 + current input + valid result manifest + Pi + wrapper rc 0`
+   即停止对应 sequence 并保留现场。
+5. profile 仍为 `config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json`；不复用
+   `.bas`，不运行 Crossover=3、MGA、8760 h 或付费云。全部 744 h 根仍为
+   `TEST_ONLY_TRUNCATED_HORIZON`。
+
 ## 2026-08-03 03:17 Phase 1 终态与 Phase 2 资源等待
 
 1. Phase 1 control root `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 已完成；

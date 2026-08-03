@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-03 08:51+08:00：作者明确撤销 Phase 2 的 `available>=96 GiB` 过度保守启动门槛，
+  要求尽快启动，并授权在资源证据支持时最多并发两条 Phase 2 sequence。历史 744 h 证据并非
+  严格“最多 20 GiB”：0729 单根 process-tree peak 为 `21.484 GiB`，四年 744 h sequence
+  wrapper peak 为 `21,927,236 KiB`，solver 历史最大内存约 `23.13 GiB`。据此，当前合同改为：
+  单条新 744 h sequence 启动前 available `>=64 GiB`、`vmstat si/so=0/0`、memory PSI 0；
+  运行中 available `<48 GiB` 时不再启动下一条。先启动 Jan Base 四年 sequence；仅当当前模型
+  实时 solver/process-tree 内存 `<=24 GiB`、第二条启动后的保守预计 available 仍 `>=32 GiB`、
+  `si/so=0/0` 且 PSI 0 时，才允许并发第二条，最多两条。该授权不改变 LP、solver profile、
+  strict QC、Base→V5 年度 state chain、Crossover=3/basis/MGA/8760 h/付费云禁令。
+  08:51 server clean/idle available `91,889,284 KiB`（约 `87.63 GiB`），已满足单条启动合同；
+  local/origin/GitHub 为 `2ddf432186875285dab981aef267977460686aba`，server 仍为 clean
+  `b2206d9c899c8008d7b6dabdf15cc50dd286e8b7`，下一步是提交/双推送本合同、fast-forward
+  server、复验并启动全新 Phase 2 Jan Base 根。
+
 - 2026-08-03 03:17+08:00：Phase 1 已完整结束并严格审计通过。control root
   `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 写出 `PHASE1_DONE`，总 stderr
   为 0 字节；六条 Base/V5 `1/24/168 h` 四年 sequences 均 `rc=0`，六个 `/usr/bin/time -v`
@@ -946,6 +960,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-03 08:51+08:00 — Phase 2 744 h 启动门槛按实测峰值下调
+
+- 作者决策：不再等待 available `>=96 GiB`；单条 Phase 2 sequence 改为 `>=64 GiB` 即可启动，
+  并授权在实时证据满足时最多并发两条。该决策仅修改运行资源合同，不修改模型、数据、目标、
+  约束、solver profile、QC 或 result/state manifests。
+- 证据：历史统一 744 h 根 process-tree peak `21.484 GiB`，历史四年 744 h sequence wrapper
+  peak `21,927,236 KiB`、swaps 0，solver 历史 max memory 约 `23.13 GiB`；因此“最多 20 GiB”
+  作为近似判断方向合理，但审计合同按 `24 GiB` 单实例上界留余量。
+- 新运行边界：单条启动需 available `>=64 GiB`、`si/so=0/0`、PSI 0；available `<48 GiB`
+  不启动下一条。第二并发 sequence 还须首实例实时内存 `<=24 GiB`、保守预计启动后 available
+  `>=32 GiB`、swap I/O/PSI 均为零；最多两条，任一严格终态失败仍停止对应 sequence 并保留现场。
+- 实时证据/下一步：08:51 server clean/idle、available `91,889,284 KiB`、`si/so=0/0`、PSI 0、
+  `/data` 余 `3.7 TiB`、ParaCloud 空队列，Phase 2 七个 control/output 候选根均不存在。
+  提交并双推送三份交接文档，fast-forward server 后复验 identity/资源/根不存在，立即启动 Jan
+  Base 四年 744 h sequence；取得当前实例内存证据后决定是否并发第二条。
 
 ### 2026-08-03 03:17+08:00 — Phase 1 24/24 严格闭合；Phase 2 等待 96 GiB
 

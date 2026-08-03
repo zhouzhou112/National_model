@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-03 08:51+08:00 Phase 2 门槛下调；准备立即启动 Jan Base
+
+- 作者已明确撤销 Phase 2 新 sequence 的 `available>=96 GiB` 门槛，并允许资源证据支持时最多
+  并发两条。历史实测为 process-tree peak `21.484--21.92 GiB`、solver max memory 约
+  `23.13 GiB`，故单实例审计上界按 `24 GiB`，不把“20 GiB”写成硬上界。
+- 新单序列启动合同：available `>=64 GiB`、`vmstat si/so=0/0`、memory PSI 0、checkout
+  clean/current、目标根不存在、ParaCloud 已核验；运行中 available `<48 GiB` 时不启动下一条。
+  第二并发序列还要求首实例实时内存 `<=24 GiB`、预计启动后 available `>=32 GiB`、无 swap
+  I/O/PSI；最多两条。
+- 08:51 server clean/idle checkout `b2206d9`，available `91,889,284 KiB`（约 `87.63 GiB`）、
+  `si/so=0/0`、PSI 0、磁盘余 `3.7 TiB`，ParaCloud 空队列，全部 Phase 2 候选根不存在。
+  local/origin/GitHub 为 `2ddf432`；下一步提交本合同、双推送并 fast-forward server，随后立即
+  启动 `start-hour=0` Jan Base 四年 744 h sequence。
+- 本次只改资源调度合同；`barrier_16_crossover2_stable_basis_long_v1.json`、严格终态验收、
+  `TEST_ONLY_TRUNCATED_HORIZON` 标签均不变，仍禁止 Crossover=3、basis/MGA、8760 h 与付费云。
+
 ## 2026-08-03 03:17+08:00 Phase 1 完整闭合；Phase 2 等待资源
 
 - `/data/zz2/National_model/run_control/phase1_b2206d9_v1` 已写出 `PHASE1_DONE`；总 stderr
