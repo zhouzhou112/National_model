@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-04 00:50+08:00 Jun/2040 与 Oct/2030 严格接受；三条 Base 继续
+
+- Jun Base/2040 与 Oct Base/2030 均为 `OPTIMAL + contract/QC PASS + 58/58 + Pi +
+  current input + valid result manifest`，manifest commit `3f123f0`、72 files，输入/结果
+  validators 均 `(true, [])`；counterflow、storage overlap、EV V2G overlap 均为零。
+- Jun/2040 objective `2,678,562.527479 million CNY`、runtime `26,056.710 s`、
+  Barrier/simplex `227/850,993`、peak `18.632 GiB`；Oct/2030 objective
+  `2,316,701.874843 million CNY`、runtime `34,852.144 s`、`223/1,071,575`、peak
+  `21.158 GiB`。年度与控制 stderr 均 0 bytes。
+- 当前活动：Jan Base/2040 PID `1152769` 与 Oct Base/2040 PID `2270187` 均在
+  Crossover/simplex；Jun Base/2050 PID `2949044` 在 Barrier。三个 runner/sequence 均活动，
+  尚无 V5 solve。00:48 available `70,941 MiB`、swap `507/2047 MiB`、实时 `si/so=0/0`、
+  memory/IO PSI 0、CPU 约 `65--66% idle`、`/data` 余 `3.7 TiB`；ParaCloud 为空。
+- server repo 保持 clean `3f123f0`。继续只读监控，不启动第四条/独立 V5，不改参数或部署
+  后续 docs tip；新年度必须重复完整终态审计后才能记为 accepted。
+
 ## 2026-08-03 17:25+08:00 Jan/Jun Base 2030 严格接受；2040 活动中
 
 - Jan/Jun Base 2030 均为 `OPTIMAL + contract/QC PASS + 58/58 + Pi + current input + valid

@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-04 00:50+08:00：Phase 2 新增两根严格接受：Jun Base/2040 与 Oct Base/2030。
+  两根均为 `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS + 58/58 +
+  current input manifest + valid result manifest + Pi`，result manifest 均为运行提交 `3f123f0`
+  且含 72 files。Jun/2040 objective `2,678,562.527479 million CNY`、solver runtime
+  `26,056.710 s`、Barrier/simplex `227/850,993`、process-tree peak `18.632 GiB`；Oct/2030
+  objective `2,316,701.874843 million CNY`、runtime `34,852.144 s`、`223/1,071,575`、peak
+  `21.158 GiB`。两根 input/result validators 均 `(true, [])`，network counterflow、storage
+  charge/discharge overlap 与 EV V2G overlap 均为零，对应年度、case 与 window stderr 均为
+  0 bytes。当前 Jan Base/2040 与 Oct Base/2040 在 Crossover/simplex，Jun Base/2050 在
+  Barrier；三个 runner/sequence 仍活动，V5 尚未启动。00:48 host available `70,941 MiB`
+  （约 `69.28 GiB`）、swap `507/2047 MiB`、实时 `si/so=0/0`、memory/IO PSI 0、CPU 约
+  `65--66% idle`、`/data` 余 `3.7 TiB`，ParaCloud 空队列。server checkout 保持 clean
+  `3f123f0`；继续只读监控，不启动第四条或独立 V5，不部署本地 docs tip。
+
 - 2026-08-03 17:25+08:00：Phase 2 Jan/Jun Base 2030 两根已严格接受并自动进入 2040。
   Jan 2030 为 `OPTIMAL + contract PASS + strict quality + QC PASS + 58/58 + current input +
   valid result manifest + Pi`，objective `2,355,641.489790 million CNY`、solver runtime
@@ -999,6 +1013,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-04 Phase 2 Jun/2040 与 Oct/2030 严格接受
+
+- Git/范围：活动模型与服务器 checkout 仍为 clean
+  `3f123f0598e95151e8492f784ca79521569f57f0`；本里程碑只更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，未修改模型、数据、
+  solver profile、活动 checkout 或任何用户 `supplementary_materials/**`、`.codex_tmp/**`。
+- 命令/证据：通过 SSH 逐根读取 `solve_report.json`、`solution_qc.json`、
+  `result_manifest.json`，以 server checkout 的 `validate_input_manifest(input_manifest.csv)`
+  与 `validate_result_manifest(output_root)` 复验；同时读取三根实时
+  `solver_telemetry.jsonl`/`gurobi.log`、进程树、RAM/swap/vmstat/PSI、stderr、磁盘与
+  ParaCloud `squeue -u a8s001819`。
+- 输出/验证：Jun/2040 与 Oct/2030 均为 `OPTIMAL + acceptance/QC PASS + 58/58 + Pi +
+  current input + valid result manifest`。Jun/2040 为 objective `2,678,562.527479 million CNY`、
+  runtime `26,056.710 s`、Barrier/simplex `227/850,993`、peak `18.632 GiB`；Oct/2030 为
+  `2,316,701.874843 million CNY`、`34,852.144 s`、`223/1,071,575`、`21.158 GiB`。
+  两根 network/storage/V2G 双向重叠均为零，stderr 0 bytes。
+- 未决问题/精确下一步：Jan/2040 与 Oct/2040 仍在 Crossover/simplex，Jun/2050 仍在
+  Barrier；三个 Base 四年 sequence 尚未全部结束，V5 尚未启动。继续只读监控并在每个新
+  年度终态后重复相同严格审计；只有各 runner 的 Base 四年全部 rc=0 后才允许其自动进入
+  同窗口 V5。不得启动第四条、手工独立 V5、8760 h、basis/MGA、Crossover=3 或付费云。
 
 ### 2026-08-03 17:25+08:00 — Phase 2 首两个 2030 年度根严格接受
 

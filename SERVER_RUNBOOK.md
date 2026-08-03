@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-04 00:50 Phase 2 当前监控对象与新增 accepted roots
+
+1. 新增 accepted roots 为 Jun Base/2040 与 Oct Base/2030；两根已逐项验证
+   `OPTIMAL + acceptance/QC PASS + 58/58 + current input + valid result manifest + Pi`，且
+   counterflow、storage overlap、EV V2G overlap 均为零。不得仅凭 sequence 已续年反推接受，
+   后续每根仍须重复读取三份终态文件并运行 input/result validators。
+2. 当前只读监控对象为 Jan Base/2040 PID `1152769`（Crossover/simplex）、Jun Base/2050
+   PID `2949044`（Barrier）与 Oct Base/2040 PID `2270187`（Crossover/simplex）；三个外层
+   runner/sequence 仍活动，V5 尚未启动。以实时 PID/telemetry 为准，不沿用本节 PID 作未来状态。
+3. 00:48 资源为 available `70,941 MiB`、swap `507/2047 MiB`、实时 `si/so=0/0`、
+   memory/IO PSI 0、CPU `65--66% idle`、磁盘余 `3.7 TiB`；全部 case/window stderr 0，
+   ParaCloud 空队列。资源安全只授权现有三条继续，不授权第四条或提前独立 V5。
+4. server checkout 继续冻结 clean `3f123f0`。不得部署 docs tip、修改 profile、复用 basis、
+   补写 manifest、运行 Crossover=3/8760 h/MGA/付费云。Base 四年 rc=0 后，由同一 runner
+   自动启动同窗口 V5；任何年度失败则对应 runner fail closed 并保留现场。
+
 ## 2026-08-03 17:25 Phase 2 当前年度监控对象
 
 1. Jan Base/2030 与 Jun Base/2030 已分别严格接受，input/result validators 均 `(true, [])`，
