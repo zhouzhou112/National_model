@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-03 17:25+08:00 Jan/Jun Base 2030 严格接受；2040 活动中
+
+- Jan/Jun Base 2030 均为 `OPTIMAL + contract/QC PASS + 58/58 + Pi + current input + valid
+  result manifest`，且 storage/V2G overlap 0、counterflow strict zero。Jan runtime
+  `24,157.126 s`、Barrier/simplex `251/751,916`、peak `19.022 GiB`；Jun runtime
+  `25,642.054 s`、`218/914,644`、peak `19.366 GiB`。
+- 两条已用 accepted planning state 自动进入 Base/2040；17:25 Jan Barrier 128、Jun 107。
+  Oct Base/2030 仍在 Crossover，约 1.008m simplex iterations，尚无 solve/QC/result manifests。
+- host available 约 `73.2 GiB`，实时 `si/so=0/0`、memory/IO PSI 0、磁盘余 `3.7 TiB`；
+  所有 stderr 0，ParaCloud 为空。server checkout 固定 `3f123f0`，不启动第四条、不部署 docs tip。
+
 ## 2026-08-03 10:45+08:00 Phase 2 三个季节窗口均已启动
 
 - Jan/Jun 两实例 max solver memory 为 `20.91/21.42 GiB`，历史峰值约 `23.13 GiB`；作者授权

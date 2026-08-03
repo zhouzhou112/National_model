@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-03 17:25+08:00：Phase 2 Jan/Jun Base 2030 两根已严格接受并自动进入 2040。
+  Jan 2030 为 `OPTIMAL + contract PASS + strict quality + QC PASS + 58/58 + current input +
+  valid result manifest + Pi`，objective `2,355,641.489790 million CNY`、solver runtime
+  `24,157.126 s`、Barrier/simplex `251/751,916`、process-tree peak `19.022 GiB`；Jun 2030
+  同合同全部通过，objective `2,352,092.149379 million CNY`、runtime `25,642.054 s`、
+  Barrier/simplex `218/914,644`、peak `19.366 GiB`。两根 result manifest 均为当前运行提交
+  `3f123f0`、72 files，input/result validators 均 `(true, [])`；storage/V2G overlap 为零，
+  counterflow `STRICT_PASS` 且 0 edge-hours。Jan Base/2040 当前 Barrier iteration 128；Jun
+  Base/2040 iteration 107。Oct Base/2030 仍在 Crossover/simplex，约 `1,008,035` iterations、
+  primal infeasibility 0、dual infeasibility振荡，尚无终态文件。17:23 host available 约
+  `73.2 GiB`、`si/so=0/0`、memory/IO PSI 0、磁盘余 `3.7 TiB`，全部 stderr 0、ParaCloud
+  空队列。三条继续运行，不启动第四条，不部署本地后续 docs tip。
+
 - 2026-08-03 10:45+08:00：作者进一步明确 48 GiB 不是 744 h 模型硬需求，授权按实测峰值
   启动第三条 Phase 2。新三并发判据为：每实例按 `24 GiB` 规划，第三条启动前 available
   `>=56 GiB`，预计启动后至少保留 `32 GiB`，且 `si/so=0/0`、memory PSI 0；绝不启动第四条。
@@ -986,6 +999,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-03 17:25+08:00 — Phase 2 首两个 2030 年度根严格接受
+
+- 运行身份：server checkout 继续 clean/frozen `3f123f0598e95151e8492f784ca79521569f57f0`；
+  Jan/Jun Base sequences 由原 PID `3742233/3746869` 管理，均已用 accepted 2030
+  `planning_state` 启动同窗 2040；未传入 basis。
+- Jan 2030 证据：`OPTIMAL`、solution contract/strict quality/QC 均 PASS、58/58、Pi、完整导出，
+  input/result validators `(true, [])`；runtime `24,157.126 s`、Barrier/simplex
+  `251/751,916`、peak RSS `19.022 GiB`、objective `2,355,641.489790 million CNY`。
+- Jun 2030 证据：同一严格合同全部通过，runtime `25,642.054 s`、Barrier/simplex
+  `218/914,644`、peak RSS `19.366 GiB`、objective `2,352,092.149379 million CNY`；两根
+  manifests 均记录 commit `3f123f0`、72 files。两根 storage/V2G overlap 0、counterflow
+  strict zero。
+- 当前/下一步：Jan/2040 Barrier 128，Jun/2040 Barrier 107；Oct/2030 仍在 Crossover，约
+  1.008m simplex iterations，尚无终态。资源无压力、stderr 全零。继续只读监控；Oct 必须按
+  相同合同验收，Jan/Jun 逐年继续，任何失败由对应 runner 停止并保留现场。
 
 ### 2026-08-03 10:45+08:00 — Phase 2 Oct 第三窗口启动
 

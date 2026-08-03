@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-03 17:25 Phase 2 当前年度监控对象
+
+1. Jan Base/2030 与 Jun Base/2030 已分别严格接受，input/result validators 均 `(true, [])`，
+   hard checks 58/58、dual Pi、counterflow strict zero；当前活动年份为 Jan/2040 与 Jun/2040。
+2. Oct Base/2030 仍在 Crossover/simplex，约 1.008m iterations；PID 存在且无终态文件时只读
+   telemetry/log，不把 Barrier interior objective 或中间 primal/dual infeasibility当作终态。
+3. 继续检查三棵进程树、available/swap/PSI、stderr 与逐年三份终态报告。任何年度只有同时满足
+   `OPTIMAL + contract/QC PASS + 58/58 + current input + valid result manifest + Pi` 才允许 runner
+   自动续年。不得启动第四条、改 profile、部署 docs tip、复用 basis 或补写 manifest。
+
 ## 2026-08-03 10:45 Phase 2 三并发活动合同
 
 本节按作者最新决策取代下方“最多两个/禁止第三条”条款；其余 solver、state、QC 与禁令不变。
