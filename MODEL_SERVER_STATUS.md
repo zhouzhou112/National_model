@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-03 08:56+08:00 Phase 2 Jan/Jun-15 两条窗口活动中
+
+- server clean checkout 冻结在 `3f123f0`；模型实现仍为 `b2206d9`。control root
+  `/data/zz2/National_model/run_control/phase2_3f123f0_v1`，runner SHA256
+  `db8adbfa18821d5dd09875cf8eee7301b557172c9189c9c140e5b93c95fafa1c`。
+- Jan PID `3742233`：Base 四年根 `planning_sequence_2030_2060_744h_jan0_3f123f0_base_v1`，
+  2030 scope `[0,744)`；Jun-15 PID `3746869`：Base 四年根
+  `planning_sequence_2030_2060_744h_jun15_3960_3f123f0_base_v1`，scope `[3960,4704)`。
+  两者均为 correct Base/test-only/Crossover=2/no-basis，当前处于 2030 build。
+- 08:56 available `117,797,340 KiB`、`si/so=0/0`、memory PSI 0；两个 window stderr 和
+  两个 Base stderr 均为 0。当前恰有两个授权槽位，禁止第三条；Oct 等任一窗口完整 Base→V5
+  结束并复核资源后才启动。PID 存在时只读监控，不部署后续文档 tip、不切参数。
+
 ## 2026-08-03 08:51+08:00 Phase 2 门槛下调；准备立即启动 Jan Base
 
 - 作者已明确撤销 Phase 2 新 sequence 的 `available>=96 GiB` 门槛，并允许资源证据支持时最多

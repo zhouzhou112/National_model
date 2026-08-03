@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-03 08:56+08:00：Phase 2 已按作者新授权启动两条并发窗口，服务器 checkout 冻结为
+  clean `3f123f0598e95151e8492f784ca79521569f57f0`（模型实现仍为 `b2206d9`，其后仅文档）。
+  control root 为 `/data/zz2/National_model/run_control/phase2_3f123f0_v1`，runner SHA256
+  `db8adbfa18821d5dd09875cf8eee7301b557172c9189c9c140e5b93c95fafa1c`。Jan wrapper PID
+  `3742233` 正在 Base 四年 sequence，根
+  `planning_sequence_2030_2060_744h_jan0_3f123f0_base_v1`；2030 scope 已核为 `[0,744)`、
+  `2030-01-01 00:00--01-31 23:00`。Jun-15 wrapper PID `3746869` 正在 Base 四年 sequence，
+  根 `planning_sequence_2030_2060_744h_jun15_3960_3f123f0_base_v1`；2030 scope 已核为
+  `[3960,4704)`、`2030-06-15 00:00--07-15 23:00`。两者均为 Base、744 h、
+  `TEST_ONLY_TRUNCATED_HORIZON`、`barrier_16_crossover2_stable_basis_long_v1`、no basis。
+  08:56 available `117,797,340 KiB`、`si/so=0/0`、memory PSI 0，两个 window/case stderr
+  均为 0。不得启动第三条；Oct 仅在 Jan/Jun 任一窗口完整 Base→V5 结束并释放槽位后启动。
+  活动 PID 存在时不 fast-forward server、不改参数，只读监控 telemetry/logs/reports/资源。
+
 - 2026-08-03 08:51+08:00：作者明确撤销 Phase 2 的 `available>=96 GiB` 过度保守启动门槛，
   要求尽快启动，并授权在资源证据支持时最多并发两条 Phase 2 sequence。历史 744 h 证据并非
   严格“最多 20 GiB”：0729 单根 process-tree peak 为 `21.484 GiB`，四年 744 h sequence
@@ -960,6 +974,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-03 08:56+08:00 — Phase 2 Jan 与 Jun-15 双窗口启动
+
+- Git/运行身份：资源合同文档提交 `3f123f0598e95151e8492f784ca79521569f57f0` 已双推送并
+  fast-forward 到 clean server；模型实现未越过 `b2206d9`。控制脚本位于
+  `/data/zz2/National_model/run_control/phase2_3f123f0_v1/window_runner.sh`，SHA256 为
+  `db8adbfa18821d5dd09875cf8eee7301b557172c9189c9c140e5b93c95fafa1c`。
+- 启动命令/对象：`nohup ./window_runner.sh jan0 0`（PID `3742233`）与
+  `nohup ./window_runner.sh jun15_3960 3960`（PID `3746869`）；各 runner 串行执行本窗口
+  Base 四年→V5 四年，年度内部严格 2030→2040→2050→2060。当前两条均在 Base/2030 build。
+- scope/配置证据：Jan `[0,744)`、Jun `[3960,4704)`；均为正确北京时间、Base、744 h、
+  test-only、Crossover=2/CrossoverBasis=1、无 basis reuse。启动 available 分别为
+  `119,476,916/118,249,404 KiB`，`si/so=0/0`、PSI 0；08:56 available `117,797,340 KiB`，
+  两个 window stderr 与两个 Base case stderr 全为 0。
+- 未决/下一步：只读监控两个活动窗口的 build、Barrier/Crossover、solver/process memory、
+  swap/PSI 与严格终态；不得启动第三条。任一窗口完整 Base→V5 结束后，资源复验通过才启动
+  Oct `start-hour=6552`。活动期间 server checkout 固定 `3f123f0`，本里程碑后续文档提交不部署。
 
 ### 2026-08-03 08:51+08:00 — Phase 2 744 h 启动门槛按实测峰值下调
 

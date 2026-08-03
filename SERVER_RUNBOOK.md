@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-03 08:56 Phase 2 双窗口活动监控对象
+
+1. server checkout 固定 clean `3f123f0598e95151e8492f784ca79521569f57f0`；活动 PID 存在时
+   不 fast-forward、不改 profile/runner。control root：
+   `/data/zz2/National_model/run_control/phase2_3f123f0_v1`。
+2. Jan window PID `3742233`，Base root
+   `/data/zz2/National_model/outputs/planning_sequence_2030_2060_744h_jan0_3f123f0_base_v1`，
+   scope `[0,744)`；Jun-15 PID `3746869`，Base root
+   `/data/zz2/National_model/outputs/planning_sequence_2030_2060_744h_jun15_3960_3f123f0_base_v1`，
+   scope `[3960,4704)`。各 runner 会在 Base 四年全部 accepted 后自动进入同窗口 V5。
+3. 只读检查两个 process trees、当前年度 `solver_telemetry.jsonl`/`gurobi.log`、available/
+   swap/vmstat/PSI、window/case stderr 与三份终态报告。任何中间 Barrier objective 都不是终态。
+4. 禁止启动第三条。任一窗口 Base 或 V5 的任一年度失败时，该 runner 由 `set -e` 停止并保留
+   现场；不得 resume、补 manifest 或换参数。窗口全部结束后按 strict contract 审计，释放槽位
+   且资源门禁通过才启动 Oct `start-hour=6552`。
+
 ## 2026-08-03 08:51 Phase 2 744 h 资源门槛修订与立即启动合同
 
 本节按作者最新决策取代下方所有 Phase 2 `available>=96 GiB` 与“禁止并发第二求解”的旧条款；
