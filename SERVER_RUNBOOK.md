@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-03 10:45 Phase 2 三并发活动合同
+
+本节按作者最新决策取代下方“最多两个/禁止第三条”条款；其余 solver、state、QC 与禁令不变。
+
+1. 活动窗口为 Jan PID `3742233`、Jun PID `3746869`、Oct PID `4173801`。Oct 根为
+   `/data/zz2/National_model/outputs/planning_sequence_2030_2060_744h_oct6552_3f123f0_base_v1`，
+   scope `[6552,7296)`。server checkout 继续固定 clean `3f123f0`。
+2. 第三实例按 24 GiB 规划；启动条件为 available `>=56 GiB`、预计启动后 `>=32 GiB`、
+   `si/so=0/0`、memory PSI 0。Oct 专用 `window_runner_56g.sh` 只修改资源阈值，SHA256
+   `e22f1696445b88458b1927fc1e803ca8ae7ec8c2f00ccf34f2c8feb6111c6be1`。
+3. 三个 runner 各自严格 Base 四年→V5 四年；V5 不作为额外第四实例提前启动。不得再启动任何
+   第四条 solve。持续审计三棵进程树、telemetry/log、available/swap/PSI、stderr 和终态合同；
+   任一失败由对应 runner 停止并保留现场。
+
 ## 2026-08-03 08:56 Phase 2 双窗口活动监控对象
 
 1. server checkout 固定 clean `3f123f0598e95151e8492f784ca79521569f57f0`；活动 PID 存在时

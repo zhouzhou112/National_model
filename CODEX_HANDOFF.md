@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-03 10:45+08:00：作者进一步明确 48 GiB 不是 744 h 模型硬需求，授权按实测峰值
+  启动第三条 Phase 2。新三并发判据为：每实例按 `24 GiB` 规划，第三条启动前 available
+  `>=56 GiB`，预计启动后至少保留 `32 GiB`，且 `si/so=0/0`、memory PSI 0；绝不启动第四条。
+  Oct 专用 runner `/data/zz2/National_model/run_control/phase2_3f123f0_v1/window_runner_56g.sh`
+  SHA256 `e22f1696445b88458b1927fc1e803ca8ae7ec8c2f00ccf34f2c8feb6111c6be1`，只把
+  启动阈值从 64 GiB 改为 56 GiB，不改模型、profile 或验收。Oct wrapper PID `4173801`
+  于 10:44:51 启动，Base 根 `planning_sequence_2030_2060_744h_oct6552_3f123f0_base_v1`；
+  2030 scope 已核为 `[6552,7296)`、`2030-10-01 00:00--10-31 23:00`、Base、test-only、
+  Crossover=2/no-basis。启动 available `62,007,656 KiB`、`si/so=0/0`、PSI 0，window/Base
+  stderr 均为 0。当前 Jan/Jun/Oct 三条各自保持 Base 四年→V5 四年串行；不得提前独立运行 V5，
+  不得启动第四条。server checkout 继续冻结 `3f123f0`，只读监控三条资源与终态。
+
 - 2026-08-03 08:56+08:00：Phase 2 已按作者新授权启动两条并发窗口，服务器 checkout 冻结为
   clean `3f123f0598e95151e8492f784ca79521569f57f0`（模型实现仍为 `b2206d9`，其后仅文档）。
   control root 为 `/data/zz2/National_model/run_control/phase2_3f123f0_v1`，runner SHA256
@@ -974,6 +986,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-03 10:45+08:00 — Phase 2 Oct 第三窗口启动
+
+- 作者/资源决策：48 GiB 是此前保守 host reserve，不是 744 h 数学模型需求。基于 Jan/Jun
+  current max solver memory `20.91/21.42 GiB` 与历史 `23.13 GiB`，第三实例继续按 `24 GiB`
+  规划；启动前 available 需 `>=56 GiB`，扣减后预计至少 `32 GiB`，swap I/O/PSI 必须为零。
+- 命令/身份：由原 runner 复制专用 `window_runner_56g.sh`，仅将
+  `MIN_AVAILABLE_KB=67108864` 改为 `58720256`，SHA256 为
+  `e22f1696445b88458b1927fc1e803ca8ae7ec8c2f00ccf34f2c8feb6111c6be1`；以
+  `oct6552 6552` 启动，实际 window PID `4173801`。server checkout 保持 clean `3f123f0`。
+- scope/资源证据：Oct Base 根不存在后新建；scope `[6552,7296)`、北京时间 10 月完整 744 h、
+  Base/test-only/Crossover=2/no-basis 均正确。启动 available `62,007,656 KiB`、`si/so=0/0`、
+  PSI 0，初始 window/Base stderr 为零。
+- 下一步：Jan/Jun/Oct 三个窗口各自只在 Base 四年全部 accepted 后自动进入同窗 V5；不独立
+  提前启动 V5，不启动第四条。持续监控三实例峰值、available、swap/PSI、Barrier/Crossover 与
+  strict terminal artifacts；活动期间不部署本里程碑后的 docs tip。
 
 ### 2026-08-03 08:56+08:00 — Phase 2 Jan 与 Jun-15 双窗口启动
 

@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-03 10:45+08:00 Phase 2 三个季节窗口均已启动
+
+- Jan/Jun 两实例 max solver memory 为 `20.91/21.42 GiB`，历史峰值约 `23.13 GiB`；作者授权
+  将第三实例按 24 GiB 规划，并以启动 available `>=56 GiB`、预计后备 `>=32 GiB` 替代此前
+  48 GiB 保守 reserve。该变更只影响资源调度，不改 LP、profile 或 strict acceptance。
+- Oct PID `4173801`，Base 根 `planning_sequence_2030_2060_744h_oct6552_3f123f0_base_v1`，
+  scope `[6552,7296)`；启动 available `62,007,656 KiB`、`si/so=0/0`、PSI 0，stderr 0。
+  专用 runner SHA256 `e22f1696445b88458b1927fc1e803ca8ae7ec8c2f00ccf34f2c8feb6111c6be1`。
+- 当前 Jan/Jun/Oct 三条均先运行 Base 四年，再由各自 runner 自动接续 V5 四年。不得提前独立
+  启动 V5，不得启动第四条；server checkout 固定 `3f123f0`，活动期间只读监控。
+
 ## 2026-08-03 08:56+08:00 Phase 2 Jan/Jun-15 两条窗口活动中
 
 - server clean checkout 冻结在 `3f123f0`；模型实现仍为 `b2206d9`。control root
