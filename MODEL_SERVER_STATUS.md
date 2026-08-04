@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-04 13:57+08:00 Base 累计 7/12 accepted；三个下一年度活动
+
+- 新增 Jan/2040、Jun/2050、Oct/2040 三根严格接受，均为 `OPTIMAL + contract/QC PASS +
+  58/58 + Pi + current input + valid result manifest`，manifest commit `3f123f0`、72 files，
+  counterflow、storage overlap、EV V2G overlap 均为零。
+- Jan/2040 objective/runtime/Barrier/simplex/peak 为
+  `2,695,375.706199 million CNY / 35,113.316 s / 295 / 775,050 / 19.266 GiB`；Jun/2050 为
+  `2,653,537.909967 / 23,990.239 / 208 / 1,065,097 / 19.859 GiB`；Oct/2040 为
+  `2,624,367.338789 / 33,408.641 / 204 / 960,431 / 20.706 GiB`。
+- 当前 Jan Base/2050、Jun Base/2060、Oct Base/2050 均在 Crossover/simplex；V5 roots 均
+  尚不存在。13:57 available `74,374 MiB`、swap `507/2047 MiB`、最新 `si/so=0/0`、
+  memory/IO PSI 0、`/data` 余 `3.7 TiB`；全部 control stderr 0，ParaCloud 队列为空。
+- server repo 保持 clean `3f123f0`。继续只读监控，不启动第四条/独立 V5，不改参数或部署
+  后续 docs tip；活动 Crossover 中间 infeasibility 不作为终态判断。
+
 ## 2026-08-04 00:50+08:00 Jun/2040 与 Oct/2030 严格接受；三条 Base 继续
 
 - Jun Base/2040 与 Oct Base/2030 均为 `OPTIMAL + contract/QC PASS + 58/58 + Pi +

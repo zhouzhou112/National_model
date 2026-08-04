@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-04 13:57+08:00：Phase 2 新增 Jan Base/2040、Jun Base/2050、Oct Base/2040
+  三根严格接受，累计 Base `7/12` accepted，另有 3 根活动。三根均为
+  `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS + 58/58 + current
+  input manifest + valid result manifest + Pi`，manifest commit `3f123f0`、72 files，且 network
+  counterflow、storage charge/discharge overlap 与 EV V2G overlap 均为零。Jan/2040 objective
+  `2,695,375.706199 million CNY`、runtime `35,113.316 s`、Barrier/simplex `295/775,050`、peak
+  `19.266 GiB`；Jun/2050 为 `2,653,537.909967 million CNY`、`23,990.239 s`、
+  `208/1,065,097`、`19.859 GiB`；Oct/2040 为 `2,624,367.338789 million CNY`、
+  `33,408.641 s`、`204/960,431`、`20.706 GiB`。当前 Jan Base/2050、Jun Base/2060、
+  Oct Base/2050 均在 Crossover/simplex；V5 根均尚不存在。13:57 host available
+  `74,374 MiB`（约 `72.63 GiB`）、swap `507/2047 MiB`、最新 `si/so=0/0`、memory/IO
+  PSI 0、磁盘余 `3.7 TiB`，全部 control stderr 0；ParaCloud 队列为空。服务器继续 clean
+  `3f123f0`，只读监控现有三条，不启动第四条或独立 V5，不部署本地 docs tip。
+
 - 2026-08-04 00:50+08:00：Phase 2 新增两根严格接受：Jun Base/2040 与 Oct Base/2030。
   两根均为 `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS + 58/58 +
   current input manifest + valid result manifest + Pi`，result manifest 均为运行提交 `3f123f0`
@@ -1013,6 +1027,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-04 Phase 2 Base 累计 7/12 accepted
+
+- Git/范围：活动服务器 checkout 仍为 clean
+  `3f123f0598e95151e8492f784ca79521569f57f0`；本里程碑仅更新三份状态文档，未修改模型、
+  数据、solver profile、活动 checkout 或受保护的 `supplementary_materials/**`、`.codex_tmp/**`。
+- 命令/证据：SSH 逐根读取 Jan/2040、Jun/2050、Oct/2040 的 `solve_report.json`、
+  `solution_qc.json`、`result_manifest.json`，运行 current-tip `validate_input_manifest` 与
+  `validate_result_manifest`；同时读取三根活动 telemetry、进程树、RAM/swap/vmstat/PSI、
+  stderr、磁盘，并通过 `paracloud-bscc-a8` 查询 `squeue -u a8s001819`。
+- 输出/验证：三根均严格满足 `OPTIMAL + acceptance/QC PASS + 58/58 + Pi + current input +
+  valid result manifest`。Jan/2040 runtime/Barrier/simplex/peak 为
+  `35,113.316 s / 295 / 775,050 / 19.266 GiB`；Jun/2050 为
+  `23,990.239 s / 208 / 1,065,097 / 19.859 GiB`；Oct/2040 为
+  `33,408.641 s / 204 / 960,431 / 20.706 GiB`。三根 counterflow、storage/V2G overlap
+  均为零，全部 control stderr 0，ParaCloud 空队列。
+- 未决问题/精确下一步：Jan/2050、Jun/2060、Oct/2050 正在 Crossover/simplex；中间
+  primal/dual infeasibility 可大幅振荡，不能据此验收或判失败。继续只读监控，逐根等待三份
+  终态文件并重复严格审计。Jun 只有 Base/2060 accepted 且 sequence rc=0 后，才由原 runner
+  自动启动 Jun V5；其他窗口同理。不得手工提前启动 V5、第四条、8760 h、basis/MGA、
+  Crossover=3 或付费云。
 
 ### 2026-08-04 Phase 2 Jun/2040 与 Oct/2030 严格接受
 

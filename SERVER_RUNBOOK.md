@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-04 13:57 Phase 2 Base 7/12 accepted 监控对象
+
+1. 新增 accepted roots 为 Jan Base/2040、Jun Base/2050、Oct Base/2040；三根已逐项验证
+   `OPTIMAL + acceptance/QC PASS + 58/58 + current input + valid result manifest + Pi`，且
+   counterflow、storage overlap、EV V2G overlap 均为零。Base 累计 `7/12` accepted。
+2. 当前只读监控对象为 Jan Base/2050、Jun Base/2060、Oct Base/2050，三者均处于
+   Crossover/simplex。中间 primal/dual infeasibility 允许大幅振荡，不得以 telemetry 单点
+   判断成功或失败；必须等待 wrapper 退出并读取 solve/QC/result 三份终态文件。
+3. 13:57 资源为 available `74,374 MiB`、swap `507/2047 MiB`、最新 `si/so=0/0`、
+   memory/IO PSI 0、磁盘余 `3.7 TiB`；control stderr 全部 0，ParaCloud 空队列。资源正常只
+   授权现有三条继续，不授权第四条或提前独立 V5。
+4. server checkout 继续冻结 clean `3f123f0`。每个窗口仅在 Base/2060 accepted 且 Base
+   sequence rc=0 后，由同一 runner 自动启动其 V5 四年链。不得部署 docs tip、改 profile、
+   复用 basis、补写 manifest或运行 Crossover=3/8760 h/MGA/付费云。
+
 ## 2026-08-04 00:50 Phase 2 当前监控对象与新增 accepted roots
 
 1. 新增 accepted roots 为 Jun Base/2040 与 Oct Base/2030；两根已逐项验证
