@@ -12,6 +12,21 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 00:26+08:00：Phase 2 新增 Oct Base/2050 严格接受，累计 Base `8/12`
+  accepted。Oct/2050 为 `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS +
+  58/58 + current input manifest + valid result manifest + Pi`，objective
+  `2,570,488.097027 million CNY`、runtime `66,128.573 s`、Barrier/simplex
+  `238/1,113,083`、peak `19.916 GiB`；manifest commit `3f123f0`、72 files，network
+  counterflow、storage overlap 与 EV V2G overlap 均为零。当前 Jan Base/2050 与 Jun
+  Base/2060 仍在 Crossover/simplex，runtime 分别约 `81,826/64,975 s`；二者中间 primal/
+  dual infeasibility 已放大至约 `3.79e39/1.18e6` 与 `5.91e40/4.91e7`，存在明显的超时或
+  数值失败风险，但 PID 仍存在、尚无终态报告，不能提前判失败。Jan 距 `86,400 s`
+  TimeLimit 约 1.27 h。Oct Base/2060 已开始 model build，尚无 `gurobi.log`；V5 根均尚未
+  启动。00:26 host available `74,239 MiB`（约 `72.50 GiB`）、swap `623/2047 MiB`、最新
+  `si/so=0/0`、memory PSI avg10/60 `0.02/0.08`、IO PSI avg10/60 `4.70/1.93`、磁盘余
+  `3.7 TiB`，全部 control stderr 0；ParaCloud 队列为空。服务器继续 clean `3f123f0`，
+  只读监控，不干预活动 Crossover、不启动第四条或部署 docs tip。
+
 - 2026-08-04 13:57+08:00：Phase 2 新增 Jan Base/2040、Jun Base/2050、Oct Base/2040
   三根严格接受，累计 Base `7/12` accepted，另有 3 根活动。三根均为
   `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS + 58/58 + current
@@ -1027,6 +1042,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 Phase 2 Oct/2050 accepted；Jan/2050 与 Jun/2060 数值风险监控
+
+- Git/范围：活动服务器 checkout 仍为 clean
+  `3f123f0598e95151e8492f784ca79521569f57f0`；本里程碑仅更新三份状态文档，未修改模型、
+  数据、solver profile、进程、活动 checkout 或受保护文件。
+- 命令/证据：SSH 读取全部 Phase 2 roots、进程树、telemetry/log、三份终态文件、
+  sequence/control stderr 与主机资源；用 current-tip validators 复验 Oct/2050 input/result
+  manifests；通过 `paracloud-bscc-a8` 查询 `squeue -u a8s001819`。
+- 输出/验证：Oct/2050 严格满足 `OPTIMAL + acceptance/QC PASS + 58/58 + Pi + current input +
+  valid result manifest`；runtime `66,128.573 s`、Barrier/simplex `238/1,113,083`、peak
+  `19.916 GiB`，counterflow 与 storage/V2G overlap 均为零。Base 累计 `8/12` accepted。
+- 未决问题/精确下一步：Jan/2050 与 Jun/2060 的 Crossover 中间 infeasibility 已升至极大
+  数量级，Jan 接近 24 h TimeLimit；Oct/2060 处于 build。PID 存在期间只读等待，不 kill、
+  不延长时限、不改容差、不 resume 或补 manifest。任一退出后必须按终态三文件、wrapper
+  exit/stderr、58 checks 与 manifests 判定；若失败，对应 runner 应由 `set -e` 停止，不能
+  手工跳年或启动其 V5。继续禁止第四条、8760 h、basis/MGA、Crossover=3 与付费云。
 
 ### 2026-08-04 Phase 2 Base 累计 7/12 accepted
 

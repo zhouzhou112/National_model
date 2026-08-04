@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 00:26 Phase 2 Base 8/12 与临近 TimeLimit 监控
+
+1. Oct Base/2050 已严格接受，Base 累计 `8/12`。Oct/2050 的 solve/QC/58 checks/input/result
+   manifests/Pi、counterflow 与 storage/V2G overlap 已逐项复验，不得因 runtime 较长降级。
+2. 当前只读监控对象为 Jan Base/2050、Jun Base/2060 与正在 build 的 Oct Base/2060。
+   Jan/Jun Crossover 中间 infeasibility 已达极大数量级，Jan 接近 `86,400 s` TimeLimit。
+   PID 存在时不得 kill、改 TimeLimit/容差/profile 或据中间日志补写任何结果。
+3. 任一进程退出后先读取 `solve_report.json`、`solution_qc.json`、`result_manifest.json`、
+   sequence/control stderr 与 wrapper exit。缺少任何终态文件、非 `OPTIMAL`、非 58/58 或
+   manifest invalid 均 fail closed；对应 runner 应停止，不得手工跳至下一年或 V5。
+4. 00:26 available `74,239 MiB`、swap `623/2047 MiB`、最新 `si/so=0/0`、memory PSI
+   avg10/60 `0.02/0.08`、IO PSI `4.70/1.93`、磁盘余 `3.7 TiB`；stderr 0、ParaCloud 空。
+   server checkout 继续冻结 clean `3f123f0`，不启动第四条、8760 h、basis/MGA、
+   Crossover=3、付费云或部署 docs tip。
+
 ## 2026-08-04 13:57 Phase 2 Base 7/12 accepted 监控对象
 
 1. 新增 accepted roots 为 Jan Base/2040、Jun Base/2050、Oct Base/2040；三根已逐项验证

@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 00:26+08:00 Base 8/12 accepted；两根 Crossover 数值风险
+
+- Oct Base/2050 新增严格接受：`OPTIMAL + contract/QC PASS + 58/58 + Pi + current input +
+  valid result manifest`，objective `2,570,488.097027 million CNY`、runtime `66,128.573 s`、
+  Barrier/simplex `238/1,113,083`、peak `19.916 GiB`；counterflow、storage/V2G overlap 0。
+- Jan Base/2050 与 Jun Base/2060 仍在 Crossover/simplex，runtime 约 `81,826/64,975 s`；
+  中间 primal/dual infeasibility 分别约 `3.79e39/1.18e6` 与 `5.91e40/4.91e7`。Jan 距
+  `86,400 s` TimeLimit 约 1.27 h。它们尚无终态，不提前判失败，但风险显著。
+- Oct Base/2060 已进入 model build，尚无 Gurobi log；V5 未启动。host available
+  `74,239 MiB`、swap `623/2047 MiB`、最新 `si/so=0/0`、memory PSI avg10/60
+  `0.02/0.08`、IO PSI `4.70/1.93`、`/data` 余 `3.7 TiB`；control stderr 0，ParaCloud 空。
+- server repo 保持 clean `3f123f0`。继续只读监控，不改活动参数、不启动第四条或部署 docs。
+
 ## 2026-08-04 13:57+08:00 Base 累计 7/12 accepted；三个下一年度活动
 
 - 新增 Jan/2040、Jun/2050、Oct/2040 三根严格接受，均为 `OPTIMAL + contract/QC PASS +
