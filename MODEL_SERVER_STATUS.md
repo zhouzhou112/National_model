@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 13:52+08:00 当前无已验证 8760 h solver route
+
+- Barrier-only 当前模型 24 h 的 20 个组合均未同时通过严格 primal/dual；它只是历史设计
+  目标，不是已验证 production profile。`Crossover=2` 是截断时域已冻结路线，但本轮 744 h
+  只完成 9/12 Base，另有两个 Crossover TIME_LIMIT。
+- 因此不能把任一路线直接外推到 8760 h，也不能把 recovery-only `BarX/BarPi` 当作
+  Barrier-only 可用性证明。正式年度求解继续禁止，先做 recovery 离线审计和新 profile A/B。
+
 ## 2026-08-05 13:47+08:00 两个 timeout 根已保存 recovery-only BarX/BarPi
 
 - Jan/2050 与 Jun/2060 均为 Gurobi 13 `BarStatus=OPTIMAL`，wrapper 因而自动保存了完整

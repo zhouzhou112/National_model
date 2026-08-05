@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 13:52+08:00：纠正 solver contract 文档冲突。经当前模型实证，Barrier-only
+  24 h 的 20 个组合均未同时通过严格 primal/dual 门禁；`Crossover=2` 才是已通过
+  24 h/168 h 配对并用于 Phase 2 的截断时域 profile，但 Phase 2 又出现两个 744 h
+  Crossover TIME_LIMIT。因此 `cispo_full_lp_model_spec.md` 中“Barrier-first 为当前主生产
+  路线”的旧表述已由后置更正明确降为历史设计目标；当前为**没有已验证的 8760 h
+  production solver route**。在完成 recovery 离线物理/dual 审计、容差候选 A/B 与至少
+  一个全新 744 h 门禁前，不得启动 8760 h。不能因 `BarStatus=OPTIMAL` 或 recovery-only
+  `BarX/BarPi` 推断 Barrier-only 已可用。
+
 - 2026-08-05 13:47+08:00：进一步复核 Jan/2050 与 Jun/2060 两个 Crossover TIME_LIMIT
   根，确认 Gurobi 13 的 `BarStatus=OPTIMAL`，wrapper 已自动保存完整 `BarX/BarPi`：Jan
   `primal_barx.npy=29,880,824 bytes`、`dual_barpi.npy=35,633,552 bytes`，Jun 分别为
@@ -1072,6 +1081,18 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 当前不存在已验证 8760 h solver route
+
+- 冲突：模型规格仍把 2026-08-01 的 Barrier-first 提案写成当前默认生产路线，但后续
+  Phase 0 已用 20 个当前模型 24 h Barrier-only 组合严格否定该资格；Phase 1/2 实际冻结并
+  使用 `Crossover=2`。本次按已验证输出增加后置更正规格，不改变数学模型或运行文件。
+- 结论：Barrier-only 在数学上可能得到 `BarStatus=OPTIMAL`，但当前尚不能通过原始
+  primal/dual 科学门禁；Crossover=2 在 744 h 也并非稳健全通过。故二者都不能直接外推为
+  8760 h production route。
+- 精确下一步：优先对两个 recovery `BarX/BarPi` 做 exact-LP 离线 primal/physical/dual
+  审计；再以 `FeasibilityTol/OptimalityTol=1e-6` 为首个最小候选做 24 h→168 h→单根
+  744 h A/B。只有严格、宏观稳定且端到端提速的路线才可进入年度 preflight。
 
 ### 2026-08-05 Crossover 超时后的 Barrier recovery checkpoint 边界复核
 

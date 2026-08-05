@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 13:52 8760 h solver route 未闭合
+
+1. Barrier-first 是待重新验证的设计目标，不是当前 production route；24 h 当前模型的
+   20 个 Barrier-only 组合均未同时通过严格 primal/dual acceptance。
+2. `barrier_16_crossover2_stable_basis_long_v1` 只在截断时域冻结；本轮 744 h 的两个
+   Crossover TIME_LIMIT 证明它不能未经年度门禁直接用于 8760 h。
+3. 当前任何 8760 h solve 均 fail closed。先对 recovery BarX/BarPi 做 exact-LP 离线审计，
+   再完成新容差 profile 的 24 h/168 h/744 h A/B；不得以 `BarStatus=OPTIMAL`、恢复向量或
+   9 个 accepted 744 h 根替代年度 solver qualification。
+
 ## 2026-08-05 13:47 8760 h 与 Crossover 超时后的内点向量边界
 
 1. 对 `Method=2/Crossover>0`，若 Gurobi 13 已有 `BarStatus=OPTIMAL` 而最终因

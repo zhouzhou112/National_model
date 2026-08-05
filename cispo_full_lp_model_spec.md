@@ -1258,6 +1258,14 @@ S_{g,t_i}=\rho_g^{\Delta_i}S_{g,t_{i-1}}
 
 Crossover 是全部主线 case/year 完成后由作者选择的独立派生任务，而不是年度门禁。它必须重建完全相同的 LP，逐层核对 baseline/analysis case、implementation bundle、data roots、input manifest、规划年、窗口、Gurobi `Fingerprint`、变量/约束/非零元数及检查点 SHA256，再把全量 `BarX/BarPi` 分别作为 `PStart/DStart` 注入，使用 `LPWarmStart=2` 将 start 映射到 presolved model 后执行 `Crossover=1/CrossoverBasis=1`。该阶段用于生成 `VBasis/CBasis`、`.bas`、basis sensitivity range 和可供 MGA 工程复用的 basic solution；容量、调度、成本、碳核算、`BarPi` 影子价格和连续 LP 的 reduced cost 本身不以 Crossover 为前提，但退化问题中的 dual/reduced-cost 可能不唯一。后置 Crossover 不写新的 `planning_state`，不得回溯改写已完成的跨年路径，其失败也不得撤销主阶段已经接受的科学结果。旧式同进程 Crossover 在超过 744 h 时默认被 runner 拒绝，只有显式 `--allow-inline-crossover` 才可作为诊断运行；若 Gurobi 13 已记录 `BarStatus=OPTIMAL` 后整体超时，runner 尝试保存 `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT` 原始检查点，但它没有完整 QC，不能被重标为科学接受结果。
 
+#### 2026-08-05 solver-route 实证更正
+
+上文 Barrier-first 是 2026-08-01 提出的**设计目标**，不是当前已验证生产路线。随后在当前模型 24 h Base 上完成的 20 个 `Method=2/Crossover=0/SolutionTarget=1` 参数组合均未同时通过严格原始 primal/dual 门禁：典型最大 constraint violation 为 `4.26e-2`；即使 `PreDual=1` 将 constraint violation 降至约 `7.60e-8`，dual violation 仍为 `1.29e-5`。因此当前可运行的截断时域 profile 是经 24 h/168 h 配对后冻结的 `barrier_16_crossover2_stable_basis_long_v1`，不是 Barrier-only profile。
+
+2026-08-05 三季节 744 h Base 的终态又为 `9/12 accepted + 2 Crossover TIME_LIMIT + 1 not run`。这既证明 `Crossover=2` 能接受多数 744 h 根，也证明它不能未经更长门禁直接外推到 8760 h。两个超时根虽为 `BarStatus=OPTIMAL` 并保存 recovery-only `BarX/BarPi`，但没有 QC、result manifest 或 accepted planning state，不能反向证明 Barrier-only 已可用。**当前没有任何已验证的 8760 h production solver route，正式年度求解不得启动。**
+
+恢复年度路线前，必须先对 recovery `BarX/BarPi` 做 exact-LP 原始 primal/physical/dual 离线审计，再以最小容差候选完成 24 h→168 h→单根 744 h A/B。只有最终 `OPTIMAL`、宏观结果稳定、全部 QC/hard checks/manifests 闭合且端到端效率可接受的路线，才能升级到 8760 h preflight。大于 744 h 的 inline Crossover 继续默认禁止；recovery-only checkpoint 不得重标、续年或解释为科学影子价格。
+
 ### 5.8.0c 截断时域的价值核算与当前验证边界
 
 对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：
