@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 13:47 8760 h 与 Crossover 超时后的内点向量边界
+
+1. 对 `Method=2/Crossover>0`，若 Gurobi 13 已有 `BarStatus=OPTIMAL` 而最终因
+   TIME_LIMIT/MEM_LIMIT 等非最优终止，runner 会尽力导出 `BarX/BarPi`。导出并非保证：
+   属性不可读、磁盘/内存或写出错误时只会生成 checkpoint error。
+2. 成功写出的超时 checkpoint 必须标记 `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`；不得
+   当作 QC PASS、result manifest、planning state、accepted shadow prices 或可直接恢复的
+   factorization。Jan/2050 与 Jun/2060 是已验证实例，均 `deferred_crossover_eligible=false`。
+3. 8760 h 默认禁止 inline Crossover；未传 `--allow-inline-crossover` 时会在 optimize 前
+   hard-fail。生产路线应为 `Method=2/Crossover=0/SolutionTarget=1`，只有最终 `OPTIMAL +
+   strict primal/dual + QC + hard checks + manifests` 才导出
+   `ACCEPTED_PRIMARY_BARRIER_SOLUTION`，之后再以 exact-LP 独立后置 Crossover。
+4. 当前模型的 Barrier-only 路线尚未重新通过门禁，因此上述设计不构成立即启动 8760 h
+   的授权。先完成小根/长根参数与宏观结果 A/B；禁止把 recovery-only 文件改标或续年。
+
 ## 2026-08-05 13:42 Phase 2 停止后的 fail-closed 边界
 
 1. 当前无 Phase 2/CISPO/Gurobi/sequence PID。Jan Base/2050 与 Jun Base/2060 均为

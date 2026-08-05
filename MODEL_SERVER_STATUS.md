@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 13:47+08:00 两个 timeout 根已保存 recovery-only BarX/BarPi
+
+- Jan/2050 与 Jun/2060 均为 Gurobi 13 `BarStatus=OPTIMAL`，wrapper 因而自动保存了完整
+  `BarX/BarPi` 向量；两份 checkpoint 均标记
+  `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`、`scientifically_accepted=false`、
+  `deferred_crossover_eligible=false`。
+- 这些文件只证明 Barrier 内点向量仍可读取，不等于 accepted solution：源 solve
+  `TIME_LIMIT + SolCount=0`，无 QC/result manifest/planning state，亦不含 presolve、
+  factorization 或 basis。不得 resume、续接或用于科学影子价格。
+- 大于 744 h 的 inline Crossover 当前默认被 runner 拒绝；8760 h 必须先用严格 accepted
+  `Crossover=0` Barrier 主阶段闭合并生成 accepted checkpoint。当前模型尚未通过该门禁。
+
 ## 2026-08-05 13:42+08:00 Phase 2 停止：Base 9/12 accepted、2 timeout
 
 - Jan/2050 与 Jun/2060 均在约 `86,400 s` 触发 `TIME_LIMIT`；Crossover 分别耗时

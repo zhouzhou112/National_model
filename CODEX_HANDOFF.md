@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 13:47+08:00：进一步复核 Jan/2050 与 Jun/2060 两个 Crossover TIME_LIMIT
+  根，确认 Gurobi 13 的 `BarStatus=OPTIMAL`，wrapper 已自动保存完整 `BarX/BarPi`：Jan
+  `primal_barx.npy=29,880,824 bytes`、`dual_barpi.npy=35,633,552 bytes`，Jun 分别为
+  `29,880,824/34,895,496 bytes`。两份 manifest 均明确为
+  `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`、`scientifically_accepted=false`、
+  `deferred_crossover_eligible=false`；它们不含 presolve/factorization/basis，且源 solve
+  `SolCount=0`、无 QC/result manifest/planning state，因此只作取证，不得当作内点科学结果、
+  sequence state 或可直接续跑的 checkpoint。当前实现对大于 744 h 的 inline Crossover
+  默认在 optimize 前 hard-fail；8760 h 预期路线必须先用 `Crossover=0` 获得严格 accepted
+  Barrier 结果，成功后才自动导出可用的 accepted `BarX/BarPi`，但该路线在当前模型上仍需
+  重新完成数值门禁。
+
 - 2026-08-05 13:42+08:00：三条 Phase 2 runner 均已退出，当前无 CISPO/Gurobi/sequence
   进程。Base 终态为 `9/12 accepted + 2 TIME_LIMIT + 1 not run`，V5 `0/12` 未启动。
   Jan/2050 在 runtime `86,402.390 s`、simplex `1,969,776` 后 `TIME_LIMIT`；Jun/2060 在
@@ -1060,6 +1072,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 Crossover 超时后的 Barrier recovery checkpoint 边界复核
+
+- 范围/证据：只读检查两个 TIME_LIMIT 根的 `solve_report.json`、
+  `barrier_checkpoint/barrier_checkpoint_manifest.json` 与两份 `.npy`；未启动任务或修改
+  server。两根均为 `BarStatus=OPTIMAL`，故 recovery export 成功。
+- 结论：当前 wrapper 会在 inline Crossover 非最优终止后尽力保存 `BarX/BarPi`，但 recovery
+  manifest 明确拒绝 scientific acceptance 与 deferred-crossover eligibility。只有以
+  `Crossover=0/SolutionTarget=1` 最终 `OPTIMAL`、严格 primal/dual、QC、hard checks 和
+  manifests 全部闭合的主阶段，才能生成 `ACCEPTED_PRIMARY_BARRIER_SOLUTION`。
+- 下一步：8760 h 不得使用当前 744 h Crossover=2 profile 强行 inline 运行；先闭合当前模型
+  的 Barrier-only 小根与长根数值门禁，再决定独立后置 Crossover。recovery-only 向量不得
+  resume、续年、出图或进入影子价格科学解释。
 
 ### 2026-08-05 Phase 2 Base 部分失败并停止；Oct 四年 Base PASS
 
