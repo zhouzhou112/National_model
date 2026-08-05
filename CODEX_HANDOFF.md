@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 14:09+08:00：汇总当前 Phase 2 的 11 个实际执行 744 h Base 根。全部使用
+  `barrier_16_crossover2_stable_basis_long_v1`：`Method=2/Threads=16/Presolve=2/
+  Crossover=2/CrossoverBasis=1/FeasibilityTol=OptimalityTol=1e-7/BarConvTol=1e-8/
+  NumericFocus=2/ScaleFlag=2/TimeLimit=86400/SoftMemLimit=80`，无 basis reuse。9 个 accepted
+  根 solver runtime 为 `5.20--18.37 h`，平均 `8.89 h`、中位 `7.24 h`；其 Barrier 段平均
+  `2.60 h`，Crossover 平均 `6.08 h`，按合计 runtime 约占 `68.3%`。另两根在 24 h
+  TimeLimit 失败，Crossover 分别耗时 `22.14/21.81 h`。11 根峰值 process-tree RSS 为
+  `18.632--21.158 GiB`。递归扫描服务器全部现存 `solve_report.json`，满足
+  `optimization_hours=744 && solver_parameters.crossover=0` 的报告为 **0 个**；当前没有真正
+  执行过 744 h Barrier-only。两个 Crossover timeout 后保存的 recovery `BarX/BarPi` 不属于
+  Barrier-only solve，不能替代该门禁。
+
 - 2026-08-05 13:52+08:00：纠正 solver contract 文档冲突。经当前模型实证，Barrier-only
   24 h 的 20 个组合均未同时通过严格 primal/dual 门禁；`Crossover=2` 才是已通过
   24 h/168 h 配对并用于 Phase 2 的截断时域 profile，但 Phase 2 又出现两个 744 h
@@ -1081,6 +1093,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 744 h runtime/profile 与 Barrier-only 执行记录审计
+
+- 证据：逐根解析本轮 11 份 `solve_report.json` 与 `gurobi.log` 的 Barrier/Crossover 时间、
+  iterations、runtime memory 和 resolved solver parameters；递归扫描服务器 outputs 下全部
+  solve reports，筛选 `optimization_hours=744` 且 `crossover=0`。
+- 结果：本轮 9 accepted、2 TIME_LIMIT 全部为同一 Crossover=2 profile；accepted solver
+  runtime 平均 `8.89 h`，Crossover 是主要耗时。服务器保留记录中无任何 744 h
+  Barrier-only solve report。
+- 下一步：不能把 24 h Barrier-only 诊断或 recovery-only checkpoint 外推为 744/8760 h
+  资格。若选择 Barrier-only 候选，必须建立全新命名根并按 24 h→168 h→744 h 逐级验收。
 
 ### 2026-08-05 当前不存在已验证 8760 h solver route
 

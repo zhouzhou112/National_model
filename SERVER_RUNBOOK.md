@@ -1,5 +1,14 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 14:09 744 h solver 实证基线
+
+1. 当前 744 h 执行证据仅覆盖 Crossover=2：11 根执行、9 accepted、2 TIME_LIMIT；accepted
+   solver runtime 平均 `8.89 h`，Barrier/Crossover 平均 `2.60/6.08 h`。
+2. 服务器保留报告中不存在 `744 h + Crossover=0` 根。不得把 recovery checkpoint、
+   24 h Barrier-only 参数诊断或规格设计目标称为 744 h Barrier-only 门禁。
+3. 新 Barrier-only 路线必须使用全新 profile/root，按 24 h→168 h→744 h 逐级闭合，不能
+   resume 当前 TIME_LIMIT 根或跳过长时域验证进入 8760 h。
+
 ## 2026-08-05 13:52 8760 h solver route 未闭合
 
 1. Barrier-first 是待重新验证的设计目标，不是当前 production route；24 h 当前模型的

@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 14:09+08:00 744 h 耗时/profile 汇总；无 Barrier-only 744 记录
+
+- 11 个已执行 Phase 2 744 h Base 根全部为 Crossover=2 同一 profile；9 accepted runtime
+  `5.20--18.37 h`、平均 `8.89 h`、中位 `7.24 h`，Barrier/Crossover 平均约
+  `2.60/6.08 h`；另两根 24 h TIME_LIMIT。峰值 RSS `18.632--21.158 GiB`。
+- 服务器全部现存 solve reports 中，744 h 且 Crossover=0 的数量为 0。当前从未真正运行
+  744 h Barrier-only；recovery BarX/BarPi 不改变这一事实。
+
 ## 2026-08-05 13:52+08:00 当前无已验证 8760 h solver route
 
 - Barrier-only 当前模型 24 h 的 20 个组合均未同时通过严格 primal/dual；它只是历史设计
