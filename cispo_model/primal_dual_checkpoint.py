@@ -8,6 +8,7 @@ resume Barrier iterations or bypass presolve/model construction.
 from __future__ import annotations
 
 import json
+import hashlib
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -25,6 +26,9 @@ from .io_contract import (
 CHECKPOINT_SCHEMA_VERSION = "cispo_barrier_primal_dual_checkpoint_v1"
 CHECKPOINT_DIRECTORY = "barrier_checkpoint"
 CHECKPOINT_MANIFEST = "barrier_checkpoint_manifest.json"
+ACCEPTED_CHECKPOINT_STATUS = "ACCEPTED_PRIMARY_BARRIER_SOLUTION"
+ENGINEERING_CHECKPOINT_STATUS = "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
+RECOVERY_CHECKPOINT_STATUS = "RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT"
 
 
 class PrimalDualCheckpointError(ValueError):
@@ -77,6 +81,92 @@ def _write_vector(model: Any, attribute: str, path: Path, expected: int) -> dict
     return result
 
 
+def _last_barrier_telemetry(path: Path) -> dict[str, Any] | None:
+    """Return the last persisted Barrier callback sample without loading the log."""
+    if not path.is_file():
+        return None
+    latest: dict[str, Any] | None = None
+    try:
+        with path.open(encoding="utf-8") as stream:
+            for line in stream:
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if (
+                    isinstance(record, dict)
+                    and record.get("event") == "solver_progress"
+                    and record.get("phase") == "barrier"
+                ):
+                    latest = record
+    except OSError:
+        return None
+    if latest is None:
+        return None
+    primal = latest.get("primal_objective")
+    dual = latest.get("dual_objective")
+    if isinstance(primal, (int, float)) and isinstance(dual, (int, float)):
+        absolute_gap = abs(float(primal) - float(dual))
+        latest["absolute_primal_dual_objective_gap"] = absolute_gap
+        latest["relative_primal_dual_objective_gap"] = absolute_gap / max(
+            1.0, abs(float(primal)), abs(float(dual))
+        )
+    return latest
+
+
+def _ordered_name_digest(
+    model: Any,
+    *,
+    kind: str,
+    chunk_size: int = 100_000,
+) -> dict[str, Any]:
+    """Hash the complete raw-LP object order without retaining all names."""
+    if kind == "variable":
+        objects = model.getVars()
+        name_attribute = "VarName"
+        auxiliary_attribute = None
+        expected = int(model.NumVars)
+    elif kind == "constraint":
+        objects = model.getConstrs()
+        name_attribute = "ConstrName"
+        auxiliary_attribute = "Sense"
+        expected = int(model.NumConstrs)
+    else:
+        raise PrimalDualCheckpointError(f"Unsupported order-digest kind: {kind}")
+    if len(objects) != expected:
+        del objects
+        raise PrimalDualCheckpointError(
+            f"{kind} object count changed while hashing LP order"
+        )
+    digest = hashlib.sha256()
+    digest.update(f"cispo_raw_lp_{kind}_order_v1\0".encode("ascii"))
+    digest.update(expected.to_bytes(8, "big", signed=False))
+    for start in range(0, expected, chunk_size):
+        chunk = objects[start : start + chunk_size]
+        names = model.getAttr(name_attribute, chunk)
+        auxiliaries = (
+            model.getAttr(auxiliary_attribute, chunk)
+            if auxiliary_attribute is not None
+            else [""] * len(chunk)
+        )
+        for offset, (name, auxiliary) in enumerate(zip(names, auxiliaries)):
+            index = start + offset
+            encoded = str(name).encode("utf-8")
+            digest.update(index.to_bytes(8, "big", signed=False))
+            digest.update(len(encoded).to_bytes(8, "big", signed=False))
+            digest.update(encoded)
+            digest.update(str(auxiliary).encode("ascii"))
+            digest.update(b"\0")
+        del chunk, names, auxiliaries
+    del objects
+    return {
+        "schema_version": f"cispo_raw_lp_{kind}_order_v1",
+        "entries": expected,
+        "sha256": digest.hexdigest(),
+        "chunk_size": int(chunk_size),
+    }
+
+
 def export_barrier_primal_dual_checkpoint(
     model: Any,
     config: ModelConfig,
@@ -88,14 +178,20 @@ def export_barrier_primal_dual_checkpoint(
     result_use: str,
     solution_qc: dict[str, Any] | None,
     accepted_primary: bool,
+    engineering_only: bool = False,
 ) -> dict[str, Any]:
     """Export full ordered ``BarX``/``BarPi`` vectors plus strict identity.
 
     ``accepted_primary=True`` is reserved for an OPTIMAL nonbasic solve whose
-    numerical contract and physics QC have both passed.  A checkpoint captured
-    after an inline-crossover failure is marked recovery-only and is never, by
-    itself, a scientifically accepted result.
+    numerical contract and physics QC have both passed. ``engineering_only``
+    preserves an otherwise non-scientific Barrier result for an explicitly
+    authorized deferred crossover. A checkpoint captured after an inline-
+    crossover failure remains recovery-only and cannot enter that workflow.
     """
+    if accepted_primary and engineering_only:
+        raise PrimalDualCheckpointError(
+            "A checkpoint cannot be both accepted-primary and engineering-only"
+        )
     if int(getattr(model, "IsMIP", 0)):
         raise PrimalDualCheckpointError("Barrier checkpoints require a continuous LP")
     contract = solve_report.get("solution_contract", {})
@@ -124,8 +220,19 @@ def export_barrier_primal_dual_checkpoint(
             )
     elif barrier_status != 2:
         raise PrimalDualCheckpointError(
-            "Recovery checkpoint requires Gurobi 13 BarStatus=OPTIMAL"
+            "Non-primary checkpoint requires Gurobi 13 BarStatus=OPTIMAL"
         )
+    if engineering_only:
+        parameters = solve_report.get("solver_parameters", {})
+        if not (
+            int(parameters.get("method", -1)) == 2
+            and int(parameters.get("crossover", -1)) == 0
+            and int(parameters.get("solution_target", -1)) == 1
+        ):
+            raise PrimalDualCheckpointError(
+                "Engineering checkpoint requires Method=2, Crossover=0, "
+                "SolutionTarget=1"
+            )
 
     output_root = Path(output_dir)
     checkpoint_root = output_root / CHECKPOINT_DIRECTORY
@@ -143,24 +250,39 @@ def export_barrier_primal_dual_checkpoint(
         checkpoint_root / "dual_barpi.npy",
         int(model.NumConstrs),
     )
+    variable_order = _ordered_name_digest(model, kind="variable")
+    constraint_order = _ordered_name_digest(model, kind="constraint")
     run_identity = _read_json(output_root / "run_identity.json")
     run_scope = _read_json(output_root / "run_scope.json")
+    run_environment = _read_json(output_root / "run_environment.json")
     input_manifest = output_root / "input_manifest.csv"
     input_valid, input_failures = validate_input_manifest(input_manifest)
     if not input_valid:
         raise PrimalDualCheckpointError(
             "Current input manifest is invalid: " + "; ".join(input_failures)
         )
+    if accepted_primary:
+        checkpoint_status = ACCEPTED_CHECKPOINT_STATUS
+    elif engineering_only:
+        checkpoint_status = ENGINEERING_CHECKPOINT_STATUS
+    else:
+        checkpoint_status = RECOVERY_CHECKPOINT_STATUS
+    lp_model = run_identity.get("lp_model") or {}
     metadata = {
         "schema_version": CHECKPOINT_SCHEMA_VERSION,
         "generated_at": datetime.now().astimezone().isoformat(),
-        "checkpoint_status": (
-            "ACCEPTED_PRIMARY_BARRIER_SOLUTION"
-            if accepted_primary
-            else "RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT"
-        ),
+        "checkpoint_status": checkpoint_status,
         "scientifically_accepted": bool(accepted_primary),
-        "deferred_crossover_eligible": bool(accepted_primary),
+        "deferred_crossover_eligible": bool(accepted_primary or engineering_only),
+        "eligibility_scope": (
+            "CLOSED_ACCEPTED_SOURCE"
+            if accepted_primary
+            else (
+                "EXPLICIT_ENGINEERING_ACKNOWLEDGEMENT_REQUIRED"
+                if engineering_only
+                else "FORENSIC_ONLY"
+            )
+        ),
         "source": {
             "planning_year": int(config.planning_year),
             "boundary_year": int(config.boundary_year),
@@ -171,6 +293,16 @@ def export_barrier_primal_dual_checkpoint(
             "solver_profile_id": config.raw.get("solver_profile", {}).get("id"),
             "input_manifest_sha256": sha256_file(input_manifest),
             "run_scope_result_use": run_scope.get("result_use"),
+            "scenario_config_sha256": (
+                sha256_file(config.scenario_path) if config.scenario_path else None
+            ),
+            "solver_config_sha256": (
+                sha256_file(config.solver_path) if config.solver_path else None
+            ),
+            "planning_state_in": run_environment.get("planning_state_in"),
+            "gurobipy_version": run_environment.get("packages", {}).get(
+                "gurobipy"
+            ),
         },
         "identity_layers": {
             name: run_identity.get(name)
@@ -193,12 +325,53 @@ def export_barrier_primal_dual_checkpoint(
                 "barrier"
             ),
             "runtime_seconds": solve_report.get("runtime_seconds"),
+            "objective_value_million_cny": solve_report.get(
+                "objective_value_million_cny"
+            ),
+            "last_persisted_barrier_telemetry": _last_barrier_telemetry(
+                output_root / "solver_telemetry.jsonl"
+            ),
         },
         "vectors": {"primal": primal, "dual": dual},
+        "lp_ordering": {
+            "variable_vector": "raw_original_model_variable_index_order",
+            "constraint_vector": "raw_original_model_linear_constraint_index_order",
+            "variables": int(model.NumVars),
+            "constraints": int(model.NumConstrs),
+            "nonzeros": int(model.NumNZs),
+            "gurobi_fingerprint": lp_model.get("gurobi_fingerprint"),
+            "variable_order_digest": variable_order,
+            "constraint_order_digest": constraint_order,
+            "validation": (
+                "exact deterministic LP rebuild plus matching layered identity, "
+                "input manifest, Gurobi Fingerprint and dimensions"
+            ),
+            "full_name_catalog_persisted": False,
+            "full_name_catalog_omission_reason": (
+                "complete ordered names are cryptographically hashed in chunks "
+                "instead of persisting a multi-gigabyte string catalog"
+            ),
+        },
+        "engineering_shadow_prices": {
+            "available": True,
+            "attribute": "BarPi",
+            "path": dual["path"],
+            "index_semantics": "raw_original_model_linear_constraint_index_order",
+            "publication_status": (
+                "SCIENTIFICALLY_ACCEPTED"
+                if accepted_primary
+                else "ENGINEERING_ONLY_NOT_FOR_PUBLICATION"
+            ),
+            "warning": (
+                "Barrier duals may be non-unique on a degenerate LP and do not "
+                "provide basis sensitivity ranges."
+            ),
+        },
         "reuse_contract": {
             "method": 2,
             "lp_warm_start": 2,
-            "recommended_crossover": 1,
+            "recommended_crossover": 2,
+            "recommended_crossover_basis": 1,
             "requires_exact_original_lp": True,
             "requires_full_pstart_and_dstart": True,
             "overwrites_source_result": False,
@@ -206,7 +379,8 @@ def export_barrier_primal_dual_checkpoint(
         "limitations": [
             "Stores ordered primal and dual vectors, not a Barrier factorization or presolve state.",
             "Deferred crossover must rebuild the exact original LP and repeat presolve.",
-            "A recovery-only checkpoint is forensic evidence and is not an accepted scientific result.",
+            "An engineering-only checkpoint is not an accepted scientific result or planning-state anchor.",
+            "A recovery-only checkpoint is forensic evidence and cannot seed the formal deferred crossover.",
             "Python object lists may add material transient memory during deferred start import.",
         ],
     }
@@ -222,24 +396,19 @@ def validate_barrier_primal_dual_checkpoint(
     source_output_dir: str | Path,
     *,
     require_result_manifest: bool = True,
+    allow_engineering: bool = False,
 ) -> tuple[bool, list[str]]:
-    """Validate an accepted Barrier checkpoint without rebuilding the LP.
+    """Validate a Barrier checkpoint without rebuilding the LP.
 
-    This is the integrity gate used by planning-state export and sequence
-    resume.  Exact-LP compatibility for a later crossover is intentionally a
-    second gate in :func:`prepare_primal_dual_crossover`.
+    The default remains the strict accepted-source gate used by planning-state
+    export and sequence resume. Engineering checkpoints require an explicit
+    opt-in and can only be consumed by the second exact-LP gate in
+    :func:`prepare_primal_dual_crossover`.
     """
     source_root = Path(source_output_dir).resolve()
     failures: list[str] = []
-    if require_result_manifest:
-        manifest_valid, manifest_failures = validate_result_manifest(source_root)
-        if not manifest_valid:
-            failures.extend(
-                f"result_manifest:{failure}" for failure in manifest_failures
-            )
     try:
         solve = _read_json(source_root / "solve_report.json")
-        qc = _read_json(source_root / "solution_qc.json")
         run_identity = _read_json(source_root / "run_identity.json")
         checkpoint_root = source_root / CHECKPOINT_DIRECTORY
         metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
@@ -247,28 +416,71 @@ def validate_barrier_primal_dual_checkpoint(
         failures.append(str(error))
         return False, failures
 
+    checkpoint_status = metadata.get("checkpoint_status")
+    engineering = checkpoint_status == ENGINEERING_CHECKPOINT_STATUS
+    accepted = checkpoint_status == ACCEPTED_CHECKPOINT_STATUS
+    if engineering and not allow_engineering:
+        failures.append("engineering_checkpoint_requires_explicit_allow")
+    if not accepted and not engineering:
+        failures.append("checkpoint_status")
+    if require_result_manifest:
+        manifest_valid, manifest_failures = validate_result_manifest(source_root)
+        if not manifest_valid:
+            failures.extend(
+                f"result_manifest:{failure}" for failure in manifest_failures
+            )
     contract = solve.get("solution_contract", {})
-    hard_checks = qc.get("hard_checks")
-    if solve.get("status") != "OPTIMAL":
-        failures.append("solve_status")
-    if contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC":
-        failures.append("solution_contract_mode")
-    if contract.get("acceptance_status") != "PASS":
-        failures.append("solution_contract_acceptance")
-    if qc.get("status") != "PASS":
-        failures.append("solution_qc_status")
-    if (
-        not isinstance(hard_checks, dict)
-        or not hard_checks
-        or not all(bool(value) for value in hard_checks.values())
-    ):
-        failures.append("solution_qc_hard_checks")
+    if accepted:
+        try:
+            qc = _read_json(source_root / "solution_qc.json")
+        except PrimalDualCheckpointError as error:
+            failures.append(str(error))
+            qc = {}
+        hard_checks = qc.get("hard_checks")
+        if solve.get("status") != "OPTIMAL":
+            failures.append("solve_status")
+        if contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+            failures.append("solution_contract_mode")
+        if contract.get("acceptance_status") != "PASS":
+            failures.append("solution_contract_acceptance")
+        if qc.get("status") != "PASS":
+            failures.append("solution_qc_status")
+        if (
+            not isinstance(hard_checks, dict)
+            or not hard_checks
+            or not all(bool(value) for value in hard_checks.values())
+        ):
+            failures.append("solution_qc_hard_checks")
+    elif engineering:
+        parameters = solve.get("solver_parameters", {})
+        if contract.get("barrier_status_code") != 2:
+            failures.append("barrier_status")
+        if not (
+            int(parameters.get("method", -1)) == 2
+            and int(parameters.get("crossover", -1)) == 0
+            and int(parameters.get("solution_target", -1)) == 1
+        ):
+            failures.append("engineering_solver_contract")
+        ordering = metadata.get("lp_ordering", {})
+        for kind in ("variable", "constraint"):
+            row = ordering.get(f"{kind}_order_digest", {})
+            if not (
+                isinstance(row, dict)
+                and int(row.get("entries", -1))
+                == int(
+                    metadata.get("vectors", {})
+                    .get("primal" if kind == "variable" else "dual", {})
+                    .get("entries", -2)
+                )
+                and len(str(row.get("sha256", ""))) == 64
+            ):
+                failures.append(f"engineering_{kind}_order_digest")
     if metadata.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
         failures.append("schema_version")
-    if metadata.get("checkpoint_status") != "ACCEPTED_PRIMARY_BARRIER_SOLUTION":
-        failures.append("checkpoint_status")
-    if not metadata.get("scientifically_accepted"):
+    if accepted and not metadata.get("scientifically_accepted"):
         failures.append("scientifically_accepted")
+    if engineering and metadata.get("scientifically_accepted"):
+        failures.append("engineering_scientifically_accepted")
     if not metadata.get("deferred_crossover_eligible"):
         failures.append("deferred_crossover_eligible")
 
@@ -332,30 +544,43 @@ def prepare_primal_dual_crossover(
     optimization_hours: int,
     optimization_start_hour: int,
     result_use: str,
+    allow_engineering_checkpoint: bool = False,
 ) -> dict[str, Any]:
-    """Validate an accepted checkpoint against the exact rebuilt target LP."""
+    """Validate an eligible checkpoint against the exact rebuilt target LP."""
     source_root = Path(source_output_dir).resolve()
     target_root = Path(target_output_dir).resolve()
+    checkpoint_root = source_root / CHECKPOINT_DIRECTORY
+    metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
+    engineering_source = (
+        metadata.get("checkpoint_status") == ENGINEERING_CHECKPOINT_STATUS
+    )
+    if engineering_source and not allow_engineering_checkpoint:
+        raise PrimalDualCheckpointError(
+            "Engineering Barrier checkpoint requires explicit acknowledgement"
+        )
     checkpoint_valid, failures = validate_barrier_primal_dual_checkpoint(
         source_root,
-        require_result_manifest=True,
+        require_result_manifest=not engineering_source,
+        allow_engineering=allow_engineering_checkpoint,
     )
     if not checkpoint_valid:
         raise PrimalDualCheckpointError(
-            "Checkpoint source is not a closed accepted Barrier result: "
+            "Checkpoint source is not eligible for deferred crossover: "
             + "; ".join(failures)
         )
-    source_qc = _read_json(source_root / "solution_qc.json")
     source_solve = _read_json(source_root / "solve_report.json")
-    if source_qc.get("status") != "PASS" or source_solve.get("status") != "OPTIMAL":
-        raise PrimalDualCheckpointError("Checkpoint source is not OPTIMAL + QC PASS")
-    checkpoint_root = source_root / CHECKPOINT_DIRECTORY
-    metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
+    if not engineering_source:
+        source_qc = _read_json(source_root / "solution_qc.json")
+        if (
+            source_qc.get("status") != "PASS"
+            or source_solve.get("status") != "OPTIMAL"
+        ):
+            raise PrimalDualCheckpointError(
+                "Accepted checkpoint source is not OPTIMAL + QC PASS"
+            )
     if metadata.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
         raise PrimalDualCheckpointError("Unsupported Barrier checkpoint schema")
-    if not metadata.get("scientifically_accepted") or not metadata.get(
-        "deferred_crossover_eligible"
-    ):
+    if not metadata.get("deferred_crossover_eligible"):
         raise PrimalDualCheckpointError(
             "Recovery-only Barrier checkpoints cannot enter formal deferred crossover"
         )
@@ -396,6 +621,38 @@ def prepare_primal_dual_crossover(
                 f"Checkpoint source and target identity layer {name} differs"
             )
     model.update()
+    ordering = metadata.get("lp_ordering", {})
+    try:
+        target_fingerprint = int(model.Fingerprint)
+    except (AttributeError, TypeError, ValueError):
+        target_fingerprint = int(model.getAttr("Fingerprint"))
+    source_fingerprint = ordering.get("gurobi_fingerprint")
+    if source_fingerprint is None:
+        # Backward-compatible path for accepted v1 checkpoints created before
+        # the explicit ordering block was added. The same value was already
+        # persisted in the lp_model identity layer.
+        source_fingerprint = (
+            source_layers.get("lp_model") or {}
+        ).get("gurobi_fingerprint")
+    if int(source_fingerprint if source_fingerprint is not None else -1) != (
+        target_fingerprint
+    ):
+        raise PrimalDualCheckpointError(
+            "Checkpoint source and target Gurobi Fingerprint differs"
+        )
+    for kind in ("variable", "constraint"):
+        expected_order = ordering.get(f"{kind}_order_digest")
+        if expected_order is None:
+            continue
+        actual_order = _ordered_name_digest(model, kind=kind)
+        if (
+            int(expected_order.get("entries", -1))
+            != int(actual_order["entries"])
+            or str(expected_order.get("sha256")) != actual_order["sha256"]
+        ):
+            raise PrimalDualCheckpointError(
+                f"Checkpoint source and target {kind} order differs"
+            )
     expected_counts = {
         "primal": int(model.NumVars),
         "dual": int(model.NumConstrs),
@@ -423,8 +680,17 @@ def prepare_primal_dual_crossover(
     return {
         "schema_version": CHECKPOINT_SCHEMA_VERSION,
         "source_output_dir": str(source_root),
-        "source_result_manifest_sha256": sha256_file(
-            source_root / "result_manifest.json"
+        "source_checkpoint_status": metadata.get("checkpoint_status"),
+        "source_scientifically_accepted": bool(
+            metadata.get("scientifically_accepted")
+        ),
+        "engineering_checkpoint_explicitly_allowed": bool(
+            engineering_source and allow_engineering_checkpoint
+        ),
+        "source_result_manifest_sha256": (
+            sha256_file(source_root / "result_manifest.json")
+            if (source_root / "result_manifest.json").is_file()
+            else None
         ),
         "source_checkpoint_manifest_sha256": sha256_file(
             checkpoint_root / CHECKPOINT_MANIFEST
@@ -433,6 +699,7 @@ def prepare_primal_dual_crossover(
         "dual_path": paths["dual"],
         "variables": expected_counts["primal"],
         "constraints": expected_counts["dual"],
+        "gurobi_fingerprint": target_fingerprint,
         "lp_warm_start": 2,
         "materializes_python_model_object_lists": True,
         "result_use": result_use,

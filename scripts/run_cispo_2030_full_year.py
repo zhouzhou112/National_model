@@ -31,6 +31,13 @@ from cispo_model.run_contract import (
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
+CLOUD_FULL_YEAR_PROFILE_IDS = {
+    "barrier_checkpoint_full_year_cloud_v1",
+    "deferred_crossover2_full_year_cloud_v1",
+}
+CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
+
+
 def diagnostic_memory_requirement_gb(config, hours: int) -> float:
     """Map an arbitrary diagnostic length to the next validated memory tier."""
     for name in ("one_month", "six_months", "full_year"):
@@ -133,6 +140,15 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--engineering-barrier-checkpoint-only",
+        action="store_true",
+        help=(
+            "Treat a Crossover=0 solve as Stage A only: persist finite ordered "
+            "BarX/BarPi immediately after BarStatus=OPTIMAL, never publish it "
+            "as a scientific result or planning-state anchor."
+        ),
+    )
+    parser.add_argument(
         "--allow-nonbasic-planning-state",
         action="store_true",
         help=(
@@ -152,6 +168,22 @@ def main() -> None:
         "--allow-primal-dual-crossover",
         action="store_true",
         help="Explicitly acknowledge exact-LP deferred crossover from BarX/BarPi.",
+    )
+    parser.add_argument(
+        "--allow-engineering-barrier-checkpoint",
+        action="store_true",
+        help=(
+            "Explicitly allow Stage B to consume a non-scientific "
+            "ENGINEERING_BARRIER_CHECKPOINT_ONLY source."
+        ),
+    )
+    parser.add_argument(
+        "--allow-deferred-crossover-planning-state",
+        action="store_true",
+        help=(
+            "After Stage B alone reaches full scientific acceptance, allow its "
+            "basic solution to export the next-year planning state."
+        ),
     )
     parser.add_argument(
         "--allow-inline-crossover",
@@ -260,6 +292,22 @@ def main() -> None:
         raise SystemExit(
             "--allow-primal-dual-crossover requires --primal-dual-checkpoint-in"
         )
+    if (
+        args.allow_engineering_barrier_checkpoint
+        and not args.primal_dual_checkpoint_in
+    ):
+        raise SystemExit(
+            "--allow-engineering-barrier-checkpoint requires "
+            "--primal-dual-checkpoint-in"
+        )
+    if (
+        args.allow_deferred_crossover_planning_state
+        and not args.primal_dual_checkpoint_in
+    ):
+        raise SystemExit(
+            "--allow-deferred-crossover-planning-state requires "
+            "--primal-dual-checkpoint-in"
+        )
     if bool(args.mga_spec) != bool(args.mga_baseline):
         raise SystemExit("--mga-spec and --mga-baseline must be supplied together")
     if args.constraint_family_audit_max_nonzeros < 1:
@@ -306,6 +354,21 @@ def main() -> None:
             "--export-barrier-checkpoint requires Method=2, Crossover=0, "
             "SolutionTarget=1"
         )
+    if (
+        args.engineering_barrier_checkpoint_only
+        and not nonbasic_primal_dual_requested
+    ):
+        raise SystemExit(
+            "--engineering-barrier-checkpoint-only requires Method=2, "
+            "Crossover=0, SolutionTarget=1"
+        )
+    if (
+        args.engineering_barrier_checkpoint_only
+        and args.allow_nonbasic_planning_state
+    ):
+        raise SystemExit(
+            "Stage A engineering checkpoints can never export planning_state"
+        )
     if args.allow_nonbasic_planning_state and not nonbasic_primal_dual_requested:
         raise SystemExit(
             "--allow-nonbasic-planning-state requires Method=2, Crossover=0, "
@@ -339,6 +402,27 @@ def main() -> None:
             raise SystemExit(
                 "Deferred crossover requires Method=2, Crossover>0 and LPWarmStart=2"
             )
+    profile_id = config.raw.get("solver_profile", {}).get("id")
+    if (
+        profile_id == "barrier_checkpoint_full_year_cloud_v1"
+        and not args.engineering_barrier_checkpoint_only
+    ):
+        raise SystemExit(
+            "barrier_checkpoint_full_year_cloud_v1 requires "
+            "--engineering-barrier-checkpoint-only"
+        )
+    if (
+        profile_id == "deferred_crossover2_full_year_cloud_v1"
+        and not args.primal_dual_checkpoint_in
+    ):
+        raise SystemExit(
+            "deferred_crossover2_full_year_cloud_v1 requires "
+            "--primal-dual-checkpoint-in"
+        )
+    if profile_id in CLOUD_FULL_YEAR_PROFILE_IDS and requested_test_only:
+        raise SystemExit(
+            f"{profile_id} is restricted to the scientific full-year horizon"
+        )
     if (
         requested_optimization_hours > 744
         and not args.preflight_only
@@ -424,6 +508,11 @@ def main() -> None:
         required_gb = diagnostic_memory_requirement_gb(
             config, optimization_hours
         )
+    if profile_id in CLOUD_FULL_YEAR_PROFILE_IDS:
+        required_gb = max(
+            required_gb,
+            CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB,
+        )
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
     )
@@ -487,6 +576,11 @@ def main() -> None:
         "configured_full_year_hours": config.hours,
         "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
+        "scientific_acceptance_mode": (
+            "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
+            if args.engineering_barrier_checkpoint_only
+            else "STANDARD_STRICT_ACCEPTANCE"
+        ),
         "annual_cost_and_policy_scaling": (
             "annualized planning costs unscaled; annual flow policy and resource "
             "accounts scaled by optimization_hours/configured_full_year_hours"
@@ -539,15 +633,26 @@ def main() -> None:
             "nonbasic_primal_dual_requested": nonbasic_primal_dual_requested,
             "primary_checkpoint_requested": bool(
                 nonbasic_primal_dual_requested
+                and not args.engineering_barrier_checkpoint_only
                 and (
                     args.export_barrier_checkpoint
                     or optimization_hours > 744
                 )
             ),
+            "engineering_checkpoint_requested": bool(
+                nonbasic_primal_dual_requested
+                and args.engineering_barrier_checkpoint_only
+            ),
             "deferred_crossover_source": (
                 str(args.primal_dual_checkpoint_in)
                 if args.primal_dual_checkpoint_in
                 else None
+            ),
+            "engineering_checkpoint_only": bool(
+                args.engineering_barrier_checkpoint_only
+            ),
+            "engineering_checkpoint_source_explicitly_allowed": bool(
+                args.allow_engineering_barrier_checkpoint
             ),
             "inline_crossover_explicitly_allowed": bool(
                 args.allow_inline_crossover
@@ -555,13 +660,24 @@ def main() -> None:
             "nonbasic_planning_state_explicitly_allowed": bool(
                 args.allow_nonbasic_planning_state
             ),
+            "deferred_crossover_planning_state_explicitly_allowed": bool(
+                args.allow_deferred_crossover_planning_state
+            ),
             "planning_state_policy": (
-                "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
-                if args.allow_nonbasic_planning_state
+                "STAGE_A_ENGINEERING_CHECKPOINT_NEVER_EXPORTS_STATE"
+                if args.engineering_barrier_checkpoint_only
                 else (
-                    "POSTHOC_CROSSOVER_ANALYSIS_DERIVATIVE_NO_STATE"
-                    if args.primal_dual_checkpoint_in
-                    else "DEFAULT_BASIC_OR_NO_STATE"
+                    "ACCEPTED_STAGE_B_BASIC_CAPACITY_STATE"
+                    if args.allow_deferred_crossover_planning_state
+                    else (
+                        "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+                        if args.allow_nonbasic_planning_state
+                        else (
+                            "POSTHOC_CROSSOVER_ANALYSIS_DERIVATIVE_NO_STATE"
+                            if args.primal_dual_checkpoint_in
+                            else "DEFAULT_BASIC_OR_NO_STATE"
+                        )
+                    )
                 )
             ),
         },
@@ -713,6 +829,9 @@ def main() -> None:
             optimization_hours=optimization_hours,
             optimization_start_hour=optimization_start_hour,
             result_use=scope_report["result_use"],
+            allow_engineering_checkpoint=bool(
+                args.allow_engineering_barrier_checkpoint
+            ),
         )
         (output_dir / "primal_dual_start_input.json").write_text(
             json.dumps(primal_dual_start, ensure_ascii=False, indent=2) + "\n",
@@ -858,6 +977,59 @@ def main() -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    engineering_checkpoint_completed = False
+    if (
+        args.engineering_barrier_checkpoint_only
+        and report.get("solution_contract", {}).get("barrier_status_code") == 2
+    ):
+        try:
+            from cispo_model.primal_dual_checkpoint import (
+                CHECKPOINT_DIRECTORY,
+                CHECKPOINT_MANIFEST,
+                export_barrier_primal_dual_checkpoint,
+            )
+
+            engineering_checkpoint = export_barrier_primal_dual_checkpoint(
+                artifacts.model,
+                config,
+                output_dir,
+                solve_report=report,
+                optimization_hours=optimization_hours,
+                optimization_start_hour=optimization_start_hour,
+                result_use=scope_report["result_use"],
+                solution_qc=None,
+                accepted_primary=False,
+                engineering_only=True,
+            )
+            engineering_checkpoint_completed = True
+            report["barrier_checkpoint"] = {
+                "status": engineering_checkpoint["checkpoint_status"],
+                "scientifically_accepted": False,
+                "deferred_crossover_eligible": True,
+                "engineering_shadow_prices_available": True,
+                "path": str(
+                    output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
+                ),
+            }
+            report["run_completion_status"] = (
+                "ENGINEERING_BARRIER_CHECKPOINT_COMPLETE"
+            )
+            # Persist this milestone before any optional downstream export.
+            (output_dir / "solve_report.json").write_text(
+                json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+        except Exception as error:
+            checkpoint_error = {
+                "status": "ENGINEERING_CHECKPOINT_EXPORT_FAILED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+            }
+            (output_dir / "barrier_checkpoint_error.json").write_text(
+                json.dumps(checkpoint_error, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            report["barrier_checkpoint"] = checkpoint_error
     if (
         int(report.get("solver_parameters", {}).get("method", -1)) == 2
         and int(report.get("solver_parameters", {}).get("crossover", 0)) > 0
@@ -909,7 +1081,11 @@ def main() -> None:
             "acceptance_status"
         ) == "PASS"
     )
-    if artifacts.model.SolCount and solver_solution_accepted:
+    if (
+        artifacts.model.SolCount
+        and solver_solution_accepted
+        and not args.engineering_barrier_checkpoint_only
+    ):
         export_master_solution(artifacts, data, output_dir)
         qc = export_operational_solution(artifacts, data, config, output_dir)
         export_result_summary(artifacts, data, config, output_dir)
@@ -925,7 +1101,10 @@ def main() -> None:
         export_state = bool(
             state_export_requested
             and not nonbasic_primal_dual_requested
-            and not args.primal_dual_checkpoint_in
+            and (
+                not args.primal_dual_checkpoint_in
+                or args.allow_deferred_crossover_planning_state
+            )
         )
         if nonbasic_primal_dual_requested and not (
             args.allow_nonbasic_planning_state
@@ -937,9 +1116,21 @@ def main() -> None:
             report["planning_state_export_status"] = (
                 "PENDING_ACCEPTED_BARRIER_CHECKPOINT"
             )
-        if args.primal_dual_checkpoint_in and state_export_requested:
+        if (
+            args.primal_dual_checkpoint_in
+            and state_export_requested
+            and not args.allow_deferred_crossover_planning_state
+        ):
             report["planning_state_export_status"] = (
                 "NOT_EXPORTED_POSTHOC_CROSSOVER_ANALYSIS_DERIVATIVE"
+            )
+        elif (
+            args.primal_dual_checkpoint_in
+            and state_export_requested
+            and args.allow_deferred_crossover_planning_state
+        ):
+            report["planning_state_export_status"] = (
+                "ACCEPTED_STAGE_B_BASIC_CAPACITY_STATE"
             )
         if mga_request is not None:
             report["solver_secondary_objective_value_gw"] = report[
@@ -954,12 +1145,17 @@ def main() -> None:
         report["solution_qc_status"] = qc["status"]
         report["solution_qc_path"] = str(output_dir / "solution_qc.json")
         report["solution_export_status"] = "COMPLETE"
+    elif artifacts.model.SolCount and args.engineering_barrier_checkpoint_only:
+        report["solution_export_status"] = (
+            "SKIPPED_ENGINEERING_BARRIER_CHECKPOINT_ONLY"
+        )
     elif artifacts.model.SolCount:
         report["solution_export_status"] = (
             "SKIPPED_UNACCEPTED_SOLVER_RESULT"
         )
     primary_checkpoint_requested = bool(
         nonbasic_primal_dual_requested
+        and not args.engineering_barrier_checkpoint_only
         and (args.export_barrier_checkpoint or optimization_hours > 744)
     )
     if primary_checkpoint_requested and qc is not None and qc.get("status") == "PASS":
@@ -1097,6 +1293,10 @@ def main() -> None:
         finalize_result_manifest(output_dir, config)
         manifest_valid, _ = validate_result_manifest(output_dir)
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.engineering_barrier_checkpoint_only:
+        if engineering_checkpoint_completed:
+            return
+        raise SystemExit(2)
     if not solver_result_is_accepted(
         report,
         qc,

@@ -153,6 +153,39 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(deferred.raw["numerics"]["crossover_basis"], 1)
         self.assertEqual(deferred.raw["numerics"]["lp_warm_start"], 2)
 
+        stage_a = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_checkpoint_full_year_cloud_v1.json"
+            )
+        )
+        self.assertEqual(stage_a.raw["numerics"]["method"], 2)
+        self.assertEqual(stage_a.raw["numerics"]["threads"], 16)
+        self.assertEqual(stage_a.raw["numerics"]["presolve"], 2)
+        self.assertEqual(stage_a.raw["numerics"]["crossover"], 0)
+        self.assertEqual(stage_a.raw["numerics"]["solution_target"], 1)
+        self.assertEqual(
+            stage_a.raw["numerics"]["barrier_convergence_tolerance"], 1e-9
+        )
+        self.assertEqual(stage_a.raw["numerics"]["aggregate"], 1)
+        self.assertEqual(stage_a.raw["numerics"]["time_limit_seconds"], 604800)
+        self.assertEqual(stage_a.raw["numerics"]["soft_mem_limit_gb"], 600)
+
+        stage_b = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "deferred_crossover2_full_year_cloud_v1.json"
+            )
+        )
+        self.assertEqual(stage_b.raw["numerics"]["method"], 2)
+        self.assertEqual(stage_b.raw["numerics"]["crossover"], 2)
+        self.assertEqual(stage_b.raw["numerics"]["crossover_basis"], 1)
+        self.assertEqual(stage_b.raw["numerics"]["lp_warm_start"], 2)
+        self.assertEqual(stage_b.raw["numerics"]["solution_target"], 0)
+        self.assertEqual(stage_b.raw["numerics"]["aggregate"], 1)
+        self.assertEqual(stage_b.raw["numerics"]["time_limit_seconds"], 604800)
+        self.assertEqual(stage_b.raw["numerics"]["soft_mem_limit_gb"], 600)
+
         tuning_profiles = sorted(profile_path.parent.glob("tuning_barrier_nonbasic_*.json"))
         self.assertEqual(len(tuning_profiles), 8)
         for tuning_profile in tuning_profiles:

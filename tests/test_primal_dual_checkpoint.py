@@ -20,6 +20,8 @@ from cispo_model.planning_state import (
 )
 from cispo_model.primal_dual_checkpoint import (
     CHECKPOINT_DIRECTORY,
+    ENGINEERING_CHECKPOINT_STATUS,
+    PrimalDualCheckpointError,
     apply_primal_dual_crossover_start,
     export_barrier_primal_dual_checkpoint,
     prepare_primal_dual_crossover,
@@ -34,17 +36,25 @@ class FakeModel:
         self.IsMIP = 0
         self.NumVars = 3
         self.NumConstrs = 2
+        self.NumNZs = 4
+        self.Fingerprint = 123
         self.Params = SimpleNamespace(LPWarmStart=-1)
         self.assigned: dict[str, np.ndarray] = {}
 
     def update(self) -> None:
         return None
 
-    def getAttr(self, name: str):
+    def getAttr(self, name: str, objects=None):
         if name == "BarX":
             return [1.0, 2.0, 3.0]
         if name == "BarPi":
             return [-4.0, 5.0]
+        if name == "VarName":
+            return list(objects)
+        if name == "ConstrName":
+            return list(objects)
+        if name == "Sense":
+            return ["=" for _ in objects]
         raise AttributeError(name)
 
     def getVars(self):
@@ -100,6 +110,15 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 )
                 (output / "input_manifest.csv").write_text(
                     "same,input,manifest\n", encoding="utf-8"
+                )
+                (output / "run_environment.json").write_text(
+                    json.dumps(
+                        {
+                            "packages": {"gurobipy": "13.0.2"},
+                            "planning_state_in": None,
+                        }
+                    ),
+                    encoding="utf-8",
                 )
             (source / "run_scope.json").write_text(
                 json.dumps({"result_use": "TEST_ONLY_TRUNCATED_HORIZON"}),
@@ -229,6 +248,122 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     allow_test_only=True,
                 )
             self.assertAlmostEqual(float(loaded.cohorts.capacity_delta.sum()), 1.25)
+
+    def test_engineering_checkpoint_requires_explicit_stage_b_allow(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "source"
+            target = root / "target"
+            source.mkdir()
+            target.mkdir()
+            identity = {
+                "baseline_contract": {"id": "baseline"},
+                "analysis_case": {"id": "analysis"},
+                "scientific_case": {"id": "analysis"},
+                "implementation_bundle": {"sha": "code"},
+                "data_roots": {"root": "data"},
+                "lp_model": {
+                    "variables": 3,
+                    "constraints": 2,
+                    "nonzeros": 4,
+                    "gurobi_fingerprint": 123,
+                },
+            }
+            for output in (source, target):
+                (output / "run_identity.json").write_text(
+                    json.dumps(identity), encoding="utf-8"
+                )
+                (output / "input_manifest.csv").write_text(
+                    "same,input,manifest\n", encoding="utf-8"
+                )
+                (output / "run_environment.json").write_text(
+                    json.dumps(
+                        {
+                            "packages": {"gurobipy": "13.0.2"},
+                            "planning_state_in": None,
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+            (source / "run_scope.json").write_text(
+                json.dumps({"result_use": "SCIENTIFIC_PRODUCTION"}),
+                encoding="utf-8",
+            )
+            solve_report = {
+                "status": "SUBOPTIMAL",
+                "status_code": 13,
+                "runtime_seconds": 10.0,
+                "iteration_counts": {"barrier": 100},
+                "solver_parameters": {
+                    "method": 2,
+                    "crossover": 0,
+                    "solution_target": 1,
+                },
+                "solution_contract": {
+                    "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+                    "acceptance_status": "PENDING_OR_NO_SOLUTION",
+                    "barrier_status_code": 2,
+                },
+                "solution_quality": {"maximum_constraint_violation": 1e-6},
+            }
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                metadata = export_barrier_primal_dual_checkpoint(
+                    FakeModel(),
+                    self.config,
+                    source,
+                    solve_report=solve_report,
+                    optimization_hours=8760,
+                    optimization_start_hour=0,
+                    result_use="SCIENTIFIC_PRODUCTION",
+                    solution_qc=None,
+                    accepted_primary=False,
+                    engineering_only=True,
+                )
+            self.assertEqual(
+                metadata["checkpoint_status"], ENGINEERING_CHECKPOINT_STATUS
+            )
+            self.assertFalse(metadata["scientifically_accepted"])
+            self.assertTrue(metadata["deferred_crossover_eligible"])
+            (source / "solve_report.json").write_text(
+                json.dumps(solve_report), encoding="utf-8"
+            )
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                valid, failures = validate_barrier_primal_dual_checkpoint(
+                    source,
+                    require_result_manifest=False,
+                    allow_engineering=True,
+                )
+                self.assertTrue(valid, failures)
+                with self.assertRaisesRegex(
+                    PrimalDualCheckpointError, "explicit acknowledgement"
+                ):
+                    prepare_primal_dual_crossover(
+                        source,
+                        target,
+                        FakeModel(),
+                        self.config,
+                        optimization_hours=8760,
+                        optimization_start_hour=0,
+                        result_use="SCIENTIFIC_PRODUCTION",
+                    )
+                prepared = prepare_primal_dual_crossover(
+                    source,
+                    target,
+                    FakeModel(),
+                    self.config,
+                    optimization_hours=8760,
+                    optimization_start_hour=0,
+                    result_use="SCIENTIFIC_PRODUCTION",
+                    allow_engineering_checkpoint=True,
+                )
+            self.assertTrue(prepared["engineering_checkpoint_explicitly_allowed"])
+            self.assertIsNone(prepared["source_result_manifest_sha256"])
 
     def test_real_gurobi_accepts_memmapped_pstart_and_dstart(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -1,0 +1,25 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "deferred_crossover2_full_year_cloud_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Stage B cloud full-year exact-LP deferred crossover. It requires a separately validated BarX/BarPi source, explicit engineering-source acknowledgement when applicable, maps complete PStart/DStart through presolve with LPWarmStart=2, and is scientific only after OPTIMAL, strict quality, all hard checks and a valid result manifest.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "lp_warm_start": 2,
+    "solution_target": 0,
+    "feasibility_tolerance": 1e-7,
+    "optimality_tolerance": 1e-7,
+    "barrier_convergence_tolerance": 1e-9,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": 604800,
+    "soft_mem_limit_gb": 600
+  }
+}
