@@ -22,6 +22,7 @@ class SolverProfileTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn('RELEASE="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"', wrapper)
         self.assertNotIn('dirname "$0"', wrapper)
+        self.assertIn('set -a\nsource "$ENV_FILE"\nset +a', wrapper)
         self.assertNotIn("#SBATCH --time", wrapper)
         self.assertIn("#SBATCH --cpus-per-task=96", wrapper)
         self.assertIn("#SBATCH --mem=700G", wrapper)

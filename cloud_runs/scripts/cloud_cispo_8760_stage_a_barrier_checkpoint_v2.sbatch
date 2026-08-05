@@ -29,7 +29,9 @@ PROXY=http://172.16.110.3:8888
 
 test -f "$ENV_FILE"
 # shellcheck disable=SC1090
+set -a
 source "$ENV_FILE"
+set +a
 test -x "$PYTHON"
 test -d "$CISPO_DATA_ROOT"
 test -d "$CISPO_CF_ROOT"
