@@ -1,5 +1,19 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 13:42+08:00 Phase 2 停止：Base 9/12 accepted、2 timeout
+
+- Jan/2050 与 Jun/2060 均在约 `86,400 s` 触发 `TIME_LIMIT`；Crossover 分别耗时
+  `79,706.97/78,531.93 s`，日志为 `Crossover changed status from Optimal to Time Limit`。
+  两根无 QC/result manifest/planning state；Jan/Jun sequence `HARD_FAIL`，Jan/2060 未运行。
+- Oct/2060 严格接受：objective `2,644,370.958385 million CNY`、runtime `18,714.463 s`、
+  Barrier/simplex `207/1,846,030`、peak `20.118 GiB`，contract/QC/58 checks/input/result
+  manifests/Pi 全部 PASS，counterflow 与 storage/V2G overlap 0。Oct 四年 Base sequence PASS。
+- Oct runner 在自动启动 V5 前因 memory PSI avg10 `0.54/0.54` fail-closed 为
+  `RESOURCE_GATE_BLOCKED`；三个窗口 V5 均未启动，也不存在 V5 root。当前所有 runner/
+  solver 已退出，Base 总计 `9 accepted / 2 TIME_LIMIT / 1 not run`。
+- 13:42 available `116,236 MiB`、swap `596/2047 MiB`、实时 `si/so=0/0`、memory/IO PSI 0；
+  ParaCloud 空，server clean `3f123f0`。不 resume 或重标失败根；下一步先做新 profile A/B。
+
 ## 2026-08-05 00:26+08:00 Base 8/12 accepted；两根 Crossover 数值风险
 
 - Oct Base/2050 新增严格接受：`OPTIMAL + contract/QC PASS + 58/58 + Pi + current input +

@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 13:42 Phase 2 停止后的 fail-closed 边界
+
+1. 当前无 Phase 2/CISPO/Gurobi/sequence PID。Jan Base/2050 与 Jun Base/2060 均为
+   `TIME_LIMIT`，无 QC/result manifest/planning state；不得 resume、重标、补 manifest、
+   使用其中间 Barrier/Crossover 解续接或手工跳到 Jan/2060/V5。
+2. Oct Base 四年 sequence 完整 PASS；Oct/2060 已严格复验 58/58、Pi 与双 manifests。
+   Oct V5 没有启动：Base 完成后 resource gate 因 memory PSI avg10 `0.54/0.54` 返回 90，
+   `oct6552_window.stderr=RESOURCE_GATE_BLOCKED`，目标 V5 root 不存在。
+3. 本次失败定位为 Crossover 路径而非内存/build：Jan/Jun Crossover 分别持续约
+   `22.14/21.81 h` 后触发 24 h TimeLimit。后续不得只延长 TimeLimit；先用全新小根比较
+   放宽一级 `FeasibilityTol/OptimalityTol=1e-6` 的候选，保持 physical QC `1e-5`、58 checks、
+   manifests 和宏观结果对照；只有 24 h/168 h/单根 744 h 闭合后才能建立新 Phase 2 roots。
+4. 13:42 服务器 idle，available `116,236 MiB`、swap `596/2047 MiB`、实时 `si/so=0/0`、
+   memory/IO PSI 0，ParaCloud 空；checkout clean `3f123f0`。当前资源恢复不等于自动授权
+   重跑、V5、8760 h、basis/MGA、Crossover=3 或付费云。
+
 ## 2026-08-05 00:26 Phase 2 Base 8/12 与临近 TimeLimit 监控
 
 1. Oct Base/2050 已严格接受，Base 累计 `8/12`。Oct/2050 的 solve/QC/58 checks/input/result

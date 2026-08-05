@@ -12,6 +12,24 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 13:42+08:00：三条 Phase 2 runner 均已退出，当前无 CISPO/Gurobi/sequence
+  进程。Base 终态为 `9/12 accepted + 2 TIME_LIMIT + 1 not run`，V5 `0/12` 未启动。
+  Jan/2050 在 runtime `86,402.390 s`、simplex `1,969,776` 后 `TIME_LIMIT`；Jun/2060 在
+  `86,400.831 s`、simplex `1,984,282` 后同样 `TIME_LIMIT`。两根日志均明确为 Barrier
+  后的 Crossover 将 status 从 Optimal 变为 Time Limit，Crossover 分别耗时
+  `79,706.97/78,531.93 s`；二者均无 `solution_qc.json`、`result_manifest.json` 或
+  accepted planning state，对应 sequence 为 `HARD_FAIL`，Jan/2060 未运行，Jan/Jun V5
+  均未启动。Oct/2060 已严格接受：`OPTIMAL + contract/QC PASS + 58/58 + current input +
+  valid result manifest + Pi`，objective `2,644,370.958385 million CNY`、runtime
+  `18,714.463 s`、Barrier/simplex `207/1,846,030`、peak `20.118 GiB`，counterflow 与
+  storage/V2G overlap 均为零；Oct 四年 Base sequence `PASS`、wrapper exit 0、wall
+  `42:59:34`。但 05:44 自动接续 Oct V5 前资源检查读到 available `96,679,408 KiB`、
+  `si/so=0/0`、memory PSI avg10 `0.54/0.54`，故 fail-closed 为 `RESOURCE_GATE_BLOCKED`，
+  未创建 V5 root。13:42 host 已恢复 available `116,236 MiB`（约 `113.51 GiB`）、swap
+  `596/2047 MiB`、实时 `si/so=0/0`、memory/IO PSI 0，ParaCloud 空队列；server clean
+  `3f123f0`。不得重标两个 TIME_LIMIT 根或把 Barrier 中间解当 accepted 结果；后续须先决定
+  新 solver/profile 与全新根的重跑合同，不能 resume、跳年或直接补 manifest。
+
 - 2026-08-05 00:26+08:00：Phase 2 新增 Oct Base/2050 严格接受，累计 Base `8/12`
   accepted。Oct/2050 为 `OPTIMAL + contract acceptance PASS + strict quality PASS + QC PASS +
   58/58 + current input manifest + valid result manifest + Pi`，objective
@@ -1042,6 +1060,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 Phase 2 Base 部分失败并停止；Oct 四年 Base PASS
+
+- Git/范围：运行身份与服务器 checkout 仍为 clean
+  `3f123f0598e95151e8492f784ca79521569f57f0`；本里程碑仅更新三份状态文档，未修改模型、
+  数据、profile、历史 outputs 或受保护文件，未启动新任务。
+- 命令/证据：SSH 逐根读取 solve/QC/result manifests、sequence reports、Gurobi log tails、
+  wrapper `/usr/bin/time -v`、control stdout/stderr、进程树与资源；用 current-tip validators
+  严格复验 Oct/2060；查询 ParaCloud `squeue -u a8s001819`。
+- 输出/验证：Oct/2060 为 `OPTIMAL + acceptance/QC PASS + 58/58 + Pi + current input +
+  valid result manifest`，使 Oct 四年 Base sequence 完整 `PASS`。Jan/2050 与 Jun/2060
+  均在约 24 h 时由 Crossover `TIME_LIMIT`，缺 QC/result manifest/state；Jan/Jun sequences
+  fail closed。Oct V5 在开始前因 memory PSI 非零被 resource gate 阻止，未创建输出根。
+- 未决问题/精确下一步：当前服务器空闲、资源恢复，但 Phase 2 未完成。先基于本次两根
+  Crossover 失败证据确定新 profile 的最小 A/B：优先测试 `FeasibilityTol/OptimalityTol=1e-6`
+  且保留 58 项 QC 和 `1e-5` 物理阈值，再决定是否测试 `BarConvTol=1e-7`；必须用全新
+  24 h→168 h→744 h 根验证端到端提速和宏观结果稳定性。未经该闭合不得直接 resume
+  失败根、运行 Jan/2060、启动任何 V5/8760 h/basis/MGA/Crossover=3 或付费云。
 
 ### 2026-08-05 Phase 2 Oct/2050 accepted；Jan/2050 与 Jun/2060 数值风险监控
 
