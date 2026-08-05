@@ -1,5 +1,48 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 16:05 Power_curve_V2 v3_qc 负荷更新合同（本地已完成，服务器未部署）
+
+本地权威源：
+
+```text
+D:/codeenv/pycharmproject/National_RL/Power_curve_V2/outputs/
+future_8760_projection_ev_calibrated_v3_qc/tables/
+future_hourly_load_2025_2060_8760.csv.gz
+SHA256 8ed727745afda68b7114b08ea65660392cb374b68f203a6633bbbc9a13af791a
+```
+
+上游含 8 年；National_model 必须继续筛选为 2025/2030/2040/2050/2060。禁止把
+2035/2045/2055 静默加入 `model_years.csv` 或序贯求解。负荷必须整体转换，不能只替换 `ev_gw`：
+新版 EV 年电量较旧输入高 4.219004%，base residual 已同步回算，全国总负荷年电量保持不变。
+
+本地重建顺序：
+
+```powershell
+# 1. 使用 config/model_data_config.json 的新 future_hourly_load，
+#    仅调用 scripts/build_cispo_data_package.py::build_load。
+python scripts/build_flexible_load_envelope_v3.py
+python scripts/build_flexible_load_v4_inputs.py --data-root data
+python scripts/validate_flexible_load_v4_inputs.py --data-root data `
+  --source-manifest data/load/hourly_load_2025_2060.csv.gz `
+  --source-manifest data/load/flexible_load_envelope_v3.manifest.json `
+  --source-manifest config/flexible_load_v4_source_registry.csv `
+  --source-manifest config/flexible_load_v4_source_count_qa.csv `
+  --source-manifest config/flexible_load_v4_central_parameters.csv
+python scripts/build_flexible_load_v5_inputs.py --data-root data
+python scripts/validate_flexible_load_v5_inputs.py --data-root data
+python scripts/smoke_test_data_package.py
+```
+
+验收硬门禁：主表 1,357,800 行；155 个省年组各 8760 h；source→model key 全闭合；最大
+MW→GW 转换误差不高于 `1e-12 GW`；逐时四分量闭合不高于 `1e-9 GW`；legacy 视图必须等于
+四决策年精确子集；V4/V5 manifests 必须直接登记主表 SHA256；data smoke 与相关回归全 PASS；
+`data/output_manifest.csv` 不得有 size/SHA256 mismatch。
+
+截至该本地里程碑，服务器尚未部署。执行部署时：先实时确认服务器 idle/clean；从当前版本化数据根
+复制到全新、明确命名的根，只替换本次 load/flexibility/provenance 文件；设置新 `CISPO_DATA_ROOT`
+后完整运行 readiness、release、V4/V5 validators、data smoke 和新的 1 h/24 h Base--V5 配对门禁。
+不得原地覆盖旧根，不得复用旧 output、planning state、basis 或 result manifest。
+
 ## 2026-08-05 14:50 8760 h 两阶段执行合同（已实现、未授权提交 job）
 
 ### 资源与调度硬门禁

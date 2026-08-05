@@ -217,6 +217,10 @@ def main() -> None:
         ),
         "source_manifests": [
             {
+                "path": "data/load/hourly_load_2025_2060.csv.gz",
+                "sha256": sha256_file(load_path),
+            },
+            {
                 "path": "data/load/flexible_load_envelope_v3.manifest.json",
                 "sha256": sha256_file(upstream_manifest),
             },

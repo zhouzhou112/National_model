@@ -12,6 +12,25 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 16:05+08:00：在本地工作树（基于 Git `d6984b2902aa85a2459935f4c76b6fa5a5623589`）
+  将 `Power_curve_V2` 最新广州逐日质控 EV 重构结果接入 National_model。权威上游为
+  `outputs/future_8760_projection_ev_calibrated_v3_qc/tables/
+  future_hourly_load_2025_2060_8760.csv.gz`，size `93,200,150 bytes`、SHA256
+  `8ed727745afda68b7114b08ea65660392cb374b68f203a6633bbbc9a13af791a`；上游包含
+  2025/2030/2035/2040/2045/2050/2055/2060，模型边界继续只保留
+  2025/2030/2040/2050/2060，未新增优化年份。新的本地 model-ready 主表
+  `data/load/hourly_load_2025_2060.csv.gz` 为 1,357,800 行、SHA256
+  `bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903`；31×5 个省年组均
+  8,760 h，源到模型 1:1 key 闭合，最大 MW→GW 转换误差 `5.68e-14 GW`，四分量闭合误差
+  `1.71e-13 GW`。全国总负荷逐年电量不变，冷热分量不变；EV 年电量相对旧本地输入提高
+  `4.219004%`，base residual 同步回算以维持总负荷。兼容四决策年视图、年度汇总、V3 热舒适
+  包络及 V4/V5 EV availability/mobility 与 sidecar 已重建；V4/V5 manifest 现在直接登记负荷
+  主表 SHA256。独立 data smoke `142/142 PASS`，相关 unittest `23/23 PASS`，最终
+  `data/output_manifest.csv` 无 hash/size mismatch。详细机器可读记录为
+  `data/load/power_curve_v3_qc_update_manifest.json`。本里程碑仅替换本地 `data/`；固定服务器、
+  ParaCloud、既有版本化数据根和历史求解输出均未改变。服务器后续只能新建版本化数据根并重跑
+  readiness/release/短门禁，不得原地覆盖当前生产数据根或重标任何既有结果。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1123,6 +1142,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 Power_curve_V2 v3_qc 负荷与 EV 派生输入本地替换
+
+- Git：未提交工作树，基于 `d6984b2902aa85a2459935f4c76b6fa5a5623589`；没有推送、部署或服务器动作。
+- 范围：把 `Power_curve_V2` 最新广州逐日质控、四城市映射的 8 年 8760 h 结果筛选为既有五个
+  CISPO 模型年；不改变 31 省、北京时间、8760 h、2025 边界或 2030/2040/2050/2060 决策年。
+- 修改文件：`config/model_data_config.json`、`config/flexible_load_v{4,5}_source_registry.csv`、
+  `scripts/build_flexible_load_envelope_v3.py`、`scripts/build_flexible_load_v{4,5}_inputs.py`，以及
+  本交接/规格/状态/runbook 文档。忽略型数据根内替换 `load/hourly_load_{2025,2030}_2060*`、年度
+  汇总、V3 envelope、V4/V5 EV 派生表和 manifests，并新增
+  `data/load/power_curve_v3_qc_update_manifest.json`。用户拥有的 `supplementary_materials/**` 未修改。
+- 命令：调用 `build_cispo_data_package.build_load()` 只重建 load 模块；随后依次执行
+  `build_flexible_load_envelope_v3.py`、V4/V5 builders 与 validators、
+  `smoke_test_data_package.py`，并用 `RL` 环境 `unittest discover` 执行两个灵活负荷测试文件。
+- 验证：源 2,172,480 行、8 个省年集合；模型筛选后 1,357,800 行、155 个省年组、每组 8760 h；
+  source/model keys 全部 `both`，datetime 完全一致，最大转换误差 `5.68e-14 GW`，组件闭合
+  `1.71e-13 GW`，legacy 1,086,240 行与主表四决策年子集完全一致；data smoke `142/142 PASS`，
+  unittest `23/23 PASS`，262 个 output-manifest 条目在最终刷新后无 SHA256/size mismatch。
+- 环境诊断：默认系统 Python 的 pytest 因无 `gurobipy` 在 collection 前退出；`RL` 环境无 pytest
+  包，因此按仓库既有 unittest 接口执行并通过。这两次不是模型/数据测试失败。
+- 未决与下一步：本地数据身份尚未提交或部署。服务器如需采用该负荷，必须复制当前版本化数据根
+  到全新目录，仅替换本里程碑列出的 load/flexibility/provenance 文件，运行完整 readiness、release、
+  input validators 与小尺度 Base/V5 配对门禁；不得覆盖当前服务器数据根或复用已有 output/state/basis。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

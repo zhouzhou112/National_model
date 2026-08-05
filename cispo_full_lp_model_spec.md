@@ -1731,7 +1731,7 @@ lifetime[onshore wind], lifetime[offshore wind], lifetime[PV], lifetime[coal], .
 | UPV/DPV | 同上 | 继续分开。二者共享 PV 容量因子，但保留不同的既有容量、资源上限、成本和接入距离口径；DPV 接入距离可设为 0 |
 | 模型年份 | `data/sets/model_years.csv` | 2025 为固定校准年；2030/2040/2050/2060 为容量扩张决策年 |
 | 小时容量因子 | `data/vre/hourly_cf_index.csv` | 索引 `D:\National_model\Data\Gis\Hourly_cf` 下 2020–2025 Zarr；默认气象年为 2023 |
-| 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW；总负荷与 base residual/heating/cooling/EV 四分量逐时闭合 |
+| 负荷 | `data/load/hourly_load_2025_2060.csv.gz` | 31 省 × 5 模型年 × 8,760 h，北京时间，GW；当前本地版本由 `Power_curve_V2/future_8760_projection_ev_calibrated_v3_qc` 的 8 年上游筛选既有五模型年，采用广州逐日 QC 后的 EV 形状与显式月度单车电量参数；总负荷与 base residual/heating/cooling/EV 四分量逐时闭合，2035/2045/2055 不进入当前模型年集合 |
 | V4 需求柔性 | `data/flexibility/{thermal_hourly_envelope_v4.csv.gz,thermal_parameters_by_province_v4.csv,ev_availability_hourly_v4.csv.gz,ev_mobility_hourly_v4.csv.gz,flex_enablement_cost_v4.csv,flexible_load_v4.manifest.json}` | 独立工程情景输入；由既有冷热/EV 基线和 BAIT `+/-1 C` 包络生成，四规划年 loader/SHA256 闭合；中心/低/高参数是需敏感性的工程假设，不进入 Base |
 | 火电 | `data/thermal/capacity_floor_by_year.csv` | GEM 2025 运行机组扣除逐期退役后的外生容量下界；新增容量由模型决定 |
 | 核电 | `data/thermal/nuclear_capacity_floor_by_year.csv`、`data/thermal/nuclear_capacity_upper_by_year.csv` | GEM committed/pipeline 下界；V0719 全国上界 2030/2040/2050/2060 = 110/205/300/300 GW，省级按管线权重分配 |

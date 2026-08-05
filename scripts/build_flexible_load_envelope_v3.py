@@ -28,7 +28,7 @@ DEFAULT_HISTORY = (
 DEFAULT_FUTURE = (
     DEFAULT_POWER_CURVE_ROOT
     / "outputs"
-    / "future_8760_projection"
+    / "future_8760_projection_ev_calibrated_v3_qc"
     / "tables"
     / "future_hourly_load_2025_2060_8760.csv.gz"
 )

@@ -37,7 +37,7 @@
     "final_point_v2": "D:/codeenv/pycharmproject/National_RL/Gis_process/suitable_area/final_pointV2/tables/final_025deg_points_for_optimization.csv",
     "vre_so2_ccs_points": "D:/codeenv/pycharmproject/National_RL/Gis_process/suitable_area/final/so2_shipping_route_restriction/ccs_storage_025deg_extension/tables/remaining_capacity_025deg_points_so2_restricted_ccs.csv",
     "hourly_cf_root": "D:/National_model/Data/Gis/Hourly_cf",
-    "future_hourly_load": "D:/codeenv/pycharmproject/National_RL/Power_curve_V2/outputs/future_8760_projection/tables/future_hourly_load_2025_2060_8760.csv.gz",
+    "future_hourly_load": "D:/codeenv/pycharmproject/National_RL/Power_curve_V2/outputs/future_8760_projection_ev_calibrated_v3_qc/tables/future_hourly_load_2025_2060_8760.csv.gz",
     "thermal_existing": "D:/codeenv/pycharmproject/National_RL/Gis_process/thermal_power/outputs/thermal_retirement_20260612_official_gem_neacheck/operating_capacity_by_province_type.csv",
     "thermal_retirement": "D:/codeenv/pycharmproject/National_RL/Gis_process/thermal_power/outputs/thermal_retirement_20260612_official_gem_neacheck/retirement_5yr_operating_capacity.csv",
     "nuclear_pipeline": "D:/codeenv/pycharmproject/National_RL/Gis_process/thermal_power/outputs/nuclear_capacity_milestones_expanded_20260612/nuclear_capacity_by_province_milestone_pipeline.csv",

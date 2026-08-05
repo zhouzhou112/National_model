@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 16:05+08:00 本地负荷已切换到 Power_curve_V2 v3_qc；服务器未变
+
+- 本地权威上游现为 `Power_curve_V2/outputs/future_8760_projection_ev_calibrated_v3_qc/tables/
+  future_hourly_load_2025_2060_8760.csv.gz`，SHA256
+  `8ed727745afda68b7114b08ea65660392cb374b68f203a6633bbbc9a13af791a`。
+- 本地 `data/load/hourly_load_2025_2060.csv.gz` 已替换为五模型年转换，SHA256
+  `bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903`；31省×5年×8760 h、
+  key/datetime/单位/组件闭合全部通过。EV 年电量较旧本地输入提高 4.219004%，base residual 回算，
+  全国总负荷年电量和冷热分量不变。
+- `hourly_load_2030_2060.csv.gz`、`annual_load_summary.csv`、V3 envelope、V4/V5 EV 派生输入及
+  manifests 已同步重建；V4/V5 sidecar 均直接绑定新负荷主表 SHA256。data smoke `142/142 PASS`，
+  相关 unittest `23/23 PASS`。
+- 这是 **local-only data milestone**。截至该里程碑时点，固定服务器 checkout、当前版本化数据根、输出和
+  ParaCloud 均未改变；此前 accepted roots 继续绑定旧 input manifest，不能
+  重标为新负荷结果。部署需另建数据根并重新完成 release/readiness/短门禁。
+
 ## 2026-08-05 14:50+08:00 两阶段 8760 h 合同已实现，尚未启动
 
 - implementation `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 fixed
