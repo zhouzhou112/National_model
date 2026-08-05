@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 01:06 Stage A 首次提交失败与 wrapper 修正
+
+job `4139419` 仅可解释为 0 秒 launcher failure：`FAILED 1:0`、`Elapsed/CPUTime=0`、
+`TotalCPU=0.007 s`、`MaxRSS=0`、stdout/stderr 0 bytes；不得计入 8760 h build/solver 样本。
+资源合同本身已由调度器确认：`96 CPU/700G/billing=96/TimeLimit=UNLIMITED`。
+
+禁止从 Slurm 脚本 `$0` 推导 release，因为执行对象是 spool copy。提交 `d857f8d` 后 wrapper 必须：
+
+```bash
+test -n "${SLURM_SUBMIT_DIR:-}"
+RELEASE="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"
+test -d "$RELEASE/repo"
+```
+
+且 `sbatch` 必须从精确的 `$RELEASE/repo` 调用。失败的 `_v1`（CRLF archive）与 `_v2`
+（旧 `$0` resolver/job 4139419）release 只读保留；不得原地修补或重提。使用 fixed-server Linux
+`git archive` 新建 `_v3`，重跑 `bash -n`、profile load 和 `sbatch --test-only` 后才可提交新的唯一
+Stage A。仍不授权 Stage B、下一年、V5 或第二并发求解。
+
 ## 2026-08-06 00:57 2030 Base 8760 h Stage A v2 提交合同
 
 本条取代 2026-08-05 14:50 节中 Stage A v1 的严格容差、7 天 Gurobi/Slurm 时限和 128 CPU

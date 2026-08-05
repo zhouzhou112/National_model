@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 01:06+08:00 首次提交 0 秒失败；未求解，wrapper 已修复
+
+- cloud 无计费 `sbatch --test-only` 接受 `96 CPU/700G`。首次实际 job `4139419` 的
+  `ReqTRES/AllocTRES=cpu=96,mem=700G,billing=96`、`TimeLimit=UNLIMITED`，但在 0 秒、
+  `TotalCPU=0.007 s/MaxRSS=0` 时 `FAILED 1:0`；Slurm stdout/stderr 均为 0 bytes，未进入 Python、
+  模型 build 或 Gurobi，不是数值/模型失败，也没有持续计费。
+- 原因是 Slurm 执行 spool copy，旧 wrapper 从 `$0` 推导 release 根会落到 spool 路径。
+  修复提交 `d857f8d2a0724bc7d89856aea70042977b2f9b0a` 改用提交时固定的
+  `SLURM_SUBMIT_DIR`，并新增静态回归，profile tests `9/9 PASS`。
+- Windows tar 导出的 CRLF `_v1` 与上述 job 所在 `_v2` release 均保留为失败证据；二者不复用。
+  精确下一步是双推送/deploy `d857f8d`，用 fixed-server Linux archive 建立全新 `_v3` release，
+  再次 `bash -n + sbatch --test-only` 后仅重提一个 Stage A。
+
 ## 2026-08-06 00:57+08:00 2030 Base 8760 h Stage A v2 已实现，待部署提交
 
 - 实现提交 `6f0b1f7286a5ba479eabff3df2b14c2f8cf6bbb6` 新增

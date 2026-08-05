@@ -59,6 +59,15 @@ This is the repository's single handoff document for work continued across Codex
   尚未提交 job；精确下一步为双推送本合同、clean 部署、建立新不可变 cloud release，执行
   `sbatch --test-only` 后只提交一个 Stage A 并核对开始阶段与实际 billing TRES。
 
+- 2026-08-06 01:06+08:00：无计费调度预检已接受 `96 CPU/700G`；首次实际 job `4139419`
+  显示 `billing=96/TimeLimit=UNLIMITED`，但在 `Elapsed/CPUTime=0`、`TotalCPU=0.007 s`、
+  `MaxRSS=0` 时以 `FAILED 1:0` 退出，stdout/stderr 均为 0 bytes，未进入 Python/model build/Gurobi。
+  原因是 Slurm 运行脚本 spool copy，不能用 `$0` 推导 immutable release。修复提交
+  `d857f8d2a0724bc7d89856aea70042977b2f9b0a` 改为从 `SLURM_SUBMIT_DIR` 的父目录解析 release，
+  并加入静态 wrapper 回归；profile tests `9/9 PASS`。CRLF `_v1` 与旧 resolver `_v2` cloud
+  releases 均保留且禁止复用。精确下一步是双推送/deploy 修复，使用 fixed-server Linux archive
+  建全新 `_v3`，再跑 `bash -n + sbatch --test-only` 后只重提一个 Stage A。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1233,6 +1242,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - 未决/下一步：本条仍是提交前冻结点。先双推送/部署精确 tip，建立只读的新 cloud release；
   用不启动 job 的 `sbatch --test-only` 审核 96 CPU/700G，再提交单个 Stage A。禁止自动 Stage B、
   2040/V5、并发第二求解或将工程 `BarPi` 当论文价格。
+
+### 2026-08-06 Stage A job 4139419 的 0 秒 launcher failure 与修复
+
+- 证据：ParaCloud `scontrol/sacct` 为 `FAILED 1:0`、0 秒 elapsed/CPUTime、`TotalCPU=0.007 s`、
+  `MaxRSS=0`；资源为 `Req/Alloc cpu=96,mem=700G,billing=96`，无 wall time。control 下两份 Slurm
+  日志都是 0 bytes，output root 未创建，故没有模型构建、求解或有效 8760 h 数据。
+- 原因/修复：Slurm 将脚本复制到 spool 后执行，`dirname "$0"` 不再指向 release。提交
+  `d857f8d2a0724bc7d89856aea70042977b2f9b0a` 使用 `SLURM_SUBMIT_DIR`，并测试无 `#SBATCH --time`、
+  保持 96 CPU/700G 且禁止 `$0` resolver；targeted `9/9 PASS`。
+- 未决/下一步：失败 releases/job 全部只读保留。双推送/clean deploy 后用 Linux archive 建 `_v3`；
+  只有其 `bash -n`、profile load、调度预检与全新 roots 通过时才重提唯一 Stage A。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
