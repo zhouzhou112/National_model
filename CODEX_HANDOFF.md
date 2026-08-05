@@ -68,6 +68,13 @@ This is the repository's single handoff document for work continued across Codex
   releases 均保留且禁止复用。精确下一步是双推送/deploy 修复，使用 fixed-server Linux archive
   建全新 `_v3`，再跑 `bash -n + sbatch --test-only` 后只重提一个 Stage A。
 
+- 2026-08-06 01:10+08:00：第二次 job `4139479` 已通过 Stage A profile preflight，但 `.env`
+  普通赋值未 export 给 runner 子进程，因此在 provenance 门禁前以全部 data inputs missing 退出。
+  该 job 仅 5 秒；runner `1.09 s`、peak `83,900 KiB`、swap 0，无 LP build/Gurobi/telemetry。
+  修复提交 `b5cad0dee02f0f2ac7c8368b778f68dde0796826` 在 source 前后使用 `set -a/set +a`，
+  并新增静态断言，profile suite `9/9 PASS`。前三个 cloud releases 与两个 job 均保留为失败证据；
+  精确下一步为双推送/deploy、新建 Linux archive `_v4`、预检后仅重提一个 Stage A。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1253,6 +1260,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   保持 96 CPU/700G 且禁止 `$0` resolver；targeted `9/9 PASS`。
 - 未决/下一步：失败 releases/job 全部只读保留。双推送/clean deploy 后用 Linux archive 建 `_v3`；
   只有其 `bash -n`、profile load、调度预检与全新 roots 通过时才重提唯一 Stage A。
+
+### 2026-08-06 Stage A job 4139479 的环境继承 fail-fast 与修复
+
+- 证据：Slurm 5 秒；profile preflight PASS；runner 在 `write_run_provenance` 前报告 data roots 未传入，
+  `1.09 s/83,900 KiB/0 swap/exit 1`，没有 model build、Gurobi log、telemetry 或 solver output。
+- 修复：`b5cad0dee02f0f2ac7c8368b778f68dde0796826` 用 `set -a/source/set +a` 将 manifest 中的
+  `PYTHON/GUROBI_HOME/CISPO_*_ROOT` 导出到子进程；静态 profile tests `9/9 PASS`。
+- 下一步：失败 root/release 不复用；双推送、clean deploy 后建立 `_v4` Linux release，完成
+  syntax/LF/hash/queue/test-only 预检，再提交唯一 Stage A。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 01:10 Stage A 环境变量导出修正
+
+job `4139479` 只完成 profile preflight；在 provenance 门禁前报告全部 data inputs missing。
+`/usr/bin/time` 为 `1.09 s/83,900 KiB/0 swap/exit 1`，无 LP build、solver telemetry 或 Gurobi log，
+不得作为 8760 h 求解样本。原因是 `.env` 中的普通赋值没有自动继承到子 Python。
+
+从 `b5cad0d` 起必须按以下方式加载，且静态测试要锁定三行相邻：
+
+```bash
+set -a
+source "$ENV_FILE"
+set +a
+```
+
+失败 `_v3`/job `4139479` 不得复用 output root。只允许从 clean `b5cad0d` 后续文档 tip 的 Linux
+archive 新建 `_v4` release，再做 `bash -n`、LF、manifest、queue 与 `sbatch --test-only` 检查。
+Stage B/下一年/V5 仍未授权。
+
 ## 2026-08-06 01:06 Stage A 首次提交失败与 wrapper 修正
 
 job `4139419` 仅可解释为 0 秒 launcher failure：`FAILED 1:0`、`Elapsed/CPUTime=0`、

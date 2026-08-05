@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 01:10+08:00 第二次提交在 provenance 前 fail-fast；环境导出已修复
+
+- job `4139479` 先通过 `STAGE_A_PROFILE_PREFLIGHT_PASS`，随后因四个 `CISPO_*_ROOT` 仅被
+  shell `source`、未 export 给子 Python 而在 `write_run_provenance` 前退出。Slurm elapsed 5 秒，
+  runner wall `1.09 s`、peak RSS `83,900 KiB`、swap 0；没有 LP build、Gurobi log/telemetry 或求解。
+- 修复提交 `b5cad0dee02f0f2ac7c8368b778f68dde0796826` 使用 `set -a/source/set +a`，并把该导出
+  合同加入 wrapper 静态测试；profile suite 继续 `9/9 PASS`。
+- job `4139419/4139479` 与 cloud `_v1/_v2/_v3` 均为只读失败证据，不得重提或补写结果。
+  下一步是双推送/deploy `b5cad0d`，以 Linux archive 创建 `_v4`，重复语法/调度预检后只提交
+  一个全新 Stage A。
+
 ## 2026-08-06 01:06+08:00 首次提交 0 秒失败；未求解，wrapper 已修复
 
 - cloud 无计费 `sbatch --test-only` 接受 `96 CPU/700G`。首次实际 job `4139419` 的
