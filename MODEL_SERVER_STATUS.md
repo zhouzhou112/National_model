@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 20:35+08:00 Power_curve v3_qc 已部署 fixed server 并同步 ParaCloud
+
+- fixed server clean implementation HEAD `3cb3939197c3915a5a679a15c9a42e651c320534`；新数据根
+  `/data/zz2/National_model/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1` 为 78 files、
+  127 MiB，tree SHA256 `4e5ba9c5057ff18a2c7267395d69ce292b8f5347453dc57f9dcd892af45886e0`。
+  旧生产根与历史 outputs 未改。
+- data smoke `142/142 PASS`，完整 unittest `178/178 PASS`，release/readiness/V4/V5 全 PASS。
+  首次 v1 smoke 暴露旧精简根缺 16 个当前 QA/support tables，失败记录保留；v2 全闭合。
+- 全新四年 Base/V5 1 h 与 24 h 共 16 roots 全部 `ACCEPTED`；两份 A/B audit PASS，无 basis、
+  无并发、无 swap，且全部为 `TEST_ONLY_TRUNCATED_HORIZON`。
+- ParaCloud 有效 file release 为
+  `$HOME/National_model_cloud/20260805_power_curve_v3_qc_3cb3939_v2`，5.5 GiB；code、model-ready、
+  CF、hydro、wave 的 archive/tree hashes 全闭合。队列为空、未提交 cloud job。raw GRFR 8.3 GiB
+  未复制，故 cloud `--require-raw-grfr` readiness 未执行；无 `_v2` 的 sibling 为无效 clone 尝试。
+- 当前无 fixed-server CISPO/Gurobi process；本任务不授权 168/744/8760 h 或付费云求解。
+
 ## 2026-08-05 16:05+08:00 本地负荷已切换到 Power_curve_V2 v3_qc；服务器未变
 
 - 本地权威上游现为 `Power_curve_V2/outputs/future_8760_projection_ev_calibrated_v3_qc/tables/

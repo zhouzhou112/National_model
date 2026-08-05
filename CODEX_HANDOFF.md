@@ -31,6 +31,21 @@ This is the repository's single handoff document for work continued across Codex
   ParaCloud、既有版本化数据根和历史求解输出均未改变。服务器后续只能新建版本化数据根并重跑
   readiness/release/短门禁，不得原地覆盖当前生产数据根或重标任何既有结果。
 
+- 2026-08-05 20:35+08:00：上述 Power_curve v3_qc 身份已完成本地、fixed server 与 ParaCloud
+  文件级同步。实现/合同提交为 `d63a2513650b1075ba124d188f7e5842db0920a7` /
+  `3cb3939197c3915a5a679a15c9a42e651c320534`，均已双推送；fixed server clean checkout 为
+  `3cb3939`。新数据根
+  `/data/zz2/National_model/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1` 为 78 files、
+  tree SHA256 `4e5ba9c5057ff18a2c7267395d69ce292b8f5347453dc57f9dcd892af45886e0`；
+  release/readiness/V4/V5/smoke 全 PASS，完整 unittest `178/178 PASS`。全新 summer hour 3960
+  Base/V5 1 h、24 h 四年序列共 16 个年度根全部 `ACCEPTED`，两份 A/B audit PASS；全部仍是
+  `TEST_ONLY_TRUNCATED_HORIZON`。ParaCloud 有效发布为
+  `$HOME/National_model_cloud/20260805_power_curve_v3_qc_3cb3939_v2`，model-ready/CF/hydro/wave
+  解包 tree hashes 与 fixed server 完全相同，队列为空且没有提交 cloud job。云端未复制未变化的
+  8.3 GiB raw GRFR provenance root，因此尚不能宣称通过 `--require-raw-grfr` readiness；无 `_v2`
+  的 sibling 是保留的失败 GitHub clone，不可使用。旧数据根、旧 outputs/state/basis 及用户的
+  `supplementary_materials/**` 改动均未覆盖或纳入本次部署。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1165,6 +1180,28 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - 未决与下一步：本地数据身份尚未提交或部署。服务器如需采用该负荷，必须复制当前版本化数据根
   到全新目录，仅替换本里程碑列出的 load/flexibility/provenance 文件，运行完整 readiness、release、
   input validators 与小尺度 Base/V5 配对门禁；不得覆盖当前服务器数据根或复用已有 output/state/basis。
+
+### 2026-08-05 Power_curve v3_qc 三端同步与短门禁
+
+- Git：`d63a251` 更新来源与 V4/V5 直接负荷哈希，`3cb3939` 新增
+  `release_contract_v0805_power_curve_v3_qc.json`；历史 v0729/v0730 合同未改写。两提交双推送并
+  fast-forward fixed server；暂存排除了并发的 Module 06 与其余 `supplementary_materials/**` 改动。
+- fixed server：新建 78-file 版本根，不覆盖旧生产根。首次 smoke 对继承的 62-file 精简根
+  fail-closed，缺少的 16 个现行 QA/support tables 补入新根后，v2 deployment 下 release、readiness、
+  V4/V5、smoke、Gurobi full-license 与 unittest `178/178` 全 PASS；失败 v1 证据保留。
+- 门禁：在全新 `outputs/gates_20260805_power_curve_v3_qc_3cb3939_v1` 串行运行四年 Base/V5
+  1 h、24 h。16 roots 均 `ACCEPTED + QC PASS + current input + valid result manifest`；sequence
+  wall/peak RSS/swap 依次为 `2:56.78/0.516 GiB/0`、`3:03.53/0.559 GiB/0`、
+  `7:03.44/0.825 GiB/0`、`7:39.20/0.861 GiB/0`。A/B JSON SHA256 为
+  `f052f2aa...`（1 h）与 `bd3bd632...`（24 h）。不得将截断结果解释为年度科学价值。
+- cloud：有效 release 为 `$HOME/National_model_cloud/20260805_power_curve_v3_qc_3cb3939_v2`，
+  5.5 GiB；代码 `git archive` 与三个数据 tar 均经 SHA256 验收，四个解包 tree hashes 与 fixed
+  server 相同。Python 3.10.20 py_compile PASS，队列为空，未提交 compute/WLS/solver job。旧 cloud
+  hydro 哈希相同而复用；旧 CF 文件数仅为当前一半，故未复用。raw GRFR 8.3 GiB 未同步是明确限制。
+- 证据：fixed server 的 `run_control/deployment_20260805_power_curve_v3_qc_3cb3939_v2`、
+  `run_control/gates_20260805_power_curve_v3_qc_3cb3939_v1`；cloud 的
+  `manifests/cloud_release_manifest.json`。下一步若需云求解，须独立授权并决定是否补齐 raw GRFR；
+  本任务未启动 168/744/8760 h。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

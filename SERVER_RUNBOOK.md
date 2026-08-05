@@ -1,5 +1,34 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 20:35 Power_curve v3_qc 当前部署合同
+
+fixed server 当前根：
+
+```bash
+export CISPO_DATA_ROOT=/data/zz2/National_model/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1
+export CISPO_CF_ROOT=/data/zz2/National_model/data/hourly_cf
+export CISPO_HYDRO_ROOT=/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse
+export CISPO_RAW_GRFR_ROOT=/data/zz2/National_model/data/grfr_raw_2019
+export CISPO_WAVE_ROOT=/data/zz2/National_model/data/wave_energy_20260727
+PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
+```
+
+必须使用 `config/release_contract_v0805_power_curve_v3_qc.json`；旧 v0729/v0730 contracts 是历史
+身份。已验收证据根：
+
+```text
+/data/zz2/National_model/run_control/deployment_20260805_power_curve_v3_qc_3cb3939_v2
+/data/zz2/National_model/run_control/gates_20260805_power_curve_v3_qc_3cb3939_v1
+/data/zz2/National_model/outputs/gates_20260805_power_curve_v3_qc_3cb3939_v1
+```
+
+ParaCloud 有效文件发布为
+`$HOME/National_model_cloud/20260805_power_curve_v3_qc_3cb3939_v2`；环境路径与完整哈希见
+`manifests/{cloud_environment_paths.env,cloud_release_manifest.json}`。云端未提交 compute job，且未
+同步 8.3 GiB raw GRFR；未来若要求 `--require-raw-grfr` 必须先版本化补齐。无 `_v2` 的 sibling
+是失败 clone，不得运行。下一步长门禁仍需独立授权；禁止复用 test-only states、旧 outputs/basis，
+或把 1 h/24 h 成本差解释为年度结果。
+
 ## 2026-08-05 16:05 Power_curve_V2 v3_qc 负荷更新合同（本地已完成，服务器未部署）
 
 本地权威源：
