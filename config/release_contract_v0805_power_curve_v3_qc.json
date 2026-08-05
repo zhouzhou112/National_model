@@ -1,0 +1,71 @@
+{
+  "contract_version": "national_model_release_v0805_power_curve_v3_qc",
+  "inherits": "config/release_contract_v0730_v5.json",
+  "release_status": "POWER_CURVE_V3_QC_CANDIDATE_REQUIRES_FIXED_SERVER_BASE_V5_SHORT_GATES",
+  "external_data_files_additional": [
+    {
+      "path": "source_manifest.csv",
+      "sha256": "4d2601f9c62c01e5ebf42568ca4803ae2243a31e182b2c0e03eb9846008324e2"
+    },
+    {
+      "path": "load/hourly_load_2025_2060.csv.gz",
+      "sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+    },
+    {
+      "path": "load/flexible_load_envelope_v3.csv.gz",
+      "sha256": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+    },
+    {
+      "path": "load/flexible_load_envelope_v3.manifest.json",
+      "sha256": "966bf1dff45bf96a2b4e94b474d74389e980def61030088a570c84e67e3658a4"
+    },
+    {
+      "path": "load/power_curve_v3_qc_update_manifest.json",
+      "sha256": "d4c96bcf8321f9aee6aea408da90b77864c6cb8edef2fd08fc4e0be0c22e5de4"
+    },
+    {
+      "path": "flexibility/ev_availability_hourly_v4.csv.gz",
+      "sha256": "58c5680b9113ea6f61b0630e020d31c2c84de927d44da95f38f0d4fa69cb354b"
+    },
+    {
+      "path": "flexibility/ev_mobility_hourly_v4.csv.gz",
+      "sha256": "f28123d9f8be53ecd23a2e859601452493e780c8407da049d61c26197d6ae456"
+    },
+    {
+      "path": "flexibility/flexible_load_v4.manifest.json",
+      "sha256": "6a663d1247ef61eb58af87075fba545a244244eea03a5395efaf74712faae552"
+    },
+    {
+      "path": "flexibility/ev_availability_hourly_v5.csv.gz",
+      "sha256": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422"
+    },
+    {
+      "path": "flexibility/ev_mobility_hourly_v5.csv.gz",
+      "sha256": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6"
+    },
+    {
+      "path": "flexibility/flexible_load_v5.manifest.json",
+      "sha256": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba"
+    }
+  ],
+  "gate_policy": {
+    "local_required": [
+      "load_key_datetime_unit_component_closure",
+      "full_unittest",
+      "v4_v5_parameter_and_input_audit"
+    ],
+    "fixed_server_required_before_long_gate": [
+      "release_readiness_and_full_unittest",
+      "base_v5_1h_24h_closed_manifest_ab"
+    ],
+    "fixed_server_next": "re-evaluate longer Base/V5 engineering gates only after the new load identity passes matched 1h/24h gates",
+    "forbidden": [
+      "reuse_old_output_or_planning_state",
+      "fixed_server_8760h",
+      "paid_cloud_solve_without_separate_authorization",
+      "concurrent_second_solve",
+      "basis_gate",
+      "crossover_3"
+    ]
+  }
+}

@@ -21,7 +21,9 @@ from scripts.validate_provincial_aggregate_hydro_inputs import (  # noqa: E402
 )
 
 
-DEFAULT_CONTRACT = PROJECT_ROOT / "config" / "release_contract_v0730_v5.json"
+DEFAULT_CONTRACT = (
+    PROJECT_ROOT / "config" / "release_contract_v0805_power_curve_v3_qc.json"
+)
 
 
 def _sha256(path: Path) -> str:
