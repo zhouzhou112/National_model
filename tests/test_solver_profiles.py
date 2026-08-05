@@ -171,6 +171,32 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(stage_a.raw["numerics"]["time_limit_seconds"], 604800)
         self.assertEqual(stage_a.raw["numerics"]["soft_mem_limit_gb"], 600)
 
+        stage_a_v2 = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_checkpoint_full_year_cloud_v2.json"
+            )
+        )
+        self.assertEqual(stage_a_v2.raw["numerics"]["method"], 2)
+        self.assertEqual(stage_a_v2.raw["numerics"]["threads"], 16)
+        self.assertEqual(stage_a_v2.raw["numerics"]["crossover"], 0)
+        self.assertEqual(stage_a_v2.raw["numerics"]["solution_target"], 1)
+        self.assertEqual(
+            stage_a_v2.raw["numerics"]["barrier_convergence_tolerance"],
+            1e-8,
+        )
+        self.assertEqual(
+            stage_a_v2.raw["numerics"]["feasibility_tolerance"], 1e-6
+        )
+        self.assertEqual(
+            stage_a_v2.raw["numerics"]["optimality_tolerance"], 1e-6
+        )
+        self.assertEqual(
+            stage_a_v2.raw["numerics"]["markowitz_tolerance"], 0.01
+        )
+        self.assertIsNone(stage_a_v2.raw["numerics"]["time_limit_seconds"])
+        self.assertEqual(stage_a_v2.raw["numerics"]["soft_mem_limit_gb"], 600)
+
         stage_b = load_model_config(
             solver_path=(
                 profile_path.parent
@@ -185,6 +211,23 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(stage_b.raw["numerics"]["aggregate"], 1)
         self.assertEqual(stage_b.raw["numerics"]["time_limit_seconds"], 604800)
         self.assertEqual(stage_b.raw["numerics"]["soft_mem_limit_gb"], 600)
+
+        stage_b_v2 = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "deferred_crossover2_full_year_cloud_v2.json"
+            )
+        )
+        self.assertEqual(stage_b_v2.raw["numerics"]["crossover"], 2)
+        self.assertEqual(stage_b_v2.raw["numerics"]["crossover_basis"], 1)
+        self.assertEqual(stage_b_v2.raw["numerics"]["lp_warm_start"], 2)
+        self.assertEqual(
+            stage_b_v2.raw["numerics"]["feasibility_tolerance"], 1e-6
+        )
+        self.assertEqual(
+            stage_b_v2.raw["numerics"]["optimality_tolerance"], 1e-6
+        )
+        self.assertIsNone(stage_b_v2.raw["numerics"]["time_limit_seconds"])
 
         tuning_profiles = sorted(profile_path.parent.glob("tuning_barrier_nonbasic_*.json"))
         self.assertEqual(len(tuning_profiles), 8)

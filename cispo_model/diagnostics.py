@@ -215,7 +215,11 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         # local installations require the explicit logical-CPU count.
         configured_threads = int(os.cpu_count() or 1)
     model.Params.Threads = configured_threads
-    model.Params.TimeLimit = float(numerics["time_limit_seconds"])
+    # A null profile value deliberately leaves Gurobi's default unlimited
+    # TimeLimit in place.  This is distinct from choosing a very large but
+    # still terminating wall-clock budget for a costly full-year solve.
+    if numerics.get("time_limit_seconds") is not None:
+        model.Params.TimeLimit = float(numerics["time_limit_seconds"])
     model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
     model.Params.OutputFlag = int(numerics["output_flag"])
     model.Params.DualReductions = int(numerics.get("dual_reductions", 1))
@@ -466,6 +470,12 @@ def solve_and_report(
             "dual_reductions": int(model.Params.DualReductions),
             "inf_unbd_info": int(model.Params.InfUnbdInfo),
             "bar_iter_limit": int(model.Params.BarIterLimit),
+            "time_limit_seconds": (
+                None
+                if config.raw["numerics"].get("time_limit_seconds") is None
+                else float(model.Params.TimeLimit)
+            ),
+            "soft_mem_limit_gb": float(model.Params.SoftMemLimit),
         },
         "warm_start": warm_start,
         "primal_dual_start": primal_dual_start,

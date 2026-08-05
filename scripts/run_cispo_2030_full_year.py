@@ -978,9 +978,14 @@ def main() -> None:
         encoding="utf-8",
     )
     engineering_checkpoint_completed = False
-    if (
-        args.engineering_barrier_checkpoint_only
-        and report.get("solution_contract", {}).get("barrier_status_code") == 2
+    barrier_status_code = report.get("solution_contract", {}).get(
+        "barrier_status_code"
+    )
+    barrier_iterations = int(
+        report.get("iteration_counts", {}).get("barrier", 0)
+    )
+    if args.engineering_barrier_checkpoint_only and (
+        barrier_status_code == 2 or barrier_iterations > 0
     ):
         try:
             from cispo_model.primal_dual_checkpoint import (
@@ -989,6 +994,7 @@ def main() -> None:
                 export_barrier_primal_dual_checkpoint,
             )
 
+            complete_barrier = barrier_status_code == 2
             engineering_checkpoint = export_barrier_primal_dual_checkpoint(
                 artifacts.model,
                 config,
@@ -999,13 +1005,14 @@ def main() -> None:
                 result_use=scope_report["result_use"],
                 solution_qc=None,
                 accepted_primary=False,
-                engineering_only=True,
+                engineering_only=complete_barrier,
+                allow_incomplete_barrier=not complete_barrier,
             )
-            engineering_checkpoint_completed = True
+            engineering_checkpoint_completed = complete_barrier
             report["barrier_checkpoint"] = {
                 "status": engineering_checkpoint["checkpoint_status"],
                 "scientifically_accepted": False,
-                "deferred_crossover_eligible": True,
+                "deferred_crossover_eligible": complete_barrier,
                 "engineering_shadow_prices_available": True,
                 "path": str(
                     output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
@@ -1013,6 +1020,8 @@ def main() -> None:
             }
             report["run_completion_status"] = (
                 "ENGINEERING_BARRIER_CHECKPOINT_COMPLETE"
+                if complete_barrier
+                else "INCOMPLETE_BARRIER_RECOVERY_SAVED"
             )
             # Persist this milestone before any optional downstream export.
             (output_dir / "solve_report.json").write_text(

@@ -944,6 +944,14 @@ class ModelConfig:
             raise ValueError("numerics.inf_unbd_info must be 0 or 1")
         if int(numerics.get("bar_iter_limit", 1000)) < 0:
             raise ValueError("numerics.bar_iter_limit must be nonnegative")
+        time_limit = numerics.get("time_limit_seconds")
+        if time_limit is not None and float(time_limit) <= 0.0:
+            raise ValueError(
+                "numerics.time_limit_seconds must be null (no explicit solver "
+                "limit) or a positive number"
+            )
+        if float(numerics.get("soft_mem_limit_gb", 0.0)) <= 0.0:
+            raise ValueError("numerics.soft_mem_limit_gb must be positive")
         formulation = self.raw.get("formulation", {})
         if formulation.get("annual_emissions_accounting") not in {
             "national_dense_v1",

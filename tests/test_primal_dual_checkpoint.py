@@ -22,6 +22,7 @@ from cispo_model.primal_dual_checkpoint import (
     CHECKPOINT_DIRECTORY,
     ENGINEERING_CHECKPOINT_STATUS,
     PrimalDualCheckpointError,
+    RECOVERY_CHECKPOINT_STATUS,
     apply_primal_dual_crossover_start,
     export_barrier_primal_dual_checkpoint,
     prepare_primal_dual_crossover,
@@ -364,6 +365,85 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 )
             self.assertTrue(prepared["engineering_checkpoint_explicitly_allowed"])
             self.assertIsNone(prepared["source_result_manifest_sha256"])
+
+    def test_incomplete_barrier_vector_export_is_recovery_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            identity = {
+                "baseline_contract": {"id": "baseline"},
+                "analysis_case": {"id": "analysis"},
+                "scientific_case": {"id": "analysis"},
+                "implementation_bundle": {"sha": "code"},
+                "data_roots": {"root": "data"},
+                "lp_model": {
+                    "variables": 3,
+                    "constraints": 2,
+                    "nonzeros": 4,
+                    "gurobi_fingerprint": 123,
+                },
+            }
+            (source / "run_identity.json").write_text(
+                json.dumps(identity), encoding="utf-8"
+            )
+            (source / "input_manifest.csv").write_text(
+                "same,input,manifest\n", encoding="utf-8"
+            )
+            (source / "run_environment.json").write_text(
+                json.dumps(
+                    {
+                        "packages": {"gurobipy": "13.0.2"},
+                        "planning_state_in": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (source / "run_scope.json").write_text(
+                json.dumps({"result_use": "SCIENTIFIC_PRODUCTION"}),
+                encoding="utf-8",
+            )
+            solve_report = {
+                "status": "INTERRUPTED",
+                "status_code": 11,
+                "runtime_seconds": 10.0,
+                "iteration_counts": {"barrier": 7},
+                "solver_parameters": {
+                    "method": 2,
+                    "crossover": 0,
+                    "solution_target": 1,
+                },
+                "solution_contract": {
+                    "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+                    "acceptance_status": "PENDING_OR_NO_SOLUTION",
+                    "barrier_status_code": 11,
+                },
+            }
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                metadata = export_barrier_primal_dual_checkpoint(
+                    FakeModel(),
+                    self.config,
+                    source,
+                    solve_report=solve_report,
+                    optimization_hours=8760,
+                    optimization_start_hour=0,
+                    result_use="SCIENTIFIC_PRODUCTION",
+                    solution_qc=None,
+                    accepted_primary=False,
+                    allow_incomplete_barrier=True,
+                )
+            self.assertEqual(
+                metadata["checkpoint_status"], RECOVERY_CHECKPOINT_STATUS
+            )
+            self.assertFalse(metadata["scientifically_accepted"])
+            self.assertFalse(metadata["deferred_crossover_eligible"])
+            self.assertTrue(
+                (source / CHECKPOINT_DIRECTORY / "primal_barx.npy").is_file()
+            )
+            self.assertTrue(
+                (source / CHECKPOINT_DIRECTORY / "dual_barpi.npy").is_file()
+            )
 
     def test_real_gurobi_accepts_memmapped_pstart_and_dstart(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

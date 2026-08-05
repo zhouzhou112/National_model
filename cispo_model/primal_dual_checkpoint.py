@@ -179,6 +179,7 @@ def export_barrier_primal_dual_checkpoint(
     solution_qc: dict[str, Any] | None,
     accepted_primary: bool,
     engineering_only: bool = False,
+    allow_incomplete_barrier: bool = False,
 ) -> dict[str, Any]:
     """Export full ordered ``BarX``/``BarPi`` vectors plus strict identity.
 
@@ -188,15 +189,19 @@ def export_barrier_primal_dual_checkpoint(
     authorized deferred crossover. A checkpoint captured after an inline-
     crossover failure remains recovery-only and cannot enter that workflow.
     """
-    if accepted_primary and engineering_only:
+    if sum(bool(value) for value in (
+        accepted_primary,
+        engineering_only,
+        allow_incomplete_barrier,
+    )) > 1:
         raise PrimalDualCheckpointError(
-            "A checkpoint cannot be both accepted-primary and engineering-only"
+            "A checkpoint can have only one accepted, engineering or incomplete mode"
         )
     if int(getattr(model, "IsMIP", 0)):
         raise PrimalDualCheckpointError("Barrier checkpoints require a continuous LP")
     contract = solve_report.get("solution_contract", {})
     barrier_status = contract.get("barrier_status_code")
-    if barrier_status not in (None, 2):
+    if barrier_status not in (None, 2) and not allow_incomplete_barrier:
         raise PrimalDualCheckpointError(
             f"Barrier status {barrier_status!r} is not OPTIMAL"
         )
@@ -218,11 +223,11 @@ def export_barrier_primal_dual_checkpoint(
             raise PrimalDualCheckpointError(
                 "Primary checkpoint requires all solution QC hard checks to pass"
             )
-    elif barrier_status != 2:
+    elif not allow_incomplete_barrier and barrier_status != 2:
         raise PrimalDualCheckpointError(
             "Non-primary checkpoint requires Gurobi 13 BarStatus=OPTIMAL"
         )
-    if engineering_only:
+    if engineering_only or allow_incomplete_barrier:
         parameters = solve_report.get("solver_parameters", {})
         if not (
             int(parameters.get("method", -1)) == 2
@@ -230,9 +235,15 @@ def export_barrier_primal_dual_checkpoint(
             and int(parameters.get("solution_target", -1)) == 1
         ):
             raise PrimalDualCheckpointError(
-                "Engineering checkpoint requires Method=2, Crossover=0, "
+                "Barrier checkpoint requires Method=2, Crossover=0, "
                 "SolutionTarget=1"
             )
+    if allow_incomplete_barrier and int(
+        solve_report.get("iteration_counts", {}).get("barrier", 0)
+    ) <= 0:
+        raise PrimalDualCheckpointError(
+            "Incomplete Barrier recovery requires at least one Barrier iteration"
+        )
 
     output_root = Path(output_dir)
     checkpoint_root = output_root / CHECKPOINT_DIRECTORY
