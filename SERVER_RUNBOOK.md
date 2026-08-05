@@ -1,5 +1,38 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 00:57 2030 Base 8760 h Stage A v2 提交合同
+
+本条取代 2026-08-05 14:50 节中 Stage A v1 的严格容差、7 天 Gurobi/Slurm 时限和 128 CPU
+资源建议；不改变数学模型、Base 情景、数据或 Stage B 的独立授权边界。
+
+```text
+profile=barrier_checkpoint_full_year_cloud_v2
+Method=2 Threads=16 Presolve=2 Crossover=0 SolutionTarget=1
+BarConvTol=1e-8 FeasibilityTol=1e-6 OptimalityTol=1e-6 MarkowitzTol=0.01
+NumericFocus=2 ScaleFlag=2 Aggregate=1 DualReductions=1 InfUnbdInfo=0
+TimeLimit=UNSET SoftMemLimit=600 GiB
+Slurm=amd_a8_768, 1 node, 1 task, 96 CPU, 700G, no --time
+```
+
+只允许使用 `cloud_runs/scripts/cloud_cispo_8760_stage_a_barrier_checkpoint_v2.sbatch`。提交前必须：
+
+1. local/origin/GitHub/fixed server/cloud code identity 一致；fixed server idle/clean，cloud `squeue`
+   为空，Stage A output/control roots 不存在；
+2. cloud file release 绑定当前 Power_curve v3_qc model-ready、CF、hydro、wave tree hashes；raw GRFR
+   未复制不影响模型运行，但不得声称通过 `--require-raw-grfr`；
+3. 先用 `sbatch --test-only` 验证 `96 CPU/700G` 请求，不产生求解费用；若调度器拒绝，只能重新
+   审计资源，不得静默改变内存、线程或模型参数；
+4. 仅提交一个 Stage A，不设置依赖任务，不自动 Stage B/2040/V5。运行中监控 `squeue/sstat`、
+   `gurobi.log`、telemetry 与控制日志；因没有时间上限，只在明确 solver failure、内存临界、节点/
+   license 故障或经人工复核的长期无进展时 `scancel`，不得以正常长 factorization 静默期误判停滞；
+5. 完成终态必须核对 wrapper rc/time、`solve_report.json`、checkpoint manifest、两份向量长度/
+   finite/SHA256、input/config/Git/Fingerprint/order hashes。只有
+   `ENGINEERING_BARRIER_CHECKPOINT_ONLY + deferred_crossover_eligible=true` 才可等待单独 Stage B
+   授权；`RECOVERY_ONLY` 只作取证。
+
+Stage A 不生成科学 `result_manifest.json`、QC 结论或 planning state；其 `BarPi` 只是工程影子价格
+原始向量。`deferred_crossover2_full_year_cloud_v2` 虽已作为候选实现，但本合同不授权提交。
+
 ## 2026-08-05 20:35 Power_curve v3_qc 当前部署合同
 
 fixed server 当前根：

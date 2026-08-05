@@ -1,5 +1,24 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 00:57+08:00 2030 Base 8760 h Stage A v2 已实现，待部署提交
+
+- 实现提交 `6f0b1f7286a5ba479eabff3df2b14c2f8cf6bbb6` 新增
+  `barrier_checkpoint_full_year_cloud_v2`：`Method=2/Threads=16/Presolve=2/Crossover=0/
+  SolutionTarget=1/BarConvTol=1e-8/FeasibilityTol=OptimalityTol=1e-6/MarkowitzTol=0.01/
+  NumericFocus=2/ScaleFlag=2/Aggregate=1/SoftMemLimit=600 GiB`，Gurobi `TimeLimit` 显式为
+  `null`，因此保持 solver 默认无限；Slurm wrapper 也不设置 wall time。
+- 新 runner 路径保持 Stage A 工程身份：完整 `BarStatus=OPTIMAL` 后先保存 finite `BarX/BarPi`；
+  如果外部中断且未完成 Barrier，只在属性仍可读时尽力保存 `RECOVERY_ONLY`，其
+  `deferred_crossover_eligible=false`。Stage A 不写 scientific manifest/planning state，也不会
+  自动启动 Stage B、2040 或任何情景。
+- 本地 py_compile PASS；solver profile `8/8`、checkpoint `5/5`，完整回归 `179/179 PASS`。
+  00:49 实时核验 local/origin/GitHub/fixed server 均为前一 clean tip `ad662c8`，fixed server
+  idle、available 约 113 GiB、无 swap I/O/PSI；ParaCloud 队列为空。云分区
+  `amd_a8_768` 为 `DefaultTime=NONE/MaxTime=UNLIMITED`。
+- 已准备单任务 wrapper，申请 `96 CPU/700G` 但 Gurobi 只用 16 threads；相对 128 CPU 请求可将
+  计费 TRES 降低 25%（以调度器 `--test-only` 和实际 `sacct` 为准）。此状态点尚未提交付费 job；
+  下一步是双推送、clean 部署、建立不可变 cloud release、无计费调度预检后只提交一个 Stage A。
+
 ## 2026-08-05 20:35+08:00 Power_curve v3_qc 已部署 fixed server 并同步 ParaCloud
 
 - fixed server clean implementation HEAD `3cb3939197c3915a5a679a15c9a42e651c320534`；新数据根

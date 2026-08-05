@@ -46,6 +46,19 @@ This is the repository's single handoff document for work continued across Codex
   的 sibling 是保留的失败 GitHub clone，不可使用。旧数据根、旧 outputs/state/basis 及用户的
   `supplementary_materials/**` 改动均未覆盖或纳入本次部署。
 
+- 2026-08-06 00:57+08:00：作者已授权启动单个 2030 Base 8760 h Stage A。实现提交
+  `6f0b1f7286a5ba479eabff3df2b14c2f8cf6bbb6` 新增 v2 两阶段 profiles 与单任务 Slurm wrapper；
+  当前只授权 Stage A。v2 Stage A 为 `Method=2/Threads=16/Presolve=2/Crossover=0/
+  SolutionTarget=1/BarConvTol=1e-8/FeasibilityTol=OptimalityTol=1e-6/MarkowitzTol=0.01/
+  NumericFocus=2/ScaleFlag=2/Aggregate=1/SoftMemLimit=600 GiB`，Gurobi `TimeLimit=null`；wrapper
+  申请 `96 CPU/700G` 且不设置 Slurm wall time。完整 Barrier 后保存工程 `BarX/BarPi`；异常中断时
+  若向量仍可读则只保存 `RECOVERY_ONLY`，禁止作为 deferred crossover source。Stage A 不写科学
+  result manifest/state，不会自动启动 Stage B、下一年或 V5。py_compile、profile `8/8`、checkpoint
+  `5/5` 与完整回归 `179/179` 均 PASS。00:49 核验 fixed server idle/clean、约 113 GiB available、
+  无 swap I/O/PSI，ParaCloud 队列为空，分区 `DefaultTime=NONE/MaxTime=UNLIMITED`。当前条目写入时
+  尚未提交 job；精确下一步为双推送本合同、clean 部署、建立新不可变 cloud release，执行
+  `sbatch --test-only` 后只提交一个 Stage A 并核对开始阶段与实际 billing TRES。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1202,6 +1215,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   `run_control/gates_20260805_power_curve_v3_qc_3cb3939_v1`；cloud 的
   `manifests/cloud_release_manifest.json`。下一步若需云求解，须独立授权并决定是否补齐 raw GRFR；
   本任务未启动 168/744/8760 h。
+
+### 2026-08-06 2030 Base 8760 h Stage A v2 实现与提交前冻结
+
+- Git/修改：实现提交 `6f0b1f7286a5ba479eabff3df2b14c2f8cf6bbb6`；修改
+  `cispo_model/{config,diagnostics,primal_dual_checkpoint}.py`、
+  `scripts/run_cispo_2030_full_year.py`、两份 tests；新增 v2 Stage A/B profiles 与
+  `cloud_cispo_8760_stage_a_barrier_checkpoint_v2.sbatch`。未修改 LP 变量/约束/目标、Base 情景、
+  数据、历史 outputs 或用户 `supplementary_materials/**`。
+- 参数/保存：Stage A 宏观容差改为 `BarConvTol=1e-8`、`FeasibilityTol=OptimalityTol=1e-6`，
+  保持 `NumericFocus=2/ScaleFlag=2/Aggregate=1/MarkowitzTol=0.01`；solver 与 Slurm 均不设时间
+  上限，保留 `SoftMemLimit=600 GiB`。完整 Barrier 检查点可进入另行授权的 Stage B；未完成
+  Barrier 的可读向量只登记 recovery，不能复用。
+- 验证：py_compile、targeted `8/8 + 5/5`、完整 unittest `179/179 PASS`。live 审计确认
+  fixed server 无 CISPO/Gurobi 进程、内存无压力，ParaCloud 队列为空且 768 GiB 分区无默认/最大
+  wall time；旧云文件 release hashes 仍有效。
+- 未决/下一步：本条仍是提交前冻结点。先双推送/部署精确 tip，建立只读的新 cloud release；
+  用不启动 job 的 `sbatch --test-only` 审核 96 CPU/700G，再提交单个 Stage A。禁止自动 Stage B、
+  2040/V5、并发第二求解或将工程 `BarPi` 当论文价格。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
