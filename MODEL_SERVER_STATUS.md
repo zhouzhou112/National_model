@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 01:13+08:00 第三次提交在 wave 数据加载前 fail-fast；补齐私有 xarray overlay
+
+- v4 的低成本 job `4139494` 已证明 profile、代理/WLS 与 Gurobi 13.0.2 小 LP `PASS`。主 job
+  `4139496` 完成 provenance/input manifest 后，因 cloud Python 缺 `xarray` 在 wave store 初始化
+  前退出；Slurm elapsed 7 秒，无 LP build、`gurobi.log` 或 telemetry。
+- cloud 现有环境已含 `netCDF4=1.7.2/cftime=1.6.5/numpy=2.2.6/pandas=2.3.2`，仅缺 xarray。
+  fixed server 已有纯 Python wheel `xarray-2025.1.2-py3-none-any.whl`，SHA256
+  `a7ad6a36c6e0becd67f8aff6a7808d20e4bdcd344debb5205f0a34b1a4a7f8d6`。
+- 不修改共享 cloud conda env；下一 release 使用私有 `python_overlay` + `PYTHONPATH`。先以低资源
+  compute job 完整执行 `load_model_data(Base/8760)`，通过依赖/数据加载后才可再提交 96/700G。
+  job `4139496` 与 v4 release 不复用。
+
 ## 2026-08-06 01:10+08:00 第二次提交在 provenance 前 fail-fast；环境导出已修复
 
 - job `4139479` 先通过 `STAGE_A_PROFILE_PREFLIGHT_PASS`，随后因四个 `CISPO_*_ROOT` 仅被

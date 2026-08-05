@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 01:13 cloud xarray 私有 overlay 合同
+
+job `4139496` 在 provenance/input manifest 后、wave data load 前因 `ModuleNotFoundError: xarray`
+退出，Slurm 7 秒；没有 LP build 或 Gurobi solve。共享 cloud env 已含 netCDF4/cftime，禁止为本任务
+原地修改该环境。新 release 必须复制已校验的纯 Python wheel：
+
+```text
+xarray-2025.1.2-py3-none-any.whl
+SHA256 a7ad6a36c6e0becd67f8aff6a7808d20e4bdcd344debb5205f0a34b1a4a7f8d6
+```
+
+以 `pip --no-index --no-deps --target=$RELEASE/python_overlay` 安装，并在版本化 env manifest 中设置
+`PYTHONPATH=$RELEASE/python_overlay`。主任务前必须新增低资源 compute-node 数据加载门禁：导入
+`xarray/netCDF4`、解析 Stage A profile、执行完整 Base/8760 `load_model_data`，但不建 LP/不求解。
+只有该门禁 rc 0 后才允许再次提交单个 96 CPU/700G Stage A。
+
 ## 2026-08-06 01:10 Stage A 环境变量导出修正
 
 job `4139479` 只完成 profile preflight；在 provenance 门禁前报告全部 data inputs missing。

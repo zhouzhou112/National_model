@@ -75,6 +75,15 @@ This is the repository's single handoff document for work continued across Codex
   并新增静态断言，profile suite `9/9 PASS`。前三个 cloud releases 与两个 job 均保留为失败证据；
   精确下一步为双推送/deploy、新建 Linux archive `_v4`、预检后仅重提一个 Stage A。
 
+- 2026-08-06 01:13+08:00：v4 低成本 compute preflight `4139494` 为 `COMPLETED 0:0`，证明
+  profile、代理/WLS 与 Gurobi 13.0.2 小 LP正常；主 job `4139496` 随后完成 provenance/input
+  manifest，但 cloud Python 缺 `xarray`，在 wave data store 初始化前 7 秒退出，无 LP build、
+  `gurobi.log` 或 telemetry。cloud 已含 netCDF4/cftime，仅缺 xarray；fixed server 的
+  `xarray-2025.1.2-py3-none-any.whl` SHA256 为
+  `a7ad6a36c6e0becd67f8aff6a7808d20e4bdcd344debb5205f0a34b1a4a7f8d6`。不污染共享 env；
+  下一 release 使用私有 `python_overlay/PYTHONPATH`，并先以低资源 compute job 完整运行
+  `load_model_data(Base/8760)`，通过后才可重提唯一主 Stage A。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1269,6 +1278,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   `PYTHON/GUROBI_HOME/CISPO_*_ROOT` 导出到子进程；静态 profile tests `9/9 PASS`。
 - 下一步：失败 root/release 不复用；双推送、clean deploy 后建立 `_v4` Linux release，完成
   syntax/LF/hash/queue/test-only 预检，再提交唯一 Stage A。
+
+### 2026-08-06 Stage A job 4139496 的 xarray 依赖 fail-fast
+
+- 证据：前置 `4139494` 小 LP/WLS 为 `COMPLETED 0:0`；主 job `4139496` 写出 run identity、
+  environment 与 input manifest 后因缺 xarray 退出，Slurm 7 秒，无 model build/solver 文件。
+- 环境审计：cloud 已有 netCDF4 1.7.2/cftime 1.6.5；采用 SHA256
+  `a7ad6a36...a7f8d6` 的 xarray 2025.1.2 纯 Python wheel建立 release 私有 overlay，不改共享 env。
+- 下一步：提交/双推送本环境合同，建立新 Linux release；先运行完整 `load_model_data` 低资源门禁，
+  再决定是否提交唯一 96 CPU/700G Stage A。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
