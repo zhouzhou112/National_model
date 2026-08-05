@@ -1266,6 +1266,45 @@ Crossover 是全部主线 case/year 完成后由作者选择的独立派生任�
 
 恢复年度路线前，必须先对 recovery `BarX/BarPi` 做 exact-LP 原始 primal/physical/dual 离线审计，再以最小容差候选完成 24 h→168 h→单根 744 h A/B。只有最终 `OPTIMAL`、宏观结果稳定、全部 QC/hard checks/manifests 闭合且端到端效率可接受的路线，才能升级到 8760 h preflight。大于 744 h 的 inline Crossover 继续默认禁止；recovery-only checkpoint 不得重标、续年或解释为科学影子价格。
 
+#### 2026-08-05 作者批准的 8760 h 两阶段覆盖合同
+
+作者随后明确选择“先保全昂贵 Barrier 内点、再按需独立 Crossover”的年度工程架构。本节覆盖
+上文“Stage A 必须先成为科学 accepted 主结果”以及“后置 Crossover 只能是无 state 派生物”
+的旧设计，但不覆盖物理、成本、数据、QC、manifest 或科学解释边界。
+
+Stage A `barrier_checkpoint_full_year_cloud_v1` 使用
+`Method=2/Threads=16/Presolve=2/Crossover=0/SolutionTarget=1/BarConvTol=1e-9/
+FeasibilityTol=OptimalityTol=1e-7/NumericFocus=2/ScaleFlag=2/Aggregate=1/
+DualReductions=1/InfUnbdInfo=0/TimeLimit=604800/SoftMemLimit=600`。它是明确的工程检查点任务，
+不因 Gurobi 最终 `Status=OPTIMAL` 而自动升级为科学结果。runner 必须在任何大规模科学导出和
+物理 QC 前优先读取并保存原始 LP index order 的 `BarX/BarPi`；可复用检查点至少要求 Gurobi 13
+`BarStatus=OPTIMAL`、两个向量长度正确且全为 finite、input manifest 当前有效、运行身份完整。
+manifest 记录完整 baseline/analysis/implementation/data/lp identity、scenario/solver config SHA256、
+predecessor planning-state path、Gurobi version、Fingerprint、变量/约束/非零元数，并对完整
+`VarName` 顺序与 `ConstrName+Sense` 顺序分块计算 SHA256。检查点身份固定为
+`ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`scientifically_accepted=false`；raw `BarPi` 可以保留
+为工程 shadow-price 向量并用于后续 DStart，但不得进入论文价格、planning state、MGA、dashboard
+或 scientific result manifest。若 `BarStatus` 不为 OPTIMAL、向量不完整/不有限或写出失败，则
+Stage A 失败；已有中间日志不能替代检查点。
+
+Stage B `deferred_crossover2_full_year_cloud_v1` 必须从头重建完全相同 LP，并核对 input manifest、
+所有 identity layers、Fingerprint、LP dimensions、完整变量/约束顺序 SHA256 及 checkpoint
+文件 SHA256。工程源需显式授权；随后设置全量 `variable.PStart=saved_bar_x`、
+`constraint.DStart=saved_bar_pi`、`LPWarmStart=2`，使用
+`Method=2/Crossover=2/CrossoverBasis=1/SolutionTarget=0` 直接在 presolved crushed starts 上
+执行 Crossover，不重复 Barrier。只有 Stage B 达到 `Status=OPTIMAL`、strict ConstrVio/BoundVio/
+DualVio、`solution_qc=PASS`、全部 hard checks（当前 Base 合同为 58/58）、current input manifest、
+valid result manifest、标准 `Pi` 导出和 wrapper/time 闭合，才是年度科学结果。此时它是 canonical
+basic result，而不只是附属分析；经单独显式许可可导出下一规划年的 planning state。Stage B
+失败不损坏 Stage A，但不得重标失败解或手工补 manifest。
+
+两阶段均保留严格物理 QC，不以 `BarConvTol` 代替原模型可行性/dual 验收。`BarConvTol=1e-9`
+相对默认 `1e-8` 的意义是提高内点精度并可能缩短 Crossover，而不是保证任意超大 LP 必然得到
+`BarStatus=OPTIMAL`。`FeasibilityTol/OptimalityTol` 主要约束 simplex/crossover 的最终可行性；
+`CrossoverBasis=1` 以更高初始 basis 构造成本换取数值稳定性；`Crossover=2` 表示 dual push、
+primal push、dual-simplex cleanup。该架构的代码/小模型契约已经 Gurobi 13.0.2 验证，但尚未执行
+8760 h，因此仍不能把它描述为已有年度科学结果或已实测年度性能。
+
 ### 5.8.0c 截断时域的价值核算与当前验证边界
 
 对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：

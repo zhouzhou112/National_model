@@ -12,6 +12,36 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
+  `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
+  阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
+  Presolve=2/Crossover=0/SolutionTarget=1/BarConvTol=1e-9/FeasibilityTol=OptimalityTol=1e-7/
+  NumericFocus=2/ScaleFlag=2/Aggregate=1/DualReductions=1/InfUnbdInfo=0/TimeLimit=604800/
+  SoftMemLimit=600`。runner 强制 `--engineering-barrier-checkpoint-only`；只要 Gurobi 13
+  `BarStatus=OPTIMAL` 且 `BarX/BarPi` 完整有限，就在任何科学输出/QC 前优先落盘，并登记为
+  `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`scientifically_accepted=false`、
+  `deferred_crossover_eligible=true`。原始 `BarPi` 可作工程影子价格，但不得用于论文、年度
+  planning state、MGA 或科学 result manifest。检查点同时保存 input/config/Git/Gurobi 身份、
+  Gurobi Fingerprint、原始 LP 尺寸，以及完整 `VarName` 和 `ConstrName+Sense` 顺序的分块
+  SHA256；不持久化数 GB 名称目录。
+- 阶段 B profile 为 `deferred_crossover2_full_year_cloud_v1`：完整重建同一 LP，逐层核对
+  identity、input manifest、Fingerprint、尺寸和两类顺序 SHA256，再注入全量
+  `PStart=BarX/DStart=BarPi`；`LPWarmStart=2/Crossover=2/CrossoverBasis=1/SolutionTarget=0`，
+  其余严格 numerics、7 天 solver limit 与 600 GB soft limit 同阶段 A。工程源必须同时显式传入
+  `--allow-primal-dual-crossover --allow-engineering-barrier-checkpoint`；只有阶段 B 最终
+  `OPTIMAL + strict quality + solution_qc PASS + 全部 hard checks（当前 Base 为 58/58）+
+  current input + valid result manifest + Pi` 才是科学结果。只有再显式传入
+  `--allow-deferred-crossover-planning-state`，该 accepted basic solution 才能导出下一年 state。
+- 本地 Gurobi 12 环境 targeted tests `12/12 PASS`；全套回归执行 124 tests，其中与本次改动
+  无关的 4 个 class setup 和 2 个 planning dry-run 因本机缺少外部 `CISPO_WAVE_ROOT` 失败。
+  fixed server Gurobi 13.0.2 上 targeted checkpoint/profile tests 为 `4/4 + 8/8 PASS`。
+  14:50 fixed server clean/idle、HEAD `3695060`、available 约 `113 GiB`，低于 cloud profile
+  内建 `640 GiB available` 硬门禁，不能运行该 8760 h profile；ParaCloud `squeue` 为空。
+  `amd_a8_768` 为 128 CPU/750 GiB、`MaxMemPerCPU=6144 MB`，正式 job 建议申请整节点
+  `128 CPU + 700G`、应用仍 `Threads=16`，Slurm wall time 至少 `7-12:00:00` 并提前 TERM，
+  留出检查点写出时间。尚未创建/提交任何 8760 h 作业；启动前仍需冻结精确代码/数据/场景/
+  predecessor state hash、全新 roots、云端计费预算和 Slurm wrapper SHA256。
+
 - 2026-08-05 14:09+08:00：汇总当前 Phase 2 的 11 个实际执行 744 h Base 根。全部使用
   `barrier_16_crossover2_stable_basis_long_v1`：`Method=2/Threads=16/Presolve=2/
   Crossover=2/CrossoverBasis=1/FeasibilityTol=OptimalityTol=1e-7/BarConvTol=1e-8/
@@ -1093,6 +1123,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
+
+- 实现提交：`369506010b5bc876676941e456d9574187e0f293`。改动文件：
+  `cispo_model/primal_dual_checkpoint.py`、`scripts/run_cispo_2030_full_year.py`、两个 cloud
+  solver profiles 及对应 tests；数学模型、输入数据和历史 outputs 均未修改。
+- 实现证据：阶段 A 的工程检查点在求解返回后、科学结果导出前写出；持久化有限
+  `BarX/BarPi`、末次 Barrier telemetry、Gurobi/package/config/input/planning-state 身份、
+  LP Fingerprint/规模和完整有序名称 SHA256。阶段 B 对完全重建 LP 复算全部身份与顺序，
+  只有显式授权工程源后才设置 `PStart/DStart + LPWarmStart=2`；Stage A 永不写 scientific
+  manifest/state，Stage B 可在严格 accepted 后显式写 state。
+- 验证：本地 targeted `12/12 PASS`；fixed server Gurobi 13.0.2 targeted `12/12 PASS`。
+  本地全套 124 tests 的 6 项非通过均可复现为缺少外部 `CISPO_WAVE_ROOT`，不是断言回归。
+  fixed server 已 clean fast-forward 到 `3695060`，没有启动 solver。ParaCloud 队列为空，
+  `amd_a8_768` 资源合同已核为 128 CPU/750 GiB/每 CPU 上限 6144 MB。
+- 未决问题与精确下一步：在任何付费提交前，冻结 2030 Base 的 exact scenario/data/state 和
+  双远端 tip，建立不可复用的 Stage A/B roots 与 Slurm wrapper，申请约 `128 CPU/700G`
+  但保持 Gurobi `Threads=16`，给 solver 7 天外另留至少 12 小时写出/审计窗口，并先报告
+  核时费用。当前没有 8760 h job；固定服务器因 640 GiB memory guard 不具备执行资格。
 
 ### 2026-08-05 744 h runtime/profile 与 Barrier-only 执行记录审计
 

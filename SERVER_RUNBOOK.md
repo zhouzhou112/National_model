@@ -1,5 +1,96 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-05 14:50 8760 h 两阶段执行合同（已实现、未授权提交 job）
+
+### 资源与调度硬门禁
+
+1. 只允许 ParaCloud `amd_a8_768` 计算节点；禁止 login node 和 fixed server。两个 cloud
+   profiles 在 runner 内要求 `available >=640 GiB`。当前 fixed server 仅约 `113 GiB`，即使
+   `SoftMemLimit=600` 不会立即分配内存，也不得绕过该 guard。
+2. `amd_a8_768` 为 128 CPU、`RealMemory=768000 MB`/Slurm `750G`，且
+   `MaxMemPerCPU=6144 MB`。推荐 `--nodes=1 --ntasks=1 --cpus-per-task=128 --mem=700G`
+   （可配 `--exclusive`），应用内保持 `Threads=16`；其余 CPU 是内存配额/整节点计费，不得
+   误报为 Gurobi 128 threads。启动前必须再次核对账户配额、单价与预计 128 core-hours/
+   wall-hour 成本。
+3. Gurobi `TimeLimit=604800 s`，Slurm wall time 不得也设成恰好 7 天。建议至少
+   `--time=7-12:00:00 --signal=B:TERM@1800`，使 runner 在提前 TERM 时调用
+   `model.terminate()`，并给 BarX/BarPi、stderr/time 和审计文件留写出窗口。Slurm kill、节点
+   故障或磁盘失败仍可能阻止检查点完整写出，不能声称绝对保证。
+4. 提交前重新核对 local/origin/GitHub/server commit、server/cloud queue、不可变 data root
+   及 release SHA256、Base/scenario/formulation、2030 predecessor state、目标 roots 不存在、
+   磁盘与 license。Stage A 与 B 必须串行；任何时刻只允许一个 8760 h solve。
+
+### Stage A：工程 Barrier checkpoint
+
+profile：`config/solver_profiles/barrier_checkpoint_full_year_cloud_v1.json`：
+
+```text
+Method=2 Threads=16 Presolve=2 Crossover=0 SolutionTarget=1
+BarConvTol=1e-9 FeasibilityTol=1e-7 OptimalityTol=1e-7
+NumericFocus=2 ScaleFlag=2 Aggregate=1 DualReductions=1 InfUnbdInfo=0
+TimeLimit=604800 SoftMemLimit=600
+```
+
+命令骨架（`STAGE_A_ROOT` 必须是新绝对路径；其余 case/state 参数按冻结 release 补齐）：
+
+```bash
+$PYTHON scripts/run_cispo_2030_full_year.py \
+  --planning-year 2030 \
+  --horizon full_year \
+  --solver-config config/solver_profiles/barrier_checkpoint_full_year_cloud_v1.json \
+  --engineering-barrier-checkpoint-only \
+  --output-dir "$STAGE_A_ROOT"
+```
+
+Stage A 成功的工程终态不是 scientific acceptance，而是：
+
+- `solve_report.run_completion_status=ENGINEERING_BARRIER_CHECKPOINT_COMPLETE`；
+- checkpoint `BarStatus=OPTIMAL`，`BarX/BarPi` 长度正确、全 finite、SHA256 有效；
+- checkpoint status 为 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、
+  `scientifically_accepted=false`、`deferred_crossover_eligible=true`；
+- input/config/Git/Gurobi/Fingerprint/LP dimensions，以及完整 `VarName` 和
+  `ConstrName+Sense` 顺序 SHA256 齐全；末次 Barrier primal/dual objective、残差、
+  complementarity 已从 telemetry 记录。
+
+Stage A 在 checkpoint 完整时可返回 wrapper rc 0；该 rc 仅表示工程检查点完成。不得生成或
+补写 scientific `result_manifest.json`、planning state、MGA/basis，也不得把 raw `BarPi`
+作为论文价格。若 `BarStatus!=OPTIMAL`、向量不有限/不完整、顺序 hash 或写出失败，则 Stage A
+rc 非零并保留现场；不得从残缺文件启动 Stage B。
+
+### Stage B：exact-LP deferred Crossover=2
+
+profile：`config/solver_profiles/deferred_crossover2_full_year_cloud_v1.json`。除 Stage A 的严格
+numerics/resource limits 外，显式设置 `LPWarmStart=2/Crossover=2/CrossoverBasis=1/
+SolutionTarget=0`。`BarConvTol` 保留为身份记录；当完整 PStart/DStart 被 Gurobi 接受时，官方
+合同是直接对 crushed presolved starts 做 crossover，不执行 Barrier iterations。
+
+```bash
+$PYTHON scripts/run_cispo_2030_full_year.py \
+  --planning-year 2030 \
+  --horizon full_year \
+  --solver-config config/solver_profiles/deferred_crossover2_full_year_cloud_v1.json \
+  --primal-dual-checkpoint-in "$STAGE_A_ROOT" \
+  --allow-primal-dual-crossover \
+  --allow-engineering-barrier-checkpoint \
+  --allow-deferred-crossover-planning-state \
+  --output-dir "$STAGE_B_ROOT"
+```
+
+只有当 Stage B 为 `OPTIMAL`、`ConstrVio/BoundVio/DualVio` 通过 strict contract、
+`solution_qc=PASS`、全部 hard checks（当前 Base 预期 58/58）、current input manifest、valid
+result manifest、`Pi` 导出及 wrapper/time 均通过，才登记科学结果并允许上述显式 planning
+state。任何不满足项均保留 Stage A，不重跑 Barrier、不重标 Stage B、不补 manifest；是否以
+同一 Stage A 重新尝试另一项 Stage B 必须另行授权并使用新 root。
+
+### 当前验证与未决项
+
+- implementation commit `369506010b5bc876676941e456d9574187e0f293`；本地 targeted
+  `12/12 PASS`，fixed server Gurobi 13.0.2 targeted `12/12 PASS`。
+- 本地全套 124 tests 中 6 项因未配置外部 `CISPO_WAVE_ROOT` 失败；云端提交前必须在冻结
+  production roots 上重跑完整 regression/readiness/release/input audits，不得忽略该缺口。
+- 目前 ParaCloud queue 为空，没有 Stage A/B root、Slurm script 或 job。下一步是确定精确
+  Base/scenario/data/state identity、预算与 wrapper SHA256；本节不等于付费提交授权。
+
 ## 2026-08-05 14:09 744 h solver 实证基线
 
 1. 当前 744 h 执行证据仅覆盖 Crossover=2：11 根执行、9 accepted、2 TIME_LIMIT；accepted

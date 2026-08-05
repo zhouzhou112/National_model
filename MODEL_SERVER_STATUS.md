@@ -1,5 +1,23 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-05 14:50+08:00 两阶段 8760 h 合同已实现，尚未启动
+
+- implementation `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 fixed
+  server；server checkout clean/idle，targeted Gurobi 13.0.2 tests `12/12 PASS`。本次只做
+  Git fast-forward、py_compile 和 tests，没有 model build/solve。
+- Stage A `barrier_checkpoint_full_year_cloud_v1` 强制工程身份：`BarStatus=OPTIMAL` 后优先
+  保存 finite raw-order `BarX/BarPi`、完整 LP/order/config/input/Gurobi 身份；即使 solver
+  最终为 `OPTIMAL`，该 root 仍是 `scientifically_accepted=false`，无 scientific result
+  manifest/planning state。`BarPi` 只可作工程 shadow-price 原始向量。
+- Stage B `deferred_crossover2_full_year_cloud_v1` 只接受 exact-LP matched checkpoint；工程源
+  需双重显式授权，使用 `PStart/DStart + LPWarmStart=2 + Crossover=2/CrossoverBasis=1`，
+  不重复 Barrier。只有 Stage B 的 `OPTIMAL/QC/all checks/input/result manifest/Pi` 全闭合
+  才能成为科学结果；planning state 还需单独显式授权。
+- 14:50 fixed server available 约 `113 GiB`，Stage A/B profile 内建最低 available
+  `640 GiB`，因此 fixed server 会在 build 前 hard-fail。ParaCloud 队列为空；
+  `amd_a8_768` 为 128 CPU/750 GiB，`DefMemPerCPU=6000 MB`、`MaxMemPerCPU=6144 MB`。
+  建议 job 申请整节点 `128 CPU/700G`，Gurobi 仍为 16 threads；尚未提交作业。
+
 ## 2026-08-05 14:09+08:00 744 h 耗时/profile 汇总；无 Barrier-only 744 记录
 
 - 11 个已执行 Phase 2 744 h Base 根全部为 Crossover=2 同一 profile；9 accepted runtime
