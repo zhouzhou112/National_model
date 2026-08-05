@@ -13,6 +13,19 @@ from cispo_model.diagnostics import solve_and_report
 
 
 class SolverProfileTests(unittest.TestCase):
+    def test_full_year_stage_a_wrapper_uses_submit_directory(self):
+        wrapper = (
+            Path(__file__).resolve().parents[1]
+            / "cloud_runs"
+            / "scripts"
+            / "cloud_cispo_8760_stage_a_barrier_checkpoint_v2.sbatch"
+        ).read_text(encoding="utf-8")
+        self.assertIn('RELEASE="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"', wrapper)
+        self.assertNotIn('dirname "$0"', wrapper)
+        self.assertNotIn("#SBATCH --time", wrapper)
+        self.assertIn("#SBATCH --cpus-per-task=96", wrapper)
+        self.assertIn("#SBATCH --mem=700G", wrapper)
+
     def test_solver_profile_changes_only_numerics_and_is_traced(self):
         base = load_model_config()
         profile_path = (

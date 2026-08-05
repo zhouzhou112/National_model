@@ -14,8 +14,12 @@
 set -euo pipefail
 umask 027
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-RELEASE="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# Slurm executes a private spool copy of the submitted script, so $0 cannot
+# identify the immutable release.  Submission is contractually performed from
+# RELEASE/repo and SLURM_SUBMIT_DIR preserves that original directory.
+test -n "${SLURM_SUBMIT_DIR:-}"
+RELEASE="$(cd "$SLURM_SUBMIT_DIR/.." && pwd)"
+test -d "$RELEASE/repo"
 ENV_FILE="$RELEASE/manifests/cloud_environment_paths.env"
 CONTROL_ROOT="$RELEASE/run_control/2030_8760_base_stage_a_barrier_v2"
 OUT="$RELEASE/outputs/2030_8760_base_stage_a_barrier_v2"
