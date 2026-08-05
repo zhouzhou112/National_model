@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 01:19+08:00 2030 Base 8760 h Stage A v2 已稳定进入 model build
+
+- 当前唯一活动 cloud job 为 `4139552`，`RUNNING` 于 `m4cm1901`，开始时间 01:17:53；
+  `Req/AllocTRES=cpu=96,mem=700G,billing=96`、`TimeLimit=UNLIMITED`，无依赖任务。Gurobi profile
+  仍为 16 threads、Crossover=0、SoftMemLimit=600 GiB；不会自动 Stage B/2040/V5。
+- 有效 release：
+  `$HOME/National_model_cloud/20260806_8760_stagea_3f739fd_v5`，Git `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`，
+  Linux archive SHA256 `c49d48da070834b969b13b7a4ea50d0b45c5383276820db0e314d324822ec40e`；
+  私有 xarray wheel SHA256 `a7ad6a36...a7f8d6`，共享 conda env 未修改。
+- compute data-load gate `4139550` 为 `COMPLETED 0:0`：41.69 s、321,264 KiB、0 swap；31×8760、
+  36,686 VRE sites、2,030 hydro stations 与 wave 全载入。主 job 已通过 profile、provenance、input
+  manifest、67 PASS/3 WARN/2 INFO/0 HARD_FAIL preflight；full-year scale estimate 为
+  `41,186,823 vars / 55,928,698 rows / 497,144,574 nnz`，available 732.26 GiB。
+- 01:19 主 job 已越过前三次 fail-fast 点，处于 LP model build；MaxRSS 3,986,620 KiB，Slurm stderr
+  0 bytes，尚无 `gurobi.log`/telemetry/build report。继续只读监控，不提交任何第二任务。
+
 ## 2026-08-06 01:13+08:00 第三次提交在 wave 数据加载前 fail-fast；补齐私有 xarray overlay
 
 - v4 的低成本 job `4139494` 已证明 profile、代理/WLS 与 Gurobi 13.0.2 小 LP `PASS`。主 job

@@ -1,5 +1,33 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 01:19 当前 Stage A 监控对象
+
+```text
+job_id=4139552
+state=RUNNING
+node=m4cm1901
+release=$HOME/National_model_cloud/20260806_8760_stagea_3f739fd_v5
+output=$RELEASE/outputs/2030_8760_base_stage_a_barrier_v2
+control=$RELEASE/run_control/2030_8760_base_stage_a_barrier_v2
+resources=96 CPU / 700G / billing 96 / TimeLimit UNLIMITED
+```
+
+该 job 已通过 compute data load `4139550`（31×8760、wave、36,686 VRE、2,030 hydro）及主 runner
+preflight（67 PASS、0 HARD_FAIL），当前为 LP model build。01:19 MaxRSS 3.80 GiB、stderr 0 bytes，
+尚无 Gurobi log/telemetry。监控命令：
+
+```bash
+squeue -j 4139552 -o '%.18i %.12T %.10M %.10l %.6D %R'
+sstat -j 4139552.batch --format=JobID,AveCPU,MaxRSS,MaxVMSize,AveRSS -P
+tail -n 80 "$CONTROL/slurm-4139552.err"
+tail -n 80 "$OUTPUT/gurobi.log"
+tail -n 20 "$OUTPUT/solver_telemetry.jsonl"
+```
+
+build 期间不存在 `gurobi.log` 是正常状态；只有 model build 完成并调用 `optimize()` 后才出现 solver
+日志/telemetry。禁止因短时无日志取消；也禁止启动 Stage B、第二个 8760、下一年或 V5。前三个失败
+主 jobs `4139419/4139479/4139496` 均只保留为 launcher/dependency fail-fast 证据。
+
 ## 2026-08-06 01:13 cloud xarray 私有 overlay 合同
 
 job `4139496` 在 provenance/input manifest 后、wave data load 前因 `ModuleNotFoundError: xarray`

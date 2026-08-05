@@ -84,6 +84,16 @@ This is the repository's single handoff document for work continued across Codex
   下一 release 使用私有 `python_overlay/PYTHONPATH`，并先以低资源 compute job 完整运行
   `load_model_data(Base/8760)`，通过后才可重提唯一主 Stage A。
 
+- 2026-08-06 01:19+08:00：当前唯一活动任务为 ParaCloud job `4139552`，release
+  `$HOME/National_model_cloud/20260806_8760_stagea_3f739fd_v5`，output/control 分别为
+  `outputs/2030_8760_base_stage_a_barrier_v2` 与 `run_control/2030_8760_base_stage_a_barrier_v2`。
+  job 在 `m4cm1901` 以 `96 CPU/700G/billing=96/TimeLimit=UNLIMITED` 运行，Gurobi Threads=16；
+  无依赖和自动 Stage B/下一年。先行 data-load job `4139550` 为 `COMPLETED 0:0`，41.69 s、
+  321,264 KiB、0 swap，完整加载 31×8760、36,686 VRE、2,030 hydro 与 wave。主 runner 已通过
+  profile/provenance/input manifest/preflight（67 PASS、0 HARD_FAIL），scale estimate
+  `41,186,823/55,928,698/497,144,574`（vars/rows/nnz），01:19 正在 model build，MaxRSS
+  3,986,620 KiB、stderr 0；尚无 Gurobi log/telemetry 属正常。继续只读监控，禁止第二任务。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1287,6 +1297,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   `a7ad6a36...a7f8d6` 的 xarray 2025.1.2 纯 Python wheel建立 release 私有 overlay，不改共享 env。
 - 下一步：提交/双推送本环境合同，建立新 Linux release；先运行完整 `load_model_data` 低资源门禁，
   再决定是否提交唯一 96 CPU/700G Stage A。
+
+### 2026-08-06 Stage A v5 数据门禁通过并启动 job 4139552
+
+- Git/release：cloud code `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`；Linux archive SHA256
+  `c49d48da...822ec40e`；xarray wheel `a7ad6a36...a7f8d6` 安装到 release 私有 overlay。
+- 门禁：job `4139550` 完整 `load_model_data` PASS；主 job preflight 67 PASS/3 WARN/2 INFO/0 fail，
+  Base、2030、8760 h、wave on、flex off、无 state/basis/crossover identity 均正确。
+- 活动证据：job `4139552` 于 01:17:53 开始，96 CPU/700G/billing 96、无限时长；01:19 已稳定进入
+  model build，RSS 3.80 GiB、stderr 0。输出尚无 solve files，不得提前声称 Barrier 已开始。
+- 下一步：持续读取 squeue/sstat/build report；出现 `gurobi.log` 后核对 v2 parameters 和 Barrier
+  telemetry。任何终态都先审计 checkpoint/report，且不自动 Stage B。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
