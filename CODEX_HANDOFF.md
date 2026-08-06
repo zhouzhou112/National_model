@@ -111,6 +111,11 @@ This is the repository's single handoff document for work continued across Codex
   为 1,838.24/212.941 h，stderr 和数值警告为零。资源账本 round 4 已写入，5 records，SHA256
   `fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`；无终态文件/checkpoint。
 
+- 2026-08-07 00:00+08:00：job `4139552` 最新 iteration 23，runtime 79,383.98 s；18--23 平均
+  47.105 分钟/步，MaxRSS 362.344 GiB，allocation/actual CPU 为 2,179.973/267.629 h。
+  stderr/数值警告为零，无终态/checkpoint。资源账本 round 5 共 6 records，SHA256
+  `73f3df3998f4313051231658dd35dc8ccaeb1f8c3c23ccec5efa7a0e4c30d967`；继续不人工取消。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1370,6 +1375,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - 账本：`resource_audit_snapshots.jsonl` 当前 5 records，SHA256
   `fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`。下一步继续逐 iteration
   telemetry 与周期 Slurm snapshot；不得人工取消、重提或启动 Stage B/第二求解。
+
+### 2026-08-07 Barrier iteration 23 与资源审计 round 5
+
+- 只读证据：00:00:22 squeue/sacct/sstat、Gurobi tail、telemetry、warning grep、stderr 和 output
+  文件清单；未修改 active job/release/output/config/scheduler，未取消任务。
+- 进度：iteration 23 timestamp `2026-08-07T00:00:09.031273+08:00`，runtime
+  `79,383.978511 s`、work `197,157.586975`；18--23/8--23 平均 `47.105/47.175 min/step`。
+  相对 iteration 18 的 primal/dual infeasibility/complementarity 下降 `42.9%/54.9%/45.6%`。
+- 资源：wall 81,749 s、allocation `2,179.9733 core-hours`、actual CPU `267.6286 h`、MaxRSS
+  `379,945,024 KiB = 362.3438 GiB`；Gurobi max 354.4981 GiB，stderr 0。
+- 账本：`resource_audit_snapshots.jsonl` 6 records，SHA256
+  `73f3df3998f4313051231658dd35dc8ccaeb1f8c3c23ccec5efa7a0e4c30d967`。下一步继续逐轮监控；
+  无终态文件/checkpoint，不得人工取消、Stage B 或第二求解。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

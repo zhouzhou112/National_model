@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-07 00:00 iteration 23 监控基准
+
+```text
+job=4139552 RUNNING 22:42:29
+Barrier iteration=23; solver runtime=79,383.98 s
+iteration 18--23 average=47.105 min/iteration
+Slurm MaxRSS=362.344 GiB
+allocated core-hours=2,179.973; actual CPU-hours=267.629
+stderr=0; warnings=0; terminal/checkpoint files=absent
+resource audit=round 5 / 6 records / SHA256 73f3df39...30d967
+```
+
+残差继续单调改善、内存和单步时间稳定；继续只读运行。禁止由 iteration 23 推测完成百分比，禁止
+人工取消、改参数、重提、Stage B 或第二求解。
+
 ## 2026-08-06 20:27 iteration 18 监控基准
 
 ```text
