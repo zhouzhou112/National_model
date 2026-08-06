@@ -1,5 +1,31 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 12:06 Barrier 活动监控合同
+
+job `4139552` 已完成 38.95 分钟 model build、4.84 小时 presolve 和 48.54 分钟 ordering，当前
+为 Barrier iteration 8 的因子/步计算；最新已落盘 iteration 7。有效规模和资源证据：
+
+```text
+original LP = 50,907,234 rows / 41,458,383 cols / 492,835,195 nnz
+presolved LP = 37,703,954 rows / 32,166,850 cols / 404,259,819 nnz
+factor NZ = 3.395e10; estimated factor memory ~= 300 GB
+Slurm MaxRSS = 379,125,920 KiB; Gurobi max memory = 354.50 GiB
+latest Barrier = iter 7 at 11:27:07, runtime 34,202.25 s
+```
+
+近期每步约 45--48 分钟；短时无新 telemetry 是正常 factorization，不构成停滞。判断仍活跃时，
+同时比较两次 `sstat ... AveCPU`：本次 58 秒内累计 CPU 增加约 15.5 分钟，与 16 threads 满载一致。
+只有下列任一出现时才升级审计，不自动取消或重提：
+
+1. Slurm state 不再为 `RUNNING`；
+2. stderr、Gurobi log 出现 error/numerical trouble；
+3. 累计 CPU 长时间不增长且无新 telemetry；
+4. RSS 持续逼近 600 GiB soft limit；
+5. 产生 checkpoint/solve report，此时立即执行终态或阶段审计。
+
+当前 `solve_report.json`、`solution_qc.json`、`result_manifest.json` 与 Barrier checkpoint 均不存在，
+符合运行中状态；仍禁止 Stage B、第二个 8760、V5 或下一年。
+
 ## 2026-08-06 01:19 当前 Stage A 监控对象
 
 ```text

@@ -94,6 +94,12 @@ This is the repository's single handoff document for work continued across Codex
   `41,186,823/55,928,698/497,144,574`（vars/rows/nnz），01:19 正在 model build，MaxRSS
   3,986,620 KiB、stderr 0；尚无 Gurobi log/telemetry 属正常。继续只读监控，禁止第二任务。
 
+- 2026-08-06 12:06+08:00：job `4139552` 已完成 2,336.984 s model build、17,414.51 s presolve
+  和 2,912.17 s ordering，进入 Barrier；最新落盘 iteration 7，runtime 34,202.25 s，正在计算
+  iteration 8。实际 LP 为 `41,458,383 vars / 50,907,234 rows / 492,835,195 nnz`，presolved 为
+  `32,166,850 / 37,703,954 / 404,259,819`。Slurm/Gurobi peak memory 分别约 361.6/354.5 GiB，
+  stderr 0、无 numerical warning；16 threads 仍满载。当前仍无终态报告或 checkpoint，只读监控。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1303,6 +1309,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Git/release：cloud code `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`；Linux archive SHA256
   `c49d48da...822ec40e`；xarray wheel `a7ad6a36...a7f8d6` 安装到 release 私有 overlay。
 - 门禁：job `4139550` 完整 `load_model_data` PASS；主 job preflight 67 PASS/3 WARN/2 INFO/0 fail，
+### 2026-08-06 Stage A 进入 Barrier iteration 7
+
+- cloud code/release 保持 `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5` / `_v5`，没有修改运行中
+  release、模型、配置或 output；本次仅只读审计并更新三份交接文档。
+- `build_report.json`：01:18:08--01:57:05，2,336.984 s，build peak process-tree RSS
+  48.574 GiB；原始 LP `41,458,383/50,907,234/492,835,195`（vars/rows/nnz），fingerprint
+  `0xd16b4c7e`。Gurobi 13.0.2 参数与 v2 profile 完全一致且无 `TimeLimit`。
+- `gurobi.log`：presolve 17,414.51 s，presolved `32,166,850/37,703,954/404,259,819`；ordering
+  2,912.17 s；Barrier iteration 7 于 11:27:07 落盘，3--7 每步约 45--48 分钟。12:06 的两次
+  `sstat` 证明 16 threads 持续工作，日志无 warning/error。
+- 资源/终态：Slurm MaxRSS 361.6 GiB，Gurobi max 354.5 GiB；距 SoftMemLimit 600 GiB 和 allocation
+  700 GiB 尚有余量。终态三文件/checkpoint 均不存在。下一步继续只读监控 iteration、CPU 与内存；
+  不自动取消、重提、启动 Stage B 或第二求解。
+
   Base、2030、8760 h、wave on、flex off、无 state/basis/crossover identity 均正确。
 - 活动证据：job `4139552` 于 01:17:53 开始，96 CPU/700G/billing 96、无限时长；01:19 已稳定进入
   model build，RSS 3.80 GiB、stderr 0。输出尚无 solve files，不得提前声称 Barrier 已开始。

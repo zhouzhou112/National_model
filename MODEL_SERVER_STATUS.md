@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 12:06+08:00 2030 Base 8760 h Stage A 已进入 Barrier iteration 7
+
+- ParaCloud job `4139552` 仍为唯一活动任务，`RUNNING` 10:48 于 `m4cm1901`；96 CPU/700G、
+  billing 96、`TimeLimit=UNLIMITED`。Slurm stderr 仍为 0 bytes，日志未出现 warning、numerical
+  trouble 或 error；58 秒采样中累计 CPU 增加约 15.5 分钟，证明 16 个 Gurobi threads 正在工作。
+- model build 于 01:57 完成，耗时 2,336.984 s、build peak RSS 48.574 GiB。实际原始 LP 为
+  `41,458,383 vars / 50,907,234 rows / 492,835,195 nnz`，fingerprint `0xd16b4c7e`；presolve
+  17,414.51 s 后为 `32,166,850 vars / 37,703,954 rows / 404,259,819 nnz`，ordering 2,912.17 s。
+- Barrier 当前最新落盘 iteration 为 7（11:27:07，solver runtime 34,202.25 s）。iteration 3--7
+  间隔约 44.6/47.0/48.1/47.7 分钟；12:06 正在计算 iteration 8。表内 primal residual 从
+  `6.77e11` 降至 `5.32e11`、complementarity 从 `1.28e11` 降至 `1.02e11`，仍属极早期，不能据此
+  判定收敛或失败。Factor NZ `3.395e10`，Gurobi 估算 factor memory 约 300 GB。
+- Slurm MaxRSS `379,125,920 KiB`（约 361.6 GiB），Gurobi current/max memory 约
+  `351.1/354.5 GiB`；尚未触及 600 GiB soft limit 或 700 GiB allocation。当前无 solve report、
+  QC、result manifest 或 checkpoint，继续只读监控，禁止 Stage B/第二求解。
+
 ## 2026-08-06 01:19+08:00 2030 Base 8760 h Stage A v2 已稳定进入 model build
 
 - 当前唯一活动 cloud job 为 `4139552`，`RUNNING` 于 `m4cm1901`，开始时间 01:17:53；
