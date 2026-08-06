@@ -1343,7 +1343,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - 资源文件：`resource_audit_snapshots.jsonl` 4 records，SHA256
   `7ecb6006e5f590838e4212aa1fe83f671f1faa5073d8d4f357c777fdc55dae10`；
   `historical_8760_comparison.json` SHA256
-  `68639c77b150060fc43a80c42922b7497a1d5c33cde076d916ce9148885abdc9`。终态仍需追加 sacct、wrapper
+  `2e77c8ef6c440c1edc94212d02ef0f8bbed2afaf6f02f3fbda0781877f4fc7f6`。终态仍需追加 sacct、wrapper
   wall、最终 iteration/checkpoint/report，不得把当前快照视为完整资源账本。
 - 对照结论：旧 `4004585` 是 full-year 8760 h + 24 h wall limit，非 24 h horizon；其原始 LP
   `68,189,325/40,912,327/515,040,080`（rows/cols/nnz），presolved

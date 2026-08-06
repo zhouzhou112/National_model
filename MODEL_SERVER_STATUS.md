@@ -8,7 +8,7 @@
   作业自身终态仍按报告/checkpoint合同审计。
 - 当前 control root 新增只读审计产物：`resource_audit_snapshots.jsonl`（4 records，SHA256
   `7ecb6006...5dae10`）记录 launch/iteration 7/iteration 8 的 Slurm 快照与禁止取消策略；
-  `historical_8760_comparison.json`（SHA256 `68639c77...abdc9`）冻结与旧 job `4004585` 的同口径比较。
+  `historical_8760_comparison.json`（SHA256 `2e77c8ef...fc7f6`）冻结与旧 job `4004585` 的同口径比较。
   每个 Barrier iteration 继续由 `solver_telemetry.jsonl` 自动记录 runtime/work units/residual/memory；
   人工审计追加 Slurm elapsed/CPU/RSS，终态再以 `sacct` 汇总总资源。
 - 旧 `4004585` 同样是完整 8760 h LP，只是墙钟限制 24 h，并非 24 h 时域；它最终 `TIMEOUT` 于
