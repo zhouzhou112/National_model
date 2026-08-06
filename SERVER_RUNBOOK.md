@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 12:16 不取消与资源留痕合同
+
+对 active job `4139552` 执行以下硬规则：除非作者明确授权，不得人工 `scancel`、发送终止信号、
+修改 wall limit、重提或启动替代任务。Slurm/solver 自身终态不等于人工取消，仍须立即保存并审计现场。
+
+资源证据采用三层来源：
+
+1. `solver_telemetry.jsonl`：自动逐 Barrier iteration 记录 timestamp、solver runtime、work units、
+   primal/dual/complementarity 与 Gurobi current/max memory；
+2. `run_control/.../resource_audit_snapshots.jsonl`：每次人工审计追加 squeue/sstat 的 wall、allocated
+   core-hours、actual CPU、MaxRSS、stderr 与最新 iteration；
+3. terminal `sacct` + wrapper time：闭合 elapsed、CPUTimeRAW、TotalCPU、MaxRSS、exit/state，并生成最终
+   Stage A resource audit。不得以运行中 snapshot 冒充终态总量。
+
+历史比较文件 `historical_8760_comparison.json` 明确：job `4004585` 是完整 8760 h、24 h wall-limit
+任务，最终 iteration 35/TIMEOUT；不是 24 h horizon。当前模型虽 raw rows 下降 25.344%，但 presolved
+rows 仅下降 0.734%、nnz 反增 0.848%，因此仍是同量级超大 LP。当前 Factor NZ/Ops 分别下降
+11.772%/21.119%，sampled MaxRSS 由 476.760 降至 361.648 GiB；16 threads 相对旧 32 threads
+使单步约慢 50%。两任务科学身份不同，禁止把残差或目标直接作质量 A/B。
+
 ## 2026-08-06 12:06 Barrier 活动监控合同
 
 job `4139552` 已完成 38.95 分钟 model build、4.84 小时 presolve 和 48.54 分钟 ordering，当前

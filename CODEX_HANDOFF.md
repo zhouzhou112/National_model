@@ -100,6 +100,12 @@ This is the repository's single handoff document for work continued across Codex
   `32,166,850 / 37,703,954 / 404,259,819`。Slurm/Gurobi peak memory 分别约 361.6/354.5 GiB，
   stderr 0、无 numerical warning；16 threads 仍满载。当前仍无终态报告或 checkpoint，只读监控。
 
+- 2026-08-06 12:16+08:00：iteration 8 于 12:12:31 完成，单步 45.40 分钟；job 继续 RUNNING，
+  MaxRSS 361.648 GiB、累计实际 CPU 86.877 h、allocation 约 1,054.24 core-hours。作者明确要求
+  不得随意取消；当前 control root 已新增 `resource_audit_snapshots.jsonl` 与
+  `historical_8760_comparison.json`，分别冻结逐次 Slurm 快照/审计合同和旧 job `4004585` A/B。
+  Barrier 每轮的 runtime/work/residual/memory 继续由 solver telemetry 自动记录，终态用 sacct 闭合。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1309,6 +1315,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Git/release：cloud code `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`；Linux archive SHA256
   `c49d48da...822ec40e`；xarray wheel `a7ad6a36...a7f8d6` 安装到 release 私有 overlay。
 - 门禁：job `4139550` 完整 `load_model_data` PASS；主 job preflight 67 PASS/3 WARN/2 INFO/0 fail，
+  Base、2030、8760 h、wave on、flex off、无 state/basis/crossover identity 均正确。
+- 活动证据：job `4139552` 于 01:17:53 开始，96 CPU/700G/billing 96、无限时长；01:19 已稳定进入
+  model build，RSS 3.80 GiB、stderr 0。输出尚无 solve files，不得提前声称 Barrier 已开始。
+- 下一步：持续读取 squeue/sstat/build report；出现 `gurobi.log` 后核对 v2 parameters 和 Barrier
+  telemetry。任何终态都先审计 checkpoint/report，且不自动 Stage B。
+
 ### 2026-08-06 Stage A 进入 Barrier iteration 7
 
 - cloud code/release 保持 `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5` / `_v5`，没有修改运行中
@@ -1323,11 +1335,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   700 GiB 尚有余量。终态三文件/checkpoint 均不存在。下一步继续只读监控 iteration、CPU 与内存；
   不自动取消、重提、启动 Stage B 或第二求解。
 
-  Base、2030、8760 h、wave on、flex off、无 state/basis/crossover identity 均正确。
-- 活动证据：job `4139552` 于 01:17:53 开始，96 CPU/700G/billing 96、无限时长；01:19 已稳定进入
-  model build，RSS 3.80 GiB、stderr 0。输出尚无 solve files，不得提前声称 Barrier 已开始。
-- 下一步：持续读取 squeue/sstat/build report；出现 `gurobi.log` 后核对 v2 parameters 和 Barrier
-  telemetry。任何终态都先审计 checkpoint/report，且不自动 Stage B。
+### 2026-08-06 iteration 8、资源留痕与旧 8760 对照
+
+- 运行边界：除作者明确授权外，禁止人工取消 job `4139552`；本轮只写 run-control 审计旁路文件，
+  不修改 active release、output、solver 或配置。iteration 8 runtime `36,926.334 s`，work units
+  `132,433.217`，Gurobi current/max memory `351.054/354.498 GiB`。
+- 资源文件：`resource_audit_snapshots.jsonl` 4 records，SHA256
+  `7ecb6006e5f590838e4212aa1fe83f671f1faa5073d8d4f357c777fdc55dae10`；
+  `historical_8760_comparison.json` SHA256
+  `68639c77b150060fc43a80c42922b7497a1d5c33cde076d916ce9148885abdc9`。终态仍需追加 sacct、wrapper
+  wall、最终 iteration/checkpoint/report，不得把当前快照视为完整资源账本。
+- 对照结论：旧 `4004585` 是 full-year 8760 h + 24 h wall limit，非 24 h horizon；其原始 LP
+  `68,189,325/40,912,327/515,040,080`（rows/cols/nnz），presolved
+  `37,982,903/35,423,761/400,861,556`，Factor NZ/Ops `3.848e10/2.448e15`，32 threads、MaxRSS
+  476.760 GiB，最终 iteration 35/TIMEOUT。当前 raw rows/nnz 更低，presolved规模仍接近；Factor
+  NZ/Ops 和 sampled RSS 分别改善 11.772%/21.119%/24.145%，但 16-thread 单步更慢。
+- 下一步：持续逐轮保留 telemetry，并在每次人工状态审计追加 Slurm snapshot；不取消、不重跑、
+  不启动 Stage B。任务终止后生成最终资源/阶段时间/迭代/QC/checkpoint 汇总。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

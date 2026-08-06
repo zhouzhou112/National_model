@@ -1,5 +1,22 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 12:16+08:00 iteration 8 与全程资源审计已固化
+
+- job `4139552` 仍为 `RUNNING`；iteration 8 于 12:12:31 落盘，solver runtime 36,926.33 s，
+  该步耗时 2,724.09 s（45.40 分钟）。12:16 Slurm MaxRSS 361.648 GiB、累计实际 CPU
+  86.877 h、累计 allocation 约 1,054.24 core-hours，stderr 0。除非作者明确授权，禁止人工取消；
+  作业自身终态仍按报告/checkpoint合同审计。
+- 当前 control root 新增只读审计产物：`resource_audit_snapshots.jsonl`（4 records，SHA256
+  `7ecb6006...5dae10`）记录 launch/iteration 7/iteration 8 的 Slurm 快照与禁止取消策略；
+  `historical_8760_comparison.json`（SHA256 `68639c77...abdc9`）冻结与旧 job `4004585` 的同口径比较。
+  每个 Barrier iteration 继续由 `solver_telemetry.jsonl` 自动记录 runtime/work units/residual/memory；
+  人工审计追加 Slurm elapsed/CPU/RSS，终态再以 `sacct` 汇总总资源。
+- 旧 `4004585` 同样是完整 8760 h LP，只是墙钟限制 24 h，并非 24 h 时域；它最终 `TIMEOUT` 于
+  iteration 35、无 accepted result。当前相对旧模型：raw rows/cols/nnz 为 `-25.344%/+1.335%/-4.311%`；
+  presolved 为 `-0.734%/-9.194%/+0.848%`；Factor NZ/Ops 为 `-11.772%/-21.119%`，当前 sampled
+  MaxRSS 低 `24.145%`。但当前 16 threads 对旧 32 threads，近期单步约慢 50%，且科学模型/数据已变，
+  不能直接比较目标与残差大小。
+
 ## 2026-08-06 12:06+08:00 2030 Base 8760 h Stage A 已进入 Barrier iteration 7
 
 - ParaCloud job `4139552` 仍为唯一活动任务，`RUNNING` 10:48 于 `m4cm1901`；96 CPU/700G、
