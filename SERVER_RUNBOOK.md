@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-06 20:27 iteration 18 监控基准
+
+```text
+job=4139552 RUNNING 19:08:54
+Barrier iteration=18; solver runtime=65,252.49 s
+iteration 8--18 average=47.210 min/iteration
+Slurm MaxRSS=362.188 GiB
+allocated core-hours=1,838.24; actual CPU-hours=212.941
+Gurobi current/max memory=351.054/354.498 GiB
+stderr=0; numerical warnings=0; terminal files=absent
+```
+
+iteration 8--18 的 primal/dual residual 与 complementarity 均持续下降约 74%--78%，进程和16线程
+仍活跃。不得从 iteration 序号外推完成百分比；继续按“不人工取消”合同运行。最新旁路账本为
+`run_control/.../resource_audit_snapshots.jsonl`，5 records，SHA256
+`fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`。
+
 ## 2026-08-06 12:16 不取消与资源留痕合同
 
 对 active job `4139552` 执行以下硬规则：除非作者明确授权，不得人工 `scancel`、发送终止信号、

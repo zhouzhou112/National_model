@@ -106,6 +106,11 @@ This is the repository's single handoff document for work continued across Codex
   `historical_8760_comparison.json`，分别冻结逐次 Slurm 快照/审计合同和旧 job `4004585` A/B。
   Barrier 每轮的 runtime/work/residual/memory 继续由 solver telemetry 自动记录，终态用 sacct 闭合。
 
+- 2026-08-06 20:27+08:00：job `4139552` 保持 RUNNING 且未被取消，最新 iteration 18，runtime
+  65,252.49 s；iteration 8--18 平均 47.210 分钟。MaxRSS 362.188 GiB、累计 allocation/actual CPU
+  为 1,838.24/212.941 h，stderr 和数值警告为零。资源账本 round 4 已写入，5 records，SHA256
+  `fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`；无终态文件/checkpoint。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1352,6 +1357,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   NZ/Ops 和 sampled RSS 分别改善 11.772%/21.119%/24.145%，但 16-thread 单步更慢。
 - 下一步：持续逐轮保留 telemetry，并在每次人工状态审计追加 Slurm snapshot；不取消、不重跑、
   不启动 Stage B。任务终止后生成最终资源/阶段时间/迭代/QC/checkpoint 汇总。
+
+### 2026-08-06 Barrier iteration 18 与资源审计 round 4
+
+- 本轮仅执行 squeue/sacct/sstat、Gurobi/telemetry/stderr/终态文件只读检查，并更新 run-control
+  旁路账本；未修改 active release、output、solver、配置或 scheduler state，未取消任务。
+- 进度：iteration 18 timestamp `2026-08-06T20:04:37.541593+08:00`，solver runtime
+  `65,252.488843 s`、work units `175,875.850995`；iteration 8--18 平均 `47.2103 min/step`。
+  三项表内收敛指标相对 iteration 8 下降约 74%--78%，但仍无可接受解或完成百分比。
+- 资源：wall 68,934 s、96 CPUs/700G，allocation `1,838.24 core-hours`，sstat actual CPU
+  `212.9408 h`、MaxRSS `379,781,180 KiB = 362.1876 GiB`；Gurobi max 354.4981 GiB。
+- 账本：`resource_audit_snapshots.jsonl` 当前 5 records，SHA256
+  `fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`。下一步继续逐 iteration
+  telemetry 与周期 Slurm snapshot；不得人工取消、重提或启动 Stage B/第二求解。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 

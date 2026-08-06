@@ -1,5 +1,19 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-06 20:27+08:00 Barrier iteration 18，资源审计 round 4
+
+- job `4139552` 仍为唯一活动 cloud task：`RUNNING` 19:08:54、96 CPU/700G、无限时长。
+  iteration 18 于 20:04:37 落盘，solver runtime 65,252.49 s；iteration 8--18 平均
+  47.210 分钟/步，未出现持续变慢。
+- 相对 iteration 8，Gurobi 表内 primal residual/dual residual/complementarity 分别下降约
+  `74.4%/78.0%/75.1%`；dual objective 在 iteration 14 后开始回转，但仍是早期 Barrier，不能
+  换算完成比例或声称接近收敛。日志无 warning/numerical trouble/error，stderr 0。
+- 当前 Slurm MaxRSS 362.188 GiB，Gurobi current/max memory 仍为 351.054/354.498 GiB；累计
+  allocation 1,838.24 core-hours，实际 CPU 212.941 h。终态三文件和 checkpoint 均不存在。
+- `resource_audit_snapshots.jsonl` 已追加 round 4，共 5 records，当前 SHA256
+  `fb390f551ef190720673a341037e2bcd8b6ce006905b549268a27c4f0f418c7f`。继续禁止人工取消、
+  Stage B、第二求解或重提；资源账本仅在审计时旁路更新，不修改 solver/output。
+
 ## 2026-08-06 12:16+08:00 iteration 8 与全程资源审计已固化
 
 - job `4139552` 仍为 `RUNNING`；iteration 8 于 12:12:31 落盘，solver runtime 36,926.33 s，
