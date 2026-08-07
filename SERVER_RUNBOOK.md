@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-07 09:59 iteration 35 监控基准
+
+```text
+job=4139552 RUNNING 1-08:41:08
+Barrier iteration=35; solver runtime=113,247.02 s
+iteration 23--35 average=47.032 min/iteration
+Slurm MaxRSS=362.540 GiB
+allocated core-hours=3,137.813; actual CPU-hours=421.861
+stderr=0; warnings=0; terminal/checkpoint files=absent
+resource audit=round 6 / 7 records / SHA256 13e567bd...2c6175
+```
+
+iteration 23--35 的 primal/dual infeasibility 与 complementarity 分别下降
+`78.29%/76.82%/77.52%`，单步和内存稳定；但绝对残差仍远离验收。继续只读运行，禁止按
+iteration 序号推断完成率，禁止人工取消、改参、重提、Stage B 或第二求解。
+
 ## 2026-08-07 00:00 iteration 23 监控基准
 
 ```text
