@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-07 19:45 iteration 48 监控基准
+
+```text
+job=4139552 RUNNING 1-18:27:23
+Barrier iteration=48; solver runtime=149,868.82 s
+iteration 35--48 average=46.951 min/iteration
+Slurm MaxRSS=362.649 GiB
+allocated core-hours=4,075.813; actual CPU-hours=572.464
+stderr=0; warnings=0; terminal/checkpoint files=absent
+resource audit=round 7 / 8 records / SHA256 d691d087...305badc
+```
+
+相对 iteration 35，primal/dual infeasibility 与 complementarity 分别下降
+`77.27%/84.52%/77.95%`。继续只读运行；禁止由 iteration 数推断完成比例，禁止人工取消、改参、
+重提、Stage B 或第二求解。
+
 ## 2026-08-07 09:59 iteration 35 监控基准
 
 ```text

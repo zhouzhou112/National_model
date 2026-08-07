@@ -125,6 +125,14 @@ This is the repository's single handoff document for work continued across Codex
   `13e567bd1743c5b0079ebb7445123bb18f6cba05a5e7be208f9619592c2c6175`；继续不人工取消、不改参、
   不启动 Stage B 或第二求解。
 
+- 2026-08-07 19:45+08:00：job `4139552` 仍为 `RUNNING`，wall 1 天 18:27:23；最新落盘
+  iteration 48（19:34:53），solver runtime 149,868.82 s。iteration 35--48 平均 46.951 分钟/步；
+  相对 iteration 35 的 telemetry primal/dual infeasibility 与 complementarity 分别下降
+  `77.27%/84.52%/77.95%`，继续单调改善但尚未达到验收量级。MaxRSS 362.649 GiB，
+  allocation/actual CPU 为 4,075.813/572.464 h；stderr 与数值告警为零，无终态/checkpoint。
+  资源账本 round 7 共 8 records，SHA256
+  `d691d087fec95263c77e62530befa58cac9b0aed6a986a55a9b992535305badc`；继续只读运行。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1416,6 +1424,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   符合 Barrier 运行中状态。`resource_audit_snapshots.jsonl` 已追加 round 6，共 7 records，SHA256
   `13e567bd1743c5b0079ebb7445123bb18f6cba05a5e7be208f9619592c2c6175`。精确下一步仍是只读监控；
   禁止人工取消、改参、重提、Stage B 或第二求解，终态后再按 checkpoint/报告合同闭合审计。
+
+### 2026-08-07 Barrier iteration 48 与资源审计 round 7
+
+- Git 基线：本轮开始时本地、`origin` 与 `github` 均为
+  `471a90080f6ec38b8a1f084d159a6b289f008227`；cloud release 仍冻结实现
+  `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`。仅执行只读状态/日志/文件审计并更新旁路资源账本，
+  未取消、改参、重提或启动 Stage B/第二求解。
+- 进度：19:45:16 job `RUNNING` 1 天 18:27:23；iteration 48 timestamp
+  `2026-08-07T19:34:53.868146+08:00`，runtime `149,868.815376 s`、work `301,863.167704`；
+  iteration 35--48 平均 `46.951 min/step`。相对 iteration 35 的 primal/dual infeasibility 与
+  complementarity 下降 `77.27%/84.52%/77.95%`；绝对指标仍未达到 Stage A 收敛或验收量级。
+- 资源：wall 152,843 s、96 CPU/700G，allocation `4,075.8133 core-hours`、actual CPU
+  `572.4642 h`、MaxRSS `380,264,648 KiB = 362.6486 GiB`；Gurobi current/max
+  `351.0545/354.4981 GiB`，stderr 0，无 warning/numerical trouble/error。
+- 输出与下一步：终态三文件和 checkpoint 仍不存在。`resource_audit_snapshots.jsonl` round 7
+  共 8 records，SHA256 `d691d087fec95263c77e62530befa58cac9b0aed6a986a55a9b992535305badc`。
+  继续只读监控，终态后立即执行 checkpoint、wrapper、QC/manifest 与总资源闭合审计。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
