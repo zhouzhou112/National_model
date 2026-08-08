@@ -133,6 +133,14 @@ This is the repository's single handoff document for work continued across Codex
   资源账本 round 7 共 8 records，SHA256
   `d691d087fec95263c77e62530befa58cac9b0aed6a986a55a9b992535305badc`；继续只读运行。
 
+- 2026-08-08 17:51+08:00：job `4139552` 仍为 `RUNNING`，wall 2 天 16:33:41；iteration 77
+  于 17:50:39 刚落盘，solver runtime 230,014.78 s。iteration 48--77 平均 46.061 分钟/步；
+  telemetry primal/dual infeasibility 与 complementarity 相对 iteration 48 分别缩小约
+  `82,964/832,887/57,100` 倍，Gurobi 表内最新 residual 为 `4.45e4/5.22e-5/1.15e4`，但
+  primal/dual objective `4.98e10/-5.30e11` 仍未闭合。MaxRSS 362.765 GiB，allocation/actual CPU
+  为 6,197.893/915.299 h；stderr/告警为零，无终态/checkpoint。资源账本 round 8 共 9 records，
+  SHA256 `f0c7fdfa03c0ab39c5a1ace6739ea5a337b7dd0b22de7e83d37c4f5bde09ede0`；继续只读运行。
+
 - 2026-08-05 14:50+08:00：作者确认 8760 h 采用独立两阶段架构；实现提交
   `369506010b5bc876676941e456d9574187e0f293` 已双推送并部署到 clean fixed server。
   阶段 A profile 为 `barrier_checkpoint_full_year_cloud_v1`：`Method=2/Threads=16/
@@ -1441,6 +1449,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - 输出与下一步：终态三文件和 checkpoint 仍不存在。`resource_audit_snapshots.jsonl` round 7
   共 8 records，SHA256 `d691d087fec95263c77e62530befa58cac9b0aed6a986a55a9b992535305badc`。
   继续只读监控，终态后立即执行 checkpoint、wrapper、QC/manifest 与总资源闭合审计。
+
+### 2026-08-08 Barrier iteration 77 与资源审计 round 8
+
+- Git 基线：本轮开始时本地、`origin` 与 `github` 均为
+  `4a8ad14f100a7f6344bbe184cd1910be7710b89e`；cloud release 仍冻结实现
+  `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`。仅执行只读状态、日志、资源和输出文件审计，
+  并追加 run-control 资源账本；未取消、改参、重提或启动 Stage B/第二求解。
+- 进度：17:51:34 job `RUNNING` 2 天 16:33:41；iteration 77 timestamp
+  `2026-08-08T17:50:39.829041+08:00`，runtime `230,014.776122 s`、work `414,514.268194`；
+  iteration 48--77 平均 `46.061 min/step`。相对 iteration 48，三项 telemetry 指标分别缩小
+  `82,964/832,887/57,100` 倍；最新 Gurobi primal/dual residual/complementarity 为
+  `4.45e4/5.22e-5/1.15e4`，但 objective 相对间距仍约 `11.63`，尚未达到 Stage A 收敛。
+- 资源：wall 232,421 s、96 CPU/700G，allocation `6,197.8933 core-hours`、actual CPU
+  `915.2986 h`、MaxRSS `380,386,444 KiB = 362.7648 GiB`；Gurobi current/max
+  `351.0545/354.4981 GiB`，stderr 0，无 warning/numerical trouble/error。
+- 输出与下一步：终态报告、QC、result manifest 与 checkpoint 均不存在。资源账本 round 8 共
+  9 records，SHA256 `f0c7fdfa03c0ab39c5a1ace6739ea5a337b7dd0b22de7e83d37c4f5bde09ede0`。
+  继续只读监控；只有 Barrier 返回并保存检查点后才执行严格终态审计，不自动启动 Stage B。
 
 ### 2026-08-05 8760 h 工程 Barrier 检查点与独立 Crossover=2 架构
 
