@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-10 00:47 iteration 116 监控基准
+
+```text
+job=4139552 RUNNING 3-23:29:30
+Barrier iteration=116; solver runtime=341,163.39 s
+iteration 77--116 average=47.499 min/iteration
+latest Gurobi prim/dual/compl=5.40e2 / 1.52e-5 / 2.70e2
+objective relative gap~=8.56
+Slurm MaxRSS=362.909 GiB
+allocated core-hours=9,167.2; actual CPU-hours=1,391.305
+stderr=0; warnings=0; terminal/checkpoint files=absent
+resource audit=round 9 / 10 records / SHA256 9aa1f051...bf9052b
+```
+
+iteration 77--116 三项 telemetry 指标继续下降，但近期进入较缓长尾，目标仍未闭合。继续只读运行；
+禁止人工取消、改参、重提、Stage B 或第二求解。
+
 ## 2026-08-08 17:51 iteration 77 监控基准
 
 ```text
