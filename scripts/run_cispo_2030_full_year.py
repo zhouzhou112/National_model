@@ -1123,12 +1123,33 @@ def main() -> None:
         engineering_dir = output_dir / "engineering_macro_analysis"
         try:
             export_master_solution(artifacts, data, engineering_dir)
-            engineering_qc = export_operational_solution(
-                artifacts,
-                data,
-                config,
-                engineering_dir,
-            )
+            engineering_qc = None
+            engineering_qc_error = None
+            try:
+                engineering_qc = export_operational_solution(
+                    artifacts,
+                    data,
+                    config,
+                    engineering_dir,
+                )
+            except Exception as error:
+                engineering_qc_error = {
+                    "status": "STRICT_PHYSICAL_QC_EXPORT_FAILED",
+                    "error_type": type(error).__name__,
+                    "error": str(error),
+                    "scientifically_accepted": False,
+                }
+                (
+                    engineering_dir / "engineering_raw_qc_error.json"
+                ).write_text(
+                    json.dumps(
+                        engineering_qc_error,
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
             export_result_summary(
                 artifacts,
                 data,
@@ -1151,10 +1172,17 @@ def main() -> None:
                 "strict_solver_acceptance_status": report.get(
                     "solution_contract", {}
                 ).get("acceptance_status"),
-                "raw_physical_qc_status": engineering_qc.get("status"),
-                "raw_hard_check_count": len(
-                    engineering_qc.get("hard_checks", {})
+                "raw_physical_qc_status": (
+                    engineering_qc.get("status")
+                    if engineering_qc is not None
+                    else "STRICT_PHYSICAL_QC_EXPORT_FAILED"
                 ),
+                "raw_hard_check_count": (
+                    len(engineering_qc.get("hard_checks", {}))
+                    if engineering_qc is not None
+                    else None
+                ),
+                "raw_physical_qc_error": engineering_qc_error,
                 "analysis_directory": str(engineering_dir),
                 "interpretation": (
                     "Engineering macro-comparison evidence only. Values must be "
@@ -1172,7 +1200,9 @@ def main() -> None:
                 "status": "EXPORTED_UNACCEPTED_ENGINEERING_ANALYSIS",
                 "scientifically_accepted": False,
                 "path": str(contract_path),
-                "raw_physical_qc_status": engineering_qc.get("status"),
+                "raw_physical_qc_status": engineering_contract[
+                    "raw_physical_qc_status"
+                ],
             }
         except Exception as error:
             analysis_error = {

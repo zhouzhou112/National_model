@@ -77,7 +77,16 @@ def audit(
     reference_summary = _read_json(reference_root / "annual_summary.json")
     candidate_solve = _read_json(candidate_root / "solve_report.json")
     reference_solve = _read_json(reference_root / "solve_report.json")
-    candidate_qc = _read_json(analysis_root / "solution_qc.json")
+    candidate_qc_path = analysis_root / "solution_qc.json"
+    candidate_qc = (
+        _read_json(candidate_qc_path) if candidate_qc_path.is_file() else None
+    )
+    candidate_qc_error_path = analysis_root / "engineering_raw_qc_error.json"
+    candidate_qc_error = (
+        _read_json(candidate_qc_error_path)
+        if candidate_qc_error_path.is_file()
+        else None
+    )
 
     identity_keys = (
         "planning_year",
@@ -135,7 +144,11 @@ def audit(
         candidate_generation, reference_generation
     )
 
-    hard_checks = candidate_qc.get("hard_checks", {})
+    hard_checks = (
+        candidate_qc.get("hard_checks", {})
+        if candidate_qc is not None
+        else {}
+    )
     failed_hard_checks = sorted(
         str(name) for name, passed in hard_checks.items() if not bool(passed)
     )
@@ -192,7 +205,12 @@ def audit(
                 "iteration_counts", {}
             ).get("barrier"),
         },
-        "candidate_raw_qc_status": candidate_qc.get("status"),
+        "candidate_raw_qc_status": (
+            candidate_qc.get("status")
+            if candidate_qc is not None
+            else "STRICT_PHYSICAL_QC_EXPORT_FAILED"
+        ),
+        "candidate_raw_qc_error": candidate_qc_error,
         "candidate_failed_hard_checks": failed_hard_checks,
         "largest_capacity_differences": capacity_rows[:10],
         "largest_generation_differences": generation_rows[:10],
