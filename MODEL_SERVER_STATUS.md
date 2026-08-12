@@ -1,5 +1,26 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-12 21:28+08:00 relaxed Barrier 1 h 真解暴露导出边界；保留宏观证据的修补已提交
+
+- fixed server 的首次 Base/1 h `BarConvTol=5e-2` 烟雾根为
+  `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_9f5c2ca_v1`。wrapper 正常退出，wall
+  `1:44.92`、MaxRSS `497,512 KiB`、stderr 0；Gurobi `OPTIMAL`，Barrier 49 次、solver
+  `2.829 s`，完整工程 checkpoint 已先保存：BarX `238,529` 项、BarPi `80,143` 项，均为 finite，
+  `scientifically_accepted=false`。
+- 该极宽松解没有通过严格解质量：ConstrVio `4.04e-6`、BoundVio `3.78e-9`，但 DualVio
+  `0.628`、ComplVio `29.509`，最后一次 telemetry 的 primal--dual relative gap 为 `1.389%`。
+  原始物理导出还检测到双向最小流最大 `3.599 GWh`、合计 `76.294 GWh`、640 条活动边，因而按既有
+  load-center QC 抛错。根目录仍无 scientific `solution_qc/result_manifest`、planning state 或 basis，
+  隔离边界有效；此结果明确不是科学解。
+- 修补提交 `cc9293b25ef66ff4642eeb5860fb00b0a938b5ba` 让严格原始 QC 失败时写入
+  `engineering_raw_qc_error.json`，同时继续导出未接受的宏观汇总与 analysis contract；宏观审计也能
+  在缺少严格 `solution_qc.json` 时保留失败原因。它不改变 LP、solver profile、严格 QC 或晋级阈值。
+  本地 py_compile、focused test 与完整 `181/181 PASS`。下一步为双推送、fixed server clean fast-forward、
+  server 回归及全新 1 h smoke；复测闭合后立即启动唯一串行 744 h campaign。
+- 21:28 fixed server 仍 clean/idle `9f5c2ca`，available RAM 约 `114 GiB`、连续 `si/so=0/0`、memory
+  PSI 0、`/data` 余 `3.6 TiB`。ParaCloud job `4139552` 未触碰，仍 `RUNNING` 6 天 20:10；最新
+  iteration 202、runtime `587,056.87 s`、MaxRSS `380,541,576 KiB`、stderr 0，无终态或 checkpoint。
+
 ## 2026-08-12 12:05+08:00 fixed-server relaxed Barrier campaign 已实现、尚未部署
 
 - 作者授权保持 ParaCloud `4139552` 运行，同时在 fixed server 严格串行测试显著宽松的 744 h

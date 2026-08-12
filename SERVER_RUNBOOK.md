@@ -1,5 +1,30 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-12 relaxed Barrier 工程导出容错门禁
+
+首次 Base/1 h、`BarConvTol=5e-2` 真解证明：宽松 Barrier 可以先形成完整有限 BarX/BarPi checkpoint，
+但严格 load-center 物理 QC 可能在宏观摘要生成前因双向流而抛错。提交
+`cc9293b25ef66ff4642eeb5860fb00b0a938b5ba` 后按以下规则执行：
+
+1. `export_operational_solution()` 的任何异常都必须原样写入隔离目录
+   `engineering_macro_analysis/engineering_raw_qc_error.json`；不得压低或删除既有物理阈值，不得把异常
+   改写为 PASS。
+2. 只要 master solution 可读，runner 仍继续生成 `annual_summary.json`、容量/发电汇总和
+   `engineering_relaxed_analysis_contract.json`。contract 必须同时记录
+   `STRICT_PHYSICAL_QC_EXPORT_FAILED`、原始异常和 `scientifically_accepted=false`。
+3. `scripts/audit_relaxed_barrier_macro.py` 允许候选隔离目录不存在 `solution_qc.json`，但必须读取上述
+   error 文件并在 A/B 报告中保留。`MACRO_PASS` 只评估冻结的 objective/容量/发电差异，绝不消除
+   raw QC failure，也绝不升级成科学验收。
+4. 1 h 复测必须同时满足：wrapper rc=0、stderr=0、完整 checkpoint、隔离 annual summary/contract/
+   raw-QC error 可读、根目录无 scientific manifest/state/basis。满足后才可启动 744 h；如果缺失任一项，
+   保留失败根并停在 smoke 门禁。
+
+首次失败导出根为
+`/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_9f5c2ca_v1`：wall `1:44.92`、MaxRSS
+`497,512 KiB`、Barrier 49、solver `2.829 s`；ConstrVio `4.04e-6`，但 DualVio `0.628`、ComplVio
+`29.509`，relative objective gap `1.389%`，最大/累计双向最小流 `3.599/76.294 GWh`。该根只用于验证
+隔离与极宽松参数的风险，不得作为 744 h 预期质量或科学结果。
+
 ## 2026-08-12 fixed-server relaxed Barrier 自主 campaign 合同
 
 本节响应作者新授权，覆盖此前“本地不得新增 744 h/更长时域”的旧执行限制；它不改变云端

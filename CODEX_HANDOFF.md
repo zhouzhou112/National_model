@@ -12,6 +12,22 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-12 21:28+08:00：首次 fixed-server Base/1 h `BarConvTol=5e-2` 真解已完成，输出根
+  `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_9f5c2ca_v1`。wall `1:44.92`、MaxRSS
+  `497,512 KiB`、stderr 0；Gurobi `OPTIMAL`、Barrier 49、solver `2.829 s`，完整 finite BarX
+  `238,529` 项和 BarPi `80,143` 项已优先保存。严格 contract 为 `HARD_FAIL`：ConstrVio
+  `4.04e-6`、DualVio `0.628`、ComplVio `29.509`，末次 relative objective gap `1.389%`；原始
+  load-center QC 还记录最大/累计双向最小流 `3.599/76.294 GWh`、640 条活动边。根目录无 scientific
+  QC/manifest/state/basis，隔离有效，但原实现因严格 QC 异常未继续生成 annual summary。
+- 修补提交 `cc9293b25ef66ff4642eeb5860fb00b0a938b5ba` 只让隔离工程路径在原始 QC 抛错时写
+  `engineering_raw_qc_error.json` 并继续保留宏观摘要/contract；审计器也显式带出该失败。它不修改
+  LP、求解参数、严格 QC、科学门禁或 campaign 晋级阈值。本地 py_compile、focused test 与完整
+  `181/181 PASS`。fixed server 仍 clean/idle `9f5c2ca`、available 约 114 GiB、无 swap I/O/PSI；
+  下一步是双推送、部署和全新 1 h 复测，闭合后立即启动串行 744 h campaign。
+- ParaCloud job `4139552` 未修改、未取消：21:28 仍 `RUNNING` 6 天 20:10，最新 iteration 202、
+  solver runtime `587,056.87 s`、Slurm MaxRSS `380,541,576 KiB`、stderr 0，无 solve report、QC、
+  result manifest 或 checkpoint；继续只读监控，不启动 Stage B 或第二云任务。
+
 - 2026-08-12 12:05+08:00：作者已授权在不停止 ParaCloud `4139552` 的前提下，于 fixed
   server 启动多轮显著放宽的 744 h 及更长时域测试，并要求持续自主监管。实时核验时 local、
   `origin`、GitHub 均为 `13e2eb7f63b278bca9591ac1e3965a758326bd8f`；fixed server 为 clean
@@ -1308,6 +1324,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-12 relaxed Barrier 严格 QC 失败时仍保留宏观证据（`cc9293b`）
+
+- 范围：修改 `scripts/run_cispo_2030_full_year.py` 和
+  `scripts/audit_relaxed_barrier_macro.py`，新增 `tests/test_relaxed_barrier_macro.py`。隔离工程导出现在
+  单独捕获 strict operational QC 异常、写出机器可读失败原因，并继续生成宏观汇总和永不科学接受的
+  analysis contract；比较器不再因候选缺少严格 `solution_qc.json` 而丢失整轮 A/B 证据。
+- 触发证据：fixed server 旧 tip `9f5c2ca` 的 1 h/5e-2 真解 checkpoint 完整、wrapper rc=0，
+  但 DualVio/ComplVio 为 `0.628/29.509`，load-center 双向最小流最大/合计 `3.599/76.294 GWh`，
+  严格 QC 正确拒绝。根目录 scientific output 保护检查通过。
+- 验证：targeted py_compile PASS；新增测试 `1/1 PASS`；完整 unittest `181/181 PASS`。科学含义没有
+  放宽：raw QC failure 会被保留，`MACRO_PASS` 仍只表示宏观晋级，所有工程根仍
+  `scientifically_accepted=false`。
+- 未决与下一步：提交后双推送，确认 fixed server/cloud 实时状态，再在 idle fixed server fast-forward、
+  执行 `bash -n`、py_compile、全回归和全新 1 h smoke；只有隔离 annual summary/contract 与根目录保护
+  同时闭合，才后台启动既定单实例 744 h campaign。
 
 ### 2026-08-12 relaxed Barrier 本地长时域 campaign 实现（`9308ac0`）
 
