@@ -9,7 +9,8 @@
 - 云 job 未修改：iteration 191 于 12:04:31 落盘，runtime 554,846.21 s；Slurm MaxRSS
   362.913 GiB、stderr 0，`solve_report.json`、`solution_qc.json`、`result_manifest.json` 与
   checkpoint 均不存在。继续禁止人工取消、Stage B 或第二个云任务。
-- local 新路线只在显式 `--engineering-barrier-checkpoint-only
+- 实现提交 `9308ac002161a0b7971c28db8e46b5f42e8b91a8` 的新路线只在显式
+  `--engineering-barrier-checkpoint-only
   --engineering-relaxed-barrier-analysis` 下工作。3 个 744 h profiles 扫描
   `BarConvTol=5e-2/1e-2` 和 matched `NumericFocus=1`；`FeasibilityTol/OptimalityTol=1e-5`，
   无 Crossover。宽松解的完整 `BarX/BarPi` 与宏观 outputs 分层保存，后者永不生成科学 manifest/

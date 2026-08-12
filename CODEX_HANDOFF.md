@@ -19,7 +19,7 @@ This is the repository's single handoff document for work continued across Codex
   available RAM 约 `114 GiB`、swap `976 MiB/2 GiB` 但连续 `si/so=0/0`、memory PSI 0、
   `/data` 余 `3.6 TiB`。云 job 仍为唯一付费任务，Barrier iteration 191、runtime
   `554,846.21 s`、MaxRSS `362.913 GiB`、stderr 0，无终态/checkpoint；本轮明确不取消、不改参。
-- 新的 local implementation（提交待生成）只增加隔离的
+- 实现提交 `9308ac002161a0b7971c28db8e46b5f42e8b91a8` 只增加隔离的
   `ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS` 路线，不改 LP 变量、约束、目标、单位、Base/V5
   数据或正式科学门禁。候选统一为 `Method=2/Threads=16/Presolve=2/Crossover=0/
   SolutionTarget=1/FeasibilityTol=OptimalityTol=1e-5/ScaleFlag=2/Aggregate=1`，A/B 比较
@@ -1309,7 +1309,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ## Version history
 
-### 2026-08-12 relaxed Barrier 本地长时域 campaign 实现（提交待生成）
+### 2026-08-12 relaxed Barrier 本地长时域 campaign 实现（`9308ac0`）
 
 - 范围：新增 6 个明确 test-only 的 relaxed Barrier profiles、
   `scripts/audit_relaxed_barrier_macro.py`、`scripts/run_fixed_server_relaxed_barrier_campaign.sh`；

@@ -4,7 +4,8 @@
 
 本节响应作者新授权，覆盖此前“本地不得新增 744 h/更长时域”的旧执行限制；它不改变云端
 `4139552` 的不取消合同，也不放松任何正式年度科学验收。fixed server 与 ParaCloud 可同时运行，
-但 fixed server 内部仍只允许一个 CISPO/Gurobi solve。
+但 fixed server 内部仍只允许一个 CISPO/Gurobi solve。实施基线为
+`9308ac002161a0b7971c28db8e46b5f42e8b91a8`。
 
 1. 精确 profiles：744 h 使用
    `barrier_16_engineering_relaxed_bctol{5e2,1e2}_v1` 与
