@@ -1,5 +1,24 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-12 12:05+08:00 fixed-server relaxed Barrier campaign 已实现、尚未部署
+
+- 作者授权保持 ParaCloud `4139552` 运行，同时在 fixed server 严格串行测试显著宽松的 744 h
+  和更长时域。实时 fixed server 为 clean `3f739fd`，无 CISPO/Gurobi solver，Gurobi 13.0.2，
+  available RAM 约 114 GiB、swap 976 MiB/2 GiB 且连续 `si/so=0/0`、memory PSI 0、磁盘余
+  3.6 TiB。两个 8 月 5 日遗留 bash/grep 只读审计管道无 Python/Gurobi 子进程，不是第二求解。
+- 云 job 未修改：iteration 191 于 12:04:31 落盘，runtime 554,846.21 s；Slurm MaxRSS
+  362.913 GiB、stderr 0，`solve_report.json`、`solution_qc.json`、`result_manifest.json` 与
+  checkpoint 均不存在。继续禁止人工取消、Stage B 或第二个云任务。
+- local 新路线只在显式 `--engineering-barrier-checkpoint-only
+  --engineering-relaxed-barrier-analysis` 下工作。3 个 744 h profiles 扫描
+  `BarConvTol=5e-2/1e-2` 和 matched `NumericFocus=1`；`FeasibilityTol/OptimalityTol=1e-5`，
+  无 Crossover。宽松解的完整 `BarX/BarPi` 与宏观 outputs 分层保存，后者永不生成科学 manifest/
+  state/basis。自动 campaign 在 3 个 744 h Base 之后只允许最快 `MACRO_PASS` 进入 V5/744 h、
+  Base/1488 h 和最多 Base/2160 h，全程单实例。
+- 本地验证为 focused `31/31`、完整 `180/180 PASS`、py_compile/JSON/diff PASS。尚未提交、部署或
+  启动任何 fixed-server solve；Linux `bash -n`、server full regression 和 1 h 真解烟雾门禁仍是
+  744 h 启动前置条件。
+
 ## 2026-08-12 11:50+08:00 Barrier iteration 190，资源审计 round 12
 
 - job `4139552` `RUNNING` 6 天 10:32:11；iteration 190 于 11:18:12 落盘，solver runtime

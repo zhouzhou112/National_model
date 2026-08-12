@@ -1,5 +1,41 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-12 fixed-server relaxed Barrier 自主 campaign 合同
+
+本节响应作者新授权，覆盖此前“本地不得新增 744 h/更长时域”的旧执行限制；它不改变云端
+`4139552` 的不取消合同，也不放松任何正式年度科学验收。fixed server 与 ParaCloud 可同时运行，
+但 fixed server 内部仍只允许一个 CISPO/Gurobi solve。
+
+1. 精确 profiles：744 h 使用
+   `barrier_16_engineering_relaxed_bctol{5e2,1e2}_v1` 与
+   `barrier_16_engineering_relaxed_bctol1e2_numeric1_v1`；统一
+   `Method=2/Threads=16/Presolve=2/Crossover=0/SolutionTarget=1/
+   FeasibilityTol=OptimalityTol=1e-5/ScaleFlag=2/Aggregate=1`，只改变
+   `BarConvTol=5e-2/1e-2` 和 matched `NumericFocus=2/1`。744 h 为
+   `TimeLimit=21,600 s/SoftMemLimit=40 GiB`；对应 long profiles 为
+   `43,200 s/80 GiB`。不得临时原地改 JSON。
+2. 每根必须同时传入 `--engineering-barrier-checkpoint-only` 和
+   `--engineering-relaxed-barrier-analysis`。只有 `BarStatus=OPTIMAL` 才形成完整工程 checkpoint；
+   `engineering_macro_analysis/` 可保存容量、调度、碳、成本与原始 hard checks，但根目录不得生成
+   科学 `solution_qc/result_manifest`、planning state、basis 或 MGA。所有结果均
+   `scientifically_accepted=false`，即使宏观对照 PASS 也不例外。
+3. 执行脚本 `scripts/run_fixed_server_relaxed_barrier_campaign.sh` 的顺序固定为：Base/744 h
+   `5e-2 → 1e-2 → 1e-2+NumericFocus1`；以 strict Jan Base/744 h 根比较相同 year/scenario/
+   window，只有 objective 差 `<=1%`、技术容量/发电 normalized L1 各 `<=2%`、period generation
+   差 `<=0.5%` 的最快候选晋级；随后 V5/744 h、Base/1488 h@3624，若完整 checkpoint 存在再
+   Base/2160 h@2880。不得自动超过 2160 h。
+4. 每根前确认没有 fixed-server CISPO/Gurobi、checkout clean/current、目标根不存在；744 h
+   等待 available `>=64 GiB`，1488/2160 h 等待 `>=96 GiB`；均要求最新 `si/so=0/0`、memory
+   PSI avg10=0。资源不足最多等待 12 h 后安全退出。每根用 `/usr/bin/time -v`、独立 stdout/
+   stderr/return code 及前后 resource snapshot 留痕；失败根保留，campaign 只按既定分支继续。
+5. 部署顺序：选择性提交并双推送 → 再次核验 cloud/fixed 实时状态 → fixed server fast-forward
+   到精确 tip → `bash -n`、py_compile、server full regression → 全新 Base/1 h profile smoke。
+   1 h 必须验证 complete checkpoint、隔离 analysis contract、无根目录科学 manifest/state/basis，
+   才能后台启动 campaign。活动 PID 上不部署、不切 profile、不并发第二固定机求解。
+6. 12:05 启动前快照：fixed server clean `3f739fd`、Gurobi 13.0.2、available 约 114 GiB、
+   `si/so=0/0`、memory PSI 0；云 job 4139552 iteration 191、stderr 0、无终态/checkpoint。
+   这是易变化状态，实际部署和 campaign 启动前都必须重读。
+
 ## 2026-08-12 11:50 iteration 190 监控基准
 
 ```text

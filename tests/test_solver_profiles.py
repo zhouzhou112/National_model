@@ -243,6 +243,36 @@ class SolverProfileTests(unittest.TestCase):
         )
         self.assertIsNone(stage_b_v2.raw["numerics"]["time_limit_seconds"])
 
+        relaxed_profiles = {
+            "barrier_16_engineering_relaxed_bctol1e2_v1.json": (1e-2, 2),
+            "barrier_16_engineering_relaxed_bctol5e2_v1.json": (5e-2, 2),
+            "barrier_16_engineering_relaxed_bctol1e2_numeric1_v1.json": (1e-2, 1),
+            "barrier_16_engineering_relaxed_bctol1e2_long_v1.json": (1e-2, 2),
+            "barrier_16_engineering_relaxed_bctol5e2_long_v1.json": (5e-2, 2),
+            "barrier_16_engineering_relaxed_bctol1e2_numeric1_long_v1.json": (1e-2, 1),
+        }
+        for filename, (barrier_tolerance, numeric_focus) in relaxed_profiles.items():
+            with self.subTest(relaxed_profile=filename):
+                candidate = load_model_config(
+                    solver_path=profile_path.parent / filename
+                )
+                self.assertEqual(candidate.raw["numerics"]["method"], 2)
+                self.assertEqual(candidate.raw["numerics"]["crossover"], 0)
+                self.assertEqual(candidate.raw["numerics"]["solution_target"], 1)
+                self.assertEqual(
+                    candidate.raw["numerics"]["barrier_convergence_tolerance"],
+                    barrier_tolerance,
+                )
+                self.assertEqual(
+                    candidate.raw["numerics"]["numeric_focus"], numeric_focus
+                )
+                self.assertEqual(
+                    candidate.raw["numerics"]["feasibility_tolerance"], 1e-5
+                )
+                self.assertIn(
+                    candidate.raw["numerics"]["soft_mem_limit_gb"], (40, 80)
+                )
+
         tuning_profiles = sorted(profile_path.parent.glob("tuning_barrier_nonbasic_*.json"))
         self.assertEqual(len(tuning_profiles), 8)
         for tuning_profile in tuning_profiles:

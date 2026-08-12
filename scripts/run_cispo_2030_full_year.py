@@ -149,6 +149,16 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--engineering-relaxed-barrier-analysis",
+        action="store_true",
+        help=(
+            "For an explicitly test-only Stage A run, export the unaccepted "
+            "Barrier solution into engineering_macro_analysis/ for macro-scale "
+            "capacity, energy, carbon and cost comparison. This never creates "
+            "a scientific result manifest or planning state."
+        ),
+    )
+    parser.add_argument(
         "--allow-nonbasic-planning-state",
         action="store_true",
         help=(
@@ -369,6 +379,19 @@ def main() -> None:
         raise SystemExit(
             "Stage A engineering checkpoints can never export planning_state"
         )
+    if (
+        args.engineering_relaxed_barrier_analysis
+        and not args.engineering_barrier_checkpoint_only
+    ):
+        raise SystemExit(
+            "--engineering-relaxed-barrier-analysis requires "
+            "--engineering-barrier-checkpoint-only"
+        )
+    if args.engineering_relaxed_barrier_analysis and not requested_test_only:
+        raise SystemExit(
+            "--engineering-relaxed-barrier-analysis is restricted to "
+            "test-only truncated horizons"
+        )
     if args.allow_nonbasic_planning_state and not nonbasic_primal_dual_requested:
         raise SystemExit(
             "--allow-nonbasic-planning-state requires Method=2, Crossover=0, "
@@ -559,6 +582,9 @@ def main() -> None:
             data,
             hours=optimization_hours,
             hour_start=optimization_start_hour,
+            allow_engineering_relaxed_nonbasic=bool(
+                args.engineering_relaxed_barrier_analysis
+            ),
         )
     )
     preflight = run_preflight(config, data, output_dir / "preflight_report.json")
@@ -577,7 +603,9 @@ def main() -> None:
         "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
         "scientific_acceptance_mode": (
-            "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
+            "ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS"
+            if args.engineering_relaxed_barrier_analysis
+            else "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
             if args.engineering_barrier_checkpoint_only
             else "STANDARD_STRICT_ACCEPTANCE"
         ),
@@ -865,6 +893,9 @@ def main() -> None:
         assess_flexible_load_solver_compatibility(
             compatibility_structural_audit,
             config.raw["numerics"],
+            allow_engineering_relaxed_nonbasic=bool(
+                args.engineering_relaxed_barrier_analysis
+            ),
         )
     )
     build_report = {
@@ -1084,6 +1115,77 @@ def main() -> None:
     export_state = False
     state_export_requested = False
     qc = None
+    if (
+        args.engineering_relaxed_barrier_analysis
+        and engineering_checkpoint_completed
+        and artifacts.model.SolCount
+    ):
+        engineering_dir = output_dir / "engineering_macro_analysis"
+        try:
+            export_master_solution(artifacts, data, engineering_dir)
+            engineering_qc = export_operational_solution(
+                artifacts,
+                data,
+                config,
+                engineering_dir,
+            )
+            export_result_summary(
+                artifacts,
+                data,
+                config,
+                engineering_dir,
+            )
+            engineering_contract = {
+                "schema_version": "cispo_engineering_relaxed_barrier_analysis_v1",
+                "generated_at": datetime.now().astimezone().isoformat(),
+                "scientifically_accepted": False,
+                "result_manifest_created": False,
+                "planning_state_created": False,
+                "basis_created": False,
+                "result_use": scope_report["result_use"],
+                "solver_status": report.get("status"),
+                "barrier_status_code": barrier_status_code,
+                "solver_profile_id": report.get("solver_profile_id"),
+                "solver_parameters": report.get("solver_parameters"),
+                "solution_quality": report.get("solution_quality"),
+                "strict_solver_acceptance_status": report.get(
+                    "solution_contract", {}
+                ).get("acceptance_status"),
+                "raw_physical_qc_status": engineering_qc.get("status"),
+                "raw_hard_check_count": len(
+                    engineering_qc.get("hard_checks", {})
+                ),
+                "analysis_directory": str(engineering_dir),
+                "interpretation": (
+                    "Engineering macro-comparison evidence only. Values must be "
+                    "compared against a strict accepted root before selecting a "
+                    "production tolerance and cannot anchor a planning sequence."
+                ),
+            }
+            contract_path = engineering_dir / "engineering_analysis_contract.json"
+            contract_path.write_text(
+                json.dumps(engineering_contract, ensure_ascii=False, indent=2)
+                + "\n",
+                encoding="utf-8",
+            )
+            report["engineering_relaxed_barrier_analysis"] = {
+                "status": "EXPORTED_UNACCEPTED_ENGINEERING_ANALYSIS",
+                "scientifically_accepted": False,
+                "path": str(contract_path),
+                "raw_physical_qc_status": engineering_qc.get("status"),
+            }
+        except Exception as error:
+            analysis_error = {
+                "status": "ENGINEERING_RELAXED_ANALYSIS_EXPORT_FAILED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "scientifically_accepted": False,
+            }
+            (output_dir / "engineering_relaxed_analysis_error.json").write_text(
+                json.dumps(analysis_error, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            report["engineering_relaxed_barrier_analysis"] = analysis_error
     solver_solution_accepted = bool(
         report["status"] == "OPTIMAL"
         and report.get("solution_contract", {}).get(

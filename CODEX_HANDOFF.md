@@ -12,6 +12,29 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-12 12:05+08:00：作者已授权在不停止 ParaCloud `4139552` 的前提下，于 fixed
+  server 启动多轮显著放宽的 744 h 及更长时域测试，并要求持续自主监管。实时核验时 local、
+  `origin`、GitHub 均为 `13e2eb7f63b278bca9591ac1e3965a758326bd8f`；fixed server 为 clean
+  `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`、无 CISPO/Gurobi solver、Gurobi `13.0.2`，
+  available RAM 约 `114 GiB`、swap `976 MiB/2 GiB` 但连续 `si/so=0/0`、memory PSI 0、
+  `/data` 余 `3.6 TiB`。云 job 仍为唯一付费任务，Barrier iteration 191、runtime
+  `554,846.21 s`、MaxRSS `362.913 GiB`、stderr 0，无终态/checkpoint；本轮明确不取消、不改参。
+- 新的 local implementation（提交待生成）只增加隔离的
+  `ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS` 路线，不改 LP 变量、约束、目标、单位、Base/V5
+  数据或正式科学门禁。候选统一为 `Method=2/Threads=16/Presolve=2/Crossover=0/
+  SolutionTarget=1/FeasibilityTol=OptimalityTol=1e-5/ScaleFlag=2/Aggregate=1`，A/B 比较
+  `BarConvTol=5e-2`、`1e-2` 与 `1e-2 + NumericFocus=1`；744 h 的 `TimeLimit/SoftMemLimit`
+  为 `21,600 s/40 GiB`，更长候选为 `43,200 s/80 GiB`。完整 Barrier 优先保存 `BarX/BarPi`；
+  宏观容量、发电、碳、成本和原始 QC 只写入 `engineering_macro_analysis/`，不生成科学
+  `result_manifest`、planning state 或 basis。
+- `scripts/run_fixed_server_relaxed_barrier_campaign.sh` 规定严格串行：3 个 Base/744 h 候选
+  → 以旧 strict Base/744 h 根作宏观对照并选最快 `MACRO_PASS` → 同路线 V5/744 h → Base/1488 h
+  → checkpoint 完整且资源安全时 Base/2160 h。宏观晋级阈值为 objective 相对差 `<=1%`、容量/
+  发电按技术归一化 L1 各 `<=2%`、总发电相对差 `<=0.5%`；即使通过仍是
+  `scientifically_accepted=false`。本地 py_compile、focused `22/22 + 9/9` 与完整回归
+  `180/180 PASS`；Windows 没有可用 WSL bash，故部署后还必须在 fixed server 执行
+  `bash -n` 和全回归，并先做 1 h 真解门禁，尚未启动 744 h。
+
 - 2026-08-05 16:05+08:00：在本地工作树（基于 Git `d6984b2902aa85a2459935f4c76b6fa5a5623589`）
   将 `Power_curve_V2` 最新广州逐日质控 EV 重构结果接入 National_model。权威上游为
   `outputs/future_8760_projection_ev_calibrated_v3_qc/tables/
@@ -1285,6 +1308,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-12 relaxed Barrier 本地长时域 campaign 实现（提交待生成）
+
+- 范围：新增 6 个明确 test-only 的 relaxed Barrier profiles、
+  `scripts/audit_relaxed_barrier_macro.py`、`scripts/run_fixed_server_relaxed_barrier_campaign.sh`；
+  修改 `cispo_model/flexible_load_numerics.py` 与 `scripts/run_cispo_2030_full_year.py`，让 V5
+  仅在显式工程标志下放行宽松 nonbasic 路线，并把未接受解的宏观输出隔离在子目录。新增测试
+  锁定“默认仍拒绝、显式工程模式才放行”。
+- 科学边界：不改变任何模型方程、数据、政策约束或现有 strict acceptance。工程输出永远
+  `scientifically_accepted=false`，无 `result_manifest`、state、basis、MGA 或 Crossover；
+  `MACRO_PASS` 只允许进入下一本地测试长度，不能用于论文或 2030→2040 state。
+- 验证：`py_compile` PASS；`test_flexible_load.py` `22/22`、`test_solver_profiles.py` `9/9`；
+  设置当前 wave root 后完整 unittest `180/180 PASS`；JSON 解析与 `git diff --check` PASS。
+  由于本机 WSL 不含 `/bin/bash`，部署后以 Linux `bash -n` 补闭 shell 静态证据。
+- 实时证据与下一步：12:05 fixed server clean/idle 且资源安全；ParaCloud job `4139552` 仍运行
+  iteration 191，未触碰。下一步选择性提交/双推送，重新核验两端进程与资源，fixed server
+  fast-forward 后运行 server regression、`bash -n` 和全新 1 h Base relaxed smoke；只有检查点、
+  隔离宏观输出和保护标记闭合，才以新根后台启动唯一串行 campaign。
 
 ### 2026-08-05 Power_curve_V2 v3_qc 负荷与 EV 派生输入本地替换
 

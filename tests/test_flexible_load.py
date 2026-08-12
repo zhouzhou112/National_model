@@ -120,6 +120,33 @@ class FlexibleLoadContractTests(unittest.TestCase):
         self.assertEqual(nonbasic["status"], "PASS")
         self.assertTrue(nonbasic["strict_nonbasic_primal_dual_route"])
         self.assertFalse(nonbasic["stable_basic_route"])
+        relaxed_blocked = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {
+                "method": 2,
+                "crossover": 0,
+                "solution_target": 1,
+                "barrier_convergence_tolerance": 1e-2,
+            },
+        )
+        self.assertEqual(relaxed_blocked["status"], "BLOCKED")
+        relaxed_engineering = assess_flexible_load_solver_compatibility(
+            structural_audit,
+            {
+                "method": 2,
+                "crossover": 0,
+                "solution_target": 1,
+                "barrier_convergence_tolerance": 1e-2,
+            },
+            allow_engineering_relaxed_nonbasic=True,
+        )
+        self.assertEqual(relaxed_engineering["status"], "PASS")
+        self.assertTrue(
+            relaxed_engineering["engineering_relaxed_nonbasic_route"]
+        )
+        self.assertFalse(
+            relaxed_engineering["strict_nonbasic_primal_dual_route"]
+        )
         for crossover in (2, 4):
             with self.subTest(crossover=crossover):
                 alternative_basic = assess_flexible_load_solver_compatibility(

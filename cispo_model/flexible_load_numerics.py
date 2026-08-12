@@ -331,6 +331,8 @@ def _thermal_state_chain_numerical_risks(
 def assess_flexible_load_solver_compatibility(
     structural_audit: dict[str, Any],
     numerics: dict[str, Any],
+    *,
+    allow_engineering_relaxed_nonbasic: bool = False,
 ) -> dict[str, Any]:
     """Block risky V5 solves without the stable long-horizon solver contract.
 
@@ -385,12 +387,21 @@ def assess_flexible_load_solver_compatibility(
         and solution_target == 1
         and barrier_tolerance <= 1e-9
     )
+    engineering_relaxed_nonbasic_route = bool(
+        allow_engineering_relaxed_nonbasic
+        and method == 2
+        and crossover == 0
+        and solution_target == 1
+        and 1e-9 < barrier_tolerance <= 5e-2
+        and (not aggregate_zero_required or aggregate == 0)
+    )
     stable_long_horizon_settings = (
         (not aggregate_zero_required or aggregate == 0)
         and (
             not stable_crossover_required
             or stable_basic_route
             or strict_nonbasic_primal_dual_route
+            or engineering_relaxed_nonbasic_route
         )
     )
     passed = (
@@ -406,7 +417,13 @@ def assess_flexible_load_solver_compatibility(
         if aggregate_zero_required:
             reason = (
                 "Selected-horizon V5 inverse-decay risk is protected by "
-                "Aggregate=0, Crossover in {1,2,4} and CrossoverBasis=1."
+                "Aggregate=0 and an explicitly accepted solver route."
+            )
+        elif engineering_relaxed_nonbasic_route:
+            reason = (
+                "The explicitly acknowledged engineering-only relaxed Barrier "
+                "route may run for truncated-horizon macro comparison; it is "
+                "not a scientific acceptance or planning-state route."
             )
         else:
             reason = (
@@ -452,6 +469,12 @@ def assess_flexible_load_solver_compatibility(
         "strict_nonbasic_primal_dual_route": (
             strict_nonbasic_primal_dual_route
         ),
+        "engineering_relaxed_nonbasic_route": (
+            engineering_relaxed_nonbasic_route
+        ),
+        "engineering_relaxed_nonbasic_authorized": bool(
+            allow_engineering_relaxed_nonbasic
+        ),
         "required_long_horizon_settings": {
             "aggregate": 0 if aggregate_zero_required else "automatic_allowed",
             "accepted_solver_routes": [
@@ -484,6 +507,7 @@ def prebuild_flexible_load_solver_compatibility(
     *,
     hours: int,
     hour_start: int = 0,
+    allow_engineering_relaxed_nonbasic: bool = False,
 ) -> dict[str, Any]:
     """Assess the V5 numerical contract before allocating the full LP."""
     settings = config.raw["flexible_load"]
@@ -532,6 +556,9 @@ def prebuild_flexible_load_solver_compatibility(
     return assess_flexible_load_solver_compatibility(
         structural_audit,
         config.raw["numerics"],
+        allow_engineering_relaxed_nonbasic=(
+            allow_engineering_relaxed_nonbasic
+        ),
     )
 
 
