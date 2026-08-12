@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-12 21:45+08:00 第二次 1 h smoke 定位 master-export QC；分阶段修补已提交
+
+- 新根 `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_0d773d5_v2` 的 Python/time 终态为
+  rc 0，wall `0:37.84`、MaxRSS `496,276 KiB`、stderr 0；求解结果与首次完全一致：`OPTIMAL`、
+  Barrier 49、solver `2.847 s`、checkpoint 完整。外层远端审计命令仅在求解完成后因 `$rc` 转义错误
+  以 shell rc 1 退出，并把 `return_code.txt` 误写为字面 `$rc`；`time.txt` 的 `Exit status: 0` 与模型
+  文件证明 Python 本体成功。该 wrapper 元数据错误已保留，不重标历史文件。
+- 第二次 smoke 证明 load-center 双向流拒绝实际发生在 `export_master_solution()`，早于 operational
+  export；因此提交 `cc9293b` 的捕获层级仍不足，未生成 raw-QC file/annual summary/contract。新提交
+  `247c3020dc7c667e161d61a331ff81d8b5f616fe` 把 master、operational、summary 拆成独立阶段：仅预期的
+  `Load-center/Production solution QC failed` 可被记录并继续，磁盘错误、编程错误等非 QC 异常仍立即
+  重新抛出；summary 在严格 QC 失败后继续生成。
+- 本地 py_compile 与新增 targeted `3/3 PASS`。一次 Windows 完整回归因错误环境先快速失败；改用 RL
+  环境后又异常长时间无终态，已终止且不计入 PASS。下一步双推送，在 clean/idle fixed server 部署，
+  以权威环境执行完整 `182` 项回归和第三个全新 1 h smoke；未闭合前不启动 744 h。
+
 ## 2026-08-12 21:28+08:00 relaxed Barrier 1 h 真解暴露导出边界；保留宏观证据的修补已提交
 
 - fixed server 的首次 Base/1 h `BarConvTol=5e-2` 烟雾根为

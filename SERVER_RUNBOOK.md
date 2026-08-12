@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-12 relaxed engineering export 的实际分层
+
+第二次 1 h smoke 证明 load-center network QC 位于 `export_master_solution()`，不是
+`export_operational_solution()`。实施提交
+`247c3020dc7c667e161d61a331ff81d8b5f616fe` 后，工程导出按以下顺序执行：
+
+1. master export：若且仅若异常是以 `Load-center solution QC failed:` 开头的 `RuntimeError`，记录
+   `stage=MASTER_SOLUTION_EXPORT` 后继续；
+2. operational export：若且仅若异常是以 `Production solution QC failed:` 开头的 `RuntimeError`，
+   记录 `stage=OPERATIONAL_SOLUTION_EXPORT` 后继续；
+3. 将所有预期严格 QC 失败写入 `engineering_raw_qc_error.json`，再执行 result summary；
+4. 任何 OSError、非预期 RuntimeError、summary error 或其他异常一律向外抛出并使 smoke/campaign
+   失败，禁止把代码/磁盘故障伪装成宽松 QC 结果。
+
+第二次 smoke 根 `relaxed_barrier_smoke_1h_0d773d5_v2` 的 Python 本体由 `/usr/bin/time` 记录为
+`Exit status: 0`、wall `0:37.84`、MaxRSS `496,276 KiB`、stderr 0；但远端审计 shell 在写 rc 时转义
+错误，`return_code.txt` 为字面 `$rc`，所以该根仍不是启动门禁证据。第三次 smoke 必须使用无变量转义
+歧义的 wrapper（例如直接让 `/usr/bin/time` 终态成为 SSH 终态，随后用独立命令写已核验状态），并要求
+summary/raw-QC/contract 三者齐全后才能启动 744 h。
+
 ## 2026-08-12 relaxed Barrier 工程导出容错门禁
 
 首次 Base/1 h、`BarConvTol=5e-2` 真解证明：宽松 Barrier 可以先形成完整有限 BarX/BarPi checkpoint，

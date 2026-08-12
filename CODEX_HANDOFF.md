@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-12 21:45+08:00：第二次 fixed-server 1 h smoke 根
+  `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_0d773d5_v2` 的 Python/time 终态 rc 0，
+  wall `0:37.84`、MaxRSS `496,276 KiB`、stderr 0，checkpoint 完整；但远端 shell 在事后写
+  `return_code.txt` 时把 `$rc` 误作字面量并以 rc 1 退出，该 wrapper 证据不算闭合。更关键的是，
+  双向流严格拒绝实际发生在 `export_master_solution()`，所以 `cc9293b` 的 operational-only catch
+  层级不足，第二根仍未生成 annual summary/raw-QC contract。
+- 新实现提交 `247c3020dc7c667e161d61a331ff81d8b5f616fe` 将 master/operational/summary 工程导出分阶段：
+  仅两个已知严格 QC RuntimeError 可被原样记录并继续，任何磁盘、代码或其他非预期错误仍 fail-fast；
+  summary 不再被预期严格物理 QC 阻断。本地 py_compile 与 targeted `3/3 PASS`；Windows full suite
+  未形成有效终态，不能记为 PASS。下一步双推送、fixed-server `182/182` 和第三次 1 h 真解门禁；
+  只有 wrapper、checkpoint、summary/raw-QC/contract、根目录保护全部闭合才启动 744 h。
+
 - 2026-08-12 21:28+08:00：首次 fixed-server Base/1 h `BarConvTol=5e-2` 真解已完成，输出根
   `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_9f5c2ca_v1`。wall `1:44.92`、MaxRSS
   `497,512 KiB`、stderr 0；Gurobi `OPTIMAL`、Barrier 49、solver `2.829 s`，完整 finite BarX
@@ -1324,6 +1336,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-12 relaxed macro export 按 master/operational/summary 分阶段（`247c302`）
+
+- 范围：重构 `scripts/run_cispo_2030_full_year.py` 的隔离工程导出为可测试 helper，并扩展
+  `tests/test_relaxed_barrier_macro.py`。master 与 operational 的预期严格 QC 失败分别登记 stage，
+  汇总后写单一 raw-QC payload，再继续生成年度宏观摘要。
+- 安全边界：只允许两个精确前缀的 `RuntimeError` 作为预期 QC 失败；I/O、编程、未知 RuntimeError
+  与 summary 异常全部重新抛出。未修改 LP、profile、科学 QC、manifest/state/basis 规则或 A/B 阈值。
+- 触发证据：`0d773d5` 的第二次 1 h smoke 再现相同 49 次 Barrier 解，证明异常源在 master export；
+  Python `/usr/bin/time` rc 0，但外层 shell rc 留痕因转义错误无效，故保留该根但不用于启动 campaign。
+- 验证与下一步：py_compile PASS、targeted `3/3 PASS`；本地完整回归未形成有效终态。双推送后只在
+  idle fixed server clean fast-forward，执行 Linux full `182` tests，再建第三个不可复用 smoke 根，
+  最终门禁通过后启动既定串行 744 h campaign。
 
 ### 2026-08-12 relaxed Barrier 严格 QC 失败时仍保留宏观证据（`cc9293b`）
 
