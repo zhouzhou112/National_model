@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-12 11:50+08:00 Barrier iteration 190，资源审计 round 12
+
+- job `4139552` `RUNNING` 6 天 10:32:11；iteration 190 于 11:18:12 落盘，solver runtime
+  552,067.53 s。iteration 158--190 平均 47.571 分钟/步，速度稳定。
+- 最新 Gurobi primal/dual residual/complementarity 为 `4.00e1/9.35e-7/2.37e1`；objective 相对
+  间距由 iteration 158 的 `3.69` 缓慢降至 `3.21`。仍在推进，但长尾明显且尚未收敛。
+- Slurm MaxRSS 362.913 GiB、Gurobi current/max 351.054/354.498 GiB；累计 allocation
+  14,835.493 core-hours、actual CPU 2,300.554 h。stderr 0，无 warning/numerical trouble/error。
+- 终态报告、QC、result manifest 和 checkpoint 均不存在。资源账本 round 12 共 13 records，SHA256
+  `e299d4c7821a0e6e372b44182c3dc239179b58bea5ccfa784a4cc841a77b776d`。继续不取消、不改参，
+  不启动 Stage B/第二求解。
+
 ## 2026-08-11 10:16+08:00 Barrier iteration 158，资源审计 round 11
 
 - job `4139552` `RUNNING` 5 天 08:58:07；iteration 158 于 09:55:55 落盘，solver runtime

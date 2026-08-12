@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-12 11:50 iteration 190 监控基准
+
+```text
+job=4139552 RUNNING 6-10:32:11
+Barrier iteration=190; solver runtime=552,067.53 s
+iteration 158--190 average=47.571 min/iteration
+latest Gurobi prim/dual/compl=4.00e1 / 9.35e-7 / 2.37e1
+objective relative gap~=3.21
+Slurm MaxRSS=362.913 GiB
+allocated core-hours=14,835.493; actual CPU-hours=2,300.554
+stderr=0; warnings=0; terminal/checkpoint files=absent
+resource audit=round 12 / 13 records / SHA256 e299d4c7...a77b776d
+```
+
+目标相对间距从 iteration 158 的约 `3.69` 缓慢降至 `3.21`，长尾仍在推进。继续只读运行；禁止
+人工取消、改参、重提、Stage B 或第二求解。
+
 ## 2026-08-11 10:16 iteration 158 监控基准
 
 ```text
