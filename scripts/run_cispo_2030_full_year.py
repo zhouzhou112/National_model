@@ -47,6 +47,84 @@ def diagnostic_memory_requirement_gb(config, hours: int) -> float:
     raise ValueError(f"Diagnostic horizon {hours} exceeds the configured full year")
 
 
+def export_engineering_relaxed_macro_analysis(
+    artifacts,
+    data,
+    config,
+    engineering_dir: Path,
+    *,
+    master_exporter,
+    operational_exporter,
+    summary_exporter,
+):
+    """Export unaccepted macro evidence while preserving strict-QC failures."""
+    engineering_dir.mkdir(parents=True, exist_ok=True)
+    export_errors = []
+
+    def record_expected_qc_failure(stage: str, error: Exception) -> None:
+        message = str(error)
+        expected_prefixes = (
+            "Load-center solution QC failed:",
+            "Production solution QC failed:",
+        )
+        if not isinstance(error, RuntimeError) or not message.startswith(
+            expected_prefixes
+        ):
+            raise error
+        export_errors.append(
+            {
+                "stage": stage,
+                "error_type": type(error).__name__,
+                "error": message,
+            }
+        )
+
+    try:
+        master_exporter(artifacts, data, engineering_dir)
+    except Exception as error:
+        record_expected_qc_failure("MASTER_SOLUTION_EXPORT", error)
+
+    engineering_qc = None
+    try:
+        engineering_qc = operational_exporter(
+            artifacts,
+            data,
+            config,
+            engineering_dir,
+        )
+    except Exception as error:
+        record_expected_qc_failure("OPERATIONAL_SOLUTION_EXPORT", error)
+
+    engineering_qc_error = None
+    if export_errors:
+        first_error = export_errors[0]
+        engineering_qc_error = {
+            "status": "STRICT_PHYSICAL_QC_EXPORT_FAILED",
+            "error_stage": first_error["stage"],
+            "error_type": first_error["error_type"],
+            "error": first_error["error"],
+            "errors": export_errors,
+            "scientifically_accepted": False,
+        }
+        (engineering_dir / "engineering_raw_qc_error.json").write_text(
+            json.dumps(
+                engineering_qc_error,
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+    summary_exporter(
+        artifacts,
+        data,
+        config,
+        engineering_dir,
+    )
+    return engineering_qc, engineering_qc_error
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Sequential CISPO planning-year expansion plus chronological operation"
@@ -1122,39 +1200,16 @@ def main() -> None:
     ):
         engineering_dir = output_dir / "engineering_macro_analysis"
         try:
-            export_master_solution(artifacts, data, engineering_dir)
-            engineering_qc = None
-            engineering_qc_error = None
-            try:
-                engineering_qc = export_operational_solution(
+            engineering_qc, engineering_qc_error = (
+                export_engineering_relaxed_macro_analysis(
                     artifacts,
                     data,
                     config,
                     engineering_dir,
+                    master_exporter=export_master_solution,
+                    operational_exporter=export_operational_solution,
+                    summary_exporter=export_result_summary,
                 )
-            except Exception as error:
-                engineering_qc_error = {
-                    "status": "STRICT_PHYSICAL_QC_EXPORT_FAILED",
-                    "error_type": type(error).__name__,
-                    "error": str(error),
-                    "scientifically_accepted": False,
-                }
-                (
-                    engineering_dir / "engineering_raw_qc_error.json"
-                ).write_text(
-                    json.dumps(
-                        engineering_qc_error,
-                        ensure_ascii=False,
-                        indent=2,
-                    )
-                    + "\n",
-                    encoding="utf-8",
-                )
-            export_result_summary(
-                artifacts,
-                data,
-                config,
-                engineering_dir,
             )
             engineering_contract = {
                 "schema_version": "cispo_engineering_relaxed_barrier_analysis_v1",

@@ -7,6 +7,9 @@ import unittest
 from pathlib import Path
 
 from scripts.audit_relaxed_barrier_macro import audit
+from scripts.run_cispo_2030_full_year import (
+    export_engineering_relaxed_macro_analysis,
+)
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -23,6 +26,67 @@ def _write_series(path: Path, key: str, value: str, amount: float) -> None:
 
 
 class RelaxedBarrierMacroAuditTests(unittest.TestCase):
+    def test_master_qc_failure_does_not_block_engineering_summary(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            analysis = Path(temporary) / "engineering_macro_analysis"
+            calls = []
+
+            def master_exporter(*_args):
+                calls.append("master")
+                raise RuntimeError(
+                    "Load-center solution QC failed: directionality"
+                )
+
+            def operational_exporter(*_args):
+                calls.append("operational")
+                return {"status": "PASS", "hard_checks": {"example": True}}
+
+            def summary_exporter(*_args):
+                calls.append("summary")
+                _write_json(analysis / "annual_summary.json", {"ok": True})
+
+            qc, error = export_engineering_relaxed_macro_analysis(
+                object(),
+                object(),
+                object(),
+                analysis,
+                master_exporter=master_exporter,
+                operational_exporter=operational_exporter,
+                summary_exporter=summary_exporter,
+            )
+
+            self.assertEqual(calls, ["master", "operational", "summary"])
+            self.assertEqual(qc["status"], "PASS")
+            self.assertEqual(
+                error["status"], "STRICT_PHYSICAL_QC_EXPORT_FAILED"
+            )
+            self.assertEqual(error["error_stage"], "MASTER_SOLUTION_EXPORT")
+            self.assertTrue((analysis / "annual_summary.json").is_file())
+            persisted = json.loads(
+                (analysis / "engineering_raw_qc_error.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertFalse(persisted["scientifically_accepted"])
+
+    def test_unexpected_engineering_export_error_is_not_suppressed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            analysis = Path(temporary) / "engineering_macro_analysis"
+
+            def master_exporter(*_args):
+                raise OSError("disk write failed")
+
+            with self.assertRaisesRegex(OSError, "disk write failed"):
+                export_engineering_relaxed_macro_analysis(
+                    object(),
+                    object(),
+                    object(),
+                    analysis,
+                    master_exporter=master_exporter,
+                    operational_exporter=lambda *_args: {},
+                    summary_exporter=lambda *_args: None,
+                )
+
     def test_missing_strict_qc_is_preserved_without_losing_macro_audit(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
