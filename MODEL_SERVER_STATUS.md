@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 17:06+08:00 cloud round 17 / fixed quad cleanup
+
+- ParaCloud `4139552` 未修改：Barrier iteration 313、runtime `917,751.15 s`；round 17 为 wall
+  `920,881 s`、allocated `24,556.827 core-hours`、actual CPU `3,841.487 h`、CPU efficiency
+  `15.6433%`、MaxRSS `362.913 GiB`、最近 20 步平均 `52.099 min`。18 records SHA256
+  `a7ab2c58...11ba`；stderr 0、无 terminal/checkpoint。
+- fixed strict quad cleanup 为 iteration `828,761`、runtime `13,981 s`、primal 0、dual `2.73e5`；
+  wrapper/v3 supervisor 存活，仍只有一个 solver，终态文件 absent。
+
 ## 2026-08-16 16:58+08:00 strict cleanup 切换 quad precision
 
 - iteration `823,548`、runtime `13,224 s` 后，Gurobi 自动报告 `1 variables dropped from basis` 和

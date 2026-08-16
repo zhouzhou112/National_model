@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 17:06+08:00：ParaCloud `4139552` 保持原样，16:52 落盘 Barrier iteration 313，
+  runtime `917,751.15 s`，primal/dual/complementarity `2.701581/1.817e-6/0.219215`。resource
+  audit round 17：wall `920,881 s`、allocated `24,556.827 core-hours`、actual CPU
+  `3,841.487 h`、efficiency `15.6433%`、MaxRSS `362.913 GiB`、iteration 293--313 平均
+  `52.099 min`；18 records SHA256 `a7ab2c58...11ba`。stderr 0、无 terminal/checkpoint。
+  fixed strict quad cleanup 同时仍活跃，iteration `828,761`、runtime `13,981 s`、primal 0、
+  dual `2.73e5`，只有一个 solver。
 - 2026-08-16 16:58+08:00：strict cleanup 在 iteration `823,548`、runtime `13,224 s` 自动报告
   `Warning: 1 variables dropped from basis` 与 `Warning: switch to quad precision`。这与旧成功根完全
   相同类型的 Gurobi 数值保护；切换后约 `7 pivots/s`，iteration `825,303`、runtime `13,464 s`
@@ -1494,6 +1501,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 313 / resource audit round 17
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `689a2a4a1c3fa5e2fd16b424ce69daa7efb2248c`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  仅追加 cloud run-control resource snapshot 并更新三份交接文档；未修改 cloud/fixed solver、
+  profile、checkout、模型、数据或 output。
+- cloud 证据：job 继续 RUNNING；iteration 313、runtime `917,751.150 s`，primal infeasibility
+  `2.701581`、complementarity `0.219215`，均较 iteration 312 下降。round 17 记录 wall
+  `920,881 s`、allocation `24,556.827 core-hours`、actual CPU `3,841.487 h`、CPU efficiency
+  `15.6433%`、MaxRSS `362.913 GiB`、最近 20 步平均 `52.099 min`。18 records SHA256 为
+  `a7ab2c58591de060f886052d2c47f1cc4916f48ed38473710ecfe2003c9411ba`；stderr 0、无终态文件或
+  checkpoint，不取消、不改参、不启动 Stage B。
+- fixed/下一步：strict quad cleanup 到 iteration `828,761`、runtime `13,981 s`，primal 0、dual
+  `2.732433e5`，wrapper 和 v3 supervisor 存活且只有一个 solver。继续监控 strict 正式终态；cloud
+  只在下一新 iteration 或有意义时间间隔后再追加审计。
 
 ### 2026-08-16 strict Crossover 自动切换 quad precision
 

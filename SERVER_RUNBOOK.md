@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 17:06 cloud round 17
+
+```text
+cloud_job=4139552 RUNNING Barrier iteration 313
+cloud_solver_runtime_seconds=917751.150
+cloud_recent_20_iteration_average_minutes=52.099
+cloud_resource_audit_round=17 records=18
+cloud_resource_audit_sha256=a7ab2c58591de060f886052d2c47f1cc4916f48ed38473710ecfe2003c9411ba
+fixed_quad_iteration=828761
+fixed_quad_runtime_seconds=13981
+```
+
+iteration 313 的 primal infeasibility 与 complementarity 继续下降，任务不是停滞。round 17 已持久化；
+不得据本地 strict 中途状态取消、修改或追加 cloud Stage B。fixed 继续唯一 quad cleanup，终态后才执行
+reference contract 与 exact macro。
+
 ## 2026-08-16 16:58 strict quad-precision cleanup
 
 ```text
