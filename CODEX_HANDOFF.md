@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 06:21+08:00：fixed Base/1488 已进入 Barrier。raw LP 为
+  `7,236,351 vars / 8,648,849 rows / 87,364,792 nnz`；build 约 10.4 min，Presolve=2 用
+  `1,080.17 s` 后得到 `6,564,794 / 5,761,274 / 73,637,736`，ordering `322.03 s`。
+  Barrier 因子为 dense cols `36,218`、Factor NZ `3.866e9`（约 36 GB）、Factor Ops `1.060e14`
+  （Gurobi 粗估 200 s/iter）；相对同 Base/744 NF1 winner，presolved nnz `2.36x`，但 dense cols/
+  Factor NZ/Factor Ops 为 `5.99x/5.27x/22.26x`，确认主要长时域瓶颈是 fill-in 而非容差。
+  iteration 0/1/2 runtime `1,489.26/1,595.89/1,855.80 s`，前两步分别约 `106.64/259.91 s`；
+  Gurobi current/max memory `45.07/58.29 GiB`，stderr 0。12 h TimeLimit 可能只够约 200--250 步，
+  但 runner 会在至少一轮 Barrier 后保存 `INCOMPLETE_BARRIER_RECOVERY`；这种根只供取证，不能延期
+  Crossover。campaign 当前只检查 manifest 是否存在才放行 2160，未区分 recovery/eligible，需在本轮
+  结束后修正门禁；活动脚本/checkout 不得中途修改。
 - 2026-08-17 05:47+08:00：ParaCloud `4139552` 未触碰，新增落盘 Barrier iteration 326/327；
   最新 runtime `963,537.897 s`，primal/dual/complementarity
   `1.529887/1.166e-6/0.128042`，继续下降。resource audit round 30：wall `966,523 s`、allocated
@@ -1633,6 +1644,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/1488 presolve, factorization and early Barrier evidence
+
+- 命令/身份：fixed clean `902b1672a869cd4e6483633ceaf0208e092bff36`，Base/1488 start hour
+  3624，long NF1 winner profile（Method2/Threads16/Presolve2/Crossover0/BarConvTol1e-2/FeasOpt1e-5/
+  Scale2/TimeLimit43200/SoftMem80）。local/origin/GitHub 文档 tip 在本记录前为 `97d0a13`；活动求解
+  期间未部署新 tip、未启动第二 solver，云 job 未改。
+- 规模/预处理：build 约 10.4 min；raw `7,236,351 vars / 8,648,849 rows / 87,364,792 nnz`。
+  Presolve `1,080.17 s` 后为 `6,564,794 rows / 5,761,274 cols / 73,637,736 nnz`；ordering
+  `322.03 s`。Barrier statistics：dense cols 36,218、AA' NZ `1.509e8`、Factor NZ `3.866e9`
+  （约 36 GB）、Factor Ops `1.060e14`（约 200 s/iter）、16 threads。
+- 对照：同 Base/744 NF1 winner 的 presolved 规模为 `3,001,388/2,775,698/31,159,971`，ordering
+  `101.00 s`、dense cols 6,050、Factor NZ `7.334e8`、Factor Ops `4.761e12`。因此 1488 虽仅延长
+  一倍时域，presolved nnz 为 `2.36x`，Factor NZ/Factor Ops 却为 `5.27x/22.26x`；全年效率问题
+  不能只靠放宽 BarConvTol 解决，优先目标应转为降低跨时序填充和 dense-column coupling。
+- 早期轨迹/资源：iteration 0/1/2 runtime `1,489.26/1,595.89/1,855.80 s`，步耗时约
+  `106.64/259.91 s`；current/max solver memory `45.07/58.29 GiB`，主机采样 available 约 82 GiB、
+  si/so 0、memory PSI 0、stderr 0。继续运行，至少收集 5--10 步后再估终点。
+- 恢复合同审计：runner 在非 OPTIMAL 且 Barrier iteration>0 时会尝试保存完整 BarX/BarPi 为
+  `INCOMPLETE_BARRIER_RECOVERY`，`deferred_crossover_eligible=false`；不会把它当科学结果。但 campaign
+  的 2160 条件当前仅测试 manifest 文件存在，未检查 eligibility，和“完整 checkpoint 才晋级”的
+  文档合同不完全一致。活动脚本不得中途改；本轮结束后最小修复为解析 manifest 并要求
+  `deferred_crossover_eligible=true`，另加回归测试。
 
 ### 2026-08-17 cloud resource audit round 30 during Base/1488 build
 

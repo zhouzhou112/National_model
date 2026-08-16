@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 06:21+08:00 Base 1488 factorization / Barrier start
+
+- Base/1488 raw LP `7,236,351 vars / 8,648,849 rows / 87,364,792 nnz`；build 约 10.4 min，
+  presolve `1,080.17 s` 后为 `6,564,794 / 5,761,274 / 73,637,736`，ordering `322.03 s`。
+  dense cols 36,218、Factor NZ `3.866e9`（约 36 GB）、Factor Ops `1.060e14`（约 200 s/iter）。
+- 相对同 Base/744 NF1 winner，presolved nnz `2.36x`，但 Factor NZ/Ops `5.27x/22.26x`；长时域
+  性能瓶颈已定位为 fill-in/dense temporal coupling，不是仅靠容差能消除。
+- iteration 0/1/2 runtime `1,489.26/1,595.89/1,855.80 s`；solver current/max memory
+  `45.07/58.29 GiB`，stderr 0，主机无 swap I/O/PSI。继续唯一求解，至少 5--10 步后再估 12 h 终点。
+- 审计发现 campaign 的 2160 gate 仅检查 checkpoint manifest 存在；若 1488 TIME_LIMIT 后只保存
+  `INCOMPLETE_BARRIER_RECOVERY`，也会被误放行。活动脚本不改；本轮结束后应要求 manifest
+  `deferred_crossover_eligible=true` 并加测试。
+
 ## 2026-08-17 05:47+08:00 cloud round 30 / Base 1488 building
 
 - ParaCloud `4139552` 新落盘 Barrier iteration 326/327；最新 runtime `963,537.897 s`，

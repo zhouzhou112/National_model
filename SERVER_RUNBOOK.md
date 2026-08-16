@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 06:21 Base/1488 presolve/factor/early Barrier
+
+```text
+base_1488_raw=7236351_vars/8648849_rows/87364792_nnz build_minutes~=10.4
+base_1488_presolve_seconds=1080.17 presolved=6564794_rows/5761274_cols/73637736_nnz
+base_1488_ordering_seconds=322.03 dense_cols=36218 aa_nz=1.509e8
+base_1488_factor_nz=3.866e9 factor_memory_estimate_gb=36 factor_ops=1.060e14
+base_1488_iter_0_1_2_runtime_s=1489.26/1595.89/1855.80
+base_1488_solver_current_max_memory_gib=45.07/58.29 stderr_bytes=0
+base744_to1488_presolved_nnz_factor_nz_factor_ops_ratio=2.36/5.27/22.26
+```
+
+继续只读运行 PID `3899905/3899906`；先收集至少 5--10 个 Barrier 步长，不以单步外推终点。
+TIME_LIMIT 后若 runner 生成 `INCOMPLETE_BARRIER_RECOVERY`，该 manifest 的
+`deferred_crossover_eligible=false`，只可用于取证，不可 deferred crossover。现有 campaign 的 2160
+条件只检查 manifest 存在，活动期间不得修改脚本；本轮退出后先核查它是否错误晋级，再把未来门禁
+最小修复为解析 manifest 且强制 `deferred_crossover_eligible=true`。云 Stage A 保持不变。
+
 ## 2026-08-17 05:47 cloud round 30 / Base/1488 build
 
 ```text
