@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 19:57+08:00：current-identity strict Base/744 总 Gurobi runtime 已达 `24,224 s` 且
+  仍未结束，正式超过旧历史成功根 `24,156.53 s` 约 `67.5 s`。本次 Barrier `7,734.65 s` 相对旧
+  `11,142.54 s` 节省约 `3,407.9 s`，但自 Barrier 完成后的 Crossover/cleanup 已至少
+  `16,489.4 s`，相对旧 `Crossover time=12,672.69 s` 多约 `3,816.7 s`（`30.1%`），完全吞掉
+  Barrier 加速。该比较跨数据版本，仅为历史工程参照，不是 exact scientific A/B；但已证明不能用
+  Barrier 加速推断端到端加速，并增强 8760 h “先保存 Barrier checkpoint、后续独立 Crossover”
+  的架构依据。当前 iteration `885,507`、primal 0、dual `2.89e5`、stderr 0，继续运行。
 - 2026-08-16 19:36+08:00：ParaCloud `4139552` 未修改，19:28 落盘 Barrier iteration 316，
   runtime `927,093.65 s`，primal/dual/complementarity `2.420051/1.732e-6/0.199649`。round 20
   记录 wall `929,885 s`、allocated `24,796.933 core-hours`、actual CPU `3,879.081 h`、
@@ -1525,6 +1532,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict 744 端到端耗时已超过旧成功根
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `4ce1c92c2f6e05d37a4c7fe1550462125355f88e`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  本轮只读比较当前与旧成功 `gurobi.log` 并更新三份交接文档；未改 solver、profile、checkout、模型、
+  数据、output 或 cloud job。
+- 证据：当前 runtime `24,224 s` 时仍在 iteration `885,507` 的 quad cleanup，primal 0、dual
+  `2.886885e5`、stderr 0；旧成功根总 runtime `24,156.53 s`。当前已慢 `67.47 s` 且差距将继续增长。
+  当前 Barrier `7,734.65 s` 比旧 `11,142.54 s` 快 `3,407.89 s`；当前 Barrier 后阶段已至少
+  `16,489.35 s`，比旧完整 Crossover `12,672.69 s` 多 `3,816.66 s`（`30.12%`）。
+- 判读边界：旧根绑定旧 LP/data，故该比较只能作为历史工程轨迹，不能替代 current-identity exact
+  macro A/B。但它足以否定“Barrier 快即整轮快”，并说明严格 Crossover 长尾可完全抹去 Barrier
+  收益；8760 h Stage A checkpoint 与 Stage B 解耦仍是必要的成本控制架构。
+- 下一步：strict 继续运行到正式终态，不因超过历史时间取消；成功后执行 reference contract/exact
+  macro，失败则让 v3 保留现场并停止。云 job `4139552` 保持原样。
 
 ### 2026-08-16 cloud iteration 316 / resource audit round 20
 

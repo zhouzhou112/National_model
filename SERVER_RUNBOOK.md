@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 19:57 strict 端到端基准交叉
+
+```text
+current_total_runtime_seconds=24224 still_running
+old_success_total_runtime_seconds=24156.53
+current_minus_old_total_seconds=67.47
+current_barrier_seconds=7734.65
+old_barrier_seconds=11142.54
+current_post_barrier_elapsed_seconds=16489.35
+old_crossover_seconds=12672.69
+current_post_barrier_vs_old_crossover_percent=+30.12
+```
+
+该历史比较跨 LP/data identity，只用于工程耗时，不用于科学 exact A/B。结论是 Barrier 加速不能代表
+端到端加速；Crossover 长尾已经抹去约 3,408 s Barrier 节省。继续 strict 到正式终态，不因超过旧
+耗时取消；8760 h 继续采用独立 Barrier checkpoint / deferred Crossover 架构思路。
+
 ## 2026-08-16 19:36 cloud round 20 / fixed low-dual cleanup
 
 ```text

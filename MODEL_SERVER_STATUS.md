@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 19:57+08:00 strict runtime 超过旧成功根
+
+- 当前 strict runtime `24,224 s` 且未结束，已超过旧成功根 `24,156.53 s`；iteration `885,507`、
+  primal 0、dual `2.89e5`、stderr 0。
+- 本次 Barrier 比旧根快约 `3,407.9 s`，但 Barrier 后 Crossover/cleanup 已至少 `16,489.4 s`，
+  相对旧完整 Crossover `12,672.69 s` 慢约 `30.1%`，端到端收益已耗尽。比较跨数据版本，仅为
+  历史工程参照；继续运行并等待正式 status。云 job 不变。
+
 ## 2026-08-16 19:36+08:00 cloud round 20 / fixed low-dual cleanup
 
 - ParaCloud `4139552` 未触碰：Barrier iteration 316、runtime `927,093.65 s`；round 20 为 wall
