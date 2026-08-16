@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 04:12 strict reference terminal / v3 fail-closed / minimal fix
+
+```text
+strict_status=OPTIMAL qc=PASS hard_checks=58/58
+strict_solver_seconds=53489.068 barrier_seconds=7734.65 crossover_seconds=45468.01
+strict_objective_million_cny=2361958.416203
+strict_constr_bound_dual_vio=9.74e-8/8.50e-8/8.85e-8
+strict_wrapper_rc=0 stderr_bytes=0 wall=14:57:39 maxrss_kib=20617928 swaps=0
+v3_campaign=NO_MACRO_PASS orchestration_failure_only solver_started=false
+patched_campaign_sha256=95e177eeb6874a36bf769dc70f95e7a1262506438bf7124d4f74f69dd5a17132
+focused_tests=6/6_PASS
+```
+
+v3 不得重标为候选失败；其三个 `macro_comparison_stdout.log` 均为 import failure，且无新 solver。
+部署修复后必须使用全新 v4 control/output root；只复用 supervisor symlink 指向的既有 744 engineering
+roots，普通已有目录继续拒绝。v4 先运行 exact macro，只有 `MACRO_PASS` winner 才允许严格串行
+V5/744、Base/1488，且仅在 1488 checkpoint 存在时进入 Base/2160。
+
 ## 2026-08-17 03:01 cloud round 28 / fixed cleanup
 
 ```text

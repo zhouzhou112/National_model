@@ -129,9 +129,18 @@ declare -a long_profiles=(
 
 for i in "${!tags[@]}"; do
   tag="base_744h_${tags[$i]}"
-  run_case "$tag" "${profiles[$i]}" 744 0 config/scenarios/base.json 64 || true
+  candidate_root="$OUTPUT_BASE/$tag"
+  candidate_contract="$candidate_root/engineering_macro_analysis/engineering_analysis_contract.json"
+  if [[ -L "$candidate_root" && -f "$candidate_contract" ]]; then
+    printf '%s reuse_supervisor_candidate tag=%s target=%s\n' \
+      "$(date --iso-8601=seconds)" "$tag" "$(readlink -f "$candidate_root")" \
+      >>"$CONTROL_ROOT/campaign_events.log"
+  else
+    run_case "$tag" "${profiles[$i]}" 744 0 config/scenarios/base.json 64 || true
+  fi
   if [[ -f "$OUTPUT_BASE/$tag/engineering_macro_analysis/engineering_analysis_contract.json" ]]; then
-    "$PYTHON" "$AUDIT_SCRIPT" \
+    PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+      "$PYTHON" "$AUDIT_SCRIPT" \
       --candidate-root "$OUTPUT_BASE/$tag" \
       --reference-root "$REFERENCE_ROOT" \
       --output "$CONTROL_ROOT/$tag/macro_comparison.json" \

@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 04:12+08:00：fixed strict Base/744 reference 已正式闭合：`OPTIMAL + QC PASS +
+  58/58 + current input manifest + valid 68-file result manifest`，solver `53,489.07 s`（Barrier
+  `7,734.65 s`、Crossover `45,468.01 s`），objective `2,361,958.416203 million CNY`；wrapper rc 0、
+  stderr 0、wall `14:57:39`、MaxRSS `20,617,928 KiB`、swap 0，严格三项 violation 均 `<1e-7`。
+  电力、网络、储能、水电、备用、惯量、碳与成本 hard checks 全闭合；身份仍为
+  `TEST_ONLY_TRUNCATED_HORIZON`。v3 exact-macro campaign 因编排错误 fail-closed 且无新 solver：
+  supervisor symlink 被重复运行逻辑拒绝，独立 audit 缺 frozen repo `PYTHONPATH`，三候选均 import
+  failure，故 `NO_MACRO_PASS` 不是模型结论。campaign 已最小修复为只复用完整 supervisor symlink
+  并显式注入 `PYTHONPATH`；本地 focused `6/6 PASS`，脚本 SHA256 `95e177ee...5a17132`。
 - 2026-08-17 03:01+08:00：ParaCloud `4139552` 未修改，02:58 落盘 Barrier iteration 324，
   runtime `954,056.89 s`，primal/dual/complementarity `1.740057/1.228e-6/0.145081`。round 28
   记录 wall `956,593 s`、allocated `25,509.147 core-hours`、actual CPU `3,988.565 h`、
@@ -1592,6 +1601,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 strict Base/744 terminal acceptance and v3 orchestration repair
+
+- Git/范围：里程碑前 local/origin/GitHub tip 为
+  `7a15b406e7684da97087c6032ec9cd00c22cc41f`，fixed checkout clean/frozen `d80f5b7`。严格根
+  wrapper 退出后执行完整只读终态审计；随后 v3 自动 exact-macro campaign fail-closed，未启动 solver。
+  修改仅限 `scripts/run_fixed_server_relaxed_barrier_campaign.sh` 与三份交接文档；不改模型、数据、
+  参数、候选输出、严格输出或 ParaCloud `4139552`。
+- strict 证据：status `OPTIMAL`、QC `PASS`、58/58 hard checks、input/result manifest 均 valid，
+  result manifest 68 files；solver `53,489.068 s`、Barrier `218 / 7,734.65 s`、Crossover
+  `45,468.01 s`、simplex `1,027,895`、objective `2,361,958.416203 million CNY`。wrapper rc 0、
+  stderr 0、wall `14:57:39`、MaxRSS `20,617,928 KiB`、swap 0；`ConstrVio/BoundVio/DualVio`
+  `9.737e-8/8.505e-8/8.854e-8`。power balance `2.17e-9 GW`，无双向跨省流、无储能同时充放；
+  reserve/inertia 仅有容差内浮点负边际，CO2/DAC/BECCS/CCS 与成本分解检查均通过。
+- v3 诊断与修复：`campaign_events.log` 为三个 `refuse_existing_output` 后
+  `no_macro_winner_stop`；三个 macro stdout 均为 `ModuleNotFoundError: cispo_model`，因此
+  `NO_MACRO_PASS` 仅是编排失败。修复只在候选是 supervisor symlink 且 engineering contract 存在时
+  复用，并以 `PYTHONPATH=$REPO_ROOT...` 调 audit；普通已有目录仍 fail-closed。`git diff --check` 与
+  `tests.test_relaxed_barrier_macro + tests.test_summarize_relaxed_barrier_campaign` 共 `6/6 PASS`；脚本
+  SHA256 `95e177eeb6874a36bf769dc70f95e7a1262506438bf7124d4f74f69dd5a17132`。
+- 未决/下一步：提交并双推送修复；确认 fixed server 无 solver、clean checkout 后部署精确 tip，运行
+  server `bash -n` 与 focused tests。使用全新 v4 control/output 根重跑 exact macro，不能重标 v3；
+  只有 winner `MACRO_PASS` 后才依脚本串行 V5/744、Base/1488，并在 checkpoint 存在时 Base/2160。
 
 ### 2026-08-17 cloud iteration 324 / resource audit round 28
 

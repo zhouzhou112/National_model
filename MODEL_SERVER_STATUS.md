@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 04:12+08:00 strict 744 accepted / exact-macro orchestration fix
+
+- fixed strict Base/744 reference 正式 `OPTIMAL + QC PASS + 58/58 + current input manifest + valid
+  68-file result manifest`。solver `53,489.07 s`：Barrier `7,734.65 s`、Crossover `45,468.01 s`，
+  objective `2,361,958.416203 million CNY`；wrapper rc 0、stderr 0、wall `14:57:39`、MaxRSS
+  `20,617,928 KiB`、swap 0。`ConstrVio/BoundVio/DualVio` 为
+  `9.74e-8/8.50e-8/8.85e-8`，宏观电力、网络、储能、水电、备用、惯量、碳与成本检查均闭合；
+  仍仅为 `TEST_ONLY_TRUNCATED_HORIZON`。
+- v3 exact-macro campaign fail-closed 且未启动 solver：supervisor symlink 被重复运行逻辑误报为已有输出，
+  audit 脚本又因缺少 frozen repo `PYTHONPATH` 报 `ModuleNotFoundError`，故 `NO_MACRO_PASS`。
+  已最小修复 campaign：仅复用带完整 engineering contract 的 supervisor symlink，并为独立 audit
+  显式注入 repo `PYTHONPATH`；本地 focused `6/6 PASS`，脚本 SHA256
+  `95e177ee...5a17132`。下一步双推送、fixed server `bash -n` 后在全新 v4 control/output 根只重跑
+  exact macro，再按 winner 串行进入 V5/744 与 Base/1488/2160。
+
 ## 2026-08-17 03:01+08:00 cloud round 28 / fixed cleanup
 
 - ParaCloud `4139552` 未触碰：Barrier iteration 324、runtime `954,056.89 s`；round 28 为 wall
