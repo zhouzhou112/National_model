@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 07:03+08:00：本地 1488 已验证为可信的 8760 单步成本代理。云端 8760 factor 为
+  dense cols `37,696`、Factor NZ `3.395e10`、Factor Ops `1.931e15`，本地 1488 分别为
+  `36,218/3.866e9/1.060e14`；Factor Ops 比值 `18.22x`。云最近 20 步实际 `53.608 min`
+  （`3216.5 s`），按 Ops 比值折算本地 `176.6 s/step`，与本地 iteration 0--16 实测
+  `171.0 s/step` 仅差约 3.2%。因此全年每步约 50--55 min 是 fill-in 决定的，可由 1488 预测；
+  放宽容差只能减少迭代数，不能数量级降低单步成本。当前 1488 的核心任务转为实测
+  `BarConvTol=1e-2/NF1` 所需迭代数，继续运行、不改参。
 - 2026-08-17 07:01+08:00：ParaCloud `4139552` 未触碰；06:29 落盘 Barrier iteration 328，
   runtime `966,756.149 s`，primal/dual/complementarity `1.450925/1.129e-6/0.122696`。
   resource audit round 31 为 wall `970,967 s`、allocated `25,892.453 core-hours`、actual CPU
@@ -1650,6 +1657,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/1488 to cloud/8760 factor-cost validation
+
+- 只读对照：cloud 8760 raw `50,907,234 rows / 41,458,383 cols / 492,835,195 nnz`，presolve
+  `17,414.51 s` 后为 `37,703,954 / 32,166,850 / 404,259,819`，ordering `2,912.17 s`；
+  dense cols 37,696、AA' NZ `7.469e8`、Factor NZ `3.395e10`（约 300 GB）、Factor Ops
+  `1.931e15`（粗估 5000 s/iter）。未改 cloud job。
+- 与 fixed 1488 对照：1488 dense cols 36,218，Factor NZ `3.866e9`、Factor Ops `1.060e14`；
+  8760/1488 Factor NZ/Ops 比为 `8.78x/18.22x`，dense cols 已接近饱和。cloud 最近 20 步实际
+  `53.608 min = 3216.5 s/step`，按 Ops 比值折算 1488 为 `176.6 s/step`，而 fixed iteration
+  0--16 实测约 `171.0 s/step`，误差约 3.2%。
+- 结论/下一步：1488 可作为当前 LP/机器路线的全年每迭代成本代理；当前瓶颈是 Cholesky fill-in，
+  不是容差本身。宽松 profile 的全年收益必须由显著减少 Barrier iteration 数产生。fixed 继续到
+  25/50/终态测迭代数和残差曲线；不因该推断中止当前任务，也不启动第二 solver。
 
 ### 2026-08-17 cloud resource audit round 31 and Base/1488 iteration 16
 

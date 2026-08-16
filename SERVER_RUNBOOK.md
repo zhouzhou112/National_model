@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 07:03 1488-to-8760 factor cost proxy
+
+```text
+cloud_8760_presolved=37703954_rows/32166850_cols/404259819_nnz
+cloud_8760_ordering_s=2912.17 dense_cols=37696 factor_nz=3.395e10 factor_ops=1.931e15
+fixed_1488_dense_cols=36218 factor_nz=3.866e9 factor_ops=1.060e14
+cloud_to_fixed_factor_nz_factor_ops_ratio=8.78/18.22
+cloud_recent_step_s=3216.5 factor_scaled_fixed_step_s=176.6 fixed_observed_step_s~=171.0
+```
+
+1488 现在是全年单步耗时的实证代理。后续参数候选必须同时报告 presolved matrix、dense cols、
+Factor NZ/Ops 和实际 step time；只减少 Barrier iteration 但增加每步成本的候选不得晋级。当前唯一
+1488 继续测宽松容差所需总迭代数；云端与 fixed 均不改变。
+
 ## 2026-08-17 07:01 cloud round 31 / Base/1488 iteration 16
 
 ```text

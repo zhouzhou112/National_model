@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 07:03+08:00 Base 1488 validates cloud 8760 per-step scaling
+
+- cloud 8760 Factor NZ/Ops `3.395e10/1.931e15`，fixed 1488 为 `3.866e9/1.060e14`，比值
+  `8.78x/18.22x`；dense cols `37,696/36,218`。cloud 最近实际 `3216.5 s/step` 按 Factor Ops
+  折算 fixed 为 `176.6 s/step`，与 fixed 0--16 实测 `171.0 s/step` 仅差约 3.2%。
+- 结论：1488 是当前 LP 的可信全年单步成本代理；fill-in 决定单步约 50--55 min。放宽容差只可能
+  通过减少迭代数降总时间。继续当前 1488 到 25/50/终态实测，不改参、不并发。
+
 ## 2026-08-17 07:01+08:00 cloud round 31 / Base 1488 iteration 16
 
 - ParaCloud `4139552` iteration 328、runtime `966,756.149 s`，primal/dual/complementarity
