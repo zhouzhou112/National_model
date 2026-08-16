@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 07:25 Base/1488 iteration 25 gate
+
+```text
+fixed_base_1488_iteration=25 runtime_s=5731.421 avg_iter_0_25_s=169.69
+fixed_primal_dual_complementarity=2.275e8/1.364e5/5.068e7
+same_profile_base744_iter25=1.715e8/4.129e6/2.703e10
+fixed_solver_memory_current_max_gib=45.07/58.29 process_rss_gib~=52.8
+host_available_gib~=61.1 swap_io=0/0 memory_psi=0 stderr_bytes=0
+```
+
+继续到 iteration 50；不得仅按 Base/744 的 263 步判断 1488。当前 available 低于新长任务门槛是
+活动因子内存所致，不构成停当前任务条件；1488 退出释放内存后，2160 必须重新通过 available>=96 GiB、
+si/so=0、PSI=0 门禁才可启动。
+
 ## 2026-08-17 07:03 1488-to-8760 factor cost proxy
 
 ```text

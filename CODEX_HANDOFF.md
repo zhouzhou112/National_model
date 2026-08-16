@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 07:25+08:00：fixed Base/1488 到 iteration 25，runtime `5,731.421 s`，iteration
+  0--25 平均 `169.69 s/step`；primal/dual/complementarity
+  `2.275e8/1.364e5/5.068e7`。相对同参数 Base/744 的 iteration 25，primal 约高 32.6%，但 dual/
+  complementarity 低约 `30x/533x`，故不能按 744 的 263 步机械外推。按当前均值 12 h 可到约
+  iteration 246；下一判别点为 50。solver current/max memory `45.07/58.29 GiB`，process RSS
+  约 52.8 GiB，主机 available `61.1 GiB`、si/so 0、memory PSI 0、stderr 0；运行安全但 2160
+  必须等待当前内存释放并重新通过 96 GiB 启动门禁。
 - 2026-08-17 07:03+08:00：本地 1488 已验证为可信的 8760 单步成本代理。云端 8760 factor 为
   dense cols `37,696`、Factor NZ `3.395e10`、Factor Ops `1.931e15`，本地 1488 分别为
   `36,218/3.866e9/1.060e14`；Factor Ops 比值 `18.22x`。云最近 20 步实际 `53.608 min`
@@ -1657,6 +1664,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/1488 iteration 25 resource and trajectory gate
+
+- 轨迹：iteration 25 于 07:24:37 落盘，runtime `5,731.421 s`；0--25 平均
+  `169.69 s/step`，primal/dual/complementarity `2.275e8/1.364e5/5.068e7`。按该早期均值和
+  43,200 s solver limit，粗略可到 iteration 246；这不是停止判据，继续到 50/100/终态。
+- exact 744 对齐：Base/744 同 profile iteration 25 为 primal/dual/complementarity
+  `1.715e8/4.129e6/2.703e10`；1488 primal 高约 32.6%，但 dual/compl 低约 `30x/533x`。
+  因收敛维度混合，不能直接沿用 744 的 263 iterations；需观察目标差和中段平台。
+- 资源：Gurobi current/max memory `45.07/58.29 GiB`，Python RSS `55,367,700 KiB`；主机
+  available `65,561,522,176 bytes`（约 61.1 GiB），swap used 约 970 MiB 且实时 si/so 0，
+  memory PSI 0、stderr 0。运行继续安全；下一 case 只能在当前退出释放内存后重新通过 96 GiB 门禁。
+- Git/运行：local/origin/GitHub 文档 tip 在本记录前为 `27e991d`；fixed 仍 clean/frozen
+  `902b1672...ff36`，不部署、不并发、不修改云 job。
 
 ### 2026-08-17 Base/1488 to cloud/8760 factor-cost validation
 

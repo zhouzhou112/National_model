@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 07:25+08:00 Base 1488 iteration 25
+
+- iteration 25 runtime `5,731.421 s`；0--25 平均 `169.69 s/step`，primal/dual/complementarity
+  `2.275e8/1.364e5/5.068e7`。相对 Base/744 同步点，primal 高 32.6% 而 dual/compl 低约
+  `30x/533x`；继续到 50，不能按 263 步直接外推。
+- solver current/max memory `45.07/58.29 GiB`、process RSS 约 52.8 GiB；host available 约
+  61.1 GiB、si/so 0、memory PSI 0、stderr 0。当前安全；2160 仍须退出后重新满足 96 GiB 门禁。
+
 ## 2026-08-17 07:03+08:00 Base 1488 validates cloud 8760 per-step scaling
 
 - cloud 8760 Factor NZ/Ops `3.395e10/1.931e15`，fixed 1488 为 `3.866e9/1.060e14`，比值
