@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 00:14 cloud round 25 / fixed cleanup
+
+```text
+cloud_job=4139552 RUNNING Barrier iteration 321
+cloud_solver_runtime_seconds=943795.685
+cloud_recent_20_iteration_average_minutes=52.246
+cloud_last_iteration_minutes=55.024
+cloud_resource_audit_round=25 records=26
+cloud_resource_audit_sha256=05a7a568c7e3ba293db050626324d197ce4ce3172cc940d5e8621e25172f52f7
+fixed_quad_iteration=962785
+fixed_quad_runtime_seconds=39637.753
+fixed_quad_dual_infeasibility=2.547886e3
+```
+
+cloud round 25 已持久化且 Stage A 保持原样。fixed 仍为唯一 quad cleanup，wrapper/v3 supervisor
+存活、continuation 输出根 absent；继续到正式终态，不提前放行 exact macro。
+
 ## 2026-08-16 23:50 cloud round 24 / fixed cleanup
 
 ```text

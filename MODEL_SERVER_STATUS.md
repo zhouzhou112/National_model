@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 00:14+08:00 cloud round 25 / fixed cleanup
+
+- ParaCloud `4139552` 未触碰：Barrier iteration 321、runtime `943,795.68 s`；round 25 为 wall
+  `946,575 s`、allocated `25,242.000 core-hours`、actual CPU `3,947.624 h`、CPU efficiency
+  `15.6391%`、MaxRSS `362.913 GiB`、iteration 301--321 平均 `52.246 min`。26 records SHA256
+  `05a7a568...2f52f7`；stderr 0、无 terminal/checkpoint。最新单步约 `55.02 min`，primal 与
+  complementarity 继续下降。
+- fixed strict quad cleanup 为 iteration `962,785`、runtime `39,637.75 s`、primal 0、dual
+  `2.55e3`；wrapper/v3 supervisor 存活、仍只有一个 solver，continuation 输出根 absent。
+
 ## 2026-08-16 23:50+08:00 cloud round 24 / fixed cleanup
 
 - ParaCloud `4139552` 未触碰：Barrier iteration 320、runtime `940,494.22 s`；round 24 为 wall
