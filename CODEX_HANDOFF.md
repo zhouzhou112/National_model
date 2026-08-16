@@ -12,6 +12,26 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:42+08:00：reference 终态门禁已加固。实现提交
+  `f96d9e0443a40f343eaf74b6d97c7abd186e309a` 修复 `validate_result_manifest()` 对缺失/空 `files`
+  的误接受，并要求每条记录具有安全相对路径、非负 size、合法 SHA256 且逐文件 size/hash 闭合；
+  `audit_relaxed_barrier_macro.py` 现在把实际 manifest 校验结果和 failures 纳入 strict reference contract。
+  py_compile、macro targeted `5/5 PASS` 与独立正/反 synthetic validator 检查通过；本机因无 `gurobipy`
+  不能导入 `result_summary` 的完整 manifest test，须待 fixed solve 退出后在服务器完整回归。提交已推送
+  `origin` 与 GitHub，但活动 fixed checkout 按 PID 保护继续冻结 `d80f5b7`，未部署。
+- 原 supervisor v1 PID `4100799` 及其唯一 `sleep` 子进程已精确终止，solver wrapper/Python/resource
+  sampler 均未受影响；v1 控制根和全部日志保留。强化后的 supervisor v2 PID `4179192` 已 reparent
+  到 PID 1，控制/预定输出根分别为 `run_control/relaxed_barrier_continuation_v0816_v2` 与
+  `outputs/relaxed_barrier_continuation_v0816_v2`，脚本 SHA256
+  `90e399e9...e17c3b`。它在 reference 退出后硬要求 wrapper rc 0、stderr 0、`OPTIMAL`、
+  `solution_qc=PASS`、恰好 `58/58`、非空逐文件 result manifest 与 current input manifest 均有效；
+  任一失败即停止。13:39 新输出根仍不存在，fixed server 仍仅一个 solver。
+- strict Base/744 h 13:39 仍在 Barrier iteration 51、runtime `1,579.34 s`，stderr 0；Python RSS
+  约 `17.5 GiB`，host available 约 `96.5 GiB`，实时 `si/so=0/0`、memory PSI 0。ParaCloud
+  `4139552` 13:42 仍 `RUNNING`；iteration 309、solver runtime `905,512.39 s`、stderr 0、无终态/
+  checkpoint。cloud resource audit 已追加 round 13：wall `908,636 s`、allocated `24,230.29`
+  core-hours、actual CPU `3,790.05 h`、MaxRSS `362.913 GiB`、最近 289--309 平均
+  `52.070 min/iteration`，14 records SHA256 `a649998d...55a1f`；未取消、未改参、未启动 Stage B。
 - 2026-08-16 13:30+08:00：按 Gurobi 13 官方文档复审当前参数。strict 744 matrix/objective/RHS
   跨度约 `6.24e9/3.85e9/3.68e11`，确认存在真实数值尺度风险；工程 profile 的 Feas/Opt `1e-5`
   大于最小 `1e-6` 系数一个数量级，只能保留为隔离测试，不能直接升级 Stage B/科学结果。可验证的
@@ -1397,6 +1417,28 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict reference manifest 合同与无人值守监管器 v2
+
+- 实现提交：`f96d9e0443a40f343eaf74b6d97c7abd186e309a`，已推送 `origin` 与 GitHub。changed files 为
+  `cispo_model/io_contract.py`、`scripts/audit_relaxed_barrier_macro.py`、
+  `tests/test_result_manifest.py`、`tests/test_relaxed_barrier_macro.py`。
+- 修复：旧 validator 对 `{"valid":true}` 或空 `files` 返回 true；现要求非空结构、唯一且安全的相对
+  path、可解析的非负 bytes、64 位 SHA256，并逐文件复核存在性、size 与 hash；损坏 JSON 返回显式
+  failure。exact macro 审计不再以 manifest “存在/可解析”代替有效性。
+- 验证：`git diff --check`、py_compile、macro targeted `5/5 PASS`，并直接验证无 `files` 的 manifest
+  被拒绝、正确单文件 manifest 通过。本机缺 `gurobipy`，因此包含 `finalize_result_manifest()` 的完整
+  test module 留待 fixed checkout 空闲并部署后进入 full regression，不把该未运行项写成 PASS。
+- 服务器动作：精确核验 v1 supervisor PID `4100799` 的命令、PPID 与唯一 `sleep` 子进程后只终止这两个
+  非 solver 进程；strict PID `4046161/4046167/4046172` 与 resource sampler `4059299` 持续存活。
+  v1 证据不删除。v2 PID `4179192` 使用独立根和版本化脚本，新增 wrapper、58/58、result/input
+  manifest 强门禁；当前只等待，不创建输出、不启动第二求解。
+- 云端证据：job `4139552` 保持 RUNNING；resource audit round 13 已追加，14 records SHA256
+  `a649998df5a4dfb05e3efda7a89d09265353a13d4a56d4771c3d7dbd91355a1f`。没有 `scancel`、
+  profile 修改、Stage B 或第二 cloud job。
+- 未决与精确下一步：继续监控 strict reference；退出后由 v2 先完成强终态审计，再复用三根历史
+  candidates 重算 exact A/B。仅最快 exact `MACRO_PASS` 可串行进入 V5/744、Base/1488、以及 1488
+  checkpoint 完整时的 Base/2160。fixed checkout 在活动 solver 退出前不得部署 `f96d9e0`。
 
 ### 2026-08-16 Gurobi 官方语义与 relaxed 744 参数边界复审
 

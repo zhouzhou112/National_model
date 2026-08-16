@@ -1,5 +1,25 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:42+08:00 strict reference manifest 门禁与 supervisor v2
+
+- 实现 `f96d9e0443a40f343eaf74b6d97c7abd186e309a` 已双推送：result manifest validator 现在拒绝
+  缺失/空 `files`、损坏 JSON、不安全/重复路径、非法 bytes/SHA256，并逐文件复核 size/hash；exact
+  macro 审计要求 validator PASS 并记录 failures。py_compile、macro tests `5/5` 与直接 synthetic
+  正/反检查通过；服务器 full regression 必须等活动 solve 退出后再做。
+- 活动 fixed checkout 继续 clean/frozen `d80f5b7`。旧 supervisor v1 PID `4100799` 与唯一 sleep child
+  被精确替换，未触碰 strict wrapper/time/Python `4046161/4046167/4046172` 或 sampler `4059299`；
+  v1 日志全部保留。supervisor v2 PID `4179192`、PPID 1、脚本 SHA256 `90e399e9...e17c3b`，使用
+  独立 `relaxed_barrier_continuation_v0816_v2` 控制/输出根。
+- v2 只有在 reference 同时满足 wrapper rc 0、stderr 0、`OPTIMAL + PASS + 58/58`、非空且逐文件有效
+  result manifest、current input manifest valid 后才复用 candidates 并启动串行 continuation；任一失败
+  即停止。13:39 新输出根 absent，仍无第二 fixed solve。
+- strict reference 13:39 Barrier iteration 51、runtime `1,579.34 s`、stderr 0；RSS 约 `17.5 GiB`、
+  available RAM 约 `96.5 GiB`、实时 `si/so=0/0`、memory PSI 0。
+- ParaCloud `4139552` 不变，13:42 仍 RUNNING、iteration 309、runtime `905,512.39 s`、stderr 0、无
+  terminal/checkpoint。resource audit round 13：wall `908,636 s`、allocated core-hours `24,230.29`、
+  actual CPU-hours `3,790.05`、MaxRSS `362.913 GiB`、iteration 289--309 平均 `52.070 min`；14 records
+  SHA256 `a649998d...55a1f`。未取消、未改参、未启动 Stage B。
+
 ## 2026-08-16 13:30+08:00 Gurobi 参数边界复审
 
 - strict Base/744 h 实际参数为 `BarConvTol=1e-8/FeasOpt=1e-7/NumericFocus=2/ScaleFlag=2/

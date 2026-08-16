@@ -1,5 +1,34 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 strict reference 强终态门禁与 supervisor v2
+
+活动 fixed checkout 在 strict solve 退出前继续冻结 `d80f5b7`；本地/双远端实现
+`f96d9e0443a40f343eaf74b6d97c7abd186e309a` 不得部署到活动 PID。v1 supervisor 已保留日志并由 v2
+取代：
+
+```text
+supervisor_pid=4179192
+control=/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v2
+output=/data/zz2/National_model/outputs/relaxed_barrier_continuation_v0816_v2
+script_sha256=90e399e9ede9d4d48969e53095f9e7a41308e26351ecbdb1d344632685e17c3b
+```
+
+reference wrapper 退出后必须按顺序检查：
+
+1. `wrapper_exit_code.txt=0`、stderr 为 0 bytes，五个 reference contract 文件齐全；
+2. `solve_report.status=OPTIMAL`，`solution_qc.status=PASS`，`hard_checks` 必须为恰好 58 项且全部 true；
+3. `result_manifest.json.files` 必须是非空列表；每项 path 安全且唯一、bytes 非负、SHA256 合法，随后
+   调用正式 validator 逐文件核对存在性/size/hash；
+4. 调用 `validate_input_manifest()` 复核当前每个 input；任一 failure/exception 以非零状态停止；
+5. 仅强门禁通过后创建全新 v2 输出根和三个只读 candidate symlink，调用冻结的 serial campaign 重算
+   exact A/B。其内层旧 validator 较弱不构成放行，因为 reference 已先经过上述更强门禁；后续部署
+   `f96d9e0` 后所有新审计直接使用修复后的通用 validator。
+
+不得终止 strict wrapper/Python/resource sampler，不得提前创建 v2 输出根，不得并发第二 fixed solve。
+ParaCloud `4139552` 继续只读；每轮人工检查须向 `resource_audit_snapshots.jsonl` 追加 wall、allocated/
+actual CPU-hours、MaxRSS、latest Barrier、近期平均单步、stderr 与 terminal artifacts。round 13 已记录，
+14 records SHA256 为 `a649998df5a4dfb05e3efda7a89d09265353a13d4a56d4771c3d7dbd91355a1f`。
+
 ## 2026-08-16 relaxed tolerance 的生产边界
 
 1. `BarConvTol=1e-2/5e-2` 与 `NumericFocus=1` 仅在
