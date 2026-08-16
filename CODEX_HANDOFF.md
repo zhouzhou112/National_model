@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 15:25+08:00：fixed strict Base/744 h Barrier 已正常结束并进入
+  `Building initial crossover basis`。Gurobi 记录 `218 iterations / 7,734.65 s / 11,980.50 work units`、
+  `Optimal objective 2,361,958.43 million CNY`；最后 telemetry primal/dual/complementarity 为
+  `0.003445/6.761e-7/1.962e-9`，Gurobi scaled 表为 `6.11e-4/6.58e-8/1.96e-9`。相对旧同 profile
+  Jan/2030 Barrier `251 / 11,142.54 s`，少 33 轮且 Barrier runtime 缩短约 `30.58%`。
+- 最快 relaxed `BarConvTol=1e-2/NumericFocus=1` 候选 objective `2,361,958.423126 million CNY`，
+  与严格 Barrier objective 相对差约 `3e-9`；其 solver runtime `4,275.73 s`，相对本次 strict
+  Barrier-only 部分节省约 `44.72%`。这只是强候选信号，仍须等待 strict Crossover/完整导出后执行
+  容量、发电、period、碳/CCS、运行和成本 exact A/B，不能提前登记科学接受。
+- 当前仍只有 strict 一个 fixed solver；Crossover basis 构建时 Python RSS 约 `12.57 GiB`、available
+  RAM 约 `101 GiB`、`si/so=0/0`、memory PSI 0，stderr 0，终态三文件 absent。v3 supervisor
+  PID `46839` 继续等待 wrapper，不启动第二求解。ParaCloud `4139552` 保持 iteration 310、round 14，
+  未取消、未改参、未启动 Stage B。
 - 2026-08-16 14:20+08:00：fixed strict Base/744 h 仍为唯一 solver，Barrier iteration 120、solver
   runtime `3,996.41 s`；110--120 平均 `45.062 s/iteration`，telemetry primal/dual/complementarity
   为 `0.007359/5.61e-4/0.502643`。日志无 numerical warning/error，stderr 0，终态三文件仍 absent；
@@ -1447,6 +1460,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict Base/744 Barrier 正常完成并进入 Crossover
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `8313ef8932196bc13c36c50292bd79147f5416a2`；fixed checkout 继续 clean/frozen
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`。本里程碑只更新三份交接文档，未改模型、数据、
+  solver profile、活动 checkout/output 或进程。
+- 命令/证据：只读检查 `solver_telemetry.jsonl`、`gurobi.log`、process tree、stderr、终态文件和
+  `free/vmstat/PSI`。Barrier 在 iteration 218、runtime `7,734.65 s` 正常报告 `Optimal objective
+  2.36195843e+06`，随后进入 `Building initial crossover basis`；日志无 numerical warning/error。
+  最后 telemetry 与 scaled Gurobi 三项残差均完整保留，不以 telemetry callback 停在 Barrier 冒充
+  卡住或 wrapper 终态。
+- A/B 前置量化：旧同 profile Jan/2030 Barrier 为 `251 / 11,142.54 s`，本次少 33 轮、runtime
+  快约 `30.58%`。`1e-2/NumericFocus=1` candidate 为 `263 / 4,275.73 s`、objective
+  `2,361,958.423126 million CNY`，与 strict Barrier objective 相对差约 `3e-9`，Barrier-only 时间
+  节省约 `44.72%`；但该候选仍 `scientifically_accepted=false`，不能用目标值近似代替宏观账目门禁。
+- 资源/并发：Crossover basis 时 Python RSS 约 `12.57 GiB`、available RAM 约 `101 GiB`、实时
+  `si/so=0/0`、memory PSI 0；stderr 0，solve/QC/result manifest absent。v3 supervisor 仍等待
+  reference wrapper，预定 continuation 根不存在，没有第二 fixed solver。云 `4139552` 未触碰，仍
+  Barrier iteration 310、resource audit round 14。
+- 精确下一步：单独计时 Crossover basis/push/simplex；wrapper 退出后先执行强终态合同。只有 strict
+  `OPTIMAL + QC PASS + 58/58 + current input + valid result manifest` 才运行 macro v2 并让最快
+  `MACRO_PASS` 候选串行进入 V5/744、Base/1488 与条件式 Base/2160；云端继续不取消、不启动 Stage B。
 
 ### 2026-08-16 strict 744 iteration 120 与 cloud resource audit round 14
 

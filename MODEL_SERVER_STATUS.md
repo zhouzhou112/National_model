@@ -1,5 +1,19 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 15:25+08:00 strict Barrier 完成 / Crossover basis
+
+- strict Base/744 h Barrier 正常报告 `218 iterations / 7,734.65 s / 11,980.50 work units`、
+  `Optimal objective 2,361,958.43 million CNY`，已进入 `Building initial crossover basis`。
+  最后 telemetry primal/dual/complementarity `0.003445/6.761e-7/1.962e-9`；scaled Gurobi 表为
+  `6.11e-4/6.58e-8/1.96e-9`，日志无 warning/error。
+- 相对旧同 profile Jan/2030 Barrier `251 / 11,142.54 s`，少 33 轮、runtime 快约 `30.58%`。
+  最快 `1e-2/NumericFocus=1` candidate objective 与 strict Barrier 相对差约 `3e-9`，其 runtime
+  `4,275.73 s`，Barrier-only 节省约 `44.72%`；仍须 exact macro v2，尚未晋级。
+- fixed 仍只有一个 solver；Crossover basis 时 RSS 约 `12.57 GiB`、available RAM 约 `101 GiB`、
+  `si/so=0/0`、memory PSI 0，stderr 0、终态三文件 absent。v3 PID `46839` 仍等待 wrapper。
+- ParaCloud `4139552` 未触碰，仍为 Barrier iteration 310、resource audit round 14；不取消、不改参、
+  不启动 Stage B。
+
 ## 2026-08-16 14:20+08:00 strict iteration 120 / cloud audit round 14
 
 - fixed strict Base/744 h 为唯一 solver：Barrier iteration 120、runtime `3,996.41 s`；110--120

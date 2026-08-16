@@ -1,5 +1,28 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 15:25 strict Barrier→Crossover 监控边界
+
+```text
+strict_barrier_status=OPTIMAL
+strict_barrier_iterations=218
+strict_barrier_runtime_seconds=7734.65
+strict_barrier_work_units=11980.50
+strict_barrier_objective_million_cny=2361958.43
+current_phase=Building initial crossover basis
+reference_wrapper=alive
+supervisor_pid=46839 waiting_reference
+```
+
+telemetry 最后一条仍标 `phase=barrier` 是 callback 语义，不代表当前阶段；权威阶段必须同时读取
+`gurobi.log`。进入 Crossover 后分别记录：initial basis 构建时长、primal/dual push 时间与数量、
+simplex cleanup iterations/time、最终 status/quality。不得因 Barrier 已 `OPTIMAL` 就终止 wrapper，
+不得提前启动 relaxed campaign。strict 终态后仍先走强 reference contract；失败则保留现场并停止
+continuation，通过才执行 exact macro v2。
+
+当前 fastest candidate 仅得到 objective 近似与时间优势：`1e-2/NumericFocus=1` 相对 strict Barrier
+objective 差约 `3e-9`、Barrier-only runtime 节省约 `44.72%`。它仍是 engineering-only，必须等待
+完整宏观账目 A/B；该信号不得放松 Stage B 科学验收。云 job `4139552` 保持原样。
+
 ## 2026-08-16 14:20 运行中权威状态
 
 ```text
