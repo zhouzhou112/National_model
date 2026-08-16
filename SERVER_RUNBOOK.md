@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 16:27 strict cleanup 与 cloud round 16
+
+```text
+fixed_simplex_iteration=792828
+fixed_solver_runtime_seconds=11630
+fixed_primal_infeasibility=0
+fixed_dual_infeasibility_nonmonotonic_range=7.47e3..9.29e8
+cloud_job=4139552 RUNNING Barrier iteration 312
+cloud_resource_audit_round=16 records=17
+cloud_resource_audit_sha256=65b3c5495adf75062420582837743b6bd34a46afecae1b4e61cf1e34578a59c9
+```
+
+simplex dual infeasibility 的单次尖峰不是取消条件。旧成功根在 push 后约 6--7 分钟同样从 `1.52e4`
+摆动到 `1.09e9`，最后仍 OPTIMAL；只有持续无 pivot/CPU 增长、warning/error、进程异常退出或正式
+status 才升级。继续记录 cleanup iteration/runtime、objective、primal/dual infeasibility；wrapper 退出后
+执行完整 reference contract，不得由 `primal=0` 或局部日志提前验收。cloud round 16 已持久化，任务
+不取消、不改参、不启动 Stage B。
+
 ## 2026-08-16 16:20 Crossover simplex cleanup 监控
 
 ```text

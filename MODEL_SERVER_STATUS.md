@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 16:27+08:00 strict cleanup / cloud round 16
+
+- fixed strict simplex 约从 iteration `788,784` 推进到 `792,828`，runtime `11,448→11,630 s`；
+  primal infeasibility 保持 0，dual infeasibility 在 `7.47e3--9.29e8` 非单调。旧成功根同一相对
+  阶段也曾摆动到 `1.09e9` 后最终 OPTIMAL，当前暂无新增 numerical failure 证据，但仍不能预测
+  cleanup 完成时间。
+- wrapper/Python 与 v3 supervisor 均存活，stderr 0、终态三文件 absent；fixed 仍只有一个 solver，
+  available RAM 约 `100 GiB`、无实时 swap I/O、memory PSI 0。
+- ParaCloud `4139552` 未触碰：Barrier iteration 312、runtime `914,959.12 s`；round 16 为 wall
+  `918,306 s`、allocated `24,488.16 core-hours`、actual CPU `3,830.451 h`、CPU efficiency
+  `15.6421%`、MaxRSS `362.913 GiB`、iteration 292--312 平均 `52.330 min`。17 records SHA256
+  `65b3c549...a59c9`；stderr 0、无 terminal/checkpoint。
+
 ## 2026-08-16 16:20+08:00 Crossover push complete / simplex cleanup
 
 - strict Crossover basis 约 `255 s`；DPush `841,200→0` 用 `2,565 s`，PPush `274,055→0` 用

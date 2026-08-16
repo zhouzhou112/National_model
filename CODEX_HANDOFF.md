@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 16:27+08:00：strict Base/744 simplex cleanup 仍活跃；约从 iteration `788,784`
+  推进到 `792,828`，runtime `11,448→11,630 s`，primal infeasibility 持续为 0，dual
+  infeasibility 在 `7.47e3--9.29e8` 间非单调。该形态与旧成功根 push 后同阶段相符：旧根在约
+  6--7 分钟内也曾由 `1.52e4` 跳到 `1.09e9`，最终仍为 `OPTIMAL`；因此当前尖峰不是失败证据，
+  但旧 cleanup 总计仍约 `10,450 s`，不能承诺短时结束。stderr 0、无终态文件、单 solver、
+  available RAM 约 `100 GiB`。
+- ParaCloud `4139552` 未修改、未取消：16:06 落盘 Barrier iteration 312，runtime
+  `914,959.12 s`，primal/dual/complementarity `2.862660/1.840e-6/0.229635`。resource audit
+  round 16 已追加：wall `918,306 s`、allocated `24,488.16 core-hours`、actual CPU
+  `3,830.451 h`、CPU efficiency `15.6421%`、MaxRSS `362.913 GiB`、iteration 292--312
+  平均 `52.330 min`；17 records SHA256 `65b3c549...a59c9`。stderr 0、无 terminal/checkpoint。
 - 2026-08-16 16:20+08:00：strict Base/744 Crossover push 已完成并进入 simplex cleanup。
   initial basis 约 `255 s`；DPush `841,200→0` 为 `2,565 s`，PPush `274,055→0` 为 `602 s`；
   push complete runtime `11,177 s`，PInf/DInf `2.741902 / 1.751704e8`。cleanup 从 iteration
@@ -1478,6 +1489,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict cleanup 对照审计与 cloud round 16
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `cc5dcb1022c0093a517c7821e12c74931db0f8f1`；fixed checkout 继续 clean/frozen
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`。本轮只追加 cloud run-control resource snapshot
+  并更新三份交接文档；未改 active solver、profile、模型、数据、checkout 或 output。
+- fixed 证据：只读 `gurobi.log`、进程、stderr、终态文件和资源。16:23--16:27，simplex 从
+  iteration `788,784` 推进至 `792,828`，约 `22.2 pivots/s`；primal infeasibility 保持 0，dual
+  infeasibility 非单调，最低观察到 `7.47e3`、尖峰 `9.29e8`。wrapper/Python 仍存活，stderr 0，
+  `solve_report.json`、`solution_qc.json`、`result_manifest.json` 均 absent，v3 supervisor 只等待。
+- 历史解释：旧成功根在 push 完成约 345--423 s 时，dual infeasibility 同样在
+  `1.52e4--1.09e9` 摆动，随后最终 `OPTIMAL`。因此当前轨迹暂未偏离历史成功模式；但旧根从
+  push complete 到求解结束约 `10,450 s`，仍须按终态合同继续监管，不能据局部尖峰取消，也不能
+  据 primal=0 提前验收。
+- cloud 证据：iteration 312、runtime `914,959.120 s`；round 16 记录 wall `918,306 s`、
+  allocation `24,488.16 core-hours`、actual CPU `3,830.451 h`、efficiency `15.6421%`、MaxRSS
+  `362.913 GiB`、最近 20 步平均 `52.330 min`。17 records SHA256 为
+  `65b3c5495adf75062420582837743b6bd34a46afecae1b4e61cf1e34578a59c9`；stderr 0、无终态或
+  checkpoint，未取消、未改参、未启动 Stage B。
+- 精确下一步：继续监控 strict simplex 到 wrapper 退出；只在完整 `OPTIMAL + PASS + 58/58 +
+  current input + valid result manifest` 后允许 v3 exact macro，再让唯一赢家串行进入 V5/744、
+  Base/1488/2160。云端仅在新 iteration 或有意义时间间隔后追加下一轮审计。
 
 ### 2026-08-16 strict Crossover push 完成并进入 simplex cleanup
 
