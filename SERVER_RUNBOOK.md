@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 19:36 cloud round 20 / fixed low-dual cleanup
+
+```text
+cloud_job=4139552 RUNNING Barrier iteration 316
+cloud_solver_runtime_seconds=927093.647
+cloud_recent_20_iteration_average_minutes=51.638
+cloud_resource_audit_round=20 records=21
+cloud_resource_audit_sha256=278f03964d057fe6748aee8f2f6cb0327d6b594961f092d4ffd789b067c9e639
+fixed_quad_iteration=879136
+fixed_quad_runtime_seconds=22956
+fixed_quad_dual_infeasibility=4.729218e4
+```
+
+fixed 当前处于低 dual 局部段，但仍高于正式容差且无 solver status；继续唯一 solver，不提前验收。
+cloud round 20 已持久化，Stage A 保持原样，不取消、不改参、不启动 Stage B。
+
 ## 2026-08-16 18:38 cloud round 19 / fixed dual recovery
 
 ```text

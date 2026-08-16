@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 19:36+08:00：ParaCloud `4139552` 未修改，19:28 落盘 Barrier iteration 316，
+  runtime `927,093.65 s`，primal/dual/complementarity `2.420051/1.732e-6/0.199649`。round 20
+  记录 wall `929,885 s`、allocated `24,796.933 core-hours`、actual CPU `3,879.081 h`、
+  efficiency `15.6434%`、MaxRSS `362.913 GiB`、iteration 296--316 平均 `51.638 min`；
+  21 records SHA256 `278f0396...e639`，stderr 0、无 terminal/checkpoint。fixed strict quad cleanup
+  同时为 iteration `879,136`、runtime `22,956 s`、primal 0、dual `4.73e4`，仍为唯一 solver。
 - 2026-08-16 18:38+08:00：ParaCloud `4139552` 保持原样，18:31 落盘 Barrier iteration 315，
   runtime `923,654.91 s`，primal/dual/complementarity `2.505751/1.784e-6/0.206062`。round 19
   记录 wall `926,381 s`、allocated `24,703.493 core-hours`、actual CPU `3,864.724 h`、
@@ -1519,6 +1525,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 316 / resource audit round 20
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `16fe477921e64f1f2fdd2674c5248f6abe5ba65b`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  仅追加 cloud resource snapshot 并更新三份交接文档；未改 active solver、profile、checkout、模型、
+  数据、output 或 Stage B 状态。
+- cloud 证据：job 继续 RUNNING；iteration 316、runtime `927,093.647 s`，primal infeasibility
+  `2.420051`、complementarity `0.199649`，较 iteration 315 继续下降。round 20 为 wall
+  `929,885 s`、allocation `24,796.933 core-hours`、actual CPU `3,879.081 h`、CPU efficiency
+  `15.6434%`、MaxRSS `362.913 GiB`、最近 20 步平均 `51.638 min`。21 records SHA256
+  `278f03964d057fe6748aee8f2f6cb0327d6b594961f092d4ffd789b067c9e639`；stderr 0、无终态或
+  checkpoint，任务未取消、未改参、未启动 Stage B。
+- fixed/下一步：strict quad cleanup 当前 iteration `879,136`、runtime `22,956 s`、primal 0、dual
+  `4.729218e4`、stderr 0，继续唯一 solver；低 dual 局部状态不替代正式终态。继续监管 strict，
+  cloud 仅在新 iteration 或有意义间隔后追加下一轮审计。
 
 ### 2026-08-16 cloud iteration 315 / resource audit round 19
 
