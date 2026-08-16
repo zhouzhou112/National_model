@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:30+08:00 Gurobi 参数边界复审
+
+- strict Base/744 h 实际参数为 `BarConvTol=1e-8/FeasOpt=1e-7/NumericFocus=2/ScaleFlag=2/
+  Crossover=2/CrossoverBasis=1`；当前矩阵、目标与 RHS 正值跨度分别约 `6.24e9/3.85e9/3.68e11`。
+- Gurobi 官方说明支持当前执行边界：BarConvTol 可换取 Barrier 速度但可能转移成本到 Crossover；
+  NumericFocus 越高数值保护越强且更慢；Feas/Opt 是绝对容差并非修复数值问题的首选；
+  CrossoverBasis=1 更慢但更稳健。
+- 因工程候选 `FeasOpt=1e-5` 比最小 `1e-6` 系数还大一个数量级，它们继续严格
+  engineering-only。后续速度选择看 exact macro、V5 与长时域，不把 `1e-5` 直接升级 Stage B。
+- ParaCloud `4139552` 不变；13:29 已到 iteration 309、stderr 0。fixed strict reference 13:29
+  iteration 22、stderr 0、available RAM 约 96 GiB、memory PSI 0；supervisor 仍只等待。
+
 ## 2026-08-16 13:28+08:00 relaxed campaign 汇总器完成真实三根验证
 
 - 新增纯读取 `scripts/summarize_relaxed_barrier_campaign.py`，统一输出 JSON/CSV 的 rc、wall、solver

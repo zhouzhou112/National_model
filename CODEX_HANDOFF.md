@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:30+08:00：按 Gurobi 13 官方文档复审当前参数。strict 744 matrix/objective/RHS
+  跨度约 `6.24e9/3.85e9/3.68e11`，确认存在真实数值尺度风险；工程 profile 的 Feas/Opt `1e-5`
+  大于最小 `1e-6` 系数一个数量级，只能保留为隔离测试，不能直接升级 Stage B/科学结果。可验证的
+  速度旋钮冻结为 `BarConvTol` 与 `NumericFocus`；`CrossoverBasis=1` 继续作为更稳健的 Stage B
+  basis 构造策略，Stage B 绝对容差不宽于 `1e-6`。详细更正已追加
+  `MODEL_SOLVABILITY_AUDIT_20260719.md` 第 10 节。当前云 8760 h 不改参、不取消。
 - 2026-08-16 13:28+08:00：新增只读汇总器
   `scripts/summarize_relaxed_barrier_campaign.py` 与合成测试，把 solve report、GNU time、telemetry、
   checkpoint、工程 QC、exact macro、LP identity、根目录科学产物隔离和可选资源采样统一为合法 JSON/CSV；
@@ -1391,6 +1397,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 Gurobi 官方语义与 relaxed 744 参数边界复审
+
+- 范围：只追加 `MODEL_SOLVABILITY_AUDIT_20260719.md` 第 10 节并更新三份交接文档；不修改 profile、
+  LP、QC、活动 checkout、fixed solve 或 cloud job。
+- 官方依据：Gurobi 13 Parameter Reference、Numerical Issues 参数指南与 Tolerances/User-Scaling；
+  `BarConvTol` 是 Barrier 精度/速度旋钮，较高 `NumericFocus` 以成本换数值保护，Feas/Opt 是绝对容差且
+  通常不是修复病态的首选，`CrossoverBasis=1` 更慢但更稳健。
+- 模型证据：strict 744 matrix/objective/RHS 跨度为 `6.24e9/3.85e9/3.68e11`；工程候选 `1e-5`
+  Feas/Opt 容差大于最小 `1e-6` 系数，故冻结为 engineering-only。三根有效速度/quality 表和 exact
+  晋级阈值已写入审计；不再把放宽 Feas/Opt 当成主要加速来源。
+- 当前执行：strict reference 与 continuation supervisor 保持不变；ParaCloud 8760 h v2 继续
+  `BarConvTol=1e-8/NumericFocus=2/FeasOpt=1e-6/Crossover=0`，未触碰。
+- 未决：等待 exact A/B；只有最快宏观 PASS 路线才进入 V5/744 与 Base/1488/2160。长时域即使通过也
+  不能把 `1e-5` 绝对容差直接复制到 scientific Stage B。
 
 ### 2026-08-16 relaxed campaign 机器可读汇总器与真实三根验证
 

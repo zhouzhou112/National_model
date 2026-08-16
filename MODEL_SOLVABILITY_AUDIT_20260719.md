@@ -221,3 +221,67 @@ active cohort iff build_year <= planning_year < retire_year
 5. 若 build-only 峰值或 barrier 线性下限表明总内存超过主机，停止单体求解，改用至少 256 GiB 节点或提交精确分解架构供研究边界审批。
 6. 容差候选必须在修正 744h 上同时满足 `OPTIMAL + all hard QC PASS + objective/capacity comparison` 后才可写入生产配置。
 
+## 10. 2026-08-16 当前模型 relaxed Barrier 参数复审与更正
+
+本节是对 7 月审计的追加更正，不覆盖历史证据。当前 Power_curve v3_qc Base/744 h LP 已变为
+`3,735,087` variables、`4,454,178` constraints、`40,395,436` nonzeros，Gurobi Fingerprint
+`2120635803`。当前身份 strict reference 的实际生效参数为
+`Method=2/Threads=16/Presolve=2/Crossover=2/CrossoverBasis=1/BarConvTol=1e-8/
+FeasibilityTol=OptimalityTol=1e-7/NumericFocus=2/ScaleFlag=2`；它仅用于 exact A/B reference，仍是
+744 h truncated diagnostic。
+
+### 10.1 官方语义与本模型数值范围
+
+Gurobi 13 官方文档给出的边界为：
+
+- `BarConvTol` 直接控制 Barrier 的相对 primal/dual objective gap、相对 primal/dual feasibility 和
+  complementarity；放宽它表示愿意接受较低精度，收紧有时反而会减少后续 Crossover 时间。
+- `NumericFocus` 提高时会增加数值保护，包括更积极使用高精度计算与更严格的 basis 数值策略，通常
+  以更高计算成本换稳定性。
+- `FeasibilityTol` 与 `OptimalityTol` 是绝对容差，不随变量或约束单位缩放；官方明确指出，修改这些
+  容差通常不是修复 numerical pathology 的首选。
+- `CrossoverBasis=1` 会增加初始 basis 构造时间，但用于数值困难模型时更稳健。
+
+依据：[Gurobi Parameter Reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html)、
+[Solver Parameters to Manage Numerical Issues](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/numeric_parameters.html)、
+[Tolerances and User-Scaling](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html)。
+
+当前 strict 744 h 的 matrix coefficients 为约 `1.001e-6` 至 `6250`（跨度 `6.24e9`），objective
+coefficients 为 `1e-6` 至 `3853.19`（跨度 `3.85e9`），positive RHS 为 `2.523e-7` 至
+`92755.93`（跨度 `3.68e11`）。这些跨度超过官方用于提示潜在数值风险的粗略 `1e9` 量级。因此：
+
+1. `ScaleFlag=2` 与 production `NumericFocus=2` 仍有充分依据；
+2. relaxed profile 的 `FeasibilityTol=OptimalityTol=1e-5` 大于最小 matrix/objective coefficient 一个
+   数量级，只能用于隔离的工程宏观实验，不能直接传给 scientific Crossover 或正式 result contract；
+3. 是否能把 `NumericFocus` 从 2 降到 1，只能由 exact-LP macro A/B、V5/744 和更长时域稳定性共同决定。
+
+### 10.2 三根 Base/744 h Barrier-only 的有效速度与质量证据
+
+三根均为同一 Fingerprint `2120635803`、rc 0、Gurobi `OPTIMAL`、完整 BarX/BarPi checkpoint，且没有
+在根目录误生 scientific QC/manifest/state/basis：
+
+| Candidate | wall / solver | Barrier | observed s/iter | ConstrVio | DualVio | strict raw QC |
+|---|---:|---:|---:|---:|---:|---|
+| `BarConvTol=5e-2, NumericFocus=2` | 5311 / 4927.57 s | 144 | 31.643 | 0.05035 | 1.61e-3 | reservoir + directionality fail |
+| `BarConvTol=1e-2, NumericFocus=2` | 5674 / 5289.26 s | 151 | 32.573 | 0.04791 | 1.00e-3 | reservoir + directionality fail |
+| `BarConvTol=1e-2, NumericFocus=1` | 4652 / 4275.73 s | 263 | 14.862 | 0.009219 | 2.24e-7 | reservoir fail |
+
+`NumericFocus=1` 虽然迭代数增加约 74--83%，但单步时间降低约 53--54%，总 solver 时间仍比另外两根
+短 13--19%。因此本轮主要速度信号来自单步因子成本，不是仅靠更大的 `BarConvTol` 提前少走几步。
+但旧 macro comparison 使用不同数据/LP reference，已经撤回；上述表只证明速度、资源和 raw quality，
+尚不能证明容量、发电、碳和成本账目稳定。
+
+### 10.3 当前冻结的晋级规则
+
+- `5e-2/NumericFocus=2` 没有速度优势且 raw quality 最弱；除非 exact A/B 出现反常优势，不作为首选。
+- `1e-2/NumericFocus=1` 仅在 current-identity strict reference 的 exact objective `<=1%`、capacity/
+  generation normalized L1 `<=2%`、period generation `<=0.5%` 全部通过后，才晋级 V5/744 与
+  Base/1488/2160；晋级仍是 engineering-only。
+- 长时域候选继续保存 `BarX/BarPi`、资源和宏观账目，但 `1e-5` Feas/Opt 容差不构成科学接受依据。
+- 对未来全年 Stage A，优先评估 `BarConvTol` 与 `NumericFocus` 的速度/稳定性，不应把
+  `FeasibilityTol/OptimalityTol=1e-5` 当成主要加速措施。Stage B 仍使用独立的
+  `LPWarmStart=2/Crossover=2/CrossoverBasis=1` 和不宽于 `1e-6` 的绝对容差，并要求最终
+  QC/manifest 全部通过。
+- 当前 ParaCloud 8760 h `barrier_checkpoint_full_year_cloud_v2` 继续按
+  `BarConvTol=1e-8/NumericFocus=2/FeasibilityTol=OptimalityTol=1e-6/Crossover=0` 运行，不因本地
+  试验被取消或改参。

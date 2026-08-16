@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 relaxed tolerance 的生产边界
+
+1. `BarConvTol=1e-2/5e-2` 与 `NumericFocus=1` 仅在
+   `--engineering-barrier-checkpoint-only --engineering-relaxed-barrier-analysis` 隔离路径使用；
+   根目录不得生成 scientific QC/manifest/state/basis。
+2. relaxed profile 的 `FeasibilityTol=OptimalityTol=1e-5` 不得复制到 scientific Stage B。当前最小
+   matrix/objective coefficient 约 `1e-6`，而 Feas/Opt 是绝对容差；`1e-5` 只用于宏观工程 A/B。
+3. exact macro 晋级阈值维持 objective `<=1%`、capacity/generation normalized L1 `<=2%`、period
+   generation `<=0.5%`。通过只表示可跑 V5/744 与 Base/1488/2160，不表示科学接受。
+4. deferred Stage B 继续 `LPWarmStart=2/Crossover=2/CrossoverBasis=1/NumericFocus=2/ScaleFlag=2`，
+   Feas/Opt 不宽于 `1e-6`；必须产生 basic OPTIMAL、全部 QC 与有效 manifest。
+5. ParaCloud active Stage A 不根据本地中途结果改参或取消。只有本地 exact+long 证据完整后，才为下一次
+   8760 h 形成新的 versioned profile；禁止原地修改已运行 profile。
+
+官方依据为 Gurobi 13
+[Parameter Reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html)、
+[Numerical Parameters](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/numeric_parameters.html)
+和 [Tolerances/User-Scaling](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html)。
+
 ## 2026-08-16 relaxed campaign summary 生成方法
 
 汇总器只读，不改变任何验收状态：
