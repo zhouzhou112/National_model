@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 16:20+08:00：strict Base/744 Crossover push 已完成并进入 simplex cleanup。
+  initial basis 约 `255 s`；DPush `841,200→0` 为 `2,565 s`，PPush `274,055→0` 为 `602 s`；
+  push complete runtime `11,177 s`，PInf/DInf `2.741902 / 1.751704e8`。cleanup 从 iteration
+  `782,488` 开始，iteration `782,690` 已把 primal infeasibility 从 `2.742` 降到 `1.19e-3`，
+  但 dual cleanup 尚未展示，不能判断完成时间或最终成功。
+- 与旧严格成功根相比，当前到 push complete 仍提前 `2,530 s`（约 42.17 分钟），但旧 push
+  complete PInf/DInf 仅 `0.576694 / 6.499e3`，当前 cleanup 起点明显更难；Crossover 是否净加速
+  必须等最终 simplex 结束。当前 stderr 0、终态三文件 absent，RSS 约 `13.57 GiB`、available RAM
+  约 `100 GiB`、memory PSI 0；仍只有一个 solver，v3 supervisor 继续等待。
 - 2026-08-16 15:39+08:00：ParaCloud `4139552` 未修改、未取消；15:14 落盘 Barrier iteration
   311、runtime `911,815.51 s`，primal/dual/complementarity
   `3.026548/1.806e-6/0.241261`。resource audit round 15 已追加：wall `915,643 s`、allocated
@@ -1469,6 +1478,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict Crossover push 完成并进入 simplex cleanup
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `fa595a6d9afbbe68ec43985059e3cb974d8bbe6f`；fixed checkout 继续 clean/frozen
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`。本里程碑只更新三份交接文档，不改 active solver、
+  checkout、profile、模型、数据或 output。
+- 命令/证据：只读解析 `gurobi.log` transition、process tree、stderr、terminal artifacts 与资源。
+  Crossover basis 在约 runtime `7,990 s` 完成；DPush 从 runtime `8,010` 的 `841,200` 项到
+  runtime `10,575` 的 0 项，共 `2,565 s`；PPush 从 `274,055` 项到 runtime `11,177` 的 0 项，
+  共 `602 s`。`Push phase complete` 为 PInf `2.741902`、DInf `1.751704e8`。
+- cleanup：首行 iteration `782,488`、objective `2,362,074.5 million CNY`；到 `782,690`
+  primal infeasibility 已由 `2.742` 降至 `1.19e-3`。这只证明 cleanup 活跃，dual phase 和终态均
+  未完成；不得把 primal 快速下降冒充 `OPTIMAL`。
+- 历史比较：旧成功根 push complete runtime `13,707 s`，当前 `11,177 s`，仍领先 `2,530 s`
+  （42.17 分钟）；但旧 PInf/DInf 为 `0.576694/6.499e3`，当前起点显著更差。必须以最终 cleanup
+  iterations/runtime/status 评价 Crossover，而非只报告 Barrier 或 push 加速。
+- 资源/下一步：RSS 约 `13.57 GiB`、available RAM 约 `100 GiB`、`si/so=0/0`、memory PSI 0；
+  stderr 0，终态文件 absent，仍只有 strict solver。继续只读监管 simplex；wrapper 后走强 reference
+  合同，再决定 exact macro 与串行长时域候选。云 job `4139552` 保持原样，不启动 Stage B。
 
 ### 2026-08-16 cloud iteration 311 / resource audit round 15
 

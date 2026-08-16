@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 16:20+08:00 Crossover push complete / simplex cleanup
+
+- strict Crossover basis 约 `255 s`；DPush `841,200→0` 用 `2,565 s`，PPush `274,055→0` 用
+  `602 s`。push complete runtime `11,177 s`，PInf/DInf `2.741902/1.751704e8`，已进入 simplex
+  cleanup；iteration `782,690` primal infeasibility 已降至 `1.19e-3`，dual cleanup 尚未完成。
+- 旧成功根 push complete runtime `13,707 s`，当前仍快 `2,530 s`；但旧 PInf/DInf 仅
+  `0.576694/6.499e3`，当前 cleanup 起点更难，不能预测最终净加速。
+- stderr 0、terminal files absent；RSS 约 `13.57 GiB`、available RAM 约 `100 GiB`、memory PSI
+  0。仍只有一个 fixed solver，v3 supervisor 继续等待 wrapper；ParaCloud 不变。
+
 ## 2026-08-16 15:39+08:00 cloud round 15 / fixed DPush
 
 - ParaCloud `4139552` 未触碰：Barrier iteration 311、runtime `911,815.51 s`；resource audit round

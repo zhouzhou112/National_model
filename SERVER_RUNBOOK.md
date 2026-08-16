@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 16:20 Crossover simplex cleanup 监控
+
+```text
+crossover_basis_seconds≈255
+dpush_initial=841200
+dpush_seconds=2565
+ppush_initial=274055
+ppush_seconds=602
+push_complete_runtime_seconds=11177
+push_complete_pinf=2.741902
+push_complete_dinf=1.751704e8
+simplex_initial_iteration=782488
+```
+
+simplex cleanup 必须继续记录 primal→dual 阶段、iteration 增量、objective 跳变、长时间无改善和最终
+`Crossover time/Solved in/Optimal objective`。当前 PInf 很快下降不代表 dual cleanup 完成；尤其当前
+DInf 明显高于旧成功根，禁止提前终止或用当前 basis 验收。资源安全时继续唯一 solver；终态三文件
+出现前 supervisor 只等待。云 job `4139552` 不变。
+
 ## 2026-08-16 15:39 live Crossover / cloud 状态
 
 ```text
