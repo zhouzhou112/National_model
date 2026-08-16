@@ -1,5 +1,34 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 autonomous exact-A/B continuation supervisor
+
+strict reference 进入 Barrier 后启动只等待 supervisor：
+
+```text
+supervisor_pid=4100799
+control=/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1
+output=/data/zz2/National_model/outputs/relaxed_barrier_continuation_v0816_v1
+reference=/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2
+candidate_source=/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1
+poll_interval=300 s
+```
+
+执行状态机固定为：
+
+1. reference wrapper PID 存活时只写 `waiting_reference` event，禁止创建新输出或启动 solver；
+2. wrapper 退出后要求 `wrapper_exit_code=0`、stderr 空、`solve_report/solution_qc/result_manifest/
+   run_identity/input_manifest` 齐全，并解析确认 `OPTIMAL + PASS`；任一失败以非零状态停止；
+3. 通过后在新输出根为三个旧 Base/744 candidates 建只读 symlink，不复制、不覆盖、不重跑旧结果；
+4. 以新 `CONTROL_ROOT` 和 exact `REFERENCE_ROOT` 调用冻结在 `d80f5b7` 的 serial campaign；audit
+   自身还必须通过 input manifest、科学配置、LP 规模/Fingerprint 与 strict reference contract；
+5. 无 exact `MACRO_PASS` 即停止；有 winner 才按最快 solver runtime 选择 profile，顺序为 V5/744、
+   Base/1488、1488 checkpoint 完整时 Base/2160。fixed server 始终最多一个 solver。
+
+supervisor 不是科学终态审计的替代品。每根退出后仍须人工核对 rc/time/stderr、checkpoint completeness、
+工程 raw QC、宏观容量/发电/负荷/碳/成本账目、资源账本与科学根目录隔离。strict reference 当前 LP
+Fingerprint 为 `2120635803`，presolve/order `226.12/99.29 s`，Barrier iteration 0 runtime
+`363.60 s`；独立资源 sampler PID `4059299` 每 300 秒写 `resource_monitor.tsv`。
+
 ## 2026-08-16 current-identity strict Base/744 h reference 运行合同
 
 当前 strict reference 已在 fixed server clean checkout `d80f5b7` 启动，wrapper PID `4046161`：

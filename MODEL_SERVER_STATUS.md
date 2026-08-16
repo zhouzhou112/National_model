@@ -1,5 +1,22 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:21+08:00 strict 744 h 已进入 Barrier；continuation supervisor 等待
+
+- strict reference LP 为 `3,735,087` variables、`4,454,178` constraints、`40,395,436` nonzeros，
+  Gurobi Fingerprint `0x7e66559b`=`2120635803`，与三条 relaxed candidates 相同。Presolve
+  `226.12 s` 后为 `3,007,552 × 2,780,968`、`31,165,413` nonzeros；ordering `99.29 s`，
+  Barrier iteration 0 于 runtime `363.60 s` 开始。
+- 13:20 iteration 3，stderr 0；Gurobi current/max memory `12.61/21.36 GiB`。独立 5 分钟资源采样
+  PID `4059299` 已记录 Python RSS `1.90/7.92/17.39 GiB`，host available RAM 当前约 96 GiB，
+  swap 累计计数仅有背景级变化、memory PSI 0。
+- continuation supervisor PID `4100799` 已 reparent 到 PID 1，只在 `sleep 300` 等待 reference；
+  控制根为 `/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1`，预定新输出根
+  尚不存在。门禁为 reference rc 0、stderr 0、`OPTIMAL + QC PASS + result manifest`；失败即停止。
+- 门禁通过后仅建立指向三个旧 candidates 的 symlink，不重跑它们；在新控制根重算 exact A/B，随后
+  只让最快 exact `MACRO_PASS` 严格串行进入 V5/744、Base/1488、Base/2160（最后一根还要求 1488
+  checkpoint 完整）。当前服务器仍只有 strict reference 一个 solver；活动 checkout 不变。
+- ParaCloud `4139552` 未修改，继续不取消、不改参、不启动 Stage B。
+
 ## 2026-08-16 13:08+08:00 current-identity strict Base/744 h reference 已启动
 
 - local、`origin`、GitHub 与 fixed server 均为 `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`；

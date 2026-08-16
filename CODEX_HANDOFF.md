@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:21+08:00：strict Base/744 h reference 已于 runtime `363.60 s` 进入 Barrier；LP 为
+  `3,735,087` variables、`4,454,178` constraints、`40,395,436` nonzeros，Fingerprint
+  `0x7e66559b`=`2120635803`，与三根 relaxed candidates 完全一致。Presolve `226.12 s`，presolved
+  LP `3,007,552 × 2,780,968`、`31,165,413` nonzeros；ordering `99.29 s`。13:20 iteration 3，
+  stderr 0，Gurobi current/max memory `12.61/21.36 GiB`；5 分钟资源账本显示 Python RSS 从
+  `1.90→7.92→17.39 GiB`，主机 available 约 96 GiB、swap 累计计数基本不变、memory PSI 0。
+- 已启动只等待的 continuation supervisor PID `4100799`，控制根
+  `/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1`。它在 strict wrapper
+  存活期间每 300 秒等待，当前新输出根尚不存在、没有第二求解；只有 reference 同时满足 wrapper
+  rc 0、stderr 0、`OPTIMAL`、`solution_qc=PASS`、result manifest 与必要身份文件存在，才建立指向
+  三个历史 candidate 的只读 symlink，在全新输出根重算 exact A/B，并仅让最快 exact `MACRO_PASS`
+  串行进入 V5/744、Base/1488、以及 1488 checkpoint 完整时的 Base/2160。任何门禁失败均停止。
 - 2026-08-16 13:08+08:00：local、`origin` 与 GitHub branch
   `codex/cispo-2030-full-lp` 均为 `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`；fixed server
   clean checkout 亦为同一提交，Gurobi 13.0.2 权威完整回归 `184/184 PASS`，耗时 `94.693 s`。
@@ -1367,6 +1379,30 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict reference 进入 Barrier 与无人值守 continuation supervisor
+
+- Git/服务器边界：活动 fixed checkout 继续冻结在 `d80f5b7`，没有部署或修改 checkout；唯一 solver
+  仍是 strict reference PID `4046161`。local/双远端文档 tip 为 `1480f82`，用户拥有的
+  `supplementary_materials/**`、`.codex_tmp/**` 与历史输出均未改写。
+- 求解证据：model build 后 LP `3,735,087 × 4,454,178`、`40,395,436` nonzeros、Fingerprint
+  `2120635803`，与 relaxed candidates 相同；presolve/order 分别 `226.12/99.29 s`，Barrier iteration 0
+  于 runtime `363.60 s` 落盘。iteration 3 时 stderr 0、solver current/max memory `12.61/21.36 GiB`，
+  host available 约 96 GiB、memory PSI 0。
+- 资源留痕：strict control 根新增独立 PID `4059299` 的 `resource_monitor.tsv`，每 300 秒记录 Python
+  PID/RSS/CPU、MemAvailable、swap used 与累计 pswpin/pswpout、memory PSI；它只读系统状态，不修改模型。
+  首次内联 `awk` 启动命令因引号错误在写 PID 前退出，第二次标准输入脚本已独立核验为活动采样器。
+- 自主续接：启动 supervisor PID `4100799`，控制根
+  `/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1`，预定输出根
+  `/data/zz2/National_model/outputs/relaxed_barrier_continuation_v0816_v1`。它只在 reference
+  `rc=0 + stderr=0 + OPTIMAL + QC PASS + result manifest` 后创建三条指向旧 candidates 的 symlink，
+  使用新控制根重算 exact A/B；随后现有 campaign 的严格串行合同只允许最快 exact `MACRO_PASS`
+  进入 V5/744、Base/1488、Base/2160。外层启动命令最后一次 `cat` 因 Windows CR 行尾返回 rc 1，
+  发生在 supervisor 启动后；独立复核确认 PID 已 reparent 到 1、正在 `sleep 300`、event log 正常、
+  新输出根不存在且无第二 solver。
+- ParaCloud：job `4139552` 未修改，仍为原 Stage A；不取消、不改参、不启动 Stage B。
+- 未决与下一步：继续只读监管 strict reference 与 supervisor。reference 退出时先人工执行完整终态审计；
+  supervisor 只负责安全续接，不替代 58/58 hard checks、manifest validity、资源/耗时和宏观结果审计。
 
 ### 2026-08-16 当前身份 strict Base/744 h reference 启动（`d80f5b7`）
 
