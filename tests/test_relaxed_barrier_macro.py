@@ -91,6 +91,36 @@ def _write_run_identity(path: Path, fingerprint: int = 123) -> None:
     )
 
 
+def _macro_summary() -> dict:
+    return {
+        "planning_year": 2030,
+        "scenario_id": "base",
+        "optimization_hours": 744,
+        "optimization_start_hour": 0,
+        "objective_million_cny_per_year": 100.0,
+        "period_generation_gwh": 1000.0,
+        "period_load_gwh": 900.0,
+        "period_vre_curtailment_gwh": 20.0,
+        "period_ror_curtailment_gwh": 0.0,
+        "period_hydro_aggregate_curtailment_gwh": 0.0,
+        "period_storage_charge_gwh": 30.0,
+        "period_storage_discharge_gwh": 25.0,
+        "period_interprovincial_transmission_losses_gwh": 10.0,
+        "period_wave_generation_gwh": 1.0,
+    }
+
+
+def _carbon_account() -> dict:
+    return {
+        "annual_gross_emissions_mtco2": 100.0,
+        "annual_fossil_unabated_emissions_mtco2": 101.0,
+        "annual_net_emissions_mtco2": 99.0,
+        "annual_captured_mtco2": 2.0,
+        "annual_co2_shipped_mtco2": 2.0,
+        "annual_dac_removed_mtco2": 1.0,
+    }
+
+
 class RelaxedBarrierMacroAuditTests(unittest.TestCase):
     def test_master_qc_failure_does_not_block_engineering_summary(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -159,21 +189,15 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
             candidate = root / "candidate"
             analysis = candidate / "engineering_macro_analysis"
             reference = root / "reference"
-            common_summary = {
-                "planning_year": 2030,
-                "scenario_id": "base",
-                "optimization_hours": 744,
-                "optimization_start_hour": 0,
-                "objective_million_cny_per_year": 100.0,
-                "period_generation_gwh": 1000.0,
-                "period_load_gwh": 900.0,
-            }
+            common_summary = _macro_summary()
             _write_json(
                 analysis / "engineering_analysis_contract.json",
                 {"scientifically_accepted": False},
             )
             _write_json(analysis / "annual_summary.json", common_summary)
             _write_json(reference / "annual_summary.json", common_summary)
+            _write_json(analysis / "annual_carbon_ccs.json", _carbon_account())
+            _write_json(reference / "annual_carbon_ccs.json", _carbon_account())
             _write_json(
                 candidate / "solve_report.json",
                 {
@@ -247,6 +271,94 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
             self.assertTrue(
                 report["reference_contract"]["result_manifest_valid"]
             )
+            self.assertFalse(
+                report["cost_accounting"]["component_comparison_available"]
+            )
+
+            drifted_carbon = _carbon_account()
+            drifted_carbon["annual_gross_emissions_mtco2"] = 1000.0
+            _write_json(
+                analysis / "annual_carbon_ccs.json", drifted_carbon
+            )
+            with patch(
+                "scripts.audit_relaxed_barrier_macro.validate_result_manifest",
+                return_value=(True, []),
+            ):
+                carbon_report = audit(
+                    candidate,
+                    reference,
+                    objective_limit=0.01,
+                    capacity_l1_limit=0.02,
+                    generation_l1_limit=0.02,
+                    period_generation_limit=0.005,
+                )
+            self.assertEqual(carbon_report["status"], "MACRO_FAIL")
+            self.assertGreater(
+                carbon_report["metrics"]["carbon_account_normalized_l1"],
+                0.02,
+            )
+
+            _write_json(
+                analysis / "annual_carbon_ccs.json", _carbon_account()
+            )
+            drifted_summary = _macro_summary()
+            drifted_summary["period_storage_charge_gwh"] = 300.0
+            _write_json(analysis / "annual_summary.json", drifted_summary)
+            with patch(
+                "scripts.audit_relaxed_barrier_macro.validate_result_manifest",
+                return_value=(True, []),
+            ):
+                operation_report = audit(
+                    candidate,
+                    reference,
+                    objective_limit=0.01,
+                    capacity_l1_limit=0.02,
+                    generation_l1_limit=0.02,
+                    period_generation_limit=0.005,
+                )
+            self.assertEqual(operation_report["status"], "MACRO_FAIL")
+            self.assertGreater(
+                operation_report["metrics"][
+                    "operation_account_normalized_l1"
+                ],
+                0.05,
+            )
+
+            _write_json(analysis / "annual_summary.json", common_summary)
+            _write_series(
+                analysis / "cost_components.csv",
+                "cost_component",
+                "value_million_cny_per_year",
+                200.0,
+            )
+            _write_series(
+                reference / "cost_components.csv",
+                "cost_component",
+                "value_million_cny_per_year",
+                100.0,
+            )
+            with patch(
+                "scripts.audit_relaxed_barrier_macro.validate_result_manifest",
+                return_value=(True, []),
+            ):
+                cost_report = audit(
+                    candidate,
+                    reference,
+                    objective_limit=0.01,
+                    capacity_l1_limit=0.02,
+                    generation_l1_limit=0.02,
+                    period_generation_limit=0.005,
+                )
+            self.assertEqual(cost_report["status"], "MACRO_FAIL")
+            self.assertTrue(
+                cost_report["cost_accounting"][
+                    "component_comparison_available"
+                ]
+            )
+            self.assertGreater(
+                cost_report["metrics"]["cost_component_normalized_l1"],
+                0.02,
+            )
 
     def test_mismatched_lp_or_input_cannot_macro_pass(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -254,21 +366,15 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
             candidate = root / "candidate"
             analysis = candidate / "engineering_macro_analysis"
             reference = root / "reference"
-            common_summary = {
-                "planning_year": 2030,
-                "scenario_id": "base",
-                "optimization_hours": 744,
-                "optimization_start_hour": 0,
-                "objective_million_cny_per_year": 100.0,
-                "period_generation_gwh": 1000.0,
-                "period_load_gwh": 900.0,
-            }
+            common_summary = _macro_summary()
             _write_json(
                 analysis / "engineering_analysis_contract.json",
                 {"scientifically_accepted": False},
             )
             _write_json(analysis / "annual_summary.json", common_summary)
             _write_json(reference / "annual_summary.json", common_summary)
+            _write_json(analysis / "annual_carbon_ccs.json", _carbon_account())
+            _write_json(reference / "annual_carbon_ccs.json", _carbon_account())
             _write_json(
                 candidate / "solve_report.json",
                 {
@@ -324,21 +430,15 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
             candidate = root / "candidate"
             analysis = candidate / "engineering_macro_analysis"
             reference = root / "reference"
-            common_summary = {
-                "planning_year": 2030,
-                "scenario_id": "base",
-                "optimization_hours": 744,
-                "optimization_start_hour": 0,
-                "objective_million_cny_per_year": 100.0,
-                "period_generation_gwh": 1000.0,
-                "period_load_gwh": 900.0,
-            }
+            common_summary = _macro_summary()
             _write_json(
                 analysis / "engineering_analysis_contract.json",
                 {"scientifically_accepted": False},
             )
             _write_json(analysis / "annual_summary.json", common_summary)
             _write_json(reference / "annual_summary.json", common_summary)
+            _write_json(analysis / "annual_carbon_ccs.json", _carbon_account())
+            _write_json(reference / "annual_carbon_ccs.json", _carbon_account())
             _write_json(
                 candidate / "solve_report.json",
                 {

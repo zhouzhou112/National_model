@@ -277,6 +277,8 @@ def _case_summary(
         "exact_ab_identity_status": exact_identity.get("status"),
         "exact_ab_identity_matches": exact_identity.get("matches"),
         "macro_metrics": metrics,
+        "macro_thresholds": macro.get("thresholds", {}) if macro else {},
+        "cost_accounting": macro.get("cost_accounting", {}) if macro else {},
         "candidate_failed_hard_checks": (
             macro.get("candidate_failed_hard_checks", []) if macro else []
         ),
@@ -322,6 +324,10 @@ CSV_FIELDS = [
     "capacity_normalized_l1",
     "generation_normalized_l1",
     "period_generation_relative_difference",
+    "carbon_account_normalized_l1",
+    "operation_account_normalized_l1",
+    "cost_component_normalized_l1",
+    "cost_component_comparison_available",
     "candidate_failed_hard_checks",
     "scientifically_accepted",
 ]
@@ -334,6 +340,7 @@ def _flat_case(case: dict[str, Any]) -> dict[str, Any]:
     telemetry = case.get("telemetry") or {}
     runtime_memory = case.get("runtime_memory") or {}
     metrics = case.get("macro_metrics") or {}
+    cost_accounting = case.get("cost_accounting") or {}
     root_artifacts = case["root_scientific_artifacts"]
     return {
         "tag": case["tag"],
@@ -389,6 +396,18 @@ def _flat_case(case: dict[str, Any]) -> dict[str, Any]:
         "period_generation_relative_difference": metrics.get(
             "period_generation_relative_difference"
         ),
+        "carbon_account_normalized_l1": metrics.get(
+            "carbon_account_normalized_l1"
+        ),
+        "operation_account_normalized_l1": metrics.get(
+            "operation_account_normalized_l1"
+        ),
+        "cost_component_normalized_l1": metrics.get(
+            "cost_component_normalized_l1"
+        ),
+        "cost_component_comparison_available": cost_accounting.get(
+            "component_comparison_available"
+        ),
         "candidate_failed_hard_checks": ";".join(
             case["candidate_failed_hard_checks"]
         ),
@@ -419,7 +438,7 @@ def summarize(
     winner = _read_json(control_root / "winner.json")
     macro_pass = [case["tag"] for case in cases if case["macro_status"] == "MACRO_PASS"]
     return {
-        "schema_version": "cispo_relaxed_barrier_campaign_summary_v1",
+        "schema_version": "cispo_relaxed_barrier_campaign_summary_v2",
         "generated_at": datetime.now().astimezone().isoformat(),
         "scientifically_accepted": False,
         "output_base": str(output_base.resolve()),

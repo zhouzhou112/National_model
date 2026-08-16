@@ -80,7 +80,15 @@ class RelaxedBarrierCampaignSummaryTests(unittest.TestCase):
                 {
                     "status": "MACRO_PASS",
                     "exact_ab_identity": {"status": "EXACT_AB_IDENTITY_PASS", "matches": True},
-                    "metrics": {"objective_relative_difference": 0.001},
+                    "metrics": {
+                        "objective_relative_difference": 0.001,
+                        "carbon_account_normalized_l1": 0.002,
+                        "operation_account_normalized_l1": 0.003,
+                        "cost_component_normalized_l1": None,
+                    },
+                    "cost_accounting": {
+                        "component_comparison_available": False,
+                    },
                 },
             )
             (fallback / "base_744h_numeric1" / "time.txt").write_text(
@@ -111,6 +119,12 @@ class RelaxedBarrierCampaignSummaryTests(unittest.TestCase):
                 rows = list(csv.DictReader(handle))
             self.assertEqual(rows[0]["macro_status"], "MACRO_PASS")
             self.assertEqual(rows[0]["wall_elapsed_seconds"], "120.0")
+            self.assertEqual(
+                rows[0]["carbon_account_normalized_l1"], "0.002"
+            )
+            self.assertEqual(
+                rows[0]["cost_component_comparison_available"], "False"
+            )
             self.assertEqual(
                 rows[0]["barrier_checkpoint_manifest_present"], "True"
             )

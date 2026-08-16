@@ -18,6 +18,26 @@ from typing import Any
 from cispo_model.io_contract import validate_result_manifest
 
 
+CARBON_ACCOUNT_FIELDS = (
+    "annual_gross_emissions_mtco2",
+    "annual_fossil_unabated_emissions_mtco2",
+    "annual_net_emissions_mtco2",
+    "annual_captured_mtco2",
+    "annual_co2_shipped_mtco2",
+    "annual_dac_removed_mtco2",
+)
+
+OPERATION_ACCOUNT_FIELDS = (
+    "period_vre_curtailment_gwh",
+    "period_ror_curtailment_gwh",
+    "period_hydro_aggregate_curtailment_gwh",
+    "period_storage_charge_gwh",
+    "period_storage_discharge_gwh",
+    "period_interprovincial_transmission_losses_gwh",
+    "period_wave_generation_gwh",
+)
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -210,6 +230,12 @@ def _normalized_l1(
     )
 
 
+def _named_numeric_values(
+    payload: dict[str, Any], fields: tuple[str, ...]
+) -> dict[str, float]:
+    return {name: float(payload[name]) for name in fields}
+
+
 def audit(
     candidate_root: Path,
     reference_root: Path,
@@ -218,6 +244,9 @@ def audit(
     capacity_l1_limit: float,
     generation_l1_limit: float,
     period_generation_limit: float,
+    carbon_l1_limit: float = 0.02,
+    operation_l1_limit: float = 0.05,
+    cost_component_l1_limit: float = 0.02,
 ) -> dict[str, Any]:
     analysis_root = candidate_root / "engineering_macro_analysis"
     candidate_contract = _read_json(
@@ -225,6 +254,8 @@ def audit(
     )
     candidate_summary = _read_json(analysis_root / "annual_summary.json")
     reference_summary = _read_json(reference_root / "annual_summary.json")
+    candidate_carbon = _read_json(analysis_root / "annual_carbon_ccs.json")
+    reference_carbon = _read_json(reference_root / "annual_carbon_ccs.json")
     candidate_solve = _read_json(candidate_root / "solve_report.json")
     reference_solve = _read_json(reference_root / "solve_report.json")
     reference_qc_path = reference_root / "solution_qc.json"
@@ -313,6 +344,40 @@ def audit(
     generation_l1, generation_rows = _normalized_l1(
         candidate_generation, reference_generation
     )
+    carbon_l1, carbon_rows = _normalized_l1(
+        _named_numeric_values(candidate_carbon, CARBON_ACCOUNT_FIELDS),
+        _named_numeric_values(reference_carbon, CARBON_ACCOUNT_FIELDS),
+    )
+    operation_l1, operation_rows = _normalized_l1(
+        _named_numeric_values(candidate_summary, OPERATION_ACCOUNT_FIELDS),
+        _named_numeric_values(reference_summary, OPERATION_ACCOUNT_FIELDS),
+    )
+
+    candidate_cost_path = analysis_root / "cost_components.csv"
+    reference_cost_path = reference_root / "cost_components.csv"
+    cost_component_comparison_available = bool(
+        candidate_cost_path.is_file() and reference_cost_path.is_file()
+    )
+    cost_component_l1 = None
+    cost_component_rows: list[dict[str, float | str]] = []
+    if cost_component_comparison_available:
+        candidate_cost = _read_series(
+            candidate_cost_path,
+            "cost_component",
+            "value_million_cny_per_year",
+        )
+        reference_cost = _read_series(
+            reference_cost_path,
+            "cost_component",
+            "value_million_cny_per_year",
+        )
+        cost_component_l1, cost_component_rows = _normalized_l1(
+            candidate_cost, reference_cost
+        )
+    cost_component_gate_pass = bool(
+        cost_component_l1 is None
+        or cost_component_l1 <= cost_component_l1_limit
+    )
 
     hard_checks = (
         candidate_qc.get("hard_checks", {})
@@ -328,7 +393,11 @@ def audit(
         period_load_difference,
         capacity_l1,
         generation_l1,
+        carbon_l1,
+        operation_l1,
     ]
+    if cost_component_l1 is not None:
+        numeric_values.append(cost_component_l1)
     finite = all(math.isfinite(value) for value in numeric_values)
     macro_pass = bool(
         identity_match
@@ -342,9 +411,12 @@ def audit(
         and period_generation_difference <= period_generation_limit
         and capacity_l1 <= capacity_l1_limit
         and generation_l1 <= generation_l1_limit
+        and carbon_l1 <= carbon_l1_limit
+        and operation_l1 <= operation_l1_limit
+        and cost_component_gate_pass
     )
     return {
-        "schema_version": "cispo_relaxed_barrier_macro_comparison_v1",
+        "schema_version": "cispo_relaxed_barrier_macro_comparison_v2",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "MACRO_PASS" if macro_pass else "MACRO_FAIL",
         "scientifically_accepted": False,
@@ -370,6 +442,11 @@ def audit(
             "capacity_normalized_l1": capacity_l1_limit,
             "generation_normalized_l1": generation_l1_limit,
             "period_generation_relative_difference": period_generation_limit,
+            "carbon_account_normalized_l1": carbon_l1_limit,
+            "operation_account_normalized_l1": operation_l1_limit,
+            "cost_component_normalized_l1_when_available": (
+                cost_component_l1_limit
+            ),
         },
         "metrics": {
             "objective_relative_difference": objective_difference,
@@ -377,6 +454,9 @@ def audit(
             "period_generation_relative_difference": period_generation_difference,
             "capacity_normalized_l1": capacity_l1,
             "generation_normalized_l1": generation_l1,
+            "carbon_account_normalized_l1": carbon_l1,
+            "operation_account_normalized_l1": operation_l1,
+            "cost_component_normalized_l1": cost_component_l1,
             "candidate_solver_runtime_seconds": candidate_solve.get(
                 "runtime_seconds"
             ),
@@ -397,8 +477,25 @@ def audit(
         ),
         "candidate_raw_qc_error": candidate_qc_error,
         "candidate_failed_hard_checks": failed_hard_checks,
+        "cost_accounting": {
+            "total_objective_gate_applied": True,
+            "component_comparison_available": (
+                cost_component_comparison_available
+            ),
+            "component_gate_applied": cost_component_l1 is not None,
+            "candidate_cost_components_present": candidate_cost_path.is_file(),
+            "reference_cost_components_present": reference_cost_path.is_file(),
+            "component_gate_pass": cost_component_gate_pass,
+            "historical_missing_component_interpretation": (
+                "Total objective remains the cost gate. Missing historical "
+                "engineering cost decomposition is reported, not imputed."
+            ),
+        },
         "largest_capacity_differences": capacity_rows[:10],
         "largest_generation_differences": generation_rows[:10],
+        "largest_carbon_account_differences": carbon_rows[:10],
+        "largest_operation_account_differences": operation_rows[:10],
+        "largest_cost_component_differences": cost_component_rows[:10],
         "interpretation": (
             "A MACRO_PASS only qualifies the parameter set for longer local "
             "engineering tests. It does not relax the scientific result contract."
@@ -415,6 +512,9 @@ def main() -> None:
     parser.add_argument("--capacity-l1-limit", type=float, default=0.02)
     parser.add_argument("--generation-l1-limit", type=float, default=0.02)
     parser.add_argument("--period-generation-limit", type=float, default=0.005)
+    parser.add_argument("--carbon-l1-limit", type=float, default=0.02)
+    parser.add_argument("--operation-l1-limit", type=float, default=0.05)
+    parser.add_argument("--cost-component-l1-limit", type=float, default=0.02)
     args = parser.parse_args()
     report = audit(
         Path(args.candidate_root),
@@ -423,6 +523,9 @@ def main() -> None:
         capacity_l1_limit=args.capacity_l1_limit,
         generation_l1_limit=args.generation_l1_limit,
         period_generation_limit=args.period_generation_limit,
+        carbon_l1_limit=args.carbon_l1_limit,
+        operation_l1_limit=args.operation_l1_limit,
+        cost_component_l1_limit=args.cost_component_l1_limit,
     )
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)

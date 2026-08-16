@@ -63,6 +63,62 @@ def selected_horizon_annual_fraction(
     return float(selected_hours) / float(configured_hours)
 
 
+def export_cost_components(
+    artifacts: MasterArtifacts,
+    output_dir,
+    *,
+    default_optimization_hours: int | None = None,
+) -> None:
+    """Persist the objective decomposition before optional strict export QC."""
+    from pathlib import Path
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    if default_optimization_hours is None:
+        default_optimization_hours = int(
+            artifacts.index.get("configured_hours", 0)
+        )
+    optimization_hours = int(
+        artifacts.index.get(
+            "optimization_hours", default_optimization_hours
+        )
+    )
+    configured_hours = int(
+        artifacts.index.get("configured_hours", optimization_hours)
+    )
+    result_use = (
+        "SCIENTIFIC_PRODUCTION"
+        if optimization_hours == configured_hours
+        else "TEST_ONLY_TRUNCATED_HORIZON"
+    )
+    cost_frame = pd.DataFrame(
+        [
+            {
+                "cost_component": name,
+                "value_million_cny_per_year": expression.getValue(),
+                "value_million_cny_model_accounting_period": expression.getValue(),
+                "accounting_scope": cost_component_accounting_scope(name),
+                "optimization_hours": optimization_hours,
+                "result_use": result_use,
+                "included_directly_in_objective": not name.startswith(
+                    "operating_"
+                ),
+                "included_in_primary_cost": not name.startswith("operating_"),
+                "included_directly_in_solver_objective": (
+                    not name.startswith("operating_")
+                    and "mga" not in artifacts.index
+                ),
+            }
+            for name, expression in artifacts.cost_components.items()
+        ]
+    )
+    cost_frame.to_csv(
+        output_dir / "cost_components.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
+
 def export_master_solution(
     artifacts: MasterArtifacts,
     data: ModelData,
@@ -73,6 +129,13 @@ def export_master_solution(
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    # Cost accounting is independently meaningful engineering evidence.  Write
+    # it before strict load-center QC can stop the remainder of the export.
+    export_cost_components(
+        artifacts,
+        output_dir,
+        default_optimization_hours=data.load_gw.shape[1],
+    )
     variables = artifacts.variables
     vre = data.vre_sites[
         ["grid_uid", "grid_id", "province_code", "technology", "capacity_floor_gw", "capacity_upper_gw"]
@@ -615,39 +678,6 @@ def export_master_solution(
             or qc["dpv_spur_augmentation_max_gw"] > 1e-8
         ):
             raise RuntimeError(f"Load-center solution QC failed: {qc}")
-
-    optimization_hours = int(
-        artifacts.index.get("optimization_hours", data.load_gw.shape[1])
-    )
-    configured_hours = int(
-        artifacts.index.get("configured_hours", optimization_hours)
-    )
-    result_use = (
-        "SCIENTIFIC_PRODUCTION"
-        if optimization_hours == configured_hours
-        else "TEST_ONLY_TRUNCATED_HORIZON"
-    )
-    cost_frame = pd.DataFrame(
-        [
-            {
-                "cost_component": name,
-                "value_million_cny_per_year": expression.getValue(),
-                "value_million_cny_model_accounting_period": expression.getValue(),
-                "accounting_scope": cost_component_accounting_scope(name),
-                "optimization_hours": optimization_hours,
-                "result_use": result_use,
-                "included_directly_in_objective": not name.startswith("operating_"),
-                "included_in_primary_cost": not name.startswith("operating_"),
-                "included_directly_in_solver_objective": (
-                    not name.startswith("operating_")
-                    and "mga" not in artifacts.index
-                ),
-            }
-            for name, expression in artifacts.cost_components.items()
-        ]
-    )
-    cost_frame.to_csv(output_dir / "cost_components.csv", index=False, encoding="utf-8-sig")
-
 
 def _technology_lookup(frame: pd.DataFrame, value_column: str) -> dict[str, float]:
     return frame.set_index("technology")[value_column].astype(float).to_dict()
