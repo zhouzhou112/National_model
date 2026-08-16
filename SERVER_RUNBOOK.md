@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 17:51 cloud round 18
+
+```text
+cloud_job=4139552 RUNNING Barrier iteration 314
+cloud_solver_runtime_seconds=920799.474
+cloud_recent_20_iteration_average_minutes=51.766
+cloud_resource_audit_round=18 records=19
+cloud_resource_audit_sha256=90fc64d612696045ba3c03abd40f60df143a048fafea6357a9d8538aa3730498
+fixed_quad_iteration=844413
+fixed_quad_runtime_seconds=16683
+```
+
+cloud primal infeasibility/complementarity 继续下降，round 18 已持久化；保持原 Stage A，不取消、不改参、
+不启动 Stage B。fixed quad cleanup 仍活跃且单 solver，只有完整 strict 终态通过后才允许 exact macro。
+
 ## 2026-08-16 17:06 cloud round 17
 
 ```text

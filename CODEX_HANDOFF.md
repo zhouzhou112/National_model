@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 17:51+08:00：ParaCloud `4139552` 未修改，17:43 落盘 Barrier iteration 314，
+  runtime `920,799.47 s`，primal/dual/complementarity `2.587524/1.804e-6/0.211519`。round 18
+  记录 wall `923,578 s`、allocated `24,628.747 core-hours`、actual CPU `3,852.752 h`、
+  efficiency `15.6433%`、MaxRSS `362.913 GiB`、iteration 294--314 平均 `51.766 min`；
+  19 records SHA256 `90fc64d6...0498`，stderr 0、无 terminal/checkpoint。fixed strict quad cleanup
+  同时为 iteration `844,413`、runtime `16,683 s`、primal 0、dual `2.69e8`，继续单 solver。
 - 2026-08-16 17:06+08:00：ParaCloud `4139552` 保持原样，16:52 落盘 Barrier iteration 313，
   runtime `917,751.15 s`，primal/dual/complementarity `2.701581/1.817e-6/0.219215`。resource
   audit round 17：wall `920,881 s`、allocated `24,556.827 core-hours`、actual CPU
@@ -1501,6 +1507,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 314 / resource audit round 18
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `7b4188bf0f8f1d1a011200a9f7a08a54af29ef48`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  仅追加 cloud resource snapshot 并更新三份交接文档；未改 solver、profile、checkout、模型、数据、
+  output 或 Stage B 状态。
+- cloud 证据：job 继续 RUNNING；iteration 314、runtime `920,799.474 s`，primal infeasibility
+  `2.587524`、complementarity `0.211519`，较 iteration 313 继续下降。round 18 为 wall
+  `923,578 s`、allocation `24,628.747 core-hours`、actual CPU `3,852.752 h`、CPU efficiency
+  `15.6433%`、MaxRSS `362.913 GiB`、最近 20 步平均 `51.766 min`。19 records SHA256
+  `90fc64d612696045ba3c03abd40f60df143a048fafea6357a9d8538aa3730498`；stderr 0、无终态或
+  checkpoint，任务未取消、未改参、未启动 Stage B。
+- fixed/下一步：strict quad cleanup 为 iteration `844,413`、runtime `16,683 s`，primal 0、dual
+  `2.692850e8`，objective 继续下降、只有一个 solver。继续监控 strict 终态；cloud 仅在新 iteration
+  或有意义时间间隔后追加下一轮审计。
 
 ### 2026-08-16 cloud iteration 313 / resource audit round 17
 
