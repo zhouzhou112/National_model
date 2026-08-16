@@ -1,5 +1,27 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 05:41 V5/744 terminal / Base/1488 monitoring
+
+```text
+v5_744_campaign_rc=0 solver_status=OPTIMAL barrier_iterations=305 solver_seconds=4520.108
+v5_744_wall=1:21:54 stderr_bytes=0 maxrss_kib=21285692 swaps=0
+v5_744_lp=3894744_vars/4636251_constrs/41327437_nonzeros
+v5_744_checkpoint=COMPLETE deferred_crossover_eligible=true scientifically_accepted=false
+v5_744_strict_qc=HARD_FAIL failed_check=reservoir_transition residual_m3=11917.821
+v5_744_power_balance_gw=2.362e-7 bidirectional_edge_hours=0 storage_overlap_gwh=1.745e-5
+base_1488_start=2026-08-17T05:38:42+08:00 pid=3899905/3899906 start_hour=3624
+base_1488_profile=BarConvTol1e-2_FeasOpt1e-5_NF1_Scale2_Crossover0_long
+fixed_git=902b1672a869cd4e6483633ceaf0208e092bff36 clean
+```
+
+当前只读监管 PID `3899905/3899906`。不得切 fixed checkout、启动第二 solver 或修改输出根；每次采样
+记录 Barrier iteration/runtime/primal/dual/complementarity、RSS、available RAM、swap I/O、memory PSI、
+stderr bytes。wrapper 退出后不能只看 PID/Gurobi status：必须核对 `time.txt`、campaign rc、
+`solve_report.json`、checkpoint manifest、向量长度/finite/hash、LP identity 与 engineering physical QC。
+1488 checkpoint manifest 缺失则 campaign 必须 fail-closed，不得进入 2160；存在时只允许脚本按既定顺序
+启动一个 Base/2160。V5/744 的 `reservoir_transition` 残差必须保留为质量证据，不得把工程解重标为
+scientific PASS。云 job `4139552` 继续不取消、不改参、不启 Stage B。
+
 ## 2026-08-17 04:18 exact macro winner / V5/744 / cloud round 29
 
 ```text

@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 05:41+08:00 V5 744 terminal / Base 1488 active
+
+- V5/744 于 05:38:39 rc 0：solver `OPTIMAL`，Barrier `305 iterations / 4,520.108 s`，wrapper
+  wall `1:21:54`、stderr 0、MaxRSS `21,285,692 KiB`、swaps 0。LP 为 3,894,744 variables、
+  4,636,251 constraints、41,327,437 nonzeros；完整 `BarX/BarPi`、LP Fingerprint、ordering digest、
+  layered identity 与 hashes 均已保存，checkpoint 可在精确重建 LP 后延期 Crossover。
+- 该解是工程检查点，不是科学结果：strict QC `HARD_FAIL`，58 个物理 hard checks 中仅
+  `reservoir_transition` 失败，最大残差 `11,917.821 m3`；power balance `2.362e-7 GW`、省间双向流 0、
+  storage overlap `1.745e-5 GWh`，其余网络、备用、惯量、碳/CCS 和成本账目通过；没有 scientific
+  result manifest/planning state/basis。
+- campaign 于 05:38:42 自动串行启动唯一 Base/1488：PID `3899905/3899906`，start hour 3624，
+  output `relaxed_barrier_continuation_v0817_v5/base_1488h_bctol1e2_numeric1`，long NF1 winner profile。
+  05:41 仍在 build，stderr 0、available RAM 约 111 GiB、si/so 0、memory PSI 0；固定 checkout clean
+  `902b1672...ff36`。无第二 solver；仅在 1488 checkpoint 存在时才允许自动进入 Base/2160。
+- ParaCloud `4139552` 未取消、未改参、未启动 Stage B；沿用 round 29 证据直到出现新 iteration。
+
 ## 2026-08-17 04:18+08:00 exact macro winner / V5 744 start / cloud round 29
 
 - v5 exact A/B 成功：`5e-2/NF2` 与 `1e-2/NF2` 分别因宏观 operation-account L1

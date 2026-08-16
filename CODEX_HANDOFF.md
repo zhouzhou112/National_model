@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 05:41+08:00：V5/744 winner 路线已于 05:38:39 正常返回 rc 0，solver
+  `OPTIMAL`，Barrier `305 iterations / 4,520.108 s`，wrapper wall `1:21:54`、stderr 0、
+  MaxRSS `21,285,692 KiB`、swaps 0。完整工程 checkpoint 已保存：`BarX` `3,894,744` 项、
+  `BarPi` `4,636,251` 项，均为 finite `float64` 并带 SHA256；LP Fingerprint、变量/约束顺序摘要、
+  分层 identity 与 input manifest 均落盘，`deferred_crossover_eligible=true`。该宽松内点严格 QC 为
+  `HARD_FAIL`：58 项物理账目中仅 `reservoir_transition` 失败，最大递推残差 `11,917.821 m3`；
+  power balance `2.36e-7 GW`，网络双向流 0，储能同时充放电量 `1.75e-5 GWh`，其余网络、备用、
+  惯量、碳/CCS 与成本账目通过。因此身份仅为 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`，不是科学结果。
+  campaign 已于 05:38:42 自动且串行进入唯一 Base/1488，PID `3899905/3899906`，start hour 3624，
+  使用 long NF1 winner profile；05:41 尚在模型构建，stderr 0、约 `111 GiB` available、si/so 0、
+  memory PSI 0。fixed checkout clean `902b1672...ff36`；local/origin/GitHub docs tip 为 `245d3b4`。
 - 2026-08-17 04:18+08:00：v5 exact A/B 已真实完成。`5e-2/NF2` 与 `1e-2/NF2` 因宏观
   operation-account L1 `29.64%/10.04%` 等失败；`1e-2/NF1` 唯一 `MACRO_PASS`，objective/
   capacity/generation/carbon/operation 差异 `2.93e-9/1.33e-8/0.001056/8.41e-10/1.92e-6`。
@@ -1616,6 +1627,32 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 V5/744 engineering checkpoint terminal and Base/1488 start
+
+- Git/身份：运行实现为 fixed server clean
+  `902b1672a869cd4e6483633ceaf0208e092bff36`；本次记录前 local/origin/GitHub 文档 tip 均为
+  `245d3b4be270150af0c4ff14fb0acd98aa97138a`。固定 checkout 在 solver 活动期间未切换，用户拥有的
+  `supplementary_materials/**`、`.codex_tmp/**`、Module 06 handoff hunks 与历史 outputs 未改。
+- V5/744 命令/终态：2030、hours 0--743、`flex_integrated_v5_central.json`、
+  `barrier_16_engineering_relaxed_bctol1e2_numeric1_v1.json`，Crossover 0、工程 checkpoint/analysis。
+  campaign event 为 04:16:42 start、05:38:39 end rc 0；solver `OPTIMAL`，Barrier 305 次、
+  `4,520.108 s`，objective `2,361,276.668084 million CNY`。`/usr/bin/time -v` 为 wall `1:21:54`、
+  user/system `63,271.79/2,208.31 s`、MaxRSS `21,285,692 KiB`、swaps 0；stderr 0。
+- checkpoint/质量：`BarX` 3,894,744 项、SHA256 `464a5ee1...2d96`；`BarPi` 4,636,251 项、
+  SHA256 `8bd6de58...43b2`。Gurobi Fingerprint `-807918957`，LP nonzeros `41,327,437`，变量/约束
+  ordering digest 完整，`deferred_crossover_eligible=true`。严格 solution
+  contract/QC 为 `HARD_FAIL`；58 个物理 hard checks 仅 `reservoir_transition=false`，最大残差
+  `11,917.821 m3`，对应 solver maximum constraint violation `0.011917821`。power balance
+  `2.362e-7 GW`、line violation `3.643e-9 GW`、双向省间流 0、storage overlap `1.745e-5 GWh`，
+  其余账目通过。未创建 scientific result manifest/planning state/basis；不得发表或锚定 sequence。
+- 长时域启动/资源：05:38:42 campaign 串行启动 Base/1488，output
+  `relaxed_barrier_continuation_v0817_v5/base_1488h_bctol1e2_numeric1`，PID `3899905/3899906`，
+  start hour 3624，使用 `barrier_16_engineering_relaxed_bctol1e2_numeric1_long_v1.json`；05:41 仍在
+  build，stderr 0、available RAM 约 111 GiB、si/so 0、memory PSI 0，无第二 solver。
+- 未决/下一步：只读监管 1488 到正式终态，审计 rc/stderr/time、LP 规模、Barrier 轨迹、资源、
+  checkpoint vectors/identity 和 relaxed physical QC。只有 1488 checkpoint manifest 存在时 campaign
+  才可进入 Base/2160。云 job `4139552` 保持原样，只在新 iteration/终态时追加审计，不启 Stage B。
 
 ### 2026-08-17 exact macro winner, V5/744 start and cloud resource round 29
 
