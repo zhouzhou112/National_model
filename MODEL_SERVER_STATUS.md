@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 18:38+08:00 cloud round 19 / fixed dual recovery
+
+- ParaCloud `4139552` 未触碰：Barrier iteration 315、runtime `923,654.91 s`；round 19 为 wall
+  `926,381 s`、allocated `24,703.493 core-hours`、actual CPU `3,864.724 h`、CPU efficiency
+  `15.6444%`、MaxRSS `362.913 GiB`、iteration 295--315 平均 `51.837 min`。20 records SHA256
+  `19273e36...c437`；stderr 0、无 terminal/checkpoint。
+- fixed strict quad 已从 `1e10--1e12` dual 段恢复；当前 iteration `859,888`、runtime `19,483 s`、
+  primal 0、dual `2.05e6`、stderr 0，wrapper/v3 supervisor 存活、仍只有一个 solver。
+
 ## 2026-08-16 18:04+08:00 strict quad 轨迹偏离旧成功根
 
 - 定量纠正：旧成功根 quad 后最大 dual `1.91e8`，仅 2 个采样 `>=1e8`、无 `>=1e9`；当前根

@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 18:38+08:00：ParaCloud `4139552` 保持原样，18:31 落盘 Barrier iteration 315，
+  runtime `923,654.91 s`，primal/dual/complementarity `2.505751/1.784e-6/0.206062`。round 19
+  记录 wall `926,381 s`、allocated `24,703.493 core-hours`、actual CPU `3,864.724 h`、
+  efficiency `15.6444%`、MaxRSS `362.913 GiB`、iteration 295--315 平均 `51.837 min`；
+  20 records SHA256 `19273e36...c437`，stderr 0、无 terminal/checkpoint。fixed strict quad cleanup
+  已从高 dual 段恢复，iteration `859,888`、runtime `19,483 s`、primal 0、dual `2.05e6`，继续单 solver。
 - 2026-08-16 18:04+08:00 correction：strict 与旧成功根只在“丢弃 1 个 basis variable 并切换 quad”
   的保护动作上相同，**quad 后数值轨迹并不相同**。旧根 quad 后最大 dual infeasibility 仅
   `1.908564e8`，只有 2 个日志采样点 `>=1e8`、无 `>=1e9`；当前根 quad 后最大已达
@@ -1513,6 +1519,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 315 / resource audit round 19
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `64868c1574ae0b435d1037c86f9fbb2805981caa`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  仅追加 cloud resource snapshot 并更新三份交接文档；未改 active solver、profile、checkout、模型、
+  数据、output 或 Stage B 状态。
+- cloud 证据：job 继续 RUNNING；iteration 315、runtime `923,654.909 s`，primal infeasibility
+  `2.505751`、complementarity `0.206062`，较 iteration 314 继续下降。round 19 为 wall
+  `926,381 s`、allocation `24,703.493 core-hours`、actual CPU `3,864.724 h`、CPU efficiency
+  `15.6444%`、MaxRSS `362.913 GiB`、最近 20 步平均 `51.837 min`。20 records SHA256
+  `19273e364307274243a2b9491cd0610b1c5d6aee964bd08cc34e0a4cfadfc437`；stderr 0、无终态或
+  checkpoint，任务未取消、未改参、未启动 Stage B。
+- fixed/下一步：strict quad cleanup 经 `1e10--1e12` 高 dual 段后恢复到 `1e4--1e7` 区间；当前
+  iteration `859,888`、runtime `19,483 s`、primal 0、dual `2.045376e6`、stderr 0，仍只有一个
+  solver。恢复不能替代终态，继续等待正式 status/rc/QC/manifest；cloud 仅在新 iteration 后追加审计。
 
 ### 2026-08-16 strict quad 数值轨迹与旧成功根的定量纠正
 

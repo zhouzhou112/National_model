@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 18:38 cloud round 19 / fixed dual recovery
+
+```text
+cloud_job=4139552 RUNNING Barrier iteration 315
+cloud_solver_runtime_seconds=923654.909
+cloud_recent_20_iteration_average_minutes=51.837
+cloud_resource_audit_round=19 records=20
+cloud_resource_audit_sha256=19273e364307274243a2b9491cd0610b1c5d6aee964bd08cc34e0a4cfadfc437
+fixed_quad_iteration=859888
+fixed_quad_runtime_seconds=19483
+fixed_quad_dual_infeasibility=2.045376e6
+```
+
+fixed dual 从高风险段回落证明当前 cleanup 尚有恢复能力，但不撤销数值风险升级，也不能替代正式
+`OPTIMAL + wrapper/QC/manifest`。继续唯一 solver；cloud round 19 已持久化且 Stage A 保持原样。
+
 ## 2026-08-16 18:04 strict quad 风险升级与历史对照纠正
 
 ```text
