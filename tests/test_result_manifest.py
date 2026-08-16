@@ -55,6 +55,28 @@ class ResultManifestTests(unittest.TestCase):
             manifest_ok, manifest_failures = validate_result_manifest(output_dir)
             self.assertTrue(manifest_ok, manifest_failures)
 
+    def test_empty_or_structurally_invalid_manifest_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output_dir = Path(temporary)
+            manifest = output_dir / "result_manifest.json"
+
+            manifest.write_text('{"valid":true}\n', encoding="utf-8")
+            valid, failures = validate_result_manifest(output_dir)
+            self.assertFalse(valid)
+            self.assertIn("result_manifest.json files is not a list", failures)
+
+            manifest.write_text('{"files":[]}\n', encoding="utf-8")
+            valid, failures = validate_result_manifest(output_dir)
+            self.assertFalse(valid)
+            self.assertIn("result_manifest.json files is empty", failures)
+
+            manifest.write_text('{not-json}\n', encoding="utf-8")
+            valid, failures = validate_result_manifest(output_dir)
+            self.assertFalse(valid)
+            self.assertTrue(
+                any("result_manifest.json is unreadable" in item for item in failures)
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

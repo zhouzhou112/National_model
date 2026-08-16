@@ -15,6 +15,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from cispo_model.io_contract import validate_result_manifest
+
 
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -235,11 +237,14 @@ def audit(
         if reference_manifest_path.is_file()
         else None
     )
+    reference_manifest_valid, reference_manifest_failures = (
+        validate_result_manifest(reference_root)
+    )
     reference_accepted = bool(
         reference_solve.get("status") == "OPTIMAL"
         and reference_qc is not None
         and reference_qc.get("status") == "PASS"
-        and reference_result_manifest is not None
+        and reference_manifest_valid
     )
     exact_ab_identity = _exact_ab_identity(candidate_root, reference_root)
     candidate_qc_path = analysis_root / "solution_qc.json"
@@ -357,6 +362,8 @@ def audit(
                 else None
             ),
             "result_manifest_present": reference_result_manifest is not None,
+            "result_manifest_valid": reference_manifest_valid,
+            "result_manifest_failures": reference_manifest_failures,
         },
         "thresholds": {
             "objective_relative_difference": objective_limit,

@@ -6,6 +6,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import re
 import subprocess
 import sys
 from datetime import datetime
@@ -675,18 +676,67 @@ def validate_result_manifest(output_dir: str | Path) -> tuple[bool, list[str]]:
     path = output_dir / "result_manifest.json"
     if not path.is_file():
         return False, ["result_manifest.json is missing"]
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError) as error:
+        return False, [f"result_manifest.json is unreadable: {error}"]
+    if not isinstance(payload, dict):
+        return False, ["result_manifest.json root is not an object"]
+    rows = payload.get("files")
+    if not isinstance(rows, list):
+        return False, ["result_manifest.json files is not a list"]
+    if not rows:
+        return False, ["result_manifest.json files is empty"]
+
     failures: list[str] = []
-    for row in payload.get("files", []):
-        item = output_dir / row["path"]
+    output_resolved = output_dir.resolve()
+    seen_paths: set[str] = set()
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            failures.append(f"row:{index}:not_an_object")
+            continue
+        relative = row.get("path")
+        recorded_bytes = row.get("bytes")
+        recorded_sha256 = row.get("sha256")
+        if not isinstance(relative, str) or not relative.strip():
+            failures.append(f"row:{index}:path")
+            continue
+        relative_path = Path(relative)
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            failures.append(f"unsafe_path:{relative}")
+            continue
+        if relative in seen_paths:
+            failures.append(f"duplicate_path:{relative}")
+            continue
+        seen_paths.add(relative)
+        try:
+            expected_bytes = int(recorded_bytes)
+        except (TypeError, ValueError):
+            failures.append(f"bytes:{relative}:invalid")
+            continue
+        if expected_bytes < 0:
+            failures.append(f"bytes:{relative}:invalid")
+            continue
+        if not isinstance(recorded_sha256, str) or not re.fullmatch(
+            r"[0-9a-fA-F]{64}", recorded_sha256
+        ):
+            failures.append(f"sha256:{relative}:invalid")
+            continue
+        item = output_dir / relative_path
+        try:
+            item_resolved = item.resolve()
+            item_resolved.relative_to(output_resolved)
+        except (OSError, ValueError):
+            failures.append(f"unsafe_path:{relative}")
+            continue
         if not item.is_file():
-            failures.append(f"missing:{row['path']}")
+            failures.append(f"missing:{relative}")
             continue
-        if item.stat().st_size != int(row["bytes"]):
-            failures.append(f"size:{row['path']}")
+        if item.stat().st_size != expected_bytes:
+            failures.append(f"size:{relative}")
             continue
-        if sha256_file(item) != row["sha256"]:
-            failures.append(f"sha256:{row['path']}")
+        if sha256_file(item).lower() != recorded_sha256.lower():
+            failures.append(f"sha256:{relative}")
     return not failures, failures
 
 

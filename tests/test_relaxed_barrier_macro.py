@@ -5,6 +5,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.audit_relaxed_barrier_macro import audit
 from scripts.run_cispo_2030_full_year import (
@@ -218,14 +219,18 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
                     1000.0,
                 )
 
-            report = audit(
-                candidate,
-                reference,
-                objective_limit=0.01,
-                capacity_l1_limit=0.02,
-                generation_l1_limit=0.02,
-                period_generation_limit=0.005,
-            )
+            with patch(
+                "scripts.audit_relaxed_barrier_macro.validate_result_manifest",
+                return_value=(True, []),
+            ):
+                report = audit(
+                    candidate,
+                    reference,
+                    objective_limit=0.01,
+                    capacity_l1_limit=0.02,
+                    generation_l1_limit=0.02,
+                    period_generation_limit=0.005,
+                )
 
             self.assertEqual(report["status"], "MACRO_PASS")
             self.assertFalse(report["scientifically_accepted"])
@@ -239,6 +244,9 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
             )
             self.assertTrue(report["exact_ab_identity"]["matches"])
             self.assertTrue(report["reference_contract"]["accepted"])
+            self.assertTrue(
+                report["reference_contract"]["result_manifest_valid"]
+            )
 
     def test_mismatched_lp_or_input_cannot_macro_pass(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -308,6 +316,75 @@ class RelaxedBarrierMacroAuditTests(unittest.TestCase):
                 report["exact_ab_identity"]["fields"][
                     "gurobi_fingerprint"
                 ]["matches"]
+            )
+
+    def test_invalid_reference_manifest_cannot_macro_pass(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            candidate = root / "candidate"
+            analysis = candidate / "engineering_macro_analysis"
+            reference = root / "reference"
+            common_summary = {
+                "planning_year": 2030,
+                "scenario_id": "base",
+                "optimization_hours": 744,
+                "optimization_start_hour": 0,
+                "objective_million_cny_per_year": 100.0,
+                "period_generation_gwh": 1000.0,
+                "period_load_gwh": 900.0,
+            }
+            _write_json(
+                analysis / "engineering_analysis_contract.json",
+                {"scientifically_accepted": False},
+            )
+            _write_json(analysis / "annual_summary.json", common_summary)
+            _write_json(reference / "annual_summary.json", common_summary)
+            _write_json(
+                candidate / "solve_report.json",
+                {
+                    "run_completion_status": (
+                        "ENGINEERING_BARRIER_CHECKPOINT_COMPLETE"
+                    )
+                },
+            )
+            _write_json(reference / "solve_report.json", {"status": "OPTIMAL"})
+            _write_json(reference / "solution_qc.json", {"status": "PASS"})
+            _write_json(reference / "result_manifest.json", {"valid": True})
+            _write_run_identity(candidate / "run_identity.json")
+            _write_run_identity(reference / "run_identity.json")
+            _write_input_manifest(candidate / "input_manifest.csv", "same-data")
+            _write_input_manifest(reference / "input_manifest.csv", "same-data")
+            for directory in (analysis, reference):
+                _write_series(
+                    directory / "annual_capacity_by_technology.csv",
+                    "technology",
+                    "capacity",
+                    100.0,
+                )
+                _write_series(
+                    directory / "annual_generation_by_technology.csv",
+                    "technology",
+                    "generation_gwh",
+                    1000.0,
+                )
+
+            report = audit(
+                candidate,
+                reference,
+                objective_limit=0.01,
+                capacity_l1_limit=0.02,
+                generation_l1_limit=0.02,
+                period_generation_limit=0.005,
+            )
+
+            self.assertEqual(report["status"], "MACRO_FAIL")
+            self.assertFalse(report["reference_contract"]["accepted"])
+            self.assertFalse(
+                report["reference_contract"]["result_manifest_valid"]
+            )
+            self.assertIn(
+                "result_manifest.json files is not a list",
+                report["reference_contract"]["result_manifest_failures"],
             )
 
 
