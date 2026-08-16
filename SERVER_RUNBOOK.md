@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 07:40 cloud round 32 / fixed iteration 30
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=329 runtime_s=969935.080
+cloud_primal_dual_complementarity=1.404886/1.110e-6/0.119628
+cloud_round=32 wall_s=973314 allocated_core_hours=25955.040 actual_cpu_hours=4058.406
+cloud_efficiency_percent=15.6363 maxrss_gib=362.913 recent20_minutes=53.686
+cloud_resource_audit_records=33 sha256=0752c62843c6d272d58b6d81b2d2444f0fb7b8123e0bc5b225d99921e467326d
+fixed_base_1488_iteration=30 runtime_s=6588.139
+fixed_primal_dual_complementarity=2.223e6/702.46/5.926e5
+```
+
+两端均继续运行；cloud 不取消、不改参、不启 Stage B，fixed 不并发、不部署，下一 fixed 判别点为 50。
+
 ## 2026-08-17 07:35 next relaxed factor-screen order
 
 活动 Base/1488 期间只读监控；不得部署或并发。campaign 完成并重新通过 no-solver、clean checkout、

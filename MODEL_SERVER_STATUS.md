@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 07:40+08:00 cloud round 32 / fixed iteration 30
+
+- cloud `4139552` RUNNING，iteration 329、runtime `969,935.080 s`，primal/dual/compl
+  `1.404886/1.110e-6/0.119628`；wall `973,314 s`、allocated `25,955.040 core-hours`、
+  actual CPU `4,058.406 h`、efficiency `15.6363%`、MaxRSS `362.913 GiB`，最近 20 步
+  `53.686 min`。resource audit 33 records SHA256 `0752c628...e467326d`；stderr 0、无终态/
+  checkpoint，未启 Stage B。
+- fixed Base/1488 到 iteration 30，runtime `6,588.139 s`，primal/dual/compl
+  `2.223e6/702.46/5.926e5`；内存不变、stderr 0，继续到 50。
+
 ## 2026-08-17 07:35+08:00 next-candidate factor audit
 
 - 只读历史 24 h 表明 `NumericFocus=0 + ScaleFlag=-1` 相对 NF2/Scale2 将 Factor NZ/Ops

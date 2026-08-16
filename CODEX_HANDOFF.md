@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 07:40+08:00：ParaCloud audit round 32 已追加；job `4139552` 仍 `RUNNING`，最新
+  iteration 329（07:22:40），runtime `969,935.080 s`，primal/dual/complementarity
+  `1.404886/1.110e-6/0.119628`。wall `973,314 s`、allocated `25,955.040 core-hours`、
+  actual CPU `4,058.406 h`、efficiency `15.6363%`、MaxRSS `362.913 GiB`、最近 20 步
+  `53.686 min/step`；账本 33 records，SHA256 `0752c628...e467326d`。stderr 0、无终态/
+  checkpoint，未取消、未改参、未启 Stage B。fixed Base/1488 同时到 iteration 30，runtime
+  `6,588.139 s`，primal/dual/complementarity `2.223e6/702.46/5.926e5`，仍稳定下降。
 - 2026-08-17 07:35+08:00：只读复核 2026-08-01 fixed-server 24 h 参数根后，下一轮候选从“继续放宽
   容差”转为“降低每步因子成本”。历史 `NumericFocus=0 + ScaleFlag=-1` 相对同轮 NF2/Scale2
   路线把 Factor NZ/Ops 从约 `6.562e6/6.930e8` 降至 `6.017e6/6.408e8`
@@ -1672,6 +1679,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 32 and Base/1488 iteration 30
+
+- cloud：只读核验并向既有
+  `run_control/2030_8760_base_stage_a_barrier_v2/resource_audit_snapshots.jsonl` 原子追加 round 32。
+  job `4139552` 为 `RUNNING`，iteration 329、solver runtime `969,935.080 s`；Slurm wall
+  `973,314 s`、96 CPUs、700 GiB allocation、allocated `25,955.040 core-hours`、actual CPU
+  `4,058.406 h`、efficiency `15.6363%`、MaxRSS `380,541,608 KiB`。最近 iteration 309--329
+  平均 `53.6856 min`；33 条记录 SHA256
+  `0752c62843c6d272d58b6d81b2d2444f0fb7b8123e0bc5b225d99921e467326d`。
+- 终态边界：cloud wrapper stderr 0；`solve_report.json`、`solution_qc.json`、
+  `result_manifest.json` 与 checkpoint manifest 均不存在；未停止、未修改 profile、未启 Stage B。
+- fixed：Base/1488 iteration 30 于 07:38:54 落盘，runtime `6,588.139 s`；primal/dual/
+  complementarity `2.223e6/702.46/5.926e5`，solver current/max memory 仍
+  `45.07/58.29 GiB`、stderr 0。继续唯一 solver 到 iteration 50。
 
 ### 2026-08-17 historical factor-parameter audit for the next relaxed campaign
 
