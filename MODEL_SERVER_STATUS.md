@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 07:35+08:00 next-candidate factor audit
+
+- 只读历史 24 h 表明 `NumericFocus=0 + ScaleFlag=-1` 相对 NF2/Scale2 将 Factor NZ/Ops
+  约降低 `8.3%/7.5%`，Barrier `18.99 s` 对 `57.95 s`；旧严格合同因
+  `ConstrVio=0.04788` 拒绝，但 objective 相对差约 `1.54e-7`。
+- 下一轮应在 current model / `BarConvTol=1e-2` 下拆分 NF0 与 auto scaling，并先用 744
+  短迭代比较 Factor NZ/Ops；`AggFill=0` 历史收益不足 2%，`PreSparsify=2` 虽稀疏却更慢，均非
+  首选完整 solve。当前 Base/1488 和 cloud job 未改，活动 campaign 退出前不启动候选。
+
 ## 2026-08-17 07:25+08:00 Base 1488 iteration 25
 
 - iteration 25 runtime `5,731.421 s`；0--25 平均 `169.69 s/step`，primal/dual/complementarity

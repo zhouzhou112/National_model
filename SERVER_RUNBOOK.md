@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 07:35 next relaxed factor-screen order
+
+活动 Base/1488 期间只读监控；不得部署或并发。campaign 完成并重新通过 no-solver、clean checkout、
+available RAM、si/so 与 PSI 门禁后，下一轮按以下顺序串行：
+
+1. 744 short-iteration factor screen：`NF0+Scale2`、`NF1+ScaleAuto`、
+   `NF0+ScaleAuto`，其余保持 winner 的 `BarConvTol=1e-2`、Feas/Opt `1e-5`、Method 2、
+   Threads 16、Presolve 2、Crossover 0；
+2. 每根记录 raw/presolved rows/cols/nnz、dense cols、AA' NZ、Factor NZ/Ops、ordering、实际
+   step time、RSS/swap/PSI；只有明显降低 factor 成本且轨迹有限的候选晋级；
+3. 晋级候选以全新 root 完成 744，并和 strict reference 比较 objective、capacity、generation、
+   carbon、operation 与 cost-component 账目；不因 micro residual 单独拒绝，也不产生科学 manifest；
+4. `AggFill=0` 与 `PreSparsify=2` 仅为次级 screen：历史前者 Factor Ops 改善不足 2%，后者虽降
+   Factor Ops 却增加 iterations/总时间。不得直接把它们放大到长任务。
+
 ## 2026-08-17 07:25 Base/1488 iteration 25 gate
 
 ```text

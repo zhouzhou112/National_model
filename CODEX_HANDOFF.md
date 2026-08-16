@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 07:35+08:00：只读复核 2026-08-01 fixed-server 24 h 参数根后，下一轮候选从“继续放宽
+  容差”转为“降低每步因子成本”。历史 `NumericFocus=0 + ScaleFlag=-1` 相对同轮 NF2/Scale2
+  路线把 Factor NZ/Ops 从约 `6.562e6/6.930e8` 降至 `6.017e6/6.408e8`
+  （`-8.3%/-7.5%`），Barrier `18.99 s` 对 `57.95 s`；当时因严格 nonbasic contract 的
+  `ConstrVio=0.04788` 与 complementarity 被拒绝，但目标相对偏差仅约 `1.54e-7`，故应在当前
+  `BarConvTol=1e-2` 宏观 A/B 合同下重新拆分 NF0 与 auto scaling。`AggFill=0` 仅约 `2%`
+  Factor Ops 改善，列为次选；`PreSparsify=2` 仅做短迭代 factor screen。活动 Base/1488 与 cloud
+  job 均未修改；候选只能在当前串行 campaign 退出并释放内存后启动。
 - 2026-08-17 07:25+08:00：fixed Base/1488 到 iteration 25，runtime `5,731.421 s`，iteration
   0--25 平均 `169.69 s/step`；primal/dual/complementarity
   `2.275e8/1.364e5/5.068e7`。相对同参数 Base/744 的 iteration 25，primal 约高 32.6%，但 dual/
@@ -1664,6 +1672,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 historical factor-parameter audit for the next relaxed campaign
+
+- 只读来源：fixed-server 历史根
+  `/data/zz2/National_model/outputs/solver_tuning_v0801_a3a078e_24h_base_candidates_v3` 与
+  `solver_tuning_v0801_5e7db68_24h_base_round2_v1`；没有更改历史输出、活动 checkout、当前
+  Base/1488 或 ParaCloud `4139552`。
+- 关键证据：NF0/auto-scale 历史根的 presolved rows/cols/nnz 为
+  `101,664/232,186/1,416,758`，Factor NZ/Ops `6.017e6/6.408e8`、137 iterations、
+  `18.99 s`；NF2/Scale2 对照为 `110,665/232,186/1,408,639`、
+  `6.562e6/6.930e8`、150 iterations、`57.95 s`。前者 status `SUBOPTIMAL`、目标
+  `2,128,186.084091 million CNY`、ConstrVio `0.047882845`，因此不是科学结果，但相对严格
+  objective 的宏观偏差约 `1.54e-7`，具备按现行工程宏观合同重测的价值。
+- 次选证据：`AggFill=0` 为 `6.557e6/6.803e8`、134 iterations、54.21 s，Factor Ops
+  改善不足 2%；`PreSparsify=2` 为 `6.298e6/6.361e8`，但 175 iterations/74.12 s，说明只看
+  稀疏度不足以晋级。官方参数说明也指出 NF0 偏速度、默认 scaling 通常有效，而 AggFill/
+  PreSparsify 只控制 presolve 填充/稀疏化。
+- 下一步：当前串行 campaign 终止并通过空闲/内存门禁后，先做 current-model 744 短迭代 factor
+  screen，分别隔离 `NF0+Scale2`、`NF1+ScaleAuto`、`NF0+ScaleAuto`；只将显著降低 Factor
+  NZ/Ops 且无异常数值轨迹的候选晋级完整 744 宏观 A/B。容差仍为 `BarConvTol=1e-2`、
+  Feas/Opt `1e-5`，不再无证据地放宽；fixed 始终单 solver。
 
 ### 2026-08-17 Base/1488 iteration 25 resource and trajectory gate
 
