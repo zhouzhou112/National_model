@@ -1,5 +1,22 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:54+08:00 macro accounting v2 与 supervisor v3
+
+- `a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1` 已双推送：exact macro 新增 carbon/CCS L1
+  `<=2%` 与运行账目 L1 `<=5%`；成本分项存在时 L1 `<=2%`，历史缺失时仅 objective `<=1%` 作成本
+  门禁并显式报告。容量/发电 `2%`、period generation `0.5%` 不变。采用 normalized L1 而非逐个
+  近零项相对误差，符合全国宏观尺度且不放松科学 QC。
+- `cost_components.csv` 现在在 load-center strict QC 前写出；不改表达式、数值、accounting scope 或
+  QC。py_compile、macro+summary `6/6 PASS`，server isolated cost export PASS；真实旧根 parser v2
+  成功但 exact identity 仍 FAIL。活动 checkout 未部署该提交。
+- `5af8efe6872b569e4ca068c7c66cc2aefa9e676e` 已双推送并提供 versioned supervisor/campaign audit
+  injection。旧 v2 supervisor 只等待且已精确替换，日志保留；v3 PID `46839`、PPID 1，控制/输出根
+  为 `relaxed_barrier_continuation_v0816_v3`，绑定 checksummed macro v2。13:54 输出根 absent，无第二
+  fixed solve。
+- strict Base/744 13:54 Barrier iteration 81、runtime `2,445.64 s`、stderr 0；Python RSS 约
+  `17.5 GiB`，memory PSI 0。checkout 继续 frozen `d80f5b7`。ParaCloud `4139552` 未触碰，最近权威
+  审计为 round 13、iteration 309、stderr 0、无 terminal/checkpoint。
+
 ## 2026-08-16 13:42+08:00 strict reference manifest 门禁与 supervisor v2
 
 - 实现 `f96d9e0443a40f343eaf74b6d97c7abd186e309a` 已双推送：result manifest validator 现在拒绝

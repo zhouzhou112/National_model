@@ -1,5 +1,36 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 macro accounting v2 / supervisor v3
+
+当前唯一 continuation 为：
+
+```text
+supervisor_pid=46839
+control=/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v3
+output=/data/zz2/National_model/outputs/relaxed_barrier_continuation_v0816_v3
+macro_implementation=a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1
+supervisor_implementation=5af8efe6872b569e4ca068c7c66cc2aefa9e676e
+audit_sha256=dbcf0a6c119d6727e20ec09176fe561dcd00d7cdd13cdfd15156e4371e9665df
+campaign_sha256=dd94436d7e007d580f3b3266edb7d56f98e9572710e0e777abb42b76faefa4b3
+supervisor_sha256=6a3a70e04c51d77d436b56d14c3be2b602d54fc16742285cf7aa4a7b6862b9dd
+```
+
+reference 强终态合同沿用下节；通过后 winner 必须再满足：
+
+1. exact LP/input/scientific identity；
+2. objective relative difference `<=1%`；
+3. capacity/generation normalized L1 各 `<=2%`，period generation relative difference `<=0.5%`；
+4. `annual_carbon_ccs.json` 中 gross/unabated/net/captured/shipped/DAC 的 normalized L1 `<=2%`；
+5. curtailment、storage charge/discharge、interprovincial losses 与 wave generation 的 normalized L1
+   `<=5%`；采用总账归一化，不能用近零单项的无界相对误差拒绝宏观等价路线；
+6. 双方均有 `cost_components.csv` 时 normalized L1 `<=2%`；既有候选因 strict load-center QC 在旧导出
+   顺序中提前抛错而缺表时，必须记录 unavailable，只由总 objective 作成本门禁，不得插补。
+
+`export_cost_components()` 的提前写出只影响未来工程证据的保存顺序，不放松 load-center、reservoir 或
+其他 hard checks。v3 仍只复用三根候选，不新增参数轮次；只让全账目 `MACRO_PASS` 的最快者运行
+V5/744、Base/1488、以及 1488 checkpoint 完整时的 Base/2160。v1/v2 控制根永久保留；不得恢复其
+等待 PID。活动 checkout 仍是 `d80f5b7`，不得在 strict 或 continuation solver 存活时部署新提交。
+
 ## 2026-08-16 strict reference 强终态门禁与 supervisor v2
 
 活动 fixed checkout 在 strict solve 退出前继续冻结 `d80f5b7`；本地/双远端实现

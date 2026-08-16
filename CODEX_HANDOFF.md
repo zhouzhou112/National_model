@@ -12,6 +12,25 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:54+08:00：macro 账目范围与 continuation 已升级。实现
+  `a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1` 把碳/CCS normalized L1 `<=2%`、运行账目
+  normalized L1 `<=5%` 纳入 exact `MACRO_PASS`，继续保留 objective `<=1%`、容量/发电 L1
+  `<=2%`、period generation `<=0.5%`；成本分项存在时要求 L1 `<=2%`，历史候选缺失时明确记录且
+  只由总 objective 作成本门禁，不插补、不伪装。`cost_components.csv` 改为在严格 load-center QC 前
+  写出，QC 阈值和模型均未放松。联合 tests `6/6 PASS`，server isolated fake-expression cost export PASS；
+  真实旧根 parser v2 成功写入
+  `run_control/relaxed_barrier_continuation_v0816_v2/pre_exact_v2_parser_numeric1.json`，但因旧 reference
+  identity 不同保持 `MACRO_FAIL`，不得用于 winner。
+- 实现 `5af8efe6872b569e4ca068c7c66cc2aefa9e676e` 新增 versioned continuation supervisor，并让
+  campaign 接受 checksummed `AUDIT_SCRIPT`。v2 PID `4179192` 及唯一 sleep child 已精确终止；strict
+  和 sampler 未受影响，v2 全部证据保留。supervisor v3 PID `46839`、PPID 1，控制/预定输出根为
+  `relaxed_barrier_continuation_v0816_v3`；audit/campaign/supervisor SHA256 分别为
+  `dbcf0a6c...665df`、`dd94436d...fa4b3`、`6a3a70e0...2b9dd`，绑定 `a02d4d9/5af8efe`。
+  它会以新 macro v2 选 winner，仍只按 V5/744→Base/1488→条件式 Base/2160 串行执行。
+- 13:54 v3 新输出根 absent，fixed server 仍仅 strict Base/744 一个 solver；Barrier iteration 81、
+  runtime `2,445.64 s`、stderr 0，RSS 约 `17.5 GiB`、无 memory PSI。活动 checkout 按 PID 保护仍为
+  `d80f5b7`；`a02d4d9/5af8efe` 已推送双远端但未部署。云端 `4139552` 继续不取消、不改参、
+  不启动 Stage B；最近权威 resource audit 仍为 round 13。
 - 2026-08-16 13:42+08:00：reference 终态门禁已加固。实现提交
   `f96d9e0443a40f343eaf74b6d97c7abd186e309a` 修复 `validate_result_manifest()` 对缺失/空 `files`
   的误接受，并要求每条记录具有安全相对路径、非负 size、合法 SHA256 且逐文件 size/hash 闭合；
@@ -1417,6 +1436,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 relaxed macro 全账目 v2 与 versioned supervisor v3
+
+- Git：`a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1` 修改
+  `cispo_model/master.py`、macro auditor/summary 与 tests；`5af8efe6872b569e4ca068c7c66cc2aefa9e676e`
+  增加 versioned supervisor 并参数化 campaign 的 audit script。两提交均已推送 `origin` 与 GitHub；
+  活动 fixed checkout 未部署。
+- 账目合同：exact identity 后同时门禁 objective、技术容量/发电、period generation、碳/CCS六项和
+  VRE/ROR/hydro curtailment、储能充放、网损、wave generation 等运行账目。碳与运行采用总量归一化
+  L1 `2%/5%`，避免近零单项造成虚假巨大相对误差；成本分项可用时 L1 `2%`，历史缺失时仅总 objective
+  门禁并显式标记 `component_gate_applied=false`。这不改变 LP、求解参数或严格物理 QC。
+- 导出修正：`export_cost_components()` 在 load-center 严格 QC 前写同内容 CSV，使未来 relaxed 解即使因
+  `0.0001 GWh` 级双向流严格拒绝，仍留下成本构成。既有三根不重写；其成本分项 unavailable 被保留为
+  历史限制。server fake expression 两行 isolated export PASS，无第二 Gurobi solve。
+- 验证：py_compile；macro+summary tests `6/6 PASS`，覆盖 carbon/operation/cost drift 分别使
+  `MACRO_FAIL`；两 shell scripts `bash -n` PASS。旧 invalid-reference real parser v2 的 carbon L1
+  `8.42e-10`、operation L1 `2.007%`、cost components unavailable，且 exact identity 仍 FAIL。
+- 监管替换：严格核验 v2 supervisor PID/PPID/cmdline/唯一 sleep child 后只终止等待进程，保留 v2
+  控制根；启动 v3 PID `46839`。v3 使用隔离复制且逐字节匹配提交的 audit/campaign/supervisor，强
+  reference 合同不变，winner 改由 macro v2 决定。13:54 仍只等待，不创建输出、不并发求解。
+- 未决与下一步：strict reference 完成后由 v3 做终态与 exact macro v2；仅全账目 PASS 的最快候选
+  进入 V5/744 与长时域。活动求解全部结束前不得部署新 tip；之后需 fixed full regression，确认提前
+  cost export 对科学成功根逐字段兼容，再生成 post-exact summary v2。
 
 ### 2026-08-16 strict reference manifest 合同与无人值守监管器 v2
 
