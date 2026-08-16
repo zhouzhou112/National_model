@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 07:01+08:00 cloud round 31 / Base 1488 iteration 16
+
+- ParaCloud `4139552` iteration 328、runtime `966,756.149 s`，primal/dual/complementarity
+  `1.450925/1.129e-6/0.122696`。round 31 wall `970,967 s`、allocated `25,892.453 core-hours`、
+  actual CPU `4,048.863 h`、efficiency `15.6372%`、MaxRSS `362.913 GiB`、最近 20 步
+  `53.608 min`；32 records SHA256 `223757e0...e391`。stderr 0、无 terminal/checkpoint，未改任务。
+- fixed Base/1488 iteration 16、runtime `4,225.346 s`；0--16 平均约 `171.00 s/step`，solver
+  current/max memory `45.07/58.29 GiB`、stderr 0。继续唯一 solver 到 iteration 25 门点。
+
 ## 2026-08-17 06:21+08:00 Base 1488 factorization / Barrier start
 
 - Base/1488 raw LP `7,236,351 vars / 8,648,849 rows / 87,364,792 nnz`；build 约 10.4 min，

@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 07:01+08:00：ParaCloud `4139552` 未触碰；06:29 落盘 Barrier iteration 328，
+  runtime `966,756.149 s`，primal/dual/complementarity `1.450925/1.129e-6/0.122696`。
+  resource audit round 31 为 wall `970,967 s`、allocated `25,892.453 core-hours`、actual CPU
+  `4,048.863 h`、efficiency `15.6372%`、MaxRSS `362.913 GiB`、最近 20 步 `53.608 min`；
+  32 records SHA256 `223757e0...e391`，stderr 0、无 terminal/checkpoint。fixed Base/1488 同时已到
+  iteration 16，0--16 平均约 `171.00 s/step`，solver current/max memory `45.07/58.29 GiB`。
 - 2026-08-17 06:21+08:00：fixed Base/1488 已进入 Barrier。raw LP 为
   `7,236,351 vars / 8,648,849 rows / 87,364,792 nnz`；build 约 10.4 min，Presolve=2 用
   `1,080.17 s` 后得到 `6,564,794 / 5,761,274 / 73,637,736`，ordering `322.03 s`。
@@ -1644,6 +1650,18 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 31 and Base/1488 iteration 16
+
+- cloud：job `4139552` 仍 `RUNNING`，iteration 328 于 06:29:41 落盘；runtime
+  `966,756.149 s`，primal/dual/complementarity `1.450925/1.129e-6/0.122696`。07:00:40 追加
+  round 31：wall `970,967 s`、allocated `25,892.453 core-hours`、actual CPU `4,048.863 h`、
+  efficiency `15.6372%`、MaxRSS `362.913 GiB`、iteration 308--328 平均 `53.608 min`。
+  账本 32 records，SHA256 `223757e0609a3299b471d9e01081d1b6a7c69a5a62037707bc6bea191d0ae391`；
+  stderr 0、无 terminal/checkpoint，未取消、未改参、未启动 Stage B。
+- fixed：Base/1488 已到 iteration 16、runtime `4,225.346 s`；iteration 0--16 平均约
+  `171.00 s/step`，primal infeasibility `1.927e9`，solver current/max memory `45.07/58.29 GiB`，
+  stderr 0。仍为唯一 fixed solver，继续到 iteration 25 重新估算；checkout 不部署文档 tip。
 
 ### 2026-08-17 Base/1488 presolve, factorization and early Barrier evidence
 

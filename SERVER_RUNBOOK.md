@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 07:01 cloud round 31 / Base/1488 iteration 16
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=328 runtime_s=966756.149
+cloud_primal_dual_complementarity=1.450925/1.129e-6/0.122696
+cloud_round=31 wall_s=970967 allocated_core_hours=25892.453 actual_cpu_hours=4048.863
+cloud_efficiency_percent=15.6372 maxrss_gib=362.913 recent20_minutes=53.608
+cloud_resource_audit_records=32 sha256=223757e0609a3299b471d9e01081d1b6a7c69a5a62037707bc6bea191d0ae391
+fixed_base_1488_iteration=16 runtime_s=4225.346 avg_iter_0_16_s~=171.00
+fixed_solver_memory_current_max_gib=45.07/58.29 stderr_bytes=0
+```
+
+两侧均继续只读监管；fixed 下一统计门点为 iteration 25，云端下一次仅在新 iteration/终态追加。
+不得取消、改参、部署 fixed checkout、启动第二 solver 或云 Stage B。
+
 ## 2026-08-17 06:21 Base/1488 presolve/factor/early Barrier
 
 ```text
