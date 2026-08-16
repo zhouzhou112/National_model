@@ -5,6 +5,7 @@ set -uo pipefail
 # active ParaCloud job, never runs crossover, and never exports planning state.
 REPO_ROOT=${REPO_ROOT:-/data/zz2/National_model/repo}
 PYTHON=${CISPO_PYTHON:-/home/zz2/.local/envs/cispo-2030/bin/python}
+AUDIT_SCRIPT=${AUDIT_SCRIPT:-$REPO_ROOT/scripts/audit_relaxed_barrier_macro.py}
 OUTPUT_BASE=${OUTPUT_BASE:-/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1}
 CONTROL_ROOT=${CONTROL_ROOT:-/data/zz2/National_model/run_control/relaxed_barrier_campaign_v0812_v1}
 REFERENCE_ROOT=${REFERENCE_ROOT:-/data/zz2/National_model/outputs/planning_sequence_2030_2060_744h_jan0_3f123f0_base_v1/2030}
@@ -130,7 +131,7 @@ for i in "${!tags[@]}"; do
   tag="base_744h_${tags[$i]}"
   run_case "$tag" "${profiles[$i]}" 744 0 config/scenarios/base.json 64 || true
   if [[ -f "$OUTPUT_BASE/$tag/engineering_macro_analysis/engineering_analysis_contract.json" ]]; then
-    "$PYTHON" scripts/audit_relaxed_barrier_macro.py \
+    "$PYTHON" "$AUDIT_SCRIPT" \
       --candidate-root "$OUTPUT_BASE/$tag" \
       --reference-root "$REFERENCE_ROOT" \
       --output "$CONTROL_ROOT/$tag/macro_comparison.json" \
