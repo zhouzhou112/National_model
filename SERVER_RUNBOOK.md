@@ -1,5 +1,26 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 14:20 运行中权威状态
+
+```text
+fixed_checkout=d80f5b76b7deefd6c82004ee0e17f1fc206f7eff clean/frozen
+fixed_strict_phase=Barrier iteration 120
+fixed_strict_runtime_seconds=3996.405
+fixed_strict_telemetry_primal_dual_complementarity=0.007359 / 5.61e-4 / 0.502643
+fixed_supervisor_pid=46839 waiting_reference
+fixed_continuation_output=absent
+cloud_job=4139552 RUNNING iteration 310
+cloud_runtime_seconds=908489.106
+cloud_resource_audit_round=14 records=15
+cloud_resource_audit_sha256=12ecc84d4405e9549fdcd3e295bdd6c13e940c5b233e7d9ae340080d6aade21f
+```
+
+运行中仍只允许只读监控。strict wrapper 退出前不得修改 checkout、候选 profile 或输出；不得手工
+触发 campaign。iteration 110--120 的 primal 非单调而 complementarity 继续下降，不构成失败或
+完成判断。reference 只有完整通过强终态合同后，v3 才会创建新输出根、只读链接三根 candidate 并
+运行 exact macro v2。ParaCloud round 14 已追加到 run-control 旁路；下一轮只在新 iteration 或有意义
+时间间隔后追加，禁止因本地中途结果取消/改参/启动 Stage B。
+
 ## 2026-08-16 macro accounting v2 / supervisor v3
 
 当前唯一 continuation 为：
@@ -57,8 +78,8 @@ reference wrapper 退出后必须按顺序检查：
 
 不得终止 strict wrapper/Python/resource sampler，不得提前创建 v2 输出根，不得并发第二 fixed solve。
 ParaCloud `4139552` 继续只读；每轮人工检查须向 `resource_audit_snapshots.jsonl` 追加 wall、allocated/
-actual CPU-hours、MaxRSS、latest Barrier、近期平均单步、stderr 与 terminal artifacts。round 13 已记录，
-14 records SHA256 为 `a649998df5a4dfb05e3efda7a89d09265353a13d4a56d4771c3d7dbd91355a1f`。
+actual CPU-hours、MaxRSS、latest Barrier、近期平均单步、stderr 与 terminal artifacts。round 14 已记录，
+15 records SHA256 为 `12ecc84d4405e9549fdcd3e295bdd6c13e940c5b233e7d9ae340080d6aade21f`。
 
 ## 2026-08-16 relaxed tolerance 的生产边界
 

@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 14:20+08:00：fixed strict Base/744 h 仍为唯一 solver，Barrier iteration 120、solver
+  runtime `3,996.41 s`；110--120 平均 `45.062 s/iteration`，telemetry primal/dual/complementarity
+  为 `0.007359/5.61e-4/0.502643`。日志无 numerical warning/error，stderr 0，终态三文件仍 absent；
+  Python RSS 约 `17.51 GiB`，available RAM 约 `96 GiB`、实时 `si/so=0/0`、memory PSI 0。
+  v3 supervisor PID `46839` 继续只等待，预定输出根 absent；checkout clean/frozen `d80f5b7`。
+- ParaCloud `4139552` 未修改、未取消：14:18 落盘 Barrier iteration 310、runtime
+  `908,489.11 s`，primal/dual/complementarity `3.147713/1.860e-6/0.251022`，stderr 0、无
+  terminal/checkpoint。resource audit round 14 已追加：wall `910,941 s`、allocated
+  `24,291.76 core-hours`、actual CPU `3,799.68 h`、CPU efficiency `15.642%`、MaxRSS
+  `362.913 GiB`，iteration 290--310 平均 `51.827 min`；15 records SHA256
+  `12ecc84d...e21f`。不启动 Stage B 或第二云求解。
 - 2026-08-16 13:54+08:00：macro 账目范围与 continuation 已升级。实现
   `a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1` 把碳/CCS normalized L1 `<=2%`、运行账目
   normalized L1 `<=5%` 纳入 exact `MACRO_PASS`，继续保留 objective `<=1%`、容量/发电 L1
@@ -1436,6 +1447,33 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict 744 iteration 120 与 cloud resource audit round 14
+
+- Git/范围：里程碑前本地、origin、GitHub 均为文档 tip
+  `86f3ca3a030319455157bf585029937e50fd4301`；fixed checkout 保持 clean/frozen
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`。本里程碑只更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，未修改模型、数据、profile、
+  active output 或进程。
+- fixed 命令/证据：只读 SSH 复核 process tree、telemetry/Gurobi log、终态文件、resource sampler、
+  `free/vmstat/PSI`。strict Base/744 为 iteration 120、runtime `3,996.405 s`；110--120 平均
+  `45.062 s/iteration`，primal 从 `0.006807` 到 `0.007359`，dual 从 `6.761e-4` 到
+  `5.605e-4`，complementarity 从 `1.4913` 到 `0.5026`。这说明原始残差仍非单调，不能把中途
+  complementarity 下降冒充严格完成；stderr 0、无 warning/terminal，资源安全。
+- continuation 预检：v3 PID `46839` 仍等待 reference；新输出根不存在。三根旧 candidate 的
+  engineering contract、solve report、run identity、input manifest 与 checkpoint manifest 均存在；
+  三根 checkpoint 都是 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`，BarX `3,735,087` 项、BarPi
+  `4,454,178` 项，`deferred_crossover_eligible=true`，但 `scientifically_accepted=false`。复制脚本
+  `bash -n` 与 audit `py_compile` 均 PASS。
+- cloud 命令/证据：只读 `squeue/sstat` 与 telemetry 后，向 run-control 旁路
+  `resource_audit_snapshots.jsonl` 追加 round 14。job 仍 RUNNING；iteration 310、runtime
+  `908,489.106 s`；wall `910,941 s`、allocation `24,291.76 core-hours`、actual CPU
+  `3,799.6767 h`、MaxRSS `362.913 GiB`、stderr 0、终态/checkpoint absent；15 records SHA256
+  `12ecc84d4405e9549fdcd3e295bdd6c13e940c5b233e7d9ae340080d6aade21f`。
+- 未决/精确下一步：继续等待 strict Barrier→Crossover→wrapper 终态，按强合同复核
+  `OPTIMAL + QC PASS + 58/58 + current input + valid result manifest`；仅通过后运行 exact macro v2，
+  再由全账目 `MACRO_PASS` 的最快候选串行进入 V5/744、Base/1488 与条件式 Base/2160。云端继续
+  不取消、不改参、不启动 Stage B。
 
 ### 2026-08-16 relaxed macro 全账目 v2 与 versioned supervisor v3
 

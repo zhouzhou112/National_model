@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 14:20+08:00 strict iteration 120 / cloud audit round 14
+
+- fixed strict Base/744 h 为唯一 solver：Barrier iteration 120、runtime `3,996.41 s`；110--120
+  平均 `45.062 s/iteration`，telemetry primal/dual/complementarity 为
+  `0.007359/5.61e-4/0.502643`。stderr 0、无数值 warning、终态三文件 absent。
+- Python RSS 约 `17.51 GiB`，host available RAM 约 `96 GiB`，swap 实时 `si/so=0/0`、memory
+  PSI 0。v3 supervisor PID `46839` 仍等待，预定输出根 absent；fixed checkout clean/frozen
+  `d80f5b7`，没有第二 solver。
+- 三根 relaxed candidate 的 checkpoint 预检通过：各有完整 BarX `3,735,087` 项与 BarPi
+  `4,454,178` 项，只能作为 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`；copied supervisor/campaign
+  `bash -n` 与 audit `py_compile` PASS。
+- ParaCloud `4139552` 未触碰：iteration 310、runtime `908,489.11 s`、stderr 0、无
+  terminal/checkpoint。resource audit round 14 为 wall `910,941 s`、allocated `24,291.76`
+  core-hours、actual CPU `3,799.68 h`、CPU efficiency `15.642%`、MaxRSS `362.913 GiB`、最近
+  290--310 平均 `51.827 min/iteration`；15 records SHA256 `12ecc84d...e21f`。
+
 ## 2026-08-16 13:54+08:00 macro accounting v2 与 supervisor v3
 
 - `a02d4d99b1060a2552e1c1f470817f1d4dbe3ac1` 已双推送：exact macro 新增 carbon/CCS L1
