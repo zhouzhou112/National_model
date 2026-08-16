@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:08+08:00：local、`origin` 与 GitHub branch
+  `codex/cispo-2030-full-lp` 均为 `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`；fixed server
+  clean checkout 亦为同一提交，Gurobi 13.0.2 权威完整回归 `184/184 PASS`，耗时 `94.693 s`。
+  在确认无活动 CISPO/Gurobi、目标根不存在、available RAM 约 114 GiB、`si/so=0/0`、memory PSI 0
+  后，已启动当前数据/LP 身份严格 Base/744 h reference：wrapper PID `4046161`，输出根
+  `/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2`，
+  控制根同名位于 `run_control/`。命令使用 2030、hour 0--743、`base.json` 与
+  `barrier_16_crossover2_stable_basis_long_v1`，未传 `--export-diagnostic-state`；启动后 Python 子进程
+  存在、stderr 0、available RAM 约 113 GiB、无 swap I/O/PSI。该根只用于严格参考和 exact-LP A/B，
+  仍是 `TEST_ONLY_TRUNCATED_HORIZON`，不得作为 state anchor。
+- ParaCloud `4139552` 未触碰：13:07 仍 `RUNNING` 10 天 11:49，latest iteration 308、runtime
+  `902,426.19 s`、Gurobi primal/dual/compl `0.901/1.26e-6/0.272`、stderr 0，无
+  solve report/QC/result manifest/checkpoint。fixed reference 运行期间继续只读云任务，不取消、不改参、
+  不启动 Stage B 或第二个 fixed solve。
 - 2026-08-16 13:02+08:00：fixed-server relaxed campaign 已在 8 月 13 日完成三根 Base/744 h 后
   自动停止，未启动 V5/1488/2160。三根均 rc 0、stderr 0、`OPTIMAL`、完整 engineering
   checkpoint，wall/solver/Barrier/MaxRSS 分别为：`5e-2` `1:28:31/4927.57 s/144/
@@ -1353,6 +1367,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 当前身份 strict Base/744 h reference 启动（`d80f5b7`）
+
+- Git 与部署：local、`origin`、GitHub 和 fixed-server checkout 均为
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`；fixed server 工作树 clean。提交包含 exact-LP 宏观
+  审计门禁及相应三份交接修正；没有修改 LP 变量、约束、目标、数据或正式科学 QC。
+- 验证：在 Power_curve v3_qc 当前数据根与 Gurobi 13.0.2 环境完成完整回归 `184/184 PASS`
+  （`94.693 s`）。启动前无活动 CISPO/Gurobi，available RAM 约 114 GiB，swap 968 MiB/2 GiB 但
+  `vmstat si/so=0/0`，memory PSI avg10/60/300 均为 0，两个新根均不存在。
+- 命令与输出：以 `/usr/bin/time -v` 后台执行
+  `scripts/run_cispo_2030_full_year.py --planning-year 2030 --diagnostic-hours 744
+  --diagnostic-start-hour 0 --scenario-config config/scenarios/base.json
+  --solver-config config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json`；输出根为
+  `/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2`，
+  控制根位于对应 `run_control/`，wrapper PID `4046161`。未传 `--export-diagnostic-state`。
+- 启动证据：wrapper→`time`→Python 进程树完整，stderr 0；主机 available RAM 约 113 GiB、无 swap I/O、
+  memory PSI 0。ParaCloud `4139552` 仍为原唯一付费任务且未修改，latest iteration 308，尚无终态文件。
+- 未决与精确下一步：只读监管 strict reference，退出后必须验收 rc/time/stderr、`OPTIMAL`、
+  `solution_qc=PASS`、全部 hard checks、current input manifest、valid result manifest 和 LP Fingerprint；
+  随后用新审计器离线重算三个既有 relaxed candidates，保留旧无效报告且另写新报告。只有 exact
+  `MACRO_PASS` 中最快者才可串行进入 V5/744 与 Base/1488/2160；运行中不部署、不启动第二求解。
 
 ### 2026-08-16 macro audit exact-LP identity 门禁（`c53bd78`）
 

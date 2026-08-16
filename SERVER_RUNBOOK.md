@@ -1,5 +1,33 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 current-identity strict Base/744 h reference 运行合同
+
+当前 strict reference 已在 fixed server clean checkout `d80f5b7` 启动，wrapper PID `4046161`：
+
+```text
+OUTPUT=/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2
+CONTROL=/data/zz2/National_model/run_control/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2
+planning_year=2030; diagnostic_start_hour=0; diagnostic_hours=744
+scenario=config/scenarios/base.json
+solver=config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json
+export_diagnostic_state=false
+```
+
+启动门禁为 server full regression `184/184 PASS`（Gurobi 13.0.2，`94.693 s`）、clean/current checkout、
+无 solver、目标根不存在、available RAM 约 114 GiB、`si/so=0/0`、memory PSI 0；均已满足。运行中：
+
+1. 只读检查 `$CONTROL/pid` 的 wrapper/time/Python 树、`stdout.log`、`stderr.log`、`time.txt`、
+   output `solver_telemetry.jsonl` 与 `gurobi.log`，以及 RAM/swap/vmstat/PSI；不得部署、改 profile、
+   删除根或启动第二个 fixed solve。
+2. PID 退出后不能以日志尾或 Gurobi status 单独验收；必须同时核对 wrapper rc/time、stderr、
+   `solve_report.json=OPTIMAL`、`solution_qc.json=PASS`、全部 hard checks、current input manifest、
+   valid `result_manifest.json`、LP variables/constraints/nonzeros/Fingerprint 与无 diagnostic state。
+3. 对三个 relaxed candidates 使用更新后的 `scripts/audit_relaxed_barrier_macro.py` 另写新报告；旧报告
+   必须保留并标记 `INVALID_AB_REFERENCE_IDENTITY`。只有 exact identity 为 PASS 后才计算宏观阈值，
+   只有最快 exact `MACRO_PASS` 才晋级 V5/744 与 Base/1488/2160。
+4. ParaCloud `4139552` 与本 reference 相互独立；继续只读，不 `scancel`、不改参、不启动 Stage B。
+   13:07 snapshot 为 RUNNING 10 天 11:49、iteration 308、stderr 0、无终态/checkpoint。
+
 ## 2026-08-16 exact-LP relaxed Barrier A/B 修正
 
 8 月 12 日 campaign 的三个候选本身均成功保存工程解，但 reference 指向旧数据/旧 LP；其

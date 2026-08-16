@@ -1,5 +1,23 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:08+08:00 current-identity strict Base/744 h reference 已启动
+
+- local、`origin`、GitHub 与 fixed server 均为 `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`；
+  fixed server clean，Gurobi 13.0.2 完整回归 `184/184 PASS`（`94.693 s`）。启动前无活动
+  CISPO/Gurobi，available RAM 约 114 GiB、swap 968 MiB/2 GiB 但 `si/so=0/0`、memory PSI 0。
+- strict reference wrapper PID `4046161`，输出根
+  `/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2`，
+  控制根为对应 `run_control/`。边界为 2030 Base、hour 0--743、
+  `barrier_16_crossover2_stable_basis_long_v1`；即 `Method=2/Threads=16/Presolve=2/Crossover=2/
+  CrossoverBasis=1/TimeLimit=86400 s/SoftMemLimit=80 GiB`，未导出 diagnostic state。
+- 启动后 wrapper→time→Python 进程树正常，stderr 0；available RAM 约 113 GiB、`si/so=0/0`、
+  memory PSI 0。fixed server 内部仍严格单求解，不在 active PID 上部署或改参数。
+- ParaCloud `4139552` 未修改：13:07 `RUNNING` 10 天 11:49，iteration 308、solver runtime
+  `902,426.19 s`，Gurobi primal/dual/compl `0.901/1.26e-6/0.272`；stderr 0，solve report/QC/result
+  manifest/checkpoint 全部不存在。继续不取消、不改参、不启动 Stage B。
+- 下一步：strict reference 退出后做完整终态与 LP 身份审计，再对三根 relaxed candidate 另写 exact-LP
+  A/B 报告；不得覆盖旧的 invalid-reference 报告。只有 exact `MACRO_PASS` 最快者晋级 V5/744 与更长时域。
+
 ## 2026-08-16 13:02+08:00 relaxed 744 h campaign 已完成，但旧宏观 reference 身份无效
 
 - fixed-server campaign `/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1`
