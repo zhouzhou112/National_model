@@ -1,5 +1,31 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:02+08:00 relaxed 744 h campaign 已完成，但旧宏观 reference 身份无效
+
+- fixed-server campaign `/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1`
+  已严格串行完成 3 根 Base/744 h，均 rc 0、stderr 0、Gurobi `OPTIMAL`、完整工程 BarX/BarPi
+  checkpoint，且根目录 scientific QC/manifest/state/basis 保护全部通过。campaign PID `3074785`
+  已退出；13:02 fixed server clean `6477f42`、无求解、available RAM 约 114 GiB、swap 968 MiB/2 GiB
+  且 `si/so=0/0`、memory PSI 0。
+- `BarConvTol=5e-2`：wall `1:28:31`、solver `4,927.57 s`、Barrier 144、MaxRSS
+  `19,959,364 KiB`；`1e-2/NumericFocus=2`：`1:34:34`、`5,289.26 s`、151、
+  `19,802,092 KiB`；`1e-2/NumericFocus=1`：`1:17:32`、`4,275.73 s`、263、
+  `19,486,068 KiB`。三根严格 solver/physical QC 均 HARD_FAIL，但未被误标科学结果。
+- 原 `winner.json=NO_MACRO_PASS` 不能解释为参数科学失真：campaign 错用了旧 strict root
+  `...744h_jan0_3f123f0_base_v1/2030`。旧根绑定 2026-07-30 数据、Git `3f123f0`、LP Fingerprint
+  `-1670477391`；候选绑定 2026-08-05 Power_curve v3_qc 数据、Git `6477f42`、Fingerprint
+  `2120635803`。负荷 SHA 与多个 flex/EV 文件也不同，`period_load` 因而相差 `0.2732%`。
+  三根的耗时/资源证据仍有效，但既有宏观 A/B 与速度比不是 exact-LP 对照。
+- 修补提交 `c53bd78` 现要求同一 baseline/scientific/scenario/formulation identity、同一非 solver
+  input manifest、同一 LP variables/constraints/nnz/Fingerprint，并要求 reference
+  `OPTIMAL + solution_qc PASS + result_manifest`；solver profile 允许不同。source bundle 是否相同
+  单独记录但不作为 LP 门禁，以允许纯审计/导出代码更新。py_compile 与 targeted `4/4 PASS`。
+- 精确下一步：双推送并部署 `c53bd78`，server 全回归后在当前 tip/当前数据新建单独 strict
+  Base/744 h reference（Crossover=2，不导出 state）；完成后重算已有三根 exact A/B。只有 exact
+  winner 才进入 V5/744、Base/1488 与 Base/2160，不再重复无信息的宽松候选。
+- ParaCloud `4139552` 未修改：13:02 仍 RUNNING 10 天 11:44，latest Barrier iteration 308、
+  runtime `902,426.19 s`、primal/dual/compl `3.376/2.02e-6/0.2725`、stderr 0，无终态/checkpoint。
+
 ## 2026-08-12 21:45+08:00 第二次 1 h smoke 定位 master-export QC；分阶段修补已提交
 
 - 新根 `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_0d773d5_v2` 的 Python/time 终态为

@@ -1,5 +1,37 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 exact-LP relaxed Barrier A/B 修正
+
+8 月 12 日 campaign 的三个候选本身均成功保存工程解，但 reference 指向旧数据/旧 LP；其
+`NO_MACRO_PASS` 必须撤回为 **INVALID_AB_REFERENCE_IDENTITY**，不得用于选择或拒绝 8760 h 参数。
+实施 `c53bd78` 后，`scripts/audit_relaxed_barrier_macro.py` 的 macro PASS 必须同时满足：
+
+1. summary 的 planning year、scenario、hours、start hour 相同；
+2. baseline contract、resolved scientific config、scenario config、formulation config SHA 相同；
+3. 除 `solver_configuration` 外的 input manifest 逐行逻辑路径、SHA、size、required/existence/role 相同；
+4. LP variables、constraints、nonzeros 与 Gurobi Fingerprint 全部相同；
+5. reference 为 `Status=OPTIMAL`、`solution_qc=PASS` 且存在 result manifest；
+6. 以上闭合后才评估 objective `<=1%`、capacity/generation L1 `<=2%`、period generation `<=0.5%`。
+
+source bundle SHA 继续记录但不作为 LP 等价硬门禁，因为纯审计/导出脚本提交可能改变 provenance 而不
+改变 LP；LP Fingerprint、科学配置与全输入 manifest 共同作为硬证据。旧 reference 的数据根为
+`model_ready_20260730_flex_v5_4f717de_v1`、Fingerprint `-1670477391`；候选为
+`model_ready_20260805_power_curve_v3_qc_d63a251_v1`、Fingerprint `2120635803`，明确不等价。
+
+当前正确执行顺序是：部署 `c53bd78` 并完成 server regression → 当前代码/数据上单独运行一次
+`barrier_16_crossover2_stable_basis_long_v1` Base/744 h strict reference → 验收 OPTIMAL/QC/manifest
+与 exact identity → 重跑三个离线 macro audits → 仅 fastest exact `MACRO_PASS` 晋级 V5/744 和更长
+时域。strict reference 不传 `--export-diagnostic-state`，不产生后续 state anchor；它仍是
+`TEST_ONLY_TRUNCATED_HORIZON`。
+
+已完成候选资源证据（均 rc 0/stderr 0）：
+
+| 候选 | wall | solver | Barrier | MaxRSS |
+|---|---:|---:|---:|---:|
+| `5e-2/NumericFocus=2` | 1:28:31 | 4,927.57 s | 144 | 19,959,364 KiB |
+| `1e-2/NumericFocus=2` | 1:34:34 | 5,289.26 s | 151 | 19,802,092 KiB |
+| `1e-2/NumericFocus=1` | 1:17:32 | 4,275.73 s | 263 | 19,486,068 KiB |
+
 ## 2026-08-12 relaxed engineering export 的实际分层
 
 第二次 1 h smoke 证明 load-center network QC 位于 `export_master_solution()`，不是

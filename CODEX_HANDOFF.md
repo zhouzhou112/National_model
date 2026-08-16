@@ -12,6 +12,23 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:02+08:00：fixed-server relaxed campaign 已在 8 月 13 日完成三根 Base/744 h 后
+  自动停止，未启动 V5/1488/2160。三根均 rc 0、stderr 0、`OPTIMAL`、完整 engineering
+  checkpoint，wall/solver/Barrier/MaxRSS 分别为：`5e-2` `1:28:31/4927.57 s/144/
+  19,959,364 KiB`；`1e-2` `1:34:34/5289.26 s/151/19,802,092 KiB`；`1e-2+NumericFocus1`
+  `1:17:32/4275.73 s/263/19,486,068 KiB`。三根严格 QC 均 HARD_FAIL，科学根目录保护通过。
+- campaign 的 `NO_MACRO_PASS` 已发现是无效 A/B，不是参数结论：旧 reference 使用 Git `3f123f0`、
+  `model_ready_20260730_flex_v5_4f717de_v1`、LP Fingerprint `-1670477391`；候选使用 Git
+  `6477f42`、Power_curve v3_qc 数据根、Fingerprint `2120635803`。负荷 SHA 改变导致同一窗口
+  `period_load` 差 `0.2732%`。候选耗时/资源仍有效，既有宏观差异与速度比不得作为 exact-LP 证据。
+- 修补 `c53bd78` 对宏观 A/B 新增非 solver input manifest、科学配置、LP 规模/Fingerprint 与 strict
+  reference OPTIMAL/QC/manifest 硬门禁；targeted `4/4 PASS`。下一步双推送、server regression，
+  在当前 tip/数据上运行一次 Base/744 h Crossover=2 strict reference（不导出 state），再离线重算
+  三根；exact winner 才进入 V5/744 与 1488/2160。
+- 13:02 fixed server clean/idle `6477f42`、available 约 114 GiB、无 swap I/O/PSI。ParaCloud
+  `4139552` 未触碰，RUNNING 10 天 11:44，iteration 308、runtime `902,426.19 s`、stderr 0，
+  无 solve report/QC/result manifest/checkpoint；继续只读，不取消、不启动 Stage B。
+
 - 2026-08-12 21:45+08:00：第二次 fixed-server 1 h smoke 根
   `/data/zz2/National_model/outputs/relaxed_barrier_smoke_1h_0d773d5_v2` 的 Python/time 终态 rc 0，
   wall `0:37.84`、MaxRSS `496,276 KiB`、stderr 0，checkpoint 完整；但远端 shell 在事后写
@@ -1336,6 +1353,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 macro audit exact-LP identity 门禁（`c53bd78`）
+
+- 范围：修改 `scripts/audit_relaxed_barrier_macro.py` 与
+  `tests/test_relaxed_barrier_macro.py`，加入 path-neutral 非 solver input identity、科学配置、LP
+  Fingerprint/规模和 strict reference contract；新增 mismatch 回归。
+- 触发证据：8 月 12 日 campaign 三根运行成功，但 reference 与候选的数据根、负荷/flex/EV hashes、
+  source bundle 和 Gurobi Fingerprint 均不同；旧审计只检查 year/scenario/window，错误地允许跨 LP 比较。
+- 修复边界：solver profile 明确排除于 input equality，source bundle 只记录不硬拦；同一 Fingerprint、
+  科学配置和全部非 solver inputs 才能证明 exact LP。reference 还必须 OPTIMAL/QC PASS/result manifest。
+- 验证：RL 环境 py_compile、targeted `4/4 PASS`、`git diff --check` PASS。尚待 fixed-server full
+  regression；未启动新求解。
+- 精确下一步：提交/双推送/clean deploy 后启动当前身份 strict Base/744 reference，保留完整资源账本；
+  完成后重算三根，按 exact fastest MACRO_PASS 决定 V5 与长时域路线。
 
 ### 2026-08-12 relaxed macro export 按 master/operational/summary 分阶段（`247c302`）
 
