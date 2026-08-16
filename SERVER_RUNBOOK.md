@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 04:18 exact macro winner / V5/744 / cloud round 29
+
+```text
+exact_macro_5e2_nf2=FAIL objective_rel=0.012520 operation_l1=0.296402
+exact_macro_1e2_nf2=FAIL objective_rel=0.004278 operation_l1=0.100422
+exact_macro_1e2_nf1=PASS objective_rel=2.931e-9 capacity_l1=1.330e-8
+exact_macro_1e2_nf1_generation_l1=0.001056 operation_l1=1.917e-6 runtime_s=4275.732
+v5_744_start=2026-08-17T04:16:42+08:00 pid=3569191/3569192
+v5_744_profile=BarConvTol1e-2_FeasOpt1e-5_NF1_Scale2_Crossover0_TimeLimit21600_SoftMem40
+cloud_iteration=325 runtime_s=957363.694 audit_round=29 records=30
+cloud_wall_s=961177 allocated_core_hours=25631.387 actual_cpu_hours=4007.857
+cloud_resource_audit_sha256=26a9903d932fae6c68d5f81b17a04f995313167ec8b2ebca28f7e55d07a61e69
+```
+
+当前只读监管 V5/744；PID 存在时不切 fixed checkout、不启动第二 solver。V5 退出后必须先审计
+checkpoint/engineering macro/stderr/time；campaign 才可串行进入 Base/1488。ParaCloud 继续不取消、
+不改参、不启动 Stage B。
+
 ## 2026-08-17 04:16 v4 fail-closed / reused-candidate control directory
 
 ```text

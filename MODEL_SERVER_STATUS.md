@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 04:18+08:00 exact macro winner / V5 744 start / cloud round 29
+
+- v5 exact A/B 成功：`5e-2/NF2` 与 `1e-2/NF2` 分别因宏观 operation-account L1
+  `29.64%/10.04%` 等失败；`1e-2/NF1` 为唯一 `MACRO_PASS`，objective/capacity/generation/
+  carbon/operation 差异为 `2.93e-9/1.33e-8/0.001056/8.41e-10/1.92e-6`。winner Barrier
+  `4,275.73 s`，较 strict total `53,489.07 s` 快 `92.0%`，较 strict Barrier `7,734.65 s`
+  快 `44.7%`。
+- 唯一 solver 已于 04:16:42 启动 V5/744 Barrier-only：PID `3569191/3569192`，output
+  `relaxed_barrier_continuation_v0817_v5/v5_744h_bctol1e2_numeric1`；profile 为 Method 2、16 threads、
+  Presolve 2、Crossover 0、BarConvTol `1e-2`、Feas/Opt `1e-5`、NF1、Scale2、TimeLimit 6h、
+  SoftMem 40 GiB。启动时约 113.6 GiB available、无实时 swap I/O/PSI、stderr 0。
+- ParaCloud `4139552` 未触碰：iteration 325、runtime `957,363.69 s`；round 29 wall
+  `961,177 s`、allocated `25,631.387 core-hours`、actual CPU `4,007.857 h`、efficiency
+  `15.6365%`、最近 20 步 `53.129 min`、MaxRSS `362.913 GiB`。30 records SHA256
+  `26a9903d...7a61e69`；stderr 0、无 terminal/checkpoint。
+
 ## 2026-08-17 04:16+08:00 v4 exact-macro second fail-closed / control-dir fix
 
 - fixed server 已部署 clean `5161dd0`，`bash -n`、focused `6/6` 与完整 `187/187 PASS`

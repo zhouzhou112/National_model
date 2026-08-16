@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 04:18+08:00：v5 exact A/B 已真实完成。`5e-2/NF2` 与 `1e-2/NF2` 因宏观
+  operation-account L1 `29.64%/10.04%` 等失败；`1e-2/NF1` 唯一 `MACRO_PASS`，objective/
+  capacity/generation/carbon/operation 差异 `2.93e-9/1.33e-8/0.001056/8.41e-10/1.92e-6`。
+  winner Barrier `4,275.73 s`，较 strict total 快 `92.0%`、较 strict Barrier 快 `44.7%`。
+  04:16:42 已启动唯一 V5/744 Barrier-only，PID `3569191/3569192`，profile 为 Crossover 0、
+  BarConvTol `1e-2`、Feas/Opt `1e-5`、NF1、Scale2、TimeLimit 6h、SoftMem 40 GiB；启动资源安全、
+  stderr 0。ParaCloud `4139552` 未修改，03:53 iteration 325、runtime `957,363.69 s`；round 29
+  wall `961,177 s`、allocated `25,631.387 core-hours`、actual CPU `4,007.857 h`、efficiency
+  `15.6365%`、最近 20 步 `53.129 min`、30 records SHA256 `26a9903d...7a61e69`，无终态/checkpoint。
 - 2026-08-17 04:16+08:00：fixed server clean `5161dd0`，server `bash -n`、focused `6/6`、
   full regression `187/187 PASS` (`94.975 s`)。v4 exact-macro 正确复用三组 supervisor symlink 且
   import 已修复，但复用分支没有创建 `$CONTROL_ROOT/$tag`，shell 在 audit stdout 重定向前失败；
@@ -1607,6 +1616,32 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 exact macro winner, V5/744 start and cloud resource round 29
+
+- Git/部署：启动时 local/origin/GitHub/fixed server 均为
+  `902b1672a869cd4e6483633ceaf0208e092bff36`；fixed server `bash -n` 与 focused `6/6 PASS`，
+  clean 且无 pre-existing solver。v3/v4 编排失败根均保留；全新 v5 control/output 成功生成三份 exact
+  macro comparison，未改历史候选或 strict reference。
+- A/B 结果：`5e-2/NF2` 为 `MACRO_FAIL`，objective rel `0.012520`、generation L1
+  `0.034367`、operation L1 `0.296402`；`1e-2/NF2` 为 `MACRO_FAIL`，对应
+  `0.004278/0.014511/0.100422`。`1e-2/NF1` 唯一 `MACRO_PASS`：objective rel
+  `2.931e-9`、capacity L1 `1.330e-8`、generation L1 `0.0010563`、carbon L1 `8.414e-10`、
+  operation L1 `1.917e-6`；runtime `4,275.732 s`，相对 strict total/Barrier 分别缩短约
+  `92.0%/44.7%`。
+- fixed 启动：04:16:42 campaign 严格串行启动
+  `v5_744h_bctol1e2_numeric1`，wrapper/Python PID `3569191/3569192`；命令为 2030、hours 0--743、
+  `flex_integrated_v5_central.json`、engineering Barrier-only。profile 明确 Method2/Threads16/Presolve2/
+  Crossover0/BarConvTol1e-2/FeasOpt1e-5/NF1/Scale2/TimeLimit21600/SoftMem40。启动时 available
+  约 113.6 GiB、si/so 0、memory PSI 0、stderr 0；无第二 solver。
+- cloud round 29：job 仍 RUNNING；iteration 325、runtime `957,363.694 s`，primal/dual/compl
+  `1.646663/1.197e-6/0.137358`；round 29 wall `961,177 s`、allocation
+  `25,631.387 core-hours`、actual CPU `4,007.857 h`、efficiency `15.6365%`、MaxRSS
+  `362.913 GiB`、最近 20 步 `53.129 min`。30 records SHA256
+  `26a9903d932fae6c68d5f81b17a04f995313167ec8b2ebca28f7e55d07a61e69`；stderr 0、无
+  terminal/checkpoint，未取消、未改参、未启动 Stage B。
+- 下一步：只读监管 V5/744 到正式终态；无论终态先核对 checkpoint、engineering macro、stderr/time
+  与资源。campaign 仅在该 case 返回后串行 Base/1488，且仅在其 checkpoint 存在时 Base/2160。
 
 ### 2026-08-17 v4 exact-macro second orchestration fail-closed and directory fix
 
