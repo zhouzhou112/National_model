@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 18:04+08:00 strict quad 轨迹偏离旧成功根
+
+- 定量纠正：旧成功根 quad 后最大 dual `1.91e8`，仅 2 个采样 `>=1e8`、无 `>=1e9`；当前根
+  quad 后最大 `6.63e12`，41/23/17/10 个采样分别 `>=1e8/1e9/1e10/1e11`。两根只有自动
+  `drop basis variable + switch to quad` 动作相同，后续数值轨迹明显不同，不能沿用旧根 ETA。
+- 当前 iteration `848,783`、runtime `17,444 s`、primal 0、dual `3.96e10`、objective 仍下降；
+  wrapper 存活、stderr 0、无正式 failure/终态。按合同不取消、不并发，但提高数值风险等级并等待
+  正式 status。云 job 不变。
+
 ## 2026-08-16 17:51+08:00 cloud round 18 / fixed quad cleanup
 
 - ParaCloud `4139552` 未触碰：Barrier iteration 314、runtime `920,799.47 s`；round 18 为 wall

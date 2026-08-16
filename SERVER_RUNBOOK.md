@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 18:04 strict quad 风险升级与历史对照纠正
+
+```text
+old_quad_max_dual_infeasibility=1.908564e8
+old_quad_samples_ge_1e8_1e9=2/0
+current_quad_max_dual_infeasibility=6.625378e12
+current_quad_samples_ge_1e8_1e9_1e10_1e11=41/23/17/10
+current_iteration=848783
+current_runtime_seconds=17444
+current_primal_infeasibility=0
+current_dual_infeasibility=3.964324e10
+```
+
+不得再以旧成功根 quad 尾长直接预测当前 ETA；两根只共享 warning/保护动作，不共享后续数值轨迹。
+当前仍有 pivot/CPU/objective 进展且无正式 failure，故继续唯一 solver，不人工取消。若出现 wrapper 退出，
+立即以 status/rc/stderr/QC/manifest 做终态；失败则 supervisor 必须停住，成功才允许 exact macro。
+
 ## 2026-08-16 17:51 cloud round 18
 
 ```text

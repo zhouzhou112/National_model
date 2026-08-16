@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 18:04+08:00 correction：strict 与旧成功根只在“丢弃 1 个 basis variable 并切换 quad”
+  的保护动作上相同，**quad 后数值轨迹并不相同**。旧根 quad 后最大 dual infeasibility 仅
+  `1.908564e8`，只有 2 个日志采样点 `>=1e8`、无 `>=1e9`；当前根 quad 后最大已达
+  `6.625378e12`，41/23/17/10 个采样点分别 `>=1e8/1e9/1e10/1e11`。iteration `848,783`、
+  runtime `17,444 s` 时 primal 0、dual `3.964324e10`、stderr 0，objective 仍下降且 wrapper 活跃，
+  因此不取消，但不能再用旧根 quad 剩余时间或成功率作乐观外推；必须等待正式 status/终态。
 - 2026-08-16 17:51+08:00：ParaCloud `4139552` 未修改，17:43 落盘 Barrier iteration 314，
   runtime `920,799.47 s`，primal/dual/complementarity `2.587524/1.804e-6/0.211519`。round 18
   记录 wall `923,578 s`、allocated `24,628.747 core-hours`、actual CPU `3,852.752 h`、
@@ -1507,6 +1513,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict quad 数值轨迹与旧成功根的定量纠正
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `ec368abb586e78f057a6f07865d534bc19cd2ff6`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  本轮只读解析当前与旧成功根完整 `gurobi.log` 的 quad 段并更新三份交接文档；未改 solver、profile、
+  checkout、模型、数据、output 或 cloud job。
+- 对照证据：旧成功根 quad 段 244 个日志采样，最大 dual `1.908564e8`，仅 2 点 `>=1e8`、0 点
+  `>=1e9`；当前至 18:04 的 139 个 quad 采样，最大 dual `6.625378e12`，分别有 41/23/17/10 点
+  `>=1e8/1e9/1e10/1e11`。因此此前“保护动作与旧根相同”只适用于 warning 类型，不能延伸为
+  quad 后收敛轨迹相同；旧根约 9,500 s quad 尾长不再是可靠 ETA。
+- 当前状态/边界：iteration `848,783`、runtime `17,444 s`，primal infeasibility 0、dual
+  `3.964324e10`、objective `2,362,011.2 million CNY`；wrapper/CPU/iteration 活跃，stderr 0，尚无
+  新 warning 或正式 numerical failure。依据用户“不随意取消”合同继续唯一 solver，但显式提高
+  Crossover 数值风险等级；只有 Gurobi status、wrapper rc 与完整 QC/manifest 才能决定终态。
+- 下一步：持续监管，不提前触发 relaxed campaign；若 strict 失败，v3 应保留现场并停止 continuation；
+  若 strict 通过，仍按强 reference contract 后再执行 exact macro。ParaCloud `4139552` 保持原样。
 
 ### 2026-08-16 cloud iteration 314 / resource audit round 18
 
