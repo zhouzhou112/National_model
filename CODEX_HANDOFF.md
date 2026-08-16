@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 15:39+08:00：ParaCloud `4139552` 未修改、未取消；15:14 落盘 Barrier iteration
+  311、runtime `911,815.51 s`，primal/dual/complementarity
+  `3.026548/1.806e-6/0.241261`。resource audit round 15 已追加：wall `915,643 s`、allocated
+  `24,417.15 core-hours`、actual CPU `3,819.47 h`、CPU efficiency `15.643%`、MaxRSS
+  `362.913 GiB`、iteration 291--311 平均 `52.200 min`；16 records SHA256
+  `41c67c50...a58fe`。stderr 0、无 terminal/checkpoint，不启动 Stage B。
+- fixed strict 仍在 Crossover DPush；initial `841,200` 已降至约 `237,580`，runtime 约
+  `8,725 s`。Python RSS 约 `12.47 GiB`、available RAM 约 `101 GiB`、memory PSI 0；没有第二
+  solver，v3 supervisor 继续等待 wrapper。
 - 2026-08-16 15:25+08:00：fixed strict Base/744 h Barrier 已正常结束并进入
   `Building initial crossover basis`。Gurobi 记录 `218 iterations / 7,734.65 s / 11,980.50 work units`、
   `Optimal objective 2,361,958.43 million CNY`；最后 telemetry primal/dual/complementarity 为
@@ -1460,6 +1469,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 311 / resource audit round 15
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `4dbcf9cc53f140a25d6b427d242cc41f1c9453ae`；fixed checkout 保持 clean/frozen
+  `d80f5b76b7deefd6c82004ee0e17f1fc206f7eff`。仅更新三份交接文档与 cloud run-control 旁路
+  resource audit；未改 active solver、profile、模型、数据、output 或 checkout。
+- cloud 证据：只读 `squeue/sstat`、telemetry 与 terminal artifacts 后追加 round 15。job 仍
+  RUNNING；iteration 311、runtime `911,815.511 s`；wall `915,643 s`、allocation
+  `24,417.1467 core-hours`、actual CPU `3,819.4717 h`、CPU efficiency `15.6426%`、MaxRSS
+  `362.913 GiB`，stderr 0、terminal/checkpoint absent。16 records SHA256
+  `41c67c508e5f43dc2eb490a949fc77904319efb190f3fef30384878bebda58fe`。
+- fixed 证据：strict Barrier 已完成，Crossover initial basis 完成后进入 DPush；初始 `841,200`
+  降至约 `237,580`，DInf 非单调但进程满载、日志无 numerical error。available RAM 约 `101 GiB`、
+  memory PSI 0，仍只有一个 solver，supervisor 不越过 wrapper 门禁。
+- 下一步：继续单独记录 DPush、PPush、simplex cleanup 与 strict 终态；强合同通过后才执行 exact
+  macro v2 和串行长时域候选。云端继续不取消、不改参、不启动 Stage B。
 
 ### 2026-08-16 strict Base/744 Barrier 正常完成并进入 Crossover
 

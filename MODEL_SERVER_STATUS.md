@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 15:39+08:00 cloud round 15 / fixed DPush
+
+- ParaCloud `4139552` 未触碰：Barrier iteration 311、runtime `911,815.51 s`；resource audit round
+  15 为 wall `915,643 s`、allocated `24,417.15 core-hours`、actual CPU `3,819.47 h`、CPU
+  efficiency `15.643%`、MaxRSS `362.913 GiB`、iteration 291--311 平均 `52.200 min`。stderr 0、
+  无 terminal/checkpoint；16 records SHA256 `41c67c50...a58fe`。
+- fixed strict Crossover initial basis 已完成，DPush 从 `841,200` 降至约 `237,580`；DInf 非单调但
+  日志无 error。RSS 约 `12.47 GiB`、available RAM 约 `101 GiB`、memory PSI 0，仍只有一个
+  solver；v3 PID `46839` 继续等待 wrapper。
+
 ## 2026-08-16 15:25+08:00 strict Barrier 完成 / Crossover basis
 
 - strict Base/744 h Barrier 正常报告 `218 iterations / 7,734.65 s / 11,980.50 work units`、

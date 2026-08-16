@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 15:39 live Crossover / cloud 状态
+
+```text
+fixed_phase=Crossover DPush
+fixed_dpush_initial=841200
+fixed_dpush_latest≈237580
+fixed_single_solver=true
+cloud_job=4139552 RUNNING Barrier iteration 311
+cloud_resource_audit_round=15 records=16
+cloud_resource_audit_sha256=41c67c508e5f43dc2eb490a949fc77904319efb190f3fef30384878bebda58fe
+```
+
+DPush 的 DInf 可非单调，只有剩余 pushes、进程活性、warning/error 与最终 push/simplex 状态联合判断；
+不得因 DInf 暂升终止。继续按 `gurobi.log` 而不是 barrier telemetry 判断 Crossover 阶段。round 15 已
+写入 cloud run-control 旁路，云任务不取消、不改参、不启动 Stage B。
+
 ## 2026-08-16 15:25 strict Barrier→Crossover 监控边界
 
 ```text
@@ -101,8 +117,8 @@ reference wrapper 退出后必须按顺序检查：
 
 不得终止 strict wrapper/Python/resource sampler，不得提前创建 v2 输出根，不得并发第二 fixed solve。
 ParaCloud `4139552` 继续只读；每轮人工检查须向 `resource_audit_snapshots.jsonl` 追加 wall、allocated/
-actual CPU-hours、MaxRSS、latest Barrier、近期平均单步、stderr 与 terminal artifacts。round 14 已记录，
-15 records SHA256 为 `12ecc84d4405e9549fdcd3e295bdd6c13e940c5b233e7d9ae340080d6aade21f`。
+actual CPU-hours、MaxRSS、latest Barrier、近期平均单步、stderr 与 terminal artifacts。round 15 已记录，
+16 records SHA256 为 `41c67c508e5f43dc2eb490a949fc77904319efb190f3fef30384878bebda58fe`。
 
 ## 2026-08-16 relaxed tolerance 的生产边界
 
