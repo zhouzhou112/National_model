@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 05:47+08:00 cloud round 30 / Base 1488 building
+
+- ParaCloud `4139552` 新落盘 Barrier iteration 326/327；最新 runtime `963,537.897 s`，
+  primal/dual/complementarity `1.529887/1.166e-6/0.128042`。round 30 wall `966,523 s`、allocated
+  `25,773.947 core-hours`、actual CPU `4,030.069 h`、efficiency `15.6362%`、MaxRSS
+  `362.913 GiB`、最近 20 步 `53.232 min`；31 records SHA256 `5ea6005a...840c9`。stderr 0、
+  无 terminal/checkpoint，未取消、未改参、未启动 Stage B。
+- fixed Base/1488 PID `3899905/3899906` 仍为唯一 solver 链，05:46 尚在 build，stderr 0；继续等待
+  Gurobi/presolve/Barrier，不切 checkout、不启动第二 solver。
+
 ## 2026-08-17 05:41+08:00 V5 744 terminal / Base 1488 active
 
 - V5/744 于 05:38:39 rc 0：solver `OPTIMAL`，Barrier `305 iterations / 4,520.108 s`，wrapper

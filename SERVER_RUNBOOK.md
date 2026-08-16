@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 05:47 cloud round 30 / Base/1488 build
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=327 runtime_s=963537.897
+cloud_primal_dual_complementarity=1.529887/1.166e-6/0.128042
+cloud_round=30 wall_s=966523 allocated_core_hours=25773.947 actual_cpu_hours=4030.069
+cloud_efficiency_percent=15.6362 maxrss_gib=362.913 recent20_minutes=53.232
+cloud_resource_audit_records=31 sha256=5ea6005a31f704c2d4a00a0c35555ab1118bf16e2fdf722e1d417d4d911840c9
+fixed_base_1488=BUILDING pid=3899905/3899906 stderr_bytes=0
+```
+
+云端继续按原 Stage A 合同只读，不取消、不改参、不启 Stage B。fixed 继续只读等待首个 Gurobi 日志；
+build 期没有 telemetry 属正常状态，不构成停滞。任何一侧均不得启动并发第二求解。
+
 ## 2026-08-17 05:41 V5/744 terminal / Base/1488 monitoring
 
 ```text
