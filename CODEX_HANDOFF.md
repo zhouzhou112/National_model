@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 21:45+08:00：ParaCloud `4139552` 未修改，21:12 落盘 Barrier iteration 318，
+  runtime `933,326.74 s`，primal/dual/complementarity `2.289620/1.714e-6/0.188602`。round 22
+  记录 wall `937,651 s`、allocated `25,004.027 core-hours`、actual CPU `3,911.908 h`、
+  efficiency `15.6451%`、MaxRSS `362.913 GiB`、iteration 298--318 平均 `51.532 min`；
+  23 records SHA256 `5db4ac89...50a0`，stderr 0、无 terminal/checkpoint。fixed strict quad cleanup
+  同时为 iteration `917,738`、runtime `30,759.68 s`、primal 0、dual `8.19e6`，仍为唯一 solver；
+  wrapper 与 v3 supervisor 存活，终态文件 absent。
 - 2026-08-16 20:23+08:00：ParaCloud `4139552` 未修改，20:17 落盘 Barrier iteration 317，
   runtime `930,000.70 s`，primal/dual/complementarity `2.379513/1.678e-6/0.195367`。round 21
   记录 wall `932,693 s`、allocated `24,871.813 core-hours`、actual CPU `3,890.998 h`、
@@ -1538,6 +1545,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 cloud iteration 318 / resource audit round 22
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `6b7862d60a6adbefa3d532046cb7f7fb3e4c7917`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  仅追加 cloud resource snapshot 并更新三份交接文档；未改 active solver、profile、checkout、模型、
+  数据、output 或 Stage B 状态。首次账本脚本因登录节点旧 Python 不支持 `datetime.fromisoformat`
+  在写入前退出；兼容重试执行唯一追加，并经 JSON/count/SHA 复核闭合。
+- cloud 证据：job 继续 RUNNING；iteration 318、runtime `933,326.741 s`，primal infeasibility
+  `2.289620`、complementarity `0.188602`，较 iteration 317 继续下降。round 22 为 wall
+  `937,651 s`、allocation `25,004.027 core-hours`、actual CPU `3,911.908 h`、CPU efficiency
+  `15.6451%`、MaxRSS `362.913 GiB`、最近 20 步平均 `51.532 min`。23 records SHA256
+  `5db4ac898c7bc21d5598176853242bcadea04eb9b20599ffc5fccbc2915d50a0`；stderr 0、无终态或
+  checkpoint，任务未取消、未改参、未启动 Stage B。
+- fixed/下一步：strict quad cleanup 为 iteration `917,738`、runtime `30,759.68 s`、primal 0、dual
+  `8.190958e6`、stderr 0，wrapper/v3 supervisor 存活且仍只有一个 solver。继续监管 strict；只有其
+  完整终态通过才允许 exact macro，cloud 仅在新 iteration 或终态后追加下一轮审计。
 
 ### 2026-08-16 cloud iteration 317 / resource audit round 21
 
