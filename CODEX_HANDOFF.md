@@ -12,6 +12,11 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 16:58+08:00：strict cleanup 在 iteration `823,548`、runtime `13,224 s` 自动报告
+  `Warning: 1 variables dropped from basis` 与 `Warning: switch to quad precision`。这与旧成功根完全
+  相同类型的 Gurobi 数值保护；切换后约 `7 pivots/s`，iteration `825,303`、runtime `13,464 s`
+  时 primal 为 0、dual `1.14e5`，stderr 0。该 warning 需要记录但不是失败/取消条件；继续等待
+  Crossover 正式终态和完整 wrapper/QC/manifest。
 - 2026-08-16 16:27+08:00：strict Base/744 simplex cleanup 仍活跃；约从 iteration `788,784`
   推进到 `792,828`，runtime `11,448→11,630 s`，primal infeasibility 持续为 0，dual
   infeasibility 在 `7.47e3--9.29e8` 间非单调。该形态与旧成功根 push 后同阶段相符：旧根在约
@@ -1489,6 +1494,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 strict Crossover 自动切换 quad precision
+
+- Git/范围：里程碑前本地、origin、GitHub tip 均为
+  `1d79af5bd6851c805cb6aa82b5acc8bc6d97c17f`；fixed checkout 继续 clean/frozen `d80f5b7`。
+  只读检查 active `gurobi.log`、进程、stderr 与终态文件并更新三份交接文档；未改求解器、checkout、
+  profile、模型、数据、output 或 cloud job。
+- 证据：iteration `823,548`、runtime `13,224 s` 时 dual infeasibility `7.102660e9`；随后 Gurobi
+  报告丢弃 1 个 basis variable 并切换 quad precision。到 iteration `825,303`、runtime `13,464 s`，
+  primal infeasibility 0、dual `1.142198e5`，objective `2,362,020.1 million CNY`；stderr 0、wrapper
+  仍存活、终态三文件 absent。
+- 判读/下一步：旧成功 strict 根也执行了同样两条 warning 后最终 `OPTIMAL`；quad 后约 `7 pivots/s`
+  的速度下降是高精度 cleanup 代价，不是停滞。继续唯一 solver，记录 quad iterations/runtime、dual
+  趋势与最终 `Crossover time/Solved in/Optimal objective`；wrapper 退出后仍执行强 reference contract。
+  ParaCloud `4139552` 保持不变，不取消、不改参、不启动 Stage B。
 
 ### 2026-08-16 strict cleanup 对照审计与 cloud round 16
 

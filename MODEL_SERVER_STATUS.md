@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 16:58+08:00 strict cleanup 切换 quad precision
+
+- iteration `823,548`、runtime `13,224 s` 后，Gurobi 自动报告 `1 variables dropped from basis` 和
+  `switch to quad precision`；旧成功根存在完全相同保护动作，当前不判失败或取消。
+- quad 后约 `7 pivots/s`；iteration `825,303`、runtime `13,464 s` 时 primal 0、dual `1.14e5`、
+  objective `2,362,020.1 million CNY`。stderr 0、wrapper 存活、终态文件 absent、只有一个 solver；
+  继续等待正式 Crossover status 与强终态审计。云 job 不变。
+
 ## 2026-08-16 16:27+08:00 strict cleanup / cloud round 16
 
 - fixed strict simplex 约从 iteration `788,784` 推进到 `792,828`，runtime `11,448→11,630 s`；

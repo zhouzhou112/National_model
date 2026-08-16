@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 16:58 strict quad-precision cleanup
+
+```text
+quad_switch_iteration=823548
+quad_switch_runtime_seconds=13224
+basis_variables_dropped=1
+post_switch_iteration=825303
+post_switch_runtime_seconds=13464
+post_switch_primal_infeasibility=0
+post_switch_dual_infeasibility=1.142198e5
+```
+
+`drop basis variable + switch to quad precision` 是 Gurobi 自动数值保护，旧成功根有相同轨迹；不得仅凭
+该 warning 取消。quad 后 pivot 变慢是预期成本，仍以 CPU/iteration 是否增长、后续 warning/status、
+stderr 与终态文件联合判断。继续唯一 solver；只有 wrapper 退出后才执行完整 reference contract。
+
 ## 2026-08-16 16:27 strict cleanup 与 cloud round 16
 
 ```text
