@@ -1,5 +1,30 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-16 relaxed campaign summary 生成方法
+
+汇总器只读，不改变任何验收状态：
+
+```bash
+python scripts/summarize_relaxed_barrier_campaign.py \
+  --output-base /data/zz2/National_model/outputs/relaxed_barrier_continuation_v0816_v1 \
+  --control-root /data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1/campaign \
+  --fallback-control-root /data/zz2/National_model/run_control/relaxed_barrier_campaign_v0812_v1 \
+  --output-json /data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1/post_exact_summary.json \
+  --output-csv /data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1/post_exact_summary.csv
+```
+
+输出必须至少审计：return code 与来源、solver/wall runtime、Barrier count/observed seconds per iteration、
+GNU MaxRSS 与 process-tree peak、Constr/Bound/Dual/ComplVio、checkpoint manifest、root scientific
+QC/manifest/state/basis 是否误生、raw physical QC、exact identity、四个宏观阈值和 failed hard checks。
+JSON 中非有限数必须为 `null`；所有 relaxed rows 与 campaign 根均为
+`scientifically_accepted=false`。若 continuation 新输出根中的 Base candidates 是历史根 symlink，必须用
+`--fallback-control-root` 读取原始 GNU time；不得复制或篡改历史输出。
+
+当前 pre-exact v2 已在三根真实结果上验证，JSON/CSV SHA256 为 `f1f95348...82a688`、
+`e15331e5...a6cf50`。其中 macro comparison 仍来自旧 reference，只证明汇总器能读历史失败报告，
+不得用于 winner。strict reference 完成、supervisor 重算 exact A/B 后必须另写 `post_exact_summary`，
+保留 pre-exact 文件，不得原地覆盖。
+
 ## 2026-08-16 autonomous exact-A/B continuation supervisor
 
 strict reference 进入 Barrier 后启动只等待 supervisor：

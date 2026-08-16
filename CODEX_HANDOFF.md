@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-16 13:28+08:00：新增只读汇总器
+  `scripts/summarize_relaxed_barrier_campaign.py` 与合成测试，把 solve report、GNU time、telemetry、
+  checkpoint、工程 QC、exact macro、LP identity、根目录科学产物隔离和可选资源采样统一为合法 JSON/CSV；
+  非有限数写为 `null`，任何行仍固定 `scientifically_accepted=false`。py_compile 与联合 targeted tests
+  `5/5 PASS`。未部署活动 checkout，而是经 stdin 在 fixed server 读取三根真实历史 candidate，权威
+  pre-exact v2 输出为 continuation 控制根下 `pre_exact_candidate_summary_v2.{json,csv}`，SHA256
+  分别 `f1f95348...82a688`、`e15331e5...a6cf50`。三根均 rc 0/OPTIMAL/checkpoint present，且根目录
+  science QC/manifest/state/basis 全 absent；旧 reference 宏观列仍标 invalid，不作参数结论。
+- v2 量化单步成本：`5e-2/NumericFocus2` `31.643 s/iter`，`1e-2/NumericFocus2`
+  `32.573 s/iter`，`1e-2/NumericFocus1` `14.862 s/iter`。最快根 wall/solver/Barrier 为
+  `4652/4275.73 s/263`，说明当前主要加速来自 NumericFocus=1 的单步成本，而不是只减少 Barrier
+  iterations；exact A/B 仍决定其能否晋级。13:27 strict reference 为 iteration 16、stderr 0。
 - 2026-08-16 13:21+08:00：strict Base/744 h reference 已于 runtime `363.60 s` 进入 Barrier；LP 为
   `3,735,087` variables、`4,454,178` constraints、`40,395,436` nonzeros，Fingerprint
   `0x7e66559b`=`2120635803`，与三根 relaxed candidates 完全一致。Presolve `226.12 s`，presolved
@@ -1379,6 +1391,31 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-16 relaxed campaign 机器可读汇总器与真实三根验证
+
+- 范围：新增 `scripts/summarize_relaxed_barrier_campaign.py` 和
+  `tests/test_summarize_relaxed_barrier_campaign.py`；只读取既有证据，不修改 LP、solver profiles、
+  campaign 阈值、科学 QC 或服务器 checkout。
+- 合同：自动发现 campaign cases，连接 `solve_report.json`、`run_identity.json`、engineering contract、
+  `barrier_checkpoint_manifest.json`、telemetry、GNU time、return code、macro comparison 和可选
+  `resource_monitor.tsv`；支持 fallback control root，以便新 continuation symlink 复用旧 candidate 的
+  wall/MaxRSS。JSON 将非有限数转为 `null`；CSV 明示 checkpoint、根目录 science artifacts、solution
+  quality、exact identity、宏观 metrics 和 failed hard checks。汇总自身及所有 case 永不标科学接受。
+- 验证：py_compile；`python -m unittest tests.test_summarize_relaxed_barrier_campaign
+  tests.test_relaxed_barrier_macro` 为 `5/5 PASS`。首次增强补丁人工检查发现 `_read_int()` 分支错位，
+  合成测试因 GNU-time fallback 未暴露；已在提交前修正并增加直接 `return_code.txt=7` 断言，复测通过。
+- 真实运行：不部署 active checkout，而把脚本经 stdin 交给 fixed-server Python，读取旧 campaign 三根；
+  初版 `pre_exact_candidate_summary.{json,csv}` 保留为探索证据，字段增强后的权威文件为
+  `/data/zz2/National_model/run_control/relaxed_barrier_continuation_v0816_v1/
+  pre_exact_candidate_summary_v2.{json,csv}`，JSON/CSV SHA256 为
+  `f1f9534895a190fde28f5262303330c7579c25d3216e54c4586412a59282a688` 与
+  `e15331e5cc3ddac5e260c7fe5d87dfcd4c94bbe534c5e19928763c7a4aa6cf50`。
+- 结果：三根均 checkpoint present，root `solution_qc/result_manifest/planning_state/basis_manifest` absent；
+  NumericFocus2 两根 observed Barrier `31.643/32.573 s/iter`，NumericFocus1 为 `14.862 s/iter`。
+  当前 macro 字段来自已撤回的旧 reference，仅用于验证 parser，不能选 winner。
+- 未决与下一步：strict reference 完成后由 supervisor 生成新 exact reports，再以同一汇总器和新的
+  continuation control root 生成 post-exact summary；然后审计 V5/744 与更长时域资源、质量和宏观账目。
 
 ### 2026-08-16 strict reference 进入 Barrier 与无人值守 continuation supervisor
 

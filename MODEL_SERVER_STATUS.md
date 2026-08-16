@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-16 13:28+08:00 relaxed campaign 汇总器完成真实三根验证
+
+- 新增纯读取 `scripts/summarize_relaxed_barrier_campaign.py`，统一输出 JSON/CSV 的 rc、wall、solver
+  runtime、Barrier iterations/平均单步、GNU/进程树内存峰值、solution quality、checkpoint、工程 raw QC、
+  根目录科学产物隔离、LP identity 与 macro exact A/B。py_compile 与联合测试 `5/5 PASS`。
+- 活动 fixed checkout 未部署；脚本经 stdin 读取三根历史 candidate，权威输出位于 continuation 控制根
+  `pre_exact_candidate_summary_v2.{json,csv}`，SHA256 为 `f1f95348...82a688`、
+  `e15331e5...a6cf50`。三根均 rc 0、OPTIMAL、complete engineering checkpoint，root scientific
+  QC/manifest/state/basis 均 absent。
+- 观测 Barrier 单步：NumericFocus2 的 `5e-2/1e-2` 为 `31.643/32.573 s`，NumericFocus1 的
+  `1e-2` 为 `14.862 s`；对应 solver runtime `4927.57/5289.26/4275.73 s`。因此最快路线的优势来自
+  单步因子成本下降，尽管 iterations 为 `263`，高于另外两根的 `144/151`。
+- pre-exact macro 列仍来自错误旧 reference，仅用于 parser 验证，禁止选择 winner。13:27 strict
+  reference iteration 16、stderr 0；supervisor 继续等待，云端任务未修改。
+
 ## 2026-08-16 13:21+08:00 strict 744 h 已进入 Barrier；continuation supervisor 等待
 
 - strict reference LP 为 `3,735,087` variables、`4,454,178` constraints、`40,395,436` nonzeros，
