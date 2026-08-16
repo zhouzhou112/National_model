@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 from datetime import datetime
@@ -23,6 +24,153 @@ def _read_series(path: Path, key: str, value: str) -> dict[str, float]:
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         rows = csv.DictReader(handle)
         return {str(row[key]): float(row[value]) for row in rows}
+
+
+def _input_manifest_identity(path: Path) -> dict[str, Any]:
+    """Return a path-neutral identity for all non-solver run inputs."""
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = []
+        for row in csv.DictReader(handle):
+            if row["kind"] == "solver_configuration":
+                continue
+            rows.append(
+                {
+                    "kind": row["kind"],
+                    "logical_path": row["logical_path"],
+                    "required": row["required"],
+                    "exists": row["exists"],
+                    "size_bytes": row["size_bytes"],
+                    "sha256": row["sha256"],
+                    "integrity_method": row["integrity_method"],
+                    "role": row["role"],
+                }
+            )
+    rows.sort(key=lambda item: (item["kind"], item["logical_path"]))
+    canonical = json.dumps(
+        rows,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return {
+        "row_count": len(rows),
+        "sha256": hashlib.sha256(canonical).hexdigest(),
+        "rows": rows,
+    }
+
+
+def _nested(payload: dict[str, Any], *keys: str) -> Any:
+    value: Any = payload
+    for key in keys:
+        if not isinstance(value, dict):
+            return None
+        value = value.get(key)
+    return value
+
+
+def _exact_ab_identity(
+    candidate_root: Path,
+    reference_root: Path,
+) -> dict[str, Any]:
+    candidate = _read_json(candidate_root / "run_identity.json")
+    reference = _read_json(reference_root / "run_identity.json")
+    fields = {
+        "baseline_contract_sha256": (
+            ("baseline_contract", "contract_sha256")
+        ),
+        "scientific_configuration_sha256": (
+            "analysis_case",
+            "resolved_scientific_configuration_sha256",
+        ),
+        "scenario_configuration_sha256": (
+            "analysis_case",
+            "scenario_configuration",
+            "sha256",
+        ),
+        "formulation_configuration_sha256": (
+            "analysis_case",
+            "formulation_configuration",
+            "sha256",
+        ),
+        "lp_variables": ("lp_model", "variables"),
+        "lp_constraints": ("lp_model", "constraints"),
+        "lp_nonzeros": ("lp_model", "nonzeros"),
+        "gurobi_fingerprint": ("lp_model", "gurobi_fingerprint"),
+    }
+    comparisons = {}
+    for label, keys in fields.items():
+        candidate_value = _nested(candidate, *keys)
+        reference_value = _nested(reference, *keys)
+        comparisons[label] = {
+            "candidate": candidate_value,
+            "reference": reference_value,
+            "matches": candidate_value == reference_value,
+        }
+
+    candidate_manifest = _input_manifest_identity(
+        candidate_root / "input_manifest.csv"
+    )
+    reference_manifest = _input_manifest_identity(
+        reference_root / "input_manifest.csv"
+    )
+    candidate_rows = {
+        (row["kind"], row["logical_path"]): row
+        for row in candidate_manifest["rows"]
+    }
+    reference_rows = {
+        (row["kind"], row["logical_path"]): row
+        for row in reference_manifest["rows"]
+    }
+    differing_inputs = []
+    for key in sorted(set(candidate_rows).union(reference_rows)):
+        candidate_row = candidate_rows.get(key)
+        reference_row = reference_rows.get(key)
+        if candidate_row != reference_row:
+            differing_inputs.append(
+                {
+                    "kind": key[0],
+                    "logical_path": key[1],
+                    "candidate": candidate_row,
+                    "reference": reference_row,
+                }
+            )
+    input_manifest_match = not differing_inputs
+    exact_match = bool(
+        all(item["matches"] for item in comparisons.values())
+        and input_manifest_match
+    )
+    return {
+        "status": (
+            "EXACT_AB_IDENTITY_PASS"
+            if exact_match
+            else "EXACT_AB_IDENTITY_FAIL"
+        ),
+        "matches": exact_match,
+        "fields": comparisons,
+        "candidate_source_bundle_sha256": _nested(
+            candidate, "implementation_bundle", "source_bundle_sha256"
+        ),
+        "reference_source_bundle_sha256": _nested(
+            reference, "implementation_bundle", "source_bundle_sha256"
+        ),
+        "source_bundle_matches": _nested(
+            candidate, "implementation_bundle", "source_bundle_sha256"
+        )
+        == _nested(
+            reference, "implementation_bundle", "source_bundle_sha256"
+        ),
+        "candidate_input_manifest": {
+            "row_count": candidate_manifest["row_count"],
+            "sha256": candidate_manifest["sha256"],
+        },
+        "reference_input_manifest": {
+            "row_count": reference_manifest["row_count"],
+            "sha256": reference_manifest["sha256"],
+        },
+        "input_manifest_matches": input_manifest_match,
+        "differing_input_count": len(differing_inputs),
+        "differing_inputs": differing_inputs[:20],
+    }
 
 
 def _relative_difference(candidate: float, reference: float) -> float:
@@ -77,6 +225,23 @@ def audit(
     reference_summary = _read_json(reference_root / "annual_summary.json")
     candidate_solve = _read_json(candidate_root / "solve_report.json")
     reference_solve = _read_json(reference_root / "solve_report.json")
+    reference_qc_path = reference_root / "solution_qc.json"
+    reference_manifest_path = reference_root / "result_manifest.json"
+    reference_qc = (
+        _read_json(reference_qc_path) if reference_qc_path.is_file() else None
+    )
+    reference_result_manifest = (
+        _read_json(reference_manifest_path)
+        if reference_manifest_path.is_file()
+        else None
+    )
+    reference_accepted = bool(
+        reference_solve.get("status") == "OPTIMAL"
+        and reference_qc is not None
+        and reference_qc.get("status") == "PASS"
+        and reference_result_manifest is not None
+    )
+    exact_ab_identity = _exact_ab_identity(candidate_root, reference_root)
     candidate_qc_path = analysis_root / "solution_qc.json"
     candidate_qc = (
         _read_json(candidate_qc_path) if candidate_qc_path.is_file() else None
@@ -162,6 +327,8 @@ def audit(
     finite = all(math.isfinite(value) for value in numeric_values)
     macro_pass = bool(
         identity_match
+        and exact_ab_identity["matches"]
+        and reference_accepted
         and finite
         and candidate_contract.get("scientifically_accepted") is False
         and candidate_solve.get("run_completion_status")
@@ -180,6 +347,17 @@ def audit(
         "reference_root": str(reference_root.resolve()),
         "identity": identity,
         "identity_match": identity_match,
+        "exact_ab_identity": exact_ab_identity,
+        "reference_contract": {
+            "accepted": reference_accepted,
+            "solver_status": reference_solve.get("status"),
+            "solution_qc_status": (
+                reference_qc.get("status")
+                if reference_qc is not None
+                else None
+            ),
+            "result_manifest_present": reference_result_manifest is not None,
+        },
         "thresholds": {
             "objective_relative_difference": objective_limit,
             "capacity_normalized_l1": capacity_l1_limit,
