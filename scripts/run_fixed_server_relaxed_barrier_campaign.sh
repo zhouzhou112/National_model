@@ -129,6 +129,7 @@ declare -a long_profiles=(
 
 for i in "${!tags[@]}"; do
   tag="base_744h_${tags[$i]}"
+  mkdir -p "$CONTROL_ROOT/$tag"
   candidate_root="$OUTPUT_BASE/$tag"
   candidate_contract="$candidate_root/engineering_macro_analysis/engineering_analysis_contract.json"
   if [[ -L "$candidate_root" && -f "$candidate_contract" ]]; then

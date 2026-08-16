@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 04:16 v4 fail-closed / reused-candidate control directory
+
+```text
+server_git=5161dd0d7cd1958dda0ffdc648f2d6683056c95b clean
+server_bash_n=PASS focused=6/6_PASS full_regression=187/187_PASS_94.975s
+v4_reuse_symlink=PASS audit_import=PASS
+v4_macro_files=0 winner=NO_MACRO_PASS solver_started=false
+cause=missing_CONTROL_ROOT_tag_directory_before_shell_redirection
+patched_campaign_sha256=21e67deb17013c09a05f84c4f28e161c781d48878365d86f1e4124ffaff79b07
+```
+
+v4 只作为第二次编排 fail-closed 证据保留。修复后不得覆盖 v4；使用全新 v5 control/output，候选
+control 子目录必须在 audit stdout 重定向前存在。只有三份 `macro_comparison.json` 实际生成且 winner
+为 `MACRO_PASS` 才能启动一个串行 solver。
+
 ## 2026-08-17 04:12 strict reference terminal / v3 fail-closed / minimal fix
 
 ```text

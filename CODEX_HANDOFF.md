@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 04:16+08:00：fixed server clean `5161dd0`，server `bash -n`、focused `6/6`、
+  full regression `187/187 PASS` (`94.975 s`)。v4 exact-macro 正确复用三组 supervisor symlink 且
+  import 已修复，但复用分支没有创建 `$CONTROL_ROOT/$tag`，shell 在 audit stdout 重定向前失败；
+  因此 `NO_MACRO_PASS` 仍是编排终态，无 `macro_comparison.json`、无 solver。最小补丁在候选循环
+  入口无条件创建 control 子目录；本地 focused `6/6 PASS`，脚本 SHA256
+  `21e67deb...ff79b07`。v4 保留，下一步只能以全新 v5 根重试 exact macro。
 - 2026-08-17 04:12+08:00：fixed strict Base/744 reference 已正式闭合：`OPTIMAL + QC PASS +
   58/58 + current input manifest + valid 68-file result manifest`，solver `53,489.07 s`（Barrier
   `7,734.65 s`、Crossover `45,468.01 s`），objective `2,361,958.416203 million CNY`；wrapper rc 0、
@@ -1601,6 +1607,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 v4 exact-macro second orchestration fail-closed and directory fix
+
+- Git/部署：v4 前 local/origin/GitHub/fixed server 已统一到
+  `5161dd0d7cd1958dda0ffdc648f2d6683056c95b`，server clean；`bash -n`、focused `6/6` 与
+  full regression `187/187 PASS` (`94.975 s`)。ParaCloud 未修改。
+- v4 证据：新 control/output 为 `relaxed_barrier_continuation_v0817_v4`；strict contract 通过，三组
+  `reuse_supervisor_candidate` 均写入 events，import 修复生效。但复用分支绕过 `run_case()` 后没有
+  创建候选 control 子目录，导致 shell 在 `macro_comparison_stdout.log` 重定向时失败；三份 comparison
+  均未生成，winner 为 `NO_MACRO_PASS`，无活动 CISPO/Gurobi。
+- 修复/验证：在候选循环入口无条件创建 `$CONTROL_ROOT/$tag`，兼容复用与新求解两条路径；不改
+  audit 阈值、模型、参数、候选输出或 strict reference。`git diff --check`、focused `6/6 PASS`；
+  脚本 SHA256 `21e67deb17013c09a05f84c4f28e161c781d48878365d86f1e4124ffaff79b07`。
+- 下一步：提交并双推送；server fast-forward、`bash -n` 后使用全新 v5 root 重跑 exact macro。
+  v3/v4 均不得重标或覆盖；只有真实 `MACRO_PASS` winner 才允许串行 V5/744 与后续长时域。
 
 ### 2026-08-17 strict Base/744 terminal acceptance and v3 orchestration repair
 

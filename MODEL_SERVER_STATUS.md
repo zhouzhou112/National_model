@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 04:16+08:00 v4 exact-macro second fail-closed / control-dir fix
+
+- fixed server 已部署 clean `5161dd0`，`bash -n`、focused `6/6` 与完整 `187/187 PASS`
+  (`94.975 s`)。v4 正确复用三候选且 import 问题已消失，但复用分支未创建候选 control 子目录，
+  shell 在 stdout 重定向前即失败；故仍为 `NO_MACRO_PASS`，无 `macro_comparison.json`、无 solver。
+- 最小补丁在每个候选循环入口无条件 `mkdir -p "$CONTROL_ROOT/$tag"`；本地 focused `6/6 PASS`，
+  新脚本 SHA256 `21e67deb...ff79b07`。v4 保留为编排失败证据；下一步双推送、server `bash -n`
+  后在全新 v5 根第三次执行 exact macro，不重算任何 744 候选。
+
 ## 2026-08-17 04:12+08:00 strict 744 accepted / exact-macro orchestration fix
 
 - fixed strict Base/744 reference 正式 `OPTIMAL + QC PASS + 58/58 + current input manifest + valid
