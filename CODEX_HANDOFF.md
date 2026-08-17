@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 09:57+08:00：ParaCloud audit round 34 已追加；`4139552` 仍 RUNNING，iteration 332
+  于 09:52:13 落盘，runtime `978,908.233 s`，primal/dual/complementarity
+  `1.274926/1.023e-6/0.109716`。wall `981,492 s`、allocated `26,173.120 core-hours`、actual CPU
+  `4,092.853 h`、efficiency `15.6376%`、MaxRSS `362.913 GiB`、最近 20 步 `53.291 min`；35 records
+  SHA256 `29960f1e...aad17`。stderr 0、无终态/checkpoint，未取消/改参/启 Stage B。fixed
+  Base/1488 同时到 iteration 79，runtime `14,822.968 s`，primal/dual/complementarity
+  `10.2064/0.0030838/7.74511`，process RSS 约 `55,451,664 KiB`、stderr 0；继续唯一 solver。
 - 2026-08-17 09:44+08:00：下一轮 744 h lower-factor screen 已在本地冻结为三个配对 profile：
   `NF0+Scale2`、`NF1+ScaleAuto(-1)`、`NF0+ScaleAuto(-1)`。共同保持 Method 2、Threads 16、
   Presolve 2、Crossover 0、SolutionTarget 1、`BarConvTol=1e-2`、Feas/Opt `1e-5`、Aggregate 1，
@@ -1714,6 +1721,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 34 and Base/1488 iteration 79
+
+- cloud：只读核验 `squeue/sstat`、telemetry 与两个 stderr；job `4139552` iteration 332、runtime
+  `978,908.233 s`，primal/dual/complementarity `1.274926/1.023e-6/0.109716`。wall
+  `981,492 s`、allocated `26,173.120 core-hours`、actual CPU `4,092.853 h`、CPU efficiency
+  `15.6376%`、MaxRSS `380,541,608 KiB`；iteration 312--332 平均 `53.2909 min/step`。
+- 账本：向既有 `resource_audit_snapshots.jsonl` 追加 round 34 后为 35 records，SHA256
+  `29960f1e803e98b1dcbd59e26f242b48b026e87e9a01859f20a3681d6ddaad17`。slurm/wrapper stderr
+  均 0，终态与 checkpoint absent；没有 cancel、signal、改参或 Stage B。
+- fixed：Base/1488 iteration 79 于 09:56:09 落盘，runtime `14,822.968 s`；primal/dual/
+  complementarity `10.206400/0.00308381/7.745108`，process RSS 约 `55,451,664 KiB`、stderr 0。
+  保持当前 checkout/profile 和唯一 solver，下一材料判别点仍为 iteration 100/终态。
 
 ### 2026-08-17 paired five-iteration 744 h factor screens prepared
 

@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 09:57 cloud round 34 / fixed iteration 79
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=332 runtime_s=978908.233
+cloud_primal_dual_complementarity=1.274926/1.023e-6/0.109716
+cloud_round=34 wall_s=981492 allocated_core_hours=26173.120 actual_cpu_hours=4092.853
+cloud_efficiency_percent=15.6376 maxrss_gib=362.913 recent20_minutes=53.291
+cloud_resource_audit_records=35 sha256=29960f1e803e98b1dcbd59e26f242b48b026e87e9a01859f20a3681d6ddaad17
+fixed_base_1488_iteration=79 runtime_s=14822.968
+fixed_primal_dual_complementarity=10.206400/0.00308381/7.745108
+fixed_process_rss_kib~=55451664 stderr_bytes=0
+```
+
+两端继续只读监管；不修改 profile/checkout、不取消 cloud、不启 Stage B/并发 fixed solve。下一 fixed
+材料门禁为 iteration 100 或终态；cloud 只在新 iteration 后追加下一轮资源账本。
+
 ## Next lower-factor screen matrix
 
 活动 campaign 结束且服务器空闲后，部署精确提交并先执行 bash/profile/full regression。随后以唯一
