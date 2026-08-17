@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 11:52+08:00：fixed Base/1488 到 iteration 120，runtime `21,739.318 s`，primal/dual/
+  complementarity `0.050274/0.000789619/0.027934`，100--120/110--120 平均约
+  `169.03/169.75 s/step`，按 100--120 窗口投影 12 h 到 iteration `247.0`。process RSS
+  `55,459,960 KiB`，11:50 host available 约 `61.1 GiB`、swap used 约 `984 MiB`，si/so 0、memory
+  PSI 0、stderr 0、无终态/checkpoint，仍为唯一 solver。ParaCloud iteration 334 于 11:28:50 落盘，
+  runtime `984,705.405 s`，primal/dual/complementarity `1.213709/9.858e-7/0.104884`；resource audit
+  round 36 已原子追加：wall `988,357 s`、allocated `26,356.187 core-hours`、actual CPU
+  `4,122.200 h`、efficiency `15.6404%`、MaxRSS `362.913 GiB`、最近 20 步 `53.255 min`，37 records
+  SHA256 `cbf0311e...33710`。云端 stderr 0、无终态/checkpoint，未取消/改参/启 Stage B。
 - 2026-08-17 11:05+08:00：本地扩展 `cispo_model.solver_audit.collect_solver_run()` 的 phase-level
   telemetry 审计：每个 Barrier/simplex phase 现自动记录 iteration/runtime span、observed seconds per
   iteration、complementarity 的末值/极值、末端 primal/dual objective 与 raw gap。这样三根 5-step
@@ -1742,6 +1751,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 36 and Base/1488 iteration 120
+
+- Git/范围：基于 `4cf59af2ccbaf5a2a049453e0793d07ccd1be1ff`；只读 fixed/cloud，并向既有 cloud
+  ledger 原子追加 round 36；更新三份交接文档。未修改活动 checkout/profile，未启停任何 solver。
+- fixed：iteration 120 于 11:51:25 落盘，runtime `21,739.318 s`，primal/dual/complementarity
+  `0.050274/0.000789619/0.027934`；100--120/110--120 平均 `169.03/169.75 s/step`，12 h 投影
+  iteration `247.0`。RSS `55,459,960 KiB`，available 约 `61.1 GiB`，swap used 约 `984 MiB` 但
+  si/so/PSI 为 0，stderr 0，终态/checkpoint 不存在。
+- cloud：job `4139552` RUNNING，iteration 334、runtime `984,705.405 s`，primal/dual/
+  complementarity `1.213709/9.858e-7/0.104884`；round 36 wall `988,357 s`、allocated
+  `26,356.187 core-hours`、actual CPU `4,122.200 h`、efficiency `15.6404%`、MaxRSS `362.913 GiB`、
+  recent-20 `53.255 min`。ledger 37 records，SHA256
+  `cbf0311e71c382508ad459bd238232e3fbea499b1f8913bbb7792bd5d8233710`；stderr 0、无终态/
+  checkpoint、无 Stage B。
+- 下一步：继续低频到 fixed iteration 130/终态，cloud 下一轮约一小时且仅有新 iteration 才记账；
+  正常中间点不另写文档。当前 campaign idle 前不部署本地 tip 或 factor screens。
 
 ### 2026-08-17 machine-readable phase trajectory audit
 

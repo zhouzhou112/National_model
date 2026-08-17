@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 11:52+08:00 cloud round 36 / fixed iteration 120
+
+- fixed Base/1488 iteration 120、runtime `21,739.318 s`，primal/dual/compl
+  `0.050274/0.000789619/0.027934`；近 20/10 步 `169.03/169.75 s/step`，12 h 投影 iteration
+  `247.0`。RSS `55,459,960 KiB`，available 约 `61.1 GiB`、swap used 约 `984 MiB`，si/so/PSI 0、
+  stderr 0、无终态/checkpoint，唯一 solver 正常。
+- cloud `4139552` RUNNING，iteration 334、runtime `984,705.405 s`，primal/dual/compl
+  `1.213709/9.858e-7/0.104884`；round 36 wall `988,357 s`、allocated `26,356.187 core-hours`、
+  actual CPU `4,122.200 h`、efficiency `15.6404%`、MaxRSS `362.913 GiB`、recent-20 `53.255 min`。
+  ledger 37 records SHA256 `cbf0311e...33710`；stderr 0、无 terminal/checkpoint、未启 Stage B。
+- 下一次 fixed 为 iteration 130/终态，cloud 约一小时；活动 campaign 退出前不部署或并发。
+
 ## 2026-08-17 11:05+08:00 phase trajectory audit extended locally
 
 - `collect_solver_run()` 现为每个 solver phase 自动记录 iteration/runtime span、observed seconds per

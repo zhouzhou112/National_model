@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 11:52 cloud round 36 / fixed iteration 120
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=334 runtime_s=984705.405
+cloud_primal_dual_complementarity=1.213709/9.858e-7/0.104884
+cloud_round=36 wall_s=988357 allocated_core_hours=26356.187 actual_cpu_hours=4122.200
+cloud_efficiency_percent=15.6404 maxrss_gib=362.913 recent20_minutes=53.255
+cloud_resource_audit_records=37 sha256=cbf0311e71c382508ad459bd238232e3fbea499b1f8913bbb7792bd5d8233710
+fixed_base_1488_iteration=120 runtime_s=21739.318
+fixed_primal_dual_complementarity=0.050274/0.000789619/0.027934
+fixed_step_seconds_100_120_110_120=169.03/169.75 projected_iteration_at_43200s=247.0
+fixed_process_rss_kib=55459960 stderr_bytes=0 terminal_files=absent
+```
+
+继续原 profile、唯一 fixed solver 与不取消 cloud 合同。下一 fixed 检查为 iteration 130/终态；下一 cloud
+检查约一小时，只有新 iteration 才追加 ledger。不启动 Stage B 或 factor screens。
+
 ## Factor-screen machine-readable trajectory fields
 
 部署当前本地 tip 后，`solver_audit.json -> telemetry_phase_summaries.barrier` 必须包含：
