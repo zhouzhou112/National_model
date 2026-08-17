@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 16:43+08:00 all-version cloud profile guard prepared locally
+
+- save-first 复核确认：complete `BarStatus=OPTIMAL` engineering checkpoint 可 deferred crossover；至少有
+  1 次 Barrier iteration 的 incomplete result 尽力保存 recovery-only，但明确不可续接。
+- runner 原只硬编码 cloud v1 profile guard；本地现按 Stage A/B 稳定前缀覆盖 v1/v2/future versions，
+  强制 engineering flag/checkpoint input/full-year-only。focused `4/4 PASS`、compile/diff PASS。
+- 当前 v2 cloud sbatch 本来已传正确 flag/full_year，job `4139552` 不受影响。此修复未提交/部署；fixed
+  活动 checkout 保持 `b277fce`，两端任务均未查询、未触碰。
+
 ## 2026-08-17 16:35+08:00 deferred Crossover=2 744 validation active
 
 - `b277fcea4cb42d4bf8634f0baaf794095e00d67f` 已双推送并部署；fixed 启动前 clean/idle，server

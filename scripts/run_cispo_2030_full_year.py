@@ -31,11 +31,20 @@ from cispo_model.run_contract import (
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
-CLOUD_FULL_YEAR_PROFILE_IDS = {
-    "barrier_checkpoint_full_year_cloud_v1",
-    "deferred_crossover2_full_year_cloud_v1",
-}
+CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
+CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
+
+
+def cloud_full_year_profile_role(profile_id: object) -> str | None:
+    """Classify every version of the fail-closed cloud Stage A/B profiles."""
+    if not isinstance(profile_id, str):
+        return None
+    if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX):
+        return "STAGE_A"
+    if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX):
+        return "STAGE_B"
+    return None
 
 
 def diagnostic_memory_requirement_gb(config, hours: int) -> float:
@@ -521,23 +530,24 @@ def main() -> None:
                 "Deferred crossover requires Method=2, Crossover>0 and LPWarmStart=2"
             )
     profile_id = config.raw.get("solver_profile", {}).get("id")
+    cloud_full_year_role = cloud_full_year_profile_role(profile_id)
     if (
-        profile_id == "barrier_checkpoint_full_year_cloud_v1"
+        cloud_full_year_role == "STAGE_A"
         and not args.engineering_barrier_checkpoint_only
     ):
         raise SystemExit(
-            "barrier_checkpoint_full_year_cloud_v1 requires "
+            f"{profile_id} requires "
             "--engineering-barrier-checkpoint-only"
         )
     if (
-        profile_id == "deferred_crossover2_full_year_cloud_v1"
+        cloud_full_year_role == "STAGE_B"
         and not args.primal_dual_checkpoint_in
     ):
         raise SystemExit(
-            "deferred_crossover2_full_year_cloud_v1 requires "
+            f"{profile_id} requires "
             "--primal-dual-checkpoint-in"
         )
-    if profile_id in CLOUD_FULL_YEAR_PROFILE_IDS and requested_test_only:
+    if cloud_full_year_role is not None and requested_test_only:
         raise SystemExit(
             f"{profile_id} is restricted to the scientific full-year horizon"
         )

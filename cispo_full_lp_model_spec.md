@@ -1284,8 +1284,11 @@ predecessor planning-state path、Gurobi version、Fingerprint、变量/约束/�
 `VarName` 顺序与 `ConstrName+Sense` 顺序分块计算 SHA256。检查点身份固定为
 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`scientifically_accepted=false`；raw `BarPi` 可以保留
 为工程 shadow-price 向量并用于后续 DStart，但不得进入论文价格、planning state、MGA、dashboard
-或 scientific result manifest。若 `BarStatus` 不为 OPTIMAL、向量不完整/不有限或写出失败，则
-Stage A 失败；已有中间日志不能替代检查点。
+或 scientific result manifest。若 `BarStatus` 不为 OPTIMAL 但至少完成一次 Barrier iteration，runner
+应尽力把当前可读取的完整有限 `BarX/BarPi` 保存为 `INCOMPLETE_BARRIER_RECOVERY_ONLY`；它只用于
+故障取证，`deferred_crossover_eligible=false`，不能续接 Stage B。若向量不可读、不完整/不有限或写出
+失败，仍记录显式 export error。上述情况均表示 Stage A 未完成；recovery 或中间日志不能替代可复用
+检查点。
 
 Stage B `deferred_crossover2_full_year_cloud_v1` 必须从头重建完全相同 LP。Stage A 与 Stage B
 必然使用不同 solver profile，因此 resume identity 只从 `input_manifest.csv` 排除恰好一行
@@ -1302,6 +1305,11 @@ DualVio、`solution_qc=PASS`、全部 hard checks（当前 Base 合同为 58/58�
 valid result manifest、标准 `Pi` 导出和 wrapper/time 闭合，才是年度科学结果。此时它是 canonical
 basic result，而不只是附属分析；经单独显式许可可导出下一规划年的 planning state。Stage B
 失败不损坏 Stage A，但不得重标失败解或手工补 manifest。
+
+所有 `barrier_checkpoint_full_year_cloud_*` 与 `deferred_crossover2_full_year_cloud_*` profile 版本均由
+runner 按前缀分别识别为 Stage A/Stage B，而不是只硬编码 v1。前者强制
+`--engineering-barrier-checkpoint-only`，后者强制 `--primal-dual-checkpoint-in`，二者都禁止用于截断
+时域。新增 v3/v4 等版本不能因遗漏 allowlist 而绕过全年与阶段边界。
 
 两阶段均保留严格物理 QC，不以 `BarConvTol` 代替原模型可行性/dual 验收。`BarConvTol=1e-9`
 相对默认 `1e-8` 的意义是提高内点精度并可能缩短 Crossover，而不是保证任意超大 LP 必然得到

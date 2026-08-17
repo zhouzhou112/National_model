@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 16:43 all-version cloud profile fail-closed guard
+
+```text
+stage_a_profile_prefix=barrier_checkpoint_full_year_cloud_
+stage_a_required_flag=--engineering-barrier-checkpoint-only
+stage_b_profile_prefix=deferred_crossover2_full_year_cloud_
+stage_b_required_input=--primal-dual-checkpoint-in
+both_roles=full_year_only
+focused_local=4/4_PASS py_compile=PASS diff_check=PASS deployment=NOT_YET
+```
+
+不要再用逐版本 allowlist 增补 v3/v4；稳定前缀本身就是 fail-closed role contract。complete Barrier
+checkpoint 可进入 exact Stage B；incomplete Barrier 只保存 recovery evidence，必须保持
+`deferred_crossover_eligible=false`。当前 v2 cloud job 启动命令已满足上述合同，不重提、不改参。
+fixed solver 存在期间不得部署此本地修复。
+
 ## 2026-08-17 16:35 deferred Crossover=2 744 validation active
 
 ```text

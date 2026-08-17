@@ -12,6 +12,16 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 16:43+08:00：等待低频检查窗口期间完成全年 save-first 代码合同复核。当前 runner 已在
+  `BarStatus=OPTIMAL` 时把 engineering checkpoint 标为可续接；若 `BarStatus!=OPTIMAL` 但 Barrier
+  iterations `>0`，则尽力保存 `INCOMPLETE_BARRIER_RECOVERY_ONLY`，明确不可续接；`SUBOPTIMAL +
+  BarStatus=OPTIMAL` 仍可形成工程 checkpoint，现有单元证据覆盖该分支。发现新的 fail-closed 缺口：
+  cloud full-year role/flag/horizon guard 只硬编码 v1，而活动 cloud 使用 v2；当前 sbatch 已显式传正确
+  Stage A flag 与 full_year，故不影响 job `4139552`。本地最小修复改为按
+  `barrier_checkpoint_full_year_cloud_*` / `deferred_crossover2_full_year_cloud_*` 前缀分类，所有未来版本
+  自动强制 engineering flag/checkpoint input 和 full-year-only。新增无 Gurobi 依赖的 subprocess tests，
+  `4/4 PASS`，`py_compile`/diff PASS。尚未提交/部署；fixed 活动 checkout `b277fce` 与 solver、cloud
+  均未查询或触碰。
 - 2026-08-17 16:35+08:00：744 h deferred Stage B 已按独立全新 roots 安全启动。修复提交
   `b277fcea4cb42d4bf8634f0baaf794095e00d67f` 已双推送并 fast-forward 到 fixed；部署后 Linux
   `bash -n`、profile JSON、`py_compile`、focused `20/20` 与完整 server regression `203/203 PASS`
@@ -1903,6 +1913,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 all-version cloud Stage A/B fail-closed guard prepared locally
+
+- 问题：`run_cispo_2030_full_year.py` 仅把两个 `*_v1` profile 纳入全年/flag 门禁；current v2 sbatch
+  本身正确，但直接调用 v2 或未来版本可能绕过 profile-specific fail-closed 检查。
+- 修改：`scripts/run_cispo_2030_full_year.py` 新增纯函数 `cloud_full_year_profile_role()`，按稳定前缀识别
+  所有版本；Stage A 必须显式 engineering checkpoint，Stage B 必须给 checkpoint input，二者必须为
+  full-year。新增 `tests/test_cloud_full_year_profile_guard.py`；同步 `cispo_full_lp_model_spec.md` 的
+  complete/incomplete recovery 与 all-version guard 合同。
+- 验证：RL Python `py_compile` PASS；focused subprocess/unit tests `4/4 PASS`；`git diff --check` PASS。
+- 运行影响：无。当前 cloud sbatch 已使用 full_year 与 engineering flag；fixed/cloud 均未查询、未改参、
+  未部署。本地修复不得在 fixed PID 存在期间 fast-forward。
+- 下一步：到 fixed 约 30--45 分钟/phase 事件窗口后核对 exact resume；cloud 仍约 2 小时且仅新 iteration
+  落账。代码提交后也只推送 remotes，不部署活动 fixed checkout。
 
 ### 2026-08-17 exact deferred Crossover=2 validation launched on fixed server
 
