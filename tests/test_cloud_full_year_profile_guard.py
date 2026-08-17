@@ -6,7 +6,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.run_cispo_2030_full_year import cloud_full_year_profile_role
+from scripts.run_cispo_2030_full_year import (
+    cloud_full_year_profile_role,
+    cloud_full_year_required_memory_gib,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +46,33 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         )
         self.assertIsNone(cloud_full_year_profile_role("barrier_16_auto_order_v2"))
         self.assertIsNone(cloud_full_year_profile_role(None))
+
+    def test_all_cloud_profile_versions_receive_memory_floor(self) -> None:
+        for profile_id in (
+            "barrier_checkpoint_full_year_cloud_v1",
+            "barrier_checkpoint_full_year_cloud_v2",
+            "barrier_checkpoint_full_year_cloud_v99",
+            "deferred_crossover2_full_year_cloud_v2",
+        ):
+            with self.subTest(profile_id=profile_id):
+                self.assertEqual(
+                    cloud_full_year_required_memory_gib(
+                        80.0,
+                        cloud_full_year_profile_role(profile_id),
+                    ),
+                    640.0,
+                )
+        self.assertEqual(
+            cloud_full_year_required_memory_gib(
+                80.0,
+                cloud_full_year_profile_role("barrier_16_auto_order_v2"),
+            ),
+            80.0,
+        )
+        self.assertEqual(
+            cloud_full_year_required_memory_gib("700", "STAGE_A"),
+            700.0,
+        )
 
     def test_stage_a_v2_requires_engineering_checkpoint_flag(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

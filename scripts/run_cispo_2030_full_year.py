@@ -47,6 +47,20 @@ def cloud_full_year_profile_role(profile_id: object) -> str | None:
     return None
 
 
+def cloud_full_year_required_memory_gib(
+    configured_required_gib: float,
+    profile_role: str | None,
+) -> float:
+    """Apply the cloud full-year memory floor to every Stage A/B version."""
+    required_gib = float(configured_required_gib)
+    if profile_role is not None:
+        required_gib = max(
+            required_gib,
+            CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB,
+        )
+    return required_gib
+
+
 def diagnostic_memory_requirement_gb(config, hours: int) -> float:
     """Map an arbitrary diagnostic length to the next validated memory tier."""
     for name in ("one_month", "six_months", "full_year"):
@@ -636,11 +650,10 @@ def main() -> None:
         required_gb = diagnostic_memory_requirement_gb(
             config, optimization_hours
         )
-    if profile_id in CLOUD_FULL_YEAR_PROFILE_IDS:
-        required_gb = max(
-            required_gb,
-            CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB,
-        )
+    required_gb = cloud_full_year_required_memory_gib(
+        required_gb,
+        cloud_full_year_role,
+    )
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
     )
