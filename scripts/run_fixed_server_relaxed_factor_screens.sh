@@ -11,6 +11,12 @@ BASELINE_OUTPUT=${BASELINE_OUTPUT:-/data/zz2/National_model/outputs/relaxed_barr
 MINIMUM_AVAILABLE_GIB=${MINIMUM_AVAILABLE_GIB:-64}
 EXPECTED_HEAD=${EXPECTED_HEAD:-}
 
+export CISPO_DATA_ROOT=${CISPO_DATA_ROOT:-/data/zz2/National_model/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1}
+export CISPO_CF_ROOT=${CISPO_CF_ROOT:-/data/zz2/National_model/data/hourly_cf}
+export CISPO_HYDRO_ROOT=${CISPO_HYDRO_ROOT:-/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse}
+export CISPO_RAW_GRFR_ROOT=${CISPO_RAW_GRFR_ROOT:-/data/zz2/National_model/data/grfr_raw_2019}
+export CISPO_WAVE_ROOT=${CISPO_WAVE_ROOT:-/data/zz2/National_model/data/wave_energy_20260727}
+
 mkdir -p "$CONTROL_ROOT"
 cd "$REPO_ROOT"
 

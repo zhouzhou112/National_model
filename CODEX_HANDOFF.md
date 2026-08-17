@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 14:20+08:00：fixed 已在 idle/clean/resource-safe 门禁后 fast-forward 到
+  `613abe8d48ac3aa6382cdca3ce5a7d3528356723`。Linux `bash -n`、三份 factor profile JSON、
+  `py_compile` 与 focused `10/10 PASS`；显式冻结当前五个外部根后完整 server regression 为
+  `194/194 PASS`（`95.60 s`、MaxRSS `1,115,900 KiB`）。前两次 full regression 分别只设置零个/一个
+  数据根，因 repo 不内含 model-ready/CF 等外部数据而 fail-fast；没有 solver 或输出根，不能计作代码
+  回归失败。该过程识别出新 `run_fixed_server_relaxed_factor_screens.sh` 未自行冻结五个数据根；本地最小
+  修复现导出 current `CISPO_DATA_ROOT/CF_ROOT/HYDRO_ROOT/RAW_GRFR_ROOT/WAVE_ROOT`，并新增静态断言，
+  discovery focused `10/10 PASS`、`diff --check` PASS。此修复尚待提交/双推送/部署，故 factor screens
+  尚未启动；server 仍无 solver，cloud Stage A 未触碰。
 - 2026-08-17 14:14+08:00：fixed Base/2160 已在 Ordering 后、Barrier 第 0 次迭代前因
   `SoftMemLimit=80 GiB` 正常 fail-closed：Gurobi `MEM_LIMIT/status 17`、`solution_count=0`、solver
   runtime `2,800.735 s`，wrapper rc `2`、wall `1:01:40`、MaxRSS `72,659,300 KiB`（约
@@ -1797,6 +1806,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 factor-screen external data identity freeze
+
+- Git/范围：基于 `613abe8d48ac3aa6382cdca3ce5a7d3528356723`；仅修改
+  `scripts/run_fixed_server_relaxed_factor_screens.sh`、对应静态测试与三份交接文档。runner 现在与已验
+  campaign 一样，以可覆盖但有 current defaults 的方式导出 model-ready、CF、hydro、raw GRFR、wave
+  五个外部数据根，消除后台 shell 环境偶然性；模型、scenario、solver 参数与数据内容均未改变。
+- server 部署前验证：checkout clean/idle 后 fast-forward `613abe8`；`bash -n`、profile JSON、
+  `py_compile`、focused `10/10 PASS`。在五个 current roots 显式设置后，完整 regression
+  `194/194 PASS`，wall `95.60 s`、MaxRSS `1,115,900 KiB`。两次缺根运行只产生 missing external
+  input 错误且未启动 solver；这也是加入 runner defaults 的直接证据。
+- local 验证：四个目标文件按 discovery 方式合计 `10/10 PASS`，`git diff --check` PASS。直接以
+  `tests.test_*` 模块路径调用因 `tests/` 非 package 而 import failure，未当作测试结果。
+- 下一步：提交/双推送本修复，fixed fast-forward 新精确 tip 后重复 `bash -n`、focused/full regression；
+  然后以全新 v1 roots、`EXPECTED_HEAD` 和唯一后台 supervisor 启动三根串行 744 h 5-iteration screens。
 
 ### 2026-08-17 Base/2160 memory boundary and cloud resource round 38
 

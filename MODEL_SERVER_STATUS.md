@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 14:20+08:00 factor-screen deployment preflight and data-root freeze
+
+- fixed 已 clean/idle fast-forward `613abe8d...6723`；`bash -n`、profile JSON、`py_compile`、focused
+  `10/10 PASS`。显式设置 current data/CF/hydro/raw-GRFR/wave roots 后 full regression
+  `194/194 PASS`（`95.60 s`，MaxRSS `1,115,900 KiB`）。缺外部根的两次尝试 fail-fast，无 solver。
+- 本地已最小修复 factor-screen runner，使其冻结五个 current 外部数据根并允许显式覆盖；静态 focused
+  discovery `10/10 PASS`、diff check PASS。该补丁尚待提交、双推送与 server redeploy，screens 未启动。
+- fixed 当前无 solver；cloud `4139552` 未触碰。下一步部署补丁并重跑验证，再启动唯一串行 screens。
+
 ## 2026-08-17 14:14+08:00 Base 2160 MEM_LIMIT / fixed idle / cloud round 38
 
 - Base/2160 原始 LP `12,520,914 rows / 10,398,783 cols / 126,724,678 nnz`，build `884.643 s`；

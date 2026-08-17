@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 14:20 factor-screen data-root freeze before launch
+
+```text
+fixed_deployed_head=613abe8d48ac3aa6382cdca3ce5a7d3528356723
+server_bash_n=PASS profile_json=3/3_PASS py_compile=PASS focused=10/10_PASS
+server_full_regression=194/194_PASS wall_s=95.60 maxrss_kib=1115900
+factor_runner_data_roots=CISPO_DATA_ROOT,CISPO_CF_ROOT,CISPO_HYDRO_ROOT,CISPO_RAW_GRFR_ROOT,CISPO_WAVE_ROOT
+factor_runner_patch_local=PASS_NOT_YET_DEPLOYED factor_screens_started=false fixed_solver_count=0
+```
+
+后台 factor runner 禁止依赖登录 shell 的偶然环境；必须冻结与 Base/744 baseline 相同的五个外部根。
+前两次缺根 full regression 仅证明外部数据不在 Git checkout 中，未启动 solver。补丁双推送并 redeploy
+后，重复 `bash -n`、focused/full regression；通过后启动时必须传 `EXPECTED_HEAD=<exact tip>`，且
+`OUTPUT_BASE`/`CONTROL_ROOT` 均须不存在。cloud Stage A 保持不变。
+
 ## 2026-08-17 14:14 Base/2160 memory boundary, fixed idle, cloud round 38
 
 ```text

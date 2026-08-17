@@ -52,6 +52,11 @@ class RelaxedFactorScreenProfileTests(unittest.TestCase):
         self.assertIn("refuse_invalid_baseline_audit", runner)
         self.assertIn("baseline_solver_audit.json", runner)
         self.assertIn("summarize_relaxed_factor_screens.py", runner)
+        self.assertIn("export CISPO_DATA_ROOT=", runner)
+        self.assertIn("export CISPO_CF_ROOT=", runner)
+        self.assertIn("export CISPO_HYDRO_ROOT=", runner)
+        self.assertIn("export CISPO_RAW_GRFR_ROOT=", runner)
+        self.assertIn("export CISPO_WAVE_ROOT=", runner)
         self.assertIn("factor_screen_summary.json", runner)
         self.assertIn("factor_screen_summary.csv", runner)
 
