@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 17:54+08:00 deferred Crossover v3 active
+
+- fixed 启动门禁：clean/no solver，available `113 GiB`、vmstat si/so 0、memory PSI 0、v3 roots 不存在；
+  已部署 `710aa0259957d03c45821b755562fc1636a60519`。
+- server bash/compile PASS、focused `17/17`、full `212/212 PASS`（97.198 s，wall 1:38.40，MaxRSS
+  `1,105,756 KiB`，swaps 0）。
+- `deferred_crossover2_744_validation_v0817_v3` 于 17:53:13 启动 supervisor/Python
+  `1758970/1758995`；5 秒存活、start event 完整、stderr 0。唯一 fixed solver，checkout 冻结。
+- 下一检查约 30--45 分钟或 phase/terminal/resource anomaly。cloud 本轮未查询/触碰。
+
 ## 2026-08-17 17:48+08:00 deferred Crossover v2 pre-build terminal / repair pushed
 
 - v2 于 17:15:01 terminal，runner/audit/macro `1/41/42`；没有 output 文件、LP、Gurobi、telemetry、

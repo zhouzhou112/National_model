@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 17:54+08:00：fixed 在 no-solver/clean、v3 roots 不存在、available `113 GiB`、si/so 0、
+  memory PSI 0 后 fast-forward 到 `710aa0259957d03c45821b755562fc1636a60519`。Linux bash/py_compile
+  PASS，focused `17/17`，完整 server regression `212/212 PASS`（tests `97.198 s`、wall `1:38.40`、
+  MaxRSS `1,105,756 KiB`、swaps 0）。全新 output/control
+  `deferred_crossover2_744_validation_v0817_v3` 于 17:53:13 启动；supervisor/Python PID
+  `1758970/1758995`，5 秒存活、首 start event、supervisor/runner stderr 0。当前为唯一 fixed solver，
+  checkout 冻结 `710aa02`；source/reference/profile 不变。下一 fixed 检查仅 phase/terminal/resource anomaly
+  或约 30--45 分钟；cloud 本轮未查询、未触碰，仍约 2 小时且无新 iteration 不落账。
 - 2026-08-17 17:48+08:00：deferred Stage B v2 已确认于 17:15:01 在 optimize/build 前异常退出，
   runner/audit/macro rc `1/41/42`；没有 output 文件、LP、Gurobi log、telemetry、solve/QC/result 或
   primal-dual start identity。唯一异常为 `run_cispo_2030_full_year.py:639` 引用已删除的
@@ -1950,6 +1958,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v3 deployed, validated and launched
+
+- deploy gate：fixed `17:50+08:00` 为 branch `codex/cispo-2030-full-lp`、clean `acf59f9`，无真实
+  CISPO/Gurobi solver；可用内存约 `113 GiB`、swap `1.0/2.0 GiB` 但连续 vmstat si/so 0、memory PSI
+  avg10/60/300 0、磁盘可用 `3.6 TiB`，v3 output/control 均不存在。随后 fast-forward 到 `710aa02`。
+- server validation：runner `bash -n`、py_compile PASS；cloud/root/checkpoint/deferred focused `17/17 PASS`；
+  full regression `212/212 PASS`，tests `97.198 s`、wall `1:38.40`、MaxRSS `1,105,756 KiB`、swaps 0。
+- launch：全新 output `/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v3`，
+  control `/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v3`；17:53:13 start，
+  supervisor PID `1758970`、Python PID `1758995`。5 秒后存活，events 已写 start，两个 stderr 均 0。
+- 边界/下一步：v1/v2 roots 永久保留；v3 是唯一 fixed solver，checkout 冻结 `710aa02`，不部署随后
+  docs tip、不并发、不改参。约 30--45 分钟或 phase/terminal 检查 exact resume、Gurobi 是否直接
+  Crossover、资源与 stderr；terminal 后才执行 strict 58/58/manifests/macro pair。cloud 本轮未查询。
 
 ### 2026-08-17 deferred Crossover v2 pre-build terminal and memory-gate repair
 

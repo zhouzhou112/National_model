@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 17:54 deferred Crossover v3 active
+
+```text
+deployed_head=710aa0259957d03c45821b755562fc1636a60519 checkout=clean_frozen
+server_validation=bash_compile_PASS,focused_17/17,full_212/212_97.198s
+full_wall=1:38.40 maxrss_kib=1105756 swaps=0
+output=/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v3
+control=/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v3
+started_at=2026-08-17T17:53:13+08:00 supervisor_pid=1758970 python_pid=1758995
+launch_available_gib~=113 si_so=0/0 psi=0 initial_stderr=0
+```
+
+活动期禁止 fast-forward、第二 solver、改参和覆盖 roots。下一 fixed 检查不早于约 30--45 分钟，除非
+phase/terminal/resource anomaly；顺序为 process/event → start identity/root compatibility → Fingerprint/
+dimensions/order → Gurobi 是否直接 Crossover 且 Barrier 未重跑 → RAM/swap/vmstat/PSI/stderr。若 terminal，
+必须依赖 runner strict audit、58/58、两个 manifest 和 macro pair，不能只看 PID/日志/status。cloud 仍按
+约 2 小时检查且无新 Barrier iteration/异常时不落账。
+
 ## 2026-08-17 17:48 deferred Crossover v2 terminal and v3 relaunch gate
 
 ```text
