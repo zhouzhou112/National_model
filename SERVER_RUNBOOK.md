@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## Factor-screen machine-readable trajectory fields
+
+部署当前本地 tip 后，`solver_audit.json -> telemetry_phase_summaries.barrier` 必须包含：
+
+```text
+iteration_span
+runtime_span_seconds
+observed_seconds_per_iteration
+last_primal_infeasibility / last_dual_infeasibility / last_complementarity
+last_primal_objective / last_dual_objective / last_raw_primal_dual_objective_gap
+```
+
+server regression 必须包含 `tests.test_solver_audit`。这些字段只用于工程性能与数值轨迹比较，不把
+5-step screen 升级为 checkpoint 或科学结果，也不替代完整 744 exact macro A/B。
+
 ## 2026-08-17 10:59 cloud round 35 / fixed iteration 100
 
 ```text

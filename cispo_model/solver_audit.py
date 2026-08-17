@@ -247,6 +247,20 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         {str(row.get("phase")) for row in progress if row.get("phase")}
     ):
         rows = [row for row in progress if str(row.get("phase")) == phase]
+        first_iteration = rows[0].get("iteration")
+        last_iteration = rows[-1].get("iteration")
+        first_runtime = rows[0].get("runtime_seconds")
+        last_runtime = rows[-1].get("runtime_seconds")
+        iteration_span = (
+            float(last_iteration) - float(first_iteration)
+            if first_iteration is not None and last_iteration is not None
+            else None
+        )
+        runtime_span = (
+            float(last_runtime) - float(first_runtime)
+            if first_runtime is not None and last_runtime is not None
+            else None
+        )
         primal = [
             float(row["primal_infeasibility"])
             for row in rows
@@ -258,12 +272,37 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
             for row in rows
             if row.get("dual_infeasibility") is not None
         ]
+        complementarity = [
+            float(row["complementarity"])
+            for row in rows
+            if row.get("complementarity") is not None
+        ]
+        positive_complementarity = [
+            value for value in complementarity if value > 0.0
+        ]
+        last_primal_objective = rows[-1].get("primal_objective")
+        last_dual_objective = rows[-1].get("dual_objective")
+        last_objective_gap = (
+            abs(float(last_primal_objective) - float(last_dual_objective))
+            if last_primal_objective is not None
+            and last_dual_objective is not None
+            else None
+        )
         telemetry_phase_summaries[phase] = {
             "samples": len(rows),
-            "first_iteration": rows[0].get("iteration"),
-            "last_iteration": rows[-1].get("iteration"),
-            "first_runtime_seconds": rows[0].get("runtime_seconds"),
-            "last_runtime_seconds": rows[-1].get("runtime_seconds"),
+            "first_iteration": first_iteration,
+            "last_iteration": last_iteration,
+            "iteration_span": iteration_span,
+            "first_runtime_seconds": first_runtime,
+            "last_runtime_seconds": last_runtime,
+            "runtime_span_seconds": runtime_span,
+            "observed_seconds_per_iteration": (
+                runtime_span / iteration_span
+                if runtime_span is not None
+                and iteration_span is not None
+                and iteration_span > 0.0
+                else None
+            ),
             "minimum_positive_primal_infeasibility": (
                 min(positive_primal) if positive_primal else None
             ),
@@ -273,6 +312,18 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
             ),
             "maximum_dual_infeasibility": max(dual) if dual else None,
             "last_dual_infeasibility": rows[-1].get("dual_infeasibility"),
+            "minimum_positive_complementarity": (
+                min(positive_complementarity)
+                if positive_complementarity
+                else None
+            ),
+            "maximum_complementarity": (
+                max(complementarity) if complementarity else None
+            ),
+            "last_complementarity": rows[-1].get("complementarity"),
+            "last_primal_objective": last_primal_objective,
+            "last_dual_objective": last_dual_objective,
+            "last_raw_primal_dual_objective_gap": last_objective_gap,
         }
     max_solver_memory = max(
         (

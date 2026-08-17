@@ -145,6 +145,9 @@ Solved in 73826 iterations and 39.39 seconds
                             "runtime_seconds": 1.0,
                             "primal_infeasibility": 10.0,
                             "dual_infeasibility": 2.0,
+                            "complementarity": 4.0,
+                            "primal_objective": 30.0,
+                            "dual_objective": 20.0,
                             "max_memory_used_gb": 1.0,
                         },
                         {
@@ -154,6 +157,9 @@ Solved in 73826 iterations and 39.39 seconds
                             "runtime_seconds": 2.0,
                             "primal_infeasibility": 5.0,
                             "dual_infeasibility": 0.0,
+                            "complementarity": 3.0,
+                            "primal_objective": 15.0,
+                            "dual_objective": 12.0,
                             "max_memory_used_gb": 1.5,
                         },
                         {
@@ -163,6 +169,9 @@ Solved in 73826 iterations and 39.39 seconds
                             "runtime_seconds": 3.0,
                             "primal_infeasibility": 8.0,
                             "dual_infeasibility": 0.0,
+                            "complementarity": 2.0,
+                            "primal_objective": 14.0,
+                            "dual_objective": 13.5,
                             "max_memory_used_gb": 1.5,
                         },
                         {"event": "solver_finished", "status": "OPTIMAL"},
@@ -224,6 +233,12 @@ Solved in 73826 iterations and 39.39 seconds
             simplex["minimum_positive_primal_infeasibility"], 5.0
         )
         self.assertEqual(simplex["last_primal_infeasibility"], 8.0)
+        self.assertEqual(simplex["iteration_span"], 100.0)
+        self.assertEqual(simplex["runtime_span_seconds"], 1.0)
+        self.assertEqual(simplex["observed_seconds_per_iteration"], 0.01)
+        self.assertEqual(simplex["minimum_positive_complementarity"], 2.0)
+        self.assertEqual(simplex["last_complementarity"], 2.0)
+        self.assertEqual(simplex["last_raw_primal_dual_objective_gap"], 0.5)
 
 
 if __name__ == "__main__":

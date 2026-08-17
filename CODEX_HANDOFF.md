@@ -12,6 +12,12 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 11:05+08:00：本地扩展 `cispo_model.solver_audit.collect_solver_run()` 的 phase-level
+  telemetry 审计：每个 Barrier/simplex phase 现自动记录 iteration/runtime span、observed seconds per
+  iteration、complementarity 的末值/极值、末端 primal/dual objective 与 raw gap。这样三根 5-step
+  factor screens 和后续完整 744/长时域根可使用同一机器可读口径比较，而无需人工高频读日志。
+  `tests.test_solver_audit` 等 focused tests `8/8 PASS`，并用既有本地 1 h telemetry 实读验证；活动
+  fixed/cloud checkout、solver、输出与参数均未触碰。待 campaign idle 后随 lower-factor screens 一并部署。
 - 2026-08-17 10:59+08:00：低频材料门禁已闭合。fixed Base/1488 于 10:55:05 到 iteration 100，
   runtime `18,358.690 s`，primal/dual/complementarity `0.562716/0.00180162/0.402016`，raw
   primal-dual objective gap `5.432e6`；0--100、50--100、75--100、90--100 平均步长分别为
@@ -1736,6 +1742,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 machine-readable phase trajectory audit
+
+- Git/范围：基于 `71e5da6467d94770fee7f83b49031eff420443b8`；修改
+  `cispo_model/solver_audit.py`、`tests/test_solver_audit.py` 与三份交接文档。没有服务器部署、求解
+  启停、参数或 checkout 变更。
+- 实现：`telemetry_phase_summaries` 新增 `iteration_span`、`runtime_span_seconds`、
+  `observed_seconds_per_iteration`、complementarity 末值/极值、末端 primal/dual objectives 与 raw
+  objective gap；字段对缺失 telemetry 保持 `None`，不改变既有接口和科学验收语义。
+- 验证：`python -m unittest tests.test_solver_audit tests.test_relaxed_factor_screen_profiles
+  tests.test_checkpoint_campaign_gate tests.test_summarize_relaxed_barrier_campaign` 为 `8/8 PASS`；
+  `py_compile` PASS；既有 1 h telemetry 实读得到 76-step span 与 `0.11054 s/iteration`，末端 gap
+  `0.00108687`，证明真实 JSONL 路径兼容。
+- 未决/下一步：fixed campaign 仍运行旧 clean checkout；必须等 idle 才 fast-forward 并做 server
+  full regression。随后三个 744 factor screens 的 `solver_audit.json` 将直接提供统一 per-step 与末端
+  数值轨迹，只有 Factor NZ/Ops/步时有实质改善者才晋级完整 744 exact macro A/B。
 
 ### 2026-08-17 cloud resource audit round 35 and Base/1488 iteration 100
 

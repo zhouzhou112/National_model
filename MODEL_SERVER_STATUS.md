@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 11:05+08:00 phase trajectory audit extended locally
+
+- `collect_solver_run()` 现为每个 solver phase 自动记录 iteration/runtime span、observed seconds per
+  iteration、complementarity 及末端 primal/dual objective gap；factor screen 不再依赖人工日志摘录。
+- focused tests `8/8 PASS`、`py_compile` PASS、既有 1 h telemetry 实读 PASS。尚未部署，活动
+  fixed/cloud 作业完全未触碰；待 campaign idle 后随 lower-factor screens 一并 fast-forward/regression。
+
 ## 2026-08-17 10:59+08:00 cloud round 35 / fixed iteration 100
 
 - fixed Base/1488 iteration 100、runtime `18,358.690 s`，primal/dual/compl
