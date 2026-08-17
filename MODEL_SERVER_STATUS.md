@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 16:16+08:00 second factor batch terminal / no shortlist
+
+- v2 campaign 15:23:11--16:06:11 串行完成；三根 identity valid、status 7、Barrier 5、runner/audit
+  `2/0`、stderr/swaps 0、无科学/checkpoint 产物。summary `NO_MATERIAL_COST_IMPROVEMENT`、shortlist 空。
+- `PreSparsify2` Factor NZ/Ops/step ratios `0.976002/1.073514/1.107897`；`BarOrder1`
+  `1/1/1.107832`；Threads32 `1/1/1.256668`。case wall `17:00.64/12:46.29/13:01.31`，MaxRSS
+  `20,371,484/19,783,500/19,759,924 KiB`。
+- fixed 无 solver，available 约 `113 GiB`、si/so/PSI 0、checkout clean `7551e3f`。不运行这三根的
+  完整 744、不继续参数盲扫；转入已有完整 744/1488/2160/cloud 证据的 8760 决策审计。cloud 未触碰。
+
 ## 2026-08-17 15:23+08:00 second factor/throughput batch active
 
 - 实施提交 `7551e3fcc55aa2964dd8eff2bed30e7ab47400f7` 已部署到 clean/idle fixed；`bash -n`、JSON、

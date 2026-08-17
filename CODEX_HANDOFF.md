@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 16:16+08:00：第二批 `relaxed_factor_screens_v0817_v2` 已于 16:06:11 串行完成，
+  campaign wall 约 `43:00`，summary 为 `NO_MATERIAL_COST_IMPROVEMENT`、
+  `all_paired_screens_valid=true`、shortlist 空。三根均保持 Fingerprint `2120635803` 与完整
+  LP/scientific/scenario identity，status 7、Barrier 5、runner rc 2、audit rc 0、stderr/swaps 0，且无
+  `solution_qc/result_manifest/planning_state/basis/checkpoint`。`PreSparsify=2` 将 Factor NZ 降至
+  `7.158e8`（ratio `0.976002`），但 Factor Ops 升至 `5.111e12`（`1.073514`）、步时升至
+  `14.2197 s`（`1.107897`），wall `17:00.64`、MaxRSS `20,371,484 KiB`；`BarOrder=1` 的 Factor
+  NZ/Ops 与 baseline 完全相同、步时 `14.2189 s`（`1.107832`），wall `12:46.29`、MaxRSS
+  `19,783,500 KiB`；Threads 32 同样不改结构，步时 `16.1291 s`（`1.256668`），wall `13:01.31`、
+  MaxRSS `19,759,924 KiB`。summary JSON/CSV SHA256 为
+  `8c30c896...7a071/af32487b...154ad`。fixed 已无 solver，available RAM 约 `113 GiB`、si/so/PSI 0，
+  checkout clean `7551e3f`。这些候选不进入完整 744；不再盲扫参数，下一步汇总完整 744/1488/2160
+  与两批 screens，形成 8760 参数/内存/验收决策。cloud 本轮未查询、未触碰。
 - 2026-08-17 15:23+08:00：第二批 paired factor/throughput screens 已在固定服务器安全启动。local/origin/
   GitHub 与部署实施提交均为 `7551e3fcc55aa2964dd8eff2bed30e7ab47400f7`；部署前 fixed clean/idle，
   Linux `bash -n`、三份 profile JSON、`py_compile`、focused `16/16` 与完整 server regression
@@ -1861,6 +1874,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 second factor/throughput screen batch terminal
+
+- 运行/身份：固定服务器实施 checkout 保持 clean `7551e3f`；唯一 supervisor PID `1567638` 按
+  `presparsify2 -> barorder1 -> threads32` 从 15:23:11 至 16:06:11 串行完成，未并发、未修改云端。
+  三根均 Base/744、Crossover 0、5 Barrier steps、status 7、runner rc 2、audit rc 0、stderr/swaps 0；
+  Fingerprint `2120635803` 及九项 LP/scientific/scenario identity 全匹配，无科学/checkpoint 产物。
+- 结果：`PreSparsify=2` 的 Factor NZ/Ops/step ratios 为
+  `0.976002/1.073514/1.107897`，wall `17:00.64`、MaxRSS `20,371,484 KiB`；`BarOrder=1` 为
+  `1.0/1.0/1.107832`，wall `12:46.29`、MaxRSS `19,783,500 KiB`；Threads 32 为
+  `1.0/1.0/1.256668`，wall `13:01.31`、MaxRSS `19,759,924 KiB`。summary
+  `NO_MATERIAL_COST_IMPROVEMENT`、all valid、shortlist 空、scientifically accepted false。
+- 证据/资源：summary JSON/CSV、events、baseline audit SHA256 分别为
+  `8c30c896...7a071`、`af32487b...154ad`、`948582e8...d036`、`c782526a...3f49`；output/control
+  仅约 `330/157 KiB`。16:16 fixed 无 solver，available RAM 约 `113 GiB`、si/so/PSI 0。
+- 未决/下一步：不从空 shortlist 选择 winner，不为三根运行完整 744，也不继续低价值 solver 参数盲扫。
+  汇总既有完整 relaxed/strict 744、1488、2160 memory boundary 与云端 Stage A，形成后续 8760 的
+  profile、线程、内存、checkpoint 与验收建议；仅新候选具备可解释的实质结构收益才重开完整 A/B。
 
 ### 2026-08-17 second paired factor/throughput screen batch launched
 

@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 16:16 second paired factor/throughput batch terminal
+
+```text
+campaign=COMPLETE wall~=43:00 summary_status=NO_MATERIAL_COST_IMPROVEMENT
+all_paired_screens_valid=true shortlist_tags=[] scientifically_accepted=false
+presparsify2_factor_nz_ops_step_ratio=0.976002/1.073514/1.107897 wall=17:00.64 maxrss_kib=20371484
+barorder1_factor_nz_ops_step_ratio=1.0/1.0/1.107832 wall=12:46.29 maxrss_kib=19783500
+threads32_factor_nz_ops_step_ratio=1.0/1.0/1.256668 wall=13:01.31 maxrss_kib=19759924
+all_cases=status7,barrier5,runner_rc2,audit_rc0,stderr0,swaps0,no_science_artifacts
+summary_json_sha256=8c30c8960d987cb9c765d085c6e80c02c9c3eb276d89f22c56e19076def7a071
+summary_csv_sha256=af32487bcff1cda14ad45ebc697c517a1bee7b3d74d560ccde9e9fd5dc9154ad
+fixed_solver_count=0 checkout=7551e3f available_gib~=113 si_so=0/0 psi=0
+```
+
+不得为这三个空-shortlist 候选运行完整 744，也不得继续 PreDual/Aggregate/Scale/Order/Threads 的低价值
+盲扫。下一阶段仅做证据汇总：用已经完成的完整 relaxed/strict 744、Base/1488、Base/2160 memory boundary
+与 cloud Stage A，冻结后续 8760 的线程、内存、Barrier tolerance、checkpoint 和科学验收边界。若未来提出
+新候选，必须先给出代数等价或明确参数机制及预期 >=5% 结构/10% throughput 改善，再重复短筛。
+
 ## 2026-08-17 15:23 second paired factor/throughput batch active
 
 ```text
