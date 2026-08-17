@@ -12,6 +12,28 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 13:09+08:00：fixed Base/1488 已于 13:01:41 正常 rc 0 结束：Barrier `OPTIMAL`，143
+  iterations，solver `25,834.260 s`，wrapper wall `7:22:57`，MaxRSS `55,460,664 KiB`，swaps 0、
+  stderr 0。checkpoint 为 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`deferred_crossover_eligible=true`；
+  本地新 fail-closed gate 以只读流式执行后 `eligible=true`、reasons 空。BarX `7,236,351` entries/
+  `57,890,936 bytes`/SHA256 `a49ce6bf...7fef0`，BarPi `8,648,849` entries/`69,190,920 bytes`/
+  SHA256 `82c4ad5f...8c718`，LP Fingerprint `893131507`，变量/约束 order digests 与 current input manifest
+  SHA256 `673d0230...35a1e` 均落盘。身份仍是 `TEST_ONLY_TRUNCATED_HORIZON`，strict solver contract
+  `HARD_FAIL`（Constr/Bound/Dual/ComplVio `0.0112802/4.62e-6/0.0022079/42.0475`），根目录没有科学
+  `solution_qc/result_manifest/planning_state/basis`。engineering QC 为 `54/58`：失败项仅 wave availability、
+  strict unidirectional interprovincial flow、reservoir transition、reservoir active storage；power balance
+  `2.315 kW`，wave overshoot `0.850 MW`，水库 transition/active-storage 残差 `11,280 m3/3.775 m3`。
+  interprov opposing energy 占 period load `0.259%`、其 excess loss 占 `0.00641%`，load-center simultaneous
+  bidirectional energy 占 `0.891%`；storage overlap 占 `0.0952%`、max `58.9 MW`。成本闭合相对残差
+  `1.47e-13`，碳/CCS/DAC、备用、惯量、容量、网络容量、储能状态、级联水文与 objective accounting
+  均闭合；BarPi 影子价格成功导出 `46,128` hourly/`3,366` annual rows，但仅工程使用。按作者已定优先级，
+  这些方向性/小残差不阻断长时域工程测试，也绝不升级为科学结果。旧 campaign 于 13:01:45 串行启动
+  唯一 Base/2160（PID `1387308/1387309`，start hour 2880，同 NF1 relaxed long profile）；13:08 尚在 build，
+  RSS 约 `4.14 GiB`、available RAM 约 `110 GiB`、si/so 0、PSI 0、stderr 0。fixed checkout 仍 clean
+  `902b1672...ff36`，未中途部署。ParaCloud round 37 已追加：iteration 335、runtime `987,914.783 s`，
+  primal/dual/complementarity `1.181479/9.659e-7/0.102464`，wall `991,984 s`、allocated
+  `26,452.907 core-hours`、actual CPU `4,137.397 h`、efficiency `15.6406%`、recent-20 `53.550 min`，
+  38 records SHA256 `c31d779c...e0df`；云端未取消/改参/启 Stage B。
 - 2026-08-17 11:57+08:00：本地完成 factor-screen fail-closed 汇总闭环。`collect_solver_run()` 新增
   run-identity 的 LP Fingerprint、变量/约束/非零数与 resolved scientific/scenario SHA；新
   `scripts/summarize_relaxed_factor_screens.py` 将三个 5-step 候选与既有 NF1+Scale2 Base/744 基线按
@@ -1760,6 +1782,39 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/1488 terminal checkpoint audit, Base/2160 start and cloud round 37
+
+- Git/范围：基于 `9304f91be2b0262cd8d306d66c175cbb9c375ce3`；只读 fixed/cloud，流式运行尚未部署的
+  checkpoint gate 但不写 fixed 文件，向 cloud ledger 原子追加 round 37，并更新三份交接文档。
+  未停止/改参/并发、未修改 fixed checkout。
+- 1488 solver/resource：Barrier status/code `OPTIMAL/2`、143 iterations、runtime `25,834.260 s`、objective
+  `2,594,713.948279 million CNY`；last persisted primal/dual/compl `0.0035927/4.623e-5/0.00096294`，
+  relative primal-dual gap `0.0050318`。wrapper rc 0、wall `7:22:57`、MaxRSS `55,460,664 KiB`、swaps 0、
+  stderr 0。strict solution contract 因 Constr/Bound/Dual/ComplVio
+  `0.0112802/4.62e-6/0.0022079/42.0475` 为 `HARD_FAIL`，不作科学解。
+- checkpoint/identity：streamed current gate `eligible=true`；primal/dual vectors 分别为
+  `7,236,351/8,648,849` entries，bytes `57,890,936/69,190,920`，SHA256
+  `a49ce6bf...7fef0/82c4ad5f...8c718`。LP Fingerprint `893131507`、raw dimensions、变量/约束 order
+  digests、Gurobi `13.0.2`、scenario/solver SHA、input manifest SHA256 `673d0230...35a1e` 均完整。
+  它可供显式授权的 exact-LP deferred crossover，但不是 planning state、年度结果或论文价格。
+- 物理/宏观审计：engineering QC `54/58`，失败 wave `0.850 MW` overshoot、strict bidirectionality、
+  reservoir transition `11,280 m3`、active-storage `3.775 m3`。power balance `2.315 kW`；storage overlap
+  `1,832.89 GWh = 0.0952%` period load，max `58.9 MW`；interprov opposing `4,993.57 GWh = 0.259%`
+  period load，excess loss share `0.00641%`；load-center bidirectional `17,153.38 GWh = 0.891%`。
+  其余 load、VRE、热电、储能状态、水电月能量/级联、网络容量、备用、惯量、碳/CCS/DAC 与成本
+  accounting 通过；objective component relative residual `1.47e-13`。BarPi 导出可用，hourly/annual
+  rows `46,128/3,366`，限定 `ENGINEERING_ONLY_NOT_FOR_PUBLICATION`。
+- 2160：旧 campaign 的存在性 gate 在 1488 完成后进入 Base/2160；本次 checkpoint 用新严格 gate 也
+  实际 PASS，因此不是误放行。13:01:45 启动唯一 PID `1387308/1387309`，start hour 2880，同 relaxed
+  NF1 long profile；13:08 build RSS 约 `4.14 GiB`，available 约 `110 GiB`、si/so/PSI 0、stderr 0。
+- cloud：iteration 335、runtime `987,914.783 s`；round 37 wall `991,984 s`、allocated
+  `26,452.907 core-hours`、actual CPU `4,137.397 h`、efficiency `15.6406%`、MaxRSS `362.913 GiB`、
+  recent-20 `53.550 min`，ledger 38 records SHA256
+  `c31d779cededad5baf6d50912808be8c09bfd90a1a98577d10cddec62d0fe0df`，stderr 0、无 terminal/
+  checkpoint、无 Stage B。
+- 下一步：低频监管 Base/2160 到 factor structure/iteration gate/终态；campaign idle 前不得部署
+  `9304f91` 或启动 factor screens。2160 完成后才 fast-forward、server regression、三根 744 screen。
 
 ### 2026-08-17 fail-closed factor-screen shortlist audit
 

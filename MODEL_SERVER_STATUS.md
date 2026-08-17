@@ -1,5 +1,21 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 13:09+08:00 Base 1488 complete / Base 2160 active / cloud round 37
+
+- Base/1488 Barrier `OPTIMAL`，143 iterations、solver `25,834.260 s`、wall `7:22:57`、MaxRSS
+  `55,460,664 KiB`、rc/stderr/swaps `0/0/0`。checkpoint gate PASS；BarX/BarPi entries
+  `7,236,351/8,648,849` 且 size/SHA 完整，LP Fingerprint `893131507`、input manifest 与 order digests
+  齐全。身份仅 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`，可 deferred crossover，不是科学结果。
+- strict contract `HARD_FAIL`；engineering QC `54/58`，失败 wave `0.850 MW`、strict bidirectionality、
+  reservoir `11,280 m3/3.775 m3`。power balance `2.315 kW`，storage overlap 仅 period load `0.0952%`，
+  interprov opposing `0.259%`、excess loss `0.00641%`，load-center bidirectional `0.891%`。碳/CCS/DAC、
+  备用、惯量、网络容量、储能状态、水文级联与成本闭合；BarPi `46,128/3,366` rows 仅工程使用。
+- campaign 13:01:45 串行启动唯一 Base/2160 PID `1387308/1387309`，start hour 2880；13:08 build RSS
+  `4.14 GiB`、available 约 `110 GiB`、si/so/PSI 0、stderr 0。checkout clean `902b1672...ff36`。
+- cloud `4139552` iteration 335、runtime `987,914.783 s`；round 37 wall `991,984 s`、allocated
+  `26,452.907 core-hours`、actual CPU `4,137.397 h`、efficiency `15.6406%`、recent-20 `53.550 min`；
+  ledger 38 records SHA256 `c31d779c...e0df`，stderr 0、无 terminal/checkpoint/Stage B。
+
 ## 2026-08-17 11:57+08:00 factor shortlist audit ready locally
 
 - 新汇总器按 LP Fingerprint/矩阵/scientific/scenario identity、rc/stderr、5 iterations、numerical trouble

@@ -1,5 +1,31 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 13:09 Base/1488 terminal, Base/2160 start, cloud round 37
+
+```text
+fixed_base_1488_status=OPTIMAL barrier_status=2 barrier_iterations=143 solver_s=25834.260
+fixed_base_1488_wall=7:22:57 maxrss_kib=55460664 rc=0 stderr=0 swaps=0
+fixed_base_1488_checkpoint=ENGINEERING_BARRIER_CHECKPOINT_ONLY gate_eligible=true
+barx_entries_bytes_sha=7236351/57890936/a49ce6bf164345f78408f8453eba831e6aa74262391b9b9f9d1c928a8d17fef0
+barpi_entries_bytes_sha=8648849/69190920/82c4ad5f89c60fc62bd6c08bf71424fdf43288887c99b4078d2c6c197e38c718
+lp_fingerprint=893131507 input_manifest_sha=673d0230315cca7dbe1af06a0c9785a696cfd24f18ec52b6359cc3dc9b035a1e
+strict_contract=HARD_FAIL engineering_qc=54/58 result_use=TEST_ONLY_TRUNCATED_HORIZON
+failed_hard_checks=wave_availability,unidirectional_interprovincial_flow,reservoir_transition,reservoir_active_storage
+storage_overlap_share_load=0.000952 interprov_opposing_share_load=0.002594
+interprov_excess_loss_share_load=0.00006414 load_center_bidirectional_share_load=0.008909
+shadow_price_rows_hourly_annual=46128/3366 publication=ENGINEERING_ONLY_NOT_FOR_PUBLICATION
+fixed_base_2160_start=2026-08-17T13:01:45+08:00 pid=1387308/1387309 start_hour=2880 phase=BUILD
+fixed_base_2160_start_available_gib~=110 si_so=0/0 psi=0 stderr=0 checkout=902b1672
+cloud_job=4139552 RUNNING barrier_iteration=335 runtime_s=987914.783
+cloud_round=37 wall_s=991984 allocated_core_hours=26452.907 actual_cpu_hours=4137.397
+cloud_efficiency_percent=15.6406 maxrss_gib=362.913 recent20_minutes=53.550
+cloud_resource_audit_records=38 sha256=c31d779cededad5baf6d50912808be8c09bfd90a1a98577d10cddec62d0fe0df
+```
+
+1488 的 checkpoint 可用于工程 deferred crossover，但 strict QC/HARD_FAIL 决定它不能成为科学结果、
+planning anchor 或论文价格。作者已接受不把低占比双向/重叠现象作为长时域工程阻断项；仍须完整记录，
+且最终科学 Stage B 必须严格 QC PASS。当前只读监管唯一 Base/2160；不部署、不并发、不改 checkout。
+
 ## Factor-screen fail-closed summary contract
 
 runner 默认 baseline：
