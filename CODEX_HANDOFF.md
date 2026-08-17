@@ -12,6 +12,16 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 09:32+08:00：ParaCloud audit round 33 已追加；job `4139552` 仍为原 Stage A，最新
+  iteration 331（09:02:16），runtime `975,911.936 s`，primal/dual/complementarity
+  `1.336420/1.053e-6/0.113863`。Slurm wall `980,022 s`、allocated `26,133.920 core-hours`、
+  actual CPU `4,086.896 h`、efficiency `15.6383%`、MaxRSS `362.913 GiB`，最近 20 步
+  `53.414 min/step`；账本 34 records，SHA256 `fc88fd29...e48045c`。stderr 0、无终态或
+  checkpoint；未取消、未改参、未启 Stage B。fixed Base/1488 到 iteration 70，runtime
+  `13,316.273 s`，primal/dual/complementarity `19.5745/0.009304/18.2902`，进程/RSS 稳定、
+  stderr 0。当前云 profile 无法在活动 `optimize()` 中安全改参；按近期指数衰减只能作成本预警：
+  primal 到本地 relaxed-744 终点量级约 5 天、absolute objective gap 到 1,000 量级约 8--9 天，
+  不是完成承诺。依作者“不取消”边界继续只读监管；下一全年路线必须以 relaxed/factor A/B 降本。
 - 2026-08-17 08:37+08:00：fixed Base/1488 到 iteration 50，runtime `10,014.836 s`，0--50/
   30--50/40--50 平均 `170.51/171.33/161.75 s/step`；primal/dual/complementarity
   `229.055/0.172288/262.879`。相对 Base/744 的同量级点分别对应 iteration `48/58/65`，
@@ -1687,6 +1697,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 33 and Base/1488 iteration 70
+
+- cloud：只读核验 `squeue/sstat`、telemetry、stderr 与终态文件，并向既有
+  `run_control/2030_8760_base_stage_a_barrier_v2/resource_audit_snapshots.jsonl` 追加 round 33。
+  job `4139552` 为 `RUNNING`，latest Barrier iteration 331、runtime `975,911.936 s`；wall
+  `980,022 s`、96 CPUs/700 GiB allocation、allocated `26,133.920 core-hours`、actual CPU
+  `4,086.896 h`、efficiency `15.6383%`、MaxRSS `380,541,608 KiB`。iteration 311--331 平均
+  `53.4137 min/step`；34 条记录 SHA256
+  `fc88fd29580cc565620096fdf9a2b06ead35e42e88bfa32a2cd3d0d5fe48045c`。
+- 成本判断：latest primal/dual/complementarity 为 `1.336420/1.053e-6/0.113863`，仍改善但离
+  current `BarConvTol=1e-8` 的全年终点无近端证据。用最近 10--80 步端点衰减率外推，primal 到
+  relaxed Base/744 终点量级约 5 天，absolute objective gap 到 1,000/1 量级约 8--9/14--16 天；
+  该估计不把非线性 Barrier 当确定 ETA，只作为费用风险下界。活动 Gurobi 参数不可安全追改；
+  按作者明确要求不取消、不改参、不启 Stage B。
+- fixed：Base/1488 iteration 70 于 09:31:02 落盘，runtime `13,316.273 s`；primal/dual/
+  complementarity `19.574527/0.00930446/18.290173`，iteration 69--70 继续下降。唯一 solver
+  存活，process RSS 约 `55,451,552 KiB`、stderr 0；继续到 100/终态，不并发、不部署。
+- 下一步：本轮活动 campaign 完成并释放内存后，优先执行 `NF0+Scale2`、`NF1+ScaleAuto`、
+  `NF0+ScaleAuto` 的短迭代 factor screen；只有 materially 降低 Factor NZ/Ops 且 744 宏观账目
+  通过的路线才可成为下一次 8760 候选。当前 cloud/fixed 运行身份及历史 outputs 保持不变。
 
 ### 2026-08-17 Base/1488 iteration 50 convergence and time-limit gate
 

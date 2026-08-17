@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 09:32 cloud round 33 / Base-1488 iteration 70
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=331 runtime_s=975911.936
+cloud_primal_dual_complementarity=1.336420/1.053e-6/0.113863
+cloud_round=33 wall_s=980022 allocated_core_hours=26133.920 actual_cpu_hours=4086.896
+cloud_efficiency_percent=15.6383 maxrss_gib=362.913 recent20_minutes=53.414
+cloud_resource_audit_records=34 sha256=fc88fd29580cc565620096fdf9a2b06ead35e42e88bfa32a2cd3d0d5fe48045c
+fixed_base_1488_iteration=70 runtime_s=13316.273
+fixed_primal_dual_complementarity=19.574527/0.00930446/18.290173
+fixed_process_rss_kib~=55451552 stderr_bytes=0
+```
+
+继续遵守作者“不取消 cloud”边界。不得尝试对活动 `optimize()` 追改 `BarConvTol` 或其他参数；
+不得 signal/cancel/requeue，不启 Stage B。最近轨迹的 5 天/8--9 天外推仅作费用风险预警，不是 ETA。
+fixed 继续唯一 solver 到 iteration 100/终态，活动 campaign 退出前不得部署 lower-factor profiles。
+
 ## 2026-08-17 08:37 Base/1488 iteration 50 gate
 
 ```text

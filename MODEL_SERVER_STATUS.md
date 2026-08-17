@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 09:32+08:00 cloud round 33 / fixed iteration 70
+
+- cloud `4139552` 仍为 `RUNNING`，iteration 331、runtime `975,911.936 s`；primal/dual/compl
+  `1.336420/1.053e-6/0.113863`。wall `980,022 s`、allocated `26,133.920 core-hours`、actual CPU
+  `4,086.896 h`、efficiency `15.6383%`、MaxRSS `362.913 GiB`，最近 20 步 `53.414 min`。
+  resource audit 34 records SHA256 `fc88fd29...e48045c`；stderr 0、无终态/checkpoint，未启 Stage B。
+- fixed Base/1488 到 iteration 70，runtime `13,316.273 s`，primal/dual/compl
+  `19.574527/0.00930446/18.290173`；process RSS 约 `55,451,552 KiB`、stderr 0，仍安全。
+- 当前 cloud 严格 profile 不能在运行中改参。近期衰减只支持费用预警：primal 到 relaxed-744
+  终点量级约 5 天，objective gap 到 1,000 量级约 8--9 天；不是可靠完成 ETA。保持不取消，
+  fixed 继续到 100/终态，下一轮转入 lower-factor 参数 screen。
+
 ## 2026-08-17 08:37+08:00 Base 1488 iteration 50
 
 - iteration 50 runtime `10,014.836 s`；primal/dual/compl `229.055/0.172288/262.879`。
