@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 19:26+08:00：正式 future full-year v3 profiles 已完成 fixed Gurobi 环境验证，参数冻结
+  工程闭合。local/origin/GitHub implementation tip 均为
+  `0363b7b0183a52184b2f0be7a1381efc76d1615e`；fixed 在无 CISPO/Gurobi、clean、available
+  `122,241,404,928 bytes`（约 `113.85 GiB`）、连续 si/so 0、memory PSI 0 后从 `710aa02`
+  fast-forward 到该精确提交。两份 v3 JSON、cloud sbatch bash、py_compile PASS；Gurobi targeted
+  `14/14 PASS`（wall `0:02.52`、MaxRSS `109,940 KiB`、swaps 0），完整 server regression
+  `212/212 PASS`（tests `97.282 s`、wall `1:38.40`、MaxRSS `1,118,064 KiB`、swaps 0）。结束后
+  fixed 仍 clean/idle、资源安全，未启动 solver。Stage A/B v3 现在是正式
+  `APPROVED_PARAMETERS_NOT_LAUNCH_AUTHORIZED`；当前 cloud v2 未触碰，下一 cloud 常规检查仍约 21:20。
 - 2026-08-17 19:20+08:00：按约 2 小时低频窗口完成 cloud resource audit round 41，并因 Barrier
   从 `340` 推进到 `343` 才追加 ledger。job `4139552` 仍 RUNNING；latest runtime
   `1,012,057.571 s`，primal/dual/complementarity `0.983025/8.356e-7/0.087008`，最近 20 步平均
@@ -1998,6 +2007,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 approved future full-year v3 profiles validated on fixed server
+
+- Git/deploy：implementation `0363b7b0183a52184b2f0be7a1381efc76d1615e` 已双推送；fixed 部署前为
+  clean/idle `710aa02`，实时资源门禁通过后 fast-forward 到 exact `0363b7b`，部署后仍 clean。
+- 服务器门禁：无 CISPO/Gurobi；available RAM 约 `113.85 GiB`，swap 约 `1.04/2.0 GiB` 已用但
+  `vmstat si/so=0/0`，memory PSI avg10/60/300 均 0。验证结束后同样无 solver/压力异常。
+- 命令/验证：两份 v3 `json.tool`、Stage A sbatch `bash -n`、runner/tests py_compile PASS；在 Gurobi
+  13.0.2 环境运行 `tests.test_cloud_full_year_profile_guard + tests.test_solver_profiles` 为 `14/14 PASS`
+  （wall `0:02.52`、MaxRSS `109,940 KiB`、swaps 0）；全发现回归 `212/212 PASS`（test runtime
+  `97.282 s`、wall `1:38.40`、MaxRSS `1,118,064 KiB`、swaps 0）。
+- 结论：`barrier_checkpoint_full_year_cloud_v3` 与 `deferred_crossover2_full_year_cloud_v3` 的正式文件、
+  loader schema、all-version guard 与 Gurobi regression 全闭合；参数获批但不构成任何实际 launch
+  authorization。本轮未启动 fixed solver、未改 cloud v2、未启 Stage B。
+- 下一步：提交/双推送本验证文档；固定服务器保持 `0363b7b` idle，不必为纯文档 tip 再部署。cloud
+  只在约 21:20 或 terminal/anomaly 做下一次检查，iteration 不推进且无异常时不落账。
 
 ### 2026-08-17 cloud resource audit round 41
 

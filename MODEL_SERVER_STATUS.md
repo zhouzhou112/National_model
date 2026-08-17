@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 19:26+08:00 full-year v3 profiles server validation PASS
+
+- `0363b7b0183a52184b2f0be7a1381efc76d1615e` 已在 local/origin/GitHub 一致并部署到 fixed；部署前后
+  均 clean/idle，无 CISPO/Gurobi。available 约 `113.85 GiB`，si/so 0、memory PSI 0。
+- v3 JSON、bash、pycompile PASS；Gurobi focused `14/14 PASS`（wall `0:02.52`、MaxRSS `109,940 KiB`），
+  full regression `212/212 PASS`（97.282 s，wall `1:38.40`、MaxRSS `1,118,064 KiB`），均 swaps 0。
+- Stage A/B v3 参数现正式 `APPROVED / NOT LAUNCH AUTHORIZED`。没有启动 fixed solver；cloud v2 保持
+  不变，下一常规检查约 21:20。
+
 ## 2026-08-17 19:20+08:00 cloud round 41 / next check about 21:20
 
 - `4139552` 仍是用户队列唯一任务，RUNNING/Barrier 343；runtime `1,012,057.571 s`，primal/dual/compl

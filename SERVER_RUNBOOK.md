@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 19:26 future full-year v3 profile server validation
+
+```text
+implementation_commit=0363b7b0183a52184b2f0be7a1381efc76d1615e
+fixed_head=0363b7b0183a52184b2f0be7a1381efc76d1615e checkout=clean solver_count=0
+pre_post_available_gib~=113.85 si_so=0/0 memory_psi=0
+json_bash_pycompile=PASS
+focused=14/14_PASS wall=0:02.52 maxrss_kib=109940 swaps=0
+full_regression=212/212_PASS tests_s=97.282 wall=1:38.40 maxrss_kib=1118064 swaps=0
+profile_status=APPROVED_PARAMETERS_NOT_LAUNCH_AUTHORIZED
+```
+
+fixed 现在保持 idle `0363b7b`，不启动 smoke/744/8760、Stage B 或第二 solver；纯文档 tip 不需要再次
+部署。未来实际提交仍须独立授权、全新 roots、实时资源/identity 门禁。cloud 原 v2 继续运行，下一常规
+检查约 21:20 或 terminal/anomaly；没有 iteration/异常时不追加 ledger。
+
 ## 2026-08-17 19:20 cloud resource round 41
 
 ```text

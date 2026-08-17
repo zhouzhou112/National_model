@@ -9,7 +9,7 @@ current_cloud_action=KEEP_RUNNING_UNCHANGED
 fixed_validation=deferred_crossover2_744_validation_v0817_v3_PASS
 approved_stage_a_profile=barrier_checkpoint_full_year_cloud_v3
 approved_stage_b_profile=deferred_crossover2_full_year_cloud_v3
-formal_profile_validation=LOCAL_CONFIG_GUARD_PASS_SERVER_PENDING
+formal_profile_validation=FIXED_GUROBI_FOCUSED_14_OF_14_FULL_212_OF_212_PASS
 scientific_result_available=false
 ```
 
@@ -237,8 +237,8 @@ wrapper_stderr_and_time=audited
    manifests + Pi + macro pair` 完成架构闭合。该项不再未决，但 744 h 仍不得重标为年度结果。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
    Stage A 总耗时或终态质量。
-3. 正式 v3 profiles 与本地 config/guard 已闭合；尚须在 fixed 的 Gurobi 环境执行 targeted/full
-   regression 后冻结验证提交，不覆盖当前 v2，也不启动任务。
+3. 正式 v3 profiles 已完成 fixed Gurobi focused `14/14` 与 full `212/212`；该工程项已闭合，但不覆盖
+   当前 v2，也不授权启动任务。
 4. 结合 ParaCloud 最新资源计费/核内存绑定规则，冻结下一次申请的最小合法 CPU 与 `>=600 GiB` 内存。
 5. 将服务器验证后的最终状态同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，记录精确
    Git、commands、outputs、SHA256、验证和下一步。
