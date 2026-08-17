@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 17:48+08:00 deferred Crossover v2 pre-build terminal / repair pushed
+
+- v2 于 17:15:01 terminal，runner/audit/macro `1/41/42`；没有 output 文件、LP、Gurobi、telemetry、
+  solve/QC/result/checkpoint，未进入模型构建或求解。
+- 唯一错误为 memory gate 使用已删除的 `CLOUD_FULL_YEAR_PROFILE_IDS`。`018607c` 已双推送，改为按
+  `cloud_full_year_role` 对所有 Stage A/B 版本实施 640 GiB floor；py_compile、focused `5/5 PASS`，旧引用 0。
+- v1/v2 失败根永久保留。下一步先实时复核 fixed no-solver/clean/resource-safe，再部署 `018607c`、跑完整
+  server regression，并用全新 v3 roots 启动唯一验证。cloud 本轮未查询/触碰，监控频率不提高。
+
 ## 2026-08-17 17:21+08:00 cloud round 40
 
 - `4139552` RUNNING，Barrier 340、runtime `1,002,807.627 s`；primal/dual/compl

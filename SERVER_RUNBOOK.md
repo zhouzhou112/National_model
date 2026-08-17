@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 17:48 deferred Crossover v2 terminal and v3 relaunch gate
+
+```text
+v2_terminal=2026-08-17T17:15:01+08:00 runner_audit_macro_rc=1/41/42
+build_started=false solver_started=false output_files=0
+error=NameError:CLOUD_FULL_YEAR_PROFILE_IDS
+repair_commit=018607c local_compile=PASS focused=5/5 stale_reference_count=0
+next_roots=deferred_crossover2_744_validation_v0817_v3
+```
+
+不得复用/删除 v1 或 v2 roots。v3 只能按以下顺序启动：实时确认 fixed 无 CISPO/Gurobi、checkout clean、
+RAM/swap/vmstat/PSI 安全；fast-forward exact `018607c`；运行 bash/py_compile、profile guard、data-root、
+primal-dual、deferred contract 与 full regression；再次确认无 solver；预检全新 v3 roots 后启动唯一
+supervisor。任何一步失败都不启动。启动后只按 phase event/terminal 或约 30--45 分钟检查；cloud 约两小时，
+没有新 Barrier iteration 或异常时不追加 ledger。
+
 ## 2026-08-17 17:21 cloud resource round 40
 
 ```text

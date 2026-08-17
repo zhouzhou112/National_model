@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 17:48+08:00：deferred Stage B v2 已确认于 17:15:01 在 optimize/build 前异常退出，
+  runner/audit/macro rc `1/41/42`；没有 output 文件、LP、Gurobi log、telemetry、solve/QC/result 或
+  primal-dual start identity。唯一异常为 `run_cispo_2030_full_year.py:639` 引用已删除的
+  `CLOUD_FULL_YEAR_PROFILE_IDS`，因此不是 checkpoint、模型或数值失败。v1/v2 roots 均永久保留。
+  最小修复提交 `018607c` 已双推送：全年度 profile role 统一应用 640 GiB memory floor，新增覆盖
+  Stage A/B v1/v2/future versions 的单元回归；py_compile、focused `5/5 PASS`、旧常量引用 0。
+  下一步仅在 fixed 再次 no-solver/clean/resource-safe 后部署该精确提交，执行 focused/full server
+  regression，再以全新 `deferred_crossover2_744_validation_v0817_v3` roots 启动唯一验证。cloud 未查询、
+  未取消、未改参；监管保持 fixed 30--45 分钟/阶段事件、cloud 约 2 小时且无增量不落账。
 - 2026-08-17 17:21+08:00：cloud 两小时增量审计 round 40 已完成。job `4139552` 仍 RUNNING，Barrier
   iteration `340`、runtime `1,002,807.627 s`，primal/dual/complementarity
   `1.082073/8.926e-7/0.0942553`；最近 20 步 `51.928 min/step`。wall `1,008,190 s`、allocated
@@ -1941,6 +1950,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v2 pre-build terminal and memory-gate repair
+
+- terminal：v2 于 `17:15:01+08:00` 结束，runner/audit/macro rc `1/41/42`；未生成任何 output/LP/Gurobi/
+  checkpoint/验收产物，故不能解释为 Crossover 或数值结果。唯一 traceback 是 full-year memory gate
+  仍引用已删除的逐版本常量 `CLOUD_FULL_YEAR_PROFILE_IDS`。
+- Git/changed files：`018607c`（`fix: apply cloud profile role to memory gate`）修改
+  `scripts/run_cispo_2030_full_year.py` 与 `tests/test_cloud_full_year_profile_guard.py`；用纯函数把已分类
+  Stage A/B role 应用于 640 GiB floor，非 cloud profile 保持原 horizon 门槛，配置值高于 640 GiB 时不下调。
+- 验证：本地 py_compile PASS、profile-guard `5/5 PASS`、`rg CLOUD_FULL_YEAR_PROFILE_IDS` 为 0、
+  `git diff --check` PASS；提交已推送 origin/GitHub。未修改模型、数据、checkpoint、solver 参数或云任务。
+- 下一步：fixed 必须先实时复核 idle/clean/RAM/swap/PSI，再 fast-forward exact `018607c`，运行 focused 与
+  full regression；全部通过后只用全新 v3 roots 启动一个 Base/744 deferred Crossover2。v1/v2 不删除、
+  不覆盖；v3 后按 30--45 分钟或 phase event 低频监管。
 
 ### 2026-08-17 cloud resource audit round 40
 
