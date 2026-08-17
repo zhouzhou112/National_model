@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 15:23+08:00：第二批 paired factor/throughput screens 已在固定服务器安全启动。local/origin/
+  GitHub 与部署实施提交均为 `7551e3fcc55aa2964dd8eff2bed30e7ab47400f7`；部署前 fixed clean/idle，
+  Linux `bash -n`、三份 profile JSON、`py_compile`、focused `16/16` 与完整 server regression
+  `197/197 PASS`（`93.710 s` test runtime、`1:34.83` wall、MaxRSS `1,133,084 KiB`、swaps 0）。
+  baseline `nf1_scaleauto` 再审计为 Fingerprint `2120635803`、raw
+  `4,454,178 rows / 3,735,087 cols / 40,395,436 nnz`、Factor NZ/Ops
+  `7.334e8/4.761e12`、5 iterations、`12.834849 s/iter`。全新 output/control 为
+  `relaxed_factor_screens_v0817_v2`；15:23:11 启动唯一串行 supervisor PID `1567638`，首根
+  `presparsify2`。启动 available RAM `113.951 GiB`、si/so `0/0`、memory PSI avg10 `0.00`、
+  supervisor stderr 0；后续只能由同一 supervisor 顺序执行 `barorder1`、`threads32`，每根仍只是
+  Base/744、Crossover 0、5-step engineering screen，不是 checkpoint/科学结果。fixed checkout 在活动期
+  冻结，不部署后续文档 tip、不并发第二求解。云端 `4139552` 于 15:19 仍 RUNNING、iteration 338、
+  stderr 0，未修改；fixed 改为约 30--45 分钟或 case switch/terminal/resource anomaly 检查，cloud
+  改为约 2 小时且仅新迭代/异常落账。
 - 2026-08-17 15:16+08:00：第一批空 shortlist 后，已基于两组 24 h 历史根收敛第二批而非继续盲扫。
   淘汰 `PreDual=1`（24 h Factor Ops `2.605e11`，约基线数百倍）、`PreDual=2`（无结构收益）、
   `Aggregate=0/Presolve=1`（更差或无收益）与 `AggFill=0`（Ops 仅约 `1.8%` 改善）。仅保留
@@ -1847,6 +1861,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 second paired factor/throughput screen batch launched
+
+- Git/部署：local、origin、GitHub 已统一为实施提交
+  `7551e3fcc55aa2964dd8eff2bed30e7ab47400f7`；fixed 从 clean/idle `4f195d4` fast-forward 到该提交，
+  部署后 checkout clean。未改模型、数据、Base 身份、容差或云端作业。
+- 验证：`scripts/run_fixed_server_relaxed_factor_screens{,_round2}.sh` 均 `bash -n PASS`，三份新增 profile
+  JSON 和 summary `py_compile` PASS；summary/profile/solver-profile focused `16/16 PASS`。设置五个
+  current 外部数据根后的完整 server regression 为 `197/197 PASS`，test runtime `93.710 s`、wall
+  `1:34.83`、MaxRSS `1,133,084 KiB`、swaps 0。
+- 启动证据：目标 output/control 均事先不存在；无 Python/Gurobi solver；available RAM
+  `113.951 GiB`、si/so `0/0`、memory PSI avg10 `0.00`、磁盘充足。baseline audit 为 Fingerprint
+  `2120635803`、raw `4,454,178/3,735,087/40,395,436`、Factor NZ/Ops `7.334e8/4.761e12`、5 steps、
+  observed `12.8348494053 s/iter`。15:23:11 以全新 `relaxed_factor_screens_v0817_v2` roots 启动唯一
+  supervisor PID `1567638`，首根 `presparsify2`；5 秒存活检查、首个 event 与 stderr 0 均通过。
+- 边界/下一步：三根固定为 `presparsify2 -> barorder1 -> threads32` 串行，Base/744、Crossover 0、
+  `BarIterLimit=5`，没有科学/checkpoint 身份。活动期不改 fixed checkout、不并发求解。按用户要求将
+  fixed 正常检查降为约 30--45 分钟/事件驱动，cloud 降为约 2 小时；批次终态后严格审计 identity、
+  rc/stderr、Factor 与 paired throughput，只有 shortlist 候选才允许完整 744 + exact macro A/B。
 
 ### 2026-08-17 second paired factor/throughput screen batch prepared
 

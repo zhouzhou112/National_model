@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 15:23+08:00 second factor/throughput batch active
+
+- 实施提交 `7551e3fcc55aa2964dd8eff2bed30e7ab47400f7` 已部署到 clean/idle fixed；`bash -n`、JSON、
+  py_compile、focused `16/16` 与 full regression `197/197 PASS`（`93.710 s`，wall `1:34.83`，
+  MaxRSS `1,133,084 KiB`，swaps 0）。
+- baseline Fingerprint/raw/Factor/observed step metric 为
+  `2120635803`、`4,454,178/3,735,087/40,395,436`、`7.334e8/4.761e12`、`12.834849 s/iter`。
+  全新 v2 roots；唯一 supervisor PID `1567638`，首根 `presparsify2` 于 15:23:11 启动，stderr 0。
+- 启动 available `113.951 GiB`、si/so/PSI `0/0/0`。活动期 checkout 冻结，后两根仅由同一进程
+  串行启动；约 30--45 分钟/事件检查。cloud `4139552` 15:19 仍 RUNNING、iteration 338、stderr 0，
+  约 2 小时低频检查且未触碰。
+
 ## 2026-08-17 15:16+08:00 second factor/throughput batch ready locally
 
 - 第二批仅三根：`PreSparsify=2`、`BarOrder=1`、Threads 32；其余 PreDual/Aggregate/Presolve/AggFill

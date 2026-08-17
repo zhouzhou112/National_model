@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 15:23 second paired factor/throughput batch active
+
+```text
+deployed_head=7551e3fcc55aa2964dd8eff2bed30e7ab47400f7 checkout=clean_frozen
+server_validation=bash_json_compile_PASS,focused_16/16,full_197/197_93.710s
+full_regression_wall=1:34.83 maxrss_kib=1133084 swaps=0
+baseline_fingerprint=2120635803 raw_rows_cols_nnz=4454178/3735087/40395436
+baseline_factor_nz_ops=7.334e8/4.761e12 baseline_observed_step_s=12.8348494053
+output_base=/data/zz2/National_model/outputs/relaxed_factor_screens_v0817_v2
+control_root=/data/zz2/National_model/run_control/relaxed_factor_screens_v0817_v2
+supervisor_pid=1567638 started_at=2026-08-17T15:23:11+08:00 active_tag=presparsify2
+launch_available_gib=113.951 si_so=0/0 psi_avg10=0.00 stderr_bytes=0
+cloud_job=4139552 state=RUNNING iteration=338 verified_at=2026-08-17T15:19:23+08:00
+```
+
+活动期禁止修改 fixed checkout、启动并发求解或把 5-step 根当 checkpoint/科学结果。仅同一 supervisor
+可按 `presparsify2 -> barorder1 -> threads32` 顺序切换。正常 fixed 检查约 30--45 分钟或由 case
+switch/terminal/resource anomaly 触发；cloud 约 2 小时且只有新迭代/异常才追加 ledger。批次终态必须先
+完成 summary fail-closed 审计，再决定是否存在完整 744 + exact macro A/B 候选。
+
 ## 2026-08-17 15:16 second paired factor/throughput batch contract
 
 ```text
