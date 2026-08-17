@@ -7,6 +7,9 @@ decision_status=APPROVED_AFTER_DEFERRED_CROSSOVER_744_STRICT_PASS
 current_cloud_job=4139552
 current_cloud_action=KEEP_RUNNING_UNCHANGED
 fixed_validation=deferred_crossover2_744_validation_v0817_v3_PASS
+approved_stage_a_profile=barrier_checkpoint_full_year_cloud_v3
+approved_stage_b_profile=deferred_crossover2_full_year_cloud_v3
+formal_profile_validation=LOCAL_CONFIG_GUARD_PASS_SERVER_PENDING
 scientific_result_available=false
 ```
 
@@ -45,7 +48,7 @@ Stage B。Gurobi 参数不能在一次活动 optimize 中途安全替换，当�
 | relaxed Base/2160 | 同 winner long，SoftMem80 | Presolve/ordering 后、Barrier iter 0 前 `MEM_LIMIT` | `2,800.735 s` / `1:01:40` | `72,659,300 KiB` | 固定服务器内存边界；无解/无 checkpoint |
 | factor screens batch 1 | NF0/Scale auto 组合，均 5 iter | 三根均无改善，shortlist 空 | batch 约 `38:19` | `19.7--20.5 GiB` | 否决 NF0/auto-scale 盲扫 |
 | factor screens batch 2 | PreSparsify2/BarOrder1/Threads32，均 5 iter | 无 material cost improvement，shortlist 空 | batch 约 `43:00` | `19.8--20.4 GiB` | 否决继续短参数盲扫 |
-| cloud Base/8760 Stage A | BCTol `1e-8`，Feas/Opt `1e-6`，NF2，Crossover0，16 solver threads | 仍 RUNNING；最后已落账 iter 340 | runtime `1,002,807.627 s` | MaxRSS `362.913 GiB` | 当前唯一全年 Stage A 工程任务 |
+| cloud Base/8760 Stage A | BCTol `1e-8`，Feas/Opt `1e-6`，NF2，Crossover0，16 solver threads | 仍 RUNNING；最后已落账 iter 343 | runtime `1,012,057.571 s` | MaxRSS `362.913 GiB` | 当前唯一全年 Stage A 工程任务 |
 
 strict Base/744 的分时为 Barrier `7,734.65 s`、Crossover/simplex cleanup `45,468.01 s`。因此当前
 全年架构的主要风险不是“Barrier-only 一定不能结束”，而是：
@@ -96,8 +99,8 @@ Factor Ops/NZ 至少 `5%` 或 observed step time 至少 `10%` 的改善；否则
 ### 5.2 云端
 
 - 当前 job 申请资源不能中途改变；保持原样直到 Stage A 自行结束或出现明确 fatal terminal。
-- 最后已落账的 allocated core-hours 为 `26,657.947`，actual CPU hours 为 `4,169.626`，CPU efficiency
-  `15.6412%`，说明 96 allocated cores 并未被 16-thread solver 充分使用。该事实不等于当前任务可以
+- 最后已落账的 allocated core-hours 为 `27,076.827`，actual CPU hours 为 `4,235.784`，CPU efficiency
+  `15.6436%`，说明 96 allocated cores 并未被 16-thread solver 充分使用。该事实不等于当前任务可以
   安全缩容；节点内存是主要申请约束。
 - 下一次提交应先核对 ParaCloud 的“每核对应可申请内存”与计费规则，在满足 `>=600 GiB` 可用内存的
   最小合法核数上申请。若队列允许独立大内存且 16/32 cores，则优先 16 solver threads；不要只为使用
@@ -109,7 +112,7 @@ Factor Ops/NZ 至少 `5%` 或 observed step time 至少 `10%` 的改善；否则
 
 ### 6.1 Stage A：save-first relaxed Barrier checkpoint
 
-建议新增/冻结为一个新的 profile 版本，不覆盖当前正在运行的
+已正式冻结为 `barrier_checkpoint_full_year_cloud_v3`，不覆盖当前正在运行的
 `barrier_checkpoint_full_year_cloud_v2`：
 
 ```json
@@ -149,6 +152,8 @@ Stage B。Gurobi 没有为当前 Python solve 提供可移植的任意 Barrier i
 “save-first”指 optimize 返回后立即落盘，不应宣称能抵御节点硬故障或进程被强杀。
 
 ### 6.2 Stage B：独立 exact-LP deferred Crossover
+
+正式 profile 为 `deferred_crossover2_full_year_cloud_v3`：
 
 ```json
 {
@@ -223,8 +228,8 @@ wrapper_stderr_and_time=audited
 | fixed 新增 solver | NO-GO | v3 已完成且固定服务器内存边界明确，不再追加盲测 |
 | 继续盲扫常规 Gurobi 参数 | NO-GO | 两批 paired screens 均无 material improvement |
 | fixed 重跑 Base/2160 | NO-GO | 已在 Barrier 前触发明确内存边界 |
-| future relaxed Stage A profile | APPROVED / NOT LAUNCH AUTHORIZED | 744 macro、V5/744、Base/1488 与 deferred v3 已闭合 |
-| future Stage B profile | APPROVED / NOT LAUNCH AUTHORIZED | v3 已完成 strict terminal、Pi、manifests 与 macro pair |
+| `barrier_checkpoint_full_year_cloud_v3` | APPROVED / NOT LAUNCH AUTHORIZED | 744 macro、V5/744、Base/1488 与 deferred v3 已闭合；正式文件已建立 |
+| `deferred_crossover2_full_year_cloud_v3` | APPROVED / NOT LAUNCH AUTHORIZED | v3 已完成 strict terminal、Pi、manifests 与 macro pair；正式文件已建立 |
 
 ## 9. 尚待闭合
 
@@ -232,7 +237,8 @@ wrapper_stderr_and_time=audited
    manifests + Pi + macro pair` 完成架构闭合。该项不再未决，但 744 h 仍不得重标为年度结果。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
    Stage A 总耗时或终态质量。
-3. 新增 future relaxed Stage A 与配套 Stage B 的正式 profile/tests；不覆盖当前 v2，也不启动任务。
+3. 正式 v3 profiles 与本地 config/guard 已闭合；尚须在 fixed 的 Gurobi 环境执行 targeted/full
+   regression 后冻结验证提交，不覆盖当前 v2，也不启动任务。
 4. 结合 ParaCloud 最新资源计费/核内存绑定规则，冻结下一次申请的最小合法 CPU 与 `>=600 GiB` 内存。
-5. 将最终批准状态同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，记录精确
+5. 将服务器验证后的最终状态同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，记录精确
    Git、commands、outputs、SHA256、验证和下一步。

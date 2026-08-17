@@ -1,5 +1,39 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 19:20 cloud resource round 41
+
+```text
+job=4139552 state=RUNNING barrier_iteration=343 solver_runtime_s=1012057.571
+primal_dual_complementarity=0.983025/8.356e-7/0.087008 recent20_minutes=51.190
+wall_s=1015381 allocated_core_hours=27076.827 actual_cpu_hours=4235.784
+cpu_efficiency_percent=15.6436 maxrss_gib=362.913 stderr_bytes=0 terminal_artifacts=[]
+gurobi_current_max_gib=351.054/354.498 user_queue_jobs=1
+ledger_records=42 sha256=69e14220460f734f4f929170e5b9b4575040c5e1be99147a230de749d7d90f25
+```
+
+本轮距 round 40 约 2 小时且 iteration 340→343，故追加 ledger；没有无增量重复记录。下一常规 cloud
+检查不早于约 21:20，除非 terminal/anomaly。保持原 Stage A，不取消、不改参、不启动 Stage B。
+
+## 2026-08-17 19:18 approved future full-year v3 profile contract
+
+```text
+stage_a_profile=barrier_checkpoint_full_year_cloud_v3
+stage_a_numerics=Method2,Threads16,Presolve2,Crossover0,SolutionTarget1,BCTol1e-2,FeasOpt1e-5,NF1,Scale2,Aggregate1
+stage_b_profile=deferred_crossover2_full_year_cloud_v3
+stage_b_numerics=Method2,Threads16,Presolve2,Crossover2,Basis1,LPWarmStart2,FeasOpt1e-6,NF2,Scale2,Aggregate1
+common=Markowitz0.01,DualReductions1,InfUnbdInfo0,no_TimeLimit,SoftMem600GiB,Gurobi13+
+authorization=APPROVED_PARAMETERS_NOT_LAUNCH_AUTHORIZED
+local_validation=config_load_PASS,role_guard_5/5,py_compile_PASS,diff_check_PASS
+server_validation=PENDING
+```
+
+`solver_profile_version=v1` 是当前 loader schema，不得误改为 profile identity；版本身份由文件名和
+`profile_id` 的 `_v3` 表示。部署验证只能在 fixed 无 CISPO/Gurobi、checkout clean、RAM/swap/vmstat/PSI
+安全时进行：fast-forward 精确提交，运行 JSON/config load、bash/py_compile、cloud role guard、完整
+`tests.test_solver_profiles` 和 full regression。验证完成后仍不得启动 solver。活动 cloud `4139552` 继续
+原 v2，不取消、不改参、不启动 Stage B；只约 2 小时或 terminal/anomaly 检查，iteration 未推进且无异常
+时不追加 ledger。
+
 ## 2026-08-17 19:14 deferred Crossover v3 terminal acceptance
 
 ```text

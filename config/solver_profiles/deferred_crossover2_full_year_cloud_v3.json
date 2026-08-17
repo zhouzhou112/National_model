@@ -1,0 +1,26 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "deferred_crossover2_full_year_cloud_v3",
+  "minimum_gurobi_major_version": 13,
+  "description": "Approved future Stage B full-year exact-LP deferred Crossover=2 profile. It matches the strict Base/744 deferred validation route, requires a separately accepted complete Stage A checkpoint and explicit authorization, and is scientific only after OPTIMAL, strict quality, all hard checks, finite Pi, and valid manifests.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "lp_warm_start": 2,
+    "solution_target": 0,
+    "barrier_convergence_tolerance": 1e-8,
+    "feasibility_tolerance": 1e-6,
+    "optimality_tolerance": 1e-6,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": 600
+  }
+}

@@ -37,11 +37,19 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             "STAGE_A",
         )
         self.assertEqual(
+            cloud_full_year_profile_role("barrier_checkpoint_full_year_cloud_v3"),
+            "STAGE_A",
+        )
+        self.assertEqual(
             cloud_full_year_profile_role("barrier_checkpoint_full_year_cloud_v99"),
             "STAGE_A",
         )
         self.assertEqual(
             cloud_full_year_profile_role("deferred_crossover2_full_year_cloud_v2"),
+            "STAGE_B",
+        )
+        self.assertEqual(
+            cloud_full_year_profile_role("deferred_crossover2_full_year_cloud_v3"),
             "STAGE_B",
         )
         self.assertIsNone(cloud_full_year_profile_role("barrier_16_auto_order_v2"))
@@ -51,8 +59,10 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         for profile_id in (
             "barrier_checkpoint_full_year_cloud_v1",
             "barrier_checkpoint_full_year_cloud_v2",
+            "barrier_checkpoint_full_year_cloud_v3",
             "barrier_checkpoint_full_year_cloud_v99",
             "deferred_crossover2_full_year_cloud_v2",
+            "deferred_crossover2_full_year_cloud_v3",
         ):
             with self.subTest(profile_id=profile_id):
                 self.assertEqual(

@@ -1325,6 +1325,27 @@ runner 按前缀分别识别为 Stage A/Stage B，而不是只硬编码 v1。前
 primal push、dual-simplex cleanup。该架构的代码/小模型契约已经 Gurobi 13.0.2 验证，但尚未执行
 8760 h，因此仍不能把它描述为已有年度科学结果或已实测年度性能。
 
+#### 2026-08-17 大尺度参数实证与正式 v3 profile 覆盖
+
+2026-08-17 的 current-model 配对实验覆盖 strict Base/744、relaxed Base/744、V5/744、Base/1488、
+Base/2160 memory boundary、两批同 identity 5-iteration factor screens，以及 exact deferred
+Crossover/744。证据表明 Stage A 不宜继续沿用上节未经大尺度实证的 `BarConvTol=1e-9`：当前
+`barrier_checkpoint_full_year_cloud_v3` 冻结为 `Method=2/Threads=16/Presolve=2/Crossover=0/
+SolutionTarget=1/BarConvTol=1e-2/FeasibilityTol=OptimalityTol=1e-5/MarkowitzTol=0.01/
+NumericFocus=1/ScaleFlag=2/Aggregate=1/DualReductions=1/InfUnbdInfo=0/no TimeLimit/
+SoftMemLimit=600 GiB`。它只产生 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`，必须保存完整 finite raw-order
+`BarX/BarPi`、identity、残差、资源和时间；不得产生 scientific result manifest、accepted planning state
+或论文影子价格。
+
+配套 `deferred_crossover2_full_year_cloud_v3` 冻结为 `Method=2/Threads=16/Presolve=2/
+Crossover=2/CrossoverBasis=1/LPWarmStart=2/SolutionTarget=0/FeasibilityTol=OptimalityTol=1e-6/
+MarkowitzTol=0.01/NumericFocus=2/ScaleFlag=2/Aggregate=1/DualReductions=1/InfUnbdInfo=0/
+no TimeLimit/SoftMemLimit=600 GiB`。其 `BarConvTol=1e-8` 仅为完整 numerics 记录；exact PStart/DStart
+路线不得重跑 Barrier。Base/744 已实证 Barrier 0、`OPTIMAL + solution contract PASS + QC PASS 58/58 +
+valid manifests + finite Pi + macro pair PASS`，Stage A+B 合计 solver/wall 为 `6,938.338 s/2:08:24.08`，
+相对 strict inline 路线约加速 `7.71×/6.99×`。该结果仍是 `TEST_ONLY_TRUNCATED_HORIZON`，只批准未来
+全年工程架构与参数文件；不授权自动提交 8760 h、当前 cloud Stage B、下一规划年或第二并发任务。
+
 ### 5.8.0c 截断时域的价值核算与当前验证边界
 
 对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：

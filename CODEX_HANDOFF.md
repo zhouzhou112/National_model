@@ -12,6 +12,24 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 19:20+08:00：按约 2 小时低频窗口完成 cloud resource audit round 41，并因 Barrier
+  从 `340` 推进到 `343` 才追加 ledger。job `4139552` 仍 RUNNING；latest runtime
+  `1,012,057.571 s`，primal/dual/complementarity `0.983025/8.356e-7/0.087008`，最近 20 步平均
+  `51.190 min/step`。wall `1,015,381 s`、allocated `27,076.827 core-hours`、actual CPU
+  `4,235.784 h`、efficiency `15.6436%`；job MaxRSS `362.913 GiB`，Gurobi current/max
+  `351.054/354.498 GiB`，节点当时 CPU load `16.13`、FreeMem 约 `372.184 GiB`（均为整节点指标）。
+  stderr 0，无 solve/QC/result/checkpoint；ParaCloud 用户队列只有该 job。ledger 现 `42` records、SHA256
+  `69e14220...0f25`。未取消、未改参、未启 Stage B；下一常规 cloud 检查不早于约 21:20，除非
+  terminal/anomaly。
+- 2026-08-17 19:18+08:00：未来全年两阶段正式 v3 profiles 已在本地建立但未授权启动。Stage A
+  `barrier_checkpoint_full_year_cloud_v3` 冻结为 `Method2/Threads16/Presolve2/Crossover0/
+  SolutionTarget1/BCTol1e-2/FeasOpt1e-5/Markowitz0.01/NF1/Scale2/Aggregate1/no TimeLimit/
+  SoftMem600 GiB`；Stage B `deferred_crossover2_full_year_cloud_v3` 冻结为 exact
+  `Crossover2/CrossoverBasis1/LPWarmStart2/FeasOpt1e-6/NF2`，其余公共项相同。首次 config load 发现
+  `solver_profile_version` 是 loader schema 而非 profile identity，已从误写 `v3` 修正为合法 `v1`；
+  profile identity 仍由 `_v3` 文件名/`profile_id` 表示。独立 config load、all-version role guard `5/5`、
+  py_compile 与 diff check 均 PASS；本地默认 Python 缺 gurobipy，完整 solver-profile/full regression 留给
+  fixed Gurobi 环境。fixed 仍 idle，尚未部署/启动；cloud 仍原 job/profile，保持约 2 小时/事件低频只读。
 - 2026-08-17 19:14+08:00：deferred Crossover v3 已于 18:44:12 严格闭合。runner/audit/macro rc
   `0/0/0`；Gurobi `OPTIMAL`、solution contract `PASS`、QC `PASS 58/58`、current input 与 result manifest
   均 valid，planning state/basis 均不存在，strict test 与 accepted macro pair 均 PASS。Barrier `0`、simplex
@@ -1980,6 +1998,36 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 41
+
+- Git：基于本地未提交 future v3 profile 里程碑；本轮只写远端 append-only resource ledger 与文档，
+  不修改活动 checkout、profile、进程或输出。
+- 只读证据：`squeue/scontrol/sstat/sacct`、最新 telemetry/Gurobi tail、stderr、terminal artifacts、节点状态
+  与用户队列。`4139552` 仍 RUNNING/Barrier 343；runtime `1,012,057.571 s`，primal/dual/compl
+  `0.983025/8.356e-7/0.087008`，recent-20 `51.190 min`。wall `1,015,381 s`、allocated
+  `27,076.827 core-hours`、actual CPU `4,235.784 h`、efficiency `15.6436%`、MaxRSS `362.913 GiB`；
+  stderr 0、无 terminal/checkpoint，用户队列无第二任务。
+- 持久化：只有因 iteration 从 round 40 的 340 推进到 343，才追加 `audit_round=41`；ledger 变为
+  `42` records，SHA256 `69e14220460f734f4f929170e5b9b4575040c5e1be99147a230de749d7d90f25`。
+- 下一步：不早于约 21:20 再做常规 cloud 检查，除非 terminal/anomaly；先完成本地 future v3 profile
+  提交和 fixed 无求解部署回归，不启动任何 solver。
+
+### 2026-08-17 approved future full-year v3 profiles prepared locally
+
+- Git：基于 `bb42e1e71bea0c784cd6c82902ad93d0598bc450` 的未提交里程碑；local/origin/GitHub 起点一致。
+- 范围：新增 `config/solver_profiles/barrier_checkpoint_full_year_cloud_v3.json` 与
+  `deferred_crossover2_full_year_cloud_v3.json`；更新 profile-role/profile-value tests、模型规范、全年决策、
+  三份强制交接文档。没有改模型边界、数据、scenario、目标/约束、活动 cloud 或 fixed 输出。
+- 参数：Stage A 为 744/1488 实证 relaxed winner，Stage B 为 deferred v3 strict terminal 实证路线；共同
+  16 threads、Presolve2、Scale2、Aggregate1、Markowitz0.01、无 TimeLimit、SoftMem600 GiB。两份 profile
+  均 `APPROVED / NOT LAUNCH AUTHORIZED`，不能覆盖 v2 或自动启动任务。
+- 本地验证：首次 config load 正确抓到 schema 字段误写，修正为 `solver_profile_version=v1` 后两份配置
+  load PASS；`tests.test_cloud_full_year_profile_guard` `5/5 PASS`，py_compile 与 `git diff --check` PASS。
+  本地默认 Python 无 gurobipy，故 `tests.test_solver_profiles` 的真实执行必须在 fixed 环境完成。
+- 未决与下一步：选择性暂存本任务文件、提交并双推送；随后实时确认 fixed no-solver/clean/resource-safe，
+  fast-forward 精确提交并执行 targeted/full regression。只验证配置与代码，不启动求解。cloud 约 19:20
+  做下一次低频只读审计，只有 iteration 进展、异常或 terminal 才写 ledger。
 
 ### 2026-08-17 deferred Crossover v3 strict terminal and macro pair PASS
 

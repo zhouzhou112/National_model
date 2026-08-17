@@ -1,5 +1,27 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 19:20+08:00 cloud round 41 / next check about 21:20
+
+- `4139552` 仍是用户队列唯一任务，RUNNING/Barrier 343；runtime `1,012,057.571 s`，primal/dual/compl
+  `0.983025/8.356e-7/0.087008`，recent-20 `51.190 min`。
+- wall `1,015,381 s`、allocated `27,076.827 core-hours`、actual CPU `4,235.784 h`、efficiency
+  `15.6436%`；MaxRSS `362.913 GiB`，Gurobi current/max `351.054/354.498 GiB`。stderr 0，无
+  solve/QC/result/checkpoint。
+- iteration 推进后才追加 round 41；ledger `42` records、SHA `69e14220...0f25`。未取消/改参/启
+  Stage B；下一常规 cloud 审计不早于约 21:20，terminal/anomaly 除外。
+
+## 2026-08-17 19:18+08:00 approved full-year v3 profiles prepared locally
+
+- 正式 future Stage A/B 文件已建立：`barrier_checkpoint_full_year_cloud_v3` 固定 relaxed winner
+  `BCTol=1e-2/FeasOpt=1e-5/NF1/Crossover0`；`deferred_crossover2_full_year_cloud_v3` 固定 exact
+  `Crossover2/Basis1/LPWarmStart2/FeasOpt=1e-6/NF2`。两者均为 16 solver threads、Presolve2、Scale2、
+  Aggregate1、无 Gurobi TimeLimit、SoftMem600 GiB；不覆盖活动 cloud v2，也不授权启动。
+- `solver_profile_version` 保持配置 schema `v1`，`_v3` 只属于 profile identity；首次 config load 已据此
+  修正并 PASS。无 Gurobi 依赖的 config load、profile-role guard `5/5`、py_compile、diff check 均 PASS。
+  本地默认 Python 缺 gurobipy，`tests.test_solver_profiles` 留给 fixed Gurobi 环境执行。
+- fixed 仍 idle、尚未部署本里程碑；下一步只做精确提交/双推送后 no-solver/clean 门禁、targeted 与 full
+  server regression，不启动 solver。cloud 继续约 2 小时/事件低频只读。
+
 ## 2026-08-17 19:14+08:00 deferred Crossover v3 strict PASS / fixed idle
 
 - 18:44:12 terminal：runner/audit/macro `0/0/0`；`OPTIMAL + solver PASS + QC PASS 58/58 + valid input/result
