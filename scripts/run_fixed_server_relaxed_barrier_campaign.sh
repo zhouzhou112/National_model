@@ -187,9 +187,18 @@ run_case "v5_744h_${winner_tag}" "$winner_profile" 744 0 \
 
 run_case "base_1488h_${winner_tag}" "$winner_long_profile" 1488 3624 \
   config/scenarios/base.json 96 || true
-if [[ -f "$OUTPUT_BASE/base_1488h_${winner_tag}/barrier_checkpoint/barrier_checkpoint_manifest.json" ]]; then
+checkpoint_manifest="$OUTPUT_BASE/base_1488h_${winner_tag}/barrier_checkpoint/barrier_checkpoint_manifest.json"
+checkpoint_gate="$CONTROL_ROOT/base_1488h_${winner_tag}/checkpoint_campaign_gate.json"
+if "$PYTHON" scripts/check_barrier_checkpoint_eligibility.py \
+    "$checkpoint_manifest" --output "$checkpoint_gate"; then
+  printf '%s checkpoint_eligible_continue tag=base_1488h_%s\n' \
+    "$(date --iso-8601=seconds)" "$winner_tag" >>"$CONTROL_ROOT/campaign_events.log"
   run_case "base_2160h_${winner_tag}" "$winner_long_profile" 2160 2880 \
     config/scenarios/base.json 96 || true
+else
+  printf '%s checkpoint_ineligible_stop tag=base_1488h_%s manifest=%s gate=%s\n' \
+    "$(date --iso-8601=seconds)" "$winner_tag" "$checkpoint_manifest" "$checkpoint_gate" \
+    >>"$CONTROL_ROOT/campaign_events.log"
 fi
 
 snapshot campaign_end

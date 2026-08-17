@@ -1,5 +1,12 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 09:41+08:00 future campaign checkpoint gate fixed locally
+
+- 旧 1488→2160 编排仅按 manifest 存在性放行；现在本地新增 fail-closed eligibility/vector-integrity
+  gate，recovery-only、status 不符、向量缺失/size/SHA256 不符均停止。相关 unittest `4/4 PASS`。
+- 尚未部署，活动 fixed checkout、Base/1488 和 cloud `4139552` 均未修改。必须等唯一 solver 与
+  campaign 退出后才能 fast-forward，并补 server `bash -n`、focused/full regression。
+
 ## 2026-08-17 09:32+08:00 cloud round 33 / fixed iteration 70
 
 - cloud `4139552` 仍为 `RUNNING`，iteration 331、runtime `975,911.936 s`；primal/dual/compl

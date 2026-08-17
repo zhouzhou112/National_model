@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## Future 1488-to-2160 checkpoint gate
+
+新 campaign 不得再用 manifest existence 作为长时域继续条件。必须执行：
+
+```text
+python scripts/check_barrier_checkpoint_eligibility.py \
+  OUTPUT/barrier_checkpoint/barrier_checkpoint_manifest.json \
+  --output CONTROL/checkpoint_campaign_gate.json
+```
+
+仅 exit 0 / `eligible=true` 可继续；recovery-only、非 OPTIMAL Barrier、BarX/BarPi size 或 SHA256
+不符都停止。该实现当前只在本地，活动 fixed campaign 不追改。部署必须等待 solver/campaign idle，
+再执行 server `bash -n scripts/run_fixed_server_relaxed_barrier_campaign.sh`、focused tests 与全回归。
+
 ## 2026-08-17 09:32 cloud round 33 / Base-1488 iteration 70
 
 ```text

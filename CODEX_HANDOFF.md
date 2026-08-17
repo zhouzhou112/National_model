@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 09:41+08:00：本地修复 relaxed campaign 的 1488→2160 门禁。旧脚本只检查
+  `barrier_checkpoint_manifest.json` 是否存在，会把 TimeLimit 后的
+  `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT` 错当成继续条件；新
+  `scripts/check_barrier_checkpoint_eligibility.py` fail-closed 核验 schema、
+  `deferred_crossover_eligible=true`、checkpoint/solver/Barrier status，并逐个核对 BarX/BarPi
+  entries、size 与 SHA256。campaign 只有 gate exit 0 才继续 2160，否则落盘 JSON 与 stop event。
+  本地 `py_compile`、新旧相关 unittest `4/4 PASS`；Windows WSL 无 `/bin/bash`，故待 fixed server
+  空闲后仍须 `bash -n` 与 server regression。活动 fixed checkout/脚本/solver 与 cloud job 均未
+  修改；当前旧 campaign 的本轮行为不被追改。
 - 2026-08-17 09:32+08:00：ParaCloud audit round 33 已追加；job `4139552` 仍为原 Stage A，最新
   iteration 331（09:02:16），runtime `975,911.936 s`，primal/dual/complementarity
   `1.336420/1.053e-6/0.113863`。Slurm wall `980,022 s`、allocated `26,133.920 core-hours`、
@@ -1697,6 +1706,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 fail-closed long-horizon checkpoint campaign gate
+
+- 问题：`scripts/run_fixed_server_relaxed_barrier_campaign.sh` 原来只用 manifest 文件存在性放行
+  Base/2160；runner 在 TimeLimit 后只要有 Barrier iteration 也会保存完整向量和 recovery manifest，
+  因而 `deferred_crossover_eligible=false` 的 forensic recovery 可能被错误用作完整工程 checkpoint。
+- 修复：新增 `scripts/check_barrier_checkpoint_eligibility.py`，核验 checkpoint schema、eligible flag、
+  accepted/engineering status、solver/Barrier status code，并校验 primal/dual vector metadata、文件大小
+  与 SHA256。campaign 把机器可读 gate 写入对应 control 子目录；只有 exit 0 才运行 2160，其他情况
+  记录 `checkpoint_ineligible_stop` 后 fail-closed 结束。
+- 测试：新增 `tests/test_checkpoint_campaign_gate.py`，覆盖 complete engineering PASS、recovery-only
+  拒绝与 vector corruption 拒绝；`python -m py_compile ...` PASS，配合既有 summary test 共
+  `4/4 PASS`。本地 WSL 配置没有 `/bin/bash`，所以没有伪造 bash-n 结论。
+- 边界/下一步：本变更仅在本地工作树；没有修改活动 fixed checkout、campaign 进程、outputs 或
+  ParaCloud `4139552`。待活动串行 campaign 完全退出、服务器 clean/idle 后再部署精确提交，执行
+  `bash -n`、focused/full regression，并用合成 eligible/recovery manifests 验证两条 shell 分支。
 
 ### 2026-08-17 cloud resource audit round 33 and Base/1488 iteration 70
 
