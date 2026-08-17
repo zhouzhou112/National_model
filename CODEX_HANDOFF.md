@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 15:16+08:00：第一批空 shortlist 后，已基于两组 24 h 历史根收敛第二批而非继续盲扫。
+  淘汰 `PreDual=1`（24 h Factor Ops `2.605e11`，约基线数百倍）、`PreDual=2`（无结构收益）、
+  `Aggregate=0/Presolve=1`（更差或无收益）与 `AggFill=0`（Ops 仅约 `1.8%` 改善）。仅保留
+  `PreSparsify=2`（历史 Ops 约 `-8.2%` 但迭代增加）、`BarOrder=1`（历史 Ops 约 `-3.5%`，检查
+  大尺度放大）和 `Threads=32`（结构不变，只测真实 throughput）。新增三份 current relaxed 5-step
+  profiles 与 `run_fixed_server_relaxed_factor_screens_round2.sh`；baseline 固定为第一批同机同 5-step
+  `nf1_scaleauto`，v2 roots 为 `relaxed_factor_screens_v0817_v2`。通用 summary/runner 现接受显式且经
+  校验的 case/profile 列表；结构门槛仍为 Factor Ops/NZ 降低 `>=5%`，新增配对 observed
+  sec/iteration 降低 `>=10%` 的 runtime 门槛，任一晋级仍非 winner，必须完整 744 + exact macro A/B。
+  candidate/baseline 缺 runtime metric、identity、5 iterations、Factor 字段、rc/stderr 任一即 fail-closed。
+  本地 JSON/py_compile/diff PASS；summary/profile/solver-profile discovery 合计 `16/16 PASS`。尚未提交/
+  部署/启动第二批；fixed 当前 idle clean `4f195d4`，cloud 未触碰。
 - 2026-08-17 15:10+08:00：三根 Base/744 5-iteration factor screens 已于 15:04:08 串行完成，
   campaign wall 约 `38:19`，summary 为 `NO_MATERIAL_FACTOR_IMPROVEMENT`、
   `all_paired_screens_valid=true`、shortlist 空、scientifically accepted/automatic winner 均 false。
@@ -1835,6 +1847,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 second paired factor/throughput screen batch prepared
+
+- Git/范围：基于 `b1af1e42d42c6bc8d31857e4a09cdc4accc8c81f`；新增
+  `PreSparsify=2`、`BarOrder=1`、Threads 32 三份 relaxed 744×5 profiles 与 round-2 wrapper；扩展
+  通用 runner/summary 和测试，更新三份交接文档。未修改模型/数据/scenario，未启动 solver。
+- 筛选理由：24 h PreSparsify2 Factor Ops/NZ 约 `6.361e8/6.298e6`，有结构收益但迭代变多；
+  BarOrder1 `6.690e8/6.505e6`，收益低于门槛但可能随规模放大；Threads32 结构不变，24 h 曾较慢，
+  仅允许以同机 paired 5-step throughput 证明。PreDual1、PreDual2、Aggregate0、Presolve1、AggFill0
+  已因灾难性 factor、无收益或 <2% 收益排除。
+- 合同：round-2 baseline 为 v1 `nf1_scaleauto` 5-step 根；结构门槛 `>=5%`，runtime 门槛
+  `>=10%`。summary v2 接受显式安全 case tags，记录 observed ratio；missing runtime/identity/factor/
+  exact 5 steps/rc/stderr fail-closed。shortlist 不自动 winner 或 science。
+- 验证：三份 JSON、py_compile、diff check PASS；summary 3、profile 4、solver profile 9 项，共
+  `16/16 PASS`。下一步双推送，fixed idle/clean fast-forward 后执行 Linux bash/profile/focused/full
+  regression；再以全新 v2 roots 唯一串行启动。
 
 ### 2026-08-17 first factor-screen batch terminal and cloud resource round 39
 

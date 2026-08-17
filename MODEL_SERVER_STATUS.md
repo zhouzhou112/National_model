@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 15:16+08:00 second factor/throughput batch ready locally
+
+- 第二批仅三根：`PreSparsify=2`、`BarOrder=1`、Threads 32；其余 PreDual/Aggregate/Presolve/AggFill
+  已按历史结构/时间证据淘汰。共同保持 Base/744、NF1、Scale2、relaxed tolerance、Crossover 0、5 steps。
+- baseline 为第一批同机 `nf1_scaleauto` 5-step；v2 结构降低门槛 `5%`，配对 step-time 降低门槛
+  `10%`。summary/runner 对 case tags、profiles、identity、runtime、factor、rc/stderr fail-closed。
+- 本地 JSON/compile/diff 与 focused `16/16 PASS`。尚未提交/部署/启动；fixed idle clean `4f195d4`，
+  cloud `4139552` 未触碰。
+
 ## 2026-08-17 15:10+08:00 factor batch 1 complete / no shortlist / cloud round 39
 
 - 三根 744h×5-step screens 全部 identity valid、status 7、rc 2、audit 0、stderr/swaps 0；无任何

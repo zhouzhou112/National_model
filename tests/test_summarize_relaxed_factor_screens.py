@@ -6,7 +6,13 @@ from pathlib import Path
 from scripts.summarize_relaxed_factor_screens import CASE_TAGS, summarize
 
 
-def audit(*, factor_ops: float, factor_nz: float, fingerprint: int = 7) -> dict:
+def audit(
+    *,
+    factor_ops: float,
+    factor_nz: float,
+    fingerprint: int = 7,
+    observed_seconds: float | None = None,
+) -> dict:
     return {
         "solver_profile_id": "profile",
         "lp_gurobi_fingerprint": fingerprint,
@@ -29,7 +35,11 @@ def audit(*, factor_ops: float, factor_nz: float, fingerprint: int = 7) -> dict:
         "numerical_trouble_count": 0,
         "telemetry_phase_summaries": {
             "barrier": {
-                "observed_seconds_per_iteration": factor_ops / 100.0,
+                "observed_seconds_per_iteration": (
+                    factor_ops / 100.0
+                    if observed_seconds is None
+                    else observed_seconds
+                ),
                 "last_primal_infeasibility": 1.0,
                 "last_dual_infeasibility": 0.1,
                 "last_complementarity": 2.0,
@@ -91,6 +101,50 @@ class RelaxedFactorScreenSummaryTests(unittest.TestCase):
         bad = next(case for case in report["cases"] if case["tag"] == "nf0_scaleauto")
         self.assertIn("lp_or_scientific_identity_mismatch", bad["screen_failures"])
         self.assertFalse(bad["shortlist_eligible"])
+
+    def test_custom_tags_can_shortlist_paired_runtime_improvement(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            baseline_path = root / "baseline.json"
+            baseline_path.write_text(
+                json.dumps(
+                    audit(
+                        factor_ops=1000.0,
+                        factor_nz=100.0,
+                        observed_seconds=10.0,
+                    )
+                ),
+                encoding="utf-8",
+            )
+            control = root / "control"
+            tags = ("presparsify2", "barorder1", "threads32")
+            values = ((940.0, 98.0, 11.0), (980.0, 99.0, 10.5), (1000.0, 100.0, 8.5))
+            for tag, (ops, nz, seconds) in zip(tags, values):
+                self._write_case(
+                    control,
+                    tag,
+                    audit(
+                        factor_ops=ops,
+                        factor_nz=nz,
+                        observed_seconds=seconds,
+                    ),
+                )
+            report = summarize(
+                baseline_path,
+                control,
+                case_tags=tags,
+                material_runtime_reduction_fraction=0.10,
+            )
+
+        self.assertEqual(report["status"], "SHORTLIST_READY")
+        self.assertEqual(
+            set(report["shortlist_tags"]), {"presparsify2", "threads32"}
+        )
+        thread_case = next(
+            case for case in report["cases"] if case["tag"] == "threads32"
+        )
+        self.assertTrue(thread_case["material_runtime_improvement"])
+        self.assertFalse(thread_case["material_structural_improvement"])
 
 
 if __name__ == "__main__":

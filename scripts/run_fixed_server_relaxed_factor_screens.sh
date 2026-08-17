@@ -10,12 +10,38 @@ CONTROL_ROOT=${CONTROL_ROOT:-/data/zz2/National_model/run_control/relaxed_factor
 BASELINE_OUTPUT=${BASELINE_OUTPUT:-/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1}
 MINIMUM_AVAILABLE_GIB=${MINIMUM_AVAILABLE_GIB:-64}
 EXPECTED_HEAD=${EXPECTED_HEAD:-}
+CASE_TAGS_CSV=${CASE_TAGS_CSV:-nf0_scale2,nf1_scaleauto,nf0_scaleauto}
+PROFILE_PATHS_CSV=${PROFILE_PATHS_CSV:-config/solver_profiles/barrier_16_engineering_factor_nf0_scale2_5iter_v1.json,config/solver_profiles/barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json,config/solver_profiles/barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json}
+MATERIAL_STRUCTURAL_REDUCTION_FRACTION=${MATERIAL_STRUCTURAL_REDUCTION_FRACTION:-0.05}
+MATERIAL_RUNTIME_REDUCTION_FRACTION=${MATERIAL_RUNTIME_REDUCTION_FRACTION:-}
 
 export CISPO_DATA_ROOT=${CISPO_DATA_ROOT:-/data/zz2/National_model/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1}
 export CISPO_CF_ROOT=${CISPO_CF_ROOT:-/data/zz2/National_model/data/hourly_cf}
 export CISPO_HYDRO_ROOT=${CISPO_HYDRO_ROOT:-/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse}
 export CISPO_RAW_GRFR_ROOT=${CISPO_RAW_GRFR_ROOT:-/data/zz2/National_model/data/grfr_raw_2019}
 export CISPO_WAVE_ROOT=${CISPO_WAVE_ROOT:-/data/zz2/National_model/data/wave_energy_20260727}
+
+IFS=',' read -r -a tags <<<"$CASE_TAGS_CSV"
+IFS=',' read -r -a profiles <<<"$PROFILE_PATHS_CSV"
+if (( ${#tags[@]} == 0 || ${#tags[@]} != ${#profiles[@]} )); then
+  printf '%s refuse_case_profile_cardinality tags=%s profiles=%s\n' \
+    "$(date --iso-8601=seconds)" "${#tags[@]}" "${#profiles[@]}" >&2
+  exit 89
+fi
+for tag in "${tags[@]}"; do
+  if [[ ! "$tag" =~ ^[A-Za-z0-9_.-]+$ ]]; then
+    printf '%s refuse_invalid_case_tag tag=%s\n' \
+      "$(date --iso-8601=seconds)" "$tag" >&2
+    exit 89
+  fi
+done
+for profile in "${profiles[@]}"; do
+  if [[ ! -f "$REPO_ROOT/$profile" ]]; then
+    printf '%s refuse_missing_profile path=%s\n' \
+      "$(date --iso-8601=seconds)" "$profile" >&2
+    exit 89
+  fi
+done
 
 mkdir -p "$CONTROL_ROOT"
 cd "$REPO_ROOT"
@@ -74,13 +100,14 @@ fi
 
 set +e
 PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" - \
-    "$BASELINE_OUTPUT" "$CONTROL_ROOT/baseline_solver_audit.json" <<'PY'
+    "$BASELINE_OUTPUT" "$CONTROL_ROOT/baseline_solver_audit.json" \
+    "$MATERIAL_RUNTIME_REDUCTION_FRACTION" <<'PY'
 import json
 import sys
 from pathlib import Path
 from cispo_model.solver_audit import collect_solver_run
 
-root, destination = map(Path, sys.argv[1:])
+root, destination = map(Path, sys.argv[1:3])
 report = collect_solver_run(root)
 required = (
     "lp_gurobi_fingerprint", "lp_identity_variables",
@@ -92,6 +119,10 @@ required = (
     "aa_transpose_nonzeros", "factor_nonzeros", "factor_operations",
 )
 missing = [field for field in required if report.get(field) is None]
+if len(sys.argv) > 3 and sys.argv[3]:
+    barrier = (report.get("telemetry_phase_summaries") or {}).get("barrier") or {}
+    if barrier.get("observed_seconds_per_iteration") is None:
+        missing.append("barrier_observed_seconds_per_iteration")
 if missing:
     raise SystemExit("baseline audit missing: " + ", ".join(missing))
 destination.write_text(
@@ -105,13 +136,6 @@ if (( baseline_audit_rc != 0 )); then
     >>"$CONTROL_ROOT/events.log"
   exit 98
 fi
-
-declare -a tags=(nf0_scale2 nf1_scaleauto nf0_scaleauto)
-declare -a profiles=(
-  config/solver_profiles/barrier_16_engineering_factor_nf0_scale2_5iter_v1.json
-  config/solver_profiles/barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json
-  config/solver_profiles/barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json
-)
 
 record_resources campaign_before
 printf '%s\n' "$(git rev-parse HEAD)" >"$CONTROL_ROOT/git_head.txt"
@@ -150,13 +174,14 @@ for i in "${!tags[@]}"; do
   rc=$?
   printf '%s\n' "$rc" >"$control/return_code.txt"
   PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" - "$output" \
-      "$control/solver_audit.json" <<'PY'
+      "$control/solver_audit.json" \
+      "$MATERIAL_RUNTIME_REDUCTION_FRACTION" <<'PY'
 import json
 import sys
 from pathlib import Path
 from cispo_model.solver_audit import collect_solver_run
 
-root, destination = map(Path, sys.argv[1:])
+root, destination = map(Path, sys.argv[1:3])
 report = collect_solver_run(root)
 destination.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 iterations = report.get("barrier_iterations")
@@ -165,6 +190,10 @@ if iterations is None or not (1 <= int(iterations) <= 5):
 for field in ("factor_nonzeros", "factor_operations", "dense_columns"):
     if report.get(field) is None:
         raise SystemExit(f"missing factor-screen field: {field}")
+if len(sys.argv) > 3 and sys.argv[3]:
+    barrier = (report.get("telemetry_phase_summaries") or {}).get("barrier") or {}
+    if barrier.get("observed_seconds_per_iteration") is None:
+        raise SystemExit("missing paired runtime metric")
 PY
   audit_rc=$?
   printf '%s end tag=%s runner_rc=%s audit_rc=%s\n' \
@@ -175,10 +204,22 @@ PY
   record_resources "${tag}_after"
 done
 record_resources campaign_after
+summary_args=(
+  --baseline-audit "$CONTROL_ROOT/baseline_solver_audit.json"
+  --control-root "$CONTROL_ROOT"
+  --material-reduction-fraction "$MATERIAL_STRUCTURAL_REDUCTION_FRACTION"
+  --output-json "$CONTROL_ROOT/factor_screen_summary.json"
+  --output-csv "$CONTROL_ROOT/factor_screen_summary.csv"
+)
+for tag in "${tags[@]}"; do
+  summary_args+=(--case-tag "$tag")
+done
+if [[ -n "$MATERIAL_RUNTIME_REDUCTION_FRACTION" ]]; then
+  summary_args+=(
+    --material-runtime-reduction-fraction
+    "$MATERIAL_RUNTIME_REDUCTION_FRACTION"
+  )
+fi
 PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" \
-  scripts/summarize_relaxed_factor_screens.py \
-  --baseline-audit "$CONTROL_ROOT/baseline_solver_audit.json" \
-  --control-root "$CONTROL_ROOT" \
-  --output-json "$CONTROL_ROOT/factor_screen_summary.json" \
-  --output-csv "$CONTROL_ROOT/factor_screen_summary.csv" || exit 99
+  scripts/summarize_relaxed_factor_screens.py "${summary_args[@]}" || exit 99
 printf '%s campaign_complete\n' "$(date --iso-8601=seconds)" >>"$CONTROL_ROOT/events.log"

@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 15:16 second paired factor/throughput batch contract
+
+```text
+round2_tags=presparsify2,barorder1,threads32
+round2_baseline=/data/zz2/National_model/outputs/relaxed_factor_screens_v0817_v1/nf1_scaleauto
+round2_output=/data/zz2/National_model/outputs/relaxed_factor_screens_v0817_v2
+round2_control=/data/zz2/National_model/run_control/relaxed_factor_screens_v0817_v2
+structural_reduction_gate=0.05 paired_runtime_reduction_gate=0.10
+common_scope=Base/744,NF1,Scale2,Crossover0,BarIterLimit5,scientific_false
+local_validation=json_compile_diff_PASS,focused_16/16_PASS
+deployment=NOT_YET factor_screens_started=false
+```
+
+只允许三根：PreSparsify2 检查稀疏化、BarOrder1 检查 nested-dissection、Threads32 检查真实吞吐。
+PreDual/Aggregate/Presolve/AggFill 不再重测。部署后必须验证 baseline 的 paired runtime metric；任一
+case 缺 identity/Factor/5 steps/rc/stderr/runtime 时 summary fail-closed。通过短门槛仍须完整 744 宏观
+A/B，不能直接成为 8760 profile。
+
 ## 2026-08-17 15:10 factor batch 1 terminal / no material improvement
 
 ```text

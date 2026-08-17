@@ -1,17 +1,19 @@
 """Audit and shortlist paired five-iteration Barrier factor screens.
 
-This tool compares structural factorization cost against the current
-NF1/Scale2 Base-744 engineering baseline.  It never selects a production
-profile and never upgrades a short screen to a checkpoint or science result.
+This tool compares structural factorization cost, and optionally paired
+iteration throughput, against a Base-744 engineering baseline.  It never
+selects a production profile and never upgrades a short screen to a checkpoint
+or science result.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
+import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 
 CASE_TAGS = ("nf0_scale2", "nf1_scaleauto", "nf0_scaleauto")
@@ -63,6 +65,7 @@ def _case(
     baseline: dict[str, Any],
     control_root: Path,
     material_reduction_fraction: float,
+    material_runtime_reduction_fraction: float | None,
 ) -> dict[str, Any]:
     control = control_root / tag
     audit_path = control / "solver_audit.json"
@@ -71,6 +74,9 @@ def _case(
     stderr_path = control / "stderr.log"
     stderr_bytes = stderr_path.stat().st_size if stderr_path.is_file() else None
     barrier = (audit.get("telemetry_phase_summaries") or {}).get("barrier") or {}
+    baseline_barrier = (baseline.get("telemetry_phase_summaries") or {}).get(
+        "barrier"
+    ) or {}
 
     identity_matches = {
         field: (
@@ -96,6 +102,15 @@ def _case(
         failures.append("factor_metrics_missing")
     if not all(identity_matches.values()):
         failures.append("lp_or_scientific_identity_mismatch")
+    observed_seconds = barrier.get("observed_seconds_per_iteration")
+    baseline_observed_seconds = baseline_barrier.get(
+        "observed_seconds_per_iteration"
+    )
+    if (
+        material_runtime_reduction_fraction is not None
+        and (observed_seconds is None or baseline_observed_seconds is None)
+    ):
+        failures.append("runtime_metric_missing")
 
     factor_ops_ratio = _ratio(
         audit.get("factor_operations"), baseline.get("factor_operations")
@@ -110,6 +125,15 @@ def _case(
             factor_ops_ratio <= 1.0 - material_reduction_fraction
             or factor_nz_ratio <= 1.0 - material_reduction_fraction
         )
+    )
+    observed_seconds_ratio = _ratio(
+        observed_seconds, baseline_observed_seconds
+    )
+    runtime_improvement = bool(
+        material_runtime_reduction_fraction is not None
+        and observed_seconds_ratio is not None
+        and observed_seconds_ratio
+        <= 1.0 - material_runtime_reduction_fraction
     )
     valid = not failures
     return {
@@ -129,8 +153,9 @@ def _case(
         "aa_transpose_nonzeros": audit.get("aa_transpose_nonzeros"),
         "presolved_nonzeros": audit.get("presolved_nonzeros"),
         "barrier_iterations": audit.get("barrier_iterations"),
-        "observed_seconds_per_iteration": barrier.get(
-            "observed_seconds_per_iteration"
+        "observed_seconds_per_iteration": observed_seconds,
+        "observed_seconds_per_iteration_ratio_to_baseline": (
+            observed_seconds_ratio
         ),
         "last_primal_infeasibility": barrier.get("last_primal_infeasibility"),
         "last_dual_infeasibility": barrier.get("last_dual_infeasibility"),
@@ -139,16 +164,34 @@ def _case(
             "last_raw_primal_dual_objective_gap"
         ),
         "material_structural_improvement": structural_improvement,
-        "shortlist_eligible": valid and structural_improvement,
+        "material_runtime_improvement": runtime_improvement,
+        "shortlist_eligible": valid
+        and (structural_improvement or runtime_improvement),
         "scientifically_accepted": False,
     }
+
+
+def _validated_case_tags(case_tags: Sequence[str]) -> tuple[str, ...]:
+    tags = tuple(case_tags)
+    if not tags:
+        raise ValueError("At least one case tag is required")
+    if len(set(tags)) != len(tags):
+        raise ValueError("Case tags must be unique")
+    invalid = [tag for tag in tags if not re.fullmatch(r"[A-Za-z0-9_.-]+", tag)]
+    if invalid:
+        raise ValueError("Invalid case tags: " + ", ".join(invalid))
+    return tags
 
 
 def summarize(
     baseline_audit_path: Path,
     control_root: Path,
     material_reduction_fraction: float = 0.05,
+    *,
+    case_tags: Sequence[str] = CASE_TAGS,
+    material_runtime_reduction_fraction: float | None = None,
 ) -> dict[str, Any]:
+    tags = _validated_case_tags(case_tags)
     baseline = _read_json(baseline_audit_path)
     if not baseline:
         raise ValueError(f"Missing baseline audit: {baseline_audit_path}")
@@ -162,28 +205,39 @@ def summarize(
             "Baseline audit lacks required fields: " + ", ".join(missing_baseline)
         )
     cases = [
-        _case(tag, baseline, control_root, material_reduction_fraction)
-        for tag in CASE_TAGS
+        _case(
+            tag,
+            baseline,
+            control_root,
+            material_reduction_fraction,
+            material_runtime_reduction_fraction,
+        )
+        for tag in tags
     ]
     valid = [case for case in cases if case["valid_paired_screen"]]
     shortlist = sorted(
         (case for case in valid if case["shortlist_eligible"]),
         key=lambda case: (
+            not case["material_structural_improvement"],
             case["factor_operations_ratio_to_baseline"],
             case["factor_nonzeros_ratio_to_baseline"],
+            case["observed_seconds_per_iteration_ratio_to_baseline"]
+            or float("inf"),
             case["observed_seconds_per_iteration"] or float("inf"),
         ),
     )
-    all_valid = len(valid) == len(CASE_TAGS)
+    all_valid = len(valid) == len(tags)
     status = (
         "SCREEN_AUDIT_INCOMPLETE"
         if not all_valid
         else "SHORTLIST_READY"
         if shortlist
+        else "NO_MATERIAL_COST_IMPROVEMENT"
+        if material_runtime_reduction_fraction is not None
         else "NO_MATERIAL_FACTOR_IMPROVEMENT"
     )
     return {
-        "schema_version": "cispo_relaxed_factor_screen_summary_v1",
+        "schema_version": "cispo_relaxed_factor_screen_summary_v2",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": status,
         "scientifically_accepted": False,
@@ -191,12 +245,22 @@ def summarize(
         "baseline_audit_path": str(baseline_audit_path.resolve()),
         "baseline_profile_id": baseline.get("solver_profile_id"),
         "material_reduction_fraction": material_reduction_fraction,
+        "material_runtime_reduction_fraction": (
+            material_runtime_reduction_fraction
+        ),
+        "baseline_observed_seconds_per_iteration": (
+            (baseline.get("telemetry_phase_summaries") or {})
+            .get("barrier", {})
+            .get("observed_seconds_per_iteration")
+        ),
+        "case_tags": list(tags),
         "all_paired_screens_valid": all_valid,
         "shortlist_tags": [case["tag"] for case in shortlist],
         "ranking_basis": (
-            "Factor Ops ratio, then Factor NZ ratio, then observed seconds per "
-            "iteration. Shortlisting requires >= configured structural reduction; "
-            "a full 744 solve and exact macro A/B remain mandatory."
+            "Structural improvement first, then Factor Ops ratio, Factor NZ ratio, "
+            "and paired observed seconds per iteration. Shortlisting requires the "
+            "configured structural or runtime reduction; a full 744 solve and "
+            "exact macro A/B remain mandatory."
         ),
         "cases": cases,
     }
@@ -212,11 +276,13 @@ CSV_FIELDS = (
     "dense_columns",
     "presolved_nonzeros",
     "observed_seconds_per_iteration",
+    "observed_seconds_per_iteration_ratio_to_baseline",
     "last_primal_infeasibility",
     "last_dual_infeasibility",
     "last_complementarity",
     "last_raw_primal_dual_objective_gap",
     "material_structural_improvement",
+    "material_runtime_improvement",
     "shortlist_eligible",
     "screen_failures",
     "scientifically_accepted",
@@ -239,15 +305,28 @@ def main() -> None:
     parser.add_argument("--baseline-audit", required=True)
     parser.add_argument("--control-root", required=True)
     parser.add_argument("--material-reduction-fraction", type=float, default=0.05)
+    parser.add_argument("--material-runtime-reduction-fraction", type=float)
+    parser.add_argument("--case-tag", action="append", dest="case_tags")
     parser.add_argument("--output-json", required=True)
     parser.add_argument("--output-csv", required=True)
     args = parser.parse_args()
     if not 0.0 < args.material_reduction_fraction < 1.0:
         raise SystemExit("--material-reduction-fraction must be in (0, 1)")
+    if (
+        args.material_runtime_reduction_fraction is not None
+        and not 0.0 < args.material_runtime_reduction_fraction < 1.0
+    ):
+        raise SystemExit(
+            "--material-runtime-reduction-fraction must be in (0, 1)"
+        )
     report = summarize(
         Path(args.baseline_audit),
         Path(args.control_root),
         args.material_reduction_fraction,
+        case_tags=args.case_tags or CASE_TAGS,
+        material_runtime_reduction_fraction=(
+            args.material_runtime_reduction_fraction
+        ),
     )
     output_json = Path(args.output_json)
     output_json.parent.mkdir(parents=True, exist_ok=True)
