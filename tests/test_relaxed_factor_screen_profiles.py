@@ -1,0 +1,49 @@
+import json
+import unittest
+from pathlib import Path
+
+from cispo_model.config import load_model_config
+
+
+ROOT = Path(__file__).resolve().parents[1]
+PROFILE_NAMES = (
+    "barrier_16_engineering_factor_nf0_scale2_5iter_v1.json",
+    "barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json",
+    "barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json",
+)
+
+
+class RelaxedFactorScreenProfileTests(unittest.TestCase):
+    def test_factor_screens_change_only_numeric_focus_and_scaling(self) -> None:
+        profiles = []
+        for name in PROFILE_NAMES:
+            path = ROOT / "config" / "solver_profiles" / name
+            source = json.loads(path.read_text(encoding="utf-8"))
+            config = load_model_config(
+                ROOT / "config" / "optimization_2030.json",
+                ROOT / "config" / "scenarios" / "base.json",
+                path,
+                None,
+            )
+            self.assertEqual(config.raw["solver_profile"]["id"], source["profile_id"])
+            profiles.append(config.raw["numerics"])
+        expected_pairs = ((0, 2), (1, -1), (0, -1))
+        ignored = {"numeric_focus", "scale_flag"}
+        reference = {key: value for key, value in profiles[0].items() if key not in ignored}
+        for profile, expected_pair in zip(profiles, expected_pairs):
+            self.assertEqual(
+                (profile["numeric_focus"], profile["scale_flag"]), expected_pair
+            )
+            self.assertEqual(
+                {key: value for key, value in profile.items() if key not in ignored},
+                reference,
+            )
+            self.assertEqual(profile["bar_iter_limit"], 5)
+            self.assertEqual(profile["crossover"], 0)
+            self.assertEqual(profile["barrier_convergence_tolerance"], 1e-2)
+            self.assertEqual(profile["feasibility_tolerance"], 1e-5)
+            self.assertEqual(profile["optimality_tolerance"], 1e-5)
+
+
+if __name__ == "__main__":
+    unittest.main()

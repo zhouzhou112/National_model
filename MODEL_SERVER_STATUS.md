@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 09:44+08:00 lower-factor screens prepared locally
+
+- 三个配对 Base/744 profiles：`NF0+Scale2`、`NF1+ScaleAuto`、`NF0+ScaleAuto`；共同
+  `BarIterLimit=5`、TimeLimit 2 h、SoftMem 40 GiB，其余保持 relaxed winner 合同。
+- 串行 runner 要求 clean/no-solver、available ≥64 GiB、si/so/PSI 0，记录完整 factor/resource
+  证据且不导出 checkpoint。配置/配对测试 `1/1 PASS`；server bash/profile/full regression 待 idle。
+- 当前 fixed/cloud 未部署或改参；活动 campaign 退出前严禁启动 screens。
+
 ## 2026-08-17 09:41+08:00 future campaign checkpoint gate fixed locally
 
 - 旧 1488→2160 编排仅按 manifest 存在性放行；现在本地新增 fail-closed eligibility/vector-integrity

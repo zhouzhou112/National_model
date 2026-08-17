@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 09:44+08:00：下一轮 744 h lower-factor screen 已在本地冻结为三个配对 profile：
+  `NF0+Scale2`、`NF1+ScaleAuto(-1)`、`NF0+ScaleAuto(-1)`。共同保持 Method 2、Threads 16、
+  Presolve 2、Crossover 0、SolutionTarget 1、`BarConvTol=1e-2`、Feas/Opt `1e-5`、Aggregate 1，
+  仅跑 `BarIterLimit=5`，TimeLimit 2 h、SoftMem 40 GiB。新串行 runner 要求 clean checkout、
+  no-solver、available ≥64 GiB、si/so 0、memory PSI 0，并为每根记录 time、resource、log-derived
+  raw/presolved/dense/Factor NZ/Ops 与 telemetry；不导出 checkpoint、不做 Crossover、不作科学结果。
+  配置加载与 exact-pair unittest `1/1 PASS`、三份 JSON PASS；本机无 `gurobipy`，完整 profile suite
+  待 server idle 后执行。活动 fixed/cloud 未修改，screens 不能在当前 campaign 退出前部署或启动。
 - 2026-08-17 09:41+08:00：本地修复 relaxed campaign 的 1488→2160 门禁。旧脚本只检查
   `barrier_checkpoint_manifest.json` 是否存在，会把 TimeLimit 后的
   `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT` 错当成继续条件；新
@@ -1706,6 +1714,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 paired five-iteration 744 h factor screens prepared
+
+- 设计：新增三个 Base/744 test-only profiles：
+  `barrier_16_engineering_factor_nf0_scale2_5iter_v1`、
+  `barrier_16_engineering_factor_nf1_scaleauto_5iter_v1`、
+  `barrier_16_engineering_factor_nf0_scaleauto_5iter_v1`。除 `NumericFocus/ScaleFlag` 的
+  `(0,2)/(1,-1)/(0,-1)` 外，所有数值参数一致；`BarIterLimit=5` 只取得 presolve、ordering、factor
+  与初始步长证据，不以未收敛向量冒充 checkpoint。
+- 编排：新增 `scripts/run_fixed_server_relaxed_factor_screens.sh`，只在 clean/no-solver、available
+  ≥64 GiB、无 swap I/O/PSI 时串行运行；每根输出新 root，拒绝覆盖，记录 `/usr/bin/time -v`、
+  resource snapshots、return code 与 `collect_solver_run()` 机器可读审计，并要求 1--5 Barrier steps
+  及 Factor NZ/Ops/dense cols 完整。
+- 验证：三份 JSON 可解析；`load_model_config()` 均接受；
+  `tests.test_relaxed_factor_screen_profiles` `1/1 PASS`。本地完整 `test_solver_profiles` 因环境没有
+  `gurobipy` 无法导入，不记录为测试失败或通过；Windows WSL 同样没有 `/bin/bash`。
+- 边界/下一步：未触碰 fixed checkout、活动 Base/1488、历史 outputs 或 ParaCloud。待当前 campaign
+  退出后部署精确 tip，先跑 server `bash -n`、新测试、完整 profile/full regression，再以新 roots
+  执行三个 screen；只有 materially 降低 factor/step 成本的候选进入完整 744 exact macro A/B。
 
 ### 2026-08-17 fail-closed long-horizon checkpoint campaign gate
 

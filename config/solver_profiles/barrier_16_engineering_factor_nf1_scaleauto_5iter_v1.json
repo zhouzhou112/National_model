@@ -1,0 +1,25 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_engineering_factor_nf1_scaleauto_5iter_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Test-only 744 h factor screen. It isolates Gurobi automatic scaling with NumericFocus=1 and stops after five Barrier iterations. It is not a complete solve or a scientific result.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-2,
+    "feasibility_tolerance": 1e-5,
+    "optimality_tolerance": 1e-5,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 1,
+    "scale_flag": -1,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "bar_iter_limit": 5,
+    "time_limit_seconds": 7200,
+    "soft_mem_limit_gb": 40
+  }
+}

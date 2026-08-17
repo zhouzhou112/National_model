@@ -1,5 +1,23 @@
 # CISPO 2030/8760 server runbook
 
+## Next lower-factor screen matrix
+
+活动 campaign 结束且服务器空闲后，部署精确提交并先执行 bash/profile/full regression。随后以唯一
+串行 runner 比较：
+
+```text
+NF0 + ScaleFlag=2
+NF1 + ScaleFlag=-1
+NF0 + ScaleFlag=-1
+common: Base/744, Method=2, Threads=16, Presolve=2, Crossover=0,
+        BarConvTol=1e-2, FeasibilityTol=OptimalityTol=1e-5,
+        BarIterLimit=5, TimeLimit=7200, SoftMemLimit=40 GiB
+```
+
+启动门禁为 clean checkout、无 CISPO/Gurobi、available ≥64 GiB、si/so 0、memory PSI 0。screen 只
+比较 raw/presolved、ordering、dense columns、AA' NZ、Factor NZ/Ops、5-step time、RSS/swap/PSI；
+不导出 checkpoint，不做 Crossover，不做宏观/科学验收。只有 factor 成本有实质改善者再跑完整 744。
+
 ## Future 1488-to-2160 checkpoint gate
 
 新 campaign 不得再用 manifest existence 作为长时域继续条件。必须执行：
