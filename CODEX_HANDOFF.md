@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 19:29+08:00：对持久化目标完成逐项审计。原目标要求的“不停止活动 cloud、固定服务器
+  多轮宽松 744 与更长时域、显著提速、宏观 A/B 稳定、资源/耗时/质量/Git 全记录、形成后续全年决策”
+  均已有直接证据：Base/V5 744、两批 factor screens、Base/1488、Base/2160 memory boundary、deferred
+  v3 strict `OPTIMAL + 58/58 + manifests + Pi + macro PASS`、正式 Stage A/B v3 profiles 与 fixed
+  `14/14 + 212/212 PASS`。Stage A+B 相对 strict 744 solver/wall 加速 `7.71×/6.99×`。因此参数筛选
+  目标已完成；不等待当前旧参数 cloud job 终态，也绝不取消它或把它写成已接受年度结果。cloud
+  `4139552` 保持原样，后续只在约 2 小时/terminal/anomaly 做独立只读审计；下一次付费资源申请须在
+  新授权时实时核对计费/核内存规则。
 - 2026-08-17 19:26+08:00：正式 future full-year v3 profiles 已完成 fixed Gurobi 环境验证，参数冻结
   工程闭合。local/origin/GitHub implementation tip 均为
   `0363b7b0183a52184b2f0be7a1381efc76d1615e`；fixed 在无 CISPO/Gurobi、clean、available
@@ -2007,6 +2015,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 full-year parameter-route goal completion audit
+
+- 范围：只做目标级证据审计与文档状态更新；没有查询未到窗口的 cloud、没有部署纯文档 tip、没有启动/
+  停止/修改任何 solver，也没有触碰用户 supplementary/Module 06 工作树。
+- 完成证明：多轮 relaxed 744、V5/744、两批 paired factor screens、Base/1488、Base/2160 memory boundary
+  均有 identity/资源/时间/质量记录；strict 744 与 deferred v3 完成 exact macro A/B；正式 v3 profiles
+  已由 fixed Gurobi `14/14 + 212/212` 验证并双推送。
+- 决策：Stage A `barrier_checkpoint_full_year_cloud_v3` 与 Stage B
+  `deferred_crossover2_full_year_cloud_v3` 为 `APPROVED_PARAMETERS_NOT_LAUNCH_AUTHORIZED`；相对 strict
+  744 的组合加速为 solver/wall `7.71×/6.99×`。截断根仍非年度科学结果。
+- 独立未发生事件：活动 cloud `4139552` 的最终 Barrier/checkpoint/resource terminal audit；任何未来
+  付费提交时的实时 ParaCloud CPU/memory/计费规则复核。二者不否定已经形成的未来全年参数决策，且
+  均不能由本轮提前假定。
+- Git/下一步：基于 docs tip `5fc60efd41cc4a54147dcbbfbac78ae3f17dee8d` 记录本完成审计并双推送；
+  fixed 保持 implementation `0363b7b` idle。后续 cloud 只按约 2 小时或 terminal/anomaly 另行审计。
 
 ### 2026-08-17 approved future full-year v3 profiles validated on fixed server
 

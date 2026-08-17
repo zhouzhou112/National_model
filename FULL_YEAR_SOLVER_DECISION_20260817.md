@@ -4,6 +4,7 @@
 
 ```text
 decision_status=APPROVED_AFTER_DEFERRED_CROSSOVER_744_STRICT_PASS
+parameter_route_goal_status=COMPLETE_WITH_CLOUD_STAGE_A_STILL_RUNNING
 current_cloud_job=4139552
 current_cloud_action=KEEP_RUNNING_UNCHANGED
 fixed_validation=deferred_crossover2_744_validation_v0817_v3_PASS
@@ -231,14 +232,30 @@ wrapper_stderr_and_time=audited
 | `barrier_checkpoint_full_year_cloud_v3` | APPROVED / NOT LAUNCH AUTHORIZED | 744 macro、V5/744、Base/1488 与 deferred v3 已闭合；正式文件已建立 |
 | `deferred_crossover2_full_year_cloud_v3` | APPROVED / NOT LAUNCH AUTHORIZED | v3 已完成 strict terminal、Pi、manifests 与 macro pair；正式文件已建立 |
 
-## 9. 尚待闭合
+## 9. 参数筛选目标之外仍待发生的外部事件
 
 1. deferred v1/v2 的 pre-optimize 失败根永久保留；v3 已以 Barrier 0、strict `OPTIMAL + PASS + 58/58 +
    manifests + Pi + macro pair` 完成架构闭合。该项不再未决，但 744 h 仍不得重标为年度结果。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
-   Stage A 总耗时或终态质量。
+   Stage A 总耗时或终态质量。该任务继续运行，不阻断“为下一次全年求解形成可靠参数决策”目标闭合。
 3. 正式 v3 profiles 已完成 fixed Gurobi focused `14/14` 与 full `212/212`；该工程项已闭合，但不覆盖
    当前 v2，也不授权启动任务。
-4. 结合 ParaCloud 最新资源计费/核内存绑定规则，冻结下一次申请的最小合法 CPU 与 `>=600 GiB` 内存。
-5. 将服务器验证后的最终状态同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，记录精确
-   Git、commands、outputs、SHA256、验证和下一步。
+4. 任何下一次付费提交前，仍须结合 ParaCloud 当时有效的资源计费/核内存绑定规则，冻结最小合法 CPU
+   与 `>=600 GiB` 内存；当前没有新任务授权，故不得把易变计费规则猜测写入 profile。
+5. 服务器验证后的最终状态已同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`；
+   implementation `0363b7b`、documentation `5fc60ef` 已双推送，该项已闭合。
+
+## 10. 原目标逐项完成审计
+
+| 原目标要求 | 权威证据 | 判定 |
+|---|---|---|
+| 不停止当前 cloud/8760 Stage A | round 41：job `4139552` RUNNING/Barrier 343；无 cancel/reparameterize/Stage B，ledger 42 records | 已满足 |
+| 固定服务器设计并运行多轮宽松 744 h | relaxed Base/744、V5/744、两批 paired factor screens；每根均记录 identity、参数、wall/RSS/rc | 已满足 |
+| 执行更长时域并确定资源边界 | Base/1488 Barrier OPTIMAL/checkpoint eligible；Base/2160 在 iter 0 前 MEM_LIMIT，形成 128 GiB 主机边界 | 已满足 |
+| 筛出显著提速且宏观稳定路线 | relaxed Stage A + exact deferred Stage B：solver/wall `6,938.338 s/2:08:24.08`，相对 strict `7.71×/6.99×`；strict/macro pair PASS | 已满足 |
+| 记录解质量和全国宏观账目 | Stage B `OPTIMAL + PASS + 58/58 + manifests + finite Pi`；objective/capacity/carbon/cost/generation/operation A/B 全闭合 | 已满足 |
+| 冻结后续全年工程方案 | Stage A/B v3 正式 profiles、模型规范与 go/no-go 表；明确工程 checkpoint 与科学 basic result 边界 | 已满足 |
+| 验证代码并保存 Git/运行证据 | fixed Gurobi focused `14/14`、full `212/212`；implementation `0363b7b`、docs `5fc60ef` 同步 origin/GitHub | 已满足 |
+
+因此本参数筛选与全年决策目标完成；这不把任何 744/1488 截断根重标为年度科学结果，也不声称当前
+cloud 已终态。后续只剩外部 job 的低频终态审计及任何新付费提交前的实时资源规则复核。

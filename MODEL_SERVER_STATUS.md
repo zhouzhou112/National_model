@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 19:29+08:00 parameter-route goal complete / cloud remains active
+
+- 多轮 relaxed 744、V5/744、Base/1488、Base/2160 memory boundary、两批 factor screens、strict deferred
+  v3、宏观 A/B、正式 profiles 和 fixed `14/14 + 212/212` 已逐项覆盖原参数筛选目标。
+- 批准路线为 future Stage A/B v3，组合相对 strict 744 solver/wall 加速 `7.71×/6.99×`；仍须独立授权
+  才能实际提交，截断根不是年度科学结果。
+- cloud `4139552` 不因目标闭合而停止或改参，仍按约 2 小时/terminal/anomaly 低频只读；其实际全年
+  terminal quality 尚未知。fixed 保持 idle `0363b7b`。
+
 ## 2026-08-17 19:26+08:00 full-year v3 profiles server validation PASS
 
 - `0363b7b0183a52184b2f0be7a1381efc76d1615e` 已在 local/origin/GitHub 一致并部署到 fixed；部署前后

@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 19:29 parameter-route completion boundary
+
+```text
+parameter_route_goal=COMPLETE
+approved_stage_a=barrier_checkpoint_full_year_cloud_v3
+approved_stage_b=deferred_crossover2_full_year_cloud_v3
+combined_744_speedup_solver_wall=7.71x/6.99x
+fixed=idle_at_0363b7b
+cloud_4139552=KEEP_RUNNING_UNCHANGED
+cloud_terminal_scientific_status=UNKNOWN
+```
+
+“目标完成”只表示未来全年参数架构已有充分工程证据，不表示 cloud 已结束、744/1488 是年度结果，亦不
+授权新付费任务。cloud 后续检查仍不早于约 2 小时窗口，除非 terminal/anomaly；无 iteration/异常不写
+ledger。任何新 8760 提交必须重新核对当时有效的 ParaCloud 计费、最小 CPU/内存绑定与独立 roots。
+
 ## 2026-08-17 19:26 future full-year v3 profile server validation
 
 ```text
