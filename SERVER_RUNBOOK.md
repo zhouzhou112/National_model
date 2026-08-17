@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 14:26 serial 744 h factor-screen campaign
+
+```text
+fixed_head=4f195d4353b76ce76c710eb5c7ba3c467a4d494c checkout=clean
+server_validation=bash/profile/pycompile_PASS,focused_10/10,full_194/194_96.14s
+baseline_fingerprint=2120635803 raw_rows_cols_nnz=4454178/3735087/40395436
+baseline_presolved_rows_cols_nnz=3001388/2775698/31159971
+baseline_dense_aat_factor_nz_ops=6050/6.131e7/7.334e8/4.761e12
+output_base=/data/zz2/National_model/outputs/relaxed_factor_screens_v0817_v1
+control_root=/data/zz2/National_model/run_control/relaxed_factor_screens_v0817_v1
+supervisor_pid=1494933 active_tag=nf0_scale2 wrapper_python_pid=1495063/1495064
+started_at=2026-08-17T14:25:49+08:00 serial_cases=3 barrier_iter_limit=5 crossover=0
+launch_available_gib=113.97 si_so=0/0 psi=0 stderr=0
+```
+
+活动期间不得 fast-forward fixed checkout、并发第二 solver、生成 checkpoint 或把 screen 当科学结果。
+监控只在 15--20 分钟、case switch、terminal 或资源异常触发。结束后要求三根 identity/rc/stderr/
+5-iteration/factor fields 全闭合；Factor Ops 或 NZ 至少下降 `5%` 才进入完整 744 shortlist。
+
 ## 2026-08-17 14:20 factor-screen data-root freeze before launch
 
 ```text

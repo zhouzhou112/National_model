@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 14:26+08:00 serial factor screens active
+
+- exact head `4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 已部署；server bash/profile/compile、focused
+  `10/10`、full `194/194 PASS`。baseline Fingerprint/LP/scientific identity 与 Factor 字段全通过。
+- 全新 roots `relaxed_factor_screens_v0817_v1`；supervisor PID `1494933`，第一根 `nf0_scale2`
+  wrapper/Python `1495063/1495064`，14:25:49 启动。3 根只串行，每根 Base/744、5 Barrier steps、
+  Crossover 0，不是 checkpoint/科学结果。
+- 启动 available `113.97 GiB`、si/so/PSI 0、磁盘约 `3.96 TB` 可用、stderr 0。活动期间 checkout
+  冻结 `4f195d4`；15--20 分钟或事件低频检查。cloud `4139552` 未触碰。
+
 ## 2026-08-17 14:20+08:00 factor-screen deployment preflight and data-root freeze
 
 - fixed 已 clean/idle fast-forward `613abe8d...6723`；`bash -n`、profile JSON、`py_compile`、focused

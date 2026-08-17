@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 14:26+08:00：factor-screen data-root 修复提交
+  `4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 已双推送并部署；server `bash -n`/profile/py_compile
+  PASS、focused `10/10 PASS`、完整 regression `194/194 PASS`（`96.14 s`、MaxRSS
+  `1,104,912 KiB`），checkout clean 且无 solver。启动前 baseline fail-closed audit 全字段齐全：Fingerprint
+  `2120635803`，LP identity/raw `3,735,087 cols / 4,454,178 rows / 40,395,436 nnz`，presolved
+  `2,775,698 / 3,001,388 / 31,159,971`，dense cols `6,050`、AA' NZ `6.131e7`、Factor NZ/Ops
+  `7.334e8/4.761e12`，scientific/scenario SHA `fdb337d6...a2c72/aa5a3fc6...a6f7`。14:25:44
+  以全新 output/control `relaxed_factor_screens_v0817_v1` 启动唯一串行 supervisor PID `1494933`；
+  第一根 `nf0_scale2` 于 14:25:49 启动，wrapper/Python PID `1495063/1495064`。合同为 Base/744、
+  Crossover 0、5 Barrier iterations；后两根只能由同一 supervisor 顺序启动。启动 available
+  `113.97 GiB`、si/so 0、PSI 0、磁盘可用约 `3.96 TB`、stderr 0。fixed checkout 在活动期间冻结
+  `4f195d4`；cloud `4139552` 仍 RUNNING 且未触碰。下一次 fixed 检查为 15--20 分钟或 case switch/
+  terminal/resource anomaly，不做分钟级轮询。
 - 2026-08-17 14:20+08:00：fixed 已在 idle/clean/resource-safe 门禁后 fast-forward 到
   `613abe8d48ac3aa6382cdca3ce5a7d3528356723`。Linux `bash -n`、三份 factor profile JSON、
   `py_compile` 与 focused `10/10 PASS`；显式冻结当前五个外部根后完整 server regression 为
@@ -1806,6 +1819,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 three serial 744 h factor screens launched
+
+- Git/部署：`4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 已到 local/origin/GitHub/fixed；fixed
+  clean/idle。Linux `bash -n`、3 profile JSON、py_compile、focused `10/10` 与 full `194/194 PASS`
+  （`96.14 s`、MaxRSS `1,104,912 KiB`）。
+- baseline gate：Fingerprint `2120635803`，raw/identity `4,454,178 rows / 3,735,087 cols /
+  40,395,436 nnz`，presolved `3,001,388 / 2,775,698 / 31,159,971`，dense `6,050`、AA' NZ
+  `6.131e7`、Factor NZ `7.334e8`、Ops `4.761e12`；scientific/scenario SHA 完整。输出/control 均
+  在启动前不存在，available `113.97 GiB`、si/so/PSI 0、磁盘约 `3.96 TB` 可用。
+- 启动：`relaxed_factor_screens_v0817_v1` supervisor PID `1494933`，14:25:49 第一根
+  `nf0_scale2` PID `1495063/1495064`；严格串行 3×Base/744、每根 5 Barrier iterations、Crossover 0，
+  不导出 checkpoint/科学结果。launch contract 冻结 exact head、roots、64 GiB 门槛与 cloud untouched。
+- 下一步：15--20 分钟或 case switch/terminal 低频检查；三根结束后只按 summary fail-closed shortlist，
+  不自动选 winner。活动期间不改 fixed checkout；cloud 保持原 Stage A。
 
 ### 2026-08-17 factor-screen external data identity freeze
 
