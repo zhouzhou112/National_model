@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 17:21 cloud resource round 40
+
+```text
+job=4139552 state=RUNNING barrier_iteration=340 solver_runtime_s=1002807.627
+primal_dual_complementarity=1.082073/8.926e-7/0.0942553 recent20_minutes=51.928
+wall_s=1008190 allocated_core_hours=26885.067 actual_cpu_hours=4205.427
+cpu_efficiency_percent=15.6422 maxrss_gib=362.913 stderr_bytes=0 terminal_artifacts=[]
+ledger_records=41 sha256=5e3a972a36812e11ea3b4464743e4f996653b39e141e592081615233cf7021a4
+```
+
+下一 cloud 检查约 2 小时或 terminal/anomaly；只有新 iteration 才追加 ledger。fixed v2 本轮未查询，
+保持独立的 30--45 分钟/phase-event cadence。
+
 ## 2026-08-17 17:15 deferred Crossover v2 active
 
 ```text

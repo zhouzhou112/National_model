@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 17:21+08:00 cloud round 40
+
+- `4139552` RUNNING，Barrier 340、runtime `1,002,807.627 s`；primal/dual/compl
+  `1.082073/8.926e-7/0.0942553`，recent-20 `51.928 min`。
+- wall `1,008,190 s`、allocated `26,885.067 core-hours`、actual CPU `4,205.427 h`、efficiency
+  `15.6422%`、MaxRSS `362.913 GiB`；stderr 0，无 terminal/checkpoint。
+- ledger 41 records，SHA `5e3a972a...21a4`。未取消/改参/启 Stage B；fixed v2 本轮未查询。
+
 ## 2026-08-17 17:15+08:00 deferred Crossover v2 active
 
 - fixed 已部署 exact `acf59f9180483b09c4c0e9380e0576457cc554ac`；`bash`/compile、focused `16/16`、

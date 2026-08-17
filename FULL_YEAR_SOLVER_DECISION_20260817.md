@@ -43,7 +43,7 @@ Stage B。Gurobi 参数不能在一次活动 optimize 中途安全替换，当�
 | relaxed Base/2160 | 同 winner long，SoftMem80 | Presolve/ordering 后、Barrier iter 0 前 `MEM_LIMIT` | `2,800.735 s` / `1:01:40` | `72,659,300 KiB` | 固定服务器内存边界；无解/无 checkpoint |
 | factor screens batch 1 | NF0/Scale auto 组合，均 5 iter | 三根均无改善，shortlist 空 | batch 约 `38:19` | `19.7--20.5 GiB` | 否决 NF0/auto-scale 盲扫 |
 | factor screens batch 2 | PreSparsify2/BarOrder1/Threads32，均 5 iter | 无 material cost improvement，shortlist 空 | batch 约 `43:00` | `19.8--20.4 GiB` | 否决继续短参数盲扫 |
-| cloud Base/8760 Stage A | BCTol `1e-8`，Feas/Opt `1e-6`，NF2，Crossover0，16 solver threads | 仍 RUNNING；最后已落账 iter 338 | runtime `996,833.092 s` | MaxRSS `362.913 GiB` | 当前唯一全年 Stage A 工程任务 |
+| cloud Base/8760 Stage A | BCTol `1e-8`，Feas/Opt `1e-6`，NF2，Crossover0，16 solver threads | 仍 RUNNING；最后已落账 iter 340 | runtime `1,002,807.627 s` | MaxRSS `362.913 GiB` | 当前唯一全年 Stage A 工程任务 |
 
 strict Base/744 的分时为 Barrier `7,734.65 s`、Crossover/simplex cleanup `45,468.01 s`。因此当前
 全年架构的主要风险不是“Barrier-only 一定不能结束”，而是：

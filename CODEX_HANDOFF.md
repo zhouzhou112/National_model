@@ -12,6 +12,13 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 17:21+08:00：cloud 两小时增量审计 round 40 已完成。job `4139552` 仍 RUNNING，Barrier
+  iteration `340`、runtime `1,002,807.627 s`，primal/dual/complementarity
+  `1.082073/8.926e-7/0.0942553`；最近 20 步 `51.928 min/step`。wall `1,008,190 s`、allocated
+  `26,885.067 core-hours`、actual CPU `4,205.427 h`、efficiency `15.6422%`、MaxRSS `362.913 GiB`；
+  stderr 0，无 solve/QC/result/checkpoint。ledger round 40 后 41 records，SHA256
+  `5e3a972a...21a4`。未取消、未改参、未启 Stage B。fixed v2 本轮未查询，仍按 30--45 分钟/
+  phase event 低频监管。
 - 2026-08-17 17:15+08:00：未消费 RAW_GRFR root 修复提交
   `acf59f9180483b09c4c0e9380e0576457cc554ac` 已双推送；fixed 在 no-solver/clean 后从 `b277fce`
   fast-forward 到该精确 tip。Linux `bash -n`、py_compile、四组 focused `16/16` 与完整 server regression
@@ -1934,6 +1941,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 40
+
+- job：`4139552` RUNNING，Barrier iteration 340、runtime `1,002,807.627 s`；primal/dual/compl
+  `1.082073/8.926e-7/0.0942553`，近期 20 步平均 `51.928 min`。
+- 资源：wall `1,008,190 s`、96 allocated CPUs/700 GiB、allocated `26,885.067 core-hours`、actual
+  CPU `4,205.427 h`、efficiency `15.6422%`、MaxRSS `362.913 GiB`，stderr 0。
+- 产物：solve/QC/result/checkpoint 均不存在；ledger 41 records，SHA256
+  `5e3a972a36812e11ea3b4464743e4f996653b39e141e592081615233cf7021a4`。
+- 边界：纯只读 Slurm/solver 检查后仅因 iteration 338→340 才追加一条 ledger；未取消/改参/启动
+  Stage B。fixed v2 未查询，继续独立低频监管。
 
 ### 2026-08-17 deferred Crossover v2 deployed and launched
 
