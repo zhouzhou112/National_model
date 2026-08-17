@@ -44,6 +44,17 @@ class RelaxedFactorScreenProfileTests(unittest.TestCase):
             self.assertEqual(profile["feasibility_tolerance"], 1e-5)
             self.assertEqual(profile["optimality_tolerance"], 1e-5)
 
+    def test_runner_builds_fail_closed_baseline_and_summary(self) -> None:
+        runner = (
+            ROOT / "scripts" / "run_fixed_server_relaxed_factor_screens.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("BASELINE_OUTPUT=", runner)
+        self.assertIn("refuse_invalid_baseline_audit", runner)
+        self.assertIn("baseline_solver_audit.json", runner)
+        self.assertIn("summarize_relaxed_factor_screens.py", runner)
+        self.assertIn("factor_screen_summary.json", runner)
+        self.assertIn("factor_screen_summary.csv", runner)
+
 
 if __name__ == "__main__":
     unittest.main()

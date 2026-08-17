@@ -7,6 +7,7 @@ REPO_ROOT=${REPO_ROOT:-/data/zz2/National_model/repo}
 PYTHON=${CISPO_PYTHON:-/home/zz2/.local/envs/cispo-2030/bin/python}
 OUTPUT_BASE=${OUTPUT_BASE:-/data/zz2/National_model/outputs/relaxed_factor_screens_v0817_v1}
 CONTROL_ROOT=${CONTROL_ROOT:-/data/zz2/National_model/run_control/relaxed_factor_screens_v0817_v1}
+BASELINE_OUTPUT=${BASELINE_OUTPUT:-/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1}
 MINIMUM_AVAILABLE_GIB=${MINIMUM_AVAILABLE_GIB:-64}
 EXPECTED_HEAD=${EXPECTED_HEAD:-}
 
@@ -58,6 +59,45 @@ if ! resource_safe; then
   printf '%s refuse_resources minimum_available_gib=%s\n' \
     "$(date --iso-8601=seconds)" "$MINIMUM_AVAILABLE_GIB" >>"$CONTROL_ROOT/events.log"
   exit 93
+fi
+if [[ ! -f "$BASELINE_OUTPUT/solve_report.json" ]]; then
+  printf '%s refuse_missing_baseline path=%s\n' \
+    "$(date --iso-8601=seconds)" "$BASELINE_OUTPUT" >>"$CONTROL_ROOT/events.log"
+  exit 98
+fi
+
+set +e
+PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" - \
+    "$BASELINE_OUTPUT" "$CONTROL_ROOT/baseline_solver_audit.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+from cispo_model.solver_audit import collect_solver_run
+
+root, destination = map(Path, sys.argv[1:])
+report = collect_solver_run(root)
+required = (
+    "lp_gurobi_fingerprint", "lp_identity_variables",
+    "lp_identity_constraints", "lp_identity_nonzeros",
+    "original_rows", "original_columns", "original_nonzeros",
+    "resolved_scientific_configuration_sha256",
+    "scenario_configuration_sha256", "presolved_rows",
+    "presolved_columns", "presolved_nonzeros", "dense_columns",
+    "aa_transpose_nonzeros", "factor_nonzeros", "factor_operations",
+)
+missing = [field for field in required if report.get(field) is None]
+if missing:
+    raise SystemExit("baseline audit missing: " + ", ".join(missing))
+destination.write_text(
+    json.dumps(report, indent=2) + "\n", encoding="utf-8"
+)
+PY
+baseline_audit_rc=$?
+if (( baseline_audit_rc != 0 )); then
+  printf '%s refuse_invalid_baseline_audit rc=%s path=%s\n' \
+    "$(date --iso-8601=seconds)" "$baseline_audit_rc" "$BASELINE_OUTPUT" \
+    >>"$CONTROL_ROOT/events.log"
+  exit 98
 fi
 
 declare -a tags=(nf0_scale2 nf1_scaleauto nf0_scaleauto)
@@ -129,4 +169,10 @@ PY
   record_resources "${tag}_after"
 done
 record_resources campaign_after
+PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" \
+  scripts/summarize_relaxed_factor_screens.py \
+  --baseline-audit "$CONTROL_ROOT/baseline_solver_audit.json" \
+  --control-root "$CONTROL_ROOT" \
+  --output-json "$CONTROL_ROOT/factor_screen_summary.json" \
+  --output-csv "$CONTROL_ROOT/factor_screen_summary.csv" || exit 99
 printf '%s campaign_complete\n' "$(date --iso-8601=seconds)" >>"$CONTROL_ROOT/events.log"

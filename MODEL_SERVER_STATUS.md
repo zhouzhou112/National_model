@@ -1,5 +1,13 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 11:57+08:00 factor shortlist audit ready locally
+
+- 新汇总器按 LP Fingerprint/矩阵/scientific/scenario identity、rc/stderr、5 iterations、numerical trouble
+  与完整 Factor 指标 fail-closed；Factor Ops/NZ 至少降低 `5%` 才进入 engineering shortlist。
+- runner 在三根 screen 前先审计当前 NF1+Scale2 Base/744 baseline，末尾输出 JSON/CSV；不完整分别
+  exit `98/99`。shortlist 不自动成为 winner，完整 744 exact macro A/B 仍强制。
+- focused tests `11/11 PASS`、`py_compile` PASS；尚未部署，活动 fixed/cloud 未触碰。
+
 ## 2026-08-17 11:52+08:00 cloud round 36 / fixed iteration 120
 
 - fixed Base/1488 iteration 120、runtime `21,739.318 s`，primal/dual/compl

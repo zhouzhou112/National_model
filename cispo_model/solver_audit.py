@@ -214,6 +214,9 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
     scope = _read_json(root / "run_scope.json")
     config_snapshot = _read_json(root / "model_config_snapshot.json")
     environment = _read_json(root / "run_environment.json")
+    run_identity = _read_json(root / "run_identity.json")
+    lp_identity = run_identity.get("lp_model") or {}
+    analysis_case = run_identity.get("analysis_case") or {}
     log_path = root / "gurobi.log"
     log_fields = (
         parse_gurobi_log(log_path.read_text(encoding="utf-8", errors="replace"))
@@ -404,6 +407,16 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "configuration_source_sha256": config_snapshot.get("source_sha256"),
         "scenario_source_sha256": config_snapshot.get("scenario_source_sha256"),
         "solver_profile_source_sha256": config_snapshot.get("solver_source_sha256"),
+        "resolved_scientific_configuration_sha256": analysis_case.get(
+            "resolved_scientific_configuration_sha256"
+        ),
+        "scenario_configuration_sha256": (
+            analysis_case.get("scenario_configuration") or {}
+        ).get("sha256"),
+        "lp_gurobi_fingerprint": lp_identity.get("gurobi_fingerprint"),
+        "lp_identity_variables": lp_identity.get("variables"),
+        "lp_identity_constraints": lp_identity.get("constraints"),
+        "lp_identity_nonzeros": lp_identity.get("nonzeros"),
         "objective_value_million_cny": solve.get(
             "objective_value_million_cny"
         ),

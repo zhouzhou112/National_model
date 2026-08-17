@@ -1,5 +1,28 @@
 # CISPO 2030/8760 server runbook
 
+## Factor-screen fail-closed summary contract
+
+runner 默认 baseline：
+
+```text
+/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1
+```
+
+部署后必须先生成 `CONTROL_ROOT/baseline_solver_audit.json`；缺少 LP Fingerprint、raw/LP matrix counts、
+scientific/scenario SHA 或 presolved/Factor fields 时 exit 98，不能先消耗三根 screen。三根完成后执行：
+
+```bash
+python scripts/summarize_relaxed_factor_screens.py \
+  --baseline-audit CONTROL_ROOT/baseline_solver_audit.json \
+  --control-root CONTROL_ROOT \
+  --output-json CONTROL_ROOT/factor_screen_summary.json \
+  --output-csv CONTROL_ROOT/factor_screen_summary.csv
+```
+
+任一 identity/rc/stderr/5-iteration/numerical/factor gate 失败为 `SCREEN_AUDIT_INCOMPLETE` 并 exit 99。
+Factor Ops 或 Factor NZ 相对 baseline 至少下降 `5%` 才进 shortlist；shortlist 只决定哪些 profile 值得
+跑完整 744，不是 winner、checkpoint 或科学验收。
+
 ## 2026-08-17 11:52 cloud round 36 / fixed iteration 120
 
 ```text

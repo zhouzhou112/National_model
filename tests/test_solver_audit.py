@@ -194,6 +194,23 @@ Solved in 73826 iterations and 39.39 seconds
                 ),
                 encoding="utf-8",
             )
+            (root / "run_identity.json").write_text(
+                json.dumps(
+                    {
+                        "analysis_case": {
+                            "resolved_scientific_configuration_sha256": "science",
+                            "scenario_configuration": {"sha256": "scenario"},
+                        },
+                        "lp_model": {
+                            "gurobi_fingerprint": 123,
+                            "variables": 3,
+                            "constraints": 2,
+                            "nonzeros": 4,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
 
             collected = collect_solver_run(root)
 
@@ -222,6 +239,12 @@ Solved in 73826 iterations and 39.39 seconds
         self.assertTrue(collected["solver_aggregate_zero_required"])
         self.assertTrue(collected["solver_stable_crossover_required"])
         self.assertEqual(collected["solver_lp_warm_start"], 2)
+        self.assertEqual(collected["lp_gurobi_fingerprint"], 123)
+        self.assertEqual(collected["lp_identity_variables"], 3)
+        self.assertEqual(
+            collected["resolved_scientific_configuration_sha256"], "science"
+        )
+        self.assertEqual(collected["scenario_configuration_sha256"], "scenario")
         self.assertEqual(collected["solution_kappa"], 42.0)
         self.assertFalse(collected["kappa_exact_computed"])
         self.assertEqual(

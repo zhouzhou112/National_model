@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 11:57+08:00：本地完成 factor-screen fail-closed 汇总闭环。`collect_solver_run()` 新增
+  run-identity 的 LP Fingerprint、变量/约束/非零数与 resolved scientific/scenario SHA；新
+  `scripts/summarize_relaxed_factor_screens.py` 将三个 5-step 候选与既有 NF1+Scale2 Base/744 基线按
+  完整 LP/scientific identity、runner rc、stderr、5 Barrier iterations、numerical trouble、presolved/
+  Factor 指标核对，并以 Factor Ops/NZ 至少降低 `5%` 作为工程 shortlist 门槛。排序只生成 shortlist，
+  `automatic_winner_selected=false`、`scientifically_accepted=false`，完整 744 与 exact macro A/B 仍为
+  强制后续。screen runner 现先生成并验证 `baseline_solver_audit.json`，任一基线字段缺失即在运行三根
+  前 exit 98；完成后生成 JSON/CSV summary，审计不完整 exit 99。focused tests `11/11 PASS`、
+  `py_compile` PASS；尚未部署，活动 fixed/cloud 完全未触碰。
 - 2026-08-17 11:52+08:00：fixed Base/1488 到 iteration 120，runtime `21,739.318 s`，primal/dual/
   complementarity `0.050274/0.000789619/0.027934`，100--120/110--120 平均约
   `169.03/169.75 s/step`，按 100--120 窗口投影 12 h 到 iteration `247.0`。process RSS
@@ -1751,6 +1760,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 fail-closed factor-screen shortlist audit
+
+- Git/范围：基于 `b545f6ca603285878372d4e91d3c3c7adb56181d`；修改
+  `cispo_model/solver_audit.py`、`scripts/run_fixed_server_relaxed_factor_screens.sh`、新增
+  `scripts/summarize_relaxed_factor_screens.py` 与测试，并更新三份交接文档。未部署或触碰活动作业。
+- 身份/门禁：baseline 与每根 candidate 必须同时具备相同 Gurobi Fingerprint、LP identity/raw matrix
+  数量、resolved scientific configuration SHA 与 scenario SHA；候选还必须 rc `0/2`、stderr 0、
+  Barrier iterations `5`、无 numerical trouble 且 presolved/AA'/Factor/dense 指标齐全。baseline
+  audit 在任何 screen 前 fail-closed；三根有任一不完整则 summary 为 `SCREEN_AUDIT_INCOMPLETE`。
+- 排序合同：相对当前 NF1+Scale2 baseline，Factor Ops 或 Factor NZ 至少降低 `5%` 才进 engineering
+  shortlist；排序依次为 Ops ratio、NZ ratio、observed seconds/iteration。工具明确不自动选 production
+  winner，也不创建 checkpoint/scientific acceptance；shortlist 仍须完整 744 和 exact macro A/B。
+- 验证：focused unittest `11/11 PASS`、两个 Python 文件 `py_compile` PASS、`git diff --check` PASS。
+  单测覆盖 material-improvement shortlist 与 LP Fingerprint mismatch fail-closed；runner 内容测试覆盖
+  baseline/JSON/CSV summary 编排。
+- 下一步：待当前 fixed campaign idle 后 fast-forward 精确 tip，执行 server `bash -n`、profile/focused/
+  full regression；随后用唯一串行 runner 产生三根 screen。不得在 active Base/1488/2160 中途部署。
 
 ### 2026-08-17 cloud resource audit round 36 and Base/1488 iteration 120
 
