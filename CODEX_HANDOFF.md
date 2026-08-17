@@ -12,6 +12,21 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 14:14+08:00：fixed Base/2160 已在 Ordering 后、Barrier 第 0 次迭代前因
+  `SoftMemLimit=80 GiB` 正常 fail-closed：Gurobi `MEM_LIMIT/status 17`、`solution_count=0`、solver
+  runtime `2,800.735 s`，wrapper rc `2`、wall `1:01:40`、MaxRSS `72,659,300 KiB`（约
+  `69.3 GiB`）、swaps/stderr `0/0`。原始 LP 为 `12,520,914 rows / 10,398,783 cols /
+  126,724,678 nnz`；build `884.643 s`，Presolve `2,214.94 s` 后为 `9,527,353 / 8,288,888 /
+  106,864,030`，Ordering `565.03 s`。没有 Barrier 内点、objective、BarX/BarPi、engineering
+  checkpoint、`solution_qc` 或 `result_manifest`，因此不能做影子价格、宏观 A/B 或科学解释；失败根只保留
+  scale/memory 证据。campaign 于 14:03:30 写入 `campaign_complete`，fixed 已无 CISPO/Gurobi/campaign
+  进程，checkout clean `902b1672...ff36`；退出后 available RAM 约 `114.0 GiB`、si/so 0、memory
+  PSI 0。该证据说明当前 128 GiB 主机的 2160 h、NF1+Scale2 路线已进入内存边界，不授权直接抬高
+  SoftMem 后重跑；下一步先部署已完成的 744 h lower-factor screens，以降低 fill-in 再决定较长时域。
+  ParaCloud round 38 同时已追加：iteration 336、runtime `990,741.973 s`，primal/dual/complementarity
+  `1.161194/9.516e-7/0.100835`；wall `995,707 s`、allocated `26,552.187 core-hours`、actual CPU
+  `4,153.300 h`、efficiency `15.6420%`、MaxRSS `362.913 GiB`、recent-20 `53.040 min`，39 records
+  SHA256 `932b7d8a...bd534`。云端仍 RUNNING、stderr 0、无 terminal/checkpoint，未取消/改参/启 Stage B。
 - 2026-08-17 13:09+08:00：fixed Base/1488 已于 13:01:41 正常 rc 0 结束：Barrier `OPTIMAL`，143
   iterations，solver `25,834.260 s`，wrapper wall `7:22:57`，MaxRSS `55,460,664 KiB`，swaps 0、
   stderr 0。checkpoint 为 `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`deferred_crossover_eligible=true`；
@@ -1782,6 +1797,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/2160 memory boundary and cloud resource round 38
+
+- Git/范围：基于 `62290ea19e087d5e177066071315c2bbfc195639`；只读审计 fixed terminal 与 cloud，
+  向既有 cloud resource ledger 原子追加 round 38，并更新三份交接文档。未修改 fixed checkout/profile，
+  未取消/改参 cloud，未启动 Stage B 或第二 solver。
+- fixed：Base/2160 原始 LP `12,520,914 / 10,398,783 / 126,724,678`（rows/cols/nnz），build
+  `884.643 s`；Presolve `2,214.94 s` 后为 `9,527,353 / 8,288,888 / 106,864,030`，Ordering
+  `565.03 s`。`SoftMemLimit=80 GiB` 在 Barrier 0 iterations 前触发 `MEM_LIMIT/status 17`；solver
+  `2,800.735 s`、wrapper wall `1:01:40`、MaxRSS `72,659,300 KiB`、rc 2、stderr/swaps 0。
+  `solve_report.json` 明确 `solution_count=0`、objective null；无 QC/result/checkpoint/BarX/BarPi，故只作为
+  内存/fill-in 工程证据。campaign `14:03:30` complete，fixed 无 solver、checkout clean `902b1672`。
+- cloud：iteration 336、runtime `990,741.973 s`，primal/dual/complementarity
+  `1.161194/9.516e-7/0.100835`；round 38 wall `995,707 s`、allocated `26,552.187 core-hours`、
+  actual CPU `4,153.300 h`、efficiency `15.6420%`、MaxRSS `362.913 GiB`、recent-20
+  `53.040 min`。ledger 39 records、SHA256
+  `932b7d8a6510e26653ee2b275cb8ec6280f19d1c87b6c640771c404e66bbd534`；stderr 0、无终态。
+- 未决/下一步：不以提高 SoftMemLimit 直接重跑 2160。先双推送本记录，fixed fast-forward 精确 tip，执行
+  `bash -n`、profile/focused/full regression；通过后仅启动三根串行 Base/744 五迭代 factor screens，
+  用 Factor Ops/NZ shortlist 决定完整 744 候选，再做 exact macro A/B。
 
 ### 2026-08-17 Base/1488 terminal checkpoint audit, Base/2160 start and cloud round 37
 

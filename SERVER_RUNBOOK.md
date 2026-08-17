@@ -1,5 +1,29 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 14:14 Base/2160 memory boundary, fixed idle, cloud round 38
+
+```text
+fixed_base_2160_status=MEM_LIMIT status_code=17 solution_count=0 barrier_iterations=0
+fixed_base_2160_raw_rows_cols_nnz=12520914/10398783/126724678
+fixed_base_2160_build_s=884.643 presolve_s=2214.94
+fixed_base_2160_presolved_rows_cols_nnz=9527353/8288888/106864030
+fixed_base_2160_ordering_s=565.03 soft_mem_limit_gib=80
+fixed_base_2160_solver_s=2800.735 wall=1:01:40 maxrss_kib=72659300 rc=2 stderr=0 swaps=0
+fixed_base_2160_checkpoint=false qc=false result_manifest=false objective=null
+fixed_campaign=COMPLETE fixed_solver_count=0 checkout=902b1672
+fixed_idle_available_gib~=114 si_so=0/0 memory_psi=0
+cloud_job=4139552 RUNNING barrier_iteration=336 runtime_s=990741.973
+cloud_round=38 wall_s=995707 allocated_core_hours=26552.187 actual_cpu_hours=4153.300
+cloud_efficiency_percent=15.6420 maxrss_gib=362.913 recent20_minutes=53.040
+cloud_resource_audit_records=39 sha256=932b7d8a6510e26653ee2b275cb8ec6280f19d1c87b6c640771c404e66bbd534
+```
+
+`MEM_LIMIT` 发生在任何 Barrier iterate 之前，因此没有可保存内点，禁止把此根登记为 checkpoint、
+shadow-price 或 macro A/B 结果。不得仅提高 SoftMemLimit 后原样重跑 2160；先利用 744 h 配对 screen
+筛选 Factor Ops/NZ 至少下降 `5%` 的候选。fixed 已空闲，下一操作顺序固定为：双推送本里程碑 →
+fast-forward 精确 tip → `bash -n`、profile/focused/full regression → 唯一串行 factor-screen runner。
+cloud 保持原 Stage A，只读低频监管，不取消、不改参、不启动 Stage B。
+
 ## 2026-08-17 13:09 Base/1488 terminal, Base/2160 start, cloud round 37
 
 ```text

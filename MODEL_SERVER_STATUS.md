@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 14:14+08:00 Base 2160 MEM_LIMIT / fixed idle / cloud round 38
+
+- Base/2160 原始 LP `12,520,914 rows / 10,398,783 cols / 126,724,678 nnz`，build `884.643 s`；
+  Presolve `2,214.94 s` 后 `9,527,353 / 8,288,888 / 106,864,030`，Ordering `565.03 s`。
+- `SoftMemLimit=80 GiB` 在 Barrier 0 iterations 前触发 `MEM_LIMIT/status 17`；solver `2,800.735 s`、
+  wrapper wall `1:01:40`、MaxRSS `72,659,300 KiB`、rc 2、stderr/swaps 0。`solution_count=0`、objective
+  null；无 QC/result/checkpoint/BarX/BarPi，只能作为内存与 fill-in 工程证据。
+- campaign 14:03:30 complete；fixed 无 CISPO/Gurobi/campaign 进程，checkout clean `902b1672...ff36`。
+  available RAM 约 `114.0 GiB`、si/so/PSI 0。下一步不直接抬高 SoftMem 重跑 2160，先部署并执行
+  串行 744h lower-factor screens。
+- cloud `4139552` iteration 336、runtime `990,741.973 s`；round 38 wall `995,707 s`、allocated
+  `26,552.187 core-hours`、actual CPU `4,153.300 h`、efficiency `15.6420%`、MaxRSS `362.913 GiB`、
+  recent-20 `53.040 min`。ledger 39 records SHA256 `932b7d8a...bd534`；stderr 0、无 terminal/checkpoint，
+  未取消/改参/启 Stage B。
+
 ## 2026-08-17 13:09+08:00 Base 1488 complete / Base 2160 active / cloud round 37
 
 - Base/1488 Barrier `OPTIMAL`，143 iterations、solver `25,834.260 s`、wall `7:22:57`、MaxRSS
