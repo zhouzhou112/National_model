@@ -788,3 +788,76 @@ def validate_input_manifest(
         else:
             failures.append(f"unsupported_integrity_method:{logical_path}")
     return not failures, failures
+
+
+def input_manifest_scientific_resume_identity(
+    manifest_path: str | Path,
+) -> dict[str, Any]:
+    """Hash every resume-relevant input while excluding solver numerics only.
+
+    A deferred crossover must use a different solver profile from its
+    Crossover=0 Barrier source.  Comparing the complete CSV byte-for-byte is
+    therefore self-contradictory because ``solver_configuration`` is a normal
+    manifest row.  This identity removes exactly that one runtime-only row and
+    preserves every model, scenario, formulation, data, state and integrity
+    field in deterministic row order.  Both manifests are still independently
+    validated against disk before this identity is used.
+    """
+    path = Path(manifest_path)
+    if not path.is_file():
+        raise ValueError("input_manifest.csv is missing")
+    try:
+        manifest = pd.read_csv(
+            path,
+            dtype=str,
+            keep_default_na=False,
+            encoding="utf-8-sig",
+        )
+    except (pd.errors.EmptyDataError, UnicodeDecodeError, OSError) as error:
+        raise ValueError(f"input_manifest.csv is unreadable: {error}") from error
+    required_columns = (
+        "kind",
+        "logical_path",
+        "resolved_path",
+        "required",
+        "exists",
+        "size_bytes",
+        "sha256",
+        "integrity_method",
+        "role",
+    )
+    missing = [column for column in required_columns if column not in manifest]
+    if missing:
+        raise ValueError(
+            "input_manifest.csv is missing columns: " + ", ".join(missing)
+        )
+    records = manifest.loc[:, required_columns].to_dict(orient="records")
+    solver_rows = [
+        row for row in records if row["kind"] == "solver_configuration"
+    ]
+    if len(solver_rows) != 1:
+        raise ValueError(
+            "input_manifest.csv must contain exactly one solver_configuration row"
+        )
+    scientific_rows = [
+        row for row in records if row["kind"] != "solver_configuration"
+    ]
+    payload = json.dumps(
+        scientific_rows,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    solver_row = solver_rows[0]
+    return {
+        "schema_version": "cispo_input_manifest_scientific_resume_v1",
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "row_count": len(scientific_rows),
+        "excluded_runtime_kinds": ["solver_configuration"],
+        "solver_configuration": {
+            "logical_path": solver_row["logical_path"],
+            "resolved_path": solver_row["resolved_path"],
+            "sha256": solver_row["sha256"],
+        },
+        "full_manifest_sha256": sha256_file(path),
+    }

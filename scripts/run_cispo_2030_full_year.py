@@ -266,6 +266,15 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--allow-compatible-primal-dual-implementation",
+        action="store_true",
+        help=(
+            "Explicitly allow a checkpoint created by another Git/source bundle "
+            "only when scientific inputs, layered case identity, exact Gurobi "
+            "Fingerprint, dimensions and variable/constraint ordering all match."
+        ),
+    )
+    parser.add_argument(
         "--allow-deferred-crossover-planning-state",
         action="store_true",
         help=(
@@ -386,6 +395,14 @@ def main() -> None:
     ):
         raise SystemExit(
             "--allow-engineering-barrier-checkpoint requires "
+            "--primal-dual-checkpoint-in"
+        )
+    if (
+        args.allow_compatible_primal_dual_implementation
+        and not args.primal_dual_checkpoint_in
+    ):
+        raise SystemExit(
+            "--allow-compatible-primal-dual-implementation requires "
             "--primal-dual-checkpoint-in"
         )
     if (
@@ -760,6 +777,9 @@ def main() -> None:
             "engineering_checkpoint_source_explicitly_allowed": bool(
                 args.allow_engineering_barrier_checkpoint
             ),
+            "compatible_implementation_bundle_explicitly_allowed": bool(
+                args.allow_compatible_primal_dual_implementation
+            ),
             "inline_crossover_explicitly_allowed": bool(
                 args.allow_inline_crossover
             ),
@@ -937,6 +957,9 @@ def main() -> None:
             result_use=scope_report["result_use"],
             allow_engineering_checkpoint=bool(
                 args.allow_engineering_barrier_checkpoint
+            ),
+            allow_compatible_implementation_bundle=bool(
+                args.allow_compatible_primal_dual_implementation
             ),
         )
         (output_dir / "primal_dual_start_input.json").write_text(

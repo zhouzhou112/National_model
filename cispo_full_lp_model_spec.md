@@ -1287,9 +1287,14 @@ predecessor planning-state path、Gurobi version、Fingerprint、变量/约束/�
 或 scientific result manifest。若 `BarStatus` 不为 OPTIMAL、向量不完整/不有限或写出失败，则
 Stage A 失败；已有中间日志不能替代检查点。
 
-Stage B `deferred_crossover2_full_year_cloud_v1` 必须从头重建完全相同 LP，并核对 input manifest、
-所有 identity layers、Fingerprint、LP dimensions、完整变量/约束顺序 SHA256 及 checkpoint
-文件 SHA256。工程源需显式授权；随后设置全量 `variable.PStart=saved_bar_x`、
+Stage B `deferred_crossover2_full_year_cloud_v1` 必须从头重建完全相同 LP。Stage A 与 Stage B
+必然使用不同 solver profile，因此 resume identity 只从 `input_manifest.csv` 排除恰好一行
+`solver_configuration`；configuration、scenario、formulation、planning state、全部数据文件及其
+size/SHA256 仍逐行一致。继续核对 baseline/analysis/scientific/data/lp identity、Fingerprint、LP
+dimensions、完整变量/约束顺序 SHA256 及 checkpoint 文件 SHA256。若 Git/source bundle 改变，默认
+仍 fail-closed；只有显式 `--allow-compatible-primal-dual-implementation` 才能进入后续 exact-LP
+Fingerprint/order 复核，且该授权及 source/target bundle 必须写入 `primal_dual_start_input.json`。
+工程源还需显式授权；随后设置全量 `variable.PStart=saved_bar_x`、
 `constraint.DStart=saved_bar_pi`、`LPWarmStart=2`，使用
 `Method=2/Crossover=2/CrossoverBasis=1/SolutionTarget=0` 直接在 presolved crushed starts 上
 执行 Crossover，不重复 Barrier。只有 Stage B 达到 `Status=OPTIMAL`、strict ConstrVio/BoundVio/

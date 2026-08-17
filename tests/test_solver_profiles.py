@@ -167,6 +167,36 @@ class SolverProfileTests(unittest.TestCase):
         self.assertEqual(deferred.raw["numerics"]["crossover_basis"], 1)
         self.assertEqual(deferred.raw["numerics"]["lp_warm_start"], 2)
 
+        deferred2_validation = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_16_deferred_crossover2_744_validation_v1.json"
+            )
+        )
+        self.assertEqual(deferred2_validation.raw["numerics"]["method"], 2)
+        self.assertEqual(deferred2_validation.raw["numerics"]["threads"], 16)
+        self.assertEqual(deferred2_validation.raw["numerics"]["crossover"], 2)
+        self.assertEqual(
+            deferred2_validation.raw["numerics"]["crossover_basis"], 1
+        )
+        self.assertEqual(
+            deferred2_validation.raw["numerics"]["lp_warm_start"], 2
+        )
+        self.assertEqual(
+            deferred2_validation.raw["numerics"]["feasibility_tolerance"],
+            1e-6,
+        )
+        self.assertEqual(
+            deferred2_validation.raw["numerics"]["optimality_tolerance"],
+            1e-6,
+        )
+        self.assertIsNone(
+            deferred2_validation.raw["numerics"]["time_limit_seconds"]
+        )
+        self.assertEqual(
+            deferred2_validation.raw["numerics"]["soft_mem_limit_gb"], 80
+        )
+
         stage_a = load_model_config(
             solver_path=(
                 profile_path.parent

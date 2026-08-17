@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 16:30+08:00 deferred Crossover=2 resume fix prepared locally
+
+- relaxed Base/744 source checkpoint gate PASS：Fingerprint `2120635803`、BarX/BarPi
+  `3,735,087/4,454,178` entries 且 size/SHA 完整、source commit `6477f42`、Gurobi `13.0.2`。
+- 修复真实 Stage A/B manifest 自相矛盾：只允许 `solver_configuration` 行不同；所有科学 input、Gurobi
+  version、identity、Fingerprint、LP 尺寸与变量/约束顺序仍 fail-closed。跨 source bundle 必须显式授权
+  且 exact LP 全通过，授权与两端 bundle 落盘。
+- 新 744 Stage B profile 为 Crossover2/Basis1/LPWarmStart2、16 threads、Feas/Opt `1e-6`、NF2/Scale2、
+  no TimeLimit、SoftMem80；新 runner 禁止 state/basis，要求严格 58/58、manifests 和 exact macro pair。
+  本地 JSON/compile/diff、focused `6/6 PASS`；未提交/部署/启动。fixed idle `7551e3f`，cloud 未触碰。
+
 ## 2026-08-17 16:16+08:00 second factor batch terminal / no shortlist
 
 - v2 campaign 15:23:11--16:06:11 串行完成；三根 identity valid、status 7、Barrier 5、runner/audit

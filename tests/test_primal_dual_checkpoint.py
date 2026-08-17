@@ -79,6 +79,39 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             )
         )
 
+    @staticmethod
+    def _write_input_manifest(
+        output: Path,
+        *,
+        solver_logical_path: str = "solver/barrier.json",
+        solver_sha256: str = "solver-barrier",
+    ) -> None:
+        rows = [
+            {
+                "kind": "configuration",
+                "logical_path": "config/optimization_2030.json",
+                "resolved_path": "/same/config/optimization_2030.json",
+                "required": "True",
+                "exists": "True",
+                "size_bytes": "100",
+                "sha256": "scientific-config",
+                "integrity_method": "sha256_file",
+                "role": "",
+            },
+            {
+                "kind": "solver_configuration",
+                "logical_path": solver_logical_path,
+                "resolved_path": f"/runtime/{solver_logical_path}",
+                "required": "True",
+                "exists": "True",
+                "size_bytes": "10",
+                "sha256": solver_sha256,
+                "integrity_method": "sha256_file",
+                "role": "",
+            },
+        ]
+        pd.DataFrame(rows).to_csv(output / "input_manifest.csv", index=False)
+
     def test_diagnostic_memory_uses_next_validated_tier(self) -> None:
         self.assertEqual(diagnostic_memory_requirement_gb(self.config, 744), 8.0)
         self.assertEqual(diagnostic_memory_requirement_gb(self.config, 745), 32.0)
@@ -109,9 +142,6 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 (output / "run_identity.json").write_text(
                     json.dumps(identity), encoding="utf-8"
                 )
-                (output / "input_manifest.csv").write_text(
-                    "same,input,manifest\n", encoding="utf-8"
-                )
                 (output / "run_environment.json").write_text(
                     json.dumps(
                         {
@@ -121,6 +151,12 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     ),
                     encoding="utf-8",
                 )
+            self._write_input_manifest(source)
+            self._write_input_manifest(
+                target,
+                solver_logical_path="solver/crossover2.json",
+                solver_sha256="solver-crossover2",
+            )
             (source / "run_scope.json").write_text(
                 json.dumps({"result_use": "TEST_ONLY_TRUNCATED_HORIZON"}),
                 encoding="utf-8",
@@ -194,6 +230,15 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     )
                 )
             self.assertTrue(checkpoint_valid, checkpoint_failures)
+            self.assertTrue(prepared["implementation_bundle_matches"])
+            self.assertNotEqual(
+                prepared["scientific_input_manifest_identity"][
+                    "source_full_manifest_sha256"
+                ],
+                prepared["scientific_input_manifest_identity"][
+                    "target_full_manifest_sha256"
+                ],
+            )
             apply_primal_dual_crossover_start(target_model, prepared)
             np.testing.assert_allclose(target_model.assigned["PStart"], [1, 2, 3])
             np.testing.assert_allclose(target_model.assigned["DStart"], [-4, 5])
@@ -274,9 +319,6 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 (output / "run_identity.json").write_text(
                     json.dumps(identity), encoding="utf-8"
                 )
-                (output / "input_manifest.csv").write_text(
-                    "same,input,manifest\n", encoding="utf-8"
-                )
                 (output / "run_environment.json").write_text(
                     json.dumps(
                         {
@@ -286,6 +328,12 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     ),
                     encoding="utf-8",
                 )
+            self._write_input_manifest(source)
+            self._write_input_manifest(
+                target,
+                solver_logical_path="solver/crossover2.json",
+                solver_sha256="solver-crossover2",
+            )
             (source / "run_scope.json").write_text(
                 json.dumps({"result_use": "SCIENTIFIC_PRODUCTION"}),
                 encoding="utf-8",
@@ -331,6 +379,11 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             (source / "solve_report.json").write_text(
                 json.dumps(solve_report), encoding="utf-8"
             )
+            target_identity = dict(identity)
+            target_identity["implementation_bundle"] = {"sha": "new-code"}
+            (target / "run_identity.json").write_text(
+                json.dumps(target_identity), encoding="utf-8"
+            )
             with patch(
                 "cispo_model.primal_dual_checkpoint.validate_input_manifest",
                 return_value=(True, []),
@@ -353,6 +406,19 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                         optimization_start_hour=0,
                         result_use="SCIENTIFIC_PRODUCTION",
                     )
+                with self.assertRaisesRegex(
+                    PrimalDualCheckpointError, "implementation bundle differs"
+                ):
+                    prepare_primal_dual_crossover(
+                        source,
+                        target,
+                        FakeModel(),
+                        self.config,
+                        optimization_hours=8760,
+                        optimization_start_hour=0,
+                        result_use="SCIENTIFIC_PRODUCTION",
+                        allow_engineering_checkpoint=True,
+                    )
                 prepared = prepare_primal_dual_crossover(
                     source,
                     target,
@@ -362,8 +428,15 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     optimization_start_hour=0,
                     result_use="SCIENTIFIC_PRODUCTION",
                     allow_engineering_checkpoint=True,
+                    allow_compatible_implementation_bundle=True,
                 )
             self.assertTrue(prepared["engineering_checkpoint_explicitly_allowed"])
+            self.assertTrue(
+                prepared[
+                    "compatible_implementation_bundle_explicitly_allowed"
+                ]
+            )
+            self.assertFalse(prepared["implementation_bundle_matches"])
             self.assertIsNone(prepared["source_result_manifest_sha256"])
 
     def test_incomplete_barrier_vector_export_is_recovery_only(self) -> None:
@@ -479,7 +552,7 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             )
             target.setObjective(y[0] + 2.0 * y[1] + 3.0 * y[2])
             target.Params.Method = 2
-            target.Params.Crossover = 1
+            target.Params.Crossover = 2
             target.Params.OutputFlag = 0
             apply_primal_dual_crossover_start(
                 target,

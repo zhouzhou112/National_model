@@ -12,6 +12,22 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 16:30+08:00：在启动 744 h deferred Stage B 前完成 fail-closed 源审计并发现真实续接
+  缺陷。winner source `relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1` 的 checkpoint
+  gate `eligible=true`、reasons 空；Fingerprint `2120635803`，raw vars/rows/nnz
+  `3,735,087/4,454,178/40,395,436`，BarX/BarPi entries
+  `3,735,087/4,454,178`、SHA256 `53054c53...aa4c5/98d035bb...35ef`，manifest SHA256
+  `76460ff4...148b4`，source commit `6477f42`、Gurobi `13.0.2`。现实现却逐字节比较 Stage A/B
+  `input_manifest.csv`，其中包含必然不同的 `solver_configuration`，并把任意 Git commit 差异直接当 LP
+  差异，导致真实 deferred Crossover 在 solve 前自相矛盾地被拒绝。最小修复现只排除恰好一条 solver
+  runtime 行；configuration/scenario/formulation/state/数据仍全部进入 scientific resume SHA。跨
+  implementation bundle 默认 fail-closed，新增显式许可后仍必须通过相同 Gurobi version、科学/数据
+  identity、Fingerprint、LP 尺寸与完整变量/约束顺序 digest。新增专用 744 profile：Method 2、Threads
+  16、Presolve 2、Crossover 2、CrossoverBasis 1、LPWarmStart 2、Feas/Opt `1e-6`、NF2、Scale2、
+  no TimeLimit、SoftMem 80 GiB；runner 使用全新 roots、无 state/basis，并要求 OPTIMAL + PASS + 58/58 +
+  current input + valid result manifest + exact macro pair PASS。JSON/py_compile/diff 与不依赖 Gurobi 的
+  focused `6/6 PASS`；本机缺 gurobipy，server full regression/build identity gate 尚未执行，Stage B
+  尚未启动。fixed idle clean `7551e3f`；cloud 未查询、未触碰。
 - 2026-08-17 16:16+08:00：第二批 `relaxed_factor_screens_v0817_v2` 已于 16:06:11 串行完成，
   campaign wall 约 `43:00`，summary 为 `NO_MATERIAL_COST_IMPROVEMENT`、
   `all_paired_screens_valid=true`、shortlist 空。三根均保持 Fingerprint `2120635803` 与完整
@@ -1874,6 +1890,27 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 real deferred-crossover resume contract repaired locally
+
+- 问题证据：既有 relaxed Base/744 source checkpoint eligibility 全通过，完整 BarX/BarPi、Fingerprint、
+  source identity/order digests 均有效；但 `prepare_primal_dual_crossover()` 要求 source/target 完整
+  `input_manifest.csv` 文件 SHA 相同。manifest 明确包含 solver profile 行，Stage A 与 Stage B 又必须
+  使用不同 profile，故原合同无法真实续接。implementation layer 还包含 Git commit，使后续非 LP 修复
+  同样无条件阻断，尽管 exact LP Fingerprint/order 可独立验证。
+- 修改范围：`io_contract.py` 新增只排除 `solver_configuration` 的科学 resume identity；
+  `primal_dual_checkpoint.py` 保留 source manifest/vector 自校验并增加 source/target Gurobi version、
+  科学 input SHA、显式跨 bundle 许可和全量 provenance；runner 新增
+  `--allow-compatible-primal-dual-implementation`，无 checkpoint 时拒绝。模型变量、约束、目标、Base、
+  数据、容差和现有云作业均未改变。
+- 新实验合同：新增 `barrier_16_deferred_crossover2_744_validation_v1.json`、固定服务器独立 runner 与
+  accepted Stage B/strict reference macro pair auditor。目标必须 Crossover 2、CrossoverBasis 1、
+  LPWarmStart 2、Feas/Opt `1e-6`、SoftMem 80、no TimeLimit；使用全新 output/control，不导出 state/basis，
+  终态要求 OPTIMAL、solver contract PASS、QC PASS、58/58、两个 manifest 有效及 exact macro PASS。
+- 验证/未决：JSON、py_compile、`git diff --check` 与 input-resume/runner/pair-audit focused `6/6 PASS`。
+  Windows 无 gurobipy，不能把 checkpoint/profile Gurobi tests 记为通过。下一步提交/双推送，fixed idle
+  fast-forward 后执行 bash/json/compile、focused/full regression；再先让真实 744 build 完成全部
+  checkpoint identity/order gate，只有进入 Crossover 才持续运行。cloud `4139552` 不改参、不取消。
 
 ### 2026-08-17 second factor/throughput screen batch terminal
 

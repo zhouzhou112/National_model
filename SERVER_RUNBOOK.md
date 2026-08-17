@@ -1,5 +1,28 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 16:30 deferred Crossover=2 744 validation contract prepared
+
+```text
+source=/data/zz2/National_model/outputs/relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1
+source_checkpoint_eligible=true source_manifest_sha256=76460ff4e1ff36cc59c72235d95816aeb1961a34ef90d0e7a9bdd68a0bb148b4
+source_fingerprint_vars_rows_nnz=2120635803/3735087/4454178/40395436
+source_barx_entries_sha=3735087/53054c53f01c4f0caad533766dadb355e5f0c7625f3f3a6e82a71ce5bdaaa4c5
+source_barpi_entries_sha=4454178/98d035bb632994482879831938f28102aae1595d16d116b4cbd492482db335ef
+target_profile=barrier_16_deferred_crossover2_744_validation_v1
+target_params=Crossover2,CrossoverBasis1,LPWarmStart2,Threads16,FeasOpt1e-6,NF2,Scale2,no_TimeLimit,SoftMem80
+target_output=/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v1
+target_control=/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v1
+local_validation=json_compile_diff_PASS,focused_6/6_PASS deployment=NOT_YET started=false
+```
+
+真实 resume identity 不得比较包含 solver profile 的完整 manifest 文件 SHA；Stage A/B 必须使用不同
+solver profile。现在只排除恰好一行 `solver_configuration`，其余 manifest 行全部参与科学 SHA。
+implementation bundle 不同默认拒绝；显式许可只允许继续执行 Gurobi version、case/data layers、exact
+Fingerprint/dimensions 与完整 Var/Constr order digests，任一不符仍在 optimize 前失败。部署后先跑完整
+server regression；启动命令必须包含三项显式许可并禁止 state/basis。终态只有
+`OPTIMAL + solver PASS + solution_qc PASS + 58/58 + current input + valid result manifest + accepted-pair
+macro PASS` 才证明 744 Stage A→B 架构可用；结果仍是 `TEST_ONLY_TRUNCATED_HORIZON`。
+
 ## 2026-08-17 16:16 second paired factor/throughput batch terminal
 
 ```text

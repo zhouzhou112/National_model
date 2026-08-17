@@ -17,6 +17,7 @@ import numpy as np
 
 from .config import ModelConfig
 from .io_contract import (
+    input_manifest_scientific_resume_identity,
     sha256_file,
     validate_input_manifest,
     validate_result_manifest,
@@ -556,6 +557,7 @@ def prepare_primal_dual_crossover(
     optimization_start_hour: int,
     result_use: str,
     allow_engineering_checkpoint: bool = False,
+    allow_compatible_implementation_bundle: bool = False,
 ) -> dict[str, Any]:
     """Validate an eligible checkpoint against the exact rebuilt target LP."""
     source_root = Path(source_output_dir).resolve()
@@ -615,15 +617,40 @@ def prepare_primal_dual_crossover(
         raise PrimalDualCheckpointError(
             "Target input manifest is invalid: " + "; ".join(target_failures)
         )
-    if sha256_file(source_input) != sha256_file(target_input):
-        raise PrimalDualCheckpointError("Source and target input manifests differ")
+    try:
+        source_manifest_identity = input_manifest_scientific_resume_identity(
+            source_input
+        )
+        target_manifest_identity = input_manifest_scientific_resume_identity(
+            target_input
+        )
+    except ValueError as error:
+        raise PrimalDualCheckpointError(str(error)) from error
+    if (
+        source_manifest_identity["sha256"]
+        != target_manifest_identity["sha256"]
+        or source_manifest_identity["row_count"]
+        != target_manifest_identity["row_count"]
+    ):
+        raise PrimalDualCheckpointError(
+            "Source and target scientific input manifests differ"
+        )
     target_identity = _read_json(target_root / "run_identity.json")
+    target_environment = _read_json(target_root / "run_environment.json")
+    source_gurobi_version = source.get("gurobipy_version")
+    target_gurobi_version = (
+        target_environment.get("packages", {}).get("gurobipy")
+    )
+    if source_gurobi_version != target_gurobi_version:
+        raise PrimalDualCheckpointError(
+            "Checkpoint source and target Gurobi version differs: "
+            f"{source_gurobi_version!r} != {target_gurobi_version!r}"
+        )
     source_layers = metadata.get("identity_layers", {})
     for name in (
         "baseline_contract",
         "analysis_case",
         "scientific_case",
-        "implementation_bundle",
         "data_roots",
         "lp_model",
     ):
@@ -631,6 +658,20 @@ def prepare_primal_dual_crossover(
             raise PrimalDualCheckpointError(
                 f"Checkpoint source and target identity layer {name} differs"
             )
+    source_implementation = source_layers.get("implementation_bundle")
+    target_implementation = target_identity.get("implementation_bundle")
+    implementation_bundle_matches = (
+        source_implementation == target_implementation
+    )
+    if (
+        not implementation_bundle_matches
+        and not allow_compatible_implementation_bundle
+    ):
+        raise PrimalDualCheckpointError(
+            "Checkpoint source and target implementation bundle differs; "
+            "an explicit compatibility acknowledgement is required before "
+            "the exact LP Fingerprint and ordering checks may authorize reuse"
+        )
     model.update()
     ordering = metadata.get("lp_ordering", {})
     try:
@@ -698,6 +739,35 @@ def prepare_primal_dual_crossover(
         "engineering_checkpoint_explicitly_allowed": bool(
             engineering_source and allow_engineering_checkpoint
         ),
+        "compatible_implementation_bundle_explicitly_allowed": bool(
+            not implementation_bundle_matches
+            and allow_compatible_implementation_bundle
+        ),
+        "implementation_bundle_matches": implementation_bundle_matches,
+        "source_implementation_bundle": source_implementation,
+        "target_implementation_bundle": target_implementation,
+        "source_gurobi_version": source_gurobi_version,
+        "target_gurobi_version": target_gurobi_version,
+        "scientific_input_manifest_identity": {
+            "schema_version": source_manifest_identity["schema_version"],
+            "sha256": source_manifest_identity["sha256"],
+            "row_count": source_manifest_identity["row_count"],
+            "excluded_runtime_kinds": source_manifest_identity[
+                "excluded_runtime_kinds"
+            ],
+            "source_solver_configuration": source_manifest_identity[
+                "solver_configuration"
+            ],
+            "target_solver_configuration": target_manifest_identity[
+                "solver_configuration"
+            ],
+            "source_full_manifest_sha256": source_manifest_identity[
+                "full_manifest_sha256"
+            ],
+            "target_full_manifest_sha256": target_manifest_identity[
+                "full_manifest_sha256"
+            ],
+        },
         "source_result_manifest_sha256": (
             sha256_file(source_root / "result_manifest.json")
             if (source_root / "result_manifest.json").is_file()

@@ -1,0 +1,26 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_16_deferred_crossover2_744_validation_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Test-only 744 h validation of an exact-LP deferred Crossover=2 from a separately saved engineering Barrier checkpoint. It maps full raw-order PStart/DStart through presolve with LPWarmStart=2, uses macro-scale 1e-6 simplex tolerances, has no solver time limit, and cannot export a planning state.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "lp_warm_start": 2,
+    "solution_target": 0,
+    "barrier_convergence_tolerance": 1e-8,
+    "feasibility_tolerance": 1e-6,
+    "optimality_tolerance": 1e-6,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": 80
+  }
+}
