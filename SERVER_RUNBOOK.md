@@ -1,5 +1,20 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 08:37 Base/1488 iteration 50 gate
+
+```text
+fixed_base_1488_iteration=50 runtime_s=10014.836
+fixed_primal_dual_complementarity=229.055/0.172288/262.879
+same_profile_base744_equivalent_iterations=48/58/65 objective_gap_equivalent=61
+fixed_projected_iteration_at_12h=244..255
+fixed_process_rss_kib=55428232 host_available_gib~=61.0
+swap_used_mib~=984 swap_io=0/0 memory_psi=0 stderr_bytes=0
+```
+
+这是时间边界信号，不是停止信号。继续到 iteration 100 或终态；不得中途改 TimeLimit/profile、不得
+并发。若触发 TimeLimit，按 recovery contract 审计 BarX/BarPi、identity 与物理账目，不能重标为
+complete checkpoint 或科学解。
+
 ## 2026-08-17 07:40 cloud round 32 / fixed iteration 30
 
 ```text

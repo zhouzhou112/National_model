@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 08:37+08:00：fixed Base/1488 到 iteration 50，runtime `10,014.836 s`，0--50/
+  30--50/40--50 平均 `170.51/171.33/161.75 s/step`；primal/dual/complementarity
+  `229.055/0.172288/262.879`。相对 Base/744 的同量级点分别对应 iteration `48/58/65`，
+  absolute primal-dual objective gap 对应 iteration 61，且同 iteration 50 的 gap 小 `157.5x`。
+  按三个步长窗口，12 h 约可到 iteration `244--255`；若仍需 263 步会略超时，若当前约 10--15 步
+  迭代领先保持则可能刚好完成，故继续且不提前停止。process RSS `55,428,232 KiB`、available
+  `65,492,828,160 bytes`（约 61.0 GiB）、swap used 约 984 MiB 但 si/so 0、memory PSI 0、
+  stderr 0；运行安全。
 - 2026-08-17 07:40+08:00：ParaCloud audit round 32 已追加；job `4139552` 仍 `RUNNING`，最新
   iteration 329（07:22:40），runtime `969,935.080 s`，primal/dual/complementarity
   `1.404886/1.110e-6/0.119628`。wall `973,314 s`、allocated `25,955.040 core-hours`、
@@ -1679,6 +1687,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 Base/1488 iteration 50 convergence and time-limit gate
+
+- 轨迹：iteration 50 于 08:36:01 落盘，runtime `10,014.836 s`；iteration 0--50、30--50、
+  40--50 的平均步长为 `170.51/171.33/161.75 s`。primal/dual/complementarity 为
+  `229.055098/0.1722879/262.878554`；iteration 40--50 从
+  `357.500/0.328730/484.941` 单调下降，中段平台存在但无反弹。
+- exact 744 对齐：三个质量维度分别最接近 Base/744 的 iteration `48/58/65`；absolute
+  primal-dual objective gap `3.472e9` 最接近 744 iteration 61，而 744 同 iteration 50 gap
+  `5.468e11`，1488 小 `157.5x`。综合迭代路径约领先 10--15 步，但 primal 本身没有领先。
+- 时限估计：按 0--50、20--50、30--50、40--50 窗口，43,200 s TimeLimit 可到约
+  `244.6/245.2/243.7/255.2` steps。若复制 744 的 263 步会差约 8--19 步；若质量领先能转化为
+  终点迭代缩短则可能完成。该区间不足以取消，继续到 100/终态并保留完整 checkpoint/recovery。
+- 资源：Python RSS `55,428,232 KiB`，Gurobi current/max memory `45.07/58.29 GiB`；host
+  available `65,492,828,160 bytes`、swap used `1,031,831,552 bytes`，实时 si/so `0/0`、
+  memory PSI 0、stderr 0。当前 solver 安全，下一 case 仍须等待退出释放内存。
 
 ### 2026-08-17 cloud resource audit round 32 and Base/1488 iteration 30
 

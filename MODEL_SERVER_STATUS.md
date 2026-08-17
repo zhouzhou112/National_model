@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 08:37+08:00 Base 1488 iteration 50
+
+- iteration 50 runtime `10,014.836 s`；primal/dual/compl `229.055/0.172288/262.879`。
+  与 Base/744 对齐分别相当于 iteration `48/58/65`，objective gap 相当于 61，综合约领先
+  10--15 步；同 iteration gap 小 `157.5x`。
+- 当前平均步长推算 12 h 可到 iteration `244--255`。相对 744 的 263 步仍是边界案例；继续到
+  100/终态，不取消、不改参。
+- RSS `55,428,232 KiB`、available 约 61.0 GiB、swap used 约 984 MiB，si/so 0、memory PSI 0、
+  stderr 0；当前安全，下一任务不得并发。
+
 ## 2026-08-17 07:40+08:00 cloud round 32 / fixed iteration 30
 
 - cloud `4139552` RUNNING，iteration 329、runtime `969,935.080 s`，primal/dual/compl
