@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 16:35+08:00：744 h deferred Stage B 已按独立全新 roots 安全启动。修复提交
+  `b277fcea4cb42d4bf8634f0baaf794095e00d67f` 已双推送并 fast-forward 到 fixed；部署后 Linux
+  `bash -n`、profile JSON、`py_compile`、focused `20/20` 与完整 server regression `203/203 PASS`
+  （tests `94.966 s`、wall `1:36.07`、MaxRSS `1,121,468 KiB`、swaps 0），checkout clean 后才启动。
+  output/control 为 `deferred_crossover2_744_validation_v0817_v1`，supervisor PID `1656831`，
+  `/usr/bin/time` child PID `1656855`，启动时刻 `16:34:12`，available RAM `113.918 GiB`、si/so
+  `0/0`、memory PSI avg10 0、supervisor stderr 0。命令使用 Base/744、源 relaxed checkpoint、
+  `Crossover=2/CrossoverBasis=1/LPWarmStart=2`、显式 engineering-source 与 compatible-implementation
+  许可；优化前仍必须逐层通过 target manifest、Gurobi version、scientific resume identity、Fingerprint、
+  raw dimensions 与完整变量/约束顺序 digest。当前只允许这一个 fixed solver，checkout 冻结在
+  `b277fce`；不部署后续文档 tip、不并发。监管频率按用户要求降为 fixed 约 30--45 分钟或 phase/
+  terminal/resource anomaly，cloud 约 2 小时且仅在新 Barrier iteration/异常时落账；云端 `4139552`
+  未取消、未改参、未启 Stage B。
 - 2026-08-17 16:30+08:00：在启动 744 h deferred Stage B 前完成 fail-closed 源审计并发现真实续接
   缺陷。winner source `relaxed_barrier_campaign_v0812_v1/base_744h_bctol1e2_numeric1` 的 checkpoint
   gate `eligible=true`、reasons 空；Fingerprint `2120635803`，raw vars/rows/nnz
@@ -1890,6 +1903,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 exact deferred Crossover=2 validation launched on fixed server
+
+- Git：实施提交 `b277fcea4cb42d4bf8634f0baaf794095e00d67f`（`fix: enable exact deferred
+  crossover resume`）已推送 origin/GitHub 并部署到 fixed；启动前 checkout clean/idle。
+- 范围：独立重建 Base/744 exact LP，从既有 relaxed Base/744 BarX/BarPi 只读恢复，验证
+  `LPWarmStart=2 + Crossover=2 + CrossoverBasis=1` 是否直接完成 Stage B，而不重新运行 Barrier。
+- server validation：`bash -n`、JSON、`py_compile` PASS；focused actual `20/20 PASS`；完整 regression
+  `203/203 PASS`，tests `94.966 s`、wall `1:36.07`、MaxRSS `1,121,468 KiB`、swaps 0。
+- 运行证据：output `/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v1`，
+  control `/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v1`；
+  `2026-08-17T16:34:12+08:00` 启动 supervisor PID `1656831`、time child PID `1656855`；available
+  RAM `113.918 GiB`、si/so `0/0`、memory PSI avg10 0、stderr 0。
+- 合同：优化前必须通过源/目标 current manifests、相同 Gurobi `13.0.2`、科学/数据 identity、
+  Fingerprint `2120635803`、raw `3,735,087 vars / 4,454,178 rows / 40,395,436 nnz` 与完整顺序
+  digests；终态仅接受 `OPTIMAL + solver contract PASS + solution_qc PASS + 58/58 + valid manifests +
+  exact accepted-pair macro PASS`，且仍为 `TEST_ONLY_TRUNCATED_HORIZON`。
+- 未决与精确下一步：fixed checkout 冻结 `b277fce`，只按约 30--45 分钟或 phase/terminal/资源异常
+  检查；首次事件检查核对 `primal_dual_start_input.json` 与是否直接进入 Crossover。cloud 仍按约 2 小时
+  低频只读，仅新迭代/异常追加 ledger；不得取消/改参/启 Stage B 或提交第二云任务。
 
 ### 2026-08-17 real deferred-crossover resume contract repaired locally
 

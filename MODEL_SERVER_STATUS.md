@@ -1,5 +1,19 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 16:35+08:00 deferred Crossover=2 744 validation active
+
+- `b277fcea4cb42d4bf8634f0baaf794095e00d67f` 已双推送并部署；fixed 启动前 clean/idle，server
+  `bash`/JSON/compile PASS、focused `20/20`、full regression `203/203 PASS`（tests `94.966 s`、
+  wall `1:36.07`、MaxRSS `1,121,468 KiB`、swaps 0）。
+- 全新 output/control 为 `deferred_crossover2_744_validation_v0817_v1`；16:34:12 启动 supervisor
+  PID `1656831`、time child PID `1656855`。启动 available RAM `113.918 GiB`、si/so `0/0`、
+  memory PSI avg10 0、stderr 0。
+- 当前处于 exact LP build/identity gate 的初始窗口；必须先核对 target/source manifests、Gurobi
+  `13.0.2`、scientific identity、Fingerprint、dimensions 与完整 Var/Constr order，再以
+  `LPWarmStart=2` 直接 Crossover。checkout 冻结 `b277fce`，禁止第二 solver 或部署文档 tip。
+- 监管降频：fixed 约 30--45 分钟或 phase/terminal/resource anomaly；cloud 约 2 小时且仅新 Barrier
+  iteration/异常落账。云端 `4139552` 保持原 Stage A，未取消、未改参、未启 Stage B。
+
 ## 2026-08-17 16:30+08:00 deferred Crossover=2 resume fix prepared locally
 
 - relaxed Base/744 source checkpoint gate PASS：Fingerprint `2120635803`、BarX/BarPi

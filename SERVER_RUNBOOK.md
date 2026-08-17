@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 16:35 deferred Crossover=2 744 validation active
+
+```text
+deployed_head=b277fcea4cb42d4bf8634f0baaf794095e00d67f checkout=clean_frozen
+server_validation=bash_json_compile_PASS,focused_20/20,full_203/203_94.966s
+regression_wall=1:36.07 maxrss_kib=1121468 swaps=0
+output=/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v1
+control=/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v1
+started_at=2026-08-17T16:34:12+08:00 supervisor_pid=1656831 time_child_pid=1656855
+launch_available_gib=113.918 vmstat_si_so=0/0 memory_psi_avg10=0 stderr_bytes=0
+fixed_monitor=phase_event_or_30_to_45_minutes cloud_monitor=about_2_hours_new_iteration_or_anomaly_only
+```
+
+首个 fixed 检查不得早于正常 build/identity 窗口，除非 PID/资源异常。检查顺序为：supervisor/process tree
+→ events → `primal_dual_start_input.json` → source/target manifest 与 Gurobi/version/implementation authorization
+→ Fingerprint/dimensions/order digests → `gurobi.log` 是否直接 warm-start/Crossover 且未重跑 Barrier →
+RAM/swap/vmstat/PSI/stderr。PID 存在时禁止 fast-forward、第二求解或修改输出。terminal 后只能由 runner 的
+strict audit 与 macro pair audit 判定；不得仅凭 PID、return code 或 Gurobi log 接受。cloud `4139552`
+仍为原 Stage A，不取消、不改参、不启动 Stage B。
+
 ## 2026-08-17 16:30 deferred Crossover=2 744 validation contract prepared
 
 ```text
