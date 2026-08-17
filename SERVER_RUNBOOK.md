@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 10:59 cloud round 35 / fixed iteration 100
+
+```text
+cloud_job=4139552 RUNNING barrier_iteration=333 runtime_s=981713.748
+cloud_primal_dual_complementarity=1.246258/1.002e-6/0.107341
+cloud_round=35 wall_s=985280 allocated_core_hours=26274.133 actual_cpu_hours=4109.163
+cloud_efficiency_percent=15.6396 maxrss_gib=362.913 recent20_minutes=53.302
+cloud_resource_audit_records=36 sha256=64d80b8cceb7eae1081524328adb85d01515c16e1c5446cc5f0eb504bbdb6e87
+fixed_base_1488_iteration=100 runtime_s=18358.690 raw_objective_gap=5.432e6
+fixed_primal_dual_complementarity=0.562716/0.00180162/0.402016
+fixed_step_seconds_0_100_50_100_75_100_90_100=168.69/166.88/168.82/169.06
+fixed_projected_iteration_at_43200s=247.2
+fixed_process_rss_kib=55452788 mem_available_kib=64075116 swap_used_kib=1007648
+fixed_vmstat_si_so=0/0 memory_psi_avg10=0/0 stderr_bytes=0 terminal_files=absent
+```
+
+fixed 继续唯一 solver，不按 iteration 100 中途结果停止或改参。每 10 iteration 或 15--30 min 只读检查；
+仅终态、TimeLimit、资源异常、campaign job switch 才立即做完整审计。cloud 约每小时检查且仅在新 iteration
+后追加账本；不取消、不改参、不启 Stage B。CRLF watcher 已弃用，后续使用 direct read-only SSH。
+
 ## 2026-08-17 09:57 cloud round 34 / fixed iteration 79
 
 ```text

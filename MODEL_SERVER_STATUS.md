@@ -1,5 +1,20 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 10:59+08:00 cloud round 35 / fixed iteration 100
+
+- fixed Base/1488 iteration 100、runtime `18,358.690 s`，primal/dual/compl
+  `0.562716/0.00180162/0.402016`；0--100/50--100/75--100/90--100 平均
+  `168.69/166.88/168.82/169.06 s/step`，按近期窗口 12 h 约到 iteration `247.2`。残差量级约对应
+  strict Base/744 iteration `67/96/122`；raw objective gap `5.432e6`，不跨 horizon 强行比较。
+- fixed process RSS `55,452,788 KiB`，available 约 `61.1 GiB`，swap used 约 `984 MiB` 但 si/so 0、
+  memory PSI 0；stderr 0、无终态/checkpoint、唯一 solver 安全运行。
+- cloud `4139552` RUNNING，iteration 333、runtime `981,713.748 s`，primal/dual/compl
+  `1.246258/1.002e-6/0.107341`；round 35 wall `985,280 s`、allocated `26,274.133 core-hours`、
+  actual CPU `4,109.163 h`、efficiency `15.6396%`、MaxRSS `362.913 GiB`、recent-20 `53.302 min`。
+  resource ledger 36 records SHA256 `64d80b8c...db6e87`；stderr 0、无 terminal/checkpoint、未启 Stage B。
+- 继续低频：fixed 每 10 iteration/15--30 min 或事件检查，cloud 约每小时且只在新 iteration 记账；
+  正常中途点不再逐次写文档。活动 campaign 退出前不部署或启动 lower-factor screens。
+
 ## 2026-08-17 09:57+08:00 cloud round 34 / fixed iteration 79
 
 - cloud `4139552` RUNNING，iteration 332、runtime `978,908.233 s`，primal/dual/compl

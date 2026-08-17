@@ -12,6 +12,21 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 10:59+08:00：低频材料门禁已闭合。fixed Base/1488 于 10:55:05 到 iteration 100，
+  runtime `18,358.690 s`，primal/dual/complementarity `0.562716/0.00180162/0.402016`，raw
+  primal-dual objective gap `5.432e6`；0--100、50--100、75--100、90--100 平均步长分别为
+  `168.69/166.88/168.82/169.06 s`，按 75--100 窗口投影 12 h 到 iteration `247.2`。按残差量级与
+  strict Base/744 对齐，primal/dual/complementarity 分别约对应 iteration `67/96/122`；不同 horizon
+  的 objective gap 不直接作科学对齐。solver current/max memory `45.07/58.29 GiB`，process RSS
+  `55,452,788 KiB`，host available 约 `61.1 GiB`，swap used 约 `984 MiB` 但 si/so 0、memory PSI 0，
+  stderr 0、无终态/checkpoint，仍为唯一 solver。ParaCloud 同轮只读核验到 iteration 333，runtime
+  `981,713.748 s`，primal/dual/complementarity `1.246258/1.002e-6/0.107341`；resource audit round 35
+  已原子追加：wall `985,280 s`、allocated `26,274.133 core-hours`、actual CPU `4,109.163 h`、
+  efficiency `15.6396%`、MaxRSS `362.913 GiB`、最近 20 步 `53.302 min`，36 records SHA256
+  `64d80b8c...db6e87`。云端 stderr 0、无终态/checkpoint，未取消/改参/启 Stage B。监听器因 CRLF
+  尾字符退出仅影响本地等待器，不影响 solver；后续改用低频直接只读检查。相关本地 focused tests
+  `5/5 PASS`。下一轮只在 fixed 每 10 iteration/15--30 min 或终态事件检查，cloud 约每小时且仅有
+  新 iteration 才记账；不为中途正常点反复更新文档。
 - 2026-08-17 09:57+08:00：ParaCloud audit round 34 已追加；`4139552` 仍 RUNNING，iteration 332
   于 09:52:13 落盘，runtime `978,908.233 s`，primal/dual/complementarity
   `1.274926/1.023e-6/0.109716`。wall `981,492 s`、allocated `26,173.120 core-hours`、actual CPU
@@ -1721,6 +1736,28 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 cloud resource audit round 35 and Base/1488 iteration 100
+
+- Git/范围：基于 `1c156c87ea9f4306c8c484eef67c0ba1a323d963`；仅只读 fixed/cloud 活动作业、向既有 cloud
+  resource ledger 原子追加一条记录并更新 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、
+  `SERVER_RUNBOOK.md`。未修改活动 checkout/profile、未取消任务、未启动 Stage B 或第二 solver。
+- fixed 证据：Base/1488 iteration 100 于 10:55:05 落盘，runtime `18,358.690 s`，primal/dual/
+  complementarity `0.562716/0.00180162/0.402016`；0--100/50--100/75--100/90--100 平均步长
+  `168.69/166.88/168.82/169.06 s`，按近期窗口投影 12 h 到 iteration `247.2`。process RSS
+  `55,452,788 KiB`，available 约 `61.1 GiB`，swap used 约 `984 MiB` 但 si/so 0、PSI 0，stderr 0，
+  终态三文件与 checkpoint 均不存在。残差量级对齐 strict Base/744 为 `67/96/122`；不同 horizon
+  objective gap 不直接比较，raw gap 仅记录为 `5.432e6`。
+- cloud 证据：job `4139552` 仍 RUNNING，iteration 333、runtime `981,713.748 s`，primal/dual/
+  complementarity `1.246258/1.002e-6/0.107341`。round 35 记录 wall `985,280 s`、allocated
+  `26,274.133 core-hours`、actual CPU `4,109.163 h`、efficiency `15.6396%`、MaxRSS `362.913 GiB`、
+  recent-20 `53.302 min`；账本 36 records，SHA256
+  `64d80b8cceb7eae1081524328adb85d01515c16e1c5446cc5f0eb504bbdb6e87`，stderr 0、无终态/
+  checkpoint、无 Stage B。
+- 验证/未决/下一步：本地 focused unittest `5/5 PASS`。iteration-100 watcher 因 CRLF 路径尾字符
+  退出，但 direct SSH 已验证远端 solver/PID 完整，故仅弃用该等待器，不干预求解。继续低频监管
+  fixed 至 Barrier 终态或 12 h TimeLimit；旧 campaign 若切换到 2160，只记录且不追改。campaign
+  idle 后部署 fail-closed gate/lower-factor screens，补 server bash/profile/full regression，再串行筛选。
 
 ### 2026-08-17 cloud resource audit round 34 and Base/1488 iteration 79
 
