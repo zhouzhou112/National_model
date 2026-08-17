@@ -222,7 +222,7 @@ wrapper_stderr_and_time=audited
 | 继续盲扫常规 Gurobi 参数 | NO-GO | 两批 paired screens 均无 material improvement |
 | fixed 重跑 Base/2160 | NO-GO | 已在 Barrier 前触发明确内存边界 |
 | future relaxed Stage A profile | CONDITIONAL GO | 744 macro、V5/744、Base/1488 已支持；待 deferred Stage B terminal |
-| future Stage B profile | CONDITIONAL GO | exact resume 实现已修复；待 fixed 744 strict terminal + macro pair |
+| future Stage B profile | CONDITIONAL GO | v3 已证明 direct primal/dual Crossover；待 fixed 744 strict terminal + macro pair |
 
 ## 9. 尚待闭合
 
@@ -230,7 +230,7 @@ wrapper_stderr_and_time=audited
    manifest usage 都为 0 的该可选根不同。v2 随后又在 build 前因 memory gate 遗留的已删除常量引用
    异常退出；没有 LP/Gurobi/数值结果。`018607c` 已修复并覆盖所有 cloud profile versions。v1/v2 roots
    永久保留。server regression `212/212 PASS` 后，全新 v3 已于 17:53:13 启动；仍须证明
-   `LPWarmStart=2` 生效、未重跑 Barrier，并完成严格
+   `LPWarmStart=2` 已于 Gurobi 日志证明生效且未重跑 Barrier；当前处于 simplex cleanup，仍待完成严格
    `OPTIMAL + PASS + 58/58 + manifests + macro pair`。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
    Stage A 总耗时或终态质量。

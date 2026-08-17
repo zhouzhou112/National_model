@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 18:26 deferred Crossover v3 phase audit
+
+```text
+identity=Gurobi13.0.2,Fingerprint2120635803,raw_rows_cols_nnz=4454178/3735087/40395436
+scientific_manifest=77_rows,sha256=772627bc1539338f5f0af23ad7be01eb9553e78b38a67788863dd26593ad9ac3
+data_root_compatibility=PASS,RAW_GRFR_usage_0/0_only
+presolve_s=166.67 presolved_rows_cols_nnz=3007038/2846655/31252909
+resume=LPWarmStart2_primal_and_dual_vectors direct_crossover=true barrier_rerun=false
+push_complete_s=1361 simplex_iteration=1220005 solver_runtime_s=1601 objective~=2361959.0
+python_rss_kib=8758088 gurobi_current_max_gib=12.687/13.944
+available_gib=105 si_so=0/0 memory_psi=0 stderr=0 terminal=false
+```
+
+cleanup 中的 dual infeasibility 不能单独作为失败或验收依据；保持运行，不修改参数。下一 fixed 只在约
+19:10 或 terminal/resource anomaly 检查；若 terminal，读取 runner/audit/macro rc、solve/QC、58/58、
+input/result manifest、stdout/stderr/time 和 exact macro pair。cloud 约 19:20 才查。
+
 ## 2026-08-17 17:54 deferred Crossover v3 active
 
 ```text

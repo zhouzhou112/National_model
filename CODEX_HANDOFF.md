@@ -12,6 +12,16 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 18:26+08:00：v3 首次低频阶段审计确认 deferred resume 主链已真实生效。supervisor/Python
+  `1758970/1758995` 存活，wall `32:29`；source/target Gurobi 均 `13.0.2`，科学 input manifest
+  `77` rows、SHA256 `772627bc...9ac3`，Fingerprint `2120635803`，raw
+  `4,454,178 rows / 3,735,087 cols / 40,395,436 nnz`，唯一 data-root 差异为 RAW_GRFR 双端 usage
+  `0/0`。Gurobi 明确记录 `LP warm-start: perform crossover with primal and dual start vectors`，presolve
+  `166.67 s` 后为 `3,007,038 / 2,846,655 / 31,252,909`，没有 Barrier 重跑。Crossover push 于 solver
+  `1,361 s` 完成，当前进入 simplex cleanup；18:25:41 为 iteration `1,220,005`、runtime `1,601 s`、
+  objective 约 `2,361,959.0`，尚未终态，不能验收。进程 RSS `8,758,088 KiB`，Gurobi max memory
+  `13.944 GiB`，主机 available `105 GiB`、si/so 0、memory PSI 0、stderr 0，无 numerical-trouble 或
+  solve/QC/result。继续运行且不改参；下一 fixed 检查约 19:10 或 terminal/anomaly，cloud 仍等约 19:20。
 - 2026-08-17 17:54+08:00：fixed 在 no-solver/clean、v3 roots 不存在、available `113 GiB`、si/so 0、
   memory PSI 0 后 fast-forward 到 `710aa0259957d03c45821b755562fc1636a60519`。Linux bash/py_compile
   PASS，focused `17/17`，完整 server regression `212/212 PASS`（tests `97.198 s`、wall `1:38.40`、
@@ -1958,6 +1968,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v3 exact-resume / simplex phase confirmed
+
+- identity：source checkpoint status `ENGINEERING_BARRIER_CHECKPOINT_ONLY`，科学 manifest 77 rows、SHA
+  `772627bc1539338f5f0af23ad7be01eb9553e78b38a67788863dd26593ad9ac3`；Gurobi `13.0.2`、Fingerprint
+  `2120635803`、raw LP `4,454,178 / 3,735,087 / 40,395,436`。implementation bundle 差异已显式许可，
+  但 target 精确 LP 检查已通过；RAW_GRFR 是唯一差异且两端科学 manifest usage 均 0。
+- phase：17:58:55 optimize，日志先写 `use start vectors`，再写 `perform crossover with primal and dual
+  start vectors`；Presolve `166.67 s`，presolved rows/cols/nnz `3,007,038/2,846,655/31,252,909`。日志没有
+  Barrier 阶段；push 于 `1,361 s` 完成，随后 simplex cleanup。18:25:41 为 iteration `1,220,005`、
+  runtime `1,601 s`，尚未达到终态，较大的 cleanup dual infeasibility 仅作为进行中轨迹记录，不提前判败。
+- resources/artifacts：Python RSS `8,758,088 KiB`，Gurobi current/max memory `12.687/13.944 GiB`；available
+  RAM `105 GiB`、vmstat si/so 0、PSI 0、stderr 0。没有 numerical trouble、return code、solve/QC/result。
+- 边界/下一步：只读审计，未改参/取消/并发/部署。fixed checkout 继续冻结 `710aa02`；约 19:10 或
+  terminal/anomaly 再查，若仍活动只记录新增阶段；terminal 后依 runner strict audit 和 macro pair 验收。
+  cloud 未查询，仍保留约 19:20 的两小时窗口。
 
 ### 2026-08-17 deferred Crossover v3 deployed, validated and launched
 

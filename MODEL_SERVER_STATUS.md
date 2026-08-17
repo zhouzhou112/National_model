@@ -1,5 +1,15 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 18:26+08:00 deferred Crossover v3 exact resume confirmed
+
+- v3 唯一 solver 存活；Gurobi 明确使用 `LPWarmStart=2` 的 primal/dual vectors 并直接 Crossover，未重跑
+  Barrier。Gurobi/Fingerprint/raw identity 为 `13.0.2 / 2120635803 / 4,454,178×3,735,087×40,395,436`；
+  scientific manifest 77 rows、SHA `772627bc...9ac3`，仅 RAW_GRFR 0/0 usage 差异。
+- presolve `166.67 s`，presolved `3,007,038/2,846,655/31,252,909`；push 于 solver `1,361 s` 完成，
+  18:25:41 simplex iteration `1,220,005`、runtime `1,601 s`，尚未终态，未作验收。
+- Python RSS `8,758,088 KiB`，Gurobi max `13.944 GiB`；available `105 GiB`、si/so/PSI 0、stderr 0，
+  无 numerical trouble 和 solve/QC/result。继续运行；下一 fixed 约 19:10，cloud 约 19:20。
+
 ## 2026-08-17 17:54+08:00 deferred Crossover v3 active
 
 - fixed 启动门禁：clean/no solver，available `113 GiB`、vmstat si/so 0、memory PSI 0、v3 roots 不存在；
