@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 15:10+08:00 factor batch 1 complete / no shortlist / cloud round 39
+
+- 三根 744h×5-step screens 全部 identity valid、status 7、rc 2、audit 0、stderr/swaps 0；无任何
+  checkpoint/科学产物。campaign 约 `38:19`，case wall 约 `12:41--12:44`、MaxRSS
+  `19.68--20.50M KiB`。
+- NF0+Scale2 与 NF0+ScaleAuto 的 Factor NZ/Ops 相对 baseline 为 `1.003545/1.031506`；
+  NF1+ScaleAuto 为 `1.0/1.0`。summary `NO_MATERIAL_FACTOR_IMPROVEMENT`，shortlist 空。
+- fixed 无 solver，available 约 `114.0 GiB`、si/so/PSI 0、checkout clean `4f195d4`。下一轮只审计/
+  短测更直接的 sparsification/fill/order 候选，不运行完整 744。
+- cloud round 39：iteration 338、runtime `996,833.092 s`，wall `999,673 s`、allocated
+  `26,657.947 core-hours`、actual CPU `4,169.626 h`、efficiency `15.6412%`、recent-20 `52.922 min`；
+  ledger 40 records SHA256 `75c7edd5...2108`，stderr 0、无终态/Stage B。
+
 ## 2026-08-17 14:26+08:00 serial factor screens active
 
 - exact head `4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 已部署；server bash/profile/compile、focused

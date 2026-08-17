@@ -12,6 +12,22 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 15:10+08:00：三根 Base/744 5-iteration factor screens 已于 15:04:08 串行完成，
+  campaign wall 约 `38:19`，summary 为 `NO_MATERIAL_FACTOR_IMPROVEMENT`、
+  `all_paired_screens_valid=true`、shortlist 空、scientifically accepted/automatic winner 均 false。
+  三根均 Fingerprint `2120635803`、LP/scientific/scenario identity 完全相同，status 7、Barrier 5、
+  runner rc 2、audit rc 0、stderr/swaps 0，无 checkpoint/QC/result/planning state。`NF0+Scale2` 与
+  `NF0+ScaleAuto` 均为 Factor NZ/Ops `7.360e8/4.911e12`，相对 NF1+Scale2 baseline 恶化
+  `0.3545%/3.1506%`，observed `13.187/13.505 s/iter`；`NF1+ScaleAuto` 与 baseline 完全一致
+  `7.334e8/4.761e12`、`12.835 s/iter`。三根 wall/MaxRSS 分别为
+  `12:44.06/20,211,636 KiB`、`12:42.69/19,678,600 KiB`、`12:41.36/20,501,636 KiB`。
+  fixed 已无 solver，available RAM 约 `114.0 GiB`、si/so 0、PSI 0，checkout clean `4f195d4`。
+  结论是 NumericFocus 0 与 auto scaling 不降低当前 744 fill-in，不值得进入完整 744；下一轮只测试
+  更直接作用于 sparsification/fill/order 的短候选，不把空 shortlist 强行升级为 winner。ParaCloud
+  round 39 已追加：iteration 338、runtime `996,833.092 s`，primal/dual/complementarity
+  `1.114863/9.225e-7/0.097289`；wall `999,673 s`、allocated `26,657.947 core-hours`、actual CPU
+  `4,169.626 h`、efficiency `15.6412%`、recent-20 `52.922 min`，40 records SHA256
+  `75c7edd5...2108`；仍 RUNNING、stderr 0、无 terminal/checkpoint、未启 Stage B。
 - 2026-08-17 14:26+08:00：factor-screen data-root 修复提交
   `4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 已双推送并部署；server `bash -n`/profile/py_compile
   PASS、focused `10/10 PASS`、完整 regression `194/194 PASS`（`96.14 s`、MaxRSS
@@ -1819,6 +1835,24 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 first factor-screen batch terminal and cloud resource round 39
+
+- Git/范围：fixed 冻结 clean `4f195d4353b76ce76c710eb5c7ba3c467a4d494c` 完成三根 screen；
+  只读终态审计并向 cloud ledger 原子追加 round 39，更新三份交接文档。无 checkout/profile/solver
+  中途修改，未取消/改参 cloud、未启 Stage B。
+- factor terminal：三根均 paired identity 全匹配、status 7、5 Barrier iterations、runner rc 2、
+  audit rc 0、stderr/swaps 0，且无科学/检查点产物。NF0 两根 Factor NZ/Ops ratio
+  `1.003545/1.031506`，NF1+ScaleAuto 为 `1.0/1.0`；observed step `13.187/12.835/13.505 s`。
+  case wall `12:44.06/12:42.69/12:41.36`，MaxRSS `20,211,636/19,678,600/20,501,636 KiB`。
+  summary `NO_MATERIAL_FACTOR_IMPROVEMENT`、all valid、shortlist `[]`，完整 744 未启动。
+- cloud：iteration 338、runtime `996,833.092 s`，primal/dual/complementarity
+  `1.114863/9.225e-7/0.097289`；round 39 wall `999,673 s`、allocated `26,657.947 core-hours`、
+  actual CPU `4,169.626 h`、efficiency `15.6412%`、MaxRSS `362.913 GiB`、recent-20
+  `52.922 min`。ledger 40 records SHA256
+  `75c7edd5cc791517c465798066974edcd7a0acfcf43ee337cf99bbb9222c2108`。
+- 下一步：审计既有 AggFill/PreSparsify/BarOrder/PreDual 证据并只构造最少数量的第二批 744 5-step
+  candidates；仍要求 exact paired identity 和 >=5% Factor Ops/NZ，未过门槛不跑完整 744。
 
 ### 2026-08-17 three serial 744 h factor screens launched
 

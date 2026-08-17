@@ -1,5 +1,25 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 15:10 factor batch 1 terminal / no material improvement
+
+```text
+factor_campaign_status=COMPLETE wall~=38:19 all_paired_screens_valid=true
+summary_status=NO_MATERIAL_FACTOR_IMPROVEMENT shortlist_tags=[] scientific=false
+nf0_scale2_factor_nz_ops_ratio=1.003545/1.031506 step_s=13.187 wall=12:44.06 maxrss_kib=20211636
+nf1_scaleauto_factor_nz_ops_ratio=1.0/1.0 step_s=12.835 wall=12:42.69 maxrss_kib=19678600
+nf0_scaleauto_factor_nz_ops_ratio=1.003545/1.031506 step_s=13.505 wall=12:41.36 maxrss_kib=20501636
+all_cases=status7,barrier5,runner_rc2,audit_rc0,stderr0,swaps0,no_science_artifacts
+fixed_solver_count=0 checkout=4f195d4 available_gib~=114 si_so=0/0 psi=0
+cloud_job=4139552 RUNNING barrier_iteration=338 runtime_s=996833.092
+cloud_round=39 wall_s=999673 allocated_core_hours=26657.947 actual_cpu_hours=4169.626
+cloud_efficiency_percent=15.6412 recent20_minutes=52.922 records=40
+cloud_ledger_sha256=75c7edd5cc791517c465798066974edcd7a0acfcf43ee337cf99bbb9222c2108
+```
+
+不得从空 shortlist 选择 production winner，也不得运行这三根的完整 744。下一候选必须直接针对
+presolve sparsification、fill 或 ordering，仍先 5 iterations；保持原 LP/scientific identity、串行、
+全新 roots 与 >=5% Factor Ops/NZ 门槛。cloud 继续低频只读。
+
 ## 2026-08-17 14:26 serial 744 h factor-screen campaign
 
 ```text
