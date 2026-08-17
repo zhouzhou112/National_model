@@ -1306,6 +1306,13 @@ valid result manifest、标准 `Pi` 导出和 wrapper/time 闭合，才是年度
 basic result，而不只是附属分析；经单独显式许可可导出下一规划年的 planning state。Stage B
 失败不损坏 Stage A，但不得重标失败解或手工补 manifest。
 
+`data_roots` 默认逐键精确一致。唯一已审计例外是 `CISPO_RAW_GRFR_ROOT`：它在 current solve package
+中是 readiness/provenance 环境根，旧 checkpoint 创建 shell 可能未设置。只有 source/target 已分别通过
+manifest validation、排除 solver 行后的 77 行科学 manifest 逐字段/SHA 完全相同，并且两端 manifest
+在各自声明的 RAW_GRFR root 下消费文件数均为 0 时，才允许该可选根的 `null`/路径差异；差异、两端
+使用计数和 allowlist 必须写入 `primal_dual_start_input.json`。任何被消费根不同，或任何非 allowlist
+根即使暂未消费也不同，仍在 optimize 前 fail-closed。
+
 所有 `barrier_checkpoint_full_year_cloud_*` 与 `deferred_crossover2_full_year_cloud_*` profile 版本均由
 runner 按前缀分别识别为 Stage A/Stage B，而不是只硬编码 v1。前者强制
 `--engineering-barrier-checkpoint-only`，后者强制 `--primal-dual-checkpoint-in`，二者都禁止用于截断

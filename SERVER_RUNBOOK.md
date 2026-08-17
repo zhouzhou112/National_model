@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 17:10 deferred Crossover v1 identity terminal
+
+```text
+v1_runner_audit_macro_rc=1/41/42 wall=5:31.43 maxrss_kib=4754120 swaps=0
+solver_started=false gurobi_log=false solve_qc_result=false
+source_raw_grfr_root=null
+target_raw_grfr_root=/data/zz2/National_model/data/grfr_raw_2019
+scientific_manifest_rows=77/77 equal=true sha256=772627bc1539338f5f0af23ad7be01eb9553e78b38a67788863dd26593ad9ac3
+source_target_raw_grfr_manifest_usage=0/0
+fixed_idle=true checkout=b277fce available_gib~=113 si_so=0/0 psi=0
+local_fix_tests=root_compatibility_4/4,primal_dual_5/5 deployment=NOT_YET
+```
+
+v1 output/control 永久保留，不删除、不覆盖。允许重跑的唯一修复范围是：只有
+`CISPO_RAW_GRFR_ROOT` 在双方 scientific manifest usage 均 0 时可作为审计后环境差异；任何其他 root
+或非零 usage 仍 fail-closed。提交/双推送后，fixed 先 fast-forward exact tip，执行 `bash -n`、新增 focused
+与 full regression；全部通过且 no-solver/resource-safe 后，显式设置全新
+`OUTPUT_ROOT/CONTROL_ROOT=deferred_crossover2_744_validation_v0817_v2` 再启动。不得复用 v1 根。
+
 ## 2026-08-17 16:43 all-version cloud profile fail-closed guard
 
 ```text

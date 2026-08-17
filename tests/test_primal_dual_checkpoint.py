@@ -381,6 +381,10 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             )
             target_identity = dict(identity)
             target_identity["implementation_bundle"] = {"sha": "new-code"}
+            target_identity["data_roots"] = {
+                **identity["data_roots"],
+                "CISPO_RAW_GRFR_ROOT": "/unused/raw/grfr",
+            }
             (target / "run_identity.json").write_text(
                 json.dumps(target_identity), encoding="utf-8"
             )
@@ -438,6 +442,15 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             )
             self.assertFalse(prepared["implementation_bundle_matches"])
             self.assertIsNone(prepared["source_result_manifest_sha256"])
+            self.assertFalse(
+                prepared["data_root_compatibility"]["exact_match"]
+            )
+            self.assertEqual(
+                prepared["data_root_compatibility"][
+                    "allowed_unused_optional_differences"
+                ][0]["key"],
+                "CISPO_RAW_GRFR_ROOT",
+            )
 
     def test_incomplete_barrier_vector_export_is_recovery_only(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

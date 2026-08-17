@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 17:10+08:00 deferred Crossover v1 failed before optimize / narrow fix local
+
+- v1 于 16:39:46 terminal：runner/audit/macro `1/41/42`，wall `5:31.43`、MaxRSS `4,754,120 KiB`、
+  swaps 0；无 Gurobi log/solve/QC/result，未执行 Barrier/Crossover。
+- 唯一差异是 source `CISPO_RAW_GRFR_ROOT=null`、target=current raw path。科学 manifests 各自 valid，
+  排除 solver 后 77/77 行完全相同、SHA `772627bc...9ac3`，该 root 两端 usage 0；其余 roots 与
+  Fingerprint `2120635803` 一致。
+- 本地修复仅允许 allowlisted RAW_GRFR 在双方 usage 0 时不同；consumed/non-allowlisted root 仍拒绝，
+  audit 落盘。focused `4/4 + 5/5 PASS`、compile/diff PASS；未提交/部署/重启。
+- fixed idle clean `b277fce`，available `113 GiB`、si/so/PSI 0。cloud 未查询、未触碰。
+
 ## 2026-08-17 16:43+08:00 all-version cloud profile guard prepared locally
 
 - save-first 复核确认：complete `BarStatus=OPTIMAL` engineering checkpoint 可 deferred crossover；至少有

@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 17:10+08:00：首次降频 fixed 检查发现 deferred Stage B v1 已于 16:39:46 在 optimize 前
+  fail-closed 退出：runner/audit/macro rc `1/41/42`，wall `5:31.43`、MaxRSS `4,754,120 KiB`、swaps 0；
+  无 Gurobi log/telemetry/solve/QC/result manifest，未运行 Barrier/Crossover。错误唯一为
+  `data_roots differs`。逐层复核证明 source checkpoint/run identity 的 `CISPO_RAW_GRFR_ROOT=null`，
+  target 为 `/data/zz2/National_model/data/grfr_raw_2019`；其余四根完全相同。source/target manifests
+  各自 valid，排除 solver 行后 `77/77` 行逐字段相同，scientific SHA 同为
+  `772627bc...9ac3`，RAW_GRFR 两端 manifest usage 均为 0；Fingerprint 仍为 `2120635803`。因此不是
+  科学数据/LP 漂移，而是未消费可选 readiness root 的环境登记差异。主机 idle，available `113 GiB`、
+  si/so `0/0`、PSI 0，checkout clean `b277fce`。本地最小修复只 allowlist `CISPO_RAW_GRFR_ROOT`，且仅
+  当两端 usage 均 0 才允许差异并落盘完整审计；任何被消费或非 allowlist 根仍拒绝。新增纯单元正反
+  `4/4 PASS`，完整 primal-dual focused `5/5 PASS`（含 Gurobi 12 小 LP Crossover2），compile/diff PASS。
+  尚未提交/部署/重启；cloud 本轮未查询、未触碰。
 - 2026-08-17 16:43+08:00：等待低频检查窗口期间完成全年 save-first 代码合同复核。当前 runner 已在
   `BarStatus=OPTIMAL` 时把 engineering checkpoint 标为可续接；若 `BarStatus!=OPTIMAL` 但 Barrier
   iterations `>0`，则尽力保存 `INCOMPLETE_BARRIER_RECOVERY_ONLY`，明确不可续接；`SUBOPTIMAL +
@@ -1913,6 +1925,23 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v1 data-root gate terminal and narrow repair
+
+- fixed terminal：v1 output/control `deferred_crossover2_744_validation_v0817_v1`；runner rc 1、strict
+  audit rc 41、macro rc 42，wall `5:31.43`、MaxRSS `4,754,120 KiB`、swaps 0。无 solve/QC/result、
+  Gurobi log 或 telemetry，故没有求解成本和可接受结果；失败根不可复用。
+- 根因证据：checkpoint source 的 `CISPO_RAW_GRFR_ROOT=null`，target 显式指向 current raw root；该根
+  在两端科学 manifest 中均零使用。除 solver row 外，两份 manifest 的 77 行完全相同，SHA256
+  `772627bc1539338f5f0af23ad7be01eb9553e78b38a67788863dd26593ad9ac3`；其他 roots 与 LP
+  Fingerprint/尺寸一致。严格门禁正确地阻止了 optimize，但把未消费环境根等同科学数据漂移过严。
+- 修改：`cispo_model/primal_dual_checkpoint.py` 新增 manifest root-usage audit，只 allowlist
+  `CISPO_RAW_GRFR_ROOT` 且要求 source/target usage 均 0；所有 consumed/non-allowlisted roots 仍精确匹配，
+  audit 结果进入 `primal_dual_start_input.json`。新增
+  `tests/test_primal_dual_data_root_compatibility.py`，并在 existing prepare integration test 覆盖真实形态。
+- 验证：新 root-compatibility `4/4 PASS`；primal-dual checkpoint `5/5 PASS`；`py_compile` 与 diff PASS。
+- 未决与下一步：选择性提交/双推送后，fixed 已 idle 可 fast-forward 新 tip；先跑 bash/focused/full
+  regression，再以全新 v2 output/control 启动唯一验证。任何测试失败不启动。cloud 仍不取消/改参。
 
 ### 2026-08-17 all-version cloud Stage A/B fail-closed guard prepared locally
 

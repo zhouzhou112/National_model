@@ -226,8 +226,11 @@ wrapper_stderr_and_time=audited
 
 ## 9. 尚待闭合
 
-1. fixed `deferred_crossover2_744_validation_v0817_v1` 必须证明 optimize 前 exact identity PASS、
-   `LPWarmStart=2` 生效、未重跑 Barrier，并完成严格 `OPTIMAL + PASS + 58/58 + manifests + macro pair`。
+1. fixed `deferred_crossover2_744_validation_v0817_v1` 已于 optimize 前 fail-closed：source 未设置未消费的
+   可选 `CISPO_RAW_GRFR_ROOT`，target 显式设置；两份科学 manifest 77/77 行完全相同。v1 根永久保留为
+   identity-gate 失败证据。修复必须只允许该根在两端 manifest usage 均为 0 时不同，并以全新 v2 根重跑；
+   v2 仍须证明 `LPWarmStart=2` 生效、未重跑 Barrier，并完成严格
+   `OPTIMAL + PASS + 58/58 + manifests + macro pair`。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
    Stage A 总耗时或终态质量。
 3. 仅在第 1 项通过后，新增 future relaxed Stage A 的正式 profile/runner tests；不覆盖当前 v2。

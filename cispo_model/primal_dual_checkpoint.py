@@ -7,6 +7,7 @@ resume Barrier iterations or bypass presolve/model construction.
 """
 from __future__ import annotations
 
+import csv
 import json
 import hashlib
 from datetime import datetime
@@ -30,6 +31,9 @@ CHECKPOINT_MANIFEST = "barrier_checkpoint_manifest.json"
 ACCEPTED_CHECKPOINT_STATUS = "ACCEPTED_PRIMARY_BARRIER_SOLUTION"
 ENGINEERING_CHECKPOINT_STATUS = "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
 RECOVERY_CHECKPOINT_STATUS = "RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT"
+DEFERRED_CROSSOVER_OPTIONAL_UNUSED_DATA_ROOTS = frozenset(
+    {"CISPO_RAW_GRFR_ROOT"}
+)
 
 
 class PrimalDualCheckpointError(ValueError):
@@ -46,6 +50,104 @@ def _read_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise PrimalDualCheckpointError(f"Expected a JSON object in {path}")
     return value
+
+
+def _scientific_manifest_resolved_paths(manifest_path: Path) -> tuple[str, ...]:
+    """Read solve-consumed paths while excluding the solver profile row."""
+    try:
+        with manifest_path.open(
+            "r", encoding="utf-8-sig", newline=""
+        ) as handle:
+            reader = csv.DictReader(handle)
+            if reader.fieldnames is None or not {
+                "kind",
+                "resolved_path",
+            }.issubset(reader.fieldnames):
+                raise PrimalDualCheckpointError(
+                    f"Input manifest lacks root-usage columns: {manifest_path}"
+                )
+            return tuple(
+                str(row["resolved_path"])
+                for row in reader
+                if row.get("kind") != "solver_configuration"
+                and row.get("resolved_path")
+            )
+    except (OSError, UnicodeDecodeError, csv.Error) as error:
+        raise PrimalDualCheckpointError(
+            f"Cannot audit input-manifest data-root usage: {manifest_path}"
+        ) from error
+
+
+def _count_paths_under_root(paths: tuple[str, ...], root: object) -> int:
+    if not isinstance(root, str) or not root:
+        return 0
+    normalized = root.rstrip("/\\")
+    prefixes = (normalized + "/", normalized + "\\")
+    return sum(
+        path == normalized or path.startswith(prefixes)
+        for path in paths
+    )
+
+
+def validate_checkpoint_data_root_compatibility(
+    source_roots: object,
+    target_roots: object,
+    source_manifest: str | Path,
+    target_manifest: str | Path,
+) -> dict[str, Any]:
+    """Allow only audited, unconsumed optional environment-root drift.
+
+    Scientific source/target manifest equality is checked separately before
+    this function.  ``CISPO_RAW_GRFR_ROOT`` is a readiness/provenance input for
+    current solve packages and may be absent from an older shell environment.
+    Its path may differ only when neither validated manifest consumes a file
+    under the declared root.  Every consumed or non-allowlisted root remains
+    exact-match fail-closed.
+    """
+    if not isinstance(source_roots, dict) or not isinstance(target_roots, dict):
+        raise PrimalDualCheckpointError(
+            "Checkpoint source or target data_roots identity is not an object"
+        )
+    source_paths = _scientific_manifest_resolved_paths(Path(source_manifest))
+    target_paths = _scientific_manifest_resolved_paths(Path(target_manifest))
+    differences: list[dict[str, Any]] = []
+    for key in sorted(set(source_roots) | set(target_roots)):
+        source_value = source_roots.get(key)
+        target_value = target_roots.get(key)
+        if source_value == target_value:
+            continue
+        source_usage = _count_paths_under_root(source_paths, source_value)
+        target_usage = _count_paths_under_root(target_paths, target_value)
+        difference = {
+            "key": key,
+            "source": source_value,
+            "target": target_value,
+            "source_scientific_manifest_path_count": source_usage,
+            "target_scientific_manifest_path_count": target_usage,
+        }
+        if (
+            key not in DEFERRED_CROSSOVER_OPTIONAL_UNUSED_DATA_ROOTS
+            or source_usage
+            or target_usage
+        ):
+            raise PrimalDualCheckpointError(
+                "Checkpoint source and target identity layer data_roots differs "
+                f"for {key}: source_usage={source_usage}, "
+                f"target_usage={target_usage}"
+            )
+        differences.append(difference)
+    return {
+        "status": "PASS",
+        "exact_match": not differences,
+        "allowed_unused_optional_differences": differences,
+        "allowlisted_optional_unused_roots": sorted(
+            DEFERRED_CROSSOVER_OPTIONAL_UNUSED_DATA_ROOTS
+        ),
+        "policy": (
+            "All consumed and non-allowlisted data roots must match exactly; "
+            "an allowlisted optional root may differ only with zero manifest usage."
+        ),
+    }
 
 
 def _write_vector(model: Any, attribute: str, path: Path, expected: int) -> dict[str, Any]:
@@ -651,13 +753,18 @@ def prepare_primal_dual_crossover(
         "baseline_contract",
         "analysis_case",
         "scientific_case",
-        "data_roots",
         "lp_model",
     ):
         if source_layers.get(name) != target_identity.get(name):
             raise PrimalDualCheckpointError(
                 f"Checkpoint source and target identity layer {name} differs"
             )
+    data_root_compatibility = validate_checkpoint_data_root_compatibility(
+        source_layers.get("data_roots"),
+        target_identity.get("data_roots"),
+        source_input,
+        target_input,
+    )
     source_implementation = source_layers.get("implementation_bundle")
     target_implementation = target_identity.get("implementation_bundle")
     implementation_bundle_matches = (
@@ -748,6 +855,7 @@ def prepare_primal_dual_crossover(
         "target_implementation_bundle": target_implementation,
         "source_gurobi_version": source_gurobi_version,
         "target_gurobi_version": target_gurobi_version,
+        "data_root_compatibility": data_root_compatibility,
         "scientific_input_manifest_identity": {
             "schema_version": source_manifest_identity["schema_version"],
             "sha256": source_manifest_identity["sha256"],
