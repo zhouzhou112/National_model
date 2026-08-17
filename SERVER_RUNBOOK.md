@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 19:14 deferred Crossover v3 terminal acceptance
+
+```text
+terminal=2026-08-17T18:44:12+08:00 runner_audit_macro_rc=0/0/0
+status=OPTIMAL solver_contract=PASS qc=PASS hard_checks=58/58
+input_manifest_valid=true result_manifest_valid=true planning_state=false basis=false stderr=0
+barrier=0 simplex=1266756 solver_s=2662.606 crossover_s=2458.89 wrapper_wall=50:52.08
+max_constr_bound_dual_vio=9.608e-7/8.955e-7/9.538e-7 maxrss_kib=9644004 swaps=0
+macro_objective_rel=1.838e-12 capacity_carbon_cost_generation_operation_l1=4.220e-8/1.588e-13/2.209e-9/0.002380/2.109e-6
+dual_export=available hourly_rows=23064 hourly_finite=115320 annual_rows_finite=3366/3366
+result_use=TEST_ONLY_TRUNCATED_HORIZON scientifically_accepted=false
+```
+
+v3 证明 exact deferred route，不是年度结果。未来 8760 Stage B 仍须独立 root、完整 source checkpoint、
+相同 Gurobi/scientific identity/Fingerprint/order 和单独授权；最终必须重复本节完整验收。fixed 当前 idle，
+不得因成功而自动启动下一 solver。cloud 不取消/改参，约 19:20 才执行下一低频审计。
+
 ## 2026-08-17 18:26 deferred Crossover v3 phase audit
 
 ```text

@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 19:14+08:00：deferred Crossover v3 已于 18:44:12 严格闭合。runner/audit/macro rc
+  `0/0/0`；Gurobi `OPTIMAL`、solution contract `PASS`、QC `PASS 58/58`、current input 与 result manifest
+  均 valid，planning state/basis 均不存在，strict test 与 accepted macro pair 均 PASS。Barrier `0`、simplex
+  `1,266,756`；solver `2,662.606 s`，其中 Crossover `2,458.89 s`，wrapper wall `50:52.08`，MaxRSS
+  `9,644,004 KiB`、swaps 0、stderr 0。最大 constraint/bound/dual violation
+  `9.608e-7/8.955e-7/9.538e-7`，均通过本路线 `1e-6` 合同。相对 strict reference：objective 差
+  `1.838e-12`，capacity/carbon/cost normalized L1 `4.220e-8/1.588e-13/2.209e-9`，generation
+  normalized L1 `0.002380`、operation `2.109e-6`，全部通过。`Pi` 导出 available：hourly `23,064`
+  rows/`115,320` finite dual-price values，annual `3,366/3,366` finite。该结果仍是
+  `TEST_ONLY_TRUNCATED_HORIZON`，scientifically accepted=false，但已严格证明 save-first Stage A → exact
+  deferred Stage B 架构。未来 Stage A+B 合计 solver `6,938.338 s`、wall `2:08:24.08`，相对 strict
+  744 约加速 `7.71×/6.99×`。fixed 已 idle；cloud `4139552` 未取消/改参，下一审计约 19:20。
 - 2026-08-17 18:26+08:00：v3 首次低频阶段审计确认 deferred resume 主链已真实生效。supervisor/Python
   `1758970/1758995` 存活，wall `32:29`；source/target Gurobi 均 `13.0.2`，科学 input manifest
   `77` rows、SHA256 `772627bc...9ac3`，Fingerprint `2120635803`，raw
@@ -1968,6 +1980,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v3 strict terminal and macro pair PASS
+
+- terminal contract：v3 18:44:12 完成，runner/strict audit/macro pair `0/0/0`。`OPTIMAL`、solver contract
+  PASS、QC PASS 58/58、input/result manifests valid、无 state/basis、两个 stderr 0；strict test accepted，
+  但因 744 h 截断边界，`scientifically_accepted=false`。
+- solver/resources：Barrier 0、simplex `1,266,756`、solver `2,662.606 s`、Crossover `2,458.89 s`；
+  wrapper wall `50:52.08`、User/System `7,596.66/785.36 s`、MaxRSS `9,644,004 KiB`、swaps 0。
+  最大 constraint/bound/dual violation `9.608e-7/8.955e-7/9.538e-7`，strict quality PASS。
+- macro A/B：objective relative `1.838e-12`；capacity/carbon/cost/generation/operation normalized L1
+  `4.220e-8/1.588e-13/2.209e-9/0.002380/2.109e-6`，period generation relative `2.365e-9`、load 0。
+  所有阈值通过；小幅发电组合差为同一最优面退化，不影响容量、碳、成本和总能量闭合。
+- dual/manifests：`dual_export_status.available=true`、Pi basic/default；hourly `23,064` rows、`115,320`
+  finite values，annual `3,366/3,366` finite。input/result/QC/solve/start SHA256 分别为
+  `be36b189...a0c6/c9a66c72...17cd/2d703865...ce9f/2ef1bcfe...eec8/45ca39fb...1be`；strict/macro
+  audit SHA `44c57482...778/541f5291...b79`。
+- conclusion/next：relaxed Stage A + v3 Stage B 合计 solver `6,938.338 s`、wall `2:08:24.08`，相对 strict
+  744 的 solver/wall 加速 `7.71×/6.99×`。参数 A/B 架构可从 provisional 升级为未来全年工程批准；
+  仍须新增不覆盖现有 v2 的正式 profiles/tests，并等待 cloud 19:20 低频审计。不得把 744 重标年度结果。
 
 ### 2026-08-17 deferred Crossover v3 exact-resume / simplex phase confirmed
 

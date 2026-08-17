@@ -1,5 +1,16 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 19:14+08:00 deferred Crossover v3 strict PASS / fixed idle
+
+- 18:44:12 terminal：runner/audit/macro `0/0/0`；`OPTIMAL + solver PASS + QC PASS 58/58 + valid input/result
+  manifests + macro PASS`，无 state/basis，stderr 0。744 h 仍为 test-only，不是年度科学结果。
+- Barrier 0、simplex `1,266,756`、solver `2,662.606 s`、Crossover `2,458.89 s`；wall `50:52.08`、
+  MaxRSS `9,644,004 KiB`、swaps 0。最大 constraint/bound/dual vio 均 `<1e-6`。
+- strict 配对 objective rel `1.838e-12`，capacity/carbon/cost/generation/operation L1
+  `4.220e-8/1.588e-13/2.209e-9/0.002380/2.109e-6`，全部 PASS。Pi hourly/annual 均完整有限。
+- fixed 已无 solver。Stage A+B 合计相对 strict 744 solver/wall 加速 `7.71×/6.99×`；未来 profile
+  可正式冻结，但不触发新任务。cloud 保持原 job，约 19:20 检查。
+
 ## 2026-08-17 18:26+08:00 deferred Crossover v3 exact resume confirmed
 
 - v3 唯一 solver 存活；Gurobi 明确使用 `LPWarmStart=2` 的 primal/dual vectors 并直接 Crossover，未重跑

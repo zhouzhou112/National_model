@@ -3,17 +3,18 @@
 ## 1. 文档状态
 
 ```text
-decision_status=PROVISIONAL_PENDING_DEFERRED_CROSSOVER_744_TERMINAL
+decision_status=APPROVED_AFTER_DEFERRED_CROSSOVER_744_STRICT_PASS
 current_cloud_job=4139552
 current_cloud_action=KEEP_RUNNING_UNCHANGED
-fixed_validation=deferred_crossover2_744_validation_v0817_v3_ACTIVE
+fixed_validation=deferred_crossover2_744_validation_v0817_v3_PASS
 scientific_result_available=false
 ```
 
 本文件汇总当前模型 identity 下已经完成的 strict/relaxed 744 h、V5/744 h、Base/1488 h、
 Base/2160 h、两批 5-iteration factor screens 和正在运行的 cloud/8760 h Stage A 证据。它用于冻结
-下一次全年运行的工程方案，不把任何截断时域结果解释为年度科学结果。只有固定服务器 744 h deferred
-Stage B 通过严格终态和宏观配对审计后，第 6 节的未来 A/B 路线才能由 provisional 升级为 approved。
+下一次全年运行的工程方案，不把任何截断时域结果解释为年度科学结果。固定服务器 744 h deferred
+Stage B 已通过严格终态和宏观配对审计，第 6 节的未来 A/B 参数路线现升级为 approved；实际提交仍须
+单独授权、独立 roots 与云资源门禁。
 
 当前云端 `4139552` 已运行多日，继续按原 profile 求解；本文不授权取消、改参、缩容、重排队或启动
 Stage B。Gurobi 参数不能在一次活动 optimize 中途安全替换，当前费用已经成为 sunk cost，不应为了采用
@@ -38,6 +39,7 @@ Stage B。Gurobi 参数不能在一次活动 optimize 中途安全替换，当�
 |---|---|---|---:|---:|---|
 | strict Base/744 | BCTol `1e-8`，Feas/Opt `1e-7`，NF2，Crossover2 | `OPTIMAL + PASS + 58/58` | `53,489.07 s` / `14:57:39` | 约 `20 GiB` | strict reference；仅截断时域 |
 | relaxed Base/744 winner | BCTol `1e-2`，Feas/Opt `1e-5`，NF1，Crossover0 | Barrier `OPTIMAL`，263 iter，exact macro A/B PASS | `4,275.732 s` / `1:17:32` | 约 `20 GiB` | Stage A 工程 checkpoint 候选 |
+| deferred Stage B/744 v3 | Feas/Opt `1e-6`，NF2，Crossover2，LPWarmStart2 | `OPTIMAL + PASS + 58/58 + manifests + macro PASS`，Barrier 0 | `2,662.606 s` / `50:52.08` | `9,644,004 KiB` | exact deferred route 严格证明；仍仅截断时域 |
 | relaxed V5/744 | 同 winner，V5 | Barrier `OPTIMAL`，305 iter | `4,520.108 s` / `1:21:54` | 约 `20 GiB` | 稳健性工程证据；reservoir QC 未 strict PASS |
 | relaxed Base/1488 | 同 winner long | Barrier `OPTIMAL`，143 iter，checkpoint eligible | `25,834.260 s` / `7:22:57` | `55,460,664 KiB` | 较长时域资源/检查点证据 |
 | relaxed Base/2160 | 同 winner long，SoftMem80 | Presolve/ordering 后、Barrier iter 0 前 `MEM_LIMIT` | `2,800.735 s` / `1:01:40` | `72,659,300 KiB` | 固定服务器内存边界；无解/无 checkpoint |
@@ -62,8 +64,8 @@ strict Base/744 的分时为 Barrier `7,734.65 s`、Crossover/simplex cleanup `4
 - `Presolve=2`、`Aggregate=1`：当前 best known equivalent LP reduction 组合。
 - `NumericFocus=1 + ScaleFlag=2`：在 relaxed Stage A 中的唯一实测总耗时 winner；它通过 current
   identity exact macro A/B，并完成 V5/744 与 Base/1488 checkpoint。该结论只适用于工程 Stage A。
-- `Crossover=2 + CrossoverBasis=1 + LPWarmStart=2`：严格 Stage B 候选，需由当前 fixed 独立续接验证
-  最终证明。
+- `Crossover=2 + CrossoverBasis=1 + LPWarmStart=2`：严格 Stage B 已由 fixed v3 独立续接证明；Barrier 0、
+  58/58、manifests、Pi 与宏观 A/B 全通过。
 
 ### 4.2 否决或不再盲扫
 
@@ -103,7 +105,7 @@ Factor Ops/NZ 至少 `5%` 或 observed step time 至少 `10%` 的改善；否则
 - Stage A/B 均不设置 Gurobi `TimeLimit`；费用控制依赖低频轨迹审计、资源异常门禁和独立阶段授权，
   而不是让昂贵全年解在固定时限处无条件丢失。
 
-## 6. 下一次 8760 h 推荐架构（条件性）
+## 6. 下一次 8760 h 推荐架构（参数已批准，实际运行须单独授权）
 
 ### 6.1 Stage A：save-first relaxed Barrier checkpoint
 
@@ -218,23 +220,19 @@ wrapper_stderr_and_time=audited
 | 继续 cloud job `4139552` | GO | 已投入多日计算；仍正常 RUNNING，无 fatal evidence |
 | 修改/取消当前 cloud 参数 | NO-GO | 活动 solve 不可安全热替换；会丢失轨迹 |
 | 当前 cloud 自动启动 Stage B | NO-GO | Stage A 尚未终态；需独立授权和 exact resume gate |
-| fixed 并发第二 solver | NO-GO | v3 已启动，checkout 冻结且只允许此唯一验证 |
+| fixed 新增 solver | NO-GO | v3 已完成且固定服务器内存边界明确，不再追加盲测 |
 | 继续盲扫常规 Gurobi 参数 | NO-GO | 两批 paired screens 均无 material improvement |
 | fixed 重跑 Base/2160 | NO-GO | 已在 Barrier 前触发明确内存边界 |
-| future relaxed Stage A profile | CONDITIONAL GO | 744 macro、V5/744、Base/1488 已支持；待 deferred Stage B terminal |
-| future Stage B profile | CONDITIONAL GO | v3 已证明 direct primal/dual Crossover；待 fixed 744 strict terminal + macro pair |
+| future relaxed Stage A profile | APPROVED / NOT LAUNCH AUTHORIZED | 744 macro、V5/744、Base/1488 与 deferred v3 已闭合 |
+| future Stage B profile | APPROVED / NOT LAUNCH AUTHORIZED | v3 已完成 strict terminal、Pi、manifests 与 macro pair |
 
 ## 9. 尚待闭合
 
-1. fixed v1 已在 optimize 前因未消费 RAW_GRFR root 的环境登记差异 fail-closed；窄修复仅允许两端
-   manifest usage 都为 0 的该可选根不同。v2 随后又在 build 前因 memory gate 遗留的已删除常量引用
-   异常退出；没有 LP/Gurobi/数值结果。`018607c` 已修复并覆盖所有 cloud profile versions。v1/v2 roots
-   永久保留。server regression `212/212 PASS` 后，全新 v3 已于 17:53:13 启动；仍须证明
-   `LPWarmStart=2` 已于 Gurobi 日志证明生效且未重跑 Barrier；当前处于 simplex cleanup，仍待完成严格
-   `OPTIMAL + PASS + 58/58 + manifests + macro pair`。
+1. deferred v1/v2 的 pre-optimize 失败根永久保留；v3 已以 Barrier 0、strict `OPTIMAL + PASS + 58/58 +
+   manifests + Pi + macro pair` 完成架构闭合。该项不再未决，但 744 h 仍不得重标为年度结果。
 2. cloud `4139552` Stage A 需要最终 Barrier/checkpoint/resource terminal 审计；在此之前不能给出实际全年
    Stage A 总耗时或终态质量。
-3. 仅在第 1 项通过后，新增 future relaxed Stage A 的正式 profile/runner tests；不覆盖当前 v2。
+3. 新增 future relaxed Stage A 与配套 Stage B 的正式 profile/tests；不覆盖当前 v2，也不启动任务。
 4. 结合 ParaCloud 最新资源计费/核内存绑定规则，冻结下一次申请的最小合法 CPU 与 `>=600 GiB` 内存。
 5. 将最终批准状态同步到 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`、`SERVER_RUNBOOK.md`，记录精确
    Git、commands、outputs、SHA256、验证和下一步。
