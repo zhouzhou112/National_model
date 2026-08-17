@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-17 17:15+08:00 deferred Crossover v2 active
+
+- fixed 已部署 exact `acf59f9180483b09c4c0e9380e0576457cc554ac`；`bash`/compile、focused `16/16`、
+  full `211/211 PASS`（97.142 s，wall 1:38.26，MaxRSS `1,112,044 KiB`，swaps 0）。
+- 全新 `deferred_crossover2_744_validation_v0817_v2` 于 17:14:54 启动 supervisor PID `1710059`；
+  available `113.905 GiB`、si/so/PSI 0、初始 stdout/stderr 0。v1 失败根保留。
+- checkout 冻结 `acf59f9`，禁止第二 solver/部署 docs tip；下次 fixed 仅 phase/terminal 或 30--45 分钟。
+  cloud 本轮尚未查询、未触碰。
+
 ## 2026-08-17 17:10+08:00 deferred Crossover v1 failed before optimize / narrow fix local
 
 - v1 于 16:39:46 terminal：runner/audit/macro `1/41/42`，wall `5:31.43`、MaxRSS `4,754,120 KiB`、

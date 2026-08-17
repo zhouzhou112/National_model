@@ -1,5 +1,22 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-17 17:15 deferred Crossover v2 active
+
+```text
+deployed_head=acf59f9180483b09c4c0e9380e0576457cc554ac checkout=clean_frozen
+server_validation=bash_compile_PASS,focused_16/16,full_211/211_97.142s
+full_wall=1:38.26 maxrss_kib=1112044 swaps=0
+output=/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v2
+control=/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v2
+started_at=2026-08-17T17:14:54+08:00 supervisor_pid=1710059
+launch_available_gib=113.905 si_so=0/0 psi=0 initial_stderr=0
+```
+
+v2 与 v1 的 source/reference/profile 相同，只使用修复后的窄 root-compatibility gate 和全新 roots。第一次
+phase 检查必须验证 `primal_dual_start_input.json.data_root_compatibility` 仅含 RAW_GRFR 0/0 usage 差异，
+并继续核对 scientific SHA、Gurobi version、Fingerprint、dimensions/order、LPWarmStart2 与 Gurobi 是否
+直接 Crossover。PID 存在时禁止 fast-forward、并发、改参或覆盖 v1/v2。
+
 ## 2026-08-17 17:10 deferred Crossover v1 identity terminal
 
 ```text

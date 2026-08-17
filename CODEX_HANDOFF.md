@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-17 17:15+08:00：未消费 RAW_GRFR root 修复提交
+  `acf59f9180483b09c4c0e9380e0576457cc554ac` 已双推送；fixed 在 no-solver/clean 后从 `b277fce`
+  fast-forward 到该精确 tip。Linux `bash -n`、py_compile、四组 focused `16/16` 与完整 server regression
+  `211/211 PASS`（tests `97.142 s`、wall `1:38.26`、MaxRSS `1,112,044 KiB`、swaps 0）。全新
+  output/control `deferred_crossover2_744_validation_v0817_v2` 于 17:14:54 启动唯一 supervisor PID
+  `1710059`；启动 gate available `113.905 GiB`、si/so `0/0`、memory PSI avg10 0、supervisor stdout/
+  stderr 0。v1 失败根永久保留；v2 使用同一源 checkpoint/reference/profile，只改变已审计 identity gate
+  与全新 roots。fixed checkout 现冻结 `acf59f9`，禁止部署后续 docs tip/第二 solver；下一 fixed 检查仅
+  phase/terminal/resource anomaly 或约 30--45 分钟。cloud 尚未到本轮窗口、未查询、未触碰。
 - 2026-08-17 17:10+08:00：首次降频 fixed 检查发现 deferred Stage B v1 已于 16:39:46 在 optimize 前
   fail-closed 退出：runner/audit/macro rc `1/41/42`，wall `5:31.43`、MaxRSS `4,754,120 KiB`、swaps 0；
   无 Gurobi log/telemetry/solve/QC/result manifest，未运行 Barrier/Crossover。错误唯一为
@@ -1925,6 +1934,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-17 deferred Crossover v2 deployed and launched
+
+- Git/deploy：`acf59f9180483b09c4c0e9380e0576457cc554ac` 已推送 origin/GitHub；fixed no-solver、
+  clean 后 fast-forward 到相同 tip。
+- 验证：`bash -n`/py_compile PASS；focused `16/16 PASS`；full `211/211 PASS`，tests `97.142 s`、
+  wall `1:38.26`、MaxRSS `1,112,044 KiB`、swaps 0。
+- 运行：全新 v2 output `/data/zz2/National_model/outputs/deferred_crossover2_744_validation_v0817_v2`，
+  control `/data/zz2/National_model/run_control/deferred_crossover2_744_validation_v0817_v2`；17:14:54
+  启动 PID `1710059`。available `113.905 GiB`、si/so/PSI `0/0/0`、初始 stderr 0。
+- 边界/下一步：v1 不覆盖；v2 仍须先写出 root compatibility、exact Fingerprint/dimensions/order 与
+  `LPWarmStart=2` 证据，随后严格 OPTIMAL/QC/58/58/manifests/macro pair。活动期间 fixed checkout 冻结；
+  约 30--45 分钟或 phase/terminal 才检查。cloud 保持原 Stage A。
 
 ### 2026-08-17 deferred Crossover v1 data-root gate terminal and narrow repair
 
