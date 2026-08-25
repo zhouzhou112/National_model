@@ -10,7 +10,8 @@
 - Model/data boundary unchanged. Local py_compile, guard `8/8`, profile `9/9`, full unittest `215/215 PASS`;
   2160 preflight PASS with estimated raw scale `10,331,823/13,932,898/123,010,374`.
 - Deployment status: **NOT DEPLOYED / NOT RUNNING**. Both SSH aliases currently time out during banner exchange;
-  last validated t550 state remains clean `50e2d20`, idle. Do not infer current live state until SSH is restored.
+  implementation `7dfefbbef5acc593d22b82173259931183353b89` is on GitHub, while server `origin` push failed.
+  Last validated t550 state remains clean `50e2d20`, idle. Do not infer current live state until SSH is restored.
 
 ## 2026-08-25 t550 replacement server ready for short debugging gates
 

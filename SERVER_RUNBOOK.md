@@ -2,6 +2,14 @@
 
 ## 2026-08-25 host95 2160h fixed-server gate (authorized, pending connectivity)
 
+```text
+implementation_commit=7dfefbbef5acc593d22b82173259931183353b89
+github=updated
+server_bare_origin=pending_ssh_banner_recovery
+server_checkout=last_verified_50e2d2012a76a342eed1d281997c9b2382731a8a
+run_status=NOT_STARTED
+```
+
 The author superseded the former 80 GB/744 h operational limit for one isolated fixed-server engineering run.
 This does not authorize fixed-server 8760 h or a second concurrent solver. The checked-in launcher defaults to
 Base/2160 h over model hours 2880--5039 and creates new versioned output/control roots:

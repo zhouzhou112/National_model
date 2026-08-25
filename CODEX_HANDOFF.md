@@ -23,7 +23,8 @@ This is the repository's single handoff document for work continued across Codex
   `TEST_ONLY_TRUNCATED_HORIZON`，不改变 LP 方程/数据/目标，也不自动形成科学结果或 planning state。
   本地 py_compile、profile tests `9/9`、guard tests `8/8`、完整 unittest `215/215 PASS`；2160 preflight
   PASS，估计 `10,331,823 vars / 13,932,898 rows / 123,010,374 nnz`。两次 SSH 入口均在 banner 阶段
-  timeout，因此服务器仍保持最后验证的 `50e2d20`/idle 状态，尚未 push/deploy/run；连接恢复后必须先
+  timeout。实现提交 `7dfefbbef5acc593d22b82173259931183353b89` 已推送 GitHub；server bare `origin`
+  push 因同一 SSH blocker 失败。因此服务器仍保持最后验证的 `50e2d20`/idle 状态，尚未 deploy/run；连接恢复后必须先
   核对 HEAD/clean/no-solver/available>=96 GiB/si-so/PSI，再以全新版本根启动唯一 2160 h 任务。
 - 2026-08-25 00:35+08:00：新本地服务器 `t550` 已完成可复现部署与真解门禁。主 SSH 入口为
   `national-model-server -> zz2@192.168.9.27`，当前显式绑定本机有线地址 `124.16.2.17`；本地
@@ -2069,9 +2070,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   本地 wave root 后完整 unittest `215/215 PASS`（`76.227 s`）。2160 preflight 使用 May--July 窗口，
   result-use 正确为 `TEST_ONLY_TRUNCATED_HORIZON`，数值兼容 PASS，规模估计
   `10,331,823/13,932,898/123,010,374`。Windows 无可用 Linux bash，`bash -n` 留到服务器部署门禁。
+- Git/同步：selective commit `7dfefbbef5acc593d22b82173259931183353b89` 只包含本路线、t550 交接
+  记录与测试，未包含 Module 06 或 `supplementary_materials/**`。GitHub 已 fast-forward 到该提交；
+  `origin` push 因 SSH banner timeout 失败。
 - 未决/精确下一步：`national-model-server` 与 `national-model-server-vpn` 均可建立 TCP 但 SSH banner
-  timeout，故没有提交到 server bare remote、没有更新 checkout、没有启动任务。连接恢复后：先完成
-  selective commit/push，server fast-forward，执行 `bash -n`、focused/full regression 和资源门禁；再
+  timeout，故没有更新 server bare remote/checkout、没有启动任务。连接恢复后：先 push `origin`，
+  server fast-forward，执行 `bash -n`、focused/full regression 和资源门禁；再
   以新根后台启动唯一 2160 h。不得复用 2026-08-17 的 MEM_LIMIT 根或与云端 `4139552` 相互覆盖。
 
 ### 2026-08-25 t550 new-server deployment and 1h Base gate PASS
