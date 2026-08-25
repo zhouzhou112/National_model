@@ -1,5 +1,24 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-25 17:07 host95 deployed and validated; launch waiting for shared-host memory
+
+- SSH recovered without a client configuration change. The server bare remote, GitHub and clean `t550` checkout
+  now contain `60561e57c419131a94539c2258ff108cc725edfd`; functional host95 implementation remains
+  `7dfefbbef5acc593d22b82173259931183353b89`.
+- Before launch, resource snapshots were hardened to record `comm` rather than full process arguments on this
+  shared host, preventing unrelated users' command-line credentials from being persisted. This operational-only
+  fix is commit `60561e5`; model equations, data, scenario, numerics and memory thresholds are unchanged.
+- Server verification PASS: `bash -n`, py_compile, profile tests `9/9`, guard tests `8/8`, and full pytest
+  `215 passed + 63 subtests` in `98.34 s`; MaxRSS `1,186,016 KiB`, swaps `0`, checkout clean.
+- Server preflight root `outputs/preflight_host95_2160h_deploy_20260825_v1` PASS: Base 2030 hours
+  `2880--5039`, `10,331,823 vars / 13,932,898 rows / 123,010,374 nnz`, numerical compatibility PASS,
+  `TEST_ONLY_TRUNCATED_HORIZON`. Physical RAM is `132,145,156,096 bytes`; resolved Gurobi
+  `SoftMemLimit=125.537898 decimal GB` (95%), `TimeLimit=null`.
+- Run status remains **NOT STARTED**. This is a shared server and other users' active workloads leave only about
+  `85--86 GiB` available, below the checked-in `96 GiB` start gate. No foreign process was changed. Wait for
+  available memory `>=96 GiB`, then recheck clean/no-solver/roots absent/si-so/PSI before launching the unique
+  `2030_base_2160h_host95_20260825_v1` task.
+
 ## 2026-08-25 13:05 host95 long-horizon code ready locally; server unreachable
 
 - New test-only profile `barrier_checkpoint_fixed_server_host_memory_95_v1` removes the old 12 h/80 GB

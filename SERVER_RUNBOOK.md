@@ -1,13 +1,15 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-08-25 host95 2160h fixed-server gate (authorized, pending connectivity)
+## 2026-08-25 host95 2160h fixed-server gate (deployed; waiting for memory gate)
 
 ```text
 implementation_commit=7dfefbbef5acc593d22b82173259931183353b89
-github=updated
-server_bare_origin=pending_ssh_banner_recovery
-server_checkout=last_verified_50e2d2012a76a342eed1d281997c9b2382731a8a
+operational_safety_commit=60561e57c419131a94539c2258ff108cc725edfd
+github=60561e57c419131a94539c2258ff108cc725edfd
+server_bare_origin=60561e57c419131a94539c2258ff108cc725edfd
+server_checkout=60561e57c419131a94539c2258ff108cc725edfd_clean
 run_status=NOT_STARTED
+blocker=shared_host_available_memory_85_to_86_GiB_below_96_GiB_gate
 ```
 
 The author superseded the former 80 GB/744 h operational limit for one isolated fixed-server engineering run.
@@ -33,10 +35,16 @@ whole-host use every 2 s and sends SIGTERM only when whole-host used reaches 95%
 terminal may occur earlier. Evidence paths under the control root include `git_head.txt`, `git_status.txt`,
 `resource_monitor.tsv`, `events.log`, `time.txt`, stdout/stderr, PID, return code, and before/after snapshots.
 
+Deployment verification on `t550` passed `bash -n`, py_compile, focused profile `9/9`, guard `8/8`, and full
+pytest `215 passed + 63 subtests` (`98.34 s`, MaxRSS `1,186,016 KiB`, swaps 0). The matching server preflight is
+`$CISPO_SERVER_ROOT/outputs/preflight_host95_2160h_deploy_20260825_v1`: numerical compatibility PASS, dimensions
+`10,331,823/13,932,898/123,010,374`, resolved Gurobi SoftMemLimit `125.537898 decimal GB`, no time limit. Do not
+launch while shared-host available memory remains below `96 GiB`; do not stop or displace unrelated users' jobs.
+
 This run remains `TEST_ONLY_TRUNCATED_HORIZON`. Require a finite eligible engineering checkpoint plus exact input,
 LP identity, QC/macro and resource audit before drawing any parameter conclusion. Never reuse the preserved
-2026-08-17 Base/2160 MEM_LIMIT root. At the time this section was written, both SSH aliases timed out during banner
-exchange, so the code was local-only and no server process had been started.
+2026-08-17 Base/2160 MEM_LIMIT root. Resource snapshots intentionally record only process names (`comm`), never
+full command arguments, because the server is shared.
 
 ## 2026-08-25 t550 current entry, layout and validated short gate
 

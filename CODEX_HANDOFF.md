@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-25 17:07+08:00：`t550` SSH 已恢复，server bare remote、GitHub 与 clean checkout 均部署到
+  `60561e57c419131a94539c2258ff108cc725edfd`；host95 功能提交仍为 `7dfefbb`。部署前发现共享主机
+  资源快照不应持久化其他用户完整命令参数，故以 `60561e5` 最小改为仅记录 `comm`，模型方程、数据、
+  场景、求解参数和内存阈值均未改变。server `bash -n`、py_compile、profile `9/9`、guard `8/8`、
+  完整 pytest `215 passed + 63 subtests`（`98.34 s`、MaxRSS `1,186,016 KiB`、swaps 0）全部 PASS。
+  `outputs/preflight_host95_2160h_deploy_20260825_v1` 以 Base 2030、hours `2880--5039` PASS：规模
+  `10,331,823/13,932,898/123,010,374`，数值兼容 PASS，物理内存 `132,145,156,096 bytes`，动态
+  `SoftMemLimit=125.537898 decimal GB`、`TimeLimit=null`。正式 2160h **尚未启动**：共享主机其他用户
+  工作负载使 available RAM 仅约 `85--86 GiB`，低于不可绕过的 `96 GiB` 启动门禁；未更改任何他人
+  进程。精确下一步是等待 available `>=96 GiB`，重新核对 clean/no-solver/目标根不存在/si-so/PSI 后，
+  启动唯一 `2030_base_2160h_host95_20260825_v1`。
 - 2026-08-25 13:05+08:00：按作者明确授权，已在本地实现固定服务器长时域 `host95` 工程路线，但尚未
   部署或启动。新增 profile `barrier_checkpoint_fixed_server_host_memory_95_v1`：Base Stage A、
   `Method2/Threads16/Presolve2/Crossover0/SolutionTarget1/BCTol1e-2/FeasOpt1e-5/NF1/Scale2/Aggregate1`，
@@ -2049,6 +2060,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-25 t550 host95 deployed and server gates passed; large run memory-blocked
+
+- Git/部署：SSH 恢复后，将 `7dfefbb` 功能与 `f7ef130` 文档推送 server bare remote 并 fast-forward；
+  随后以 `60561e57c419131a94539c2258ff108cc725edfd` 将共享主机资源快照从完整 `cmd` 改为无参数的
+  `comm`，避免持久化无关用户命令行中的凭据。`origin`、GitHub、server checkout 同步到 `60561e5`，
+  server checkout clean、无 CISPO/Gurobi solver。
+- 修改文件：`scripts/run_fixed_server_host95_long_horizon.sh` 仅改变 before/after 资源快照字段；不改变
+  profile、LP、数据、场景、目标、约束、单位、时间窗口、95% SoftMemLimit 或 96 GiB pre-start gate。
+- 验证：server `bash -n`、py_compile、`tests/test_solver_profiles.py` 9/9、
+  `tests/test_cloud_full_year_profile_guard.py` 8/8、完整 pytest `215 passed + 63 subtests`；完整测试 wall
+  `98.34 s`、MaxRSS `1,186,016 KiB`、swaps 0。preflight 根
+  `/home/zz2/National_model_server/outputs/preflight_host95_2160h_deploy_20260825_v1` stderr 0，Base 2030
+  2160h/start 2880、`TEST_ONLY_TRUNCATED_HORIZON`、compatibility PASS，规模
+  `10,331,823/13,932,898/123,010,374`，动态 SoftMemLimit `125.537898 decimal GB`。
+- 未决/精确下一步：共享主机上其他用户的 MATLAB/模型服务使 available RAM 约 `85--86 GiB`，低于
+  `96 GiB` 门禁；没有停止、修改或挤压这些任务，正式 2160h 未启动。等待 available `>=96 GiB` 后，
+  再核对 exact HEAD、clean、无 solver、目标 output/run_control 根不存在、si/so 0 与 memory PSI benign，
+  然后只启动唯一 `2030_base_2160h_host95_20260825_v1`，不得绕过门禁或并发第二个 solver。
 
 ### 2026-08-25 fixed-server host95 long-horizon route implemented locally
 
