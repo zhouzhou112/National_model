@@ -9,6 +9,7 @@ from pathlib import Path
 from scripts.run_cispo_2030_full_year import (
     cloud_full_year_profile_role,
     cloud_full_year_required_memory_gib,
+    resolve_host_memory_soft_limit_gb,
 )
 
 
@@ -82,6 +83,58 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         self.assertEqual(
             cloud_full_year_required_memory_gib("700", "STAGE_A"),
             700.0,
+        )
+
+    def test_host_memory_fraction_resolves_to_decimal_gb(self) -> None:
+        gib = 1024**3
+        self.assertAlmostEqual(
+            resolve_host_memory_soft_limit_gb(128 * gib, 0.95),
+            130.5670057984,
+        )
+        for invalid in (0.0, -0.1, 0.951, 1.0):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(ValueError):
+                    resolve_host_memory_soft_limit_gb(128 * gib, invalid)
+
+    def test_fixed_server_host95_profile_requires_stage_a_flag(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            result = self.run_runner(
+                "--diagnostic-hours",
+                "2160",
+                "--solver-config",
+                str(
+                    PROFILES
+                    / "barrier_checkpoint_fixed_server_host_memory_95_v1.json"
+                ),
+                "--output-dir",
+                str(Path(temporary) / "output"),
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "barrier_checkpoint_fixed_server_host_memory_95_v1 requires "
+            "--engineering-barrier-checkpoint-only",
+            result.stdout + result.stderr,
+        )
+
+    def test_fixed_server_host95_profile_rejects_full_year(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            result = self.run_runner(
+                "--horizon",
+                "full_year",
+                "--solver-config",
+                str(
+                    PROFILES
+                    / "barrier_checkpoint_fixed_server_host_memory_95_v1.json"
+                ),
+                "--engineering-barrier-checkpoint-only",
+                "--output-dir",
+                str(Path(temporary) / "output"),
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "barrier_checkpoint_fixed_server_host_memory_95_v1 is restricted "
+            "to test-only truncated horizons",
+            result.stdout + result.stderr,
         )
 
     def test_stage_a_v2_requires_engineering_checkpoint_flag(self) -> None:

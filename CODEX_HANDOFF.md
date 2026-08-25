@@ -12,6 +12,39 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-25 13:05+08:00：按作者明确授权，已在本地实现固定服务器长时域 `host95` 工程路线，但尚未
+  部署或启动。新增 profile `barrier_checkpoint_fixed_server_host_memory_95_v1`：Base Stage A、
+  `Method2/Threads16/Presolve2/Crossover0/SolutionTarget1/BCTol1e-2/FeasOpt1e-5/NF1/Scale2/Aggregate1`，
+  `TimeLimit=null`；runner 从 `/proc`/`psutil` 检测主机物理内存，将 Gurobi decimal-GB
+  `SoftMemLimit` 动态解析为总物理内存的 `95%`，并完整写入 run scope/config snapshot。新启动器
+  `scripts/run_fixed_server_host95_long_horizon.sh` 仅允许 `745--8759 h`、clean checkout、单 solver、
+  新 output/control roots；默认重跑与历史可比的 Base `2160 h`、start hour `2880`，每 2 秒记录整机
+  内存，整机使用率达到 `95%` 才发送 SIGTERM，solver 自然终态仍可提前结束。该路线仍是
+  `TEST_ONLY_TRUNCATED_HORIZON`，不改变 LP 方程/数据/目标，也不自动形成科学结果或 planning state。
+  本地 py_compile、profile tests `9/9`、guard tests `8/8`、完整 unittest `215/215 PASS`；2160 preflight
+  PASS，估计 `10,331,823 vars / 13,932,898 rows / 123,010,374 nnz`。两次 SSH 入口均在 banner 阶段
+  timeout，因此服务器仍保持最后验证的 `50e2d20`/idle 状态，尚未 push/deploy/run；连接恢复后必须先
+  核对 HEAD/clean/no-solver/available>=96 GiB/si-so/PSI，再以全新版本根启动唯一 2160 h 任务。
+- 2026-08-25 00:35+08:00：新本地服务器 `t550` 已完成可复现部署与真解门禁。主 SSH 入口为
+  `national-model-server -> zz2@192.168.9.27`，当前显式绑定本机有线地址 `124.16.2.17`；本地
+  `origin` 已切到 `ssh://national-model-server/home/zz2/git/National_model.git`，新 bare remote、服务器
+  clean checkout 与本地分支均为 `50e2d2012a76a342eed1d281997c9b2382731a8a`，`github` remote 保留。
+  服务器运行根为 `/home/zz2/National_model_server`，Python `3.11.15`、Gurobi/gurobipy `13.0.2`，
+  2,501 变量完整许可门禁 PASS；发布契约、V5 输入、水电 380 GW 闭合、readiness 与两个 raw GRFR
+  SHA256 均 PASS，数据 smoke `142/142 PASS`，完整 pytest `212 passed + 59 subtests`。
+- 新根 `/home/zz2/National_model_server/outputs/2030_1h_new_server_smoke_20260825_v1` 已以 Base、
+  `--diagnostic-hours 1`、`barrier_16_auto_order_v2`、cold/no-basis 完成：`OPTIMAL + QC 58/58 + current
+  input manifest + valid result manifest`。raw LP `238,529/80,143/453,269`，objective
+  `2,127,270.302704 million CNY`，solver `6.925 s`、wall `33.33 s`、peak process-tree RSS `0.469 GiB`、
+  swaps/stderr `0/0`；最大 constraint/bound/dual violation
+  `9.244e-12/4.922e-12/0`。该结果明确为 `TEST_ONLY_TRUNCATED_HORIZON`，不是科学规划结果；结束后
+  checkout clean、无 CISPO/Gurobi 进程、available RAM 约 `104 GiB`。
+- 新服务器所有已挂载文件系统中未发现旧 National_model case/data/output。`/dev/sdb1` 是未挂载
+  `14.6 TiB NTFS`（label `系统`），`/dev/sdc4` 是未挂载约 `222.7 GiB ext4`；当前账户不在 `disk`
+  组且无 passwordless mount 权限，因此未越权挂载或写入，旧 case 是否位于这两个盘仍未知。新部署
+  采用 add-only 版本化数据根；为尽快恢复运行，只上传 solver 实际消费的 147 个 model-ready 文件，
+  未上传不被运行时合同消费的约 `19.2 GB data/raw` 用电 TIFF。两份中止传输的 partial tar 共约
+  `6.37 GB` 被保留在 `packages/`，清理前须另行确认。
 - 2026-08-17 19:29+08:00：对持久化目标完成逐项审计。原目标要求的“不停止活动 cloud、固定服务器
   多轮宽松 744 与更长时域、显著提速、宏观 A/B 稳定、资源/耗时/质量/Git 全记录、形成后续全年决策”
   均已有直接证据：Base/V5 744、两批 factor screens、Base/1488、Base/2160 memory boundary、deferred
@@ -2015,6 +2048,73 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-25 fixed-server host95 long-horizon route implemented locally
+
+- 授权/边界：作者明确要求解除原 80 GB 长 profile 上限，让 128G 本地服务器尽可能利用内存，并停止
+  依赖 744 h 作为主要规模门禁。本实现不改变科学模型边界、输入数据、变量、约束、目标、单位或 Base
+  场景；只新增显式、隔离、test-only 的求解与资源策略。自然 `OPTIMAL/MEM_LIMIT/INTERRUPTED/ERROR`
+  仍可终止；“95%”是允许上限和整机保护阈值，不是强制占用目标。
+- 修改文件：`cispo_model/config.py` 支持 solver profile 声明、验证并追踪
+  `host_memory_soft_limit_fraction<=0.95`；`scripts/run_cispo_2030_full_year.py` 将物理内存字节换算为
+  Gurobi decimal GB，覆盖保守 fallback 并把解析值、总内存和解释写入 `run_scope.json`；新增
+  `config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v1.json` 与
+  `scripts/run_fixed_server_host95_long_horizon.sh`；扩展两组 profile/guard tests。
+- 运行合同：新 profile 只允许 truncated horizon、`--engineering-barrier-checkpoint-only`、
+  `Method=2/Crossover=0/SolutionTarget=1/TimeLimit=null`。启动器默认 2030 Base、2160 h、start 2880，
+  pre-start 要求 checkout clean、无已有 solver、available>=96 GiB；output/control 必须不存在。监控器
+  每 2 秒写 `resource_monitor.tsv`，整机 used>=95% 时只向独立进程组发 SIGTERM；所有 stdout/stderr、
+  GNU time、PID、return code、events 和前后资源快照均保留。
+- 本地验证：系统 Python guard tests `8/8 PASS`；RL/Gurobi 环境 solver-profile tests `9/9 PASS`；设置
+  本地 wave root 后完整 unittest `215/215 PASS`（`76.227 s`）。2160 preflight 使用 May--July 窗口，
+  result-use 正确为 `TEST_ONLY_TRUNCATED_HORIZON`，数值兼容 PASS，规模估计
+  `10,331,823/13,932,898/123,010,374`。Windows 无可用 Linux bash，`bash -n` 留到服务器部署门禁。
+- 未决/精确下一步：`national-model-server` 与 `national-model-server-vpn` 均可建立 TCP 但 SSH banner
+  timeout，故没有提交到 server bare remote、没有更新 checkout、没有启动任务。连接恢复后：先完成
+  selective commit/push，server fast-forward，执行 `bash -n`、focused/full regression 和资源门禁；再
+  以新根后台启动唯一 2160 h。不得复用 2026-08-17 的 MEM_LIMIT 根或与云端 `4139552` 相互覆盖。
+
+### 2026-08-25 t550 new-server deployment and 1h Base gate PASS
+
+- Git/入口：运行实现锁定 clean `50e2d2012a76a342eed1d281997c9b2382731a8a`，branch
+  `codex/cispo-2030-full-lp`；新 bare remote 为 `/home/zz2/git/National_model.git`，本地 `origin` 已改为
+  `ssh://national-model-server/home/zz2/git/National_model.git`，`github` 保留为
+  `https://github.com/zhouzhou112/National_model.git`。`C:\Users\ZZ\.ssh\config` 主入口更新为
+  `zz2@192.168.9.27`、`id_ed25519`、`BindAddress 124.16.2.17`，并保留自动路由备用入口。当前文档更新
+  未提交，以避免把用户已有的 `CODEX_HANDOFF.md` 与 `supplementary_materials/**` 工作树一并提交。
+- 服务器盘点：主机 `t550`，96 logical CPUs、约 123 GiB RAM、根盘可用约 2.6 TiB、2×RTX 4090；
+  初始 `/home/zz2` 未发现 repo/case/data/output，所有已挂载文件系统的有界检索亦无旧 case。未挂载
+  `/dev/sdb1`（14.6 TiB NTFS）和 `/dev/sdc4`（约 222.7 GiB ext4）需要管理员只读挂载授权；本轮没有
+  mount、删除或覆盖旧数据。
+- 版本化部署：代码 `/home/zz2/National_model_server/repo`；环境
+  `/home/zz2/National_model_server/envs/cispo-2030-v1`；数据根分别为
+  `model_ready_20260805_power_curve_v3_qc_d63a251_v1`、`hourly_cf`、
+  `hydro_timeseries_20260719_sequential_sparse`、`grfr_raw_2019`、`wave_energy_20260727`。所有传输均以
+  bytes/SHA256 校验；raw GRFR 两文件分别为既有权威 SHA
+  `84ff2c88...506e0f`、`e56d5da8...232756`。首轮 smoke 识别到错误水文子包缺 p30 与 transfer
+  manifest，已 add-only 补入权威本地 `grfr_monthly_p30_single_year_proxy_2019.nc`（SHA
+  `c28f6286...03767`）及新传输 manifest；随后 `142/142 PASS`。首轮 pytest 同时识别运行环境缺
+  `xarray`，按仓库 `requirements-data.txt` 补装 `xarray/xlrd/openpyxl` 后完整复跑为
+  `212 passed + 59 subtests`。
+- 环境/输入证据：Python `3.11.15`，Gurobi `13.0.2`；`check_gurobi_full_license.py` 以 2,501
+  variables/1 constraint/objective 1.0 PASS。`audit_release_contract.py`、V5 input audit、provincial hydro
+  audit、`compileall`、6 个 shell、91 个 JSON 及
+  `check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256` 全部 PASS。pip freeze、Conda
+  explicit、部署 manifest、环境脚本和 29 行证据 SHA 文件保存在
+  `/home/zz2/National_model_server/manifests/`；证据清单自身 SHA256 为
+  `4db4ba8a806028df9f1452ffd24a2ae63891728864ef562fa328bd961e686e52`。
+- 真解命令/输出：版本化脚本
+  `/home/zz2/National_model_server/run_control/run_2030_1h_new_server_smoke_20260825_v1.sh` 调用
+  `scripts/run_cispo_2030_full_year.py --planning-year 2030 --diagnostic-hours 1 --scenario-config
+  config/scenarios/base.json --solver-config config/solver_profiles/barrier_16_auto_order_v2.json`。输出根
+  `/home/zz2/National_model_server/outputs/2030_1h_new_server_smoke_20260825_v1` 为 `OPTIMAL`，QC
+  `58/58`、两个 manifest valid；LP `238,529 vars / 80,143 rows / 453,269 nnz`，presolved
+  `113,589/5,709/236,401`，94 Barrier + 1,623 simplex，objective `2,127,270.302704 million CNY`，solver
+  `6.9245 s`、wall `33.33 s`、RSS `0.469 GiB`、swaps/stderr 0。数值违约最大值低于 `1e-11`。
+- 未决/下一步：旧 case 只能在管理员允许对 `/dev/sdb1`、`/dev/sdc4` 做只读挂载后继续盘点；不要猜测
+  它们不存在，也不要写盘。`packages/` 中保留两个 partial tar（约 5.06/1.77 GB），如需清理须作者确认。
+  当前环境已可用于审查后的最小调试；下一步应根据具体 review issue 先写/跑 focused test，再只运行
+  新命名 1h/24h 门禁。不得把本次 1h 当科学结果，不自动启动 168h/744h/8760h、付费云或并发第二求解。
 
 ### 2026-08-17 full-year parameter-route goal completion audit
 

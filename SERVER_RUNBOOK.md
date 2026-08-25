@@ -1,5 +1,81 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-25 host95 2160h fixed-server gate (authorized, pending connectivity)
+
+The author superseded the former 80 GB/744 h operational limit for one isolated fixed-server engineering run.
+This does not authorize fixed-server 8760 h or a second concurrent solver. The checked-in launcher defaults to
+Base/2160 h over model hours 2880--5039 and creates new versioned output/control roots:
+
+```bash
+source /home/zz2/National_model_server/server_env_20260825.sh
+cd "$CISPO_REPO_ROOT"
+bash -n scripts/run_fixed_server_host95_long_horizon.sh
+$CISPO_PYTHON -m pytest -q
+
+nohup bash scripts/run_fixed_server_host95_long_horizon.sh \
+  >"$CISPO_SERVER_ROOT/run_control/host95_2160_launcher.stdout" \
+  2>"$CISPO_SERVER_ROOT/run_control/host95_2160_launcher.stderr" </dev/null &
+```
+
+Do not run the launch command until all of these are true: exact deployed commit recorded, checkout clean, no
+`run_cispo_2030_full_year.py`/planning-sequence process, target roots absent, available memory at least 96 GiB,
+`vmstat si/so=0/0`, memory PSI zero/benign, and the focused/full tests pass. The profile has no solver time limit.
+The runner resolves Gurobi `SoftMemLimit` to 95% of detected physical memory; the launcher separately samples
+whole-host use every 2 s and sends SIGTERM only when whole-host used reaches 95%. Natural optimal/numerical/error
+terminal may occur earlier. Evidence paths under the control root include `git_head.txt`, `git_status.txt`,
+`resource_monitor.tsv`, `events.log`, `time.txt`, stdout/stderr, PID, return code, and before/after snapshots.
+
+This run remains `TEST_ONLY_TRUNCATED_HORIZON`. Require a finite eligible engineering checkpoint plus exact input,
+LP identity, QC/macro and resource audit before drawing any parameter conclusion. Never reuse the preserved
+2026-08-17 Base/2160 MEM_LIMIT root. At the time this section was written, both SSH aliases timed out during banner
+exchange, so the code was local-only and no server process had been started.
+
+## 2026-08-25 t550 current entry, layout and validated short gate
+
+```text
+primary_ssh=national-model-server -> zz2@192.168.9.27 (BindAddress 124.16.2.17)
+fallback_ssh=national-model-server-vpn -> zz2@192.168.9.27 (system route)
+server=t550
+server_root=/home/zz2/National_model_server
+repo=/home/zz2/National_model_server/repo
+python=/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python
+environment=/home/zz2/National_model_server/server_env_20260825.sh
+bare_remote=/home/zz2/git/National_model.git
+validated_commit=50e2d2012a76a342eed1d281997c9b2382731a8a
+```
+
+登录后先加载版本化环境，不要手写或猜测数据根：
+
+```bash
+source /home/zz2/National_model_server/server_env_20260825.sh
+cd "$CISPO_REPO_ROOT"
+git rev-parse HEAD
+git status --short
+```
+
+当前五个运行数据根位于 `$CISPO_SERVER_ROOT/data/`：
+`model_ready_20260805_power_curve_v3_qc_d63a251_v1`、`hourly_cf`、
+`hydro_timeseries_20260719_sequential_sparse`、`grfr_raw_2019`、`wave_energy_20260727`。部署 manifest、
+pip/Conda 清单、readiness/test logs 和 SHA256 证据均位于 `$CISPO_SERVER_ROOT/manifests/`。当前最小复核：
+
+```bash
+source /home/zz2/National_model_server/server_env_20260825.sh
+cd "$CISPO_REPO_ROOT"
+$CISPO_PYTHON scripts/smoke_test_data_package.py
+$CISPO_PYTHON -m pytest -q
+$CISPO_PYTHON scripts/check_server_readiness.py --require-raw-grfr --verify-raw-grfr-sha256
+```
+
+2026-08-25 的接受证据为 data `142/142 PASS`、pytest `212 passed + 59 subtests`、readiness PASS。
+唯一真解根 `2030_1h_new_server_smoke_20260825_v1` 使用 Base、1h、
+`barrier_16_auto_order_v2`、cold/no-basis，达到 `OPTIMAL + 58/58 + manifests valid`；solver/wall
+`6.925/33.33 s`、RSS `0.469 GiB`、swaps 0。它只证明运行链闭合，不是科学结果，也不授权自动放大。
+
+旧 case 盘点边界：所有已挂载文件系统未发现旧 National_model roots；`/dev/sdb1`（14.6 TiB NTFS）与
+`/dev/sdc4`（约 222.7 GiB ext4）未挂载，普通 `zz2` 无权只读挂载。必须由管理员授权只读 mount 后再
+盘点；禁止自行写盘或宣称旧 case 已丢失。`packages/` 内两个 `*.partial_aborted_20260825` 仅是中止传输
+残片，删除前仍须作者确认。
+
 ## 2026-08-17 19:29 parameter-route completion boundary
 
 ```text
@@ -3863,7 +3939,7 @@ The versioned data roots remain current. Fixed-server HEAD `b40900a` passes 34 r
 ## Long-term Git synchronization
 
 - Bare remote: `/home/zz2/git/National_model.git`
-- Local `origin`: `ssh://zz2@210.77.85.166/home/zz2/git/National_model.git`
+- Local `origin`: `ssh://national-model-server/home/zz2/git/National_model.git`
 - Active branch: `codex/cispo-2030-full-lp`
 
 Normal local-to-server workflow:
@@ -3874,7 +3950,7 @@ git pull --ff-only
 git push origin codex/cispo-2030-full-lp
 
 # Server working copy
-cd /data/zz2/National_model/repo
+cd /home/zz2/National_model_server/repo
 git pull --ff-only
 ```
 

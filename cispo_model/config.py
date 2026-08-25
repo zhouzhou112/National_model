@@ -1103,11 +1103,25 @@ def load_model_config(
             raise ValueError(
                 "minimum_gurobi_major_version must be nonnegative"
             )
+        host_memory_soft_limit_fraction = payload.get(
+            "host_memory_soft_limit_fraction"
+        )
+        if host_memory_soft_limit_fraction is not None:
+            host_memory_soft_limit_fraction = float(
+                host_memory_soft_limit_fraction
+            )
+            if not 0.0 < host_memory_soft_limit_fraction <= 0.95:
+                raise ValueError(
+                    "host_memory_soft_limit_fraction must be in (0, 0.95]"
+                )
         raw["solver_profile"] = {
             "id": str(payload["profile_id"]),
             "description": str(payload.get("description", "")),
             "minimum_gurobi_major_version": (
                 minimum_gurobi_major_version or None
+            ),
+            "host_memory_soft_limit_fraction": (
+                host_memory_soft_limit_fraction
             ),
         }
         resolved_solver = resolved_solver.resolve()

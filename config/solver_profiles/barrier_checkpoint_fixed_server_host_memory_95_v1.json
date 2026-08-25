@@ -1,0 +1,25 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_checkpoint_fixed_server_host_memory_95_v1",
+  "minimum_gurobi_major_version": 13,
+  "host_memory_soft_limit_fraction": 0.95,
+  "description": "Fixed-server long-horizon engineering Stage A profile. The runner replaces the conservative fallback SoftMemLimit with 95% of detected physical host memory, sets no solver time limit, saves ordered BarX/BarPi after an optimal Barrier, and can never publish a scientific result or planning state.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 0.01,
+    "feasibility_tolerance": 0.00001,
+    "optimality_tolerance": 0.00001,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 1,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": 80
+  }
+}

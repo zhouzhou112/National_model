@@ -361,6 +361,22 @@ class SolverProfileTests(unittest.TestCase):
                     candidate.raw["numerics"]["soft_mem_limit_gb"], (40, 80)
                 )
 
+        host95 = load_model_config(
+            solver_path=(
+                profile_path.parent
+                / "barrier_checkpoint_fixed_server_host_memory_95_v1.json"
+            )
+        )
+        self.assertEqual(host95.raw["numerics"]["method"], 2)
+        self.assertEqual(host95.raw["numerics"]["crossover"], 0)
+        self.assertEqual(host95.raw["numerics"]["solution_target"], 1)
+        self.assertIsNone(host95.raw["numerics"]["time_limit_seconds"])
+        self.assertEqual(host95.raw["numerics"]["soft_mem_limit_gb"], 80)
+        self.assertEqual(
+            host95.raw["solver_profile"]["host_memory_soft_limit_fraction"],
+            0.95,
+        )
+
         tuning_profiles = sorted(profile_path.parent.glob("tuning_barrier_nonbasic_*.json"))
         self.assertEqual(len(tuning_profiles), 8)
         for tuning_profile in tuning_profiles:

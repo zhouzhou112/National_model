@@ -34,6 +34,9 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
+FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
+    "barrier_checkpoint_fixed_server_host_memory_"
+)
 
 
 def cloud_full_year_profile_role(profile_id: object) -> str | None:
@@ -68,6 +71,20 @@ def diagnostic_memory_requirement_gb(config, hours: int) -> float:
         if int(hours) <= int(horizon["hours"]):
             return float(horizon["minimum_available_memory_gb"])
     raise ValueError(f"Diagnostic horizon {hours} exceeds the configured full year")
+
+
+def resolve_host_memory_soft_limit_gb(
+    total_physical_memory_bytes: int,
+    fraction: float,
+) -> float:
+    """Translate a host-memory fraction to Gurobi's decimal-GB limit."""
+    total_physical_memory_bytes = int(total_physical_memory_bytes)
+    fraction = float(fraction)
+    if total_physical_memory_bytes <= 0:
+        raise ValueError("total physical memory must be positive")
+    if not 0.0 < fraction <= 0.95:
+        raise ValueError("host memory fraction must be in (0, 0.95]")
+    return total_physical_memory_bytes * fraction / 1_000_000_000
 
 
 def export_engineering_relaxed_macro_analysis(
@@ -456,6 +473,54 @@ def main() -> None:
         args.diagnostic_hours is not None
         or config.horizon(args.horizon)["test_only"]
     )
+    profile_id = config.raw.get("solver_profile", {}).get("id")
+    host_memory_soft_limit_fraction = config.raw.get(
+        "solver_profile", {}
+    ).get("host_memory_soft_limit_fraction")
+    host_memory_soft_limit_policy = None
+    if host_memory_soft_limit_fraction is not None:
+        if not isinstance(profile_id, str) or not profile_id.startswith(
+            FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX
+        ):
+            raise SystemExit(
+                "host_memory_soft_limit_fraction is restricted to the "
+                "fixed-server host-memory profile family"
+            )
+        if not requested_test_only:
+            raise SystemExit(
+                f"{profile_id} is restricted to test-only truncated horizons"
+            )
+        total_physical_memory_bytes = int(psutil.virtual_memory().total)
+        configured_soft_limit_gb = float(
+            config.raw["numerics"]["soft_mem_limit_gb"]
+        )
+        resolved_soft_limit_gb = resolve_host_memory_soft_limit_gb(
+            total_physical_memory_bytes,
+            float(host_memory_soft_limit_fraction),
+        )
+        config.raw["numerics"]["soft_mem_limit_gb"] = (
+            resolved_soft_limit_gb
+        )
+        host_memory_soft_limit_policy = {
+            "policy": "GUROBI_SOFT_LIMIT_AS_FRACTION_OF_HOST_PHYSICAL_MEMORY",
+            "maximum_fraction": float(host_memory_soft_limit_fraction),
+            "host_total_memory_bytes": total_physical_memory_bytes,
+            "host_total_memory_gib": round(
+                total_physical_memory_bytes / 1024**3, 3
+            ),
+            "profile_fallback_soft_mem_limit_gb": configured_soft_limit_gb,
+            "resolved_gurobi_soft_mem_limit_gb_decimal": round(
+                resolved_soft_limit_gb, 6
+            ),
+            "time_limit_seconds": config.raw["numerics"].get(
+                "time_limit_seconds"
+            ),
+            "interpretation": (
+                "The solver may use up to the declared fraction of installed "
+                "physical memory. This is an upper allowance, not a target or "
+                "a requirement to consume that amount."
+            ),
+        }
     numerics = config.raw["numerics"]
     nonbasic_primal_dual_requested = bool(
         int(numerics.get("method", -1)) == 2
@@ -543,8 +608,28 @@ def main() -> None:
             raise SystemExit(
                 "Deferred crossover requires Method=2, Crossover>0 and LPWarmStart=2"
             )
-    profile_id = config.raw.get("solver_profile", {}).get("id")
     cloud_full_year_role = cloud_full_year_profile_role(profile_id)
+    if host_memory_soft_limit_policy is not None:
+        if cloud_full_year_role is not None:
+            raise SystemExit(
+                "The fixed-server host-memory policy cannot be combined with "
+                "a cloud full-year profile"
+            )
+        if not args.engineering_barrier_checkpoint_only:
+            raise SystemExit(
+                f"{profile_id} requires "
+                "--engineering-barrier-checkpoint-only"
+            )
+        if (
+            int(numerics.get("method", -1)) != 2
+            or int(numerics.get("crossover", -1)) != 0
+            or int(numerics.get("solution_target", -1)) != 1
+            or numerics.get("time_limit_seconds") is not None
+        ):
+            raise SystemExit(
+                f"{profile_id} requires Method=2, Crossover=0, "
+                "SolutionTarget=1 and no solver time limit"
+            )
     if (
         cloud_full_year_role == "STAGE_A"
         and not args.engineering_barrier_checkpoint_only
@@ -756,6 +841,7 @@ def main() -> None:
         "available_memory_gb": round(available_gb, 2),
         "minimum_available_memory_gb": required_gb,
         "memory_gate_pass": available_gb >= required_gb,
+        "host_memory_soft_limit_policy": host_memory_soft_limit_policy,
         "scale_estimate": selected_scale.__dict__,
         "gurobi_required_for_build": True,
         "solution_contract_requested": {

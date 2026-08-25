@@ -1,5 +1,36 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-25 13:05 host95 long-horizon code ready locally; server unreachable
+
+- New test-only profile `barrier_checkpoint_fixed_server_host_memory_95_v1` removes the old 12 h/80 GB
+  termination boundary: `TimeLimit=null`; resolved Gurobi `SoftMemLimit=95%` of detected physical host memory.
+- New launcher defaults to Base/2160 h/start 2880, requires clean/no-solver/available>=96 GiB, keeps one process
+  group and samples whole-host memory every 2 s. It sends SIGTERM only at whole-host used>=95%; natural solver
+  terminal remains valid and all evidence is retained in new output/control roots.
+- Model/data boundary unchanged. Local py_compile, guard `8/8`, profile `9/9`, full unittest `215/215 PASS`;
+  2160 preflight PASS with estimated raw scale `10,331,823/13,932,898/123,010,374`.
+- Deployment status: **NOT DEPLOYED / NOT RUNNING**. Both SSH aliases currently time out during banner exchange;
+  last validated t550 state remains clean `50e2d20`, idle. Do not infer current live state until SSH is restored.
+
+## 2026-08-25 t550 replacement server ready for short debugging gates
+
+- Current SSH/Git: `national-model-server -> zz2@192.168.9.27`（direct source
+  `124.16.2.17`）；local `origin=ssh://national-model-server/home/zz2/git/National_model.git`。bare remote、
+  deployed clean checkout 和 local branch 均为
+  `50e2d2012a76a342eed1d281997c9b2382731a8a`。
+- Runtime root `/home/zz2/National_model_server`：Python 3.11.15、Gurobi 13.0.2、完整许可 PASS；
+  model-ready/CF/hydro/raw-GRFR/wave 五个根均已 add-only 落位并校验。readiness、release/V5/hydro audits、
+  data smoke `142/142`、pytest `212 passed + 59 subtests` 全 PASS。
+- 1h Base root `outputs/2030_1h_new_server_smoke_20260825_v1`：`OPTIMAL + QC 58/58 + input/result
+  manifests valid`；raw LP `238529/80143/453269`，objective `2127270.302704 million CNY`，solver/wall
+  `6.925/33.33 s`，peak tree RSS `0.469 GiB`，swaps/stderr 0。它是
+  `TEST_ONLY_TRUNCATED_HORIZON`，不能作为科学规划结果。
+- End state: repo clean、无 CISPO/Gurobi、available RAM 约 104 GiB、root disk free 2.6 TiB。
+  已挂载文件系统无旧 case；未挂载 `/dev/sdb1` 14.6 TiB NTFS 与 `/dev/sdc4` 222.7 GiB ext4 尚待管理员
+  只读挂载授权，因此旧 case 状态仍为 `UNKNOWN_ON_UNMOUNTED_DISKS`。
+- Evidence: `/home/zz2/National_model_server/manifests/deployment_evidence_checksums_20260825.sha256`
+  （29 records，self SHA256 `4db4ba8a806028df9f1452ffd24a2ae63891728864ef562fa328bd961e686e52`）。
+
 ## 2026-08-17 19:29+08:00 parameter-route goal complete / cloud remains active
 
 - 多轮 relaxed 744、V5/744、Base/1488、Base/2160 memory boundary、两批 factor screens、strict deferred
