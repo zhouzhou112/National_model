@@ -70,7 +70,9 @@ snapshot() {
     vmstat 1 3
     cat /proc/pressure/memory
     cat /proc/pressure/io
-    ps -eo pid,ppid,pgid,%cpu,%mem,rss,etimes,cmd --sort=-rss | head -25
+    # This is a shared host.  Never persist full command lines here because
+    # unrelated users may legitimately pass credentials as process arguments.
+    ps -eo user:16,pid,ppid,pgid,%cpu,%mem,rss,etimes,comm --sort=-rss | head -25
   } >"$CONTROL_ROOT/resource_${label}.txt" 2>&1
 }
 
