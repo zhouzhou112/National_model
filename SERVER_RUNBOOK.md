@@ -1,5 +1,38 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-27 four-case 2160h campaign (Case 1 active)
+
+```text
+implementation_commit=88f88779949a5bc27486447d674f6b700b21ac93
+gpu_runtime_commit=6065bfba34b76098e86307081323e8545a4d25ac
+server_checkout=6065bfba34b76098e86307081323e8545a4d25ac_clean
+active_case=case1_v3_barrier16_stage_a
+active_tag=2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1
+active_process_group=687599
+start=2026-08-27T00:13:53+08:00
+```
+
+The only approved cases are `case1_v3_barrier16_stage_a`, `case2_v3_barrier32_screen`,
+`case3_dual_simplex_screen`, and `case4_gpu_pdhg_screen`. Run them serially through
+`scripts/run_fixed_server_2160_campaign_case.sh`; never add a parameter combination. All new profiles declare
+`soft_mem_limit_gb=null`. Case 1 has no solver time limit; the other cases have at most 21600 seconds. The launcher
+retains a separate whole-host 95% emergency guard and records resource evidence every two seconds.
+
+Case 4 must use:
+
+```bash
+export CISPO_PYTHON=/home/zz2/National_model_server/envs/cispo-2030-gurobi-gpu13.0.2-cu129-v1/bin/python
+export CASE_ID=case4_gpu_pdhg_screen
+export GPU_DEVICE=0
+bash scripts/run_fixed_server_2160_campaign_case.sh
+```
+
+The launcher creates private CUDA MPS pipe/log directories so the `zz2` client does not connect to another user's
+default MPS socket. GPU acceptance requires both `GPU model: NVIDIA GeForce RTX 4090` and `Start PDHG on GPU` in
+the Gurobi log; `GPU not found - running on CPU instead` is a failed GPU case. Do not run another solver, deploy a
+new commit, or alter the checkout while Case 1 is active. If and only if 2160h terminates from actual memory failure
+or the 95% guard, set `HOURS=2016` with a fresh tag; reduce further only if 2016h also cannot run.
+
 ## 2026-08-25 host95 2160h fixed-server gate (deployed; waiting for memory gate)
 
 ```text

@@ -1,5 +1,23 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-27 00:16 2160h Case 1 active; four-case campaign validated
+
+- Server checkout is clean `6065bfba34b76098e86307081323e8545a4d25ac`. Full server regression with the
+  data environment loaded is `217/217 PASS`.
+- The review fixes in `88f8877` replace hard-coded transmission loss and VRE/hydro FOM access with the validated
+  technology registry and make primary objective inclusion explicit. A matched 1h solve exactly reproduces the
+  old `238529/80143/453269`, fingerprint `-146272577`, objective `2127270.3027043818 million CNY`, iterations,
+  violations and QC.
+- GPU runtime is isolated at `envs/cispo-2030-gurobi-gpu13.0.2-cu129-v1`; wheel SHA256 is
+  `10f0a10fed0c0f959d11bc4f60d36d4ef04a13c48ecf649cd557e8b952de0680`. GPU smoke confirms RTX 4090 and
+  `Start PDHG on GPU`.
+- Active unique solver: tag `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`, started
+  `2026-08-27T00:13:53+08:00`, process group `687599`. It is Base 2030 hours 2880--5039, V3 Barrier16 Stage A,
+  with no Gurobi time or memory limit. Only the external whole-host 95% guard is active. At 00:15:52 it was still
+  building, stderr 0, process RSS about 3.03 GiB, host used 16.02%, memory PSI 0.
+- Do not deploy into the checkout or start Case 2--4 while Case 1 is active. If 2160h proves impossible due to
+  real OOM/95% guard, retry 2016h and only then a smaller horizon. Do not touch the active cloud 8760h run.
+
 ## 2026-08-25 17:07 host95 deployed and validated; launch waiting for shared-host memory
 
 - SSH recovered without a client configuration change. The server bare remote, GitHub and clean `t550` checkout
