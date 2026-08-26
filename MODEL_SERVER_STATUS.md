@@ -14,7 +14,9 @@
 - Active unique solver: tag `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`, started
   `2026-08-27T00:13:53+08:00`, process group `687599`. It is Base 2030 hours 2880--5039, V3 Barrier16 Stage A,
   with no Gurobi time or memory limit. Only the external whole-host 95% guard is active. At 00:15:52 it was still
-  building, stderr 0, process RSS about 3.03 GiB, host used 16.02%, memory PSI 0.
+  building, stderr 0, process RSS about 3.03 GiB, host used 16.02%, memory PSI 0. At 00:28:59 Gurobi started with
+  raw dimensions `10398783/12520914/126724678`, fingerprint `0xcf045770`, no TimeLimit/SoftMemLimit, and build
+  peak RSS 12.492 GiB; early presolve host use was about 28%.
 - Do not deploy into the checkout or start Case 2--4 while Case 1 is active. If 2160h proves impossible due to
   real OOM/95% guard, retry 2016h and only then a smaller horizon. Do not touch the active cloud 8760h run.
 
