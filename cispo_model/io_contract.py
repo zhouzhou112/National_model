@@ -365,6 +365,12 @@ def write_run_provenance(
         )
 
     add_file("configuration", str(config.path), config.path, True)
+    add_file(
+        "technology_parameter_registry",
+        "config/technology_parameters.json",
+        ROOT / "config" / "technology_parameters.json",
+        True,
+    )
     if config.scenario_path:
         add_file(
             "scenario_configuration",

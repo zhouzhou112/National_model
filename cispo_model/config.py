@@ -950,8 +950,21 @@ class ModelConfig:
                 "numerics.time_limit_seconds must be null (no explicit solver "
                 "limit) or a positive number"
             )
-        if float(numerics.get("soft_mem_limit_gb", 0.0)) <= 0.0:
-            raise ValueError("numerics.soft_mem_limit_gb must be positive")
+        soft_mem_limit = numerics.get("soft_mem_limit_gb")
+        if soft_mem_limit is not None and float(soft_mem_limit) <= 0.0:
+            raise ValueError(
+                "numerics.soft_mem_limit_gb must be null (no Gurobi limit) "
+                "or positive"
+            )
+        for key in (
+            "pdhg_absolute_tolerance",
+            "pdhg_convergence_tolerance",
+            "pdhg_relative_tolerance",
+        ):
+            if key in numerics and not 0.0 <= float(numerics[key]) <= 1.0:
+                raise ValueError(f"numerics.{key} must be in [0, 1]")
+        if int(numerics.get("pdhg_iteration_limit", 2_000_000_000)) < 0:
+            raise ValueError("numerics.pdhg_iteration_limit must be nonnegative")
         formulation = self.raw.get("formulation", {})
         if formulation.get("annual_emissions_accounting") not in {
             "national_dense_v1",
@@ -1083,6 +1096,10 @@ def load_model_config(
             "inf_unbd_info",
             "lp_warm_start",
             "pdhg_gpu",
+            "pdhg_absolute_tolerance",
+            "pdhg_convergence_tolerance",
+            "pdhg_iteration_limit",
+            "pdhg_relative_tolerance",
             "pre_dual",
             "pre_passes",
             "pre_sparsify",

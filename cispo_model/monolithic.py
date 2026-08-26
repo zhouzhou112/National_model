@@ -21,6 +21,7 @@ from .flexible_load import attach_flexible_load
 from .hydro import HydroProfileReader
 from .load_center import attach_annual_load_center_network
 from .master import MasterArtifacts, build_master
+from .technology_registry import transmission_loss_fraction_per_km
 from .timeblocks import TimeBlock
 
 
@@ -297,7 +298,13 @@ def _network_incidence(data: ModelData, province_index: dict[int, int]):
     edge_count = len(data.lines)
     forward = sparse.lil_matrix((len(province_index), edge_count), dtype=float)
     reverse = sparse.lil_matrix((len(province_index), edge_count), dtype=float)
-    efficiency = np.power(1.0 - 3.2e-5, data.lines.distance_km.to_numpy(dtype=float))
+    loss_fraction_per_km = transmission_loss_fraction_per_km(
+        data.technology_parameter_registry
+    )
+    efficiency = np.power(
+        1.0 - loss_fraction_per_km,
+        data.lines.distance_km.to_numpy(dtype=float),
+    )
     for edge, row in enumerate(data.lines.itertuples(index=False)):
         p_from = province_index[int(row.from_province_code)]
         p_to = province_index[int(row.to_province_code)]
@@ -1246,11 +1253,21 @@ def build_full_year_monolithic(
         **flexible_load.variables,
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
+    primary_objective_components = tuple(
+        artifacts.index["primary_objective_components"]
+    )
+    missing_primary_components = set(primary_objective_components).difference(
+        artifacts.cost_components
+    )
+    if missing_primary_components:
+        raise RuntimeError(
+            "Primary objective components are missing: "
+            + ", ".join(sorted(missing_primary_components))
+        )
     model.setObjective(
         gp.quicksum(
-            expression
-            for name, expression in artifacts.cost_components.items()
-            if not name.startswith("operating_")
+            artifacts.cost_components[name]
+            for name in primary_objective_components
         ),
         GRB.MINIMIZE,
     )

@@ -7,7 +7,7 @@ import json
 import os
 from pathlib import Path
 from pathlib import PureWindowsPath
-from typing import Iterable
+from typing import Any, Iterable
 
 import numpy as np
 import pandas as pd
@@ -16,6 +16,7 @@ from scipy.spatial import cKDTree
 
 from .config import ModelConfig, ROOT
 from .planning_state import PlanningState
+from .technology_registry import load_technology_parameter_registry
 from .wave_energy import WaveEnergyData, load_wave_energy_data
 
 
@@ -309,6 +310,7 @@ class ModelData:
     emissions: pd.DataFrame
     dac: pd.DataFrame
     ccs_cost: pd.Series
+    technology_parameter_registry: dict[str, Any]
     grid_connections: pd.DataFrame
     initial_spur: pd.DataFrame
     substations: pd.DataFrame
@@ -1770,6 +1772,7 @@ def load_model_data(
         emissions=emissions,
         dac=dac,
         ccs_cost=ccs_cost,
+        technology_parameter_registry=load_technology_parameter_registry(),
         grid_connections=grid_connections,
         initial_spur=initial_spur,
         substations=substations,

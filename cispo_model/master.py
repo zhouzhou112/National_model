@@ -21,6 +21,7 @@ from .data import (
 )
 from .timeblocks import TimeBlock
 from .planning_state import stable_asset_id
+from .technology_registry import fixed_om_fraction
 from .wave_energy import wave_cost_parameters
 
 
@@ -91,6 +92,9 @@ def export_cost_components(
         if optimization_hours == configured_hours
         else "TEST_ONLY_TRUNCATED_HORIZON"
     )
+    primary_components = set(
+        artifacts.index.get("primary_objective_components", ())
+    )
     cost_frame = pd.DataFrame(
         [
             {
@@ -100,12 +104,10 @@ def export_cost_components(
                 "accounting_scope": cost_component_accounting_scope(name),
                 "optimization_hours": optimization_hours,
                 "result_use": result_use,
-                "included_directly_in_objective": not name.startswith(
-                    "operating_"
-                ),
-                "included_in_primary_cost": not name.startswith("operating_"),
+                "included_directly_in_objective": name in primary_components,
+                "included_in_primary_cost": name in primary_components,
                 "included_directly_in_solver_objective": (
-                    not name.startswith("operating_")
+                    name in primary_components
                     and "mga" not in artifacts.index
                 ),
             }
@@ -765,9 +767,6 @@ def build_master(
     variables.update(vre_new=vre_new, vre_capacity=vre_cap)
 
     capex_2030 = _technology_lookup(data.capex, "capex_yuan_per_kw")
-    vre_fom_fraction = {
-        "onwind": 0.015, "offwind": 0.015, "upv": 0.005, "dpv": 0.005
-    }
     vre_investment = gp.LinExpr()
     vre_fom = gp.LinExpr()
     for technology, group in data.vre_sites.groupby("technology"):
@@ -775,7 +774,11 @@ def build_master(
         crf = capital_recovery_factor(wacc, float(lifetimes[technology]))
         capex = float(capex_2030[technology])
         vre_investment += capex * crf * vre_cap[positions].sum()
-        vre_fom += capex * vre_fom_fraction[technology] * vre_cap[positions].sum()
+        vre_fom += (
+            capex
+            * fixed_om_fraction(data.technology_parameter_registry, technology)
+            * vre_cap[positions].sum()
+        )
     costs["vre_investment"] = vre_investment
     costs["vre_fixed_om"] = vre_fom
 
@@ -1025,7 +1028,11 @@ def build_master(
     )
     hydro_accounted_capacity = hydro_cap.sum() + hydro_aggregate_existing_gw
     costs["hydro_investment"] = hydro_capex * hydro_crf * hydro_accounted_capacity
-    costs["hydro_fixed_om"] = hydro_capex * 0.02 * hydro_accounted_capacity
+    costs["hydro_fixed_om"] = (
+        hydro_capex
+        * fixed_om_fraction(data.technology_parameter_registry, "hydro")
+        * hydro_accounted_capacity
+    )
 
     # Province-level PHS retains the GHT 2026 operating floor and is capped by
     # projects available by the planning year. Battery potential remains open.
@@ -1643,11 +1650,13 @@ def build_master(
         index_extra = {}
 
     costs["annual_operation"] = gp.LinExpr()
-    objective = gp.quicksum(costs.values())
+    primary_objective_components = tuple(costs)
+    objective = gp.quicksum(costs[name] for name in primary_objective_components)
     model.setObjective(objective, GRB.MINIMIZE)
     model.update()
     index = {
         "province_codes": provinces,
+        "primary_objective_components": primary_objective_components,
         "province_index": p_index,
         "thermal_index": k_index,
         "storage_index": s_index,

@@ -650,6 +650,36 @@ class SolverProfileTests(unittest.TestCase):
             ):
                 load_model_config(formulation_path=path)
 
+    def test_large_lp_2160_campaign_profiles_are_minimal_and_unlimited_memory(self):
+        root = Path(__file__).resolve().parents[1]
+        profiles = root / "config" / "solver_profiles"
+        case1 = load_model_config(
+            solver_path=profiles / "large_lp_2160_case1_v3_barrier16_stage_a_v1.json"
+        )
+        case2 = load_model_config(
+            solver_path=profiles / "large_lp_2160_case2_v3_barrier32_screen_v1.json"
+        )
+        case3 = load_model_config(
+            solver_path=profiles / "large_lp_2160_case3_dual_simplex_screen_v1.json"
+        )
+        case4 = load_model_config(
+            solver_path=profiles / "large_lp_2160_case4_gpu_pdhg_screen_v1.json"
+        )
+
+        self.assertEqual(case1.raw["numerics"]["method"], 2)
+        self.assertEqual(case1.raw["numerics"]["threads"], 16)
+        self.assertIsNone(case1.raw["numerics"]["time_limit_seconds"])
+        self.assertEqual(case2.raw["numerics"]["threads"], 32)
+        self.assertEqual(case2.raw["numerics"]["time_limit_seconds"], 21600)
+        self.assertEqual(case3.raw["numerics"]["method"], 1)
+        self.assertEqual(case4.raw["numerics"]["method"], 6)
+        self.assertEqual(case4.raw["numerics"]["pdhg_gpu"], 1)
+        self.assertEqual(case4.raw["numerics"]["pdhg_convergence_tolerance"], 1e-2)
+        self.assertEqual(case4.raw["numerics"]["pdhg_absolute_tolerance"], 1e-5)
+        self.assertEqual(case4.raw["numerics"]["pdhg_relative_tolerance"], 1e-2)
+        for config in (case1, case2, case3, case4):
+            self.assertIsNone(config.raw["numerics"]["soft_mem_limit_gb"])
+
 
 if __name__ == "__main__":
     unittest.main()

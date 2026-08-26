@@ -220,7 +220,8 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
     # still terminating wall-clock budget for a costly full-year solve.
     if numerics.get("time_limit_seconds") is not None:
         model.Params.TimeLimit = float(numerics["time_limit_seconds"])
-    model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
+    if numerics.get("soft_mem_limit_gb") is not None:
+        model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
     model.Params.OutputFlag = int(numerics["output_flag"])
     model.Params.DualReductions = int(numerics.get("dual_reductions", 1))
     model.Params.InfUnbdInfo = int(numerics.get("inf_unbd_info", 0))
@@ -243,6 +244,10 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         "pre_dual": ("PreDual", int),
         "pre_passes": ("PrePasses", int),
         "pre_sparsify": ("PreSparsify", int),
+        "pdhg_absolute_tolerance": ("PDHGAbsTol", float),
+        "pdhg_convergence_tolerance": ("PDHGConvTol", float),
+        "pdhg_iteration_limit": ("PDHGIterLimit", int),
+        "pdhg_relative_tolerance": ("PDHGRelTol", float),
         "solution_target": ("SolutionTarget", int),
     }
     for config_key, (parameter_name, converter) in optional_parameters.items():
@@ -457,6 +462,15 @@ def solve_and_report(
             "optimality_tolerance": float(model.Params.OptimalityTol),
             "barrier_convergence_tolerance": float(model.Params.BarConvTol),
             "pdhg_gpu": int(getattr(model.Params, "PDHGGPU", 0)),
+            "pdhg_absolute_tolerance": float(
+                getattr(model.Params, "PDHGAbsTol", 0.0)
+            ),
+            "pdhg_convergence_tolerance": float(
+                getattr(model.Params, "PDHGConvTol", 0.0)
+            ),
+            "pdhg_relative_tolerance": float(
+                getattr(model.Params, "PDHGRelTol", 0.0)
+            ),
             "bar_homogeneous": int(model.Params.BarHomogeneous),
             "bar_correctors": int(model.Params.BarCorrectors),
             "bar_order": int(model.Params.BarOrder),
@@ -475,7 +489,11 @@ def solve_and_report(
                 if config.raw["numerics"].get("time_limit_seconds") is None
                 else float(model.Params.TimeLimit)
             ),
-            "soft_mem_limit_gb": float(model.Params.SoftMemLimit),
+            "soft_mem_limit_gb": (
+                None
+                if config.raw["numerics"].get("soft_mem_limit_gb") is None
+                else float(model.Params.SoftMemLimit)
+            ),
         },
         "warm_start": warm_start,
         "primal_dual_start": primal_dual_start,
