@@ -22,6 +22,7 @@ START_HOUR=${START_HOUR:-2880}
 SCENARIO=${SCENARIO:-config/scenarios/base.json}
 MINIMUM_AVAILABLE_GIB=${MINIMUM_AVAILABLE_GIB:-96}
 GPU_DEVICE=${GPU_DEVICE:-0}
+GPU_RUNTIME_ROOT=${GPU_RUNTIME_ROOT:-$SERVER_ROOT/run_control/gpu${GPU_DEVICE}_runtime}
 
 declare -a method_args=()
 case "$CASE_ID" in
@@ -40,7 +41,15 @@ case "$CASE_ID" in
     ;;
   case4_gpu_pdhg_screen)
     PROFILE=config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json
+    mkdir -p "$GPU_RUNTIME_ROOT/mps_pipe" "$GPU_RUNTIME_ROOT/mps_log"
+    chmod 700 "$GPU_RUNTIME_ROOT" "$GPU_RUNTIME_ROOT/mps_pipe" \
+      "$GPU_RUNTIME_ROOT/mps_log"
     export CUDA_VISIBLE_DEVICES="$GPU_DEVICE"
+    # Isolate this user's CUDA client from another user's system-wide MPS
+    # control socket.  An empty private pipe directory lets Gurobi use the GPU
+    # directly and avoids a cross-user MPS connection failure.
+    export CUDA_MPS_PIPE_DIRECTORY="$GPU_RUNTIME_ROOT/mps_pipe"
+    export CUDA_MPS_LOG_DIRECTORY="$GPU_RUNTIME_ROOT/mps_log"
     ;;
   *)
     printf 'unsupported CASE_ID: %s\n' "$CASE_ID" >&2
