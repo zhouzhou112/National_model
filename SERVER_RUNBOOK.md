@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-08-28 15:07 隔离数值候选运行边界
+
+当前生产仍6065bfb、无时限Case4正在GPU1运行；本worktree不允许部署/停止/重启它。
+所有新A/B在本机2线程，24h失败未解决，不新增服务器性能Case。NUMERICAL_STABILITY_WORKLOG.md
+记录等价性、失败输出和命令。零边界证书PASS不是性能/科学验收。
+本机已有一次完整8760h云端归档流式审计：Python34684、launcher37332、SSH40220，
+检查前复核身份；不要重复启动。状态outputs/stream_8760_original_v1/status.json，
+只有COMPLETE且输入SHA/字节数/模型规模都通过才能引用为全量证据；失败保留现场，不盲目重启。
+源文件来自云端完整release，与固定服务器仍在进行的备份无依赖。本地须保持开机联网。
+
 ## 2026-08-25 host95 2160h fixed-server gate (deployed; waiting for memory gate)
 
 ```text

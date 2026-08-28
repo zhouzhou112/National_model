@@ -1,5 +1,14 @@
 # CISPO 2030 full-year server status
 
+## 2026-08-28 15:07 隔离工作区状态纠正
+
+本分支不是生产部署。14:56实核固定服务器仍clean6065bfb、Python1216969自02:15:14运行，
+GPU1 100%/4600MiB。PDHG不重启/改参，无时限及3h巡检/2s采样不变。
+本地候选237测试通过但24h数值终止未解决，禁止部署；详细证据NUMERICAL_STABILITY_WORKLOG.md。
+本机独立流式审计云端已完成8760h MPS正在运行（非服务器计算、非新求解），
+状态outputs/stream_8760_original_v1/status.json；15:04约2109万nnz，尚未完成全SHA/规模校验。
+下方8月25日启动状态是历史，不能据此启动新服务器任务。
+
 ## 2026-08-25 17:07 host95 deployed and validated; launch waiting for shared-host memory
 
 - SSH recovered without a client configuration change. The server bare remote, GitHub and clean `t550` checkout

@@ -65,6 +65,11 @@ def _reservoir_release_upper_scaled(
     ):
         raise ValueError("Reservoir release bounds require valid active storage")
     local_scaled = local / float(flow_scale_m3s)
+    # Exact-zero certificate, not a numerical threshold: summing a cyclic
+    # water balance cancels storage, so zero total inflow and nonnegative
+    # turbine/spill flows imply every release is exactly zero. Track raw
+    # zero inputs/topology rather than trusting a possibly underflowed sum.
+    exact_zero_total = np.all(local == 0.0, axis=1)
     aggregate_upper = local_scaled.sum(axis=1)
     hourly_upper = local_scaled + storage_release[:, None]
     hourly_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
@@ -137,6 +142,11 @@ def _reservoir_release_upper_scaled(
             if not dependencies.issubset(resolved):
                 continue
             for source_rows, weight, lag, transfer in terms:
+                exact_zero_total[target] &= bool(
+                    weight == 0.0
+                    or np.all(transfer == 0.0)
+                    or np.all(exact_zero_total[source_rows])
+                )
                 source_aggregate = float(aggregate_upper[source_rows].sum())
                 source_hourly = hourly_upper[source_rows].sum(axis=0)
                 transferred_hourly = transfer * np.roll(source_hourly, lag)
@@ -160,6 +170,9 @@ def _reservoir_release_upper_scaled(
             )
     release_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
     release_upper = release_upper * (1.0 + 1.0e-12) + 1.0e-12
+    # Positive-inflow bounds keep their original outward rounding unchanged.
+    # Padding a proven zero only introduces unnecessary near-fixed variables.
+    release_upper[exact_zero_total, :] = 0.0
     if not np.isfinite(release_upper).all() or (release_upper < 0.0).any():
         raise ValueError("Reservoir release upper bounds are invalid")
     return release_upper
@@ -798,6 +811,11 @@ def build_full_year_monolithic(
         "release_upper_scaled_max": float(reservoir_release_upper.max()),
         "turbine_upper_scaled_min": float(reservoir_turbine_upper.min()),
         "turbine_upper_scaled_max": float(reservoir_turbine_upper.max()),
+        "exact_zero_release_bound_policy": "raw_zero_inflow_topological_certificate_v1",
+        "exact_zero_release_bound_entries": int(np.count_nonzero(reservoir_release_upper == 0.0)),
+        "exact_zero_release_station_local_rows": np.flatnonzero(
+            np.all(reservoir_release_upper == 0.0, axis=1)
+        ).tolist(),
         "volume_upper_scaled_min": float(reservoir_volume_upper.min()),
         "volume_upper_scaled_max": float(reservoir_volume_upper.max()),
         "active_storage_upper_encoding": "native_variable_upper_bound_v1",

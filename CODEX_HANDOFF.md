@@ -12,6 +12,19 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-08-28 15:07+08:00：本worktree是从生产6065bfba34b76098e86307081323e8545a4d25ac
+  建立的隔离分支codex/numerical-stability-20260828-v1，不是服务器部署。旧8月25日运行记录已过时；
+  服务器实际14:56仍clean6065bfb、原PDHG Python1216969/GPU1继续，无时限/3h巡检/2s采样未改。
+  本地实现可逆缩放、原单位容差预算、流式矩阵审计，以及严格零入流水库上界修正；
+  237/237回归PASS，逆变换与10944个界变更的原LP等式求和证书PASS。
+  **1h改善不能外推：24h/start2880原版、缩放版、零边界修正版仍NUMERIC，禁止推广/部署。**
+  homogeneous诊断仅SUBOPTIMAL、无不可行证书；没有放松模型或新增性能算法组合。
+  全8760h原MPS审计已在本机后台运行，source为云端完整归档（非固定服务器部分备份），
+  Python34684/launcher37332/SSH40220需复核身份；15:04已扫描约2109万/49284万非零，约39MB RSS。
+  只有status COMPLETE且gzip/ENDATA/SHA256/字节数/维度全通过才可使用完整结论；不可换标签重启。
+  详情、命令、数学边界、失败证据与下一步均在NUMERICAL_STABILITY_WORKLOG.md；
+  精确下一步先审查outputs/stream_8760_original_v1/status.json终态，再做针对性等价结构设计。
+
 - 2026-08-25 17:07+08:00：`t550` SSH 已恢复，server bare remote、GitHub 与 clean checkout 均部署到
   `60561e57c419131a94539c2258ff108cc725edfd`；host95 功能提交仍为 `7dfefbb`。部署前发现共享主机
   资源快照不应持久化其他用户完整命令参数，故以 `60561e5` 最小改为仅记录 `comm`，模型方程、数据、
@@ -2060,6 +2073,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-08-28 15:07 数值稳定性独立候选与完整8760h流式审计
+
+- 基线Git为6065bfba34b76098e86307081323e8545a4d25ac，本分支独立开发，不合并主工作区、不部署。
+- 新增lp_equilibration/mps_stream_audit/zero_bound_certificate及诊断脚本和20个单测；
+  monolithic.py仅对原始零入流及拓扑证书证明的零泄流上界去除1e-12余量，保留所有正入流。
+- 原LP行/列/矩阵/目标/RHS/LB/命名/方向不变；10944个UB改变由旧MPS周期等式求和独立证明。
+  237/237回归80.494s PASS、py_compile/diff-check/pip-check PASS；未改任何活跃生产文件/进程/参数。
+- 既有1h缩放v2原单位约束违反9.416e-7→7.089e-11，但耗时约2.54→5.32s；
+  新24h/start2880原版/缩放/零界修正均NUMERIC。homogeneous诊断SUBOPTIMAL，不能输出有效IIS。
+  全部失败保留在outputs，不将equivalence PASS冒充求解/科学验收。
+- 14:49:54启动本机BelowNormal只读完整云端8760h gzip流；输入4,142,909,397bytes，
+  预期SHA256344f2ae4cabb669123c2a946fe530fa3417ab7c10ebb035850584f043fe2435d，
+  预期50907234行/41458383列/492835195nnz。15:04仍RUNNING，非全尺寸审计已完成。
+- 输出/命令/环境/逐项验证详见NUMERICAL_STABILITY_WORKLOG.md。下一步只查同目录终态，
+  COMPLETE后据完整系数族定位；不凭小模型推进2160/8760求解，不干预当前无时限PDHG。
 
 ### 2026-08-25 t550 host95 deployed and server gates passed; large run memory-blocked
 
