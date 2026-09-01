@@ -14,6 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from cispo_model.config import ROOT, load_model_config
+from cispo_model.annual_energy_coordinate import resolve_annual_energy_coordinate
 from cispo_model.data import DATA_ROOT, load_model_data
 from cispo_model.flexible_load_numerics import (
     assess_flexible_load_solver_compatibility,
@@ -836,6 +837,9 @@ def main() -> None:
         "annual_emissions_accounting": config.raw["formulation"][
             "annual_emissions_accounting"
         ],
+        "annual_energy_coordinate": resolve_annual_energy_coordinate(
+            config
+        ).metadata(),
         "state_in": str(planning_state.root) if planning_state.root else None,
         "state_format": planning_state.metadata.get("format"),
         "available_memory_gb": round(available_gb, 2),
@@ -1121,6 +1125,10 @@ def main() -> None:
         "annual_emissions_accounting": config.raw["formulation"][
             "annual_emissions_accounting"
         ],
+        "annual_energy_coordinate": artifacts.index.get(
+            "annual_energy_coordinate",
+            resolve_annual_energy_coordinate(config).metadata(),
+        ),
         "horizon": horizon_name,
         "optimization_hours": optimization_hours,
         "optimization_start_hour": optimization_start_hour,

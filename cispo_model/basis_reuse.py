@@ -17,6 +17,7 @@ from typing import Any
 
 import numpy as np
 
+from .annual_energy_coordinate import resolve_annual_energy_coordinate
 from .config import ModelConfig, ROOT
 from .io_contract import sha256_file, validate_result_manifest
 
@@ -212,6 +213,9 @@ def export_warm_start_basis(
         "basis_sha256": sha256_file(basis_path),
         "basis_format": "gurobi_bas",
         "basis_solution": "OPTIMAL_POST_CROSSOVER",
+        "annual_energy_coordinate": resolve_annual_energy_coordinate(
+            config
+        ).metadata(),
         "source": {
             "planning_year": int(config.planning_year),
             "boundary_year": int(config.boundary_year),

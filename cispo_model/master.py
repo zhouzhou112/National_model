@@ -486,6 +486,22 @@ def export_master_solution(
     line["new_capacity_gw"] = variables["line_new"].X
     line.to_csv(output_dir / "transmission_capacity.csv", index=False, encoding="utf-8-sig")
 
+    annual_energy_coordinate = artifacts.index.get(
+        "annual_energy_coordinate", {}
+    )
+    scaled_annual_energy_keys = set(
+        annual_energy_coordinate.get("scaled_variable_keys", [])
+    )
+    annual_energy_scale_gwh = float(
+        annual_energy_coordinate.get("variable_scale_gwh", 1.0)
+    )
+
+    def annual_energy_value(key: str) -> np.ndarray:
+        values = np.asarray(variables[key].X, dtype=float)
+        if key in scaled_annual_energy_keys:
+            return values * annual_energy_scale_gwh
+        return values
+
     if "intra_load_center_capacity" in variables:
         intra = data.intra_load_center_edges[
             [
@@ -497,8 +513,12 @@ def export_master_solution(
         intra["capacity_gw"] = variables["intra_load_center_capacity"].X
         intra["new_capacity_gw"] = variables["intra_load_center_new"].X
         if "intra_load_center_flow_forward" in variables:
-            intra["annual_flow_forward_gwh"] = variables["intra_load_center_flow_forward"].X
-            intra["annual_flow_reverse_gwh"] = variables["intra_load_center_flow_reverse"].X
+            intra["annual_flow_forward_gwh"] = annual_energy_value(
+                "intra_load_center_flow_forward"
+            )
+            intra["annual_flow_reverse_gwh"] = annual_energy_value(
+                "intra_load_center_flow_reverse"
+            )
         intra.to_csv(
             output_dir / "load_center_intra_transmission.csv",
             index=False,
@@ -512,20 +532,26 @@ def export_master_solution(
                 "annual_demand_share_in_province",
             ]
         ].copy()
-        centers["annual_injection_gwh"] = variables["load_center_annual_injection"].X
-        centers["annual_effective_demand_gwh"] = variables["load_center_annual_demand"].X
-        centers["annual_external_net_import_gwh"] = variables[
+        centers["annual_injection_gwh"] = annual_energy_value(
+            "load_center_annual_injection"
+        )
+        centers["annual_effective_demand_gwh"] = annual_energy_value(
+            "load_center_annual_demand"
+        )
+        centers["annual_external_net_import_gwh"] = annual_energy_value(
             "load_center_external_net_import"
-        ].X
+        )
         centers.to_csv(
             output_dir / "load_center_annual_balance.csv",
             index=False,
             encoding="utf-8-sig",
         )
         generation_rows = []
-        vre_generation = variables["load_center_vre_generation"].X
-        ror_generation = variables["load_center_ror_generation"].X
-        reservoir_generation = variables["load_center_reservoir_generation"].X
+        vre_generation = annual_energy_value("load_center_vre_generation")
+        ror_generation = annual_energy_value("load_center_ror_generation")
+        reservoir_generation = annual_energy_value(
+            "load_center_reservoir_generation"
+        )
         hydro_aggregate_generation = variables[
             "hydro_aggregate_generation"
         ].X.sum(axis=1)
@@ -576,9 +602,9 @@ def export_master_solution(
                         "load_center_id": center.load_center_id,
                         "province_code": int(center.province_code),
                         "technology": "wave",
-                        "annual_generation_gwh": variables[
+                        "annual_generation_gwh": annual_energy_value(
                             "load_center_wave_generation"
-                        ].X[center_position],
+                        )[center_position],
                     }
                 )
         pd.DataFrame(generation_rows).to_csv(
@@ -587,32 +613,32 @@ def export_master_solution(
             encoding="utf-8-sig",
         )
         province_accounts = data.provinces[["province_code", "province_name_zh"]].copy()
-        province_accounts["annual_non_spatial_injection_gwh"] = variables[
+        province_accounts["annual_non_spatial_injection_gwh"] = annual_energy_value(
             "province_annual_non_spatial_injection"
-        ].X
-        province_accounts["annual_effective_demand_gwh"] = variables[
+        )
+        province_accounts["annual_effective_demand_gwh"] = annual_energy_value(
             "province_annual_effective_demand"
-        ].X
-        province_accounts["annual_external_sent_gwh"] = variables[
+        )
+        province_accounts["annual_external_sent_gwh"] = annual_energy_value(
             "province_annual_external_sent"
-        ].X
-        province_accounts["annual_external_received_gwh"] = variables[
+        )
+        province_accounts["annual_external_received_gwh"] = annual_energy_value(
             "province_annual_external_received"
-        ].X
-        province_accounts["annual_external_net_import_gwh"] = variables[
+        )
+        province_accounts["annual_external_net_import_gwh"] = annual_energy_value(
             "province_annual_external_net_import"
-        ].X
+        )
         province_accounts.to_csv(
             output_dir / "province_annual_load_center_accounts.csv",
             index=False,
             encoding="utf-8-sig",
         )
-        forward = variables["intra_load_center_flow_forward"].X
-        reverse = variables["intra_load_center_flow_reverse"].X
+        forward = annual_energy_value("intra_load_center_flow_forward")
+        reverse = annual_energy_value("intra_load_center_flow_reverse")
         balance_residual = (
-            variables["load_center_annual_injection"].X
-            + variables["load_center_external_net_import"].X
-            - variables["load_center_annual_demand"].X
+            annual_energy_value("load_center_annual_injection")
+            + annual_energy_value("load_center_external_net_import")
+            - annual_energy_value("load_center_annual_demand")
         )
         center_index = artifacts.index["load_center_index"]
         for edge, row in enumerate(data.intra_load_center_edges.itertuples(index=False)):
@@ -623,13 +649,17 @@ def export_master_solution(
             balance_residual[destination] -= reverse[edge]
             balance_residual[origin] += reverse[edge]
         province_net_exchange_residual = []
-        external_net_import = variables["province_annual_external_net_import"].X
+        external_net_import = annual_energy_value(
+            "province_annual_external_net_import"
+        )
         for p, province_code in enumerate(artifacts.index["province_codes"]):
             positions = data.load_centers.index[
                 data.load_centers.province_code.eq(province_code)
             ].to_numpy(dtype=int)
             province_net_exchange_residual.append(
-                variables["load_center_external_net_import"].X[positions].sum()
+                annual_energy_value("load_center_external_net_import")[
+                    positions
+                ].sum()
                 - external_net_import[p]
             )
         design_hours = float(artifacts.index["intra_load_center_design_hours"])

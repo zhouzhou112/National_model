@@ -974,6 +974,16 @@ class ModelConfig:
                 "formulation.annual_emissions_accounting must be "
                 "national_dense_v1 or province_hierarchical_v2"
             )
+        if formulation.get(
+            "annual_energy_coordinate", "physical_gwh_v1"
+        ) not in {
+            "physical_gwh_v1",
+            "binary_8192_gwh_v1",
+        }:
+            raise ValueError(
+                "formulation.annual_energy_coordinate must be physical_gwh_v1 "
+                "or binary_8192_gwh_v1"
+            )
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))
         if chunk <= 0 or chunk > self.hours:
             raise ValueError("build_hour_chunk_size must be in [1, 8760]")
@@ -1159,7 +1169,10 @@ def load_model_config(
             raise ValueError(
                 "Formulation profile requires an object-valued formulation field"
             )
-        allowed_formulation = {"annual_emissions_accounting"}
+        allowed_formulation = {
+            "annual_emissions_accounting",
+            "annual_energy_coordinate",
+        }
         unknown = set(overrides).difference(allowed_formulation)
         if unknown:
             raise ValueError(

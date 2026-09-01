@@ -10,6 +10,7 @@ from .config import ModelConfig
 from .data import VRE_TECHS, ModelData
 from .hydro import HydroLinearBlock
 from .master import MasterArtifacts
+from .annual_energy_coordinate import resolve_annual_energy_coordinate
 
 
 def attach_annual_load_center_network(
@@ -58,6 +59,11 @@ def attach_annual_load_center_network(
     center_count = len(centers)
     edge_count = len(edges)
     coefficient_tolerance = float(config.raw["numerics"]["coefficient_zero_tolerance"])
+    coordinate = resolve_annual_energy_coordinate(config)
+    inverse_scale = coordinate.row_scale_per_gwh
+
+    def annual_name(physical_name: str) -> str:
+        return coordinate.internal_variable_name(physical_name)
 
     if not np.isclose(
         centers.groupby("province_code").annual_demand_share_in_province.sum().to_numpy(float),
@@ -67,54 +73,78 @@ def attach_annual_load_center_network(
         raise ValueError("Configured load-center demand shares do not close by province")
 
     center_vre_generation = model.addMVar(
-        (center_count, len(VRE_TECHS)), lb=0.0, name="load_center_vre_generation_gwh"
+        (center_count, len(VRE_TECHS)),
+        lb=0.0,
+        name="load_center_vre_generation_gwh",
     )
     center_wave_generation = (
         model.addMVar(
-            center_count, lb=0.0, name="load_center_wave_generation_gwh"
+            center_count,
+            lb=0.0,
+            name="load_center_wave_generation_gwh",
         )
         if data.wave is not None
         else None
     )
     center_ror_generation = model.addMVar(
-        center_count, lb=0.0, name="load_center_ror_generation_gwh"
+        center_count,
+        lb=0.0,
+        name="load_center_ror_generation_gwh",
     )
     center_reservoir_generation = model.addMVar(
-        center_count, lb=0.0, name="load_center_reservoir_generation_gwh"
+        center_count,
+        lb=0.0,
+        name="load_center_reservoir_generation_gwh",
     )
     center_injection = model.addMVar(
-        center_count, lb=0.0, name="load_center_annual_injection_gwh"
+        center_count,
+        lb=0.0,
+        name=annual_name("load_center_annual_injection_gwh"),
     )
     center_demand = model.addMVar(
-        center_count, lb=0.0, name="load_center_annual_effective_demand_gwh"
+        center_count,
+        lb=0.0,
+        name=annual_name("load_center_annual_effective_demand_gwh"),
     )
     center_external_net_import = model.addMVar(
         center_count,
         lb=-gp.GRB.INFINITY,
-        name="load_center_external_net_import_gwh",
+        name=annual_name("load_center_external_net_import_gwh"),
     )
     intra_forward = model.addMVar(
-        edge_count, lb=0.0, name="intra_load_center_flow_forward_gwh"
+        edge_count,
+        lb=0.0,
+        name=annual_name("intra_load_center_flow_forward_gwh"),
     )
     intra_reverse = model.addMVar(
-        edge_count, lb=0.0, name="intra_load_center_flow_reverse_gwh"
+        edge_count,
+        lb=0.0,
+        name=annual_name("intra_load_center_flow_reverse_gwh"),
     )
     province_non_spatial_injection = model.addMVar(
-        len(provinces), lb=0.0, name="province_annual_non_spatial_injection_gwh"
+        len(provinces),
+        lb=0.0,
+        name=annual_name("province_annual_non_spatial_injection_gwh"),
     )
     province_effective_demand = model.addMVar(
-        len(provinces), lb=0.0, name="province_annual_effective_demand_gwh"
+        len(provinces),
+        lb=0.0,
+        name=annual_name("province_annual_effective_demand_gwh"),
     )
     province_external_sent = model.addMVar(
-        len(provinces), lb=0.0, name="province_annual_external_sent_gwh"
+        len(provinces),
+        lb=0.0,
+        name=annual_name("province_annual_external_sent_gwh"),
     )
     province_external_received = model.addMVar(
-        len(provinces), lb=0.0, name="province_annual_external_received_gwh"
+        len(provinces),
+        lb=0.0,
+        name=annual_name("province_annual_external_received_gwh"),
     )
     province_external_net_import = model.addMVar(
         len(provinces),
         lb=-gp.GRB.INFINITY,
-        name="province_annual_external_net_import_gwh",
+        name=annual_name("province_annual_external_net_import_gwh"),
     )
 
     # Attribute actual province-technology VRE generation to centers while
@@ -255,7 +285,8 @@ def attach_annual_load_center_network(
             centers.province_code.eq(province_code)
         ].to_numpy(dtype=int)
         model.addConstr(
-            center_ror_generation[center_positions].sum() == ror_generation[p, :].sum(),
+            center_ror_generation[center_positions].sum()
+            == ror_generation[p, :].sum(),
             name=f"load_center_ror_generation_closure_p{province_code}",
         )
 
@@ -287,24 +318,31 @@ def attach_annual_load_center_network(
         p = province_index[province_code]
         model.addConstr(
             province_non_spatial_injection[p]
-            == actual_thermal[p, :, :].sum()
-            + storage_discharge[p, :, :].sum()
-            + hydro_aggregate_generation[p, :].sum(),
+            == inverse_scale
+            * (
+                actual_thermal[p, :, :].sum()
+                + storage_discharge[p, :, :].sum()
+                + hydro_aggregate_generation[p, :].sum()
+            ),
             name=f"province_annual_non_spatial_injection_p{province_code}",
         )
         model.addConstr(
             province_effective_demand[p]
-            == effective_load[p, :].sum()
-            + storage_charge[p, :, :].sum()
-            + float(hours) * dac_load[p],
+            == inverse_scale
+            * (
+                effective_load[p, :].sum()
+                + storage_charge[p, :, :].sum()
+                + float(hours) * dac_load[p]
+            ),
             name=f"province_annual_effective_demand_p{province_code}",
         )
         model.addConstr(
-            province_external_sent[p] == sent_energy[p],
+            province_external_sent[p] == inverse_scale * sent_energy[p],
             name=f"province_annual_external_sent_p{province_code}",
         )
         model.addConstr(
-            province_external_received[p] == received_energy[p],
+            province_external_received[p]
+            == inverse_scale * received_energy[p],
             name=f"province_annual_external_received_p{province_code}",
         )
         model.addConstr(
@@ -328,7 +366,8 @@ def attach_annual_load_center_network(
         if share >= coefficient_tolerance:
             model.addConstr(
                 center_injection[center_position]
-                == spatial_injection + share * province_non_spatial_injection[p],
+                == inverse_scale * spatial_injection
+                + share * province_non_spatial_injection[p],
                 name=f"load_center_annual_injection_{center_position}",
             )
             model.addConstr(
@@ -342,7 +381,8 @@ def attach_annual_load_center_network(
             )
         else:
             model.addConstr(
-                center_injection[center_position] == spatial_injection,
+                center_injection[center_position]
+                == inverse_scale * spatial_injection,
                 name=f"load_center_annual_injection_{center_position}",
             )
             center_demand[center_position].UB = 0.0
@@ -384,7 +424,9 @@ def attach_annual_load_center_network(
     design_hours = utilization * float(hours)
     model.addConstr(
         intra_forward + intra_reverse
-        <= design_hours * artifacts.variables["intra_load_center_capacity"],
+        <= inverse_scale
+        * design_hours
+        * artifacts.variables["intra_load_center_capacity"],
         name="intra_load_center_annual_capacity",
     )
 
@@ -417,8 +459,14 @@ def attach_annual_load_center_network(
                 "bidirectional_flow_tolerance_gwh"
             ]
         ),
+        annual_energy_coordinate=coordinate.metadata(),
     )
     regularization = float(
         config.raw["load_center_network"]["flow_regularization_yuan_per_mwh"]
     )
-    return regularization * 1e-3 * (intra_forward.sum() + intra_reverse.sum())
+    return (
+        regularization
+        * 1e-3
+        * coordinate.variable_scale_gwh
+        * (intra_forward.sum() + intra_reverse.sum())
+    )

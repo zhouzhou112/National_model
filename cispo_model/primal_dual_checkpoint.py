@@ -17,6 +17,7 @@ from typing import Any
 import numpy as np
 
 from .config import ModelConfig
+from .annual_energy_coordinate import resolve_annual_energy_coordinate
 from .io_contract import (
     input_manifest_scientific_resume_identity,
     sha256_file,
@@ -447,6 +448,9 @@ def export_barrier_primal_dual_checkpoint(
             ),
         },
         "vectors": {"primal": primal, "dual": dual},
+        "annual_energy_coordinate": resolve_annual_energy_coordinate(
+            config
+        ).metadata(),
         "lp_ordering": {
             "variable_vector": "raw_original_model_variable_index_order",
             "constraint_vector": "raw_original_model_linear_constraint_index_order",
@@ -478,7 +482,9 @@ def export_barrier_primal_dual_checkpoint(
             ),
             "warning": (
                 "Barrier duals may be non-unique on a degenerate LP and do not "
-                "provide basis sensitivity ranges."
+                "provide basis sensitivity ranges. When annual_energy_coordinate "
+                "is enabled, this raw vector is in solver-internal row coordinates; "
+                "physical-GWh shadow prices require the recorded R^T transform."
             ),
         },
         "reuse_contract": {
@@ -779,6 +785,25 @@ def prepare_primal_dual_crossover(
             "an explicit compatibility acknowledgement is required before "
             "the exact LP Fingerprint and ordering checks may authorize reuse"
         )
+    target_coordinate = resolve_annual_energy_coordinate(config).metadata()
+    source_coordinate = metadata.get("annual_energy_coordinate")
+    if source_coordinate is None:
+        source_coordinate = {
+            "profile": "physical_gwh_v1",
+            "enabled": False,
+            "variable_scale_gwh": 1.0,
+            "row_scale_per_gwh": 1.0,
+        }
+    for key in (
+        "profile",
+        "enabled",
+        "variable_scale_gwh",
+        "row_scale_per_gwh",
+    ):
+        if source_coordinate.get(key) != target_coordinate.get(key):
+            raise PrimalDualCheckpointError(
+                "Checkpoint source and target annual-energy coordinates differ"
+            )
     model.update()
     ordering = metadata.get("lp_ordering", {})
     try:
@@ -856,6 +881,7 @@ def prepare_primal_dual_crossover(
         "source_gurobi_version": source_gurobi_version,
         "target_gurobi_version": target_gurobi_version,
         "data_root_compatibility": data_root_compatibility,
+        "annual_energy_coordinate": target_coordinate,
         "scientific_input_manifest_identity": {
             "schema_version": source_manifest_identity["schema_version"],
             "sha256": source_manifest_identity["sha256"],

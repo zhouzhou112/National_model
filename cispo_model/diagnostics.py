@@ -14,6 +14,7 @@ import numpy as np
 from gurobipy import GRB
 
 from .config import ModelConfig
+from .annual_energy_coordinate import resolve_annual_energy_coordinate
 
 
 SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS = 6_000_000
@@ -450,6 +451,9 @@ def solve_and_report(
         "annual_emissions_accounting": config.raw["formulation"][
             "annual_emissions_accounting"
         ],
+        "annual_energy_coordinate": resolve_annual_energy_coordinate(
+            config
+        ).metadata(),
         "solver_parameters": {
             "method": int(model.Params.Method),
             "threads": int(model.Params.Threads),

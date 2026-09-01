@@ -1,0 +1,8 @@
+{
+  "formulation_profile_version": "v1",
+  "profile_id": "annual_energy_coordinate_8192_v1",
+  "description": "Algebraically equivalent Annual Energy Coordinate V1: represent only annual accounting and intra-load-center flow variables in binary units of 8192 GWh; keep VRE/wave/hydro resource-generation variables and CF/runoff availability rows in physical GWh, and retain all physical data, economics, constraints and public outputs.",
+  "formulation": {
+    "annual_energy_coordinate": "binary_8192_gwh_v1"
+  }
+}

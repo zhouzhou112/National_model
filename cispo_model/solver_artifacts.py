@@ -10,6 +10,7 @@ from typing import Any
 
 import numpy as np
 
+from .annual_energy_coordinate import resolve_annual_energy_coordinate
 from .basis_reuse import lightweight_lp_identity
 from .config import ModelConfig
 from .io_contract import sha256_file
@@ -133,6 +134,14 @@ def export_scientific_base_solver_artifacts(
         "planning_year": int(config.planning_year),
         "scenario_id": str(config.raw["scenario"]["id"]),
         "analysis_role": str(config.raw["scenario"]["analysis_role"]),
+        "annual_energy_coordinate": resolve_annual_energy_coordinate(
+            config
+        ).metadata(),
+        "raw_solution_coordinate_note": (
+            "base_solution.sol.gz uses solver-internal coordinates; apply the "
+            "recorded annual_energy_coordinate transform before interpreting "
+            "scaled annual account or intra-load-center flow values."
+        ),
         "artifacts": [
             {
                 "filename": path.name,
