@@ -1,0 +1,25 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "large_lp_744_v3_baseline_factor5_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "744 h matched production-CF numerical screen: five Barrier iterations, 16 threads, no crossover or solver memory limit.",
+  "numerics": {
+    "method": 2,
+    "threads": 16,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 0.01,
+    "bar_iter_limit": 5,
+    "feasibility_tolerance": 0.00001,
+    "optimality_tolerance": 0.00001,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 1,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": null
+  }
+}

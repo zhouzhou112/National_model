@@ -1,0 +1,287 @@
+{
+  "schema_version": "cispo_vre_cf_threshold_audit_v1",
+  "generated_at": "2026-09-01T20:53:11.838360+08:00",
+  "planning_year": 2030,
+  "weather_year": 2024,
+  "start_hour": 0,
+  "hours": 8760,
+  "production_coefficient_zero_tolerance": 1e-06,
+  "site_count": 36686,
+  "coefficient_count": 321369360,
+  "raw_positive_coefficient_count": 177776520,
+  "production_retained_coefficient_count": 177775844,
+  "smallest_raw_positive_cf": 9.664029576583744e-10,
+  "smallest_production_retained_cf": 1.0016767646447988e-06,
+  "baseline_floor_availability_energy_gwh": 2940921.7095604143,
+  "baseline_upper_availability_energy_gwh": 94626887.76069635,
+  "selected_load_energy_gwh": 10607999.999996534,
+  "capacity_floor_total_gw": 1839.797999964,
+  "capacity_upper_total_gw": 57514.50097848016,
+  "thresholds": [
+    {
+      "candidate_threshold": 1e-06,
+      "newly_removed_coefficient_count": 0,
+      "retained_coefficient_count": 177775844,
+      "omitted_floor_energy_gwh": 0.0,
+      "omitted_upper_energy_gwh": 0.0,
+      "max_province_technology_hour_floor_gw": 0.0,
+      "max_province_technology_hour_upper_gw": 0.0,
+      "newly_removed_fraction_of_production_retained": 0.0,
+      "omitted_floor_fraction_of_baseline_floor_availability": 0.0,
+      "omitted_upper_fraction_of_baseline_upper_availability": 0.0,
+      "omitted_upper_energy_fraction_of_load": 0.0,
+      "max_system_hour_floor_gw": 0.0,
+      "max_system_hour_upper_gw": 0.0,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        }
+      }
+    },
+    {
+      "candidate_threshold": 2e-06,
+      "newly_removed_coefficient_count": 644,
+      "retained_coefficient_count": 177775200,
+      "omitted_floor_energy_gwh": 5.651514762656099e-05,
+      "omitted_upper_energy_gwh": 0.0015448210326467172,
+      "max_province_technology_hour_floor_gw": 5.563582021750335e-06,
+      "max_province_technology_hour_upper_gw": 4.025909802790328e-05,
+      "newly_removed_fraction_of_production_retained": 3.622539404172369e-06,
+      "omitted_floor_fraction_of_baseline_floor_availability": 1.921681472949119e-11,
+      "omitted_upper_fraction_of_baseline_upper_availability": 1.632539195998333e-11,
+      "omitted_upper_energy_fraction_of_load": 1.4562792540037915e-10,
+      "max_system_hour_floor_gw": 5.563582021750335e-06,
+      "max_system_hour_upper_gw": 4.12274746956445e-05,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 266,
+          "omitted_floor_energy_gwh": 3.077585288448073e-05,
+          "omitted_upper_energy_gwh": 0.0014602715570301425
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 378,
+          "omitted_floor_energy_gwh": 2.5739294742080245e-05,
+          "omitted_upper_energy_gwh": 8.454947561657285e-05
+        }
+      }
+    },
+    {
+      "candidate_threshold": 5e-06,
+      "newly_removed_coefficient_count": 2438,
+      "retained_coefficient_count": 177773406,
+      "omitted_floor_energy_gwh": 0.00037492102902884916,
+      "omitted_upper_energy_gwh": 0.011201237697762632,
+      "max_province_technology_hour_floor_gw": 1.9227945364027563e-05,
+      "max_province_technology_hour_upper_gw": 0.0001206125179432016,
+      "newly_removed_fraction_of_production_retained": 1.3713899172938254e-05,
+      "omitted_floor_fraction_of_baseline_floor_availability": 1.2748419239112943e-10,
+      "omitted_upper_fraction_of_baseline_upper_availability": 1.1837267359029755e-10,
+      "omitted_upper_energy_fraction_of_load": 1.0559236140428254e-09,
+      "max_system_hour_floor_gw": 2.4560648824708494e-05,
+      "max_system_hour_upper_gw": 0.00013213182776507942,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 1004,
+          "omitted_floor_energy_gwh": 0.00018914495268296876,
+          "omitted_upper_energy_gwh": 0.010611689472323452
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 1434,
+          "omitted_floor_energy_gwh": 0.0001857760763458802,
+          "omitted_upper_energy_gwh": 0.0005895482254391833
+        }
+      }
+    },
+    {
+      "candidate_threshold": 1e-05,
+      "newly_removed_coefficient_count": 5540,
+      "retained_coefficient_count": 177770304,
+      "omitted_floor_energy_gwh": 0.0015569078926292433,
+      "omitted_upper_energy_gwh": 0.04998271136359667,
+      "max_province_technology_hour_floor_gw": 7.98611776153848e-05,
+      "max_province_technology_hour_upper_gw": 0.0002939527423333057,
+      "newly_removed_fraction_of_production_retained": 3.1162838973780935e-05,
+      "omitted_floor_fraction_of_baseline_floor_availability": 5.293945389868803e-10,
+      "omitted_upper_fraction_of_baseline_upper_availability": 5.282083406356854e-10,
+      "omitted_upper_energy_fraction_of_load": 4.711794057655826e-09,
+      "max_system_hour_floor_gw": 8.068424775742216e-05,
+      "max_system_hour_upper_gw": 0.0003162435856964583,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 2291,
+          "omitted_floor_energy_gwh": 0.000887953800411522,
+          "omitted_upper_energy_gwh": 0.04764329969427948
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 3249,
+          "omitted_floor_energy_gwh": 0.0006689540922177244,
+          "omitted_upper_energy_gwh": 0.0023394116693171855
+        }
+      }
+    },
+    {
+      "candidate_threshold": 2e-05,
+      "newly_removed_coefficient_count": 11918,
+      "retained_coefficient_count": 177763926,
+      "omitted_floor_energy_gwh": 0.00581530379365887,
+      "omitted_upper_energy_gwh": 0.2022915309180204,
+      "max_province_technology_hour_floor_gw": 0.0001177455041961366,
+      "max_province_technology_hour_upper_gw": 0.0009050749493226055,
+      "newly_removed_fraction_of_production_retained": 6.703947922193524e-05,
+      "omitted_floor_fraction_of_baseline_floor_availability": 1.97737456755627e-09,
+      "omitted_upper_fraction_of_baseline_upper_availability": 2.137780663669285e-09,
+      "omitted_upper_energy_fraction_of_load": 1.9069714453062455e-08,
+      "max_system_hour_floor_gw": 0.00011871586817327076,
+      "max_system_hour_upper_gw": 0.0009503847571184262,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 4928,
+          "omitted_floor_energy_gwh": 0.0033421785258992242,
+          "omitted_upper_energy_gwh": 0.19319407230948282
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 6990,
+          "omitted_floor_energy_gwh": 0.002473125267759637,
+          "omitted_upper_energy_gwh": 0.009097458608537588
+        }
+      }
+    },
+    {
+      "candidate_threshold": 5e-05,
+      "newly_removed_coefficient_count": 31515,
+      "retained_coefficient_count": 177744329,
+      "omitted_floor_energy_gwh": 0.03809841362502512,
+      "omitted_upper_energy_gwh": 1.330361805004494,
+      "max_province_technology_hour_floor_gw": 0.0002631516558190927,
+      "max_province_technology_hour_upper_gw": 0.002993089633771341,
+      "newly_removed_fraction_of_production_retained": 0.00017727380329579534,
+      "omitted_floor_fraction_of_baseline_floor_availability": 1.295458274226544e-08,
+      "omitted_upper_fraction_of_baseline_upper_availability": 1.40590252568474e-08,
+      "omitted_upper_energy_fraction_of_load": 1.2541118071313432e-07,
+      "max_system_hour_floor_gw": 0.00035388059738517176,
+      "max_system_hour_upper_gw": 0.004105336180507294,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 13010,
+          "omitted_floor_energy_gwh": 0.020424559834205533,
+          "omitted_upper_energy_gwh": 1.2707510763233882
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 18505,
+          "omitted_floor_energy_gwh": 0.017673853790819552,
+          "omitted_upper_energy_gwh": 0.05961072868110865
+        }
+      }
+    },
+    {
+      "candidate_threshold": 0.0001,
+      "newly_removed_coefficient_count": 64001,
+      "retained_coefficient_count": 177711843,
+      "omitted_floor_energy_gwh": 0.1487878821796003,
+      "omitted_upper_energy_gwh": 5.2220775682314775,
+      "max_province_technology_hour_floor_gw": 0.0007637581483504618,
+      "max_province_technology_hour_upper_gw": 0.009532795126875996,
+      "newly_removed_fraction_of_production_retained": 0.00036000954100378225,
+      "omitted_floor_fraction_of_baseline_floor_availability": 5.05922621795464e-08,
+      "omitted_upper_fraction_of_baseline_upper_availability": 5.518598034670319e-08,
+      "omitted_upper_energy_fraction_of_load": 4.922772971562202e-07,
+      "max_system_hour_floor_gw": 0.0007847539188495931,
+      "max_system_hour_upper_gw": 0.011885307993780148,
+      "technology_breakdown": {
+        "onwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "offwind": {
+          "newly_removed_coefficient_count": 0,
+          "omitted_floor_energy_gwh": 0.0,
+          "omitted_upper_energy_gwh": 0.0
+        },
+        "upv": {
+          "newly_removed_coefficient_count": 26393,
+          "omitted_floor_energy_gwh": 0.08372758409242118,
+          "omitted_upper_energy_gwh": 4.99000136367109
+        },
+        "dpv": {
+          "newly_removed_coefficient_count": 37608,
+          "omitted_floor_energy_gwh": 0.06506029808717906,
+          "omitted_upper_energy_gwh": 0.23207620456037198
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "newly_removed": "production-retained CF >= baseline and < candidate threshold",
+    "floor_error": "availability removed at mandatory VRE capacity floors",
+    "upper_error": "conservative availability loss at independent site capacity upper bounds",
+    "scientific_note": "Any candidate above the production threshold changes the physical feasible set; it is not an algebraically equivalent scaling."
+  }
+}
