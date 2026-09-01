@@ -69,6 +69,24 @@ new screens. Because they overlap Stage B, their wall time is screening evidence
 promotion must use presolved dimensions, Factor NZ/Ops, residual trajectory and
 RSS, followed by an isolated full Stage A+B comparison.
 
+The five-step pair completed at about `2026-09-01T21:18+08:00`. Relative to
+the production threshold, the `1e-4` candidate reduced Factor NZ by 2.24%,
+Factor Ops by 6.14%, ordering time from 135.34 s to 117.64 s and concurrent
+solver time from 562.91 s to 522.94 s. This is a promising but modest screen,
+not an acceptance result.
+
+At `2026-09-01T21:44:26+08:00`, the next matched pair started from the same
+profiles without BarIterLimit:
+
+- `2030_base_744h_cf1e6_stage_a_concurrent_20260901_v1`;
+- `2030_base_744h_cf1e4_stage_a_concurrent_20260901_v1`.
+
+Both use engineering Barrier checkpoint mode, identical 16-thread CPU binding,
+no solver time/memory limit, corrected per-case 2-second telemetry and the same
+pair-level 95% guard. They will compare full relaxed Stage A convergence and
+checkpoint quality. Stage B and strict original-unit QC are still required
+before either LP can be accepted.
+
 The external Case 2 gate is
 `/home/zz2/National_model_server/campaign_tools/case2_after_stage_b_20260901_v1`.
 It starts the approved 2160h/Threads32 Case 2 exactly once only after Stage B
