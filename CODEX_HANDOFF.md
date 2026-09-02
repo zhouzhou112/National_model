@@ -12,7 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-09-02 22:40+08:00：GPTPro指出的三项高优先级审计缺口已在本地工作树完成并通过验证，尚未部署或
+- 2026-09-02 22:40+08:00：GPTPro指出的三项高优先级审计缺口已在实现提交
+  `cff905476ed2811a26b16e86f772eb5b91f9357d`完成、通过验证并推送固定服务器裸远端与GitHub，尚未部署或
   启动任何付费云作业。水库release上界现仅依据“原始逐时入流严格为零+级联拓扑严格零传播”证书设为
   精确`UB=0`，无epsilon阈值；24h相对`b0b8b3a`的physical MPS机器差异审计为`PASS`，5232个变化全部是
   turbine/spill上界`1e-12 -> 0`，矩阵、RHS、目标、下界、senses、变量/约束身份均不变，逐水库水量平衡
@@ -21,7 +22,7 @@ This is the repository's single handoff document for work continued across Codex
   完整本地回归`304/304 OK`（1项环境跳过）；24h physical/scaled双解均`OPTIMAL`、目标同为
   `2122241.6431944533 million CNY`、原单位QC双`PASS`、Barrier均112步。证据在忽略目录
   `.codex_tmp/stagea_repair_24h_validation_v1`和`.codex_tmp/physical_diff_b0b8b3a_to_repair_24h_v1.json`；
-  这些是正确性证据，不是8760h加速证据。下一步先提交/双推送并报告，再单独设计云端32/64核实验。
+  这些是正确性证据，不是8760h加速证据。下一步先向作者报告，再单独设计云端32/64核实验。
 - 云计费规则按作者提供的信息记录：计费核心数取“申请核心数”和“申请内存折算核心数”两者较大者；
   例如申请120G内存即使用1核也可能按12核计费。任何云作业提交前须以当时分区的`DefMemPerCPU`、
   `MaxMemPerCPU`和`sacct AllocTRES/billing`做只读/短探针复核，不能仅按应用内`Threads`估价。模型构建主要
@@ -2777,7 +2778,8 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### 2026-09-02 22:40+08:00 — 精确零、非basic终态硬门禁与physical差异证书闭合
 
-- Git/范围：基于`b0b8b3a`的本地待提交修复；修改`cispo_model/monolithic.py`、
+- Git/范围：实现提交`cff905476ed2811a26b16e86f772eb5b91f9357d`已推送固定服务器裸远端与GitHub；
+  修改`cispo_model/monolithic.py`、
   `cispo_model/diagnostics.py`，新增`cispo_model/zero_bound_certificate.py`、
   `cispo_model/physical_lp_diff.py`、`config/physical_lp_diff_whitelist_v1.json`、
   `scripts/compare_physical_lp_releases.py`及对应测试。本里程碑未改目标、物理约束、单位、时间/空间尺度、
@@ -2798,7 +2800,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   Stage A：reduced MPS无uncrush映射且可能同时保留原/预求解模型。可用廉价档做build/archive或诊断性
   presolve内存校准，但32/64核科学对照都必须从同一原始模型、内部Presolve=2开始。
 - 未解决/下一步：本地Gurobi12按profile门禁不能执行要求Gurobi13的direct-nonbasic真实终态测试；代码路径
-  已由单元与全回归覆盖，部署后须在Gurobi13小LP/24h门禁复核。先形成精确提交并双推送；随后才准备
+  已由单元与全回归覆盖，部署后须在Gurobi13小LP/24h门禁复核。作者确认修复报告后才准备
   32核与64核同提交、同数据、同内存上限的8760h云端收敛/内存实验，不自动Stage B。
 
 ### 2026-09-02 21:24+08:00 — 2160h内存门禁终态、GPTPro复核与三小时续测序列

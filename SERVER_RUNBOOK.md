@@ -2,8 +2,9 @@
 
 ## 2026-09-02 22:40修复后云端资源与Presolve边界
 
-- 当前本地修复已闭合精确零水库上界、nonbasic终态KKT/relative-gap硬门禁和parent→new physical LP
-  白名单；在形成并部署不可变提交、通过Gurobi13小门禁前，不提交付费8760h作业。
+- 实现提交`cff905476ed2811a26b16e86f772eb5b91f9357d`已闭合精确零水库上界、nonbasic终态
+  KKT/relative-gap硬门禁和parent→new physical LP白名单并双推送；在部署该不可变提交、通过Gurobi13
+  小门禁前，不提交付费8760h作业。
 - 作者提供的计费规则是`billable_cores=max(requested_cores,memory_equivalent_cores)`：例如120G内存即使
   `--cpus-per-task=1`也可能按12核计费。每次提交前必须重新读取分区`DefMemPerCPU/MaxMemPerCPU`，先用
   `sbatch --test-only`或最短可行探针核实`ReqTRES/AllocTRES/billing`；成本表按计费核心数而非Gurobi
