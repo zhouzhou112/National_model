@@ -12,14 +12,17 @@
 
 - 唯一生产checkout是`/home/zz2/National_model_server/repo`；
   `/data/zz2/National_model/repo`是旧NTFS克隆，禁止fetch、checkout、部署或启动。当前已核实前者为
-  clean`6065bfb`且无本项目solver；本轮实现commit仍为`pending`，因此**现在不得启动资格任务**。
+  detached、clean`ba8e09f97a6526e299f807eb9be8c579a217caeb`且无本项目solver；实现提交为
+  `122642f616b7abb2ad137250721a937e83a6f524`。服务器精确提交测试`256/256`通过。
 - 形成并推送精确提交后，只允许clean、仓库顶层且owner为`zz2`的正确checkout以该完整SHA运行。
   `EXPECTED_GIT_SHA`必须是冻结的完整SHA；不得用分支名、短SHA或运行中checkout更新替代。
 - 启动前必须再次确认无CISPO solver/recovery/watcher、Gurobi恰为`13.0.2`、`MemAvailable>=100 GiB`、
   `vmstat si/so=0/0`且memory PSI正常。CPU`0-31`必须映射为32个不同物理核，NUMA0/1各16核，launcher
   affinity包含全部CPU；solver启动后`Cpus_allowed_list`必须精确为`0-31`。任一条件不满足即fail closed。
 - 先用一个短时detached `tmux` probe记录PID/PGID/SID/cgroup，断开SSH后重连，核实同一进程身份并等待
-  自然rc0；`Linger=no`时不得把user systemd当成持久化保证。probe未通过不得启动长任务。
+  自然rc0；`Linger=no`时不得把user systemd当成持久化保证。该probe已在
+  `run_control/tmux_persistence_probe_sJrFGC`通过（同PID、6个heartbeat、自然rc0）。真实launcher的
+  normal/guard早退/重复信号/flock/guard超时探针也分别得到`0/96/129/90/97`且无孤儿进程。
 - 唯一launcher为`scripts/run_fixed_server_stagea_row_scaling_2160.sh`，固定2160h/start2880、Base、
   `barrier_checkpoint_fixed_server_host_memory_95_v2`、`annual_capacity_link_rows_8192_v1`、
   `Method=2/Threads=32/Presolve=2/Crossover=0/BarConvTol=1e-2/FeasibilityTol=OptimalityTol=1e-5/
@@ -31,6 +34,10 @@
 - launcher/guard必须共同存活：guard早退时终止且reap求解进程组；HUP/INT/TERM重复到达仍须转发；solver
   结束后guard最多等待60秒再单独TERM/KILL。保留`events.log`、PID/PGID/SID/lstart/cgroup、CPU topology、
   resource telemetry、stdout/stderr及各return code；不得把缺失值写成0或手工伪造PASS。
+- `vmstat 1 4`的首个数据行是since-boot平均值；提交`ba8e09f`明确忽略该行，只要后续三个实时区间任一
+  `si/so`非零仍返回94。禁止改回会永久误判历史swap的`NR>2`，也禁止跳过真实swap压力检查。
+- 2026-09-02 19:58连续十次采样`MemAvailable=99.62--99.68 GiB`，低于100 GiB准入线；因此当前不创建
+  正式tag/output/control。等待自然达到门槛，不降阈值、不drop caches、不干预其他用户进程。
 
 ### 2160h资格判定与后续边界
 

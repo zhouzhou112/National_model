@@ -12,7 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-09-02 本轮 current override（Git commit：`pending`）：作者已明确把唯一数值优化路线收敛为
+- 2026-09-02 本轮 current override（实现提交`122642f616b7abb2ad137250721a937e83a6f524`；
+  Linux swap 实时采样修正`ba8e09f97a6526e299f807eb9be8c579a217caeb`）：作者已明确把唯一数值优化路线收敛为
   `annual_capacity_link_rows_8192_v1`，即只对 VRE 与径流式水电（ROR）的年度可用量约束做
   **精确整行左缩放**。对族 $f$ 取 $s_f=2^{-k_f}$，将零右端行
   $E_f-\sum_i FLH_{f,i}K_i\leq0$ 整体改写为
@@ -37,13 +38,18 @@ This is the repository's single handoff document for work continued across Codex
   `output/annual_capacity_link_scaling_24h_start2880_solve_v6/validation_report.json`为`PASS`，物理原式与
   缩放式均为Gurobi status2 `OPTIMAL`，目标均为`2112716.676624984 million CNY`且原单位QC均`PASS`。
   这仅证明短时域代数/接口正确，不是2160h/8760h加速证据。
-- 服务器唯一有效生产checkout是`/home/zz2/National_model_server/repo`，当前已核实clean
-  `6065bfb`；`/data/zz2/National_model/repo`是旧NTFS克隆，不得部署或启动。本任务为落实作者
+- 服务器唯一有效生产checkout是`/home/zz2/National_model_server/repo`，已以detached HEAD部署并核实
+  clean`ba8e09f97a6526e299f807eb9be8c579a217caeb`；`/data/zz2/National_model/repo`是旧NTFS克隆，
+  不得部署或启动。本任务为落实作者
   “Stage B非必需、先解决Stage A”的新决定，已**有意停止**旧Stage B进程组及其Case2 watcher，
   当前无本项目solver。这是对下方18:04条目在当时证据不足下保留
-  `EXTERNAL_SIGTERM_CAUSE_UNRESOLVED`的后续纠正；不删除或改写该历史记录。精确下一步是完成选择性
-  提交/推送，在正确checkout上先验证跨SSH的detached `tmux`持久性，再以32个物理核启动唯一2160h
-  资格运行；不得并发其他数值支线、不得自动Stage B，也不得在2160门禁前宣称全年性能收益。
+  `EXTERNAL_SIGTERM_CAUSE_UNRESOLVED`的后续纠正；不删除或改写该历史记录。服务器精确提交全套测试
+  `256/256`通过；detached `tmux`跨SSH探针保持同PID/start time/cgroup并以6个heartbeat自然rc0；launcher
+  假进程集成验证正常rc0、guard早退rc96、重复HUP/TERM首信号rc129、并发`flock`拒绝rc90、guard卡死
+  超时rc97，所有solver/guard PID均已消失。探针还发现旧`vmstat`表达式误读since-boot首行，已在
+  `ba8e09f`改为只审查3个实时区间。19:58连续观测`MemAvailable=99.62--99.68 GiB`，低于冻结的
+  `100 GiB`准入线，故真实2160h尚未启动。精确下一步是在不降低门槛、不干预其他用户进程的前提下
+  等待可用内存达到100 GiB，再以32个物理核启动唯一资格运行；不得并发其他支线或自动Stage B。
 
 - 2026-09-02 18:04+08:00：Case1 2160h Stage B已于17:41:39被`SIGTERM`中断，非自然完成、
   非95%内存保护、非OOM。runner rc143、Gurobi status11 `INTERRUPTED`、SolCount0，严格审计rc42；
@@ -2716,24 +2722,43 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-1. 仅按白名单提交本轮VRE/ROR精确行缩放实现、三个绑定profile、validator/guard/唯一launcher、相关测试
-   与四份强制文档；记录完整commit SHA，复核工作树中其他用户修改未被stage，并将该分支推送到所需远端。
-2. 只在`/home/zz2/National_model_server/repo`无solver、owner/顶层/clean均正确时fetch并切到该精确SHA；
-   禁止使用旧`/data/zz2/National_model/repo`。部署后复跑Gurobi13.0.2、profile/formulation hash、focused/
-   full tests、CPU拓扑、内存/swap/PSI与全局锁门禁，不热更新运行中checkout。
-3. 先执行detached `tmux`跨SSH持久性probe及launcher监督集成检查，证明PID/PGID/SID/cgroup在断线后保持、
-   正常退出可reap、guard早退/重复信号/guard超时均fail closed；未通过不得启动长任务。
-4. 以`barrier_checkpoint_fixed_server_host_memory_95_v2`、`annual_capacity_link_rows_8192_v1`、CPU`0-31`
-   的32个物理核启动唯一2160h/start2880 Stage A资格运行。该profile的`80 GB`只是在JSON中保留的fallback/
-   provenance；runner必须按`host_memory_soft_limit_fraction=0.95`把Gurobi `SoftMemLimit`解析为物理内存95%
-   对应的十进制GB，并保留外部整机保护。按首个iteration>=30和结构阈值判定，不启动其他数值支线，
-   绝不自动Stage B。
-5. 只有2160h iter30、结构、内存和警告门槛全部通过，才保全证据、更新handoff并准备唯一8760h Stage A：
+1. 提交、双远端推送、正确checkout部署、服务器全套测试、detached `tmux`持久性和launcher监督集成均已
+   完成。现在只重复只读检查`MemAvailable`、实时`vmstat si/so`和memory PSI；在自然达到
+   `MemAvailable>=100 GiB`前不创建正式tag，不降低阈值、不drop caches、不干预其他用户任务。
+2. 门槛满足后，以精确SHA`ba8e09f97a6526e299f807eb9be8c579a217caeb`、
+   `barrier_checkpoint_fixed_server_host_memory_95_v2`、`annual_capacity_link_rows_8192_v1`和CPU`0-31`的
+   32个物理核，通过已验证的detached `tmux`方式启动唯一2160h/start2880 Stage A资格运行。runner必须按
+   `host_memory_soft_limit_fraction=0.95`解析有效Gurobi `SoftMemLimit`；按首个iteration>=30和结构阈值
+   判定，不启动其他数值支线，绝不自动Stage B。
+3. 只有2160h iter30、结构、内存和警告门槛全部通过，才保全证据、更新handoff并准备唯一8760h Stage A：
    `barrier_checkpoint_full_year_cloud_v4`、`Threads=32`、`soft_mem_limit_gb=600`、无`TimeLimit`，使用足够内存
    的云节点和不可变代码/数据/场景身份。2160未通过则先停止放大并只诊断这条路线；Stage B始终需要作者
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 19:58+08:00 — 精确提交已部署，Linux持久化/监督门禁通过，等待100 GiB准入
+
+- Git/部署：实现提交`122642f616b7abb2ad137250721a937e83a6f524`和swap采样修正提交
+  `ba8e09f97a6526e299f807eb9be8c579a217caeb`均已推送服务器裸远端与GitHub同名分支
+  `codex/stagea-8760-row-scaling-v1`。唯一生产checkout
+  `/home/zz2/National_model_server/repo`在无solver且clean条件下以detached HEAD切到`ba8e09f`；旧NTFS
+  checkout未触碰。服务器Python3.11.15/Gurobi13.0.2上精确提交全套`256/256`通过，launcher `bash -n`
+  与专项7项通过。
+- 持久化证据：detached tmux probe根
+  `/home/zz2/National_model_server/run_control/tmux_persistence_probe_sJrFGC`；跨独立SSH连接核对同一
+  PID`344545`、SID/PGID`344545`和`tmux-spawn-...scope` cgroup，最终6个heartbeat、return code0、
+  session自然消失。`Linger=no`不再作为阻断，但仍不使用user systemd托管长任务。
+- 监督集成：使用不建模的临时fake Python在真实launcher上验证normal`0`、guard early`96`、重复
+  HUP/TERM`129`、并发flock contender`90`、guard stuck timeout`97`；启动窗口信号另以`95`安全
+  fail closed。复核所有记录的runner/guard PID均已消失，无孤儿求解进程。
+- 现场修正：首次探针暴露`vmstat 1 4`的首个数据行是since-boot平均值，原`NR>2`会把历史swap误报为
+  当前压力并永久返回94。`ba8e09f`改为`NR>3`，只对之后三个实时区间的`si/so`非零fail closed；真实
+  活跃swap保护未放松。
+- 当前阻塞/下一步：19:58十次5秒采样为`99.62--99.68 GiB`，尚未达到launcher冻结的
+  `MemAvailable>=100 GiB`；memory PSI为0且实时`si/so=0/0`。不降低阈值、不清理内核缓存、不干预
+  其他用户任务。达到100 GiB后以新tag和detached tmux启动唯一2160h/32核资格任务，随后按iter30门禁
+  判定；Stage B仍非必需且绝不自动。
 
 ### 2026-09-02 — 唯一Stage A精确行缩放路线冻结并通过本地正确性门禁
 

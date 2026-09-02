@@ -11,15 +11,20 @@
   `Crossover=0`、严格全年容差和`soft_mem_limit_gb=600`；32线程是作者基于既有全年运行作出的选择，
   不以短时域线程测试否决。
   Stage B不是必需步骤，任何launcher/watcher/sequence均不得自动启动；只有作者以后单独授权时才讨论。
-- 本地提交仍为`pending`，尚未部署。完整回归为`290 passed, 1 skipped`；24h/start2880物理原式和缩放式
+- 实现提交`122642f616b7abb2ad137250721a937e83a6f524`及Linux实时swap采样修正
+  `ba8e09f97a6526e299f807eb9be8c579a217caeb`已推送并部署。完整本地回归为`290 passed, 1 skipped`；
+  服务器精确提交回归`256/256`通过。24h/start2880物理原式和缩放式
   均status2 `OPTIMAL`，目标均`2112716.676624984 million CNY`且原单位QC均`PASS`。这只证明等价性和
   接口正确，不是2160h/8760h速度证据。
-- 唯一正确生产checkout是`/home/zz2/National_model_server/repo`，当前核实为clean`6065bfb`；
+- 唯一正确生产checkout是`/home/zz2/National_model_server/repo`，当前核实为detached、clean`ba8e09f`；
   `/data/zz2/National_model/repo`是旧NTFS克隆，禁止部署或启动。当前无本项目solver。本任务为落实作者
   “Stage B非必需、优先解决Stage A”的新决定，已**有意停止**旧Stage B进程组及Case2 watcher；这是
   对下一节18:04在当时信息不足下保留“外部SIGTERM未解析”的后续纠正，历史记录本身保持不变。
-- 下一步只允许在正确checkout形成/部署精确提交后，先通过detached `tmux`跨SSH持久性和launcher监督
-  门禁，再以CPU`0-31`的32个物理核启动唯一2160h/start2880资格任务。该任务使用
+- detached `tmux`跨SSH持久性已通过：同PID/start time/cgroup存活，6个heartbeat后自然rc0。真实launcher
+  假进程集成已通过normal`0`、guard早退`96`、重复信号`129`、flock拒绝`90`、guard超时`97`且无孤儿。
+  探针发现并修正`vmstat`首个since-boot数据行误判；当前只审查之后三个实时`si/so`区间。
+- 下一步只允许在`MemAvailable>=100 GiB`后，以CPU`0-31`的32个物理核启动唯一2160h/start2880资格
+  任务。19:58连续采样只有`99.62--99.68 GiB`，所以尚未真实启动，也不得降低门槛。该任务使用
   `host_memory_soft_limit_fraction=0.95`并保留整机95%保护；profile中的`soft_mem_limit_gb=80`仅为
   fallback/provenance，runner必须将有效Gurobi `SoftMemLimit`覆盖为物理内存95%对应的十进制GB。
   raw结构必须精确为
