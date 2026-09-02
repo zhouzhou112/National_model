@@ -1,0 +1,30 @@
+{
+  "schema_version": "cispo_physical_lp_diff_whitelist_v1",
+  "required_reference_formulation": "physical_v1",
+  "required_candidate_formulation": "physical_v1",
+  "interpretation": "Only the reviewed ROR-FLH coefficient correction, fixed demand-share decoupling coefficients, and certified exact-zero reservoir release upper bounds may change the physical LP. Metadata has no LP representation. Annual row scaling is forbidden in this comparison.",
+  "matrix_change_rules": [
+    {
+      "rule_id": "ror_full_load_hour_threshold_correction",
+      "row_prefixes": ["load_center_ror_availability_"],
+      "variable_prefixes": ["hydro_capacity_gw["]
+    },
+    {
+      "rule_id": "fixed_annual_demand_share_decoupling",
+      "row_prefixes": [
+        "load_center_annual_injection_",
+        "load_center_annual_demand_",
+        "load_center_external_net_import_"
+      ],
+      "variable_prefixes": [
+        "province_annual_non_spatial_injection_gwh[",
+        "province_annual_effective_demand_gwh[",
+        "province_annual_external_net_import_gwh["
+      ]
+    }
+  ],
+  "exact_zero_upper_bound_variable_prefixes": [
+    "reservoir_turbine_flow_1000m3s[",
+    "reservoir_spill_flow_1000m3s["
+  ]
+}

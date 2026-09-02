@@ -1,5 +1,24 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-02 22:40修复后云端资源与Presolve边界
+
+- 当前本地修复已闭合精确零水库上界、nonbasic终态KKT/relative-gap硬门禁和parent→new physical LP
+  白名单；在形成并部署不可变提交、通过Gurobi13小门禁前，不提交付费8760h作业。
+- 作者提供的计费规则是`billable_cores=max(requested_cores,memory_equivalent_cores)`：例如120G内存即使
+  `--cpus-per-task=1`也可能按12核计费。每次提交前必须重新读取分区`DefMemPerCPU/MaxMemPerCPU`，先用
+  `sbatch --test-only`或最短可行探针核实`ReqTRES/AllocTRES/billing`；成本表按计费核心数而非Gurobi
+  `Threads`计算。
+- “构建+presolve便宜档”只能拆成两类：①Python build并保存原始MPS，供后续科学作业读取；②单独
+  `Model.presolve()`保存reduced MPS，用于内存、ordering、factor和Barrier吞吐诊断。后者没有Gurobi
+  内部uncrush映射，不能直接恢复原变量科学解，也不保证与`optimize()`内部presolve完全相同；不得作为
+  32/64核正式Stage A的续算起点。
+- 构建通常以Python侧工作为主、增加线程收益有限，但Gurobi presolve是否并行及其峰值内存都不能靠假设。
+  已知旧8760 build峰约48.574GiB，独立presolve峰值未测；`Model.presolve()`还可能同时持有original与
+  reduced model。低价准备档应先以实测峰值加安全余量选择内存折算档，不能直接假定“presolve低内存”。
+- 后续32核/64核正式比较必须读取同一个原始MPS，使用同一代码/数据/参数/内存上限、内部`Presolve=2`，
+  分别独占两个节点或严格顺序运行，并比较wall/work、ordering/factor、Barrier残差轨迹及峰值RSS。Stage B
+  不自动执行；科学接受仍要求原始模型终解、原单位QC和完整manifest。
+
 ## 2026-09-02 21:08终态覆盖：2160h行缩放资格门禁失败
 
 - 唯一tag `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`已由guard按冻结门槛受控

@@ -12,6 +12,23 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-02 22:40+08:00：GPTPro指出的三项高优先级审计缺口已在本地工作树完成并通过验证，尚未部署或
+  启动任何付费云作业。水库release上界现仅依据“原始逐时入流严格为零+级联拓扑严格零传播”证书设为
+  精确`UB=0`，无epsilon阈值；24h相对`b0b8b3a`的physical MPS机器差异审计为`PASS`，5232个变化全部是
+  turbine/spill上界`1e-12 -> 0`，矩阵、RHS、目标、下界、senses、变量/约束身份均不变，逐水库水量平衡
+  证书无遗漏。非basic Stage A验收已把`ConstrResidual`、`DualResidual`、`ComplVio`和Barrier末次相对
+  primal-dual objective gap全部纳入fail-closed硬门槛；对cloud v4对应上限分别为`1e-8/1e-7/1e-7/1e-8`。
+  完整本地回归`304/304 OK`（1项环境跳过）；24h physical/scaled双解均`OPTIMAL`、目标同为
+  `2122241.6431944533 million CNY`、原单位QC双`PASS`、Barrier均112步。证据在忽略目录
+  `.codex_tmp/stagea_repair_24h_validation_v1`和`.codex_tmp/physical_diff_b0b8b3a_to_repair_24h_v1.json`；
+  这些是正确性证据，不是8760h加速证据。下一步先提交/双推送并报告，再单独设计云端32/64核实验。
+- 云计费规则按作者提供的信息记录：计费核心数取“申请核心数”和“申请内存折算核心数”两者较大者；
+  例如申请120G内存即使用1核也可能按12核计费。任何云作业提交前须以当时分区的`DefMemPerCPU`、
+  `MaxMemPerCPU`和`sacct AllocTRES/billing`做只读/短探针复核，不能仅按应用内`Threads`估价。模型构建主要
+  是Python侧、并行收益有限，但不得假定Gurobi presolve完全串行或低内存；历史8760 build峰约48.574GiB，
+  而presolve独立峰值尚未测得。`Model.presolve()`导出的reduced MPS没有uncrush映射、不是内部续算状态，
+  只能用于诊断性factor/吞吐测试；科学终解仍须从原始模型运行内部`Presolve=2`并做原变量/原单位QC。
+
 - 2026-09-02 21:08+08:00：唯一2160h年度容量联结行缩放资格运行已按冻结门禁终止，结论为
   `FAIL_TERMINATED`，不得自动重启或晋级8760h。运行20:05:31启动，21:04:32起由guard/launcher
   受控终止；未进入Barrier迭代，未取得Factor NZ/Ops、AA' NZ、DenseCols或iter30证据。raw结构精确匹配
@@ -2757,6 +2774,32 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 22:40+08:00 — 精确零、非basic终态硬门禁与physical差异证书闭合
+
+- Git/范围：基于`b0b8b3a`的本地待提交修复；修改`cispo_model/monolithic.py`、
+  `cispo_model/diagnostics.py`，新增`cispo_model/zero_bound_certificate.py`、
+  `cispo_model/physical_lp_diff.py`、`config/physical_lp_diff_whitelist_v1.json`、
+  `scripts/compare_physical_lp_releases.py`及对应测试。本里程碑未改目标、物理约束、单位、时间/空间尺度、
+  数据源或Stage A solver参数；Stage B仍非默认步骤且未启动。
+- 实现：精确零逻辑不对正值设阈值，级联仅在零权重、全零transfer或全部上游均已严格证明为零时传播；
+  audit记录零上界entry与station row。非basic contract新增`ConstrResidual/DualResidual/ComplVio`及末次
+  durable Barrier callback相对primal-dual gap，任一属性/遥测缺失或超限即`HARD_FAIL`。physical LP
+  comparator只允许审核过的ROR-FLH、固定需求份额系数及可证明的水库正上界到零变化，其他矩阵/RHS/
+  bounds/objective/sense/identity变化均fail closed，physical比较中行缩放明确禁止。
+- 命令/验证：`CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`下以
+  `C:\Users\ZZ\.conda\envs\RL\python.exe -m unittest discover -s tests -p 'test_*.py' -q`得到
+  `304 tests OK, skipped=1`。`validate_annual_capacity_link_scaling.py --hours 24 --solve`报告`PASS`，
+  physical/scaled均status2、112 Barrier步、目标`2122241.6431944533`、原单位QC均PASS。分别从
+  `b0b8b3a`隔离worktree和当前工作树归档24h physical MPS后，`compare_physical_lp_releases.py`报告
+  `PASS`：0个矩阵变化、5232个exact-zero上界变化、0个未覆盖变量。
+- 计费/Presolve边界：作者提供`billable_cores=max(requested_cores,memory_equivalent_cores)`规则（例120G按
+  12核）；已写入runbook并要求提交前实测验证。构建/外部`Model.presolve()`不能被视为可直接续算的科学
+  Stage A：reduced MPS无uncrush映射且可能同时保留原/预求解模型。可用廉价档做build/archive或诊断性
+  presolve内存校准，但32/64核科学对照都必须从同一原始模型、内部Presolve=2开始。
+- 未解决/下一步：本地Gurobi12按profile门禁不能执行要求Gurobi13的direct-nonbasic真实终态测试；代码路径
+  已由单元与全回归覆盖，部署后须在Gurobi13小LP/24h门禁复核。先形成精确提交并双推送；随后才准备
+  32核与64核同提交、同数据、同内存上限的8760h云端收敛/内存实验，不自动Stage B。
 
 ### 2026-09-02 21:24+08:00 — 2160h内存门禁终态、GPTPro复核与三小时续测序列
 

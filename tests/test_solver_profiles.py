@@ -9,10 +9,96 @@ import gurobipy as gp
 import numpy as np
 
 from cispo_model.config import load_model_config
-from cispo_model.diagnostics import solve_and_report
+from cispo_model.diagnostics import (
+    _evaluate_nonbasic_quality_gate,
+    _last_barrier_metrics,
+    solve_and_report,
+)
 
 
 class SolverProfileTests(unittest.TestCase):
+    def test_nonbasic_quality_gate_is_fail_closed_for_each_new_metric(self):
+        quality = {
+            "maximum_constraint_violation": 0.0,
+            "maximum_constraint_residual": 0.0,
+            "maximum_bound_violation": 0.0,
+            "maximum_dual_violation": 0.0,
+            "maximum_dual_residual": 0.0,
+            "maximum_complementarity_violation": 0.0,
+        }
+        metrics = {"relative_primal_dual_objective_gap": 0.0}
+
+        def evaluate(candidate_quality=quality, candidate_metrics=metrics):
+            return _evaluate_nonbasic_quality_gate(
+                status_name="OPTIMAL",
+                solution_quality=candidate_quality,
+                barrier_metrics=candidate_metrics,
+                primal_limit=1e-8,
+                dual_limit=1e-7,
+                complementarity_limit=1e-7,
+                relative_gap_limit=1e-8,
+            )
+
+        self.assertTrue(all(evaluate().values()))
+        for key in (
+            "maximum_constraint_residual",
+            "maximum_dual_residual",
+            "maximum_complementarity_violation",
+        ):
+            with self.subTest(key=key):
+                missing = dict(quality)
+                missing.pop(key)
+                self.assertFalse(all(evaluate(missing).values()))
+                excessive = dict(quality)
+                excessive[key] = 1.0
+                self.assertFalse(all(evaluate(excessive).values()))
+        self.assertFalse(all(evaluate(candidate_metrics=None).values()))
+        self.assertFalse(
+            all(
+                evaluate(
+                    candidate_metrics={
+                        "relative_primal_dual_objective_gap": 1e-4
+                    }
+                ).values()
+            )
+        )
+
+    def test_last_barrier_metrics_uses_relative_primal_dual_gap(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "solver_telemetry.jsonl"
+            path.write_text(
+                "\n".join(
+                    (
+                        json.dumps({"event": "solver_start"}),
+                        json.dumps(
+                            {
+                                "event": "solver_progress",
+                                "phase": "barrier",
+                                "iteration": 7,
+                                "primal_objective": 100.0,
+                                "dual_objective": 99.0,
+                            }
+                        ),
+                        json.dumps(
+                            {
+                                "event": "solver_progress",
+                                "phase": "barrier",
+                                "iteration": 8,
+                                "primal_objective": 100.0,
+                                "dual_objective": 99.999999,
+                            }
+                        ),
+                    )
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            metrics = _last_barrier_metrics(path)
+        self.assertEqual(metrics["iteration"], 8)
+        self.assertAlmostEqual(
+            metrics["relative_primal_dual_objective_gap"], 1e-8, places=14
+        )
+
     def test_full_year_stage_a_wrapper_uses_submit_directory(self):
         wrapper = (
             Path(__file__).resolve().parents[1]
@@ -599,6 +685,20 @@ class SolverProfileTests(unittest.TestCase):
             self.assertEqual(
                 report["solution_contract"]["dual_attribute"],
                 "BarPi",
+            )
+            contract = report["solution_contract"]
+            self.assertTrue(all(contract["quality_gate_checks"].values()))
+            self.assertIsNotNone(
+                report["solution_quality"]["maximum_constraint_residual"]
+            )
+            self.assertIsNotNone(
+                report["solution_quality"]["maximum_dual_residual"]
+            )
+            self.assertLessEqual(
+                contract["relative_primal_dual_objective_gap"],
+                contract[
+                    "maximum_relative_primal_dual_objective_gap_limit"
+                ],
             )
             self.assertEqual(
                 set(report["solution_quality_locations"]),

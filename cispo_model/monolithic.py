@@ -65,6 +65,11 @@ def _reservoir_release_upper_scaled(
     ):
         raise ValueError("Reservoir release bounds require valid active storage")
     local_scaled = local / float(flow_scale_m3s)
+    # Preserve mathematically exact zero-flow reservoirs without applying an
+    # arbitrary cutoff.  A reservoir starts certified only when every selected
+    # local-inflow sample is exactly zero; cascade dependencies below propagate
+    # the certificate in topological order.
+    exact_zero_total = np.all(local == 0.0, axis=1)
     aggregate_upper = local_scaled.sum(axis=1)
     hourly_upper = local_scaled + storage_release[:, None]
     hourly_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
@@ -148,6 +153,11 @@ def _reservoir_release_upper_scaled(
                     float(transferred_hourly.sum()),
                 )
                 hourly_upper[target] += weight * transferred_hourly
+                exact_zero_total[target] &= bool(
+                    weight == 0.0
+                    or np.all(transfer == 0.0)
+                    or np.all(exact_zero_total[source_rows])
+                )
             hourly_upper[target] = np.minimum(
                 hourly_upper[target], aggregate_upper[target]
             )
@@ -160,6 +170,7 @@ def _reservoir_release_upper_scaled(
             )
     release_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
     release_upper = release_upper * (1.0 + 1.0e-12) + 1.0e-12
+    release_upper[exact_zero_total, :] = 0.0
     if not np.isfinite(release_upper).all() or (release_upper < 0.0).any():
         raise ValueError("Reservoir release upper bounds are invalid")
     return release_upper
@@ -789,6 +800,15 @@ def build_full_year_monolithic(
     reservoir_flow_bound_audit = {
         "schema_version": "cispo_reservoir_bound_audit_v2",
         "method": "cyclic_total_plus_hourly_storage_cascade_v1",
+        "exact_zero_release_bound_policy": (
+            "raw_zero_inflow_topological_certificate_v1"
+        ),
+        "exact_zero_release_bound_entries": int(
+            np.count_nonzero(reservoir_release_upper == 0.0)
+        ),
+        "exact_zero_release_station_local_rows": np.flatnonzero(
+            np.all(reservoir_release_upper == 0.0, axis=1)
+        ).astype(int).tolist(),
         "all_bounds_finite": bool(
             np.isfinite(reservoir_release_upper).all()
             and np.isfinite(reservoir_turbine_upper).all()

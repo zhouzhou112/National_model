@@ -19,6 +19,94 @@ from .config import ModelConfig
 SOLUTION_LOCATION_LOOKUP_MAX_OBJECTS = 6_000_000
 
 
+def _safe_model_quality_attribute(model: gp.Model, name: str) -> float | None:
+    """Read a finite scalar solution-quality attribute without masking absence."""
+    try:
+        value = float(getattr(model, name))
+    except (AttributeError, gp.GurobiError, TypeError, ValueError):
+        return None
+    return value if math.isfinite(value) else None
+
+
+def _last_barrier_metrics(path: Path) -> dict | None:
+    """Return the last complete Barrier progress record from durable telemetry."""
+    if not path.exists():
+        return None
+    latest: dict | None = None
+    with path.open("r", encoding="utf-8") as stream:
+        for line in stream:
+            try:
+                record = json.loads(line)
+            except (json.JSONDecodeError, TypeError):
+                continue
+            if record.get("event") != "solver_progress" or record.get(
+                "phase"
+            ) != "barrier":
+                continue
+            try:
+                primal = float(record["primal_objective"])
+                dual = float(record["dual_objective"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not math.isfinite(primal) or not math.isfinite(dual):
+                continue
+            absolute_gap = abs(primal - dual)
+            latest = {
+                "iteration": record.get("iteration"),
+                "primal_objective": primal,
+                "dual_objective": dual,
+                "absolute_primal_dual_objective_gap": absolute_gap,
+                "relative_primal_dual_objective_gap": absolute_gap
+                / max(1.0, abs(primal), abs(dual)),
+            }
+    return latest
+
+
+def _evaluate_nonbasic_quality_gate(
+    *,
+    status_name: str,
+    solution_quality: dict,
+    barrier_metrics: dict | None,
+    primal_limit: float,
+    dual_limit: float,
+    complementarity_limit: float,
+    relative_gap_limit: float,
+) -> dict[str, bool]:
+    """Evaluate every direct-nonbasic acceptance check fail-closed."""
+
+    def within(key: str, limit: float) -> bool:
+        value = solution_quality.get(key)
+        return bool(
+            value is not None and math.isfinite(float(value)) and value <= limit
+        )
+
+    relative_gap = (
+        barrier_metrics.get("relative_primal_dual_objective_gap")
+        if barrier_metrics is not None
+        else None
+    )
+    return {
+        "optimal_status": status_name == "OPTIMAL",
+        "constraint_violation": within(
+            "maximum_constraint_violation", primal_limit
+        ),
+        "constraint_residual": within(
+            "maximum_constraint_residual", primal_limit
+        ),
+        "bound_violation": within("maximum_bound_violation", primal_limit),
+        "dual_violation": within("maximum_dual_violation", dual_limit),
+        "dual_residual": within("maximum_dual_residual", dual_limit),
+        "complementarity_violation": within(
+            "maximum_complementarity_violation", complementarity_limit
+        ),
+        "relative_primal_dual_objective_gap": bool(
+            relative_gap is not None
+            and math.isfinite(float(relative_gap))
+            and relative_gap <= relative_gap_limit
+        ),
+    }
+
+
 class SolverTelemetry:
     """Persist low-overhead solver progress that survives a later hard kill."""
 
@@ -528,11 +616,25 @@ def solve_and_report(
             except (AttributeError, gp.GurobiError):
                 kappa = None
         solution_quality = {
-            "maximum_constraint_violation": float(model.ConstrVio),
-            "maximum_bound_violation": float(model.BoundVio),
-            "maximum_dual_violation": float(model.DualVio),
-            "maximum_complementarity_violation": float(model.ComplVio),
-            "maximum_violation": float(model.MaxVio),
+            "maximum_constraint_violation": _safe_model_quality_attribute(
+                model, "ConstrVio"
+            ),
+            "maximum_constraint_residual": _safe_model_quality_attribute(
+                model, "ConstrResidual"
+            ),
+            "maximum_bound_violation": _safe_model_quality_attribute(
+                model, "BoundVio"
+            ),
+            "maximum_dual_violation": _safe_model_quality_attribute(
+                model, "DualVio"
+            ),
+            "maximum_dual_residual": _safe_model_quality_attribute(
+                model, "DualResidual"
+            ),
+            "maximum_complementarity_violation": (
+                _safe_model_quality_attribute(model, "ComplVio")
+            ),
+            "maximum_violation": _safe_model_quality_attribute(model, "MaxVio"),
             "kappa": kappa,
             "kappa_exact_computed": False,
         }
@@ -595,12 +697,33 @@ def solve_and_report(
                 10.0 * float(model.Params.OptimalityTol),
                 1e-8,
             )
-            strict_quality_pass = bool(
-                float(model.ConstrVio) <= primal_limit
-                and float(model.BoundVio) <= primal_limit
-                and float(model.DualVio) <= dual_limit
-                and status_name == "OPTIMAL"
+            complementarity_limit = max(
+                10.0 * float(model.Params.OptimalityTol),
+                10.0 * float(model.Params.BarConvTol),
+                1e-8,
             )
+            relative_gap_limit = max(
+                10.0 * float(model.Params.BarConvTol),
+                1e-8,
+            )
+            barrier_metrics = _last_barrier_metrics(
+                output_dir / "solver_telemetry.jsonl"
+            )
+            relative_gap = (
+                barrier_metrics["relative_primal_dual_objective_gap"]
+                if barrier_metrics is not None
+                else None
+            )
+            quality_gate_checks = _evaluate_nonbasic_quality_gate(
+                status_name=status_name,
+                solution_quality=solution_quality,
+                barrier_metrics=barrier_metrics,
+                primal_limit=primal_limit,
+                dual_limit=dual_limit,
+                complementarity_limit=complementarity_limit,
+                relative_gap_limit=relative_gap_limit,
+            )
+            strict_quality_pass = all(quality_gate_checks.values())
             barrier_primal_difference: float | None = None
             barrier_primal_difference_status = "COLLECTED"
             if variables_for_locations is None:
@@ -641,6 +764,22 @@ def solve_and_report(
                 ),
                 maximum_primal_quality_limit=primal_limit,
                 maximum_dual_quality_limit=dual_limit,
+                maximum_constraint_residual_limit=primal_limit,
+                maximum_dual_residual_limit=dual_limit,
+                maximum_complementarity_violation_limit=(
+                    complementarity_limit
+                ),
+                maximum_relative_primal_dual_objective_gap_limit=(
+                    relative_gap_limit
+                ),
+                barrier_primal_dual_metrics=barrier_metrics,
+                relative_primal_dual_objective_gap=relative_gap,
+                relative_primal_dual_objective_gap_source=(
+                    "last_durable_barrier_callback_record"
+                    if barrier_metrics is not None
+                    else "UNAVAILABLE"
+                ),
+                quality_gate_checks=quality_gate_checks,
                 maximum_x_barx_difference=barrier_primal_difference,
                 maximum_x_barx_difference_status=(
                     barrier_primal_difference_status

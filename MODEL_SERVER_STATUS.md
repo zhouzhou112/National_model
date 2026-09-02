@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-09-02 22:40：三项必要修复本地闭合，云任务尚未启动
+
+- 水库精确零、nonbasic `ConstrResidual/DualResidual/ComplVio/relative gap`硬门禁、physical LP机器可读
+  差异白名单已实现；完整本地回归`304/304 OK`（1项跳过），24h physical/scaled双`OPTIMAL`、同目标、
+  原单位QC双PASS。相对`b0b8b3a`的24h physical MPS只有5232个经逐水量平衡证明的`1e-12 -> 0`水库
+  release上界变化，矩阵/RHS/目标/下界/senses/identity均不变。
+- 修复尚未部署到固定服务器或ParaCloud；当前没有由本里程碑启动的计费作业。作者提供的云计费规则已
+  记录为“申请CPU与内存折算CPU取大者”（例120G即使1线程仍可能按12核计费），提交前仍须以当前分区
+  TRES/billing实测复核。
+- 单独`Model.presolve()`生成的reduced MPS只能用于诊断，不含uncrush映射，不能作为正式科学求解的
+  可续算状态。后续低价准备档可归档原始MPS并校准presolve峰值；正式32/64核对照均须从同一原始MPS、
+  内部Presolve=2开始。Stage B不自动执行。
+
 ## 2026-09-02 21:08：2160h行缩放资格运行因冻结内存门禁终止
 
 - tag `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`已为终态
