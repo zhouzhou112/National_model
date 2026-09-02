@@ -42,12 +42,26 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
     "barrier_checkpoint_fixed_server_host_memory_"
 )
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
-    {"barrier_checkpoint_full_year_cloud_v4"}
+    {
+        "barrier_checkpoint_full_year_cloud_v4",
+        "barrier_checkpoint_full_year_cloud_v5_threads32",
+        "barrier_checkpoint_full_year_cloud_v5_threads64",
+    }
 )
-CANONICAL_DIRECT_PROFILE_JSON_SHA256 = {
-    "solver": "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d",
-    "formulation": "8f7dcb53cf45b41f9201d51fb527f3dbf6e2eb046e0db60de2a690b3267b09d7",
+CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
+    "barrier_checkpoint_full_year_cloud_v4": (
+        "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d"
+    ),
+    "barrier_checkpoint_full_year_cloud_v5_threads32": (
+        "cf02b2c5552aeb1a73710bf177abfd46f0c2f1ac9ebd6f49fe1a4c2356ec8dbe"
+    ),
+    "barrier_checkpoint_full_year_cloud_v5_threads64": (
+        "880caab8644cbd0fd03e392464ded86c7300c99b45799c2c74dbb92422e14118"
+    ),
 }
+CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256 = (
+    "8f7dcb53cf45b41f9201d51fb527f3dbf6e2eb046e0db60de2a690b3267b09d7"
+)
 
 
 def write_strict_json_atomic(path: str | Path, payload) -> None:
@@ -122,18 +136,21 @@ def _canonical_json_sha256(payload) -> str:
 
 def require_canonical_direct_nonbasic_profiles(config) -> None:
     """Bind direct scientific acceptance to the reviewed profile contents."""
+    profile_id = config.raw.get("solver_profile", {}).get("id")
     candidates = (
         (
             "solver",
             config.solver_path,
+            CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256.get(profile_id),
         ),
         (
             "formulation",
             config.formulation_path,
+            CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256,
         ),
     )
-    for label, candidate_path in candidates:
-        if candidate_path is None:
+    for label, candidate_path, expected_sha256 in candidates:
+        if candidate_path is None or expected_sha256 is None:
             raise SystemExit(
                 f"Direct nonbasic scientific acceptance requires the canonical "
                 f"{label} profile"
@@ -144,9 +161,7 @@ def require_canonical_direct_nonbasic_profiles(config) -> None:
             raise SystemExit(
                 f"Cannot validate canonical direct {label} profile: {error}"
             ) from error
-        if _canonical_json_sha256(candidate) != (
-            CANONICAL_DIRECT_PROFILE_JSON_SHA256[label]
-        ):
+        if _canonical_json_sha256(candidate) != expected_sha256:
             raise SystemExit(
                 f"Direct nonbasic scientific acceptance {label} profile "
                 "content differs from the reviewed canonical profile"

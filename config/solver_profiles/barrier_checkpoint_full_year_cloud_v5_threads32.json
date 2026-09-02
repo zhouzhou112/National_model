@@ -1,0 +1,26 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_checkpoint_full_year_cloud_v5_threads32",
+  "minimum_gurobi_major_version": 13,
+  "direct_nonbasic_scientific_acceptance": true,
+  "required_formulation_profile_id": "annual_capacity_link_rows_8192_v1",
+  "description": "Production 8760h direct nonbasic Barrier solve for the qualified row-scaled formulation, using 32 Gurobi threads inside the author-selected 520 GiB Slurm allocation, strict original-unit acceptance, no TimeLimit, and no automatic Stage B.",
+  "numerics": {
+    "method": 2,
+    "threads": 32,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 1e-9,
+    "feasibility_tolerance": 1e-9,
+    "optimality_tolerance": 1e-8,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 1,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": 520
+  }
+}

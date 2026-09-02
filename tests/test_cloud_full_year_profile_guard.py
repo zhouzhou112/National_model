@@ -296,6 +296,43 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             combined,
         )
 
+    def test_v5_thread_pair_is_canonical_and_differs_only_by_resource_fields(
+        self,
+    ) -> None:
+        formulation = (
+            ROOT
+            / "config"
+            / "formulation_profiles"
+            / "annual_capacity_link_rows_8192_v1.json"
+        )
+        profiles = []
+        for suffix in ("threads32", "threads64"):
+            path = (
+                PROFILES
+                / f"barrier_checkpoint_full_year_cloud_v5_{suffix}.json"
+            )
+            config = load_model_config(
+                solver_path=path,
+                formulation_path=formulation,
+            )
+            require_canonical_direct_nonbasic_profiles(config)
+            profiles.append(json.loads(path.read_text(encoding="utf-8")))
+
+        left = profiles[0]["numerics"]
+        right = profiles[1]["numerics"]
+        differing = {
+            key
+            for key in set(left) | set(right)
+            if left.get(key) != right.get(key)
+        }
+        self.assertEqual(differing, {"threads", "soft_mem_limit_gb"})
+        self.assertEqual(left["threads"], 32)
+        self.assertEqual(right["threads"], 64)
+        self.assertIsNone(left["time_limit_seconds"])
+        self.assertIsNone(right["time_limit_seconds"])
+        self.assertLessEqual(left["soft_mem_limit_gb"], 520)
+        self.assertLessEqual(right["soft_mem_limit_gb"], 700)
+
     def test_noncloud_nonbasic_profile_cannot_enter_direct_acceptance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_runner(
