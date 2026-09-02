@@ -247,6 +247,8 @@ class StageARowScalingQualificationTests(unittest.TestCase):
             source.index("setsid /usr/bin/numactl"),
         )
         self.assertIn("guard_kill_required", source)
+        self.assertIn("NR > 3 && ($7 != 0 || $8 != 0)", source)
+        self.assertNotIn("NR > 2 && ($7 != 0 || $8 != 0)", source)
         self.assertNotIn("Stage B", source.replace("No Stage B", ""))
         self.assertNotIn("/usr/bin/time", source)
 

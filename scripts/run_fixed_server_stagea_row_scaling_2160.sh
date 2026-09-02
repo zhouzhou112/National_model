@@ -154,7 +154,10 @@ import sys
 available, required = map(float, sys.argv[1:])
 raise SystemExit(0 if available >= required else 1)
 PY
-if ! vmstat 1 4 | awk 'NR > 2 && ($7 != 0 || $8 != 0) {bad=1} END {exit bad+0}'; then
+# vmstat's first data row is the since-boot average, not a live interval.
+# Ignore that row and fail only when one of the three sampled intervals has
+# actual swap-in/swap-out traffic.
+if ! vmstat 1 4 | awk 'NR > 3 && ($7 != 0 || $8 != 0) {bad=1} END {exit bad+0}'; then
   printf 'refuse active swap-in/swap-out pressure\n' >&2
   exit 94
 fi
