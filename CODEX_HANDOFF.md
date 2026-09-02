@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-02 10:20+08:00：已核对版本关系并建立统一数值稳定性工程线
+  `codex/numerical-stability-engineering-v2`。固定服务器clean生产HEAD`6065bfba`是本地主分支/
+  裸远端`65c8b21`的祖先，本地仅领先两条2160h运行记录提交，无分叉；工程线因此从实际生产
+  `6065bfb`建立。工程线整合通用可逆equilibration、严格零入流水库证书、默认关闭的Annual
+  Energy Coordinate V1以及CF阈值误差审计/配对脚本，统一状态见
+  `NUMERICAL_STABILITY_ENGINEERING_LINE.md`。完整8760h原MPS审计已COMPLETE：
+  50907234/41458383/492835195、4142909397bytes、SHA256`344f2ae4...43fe2435d`，原Matrix
+  `1.000486e-6..6250`。744h的`CF=1e-4`完整Stage A慢2.51%、迭代+11.67%，故不直接晋级
+  744h Stage B或生产；但该负结果不构成2160h/8760h必慢的外推证明，候选保留为当前Case1/Case2
+  完成后的隔离2160h结构/有限Barrier筛选。所有候选仍默认关闭、禁止叠加、未部署或干预活动
+  Stage B；只有原单位QC和端到端Stage A+B显示实质收益后才可准备8760h结构门禁。
+
 - 2026-08-28 15:07+08:00：本worktree是从生产6065bfba34b76098e86307081323e8545a4d25ac
   建立的隔离分支codex/numerical-stability-20260828-v1，不是服务器部署。旧8月25日运行记录已过时；
   服务器实际14:56仍clean6065bfb、原PDHG Python1216969/GPU1继续，无时限/3h巡检/2s采样未改。
@@ -2073,6 +2085,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
 
 ## Version history
+
+### 2026-09-02 10:20+08:00 — 建立统一数值稳定性工程线并修正744h外推边界
+
+- 版本核对：`git merge-base`为`6065bfba`，且`merge-base --is-ancestor 6065bfb 65c8b21` PASS；
+  服务器checkout clean6065bfb，本地主分支/服务器裸远端65c8b21仅领先`8165b20`、`65c8b21`。
+  这不是分叉，活动服务器保持原HEAD以维持Stage B实现身份。
+- 工程整合：从6065bfb新建`codex/numerical-stability-engineering-v2`，依次整合历史提交
+  `cff89ce`（等价缩放/流式审计/零边界证书）、`4814c2e`（年度能量坐标）、`46f843b`+
+  `ba89225`+`4a95822`（CF误差审计与744h筛选）。各候选有独立显式配置，默认生产行为不变。
+- 新增权威记录`NUMERICAL_STABILITY_ENGINEERING_LINE.md`，统一写明8760h完整原矩阵审计、
+  各候选的代数边界、24h/744h正负结果、物理误差预算以及744→2160→8760的逐级实验门禁。
+- 结论修正：CF1e-4在744h不晋级是当前尺度工程决策，不是所有更长时域的性能定理。更长时域
+  只能在Case1/Case2完成、内存门禁通过后做匹配的2160h结构/有限Barrier筛选；不得据此直接启动
+  8760h、修改生产默认或与其他候选叠加。
+- 验证：等价缩放11项、严格零边界9项、年度能量坐标6项、solver profile10项均PASS；设置现有
+  只读外部data/wave根后完整`unittest discover`为243/243 PASS（76.866s），py_compile与diff-check
+  PASS。首次未设外部数据根的回归缺表失败已如实保留，不属于代码失败或最终通过证据。
+- 未改变：固定服务器checkout、活动Stage B/Case2 watcher、模型数据、容差、输出根和历史证据均
+  未修改。下一步提交并推送独立工程分支；部署和大模型启动仍需独立资源门禁。
 
 ### 2026-08-28 15:07 数值稳定性独立候选与完整8760h流式审计
 

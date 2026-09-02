@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-02 数值稳定性工程线运行边界
+
+- 分支`codex/numerical-stability-engineering-v2`基于生产6065bfb，只能通过新checkout/新标签测试；
+  不得更新正在执行Stage B的生产checkout。
+- 统一读取`NUMERICAL_STABILITY_ENGINEERING_LINE.md`。CF稀疏化、年度能量坐标、严格零边界是三个
+  独立候选；任何运行一次只启用一个，算法/线程/容差/窗口保持匹配。
+- 744h CF负结果只阻止直接晋级，不阻止在资源空闲后进行2160h有限Barrier结构筛选。筛选先比较
+  presolved维度、Factor NZ/Ops、ordering、work units、残差轨迹和RSS；无综合收益则停止，不自动
+  Stage B。禁止从744h证据直接启动8760h完整求解。
+- 等价候选必须原单位objective和全部hard QC闭合；CF候选必须另报完整物理误差预算。任何候选只有
+  2160h端到端Stage A+B有实质收益才可准备8760h build/presolve/有限Barrier步门禁。
+- 当前活动服务器任务与Case2队列不属于本分支，严禁用本工程线脚本绕过其内存/唯一求解器门禁。
+
 ## 2026-08-28 15:07 隔离数值候选运行边界
 
 当前生产仍6065bfb、无时限Case4正在GPU1运行；本worktree不允许部署/停止/重启它。

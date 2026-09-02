@@ -1,5 +1,8 @@
 # Annual Energy Coordinate V1 隔离候选记录
 
+> 本文件记录该单一候选。跨候选状态、744h结果的外推边界和后续2160h/8760h工程门禁统一见
+> `NUMERICAL_STABILITY_ENGINEERING_LINE.md`；代码整合到同一工程分支不表示允许叠加候选。
+
 ## 目的与边界
 
 本候选从生产提交 `6065bfba34b76098e86307081323e8545a4d25ac` 建立在独立

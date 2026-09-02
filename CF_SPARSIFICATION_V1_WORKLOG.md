@@ -109,10 +109,17 @@ as expected for relaxed Barrier with Crossover disabled. The candidate objective
 is `371.039 million CNY` higher (about `0.01598%`), which is not numerical drift:
 the threshold changes the feasible set.
 
-Decision: reject `coefficient_zero_tolerance=1e-4` as a performance candidate.
-Do not run its Stage B, do not promote it to production or 8760h, and do not
-combine it with another numerical candidate. Key terminal evidence is preserved
-under `downloads/cf_744_stagea_pair_terminal_20260902_v1` in the main checkout.
+Decision at the tested 744h scale: do not advance `coefficient_zero_tolerance=1e-4`
+to the 744h Stage B or production default. This result does not prove that the
+2160h or 8760h factorization will be slower: presolve elimination, ordering and
+fill-in can change nonlinearly with horizon length. The candidate remains eligible
+only for an isolated, matched 2160h structure/limited-Barrier screen after the
+active Case1/Case2 sequence and memory gates are clear. It must retain the full
+physical-error budget, must not be combined with another candidate, and cannot
+start a direct 8760h production solve from the 744h evidence. Key terminal evidence
+is preserved under `downloads/cf_744_stagea_pair_terminal_20260902_v1` in the main
+checkout. The current cross-candidate policy is in
+`NUMERICAL_STABILITY_ENGINEERING_LINE.md`.
 
 The external Case 2 gate is
 `/home/zz2/National_model_server/campaign_tools/case2_after_stage_b_20260901_v1`.
