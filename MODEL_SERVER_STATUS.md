@@ -1,6 +1,20 @@
 # CISPO 2030 full-year server status
 
-## 2026-09-02 current override：唯一2160h Stage A行缩放资格运行中
+## 2026-09-02 21:08：2160h行缩放资格运行因冻结内存门禁终止
+
+- tag `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`已为终态
+  `FAIL_TERMINATED`；tmux、runner、guard和solver均已退出，未自动重启，也未启动Stage B。
+- raw结构精确匹配；presolved为`9,527,358 rows / 8,288,888 columns / 106,864,011 nnz`，其中NNZ通过
+  `107,398,350`上限，且无数值警告。但任务只走到ordering约230s，未生成Factor类指标或任何Barrier
+  iteration，因此没有iter30速度证据。
+- 进程组RSS先越过75GiB资格上限，最终记录`86.382GiB`；整机used达到`99.008%`、available约1.31GB，
+  guard发出终止信号。故这是明确的资源/资格门禁失败，不是求解器数值失败，也不能据此评价缩放加速。
+- 21:08生产checkout仍detached、clean`ba8e09f`；内存释放后available约94.45GB，实时swap si/so0/0、
+  PSI avg10=0。证据见`downloads/stagea_rowscale_2160_fail_memory_20260902_v1`。当前对话已建立每3小时
+  heartbeat `3-stage-a`；本机不得换标签原样重跑，后续必须先补齐审计门禁，再从有安全内存余量的较小
+  时间窗做单任务验证并按实测峰值逐级扩大。
+
+## 2026-09-02 current override：唯一Stage A行缩放路线，2160h首轮已终止
 
 - 作者已确认唯一继续路线：只对VRE/ROR年度可用量零右端行做
   `annual_capacity_link_rows_8192_v1`精确整行左缩放。族尺度为`s=2^-k`，`k`取不超过13且使缩放后
@@ -23,7 +37,7 @@
 - detached `tmux`跨SSH持久性已通过：同PID/start time/cgroup存活，6个heartbeat后自然rc0。真实launcher
   假进程集成已通过normal`0`、guard早退`96`、重复信号`129`、flock拒绝`90`、guard超时`97`且无孤儿。
   探针发现并修正`vmstat`首个since-boot数据行误判；当前只审查之后三个实时`si/so`区间。
-- 20:04:49可用内存自然升到`100.304 GiB`，20:05:24已启动唯一tag
+- 20:04:49可用内存自然升到`100.304 GiB`，20:05:24启动唯一tag
   `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`；tmux
   `cispo_stagea_rowscale_2160_v1`、runner PID`384500`、guard PID`384507`。实际CPU affinity为`0-31`，
   32个唯一物理核、NUMA0/1各16核，启动时`MemAvailable=100.292 GiB`。该任务使用
@@ -33,9 +47,11 @@
   `12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`；presolved nnz`<=107,398,350`、
   DenseCols`<=38,982`、`AA' NZ<=2.17035e8`、Factor NZ`<=6.28845e9`、Factor Ops`<=2.19345e14`、
   factor memory`<=63 GB`且无数值警告。首个`iteration>=30`记录须满足runtime`<=12,000 s`、
-  Work`<=18,961.075`、进程组RSS`<=75 GiB`。20:07:37仍在模型构建，guard`PENDING`、RSS约2.97 GiB、
-  两个stderr均0；尚无结构或iter30结论，不得提前宣称加速或启动8760h。每小时heartbeat只读监测，
-  明确不执行Stage B。
+  Work`<=18,961.075`、进程组RSS`<=75 GiB`。该任务21:04在ordering阶段因内存保护终止；没有结构分解或
+  iter30结论，不得宣称加速或启动8760h。GPTPro复核要求补齐精确零水库上界、KKT/relative gap硬门禁和
+  parent→new physical LP差异白名单，并增加同提交、同32核的physical对照。每3小时heartbeat只推进这条
+  路线：先修复和小窗验证，再依据峰值内存按`1488h -> 2160h -> 4320h -> 5880h`逐级单任务扩大；明确
+  不执行Stage B，也不自动启动云端8760h。
 
 ## 2026-09-02 18:04 Case1 Stage B被SIGTERM中断，Case2未启动
 

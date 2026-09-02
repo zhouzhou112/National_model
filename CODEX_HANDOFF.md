@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-02 21:08+08:00：唯一2160h年度容量联结行缩放资格运行已按冻结门禁终止，结论为
+  `FAIL_TERMINATED`，不得自动重启或晋级8760h。运行20:05:31启动，21:04:32起由guard/launcher
+  受控终止；未进入Barrier迭代，未取得Factor NZ/Ops、AA' NZ、DenseCols或iter30证据。raw结构精确匹配
+  `12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`，presolved NNZ为`106,864,011`，低于
+  `107,398,350`反回归上限，且日志无数值警告；但ordering阶段进程组RSS由约68.55GiB继续升至
+  `75.615GiB`并触及75GiB资格上限，随后达到`86.382GiB`，整机used达到`99.008%`、MemAvailable最低
+  约`1.31GB`，触发95%整机保护。当前solver、guard和tmux均已退出，生产checkout仍detached、clean
+  `ba8e09f97a6526e299f807eb9be8c579a217caeb`；21:08资源已恢复到available约94.45GB、实时si/so0/0、
+  PSI avg10=0。该结果只证明当前128GB固定服务器无法在冻结内存门槛内完成本候选的2160h排序/分解，
+  不能判断数值缩放是否加速Barrier。证据已保存到
+  `downloads/stagea_rowscale_2160_fail_memory_20260902_v1`。作者随后授权每3小时自动巡检并按实测内存逐级
+  扩大本地测试；已创建当前对话heartbeat `3-stage-a`。该授权不允许原样重启失败的2160h，也不允许直接
+  晋级8760h：下一阶段先完成下述审计缺口与内存诊断，再从能够留出安全余量的更小时间窗开始单任务验证。
+
 - 2026-09-02 本轮 current override（实现提交`122642f616b7abb2ad137250721a937e83a6f524`；
   Linux swap 实时采样修正`ba8e09f97a6526e299f807eb9be8c579a217caeb`）：作者已明确把唯一数值优化路线收敛为
   `annual_capacity_link_rows_8192_v1`，即只对 VRE 与径流式水电（ROR）的年度可用量约束做
@@ -28,8 +42,8 @@ This is the repository's single handoff document for work continued across Codex
   无`TimeLimit`；32线程是作者
   根据既有8760h经验作出的正式选择，不以小规模线程效率否决。Stage B不是必需步骤，且任何脚本、
   watcher或规划序列均不得自动启动Stage B；只有作者以后另行明确授权时才可作为独立任务讨论。
-- 2160h/start2880只作为正式放大前的工程资格门禁，当前候选已启动但尚未到结构/iter30判定，不能宣称
-  性能已改善。结构必须
+- 2160h/start2880只作为正式放大前的工程资格门禁；本轮候选已在进入Barrier前因内存门禁终止，不能宣称
+  性能已改善。后续同尺度复测仍要求结构
   保持raw`12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`；presolved nnz不超过
   `107,398,350`、DenseCols不超过`38,982`、`AA' NZ`不超过`2.17035e8`、Factor NZ不超过
   `6.28845e9`、Factor Ops不超过`2.19345e14`、日志factor memory不超过`63 GB`且无数值警告。
@@ -51,9 +65,12 @@ This is the repository's single handoff document for work continued across Codex
   `ba8e09f`改为只审查3个实时区间。20:04:49可用内存自然升至`100.304 GiB`；20:05:24已用tag
   `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`和tmux session
   `cispo_stagea_rowscale_2160_v1`启动唯一资格运行。runner PID`384500`、guard PID`384507`，实际
-  `Cpus_allowed_list=0-31`；CPU拓扑32个唯一物理核、NUMA0/1各16核。20:07:37两进程及tmux均存活，
-  stderr/guard stderr均为0，guard为`PENDING`、RSS约2.97 GiB，仍处模型构建期。精确下一步是只监测
-  结构门禁和首个iter30；不得更新活动checkout、并发其他支线或自动Stage B。
+  `Cpus_allowed_list=0-31`；CPU拓扑32个唯一物理核、NUMA0/1各16核。该任务21:04在ordering阶段因
+  进程组RSS/整机内存保护终止，未形成Barrier性能证据。下一步仅沿`annual_capacity_link_rows_8192_v1`
+  单路线推进：先恢复7fce1ca中的水库精确零上界、增加非basic终态的primal/dual residual、complementarity
+  与relative gap硬门禁，并生成parent→new physical LP机器可读差异白名单；随后在无其他CISPO任务且资源
+  预检通过时，以新tag从内存安全的较小时间窗做32核scaled/physical匹配筛选。只有实测峰值留有安全余量
+  才按`1488h -> 2160h -> 4320h -> 5880h`逐级单任务扩大；不并发、不自动Stage B、不自动云端8760h。
 
 - 2026-09-02 18:04+08:00：Case1 2160h Stage B已于17:41:39被`SIGTERM`中断，非自然完成、
   非95%内存保护、非OOM。runner rc143、Gurobi status11 `INTERRUPTED`、SolCount0，严格审计rc42；
@@ -2740,6 +2757,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 21:24+08:00 — 2160h内存门禁终态、GPTPro复核与三小时续测序列
+
+- Git/范围：服务器运行提交仍为`ba8e09f97a6526e299f807eb9be8c579a217caeb`；本条只更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`和`SERVER_RUNBOOK.md`，不修改模型、数据、solver参数或
+  服务器checkout。终态证据保存在忽略目录`downloads/stagea_rowscale_2160_fail_memory_20260902_v1`。
+- 终态证据：`qualification_gate.json=FAIL_TERMINATED`；raw结构精确匹配，presolved NNZ`106,864,011`
+  通过反回归上限且无数值警告。任务在ordering阶段、Barrier之前终止；进程组RSS越过75GiB并最终记录
+  `86.382GiB`，host used达到`99.008%`。因此没有iter30、Factor或缩放提速证据，也未启动Stage B。
+- GPTPro质量复核：确认整行二进制缩放、ROR FLH修正、demand share解耦、24h双式验证和launcher安全
+  方向正确；但要求把当前运行明确降级为Early Barrier screen，并补做同提交32核physical对照、严格容差
+  长时窗、KKT/relative gap硬门禁、精确零水库上界及parent→new physical LP差异白名单。
+- 调度/下一步：作者授权每3小时巡检并按内存逐级扩大本地测试，已创建heartbeat `3-stage-a`。不原样重启
+  失败的2160h；先完成上述代码/审计缺口和24h回归，再以1488h/start2880做scaled/physical顺序匹配筛选。
+  只有两者均通过且资源有保守余量，才依次考虑2160h、4320h、5880h；任一级失败即停止扩大。Stage B
+  不是默认步骤，且不自动启动云端8760h。当前未解决项是ordering内存增长及HUP/TERM信号链的精确归因。
 
 ### 2026-09-02 20:05+08:00 — 唯一2160h/32核Stage A资格任务已启动
 

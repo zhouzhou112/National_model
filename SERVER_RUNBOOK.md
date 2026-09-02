@@ -1,5 +1,28 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-02 21:08终态覆盖：2160h行缩放资格门禁失败
+
+- 唯一tag `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`已由guard按冻结门槛受控
+  终止，状态`FAIL_TERMINATED`。不得重启同标签、放宽75GiB/95%门槛、恢复Stage B或启动其他求解。
+- raw结构和presolved NNZ反回归通过、无数值警告；但ordering阶段RSS超过75GiB并继续到86.382GiB，
+  host used达到99.008%。任务未进入Barrier，Factor指标和iter30证据缺失，缺失值不得记作0或PASS。
+- 当前无本项目solver/guard/tmux，checkout仍clean `ba8e09f`。作者已授权每3小时自动巡检并依据实测内存
+  逐级扩大本地测试，但本结果不授权原样重启2160h、直接启动8760h或解释为数值缩放性能结论。
+
+### 终态后的唯一续测序列
+
+- heartbeat `3-stage-a`每3小时执行一次；先核实终态、服务器资源、Git/输出身份及是否存在其他CISPO
+  进程。任何时刻只允许一个CISPO求解，外部用户任务不得停止，swap实时活动或memory PSI异常即等待。
+- 启动下一求解前先在隔离分支补齐GPTPro复核指出的三项高优先级缺口：水库`release_upper`精确零上界、
+  非basic终态`ConstrResidual/DualResidual/ComplVio/relative gap`硬门禁、parent→new physical LP机器可读
+  差异白名单；完成单元测试、24h等价性与配置审计后才可部署新不可变提交。
+- 第一组性能证据使用同一提交、同一32物理核、同一数据/时间窗/参数的scaled与`physical_v1`匹配对照，
+  除年度容量联结行缩放外不得改变其他因素。鉴于2160h ordering已达到86.382GiB进程组RSS，首个候选窗
+  从1488h/start2880开始；两条顺序运行，均使用新tag/new roots和原guard，不得并发。
+- 只有scaled/physical均通过资源与结构门禁、scaled显示可重复收益且峰值内存留有保守余量，才顺序考虑
+  `2160h -> 4320h -> 5880h`。任一级内存/数值失败即停止扩大并诊断；严格生产容差验证必须在可承载的
+  最大已通过尺度上闭合，最终仍需一轮严格2160h才可讨论8760h。Stage B不在序列内，云端8760h不会自动启动。
+
 ## 2026-09-02 current override：唯一2160h Stage A行缩放资格路线
 
 本节覆盖下方过期的活动任务/队列指令，但不删除其历史事实。当前唯一允许推进的数值路线是
@@ -40,9 +63,9 @@
   `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`并在detached tmux
   `cispo_stagea_rowscale_2160_v1`中启动。runner/PGID/SID=`384500`、guard=`384507`、实际affinity
   `0-31`，启动时可用内存`100.292 GiB`。运行期间禁止切换checkout或再启动任何CISPO求解。
-- 20:07:37 guard仍为`PENDING`，进程组RSS约2.97 GiB、solver与guard stderr均0，结构和Barrier指标尚未
-  生成。后续只读检查`qualification_gate.json`；guard本身负责fail closed。automation已从旧Stage B监测
-  原位更新为每小时监测本tag，绝不恢复旧Stage B/Case2 watcher或自动启动Stage B。
+- 20:07:37 guard仍为`PENDING`，进程组RSS约2.97 GiB、solver与guard stderr均0；21:04该任务在ordering
+  阶段因内存门禁终止，未进入Barrier。后续不得复用该tag；每3小时heartbeat `3-stage-a`按上方续测序列
+  执行，绝不恢复旧Stage B/Case2 watcher或自动启动Stage B。
 
 ### 2160h资格判定与后续边界
 
@@ -53,7 +76,7 @@
   进程组RSS`<=75 GiB`才通过速度/内存门槛。runtime/Work一经通过即锁定；之后发生内存越界、警告、
   身份漂移或其他fail-closed条件仍判失败。Factor指标只是结构反回归，不单独构成加速证据。
 - 本地先验仅为`290 passed, 1 skipped`及24h/start2880 physical/scaled双`OPTIMAL`、相同目标
-  `2112716.676624984 million CNY`、原单位QC双`PASS`。本候选2160h尚未运行；不得据24h wall差异
+  `2112716.676624984 million CNY`、原单位QC双`PASS`。本候选2160h已在Barrier前因内存终止；不得据24h wall差异
   宣称32线程或8760h已加速。
 - 只有2160h上述门禁通过，才可另行准备8760h Stage A；正式profile为
   `barrier_checkpoint_full_year_cloud_v4`，`Threads=32`、`soft_mem_limit_gb=600`且无`TimeLimit`。Stage B
