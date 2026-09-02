@@ -1,6 +1,20 @@
 # CISPO 2030/8760 server runbook
 
-## 2026-09-02 23:26 current override：8760h线程对照运行与受控停止
+## 2026-09-03 01:29 current override：0.01停止容差与科学验收必须解耦
+
+- `4466067/4466068`已在Barrier 0步受控停止，当前无活动线程对照。归档原MPS完整、解压流SHA一致；没有
+  Barrier迭代就不存在可续接BarX/BarPi。不得把Slurm `FAILED/2`误判为求解器失败。
+- 下一次提交前必须新建并锁定canonical 32/64 profile：`BarConvTol=1e-2`，其余物理模型、输入、
+  `Method=2/Presolve=2/Crossover=0/SolutionTarget=1/NumericFocus=1/ScaleFlag=2/Aggregate=1`保持一致；
+  不得再用`BarConvTol<=1e-8`作为direct scientific acceptance的代码门槛。
+- 科学接受改为两层：第一层允许Barrier按1%宏观容差停止；第二层在原变量/原单位上报告并fail-closed检查
+  供需平衡、功率/能量/容量、水库、储能、输电、碳约束，以及primal/dual residual、complementarity和
+  实际相对primal-dual gap。阈值必须显式版本化，不能静默继承`10*BarConvTol`而把complementarity上限
+  放到0.1，也不能反向要求`1e-9`才算科研结果。
+- 重启后继续32/64同模型对照、无自动结束时间；只在同Presolve/Ordering阶段或同Barrier迭代比较wall、
+  Work、残差、gap、RSS和factor指标。旧日志给出的15.71天只是`1e-2`代理，不是新运行时限承诺。
+
+## 2026-09-02 23:26：8760h线程对照运行与受控停止（已被上方终态覆盖）
 
 - 正在运行：`4466067`=`Threads32, Slurm89 CPU/520G, SoftMemLimit520 decimal GB, m4cg1602`；
   `4466068`=`Threads64, Slurm120 CPU/700G, SoftMemLimit680 decimal GB, m4cm1804`。两者23:24:12同秒启动，

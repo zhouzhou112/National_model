@@ -12,21 +12,34 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-09-02 23:26+08:00 current override：作者已明确取消单独Presolve保存与本地逐级门禁，授权同步
-  启动两条数值修复后、完整原模型、正式科学8760h线程对照。不可变云发布提交为
-  `a142ab502b5af68e70b088bd5c93bd800083f708`（包含修复提交`cff9054`）；ParaCloud作业`4466067`
-  于23:24:12在`m4cg1602`启动，Slurm `89 CPU/520G/billing=89`、Gurobi `Threads=32/SoftMemLimit=520`
-  十进制GB；作业`4466068`同秒在`m4cm1804`启动，Slurm `120 CPU/700G/billing=120`、Gurobi
-  `Threads=64/SoftMemLimit=680`十进制GB。两者均`TimeLimit=UNLIMITED`、内部`Presolve=2`、`Method=2`、
-  `Crossover=0`、`SolutionTarget=1`、严格KKT/gap门禁和`annual_capacity_link_rows_8192_v1`；无自动
-  Stage B/下一年份/其他测试。当前均RUNNING、preflight双PASS、wrapper/Slurm stderr为空，规模估计相同为
-  `41,186,823 vars / 55,928,698 rows / 497,144,574 nnz`；去掉唯一允许不同的solver-profile行后，
-  两份input manifest SHA256同为`292fedfe...c4e9e`。发布根为
-  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260902_8760_threads32_64_a142ab5_v1`。
-  两条均在求解前归档original MPS/PRM，并在正常终止或作者受控停止后尽最大可能保存BarX/BarPi、结果、
-  QC和校验清单；中途Barrier私有因子状态不能原位续接，计划内停止必须创建各case控制根的
-  `STOP_REQUESTED`，不得用`scancel`截断保全。heartbeat `3-stage-a`已改为每4小时只读监测本线程对照，
-  不自动停止或派生任务。
+- 2026-09-03 01:29+08:00 current override：作者再次明确，国家尺度8760h不能以过严求解停止容差换取
+  不可接受的Barrier超级长尾；`BarConvTol=1e-2`是当前唯一允许的重启方向，科学接受必须与算法停止条件
+  分离，继续依靠原单位物理QC、显式primal/dual/complementarity与相对gap报告，而不能把`1e-9`硬编码成
+  “科学性”。上一轮把两份v5 profile收紧到`BarConvTol/FeasibilityTol/OptimalityTol=1e-9/1e-9/1e-8`
+  是错误决策，尚未重启。作业`4466067/4466068`已于01:19按各自精确`STOP_REQUESTED`受控停止，未使用
+  `scancel`；wrapper分别于01:19:13/01:19:18转发SIGTERM。两者均在Presolve、Barrier第0步退出：32线程
+  Presolve `4003.76 s/work 24406.37`，64线程`4018.41 s/work 24626.23`。Slurm显示`FAILED/exit 2`是runner
+  对“受控中断且无解”的预期返回，不是求解器崩溃；双stderr为空，峰值RSS分别为
+  `101,766,328 K/101,760,648 K`（约97.05 GiB）。32线程wrapper未落下最终`terminal_status.txt`，但
+  `solve_report/preservation_report/model_archive`均已形成；该包装终态缺口不得隐瞒。
+- 两条实际原模型完全相同：`50,907,234 rows / 41,458,383 columns / 492,835,195 nonzeros`、Fingerprint
+  `0x94cf2e50`。每条已完整保存约4.14 GB的`original.mps.gz`、PRM、build/solve/QC/preservation报告；
+  解压后的MPS数据流SHA256均为
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`。gzip容器SHA因时间戳元数据不同而
+  不同，不得误报为模型差异。由于未进入Barrier，无有效BarX/BarPi可保存；归档原模型可以精确重建，
+  但不能从Presolve中点原位续算。
+- 数值修复的作用是局部而非全局：`annual_capacity_link_rows_8192_v1`把1019条VRE与204条ROR年度行
+  精确左缩放`1/8192`，共39,318个非零系数（约占全模型0.00798%），可行域和目标不变。VRE系数范围由
+  `1..5925.477`降至`1.2207e-4..0.7233`，ROR由`0.0422..5945.850`降至`5.153e-6..0.7258`；但全局
+  Matrix仍为`[1e-6,6e3]`、Objective`[1e-6,4e3]`、Bounds`[6e-11,4e5]`、RHS`[3e-7,1e6]`，模型
+  维度、稀疏结构和每步分解规模没有缩小。约4000秒同阶段相对旧作业`4139552`仅多消去35,511行、少消去
+  2,592列，不足以证明显著Presolve或全年加速。
+- 旧16线程作业`4139552`的日志代理显示：全部打印的primal residual、dual residual、complementarity及
+  相对primal-dual gap首次同时低于`1e-2`约在iter458/15.71天；旧严格运行最终iter607/20.53天。因此
+  `BarConvTol=1e-2`能消除旧轨迹末端约4.8天，但单靠此旋钮仍不能承诺数日完成；32/64线程与当前局部
+  缩放是否进一步缩短分解时间，必须等新profile实际进入Barrier后按同迭代比较。重启前唯一下一步是把
+  `BarConvTol=1e-2`写入32/64 canonical profile，并将求解停止与原单位科学QC明确解耦；Stage B仍不自动
+  执行。
 - 2026-09-02 22:40+08:00：GPTPro指出的三项高优先级审计缺口已在实现提交
   `cff905476ed2811a26b16e86f772eb5b91f9357d`完成、通过验证并推送固定服务器裸远端与GitHub，尚未部署或
   启动任何付费云作业。水库release上界现仅依据“原始逐时入流严格为零+级联拓扑严格零传播”证书设为
@@ -2790,6 +2803,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-03 01:29+08:00 — 过严容差线程对照受控停止与数值尺度复核
+
+- Git/范围：云release仍为不可变提交`a142ab502b5af68e70b088bd5c93bd800083f708`；本里程碑只更新
+  `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md`和`SERVER_RUNBOOK.md`，未修改物理模型、输入、变量、目标、
+  约束、单位或云release。作者明确否决v5的`1e-9/1e-9/1e-8`停止容差，下一版固定回到
+  `BarConvTol=1e-2`并重新设计解耦的科学验收合同。
+- 停止/保全：01:19创建两条精确STOP文件，wrapper正常转发SIGTERM；`4466067`在Presolve
+  `4003.76 s/work 24406.37`、`4466068`在`4018.41 s/work 24626.23`退出，均Barrier 0步、SolCount0。
+  MaxRSS约97.05 GiB，stderr为空。两边均完整归档original MPS/PRM和审计报告；解压MPS流SHA相同。32线程
+  wrapper少最终terminal-status文件，但科学保全文件齐全，已按事实记录。
+- 数值审计：目标年度行的缩放把最大系数约`5.9e3`降到`<0.726`，且代数等价；但只覆盖1223行/39318
+  非零项，全局系数范围及约5.09千万行、4.15千万列、4.93亿非零项的规模不变。同4000秒旧新Presolve
+  消去量差异很小，尚无Barrier/factor性能证据。
+- 时长解释：旧16线程完整8760日志按打印四项指标的保守代理，`1e-2`约在iter458/15.71天首次同时达到，
+  严格运行iter607/20.53天。因此新停止容差应砍掉旧超级长尾约4.8天，但不能承诺单靠容差降到数日；
+  32/64并行和局部缩放的净收益必须由重启后的相同迭代wall/work实测。
+- 未解决/下一步：在本地实现`BarConvTol=1e-2` canonical 32/64 profile，并把direct-nonbasic授权从
+  `BarConvTol<=1e-8`解耦；为primal/dual/complementarity/gap设独立、原单位可解释的版本化门槛，补齐专项
+  与24h回归后才部署新不可变release并重启两条8760h。Stage B不自动执行。
 
 ### 2026-09-02 23:26+08:00 — 数值修复后8760h Threads32/64正式科学对照同步启动
 

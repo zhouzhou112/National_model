@@ -1,6 +1,20 @@
 # CISPO 2030 full-year server status
 
-## 2026-09-02 23:26：8760h Threads32/64正式科学对照已同步运行
+## 2026-09-03 01:29：严格容差线程对照已在Presolve受控停止，等待0.01新profile
+
+- 作业`4466067/4466068`已通过精确`STOP_REQUESTED`受控终止，未用`scancel`；两者均停在Barrier 0步，
+  Presolve分别为`4003.76 s/work 24406.37`和`4018.41 s/work 24626.23`。Slurm的`FAILED/2`是无解受控中断
+  的runner语义，不是崩溃；双stderr为空，MaxRSS均约97.05 GiB。
+- 实际模型同为`50,907,234 rows / 41,458,383 columns / 492,835,195 nonzeros`、Fingerprint
+  `0x94cf2e50`；解压MPS流SHA256同为`8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`。
+  original MPS/PRM及build/solve/QC/preservation清单已保全；Barrier尚未开始，故没有可用BarX/BarPi。
+- 本次停因是作者否决`BarConvTol=1e-9`导致的潜在超级长尾。下一轮必须恢复`BarConvTol=1e-2`，并把算法
+  停止精度与原单位科学QC分开；不能用`1e-9`作为科学性的同义词。当前无活动8760h作业，不自动Stage B。
+- 年度VRE/ROR行缩放显著缓和目标行的局部系数，但只影响39,318个非零项（全模型约0.00798%），全局
+  Matrix/Objective/Bounds/RHS范围及分解维度未收窄。旧16线程日志显示`1e-2`四项打印指标代理首次同时
+  达标约在15.71天，而严格终点20.53天；因此预期低于旧20天，但不能仅据此承诺短于约两周。
+
+## 2026-09-02 23:26：8760h Threads32/64正式科学对照已同步运行（已被上方终态覆盖）
 
 - 云发布根为`/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/
   20260902_8760_threads32_64_a142ab5_v1`，不可变代码`a142ab502b5af68e70b088bd5c93bd800083f708`。
