@@ -1,5 +1,18 @@
 # CISPO 2030 full-year server status
 
+## 2026-09-02 23:26：8760h Threads32/64正式科学对照已同步运行
+
+- 云发布根为`/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/
+  20260902_8760_threads32_64_a142ab5_v1`，不可变代码`a142ab502b5af68e70b088bd5c93bd800083f708`。
+  `4466067`在`m4cg1602`运行，`89 CPU/520G/billing=89`、Gurobi Threads32；`4466068`在`m4cm1804`
+  同秒运行，`120 CPU/700G/billing=120`、Gurobi Threads64。两者Slurm/Gurobi均无时间上限。
+- 两者均为Base2030/8760h、完整原模型、内部Presolve2、Method2/Crossover0/SolutionTarget1、严格
+  `1e-9/1e-9/1e-8`容差与KKT/gap门禁、`annual_capacity_link_rows_8192_v1`。preflight双PASS，估计规模
+  同为`41,186,823/55,928,698/497,144,574`；去solver-profile行的input manifest SHA256相同。
+- 每条在optimize前归档original MPS/PRM，终止后保存能取得的BarX/BarPi及preservation证据；严格通过才
+  生成accepted checkpoint、QC、result manifest和planning state。计划内停止用`STOP_REQUESTED`，禁止
+  `scancel`截断保全。每4小时heartbeat只读监测，不自动停止、Stage B或任何后续测试。
+
 ## 2026-09-02 22:40：三项必要修复本地闭合，云任务尚未启动
 
 - 水库精确零、nonbasic `ConstrResidual/DualResidual/ComplVio/relative gap`硬门禁、physical LP机器可读

@@ -12,6 +12,21 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-02 23:26+08:00 current override：作者已明确取消单独Presolve保存与本地逐级门禁，授权同步
+  启动两条数值修复后、完整原模型、正式科学8760h线程对照。不可变云发布提交为
+  `a142ab502b5af68e70b088bd5c93bd800083f708`（包含修复提交`cff9054`）；ParaCloud作业`4466067`
+  于23:24:12在`m4cg1602`启动，Slurm `89 CPU/520G/billing=89`、Gurobi `Threads=32/SoftMemLimit=520`
+  十进制GB；作业`4466068`同秒在`m4cm1804`启动，Slurm `120 CPU/700G/billing=120`、Gurobi
+  `Threads=64/SoftMemLimit=680`十进制GB。两者均`TimeLimit=UNLIMITED`、内部`Presolve=2`、`Method=2`、
+  `Crossover=0`、`SolutionTarget=1`、严格KKT/gap门禁和`annual_capacity_link_rows_8192_v1`；无自动
+  Stage B/下一年份/其他测试。当前均RUNNING、preflight双PASS、wrapper/Slurm stderr为空，规模估计相同为
+  `41,186,823 vars / 55,928,698 rows / 497,144,574 nnz`；去掉唯一允许不同的solver-profile行后，
+  两份input manifest SHA256同为`292fedfe...c4e9e`。发布根为
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260902_8760_threads32_64_a142ab5_v1`。
+  两条均在求解前归档original MPS/PRM，并在正常终止或作者受控停止后尽最大可能保存BarX/BarPi、结果、
+  QC和校验清单；中途Barrier私有因子状态不能原位续接，计划内停止必须创建各case控制根的
+  `STOP_REQUESTED`，不得用`scancel`截断保全。heartbeat `3-stage-a`已改为每4小时只读监测本线程对照，
+  不自动停止或派生任务。
 - 2026-09-02 22:40+08:00：GPTPro指出的三项高优先级审计缺口已在实现提交
   `cff905476ed2811a26b16e86f772eb5b91f9357d`完成、通过验证并推送固定服务器裸远端与GitHub，尚未部署或
   启动任何付费云作业。水库release上界现仅依据“原始逐时入流严格为零+级联拓扑严格零传播”证书设为
@@ -2775,6 +2790,29 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 23:26+08:00 — 数值修复后8760h Threads32/64正式科学对照同步启动
+
+- Git/范围：提交`871fb4f`增加两份锁定内容的direct-nonbasic科学profile及canonical SHA门禁；提交
+  `d6644cd`只为“Presolve完整消去全部行列、Barrier 0步”补充由`OPTIMAL + BarStatus=OPTIMAL + solver
+  log明确完整消去`共同证明的gap=0边界，其他缺失gap仍fail closed；提交`a142ab5`增加统一云wrapper。
+  三提交均已推送固定服务器裸远端与GitHub。未改变目标、变量、物理约束、单位、时空尺度或数据源。
+- 验证：固定服务器独立Git worktree、Gurobi13.0.2完整回归`272 passed + 100 subtests passed`；wrapper
+  `bash -n`通过；云compute smoke作业`4466064`为`COMPLETED 0:0`并通过Gurobi13.0.2/WLS及两份canonical
+  profile检查。代码tar SHA256为`293cbba7...c78e1`，发布manifest SHA256为`04a0755c...c2fd`。
+- 资源/提交：当前分区`DefMemPerCPU=6000 MB`，故520G换算89 CPU、700G换算120 CPU；`sbatch --test-only`
+  两项均合法。作业`4466067/4466068`于同一秒进入RUNNING，实际`AllocTRES`分别为
+  `cpu=89,mem=520G,billing=89`和`cpu=120,mem=700G,billing=120`，`TimeLimit=UNLIMITED`。应用线程分别
+  为32/64；两份输入manifest除solver profile行外逐字节相同。两profile的SoftMemLimit分别为520/680
+  十进制GB以给cgroup留出保全余量；若任一触线，只能评价该资源包可行性，不能归因为纯线程速度。
+- 持久化/停止：wrapper传入`--archive-original-model --allow-nonbasic-planning-state`；原始MPS/PRM在
+  optimize前归档，严格终解自动保存accepted BarX/BarPi checkpoint、科学结果/QC/manifest/planning
+  state；中断后若已有Barrier迭代则保存可获得的incomplete BarX/BarPi和preservation输出。计划内停止
+  只创建`run_control/<case>/STOP_REQUESTED`，wrapper会等到`solver_start`后向Python发送SIGTERM并等待
+  保全结束。Gurobi私有Barrier factorization不可通用续接，不得作相反承诺。
+- 未解决/下一步：两条仍在build初期，尚无最终raw模型统计、Fingerprint、Presolve/Ordering/Factor或
+  Barrier迭代证据。每4小时只读监测相同阶段/相同迭代的wall/work、残差、gap和RSS；不自动停止、改参、
+  重启、启动Stage B、下一年份或其他测试，等待作者人为决定停止点。
 
 ### 2026-09-02 22:40+08:00 — 精确零、非basic终态硬门禁与physical差异证书闭合
 

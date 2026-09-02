@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-02 23:26 current override：8760h线程对照运行与受控停止
+
+- 正在运行：`4466067`=`Threads32, Slurm89 CPU/520G, SoftMemLimit520 decimal GB, m4cg1602`；
+  `4466068`=`Threads64, Slurm120 CPU/700G, SoftMemLimit680 decimal GB, m4cm1804`。两者23:24:12同秒启动，
+  `TimeLimit=UNLIMITED`。发布根与完整SHA见`CODEX_HANDOFF.md`最新snapshot；禁止更新运行中release。
+- 每4小时检查`squeue/scontrol/sstat/sacct`、两control/output根、stderr、build/archive、Gurobi日志与
+  telemetry。只在相同阶段/相同Barrier迭代比较runtime/work/residual/gap；检查raw/presolved维度、
+  Fingerprint、Ordering、DenseCols、AA' NZ、Factor NZ/Ops/memory和MaxRSS。SoftMem触发时只评价资源包。
+- 用户未授权自动停止或后续实验。不得`scancel`、改参、重启、Stage B或下一年份。计划内停止只执行：
+  `touch <release>/run_control/<exact-case-id>/STOP_REQUESTED`。wrapper若仍在build/archive会等待
+  `solver_start`，随后SIGTERM Python并等待checkpoint/preservation完成；以`return_code.txt`、
+  `terminal_status.txt`、solve/QC/checkpoint/preservation manifests共同判终态。
+- “可续接”边界：original MPS/PRM和精确LP身份可重建模型，BarX/BarPi可作精确身份验证后的热启动；
+  Gurobi未公开的中途Barrier因子分解/迭代器内部状态无法保存为原位续算文件。节点硬故障/OOM可能只留下
+  已落盘模型、日志和遥测，缺失checkpoint不得记为0或COMPLETE。
+
 ## 2026-09-02 22:40修复后云端资源与Presolve边界
 
 - 实现提交`cff905476ed2811a26b16e86f772eb5b91f9357d`已闭合精确零水库上界、nonbasic终态
