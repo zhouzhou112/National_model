@@ -12,6 +12,7 @@ from cispo_model.config import load_model_config
 from cispo_model.diagnostics import (
     _evaluate_nonbasic_quality_gate,
     _last_barrier_metrics,
+    _zero_iteration_presolve_metrics,
     solve_and_report,
 )
 
@@ -98,6 +99,32 @@ class SolverProfileTests(unittest.TestCase):
         self.assertAlmostEqual(
             metrics["relative_primal_dual_objective_gap"], 1e-8, places=14
         )
+
+    def test_zero_iteration_gap_requires_explicit_complete_presolve_log(self):
+        model = gp.Model("zero_iteration_presolve_gap")
+        variable = model.addVar(lb=1.0, ub=1.0, obj=2.0)
+        model.optimize()
+        with tempfile.TemporaryDirectory() as temporary:
+            log_path = Path(temporary) / "gurobi.log"
+            log_path.write_text(
+                "Presolve: All rows and columns removed\n", encoding="utf-8"
+            )
+            metrics = _zero_iteration_presolve_metrics(
+                model,
+                log_path,
+                status_name="OPTIMAL",
+                barrier_status_code=2,
+            )
+            self.assertEqual(metrics["relative_primal_dual_objective_gap"], 0.0)
+            log_path.write_text("Presolve removed 0 rows\n", encoding="utf-8")
+            self.assertIsNone(
+                _zero_iteration_presolve_metrics(
+                    model,
+                    log_path,
+                    status_name="OPTIMAL",
+                    barrier_status_code=2,
+                )
+            )
 
     def test_full_year_stage_a_wrapper_uses_submit_directory(self):
         wrapper = (

@@ -62,6 +62,43 @@ def _last_barrier_metrics(path: Path) -> dict | None:
     return latest
 
 
+def _zero_iteration_presolve_metrics(
+    model: gp.Model,
+    log_path: Path,
+    *,
+    status_name: str,
+    barrier_status_code: int | None,
+) -> dict | None:
+    """Close the gap gate when presolve proves the entire LP directly.
+
+    Gurobi emits no Barrier callback when presolve removes every row and
+    column.  Accept this zero-iteration edge case only with all three durable
+    facts: the model is OPTIMAL, ``BarStatus`` is OPTIMAL, and the solver log
+    explicitly records complete presolve elimination.
+    """
+    if (
+        status_name != "OPTIMAL"
+        or barrier_status_code != 2
+        or int(model.BarIterCount) != 0
+        or not log_path.is_file()
+    ):
+        return None
+    log_text = log_path.read_text(encoding="utf-8", errors="replace")
+    if "Presolve: All rows and columns removed" not in log_text:
+        return None
+    objective = float(model.ObjVal)
+    if not math.isfinite(objective):
+        return None
+    return {
+        "iteration": 0,
+        "primal_objective": objective,
+        "dual_objective": objective,
+        "absolute_primal_dual_objective_gap": 0.0,
+        "relative_primal_dual_objective_gap": 0.0,
+        "source": "gurobi_optimal_complete_presolve_elimination",
+    }
+
+
 def _evaluate_nonbasic_quality_gate(
     *,
     status_name: str,
@@ -709,6 +746,13 @@ def solve_and_report(
             barrier_metrics = _last_barrier_metrics(
                 output_dir / "solver_telemetry.jsonl"
             )
+            if barrier_metrics is None:
+                barrier_metrics = _zero_iteration_presolve_metrics(
+                    model,
+                    output_dir / "gurobi.log",
+                    status_name=status_name,
+                    barrier_status_code=barrier_status_code,
+                )
             relative_gap = (
                 barrier_metrics["relative_primal_dual_objective_gap"]
                 if barrier_metrics is not None
@@ -775,7 +819,9 @@ def solve_and_report(
                 barrier_primal_dual_metrics=barrier_metrics,
                 relative_primal_dual_objective_gap=relative_gap,
                 relative_primal_dual_objective_gap_source=(
-                    "last_durable_barrier_callback_record"
+                    barrier_metrics.get(
+                        "source", "last_durable_barrier_callback_record"
+                    )
                     if barrier_metrics is not None
                     else "UNAVAILABLE"
                 ),
