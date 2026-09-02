@@ -87,6 +87,33 @@ pair-level 95% guard. They will compare full relaxed Stage A convergence and
 checkpoint quality. Stage B and strict original-unit QC are still required
 before either LP can be accepted.
 
+The pair completed at `2026-09-01T22:42:36+08:00`; both runners returned zero,
+the pair memory guard did not trigger, and both engineering checkpoints are
+complete and eligible for an explicitly authorized deferred crossover. The
+full Stage A evidence reverses the promising five-step screen:
+
+| Metric | Baseline `1e-6` | Candidate `1e-4` | Candidate change |
+|---|---:|---:|---:|
+| Barrier iterations | 120 | 134 | +11.67% |
+| Solver runtime (s) | 2995.079 | 3070.307 | +2.51% |
+| Work units | 2842.982 | 3006.566 | +5.75% |
+| End-to-end elapsed (s) | 3380.386 | 3478.729 | +2.91% |
+| Process-tree RSS peak (GiB) | 20.049 | 20.402 | +1.76% |
+| Raw nonzeros | 44,000,585 | 43,979,609 | -0.0477% |
+
+The independently sampled job RSS was marginally lower for the candidate
+(`21.193` versus `21.264` GB), but this is a different 2-second sampling metric
+and does not override the runner's 0.5-second process-tree peak. Both runs have
+an engineering-only `HARD_FAIL` solution contract and failed raw physical QC,
+as expected for relaxed Barrier with Crossover disabled. The candidate objective
+is `371.039 million CNY` higher (about `0.01598%`), which is not numerical drift:
+the threshold changes the feasible set.
+
+Decision: reject `coefficient_zero_tolerance=1e-4` as a performance candidate.
+Do not run its Stage B, do not promote it to production or 8760h, and do not
+combine it with another numerical candidate. Key terminal evidence is preserved
+under `downloads/cf_744_stagea_pair_terminal_20260902_v1` in the main checkout.
+
 The external Case 2 gate is
 `/home/zz2/National_model_server/campaign_tools/case2_after_stage_b_20260901_v1`.
 It starts the approved 2160h/Threads32 Case 2 exactly once only after Stage B
