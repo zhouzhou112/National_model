@@ -36,8 +36,13 @@
   resource telemetry、stdout/stderr及各return code；不得把缺失值写成0或手工伪造PASS。
 - `vmstat 1 4`的首个数据行是since-boot平均值；提交`ba8e09f`明确忽略该行，只要后续三个实时区间任一
   `si/so`非零仍返回94。禁止改回会永久误判历史swap的`NR>2`，也禁止跳过真实swap压力检查。
-- 2026-09-02 19:58连续十次采样`MemAvailable=99.62--99.68 GiB`，低于100 GiB准入线；因此当前不创建
-  正式tag/output/control。等待自然达到门槛，不降阈值、不drop caches、不干预其他用户进程。
+- 2026-09-02 20:04:49可用内存自然升至`100.304 GiB`；20:05:24已创建正式唯一tag
+  `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`并在detached tmux
+  `cispo_stagea_rowscale_2160_v1`中启动。runner/PGID/SID=`384500`、guard=`384507`、实际affinity
+  `0-31`，启动时可用内存`100.292 GiB`。运行期间禁止切换checkout或再启动任何CISPO求解。
+- 20:07:37 guard仍为`PENDING`，进程组RSS约2.97 GiB、solver与guard stderr均0，结构和Barrier指标尚未
+  生成。后续只读检查`qualification_gate.json`；guard本身负责fail closed。automation已从旧Stage B监测
+  原位更新为每小时监测本tag，绝不恢复旧Stage B/Case2 watcher或自动启动Stage B。
 
 ### 2160h资格判定与后续边界
 

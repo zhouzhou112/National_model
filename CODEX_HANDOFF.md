@@ -28,7 +28,8 @@ This is the repository's single handoff document for work continued across Codex
   无`TimeLimit`；32线程是作者
   根据既有8760h经验作出的正式选择，不以小规模线程效率否决。Stage B不是必需步骤，且任何脚本、
   watcher或规划序列均不得自动启动Stage B；只有作者以后另行明确授权时才可作为独立任务讨论。
-- 2160h/start2880只作为正式放大前的工程资格门禁，尚未运行本候选，不能宣称性能已改善。结构必须
+- 2160h/start2880只作为正式放大前的工程资格门禁，当前候选已启动但尚未到结构/iter30判定，不能宣称
+  性能已改善。结构必须
   保持raw`12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`；presolved nnz不超过
   `107,398,350`、DenseCols不超过`38,982`、`AA' NZ`不超过`2.17035e8`、Factor NZ不超过
   `6.28845e9`、Factor Ops不超过`2.19345e14`、日志factor memory不超过`63 GB`且无数值警告。
@@ -42,14 +43,17 @@ This is the repository's single handoff document for work continued across Codex
   clean`ba8e09f97a6526e299f807eb9be8c579a217caeb`；`/data/zz2/National_model/repo`是旧NTFS克隆，
   不得部署或启动。本任务为落实作者
   “Stage B非必需、先解决Stage A”的新决定，已**有意停止**旧Stage B进程组及其Case2 watcher，
-  当前无本项目solver。这是对下方18:04条目在当时证据不足下保留
+  旧任务已全部停止。这是对下方18:04条目在当时证据不足下保留
   `EXTERNAL_SIGTERM_CAUSE_UNRESOLVED`的后续纠正；不删除或改写该历史记录。服务器精确提交全套测试
   `256/256`通过；detached `tmux`跨SSH探针保持同PID/start time/cgroup并以6个heartbeat自然rc0；launcher
   假进程集成验证正常rc0、guard早退rc96、重复HUP/TERM首信号rc129、并发`flock`拒绝rc90、guard卡死
   超时rc97，所有solver/guard PID均已消失。探针还发现旧`vmstat`表达式误读since-boot首行，已在
-  `ba8e09f`改为只审查3个实时区间。19:58连续观测`MemAvailable=99.62--99.68 GiB`，低于冻结的
-  `100 GiB`准入线，故真实2160h尚未启动。精确下一步是在不降低门槛、不干预其他用户进程的前提下
-  等待可用内存达到100 GiB，再以32个物理核启动唯一资格运行；不得并发其他支线或自动Stage B。
+  `ba8e09f`改为只审查3个实时区间。20:04:49可用内存自然升至`100.304 GiB`；20:05:24已用tag
+  `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`和tmux session
+  `cispo_stagea_rowscale_2160_v1`启动唯一资格运行。runner PID`384500`、guard PID`384507`，实际
+  `Cpus_allowed_list=0-31`；CPU拓扑32个唯一物理核、NUMA0/1各16核。20:07:37两进程及tmux均存活，
+  stderr/guard stderr均为0，guard为`PENDING`、RSS约2.97 GiB，仍处模型构建期。精确下一步是只监测
+  结构门禁和首个iter30；不得更新活动checkout、并发其他支线或自动Stage B。
 
 - 2026-09-02 18:04+08:00：Case1 2160h Stage B已于17:41:39被`SIGTERM`中断，非自然完成、
   非95%内存保护、非OOM。runner rc143、Gurobi status11 `INTERRUPTED`、SolCount0，严格审计rc42；
@@ -2736,6 +2740,25 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 20:05+08:00 — 唯一2160h/32核Stage A资格任务已启动
+
+- 启动身份：实现SHA`ba8e09f97a6526e299f807eb9be8c579a217caeb`；tag
+  `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`；output/control分别为
+  `/home/zz2/National_model_server/outputs/<tag>`与`/home/zz2/National_model_server/run_control/<tag>`；
+  detached tmux session为`cispo_stagea_rowscale_2160_v1`，20:05:24开始。启动准入时
+  `MemAvailable=100.292 GiB`，未降低100 GiB门槛。
+- 进程证据：tmux pane PID`384367`，wrapper`384371`，setsid solver/runner PID/PGID/SID均为`384500`，
+  guard PID`384507`；同属`tmux-spawn-...scope`。solver实际affinity为`0-31`，拓扑验证32个唯一物理核、
+  NUMA0/1各16核。参数快照为2160h/start2880、Base、Method2、Threads32、Presolve2、Crossover0、
+  BarConvTol1e-2、Feas/Opt1e-5、NF1、Scale2、Aggregate1、无TimeLimit；运行时SoftMemLimit按host95解析为
+  `125.5378982912` decimal GB，profile的80仅fallback/provenance。
+- 初始状态：20:07:37仍在构建模型；guard`PENDING`，尚缺raw/presolved/factor及Barrier记录，进程组RSS
+  约2.97 GiB，solver/guard stderr均0，无termination signal。不得把该启动或短时状态写成方案已奏效；
+  只有结构门禁和首个iteration>=30同时通过才形成长时域加速证据。
+- 监测：原automation id`2160h-stage-b`已原位改名/改写为“监测唯一StageA行缩放资格运行”，每小时只读
+  核对身份、资源、结构、iter30与终态；明确不恢复旧Stage B/Case2 watcher、不改参、不重启、不启动
+  Stage B。下一步保持活动checkout不可变，等待guard给出结构及iter30判定。
 
 ### 2026-09-02 19:58+08:00 — 精确提交已部署，Linux持久化/监督门禁通过，等待100 GiB准入
 

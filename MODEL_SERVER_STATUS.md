@@ -1,6 +1,6 @@
 # CISPO 2030 full-year server status
 
-## 2026-09-02 current override：唯一Stage A行缩放路线待2160h资格运行
+## 2026-09-02 current override：唯一2160h Stage A行缩放资格运行中
 
 - 作者已确认唯一继续路线：只对VRE/ROR年度可用量零右端行做
   `annual_capacity_link_rows_8192_v1`精确整行左缩放。族尺度为`s=2^-k`，`k`取不超过13且使缩放后
@@ -17,21 +17,25 @@
   均status2 `OPTIMAL`，目标均`2112716.676624984 million CNY`且原单位QC均`PASS`。这只证明等价性和
   接口正确，不是2160h/8760h速度证据。
 - 唯一正确生产checkout是`/home/zz2/National_model_server/repo`，当前核实为detached、clean`ba8e09f`；
-  `/data/zz2/National_model/repo`是旧NTFS克隆，禁止部署或启动。当前无本项目solver。本任务为落实作者
+  `/data/zz2/National_model/repo`是旧NTFS克隆，禁止部署或启动。本任务为落实作者
   “Stage B非必需、优先解决Stage A”的新决定，已**有意停止**旧Stage B进程组及Case2 watcher；这是
   对下一节18:04在当时信息不足下保留“外部SIGTERM未解析”的后续纠正，历史记录本身保持不变。
 - detached `tmux`跨SSH持久性已通过：同PID/start time/cgroup存活，6个heartbeat后自然rc0。真实launcher
   假进程集成已通过normal`0`、guard早退`96`、重复信号`129`、flock拒绝`90`、guard超时`97`且无孤儿。
   探针发现并修正`vmstat`首个since-boot数据行误判；当前只审查之后三个实时`si/so`区间。
-- 下一步只允许在`MemAvailable>=100 GiB`后，以CPU`0-31`的32个物理核启动唯一2160h/start2880资格
-  任务。19:58连续采样只有`99.62--99.68 GiB`，所以尚未真实启动，也不得降低门槛。该任务使用
+- 20:04:49可用内存自然升到`100.304 GiB`，20:05:24已启动唯一tag
+  `2030_base_2160h_stagea_capacity_link_rows8192_barrier32_20260902_v1`；tmux
+  `cispo_stagea_rowscale_2160_v1`、runner PID`384500`、guard PID`384507`。实际CPU affinity为`0-31`，
+  32个唯一物理核、NUMA0/1各16核，启动时`MemAvailable=100.292 GiB`。该任务使用
   `host_memory_soft_limit_fraction=0.95`并保留整机95%保护；profile中的`soft_mem_limit_gb=80`仅为
   fallback/provenance，runner必须将有效Gurobi `SoftMemLimit`覆盖为物理内存95%对应的十进制GB。
   raw结构必须精确为
   `12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`；presolved nnz`<=107,398,350`、
   DenseCols`<=38,982`、`AA' NZ<=2.17035e8`、Factor NZ`<=6.28845e9`、Factor Ops`<=2.19345e14`、
   factor memory`<=63 GB`且无数值警告。首个`iteration>=30`记录须满足runtime`<=12,000 s`、
-  Work`<=18,961.075`、进程组RSS`<=75 GiB`。本候选2160h尚未运行，不得提前宣称加速或启动8760h。
+  Work`<=18,961.075`、进程组RSS`<=75 GiB`。20:07:37仍在模型构建，guard`PENDING`、RSS约2.97 GiB、
+  两个stderr均0；尚无结构或iter30结论，不得提前宣称加速或启动8760h。每小时heartbeat只读监测，
+  明确不执行Stage B。
 
 ## 2026-09-02 18:04 Case1 Stage B被SIGTERM中断，Case2未启动
 
