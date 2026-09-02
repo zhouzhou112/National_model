@@ -22,7 +22,13 @@ from cispo_model.mga import (
 from cispo_model.result_summary import finalize_result_manifest
 
 
-def _write_baseline(root: Path, config, *, result_use: str = "SCIENTIFIC_PRODUCTION") -> None:
+def _write_baseline(
+    root: Path,
+    config,
+    *,
+    result_use: str = "SCIENTIFIC_PRODUCTION",
+    scientifically_accepted: bool = True,
+) -> None:
     current_inputs = pd.DataFrame(
         [
             {
@@ -49,10 +55,26 @@ def _write_baseline(root: Path, config, *, result_use: str = "SCIENTIFIC_PRODUCT
         encoding="utf-8",
     )
     (root / "solve_report.json").write_text(
-        json.dumps({"status": "OPTIMAL", "objective_value_million_cny": 123.0}),
+        json.dumps(
+            {
+                "status": "OPTIMAL",
+                "objective_value_million_cny": 123.0,
+                "scientifically_accepted": scientifically_accepted,
+                "solution_contract": {"acceptance_status": "PASS"},
+            }
+        ),
         encoding="utf-8",
     )
-    (root / "solution_qc.json").write_text(json.dumps({"status": "PASS"}), encoding="utf-8")
+    (root / "solution_qc.json").write_text(
+        json.dumps(
+            {
+                "status": "PASS",
+                "hard_checks": {"power_balance": True},
+                "scientifically_accepted": scientifically_accepted,
+            }
+        ),
+        encoding="utf-8",
+    )
     (root / "model_config_snapshot.json").write_text(
         json.dumps({"resolved_configuration": config.raw}), encoding="utf-8"
     )
@@ -93,6 +115,23 @@ class MGAContractTests(unittest.TestCase):
             _write_baseline(root, config, result_use="TEST_ONLY_TRUNCATED_HORIZON")
             with self.assertRaisesRegex(MGAError, "full-year scientific"):
                 prepare_mga_request(spec_path, root, config, root / "input_manifest.csv")
+
+    def test_prepare_rejects_integrity_valid_preservation_result(self):
+        config = load_model_config()
+        spec_path = (
+            Path(__file__).resolve().parents[1]
+            / "config/mga/base_min_onwind_new_national_epsilon_1pct.json"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _write_baseline(root, config, scientifically_accepted=False)
+            with self.assertRaisesRegex(MGAError, "accepted solver contract"):
+                prepare_mga_request(
+                    spec_path,
+                    root,
+                    config,
+                    root / "input_manifest.csv",
+                )
 
     def test_cost_cap_is_retained_when_secondary_objective_replaces_solver_objective(self):
         model = gp.Model("mga_contract_test")

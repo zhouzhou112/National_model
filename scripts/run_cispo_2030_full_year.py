@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from datetime import datetime
 from pathlib import Path
 
+import numpy as np
 import psutil
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +28,7 @@ from cispo_model.run_contract import (
     RUN_IDENTITY_FILENAME,
     claim_output_directory,
     configuration_identity,
+    qc_hard_checks_are_strictly_true,
     solver_result_is_accepted,
 )
 from cispo_model.runtime_monitor import PeakMemoryMonitor
@@ -34,9 +37,127 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
+OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB = 90.0
 FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
     "barrier_checkpoint_fixed_server_host_memory_"
 )
+DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
+    {"barrier_checkpoint_full_year_cloud_v4"}
+)
+CANONICAL_DIRECT_PROFILE_JSON_SHA256 = {
+    "solver": "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d",
+    "formulation": "8f7dcb53cf45b41f9201d51fb527f3dbf6e2eb046e0db60de2a690b3267b09d7",
+}
+
+
+def write_strict_json_atomic(path: str | Path, payload) -> None:
+    """Write scientific control JSON without truncating the prior milestone."""
+    target = Path(path)
+    temporary = target.with_name(target.name + ".part")
+    temporary.write_text(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            indent=2,
+            allow_nan=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(target)
+
+
+def persist_postsolve_finalization_error(
+    output_dir: str | Path,
+    *,
+    failed_stage: str,
+    error: Exception,
+    report: dict,
+) -> dict:
+    """Retain immutable numerical evidence when only packaging fails."""
+    root = Path(output_dir)
+    evidence: dict[str, dict[str, object]] = {}
+    for relative in (
+        "solve_report.json",
+        "solution_qc.json",
+        "barrier_checkpoint/barrier_checkpoint_manifest.json",
+    ):
+        path = root / relative
+        if path.is_file():
+            evidence[relative] = {
+                "bytes": int(path.stat().st_size),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+    payload = {
+        "status": "POST_SOLVE_FINALIZATION_FAILED",
+        "scientifically_accepted": False,
+        "failed_stage": failed_stage,
+        "error_type": type(error).__name__,
+        "error": str(error),
+        "accepted_checkpoint_retained": bool(
+            report.get("barrier_checkpoint", {}).get(
+                "scientifically_accepted"
+            )
+        ),
+        "immutable_evidence": evidence,
+        "recovery": (
+            "Keep this output immutable. Repair/retry packaging from the "
+            "checksummed checkpoint or use --recover-stage-a-from into a "
+            "new output directory; never rerun into this directory."
+        ),
+    }
+    write_strict_json_atomic(root / "finalization_error.json", payload)
+    return payload
+
+
+def _canonical_json_sha256(payload) -> str:
+    serialized = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return hashlib.sha256(serialized).hexdigest()
+
+
+def require_canonical_direct_nonbasic_profiles(config) -> None:
+    """Bind direct scientific acceptance to the reviewed profile contents."""
+    candidates = (
+        (
+            "solver",
+            config.solver_path,
+        ),
+        (
+            "formulation",
+            config.formulation_path,
+        ),
+    )
+    for label, candidate_path in candidates:
+        if candidate_path is None:
+            raise SystemExit(
+                f"Direct nonbasic scientific acceptance requires the canonical "
+                f"{label} profile"
+            )
+        try:
+            candidate = json.loads(Path(candidate_path).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise SystemExit(
+                f"Cannot validate canonical direct {label} profile: {error}"
+            ) from error
+        if _canonical_json_sha256(candidate) != (
+            CANONICAL_DIRECT_PROFILE_JSON_SHA256[label]
+        ):
+            raise SystemExit(
+                f"Direct nonbasic scientific acceptance {label} profile "
+                "content differs from the reviewed canonical profile"
+            )
+    if config.raw.get("formulation", {}).get(
+        "annual_capacity_link_row_scaling"
+    ) != "binary_power2_safe_8192_v1":
+        raise SystemExit(
+            "Direct nonbasic scientific acceptance requires "
+            "binary_power2_safe_8192_v1 annual capacity-link row scaling"
+        )
 
 
 def cloud_full_year_profile_role(profile_id: object) -> str | None:
@@ -71,6 +192,41 @@ def diagnostic_memory_requirement_gb(config, hours: int) -> float:
         if int(hours) <= int(horizon["hours"]):
             return float(horizon["minimum_available_memory_gb"])
     raise ValueError(f"Diagnostic horizon {hours} exceeds the configured full year")
+
+
+def load_center_physical_qc_pass(qc: dict | None) -> bool:
+    """Apply the original-unit hard gate used by master-solution export."""
+    if not isinstance(qc, dict):
+        return False
+    return bool(
+        float(qc.get("maximum_center_balance_residual_gwh", float("inf")))
+        <= 1e-5
+        and float(
+            qc.get(
+                "maximum_province_net_exchange_residual_gwh", float("inf")
+            )
+        )
+        <= 1e-5
+        and float(qc.get("maximum_intra_capacity_violation_gwh", float("inf")))
+        <= 1e-5
+        and float(
+            qc.get(
+                "maximum_vre_annual_availability_violation_gwh",
+                float("inf"),
+            )
+        )
+        <= 1e-5
+        and float(
+            qc.get(
+                "maximum_ror_annual_availability_violation_gwh",
+                float("inf"),
+            )
+        )
+        <= 1e-5
+        and int(qc.get("bidirectional_active_edge_count", -1)) == 0
+        and float(qc.get("dpv_spur_augmentation_max_gw", float("inf")))
+        <= 1e-8
+    )
 
 
 def resolve_host_memory_soft_limit_gb(
@@ -253,8 +409,8 @@ def main() -> None:
         "--export-barrier-checkpoint",
         action="store_true",
         help=(
-            "Export ordered BarX/BarPi arrays after an accepted Crossover=0 "
-            "solve. This is automatic for horizons longer than 744h."
+            "Legacy flag: nonbasic Stage A now always preserves available "
+            "raw vectors and candidate outputs independently of acceptance."
         ),
     )
     parser.add_argument(
@@ -262,8 +418,8 @@ def main() -> None:
         action="store_true",
         help=(
             "Treat a Crossover=0 solve as Stage A only: persist finite ordered "
-            "BarX/BarPi immediately after BarStatus=OPTIMAL, never publish it "
-            "as a scientific result or planning-state anchor."
+            "BarX/BarPi first, then all results and candidate capacity state. "
+            "Preservation is independent of acceptance and does not auto-adopt the state."
         ),
     )
     parser.add_argument(
@@ -280,9 +436,8 @@ def main() -> None:
         "--allow-nonbasic-planning-state",
         action="store_true",
         help=(
-            "Explicitly allow an accepted Crossover=0 Barrier capacity solution "
-            "with a closed BarX/BarPi checkpoint to form the next-year cohort "
-            "state. Planning sequences set this flag deliberately."
+            "Explicitly allow a scientifically accepted Crossover=0 Stage A "
+            "capacity solution with a closed checkpoint to form the next-year state."
         ),
     )
     parser.add_argument(
@@ -370,6 +525,28 @@ def main() -> None:
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--write-mps", action="store_true")
     parser.add_argument(
+        "--archive-original-model",
+        action="store_true",
+        help=(
+            "Explicitly archive the original MPS and parameter file. This is "
+            "off by default because an 8760h MPS is multi-gigabyte."
+        ),
+    )
+    parser.add_argument(
+        "--archive-model-name-catalog",
+        action="store_true",
+        help=(
+            "Also archive ordered variable/constraint name catalogs; implies "
+            "--archive-original-model and may require substantial memory/I/O."
+        ),
+    )
+    parser.add_argument("--archive-presolved-model", action="store_true",
+                        help="Also run a separate diagnostic presolve archive; implies --archive-original-model and is not an internal restart state.")
+    parser.add_argument("--recover-stage-a-from",
+                        help="Read-only exact-LP recovery from a result root; never optimize or presolve.")
+    parser.add_argument("--allow-candidate-state-in", action="store_true",
+                        help="Explicitly use an unaccepted candidate capacity state; retain all upstream QC failures.")
+    parser.add_argument(
         "--constraint-family-audit",
         action="store_true",
         help=(
@@ -392,10 +569,24 @@ def main() -> None:
         help="Developer-only structural build; never use for a production solve.",
     )
     args = parser.parse_args()
+    archive_original_model = bool(
+        args.archive_original_model
+        or args.archive_model_name_catalog
+        or args.archive_presolved_model
+    )
+    if args.recover_stage_a_from:
+        if not args.output_dir:
+            raise SystemExit("Offline recovery requires an explicit independent --output-dir")
+        if Path(args.output_dir).resolve().is_relative_to(Path(args.recover_stage_a_from).resolve()):
+            raise SystemExit("Recovery output must not overwrite or be inside the source root")
     if args.skip_full_max_cf and not args.build_only:
         raise SystemExit("--skip-full-max-cf requires --build-only")
-    if args.preflight_only and (args.build_only or args.write_mps):
-        raise SystemExit("--preflight-only cannot be combined with build/write options")
+    if args.preflight_only and (
+        args.build_only or args.write_mps or archive_original_model
+    ):
+        raise SystemExit(
+            "--preflight-only cannot be combined with build/write/archive options"
+        )
     if args.diagnostic_hours is not None and not 1 <= args.diagnostic_hours < 8760:
         raise SystemExit("--diagnostic-hours must be in [1, 8759]")
     if args.diagnostic_start_hour < 0:
@@ -439,7 +630,7 @@ def main() -> None:
         )
     if (
         args.allow_compatible_primal_dual_implementation
-        and not args.primal_dual_checkpoint_in
+        and not (args.primal_dual_checkpoint_in or args.recover_stage_a_from)
     ):
         raise SystemExit(
             "--allow-compatible-primal-dual-implementation requires "
@@ -474,6 +665,21 @@ def main() -> None:
         or config.horizon(args.horizon)["test_only"]
     )
     profile_id = config.raw.get("solver_profile", {}).get("id")
+    required_formulation_profile_id = config.raw.get(
+        "solver_profile", {}
+    ).get("required_formulation_profile_id")
+    actual_formulation_profile_id = config.raw.get(
+        "formulation_profile", {}
+    ).get("id")
+    if (
+        required_formulation_profile_id is not None
+        and actual_formulation_profile_id != required_formulation_profile_id
+    ):
+        raise SystemExit(
+            f"{profile_id} requires formulation profile "
+            f"{required_formulation_profile_id}; got "
+            f"{actual_formulation_profile_id or 'physical_v1/default'}"
+        )
     host_memory_soft_limit_fraction = config.raw.get(
         "solver_profile", {}
     ).get("host_memory_soft_limit_fraction")
@@ -527,6 +733,24 @@ def main() -> None:
         and int(numerics.get("crossover", -1)) == 0
         and int(numerics.get("solution_target", -1)) == 1
     )
+    direct_nonbasic_scientific_tolerance = bool(
+        float(numerics.get("barrier_convergence_tolerance", 1.0)) <= 1e-8
+    )
+    direct_nonbasic_scientific_acceptance = bool(
+        config.raw.get("solver_profile", {}).get(
+            "direct_nonbasic_scientific_acceptance", False
+        )
+    )
+    if (
+        direct_nonbasic_scientific_acceptance
+        and profile_id not in DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS
+    ):
+        raise SystemExit(
+            "direct_nonbasic_scientific_acceptance is reserved for the "
+            "reviewed full-year Stage A profile"
+        )
+    if direct_nonbasic_scientific_acceptance:
+        require_canonical_direct_nonbasic_profiles(config)
     requested_optimization_hours = int(
         args.diagnostic_hours
         if args.diagnostic_hours is not None
@@ -555,13 +779,13 @@ def main() -> None:
             "--engineering-barrier-checkpoint-only requires Method=2, "
             "Crossover=0, SolutionTarget=1"
         )
-    if (
-        args.engineering_barrier_checkpoint_only
-        and args.allow_nonbasic_planning_state
-    ):
-        raise SystemExit(
-            "Stage A engineering checkpoints can never export planning_state"
-        )
+    if args.allow_candidate_state_in and not args.state_in:
+        raise SystemExit("--allow-candidate-state-in requires --state-in")
+    if args.recover_stage_a_from and any((args.archive_presolved_model, args.primal_dual_checkpoint_in,
+                                        args.basis_in, args.mga_spec, args.build_only, args.preflight_only)):
+        raise SystemExit("Offline recovery cannot be combined with presolve, starts, MGA, build-only or preflight-only")
+    if args.allow_candidate_state_in and args.mga_spec:
+        raise SystemExit("Unaccepted candidate state cannot define an accepted MGA baseline")
     if (
         args.engineering_relaxed_barrier_analysis
         and not args.engineering_barrier_checkpoint_only
@@ -580,6 +804,13 @@ def main() -> None:
             "--allow-nonbasic-planning-state requires Method=2, Crossover=0, "
             "SolutionTarget=1"
         )
+    if (
+        args.allow_nonbasic_planning_state
+        and args.engineering_barrier_checkpoint_only
+    ):
+        raise SystemExit(
+            "A preservation-only engineering Stage A cannot export planning_state"
+        )
     if args.allow_nonbasic_planning_state and requested_test_only and not (
         args.export_diagnostic_state
     ):
@@ -591,8 +822,8 @@ def main() -> None:
         args.export_barrier_checkpoint or requested_optimization_hours > 744
     ):
         raise SystemExit(
-            "A nonbasic planning state requires an accepted Barrier checkpoint; "
-            "pass --export-barrier-checkpoint for horizons up to 744h"
+            "A nonbasic planning state requires a closed accepted Barrier "
+            "checkpoint; pass --export-barrier-checkpoint for horizons up to 744h"
         )
     if args.primal_dual_checkpoint_in:
         if args.basis_in or args.mga_spec or nonbasic_primal_dual_requested:
@@ -631,20 +862,32 @@ def main() -> None:
                 "SolutionTarget=1 and no solver time limit"
             )
     if (
-        cloud_full_year_role == "STAGE_A"
-        and not args.engineering_barrier_checkpoint_only
-    ):
-        raise SystemExit(
-            f"{profile_id} requires "
-            "--engineering-barrier-checkpoint-only"
-        )
-    if (
         cloud_full_year_role == "STAGE_B"
         and not args.primal_dual_checkpoint_in
     ):
         raise SystemExit(
             f"{profile_id} requires "
             "--primal-dual-checkpoint-in"
+        )
+    if (
+        nonbasic_primal_dual_requested
+        and not args.engineering_barrier_checkpoint_only
+        and not direct_nonbasic_scientific_acceptance
+    ):
+        raise SystemExit(
+            f"{profile_id} requires --engineering-barrier-checkpoint-only; "
+            "this solver profile does not authorize direct scientific "
+            "nonbasic acceptance"
+        )
+    if (
+        nonbasic_primal_dual_requested
+        and not args.engineering_barrier_checkpoint_only
+        and not direct_nonbasic_scientific_tolerance
+    ):
+        raise SystemExit(
+            "Direct scientific Stage A acceptance requires "
+            "BarConvTol <= 1e-8; use --engineering-barrier-checkpoint-only "
+            "for a looser preservation-only run"
         )
     if cloud_full_year_role is not None and requested_test_only:
         raise SystemExit(
@@ -707,6 +950,7 @@ def main() -> None:
             args.state_in,
             expected_boundary_year=config.boundary_year,
             allow_test_only=args.allow_diagnostic_state_in,
+            allow_unaccepted_candidate=args.allow_candidate_state_in,
         )
         if (
             planning_state.metadata.get("state_use")
@@ -805,11 +1049,22 @@ def main() -> None:
         "configured_full_year_hours": config.hours,
         "definition": definition,
         "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
+        "offline_recovery": ({
+            "source": str(Path(args.recover_stage_a_from).resolve()),
+            "minimum_available_memory_gib": (OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB if optimization_hours > 744 else required_gb),
+            "optimize_called": False, "presolve_called": False,
+        } if args.recover_stage_a_from else None),
         "scientific_acceptance_mode": (
             "ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS"
             if args.engineering_relaxed_barrier_analysis
             else "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
             if args.engineering_barrier_checkpoint_only
+            else "OFFLINE_RECOVERY_UNACCEPTED"
+            if args.recover_stage_a_from
+            else "UPSTREAM_CANDIDATE_REMAINS_UNACCEPTED"
+            if args.allow_candidate_state_in
+            else "STRICT_NONBASIC_STAGE_A_DIRECT_ACCEPTANCE"
+            if nonbasic_primal_dual_requested
             else "STANDARD_STRICT_ACCEPTANCE"
         ),
         "annual_cost_and_policy_scaling": (
@@ -836,6 +1091,9 @@ def main() -> None:
         "annual_emissions_accounting": config.raw["formulation"][
             "annual_emissions_accounting"
         ],
+        "annual_capacity_link_row_scaling": config.raw["formulation"].get(
+            "annual_capacity_link_row_scaling", "physical_v1"
+        ),
         "state_in": str(planning_state.root) if planning_state.root else None,
         "state_format": planning_state.metadata.get("format"),
         "available_memory_gb": round(available_gb, 2),
@@ -899,8 +1157,8 @@ def main() -> None:
                 args.allow_deferred_crossover_planning_state
             ),
             "planning_state_policy": (
-                "STAGE_A_ENGINEERING_CHECKPOINT_NEVER_EXPORTS_STATE"
-                if args.engineering_barrier_checkpoint_only
+                "UPSTREAM_UNACCEPTED_CANDIDATE_CANNOT_BECOME_ACCEPTED_STATE"
+                if args.allow_candidate_state_in
                 else (
                     "ACCEPTED_STAGE_B_BASIC_CAPACITY_STATE"
                     if args.allow_deferred_crossover_planning_state
@@ -966,11 +1224,19 @@ def main() -> None:
         return
     if (
         not args.build_only
+        and not args.recover_stage_a_from
         and prebuild_solver_numerical_compatibility["status"] != "PASS"
     ):
         raise RuntimeError(
             str(prebuild_solver_numerical_compatibility["reason"])
         )
+    if args.recover_stage_a_from and optimization_hours > 744:
+        # Recovery only builds the original LP; it never allocates Barrier factors.
+        required_gb = OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB
+    if args.recover_stage_a_from:
+        from cispo_model.offline_solution import verify_recovery_inputs
+        verify_recovery_inputs(args.recover_stage_a_from, output_dir,
+            allow_compatible_implementation=args.allow_compatible_primal_dual_implementation, check_lp=False)
     if available_gb < required_gb:
         raise SystemExit(
             f"HARD_FAIL: available memory {available_gb:.1f} GiB < "
@@ -996,6 +1262,53 @@ def main() -> None:
         optimization_hours=optimization_hours,
         optimization_start_hour=optimization_start_hour,
     )
+    row_scaling_registry = artifacts.index.get(
+        "annual_capacity_link_row_scaling"
+    )
+    requested_row_scaling = config.raw["formulation"].get(
+        "annual_capacity_link_row_scaling", "physical_v1"
+    )
+    if (
+        requested_row_scaling != "physical_v1"
+        and not isinstance(row_scaling_registry, dict)
+    ):
+        raise RuntimeError(
+            "Requested annual capacity-link row scaling has no runtime registry"
+        )
+    if direct_nonbasic_scientific_acceptance:
+        from cispo_model.annual_capacity_link_scaling import (
+            BINARY_POWER2_SAFE_8192_V1,
+            MAX_BINARY_EXPONENT,
+            validate_row_scaling_registry,
+        )
+
+        validated_direct_registry = validate_row_scaling_registry(
+            row_scaling_registry,
+            model=artifacts.model,
+            allow_none=False,
+        )
+        if (
+            validated_direct_registry["profile"]
+            != BINARY_POWER2_SAFE_8192_V1
+            or any(
+                int(family["exponent"]) != MAX_BINARY_EXPONENT
+                for family in validated_direct_registry["families"].values()
+            )
+        ):
+            raise RuntimeError(
+                "Direct nonbasic scientific acceptance requires exact VRE/ROR "
+                "annual capacity-link exponent 13 runtime evidence"
+            )
+    row_scaling_manifest_path = None
+    if row_scaling_registry is not None:
+        row_scaling_manifest_path = (
+            output_dir / "annual_capacity_link_row_scaling.json"
+        )
+        row_scaling_manifest_path.write_text(
+            json.dumps(row_scaling_registry, ensure_ascii=False, indent=2)
+            + "\n",
+            encoding="utf-8",
+        )
     # Every run records a constant-memory Gurobi identity. Exact ordered names
     # and the raw CSR pattern are materialized only for explicit guarded basis
     # import/export, never merely because a long-horizon solve was requested.
@@ -1070,6 +1383,7 @@ def main() -> None:
             allow_compatible_implementation_bundle=bool(
                 args.allow_compatible_primal_dual_implementation
             ),
+            row_scaling_registry=row_scaling_registry,
         )
         (output_dir / "primal_dual_start_input.json").write_text(
             json.dumps(primal_dual_start, ensure_ascii=False, indent=2) + "\n",
@@ -1154,6 +1468,12 @@ def main() -> None:
         ),
         "memory_after_build": memory_monitor.snapshot(),
         "statistics": statistics,
+        "annual_capacity_link_row_scaling": row_scaling_registry,
+        "annual_capacity_link_row_scaling_path": (
+            str(row_scaling_manifest_path)
+            if row_scaling_manifest_path is not None
+            else None
+        ),
         "warm_start": warm_start,
         "primal_dual_start": primal_dual_start,
         "mga": mga_run,
@@ -1166,6 +1486,67 @@ def main() -> None:
         artifacts.model.write(
             str(output_dir / f"cispo_{config.planning_year}_{optimization_hours}h.mps")
         )
+    from cispo_model.solution_preservation import archive_model, preserve_stage_a, write_json
+    if (
+        not args.recover_stage_a_from
+        and (not args.build_only or archive_original_model)
+    ):
+        from cispo_model.diagnostics import configure_gurobi
+        configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
+    if archive_original_model:
+        archive_model(
+            artifacts.model,
+            output_dir,
+            presolved=args.archive_presolved_model,
+            include_name_catalog=args.archive_model_name_catalog,
+        )
+    if args.recover_stage_a_from:
+        import shutil
+        from cispo_model.offline_solution import (
+            offline_artifacts, read_snapshot, read_legacy_checkpoint, verify_recovery_inputs, audit_saved_primal,
+        )
+        from cispo_model.solution_preservation import write_json
+        source_root = Path(args.recover_stage_a_from).resolve()
+        evidence = verify_recovery_inputs(source_root, output_dir,
+            allow_compatible_implementation=args.allow_compatible_primal_dual_implementation)
+        if (source_root / "solution_snapshot" / "snapshot_manifest.json").is_file():
+            primal, dual = read_snapshot(
+                artifacts.model,
+                source_root / "solution_snapshot",
+                expected_row_scaling_registry=row_scaling_registry,
+            )
+            source_vectors = source_root / "solution_snapshot"
+        else:
+            primal, dual = read_legacy_checkpoint(
+                artifacts.model,
+                source_root,
+                expected_row_scaling_registry=row_scaling_registry,
+            )
+            source_vectors = source_root / "barrier_checkpoint"
+        view = offline_artifacts(artifacts, primal, dual)
+        source_report = json.loads((source_root / "solve_report.json").read_text(encoding="utf-8"))
+        write_json(output_dir / "raw_lp_qc.json", audit_saved_primal(
+            artifacts.model, primal,
+            tolerance=float((source_report.get("solution_contract") or {}).get("maximum_primal_quality_limit") or 1e-5),
+            violations_path=output_dir / "raw_lp_violations.csv.gz",
+            row_scaling_registry=row_scaling_registry))
+        evidence["source_solve_report_sha256"] = hashlib.sha256(
+            (source_root / "solve_report.json").read_bytes()).hexdigest()
+        evidence["recomputed_objective"] = float(view.model.ObjVal)
+        evidence["source_objective"] = source_report.get("objective_value_million_cny")
+        if evidence["source_objective"] is not None:
+            evidence["objective_difference"] = float(view.model.ObjVal - evidence["source_objective"])
+        shutil.copytree(source_vectors, output_dir / "source_checkpoint")
+        shutil.copy2(source_root / "solve_report.json", output_dir / "source_solve_report.json")
+        write_json(output_dir / "offline_recovery.json", evidence)
+        recovered = preserve_stage_a(view, data, config, output_dir,
+                                    dict(source_report, recovery="offline_recovery.json"), snapshot=False)
+        write_json(output_dir / "preservation_runtime_memory.json", memory_monitor.stop())
+        finalize_result_manifest(output_dir, config)
+        print(json.dumps(recovered, ensure_ascii=False, indent=2))
+        if recovered["status"] != "COMPLETE":
+            raise SystemExit(2)
+        return
     if args.build_only:
         build_report["memory_at_exit"] = memory_monitor.stop()
         (output_dir / "build_report.json").write_text(
@@ -1213,20 +1594,35 @@ def main() -> None:
         optimization_hours=optimization_hours,
         optimization_start_hour=optimization_start_hour,
         result_use=scope_report["result_use"],
+        upstream_candidate_state=(planning_state.metadata if planning_state.metadata.get("candidate_unaccepted") else None),
+        annual_capacity_link_row_scaling=row_scaling_registry,
     )
     (output_dir / "solve_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    solver_solution_accepted = bool(
+        report["status"] == "OPTIMAL"
+        and report.get("solution_contract", {}).get(
+            "acceptance_status"
+        ) == "PASS"
+    )
     engineering_checkpoint_completed = False
+    raw_checkpoint_saved = False
+    semantic_artifacts = artifacts
     barrier_status_code = report.get("solution_contract", {}).get(
         "barrier_status_code"
     )
     barrier_iterations = int(
         report.get("iteration_counts", {}).get("barrier", 0)
     )
-    if args.engineering_barrier_checkpoint_only and (
-        barrier_status_code == 2 or barrier_iterations > 0
+    if (
+        nonbasic_primal_dual_requested
+        and (
+            args.engineering_barrier_checkpoint_only
+            or not solver_solution_accepted
+        )
+        and (barrier_status_code == 2 or barrier_iterations > 0)
     ):
         try:
             from cispo_model.primal_dual_checkpoint import (
@@ -1248,17 +1644,48 @@ def main() -> None:
                 accepted_primary=False,
                 engineering_only=complete_barrier,
                 allow_incomplete_barrier=not complete_barrier,
+                row_scaling_registry=row_scaling_registry,
             )
             engineering_checkpoint_completed = complete_barrier
+            raw_checkpoint_saved = True
+            if complete_barrier:
+                from cispo_model.offline_solution import offline_artifacts
+
+                checkpoint_root = output_dir / CHECKPOINT_DIRECTORY
+                checkpoint_primal = np.load(
+                    checkpoint_root
+                    / engineering_checkpoint["vectors"]["primal"]["path"],
+                    mmap_mode="r",
+                    allow_pickle=False,
+                )
+                checkpoint_dual = np.load(
+                    checkpoint_root
+                    / engineering_checkpoint["vectors"]["dual"]["path"],
+                    mmap_mode="r",
+                    allow_pickle=False,
+                )
+                semantic_artifacts = offline_artifacts(
+                    artifacts,
+                    checkpoint_primal,
+                    checkpoint_dual,
+                    objective=report.get("objective_value_million_cny"),
+                )
             report["barrier_checkpoint"] = {
                 "status": engineering_checkpoint["checkpoint_status"],
                 "scientifically_accepted": False,
                 "deferred_crossover_eligible": complete_barrier,
                 "engineering_shadow_prices_available": True,
+                "semantic_export_primal_attribute": (
+                    "BarX" if complete_barrier else "LIVE_SOLVER_VALUES"
+                ),
+                "semantic_export_dual_attribute": (
+                    "BarPi" if complete_barrier else "LIVE_SOLVER_VALUES"
+                ),
                 "path": str(
                     output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
                 ),
             }
+            raw_checkpoint_saved = True
             report["run_completion_status"] = (
                 "ENGINEERING_BARRIER_CHECKPOINT_COMPLETE"
                 if complete_barrier
@@ -1303,6 +1730,7 @@ def main() -> None:
                 result_use=scope_report["result_use"],
                 solution_qc=None,
                 accepted_primary=False,
+                row_scaling_registry=row_scaling_registry,
             )
             report["barrier_checkpoint"] = {
                 "status": recovery["checkpoint_status"],
@@ -1322,6 +1750,96 @@ def main() -> None:
                 encoding="utf-8",
             )
             report["barrier_checkpoint"] = checkpoint_error
+    primary_checkpoint_requested = bool(
+        nonbasic_primal_dual_requested
+        and not args.engineering_barrier_checkpoint_only
+        and (args.export_barrier_checkpoint or optimization_hours > 744)
+    )
+    if primary_checkpoint_requested and solver_solution_accepted:
+        try:
+            from cispo_model.primal_dual_checkpoint import (
+                CHECKPOINT_DIRECTORY,
+                CHECKPOINT_MANIFEST,
+                export_barrier_primal_dual_checkpoint,
+            )
+            from cispo_model.offline_solution import offline_artifacts
+
+            pending_checkpoint = export_barrier_primal_dual_checkpoint(
+                artifacts.model,
+                config,
+                output_dir,
+                solve_report=report,
+                optimization_hours=optimization_hours,
+                optimization_start_hour=optimization_start_hour,
+                result_use=scope_report["result_use"],
+                solution_qc=None,
+                accepted_primary=False,
+                pending_qc=True,
+                row_scaling_registry=row_scaling_registry,
+            )
+            raw_checkpoint_saved = True
+            checkpoint_root = output_dir / CHECKPOINT_DIRECTORY
+            checkpoint_primal = np.load(
+                checkpoint_root
+                / pending_checkpoint["vectors"]["primal"]["path"],
+                mmap_mode="r",
+                allow_pickle=False,
+            )
+            checkpoint_dual = np.load(
+                checkpoint_root
+                / pending_checkpoint["vectors"]["dual"]["path"],
+                mmap_mode="r",
+                allow_pickle=False,
+            )
+            semantic_artifacts = offline_artifacts(
+                artifacts,
+                checkpoint_primal,
+                checkpoint_dual,
+                objective=report.get("objective_value_million_cny"),
+            )
+            report["barrier_checkpoint"] = {
+                "status": pending_checkpoint["checkpoint_status"],
+                "scientifically_accepted": False,
+                "deferred_crossover_eligible": False,
+                "stage_b_required": False,
+                "semantic_export_primal_attribute": "BarX",
+                "semantic_export_dual_attribute": "BarPi",
+                "path": str(
+                    output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
+                ),
+            }
+            (output_dir / "solve_report.json").write_text(
+                json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+        except Exception as error:
+            checkpoint_error = {
+                "status": "PENDING_QC_CHECKPOINT_EXPORT_FAILED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "scientifically_accepted": False,
+            }
+            write_json(
+                output_dir / "barrier_checkpoint_error.json",
+                checkpoint_error,
+            )
+            report["barrier_checkpoint"] = checkpoint_error
+            report["runtime_memory"] = memory_monitor.snapshot()
+            preserved = preserve_stage_a(
+                artifacts,
+                data,
+                config,
+                output_dir,
+                report,
+                snapshot=not raw_checkpoint_saved,
+            )
+            write_json(
+                output_dir / "preservation_runtime_memory.json",
+                memory_monitor.stop(),
+            )
+            finalize_result_manifest(output_dir, config)
+            print(json.dumps(preserved, ensure_ascii=False, indent=2))
+            raise SystemExit(2)
     export_state = False
     state_export_requested = False
     qc = None
@@ -1403,20 +1921,101 @@ def main() -> None:
                 encoding="utf-8",
             )
             report["engineering_relaxed_barrier_analysis"] = analysis_error
-    solver_solution_accepted = bool(
-        report["status"] == "OPTIMAL"
-        and report.get("solution_contract", {}).get(
-            "acceptance_status"
-        ) == "PASS"
-    )
+    # Explicit engineering runs, failed strict Stage A solves, and tainted
+    # upstream candidate sequences are preserved but never scientifically
+    # accepted. A strict nonbasic Stage A continues to physical QC below.
+    if (
+        args.engineering_barrier_checkpoint_only
+        or (nonbasic_primal_dual_requested and not solver_solution_accepted)
+        or planning_state.metadata.get("candidate_unaccepted")
+    ):
+        report["runtime_memory"] = memory_monitor.snapshot()
+        preserved = preserve_stage_a(
+            semantic_artifacts,
+            data,
+            config,
+            output_dir,
+            report,
+            snapshot=not raw_checkpoint_saved,
+        )
+        write_json(output_dir / "preservation_runtime_memory.json", memory_monitor.stop())
+        finalize_result_manifest(output_dir, config)
+        print(json.dumps(preserved, ensure_ascii=False, indent=2))
+        # Success here means complete preservation, never scientific acceptance.
+        if preserved["status"] != "COMPLETE":
+            raise SystemExit(2)
+        if (
+            args.engineering_barrier_checkpoint_only
+            and engineering_checkpoint_completed
+        ):
+            return
+        raise SystemExit(2)
     if (
         artifacts.model.SolCount
         and solver_solution_accepted
         and not args.engineering_barrier_checkpoint_only
     ):
-        export_master_solution(artifacts, data, output_dir)
-        qc = export_operational_solution(artifacts, data, config, output_dir)
-        export_result_summary(artifacts, data, config, output_dir)
+        try:
+            master_qc = export_master_solution(
+                semantic_artifacts,
+                data,
+                output_dir,
+                enforce_qc=not nonbasic_primal_dual_requested,
+            )
+            qc = export_operational_solution(
+                semantic_artifacts,
+                data,
+                config,
+                output_dir,
+                enforce_qc=not nonbasic_primal_dual_requested,
+            )
+            if nonbasic_primal_dual_requested:
+                master_qc_pass = load_center_physical_qc_pass(master_qc)
+                qc["load_center_physical_qc"] = master_qc
+                qc.setdefault("hard_checks", {})[
+                    "load_center_annual_capacity_link_physical_units"
+                ] = master_qc_pass
+                if not master_qc_pass:
+                    qc["status"] = "FAIL"
+                (output_dir / "solution_qc.json").write_text(
+                    json.dumps(
+                        qc,
+                        ensure_ascii=False,
+                        indent=2,
+                        allow_nan=False,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+            export_result_summary(
+                semantic_artifacts, data, config, output_dir
+            )
+        except Exception as error:
+            semantic_error = {
+                "status": "SEMANTIC_EXPORT_FAILED_PRESERVED_UNACCEPTED",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "scientifically_accepted": False,
+            }
+            write_json(output_dir / "semantic_export_error.json", semantic_error)
+            report["semantic_export_error"] = semantic_error
+            report["solution_export_status"] = semantic_error["status"]
+            report["runtime_memory"] = memory_monitor.snapshot()
+            preserved = preserve_stage_a(
+                semantic_artifacts,
+                data,
+                config,
+                output_dir,
+                report,
+                snapshot=not raw_checkpoint_saved,
+            )
+            write_json(
+                output_dir / "preservation_runtime_memory.json",
+                memory_monitor.stop(),
+            )
+            finalize_result_manifest(output_dir, config)
+            print(json.dumps(preserved, ensure_ascii=False, indent=2))
+            raise SystemExit(2)
         state_export_requested = bool(
             (not test_only or args.export_diagnostic_state)
             and report["status"] == "OPTIMAL"
@@ -1481,50 +2080,131 @@ def main() -> None:
         report["solution_export_status"] = (
             "SKIPPED_UNACCEPTED_SOLVER_RESULT"
         )
-    primary_checkpoint_requested = bool(
+    if (
         nonbasic_primal_dual_requested
-        and not args.engineering_barrier_checkpoint_only
-        and (args.export_barrier_checkpoint or optimization_hours > 744)
-    )
+        and qc is not None
+        and (
+            qc.get("status") != "PASS"
+            or not qc_hard_checks_are_strictly_true(qc)
+        )
+    ):
+        report["solution_export_status"] = (
+            "PRESERVED_UNACCEPTED_ORIGINAL_UNIT_QC_FAIL"
+        )
+        report["runtime_memory"] = memory_monitor.snapshot()
+        preserved = preserve_stage_a(
+            semantic_artifacts,
+            data,
+            config,
+            output_dir,
+            report,
+            snapshot=not raw_checkpoint_saved,
+        )
+        write_json(
+            output_dir / "preservation_runtime_memory.json",
+            memory_monitor.stop(),
+        )
+        finalize_result_manifest(output_dir, config)
+        print(json.dumps(preserved, ensure_ascii=False, indent=2))
+        raise SystemExit(2)
     if primary_checkpoint_requested and qc is not None and qc.get("status") == "PASS":
+        checkpoint_promoted = False
         try:
             from cispo_model.primal_dual_checkpoint import (
                 CHECKPOINT_DIRECTORY,
                 CHECKPOINT_MANIFEST,
-                export_barrier_primal_dual_checkpoint,
+                promote_pending_qc_checkpoint,
             )
 
-            checkpoint = export_barrier_primal_dual_checkpoint(
-                artifacts.model,
-                config,
+            checkpoint = promote_pending_qc_checkpoint(
                 output_dir,
                 solve_report=report,
-                optimization_hours=optimization_hours,
-                optimization_start_hour=optimization_start_hour,
-                result_use=scope_report["result_use"],
                 solution_qc=qc,
-                accepted_primary=True,
             )
+            checkpoint_promoted = True
             report["barrier_checkpoint"] = {
                 "status": checkpoint["checkpoint_status"],
                 "scientifically_accepted": True,
                 "deferred_crossover_eligible": True,
+                "stage_b_required": False,
+                "semantic_export_primal_attribute": "BarX",
+                "semantic_export_dual_attribute": "BarPi",
                 "path": str(
                     output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
                 ),
             }
+            # Persist the accepted solver/QC/checkpoint milestone before any
+            # planning-state, dashboard, catalog, or presentation packaging.
+            # A later packaging failure must never obscure the costly accepted
+            # numerical evidence or silently rewrite it as unaccepted.
+            write_strict_json_atomic(
+                output_dir / "solve_report.json",
+                report,
+            )
         except Exception as error:
+            if checkpoint_promoted:
+                try:
+                    finalization_error = persist_postsolve_finalization_error(
+                        output_dir,
+                        failed_stage="accepted_checkpoint_solve_report",
+                        error=error,
+                        report=report,
+                    )
+                except Exception as sidecar_error:
+                    print(
+                        "Failed to persist finalization_error.json: "
+                        + repr(sidecar_error),
+                        file=sys.stderr,
+                    )
+                    finalization_error = {
+                        "status": "POST_SOLVE_FINALIZATION_FAILED",
+                        "failed_stage": "accepted_checkpoint_solve_report",
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                        "accepted_checkpoint_retained": True,
+                    }
+                print(
+                    json.dumps(
+                        finalization_error,
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                )
+                raise SystemExit(2) from error
             checkpoint_error = {
                 "status": "PRIMARY_CHECKPOINT_EXPORT_FAILED",
                 "error_type": type(error).__name__,
                 "error": str(error),
-                "scientific_solution_remains_eligible_for_normal_acceptance": True,
+                "scientifically_accepted": False,
             }
             (output_dir / "barrier_checkpoint_error.json").write_text(
                 json.dumps(checkpoint_error, ensure_ascii=False, indent=2) + "\n",
                 encoding="utf-8",
             )
             report["barrier_checkpoint"] = checkpoint_error
+            report["solution_export_status"] = (
+                "PRESERVED_UNACCEPTED_CHECKPOINT_PROMOTION_FAILED"
+            )
+            report["runtime_memory"] = memory_monitor.snapshot()
+            preserved = preserve_stage_a(
+                # Promotion can fail because the persisted pending vectors are
+                # unreadable or no longer match their checksums.  Re-read the
+                # live solver model and create an independent snapshot instead
+                # of treating the suspect checkpoint as complete preservation.
+                artifacts,
+                data,
+                config,
+                output_dir,
+                report,
+                snapshot=True,
+            )
+            write_json(
+                output_dir / "preservation_runtime_memory.json",
+                memory_monitor.stop(),
+            )
+            finalize_result_manifest(output_dir, config)
+            print(json.dumps(preserved, ensure_ascii=False, indent=2))
+            raise SystemExit(2)
     if (
         state_export_requested
         and nonbasic_primal_dual_requested
@@ -1541,85 +2221,139 @@ def main() -> None:
         )
     if export_state:
         report["planning_state_path"] = str(output_dir / "planning_state")
-    report["runtime_memory"] = memory_monitor.stop()
-    if (
-        args.export_warm_start_basis
-        and qc is not None
-        and report["status"] == "OPTIMAL"
-        and qc["status"] == "PASS"
-    ):
-        from cispo_model.basis_reuse import export_warm_start_basis
+    manifest_valid = False
+    finalization_stage = "runtime_memory"
+    try:
+        report["runtime_memory"] = memory_monitor.stop()
+        finalization_stage = "warm_start_basis"
+        if (
+            args.export_warm_start_basis
+            and qc is not None
+            and report["status"] == "OPTIMAL"
+            and qc["status"] == "PASS"
+        ):
+            from cispo_model.basis_reuse import export_warm_start_basis
 
-        report["warm_start_basis"] = export_warm_start_basis(
-            artifacts.model,
-            config,
-            output_dir,
-            solve_report=report,
-            solution_qc=qc,
-            optimization_hours=optimization_hours,
-            optimization_start_hour=optimization_start_hour,
-            result_use=scope_report["result_use"],
-        )
-    if (
-        args.export_scientific_solver_artifacts
-        and qc is not None
-        and report["status"] == "OPTIMAL"
-        and qc["status"] == "PASS"
-    ):
-        from cispo_model.solver_artifacts import (
-            export_scientific_base_solver_artifacts,
-        )
-
-        report["scientific_solver_artifacts"] = (
-            export_scientific_base_solver_artifacts(
+            report["warm_start_basis"] = export_warm_start_basis(
                 artifacts.model,
                 config,
                 output_dir,
                 solve_report=report,
                 solution_qc=qc,
+                optimization_hours=optimization_hours,
+                optimization_start_hour=optimization_start_hour,
                 result_use=scope_report["result_use"],
             )
-        )
-    if qc is not None:
-        report["result_manifest_path"] = str(output_dir / "result_manifest.json")
-    (output_dir / "solve_report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    if structure_audit is not None:
-        from cispo_model.solver_audit import parse_gurobi_log
-
-        structure_audit["solver_log_global"] = parse_gurobi_log(
-            (output_dir / "gurobi.log").read_text(
-                encoding="utf-8", errors="replace"
+        finalization_stage = "scientific_solver_artifacts"
+        if (
+            args.export_scientific_solver_artifacts
+            and qc is not None
+            and report["status"] == "OPTIMAL"
+            and qc["status"] == "PASS"
+        ):
+            from cispo_model.solver_artifacts import (
+                export_scientific_base_solver_artifacts,
             )
+
+            report["scientific_solver_artifacts"] = (
+                export_scientific_base_solver_artifacts(
+                    artifacts.model,
+                    config,
+                    output_dir,
+                    solve_report=report,
+                    solution_qc=qc,
+                    result_use=scope_report["result_use"],
+                )
+            )
+        if qc is not None:
+            report["result_manifest_path"] = str(
+                output_dir / "result_manifest.json"
+            )
+        finalization_stage = "solve_report"
+        write_strict_json_atomic(
+            output_dir / "solve_report.json",
+            report,
         )
-        structure_audit["solve_summary"] = {
-            "status": report.get("status"),
-            "runtime_seconds": report.get("runtime_seconds"),
-            "objective_value_million_cny": report.get("objective_value_million_cny"),
-            "peak_process_tree_rss_gib": report.get("runtime_memory", {}).get(
-                "peak_process_tree_rss_gib"
-            ),
-        }
-        structure_audit_path.write_text(
-            json.dumps(structure_audit, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
-    if export_state:
-        export_solution_planning_state(
-            artifacts,
-            data,
-            config,
-            output_dir,
-            state_use=scope_report["result_use"],
-        )
-    manifest_valid = False
-    if qc is not None:
-        build_result_dashboard(output_dir)
-        write_output_catalog(output_dir)
-        finalize_result_manifest(output_dir, config)
-        manifest_valid, _ = validate_result_manifest(output_dir)
+        finalization_stage = "constraint_family_audit"
+        if structure_audit is not None:
+            from cispo_model.solver_audit import parse_gurobi_log
+
+            structure_audit["solver_log_global"] = parse_gurobi_log(
+                (output_dir / "gurobi.log").read_text(
+                    encoding="utf-8", errors="replace"
+                )
+            )
+            structure_audit["solve_summary"] = {
+                "status": report.get("status"),
+                "runtime_seconds": report.get("runtime_seconds"),
+                "objective_value_million_cny": report.get(
+                    "objective_value_million_cny"
+                ),
+                "peak_process_tree_rss_gib": report.get(
+                    "runtime_memory", {}
+                ).get("peak_process_tree_rss_gib"),
+            }
+            structure_audit_path.write_text(
+                json.dumps(
+                    structure_audit,
+                    ensure_ascii=False,
+                    indent=2,
+                    allow_nan=False,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+        finalization_stage = "planning_state"
+        if export_state:
+            export_solution_planning_state(
+                semantic_artifacts,
+                data,
+                config,
+                output_dir,
+                state_use=scope_report["result_use"],
+            )
+        if qc is not None:
+            finalization_stage = "result_dashboard"
+            build_result_dashboard(output_dir)
+            finalization_stage = "output_catalog"
+            write_output_catalog(output_dir)
+            finalization_stage = "result_manifest"
+            finalize_result_manifest(output_dir, config)
+            manifest_valid, manifest_failures = validate_result_manifest(
+                output_dir
+            )
+            if not manifest_valid:
+                raise RuntimeError(
+                    "Final result manifest validation failed: "
+                    + "; ".join(manifest_failures)
+                )
+    except Exception as error:
+        try:
+            finalization_error = persist_postsolve_finalization_error(
+                output_dir,
+                failed_stage=finalization_stage,
+                error=error,
+                report=report,
+            )
+        except Exception as sidecar_error:
+            print(
+                "Failed to persist finalization_error.json: "
+                + repr(sidecar_error),
+                file=sys.stderr,
+            )
+            finalization_error = {
+                "status": "POST_SOLVE_FINALIZATION_FAILED",
+                "failed_stage": finalization_stage,
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "accepted_checkpoint_retained": bool(
+                    report.get("barrier_checkpoint", {}).get(
+                        "scientifically_accepted"
+                    )
+                ),
+            }
+        print(json.dumps(finalization_error, ensure_ascii=False, indent=2))
+        raise SystemExit(2) from error
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if args.engineering_barrier_checkpoint_only:
         if engineering_checkpoint_completed:

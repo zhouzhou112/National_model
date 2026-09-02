@@ -22,6 +22,7 @@ from .config import ModelConfig
 from .data import STORAGE_TECHS, VRE_TECHS, ModelData
 from .io_contract import sha256_file, validate_result_manifest
 from .master import MasterArtifacts
+from .run_contract import solver_result_is_accepted
 
 
 MGA_SCHEMA_VERSION = 1
@@ -146,8 +147,15 @@ def validate_mga_baseline(
     ):
         if int(scope.get(key, -1)) != expected:
             raise MGAError(f"MGA baseline {key} differs from the requested run")
-    if report.get("status") != "OPTIMAL" or qc.get("status") != "PASS":
-        raise MGAError("MGA baseline requires solve_report OPTIMAL and solution_qc PASS")
+    if not solver_result_is_accepted(
+        report,
+        qc,
+        result_manifest_valid=valid,
+    ):
+        raise MGAError(
+            "MGA baseline requires an accepted solver contract, finite QC, "
+            "strict hard checks and a closed result manifest"
+        )
     try:
         baseline_cost = float(report["objective_value_million_cny"])
     except (KeyError, TypeError, ValueError) as error:

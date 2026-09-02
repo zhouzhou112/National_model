@@ -29,6 +29,7 @@ from cispo_model.run_contract import (
     output_matches_configuration,
     release_sequence_directory,
     sequence_identity,
+    solver_result_is_accepted,
 )
 
 
@@ -93,14 +94,14 @@ def accepted(
         qc = json.loads(qc_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError, OSError):
         return False
-    hard_checks = qc.get("hard_checks")
+    manifest_ok, _ = validate_result_manifest(output_dir)
     accepted_core = bool(
-        solve.get("status") == "OPTIMAL"
+        solver_result_is_accepted(
+            solve,
+            qc,
+            result_manifest_valid=manifest_ok,
+        )
         and solve.get("result_use") == expected_result_use
-        and qc.get("status") == "PASS"
-        and isinstance(hard_checks, dict)
-        and bool(hard_checks)
-        and all(bool(value) for value in hard_checks.values())
         and (state_path.is_file() or not require_state)
     )
     if not accepted_core:
@@ -131,9 +132,6 @@ def accepted(
                 scenario_id = "base"
         if str(scenario_id) != str(expected_scenario_id):
             return False
-    manifest_ok, _ = validate_result_manifest(output_dir)
-    if not manifest_ok:
-        return False
     if expected_run_id is not None:
         try:
             attempt = json.loads(

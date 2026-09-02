@@ -72,6 +72,28 @@ class RunContractTests(unittest.TestCase):
                 True,
             ),
             (report, {"status": "PASS", "hard_checks": {}}, True),
+            (
+                report,
+                {"status": "PASS", "hard_checks": {"power_balance": 1}},
+                True,
+            ),
+            (
+                report,
+                {
+                    "status": "PASS",
+                    "hard_checks": {"power_balance": float("nan")},
+                },
+                True,
+            ),
+            (
+                report,
+                {
+                    "status": "PASS",
+                    "hard_checks": {"power_balance": True},
+                    "maximum_power_balance_residual_gw": float("nan"),
+                },
+                True,
+            ),
             (report, {"status": "PASS"}, True),
             (report, qc, False),
             (report, None, True),

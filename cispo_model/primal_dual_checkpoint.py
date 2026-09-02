@@ -17,11 +17,19 @@ from typing import Any
 import numpy as np
 
 from .config import ModelConfig
+from .annual_capacity_link_scaling import (
+    active_row_scaling_registry,
+    validate_row_scaling_registry,
+)
 from .io_contract import (
     input_manifest_scientific_resume_identity,
     sha256_file,
     validate_input_manifest,
     validate_result_manifest,
+)
+from .run_contract import (
+    qc_hard_checks_are_strictly_true,
+    qc_payload_numbers_are_finite,
 )
 
 
@@ -31,6 +39,7 @@ CHECKPOINT_MANIFEST = "barrier_checkpoint_manifest.json"
 ACCEPTED_CHECKPOINT_STATUS = "ACCEPTED_PRIMARY_BARRIER_SOLUTION"
 ENGINEERING_CHECKPOINT_STATUS = "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
 RECOVERY_CHECKPOINT_STATUS = "RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT"
+PENDING_QC_CHECKPOINT_STATUS = "PENDING_ORIGINAL_UNIT_QC"
 DEFERRED_CROSSOVER_OPTIONAL_UNUSED_DATA_ROOTS = frozenset(
     {"CISPO_RAW_GRFR_ROOT"}
 )
@@ -184,6 +193,118 @@ def _write_vector(model: Any, attribute: str, path: Path, expected: int) -> dict
     return result
 
 
+def _compare_saved_vector_to_current_solution(
+    model: Any,
+    *,
+    current_attribute: str,
+    saved_path: Path,
+    expected: int,
+) -> dict[str, Any]:
+    """Bind a saved Barrier vector to Gurobi's quality-audited current solution."""
+    try:
+        try:
+            values = model.getAttr(current_attribute)
+        except TypeError:
+            objects = (
+                model.getVars()
+                if current_attribute == "X"
+                else model.getConstrs()
+            )
+            values = model.getAttr(current_attribute, objects)
+            del objects
+        current = np.asarray(values, dtype="<f8")
+        del values
+        if current.ndim != 1 or int(current.size) != int(expected):
+            raise ValueError(
+                f"{current_attribute} length {current.size} != {expected}"
+            )
+        if not bool(np.isfinite(current).all()):
+            raise ValueError(f"{current_attribute} contains non-finite values")
+        saved = np.load(saved_path, mmap_mode="r", allow_pickle=False)
+        maximum = 0.0
+        chunk_size = 1_000_000
+        for start in range(0, expected, chunk_size):
+            stop = min(start + chunk_size, expected)
+            difference = np.abs(current[start:stop] - saved[start:stop])
+            if len(difference):
+                maximum = max(maximum, float(difference.max()))
+        del saved, current
+        return {
+            "status": "COLLECTED",
+            "current_attribute": current_attribute,
+            "maximum_absolute_difference": maximum,
+            "entries_compared": int(expected),
+        }
+    except Exception as error:
+        return {
+            "status": "UNAVAILABLE_OR_INVALID",
+            "current_attribute": current_attribute,
+            "maximum_absolute_difference": None,
+            "entries_compared": 0,
+            "error_type": type(error).__name__,
+            "error": str(error),
+        }
+
+
+def _current_solution_comparison_failures(
+    vectors: dict[str, Any],
+    *,
+    expected_entries: dict[str, Any] | None = None,
+) -> list[str]:
+    """Require persisted Barrier vectors to be bitwise identical to X/Pi.
+
+    Gurobi's reported primal/dual quality is attached to the current ``X`` and
+    ``Pi`` solution.  A per-coordinate tolerance is not sufficient to transfer
+    that certificate to ``BarX``/``BarPi`` because a large row or column
+    1-norm can amplify individually small differences.  Scientific pending and
+    accepted checkpoints therefore require exact float64 identity; engineering
+    and forensic checkpoints may still be written, but cannot pass this gate.
+    """
+    failures: list[str] = []
+    expected_attributes = {"primal": "X", "dual": "Pi"}
+    for role in ("primal", "dual"):
+        vector = vectors.get(role, {})
+        comparison = vectors.get(role, {}).get(
+            "current_solution_comparison", {}
+        )
+        try:
+            difference = float(comparison["maximum_absolute_difference"])
+            raw_compared_entries = comparison["entries_compared"]
+            raw_vector_entries = vector["entries"]
+            raw_expected_count = (expected_entries or {}).get(
+                role, raw_vector_entries
+            )
+            if any(
+                isinstance(value, bool)
+                for value in (
+                    raw_compared_entries,
+                    raw_vector_entries,
+                    raw_expected_count,
+                )
+            ):
+                raise TypeError("Boolean vector count")
+            compared_entries = int(raw_compared_entries)
+            vector_entries = int(raw_vector_entries)
+            expected_count = int(
+                raw_expected_count
+            )
+        except (KeyError, TypeError, ValueError):
+            failures.append(f"{role}_current_solution_comparison_metadata")
+            continue
+        if (
+            comparison.get("status") != "COLLECTED"
+            or comparison.get("current_attribute")
+            != expected_attributes[role]
+            or compared_entries <= 0
+            or compared_entries != vector_entries
+            or vector_entries != expected_count
+            or not np.isfinite(difference)
+            or difference != 0.0
+        ):
+            failures.append(f"{role}_current_solution_comparison")
+    return failures
+
+
 def _last_barrier_telemetry(path: Path) -> dict[str, Any] | None:
     """Return the last persisted Barrier callback sample without loading the log."""
     if not path.is_file():
@@ -215,6 +336,73 @@ def _last_barrier_telemetry(path: Path) -> dict[str, Any] | None:
             1.0, abs(float(primal)), abs(float(dual))
         )
     return latest
+
+
+def _solver_evidence_failures(
+    evidence: Any,
+    solve_report: dict[str, Any],
+    *,
+    require_complete: bool,
+) -> list[str]:
+    """Bind checkpoint numerical evidence to the exact source solve report."""
+    if not isinstance(evidence, dict):
+        return ["solver_evidence_object"]
+    expected = {
+        "status": solve_report.get("status"),
+        "status_code": solve_report.get("status_code"),
+        "barrier_status_code": solve_report.get("solution_contract", {}).get(
+            "barrier_status_code"
+        ),
+        "solution_contract": solve_report.get("solution_contract"),
+        "solution_quality": solve_report.get("solution_quality"),
+        "barrier_iterations": solve_report.get("iteration_counts", {}).get(
+            "barrier"
+        ),
+        "objective_value_million_cny": solve_report.get(
+            "objective_value_million_cny"
+        ),
+    }
+    failures: list[str] = []
+    for key, value in expected.items():
+        try:
+            recorded = json.dumps(
+                evidence.get(key),
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+            current = json.dumps(
+                value,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+        except (TypeError, ValueError):
+            failures.append(f"solver_evidence_nonfinite_or_invalid:{key}")
+            continue
+        if recorded != current:
+            failures.append(f"solver_evidence_mismatch:{key}")
+    if require_complete:
+        objective = expected["objective_value_million_cny"]
+        iterations = expected["barrier_iterations"]
+        if (
+            expected["status"] != "OPTIMAL"
+            or expected["status_code"] != 2
+            or expected["barrier_status_code"] != 2
+            or not isinstance(expected["solution_contract"], dict)
+            or expected["solution_contract"].get("acceptance_status")
+            != "PASS"
+            or not isinstance(expected["solution_quality"], dict)
+            or not expected["solution_quality"]
+            or isinstance(iterations, bool)
+            or not isinstance(iterations, (int, np.integer))
+            or int(iterations) <= 0
+            or isinstance(objective, bool)
+            or not isinstance(objective, (int, float, np.integer, np.floating))
+            or not np.isfinite(float(objective))
+        ):
+            failures.append("solver_evidence_incomplete_for_acceptance")
+    return failures
 
 
 def _ordered_name_digest(
@@ -283,6 +471,8 @@ def export_barrier_primal_dual_checkpoint(
     accepted_primary: bool,
     engineering_only: bool = False,
     allow_incomplete_barrier: bool = False,
+    pending_qc: bool = False,
+    row_scaling_registry: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Export full ordered ``BarX``/``BarPi`` vectors plus strict identity.
 
@@ -296,6 +486,7 @@ def export_barrier_primal_dual_checkpoint(
         accepted_primary,
         engineering_only,
         allow_incomplete_barrier,
+        pending_qc,
     )) > 1:
         raise PrimalDualCheckpointError(
             "A checkpoint can have only one accepted, engineering or incomplete mode"
@@ -319,12 +510,24 @@ def export_barrier_primal_dual_checkpoint(
             raise PrimalDualCheckpointError(
                 "Primary checkpoint requires OPTIMAL nonbasic contract and QC PASS"
             )
-        hard_checks = solution_qc.get("hard_checks")
-        if not isinstance(hard_checks, dict) or not hard_checks or not all(
-            bool(value) for value in hard_checks.values()
-        ):
+        if not qc_hard_checks_are_strictly_true(solution_qc):
             raise PrimalDualCheckpointError(
                 "Primary checkpoint requires all solution QC hard checks to pass"
+            )
+        if not qc_payload_numbers_are_finite(solution_qc):
+            raise PrimalDualCheckpointError(
+                "Primary checkpoint requires finite solution QC values"
+            )
+    elif pending_qc:
+        if (
+            solve_report.get("status") != "OPTIMAL"
+            or contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC"
+            or contract.get("acceptance_status") != "PASS"
+            or barrier_status != 2
+        ):
+            raise PrimalDualCheckpointError(
+                "Pending-QC checkpoint requires an OPTIMAL nonbasic Barrier "
+                "contract before semantic export"
             )
     elif not allow_incomplete_barrier and barrier_status != 2:
         raise PrimalDualCheckpointError(
@@ -364,6 +567,34 @@ def export_barrier_primal_dual_checkpoint(
         checkpoint_root / "dual_barpi.npy",
         int(model.NumConstrs),
     )
+    primal["current_solution_comparison"] = (
+        _compare_saved_vector_to_current_solution(
+            model,
+            current_attribute="X",
+            saved_path=checkpoint_root / primal["path"],
+            expected=int(model.NumVars),
+        )
+    )
+    dual["current_solution_comparison"] = (
+        _compare_saved_vector_to_current_solution(
+            model,
+            current_attribute="Pi",
+            saved_path=checkpoint_root / dual["path"],
+            expected=int(model.NumConstrs),
+        )
+    )
+    comparison_failures = _current_solution_comparison_failures(
+        {"primal": primal, "dual": dual},
+        expected_entries={
+            "primal": int(model.NumVars),
+            "dual": int(model.NumConstrs),
+        },
+    )
+    if (accepted_primary or pending_qc) and comparison_failures:
+        raise PrimalDualCheckpointError(
+            "Barrier checkpoint vectors differ from the quality-audited current "
+            "solution: " + ", ".join(comparison_failures)
+        )
     variable_order = _ordered_name_digest(model, kind="variable")
     constraint_order = _ordered_name_digest(model, kind="constraint")
     run_identity = _read_json(output_root / "run_identity.json")
@@ -375,10 +606,15 @@ def export_barrier_primal_dual_checkpoint(
         raise PrimalDualCheckpointError(
             "Current input manifest is invalid: " + "; ".join(input_failures)
         )
+    validated_row_scaling_registry = validate_row_scaling_registry(
+        row_scaling_registry, model=model
+    )
     if accepted_primary:
         checkpoint_status = ACCEPTED_CHECKPOINT_STATUS
     elif engineering_only:
         checkpoint_status = ENGINEERING_CHECKPOINT_STATUS
+    elif pending_qc:
+        checkpoint_status = PENDING_QC_CHECKPOINT_STATUS
     else:
         checkpoint_status = RECOVERY_CHECKPOINT_STATUS
     lp_model = run_identity.get("lp_model") or {}
@@ -394,7 +630,11 @@ def export_barrier_primal_dual_checkpoint(
             else (
                 "EXPLICIT_ENGINEERING_ACKNOWLEDGEMENT_REQUIRED"
                 if engineering_only
-                else "FORENSIC_ONLY"
+                else (
+                    "PENDING_ORIGINAL_UNIT_QC"
+                    if pending_qc
+                    else "FORENSIC_ONLY"
+                )
             )
         ),
         "source": {
@@ -447,6 +687,7 @@ def export_barrier_primal_dual_checkpoint(
             ),
         },
         "vectors": {"primal": primal, "dual": dual},
+        "annual_capacity_link_row_scaling": validated_row_scaling_registry,
         "lp_ordering": {
             "variable_vector": "raw_original_model_variable_index_order",
             "constraint_vector": "raw_original_model_linear_constraint_index_order",
@@ -474,7 +715,11 @@ def export_barrier_primal_dual_checkpoint(
             "publication_status": (
                 "SCIENTIFICALLY_ACCEPTED"
                 if accepted_primary
-                else "ENGINEERING_ONLY_NOT_FOR_PUBLICATION"
+                else (
+                    "PENDING_ORIGINAL_UNIT_QC"
+                    if pending_qc
+                    else "ENGINEERING_ONLY_NOT_FOR_PUBLICATION"
+                )
             ),
             "warning": (
                 "Barrier duals may be non-unique on a degenerate LP and do not "
@@ -493,16 +738,206 @@ def export_barrier_primal_dual_checkpoint(
         "limitations": [
             "Stores ordered primal and dual vectors, not a Barrier factorization or presolve state.",
             "Deferred crossover must rebuild the exact original LP and repeat presolve.",
-            "An engineering-only checkpoint is not an accepted scientific result or planning-state anchor.",
+            "An engineering-only checkpoint is not an accepted scientific result; candidate capacity state requires explicit author adoption.",
             "A recovery-only checkpoint is forensic evidence and cannot seed the formal deferred crossover.",
             "Python object lists may add material transient memory during deferred start import.",
         ],
     }
+    solver_evidence_failures = _solver_evidence_failures(
+        metadata.get("solver_evidence"),
+        solve_report,
+        require_complete=bool(accepted_primary or pending_qc),
+    )
+    if solver_evidence_failures:
+        raise PrimalDualCheckpointError(
+            "Checkpoint solver evidence is incomplete or inconsistent: "
+            + ", ".join(solver_evidence_failures)
+        )
     manifest_path = checkpoint_root / CHECKPOINT_MANIFEST
     manifest_path.write_text(
-        json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(metadata, ensure_ascii=False, indent=2, allow_nan=False)
+        + "\n",
         encoding="utf-8",
     )
+    return metadata
+
+
+def _array_is_finite(array: np.ndarray, chunk_size: int = 1_000_000) -> bool:
+    return all(
+        bool(np.isfinite(array[start : start + chunk_size]).all())
+        for start in range(0, int(array.size), chunk_size)
+    )
+
+
+def _checkpoint_vector_integrity_failures(
+    checkpoint_root: Path,
+    metadata: dict[str, Any],
+) -> list[str]:
+    """Validate both ordered vectors independently of acceptance status."""
+    failures: list[str] = []
+    ordering = metadata.get("lp_ordering", {})
+    expected_entries = {
+        "primal": ordering.get("variables"),
+        "dual": ordering.get("constraints"),
+    }
+    for role, attribute in (("primal", "BarX"), ("dual", "BarPi")):
+        row = metadata.get("vectors", {}).get(role, {})
+        relative = Path(str(row.get("path", "")))
+        if relative.is_absolute() or len(relative.parts) != 1:
+            failures.append(f"vector_path:{role}")
+            continue
+        path = checkpoint_root / relative
+        if not path.is_file():
+            failures.append(f"vector_missing:{role}")
+            continue
+        if row.get("attribute") != attribute:
+            failures.append(f"vector_attribute:{role}")
+        try:
+            recorded_bytes = int(row.get("bytes", -1))
+        except (TypeError, ValueError):
+            recorded_bytes = -1
+        if recorded_bytes != int(path.stat().st_size):
+            failures.append(f"vector_bytes:{role}")
+        if str(row.get("sha256")) != sha256_file(path):
+            failures.append(f"vector_sha256:{role}")
+        try:
+            recorded_entries = int(row.get("entries", -1))
+            lp_entries = int(expected_entries[role])
+        except (TypeError, ValueError):
+            recorded_entries = -1
+            lp_entries = -2
+        try:
+            array = np.load(path, mmap_mode="r", allow_pickle=False)
+            if (
+                array.ndim != 1
+                or int(array.size) != recorded_entries
+                or recorded_entries != lp_entries
+                or array.dtype != np.dtype("<f8")
+            ):
+                failures.append(f"vector_shape_or_dtype:{role}")
+            elif not _array_is_finite(array):
+                failures.append(f"vector_nonfinite:{role}")
+            del array
+        except (OSError, ValueError, TypeError):
+            failures.append(f"vector_unreadable:{role}")
+    return failures
+
+
+def validate_checkpoint_vector_integrity(
+    source_output_dir: str | Path,
+) -> tuple[bool, list[str]]:
+    """Check persisted BarX/BarPi before claiming preservation completeness."""
+    source_root = Path(source_output_dir).resolve()
+    checkpoint_root = source_root / CHECKPOINT_DIRECTORY
+    try:
+        metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
+    except PrimalDualCheckpointError as error:
+        return False, [str(error)]
+    failures: list[str] = []
+    if metadata.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
+        failures.append("schema_version")
+    failures.extend(
+        _checkpoint_vector_integrity_failures(checkpoint_root, metadata)
+    )
+    return not failures, failures
+
+
+def promote_pending_qc_checkpoint(
+    output_dir: str | Path,
+    *,
+    solve_report: dict[str, Any],
+    solution_qc: dict[str, Any],
+) -> dict[str, Any]:
+    """Atomically promote already persisted BarX/BarPi after physical QC."""
+    output_root = Path(output_dir)
+    checkpoint_root = output_root / CHECKPOINT_DIRECTORY
+    manifest_path = checkpoint_root / CHECKPOINT_MANIFEST
+    metadata = _read_json(manifest_path)
+    if metadata.get("checkpoint_status") != PENDING_QC_CHECKPOINT_STATUS:
+        raise PrimalDualCheckpointError(
+            "Only a pending-QC checkpoint can be promoted"
+        )
+    contract = solve_report.get("solution_contract", {})
+    solution_qc_path = output_root / "solution_qc.json"
+    persisted_solution_qc = _read_json(solution_qc_path)
+    if (
+        solve_report.get("status") != "OPTIMAL"
+        or contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC"
+        or contract.get("acceptance_status") != "PASS"
+        or persisted_solution_qc != solution_qc
+        or persisted_solution_qc.get("status") != "PASS"
+        or not qc_hard_checks_are_strictly_true(persisted_solution_qc)
+        or not qc_payload_numbers_are_finite(persisted_solution_qc)
+    ):
+        raise PrimalDualCheckpointError(
+            "Checkpoint promotion requires solver-contract PASS and every "
+            "original-unit QC hard check to pass"
+        )
+    solver_evidence_failures = _solver_evidence_failures(
+        metadata.get("solver_evidence"),
+        solve_report,
+        require_complete=True,
+    )
+    if solver_evidence_failures:
+        raise PrimalDualCheckpointError(
+            "Pending checkpoint solver evidence differs from solve report: "
+            + ", ".join(solver_evidence_failures)
+        )
+    validate_row_scaling_registry(
+        metadata.get("annual_capacity_link_row_scaling")
+    )
+    stored_registry = active_row_scaling_registry(
+        metadata.get("annual_capacity_link_row_scaling")
+    )
+    report_registry = active_row_scaling_registry(
+        solve_report.get("annual_capacity_link_row_scaling")
+    )
+    if stored_registry != report_registry:
+        raise PrimalDualCheckpointError(
+            "Pending checkpoint row-scaling registry differs from solve report"
+        )
+    comparison_failures = _current_solution_comparison_failures(
+        metadata.get("vectors", {}),
+        expected_entries={
+            "primal": metadata.get("lp_ordering", {}).get("variables"),
+            "dual": metadata.get("lp_ordering", {}).get("constraints"),
+        },
+    )
+    if comparison_failures:
+        raise PrimalDualCheckpointError(
+            "Pending checkpoint current-solution comparison failed: "
+            + ", ".join(comparison_failures)
+        )
+    vector_failures = _checkpoint_vector_integrity_failures(
+        checkpoint_root, metadata
+    )
+    if vector_failures:
+        raise PrimalDualCheckpointError(
+            "Pending checkpoint vector integrity failed: "
+            + ", ".join(vector_failures)
+        )
+    metadata.update(
+        checkpoint_status=ACCEPTED_CHECKPOINT_STATUS,
+        scientifically_accepted=True,
+        deferred_crossover_eligible=True,
+        eligibility_scope="CLOSED_ACCEPTED_SOURCE",
+        promoted_at=datetime.now().astimezone().isoformat(),
+        acceptance_evidence={
+            "solution_qc_status": persisted_solution_qc.get("status"),
+            "solution_qc_sha256": sha256_file(solution_qc_path),
+            "all_hard_checks_pass": True,
+        },
+    )
+    metadata["engineering_shadow_prices"]["publication_status"] = (
+        "SCIENTIFICALLY_ACCEPTED"
+    )
+    temporary = manifest_path.with_suffix(manifest_path.suffix + ".part")
+    temporary.write_text(
+        json.dumps(metadata, ensure_ascii=False, indent=2, allow_nan=False)
+        + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(manifest_path)
     return metadata
 
 
@@ -529,6 +964,12 @@ def validate_barrier_primal_dual_checkpoint(
     except PrimalDualCheckpointError as error:
         failures.append(str(error))
         return False, failures
+    try:
+        validate_row_scaling_registry(
+            metadata.get("annual_capacity_link_row_scaling")
+        )
+    except ValueError as error:
+        failures.append(f"row_scaling_registry:{error}")
 
     checkpoint_status = metadata.get("checkpoint_status")
     engineering = checkpoint_status == ENGINEERING_CHECKPOINT_STATUS
@@ -537,6 +978,13 @@ def validate_barrier_primal_dual_checkpoint(
         failures.append("engineering_checkpoint_requires_explicit_allow")
     if not accepted and not engineering:
         failures.append("checkpoint_status")
+    failures.extend(
+        _solver_evidence_failures(
+            metadata.get("solver_evidence"),
+            solve,
+            require_complete=accepted,
+        )
+    )
     if require_result_manifest:
         manifest_valid, manifest_failures = validate_result_manifest(source_root)
         if not manifest_valid:
@@ -550,7 +998,6 @@ def validate_barrier_primal_dual_checkpoint(
         except PrimalDualCheckpointError as error:
             failures.append(str(error))
             qc = {}
-        hard_checks = qc.get("hard_checks")
         if solve.get("status") != "OPTIMAL":
             failures.append("solve_status")
         if contract.get("mode") != "OPTIMAL_PRIMAL_DUAL_NONBASIC":
@@ -559,12 +1006,39 @@ def validate_barrier_primal_dual_checkpoint(
             failures.append("solution_contract_acceptance")
         if qc.get("status") != "PASS":
             failures.append("solution_qc_status")
-        if (
-            not isinstance(hard_checks, dict)
-            or not hard_checks
-            or not all(bool(value) for value in hard_checks.values())
-        ):
+        if not qc_hard_checks_are_strictly_true(qc):
             failures.append("solution_qc_hard_checks")
+        if not qc_payload_numbers_are_finite(qc):
+            failures.append("solution_qc_nonfinite")
+        failures.extend(
+            "checkpoint_" + failure
+            for failure in _current_solution_comparison_failures(
+                metadata.get("vectors", {}),
+                expected_entries={
+                    "primal": metadata.get("lp_ordering", {}).get(
+                        "variables"
+                    ),
+                    "dual": metadata.get("lp_ordering", {}).get(
+                        "constraints"
+                    ),
+                },
+            )
+        )
+        evidence = metadata.get("acceptance_evidence")
+        solution_qc_path = source_root / "solution_qc.json"
+        if not isinstance(evidence, dict):
+            failures.append("acceptance_evidence")
+        else:
+            if evidence.get("solution_qc_status") != qc.get("status"):
+                failures.append("acceptance_evidence_solution_qc_status")
+            if evidence.get("all_hard_checks_pass") is not True:
+                failures.append("acceptance_evidence_hard_checks")
+            if (
+                not solution_qc_path.is_file()
+                or evidence.get("solution_qc_sha256")
+                != sha256_file(solution_qc_path)
+            ):
+                failures.append("acceptance_evidence_solution_qc_sha256")
     elif engineering:
         parameters = solve.get("solver_parameters", {})
         if contract.get("barrier_status_code") != 2:
@@ -619,33 +1093,9 @@ def validate_barrier_primal_dual_checkpoint(
         if source_layers.get(name) != run_identity.get(name):
             failures.append(f"identity_layer:{name}")
 
-    for role, attribute in (("primal", "BarX"), ("dual", "BarPi")):
-        row = metadata.get("vectors", {}).get(role, {})
-        relative = Path(str(row.get("path", "")))
-        if relative.is_absolute() or len(relative.parts) != 1:
-            failures.append(f"vector_path:{role}")
-            continue
-        path = checkpoint_root / relative
-        if not path.is_file():
-            failures.append(f"vector_missing:{role}")
-            continue
-        if row.get("attribute") != attribute:
-            failures.append(f"vector_attribute:{role}")
-        if int(row.get("bytes", -1)) != int(path.stat().st_size):
-            failures.append(f"vector_bytes:{role}")
-        if str(row.get("sha256")) != sha256_file(path):
-            failures.append(f"vector_sha256:{role}")
-        try:
-            array = np.load(path, mmap_mode="r", allow_pickle=False)
-            if (
-                array.ndim != 1
-                or int(array.size) != int(row.get("entries", -1))
-                or array.dtype != np.dtype("<f8")
-            ):
-                failures.append(f"vector_shape_or_dtype:{role}")
-            del array
-        except (OSError, ValueError, TypeError):
-            failures.append(f"vector_unreadable:{role}")
+    failures.extend(
+        _checkpoint_vector_integrity_failures(checkpoint_root, metadata)
+    )
     return not failures, failures
 
 
@@ -660,12 +1110,25 @@ def prepare_primal_dual_crossover(
     result_use: str,
     allow_engineering_checkpoint: bool = False,
     allow_compatible_implementation_bundle: bool = False,
+    row_scaling_registry: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Validate an eligible checkpoint against the exact rebuilt target LP."""
     source_root = Path(source_output_dir).resolve()
     target_root = Path(target_output_dir).resolve()
     checkpoint_root = source_root / CHECKPOINT_DIRECTORY
     metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
+    source_row_scaling_registry = validate_row_scaling_registry(
+        metadata.get("annual_capacity_link_row_scaling"), model=model
+    )
+    target_row_scaling_registry = validate_row_scaling_registry(
+        row_scaling_registry
+    )
+    if active_row_scaling_registry(source_row_scaling_registry) != (
+        active_row_scaling_registry(target_row_scaling_registry)
+    ):
+        raise PrimalDualCheckpointError(
+            "Checkpoint source and target annual capacity-link row scaling differs"
+        )
     engineering_source = (
         metadata.get("checkpoint_status") == ENGINEERING_CHECKPOINT_STATUS
     )
@@ -834,6 +1297,10 @@ def prepare_primal_dual_crossover(
             raise PrimalDualCheckpointError(
                 f"Checkpoint {role} array metadata does not match target LP"
             )
+        if not _array_is_finite(array):
+            raise PrimalDualCheckpointError(
+                f"Checkpoint {role} vector contains nonfinite values"
+            )
         del array
         paths[role] = str(path)
     return {
@@ -889,6 +1356,7 @@ def prepare_primal_dual_crossover(
         "variables": expected_counts["primal"],
         "constraints": expected_counts["dual"],
         "gurobi_fingerprint": target_fingerprint,
+        "annual_capacity_link_row_scaling": row_scaling_registry,
         "lp_warm_start": 2,
         "materializes_python_model_object_lists": True,
         "result_use": result_use,

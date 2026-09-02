@@ -33,6 +33,19 @@ class MasterArtifacts:
     index: dict[str, Any]
 
 
+def require_finite_load_center_qc_inputs(**values: Any) -> None:
+    """Reject nonfinite physical values before residual aggregation can mask them."""
+    nonfinite = [
+        name
+        for name, value in values.items()
+        if not bool(np.isfinite(np.asarray(value, dtype=float)).all())
+    ]
+    if nonfinite:
+        raise RuntimeError(
+            "Nonfinite load-center QC inputs: " + ", ".join(nonfinite)
+        )
+
+
 def cost_component_accounting_scope(name: str) -> str:
     """Classify cost rows without changing the legacy value column."""
     if name == "annual_operation":
@@ -125,12 +138,15 @@ def export_master_solution(
     artifacts: MasterArtifacts,
     data: ModelData,
     output_dir,
-) -> None:
+    *,
+    enforce_qc: bool = True,
+) -> dict[str, Any] | None:
     """Export annual decisions and the lower-bound cost decomposition."""
     from pathlib import Path
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    load_center_qc: dict[str, Any] | None = None
     # Cost accounting is independently meaningful engineering evidence.  Write
     # it before strict load-center QC can stop the remainder of the export.
     export_cost_components(
@@ -529,6 +545,12 @@ def export_master_solution(
         hydro_aggregate_generation = variables[
             "hydro_aggregate_generation"
         ].X.sum(axis=1)
+        require_finite_load_center_qc_inputs(
+            vre_generation=vre_generation,
+            ror_generation=ror_generation,
+            reservoir_generation=reservoir_generation,
+            hydro_aggregate_generation=hydro_aggregate_generation,
+        )
         aggregate_generation_by_province = {
             int(province_code): float(hydro_aggregate_generation[p])
             for p, province_code in enumerate(artifacts.index["province_codes"])
@@ -637,6 +659,87 @@ def export_master_solution(
             forward + reverse
             - design_hours * variables["intra_load_center_capacity"].X
         )
+        require_finite_load_center_qc_inputs(
+            forward=forward,
+            reverse=reverse,
+            balance_residual=balance_residual,
+            province_net_exchange_residual=province_net_exchange_residual,
+            external_net_import=external_net_import,
+            capacity_residual=capacity_residual,
+        )
+        resource_tolerance = float(
+            artifacts.index["resource_coefficient_zero_tolerance"]
+        )
+        vre_flh = np.asarray(
+            artifacts.index["load_center_vre_site_cf_hours"], dtype=float
+        )
+        vre_capacity = np.asarray(variables["vre_capacity"].X, dtype=float)
+        require_finite_load_center_qc_inputs(
+            vre_full_load_hours=vre_flh,
+            vre_capacity=vre_capacity,
+        )
+        vre_route_lookup = data.vre_load_center_routes.set_index(
+            "grid_uid"
+        ).load_center_id
+        vre_center = data.vre_sites.grid_uid.map(vre_route_lookup).astype(str)
+        maximum_vre_annual_availability_violation = 0.0
+        for center_id, center_position in center_index.items():
+            for technology_position, technology in enumerate(VRE_TECHS):
+                positions = data.vre_sites.index[
+                    vre_center.eq(center_id)
+                    & data.vre_sites.technology.eq(technology)
+                    & (vre_flh >= resource_tolerance)
+                ].to_numpy(dtype=int)
+                available = (
+                    float(vre_flh[positions] @ vre_capacity[positions])
+                    if len(positions)
+                    else 0.0
+                )
+                residual = (
+                    float(vre_generation[center_position, technology_position])
+                    - available
+                )
+                require_finite_load_center_qc_inputs(
+                    vre_availability_residual=residual
+                )
+                maximum_vre_annual_availability_violation = max(
+                    maximum_vre_annual_availability_violation, residual
+                )
+        ror_flh = np.asarray(
+            artifacts.index["load_center_ror_full_load_hours"], dtype=float
+        )
+        hydro_capacity = np.asarray(
+            variables["hydro_capacity"].X, dtype=float
+        )
+        require_finite_load_center_qc_inputs(
+            ror_full_load_hours=ror_flh,
+            hydro_capacity=hydro_capacity,
+        )
+        hydro_route_lookup = data.hydro_load_center_routes.set_index(
+            "hydrochn_row_id"
+        ).load_center_id
+        hydro_center = data.hydro_stations.hydrochn_row_id.map(
+            hydro_route_lookup
+        ).astype(str)
+        maximum_ror_annual_availability_violation = 0.0
+        for center_id, center_position in center_index.items():
+            positions = data.hydro_stations.index[
+                hydro_center.eq(center_id)
+                & data.hydro_stations.operation_type_model.eq("run_of_river")
+                & (ror_flh >= resource_tolerance)
+            ].to_numpy(dtype=int)
+            available = (
+                float(ror_flh[positions] @ hydro_capacity[positions])
+                if len(positions)
+                else 0.0
+            )
+            residual = float(ror_generation[center_position]) - available
+            require_finite_load_center_qc_inputs(
+                ror_availability_residual=residual
+            )
+            maximum_ror_annual_availability_violation = max(
+                maximum_ror_annual_availability_violation, residual
+            )
         direction_tolerance_gwh = float(
             artifacts.index[
                 "intra_load_center_bidirectional_flow_tolerance_gwh"
@@ -657,6 +760,12 @@ def export_master_solution(
             "maximum_intra_capacity_violation_gwh": float(
                 np.maximum(capacity_residual, 0.0).max()
             ),
+            "maximum_vre_annual_availability_violation_gwh": float(
+                max(maximum_vre_annual_availability_violation, 0.0)
+            ),
+            "maximum_ror_annual_availability_violation_gwh": float(
+                max(maximum_ror_annual_availability_violation, 0.0)
+            ),
             "bidirectional_flow_tolerance_gwh": direction_tolerance_gwh,
             "maximum_bidirectional_minimum_flow_gwh": float(
                 opposing_flow.max() if len(opposing_flow) else 0.0
@@ -667,6 +776,13 @@ def export_master_solution(
             "bidirectional_active_edge_count": int(bidirectional_mask.sum()),
             "dpv_spur_augmentation_max_gw": dpv_spur_max,
         }
+        require_finite_load_center_qc_inputs(
+            **{
+                key: value
+                for key, value in qc.items()
+                if key != "bidirectional_active_edge_count"
+            }
+        )
         pd.DataFrame([qc]).to_csv(
             output_dir / "load_center_network_qc.csv",
             index=False,
@@ -676,10 +792,16 @@ def export_master_solution(
             qc["maximum_center_balance_residual_gwh"] > 1e-5
             or qc["maximum_province_net_exchange_residual_gwh"] > 1e-5
             or qc["maximum_intra_capacity_violation_gwh"] > 1e-5
+            or qc["maximum_vre_annual_availability_violation_gwh"] > 1e-5
+            or qc["maximum_ror_annual_availability_violation_gwh"] > 1e-5
             or qc["bidirectional_active_edge_count"] > 0
             or qc["dpv_spur_augmentation_max_gw"] > 1e-8
         ):
-            raise RuntimeError(f"Load-center solution QC failed: {qc}")
+            if enforce_qc:
+                raise RuntimeError(f"Load-center solution QC failed: {qc}")
+        load_center_qc = qc
+
+    return load_center_qc
 
 def _technology_lookup(frame: pd.DataFrame, value_column: str) -> dict[str, float]:
     return frame.set_index("technology")[value_column].astype(float).to_dict()

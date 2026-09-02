@@ -974,6 +974,16 @@ class ModelConfig:
                 "formulation.annual_emissions_accounting must be "
                 "national_dense_v1 or province_hierarchical_v2"
             )
+        if formulation.get(
+            "annual_capacity_link_row_scaling", "physical_v1"
+        ) not in {
+            "physical_v1",
+            "binary_power2_safe_8192_v1",
+        }:
+            raise ValueError(
+                "formulation.annual_capacity_link_row_scaling must be "
+                "physical_v1 or binary_power2_safe_8192_v1"
+            )
         chunk = int(self.raw["construction"].get("build_hour_chunk_size", 0))
         if chunk <= 0 or chunk > self.hours:
             raise ValueError("build_hour_chunk_size must be in [1, 8760]")
@@ -1131,6 +1141,23 @@ def load_model_config(
                 raise ValueError(
                     "host_memory_soft_limit_fraction must be in (0, 0.95]"
                 )
+        direct_nonbasic_scientific_acceptance = payload.get(
+            "direct_nonbasic_scientific_acceptance", False
+        )
+        if not isinstance(direct_nonbasic_scientific_acceptance, bool):
+            raise ValueError(
+                "direct_nonbasic_scientific_acceptance must be boolean"
+            )
+        required_formulation_profile_id = payload.get(
+            "required_formulation_profile_id"
+        )
+        if required_formulation_profile_id is not None and (
+            not isinstance(required_formulation_profile_id, str)
+            or not required_formulation_profile_id.strip()
+        ):
+            raise ValueError(
+                "required_formulation_profile_id must be a nonempty string"
+            )
         raw["solver_profile"] = {
             "id": str(payload["profile_id"]),
             "description": str(payload.get("description", "")),
@@ -1139,6 +1166,12 @@ def load_model_config(
             ),
             "host_memory_soft_limit_fraction": (
                 host_memory_soft_limit_fraction
+            ),
+            "direct_nonbasic_scientific_acceptance": (
+                direct_nonbasic_scientific_acceptance
+            ),
+            "required_formulation_profile_id": (
+                required_formulation_profile_id
             ),
         }
         resolved_solver = resolved_solver.resolve()
@@ -1159,7 +1192,10 @@ def load_model_config(
             raise ValueError(
                 "Formulation profile requires an object-valued formulation field"
             )
-        allowed_formulation = {"annual_emissions_accounting"}
+        allowed_formulation = {
+            "annual_emissions_accounting",
+            "annual_capacity_link_row_scaling",
+        }
         unknown = set(overrides).difference(allowed_formulation)
         if unknown:
             raise ValueError(

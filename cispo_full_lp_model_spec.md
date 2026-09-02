@@ -1346,6 +1346,138 @@ valid manifests + finite Pi + macro pair PASS`，Stage A+B 合计 solver/wall �
 相对 strict inline 路线约加速 `7.71×/6.99×`。该结果仍是 `TEST_ONLY_TRUNCATED_HORIZON`，只批准未来
 全年工程架构与参数文件；不授权自动提交 8760 h、当前 cloud Stage B、下一规划年或第二并发任务。
 
+#### 2026-08-27 作者要求：Stage A 完整保存与结果采用解耦（待实现）
+
+本节覆盖上文将工程 Stage A、QC FAIL 或非 accepted checkpoint 排除在结果文件、结果清单及容量
+状态**保存**之外的限制；不修改模型、输入、单位、目标、约束、数值阈值或历史求解身份，也不授权
+自动科学接受、自动 Stage B 或自动跨年。状态为 `AUTHOR_REQUIRED_EXPORT_POLICY_PENDING_IMPLEMENTATION`。
+
+1. **先保全**：优先写出可读取的原始 primal/dual checkpoint，再保存完整容量、逐时运行、成本分项、
+   碳/CCS 核算、原始对偶及其变量/约束语义映射。不得因某个 QC 失败而中断其他可导出模块。
+   必须产生 `solution_qc.json`、`result_manifest.json` 和候选跨年容量状态，明确每类数据的覆盖范围、
+   单位、源 checkpoint/模型/数据身份及 SHA256。文件清单验证通过只表示完整性/一致性，不代表结果可用。
+2. **如实评价**：保存每个检查的状态、阈值、实测违反量、可定位的行/变量及物理单位；无法检查的项
+   标为未完成并说明原因。QC FAIL 不是丢弃文件的条件，未知状态不能写成 PASS。若无可读取解、部分
+   数据缺失、写盘失败或进程被强杀，只能尽力保全已有内容并标记 partial/error，不能宣称完整。
+3. **候选 state 与采用分离**：候选状态必须保存原始容量变化、资产类别/标识、建造与退役年份、单位、
+   前序状态和转换规则；完整保留微小或负值及其诊断，不静默裁剪/省略。既有 accepted state 的 cohort
+   tolerance 不得导致候选原值丢失；如提供兼容的筛选视图，须另存并记录差异。作者以后可选择该候选
+   继续实验，读取接口必须显式记录选择及上游未通过项；该选择不改变原始 QC，也不自动升级论文证据。
+4. **结果身份分轴记录**：产物完整性、solver/physical QC、科学验收及作者采用决定是不同字段。新 schema
+   必须可表达“导出完整、QC FAIL、科学未接受、作者待决定”；不能借生成 `result_manifest.json` 冒用
+   accepted 标记。老的 accepted state 读取接口保持兼容，未经作者选择不自动消费候选状态。
+5. **Stage B 可选**：Stage A 保存和候选容量状态恢复不等待 Stage B。Stage B 是同年 exact-LP starts
+   的独立后处理/求解任务；跨年则是资产 cohort 继承，两者不是同一个续接接口。
+
+对历史 job `4139552`，完整 `BarX/BarPi` 已备份但未持久化完整 name catalog。恢复需依原源码、配置、
+输入和原 LP identity/order 重建语义，再直接从保存向量计算各类输出。默认恢复设计不调用
+`optimize/presolve/crossover`；此前“PStart/DStart + 零迭代暴露 `.X`”只能视为未验证试验，不作保证。
+恢复结果写入独立根，保持原始 checkpoint 和 `solve_report.json` 不变；完整 QC 与对偶解释可信度待
+恢复后评价。当前 runner 和 `PlanningState.load` 尚未实现上述解耦，不得宣称原 `.npy` 已能直接续年。
+
+#### 2026-08-27 14:18 实现状态覆盖
+
+2026-08-28作者授权补充：历史恢复可显式`--allow-fingerprint-mismatch`，在原源码/输入/依赖可追溯、
+维度/非零元及完整变量/约束名称与sense顺序核对、向量hash/finite有效的情况下，指纹差异记录为
+诊断信息而不阻断候选结果导出。先保存重建模型和映射，原LP残差/QC如实报告，任何不匹配不伪称
+exact LP一致或科学接受；普通审计异常也尽量保留语义结果并标PARTIAL。这只调整恢复保全决策，
+不修改模型方程/输入/科学阈值，不授权自动Stage B或跨年优化。
+
+上节策略已本地实现，状态为 `LOCAL_VALIDATED_NOT_DEPLOYED`。所有nonbasic Stage A均保存完整可读
+结果与候选state，默认原始MPS/参数/名称归档；QC FAIL只记录，模块错误标PARTIAL并继续其他模块。
+`--allow-candidate-state-in`使作者可显式选择未验收候选进行后续实验，严格保留哈希、年份、资产/单位
+和原始QC来源，不自动升级科学结果。旧accepted-only sequence不隐式消费候选；基本解生产路径仍保留。
+
+`--recover-stage-a-from`支持新snapshot及legacy Barrier向量；先核验原输入、Gurobi版本及实现身份，
+再核对exact LP指纹/规模/顺序/向量哈希，直接代入原式导出，不做presolve或optimize。原LP全部行与边界
+检查另存具名违反清单。presolved诊断副本为可选额外调用，既不是内部uncrush映射，也不是Barrier状态。
+
+Gurobi13.0.2下222项回归及1h在线/离线对照通过；45个结果表/数组、碳和原LP残差一致，候选状态可加载
+并构建2040/1h LP。全部为截断测试，不证明历史8760h已恢复、内存峰值已验证或论文结论已接受。
+该历史保全机制的运行边界已在本节自包含：必须绑定原模型/输入/顺序/hash、保留raw-order向量和逐项QC，
+候选state只能显式选择且不自动升级为accepted；服务器当时尚未部署，活动旧进程行为不变。本规范不依赖
+当时未提交的独立说明文档。
+
+#### 2026-09-02 current override：VRE/ROR年度容量连接行的精确左缩放
+
+为尽快获得可在云端实际运行的8760h模型，同时不改变科学可行域，当前唯一允许继续的数值变换为
+`annual_capacity_link_rows_8192_v1`。它不是变量换元、CF截断、目标重标度或约束放松，而是对经过
+显式登记的VRE与径流式水电（ROR）年度可用量零右端行做正数整行左乘。
+
+对目标族 $f\in\{\mathrm{VRE},\mathrm{ROR}\}$ 的任一登记行 $r$，以物理单位书写为
+
+\[
+g_r(x)=E_r-\sum_j H_{rj}K_j\le 0,\qquad
+H_{rj}=\sum_{t\in T}cf_{rjt}\,\Delta t .
+\]
+
+其中 $E_r$ 是该行汇总的年度发电/交付电量（GWh），$K_j$ 是物理装机（GW），
+$H_{rj}$ 是所选时域内由容量因子汇总得到的等效满负荷小时（h）。求解器接收
+
+\[
+\tilde g_r(x)=s_f g_r(x)
+=s_fE_r-\sum_j s_fH_{rj}K_j\le0,\qquad s_f=2^{-k_f}>0 .
+\]
+
+因为右端为零且 $s_f>0$，$g_r(x)\le0\iff\tilde g_r(x)\le0$。因此决策变量、变量边界、
+目标函数、行列支撑、约束sense和可行域逐项不变；只改变登记行的数值坐标。Wave容量行经审计没有同类
+病态列跨度，省内负荷中心容量行也没有小时极小系数耦合，二者明确排除，不能因名称相似而自动缩放。
+
+族指数由模型实值fail-closed计算：
+
+\[
+k_f=\max\left\{k\in\mathbb Z:0\le k\le13,
+2^{-k}\min_{a\in A_f,\,a\ne0}|a|\ge10^{-6}\right\}.
+\]
+
+登记表必须保存profile、族、constraint prefix、全部constraint names、行数、缩放非零元数、原始/缩放
+系数范围和SHA256，并与已建模型的名称、sense、RHS、符号、anchor、nnz及range做深绑定。正式
+2160h/8760h合同额外要求VRE与ROR都得到`k=13`（`s=2^-13=1/8192`）；任何缺行、重复行、未登记行
+变化、指数不是13、缩放后系数低于`1e-6`或注册表/模型不一致均直接失败，不得回退到部分缩放。
+
+科学解释必须回到原行坐标。设求解器对 $\tilde g_r$ 给出的对偶和松弛分别为
+$\pi_r^{solver}$、$slack_r^{solver}$，则
+
+\[
+\pi_r^{physical}=s_f\pi_r^{solver},\qquad
+slack_r^{physical}=\frac{slack_r^{solver}}{s_f}.
+\]
+
+变量仍是物理单位，目标值不缩放；在上述对偶映射下reduced cost不变。所有约束残差、年度可用量、
+容量、成本和输出QC必须用原单位计算，不能把solver坐标直接写入论文或跨年状态。
+
+求解合同只保留一条路线：
+
+1. 固定服务器2160h/start2880工程资格运行使用
+   `barrier_checkpoint_fixed_server_host_memory_95_v2`与本formulation profile，参数为
+   `Method=2/Threads=32/Presolve=2/Crossover=0/SolutionTarget=1/BarConvTol=1e-2/
+   FeasibilityTol=OptimalityTol=1e-5/MarkowitzTol=0.01/NumericFocus=1/ScaleFlag=2/Aggregate=1/
+   DualReductions=1/InfUnbdInfo=0`，无`TimeLimit`，并设置`host_memory_soft_limit_fraction=0.95`及整机95%
+   保护。profile中的`soft_mem_limit_gb=80`只作fallback/provenance；runner将有效Gurobi
+   `SoftMemLimit`覆盖为`physical_memory_bytes*0.95/1e9`十进制GB。
+2. 8760h Stage A使用`barrier_checkpoint_full_year_cloud_v4`，固定`Threads=32`、`Method=2`、
+   `Presolve=2`、`Crossover=0`、`SolutionTarget=1`、`BarConvTol=1e-9`、`FeasibilityTol=1e-9`、
+   `OptimalityTol=1e-8`、`MarkowitzTol=0.01`、`NumericFocus=1`、`ScaleFlag=2`、`Aggregate=1`、
+   `DualReductions=1`、`InfUnbdInfo=0`、`soft_mem_limit_gb=600`，无`TimeLimit`。32线程是作者
+   根据既有全年证据作出的资源选择，短时域线程吞吐不构成否决依据。
+3. Stage A checkpoint必须按raw order校验变量/约束数量、名称顺序、dtype、shape、finite、bytes与SHA；
+   promotion前`BarX==X`、`BarPi==Pi`须逐项binary64精确成立。accepted结果还必须满足OPTIMAL、完整
+   solution contract、原单位QC、result manifest及原始身份门禁；文件保全不等于科学接受。
+4. Stage B是**非必需、非自动**的独立后续。任何Stage A launcher、guard、watcher、planning sequence或
+   promotion路径都不得自动启动Stage B；只有作者以后另行明确授权，且Stage A耗时已证明值得继续时，
+   才建立新任务与独立验收合同。
+
+本地正确性证据为完整回归`290 passed, 1 skipped`，以及24h/start2880物理原式/缩放式双
+Gurobi status2 `OPTIMAL`：目标均为`2112716.676624984 million CNY`，两者原单位QC均`PASS`，15项结构
+等价检查全真。该短时域结果只验证代数、注册表、导出和QC接口，不证明2160h或8760h性能。
+
+2160h候选尚未运行，资格门槛为：raw结构精确`12,520,914 rows / 10,398,783 vars /
+126,724,678 nnz`；presolved nnz`<=107,398,350`、DenseCols`<=38,982`、`AA' NZ<=2.17035e8`、
+Factor NZ`<=6.28845e9`、Factor Ops`<=2.19345e14`、日志factor memory`<=63 GB`且无数值警告。
+首个`iteration>=30`记录须同时满足累计runtime`<=12,000 s`、Work`<=18,961.075`和进程组RSS
+`<=75 GiB`；runtime/Work通过后即锁定，后续内存或警告仍可使候选失败。只有该门禁形成真实长时域
+证据后才能决定是否放大8760h，不能把预期收益写成已证实加速。
+
 ### 5.8.0c 截断时域的价值核算与当前验证边界
 
 对于 `hours < 8760` 的工程门禁，目标函数同时含全年年化规划/enablement 成本与所选小时的运行成本，二者不能在未加代表时段权重时直接相减为年度净收益。`cost_components.csv` 因此保留兼容列 `value_million_cny_per_year`，并新增：

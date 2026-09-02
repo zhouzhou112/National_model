@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -26,6 +27,33 @@ from cispo_model.result_summary import finalize_result_manifest
 from scripts.run_cispo_planning_sequence import accepted
 
 
+def run_sequence_with_stubbed_input_identity(
+    command: list[str],
+    *,
+    root: Path,
+) -> subprocess.CompletedProcess[str]:
+    """Run the CLI in an isolated process without host-mounted data coupling."""
+    bootstrap = "\n".join(
+        (
+            "import sys",
+            "import scripts.run_cispo_planning_sequence as module",
+            "module.capture_input_identity = lambda *args, **kwargs: {",
+            "    'input_manifest_sha256': 'test-fixture',",
+            "    'input_manifest_row_count': 0,",
+            "    'integrity_scope': 'unit-test-stub',",
+            "}",
+            "sys.argv = ['run_cispo_planning_sequence.py', *sys.argv[1:]]",
+            "module.main()",
+        )
+    )
+    return subprocess.run(
+        [command[0], "-c", bootstrap, *command[2:]],
+        cwd=root,
+        capture_output=True,
+        text=True,
+    )
+
+
 class PlanningSequenceTests(unittest.TestCase):
     def test_sequence_acceptance_requires_explicit_passing_hard_checks(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -39,19 +67,43 @@ class PlanningSequenceTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
-            for hard_checks in (
-                None,
-                {},
-                {"power_balance": False},
+            with patch(
+                "scripts.run_cispo_planning_sequence.validate_result_manifest",
+                return_value=(True, []),
             ):
-                qc = {"status": "PASS"}
-                if hard_checks is not None:
-                    qc["hard_checks"] = hard_checks
+                for hard_checks in (
+                    None,
+                    {},
+                    {"power_balance": False},
+                    {"power_balance": 1},
+                    {"power_balance": float("nan")},
+                ):
+                    qc = {"status": "PASS"}
+                    if hard_checks is not None:
+                        qc["hard_checks"] = hard_checks
+                    (output_dir / "solution_qc.json").write_text(
+                        json.dumps(qc),
+                        encoding="utf-8",
+                    )
+                    self.assertFalse(
+                        accepted(
+                            output_dir,
+                            require_state=False,
+                            expected_result_use=(
+                                "TEST_ONLY_TRUNCATED_HORIZON"
+                            ),
+                        )
+                    )
+
+                qc = {
+                    "status": "PASS",
+                    "hard_checks": {"power_balance": True},
+                }
                 (output_dir / "solution_qc.json").write_text(
                     json.dumps(qc),
                     encoding="utf-8",
                 )
-                self.assertFalse(
+                self.assertTrue(
                     accepted(
                         output_dir,
                         require_state=False,
@@ -60,6 +112,38 @@ class PlanningSequenceTests(unittest.TestCase):
                         ),
                     )
                 )
+                for report_change, qc_change in (
+                    ({"scientifically_accepted": False}, {}),
+                    (
+                        {
+                            "solution_contract": {
+                                "acceptance_status": "HARD_FAIL"
+                            }
+                        },
+                        {},
+                    ),
+                    ({}, {"scientifically_accepted": False}),
+                ):
+                    report = {
+                        "status": "OPTIMAL",
+                        "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+                        **report_change,
+                    }
+                    (output_dir / "solve_report.json").write_text(
+                        json.dumps(report), encoding="utf-8"
+                    )
+                    (output_dir / "solution_qc.json").write_text(
+                        json.dumps({**qc, **qc_change}), encoding="utf-8"
+                    )
+                    self.assertFalse(
+                        accepted(
+                            output_dir,
+                            require_state=False,
+                            expected_result_use=(
+                                "TEST_ONLY_TRUNCATED_HORIZON"
+                            ),
+                        )
+                    )
 
     def test_dry_run_forwards_profiles_and_locks_sequence_identity(self):
         root = Path(__file__).resolve().parents[1]
@@ -94,11 +178,9 @@ class PlanningSequenceTests(unittest.TestCase):
                 str(formulation),
                 "--dry-run",
             ]
-            first = subprocess.run(
+            first = run_sequence_with_stubbed_input_identity(
                 command,
-                cwd=root,
-                capture_output=True,
-                text=True,
+                root=root,
             )
             self.assertEqual(first.returncode, 0, first.stderr)
             report = json.loads(
@@ -117,7 +199,7 @@ class PlanningSequenceTests(unittest.TestCase):
                 / "solver_profiles"
                 / "barrier_16_crossover_2_v1.json"
             )
-            mismatch = subprocess.run(
+            mismatch = run_sequence_with_stubbed_input_identity(
                 [
                     *command[:-5],
                     "--solver-config",
@@ -127,9 +209,7 @@ class PlanningSequenceTests(unittest.TestCase):
                     "--dry-run",
                     "--resume",
                 ],
-                cwd=root,
-                capture_output=True,
-                text=True,
+                root=root,
             )
             self.assertNotEqual(mismatch.returncode, 0)
             self.assertIn("mixed-identity", mismatch.stderr)
@@ -144,7 +224,7 @@ class PlanningSequenceTests(unittest.TestCase):
         )
         with tempfile.TemporaryDirectory() as temporary:
             output_root = Path(temporary) / "nonbasic_sequence"
-            completed = subprocess.run(
+            completed = run_sequence_with_stubbed_input_identity(
                 [
                     sys.executable,
                     str(root / "scripts" / "run_cispo_planning_sequence.py"),
@@ -162,9 +242,7 @@ class PlanningSequenceTests(unittest.TestCase):
                     str(solver),
                     "--dry-run",
                 ],
-                cwd=root,
-                capture_output=True,
-                text=True,
+                root=root,
             )
             self.assertEqual(completed.returncode, 0, completed.stderr)
             report = json.loads(

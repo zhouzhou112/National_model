@@ -12,6 +12,7 @@ import pandas as pd
 import gurobipy as gp
 
 from cispo_model.config import load_model_config
+from cispo_model.io_contract import sha256_file
 from cispo_model.planning_state import (
     DIAGNOSTIC_STATE_USE,
     PlanningState,
@@ -20,11 +21,15 @@ from cispo_model.planning_state import (
 )
 from cispo_model.primal_dual_checkpoint import (
     CHECKPOINT_DIRECTORY,
+    CHECKPOINT_MANIFEST,
     ENGINEERING_CHECKPOINT_STATUS,
+    PENDING_QC_CHECKPOINT_STATUS,
     PrimalDualCheckpointError,
     RECOVERY_CHECKPOINT_STATUS,
+    _current_solution_comparison_failures,
     apply_primal_dual_crossover_start,
     export_barrier_primal_dual_checkpoint,
+    promote_pending_qc_checkpoint,
     prepare_primal_dual_crossover,
     validate_barrier_primal_dual_checkpoint,
 )
@@ -33,7 +38,12 @@ from scripts.run_cispo_2030_full_year import diagnostic_memory_requirement_gb
 
 
 class FakeModel:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        current_primal: list[float] | None = None,
+        current_dual: list[float] | None = None,
+    ) -> None:
         self.IsMIP = 0
         self.NumVars = 3
         self.NumConstrs = 2
@@ -41,6 +51,8 @@ class FakeModel:
         self.Fingerprint = 123
         self.Params = SimpleNamespace(LPWarmStart=-1)
         self.assigned: dict[str, np.ndarray] = {}
+        self.current_primal = current_primal or [1.0, 2.0, 3.0]
+        self.current_dual = current_dual or [-4.0, 5.0]
 
     def update(self) -> None:
         return None
@@ -48,8 +60,12 @@ class FakeModel:
     def getAttr(self, name: str, objects=None):
         if name == "BarX":
             return [1.0, 2.0, 3.0]
+        if name == "X":
+            return self.current_primal
         if name == "BarPi":
             return [-4.0, 5.0]
+        if name == "Pi":
+            return self.current_dual
         if name == "VarName":
             return list(objects)
         if name == "ConstrName":
@@ -118,6 +134,107 @@ class PrimalDualCheckpointTests(unittest.TestCase):
         self.assertEqual(diagnostic_memory_requirement_gb(self.config, 4344), 32.0)
         self.assertEqual(diagnostic_memory_requirement_gb(self.config, 4345), 96.0)
 
+    def test_current_solution_identity_evidence_binds_attribute_and_count(self):
+        vectors = {
+            "primal": {
+                "entries": 3,
+                "current_solution_comparison": {
+                    "status": "COLLECTED",
+                    "current_attribute": "X",
+                    "maximum_absolute_difference": 0.0,
+                    "entries_compared": 3,
+                },
+            },
+            "dual": {
+                "entries": 2,
+                "current_solution_comparison": {
+                    "status": "COLLECTED",
+                    "current_attribute": "Pi",
+                    "maximum_absolute_difference": 0.0,
+                    "entries_compared": 2,
+                },
+            },
+        }
+        expected = {"primal": 3, "dual": 2}
+        self.assertEqual(
+            _current_solution_comparison_failures(
+                vectors, expected_entries=expected
+            ),
+            [],
+        )
+        for role, field, value in (
+            ("primal", "current_attribute", "BarX"),
+            ("dual", "entries_compared", 0),
+        ):
+            changed = json.loads(json.dumps(vectors))
+            changed[role]["current_solution_comparison"][field] = value
+            with self.subTest(role=role, field=field):
+                self.assertTrue(
+                    _current_solution_comparison_failures(
+                        changed, expected_entries=expected
+                    )
+                )
+
+    def test_pending_checkpoint_rejects_barrier_vector_identity_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            identity = {
+                "baseline_contract": {"id": "baseline"},
+                "analysis_case": {"id": "analysis"},
+                "scientific_case": {"id": "analysis"},
+                "implementation_bundle": {"sha": "code"},
+                "data_roots": {"root": "data"},
+                "lp_model": {
+                    "variables": 3,
+                    "constraints": 2,
+                    "nonzeros": 4,
+                    "gurobi_fingerprint": 123,
+                },
+            }
+            (source / "run_identity.json").write_text(
+                json.dumps(identity), encoding="utf-8"
+            )
+            (source / "run_environment.json").write_text(
+                json.dumps({"packages": {"gurobipy": "13.0.2"}}),
+                encoding="utf-8",
+            )
+            (source / "run_scope.json").write_text(
+                json.dumps({"result_use": "TEST_ONLY_TRUNCATED_HORIZON"}),
+                encoding="utf-8",
+            )
+            self._write_input_manifest(source)
+            solve_report = {
+                "status": "OPTIMAL",
+                "solution_contract": {
+                    "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+                    "acceptance_status": "PASS",
+                    "barrier_status_code": 2,
+                    "maximum_primal_quality_limit": 1e-5,
+                    "maximum_dual_quality_limit": 1e-5,
+                },
+            }
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ), self.assertRaisesRegex(
+                PrimalDualCheckpointError,
+                "vectors differ",
+            ):
+                export_barrier_primal_dual_checkpoint(
+                    # The 1e-6 drift is smaller than the 1e-5 solver-quality
+                    # contract, but still cannot transfer X quality to BarX.
+                    FakeModel(current_primal=[1.0, 2.0, 3.000001]),
+                    self.config,
+                    source,
+                    solve_report=solve_report,
+                    optimization_hours=744,
+                    optimization_start_hour=3960,
+                    result_use="TEST_ONLY_TRUNCATED_HORIZON",
+                    solution_qc=None,
+                    accepted_primary=False,
+                    pending_qc=True,
+                )
+
     def test_export_prepare_and_apply_exact_checkpoint(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -168,10 +285,13 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
                 "runtime_seconds": 1.0,
                 "iteration_counts": {"barrier": 4},
+                "objective_value_million_cny": 7.5,
                 "solution_contract": {
                     "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
                     "acceptance_status": "PASS",
                     "barrier_status_code": 2,
+                    "maximum_primal_quality_limit": 1e-5,
+                    "maximum_dual_quality_limit": 1e-5,
                 },
                 "solution_quality": {"maximum_constraint_violation": 0.0},
             }
@@ -188,10 +308,14 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     optimization_hours=744,
                     optimization_start_hour=3960,
                     result_use="TEST_ONLY_TRUNCATED_HORIZON",
-                    solution_qc=qc,
-                    accepted_primary=True,
+                    solution_qc=None,
+                    accepted_primary=False,
+                    pending_qc=True,
                 )
-            self.assertTrue(metadata["scientifically_accepted"])
+            self.assertEqual(
+                metadata["checkpoint_status"], PENDING_QC_CHECKPOINT_STATUS
+            )
+            self.assertFalse(metadata["scientifically_accepted"])
             np.testing.assert_allclose(
                 np.load(source / CHECKPOINT_DIRECTORY / "primal_barx.npy"),
                 [1.0, 2.0, 3.0],
@@ -200,8 +324,40 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 json.dumps(solve_report), encoding="utf-8"
             )
             (source / "solution_qc.json").write_text(
+                json.dumps(
+                    {"status": "FAIL", "hard_checks": {"balance": False}}
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                PrimalDualCheckpointError,
+                "solver-contract PASS and every original-unit QC",
+            ):
+                promote_pending_qc_checkpoint(
+                    source,
+                    solve_report=solve_report,
+                    solution_qc=qc,
+                )
+            (source / "solution_qc.json").write_text(
                 json.dumps(qc), encoding="utf-8"
             )
+            different_report = json.loads(json.dumps(solve_report))
+            different_report["objective_value_million_cny"] = 8.5
+            with self.assertRaisesRegex(
+                PrimalDualCheckpointError,
+                "solver evidence differs",
+            ):
+                promote_pending_qc_checkpoint(
+                    source,
+                    solve_report=different_report,
+                    solution_qc=qc,
+                )
+            metadata = promote_pending_qc_checkpoint(
+                source,
+                solve_report=solve_report,
+                solution_qc=qc,
+            )
+            self.assertTrue(metadata["scientifically_accepted"])
             (source / "result_manifest.json").write_text("{}", encoding="utf-8")
             target_model = FakeModel()
             with (
@@ -230,6 +386,34 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                     )
                 )
             self.assertTrue(checkpoint_valid, checkpoint_failures)
+            different_report["objective_value_million_cny"] = 8.5
+            (source / "solve_report.json").write_text(
+                json.dumps(different_report), encoding="utf-8"
+            )
+            with (
+                patch(
+                    "cispo_model.primal_dual_checkpoint.validate_result_manifest",
+                    return_value=(True, []),
+                ),
+                patch(
+                    "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                    return_value=(True, []),
+                ),
+            ):
+                tampered_valid, tampered_failures = (
+                    validate_barrier_primal_dual_checkpoint(
+                        source,
+                        require_result_manifest=True,
+                    )
+                )
+            self.assertFalse(tampered_valid)
+            self.assertIn(
+                "solver_evidence_mismatch:objective_value_million_cny",
+                tampered_failures,
+            )
+            (source / "solve_report.json").write_text(
+                json.dumps(solve_report), encoding="utf-8"
+            )
             self.assertTrue(prepared["implementation_bundle_matches"])
             self.assertNotEqual(
                 prepared["scientific_input_manifest_identity"][
@@ -243,6 +427,41 @@ class PrimalDualCheckpointTests(unittest.TestCase):
             np.testing.assert_allclose(target_model.assigned["PStart"], [1, 2, 3])
             np.testing.assert_allclose(target_model.assigned["DStart"], [-4, 5])
             self.assertEqual(target_model.Params.LPWarmStart, 2)
+            (source / "solution_qc.json").write_text(
+                json.dumps(
+                    {
+                        "status": "PASS",
+                        "hard_checks": {"balance": True},
+                        "maximum_residual": float("nan"),
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch(
+                    "cispo_model.primal_dual_checkpoint.validate_result_manifest",
+                    return_value=(True, []),
+                ),
+                patch(
+                    "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                    return_value=(True, []),
+                ),
+            ):
+                checkpoint_valid, checkpoint_failures = (
+                    validate_barrier_primal_dual_checkpoint(
+                        source,
+                        require_result_manifest=True,
+                    )
+                )
+            self.assertFalse(checkpoint_valid)
+            self.assertIn("solution_qc_nonfinite", checkpoint_failures)
+            self.assertIn(
+                "acceptance_evidence_solution_qc_sha256",
+                checkpoint_failures,
+            )
+            (source / "solution_qc.json").write_text(
+                json.dumps(qc), encoding="utf-8"
+            )
 
             new_cohorts = pd.DataFrame(
                 [
@@ -451,6 +670,49 @@ class PrimalDualCheckpointTests(unittest.TestCase):
                 ][0]["key"],
                 "CISPO_RAW_GRFR_ROOT",
             )
+            checkpoint_root = source / CHECKPOINT_DIRECTORY
+            primal_path = checkpoint_root / "primal_barx.npy"
+            primal = np.load(primal_path)
+            primal[0] = np.nan
+            np.save(primal_path, primal, allow_pickle=False)
+            manifest_path = checkpoint_root / CHECKPOINT_MANIFEST
+            checkpoint_manifest = json.loads(
+                manifest_path.read_text(encoding="utf-8")
+            )
+            checkpoint_manifest["vectors"]["primal"]["bytes"] = (
+                primal_path.stat().st_size
+            )
+            checkpoint_manifest["vectors"]["primal"]["sha256"] = (
+                sha256_file(primal_path)
+            )
+            manifest_path.write_text(
+                json.dumps(checkpoint_manifest), encoding="utf-8"
+            )
+            with patch(
+                "cispo_model.primal_dual_checkpoint.validate_input_manifest",
+                return_value=(True, []),
+            ):
+                valid, failures = validate_barrier_primal_dual_checkpoint(
+                    source,
+                    require_result_manifest=False,
+                    allow_engineering=True,
+                )
+                self.assertFalse(valid)
+                self.assertIn("vector_nonfinite:primal", failures)
+                with self.assertRaisesRegex(
+                    PrimalDualCheckpointError, "not eligible"
+                ):
+                    prepare_primal_dual_crossover(
+                        source,
+                        target,
+                        FakeModel(),
+                        self.config,
+                        optimization_hours=8760,
+                        optimization_start_hour=0,
+                        result_use="SCIENTIFIC_PRODUCTION",
+                        allow_engineering_checkpoint=True,
+                        allow_compatible_implementation_bundle=True,
+                    )
 
     def test_incomplete_barrier_vector_export_is_recovery_only(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

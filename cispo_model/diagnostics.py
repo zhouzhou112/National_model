@@ -450,6 +450,9 @@ def solve_and_report(
         "annual_emissions_accounting": config.raw["formulation"][
             "annual_emissions_accounting"
         ],
+        "annual_capacity_link_row_scaling": config.raw["formulation"].get(
+            "annual_capacity_link_row_scaling", "physical_v1"
+        ),
         "solver_parameters": {
             "method": int(model.Params.Method),
             "threads": int(model.Params.Threads),
@@ -601,7 +604,9 @@ def solve_and_report(
             barrier_primal_difference: float | None = None
             barrier_primal_difference_status = "COLLECTED"
             if variables_for_locations is None:
-                barrier_primal_difference_status = "SKIPPED_MODEL_SIZE"
+                barrier_primal_difference_status = (
+                    "DEFERRED_TO_CHECKPOINT_EXPORT_MODEL_SIZE"
+                )
             else:
                 try:
                     solution = np.asarray(
@@ -618,6 +623,17 @@ def solve_and_report(
                 except (AttributeError, gp.GurobiError, ValueError):
                     barrier_primal_difference = None
                     barrier_primal_difference_status = "UNAVAILABLE"
+            if barrier_primal_difference_status == "COLLECTED":
+                strict_quality_pass = bool(
+                    strict_quality_pass
+                    and barrier_primal_difference is not None
+                    and math.isfinite(barrier_primal_difference)
+                    and barrier_primal_difference <= primal_limit
+                )
+            elif barrier_primal_difference_status != (
+                "DEFERRED_TO_CHECKPOINT_EXPORT_MODEL_SIZE"
+            ):
+                strict_quality_pass = False
             report["solution_contract"].update(
                 strict_quality_pass=strict_quality_pass,
                 acceptance_status=(

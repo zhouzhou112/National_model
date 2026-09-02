@@ -1,0 +1,8 @@
+{
+  "formulation_profile_version": "v1",
+  "profile_id": "annual_capacity_link_rows_8192_v1",
+  "description": "Exact power-of-two left scaling of annual VRE and run-of-river capacity-link rows, the two audited sources of the pathological 8760h capacity-column span. The 8760h target exponent is 13; shorter diagnostics use the largest exponent that keeps every affected nonzero coefficient at or above 1e-6.",
+  "formulation": {
+    "annual_capacity_link_row_scaling": "binary_power2_safe_8192_v1"
+  }
+}

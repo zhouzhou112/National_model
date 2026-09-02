@@ -365,7 +365,7 @@ def collect_solver_run(root: str | Path) -> dict[str, Any]:
         "solution_qc_status": qc.get("status"),
         "hard_check_count": len(hard_checks),
         "hard_check_failure_count": sum(
-            not bool(value) for value in hard_checks.values()
+            value is not True for value in hard_checks.values()
         ),
         "result_manifest_valid": manifest_valid,
         "result_manifest_failure_count": len(manifest_failures),

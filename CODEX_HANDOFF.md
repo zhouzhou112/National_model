@@ -12,6 +12,650 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-02 本轮 current override（Git commit：`pending`）：作者已明确把唯一数值优化路线收敛为
+  `annual_capacity_link_rows_8192_v1`，即只对 VRE 与径流式水电（ROR）的年度可用量约束做
+  **精确整行左缩放**。对族 $f$ 取 $s_f=2^{-k_f}$，将零右端行
+  $E_f-\sum_i FLH_{f,i}K_i\leq0$ 整体改写为
+  $s_fE_f-\sum_i s_fFLH_{f,i}K_i\leq0$；变量、目标、边界、行支撑和可行域均不变。
+  $k_f$ 是不超过13且保证缩放后最小非零系数不低于`1e-6`的最大整数；正式2160h/8760h
+  门禁要求 VRE/ROR 均为`k=13`（`s=1/8192`），否则 fail closed。Wave 与省内负荷中心容量行明确
+  不缩放。原单位解释固定为`pi_physical=s*pi_solver`、`slack_physical=slack_solver/s`、reduced cost
+  不变；所有原单位QC继续执行。
+- 8760h Stage A 冻结使用`barrier_checkpoint_full_year_cloud_v4`：`Method=2`、`Threads=32`、
+  `Presolve=2`、`Crossover=0`、`SolutionTarget=1`、`BarConvTol=1e-9`、`FeasibilityTol=1e-9`、
+  `OptimalityTol=1e-8`、`NumericFocus=1`、`ScaleFlag=2`、`Aggregate=1`、`soft_mem_limit_gb=600`，
+  无`TimeLimit`；32线程是作者
+  根据既有8760h经验作出的正式选择，不以小规模线程效率否决。Stage B不是必需步骤，且任何脚本、
+  watcher或规划序列均不得自动启动Stage B；只有作者以后另行明确授权时才可作为独立任务讨论。
+- 2160h/start2880只作为正式放大前的工程资格门禁，尚未运行本候选，不能宣称性能已改善。结构必须
+  保持raw`12,520,914 rows / 10,398,783 vars / 126,724,678 nnz`；presolved nnz不超过
+  `107,398,350`、DenseCols不超过`38,982`、`AA' NZ`不超过`2.17035e8`、Factor NZ不超过
+  `6.28845e9`、Factor Ops不超过`2.19345e14`、日志factor memory不超过`63 GB`且无数值警告。
+  首个`iteration >= 30`遥测点必须同时满足累计runtime不超过`12,000 s`、Work不超过
+  `18,961.075`、进程组RSS不超过`75 GiB`；前两项一旦通过即锁定，后续内存或警告仍可失败。
+- 本地验证已完成：设置权威wave根后完整测试`290 passed, 1 skipped`；
+  `output/annual_capacity_link_scaling_24h_start2880_solve_v6/validation_report.json`为`PASS`，物理原式与
+  缩放式均为Gurobi status2 `OPTIMAL`，目标均为`2112716.676624984 million CNY`且原单位QC均`PASS`。
+  这仅证明短时域代数/接口正确，不是2160h/8760h加速证据。
+- 服务器唯一有效生产checkout是`/home/zz2/National_model_server/repo`，当前已核实clean
+  `6065bfb`；`/data/zz2/National_model/repo`是旧NTFS克隆，不得部署或启动。本任务为落实作者
+  “Stage B非必需、先解决Stage A”的新决定，已**有意停止**旧Stage B进程组及其Case2 watcher，
+  当前无本项目solver。这是对下方18:04条目在当时证据不足下保留
+  `EXTERNAL_SIGTERM_CAUSE_UNRESOLVED`的后续纠正；不删除或改写该历史记录。精确下一步是完成选择性
+  提交/推送，在正确checkout上先验证跨SSH的detached `tmux`持久性，再以32个物理核启动唯一2160h
+  资格运行；不得并发其他数值支线、不得自动Stage B，也不得在2160门禁前宣称全年性能收益。
+
+- 2026-09-02 18:04+08:00：Case1 2160h Stage B已于17:41:39被`SIGTERM`中断，非自然完成、
+  非95%内存保护、非OOM。runner rc143、Gurobi status11 `INTERRUPTED`、SolCount0，严格审计rc42；
+  exact checkpoint resume和Crossover路径此前已通过，但运行92699.686s、8366337 simplex iterations后
+  仍剩1262112 PPushes/PInf1265.5003，无objective、QC或result manifest。0.5s process-tree RSS峰
+  26.954GiB；2s遥测46818样本/errors0、job RSS峰28.908GB、host used峰77.64%、最低available
+  29.55GB；双stderr空、host guard0，排除资源保护或solver报错。终止时刻与一条SSH session断开
+  同秒，但现有证据不足以确认信号发送者或因果关系，不能写成算法失败或用户主动停止。
+  Case2 watcher也已退出，最后状态停在17:41:05 `WAITING_STAGE_B`；没有Case2 claim/output/process，
+  不得手工启动，因为Stage B未达到rc0/QC PASS/manifest门禁。证据见
+  `downloads/case1_stage_b_interrupted_20260902_v1`。原4小时heartbeat应删除，等待作者决定是否以
+  更可靠的脱离SSH session/cgroup方式重跑Stage B、改走其他严格收尾路线或重新排序Case2/数值筛选。
+
+- 2026-09-02 10:45+08:00：版本关系核实完成：服务器生产6065bfb是本地主分支/服务器裸远端
+  65c8b21的祖先，本地仅领先两条运行记录，无分叉。已从6065bfb建立并整合统一工程分支
+  `codex/numerical-stability-engineering-v2`，提交`7fce1ca4ae08997124a41322f1460040712b5afc`，
+  已推送固定服务器裸远端和GitHub同名分支，活动生产checkout未更新。权威记录
+  `NUMERICAL_STABILITY_ENGINEERING_LINE.md`明确：744h的CF1e-4负结果只阻止凭该证据直接晋级，
+  不构成2160h/8760h必慢的外推证明；当前Case1/Case2结束且资源门禁满足后，仍可做隔离匹配的
+  2160h结构/有限Barrier筛选。工程线整合候选均默认关闭、互斥测试，不改变生产1e-6默认值。
+
+- 2026-09-02 09:59+08:00：完整744h Stage A阈值A/B已于09-01 22:42终态，pair两条均
+  runner rc0、Gurobi `OPTIMAL`且checkpoint完整/可deferred crossover，但均因Crossover0宽松Barrier
+  为`HARD_FAIL`、原始QC失败，不能科学接受。候选CF阈值1e-4相对生产1e-6虽然raw NNZ少20976，
+  却由120增至134 Barrier步（+11.67%）、solver 2995.079→3070.307s（+2.51%）、work units
+  2842.982→3006.566（+5.75%）、端到端3380.386→3478.729s（+2.91%），process-tree RSS峰
+  20.049→20.402GiB（+1.76%）；目标还因可行域改变相差371.039 million CNY（约0.01598%）。
+  因此`coefficient_zero_tolerance=1e-4`不凭744h证据启动该尺度Stage B或修改生产默认；但这不是
+  对2160h/8760h性能的永久否决，后续可按统一工程线做隔离长时域结构筛选，不能直接上8760h。
+  终态证据见`downloads/cf_744_stagea_pair_terminal_20260902_v1`；隔离分支worklog提交
+  `4a95822bf0cfbaa85851c9f5d72ea55996109c32`，生产仍clean6065bfb。Case1 Stage B同PGID3946395
+  继续exact-resume Crossover，09:59剩约2.418M
+  PPushes/PInf1633.873、solver约64942s，无return code/QC/manifest；当前RSS约24.1GiB、host
+  available约44GiB/PSI0。Case2 watcher881511仍`WAITING_STAGE_B`，不会绕过rc0+QC PASS+
+  manifest+无竞争求解+available>=96GiB门禁。当前可用内存不足以安全再塞一对744h，且两张GPU
+  存在其他计算客户；不触碰外部进程，先让Stage B完成并由门禁启动Case2。
+
+- 2026-09-01 21:44+08:00：依据作者“在Stage B空余期自行迭代744h起步”的明确授权和前述
+  `PROMISING_MODEST`五步结果，已启动下一对完整744h Stage A：基线tag
+  `2030_base_744h_cf1e6_stage_a_concurrent_20260901_v1`（PGID1045145）与候选tag
+  `2030_base_744h_cf1e4_stage_a_concurrent_20260901_v1`（PGID1045150），均为Base2030、
+  744h/start2880、Method2/Threads16/Presolve2/Crossover0、BarConvTol1e-2、Feas/Opt1e-5、
+  NF1/Scale2、engineering checkpoint模式、无TimeLimit/SoftMemLimit，分别绑定两个NUMA节点。
+  新campaign root为`campaign_tools/cf_744_stagea_pair_20260901_v1`、supervisor1045122；本轮已修复
+  monitor路径并核实两个2秒telemetry进程实际运行，pair级95%保护保留。启动时host available约87GiB、
+  PSI0，Stage B同PGID3946395继续PPushes；Case2 watcher将按无竞争/96GiB门禁等待，不会过量并发。
+  新launcher/worklog已提交隔离分支`ba89225a23375f2bc400d510b62f6e1865412239`，生产仍为6065bfb。
+
+- 2026-09-01 21:41+08:00：两条并发744h CF阈值5步因子筛选均按预期到`ITERATION_LIMIT`
+  （Gurobi status7、5 Barrier steps、无解/QC，runner rc2是当前runner对诊断终态的非零返回，不是OOM）。
+  候选1e-4相对基线1e-6：raw NNZ 44000585→43979609（-0.0477%），presolved NNZ
+  37040141→37023865（-0.0439%），Factor NZ 8.249e8→8.064e8（-2.24%），Factor Ops
+  5.048e12→4.738e12（-6.14%），ordering 135.34→117.64s，solver 562.912→522.945s
+  （并发筛选约-7.10%，不能直接当隔离加速）；process-tree RSS峰20.468→20.112GiB。候选raw Matrix
+  最小值升至3.7e-5，但目标/RHS/bounds仍有更小尺度，故只判`PROMISING_MODEST`，尚未通过完整
+  Stage A+B/QC。pair于21:18结束、host95 guard未触发；独立遥测器因生产repo缺少
+  `scripts/monitor_case_resources.py`均启动失败，但pair级2秒内存/PSI记录、runner内部0.5秒RSS及
+  `/usr/bin/time`完整，不能把缺失的独立字段记为0。Stage B于21:41完成DPushes后转入
+  6755240 PPushes/PInf3224.99，仍无return code/solve report/QC/manifest；这是Crossover下一阶段，
+  不是失败或重跑Barrier。production clean6065bfb、当前available约87GiB/PSI0，Case2 watcher
+  仍`WAITING_STAGE_B`，未重复启动。
+
+- 2026-09-01 21:04+08:00：作者明确授权在Case1 Stage B内存空闲期并发744h以上数值筛选，已部署
+  两条匹配`744h/start2880`、Barrier16、`BarIterLimit=5`、Crossover0、无TimeLimit/SoftMemLimit
+  运行：生产阈值tag `2030_base_744h_cf1e6_factor5_concurrent_20260901_v1`绑定CPU
+  `0,2,...,30`，候选阈值tag `2030_base_744h_cf1e4_factor5_concurrent_20260901_v1`绑定
+  `1,3,...,31`；21:03:45两者均启动，Stage B同PGID3946395继续，21:04整机可用约91GiB、
+  used约25.8%、memory PSI0，95%配对保护和各自2秒遥测正常。生产模型本就将CF<1e-6置零；
+  完整8760h只读误差审计表明升至1e-4会额外删除VRE64001项、ROR261060项、wave0项，容量
+  上界可用电量损失分别5.2221/0.8794/0GWh，合计约6.1015GWh；既有容量floor损失合计
+  约0.4151GWh，单小时全国上界损失不超过各资源上界之和约0.01303GW。该候选改变可行域，
+  只能凭A/B晋级，不能称代数等价或已加速。Case2即时幂等watcher PID881511已部署，每60秒
+  只做轻量门禁；Stage B rc0+QC PASS+manifest完整、repo clean6065bfb、无竞争求解、host used<90%、
+  available>=96GiB、PSI正常后启动唯一`2030_base_2160h_case2_v3_barrier32_screen_20260901_v1`。
+  人类可见automation `2160h-stage-b`保持每4小时并已扩展监测Stage B/Case2/数值候选。
+
+- 2026-09-01 18:30+08:00：在独立worktree/分支`codex/annual-energy-coordinate-v1`完成
+  `Annual Energy Coordinate V1`候选提交`4814c2e5f197cb152e9e37ff6dcf78df605bb38d`；基于生产
+  6065bfb，默认关闭，未部署服务器、未干预活动Stage B。首版因把24h极小CF汇总系数压到
+  `5.64e-10`已否决；当前版只缩放年度账户/省内年度流量，VRE/wave/hydro资源发电与CF/径流
+  行保持物理GWh。24h/start2880 raw Matrix由`1.026e-6..6250`变为`1.026e-6..260.417`，
+  最小系数不降；严格候选`OPTIMAL+QC PASS+manifest complete`且目标与原版binary64相同。
+  但候选严格Barrier/Crossover为178.807s/131/370107，对比原版174.979s/120/366065，
+  非exact Kappa也更差，故尚无速度/条件数改善结论；完整回归223/223 PASS。唯一后续是在当前
+  Stage B完成后做相同2160h/start2880 Barrier16 Stage A+B A/B，候选不得复用原checkpoint。
+  详细证据见隔离分支`ANNUAL_ENERGY_COORDINATE_V1_WORKLOG.md`。`2160h-stage-b` heartbeat已按
+  作者要求从每小时改为每4小时，只读监测策略和2秒服务器遥测不变。
+
+- 2026-09-01 17:36+08:00：2160h Case1 Stage B已通过exact resume门禁并进入真正的deferred
+  Crossover，不再是build待确认状态。`primal_dual_start_input.json`证明Gurobi13.0.2、implementation
+  bundle、科学输入identity、LP Fingerprint `0xcf045770`、10398783/12520914维度、变量/约束顺序及
+  primal/dual向量完整性门禁均通过；Gurobi日志明确为`use start vectors`→`perform crossover with primal
+  and dual start vectors`→`crush start vectors`，未重跑Barrier。17:36仍为同一PGID3946395/Python3946400，
+  DPushes 8159992→222988、DInf约9.04、solver约5982s；这是Crossover进展，不是收敛或验收。
+  3462个2秒样本/errors0，RSS采样峰28.908GB、host可用最低92.465GB、memory PSI0，双stderr空；
+  无return code/solve report/QC/result manifest，继续只读监测，不改参/重启/并发/部署数值缩放。
+  证据见`downloads/case1_stage_b_crossover_20260901_1736/README.md`。
+
+- 2026-09-01 15:42+08:00：按作者授权启动唯一2160h Case1 deferred Crossover Stage B，标签
+  `2030_base_2160h_case1_v3_stage_b_20260901_v1`，source为只读Stage A根
+  `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`。启动前production clean6065bfb、
+  无CISPO solver、MemAvailable113.093GiB、si/so0/0、memory PSI0；checkpoint gate eligible=true，
+  BarX/BarPi 10398783/12520914项的size/SHA全部PASS；定向测试13 passed+34 subtests。
+  参数为Method2/Threads16/Presolve2/Crossover2/CrossoverBasis1/LPWarmStart2、Feas/Opt1e-6、
+  NF2/Scale2，无TimeLimit/SoftMemLimit，保留整机95%保护和2秒遥测。launcher3946098、
+  solve PGID3946395/Python3946400；15:42仍在build，双stderr空，尚无primal_dual_start_input，
+  因此不能提前宣称exact resume/Crossover开始。独立工具包SHA和启动证据见
+  `downloads/case1_stage_b_launch_20260901_v1/README.md`。heartbeat `2160h-stage-b`已ACTIVE/每4小时，
+  只监测此标签，不重启/改参/并发；终态须以strict contract、原单位QC和manifests共同验收。
+
+- 2026-09-01 13:59+08:00：作者明确要求停止2160h GPU-PDHG。停止前重新核验同一标签
+  `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`、PGID1216966/Python1216969/GPU1；
+  仅向目标进程组发送SIGTERM，29秒后正常退出，未使用SIGKILL，独立遥测器正常落盘退出，
+  GPU0其他客户未触碰。终态`INTERRUPTED`/status11/rc143，solver386921.588s（107.478h）、
+  78474440步、无解；末行P/D/Compl=1.32e-4/762/0.388，目标6.14573627e6/1.34354222e6。
+  193911个2s资源样本/errors0，RSS峰27.043GiB、GPU1 job显存峰4558MiB/平均利用99.196%，
+  无CPU回退/CUDA OOM/host guard，证明终止原因是长期算法/数值平台而非资源不足。服务器求解、
+  wrapper、telemetry均已消失，GPU1已释放；未改生产代码/模型/数据/参数/其他任务。三小时
+  `case-4-gpu-pdhg` heartbeat已删除，不会自动重启。证据见
+  `downloads/case4_gpu_pdhg_user_stop_20260901_1359/README.md`。
+
+- 2026-09-01 13:52+08:00：2160h GPU-PDHG同Python1216969/PGID1216966、clean6065bfb已连续
+  运行约4d11h，solver386540s/78397740步，P/D/Compl=1.66e-4/763/0.388，目标
+  6145955.98/1343518.08，相对分离仍78.14%，无终态/QC。8月29日P残差突破后形成新平台：
+  近24h D残差仅改善1.548%、Compl0.257%、目标绝对分离0.232%，P在1.04e-4以上振荡；
+  近48h对应2.554%/0.513%/0.321%。资源正常，193695个2s样本/errors0，GPU1当前100%/
+  job4558MiB、全程平均99.20%，RSS16.59GiB/峰27.04GiB，主机可用约96.5GiB、PSI0，
+  双stderr空，无CPU回退/CUDA/OOM。结论为算法/数值长期平台，不是资源瓶颈；按作者无时限
+  授权继续，不停止/重启/改参。证据`downloads/case4_gpu_pdhg_heartbeat_20260901_1352/README.md`。
+
+- 2026-08-29 23:32+08:00：2160h GPU-PDHG出现首次明确平台突破；同Python1216969/
+  PGID1216966、clean6065bfb继续，solver162185s/32634740步。近3h primal residual由
+  3.93e-3降至1.04e-4（97.354%），且新水平已持续约1.54h，不是单点波动；跳变窗口
+  156620～156625s同时伴随dual/Compl短暂振荡，日志无显式restart标记，内部restart/iterate
+  切换仅为推断。dual residual仅790→789，Compl0.390→0.389，目标绝对分离仅改善0.887%，
+  当前目标相对分离仍约78.19%，故只判为原始可行性方向突破，绝非收敛或科学接受。
+  GPU1仍100%/job4558MiB，81526个2s样本/errors0，RSS16.59GiB/峰27.04GiB，两stderr空，
+  无CPU回退/CUDA/OOM/终态；未干预进程/参数/95%保护。证据
+  `downloads/case4_gpu_pdhg_heartbeat_20260829_2332/README.md`，原自然运行策略继续。
+
+- 2026-08-29 15:35+08:00：完整8760h原始MPS流式数值审计已核验为`COMPLETE`，修正此前
+  “下载/审计未完成”的过期状态。输入4142909397bytes、SHA256`344f2ae4...43fe2435d`，
+  integrity PASS；50907234 rows/41458383 columns/492835195 nnz与预期完全一致。审计为
+  `NO_BUILD_NO_PRESOLVE_NO_OPTIMIZE`，故不提供full presolved矩阵/Kappa，也不等于科学接受。
+  原Matrix1.000486e-6～6250/ratio6.246964e9；主因定位为`vre_capacity_gw`和
+  `hydro_capacity_gw`同时连接小时CF约1e-6与年度FLH约6000，列族跨度约5.92e9/5.94e9；
+  年度负荷中心GWh子系统还产生6250、4380和1e-6目标系数。形成第一优先候选
+  `Annual Energy Coordinate V1`：只将该年度能量/流量内部坐标按S=8192GWh缩放并在导出/QC
+  恢复原单位；不改模型边界、物理数据或求解容差。该候选仅为待实现/验证方案，预期range改善
+  必须经MPS、presolve、原单位QC和唯一2160h对照证明；不推广既有通用binary scaling负结果。
+  证据`downloads/numerical_audit_8760_20260829_v1/REPORT.md`及原audit.json。15:35只读核验
+  服务器production clean6065bfb、同2160h Python1216969/PGID1216966仍运行，无干预。
+
+- 2026-08-29 15:16+08:00：只读刷新2160h GPU-PDHG平台判断；同Python1216969/PGID1216966、
+  production clean6065bfb继续，solver132365s/26552140步，P/D/Compl=0.00393/793/0.390，
+  objective=6162895.93/1154994.79，无终态/错误，GPU1仍100%/job4558MiB，未干预。
+  解析完整26036条日志、按实际记录无插值取3/6/12/24h窗口：P残差打印精度下均0%改善；
+  D残差改善0.252/0.751/1.491/4.802%，Compl改善0/0/0.256/1.015%；目标绝对分离改善
+  1.644/3.140/4.262/6.041%。结论仍是残差主导的平台期，但不是目标差完全横盘；
+  当残差仍大时目标差不是可行上下界/停止gap，不能据此预测终态或宣称接近最优。
+  证据downloads/pdhg_plateau_review_20260829_1516（源日志2096940bytes/SHA cfd9802e...18a）。
+  本地HEAD65c8b21；仅scp/分析/文档，无模型/参数/进程/保护/自动化改变，原自然运行策略继续。
+
+- 2026-08-28 20:27+08:00：例行3h只读巡检，2160h同Python1216969/PGID1216966、clean6065bfb继续，
+  约12729540步/solver64600s，P/D/Compl=0.00393/818/0.392，仍未收敛，无新增异常/终态。
+  GPU1为100%/4600MiB、RSS16.58GiB，主机可用86.92GiB；32760个2s样本/errors0，监测持续。
+  证据downloads/case4_gpu_pdhg_heartbeat_20260828_2027/README.md。只保存日志，无生产/参数/进程变更。
+  作者19:14提出99%重试后，因旧2160h自身95%保护冲突已询问是否允许联动调整，**尚未收到确认**；
+  本次heartbeat仍要求95%，实际launcher也仍为95。99%未实施、8760h未重试，不将心跳当作授权。
+  下一步保留原巡检和运行，等待作者就联动保护的新决定；不自动停2160h或改其保护。
+
+- 2026-08-28 19:10+08:00核验：新8760h GPU0 tag `2030_base_8760h_gpu0_pdhg_unlimited_20260828_v2`
+  已于18:23:22因94%整机优先退出保护结束（rc=-9，原702485已消失），不是仍在运行。
+  总63min；完整建模3663.595s/61.06min、建模RSS峰48.183GiB，进入optimize约109s，
+  最后presolve100s，尚无Start PDHG on GPU/任何PDHG迭代或QC。全程RSS采样峰77.627GiB，
+  host峰94.374%/最低可用6.925GiB、Swap峰8GiB；GPU0仅初始化job386MiB/整卡786MiB、利用率0%。
+  非显存OOM、非算法收敛失败；实际TimeLimit/SoftMemLimit均Infinity已由模型读回，参数符合原请求。
+  原2160h Python1216969/GPU1仍100%/4600MiB，生产clean6065bfb；无新启停/改参/缩小/StageB。
+  18份control+7份输出证据本地25/25 SHA匹配，见downloads/8760_gpu0_terminal_20260828_1910/README.md。
+  原启动快照已加终态更正，本地HEAD65c8b21，未改生产/模型/数据，既有2160h自动化不暂停。
+  真实模型规模50907234/41458383/492835195与历史云8760相同，但指纹0x2acf0ca2不同于历史0xd16b4c7e，
+  来源待独立核验，不能宣称逐项矩阵完全一致；未据此改变模型边界。下一步需作者决定是否另安排
+  更充分主存窗口后再试；不自动重启/取消保护/停旧2160h，也不能声称单独运行就一定能完成。
+
+- 2026-08-28 17:22+08:00：作者新授权另一张卡尝试完整8760h，已于17:20:22在GPU0启动独立
+  `2030_base_8760h_gpu0_pdhg_unlimited_20260828_v2`，PID/PGID702485、create_time1787908821.96。
+  生产仍clean6065bfb，Base2030/full_year8760/start0，原2160h参数完整复用（Method6/Threads32/
+  Conv/Abs/Rel=1e-2/1e-5/1e-2、无TimeLimit/SoftMemLimit）；未部署数值候选、未改模型/数据。
+  唯一基础配置变化是私有副本启动内存准入96→1GiB；preflight PASS，非内存使用限额。
+  共享主机旧95%保护保持；已告知作者新任务94%整机优先退出（0.25s检查，仅杀新组），
+  新进程oom_score_adj500，2秒双GPU/主存/Swap/PSI/job采样正常，不自动缩小/重试/StageB。
+  17:22新job建模中、RSS8.38GiB、host可用78.46GiB、GPU0仅初始化786MiB/0%；尚无实际参数
+  读回文件或Start PDHG on GPU，不能称为已开始GPU迭代或已证明显存足够。旧1216969/GPU1仍100%。
+  启动器v1在模型构建前因自身拼写错误返回125，已保留现场并修正为v2；不是算法失败。
+  2个独立新增脚本+6项单测/静态检查PASS；详细SHA/命令/失败记录见downloads/8760_gpu0_launch_20260828_v2/README.md。
+  本地HEAD65c8b21、相关新文件未提交；既有其他修改与审计下载未动。下一步只核验当前v2的
+  实际Infinity/参数与GPU开始标志、资源/收敛和终态QC，不重复启动；2160h原3h巡检不变。
+
+- 2026-08-28 17:12+08:00：作者追问N50R5后，已通过登录态网页确认NC-N50R5/scvk386确已绑定，
+  同时还有BSCC-N56R5/scxk805、NC-N30/scz0rmg及原A6/A8；账号关系图五中心均标记在线。
+  这修正此前查询范围：原SSH只覆盖bscc-m8，不是平台全部资源。详细证据追加于
+  downloads/cloud_resource_inventory_20260828_1703/README.md。N50R5网页SSH实际返回connection closed，
+  未获提示符；控制台队列仅返回A6/A8，GPU型号/显存/配额/空闲/报价尚未核实，不宣称已可调度。
+  首页可用额度显示约-4973元，尚未核实合同/信用/停机政策，不能认定是断连原因。
+  Chrome资源关系页已保留；下一步核实该资源区登录/队列和计费状态，再只读查配置；未提交任何作业或改绑定。
+
+- 2026-08-28 17:03+08:00：超算账号资源只读核验完成，详见downloads/cloud_resource_inventory_20260828_1703/README.md。
+  用户组与AllowGroups匹配的UP分区为amd_m8_768-a（192CPU/768000MB）、amd_a8_768（128CPU/768000MB）、
+  amd_a8_384（128CPU，87节点384000MB/15节点768000MB）；17:03:52严格idle分别80/29/0。
+  关联GrpTRES cpu=1280、MaxSubmitJobs=50；当前用户队列空。部分节点跨分区，不能相加；361唯一节点GRES均null。
+  仅证明当前bscc-m8集群未暴露GPU；全平台资源/价格仍待作者登录已保留的Chrome控制台后查询。
+  未申请资源/安装/迁移许可/改模型/启停求解；HEAD65c8b21。下一步仅查其他资源区，不自动提交计费作业。
+
+- 2026-08-28 17:00+08:00：按作者要求完成当前2160h PDHG与前一轮23h Barrier16的同时间收敛对照，
+  见downloads/pdhg_barrier_comparison_20260828_v1/REPORT.md及4份CSV/comparison.json。
+  只读复制约16:53 PDHG日志（9916条、末51765s/10111540步），Barrier243条/末82527s；
+  同2160h/start2880、原LP指纹0xcf045770，Time含预求解但不含建模，取不晚于预算的最近记录，无插值。
+  10→14h：Barrier原始/对偶残差和目标绝对差下降80.77%/95.21%/88.83%；PDHG约0%/1.90%/0.48%。
+  PDHG前期更快拉近目标但后段平台；14h目标差仍约为Barrier十分之一，不能说同耗时全面落后。
+  历史Barrier17.4175h将目标差降至当前PDHG以下，23h宽松终态仍HARD_FAIL；不据此预测PDHG达标时间。
+  两算法内部残差尺度未证明一致；描述性abs(P-D)/max(1,abs(P),abs(D))不是solver停止指标/最优性证书。
+  新增本地比较脚本和4项测试PASS/py_compile通过，输入SHA和配置/QC可追溯；无模型/参数/进程变更。
+  16:59审计v3下载222MiB（222/3951块），仍DOWNLOADING，不干预；下一步等待各自既有流程，
+  PDHG按原无时限策略与3h巡检继续，严禁把这份比较当作提前停机或自动StageB授权。
+
+- 2026-08-28 16:44+08:00：云端GPU-PDHG可部署性只读核验完成，证据
+  downloads/cloud_gpu_license_review_20260828_v1/README.md。云端现有许可确为WLS
+  （非秘密ID2847107、0600、无机器绑定字段），但文件无到期日，本次未申请token核验订阅/并发。
+  官方GPU功能不需单独许可；当前云端应用gurobipy13.0.2无+cu，需独立GPU环境。
+  sinfo -a未见GPU分区，全部GRES null；只能证明当前账号/资源区未暴露GPU，不代表平台无GPU。
+  16:42云队列空；固定服务器原Python1216969/RTX4090 GPU1继续100%，13.0.2+cu129已实核。
+  未申请节点/迁移许可/安装/求解/改动进程；HEAD65c8b21。下一步先取得GPU资源区/型号/价格，
+  作者授权后才做新节点小LP许可及GPU验证，再评估相同2160h独立对照；现有任务不受影响。
+
+- 2026-08-28 16:43+08:00：作者明确授权“继续审计”，已启动独立本机小块续传→整文件SHA→本地审计
+  流程。当前根`.codex_tmp/numerical_stability_20260828_v1/outputs/local_8760_verified_v3`，
+  16:41:48 launcher13448/实际Python49052（需复核身份），run_v1/status.json为DOWNLOADING；
+  16:42:10成功保存3个1MiB块，非完整下载/审计终态。2线程、1MiB块、每次180s/最多3次；
+  源端仅stat/dd读取，不提交云计算、不写固定服务器、不触碰另一备份45560。
+  完整4142909397bytes/SHA344f2ae4...43fe2435d通过后自动启动一次原audit_saved_mps_stream.py，
+  验证50907234/41458383/492835195及gzip/ENDATA/SHA；最终输出run_v1/audit/audit.json。
+  首次32MiB块版因慢网络超时，于16:41身份核验后仅停止本机31188及其SSH子进程；
+  local_8760_verified_v2全部partial/锁/旧status和controlled_stop.json保留，不再当作活动任务。
+  15:38失败现场也保留。新增fetch_and_audit_mps.py及7项测试，7+11项PASS，未改解析器/LP/数据。
+  16:38 PDHG原1216969、生产clean6065bfb、GPU1 100%/4600MiB、资源无错误，未干预。
+  详细命令/哈希/接续见v3根README.md；下一步查同一run_v1状态，禁止重复启动或绕过完整性门禁。
+  仍无可推广的大规模数值修复，下载恢复不能记为审计完成；主机需保持开机联网。
+
+- 2026-08-28 16:33+08:00：响应作者状态询问，只读复核发现全8760h流式矩阵审计已于15:38:14
+  **FAILED**，不是仍在等待。ssh.stderr.log为Connection reset，解压报EOFError；原Python34684/
+  SSH40220/launcher37332均已退出。最后进度104072756/492835195 nnz（约21.1%）、
+  接收1555038208/4142909397bytes，无audit.json、未完成全量SHA/CRC/维度核验。失败现场保留，未重启。
+  16:32云端SSH恢复可达，源MPS大小仍4142909397bytes、mtime03:01:57；本轮未重新全量hash，
+  不能单凭stat证明源完整，也不将传输截断归为模型数值失败。
+  独立备份进程45560身份仍匹配，但本地transfer_progress和服务器backup_status均停在14:22:46，
+  1945156460/6606826274bytes、31/104范围，未见完整性PASS；记录为进度停滞，不干预其他任务。
+  PDHG同一Python1216969/PGID1216966、production clean6065bfb继续；16:31约9847340步，
+  solver50470s，stdout primal/dual/Compl=0.00393/828/0.393，相较14:18改善很小，仍未收敛。
+  RSS17.002GiB/采样峰27.043GiB，GPU1为100%、4600MiB、60°C/312.79W，host可用约86.83GiB；
+  25702个资源样本/errors0，日志持续更新且stderr空，未见终态/回退/OOM，不停止/改参。
+  下一步建议先处理传输停滞，取得校验通过的稳定MPS副本再重新审计；本次仅状态核验和文档更新，
+  不自动续传/重启审计或开展新数值试验。下次PDHG仍按既有3h巡检，不因本次问询改频率。
+
+- 2026-08-28 15:09+08:00：按作者要求完成历史job4139552的8760h收敛日志简报，3页中文PDF/Markdown、
+  2组PNG/SVG及逐步CSV，目录output/pdf/8760_stage_a_convergence_20260828_v1。
+  原始7个日志/报告/配置SHA256匹配归档；stdout/callback各608点（0—607）连续且独立留存。
+  solver1773606.980s=20.5279天，iter0→607占98.8365%；步间隔中位47.937min，最后100步3.0933天。
+  Matrix1.000486e-6～6250（跨度6.246964e9）；本报告无完整presolved范围/条件数，未套用旧1h统计。
+  保留solver OPTIMAL、原LP HARD_FAIL与恢复QC FAIL/56 of58三层口径；StageB未执行，恢复非二次求解。
+  新增scripts/report_8760_convergence.py、render_8760_convergence_note.py和6项解析单测；6/6 PASS、
+  编译/阶段时间闭合/3页渲染目视检查PASS，QA.md留存脚本/PDF哈希。HEAD65c8b21未提交。
+  本轮仅本地归档分析，无模型构建/presolve/optimize或服务器操作；不干预Case4、完整备份及独立
+  数值诊断任务，也不宣称其新终态。下一步作者查看简报；其他窗口的独立稳定性工作流保持原计划。
+
+- 2026-08-28 15:07+08:00：按作者“不干预PDHG，同步提高数值稳定性”授权，已建立独立worktree
+  `.codex_tmp/numerical_stability_20260828_v1`，分支codex/numerical-stability-20260828-v1，
+  候选提交`cff89ceb2e6590923f2413d9a739c3d4a7013c29`；未合并/部署，主工作区既有修改保留。
+  完整证据/数学边界/失败记录见该目录`NUMERICAL_STABILITY_WORKLOG.md`。
+  新增可逆二进制行列缩放、原单位容差预算、MPS流式审计；1h缩放v2约束违反9.416e-7→7.089e-11，
+  但耗时增加，24h/start2880原版及缩放版均NUMERIC。homogeneous诊断仅SUBOPTIMAL，不能认定不可行。
+  独立分支还修正严格零入流水库上界的1e-12余量，10944个UB改变由原LP等式求和逐项证明；
+  矩阵/目标/RHS/LB/命名不变，但24h仍NUMERIC，不宣称稳定性或速度收益。237/237回归PASS。
+  **候选均不允许推广：工程代码/等价性验证通过，不等于数值问题已解决。**
+  全8760h原MPS审计14:49:54在本机后台启动，Python34684（launcher37332/SSH40220）身份已核，
+  直接只读云端完整源，不读固定服务器部分备份；本机BelowNormal、约39MB RSS，无GPU/服务器计算。
+  15:06:29已扫完50907234约束名、24088472/492835195矩阵非零；仍RUNNING，完整SHA/规模校验未结束。
+  状态位于worktree的outputs/stream_8760_original_v1/status.json；预期4142909397bytes，
+  SHA256344f2ae4cabb669123c2a946fe530fa3417ab7c10ebb035850584f043fe2435d，完整终态才可引用全量结论。
+  14:56固定服务器仍clean6065bfb、原PDHG Python1216969/GPU1 100%/4600MiB，未改参/停止/重启。
+  下一步先查同一流式审计终态及错误日志，不重复启动；完成后据全量族统计定向设计，
+  全尺寸presolved/条件诊断仍待独立资源窗口。PDHG原3h巡检/2s采样/无时限/95%保护不变。
+
+- 2026-08-28 14:34+08:00：按作者要求完成三轮大规模数值范围只读诊断，详见
+  `downloads/numerical_review_20260828_v1/REPORT.md`和带输入SHA256的`evidence.json`。
+  云端8760h、2160h Case1 Barrier、Case4 PDHG原矩阵均1.000486e-6～6250，跨度6.247e9；
+  目标均1e-6～3853.189876。两个2160h指纹0xcf045770及原/预求解维度一致，未见原LP漂移。
+  6250已追溯DAC耗电年度核算，1e-6目标项为省内流量惩罚；不能任意截小系数或改物理参数。
+  两个Barrier虽OPTIMAL，原LP严格质量均HARD_FAIL；PDHG约14:25仍未收敛，未检出明确数值告警。
+  旧1h MPS仅作来源/预求解机制示例：全局最大不变、最差行跨度约增216倍；**非新小模型测试，
+  非当前全尺寸presolved统计**。当前全尺寸系数分布/条件数仍未知，不证明PDHG已数值崩溃。
+  本次零build/presolve/optimize，未改生产/参数/运行或其他备份任务。14:31生产clean6065bfb，
+  本机HEAD65c8b21及其他窗口未提交修改保留；脚本编译通过，旧1h统计7字段与build_report一致。
+  下一步若开展修复，先补全尺寸原/预求解分族系数审计及可逆单位缩放论证，仍按原物理QC验收；
+  不因诊断终止/重启当前无时限PDHG，3小时巡检、2秒采样与95%保护不变。
+
+- 2026-08-28 14:18+08:00 三小时巡检：同一无时限2160h Case4仍在GPU1运行，PGID1216966/
+  Python1216969创建时间和命令行已复核，production clean6065bfb；实际time_limit_seconds/
+  soft_mem_limit_gb仍null，未重启/改参/停止。14:18:02 callback8211040步、solver42448.095s
+  （含presolve），墙钟约12h03m/GPU阶段约11h11m，尚无终态/QC。
+  相较11:17改善明显放缓：stdout primal/dual/Compl由0.00396/847/0.396变为0.00393/837/0.394；
+  目标6.19070422e6/8.54039989e5仍分离，不判为收敛，按作者无时限要求继续，不因长尾停止。
+  RSS17.002GiB/采样峰27.043GiB、host可用86.831GiB；GPU1卡级4600MiB/job4558MiB，自上次巡检
+  平均GPU99.9991%，当前61°C/313.73W。summary21681样本/errors0，原始文件晚4秒，均持续更新；
+  memory PSI为0、swap-out增量0，无CUDA/OOM/回退，stderr空。
+  证据downloads/case4_unlimited_20260828_v3/review_20260828_1417/，HEAD65c8b21未提交；
+  本轮仅监测/备份/交接，保留其他窗口刚追加的云端结果备份记录。约17:17继续3小时heartbeat，
+  2秒采样及原95%保护不变，不干预云端恢复/其他备份任务。
+
+- 2026-08-28 14:17+08:00：首个2030/8760h恢复结果的**可视化已完成，完整固定服务器备份仍在后台传输**。
+  云端源仍为`20260828_8760_stagea_recovery_v1`；目标父目录
+  `/home/zz2/National_model_server/backups/2030_8760_stage_a_first_recovered_20260828_v1`，
+  下含同名release，核心为`recovered_8760/`。全release301文件6606826274bytes（6.153GiB），
+  其中原结果manifest86文件5852013714bytes；不重复全量原始输入数据库。未删除云端/旧本地副本。
+  Windows后台Python45560于14:14:41启动（须复核身份），4路64MiB分块传输；原有t550
+  checkpoint经SHA256匹配后复制复用4目标，共1477850384bytes。14:14:45完整分块/小文件计
+  1626281156bytes，**不是全部完成**；大MPS及其余大文件仍待传。源和目标只传数据，没有求解。
+  服务器父目录`backup_status.json`为实时状态，必须COMPLETE且`release_integrity_report.json`
+  PASS/301文件全部passed，才可称完整备份。脚本结束自动全量SHA256并同步报告；Windows需保持联网开机。
+  证据/日志/续传说明：`downloads/2030_stage_a_first_result_visualization_v1/README.md`及`backup_evidence/`。
+  本机60个绘图输入13378779bytes已逐项SHA256 SUBSET_PASS（不是整包PASS）；概览和月度/8760h
+  运行热图各PNG/PDF/SVG及汇总CSV/JSON完成，另有对话内交互概览，QC FAIL/56 of58明确保留。
+  图表/说明已复制到目标父目录`analysis_v1`，脚本在`backup_tools`；不写入历史recovered_8760。
+  4/4备份校验小测试PASS、4脚本py_compile通过；图形单位/时间/汇总闭合及明暗窄宽屏验证通过。
+  本轮未改模型/验收规则，不启动StageB/2040，不触碰Case4进程。HEAD65c8b21未提交。
+  下一步先查后台日志/实时status；若仍运行不重复启动；终态核验301文件PASS，再追加“备份完成”交接。
+  14:19补充核验：45560仍为原后台进程、stderr空；14:18:19进度1810938732bytes、29/104范围。
+  analysis_v1/figures的12文件与本机逐项SHA256全部一致（figure_backup_integrity.json PASS）；
+  此为图表备份终态，不是全release终态。Case4 Python1216969仍运行，未操作其进程。
+
+- 2026-08-28 13:45+08:00：终态核验确认**云端历史8760h Stage A已完整恢复**。job4396245于
+  03:18:35 COMPLETED0:0、wrapper rc0，24核wall1:04:39；原LP构建2336.557s（38m57s）、构建峰值
+  48.584GiB，整个恢复采样峰62.061GiB（Slurm batch MaxRSS64244236K为另一采样口径）。
+  结果根`/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260828_8760_stagea_recovery_v1/recovered_8760`。
+  原LP fingerprint=-781497218，变量/约束/nnz、完整名称/sense顺序均与历史一致；虽然显式允许
+  fingerprint mismatch，本次differences为空，**没有实际使用指纹豁免**。optimize/presolve均0。
+  preservation COMPLETE/errors0，capacity/cost、operation/carbon/dual/QC、summary、candidate、catalog
+  全部COMPLETE。result manifest共86文件、5852013714bytes（约5.45GiB）；本次逐项存在/大小PASS，
+  QC、solve report、candidate cohorts/summary及来源关联hash另行复核PASS。运行末尾清单和candidate
+  loader亦成功执行；本次没有在登录节点重新全量读取5.45GiB做所有SHA，也未新申请计算资源。
+  原模型MPS.gz已保存4142909397bytes，完整variable/constraint名称目录206395222/251766440bytes，
+  archive COMPLETE，无presolved/uncrush/factorization。BarPi小时271560行、年度3366行。
+  planning_state_candidate保留86900行、零值/微小值不筛除，next_year2040；可供作者显式选择续年，
+  不自动采用。QC仍FAIL：58项56PASS，失败为unidirectional_interprovincial_flow和objective_components；
+  raw LP另有2行超1e-5，最大2.286828932e-5，与源报告一致。scientifically_accepted仍false。
+  本地只备份终态报告到downloads/cloud_stage_a_recovery_4396245_20260828_v1/terminal_review_1342，
+  完整5.45GiB恢复包仍在云端。未启动Stage B/下一年份，未干预固定服务器Case4。
+  下一步可按作者要求下载完整结果、分析QC及选择是否采用候选state；不需要重做Stage A恢复。
+
+- 2026-08-28 11:17+08:00 三小时巡检：同一无时限Case4仍运行，PGID1216966/Python1216969身份
+  实核一致，production clean6065bfb。实际配置time_limit_seconds/soft_mem_limit_gb仍null，
+  solver已31569.427s，超过旧21600s截止且继续GPU求解；未停止/重启/改参。
+  11:16:44为5992040步，墙钟约9h01m、GPU迭代约8h09m；stdout31565s的primal/dual/Compl
+  为0.00396/847/0.396，相较08:14的2.54/1020/0.502，primal明显改善但dual改善有限。
+  当前目标6.19768764e6/8.42910122e5仍未闭合；无终态/QC，不将primal单项改善视为科学接受。
+  11:16:46资源16246样本；summary于11:16:42为16244条/errors0（顺序复制的4s差异）。
+  RSS当前17.001GiB/采样峰27.043GiB、host可用87.196GiB；GPU1卡级4600MiB（18.727%）、
+  job4558MiB，近3h GPU平均99.9998%，当前60°C/312.9W、历史峰61°C/317.6W。
+  memory PSI为0、swap-out增量0；双GPU/CPU/Swap记录持续，无CUDA/OOM/回退，stderr均空。
+  证据`downloads/case4_unlimited_20260828_v3/review_20260828_1116/`，local HEAD65c8b21未提交。
+  本轮仅监测/备份/交接；约14:16继续3小时heartbeat，不设6h/长尾截止，2秒采样及95%保护不变。
+
+- 2026-08-28 08:15+08:00 三小时巡检：无时限Case4仍在GPU1运行，tag
+  `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`，PGID1216966/Python1216969身份已复核；
+  production clean6065bfb，实际配置TimeLimit/SoftMemLimit对应字段仍null，未改参数/停止/重启。
+  08:14:36 callback为3763040步、solver20641.640s（含presolve）；墙钟近6h、GPU迭代约5h07m。
+  相较05:14，同stdout口径primal/dual/Compl由9.71/4.95e3/24.2降为2.54/1.02e3/0.502，
+  目标由6.989144e6/-5.15735717e8变为6.2597836e6/-1.71134618e8；有进展但仍未收敛/无QC，
+  不以两个端点改善宣称全程单调或已优于Barrier。继续无时限，不按竞争力或长尾停机。
+  08:14:37资源10782样本/errors0；RSS当前17.001GiB/采样峰27.043GiB，host可用87.349GiB；
+  GPU1卡级4600MiB（18.727%）、本job4558MiB，近3h GPU平均99.9998%，当前60°C/314.22W。
+  双GPU/CPU/Swap/PSI记录持续，GPU0无本job客户，当前memory PSI为0、本轮swap-out增量0；
+  无CUDA/OOM/CPU回退，solver与telemetry stderr空，无return_code或终态文件。
+  本地证据`downloads/case4_unlimited_20260828_v3/review_20260828_0814/`，HEAD65c8b21未提交；
+  本轮只读监测/备份/文档更新。下一次约11:14按既有3小时heartbeat检查，2秒采样及95%保护不变。
+
+- 2026-08-28 05:14+08:00 三小时巡检：无时限Case4 `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`
+  仍运行，pgid1216966/Python1216969创建时间与命令行吻合；生产repo仍clean6065bfb。
+  **已确认RTX4090及Start PDHG on GPU**，首条PDHG callback为03:07:07；build913.382s、
+  presolve2184.98s。05:13:51累计solver9797.042s（包含presolve）、1551040次迭代，未有终态/QC。
+  自身配置快照time_limit_seconds/soft_mem_limit_gb仍null，日志无非默认TimeLimit，原无限时设置未漂移。
+  05:13:53资源5360样本/errors0；job RSS当前17.001GiB、采样峰27.043GiB，host可用87.330GiB。
+  GPU1卡级显存当前/峰4600MiB（18.727%）、job4558MiB；近1h GPU平均99.999%，61°C、约315W。
+  显存控制器活跃100%不是显存容量100%；GPU0无本job客户。Swap约7.419GiB为既有占用，
+  本轮swap-out增量0、swap-in13.508MiB，当前memory PSI为0；未见CUDA/OOM/CPU回退或监测错误。
+  收敛仍未达标且非单调：stdout在7200s的primal/dual/compl为0.196/2.22e4/193，
+  9795s为9.71/4.95e3/24.2；目标仍明显分离，不能以高GPU负载判定加速或科学接受。
+  本轮仅只读巡检、备份和交接更新；未停止/重启/改参，不触发其他Case或StageB。
+  证据`downloads/case4_unlimited_20260828_v3/review_20260828_0514/`，本地HEAD65c8b21未提交。
+  下一步约08:13按既有3小时heartbeat审查；无6h/竞争力提前终止，2秒资源采样及95%整机保护不变。
+
+- 2026-08-28 02:16+08:00：按作者“每3小时审查、取消这一轮6小时门禁、观察PDHG潜力”要求，
+  heartbeat `case-4-gpu-pdhg`已改为ACTIVE/每3小时；删除按6h或相对Barrier竞争力提前终止的规则。
+  **无时限Case4已于02:15:14重新启动**，tag
+  `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`；launcher1216822、pgid1216966、
+  Python1216969、telemetry1216967。旧screen进程已在进入optimize前受控SIGTERM，02:15:04
+  rc143/hostguard0，约10分钟建模需重做；旧输出/控制日志/claim完整保留，不能计为PDHG求解失败。
+  原进程已缓存21600秒配置且无在线控制入口，不能靠改JSON取消限制；本次只做这一回必要替换。
+  新profile `large_lp_2160_case4_gpu_pdhg_unlimited_v2.json`，schema仍v1，numerics唯一变化是
+  time_limit_seconds21600→null；实际Gurobi参数空模型检查PASS TimeLimit=Infinity、SoftMemLimit=Infinity。
+  新任务自身model_config_snapshot也已核实time_limit_seconds/soft_mem_limit_gb均null；仍2160h/
+  start2880、GPU1单4090、Method6/Threads32/Crossover0及原PDHG容差，不改模型/数据/精度。
+  生产repo仍clean6065bfb，隔离工具包 `campaign_tools/case4_unlimited_20260828_v3`，本地HEAD65c8b21
+  未提交。服务器最终18/18启动/资源测试PASS，11/11资源/profile测试在schema修正后再次PASS。
+  02:15:32任务尚在数据/模型准备，未确认GPU迭代；2秒采样9条/errors0、solver/telemetry stderr空。
+  原整机95%外部保护保留；无6h、无新增显存上限，不因长尾或暂时落后而主动停止本case。
+  下一步只按3小时节奏审查新tag的GPU迭代、内存/显存压力和终态；2秒原始采样不降频，终态后暂停。
+
+- 2026-08-28 02:15+08:00：按作者明确授权“云端原环境恢复、24核、不过度严格门禁”，已提交并启动
+  **ParaCloud job4396245**，节点m4cg1702，02:13:56 RUNNING，实际Req/AllocTRES均为
+  cpu24/mem128G/billing24，TimeLimit4h（06:13:56上限，提前完成即释放）。根
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260828_8760_stagea_recovery_v1`，
+  输出`recovered_8760`，控制日志`control`；02:14:08已进入BUILDING_ORIGINAL_LP，stderr为空。
+  原Python3.10.20及8个记录依赖在计算节点全部匹配，30原始备份文件/77输入记录预检PASS；
+  云端6项tiny LP测试1.047s全部通过，没有重复全国尺度求解验证。
+  恢复新策略：先归档重建MPS/参数/完整名称，指纹不同经显式`--allow-fingerprint-mismatch`
+  记录后可继续，不再仅因此退出。维度/非零元、完整变量名/约束名及sense顺序、向量哈希/finite
+  仍核对以避免错配；名称摘要直接复用本次归档，省去第二次全量扫描。QC FAIL不阻断保存，
+  raw LP审计异常也尝试继续语义导出并标PARTIAL，不伪造exact LP匹配或科学接受。
+  原云端release和结果不改；固定服务器失败现场和独立运行Case4均未干预。Stage B/续年不启动。
+  本地HEAD65c8b21未提交；变更offline_solution、recover_historical_stage_a、test_solution_preservation，
+  新增cloud_recover_stage_a_24core.sbatch；local6/6、py_compile、diff check、cloud bash-n/hash校验PASS。
+  注意progress中的available约689.9GiB是整节点指标，不是本作业可用额度；实际allocation仍128G。
+  下一步只读检查job4396245的阶段/内存/终态与最终清单，不能把当前构建状态写成恢复已完成。
+
+- 2026-08-28 02:06+08:00：按作者“那赶紧先启动pdhg吧”的新明确授权，**Case4已独立启动**，
+  不再以历史恢复成功为前提；恢复失败现场、指纹门禁和旧结果全部保留，未修复/重启恢复。
+  固定tag `2030_base_2160h_case4_gpu_pdhg_screen_20260828_v1`，02:05:12开始，launcher1175139、
+  pgid1175169、Python1175172、telemetry1175170。启动前available104.376GiB、GPU1无compute
+  客户端/可用24047MiB，生产repo仍clean6065bfb；模型与Case4 profile均未修改。
+  Base2030/2160h/start2880，GPU1单4090、Method6/Threads32/Crossover0、最多6h、既定PDHG容差，
+  SoftMemLimit=null，原整机95%保护保留，无新增显存上限。GPU环境已实读13.0.2+cu129。
+  02:05:22仍在数据/建模准备，未见Start PDHG on GPU，不得声称已进入GPU迭代；进程已建立GPU1
+  显存分配。2秒采样连续6条、telemetry errors0，solver/telemetry stderr均空；02:05:41主机监测
+  继续更新，Python仍存活，暂无return_code。所有日志在对应run_control/<tag>。
+  新工具包 `campaign_tools/case4_independent_20260828_v2`，仅给一次性门禁新增显式
+  `--independent-after-failed-recovery`；保留失败身份记录及进程/内存/GPU/版本/hash/幂等检查。
+  两项新授权边界测试和其余资源门禁测试，本地/服务器10/10 PASS；未改已验证launcher/monitor。
+  本地HEAD65c8b21未提交，overlay清单见downloads/case4_independent_20260828_v2。
+  heartbeat `case-4-gpu-pdhg`已恢复ACTIVE（每10分钟），提示改为仅监测已启动的本次任务，
+  不调用旧恢复接续入口、不重复启动；后续确认GPU迭代、资源压力、终态和QC后暂停。
+
+- 2026-08-28 02:07+08:00：作者询问改在云端原环境恢复是否更可靠；本轮仅只读核验，未提交付费作业。
+  ParaCloud原release、python_overlay、checkpoint及数据链接仍在；按原cloud_environment_paths.env
+  检查，Python3.10.20及记录的8个依赖包版本全部与历史run_environment相同，30-file implementation
+  bundle摘要仍为bdf36a79...caf9a8e。原云端用户队列为空，amd_a8_768为UP。
+  因此原环境是更稳妥的恢复候选，但尚未证明其新建8760LP指纹必然匹配；必须保留门禁。
+  历史云端仅构建约38m57s/48.574GiB，恢复仍有校验、原模型归档、残差与语义导出，完整耗时未实测。
+  队列现DefMemPerCPU6000/MaxMemPerCPU6144，未来可评估24CPU/128G的独立恢复allocation，
+  不沿用96CPU/700G原Barrier请求，不代表已批准或已提交，也未核验账户余额/实际单价。
+  先修复失败模型保全，再经作者授权使用原环境独立恢复；原release/结果保持不变。
+
+- 2026-08-28 02:04+08:00：按作者“为何退出了”只读诊断，确认恢复退出直接原因是
+  `recover_historical_stage_a.py:197` 的原LP指纹不匹配异常，非内存/费用/求解阶段终止；
+  00:47:11报错、00:48:04 rc1、host95_guard0，重建耗时3566.906s、peak tree RSS47.914GiB。
+  新核查发现源/目标环境并未完整锁定：Python3.10.20→3.11.15、NumPy2.2.6→2.4.6、
+  SciPy1.15.3→1.17.1、xarray2025.1.2→2026.7.0，Gurobi同13.0.2；这是待排查线索，
+  **不是已证明根因**。此前1h对照是新环境内在线/离线对照，不能证明跨环境全年LP相同。
+  同时确认恢复驱动的保全缺陷：archive_model在指纹/顺序门禁之后，本次异常未留下重建MPS与完整
+  名称目录；只保留build_report、原始向量副本及错误证据。原云端/本地原解未丢失。
+  本轮未改代码/环境/服务器、未重启恢复、未绕过门禁；生产checkout仍clean6065bfb。
+  下一步若获修复授权，应先补齐失败模型归档与分项诊断，再用匹配历史依赖的小模型跨环境对照
+  定位系数/顺序/属性差异，不能仅改fingerprint期望值。既有Case4暂停规则不变。
+
+- 2026-08-28 00:57+08:00 heartbeat巡检发现：历史8760h离线恢复已失败，00:47:11报
+  `Original LP identity mismatch`，00:48:04 wrapper退出rc1、host95_guard=0。
+  重建与历史模型均为41458383变量/50907234约束/492835195非零元，但Gurobi fingerprint为
+  `718212258` vs历史`-781497218`。仅相同维度不能证明LP/顺序等价，根因尚未查明，未放宽门禁。
+  build3566.906s，wrapper1:00:28，采样peak tree RSS47.914GiB；optimize/presolve均0，尚未开始
+  全量顺序/旧向量核验及正式恢复导出。原云端checkpoint、本地备份和恢复现场保持不变。
+  Case4门禁实调为 `BLOCKED_RECOVERY_FAILED`，没有launch_claim、没有正式Case4控制目录，
+  **Case4未启动**；按既定失败规则已将heartbeat `case-4-gpu-pdhg`置PAUSED并核验本地配置。
+  生产repo仍clean6065bfb，available约104GiB；内存已释放，但不能据此绕过恢复成功这一接续条件。
+  证据备份 `downloads/case4_after_recovery_20260828_v1/recovery_failure_0057/`。本轮只读排查、
+  状态记录和暂停后续任务，未改模型/数据/求解参数。下一步请作者决定是否先诊断指纹差异；
+  不自动重启恢复、不自动改条件启动Case4。本条覆盖下方00:46的ACTIVE/WAITING状态。
+
+- 2026-08-28 00:46+08:00：按作者“恢复结束后启动该算法并记录内存/显存/GPU压力”的新授权，已创建
+  当前对话heartbeat `case-4-gpu-pdhg`（ACTIVE，每10分钟检查）。本条覆盖00:32的“未自动排队”。
+  一次性门禁实测返回 `WAITING_RECOVERY`，**Case 4尚未启动**；不终止历史恢复，不并发大模型。
+  固定Case 4标签 `2030_base_2160h_case4_gpu_pdhg_screen_20260828_v1`，GPU 1，2160h/start2880，
+  最多6h、原PDHG profile不变，无SoftMemLimit或新增显存上限，原整机95%保护保留。
+  独立部署目录 `campaign_tools/case4_after_recovery_20260828_v1/scripts`，生产repo仍clean6065bfb，
+  未部署本地其他保全/恢复dirty代码；本地HEAD65c8b21，工具为SHA256固定的未提交overlay。
+  新增 `scripts/start_case4_after_recovery.py` 与 `scripts/monitor_case_resources.py`，修正campaign
+  launcher并接入采样。Windows14 PASS+1 Linux-only SKIP；服务器15/15 PASS（含5秒占位进程的
+  完整启动→采样→退出测试，未运行模型）。双卡真实单次监测PASS，telemetry_error_samples=0。
+  运行时每2秒记录主机RAM/Swap/PSI/CPU、进程组RSS/CPU时间、双GPU显存/利用率/温度/功耗与
+  本次进程显存；`resource_pressure.jsonl`和持续更新的`resource_pressure_summary.json`位于对应
+  run_control目录。峰值为采样峰值，不是精确分配器高水位；显存控制器活跃率不等于容量占比。
+  后续检查依赖本机Codex运行和SSH可达；求解启动后的记录在服务器独立执行。恢复失败则暂停并报告，
+  恢复成功且资源/版本/空闲GPU门禁通过后只启动一次；完成后汇总并暂停heartbeat，不自动其他Case。
+
+- 2026-08-28 00:32+08:00：作者要求先启动Case 4并询问双卡。SSH可连接，双4090计算利用率均0%，
+  显存占用395/36MiB；但历史8760h离线恢复PID657364仍在 `BUILDING_ORIGINAL_LP`，RSS约30.96GiB，
+  整机available约71.96GiB，低于既定2160h启动门槛96GiB。**Case 4未启动，也未排队自动启动**；
+  未中断恢复、未部署生产checkout，server仍clean6065bfb。GPU空闲不代表CPU建模/内存资源空闲。
+  本地修复campaign启动器：保留source环境前的显式 `CISPO_PYTHON`，Case 4默认使用已验证cu129环境；
+  并发门禁新增历史恢复脚本识别。`tests/test_campaign_launcher.py` 的6项隔离测试PASS，未求解。
+  Gurobi13.0.2官方公开文档未找到受支持的单模型双GPU分摊接口；`PDHGGPU=1`是启用GPU，不是卡数，
+  不将两张24GB当成48GB池。本轮保持单卡2160h/最多6h及既定容差，不新增求解器。
+  本地HEAD65c8b21，本次修改未提交；已有保全/恢复dirty改动完整保留。下一步先确认恢复结束且资源
+  满足门禁，再单独部署启动器修复、验证GPU环境并启动Case 4；如需改变任务优先级须作者明确选择。
+
+- 2026-08-27 23:48+08:00：按作者“服务器空闲，可以启动上一轮Stage A恢复”授权，已在t550启动
+  云端历史8760h job4139552的独立离线恢复，**不是2160h Case 1重跑，也不是Stage B**。
+  根 `/home/zz2/National_model_server/recovery_8760_20260827_v1`；launcher PID657349、进程组657359、
+  Python PID657364，23:47:35启动，23:47:45进入 `BUILDING_ORIGINAL_LP`，23:47:51 stderr=0。
+  启动前available100.91GiB，设置90GiB启动门禁和整机95%外部保护；optimize/presolve入口强制报错。
+  旧release源码包SHA256 `c49d48da...ec40e`及原始30文件全部验证，原实现bundle `bdf36a79...caf9a8e`
+  匹配；只覆盖4个导出/保全文件并新增恢复适配器，历史master除export函数外AST完全相同。
+  原始77条输入/完整配置/科学身份通过显式跨机器路径映射；实际使用的8份2023/2024 CF存储共22536
+  文件全payload与云端一致，排序sha256sum清单总摘要 `c909ba9d...42c709fc`。唯一不一致为后来更新的
+  `output_manifest.csv`，已从云端取回原件放入独立historical_model_data，未改动现用数据。
+  同一历史版本1h真实求解→未求解重建→恢复对照PASS，容量/运行/成本/对偶/cohort、碳、原LP QC、
+  manifest/candidate loader均通过，恢复调用optimize/presolve均0；年度LP指纹/顺序核验仍待本次构建。
+  输出为 `recovered_8760/`，控制日志 `control/`，完整证据 `launch_validation.json`、`preflight_v2/`、
+  `validation_1h/validation_report.json`。生产checkout仍clean6065bfb，旧8760/2160输出不变。
+  本地HEAD65c8b21未提交；新入口 `scripts/recover_historical_stage_a.py` 与
+  `scripts/run_historical_stage_a_recovery.sh`。下一步只检查此恢复的进程、资源、进度和最终清单；
+  不启动并发大模型、Stage B或续年。恢复尚未完成，不得宣称已得到全年结果表或科学接受。
+
+- 2026-08-27 23:34+08:00 终态复核：固定服务器2160h Case 1 Stage A 已于23:27:51正常结束，
+  rc=0、host guard未触发、stderr=0，server仍clean `6065bfba34b76098e86307081323e8545a4d25ac`。
+  Barrier 242步，solver `82535.468 s`，wrapper wall `23:13:57`，peak tree RSS `69.291 GiB`，
+  整机最高使用率 `88.742598%`。Gurobi OPTIMAL仅是宽松Stage A终态：strict contract HARD_FAIL，
+  原LP最大constraint/bound/dual violation为 `0.0384984/0.000263950/0.00783257`，末次primal-dual
+  目标相对差 `6.286394%`；工程物理QC为53/58，失败项为power_balance、wave_availability、
+  unidirectional_interprovincial_flow、reservoir_transition、captured_co2_reconstruction。
+  输出根 `outputs/2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1` 的BarX/BarPi均已实读核验
+  finite、entries正确、SHA256匹配，checkpoint为ENGINEERING_BARRIER_CHECKPOINT_ONLY且
+  deferred_crossover_eligible=true，scientifically_accepted=false。当前无CISPO solver，available约101GiB；
+  Stage B和Case 2--4未启动。本次旧进程没有14:18的新保全功能；下一步应先核对独立离线完整恢复/导出，
+  不因QC失败省略候选结果，也不重标科学接受。本次仅状态查询与本地交接更新，未部署/启动新求解。
+- 2026-08-27 14:18+08:00：Stage A 完整保全策略已在本地实现并验证，状态为
+  `LOCAL_VALIDATED_NOT_DEPLOYED`，覆盖下方13:39的“代码待实现”。所有 nonbasic Stage A 先保存可读
+  原始向量，再独立导出容量、运行、成本、碳、对偶、QC、结果清单和未筛选 `planning_state_candidate`；
+  QC FAIL 不阻断保存，文件完整性与科学接受分开，候选续年必须显式 `--allow-candidate-state-in`。
+  默认在 optimize 前归档原始 MPS、参数和完整名称目录；`--archive-presolved-model` 仅额外保存诊断
+  副本，未保存 uncrush/factorization。新增 `--recover-stage-a-from` 真正离线恢复，不调用 optimize/
+  presolve；仍严格核对输入、Gurobi版本、LP指纹、完整顺序与向量哈希。历史8760h尚未恢复或重建。
+  Gurobi13.0.2全量回归 `222/222 PASS`；Gurobi12/13的1h对照、正式runner源/恢复入口均通过，
+  45个容量/运行/成本/对偶/cohort表或数组与直接在线导出一致、碳和原LP残差一致。已由候选状态成功
+  构建2040/1h LP（仅build，不求解），238529变量/80143约束/453269非零元，0.375GiB。
+  本条已自包含记录保存/恢复边界；机器可读验证证据为
+  `outputs/stage_a_recovery_validation_20260827_v2_gurobi13/validation_report.json`，不依赖未提交的外部说明文档。
+  未部署服务器、未改变正在运行的2160h进程、未启动Stage B/全年恢复/正式续年。旧进程仍按旧代码运行，
+  不能声称已获得新保存策略；结束后须用独立恢复入口补齐。本地HEAD仍为 `65c8b21...`，本轮未提交。
+- 2026-08-27 13:39+08:00：作者明确要求将 Stage A 的**完整保存、质量评价、结果采用**解耦。
+  新要求状态为 `AUTHOR_REQUIRED_EXPORT_POLICY_PENDING_IMPLEMENTATION`，不是已部署功能：只要结果
+  可读取，就必须保存容量、运行、成本、碳、对偶、`solution_qc.json`、`result_manifest.json` 和候选
+  跨年容量状态；QC/solver contract FAIL 只记录违反项，不得成为省略这些文件的理由。结果清单的
+  完整性不等于科学接受，候选 state 保存不等于自动续年；论文采用和未验收 state 的消费均留待作者
+  明确选择。原始 checkpoint/solve report 的 `scientifically_accepted=false` 与 `HARD_FAIL` 不改写。
+  本地复核确认 runner 仍跳过 engineering Stage A 导出，state loader 仍要求 QC PASS/accepted checkpoint；
+  当前 `.npy` 不能直接作为下一年份输入。同一 2030 LP 的 Stage B 可按现有 exact-LP/checkpoint 门禁
+  使用该 checkpoint，不依赖先生成规划表，但未启动。恢复应首先开发无 `optimize/presolve/crossover`
+  的离线数值适配器，按原源码/输入重建并验证变量、约束映射，再导出完整结果与候选资产 cohort。
+  此条更正下述旧 zero-iteration 建议：`PStart/DStart` 不是对 `.X` 的直接赋值，小模型被 presolve
+  全部消去的试验不能证明 8760 h 可零迭代恢复。历史构建峰值 `48.574 GiB` 高于本机约 32 GiB；
+  本轮只完成政策/恢复路径核查与文档记录，未修改求解代码、运行恢复、提交云作业或实时复查服务器。
+- 2026-08-27 03:28+08:00：ParaCloud 8760 h Stage A job `4139552` 已于 2026-08-26 14:39
+  正常结束，Slurm/runner 均为 rc 0，Gurobi `OPTIMAL`、Barrier 607、solver runtime
+  `1,773,606.980 s`、wrapper wall `20-13:21:11`、峰值 RSS `362.952 GiB`、stderr 0，objective
+  `4,188,006.084013813 million CNY`。已保存原始 LP 顺序的完整 `BarX/BarPi`
+  （`41,458,383/50,907,234` entries），但 checkpoint 身份严格为
+  `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、`scientifically_accepted=false`。严格 solver contract
+  为 `HARD_FAIL`：最大 constraint violation `2.28683e-5 > 1e-5`；因此没有正式
+  `solution_qc/result_manifest/planning_state/basis`，不得重标为科学结果。云端当前用户队列及
+  Python/Gurobi/CISPO 进程为空，Stage B 未启动。完整 checkpoint、输出、control、配置和精确源码包
+  已备份到本地忽略目录
+  `downloads/paracloud_4139552_2030_8760_stagea_barrier_v2_20260826`：30 个下载文件、
+  `748,733,446 bytes`，文件数/核心向量/源码归档 SHA256 全部 PASS。恢复与文件保存政策已由上方
+  13:39 作者要求覆盖；原始 checkpoint 身份及本段终态证据保持不变。
+- 2026-08-27 00:16+08:00：作者已授权执行唯一四 Case 的 2160h 大 LP 筛选。实现提交
+  `88f88779949a5bc27486447d674f6b700b21ac93` 将省际线损、VRE/水电 FOM 改为经 schema/range/source
+  校验的 `config/technology_parameters.json` 注册表读取，并显式冻结 primary objective component 集合；
+  GPU 运行时隔离提交为 `6065bfba34b76098e86307081323e8545a4d25ac`。新 profile 只包括
+  V3-16核、V3-32核、Dual simplex、GPU-PDHG，统一默认 2160h；四者 `soft_mem_limit_gb=null`，
+  challengers 最多 6h，GPU-PDHG 为 `PDHGConvTol/AbsTol/RelTol=1e-2/1e-5/1e-2`。server 全量
+  `217/217 PASS`；新旧 1h raw LP 均为 `238529/80143/453269`、fingerprint `-146272577`、objective
+  `2127270.3027043818 million CNY`、QC PASS，证明本轮审查修复不改变 LP 边界。独立 GPU env
+  `cispo-2030-gurobi-gpu13.0.2-cu129-v1` 已验证日志出现 RTX 4090 与 `Start PDHG on GPU`。
+  Case 1 已于 `00:13:53` 在 clean server `6065bfb` 启动：Base 2030、hours `2880--5039`、V3
+  Barrier 16核 Stage A、无 TimeLimit/SoftMemLimit，control/output tag 均为
+  `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`；PID group `687599`，初始 stderr 0，整机
+  used 约 16%、swap 无新增、PSI 0。`00:28:59` 已进入 Gurobi：raw LP
+  `10398783/12520914/126724678`，fingerprint `0xcf045770`；生效参数无 TimeLimit/SoftMemLimit，构建峰值
+  `12.492 GiB`，presolve 初期整机 used 约 28%。仅整机 used>=95% 时外部保护终止；若 2160h 因内存确实不可运行，
+  才依次降至 2016h 或更小。活动 cloud 8760h 不触碰。
+- 2026-08-25 17:20+08:00：已完成 National_model 最终基准情景数据归档，目标为
+  `E:\数据拷贝\National_model基准情景数据_20260825_v1`，共 `16,966` 个文件、`7.003 GiB`，按 00--09
+  中文编号分类，未删除任何源数据。最终风光装机采用
+  `osm_geometry_value_added_capacity_v3_offwind47/final_pointV2`，不是旧 v2；负荷另导出严格只含
+  `base_residual_gw` 的 31 省 × 5 年 × 8,760 h 表，共 `1,357,800` 行，QA PASS。首轮已生成
+  `16,961` 文件 SHA256 清单并完成 98 条映射检查；95 条直接 PASS，3 条告警经快速复查均已解释或
+  同步。按作者指令，第二轮逐文件严格复核在 `3,000/16,961` 处停止，交付状态记录为
+  `QUICK_PASS`，不能表述为第二轮 strict PASS。`data/raw` 的 116 条旧清单记录属于明确排除的 1 km
+  原始用电 TIFF，非 model-ready 输入漏拷；非 raw 缺失为 0。说明、版本判定、映射、哈希与校验摘要
+  均位于归档根和 `00_归档说明与校验`。归档开始时记录的 Git 基线为 `f7ef130...`；执行期间分支
+  前进到 `fc3ca89d07feb796f57a0c433845e0e48901b416`，更新后的
+  `scripts/run_fixed_server_host95_long_horizon.sh` 已补同步并核对 SHA256。新增本地脚本
+  `scripts/archive_final_baseline_data.ps1`、`scripts/extract_base_residual_load.py` 尚未提交。
 - 2026-08-25 17:07+08:00：`t550` SSH 已恢复，server bare remote、GitHub 与 clean checkout 均部署到
   `60561e57c419131a94539c2258ff108cc725edfd`；host95 功能提交仍为 `7dfefbb`。部署前发现共享主机
   资源快照不应持久化其他用户完整命令参数，故以 `60561e5` 最小改为仅记录 `comm`，模型方程、数据、
@@ -786,6 +1430,25 @@ This is the repository's single handoff document for work continued across Codex
   `scientifically_accepted=false`。本地 py_compile、focused `22/22 + 9/9` 与完整回归
   `180/180 PASS`；Windows 没有可用 WSL bash，故部署后还必须在 fixed server 执行
   `bash -n` 和全回归，并先做 1 h 真解门禁，尚未启动 744 h。
+
+- 2026-08-05 20:14+08:00：Module 06 的 EV 图件已按最终
+  `four_city_geo_tariff_guangzhou_order_reweighting_v3_qc` 方法完成本地更新；报告正文与编译稿未改。
+  本次明确区分两类变化：legacy→final 同时修正月度单车充电电量与小时形状，全国年度 EV
+  充电电量增加 `4.219004%`，12 个月相对变化范围为 `-7.244%` 至 `+16.163%`；v2→v3-QC
+  仅替换 QC 后的小时形状，年度 EV 电量差异不超过 `2.22e-14%`。修正后的月度参数源为
+  `Power_curve_V2/ev/outputs/guangzhou_monthly_kwh_per_vehicle_day.csv`，SHA256
+  `3e9109f192ba084c0154f779a2886b23d07d665f99b02344203ae44356381ffb`；未来负荷仍锁定
+  `future_hourly_load_2025_2060_8760.csv.gz` 的 SHA256
+  `8ed727745afda68b7114b08ea65660392cb374b68f203a6633bbbc9a13af791a`。已更新 S6-3、S6-4、
+  S6-5，并新增/纳入 S6-7 至 S6-10；PNG/PDF/SVG 均按 178 mm 双栏宽度输出（地图 S6-9 按
+  项目规则不输出 SVG），机器可读绘图数据、10 行图件 manifest 与
+  `qa_load_flexibility/ev_figure_update_qa.json` 均已生成，QA 为 `PASS`。广州 QC 留出验证包含
+  11 个观测月份与 1 个插值三月，244/330 日通过逐日门禁；观测月份相对 Yu 曲线均改善，平均
+  RMSE 从 `0.004468` 降至 `0.002038`，相关系数从 `0.82845` 升至 `0.95843`。集成报告
+  `.tex/.pdf` SHA256 仍分别为
+  `187e5bc8b537af7ade28b58d0f9f893d411509e9f66481c112b8d4761fd4b697` 与
+  `e0be5e109064efd924df98a341f3f7263b744761e409d5aa9c481b88d22083dd`。未进行服务器、模型
+  求解、Git 提交或部署动作；正文后续若采用新增图号，须单独同步图注和 S6-3 参数表。
 
 - 2026-08-05 16:05+08:00：在本地工作树（基于 Git `d6984b2902aa85a2459935f4c76b6fa5a5623589`）
   将 `Power_curve_V2` 最新广州逐日质控 EV 重构结果接入 National_model。权威上游为
@@ -2053,13 +2716,1113 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-1. 保留既有 744h 原目录不变；如研究协议需要处理其 manifest，只能设计目录外、名称明确、只读的 post-run audit。原目录 manifest 只有在明确批准后才可由全新根重跑取代。
-2. 这项连续 RUC 行缩减已完成本地 1h/24h 闭合门禁；若用户单独授权服务器部署，先实时复核固定服务器 checkout、进程、内存和数据根，再部署精确提交，在新的、隔离的含波浪 Base 根上运行一个匹配 168h A/B。不得并发求解、不得覆盖历史根，也不得直接放大到 744h/8760h。
-3. 后续 P3 优先寻找会同时改善 presolved 矩阵和 `Factor NZ/Factor Ops` 的等价结构修改；每个候选须记录 raw/presolved rows、columns、nonzeros、ordering/Barrier/crossover 时间、迭代数、目标、全部 QC 与 RSS。仅减少会被 presolve 消去的原始行不足以证明全年收益。
-4. 新的付费云端 8760h 必须单独获得授权，并满足不可变代码/数据/场景 hash、新 24h/168h 门禁、高内存节点与线程/SoftMemLimit、Slurm 优雅终止规则、预计核时费用和明确停止条件；固定服务器继续禁止 8760h。
-5. 科学建模的并行后续：Base 保持波浪能开启、灵活负荷关闭；以 `Power_curve_V2`/建筑热工与车辆可用性数据校准唯一的 V3-V2G 覆盖层后再做 low/base/high；先定义目标年年度成本与 2025-2060 贴现路径总成本的关系，再开展 MGA 成本松弛和点/省/全国互补性分析。
+1. 仅按白名单提交本轮VRE/ROR精确行缩放实现、三个绑定profile、validator/guard/唯一launcher、相关测试
+   与四份强制文档；记录完整commit SHA，复核工作树中其他用户修改未被stage，并将该分支推送到所需远端。
+2. 只在`/home/zz2/National_model_server/repo`无solver、owner/顶层/clean均正确时fetch并切到该精确SHA；
+   禁止使用旧`/data/zz2/National_model/repo`。部署后复跑Gurobi13.0.2、profile/formulation hash、focused/
+   full tests、CPU拓扑、内存/swap/PSI与全局锁门禁，不热更新运行中checkout。
+3. 先执行detached `tmux`跨SSH持久性probe及launcher监督集成检查，证明PID/PGID/SID/cgroup在断线后保持、
+   正常退出可reap、guard早退/重复信号/guard超时均fail closed；未通过不得启动长任务。
+4. 以`barrier_checkpoint_fixed_server_host_memory_95_v2`、`annual_capacity_link_rows_8192_v1`、CPU`0-31`
+   的32个物理核启动唯一2160h/start2880 Stage A资格运行。该profile的`80 GB`只是在JSON中保留的fallback/
+   provenance；runner必须按`host_memory_soft_limit_fraction=0.95`把Gurobi `SoftMemLimit`解析为物理内存95%
+   对应的十进制GB，并保留外部整机保护。按首个iteration>=30和结构阈值判定，不启动其他数值支线，
+   绝不自动Stage B。
+5. 只有2160h iter30、结构、内存和警告门槛全部通过，才保全证据、更新handoff并准备唯一8760h Stage A：
+   `barrier_checkpoint_full_year_cloud_v4`、`Threads=32`、`soft_mem_limit_gb=600`、无`TimeLimit`，使用足够内存
+   的云节点和不可变代码/数据/场景身份。2160未通过则先停止放大并只诊断这条路线；Stage B始终需要作者
+   以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-02 — 唯一Stage A精确行缩放路线冻结并通过本地正确性门禁
+
+- Git/范围：工作分支`codex/stagea-8760-row-scaling-v1`，基线`65c8b21`，本轮实现与文档提交
+  `pending`，尚未部署。核心变更为`cispo_model/annual_capacity_link_scaling.py`，以及其在
+  `config.py`、`load_center.py`、`master.py`、`diagnostics.py`、`run_contract.py`、checkpoint/结果保全、
+  planning/MGA入口中的严格绑定；新增formulation profile
+  `config/formulation_profiles/annual_capacity_link_rows_8192_v1.json`、2160工程profile
+  `config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v2.json`、8760正式profile
+  `config/solver_profiles/barrier_checkpoint_full_year_cloud_v4.json`，并配套validator、guard、唯一launcher、
+  regression tests及四份强制交接文档。未纳入CF`1e-4`、PDHG、simplex、Annual Energy Coordinate v2、
+  自动Stage B或其他并行数值支线。
+- 模型变换：只对VRE/ROR年度可用量零右端约束做二进制整行左缩放；$s_f=2^{-k_f}$，
+  $k_f$为`0..13`中保证缩放后最小非零系数`>=1e-6`的最大值，正式2160h/8760h必须两族均
+  `k=13`。Wave和省内负荷中心容量不在登记表中。变换保持变量、目标、边界、矩阵支撑与可行域；
+  物理对偶/松弛恢复为`pi_physical=s*pi_solver`、`slack_physical=slack_solver/s`，reduced cost不变。
+- 求解合同：8760h Stage A使用`barrier_checkpoint_full_year_cloud_v4`和作者指定`Threads=32`；
+  Stage B仅是未来可单独授权的可选任务，任何launcher、watcher或sequence都不自动执行。2160h资格运行
+  使用`barrier_checkpoint_fixed_server_host_memory_95_v2`、32个物理核、
+  `host_memory_soft_limit_fraction=0.95`、整机95%保护且无TimeLimit。profile中的
+  `soft_mem_limit_gb=80`仅为fallback/provenance；runner运行时将其覆盖为物理内存95%对应的十进制GB。
+  iter30和结构门槛依本页current snapshot；本轮尚未启动2160h，未形成长时域加速结论。
+- 本地命令/验证：在PowerShell设置
+  `CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`后，以
+  `C:\Users\ZZ\.conda\envs\RL\python.exe -m unittest discover -s tests -q`完成全套回归，结果
+  `290 passed, 1 skipped`。`scripts/validate_annual_capacity_link_scaling.py --hours 24
+  --diagnostic-start-hour 2880 --solve`输出
+  `output/annual_capacity_link_scaling_24h_start2880_solve_v6/validation_report.json`：15项结构检查全真，
+  physical/scaled均status2 `OPTIMAL`，目标均为`2112716.676624984 million CNY`，两者原单位QC均`PASS`。
+  短窗口wall差异不作为32线程或8760h性能证据。
+- checkpoint/验收：Stage A候选向量按raw order校验shape/dtype/finite/bytes/SHA与模型名称顺序；
+  `BarX==X`、`BarPi==Pi`须逐项binary64精确成立。只有严格scientific-acceptance合同满足时才能生成accepted
+  规划状态；promotion后的报告/打包失败写独立finalization error，不得倒写为未接受或伪造完整结果。
+- 服务器纠正：唯一生产checkout为`/home/zz2/National_model_server/repo`，clean`6065bfb`；旧
+  `/data/zz2/National_model/repo` NTFS克隆禁止使用。本任务为切换到作者确认的唯一Stage A路线而有意
+  停止旧Stage B及Case2 watcher，当前无本项目solver；这是对18:04未知归因记录的后续纠正，历史原文
+  保留。下一步在形成精确提交并推送后，先通过detached `tmux`跨SSH持久性与launcher监督集成门禁，
+  再启动唯一2160h资格运行；未通过iter30不得放大8760h，也不得自动讨论或执行Stage B。
+
+### 2026-09-02 18:04+08:00 — Case1 Stage B遭外部SIGTERM，Case2门禁阻断
+
+- 终态：tag`2030_base_2160h_case1_v3_stage_b_20260901_v1`于17:41:39写出return code143；
+  solve report为`INTERRUPTED`/status11/SIGTERM、SolCount0，运行92699.686s、work units73433.167、
+  simplex8366337，无objective/solution quality/QC/result manifest，strict audit rc42。
+- 最后轨迹：PPushes remaining1262112、PInf1265.5003；这说明Crossover未完成，不能作为严格基线，
+  也不能据此判断V3科学结果或自动启动Case2。
+- 资源排除：launcher记录host guard0；46818个2s样本无遥测错误，RSS sampled峰28.908GB，host used
+  峰77.64%、最低available29.55GB，memory PSI与stderr无异常；不是95%保护、OOM或Gurobi数值报错。
+- 原因边界：system journal在17:41:39记录来自本机公网地址的SSH session断开，与终止同秒；但没有
+  信号发送审计，不能据此确认是SSH/cgroup清理、人工命令或其他外部机制。必须保留为
+  `EXTERNAL_SIGTERM_CAUSE_UNRESOLVED`，不得臆测归因。
+- Case2：watcher PID881511已消失，最后status仍为17:41:05 `WAITING_STAGE_B`；没有claim、case2
+  control/output或solver。其门禁按设计未绕过。禁止重启watcher后让失败Stage B触发Case2。
+- 证据：关键control、solve report、start identity、config和资源摘要已复制至
+  `downloads/case1_stage_b_interrupted_20260902_v1`并记录SHA256。production仍clean6065bfb，当前
+  无本项目solver。下一步删除已过期heartbeat并请作者决定新的严格收尾/重跑方案，不自动重启。
+
+### 2026-09-02 10:45+08:00 — 数值稳定性工程线完成整合并推送双远端
+
+- 关系：6065bfb是65c8b21祖先，本地主分支只领先8165b20/65c8b21，无分叉；活动服务器继续锁定
+  clean6065bfb以保持Stage B实现身份。
+- 工程分支：`codex/numerical-stability-engineering-v2`从6065bfb建立，整合可逆equilibration、严格
+  零入流水库证书、Annual Energy Coordinate和CF误差审计/配对工具；统一提交`7fce1ca4`已推送
+  `origin`裸远端与GitHub，两个远端ref均核验为同一完整SHA。
+- 验证：定向36项PASS；设置现有只读data/wave根后完整unittest 243/243 PASS（76.866s），
+  py_compile/diff-check PASS。短worktree首次未设数据根的缺表失败如实保留。
+- 判定：744h CF1e-4较慢是该尺度不晋级依据，不是更长时域性能定理。候选保留为Case1/Case2
+  结束后的2160h单因素结构/有限Barrier筛选；不得叠加候选、直接启动8760h或热更新生产。
+- 活动服务器checkout、模型数据、参数、输出和队列均未改变。下一步只在资源窗口满足后按
+  `NUMERICAL_STABILITY_ENGINEERING_LINE.md`逐级执行，不绕过当前Stage B/Case2门禁。
+
+### 2026-09-02 09:59+08:00 — 744h完整Stage A否决CF 1e-4候选，Stage B继续PPushes
+
+- 身份/终态：基线与候选tag分别为`2030_base_744h_cf1e6_stage_a_concurrent_20260901_v1`和
+  `2030_base_744h_cf1e4_stage_a_concurrent_20260901_v1`，生产实现均为6065bfb，pair于21:44:26
+  启动、22:42:36结束，baseline/candidate runner rc均0、guard0。两条均为744h/start2880、
+  Barrier16/Crossover0/BarConvTol1e-2/Feas/Opt1e-5、无TimeLimit/SoftMemLimit，唯一LP差异是
+  CF零化阈值1e-6/1e-4；各自checkpoint manifest均`deferred_crossover_eligible=true`。
+- 完整Stage A比较：候选Barrier 134对120步（+11.67%），solver 3070.307对2995.079s
+  （+2.51%），work units 3006.566对2842.982（+5.75%），端到端3478.729对3380.386s
+  （+2.91%）。runner 0.5s process-tree峰20.402对20.049GiB（+1.76%）；独立2s sampled job
+  RSS为21.193对21.264GB（约-0.33%，口径不同，不得覆盖前者）。两遥测均errors0，整机峰
+  61.287%、最低available约51.16GB，未OOM或触发保护。
+- 科学判定：两条都是engineering Barrier checkpoint，strict solution contract `HARD_FAIL`且
+  raw physical QC export失败，均无result manifest/planning state；候选目标比基线高371.039
+  million CNY（约0.01598%），符合其改变可行域而非等价坐标的事实。五步筛选的Factor Ops优势
+  未转化为744h完整收敛优势，故不晋级该尺度Stage B且不修改生产默认1e-6；此结论不能外推为
+  2160h/8760h必慢，后续长时域复测须遵循独立结构筛选门禁。
+- 证据/文件：服务器原目录原样保留；关键solve report、checkpoint manifest、工程contract、资源摘要
+  与pair TSV已复制到`downloads/cf_744_stagea_pair_terminal_20260902_v1`并记录SHA256。隔离分支
+  `codex/cf-sparsification-v1`终态worklog提交`4a95822bf0cfbaa85851c9f5d72ea55996109c32`；
+  主工作区其余用户修改未触碰。
+- 活动序列：09:59 Stage B同PGID3946395/Python3946400仍在Crossover PPush，约剩2.418M、
+  PInf1633.873、solver约64942s，尚无终态。host available约44GiB、PSI0，且GPU0/1有未知客户；
+  不再并发新大模型。Case2 watcher881511继续等待Stage B严格通过和available>=96GiB，随后幂等启动
+  已批准Threads32 Case2。下一步保持4小时巡检并严格区分运行完成、QC通过和科学接受。
+
+### 2026-09-01 21:44+08:00 — 启动匹配744h完整Stage A阈值A/B
+
+- 依据：1e-4五步筛选已将Factor Ops降低6.14%且完整8760h物理误差上界已量化；作者已明确授权
+  在Stage B内存空闲期并发两条744h以上数值测试。为检验是否改善完整Barrier收敛而非只改善首个
+  factorization，晋级为单因素744h完整Stage A A/B；不混入年度坐标、线程、算法或容差变化。
+- 配置/身份：baseline/candidate标签分别为`2030_base_744h_cf1e6_stage_a_concurrent_20260901_v1`
+  和`2030_base_744h_cf1e4_stage_a_concurrent_20260901_v1`，PGID1045145/1045150；唯一LP差异仍是
+  `coefficient_zero_tolerance=1e-6/1e-4`。两者均16线程、Crossover0、BarConvTol1e-2、无Gurobi
+  time/memory limit并显式保存engineering checkpoint，输出隔离且不覆盖五步结果。
+- 启动/资源：21:44:26 pair supervisor1045122启动成功，CPU集合沿用两个NUMA节点各16个；两个
+  per-case monitor改为经验证的campaign绝对路径并已实际存活，pair2秒TSV和95%整机保护正常。
+  启动时host used约29%、available约87GiB、PSI0，Stage B继续，生产repo clean6065bfb。
+- Git：隔离分支新增Stage A pair launcher及worklog提交
+  `ba89225a23375f2bc400d510b62f6e1865412239`；未部署到或修改生产checkout。
+- 队列规则：若Stage B先终态，Case2 watcher会因活动744h返回`WAITING_OTHER_SOLVER`，待pair释放且
+  available>=96GiB后立即启动；不同时强塞第三个32线程2160h Barrier。下一步每4小时检查Stage B、
+  两个Stage A收敛/资源、pair终态及Case2 gate；Stage A后不得自动用对方checkpoint或跳过Stage B QC。
+
+### 2026-09-01 21:41+08:00 — 744h CF阈值因子筛选终态：候选小幅降低Factor Ops，Stage B转PPushes
+
+- 终态身份：基线`2030_base_744h_cf1e6_factor5_concurrent_20260901_v1`与候选
+  `2030_base_744h_cf1e4_factor5_concurrent_20260901_v1`均从21:03:45运行至约21:18，实际快照均为
+  Base2030、744h/start2880、Method2/Threads16/Presolve2/Crossover0/BarIterLimit5、NF1/Scale2、
+  无TimeLimit/SoftMemLimit，唯一模型差异为CF阈值。两者status7/5步/solution_count0，runner rc2；
+  这是预设因子筛选终态，不得标为科学解或QC失败。
+- 数值/结构：候选Matrix min`1.000486e-6→3.7e-5`，raw NNZ减少20976，presolved rows/columns/NNZ
+  分别`3269493/2975594/37040141→3269458/2975419/37023865`，dense columns5168→5165；
+  Factor NZ`8.249e8→8.064e8`（-2.24%）、Factor Ops`5.048e12→4.738e12`（-6.14%）。
+- 运行/资源：candidate solver522.9445s对baseline562.9116s（并发描述性-7.10%），ordering
+  117.64s对135.34s；runner内部process-tree RSS峰20.112GiB对20.468GiB。pair级host峰约54.9%、
+  PSI0、guard0。候选第5步Primal/Dual/Compl为8.87e9/2.93e3/9.53e9，基线为
+  8.55e9/3.27e3/1.91e10；早期轨迹混合，不能仅凭5步外推最终迭代数。
+- 监测更正：两个per-case telemetry进程均因生产repo不存在`monitor_case_resources.py`而退出；这是
+  外部launcher路径缺陷。pair supervisor自己的2秒host/RSS TSV、solver telemetry、runner0.5秒RSS及
+  time.txt均完整，因子比较仍有效，但GPU/独立resource summary缺失不得记为0，也不为补监测重跑。
+- Stage B/队列：21:41同PGID3946395完成DPush阶段并进入6755240 PPushes，PInf3224.99；无终态文件，
+  stderr/telemetry stderr空，采样10808/errors0、job RSS峰28.908GB、host峰54.924%。Case2 watcher881511
+  保持`WAITING_STAGE_B`；不得把DPush结束误判为Stage B结束。下一步继续4小时监测；1e-4候选只晋级
+  为`PROMISING_MODEST`，待空闲窗口做隔离744h完整Stage A+B，不能直接改生产或上8760h。
+
+### 2026-09-01 21:04+08:00 — 完成CF阈值误差审计、并发启动两条744h因子筛选并部署Case2即时队列
+
+- Git/隔离：基于生产`6065bfba34b76098e86307081323e8545a4d25ac`建立worktree/分支
+  `codex/cf-sparsification-v1`并提交`46f843bc9137bf2112e33dba43e7cc4e584c4bfc`；新增只读审计脚本
+  `audit_vre_cf_thresholds.py`和
+  `audit_wave_ror_cf_thresholds.py`、匹配744h profile及外部campaign gate。生产checkout保持clean
+  6065bfb，未修改源CF/Zarr、模型代码、活动Stage B checkpoint或输出。
+- 审计：生产`coefficient_zero_tolerance=1e-6`已同时应用于VRE、wave和ROR。744h/start2880
+  将阈值升为1e-4时，VRE删6152项、上界损失0.495424GWh/单小时0.009706GW；ROR删14826项、
+  上界损失0.0442055GWh/单小时0.0001335GW；wave无变化。完整8760h对应VRE删64001项、
+  上界损失5.222078GWh，ROR删261060项、上界损失0.879441GWh，wave无变化；两类既有容量
+  floor损失合计0.415104GWh。VRE审计源系数321369360项，ROR12351600项，报告分别位于隔离
+  worktree的`output/cf_threshold_audit_8760h.json`和`output/wave_ror_cf_threshold_audit_8760h.json`。
+  两个审计脚本py_compile PASS、四个profile加载值核验PASS、`test_solver_profiles` 10/10 PASS；系统
+  Python完整pytest因无gurobipy在collection阶段失败，不记为代码回归，候选未改生产模型代码。
+- 运行：外部工具根`/home/zz2/National_model_server/campaign_tools/cf_744_pair_20260901_v1`；
+  21:03:45同时启动生产1e-6与候选1e-4两条744h/start2880、Barrier16、前5步筛选，分别绑定
+  两个NUMA节点的16个CPU。两条均无Gurobi内存/时间上限，各自2秒遥测，配对supervisor PID
+  896264保留95%整机保护。21:04两条处于建模，Stage B继续，host used25.76%/available约91GiB/
+  PSI0；并发墙钟只作筛选，晋级看presolve/Factor NZ/Factor Ops/轨迹/RSS，正式加速须隔离复测。
+- Case2队列：部署`campaign_tools/case2_after_stage_b_20260901_v1`，脚本SHA256
+  `cd5db9c61e6ad3976d1e70e591456cbcafcbb0843d3eee7cf8fa7d5a4e248ce0`，watcher PID881511、
+  当前`WAITING_STAGE_B`。Stage B严格通过且资源/版本/无竞争求解门禁满足后，只启动一次既定
+  2160h Case2 Threads32/Crossover0/最多21600s；不得换标签重启或绕过门禁。automation
+  `2160h-stage-b`仍ACTIVE/每4小时，prompt已覆盖三类任务。
+- 未决/下一动作：等待两条5步筛选产生build/solve日志和资源终态，判断1e-4是否实质降低矩阵范围、
+  presolved NNZ或Factor Ops；若收益不显著即否决，不因物理误差小而推广。两条结束且Stage B通过后
+  Case2自动接管；之后才安排同机隔离744h完整Stage A+B。8760h仍只在候选通过逐级门禁后启动。
+
+### 2026-09-01 18:30+08:00 — 隔离完成年度账户坐标候选并把Stage B轮询改为4小时
+
+- Git/范围：从服务器生产基线`6065bfba34b76098e86307081323e8545a4d25ac`建立独立分支
+  `codex/annual-energy-coordinate-v1`，提交`4814c2e5f197cb152e9e37ff6dcf78df605bb38d`。
+  修改`cispo_model/annual_energy_coordinate.py`、`load_center.py`、`master.py`、config/diagnostics/
+  checkpoint/basis/solver-artifact contracts、runner、模型规范、formulation profile和测试；未改主工作区
+  模型文件，未部署服务器，未改变活动Stage B、数据、求解参数或进程。
+- 安全收缩：第一草案把资源年度发电也统一缩放，24h矩阵门禁发现最小系数
+  `1.026e-6 -> 5.636e-10`，立即否决。当前提交仅将年度账户和intra-load-center年度流量用
+  `8192 GWh/internal unit`表示；CF、径流、水库入流、VRE/wave/hydro资源发电变量和可用量行
+  均保持物理值，不删减/截断小系数。输出与QC恢复GWh，flow penalty保持物理经济等价；
+  checkpoint和原始solver artifact记录内部坐标并禁止跨坐标resume。
+- 验证：24h/start2880同结构规模346767/213253/1834406。候选raw Matrix
+  `1.0262457e-6..260.4167`（原版上限6250）、Objective最小`0.001004004`（原1e-6），
+  RHS上限517.0825（原2873.3179）；严格候选为`OPTIMAL+solution_qc PASS+manifest complete`，
+  objective `2112716.6766244858`与原版solve report逐位相同。完整本地回归223/223 PASS。
+- 负结果/限制：严格候选178.807s、131 Barrier、370107 simplex、Kappa6.589e6，相比原版
+  174.979s、120、366065、Kappa1.270e6没有短时速度/条件指标收益；24h Stage A候选也为
+  11.503s/132步，对比10.861s/124步。原版严格运行虽OPTIMAL，但新增导出函数首轮NameError导致
+  该原版根不完整；代码已修复，不能把该根当完整QC。不得宣称候选已修复收敛。
+- 下一步：等待当前物理坐标Stage B形成严格端到端基线；随后只做一个2160h/start2880、相同
+  Barrier16 Stage A+B候选A/B，不同时改容差、线程或算法，候选必须自产checkpoint；只有原单位
+  目标/QC闭合且端到端确有收益才考虑推广，禁止直接上8760h。heartbeat `2160h-stage-b`已从
+  每小时更新为每4小时；服务器2秒资源采样频率不变。
+
+### 2026-09-01 17:36+08:00 — Case1 Stage B通过exact resume并进入deferred Crossover
+
+- Git/身份：服务器production checkout为clean `6065bfba34b76098e86307081323e8545a4d25ac`；同一
+  launcher3946098、solve PGID3946395/Python3946400及完整命令行持续，无旧PID误判或重复启动。
+- exact gate：15:56生成`primal_dual_start_input.json`。该文件只会在scientific-input manifest、
+  Gurobi版本、identity layers、exact LP Fingerprint、variable/constraint order digest、向量SHA/size/dtype
+  和10398783/12520914维度全部通过后写出。Gurobi13.0.2、implementation bundle exact match，科学输入
+  identity SHA256为`2eafc35116b997927d2952689778ffd1966f0f0f138ab3cfe02a3df921dfc8c9`，
+  Fingerprint为signed `-821799056`（`0xcf045770`）。
+- 路径：日志明确`LP warm-start: use start vectors`、`perform crossover with primal and dual start vectors`、
+  `crush start vectors`和`Crossover log`；没有重新执行Barrier。Presolve1513.67s，presolved规模
+  9539397 rows/8395548 columns/107048306 nnz。
+- 进展/资源：17:36 DPushes由8159992降至222988，DInf约9.04，solver约5982s；尚不能称收敛。
+  3462个2秒样本/errors0，RSS采样峰28.908GB、host可用最低92.465GB、used峰30.03%；当前memory
+  PSI0、si/so0/0，双stderr空。GPU空闲符合CPU Crossover预期。
+- 终态/下一步：无`return_code.txt`、`solve_report.json`、`solution_qc.json`或`result_manifest.json`，
+  工程严格验收待定。后续作者已将heartbeat更新为每4小时；只在重要阶段/异常/终态报告，不改参、重启、并发或部署
+  `Annual Energy Coordinate V1`。证据和快照SHA见
+  `downloads/case1_stage_b_crossover_20260901_1736/README.md`。
+
+### 2026-09-01 15:42+08:00 — 启动2160h Case1 Stage B并更正数值审计耗时/后续门禁
+
+- Git/范围：本地HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`并保留既有未提交修改；
+  服务器生产checkout保持clean `6065bfba34b76098e86307081323e8545a4d25ac`。未改生产模型、数据、
+  Stage A源结果或其他用户进程；新增本地/隔离启动脚本、证据README和数值审计附录。
+- 前置门禁：server无CISPO solver，Gurobi13.0.2；MemAvailable113.093GiB，vmstat si/so0/0、
+  memory PSI0。Stage A checkpoint `ENGINEERING_BARRIER_CHECKPOINT_ONLY`、eligible=true/reasons[]；
+  primal/dual 10398783/12520914项、83190392/100167440bytes及SHA256全部复核PASS。
+- 工具/验证：独立部署
+  `/home/zz2/National_model_server/campaign_tools/case1_stage_b_20260901_v1`，launcher SHA256
+  `4834535b1b5ba0a8936a6a7942994ab3f37cd15c3ccb9903b25be248980841e9`；server bash-n、monitor
+  py_compile、checkpoint/profile定向`13 passed + 34 subtests`均PASS。
+- 启动：15:40:56 launcher3946098，15:41:00 solve PGID3946395/Python3946400；目标为Base2030、
+  2160h/start2880，profile`large_lp_2160_case1_v3_stage_b_v1`，显式允许engineering checkpoint和
+  deferred crossover，不允许implementation漂移。无TimeLimit/SoftMemLimit，整机95%保护和2秒资源采样保留。
+- 初始状态：15:42仍在数据/LP构建，双stderr空、资源正常；尚未生成`primal_dual_start_input.json`，
+  故exact LP/Fingerprint/order门禁与直接Crossover路径仍待核，不把“已启动”写成“已成功续接”。
+- 审计耗时更正：成功的8760h下载+完整SHA+审计为18437.594s（5h07m18s），其中本地流式MPS解析
+  2865.453s（47m45s）；含此前失败尝试的总墙钟约6h59m。次日15:35是人工报告时间，不是审计运行终点。
+  新附录`downloads/numerical_audit_8760_20260829_v1/ADDENDUM_20260901.md`将后续Gate C从PDHG改为
+  2160h Barrier Stage A+B单一A/B，并补充dual/reduced-cost逆变换硬门禁。
+- 监测/下一步：创建每小时heartbeat `2160h-stage-b`，只跟踪本标签；首先核实exact start和直接
+  Crossover，再等待严格终态。数值缩放不部署到活动Stage B；终态后才实现Annual Energy Coordinate V1。
+
+### 2026-09-01 13:59+08:00 — 作者终止2160h GPU-PDHG并关闭巡检
+
+- Git/边界：本地HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，服务器生产checkout保持
+  clean `6065bfba34b76098e86307081323e8545a4d25ac`；保留本地既有未提交修改。本动作不改模型、
+  数据、求解profile、保护阈值或其他用户任务。
+- 目标核验：停止前从run.pid、完整命令行、创建时间、PGID和GPU客户交叉确认唯一目标为
+  `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`、PGID1216966、Python1216969、GPU1；
+  GPU0的两个无关计算客户未触碰。
+- 停止：13:59:10仅对目标进程组发送SIGTERM；29秒内正常退出，未使用SIGKILL。写入
+  `user_stop_20260901.txt`并通过`telemetry.stop`使遥测器正常退出。13:59:49复核求解、wrapper、
+  telemetry均不存在，GPU1已无本任务客户；run_control记录`return_code.txt=143`和events end。
+- 终态：solve report为`INTERRUPTED`/status11/SIGTERM，solver386921.588s、PDHG78474440次、
+  SolCount0，末行P/D/Compl=1.32e-4/762/0.388；这不是自然收敛、科学接受、CUDA OOM、CPU回退
+  或host guard终态。
+- 资源：193911个2秒样本、telemetry errors0；进程树RSS峰27.043GiB，GPU1任务显存峰4558MiB、
+  全程平均利用99.196%。资源供应正常但长期平台，故将本轮归类为有执行效度的算法负结果。
+- 证据：`downloads/case4_gpu_pdhg_user_stop_20260901_1359/`保存stdout/stderr/events、配置、
+  build/solve report、运行身份及资源摘要；stdout SHA256
+  `b0e0229247c060e4c0d3e62e6b8a9e8ea5d9858354c256f49aad7b24746fcb3f`。
+- 自动化/下一步：已删除`case-4-gpu-pdhg`三小时heartbeat，不自动重启PDHG。下一步转为梳理
+  云端8760h后已验证改动，并优先评估Barrier Stage A+B与等价年度能量坐标缩放；任何新求解另行决策。
+
+### 2026-09-01 13:52+08:00 — Case4运行107h后的长期平台量化
+
+- Git/进程：本地HEAD65c8b21及既有未提交修改保留；服务器repo clean6065bfb；同一
+  Python1216969/PGID1216966/create_time1787854514.09，未重启或换标签。
+- 进度：solver386540s/78397740步，P/D/Compl=1.66e-4/763/0.388，目标
+  6145955.98/1343518.08，相对分离78.14%，无return code或QC。
+- 窗口：近3/24/48h目标绝对分离仅改善0.108/0.232/0.321%，D残差改善
+  0.909/1.548/2.554%；P residual非单调、窗口最佳均1.04e-4，旧突破未转化为整体加速。
+- 资源：193695样本/errors0，GPU1 100%/job4558MiB、全程平均99.20%，RSS16.59GiB/
+  采样峰27.04GiB，主机可用约96.5GiB、PSI0；双stderr空，无CPU回退/CUDA/OOM。
+- 文件：新增`downloads/case4_gpu_pdhg_heartbeat_20260901_1352/`证据和说明，更新交接及
+  `MODEL_SERVER_STATUS.md`；没有模型、数据、参数、保护、服务器文件或自动化变更。
+- 下一步：按作者无时限要求继续自然运行和三小时检查；只在终态、异常或新的实质突破时报告。
+
+### 2026-08-29 23:32+08:00 — Case4 primal residual突破旧平台
+
+- Git/进程：本地HEAD65c8b21及既有未提交修改保留；服务器repo clean6065bfb；同一
+  Python1216969/PGID1216966/create_time1787854514.09，未重启或换标签。
+- 进度：solver162185s/32634740步，P/D/Compl=1.04e-4/789/0.389，目标
+  6160597.02/1343433.04；无return code或QC。
+- 三小时变化：P残差降低97.354%，D残差降低0.127%，Compl降低0.256%，目标绝对分离降低
+  0.887%；新P残差平台持续约1.54h。只记录轨迹突破，不宣称整体收敛加速或预测终态。
+- 资源：81526样本/errors0，GPU1 100%/job4558MiB，RSS16.59GiB/采样峰27.04GiB，
+  主机当前可用约86.9GiB，PSI0；双stderr空，无CPU回退/CUDA/OOM。
+- 文件：新增`downloads/case4_gpu_pdhg_heartbeat_20260829_2332/`日志和说明，更新交接及
+  `MODEL_SERVER_STATUS.md`；没有模型、数据、参数、保护、服务器文件或自动化变更。
+- 下一步：保持无时限自然运行，三小时后复核P残差是否继续下降及D/Compl是否出现同步突破；
+  不自动停止、StageB、其他算法或缩小时域。
+
+### 2026-08-29 15:35+08:00 — 8760h完整原始矩阵审计终态与定向等价缩放方案
+
+- Git：本地主工作区HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，既有未提交修改保留；
+  固定服务器repo clean `6065bfba34b76098e86307081323e8545a4d25ac`。
+- 范围：只读核验已经下载的云端8760h `original.mps.gz`及其流式审计结果，分析约束/变量族；
+  未build、presolve、optimize，未修改模型、数据、solver profile、保护或活动PDHG进程。
+- 完整性：4142909397bytes、SHA256 `344f2ae4cabb669123c2a946fe530fa3417ab7c10ebb035850584f043fe2435d`，
+  `input_integrity=PASS`、audit `COMPLETE`；规模50907234/41458383/492835195与门槛一致。
+- 结论：最大风险定位为VRE/ROR容量列混合小时CF与年度FLH，以及年度负荷中心GWh坐标；水库
+  transition和近零VRE headroom列为第二阶段证据项。通用二进制缩放与提高截断阈值均不推广。
+- 方案：提出`Annual Energy Coordinate V1`，S=8192GWh的二进制内部坐标；先代数/接口门检，
+  再24h/168h工程验证与presolve对照，最后只做一个2160h同参GPU-PDHG性能验证。
+- 文件：新增`downloads/numerical_audit_8760_20260829_v1/REPORT.md`，更新本交接、
+  `MODEL_SERVER_STATUS.md`及隔离worktree工作记录；没有生产代码变更。
+- 未决：尚无已部署或已证明加速的数值修复；full presolved范围、Kappa及水库族终态残差归因待补。
+- 下一步：作者确认后在隔离分支实现年度能量坐标候选，严格通过原单位QC后才允许2160h运行；
+  当前自然PDHG继续，不因审计方案停止或重启。
+
+### 2026-08-29 15:16+08:00 — 2160h GPU-PDHG多窗口平台量化
+
+- production clean6065bfb；活动身份不变，最新132365s/26552140步，未终态，资源正常。
+- 只读复制gurobi.log，以既有严格进度格式解析26036条，取3/6/12/24h实际窗口，无插值/外推。
+- 输出downloads/pdhg_plateau_review_20260829_1516/README.md、window_metrics.csv及原日志；
+  源2096940bytes/SHA cfd9802e680a7187f70697a231e3d4ff67e382ce4831640446c0005bcadcc18a。
+- 核心残差继续平台，目标分离仍缓慢改善；目标分离非证书，打印0%不代表数学严格零变化。
+- 未改代码/模型/数据/参数/保护/进程或自动化；不因本分析提前停止，继续原3h巡检。
+
+### 2026-08-28 20:27+08:00 — 例行巡检及99%联动调整待确认
+
+- 生产clean6065bfb，同2160h身份/参数/资源记录正常，约64600s仍未终态，未作服务器变更。
+- 保存配置/求解日志/events/两stderr/资源摘要于downloads/case4_gpu_pdhg_heartbeat_20260828_2027。
+- 记录作者99%重试请求的待确认项：旧2160h95%保护仍有效，尚未授权联动调整，不执行重试。
+- 未修改模型、数据、求解器参数或自动化；下一步原3h巡检，等待联动范围确认。
+
+### 2026-08-28 19:10+08:00 — 8760h GPU0在预处理阶段触发主存保护，终态保全
+
+- 只读核验生产clean6065bfb；本地HEAD65c8b21，更新三份交接、启动记录终态提示及独立终态证据目录。
+- 运行17:20:22→18:23:22，总约63min；完整模型build_report=3663.595s/48.183GiB。
+  optimize后约109s在Presolve触发94%主机优先保护，SIGKILL仅原新组702485，rc=-9。
+- 实际参数文件确认Method6/Threads32、原PDHG容差和TimeLimit/SoftMemLimit Infinity；
+  没有Start PDHG on GPU、迭代轨迹或QC，不能归类为GPU OOM/PDHG慢收敛/自然终态。
+- RSS采样峰77.627GiB、整机94.374%、Swap近8GiB；GPU0仅job386MiB，2秒1891样本/errors0。
+- scp完整control及7份输出到downloads/8760_gpu0_terminal_20260828_1910，逐份SHA25/25匹配；
+  README说明口径/精确时间/无新MPS或解。旧2160h运行和监测继续，不暂停其自动化。
+- 原模型规模与历史相同但指纹不同（2acf0ca2 vs d16b4c7e），原因待核，不能以规模相同替代等价证明。
+- 下一步等待作者关于主存窗口/后续试验的新决定；不重启/缩小/取消保护，不干预其他任务。
+
+### 2026-08-28 17:22+08:00 — 作者授权完整8760h GPU0并发尝试
+
+- 本地HEAD65c8b21、生产clean6065bfba34b76098e86307081323e8545a4d25ac。
+- 新增scripts/run_8760_gpu_pdhg_supervised.py、run_8760_gpu_pdhg_instrumented.py及
+  tests/test_8760_gpu_pdhg_supervised.py；生产repo不改，独立部署campaign_tools/full8760_gpu0_20260828_v2。
+- Base2030/full8760/start0、GPU0 UUID锁定、Threads32及其他PDHG参数和现有2160h一致；
+  私有配置只改启动内存准入96→1GiB，无算法内存/时间上限；95%旧保护前新组94%优先退出。
+- 先prepare-only/生产preflight-only（PASS、rc0），后nohup一次启动；17:20:22新PID/PGID702485。
+  首次v1启动器拼写错误返回125、未建模，现场保留；v2已修正，6/6单测、pyflakes/编译PASS。
+- 输出与参数/输入manifest/资源/旧失败证据保存在downloads/8760_gpu0_launch_20260828_v2；
+  README含完整命令、脚本SHA、变化边界和下一步。配置null已核，真实Params Infinity待建模结束前读取。
+- 17:22新模型正在构建，GPU上下文已建立但未GPU迭代；原2160h及审计下载未停止/改参。
+- 未决：8760h真实矩阵指纹、峰值主存/显存、GPU实际开始、收敛及QC均待本轮推进；
+  不把预估33.4GB/目前8.38GiB当峰值，不自动重启/缩小/StageB，不将自然退出当科研接受。
+
+### 2026-08-28 17:12+08:00 — 登录态核实N50R5绑定，纠正资源查询范围
+
+- Git：65c8b21ea7bbe583d126f1142eebb348c3b32f3d；保留既有未提交改动。
+- 文件：追加downloads/cloud_resource_inventory_20260828_1703/README.md及CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md；无代码变更。
+- 证据：Chrome账号管理/SSH列表/资源管理所属关系图交叉核验NC-N50R5=scvk386、BSCC-N56R5=scxk805；所有五中心蓝色在线。原A8上的scontrol查N50R5返回not found，范围仅原集群。
+- 验证边界：N50R5网页SSH返回connection closed，未获得shell；GPU队列未从控制台返回，配置和实际调度权限仍未知。
+- 风险：首页可用额度约-4973元；未核合同/信用政策，不与SSH失败建立未经证实的因果关系。
+- 下一步：核实NC-N50R5登录/队列和计费条件；确认入口后只读查配置，任何计费试算另行授权。本轮未改资源、账号、许可证或求解进程。
+
+### 2026-08-28 17:03+08:00 — 超算账号资源权限、配额和实时库存核验
+
+- Git：65c8b21ea7bbe583d126f1142eebb348c3b32f3d；保留所有既有未提交改动。
+- 本轮文件：新增downloads/cloud_resource_inventory_20260828_1703/README.md；仅追加CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md。
+- 证据：SSH只读id/sinfo/scontrol/sacctmgr/squeue；用户组交叉验证分区AllowGroups；17:03:52节点状态快照，详见资源记录中的命令与返回值摘录。
+- 结果：三可申请CPU分区，M8/A8_768/A8_384严格idle80/29/0；cpu=1280，作业提交上限50；当前队列空；全部361唯一节点无GRES。
+- 未决：跨中心GPU资源、适用价格、余额及平台额外限制未查询；两个浏览器均停在控制台登录页，已保留Chrome页。
+- 下一步：作者登录后只读查全平台GPU和价格；任何开通/计费运行需单独授权。不修改既有PDHG、备份或审计流程。
+
+### 2026-08-28 17:00 同2160h的PDHG与Barrier16收敛对照
+
+- Git：主区HEAD65c8b21未变，未提交/部署；新增文件位于downloads/pdhg_barrier_comparison_20260828_v1，
+  同步更新handoff/status/runbook，保留其他窗口记录。输入只读，不构建模型或调用求解器。
+- 命令：scp读取活动Case4 outputs/<unlimited标签>/gurobi.log至input/pdhg_gurobi.log，
+  D:/anaconda/python.exe <对照目录>/compare_logs.py；unittest discover同目录test_compare_logs.py及py_compile。
+- 输出：REPORT.md、comparison.json、barrier16_trajectory.csv、gpu_pdhg_trajectory.csv、
+  same_time_samples.csv、window_changes.csv，包含输入SHA、源日志行号、真实时间和取样滞后。
+- 验证：Barrier243条、PDHG9916条，轻量LP身份全部字段匹配；同2160/start2880；有符号目标、初始假零gap、
+  无前视取样、重复迭代拒绝4项测试PASS。PDHG快照末51765s，不能当作终态；未混用callback残差。
+- 结果：PDHG前期接近快、后期平台，10—14h目标差只降0.48%，Barrier降88.83%；14h绝对差PDHG仍小约10倍。
+  Barrier历史17.4175h达到更小目标差，但23h严格质量HARD_FAIL；不能进行同QC最终速度排名或预测PDHG剩余耗时。
+- 原算法/日志采样/审计下载均不干预；16:59审计下载222MiB继续。下一步维持原监测及审计，终态后才更新同QC比较。
+
+### 2026-08-28 16:44 云WLS许可与GPU-PDHG部署条件只读核验
+
+- Git：65c8b21ea7bbe583d126f1142eebb348c3b32f3d，未提交；保留其他窗口16:43的新审计交接。
+- 文件：新增downloads/cloud_gpu_license_review_20260828_v1/README.md，更新handoff/status/runbook；
+  没有模型、数据、服务器环境或任务修改。
+- 命令/证据：SSH sinfo -a、squeue、sacctmgr show assoc；许可文件安全解析仅输出WLS存在标志、
+  非秘密ID/权限/是否有到期日；importlib.metadata查询云端13.0.2；固定服务器nvidia-smi、
+  ps及GPU解释器pip show查询13.0.2+cu129。未输出凭据、API key或许可证原文。
+- 结论：WLS类型允许按有效授权跨机器，GPU无需额外许可证；新GPU节点仍须验证到期/配额/联网、
+  驱动与GPU build。当前资源区无可见GPU队列，不能直接把amd_a8_768作业换成GPU作业。
+- 下一步：先取得可用GPU型号、资源区及价格，获明确申请授权后才启动小型授权/GPU smoke和
+  同2160h对照；不承诺更快收敛，不停止本地PDHG，不触碰独立审计/备份流程。
+
+### 2026-08-28 16:43 授权恢复8760h审计：独立可续传本地缓存与自动审计门禁
+
+- Git：主区65c8b21、隔离候选cff89ce不变；未提交/部署。只新增隔离scripts/fetch_and_audit_mps.py、
+  tests/test_fetch_and_audit_mps.py，并更新主handoff/status/runbook、隔离worklog及运行根README。
+- 源：云端已保全original.mps.gz，stat4142909397bytes/mtime1787857317与既有记录一致。
+  预期SHA344f2ae4cabb669123c2a946fe530fa3417ab7c10ebb035850584f043fe2435d；无源文件修改。
+- 首次32MiB/2线程传输16:37:37启动31188，两块180s超时；16:41:47按创建时间/完整命令行核验后
+  仅终止该本机父进程及其两个SSH客户端，未操作任一服务器求解/另一个备份。旧部分文件全部保留。
+- 改用1MiB/2线程、每块最多3次、排他缓存锁、完成块SHA收据；16:41:48 v3 launcher13448/
+  Python49052启动，16:42:10已有3个完整块、stderr空。完整副本SHA通过才自动本地审计，不再边传边解析。
+- 命令/输出：工作目录为隔离worktree；.venv/Scripts/python.exe -u scripts/fetch_and_audit_mps.py，
+  source-host paracloud-bscc-a8，cache-dir outputs/local_8760_verified_v3/cache，
+  output-dir outputs/local_8760_verified_v3/run_v1，workers2/chunk-mib1/chunk-timeout-seconds180；
+  完整参数由run状态、进程命令和v3/README保留。预期audit位于run_v1/audit/。
+- 验证：新增7项离线测试及原解析/缩放11项PASS，py_compile通过；整文件坏SHA不允许启动审计的门禁
+  及真实小MPS解析端到端路径均覆盖。脚本/测试SHA见运行README。测试不访问网络或调用求解器。
+- 未完成：仍在DOWNLOADING，完整hash/审计均待执行；当前不是数值修复验收。16:38 PDHG同进程/clean6065bfb，
+  GPU1满载4600MiB、资源errors为空；既有3h巡检不变。下一步检查同一run终态，失败保留且不盲目重启。
+
+### 2026-08-28 16:33 全尺寸流式审计传输失败、备份停滞及PDHG状态复核
+
+- Git：主区65c8b21ea7bbe583d126f1142eebb348c3b32f3d、隔离候选cff89ceb2e6590923f2413d9a739c3d4a7013c29；
+  服务器clean6065bfba34b76098e86307081323e8545a4d25ac。未提交或部署；保留所有既有修改。
+- 命令/证据：Get-Content读取隔离worktree outputs/stream_8760_original_v1/{status.json,ssh.stderr.log}
+  和outputs/stream_8760_launch_v1/stderr.log；Get-CimInstance复核退出的审计进程及仍在的备份45560。
+  SSH只读stat云端original.mps.gz，读取固定服务器同一Case4的ps/git/stdout/events/资源summary及末行、
+  双stderr、return_code存在性；读取备份backup_status.json并与本地transfer_progress.json比对。
+- 结果：审计15:38:14因SSH Connection reset后gzip EOF而FAILED，最后104072756 nnz约21.1%，无完整审计输出。
+  云端源stat大小/mtime不变，但未重做全量哈希；备份14:22:46后进度不更新、进程尚在，不能当作完整副本。
+  PDHG16:31 solver50470s、9847340步，资源记录正常、未收敛；不得因缓慢停止。
+- 修改仅为CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md及隔离NUMERICAL_STABILITY_WORKLOG.md。
+  无模型/数据/环境/求解参数变更，无新求解、无重启、无清理。失败现场仍为原目录。
+- 下一动作：向作者报告不能再只等待已退出的审计；建议安全处理传输并校验稳定副本后重做审计，
+  具体恢复动作待作者决定，不自动重复启动。完整原矩阵/预求解矩阵数值修复尚未验收。
+
+### 2026-08-28 15:09 历史8760h Stage A收敛日志简报与完整轨迹
+
+- Git：本地HEAD65c8b21ea7bbe583d126f1142eebb348c3b32f3d；被分析原代码
+  3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5。未提交，保留其他窗口已有修改。
+- 范围：只读历史job4139552归档及job4396245恢复对照JSON，不读取巨大NPY/MPS，不连接云端/固定服务器；
+  日志字段解释参照Gurobi官方在线文档，链接已附入报告。
+- 新增文件：scripts/report_8760_convergence.py、scripts/render_8760_convergence_note.py、
+  tests/test_convergence_note.py；输出目录output/pdf/8760_stage_a_convergence_20260828_v1下
+  PDF/Markdown、FIGURE_CONTRACT.md、README.md、QA.md、figures和data。同步本交接/status/runbook。
+- 命令：D:/anaconda/python.exe scripts/report_8760_convergence.py --source-dir
+  downloads/paracloud_4139552_2030_8760_stagea_barrier_v2_20260826 --recovery-dir
+  downloads/2030_stage_a_first_result_visualization_v1/input --output-dir
+  output/pdf/8760_stage_a_convergence_20260828_v1；bundled Python运行render_8760_convergence_note.py
+  --report-dir同目录，完整可复制命令见README。
+- 证据：原始7文件SHA256 PASS，4恢复JSON和清单记录哈希；两通道608点连续，目标/时间显示精度一致，
+  残差不混接。阶段时间加总与solver总时长1773606.980326891s闭合；6/6解析测试、py_compile PASS。
+  PDF3页785875bytes，逐页渲染及文本检查PASS；PDF SHA256
+  e0b6ba0f032cb41bc1c4ef1b04934252079206fc30c3549abad66ffe71e7924e。
+- 结论：607次迭代耗时1752971.911s，占solver98.8365%；中位步间隔47.937min、最后100步3.0933天。
+  原矩阵跨度6.246964e9不是条件数，未保存全尺寸presolved范围。solver OPTIMAL不改变原LP HARD_FAIL，
+  恢复QC FAIL/56 of58独立保留；StageB未执行，恢复optimize/presolve0不能并入本轮迭代。
+- 未决与下一步：本简报不补齐完整presolved分族系数及Kappa、不定位/修复全部QC原因、不改变门槛。
+  作者先审阅简报；其他窗口独立稳定性分支、MPS流式审计、Case4和完整备份沿用各自既有流程，
+  本次没有重新核验其当前进度，不宣称其新终态；已保留另一窗口15:07的新交接内容。
+
+### 2026-08-28 15:07 数值改进隔离实验完成首轮；完整8760h矩阵审计后台运行
+
+- Git/隔离：生产6065bfba34b76098e86307081323e8545a4d25ac保持clean；主工作区HEAD65c8b21
+  及用户原未提交修改保留。新worktree .codex_tmp/numerical_stability_20260828_v1，候选提交
+  cff89ceb2e6590923f2413d9a739c3d4a7013c29；未部署、未合并或push。
+- 变更：独立分支新增lp_equilibration/mps_stream_audit/zero_bound_certificate、5个实验/诊断脚本、
+  20个单测和NUMERICAL_STABILITY_WORKLOG.md；monolithic.py只修正有严格零入流证书的零上界余量。
+  主工作区仅本轮三个交接文档追加，不改主模型/参数/数据/环境、PDHG进程或其他备份任务。
+- 验证：独立venv Gurobi13.0.2、numpy1.26.4/scipy1.13.1；原RL Gurobi12.0.1未修改。
+  237/237 unittest 80.494s PASS，py_compile/pip-check/diff-check PASS，MPS逆变换bit-exact。
+  24h/start2880源213253行/346767列/1834406nnz；10944个UB→0全部由旧MPS等式求和证明，
+  其余矩阵/目标/RHS/LB/名称/方向逐项不变。不能把这个证书当成收敛改善证据。
+- 负结果：无预算缩放v1原单位误差变差；v2在1h改善primal误差但更慢，24h原版/缩放/零界修正
+  全部NUMERIC。HSD诊断仅SUBOPTIMAL而非INFEASIBLE，没有有效IIS。全部现场保留，候选不推广。
+- 后台审计：14:49:54本机Python34684/launcher37332/SSH40220开始只读云端完整original.mps.gz，
+  预期4142909397bytes、SHA344f2ae4cabb669123c2a946fe530fa3417ab7c10ebb035850584f043fe2435d；
+  预期50907234行/41458383列/492835195nnz。15:06:29为24088472nnz、约39MB RSS，未完成全SHA校验。
+  工作区outputs/stream_8760_original_v1/status.json为状态，完成才生成audit.json；
+  源端仅cat，本机解压/统计/哈希，不在固定服务器或云端计算节点构建/求解新LP。
+- 接续：同一审计不重复启动；失败保留现场，不盲目重跑；COMPLETE且gzip/ENDATA/SHA/维度通过后
+  分析族统计，进一步定位水库状态链与大规模预求解风险。尚未宣称完整数值稳定性修复完成。
+  当前PDHG无时限及3h/2s频率不变，本轮不自动StageB/其他算法/缩小时域服务器任务。
+
+### 2026-08-28 14:34 三轮大规模数值尺度诊断：风险延续，非已证实的新数值崩溃
+
+- Git：14:31服务器实核clean`6065bfba34b76098e86307081323e8545a4d25ac`；
+  local HEAD`65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，既有未提交修改均保留。
+- 范围/文件：只读SSH/scp日志、build/solve/config/run_identity；新增downloads/numerical_review_20260828_v1
+  下collect_evidence.py、REPORT.md、evidence.json与两个2160h日志快照，更新三个交接文档。
+  不改生产模型、数据、参数、进程、环境、自动任务；未启动新模型、presolve、optimize或其他Case。
+- 命令/验证：python -m py_compile及python运行collect_evidence.py通过；已有1h归档原MPS的
+  Matrix/Objective/RHS极值和nnz共7字段与build_report精确一致；MPS RHS中的OBJ常数单独排除。
+  原始输入SHA256记录在evidence.json；monolithic.py/load_center.py/DAC参数对production提交无差异。
+- 发现：三轮Matrix 1.0004860087065026e-6～6250、Objective1e-6～3853.189875762917，
+  Matrix比6.247e9；两个2160h同指纹0xcf045770、同原/预求解维度。6250是DAC年度耗电，
+  极小目标来自省内流量惩罚；V3放松容差未缩小矩阵范围。三轮灵活负荷均关闭，不能直接归因旧V5热状态链。
+- 质量：云端8760h/Case1原LP最大约束违反2.28683e-5/0.0384984，均OPTIMAL但strict HARD_FAIL；
+  Case4约14:25为8304240步、42905s，stdout残差0.00393/838、Compl0.394，目标仍分离、无最终QC。
+  未检出明确Numerical trouble等告警；残差平台不是数值崩溃的充分证据，也不证明未来无法收敛。
+- 限制：旧1h归档预求解前后全局maxA均6250，最差单行比9.42e5→2.035e8，说明全局范围不能涵盖
+  所有预求解风险；这不是当前全尺寸结论。全尺寸presolved系数分布和Kappa仍未知。
+- 下一步：先完整原/预求解系数分族诊断，再考虑保持模型等价的单位缩放并原单位QC；未经另行授权，
+  不截断小系数/改目标惩罚/增加求解组合/终止当前PDHG。3h heartbeat与2s采样、95%保护保持。
+
+### 2026-08-28 14:18 Case4第四次巡检：改善放缓，保持无时限
+
+- 范围/Git：生产clean `6065bfba34b76098e86307081323e8545a4d25ac`，local HEAD
+  `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`未提交；仅三个交接文档和独立巡检README更新。
+  SSH只读检查Git、run.pid、ps身份/命令行、实际配置/日志/资源，scp独立备份；未动运行进程或参数。
+- 标签仍2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2，PGID1216966/Python1216969、
+  02:15:14创建时间一致；TimeLimit/SoftMemLimit对应字段null，GPU1客户匹配RTX4090/Start PDHG日志。
+- 14:18:02为8211040步、solver42448.095s含presolve，墙钟12h03m。stdout42440s目标
+  6.19070422e6/8.54039989e5、primal/dual/Compl=0.00393/837/0.394，相较上次改善很小；
+  不证明永久停滞或未来必不能收敛。callback残差0.0436490391/2693.6107041单独保留，无终态/QC。
+- 资源：summary21681条/errors0至14:17:56，raw至14:18:00，顺序复制差4秒；RSS17.002GiB/
+  峰27.043GiB、host可用86.831GiB；GPU1显存4600MiB、job4558MiB，自上次均值99.9991%，
+  当前61°C/313.73W、峰61°C/317.6W。Swap7.4129GiB、swap-in增量19.762MiB、swap-out0、
+  当前memory PSI0，job CPU累计46170.91s。GPU0无本job客户，stderr空，无OOM/回退/95%保护触发。
+- 输出：downloads/case4_unlimited_20260828_v3/review_20260828_1417/{run_control,output,README.md}，
+  为活动文件分别复制的证据，非终态原子归档；没有删除/覆盖其他实验结果。
+- 文档首轮补丁因其他窗口新增14:17结果备份条目而未匹配；重新读取后仅追加本次记录，保留对方改动。
+  下一步约17:17继续既有3小时heartbeat，2秒采样/95%保护/无时限不变，不因长尾停机、不启动其他Case。
+
+### 2026-08-28 14:17 首个2030结果可视化完成，完整固定服务器备份后台进行
+
+- 14:19复核补充：后台PID45560/创建时间一致，stderr空；最新完整范围1810938732bytes、29/104。
+  服务器analysis_v1/figures的12文件全量SHA256与本机一致，figure_backup_integrity.json PASS；
+  全release仍IN_PROGRESS，Case4原进程1216969继续运行。
+- Git基线`65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，本轮未提交，保留既有脏工作树。
+- 按作者要求备份整个历史恢复release，非只有结果CSV；源301文件6606826274bytes。
+  目标`/home/zz2/National_model_server/backups/2030_8760_stage_a_first_recovered_20260828_v1`。
+  t550只读资源检查约2.5TiB空闲、86GiB可用内存；未操作独立GPU求解任务。
+- 先尝试SCP，独立小文件多连接下载遇Connection closed；改为二进制tar流取回60个分析文件，
+  加manifest共61文件。完整release受约1MiB/s网络总吞吐限制，改为分块可续传；8路未显著
+  改善吞吐，最终后台4路。只停止本任务自己的传输进程，没有停止服务器求解或删除文件。
+- 新脚本`backup_recovered_release.py`（初始流传输）、`parallel_backup_release.py`（最终后台）、
+  `verify_preserved_backup.py`、`visualize_preserved_2030.py`；新测试`test_preserved_backup_verifier.py`。
+  交接更新CODEX_HANDOFF、MODEL_SERVER_STATUS、SERVER_RUNBOOK；另在downloads产出README/证据/图表。
+- 精确启动/续传参数见`downloads/2030_stage_a_first_result_visualization_v1/README.md`。
+  后台PID45560/14:14:41；4路64MiB分块，源read-only，不复制SSH凭据，不申请计算资源。
+  t550旧checkpoint经SHA256验证后复制4个目标1477850384bytes，不删除或修改旧副本。
+  源完整inventory已落本机；结果86文件预期hash来自原manifest，其他文件由源端新算hash。
+- **当前仍IN_PROGRESS**：14:14:45计1626281156/6606826274bytes（只计完整范围，不含正在写的片段）。
+  文件大小可能暂时为稀疏文件表观值，不能据此认定完整。脚本最后自动对301文件全量hash，
+  `release_integrity_report.json` PASS后才写COMPLETE；本条不是终态备份成功声明。
+- 图表输入60文件逐项SHA256 PASS，manifest hash
+  `277732ed0a4016650e084d1b8c3c820e240b4ff6a99d0b40b3ef9753e5f2096d`。
+  装机4730.771GW（储能功率另304.455GW），发电10838.759TWh/负荷10608TWh，风光占44.763%，
+  净排放3561.645MtCO2/上限4000；原目标4.188006万亿元（2025不变价）。不据此宣布科学验收通过。
+  成本汇总不重复相加；保留主分项-354.02元闭合差、所有微小值和QC FAIL。
+  月度年度发电差-1.86e-9GWh，全国电量闭合4.16e-7GWh，时间8760行连续不重复；不代替原QC。
+- 输出`figures/2030_stage_a_overview`与`2030_stage_a_operation`，均PNG/PDF/SVG，加CSV/JSON。
+  源结果不改，分析另存；已复制到server父目录analysis_v1。PNG实际检查，修正CO2字体缺失和图例遮挡；
+  交互图736/360与1024宽明暗模式实检、320宽边界PASS，精确数值提示可用，无浏览器错误。
+  小测试4/4通过，4脚本py_compile通过；未重跑模型或扩大全年求解测试。
+- 下一步：保持Windows开机联网，查询本机background.stdout/stderr、服务器backup_status；完成后
+  核验301文件报告PASS和原86文件清单，追加终态记录。仍运行时禁止并发重复写同目录。
+
+### 2026-08-28 13:45 云端8760h Stage A恢复成功终态与产物复核
+
+- 请求：作者询问“是否恢复”。只读SSH/sacct/文件元数据与关键hash复核，下载小型终态报告，
+  未提交新作业、未安装环境、未改变模型/数据/阈值、未重启或干预Case4。
+- 作业：4396245 COMPLETED0:0，24核，02:13:56--03:18:35，elapsed1:04:39，wrapper/tiny测试均rc0，
+  stderr为空。运行末尾代码已完成result_manifest验证和PlanningState候选读取。
+- 完全匹配：原始LP41458383变量、50907234约束、492835195非零元，fingerprint=-781497218；
+  variable/constraint digest与原checkpoint完全相同，offline_recovery exact_lp_identity_and_full_order
+  为true、identity_differences={}。author allow flag为true但未用到豁免，不是绕过门禁的恢复。
+  全年恢复未调用optimize/presolve，target SolCount0，不做新优化。
+- 耗时/内存：build2336.55684s、build peak48.584GiB；完整恢复monitor3843.847s/peak62.061GiB；
+  Slurm batch MaxRSS64244236K（约61.27GiB），与0.5秒进程树采样62.061GiB口径不同，均如实保留。
+- 输出：preservation_report各阶段COMPLETE/errors[]，result_manifest86文件/5852013714bytes。
+  本次所有文件存在和size复核0失败；另实读SHA验证QC、solve report、candidate cohort/summary及
+  state source hashes，均PASS。未在登录节点重新全量hash4GB模型；不宣称完成第二次全文件SHA审计。
+  archive_manifest COMPLETE；original.mps.gz4142909397bytes/SHA344f2ae4...435d；完整变量名目录
+  206395222bytes、约束名目录251766440bytes，参数归档为未求解重建模型的参数而非内部Barrier状态。
+  原solver profile和config另在source_backup/配置快照；无presolved副本/uncrush/factorization。
+- 结果：容量/运行/成本/碳/BarPi均生成；hourly dual271560行、annual dual3366行。
+  candidate capacity_cohorts_v2共86900行，next_planning_year2040，source_qcFAIL、authorPENDING、
+  scientifically_acceptedfalse，未筛除小值/零值，未自动进入2040优化。
+- QC：hard_checks56/58，失败unidirectional_interprovincial_flow、objective_components。
+  opposing flow最大1.425562296e-5GW、累计0.297960491GWh、edge_hours149717；objective component
+  residual=-0.000354019459million CNY。重算objective4188006.0843866686 vs源4188006.084013813，
+  两者记录均保留，不修改源报告。raw LP有2行超过1e-5，最大2.286828932e-5（load_center_ror_generation_closure_p43），
+  bound最大8.128594686e-9、无超阈值bound。保存成功不等于科学验收PASS或所有论文结论成立。
+- Git/文件：HEAD65c8b21未变；更新CODEX_HANDOFF、MODEL_SERVER_STATUS、SERVER_RUNBOOK及当时独立的
+  Stage A保全说明；该说明未纳入当前可依赖提交，本条自包含保留其历史事实。备份报告在
+  downloads/cloud_stage_a_recovery_4396245_20260828_v1/terminal_review_1342；
+  仅小型报告下载，不把它描述为完整恢复包本地备份。
+- 下一步：作者决定是否下载5.45GiB完整结果/模型归档，以及如何分析QC、采用candidate state。
+  不重复恢复、不自动Stage B/续年；固定服务器GPU-PDHG为独立任务，本轮未查询或操作。
+
+### 2026-08-28 11:17 Case4第三次三小时巡检：primal显著改善，已持续运行超过旧时限
+
+- 范围：只读SSH核验Git、run.pid/ps身份、配置/日志/资源，scp本轮证据；未改生产代码、模型、数据、
+  参数或进程。production clean `6065bfba34b76098e86307081323e8545a4d25ac`，本地HEAD
+  `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`未提交。修改三个交接文档和独立巡检README。
+- 标签仍`2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`；PGID1216966/Python1216969、
+  02:15:14创建时间、2160h/start2880/指定GPU环境/profile均实核一致。实际快照time_limit_seconds及
+  soft_mem_limit_gb仍null；日志RTX4090/Start PDHG on GPU与GPU1客户对应，无CPU回退。
+- 11:16:44 callback5992040步、runtime31569.427s（含presolve），已经超过旧21600s而未结束，
+  墙钟约9h01m/GPU阶段8h09m。stdout31565s目标6.19768764e6/8.42910122e5，
+  primal/dual/Compl=0.00396/847/0.396；相较上次primal改善明显，dual仍高、目标差未闭合。
+  callback残差0.0461572596/2701.3989368单独保留，不与stdout混用；无终态/QC/科学接受。
+- 资源：本地原始16246样本，summary16244样本/errors0（文件复制时间不同，不是采样停止）；
+  RSS17.001GiB/峰27.043GiB、host可用87.196GiB；GPU1卡级4600MiB/job4558MiB，近3h均值99.9998%。
+  当前60°C/312.9W，峰61°C/317.6W；Swap7.4171GiB、累计swap-in增量15.559MiB、swap-out0，
+  当前memory PSI为0，job CPU累计34602.60s。GPU0无本job客户，stderr/telemetry stderr空。
+- 输出：`downloads/case4_unlimited_20260828_v3/review_20260828_1116/{run_control,output,README.md}`，
+  活动文件顺序复制，非终态原子归档；没有删除/覆盖其他实验结果。
+- 下一步约14:16按既有3小时heartbeat监测，同一任务无时限、原95%保护与2秒采样不变；
+  不因长尾/竞争力终止，不自动StageB/其他算法/缩小模型/历史恢复；终态才汇总并暂停。
+
+### 2026-08-28 08:15 Case4第二次三小时巡检：残差较上次改善，尚未收敛
+
+- 范围与Git：只读监测、独立备份和交接；生产clean `6065bfba34b76098e86307081323e8545a4d25ac`，
+  本地HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，无提交。仅更新CODEX_HANDOFF.md、
+  MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md及本次独立证据，不改任何运行代码/模型/数据。
+- 检查：SSH读取Git、run.pid、events、ps的PID/PGID/创建时间/完整本job命令行、stdout/资源/错误日志；
+  scp保存`downloads/case4_unlimited_20260828_v3/review_20260828_0814/{run_control,output}`。
+  原始文件在活动期间分别复制，非终态原子归档；README.md保留口径、资源、残差和下一步。
+- 状态：PGID1216966/Python1216969均仍为02:15:14创建的指定2160h/start2880 GPU任务；
+  config snapshot的time_limit_seconds/soft_mem_limit_gb均null，日志无非默认TimeLimit；
+  RTX4090/Start PDHG on GPU及GPU1本job客户持续对应，没有CPU回退。未停止、重启或改参。
+- 08:14:36累计3763040次迭代，solver20641.640s包含presolve；纯GPU迭代约5h07m29s，墙钟近6h。
+  stdout20640s目标6.2597836e6/-1.71134618e8，primal/dual/Compl=2.54/1.02e3/0.502，
+  较05:14端点9.71/4.95e3/24.2改善；中间非单调性和明显目标差仍在，不宣称可行/科学接受/算法优胜。
+  同时保存callback残差40.4778753/2861.1234620，不与文本日志混用；没有终态或QC文件。
+- 资源：10782个2秒样本、errors0；RSS17.001GiB/峰27.043GiB，host可用87.349GiB。
+  GPU1卡级显存当前/峰4600MiB、job4558MiB；近3h GPU均值99.9998%，当前60°C/314.22W；
+  峰61°C/316.91W。Swap7.4186GiB，本轮swap-in14.031MiB、swap-out0，当前memory PSI为0。
+  CPU时间累计22975.62s是进程组CPU秒，不是墙钟秒；GPU0无本job客户，其他用户资源未干预。
+- 下一步：不改ACTIVE/3h调度，约11:14再检查；不因6h/长尾/竞争排名停止，2秒资源采样及整机95%
+  保护不变。终态才完整汇总/QC/暂停，不自行启动StageB、其他算法或缩小时域。
+
+### 2026-08-28 05:14 Case4首次三小时巡检，确认GPU实际迭代
+
+- 范围：仅监测无时限2160h Case4；不干预生产模型/数据、历史8760恢复或其他用户进程。
+  固定服务器Git clean `6065bfba34b76098e86307081323e8545a4d25ac`；
+  本地HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，
+  本轮无提交。修改仅CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md及独立巡检证据。
+- 命令/证据：SSH读取git rev-parse/status、ps PID/PGID/创建时间/命令行、run_control和outputs日志，
+  scp复制到`downloads/case4_unlimited_20260828_v3/review_20260828_0514/{run_control,output}`；
+  这是运行中分别复制的快照，非终态原子归档。README.md记录采样口径和残差原值。
+- 验证：stdout第488行出现Start PDHG on GPU且GPU识别为RTX4090；GPU1计算客户为本Python1216969。
+  配置快照numerics的time_limit_seconds/soft_mem_limit_gb均null，Method6/Threads32/Crossover0、
+  PDHGConvTol/AbsTol/RelTol=1e-2/1e-5/1e-2；build_report确认2160h/start2880，模型边界不变。
+- 进展：build913.382s、presolve2184.98s，03:07:07开始GPU迭代；05:13:51 callback1551040步、
+  solver9797.042s（含presolve），stdout9795s目标6.989144e6/-5.15735717e8、
+  primal/dual/compl=9.71/4.95e3/24.2。callback残差口径与文本日志数值不同，分别保留，不混用。
+  primal残差较7200s上升，dual/compl下降，不能宣称单调收敛、已可行或比Barrier更快。
+- 资源：5360个2秒样本、errors0，RSS当前17.001GiB/峰27.043GiB；host可用87.330GiB，
+  host使用率当前29.040%/峰37.202%；GPU1显存卡级峰4600MiB、job峰4558MiB，近1h负载平均99.999%。
+  GPU1温度峰61°C/功耗峰316.91W；Swap已有约7.43GiB，本轮无新增swap-out、当前memory PSI为0。
+  stderr/telemetry.stderr为空，resource日志持续更新，无return_code/终态/QC。
+- 下一步：保持现有ACTIVE/每3小时heartbeat，约08:13再检查。无时限，不按慢收敛/竞争力停止；
+  原95%整机保护不变。终态后再完整备份/汇总并暂停；不自动重启、缩模型、StageB或其他算法。
+
+### 2026-08-28 02:16 Case4取消时间上限、受控替换启动、审查改为3小时
+
+- 作者新要求覆盖此前6小时筛选和10分钟heartbeat策略。本轮不再依据运行时长/相对Barrier速度/
+  长尾自动停止，保留既定整机95%外部安全保护和实际错误/CPU回退处理。
+- Git：local65c8b21ea7bbe583d126f1142eebb348c3b32f3d；生产clean6065bfba34b76098e86307081323e8545a4d25ac。
+  不部署其他任务dirty代码，不改生产建模实现或输入，不重启历史恢复，不改变PDHG收敛容差。
+- 文件：新增 `config/solver_profiles/large_lp_2160_case4_gpu_pdhg_unlimited_v2.json`（schema v1、
+  profile_id后缀v2），全部numerics只将time_limit_seconds从21600改为null；旧profile保留。
+  `scripts/run_fixed_server_2160_campaign_case.sh`仅给Case4加入显式profile路径覆盖；
+  `scripts/start_case4_after_recovery.py`加入`--unlimited-pdhg`、固定profile哈希检查和环境传递。
+  `tests/test_case4_resources.py`验证唯一数值参数变化和schema。更新本handoff/status/runbook。
+- 不能在线取消原因：runner启动即load_model_config并深拷贝进内存，当前telemetry只采集数据，
+  没有外部cbSetParam/信号改参接口。Gurobi自身可在指定callback改TimeLimit，不代表现有进程已经
+  实现了该控制入口；不向活动进程注入代码、不靠修改磁盘profile假装生效。
+- 验证：服务器启动/资源完整测试最终18/18 PASS；本地17 PASS+1 Linux-only SKIP。
+  首次实际生产loader验证发现schema不接受solver_profile_version=v2，已保持schema v1而只让
+  profile_id表达v2；修正后11/11资源/profile测试复核PASS。生产configure_gurobi作用于空模型、
+  不optimize的实测确认TimeLimit=Infinity、SoftMemLimit=Infinity、Method6、PDHGGPU1；
+  参数日志在新工具包validation/parameters.log。没有因为这个配置问题启动过失败的新大模型。
+- 受控停止旧case：核实PID1175172/pgid1175169、完整output参数、创建时间1787853911.67，且
+  stdout无Optimize a model/Start PDHG后，仅对该进程组SIGTERM。旧tag screen_20260828_v1
+  02:15:04退出rc143、hostguard0；只是为换无时限配置取消建模，不是算法OOM/收敛失败。
+  约10分钟建模不保留内存态，但文件全保留；旧control备份到本地新工具包downloads目录。
+- 新部署：`campaign_tools/case4_unlimited_20260828_v3/scripts`，不覆盖v1/v2历史工具包。
+  launcher SHA256 43217a950d3fee447d877497af0a145abb49d66e46a541e01b24c2aa9ec2ac2a；
+  gate a80ef9f0e708b9963b0a952512d857766f8f6b487614e406e44a6d7216b24f64；
+  profile 9c5c5ea38572dc26454c8a735e91e161e240a887dc98f5897cdff74d02c87122；monitor仍
+  10f8724fe2ac366db26d74d2eb74d41c2eca108070263ea8c6fc18323c9adf72。
+  部署清单 `downloads/case4_unlimited_20260828_v3/deployment_manifest.json`。
+- 启动命令：沿用新包start_case4_after_recovery.py的固定server/recovery/head/gpu参数，tag改为
+  `2030_base_2160h_case4_gpu_pdhg_unlimited_20260828_v2`，追加
+  `--independent-after-failed-recovery --unlimited-pdhg`。02:15:12门禁PASS、available104.258835GiB、
+  无其他模型、GPU1无compute客户端/free24047MiB。02:15:14开始；launcher1216822、pgid1216966、
+  Python1216969、telemetry1216967。新claim明确unlimited_pdhg=true，旧claim不删除。
+- 生效证据：新进程自己的model_config_snapshot.json显示time_limit_seconds=null及soft_mem_limit_gb=null，
+  argv指向固定hash的新profile；02:15:32资源9样本/errors0、stderr空，尚未进入GPU迭代。
+  控制/输出均为新tag，startup副本在downloads/case4_unlimited_20260828_v3/startup。
+- 调度：原heartbeat id/name/target不变，频率改为每3小时并实读配置确认；提示跟进新tag，明确无
+  6h/竞争力截止、2秒采样不变、不会再重复启动。后续查明GPU真实迭代与资源压力，终态汇总后暂停。
+
+### 2026-08-28 02:15 云端24核Stage A恢复启动，指纹告警与失败模型保全
+
+- 作者授权：立即使用云端原环境恢复，只申请24核心，减少过度门禁，以保存结果为主线。
+  执行范围仅8760h历史Stage A离线恢复，4h安全上限；不optimize/presolve、不Stage B/续年。
+- Git：本地HEAD65c8b21未变、未提交；原云端3f739fd发布不改，隔离overlay通过SHA256记录。
+  新release `National_model_cloud/20260828_8760_stagea_recovery_v1`，原release/数据/旧输出只读复用。
+- 文件：修改`cispo_model/offline_solution.py`、`scripts/recover_historical_stage_a.py`、
+  `tests/test_solution_preservation.py`；新增`scripts/cloud_recover_stage_a_24core.sbatch`；
+  staging脚本/映射/压缩包位于`.codex_tmp/cloud_stage_a_recovery_20260828_v1`；同步handoff、
+  server status/runbook、model spec与当时独立的Stage A保全说明文档；该说明不作为当前提交依赖。
+  无模型方程/配置/输入/阈值变更。
+- 恢复逻辑：MPS、PRM及完整index/name/sense目录在身份门禁前归档，失败也保留模型。
+  新显式allow_fingerprint_mismatch仅放行fingerprint差异，默认接口仍严格；维度/nnz、顺序、
+  checksum/finite保留。归档得到的顺序摘要在同一未修改模型中复用，避免重复遍历约9200万条名称。
+  identity差异单独保存，exact_lp_identity_and_full_order_verified不会在不匹配时错误标true。
+  raw LP审计普通异常不阻断其他导出，保全状态明确PARTIAL；原物理QC FAIL继续保存，科学接受仍false。
+- 测试：本地6/6（0.493s），新增真实改bound改变指纹的测试：默认拒绝、显式允许；改名称和破坏
+  向量仍拒绝，缓存摘要不重复遍历。py_compile/diff-check通过；云端计算节点6/6（1.047s），
+  没有跑新的全国1h/24h/744h求解或全库回归。此测试仅tiny合成LP，不是正式恢复的optimize调用。
+- 提交：02:13:55 `sbatch --parsable --export=ALL,SOURCE_RELEASE=<原release> ...
+  cloud_recover_stage_a_24core.sbatch` 返回4396245，02:13:56开始，m4cg1702。
+  实读scontrol：NumCPUs24/CPUsPerTask24、ReqTRES/AllocTRES cpu24 mem128G billing24，TimeLimit4h，
+  Requeue0。amd_a8_768实时MaxMemPerCPU6144，128G/24符合配置；不沿用96CPU/700G申请。
+- 运行：02:14:05 preflight77条PASS；原始30文件、源码/数据身份均通过。计算节点Python与全部已记录
+  依赖相同。02:14:08进入BUILDING_ORIGINAL_LP；02:14:24 sstat MaxRSS1031484K、stderr0。
+  节点available689.9GiB不等于allocation128G，不能把整节点内存作为任务额度宣传。
+- 哈希：code tar `e951750a37070aa4a07ec114f27696c4523c4b4f04197f123395802e9c25d89f`；
+  metadata tar `946d1fcddc0bdad36e828db4ed2a08796dd0afbbf43b95fb47fbdf05d30631e4`；
+  release_files.sha256摘要 `c17635741051a2b963580cbe22550960b2158d7d9baa6be89d926d10886840fe`；
+  driver `bb02ea983095a252c192f434bb3cd789cbce5d7081690a9eb3c06395b4a919f9`；
+  sbatch `9eb4a162b1385f2c33581c8031b492ad41295c87cabcca482e2d438fb691c26f`。
+  原始向量在云端复制，不往返下载上传；上传量约4.2MB，仅源码/元数据。
+- 未完成：本次8760LP指纹、完整顺序、归档和最终表/QC/candidate仍待构建后验证。准确下一步：
+  `squeue/sacct/sstat -j 4396245`，检查新release的control及recovered_8760/recovery_progress.json。
+  不重复提交、不在登录节点计算、不触碰独立Case4或原始备份。
+
+### 2026-08-28 02:06 作者独立启动授权落实，2160h Case4已启动并持续采样
+
+- 新授权：作者明确要求立即启动PDHG，覆盖“等待恢复成功”的依赖条件；不授权修复恢复、套用
+  指纹不匹配的旧向量、改模型边界或开启其他Case。历史恢复仍FAILED，原现场不修改。
+- Git：local65c8b21ea7bbe583d126f1142eebb348c3b32f3d，生产clean
+  6065bfba34b76098e86307081323e8545a4d25ac。沿用Case1同一生产模型/data和原Case4 profile。
+- 文件：`scripts/start_case4_after_recovery.py`新增显式独立授权开关，只接受已失败恢复的依赖
+  豁免，result保留recovery_status=BLOCKED_RECOVERY_FAILED；`tests/test_case4_resources.py`
+  新增测试验证不跳过仍运行/不完整恢复、也不跳过已有模型进程检查；本地/服务器均10/10 PASS。
+  本轮不改launcher/monitor/solver profile，既有其他dirty代码保留，未提交。
+- 部署新隔离包 `campaign_tools/case4_independent_20260828_v2/scripts`，不覆盖旧v1工具包或生产repo。
+  gate SHA256 `a6cdf66be3b8642d32bb55946785d7c19f7624cca7d48c947dac5de0afdf6db9`；launcher
+  `c0363c1e165fa895ec0439abb0c936c8f3a45c6fc8b9bebd2571409bfcd3db27`；monitor
+  `10f8724fe2ac366db26d74d2eb74d41c2eca108070263ea8c6fc18323c9adf72`。清单在本地
+  `downloads/case4_independent_20260828_v2/deployment_manifest.json`和服务器scripts同名文件。
+- 启动命令：GPU Python执行新包的start_case4_after_recovery.py，沿用runbook的server-root/
+  recovery-root/expected-repo-head/tag/gpu-device参数并显式追加`--independent-after-failed-recovery`。
+  02:05:09 gate为READY并LAUNCH_DISPATCHED；available104.376495GiB、无其他模型、GPU1无计算
+  客户端、free24047MiB。queue/launch_claim.json已创建，记录授权与旧恢复FAILED，不允许重复发起。
+- 运行：tag `2030_base_2160h_case4_gpu_pdhg_screen_20260828_v1`；events.log开始02:05:12；
+  launcher1175139、pgid1175169、Python1175172、telemetry1175170。GPU环境13.0.2+cu129；
+  Base2030、2160h/start2880、Method6、Threads32、GPU1、最多21600秒、Crossover0，PDHG三容差
+  1e-2/1e-5/1e-2，SoftMemLimit空、95%整机保护不变，没有新增显存上限。
+- 验证：02:05:22原始资源样本6条、telemetry_error_samples0、stderr均0；GPU1本job显存峰值
+  386MiB、卡级428MiB，但GPU利用率0，尚未出现Start PDHG on GPU；这仅证实启动/上下文分配，
+  不能证明GPU迭代已开始。02:05:41资源日志继续更新、Python存活、无return_code。
+- 调度：保留原heartbeat id/name/10分钟频率/当前thread，改提示为仅监测本次已启动Case并置ACTIVE；
+  不调用旧恢复等待入口、不因恢复FAILED停止此case。明确GPU回退CPU不得记为GPU成绩，终态/需新决定
+  后暂停，不自动重启/缩小时域/运行StageB或其他Case。
+- 输出/下一步：对应run_control/<tag>保存stdout/stderr/events/time、host资源TSV、每2秒双GPU/
+  主机/进程JSONL和summary。等待构建/预处理后核验Start PDHG on GPU及收敛；保持生产版本冻结。
+
+### 2026-08-28 02:07 云端原环境恢复可行性核验（只读，未启动）
+
+- 请求：评估直接在云端原版本恢复的可靠性与时间。SSH读取原release路径、源码摘要、Python/package
+  metadata、squeue/sinfo/scontrol；未启动模型、未创建allocation、未安装依赖、未修改云端文件。
+- 核验：原Python3.10.20，NumPy2.2.6、pandas2.3.2、SciPy1.15.3、xarray2025.1.2、netCDF4 1.7.2、
+  zarr2.18.3、psutil5.9.8、gurobipy13.0.2全部与原run_environment一致。原30个源码bundle
+  `bdf36a799f7eaf2c037e806a87f21f6e9b59c247e369e610b7cd22806caf9a8e`匹配，checkpoint和数据根仍在。
+- 资源：squeue用户无job；amd_a8_768 UP，查询时31节点idle，不保证下一次排队耗时。
+  DefMemPerCPU=6000、MaxMemPerCPU=6144；24CPU/128G只作恢复资源候选，不是已申请或费用报价。
+  共享文件系统空闲不等于账户配额；账户余额/单价本轮未核验。
+- 判断：原源码/原输入/原依赖可减少跨环境变数，因此优先考虑云端恢复；仍不能担保指纹一致。
+  Gurobi官方列举Python版本、构建顺序等均可能造成指纹变化：
+  https://support.gurobi.com/hc/en-us/articles/41809886403217-Why-Is-My-Model-Fingerprint-Different 。
+- 时间依据：历史云端原LP构建38m57s、峰值48.574GiB，本地此次59m27s/47.914GiB；不做
+  optimize/presolve的恢复不重跑20天Barrier，但全量顺序、MPS/名称归档、原LP审计与导出耗时未知。
+- Git/文件：HEAD65c8b21未变；仅更新CODEX_HANDOFF/MODEL_SERVER_STATUS。下一步需作者明确
+  云端付费执行授权，并先修复异常路径的模型归档；不得原样重跑旧Stage A求解sbatch。
+
+### 2026-08-28 02:04 恢复退出原因核查与保全缺陷记录（未修复/未重启）
+
+- 请求：作者询问“为何退出了”。只读检查进程、return_code/events/time/stdout/stderr、source/target
+  run_environment、build_report及恢复代码控制流；未启动任何建模/求解/环境安装。
+- 直接证据：00:47:11 `Original LP identity mismatch`，00:48:04 rc1、host95_guard0；维度与nnz
+  一致但fingerprint718212258不等于-781497218。峰值47.914GiB，wrapper1:00:28，optimize/presolve0。
+  02:02服务器available111959785472 bytes，原进程已全部退出，生产checkoutclean6065bfb。
+- 新线索：源→目标 Python3.10.20→3.11.15，NumPy2.2.6→2.4.6，pandas2.3.2→2.3.3，
+  SciPy1.15.3→1.17.1，xarray2025.1.2→2026.7.0，netCDF4 1.7.2→1.7.4，zarr2.18.3→2.18.7；
+  Gurobi13.0.2相同。驱动只强制检查Gurobi版本。依赖差异可能影响重建，尚无差分证据证明因果。
+  原始输入字节和源码核对不自动等于最终浮点LP相同；同环境1h恢复测试不证明跨环境8760等价。
+- 保全缺陷：驱动197行异常早于203行archive_model，因此本次重建MPS和名称目录未持久化。
+  这是需要修复的失败路径，不得把“已有原始checkpoint备份”写成“本次构建模型已归档”。
+  原BarX/BarPi和源solve_report仍保留；此次未完成solution_qc/result_manifest/candidate state。
+- 官方属性说明：`https://docs.gurobi.com/projects/optimizer/en/current/reference/attributes/model.html#fingerprint`。
+  Fingerprint取决于模型数据和属性，不能仅以机器不同为由豁免不一致。
+- Git/文件：本地HEAD65c8b21未变，本轮只追加CODEX_HANDOFF、MODEL_SERVER_STATUS和SERVER_RUNBOOK；
+  未修改恢复驱动、历史release、输入或验收阈值。下一步待修复授权，优先失败现场归档和分项对照，
+  再准备匹配历史依赖的隔离环境及跨环境小模型验证；不盲目重复一小时全年重建。
+
+### 2026-08-28 00:57 heartbeat发现历史恢复失败，Case4接续已暂停
+
+- Git：local65c8b21ea7bbe583d126f1142eebb348c3b32f3d；server clean
+  6065bfba34b76098e86307081323e8545a4d25ac。本轮不修改模型、输入、环境或求解器参数。
+- 命令：按runbook执行 `start_case4_after_recovery.py` 的固定参数入口，返回
+  BLOCKED_RECOVERY_FAILED；随后只读检查recovery control/stdout/stderr/events/time、build_report、
+  preservation_runtime_memory和 `source_backup/output/run_identity.json`。首次查找原identity缺少
+  output子目录，已按实际文件路径纠正，不据缺文件推断数据丢失。
+- 恢复终态：00:47:11.975915 identity检查抛ValueError，00:48:04 wrapper rc1/host95_guard0；
+  wall1:00:28，build3566.90585s；采样进程树峰值47.914GiB，time MaxRSS50740524KiB。
+  不是本次内存保护终止或GPU显存失败；optimize/presolve均0。
+- 实测与原模型变量41458383/约束50907234/非零元492835195均一致，唯一此层identity差别为
+  fingerprint718212258 vs -781497218。只能确认身份校验失败，不能据此断言数学模型边界改变，
+  也不能认定只是排序/浮点问题；需后续有授权的分项诊断。失败发生在完整顺序/向量核验之前，
+  没有恢复容量/运行/成本/QC等正式输出，也没有新的科学接受结论。
+- Case4：queue/status.json记录00:57:22检查BLOCKED_RECOVERY_FAILED；没有launch_claim，
+  正式Case4控制目录不存在。未启动任何Case/StageB/续年，未终止其他用户进程。
+- 调度：保留name/prompt/频率/targetThreadId，将 `case-4-gpu-pdhg` 从ACTIVE改为PAUSED；
+  通过app工具成功更新且automation.toml实读为PAUSED。停止自动检查/接续，等待作者选择。
+- 文件/证据：更新本handoff、MODEL_SERVER_STATUS.md和SERVER_RUNBOOK.md；
+  `downloads/case4_after_recovery_20260828_v1/recovery_failure_0057/`保存control完整日志及
+  build_report/recovery_progress/preservation_runtime_memory/source_run_identity。
+  原备份、原checkpoint和服务器恢复失败现场均保留。本地已有dirty代码不动，未提交/部署。
+- 下一步：请作者决定先诊断历史指纹差异，或另行授权在保留失败现场的前提下独立启动Case4；
+  在获得新决定前不改门禁、不重新恢复、不重建大LP。
+
+### 2026-08-28 00:46 恢复后Case 4自动接续与资源压力记录已配置
+
+- 作者授权：恢复结束后启动GPU-PDHG，记录主机内存、显存及GPU压力；保持2160h四Case范围。
+- Git/边界：local65c8b21ea7bbe583d126f1142eebb348c3b32f3d；生产仍clean
+  6065bfba34b76098e86307081323e8545a4d25ac。没有修改模型、输入数据、目标约束或solver profile，
+  没有部署其他任务的dirty保存/恢复代码。独立工具overlay未提交，以部署manifest+SHA256固定。
+- 文件：新增 `scripts/monitor_case_resources.py`、`scripts/start_case4_after_recovery.py`、
+  `tests/test_case4_resources.py`；更新 `scripts/run_fixed_server_2160_campaign_case.sh` 和
+  `tests/test_campaign_launcher.py`，以及本handoff/status/runbook。部署清单和真实单次采样备份在
+  `downloads/case4_after_recovery_20260828_v1/`。
+- 部署：`/home/zz2/National_model_server/campaign_tools/case4_after_recovery_20260828_v1` 下
+  scripts/保存3个工具和deployment_manifest.json，tests/保存2个测试；未覆盖生产repo或历史恢复。
+  launcher SHA256 `c0363c1e165fa895ec0439abb0c936c8f3a45c6fc8b9bebd2571409bfcd3db27`；
+  monitor `10f8724fe2ac366db26d74d2eb74d41c2eca108070263ea8c6fc18323c9adf72`；
+  gate `dc678dc835458134c53df74335524ce53c4c38c35b9e2b50895dfa626865be76`，服务器实读匹配。
+- 验证命令：本地分别 `python -m unittest discover -s tests -p test_campaign_launcher.py -v`
+  与 `-p test_case4_resources.py -v`，14 PASS+1 Linux-only SKIP；服务器独立工具根下以GPU Python
+  执行 `-m unittest discover -s tests -v`，15/15 PASS、10.672s。Linux集成fixture只sleep5秒，不建模，
+  验证detached job、多次采样、summary、return_code与telemetry_return_code均0，临时fixture自动回收。
+  真实 `monitor_case_resources.py --process-group 657359 --gpu-device 1 --once --output-dir validation_telemetry`
+  也PASS，双GPU sensor可读，error_samples=0；不启动持续监测恢复，不干预其进程。
+- 幂等门禁：恢复rc0、progress/preservation均COMPLETE、optimize/presolve均0、无其他模型进程、
+  生产HEAD/clean匹配、工具hash一致、host available>=96GiB、GPU1无compute客户端、free>=22000MiB
+  且util<=5%才允许启动。QC FAIL不是恢复完整性失败。使用flock+不可覆盖launch_claim，失败亦不盲重试。
+- 采样：默认2秒，JSONL原始序列与原子替换summary持续落盘；主机内存、Swap累计换入换出、PSI、
+  CPU利用率、求解PGID成员RSS/CPU时间；两卡总/已用/可用显存、GPU和显存控制器活跃率、温度、
+  功耗/pstate、本job GPU进程显存。只保存本job客户端PID，不持久化其他用户命令行；缺失传感器null，
+  查询失败记录errors。原resource_monitor.tsv/time.txt和95%guard保留；监测异常记日志，不静默假装成功。
+- 调度：已创建当前对话heartbeat `case-4-gpu-pdhg`，ACTIVE，每10分钟一次；只调用一次性门禁，
+  不另建服务器cron/无限等待器。00:44:09实调返回WAITING_RECOVERY；queue/status.json已落盘，
+  未生成launch_claim或正式Case 4控制目录。恢复运行中，算法未启动；首个创建调用因缺destination被拒，
+  加destination=thread后成功，已view核验。无重复任务。
+- 后续：保持本地Codex和SSH可用；自动检查恢复终态及门禁后启动GPU1 Case4，核实Start PDHG on GPU
+  和资源日志持续更新。明显不可竞争可按原筛选政策提前停止本case；CUDA回退CPU不得当GPU结果。
+  异常需新决定则报告并暂停，终态汇总内存/显存峰值、GPU负载、耗时、残差/QC后暂停，不自动Stage B。
+
+### 2026-08-28 00:32 Case 4启动准备、GPU解释器修复与恢复冲突门禁
+
+- 请求范围：先尝试2160h GPU-PDHG Case 4并核实双卡；未改变模型边界、数据、四Case配置或容差。
+- Git：local HEAD65c8b21（本轮未提交）；server clean6065bfba34b76098e86307081323e8545a4d25ac。
+  既有未提交的Stage A保全/历史恢复改动不纳入本次修改，也未部署。
+- 改动：`scripts/run_fixed_server_2160_campaign_case.sh` 保留调用者在source之前指定的解释器，
+  Case 4无显式覆盖时选 `envs/cispo-2030-gurobi-gpu13.0.2-cu129-v1/bin/python`；原共享环境会覆盖
+  `CISPO_PYTHON`为CPU解释器，不能继续使用旧启动路径。并发进程检查增加
+  `recover_historical_stage_a.py` 和 `run_historical_stage_a_recovery.sh`。
+- 新增 `tests/test_campaign_launcher.py`：真实Bash执行初始化/门禁，隔离临时环境并mock git/pgrep，
+  不运行Python求解器、SSH或大模型。命令 `python -m unittest discover -s tests -p test_campaign_launcher.py -v`
+  为6/6 PASS；涵盖Bash语法、CPU默认、GPU默认、显式解释器优先、已有求解/恢复拒绝及无关进程放行。
+- SSH 00:32:12实时证据：双卡util0%、显存395/36MiB；恢复PID657364、pgid657359、elapsed2677s、
+  RSS32462960KiB；monitor 00:32:11 MemAvailable75450228KiB，总129048004KiB。恢复仍构建原LP，
+  没有return_code文件；生产git clean6065bfb。本轮只有只读服务器检查，没有启动/终止进程。
+- 双卡依据：[Gurobi GPU安装/运行说明](https://support.gurobi.com/hc/en-us/articles/43498824105873-Installing-and-Running-GPU-enabled-Gurobi)
+  及[GPU支持说明](https://support.gurobi.com/hc/en-us/articles/360012237852-Does-Gurobi-support-GPUs)。
+  公开接口仅核实GPU版安装、Method6/PDHGGPU1和成功日志，未找到单模型双卡分摊配置。
+  `CUDA_VISIBLE_DEVICES=0,1`不等于已并行或显存池化；当前只承诺已验证单4090路径。
+- 状态/输出：本地启动器和测试、此handoff及status/runbook更新；Case 4无输出目录/求解结果/自动队列。
+  不绕过96GiB启动门槛，不中断历史恢复，不将现有whole-host95%保护改为新的Gurobi内存上限。
+- 精确下一步：恢复正常结束后核验资源和清洁生产版本，单独部署本次启动器修复，再按Case 4原profile
+  在一张空闲4090启动2160h；若作者要求立即抢占，须先明确对历史恢复的处置，不能自行停掉它。
+
+### 2026-08-27 23:48 历史8760h Stage A恢复的隔离部署、跨机校验与启动
+
+- 授权与边界：作者明确授权在空闲服务器启动上一轮Stage A恢复；本线程按前文8760h job4139552
+  执行。只恢复原向量语义、原LP审计、归档和候选结果；不重复Barrier，不执行presolve/Stage B/续年。
+- Git：本地HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，未提交；生产服务器checkout仍clean
+  `6065bfba34b76098e86307081323e8545a4d25ac`。实际恢复采用历史Linux源码包
+  `c49d48da070834b969b13b7a4ea50d0b45c5383276820db0e314d324822ec40e`，不使用当前建模方程。
+- 新文件：`scripts/recover_historical_stage_a.py`、`scripts/run_historical_stage_a_recovery.sh`；
+  隔离release及path_mapping/launch_validation在 `.codex_tmp/stage_a_8760_recovery_20260827_v1`。
+  更新本handoff、MODEL_SERVER_STATUS、SERVER_RUNBOOK及当时独立的Stage A保全说明；该说明未纳入
+  当前可依赖提交。原备份文件不修改。
+- 源码核对：原始下载30/30 SHA256一致；源包30个implementation文件的canonical bundle摘要与
+  run_identity完全相同。4个受审查覆盖仅为master导出QC开关、solution_export导出QC开关、
+  planning_state候选保全和result_summary清单标签；历史master的非export AST不变，其余旧py/config
+  文件必须逐字节相同。新增offline_solution/solution_preservation采用此前验证版本。
+- 数据：第一轮preflight_v1在建模前正确拒绝 `size:output_manifest.csv`。从原云端只读取回
+  8482-byte原清单（SHA256 `9179cba6...cb42be4`），在独立historical_model_data中替换这一说明文件；
+  其余数据通过只读消费的符号链接复用。preflight_v2原始77条输入与全新provenance逐项相同，完整
+  resolved config、baseline/analysis/scientific/solver身份和Gurobi13.0.2匹配。
+- CF完整性：云端只带2023/2024，服务器另有2020--2025；不能比较父目录总摘要后误判数据损坏。
+  对实际消费8个2023/2024 zarr的全部22536文件，`find . -type f -path '*202[34].zarr/*' -print0 |
+  LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum` 两端一致为
+  `c909ba9d0f75d9d5bd539a3df682f1c32d461df83b0037152990a17442c709fc`，不只是metadata一致。
+- 验证：隔离历史版本运行 `scripts/validate_stage_a_recovery.py --hours 1 --output-dir ../validation_1h`
+  PASS，源和恢复fingerprint均-146272577，源Barrier87步/10.10s，恢复optimize/presolve调用0；
+  直接在线与离线45个CSV/NPZ一致、碳/原LP QC一致、两端manifest/candidate读取均成功。新入口
+  py_compile及launcher bash -n通过；此次未重跑全库回归，不把此前222项结果冒充本轮新运行。
+- 启动命令：`RECOVERY_ROOT=/home/zz2/National_model_server/recovery_8760_20260827_v1
+  CISPO_SERVER_ENV=/home/zz2/National_model_server/server_env_20260825.sh bash run_historical_stage_a_recovery.sh`，
+  实际通过nohup后台启动；控制root `control`，结果root `recovered_8760`，独立进程组657359。
+  开始23:47:35，23:47:45已进入原LP构建；启动available100.9078GiB，23:47:51 stderr0、资源正常。
+  保护只终止自身进程组，阈值整机95%；不触碰其他用户进程。脚本强制禁用optimize/presolve。
+- 发布证据：恢复代码tar SHA256 `f8da39275948dc725de879571006940d82d1f0b6679ba2edf4b69e1600fba3aa`；
+  driver SHA256 `6629978ee2d555cf69df4256d0c44b46d392c83a856a2b0bdaf675c4f5578228`；
+  launcher SHA256 `f72e7b1623d03786a56a5be9bee82ba8a3ba72c1cd6946ac654fcd7285dc108d`。
+- 待完成：8760h原LP构建、-781497218指纹/完整顺序门禁、原模型归档、原始残差、完整输出及候选
+  state最终读取。QC FAIL保留而不筛选数据；失败/PARTIAL保留错误。不承诺总恢复时间或峰值内存。
+  精确下一步：查看 `control/stdout.log`、`stderr.log`、`return_code.txt`、`resource_monitor.tsv` 与
+  `recovered_8760/recovery_progress.json`；终态后检查preservation_report、solution_qc和result_manifest。
+
+### 2026-08-27 23:34 2160h Case 1 Stage A终态与检查点实读核验
+
+- Git/范围：server clean `6065bfba34b76098e86307081323e8545a4d25ac`，未改代码/参数/数据，未启动
+  Stage B或挑战者。仅向本地 `CODEX_HANDOFF.md`、`MODEL_SERVER_STATUS.md` 追加终态记录，保留已有
+  未提交的Stage A保全实现和其他作者改动；本次未提交、未部署。
+- 命令/输出：SSH只读检查Case 1 `run_control/.../events.log`、`return_code.txt`、`time.txt`、
+  `resource_monitor.tsv`，读取对应output的solve report、checkpoint manifest和engineering QC；
+  用SHA256及NumPy mmap核对原始BarX/BarPi文件。根tag为
+  `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`。
+- 终态：23:27:51 rc0、guard0、stderr0；242 Barrier iterations、solver82535.468s、wall23:13:57、
+  peak RSS69.291GiB、host peak88.742598%。OPTIMAL但strict HARD_FAIL，工程QC53/58；原始primal/dual
+  objective分别2874667.943668152/2693954.9896529447 million CNY，相对差6.286394%。不得将宽松
+  solver终态写为严格LP或科学验收通过。
+- 保全/下一动作：10398783个BarX、12520914个BarPi全部finite，两个文件SHA256与manifest一致。
+  checkpoint可用于exact-LP deferred crossover，但本轮未启动。旧进程未获得本地14:18完整保全逻辑，
+  应先在独立根核对离线恢复及候选表/状态补齐流程，保留质量失败项供作者决定采用。
+
+### 2026-08-27 14:18 Stage A 全量保全、模型归档与不求解恢复的本地实现
+
+- Git/范围：基线 `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`，未commit/push/deploy；保留作者原有
+  工作树修改。未改模型方程、目标、物理单位、时空尺度、输入数据、求解profile或验收数值阈值。
+- 改动：新增 `cispo_model/solution_preservation.py`、`cispo_model/offline_solution.py`、
+  `scripts/validate_stage_a_recovery.py`、`tests/test_solution_preservation.py`及当时独立的Stage A保全说明文档
+  （未提交，当前不作为运行或验收依赖）；
+  修改 runner、master/solution_export 的可选QC抛错接口、planning_state 候选写入/显式读取、
+  result_summary/run_contract 的完整性与接受标识，及 checkpoint 说明文字；同步本交接和三份规范/运行文档。
+- 行为：所有nonbasic Stage A无验收筛选地保存可读取向量和完整结果。可用RC/Slack/basis一并保存，
+  不可用属性如实列出；每个导出模块独立留错。原LP全部行/变量边界重新计算，超阈值条目按名称/index
+  写入 `raw_lp_violations.csv.gz`，阈值读取源solver contract。`result_manifest`是字节完整性清单，
+  不是科学证书；`scientifically_accepted=false`和作者待决定状态不因QC PASS自动更改。
+- 候选续接：全量保留raw新cohort，包括0、微小值和负值；保留原建造/退役/单位规则和前序元数据。
+  `--allow-candidate-state-in`只豁免源QC/accepted状态要求，不豁免年份、哈希、资产/单位和数值结构。
+  后继结果继续为候选；截断状态绝不能进入正式年度。旧accepted-only sequence不会自动采用候选。
+- 模型归档：默认原始MPS、参数和全量变量/约束名称目录；显式presolve仅生成诊断代数副本。
+  本地Windows Gurobi不能直接写gzip MPS时回退未压缩MPS并记warning，未丢弃模型。微型MPS读回后
+  原LP向量映射通过；没有保存Barrier内部状态、uncrush映射或factorization。
+- 真模型验证：Gurobi12.0.1与隔离overlay13.0.2的1h恢复对照PASS；后者输出根
+  `outputs/stage_a_recovery_validation_20260827_v2_gurobi13`，在线直接读取与离线恢复的45个CSV/NPZ
+  数据产物在 `rtol=atol=1e-10` 下通过，碳JSON一致、原LP QC一致、manifest有效、候选可显式加载。
+  恢复端对 `Model.optimize/Model.presolve` 做立即报错替换，仍成功且target.SolCount=0。
+- runner闭环：`outputs/stage_a_runner_1h_20260827_v1`生成完整结果和具备Stage B资格的engineering
+  checkpoint；`outputs/stage_a_runner_recovered_1h_20260827_v1`通过正式恢复入口，无presolve/optimize，
+  build+恢复监测峰值0.417GiB、36.484s（仅1h，不能线性保证8760h）。实现变更显式使用
+  `--allow-compatible-primal-dual-implementation`，source/target bundle分别写入恢复证据，LP/数据门禁不放宽。
+  最终入口复核根 `outputs/stage_a_runner_recovered_1h_20260827_v2` 同样COMPLETE，包含output catalog，
+  manifest有效，候选cohort共86900行；峰值0.417GiB、37.141s。新增Windows短暂文件锁下的有限原子
+  rename重试，不用原地覆盖代替原子写入；永久写盘错误仍明确失败并保留临时文件。
+- 跨年结构验证：使用上述恢复候选及 `--allow-candidate-state-in --allow-diagnostic-state-in --build-only`
+  构建2040/1h，输出 `outputs/stage_a_candidate_2040_1h_build_20260827_v1`，构建成功、0.375GiB，
+  未优化2040、未形成任何正式年度结论。
+- 测试：Gurobi13.0.2下 `python -m unittest discover -s tests -p 'test_*.py' -q` 为222/222 PASS，
+  96.237s；新增测试覆盖非零Barrier迭代后离线恢复、MPS读回、legacy checkpoint、QC FAIL候选、
+  缺失dual、失败模块不阻断其他模块、校验篡改及具名约束/边界违反。`py_compile/git diff --check`通过。
+  为验证版本一致性仅在 `.codex_tmp/gurobipy_13_recovery_validation` 安装13.0.2 overlay，未改全局环境。
+  Windows原子写入重试修复后，最终全量再跑222/222 PASS（96.668s）；原8760h备份30个下载文件的
+  字节数/SHA256复核仍30/30 PASS、不匹配0，未改动任何原始向量或源报告。
+- 历史溯源：会话 `rollout-2026-08-16T13-02-33-01a008f3-3c1a-7190-bddf-921000ee7fff.jsonl` 中
+  2026-08-16 13:13提问、13:14答复明确为“未来版本可加presolve模型保存”，且不能修改运行中进程。
+  历史runner只有可选write-mps，job4139552启动未传，且无presolved写出实现；不是已成功保存的模型丢失。
+- 边界/下一步：服务器仍未部署、当前2160h不触碰；先在闲置环境部署精确版本。历史8760h要在原release
+  数据/源码核验和路径映射审计后，再选择可用内存>=90GiB的环境执行独立恢复；当前完整历史恢复、
+  全年资源峰值和跨机器路径迁移尚未验证，不自动启动Stage B、全年恢复或下一正式年份。
+
+### 2026-08-27 13:39 Stage A 完整保全与作者采用决策解耦（要求记录，代码待实现）
+
+- Git：`65c8b21ea7bbe583d126f1142eebb348c3b32f3d`；保留工作树既有修改，未 commit/push。
+- 作者新要求：不以项目质量门槛筛掉 Stage A 导出。保存全部可读取的容量、运行、成本、碳、对偶、
+  QC、结果清单及候选跨年状态，并逐项记录门槛、实测违反值、定位和未能完成的检查。采用与否由
+  作者在保全后决定，不自动进入论文或下一年份，不把 FAIL 改为 PASS。
+- 修改文件：`CODEX_HANDOFF.md`、`cispo_full_lp_model_spec.md`、`MODEL_SERVER_STATUS.md`、
+  `SERVER_RUNBOOK.md`；在忽略目录的 `downloads/paracloud_4139552_2030_8760_stagea_barrier_v2_20260826/README_BACKUP.md`
+  追加覆盖说明。未更改已下载的 30 个源文件、数值向量、历史 solve/checkpoint manifest、模型或参数。
+- 核查命令/证据：`git status --short`、`git rev-parse HEAD`、定向 `rg`/`Get-Content`；
+  `run_cispo_2030_full_year.py` 明确将 engineering Stage A 标为
+  `SKIPPED_ENGINEERING_BARRIER_CHECKPOINT_ONLY`；`planning_state.py` 的 loader 强制 QC PASS 与
+  accepted nonbasic checkpoint，writer 按既有 tolerance 省略小 cohort。新候选保存路径必须额外保留
+  未筛选的 cohort 原值与转换记录，不能只删掉上述 gate 后冒用 accepted state schema。
+- 本地备份证据：`vector_integrity.json` 中 `BarX/BarPi` 长度为 `41458383/50907234`、全 finite；
+  `solve_report.json` 仍为 OPTIMAL、strict contract HARD_FAIL，constraint violation
+  `2.2868289320854274e-05 > 1e-05`。文件完整性 PASS 不等于该解的物理 QC PASS。
+- 恢复路线更正：此前 zero-iteration `PStart/DStart` 方案尚未验证；微型试验被 presolve 全部消去，
+  不足以证明赋值后直接得到 `.X`。优先实现直接读取 `BarX/BarPi` 的离线值/线性表达式适配层，
+  exact-LP identity/order 校验后再导出，无需求解器再次 optimize。原输入数据仍须从清单指定来源
+  获取并校验；源码备份不等于完整输入数据备份。不得套用 current-model 的新数据/变量顺序。
+- 续接区别：Stage B 同年 LP starts 已具资格，但仍需重建和身份校验；跨年必须先恢复容量语义、
+  建造/退役年份、单位与资产 cohort，并实现显式作者选择的候选 state 读取。完整逐时表不是容量
+  续接的数学前提，但当前既无 candidate state，也无该读取接口。任何续年仍须另行明确选择。
+- 验证：文档差异与 `git diff --check` PASS；用 `Import-Csv`/`Get-FileHash` 对原 30 个下载文件逐个
+  重核字节数与 SHA256，`30/30 PASS`、不匹配 0。不运行测试求解或大模型重建。运行状态只引用既有带时间戳
+  证据，本轮未 SSH 实时检查，未部署/启动 Stage B、恢复作业、下一年份或干预其他服务器任务。
+- 未解决与下一动作：在隔离脚本/输出根实现离线恢复和候选 state schema；先做小模型数值、成本、
+  碳、dual/cohort 对照及 QC FAIL 仍完整导出的回归测试；通过后再选择内存充足的环境做历史 8760 h
+  exact-LP 重建恢复。历史 build-only 约 39 分钟、48.574 GiB 仅为参考，不是总恢复耗时/内存承诺。
+
+### 2026-08-27 ParaCloud 8760 h Stage A 终态复核与本地 checkpoint 备份
+
+- Git/范围：当前本地 HEAD `65c8b21ea7bbe583d126f1142eebb348c3b32f3d`；云端 release commit
+  `3f739fd6216b1c7fc356e8d3a1d9a257c666f0c5`，implementation commit `6f0b1f7`。本任务未改模型、
+  数据、solver 参数或服务器文件，未提交/推送；只新增 Git 忽略的本地备份目录并更新本交接记录。
+  工作树原有作者与其他任务修改均未清理或覆盖。
+- 云端终态：job `4139552` 为 `COMPLETED 0:0`；Gurobi `OPTIMAL`、Barrier 607、objective
+  `4188006.084013813 million CNY`、solver `1773606.980 s`、wrapper wall `20-13:21:11`、MaxRSS
+  `362.952 GiB`。末步 primal/dual objective gap `0.313559536`、relative gap `7.48708e-8`；checkpoint
+  `BarX/BarPi` 完整有限且 deferred-crossover eligible。当前云端用户队列和 solver 进程为空，未启动
+  Stage B，也没有继续计费的 CISPO 作业。
+- 科学门禁：`solve_report.json` 的 solution contract 为 `HARD_FAIL`，最大 constraint/bound/dual/
+  complementarity violation 分别为 `2.28683e-5/8.12859e-9/9.99418e-7/0.0141787`；正式
+  `solution_qc.json`、`result_manifest.json`、规划状态和 basis 均不存在。checkpoint 仅保存 raw-order
+  vectors 与变量/约束顺序摘要，不保存完整名称目录、presolve 状态或 Barrier factorization。
+- 本地输出：`downloads/paracloud_4139552_2030_8760_stagea_barrier_v2_20260826` 保存 output 14、
+  run_control 10、configuration 3、source_bundle 3 个云端文件；总计 `748,733,446 bytes`。
+  `backup_verification.json=PASS`、`vector_integrity.json=PASS`；primal SHA256
+  `7be2d311...a26f43`、dual SHA256 `b9a56569...6282`、源码归档 SHA256 `c49d48da...ec40e` 均与
+  manifest 一致，完整文件清单位于 `downloaded_files_sha256.csv`。
+- 未决/精确下一动作：若不承担 Stage B 成本，先新增 fail-closed 的 engineering checkpoint
+  postprocessor，并在 1 h/744 h 验证 exact identity、`PStart/DStart` zero-iteration 暴露值、原向量
+  等价性以及现有导出/QC。8760 h 只允许在独立根和足够内存节点执行，输出必须标为
+  `scientifically_accepted=false`；正式结果仍要求后续严格 numerical/QC/manifest 闭合。
+
+### 2026-08-27 2160h 四 Case 实装、等价性/GPU 门禁通过并启动 Case 1
+
+- Git/范围：模型与 profile 提交 `88f8877`，GPU socket 隔离提交 `6065bfb`；修改
+  `cispo_model/{config,data,diagnostics,io_contract,master,monolithic,technology_registry}.py`、五个
+  `large_lp_2160_*` profile、`scripts/run_fixed_server_2160_campaign_case.sh` 与两组测试。没有修改决策
+  变量、约束、目标系数、单位、时间/空间分辨率或数据值；原硬编码数值只迁移为同值注册表读取。
+- 参数/资源合同：只允许 Case 1 V3 Barrier16 Stage A、Case 2 V3 Barrier32、Case 3 Dual simplex、
+  Case 4 single-4090 GPU-PDHG；统一 2160h/start 2880。Case 1 无 solver time limit，其余挑战者最多
+  21600 s；所有新 profile 均无 Gurobi SoftMemLimit。外部整机 95% guard 保留，2016h 及以下也不设置
+  solver memory limit；只有真实 OOM/guard terminal 才降时域。
+- 验证：local py_compile/registry test PASS；server targeted `11/11 PASS`，加载数据环境后的 full regression
+  `217/217 PASS`。旧根 `2030_1h_new_server_smoke_20260825_v1` 与新根
+  `2030_1h_registry_equivalence_88f8877_v1` 的 raw dimensions、fingerprint、objective、94 Barrier + 1623
+  simplex iterations、最大 violation 与 QC 均完全一致。GPU wheel SHA256
+  `10f0a10fed0c0f959d11bc4f60d36d4ef04a13c48ecf649cd557e8b952de0680`；独立 env 的 tiny LP 明确
+  `linux64gpu[cuda12]`、RTX 4090、`Start PDHG on GPU`、OPTIMAL。
+- 当前运行：server clean `6065bfb`；Case 1 于 `2026-08-27T00:13:53+08:00` 启动，root/tag
+  `2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1`，进程组 `687599`。`00:15:52` 尚在构建，
+  Python RSS 约 3.03 GiB，整机 used 16.02%，memory PSI 0、stderr 0；`00:28:59` 进入 Gurobi，raw
+  `10398783/12520914/126724678`、fingerprint `0xcf045770`，未设置 TimeLimit/SoftMemLimit，构建峰值
+  `12.492 GiB`。精确下一动作是只读监管 Case 1
+  到 Stage A terminal；接受完整 checkpoint 后再执行 Stage B。Case 2--4 不得与 Case 1 并发，cloud
+  8760h 保持原样。
+
+### 2026-08-25 National_model 最终基准情景数据中文分类归档完成
+
+- Git：归档开始时 HEAD 为 `f7ef130...`，任务收尾时当前 HEAD 为
+  `fc3ca89d07feb796f57a0c433845e0e48901b416`、分支 `codex/cispo-2030-full-lp`；本任务未提交、未推送。
+  工作树原有大量作者文件，均未改动或清理；本任务新增
+  `scripts/archive_final_baseline_data.ps1`、`scripts/extract_base_residual_load.py`，并更新本交接文件。
+- 范围：向 `E:\数据拷贝\National_model基准情景数据_20260825_v1` add-only 复制最终风光精细栅格、
+  0.25° 潜力/装机、非采暖制冷 EV 基准负荷、生物质、2025 省际输电、火电/核电、水电/抽蓄、
+  2023 默认气象年容量因子及当前 model-ready 输入/配置/复现代码快照；未复制约 17.9 GiB
+  `data/raw` 和非默认气象年。
+- 版本冻结：权威装机链为 `osm_geometry_value_added_capacity_v3_offwind47 -> final_pointV2`；v2 仅作为
+  复现上游并明确标记非最终。负荷使用 v3-QC 当前 model-ready 输入，另逐行提取 `base_residual_gw`，
+  不含 `heating_gw/cooling_gw/ev_gw`，不得解释为观测总负荷。
+- 命令与输出：运行 `powershell -File scripts/archive_final_baseline_data.ps1` 完成 98 条显式映射；运行
+  `python ...\00_归档说明与校验\verify_archive.py` 完成首轮全量哈希/映射核验；按作者要求以 Ctrl-C
+  停止第二轮细核对。根目录 `README_数据说明.md` 与 `00_归档说明与校验` 保存版本判定、映射、
+  `归档文件清单_SHA256.csv`、快速验收摘要和首轮原始摘要。
+- 验证：归档 `16,966` 文件、`7,519,131,497 bytes`；负荷 `1,357,800` 行、155 个省年组、每组 8,760 h、
+  QA PASS；model-ready smoke 快照 `142/142 PASS`。首轮 95/98 映射直接 PASS；两个目录短暂可见性告警
+  复查后文件数/字节一致，一个运行脚本后续更新已补同步且源目标 SHA256 一致。旧 output manifest
+  的 116 个缺失项全部位于有意排除的 `raw/`，非 raw 缺失 0。最终口径为 `QUICK_PASS`，不是第二轮
+  strict PASS。
+- 未决与下一步：当前归档可用于内部留档和同门复现。若将其作为公开/长期发布包，可在空闲时重跑
+  `verify_archive.py` 完成第二轮 strict 校验；迁移到新机器后还需重映射 VRE Zarr 与水文时序绝对路径。
 
 ### 2026-08-25 t550 host95 deployed and server gates passed; large run memory-blocked
 
@@ -3433,6 +5196,30 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
   iteration 191，未触碰。下一步选择性提交/双推送，重新核验两端进程与资源，fixed server
   fast-forward 后运行 server regression、`bash -n` 和全新 1 h Base relaxed smoke；只有检查点、
   隔离宏观输出和保护标记闭合，才以新根后台启动唯一串行 campaign。
+
+### 2026-08-05 Module 06 最终 EV 重构图件与月度能量尺度审计
+
+- Git：未提交工作树，基于 `d6984b2902aa85a2459935f4c76b6fa5a5623589`；没有推送、部署、
+  服务器动作或优化求解。
+- 范围：只更新论文图件、绘图脚本、机器可读图数据、manifest、QA 与本交接记录；不改补充材料
+  `.tex/.pdf`。重绘输入锁定最终 v3-QC 广州逐日质控、四城市时段原型、分省逐月映射、修正后的
+  月度单车充电电量和最终 2025--2060 8760 h 分量表。
+- 修改与新增：`Power_curve_V2/ev/make_ev_nature_figures.py`；Module 06 的
+  `scripts/update_ev_figure_bundle.py`、`figures_load_flexibility/Figure_S6_{03,04,05,07,08,09,10}_*`、
+  `figure_data_load_flexibility/*`、`tables_load_flexibility/figure_manifest.csv` 与
+  `qa_load_flexibility/ev_figure_update_qa.json`。上游
+  `outputs/ev_calibrated_v2_supplement/figures/Figure_S{1,2,3}_*` 亦由最终 v3-QC 数据重绘；旧目录名
+  仅为兼容输出路径，不表示方法版本。
+- 命令：在 Module 06 目录使用 RL 环境执行
+  `python scripts/update_ev_figure_bundle.py`；对两个绘图脚本执行 `python -m py_compile`；人工检查
+  S6-3 至 S6-5、S6-7 至 S6-10 的 PNG，并复核报告哈希与 10 行图件 manifest。
+- 验证：QA `PASS`、7 个本次更新图均为双栏就绪；2050 典型日分量闭合最大误差
+  `5.82e-11 MW`，年度分量份额闭合最大误差 `4.28e-11 percentage points`；legacy→final 全国
+  EV 年电量为 `+4.219004%`，v2→v3-QC 年电量一致；广州平均验证 RMSE/相关系数分别由
+  `0.004468/0.82845` 改善为 `0.002038/0.95843`。报告 `.tex/.pdf` SHA256 与改图前一致。
+- 未决与下一步：本轮按作者要求不改报告，因此新增 S6-7 至 S6-10 的引用/图注以及 S6-3 参数表
+  尚未同步；只有在作者授权报告集成后再更新这些文字，并应明确三月为二月至四月插值、EV 服务
+  库存不等于逐车行程/SOC、容量信用与备用/惯量边界仍由正文解释。
 
 ### 2026-08-05 Power_curve_V2 v3_qc 负荷与 EV 派生输入本地替换
 

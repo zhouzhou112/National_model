@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import numbers
 import os
 import platform
 import subprocess
@@ -32,6 +34,40 @@ _PRECREATED_RUNTIME_FILES = (
     RUNTIME_MANAGED_FILES.difference({"result_manifest.json"})
     | {"sequence_attempt.json"}
 )
+
+
+def qc_hard_checks_are_strictly_true(
+    solution_qc: dict[str, Any] | None,
+) -> bool:
+    """Accept only a nonempty JSON-boolean hard-check registry.
+
+    Truthiness is deliberately insufficient: ``1``, nonempty strings and NaN
+    must never be able to promote or scientifically accept a result.
+    """
+    if not isinstance(solution_qc, dict):
+        return False
+    hard_checks = solution_qc.get("hard_checks")
+    return bool(
+        isinstance(hard_checks, dict)
+        and hard_checks
+        and all(value is True for value in hard_checks.values())
+    )
+
+
+def qc_payload_numbers_are_finite(value: Any) -> bool:
+    """Recursively reject non-finite or non-JSON-like QC values."""
+    if value is None or isinstance(value, (str, bool)):
+        return True
+    if isinstance(value, numbers.Real):
+        return math.isfinite(float(value))
+    if isinstance(value, dict):
+        return all(
+            isinstance(key, str) and qc_payload_numbers_are_finite(item)
+            for key, item in value.items()
+        )
+    if isinstance(value, (list, tuple)):
+        return all(qc_payload_numbers_are_finite(item) for item in value)
+    return False
 
 
 def _canonical_json_sha256(value: Any) -> str:
@@ -118,6 +154,14 @@ def _scientific_configuration_payload(config: ModelConfig) -> dict[str, Any]:
     documentation-only or numerics-only config edit from changing this layer.
     """
     payload = json.loads(json.dumps(config.raw))
+    # Despite its legacy location under ``numerics``, this threshold changes
+    # matrix coefficients and therefore the exact scientific LP.  Keep it in
+    # the analysis identity while excluding solver-only settings below.
+    payload["scientific_coefficient_screening"] = {
+        "resource_coefficient_zero_tolerance": float(
+            config.raw["numerics"]["coefficient_zero_tolerance"]
+        )
+    }
     payload.pop("numerics", None)
     payload.pop("solver_profile", None)
     payload.pop("construction", None)
@@ -448,11 +492,6 @@ def solver_result_is_accepted(
     result_manifest_valid: bool,
 ) -> bool:
     """Return the exact success condition expected by wrappers and Slurm."""
-    hard_checks = (
-        solution_qc.get("hard_checks")
-        if solution_qc is not None
-        else None
-    )
     solution_contract = solve_report.get("solution_contract") or {}
     solution_contract_accepted = (
         not solution_contract
@@ -460,11 +499,12 @@ def solver_result_is_accepted(
     )
     return bool(
         solve_report.get("status") == "OPTIMAL"
+        and solve_report.get("scientifically_accepted") is not False
         and solution_contract_accepted
         and solution_qc is not None
         and solution_qc.get("status") == "PASS"
-        and isinstance(hard_checks, dict)
-        and bool(hard_checks)
-        and all(bool(value) for value in hard_checks.values())
+        and solution_qc.get("scientifically_accepted") is not False
+        and qc_hard_checks_are_strictly_true(solution_qc)
+        and qc_payload_numbers_are_finite(solution_qc)
         and result_manifest_valid
     )

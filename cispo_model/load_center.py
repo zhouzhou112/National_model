@@ -10,6 +10,14 @@ from .config import ModelConfig
 from .data import VRE_TECHS, ModelData
 from .hydro import HydroLinearBlock
 from .master import MasterArtifacts
+from .annual_capacity_link_scaling import (
+    BINARY_POWER2_SAFE_8192_V1,
+    MAX_BINARY_EXPONENT,
+    ordered_name_sha256,
+    row_scaling_metadata,
+    select_annual_capacity_link_row_scale,
+    validate_row_scaling_registry,
+)
 
 
 def attach_annual_load_center_network(
@@ -57,7 +65,9 @@ def attach_annual_load_center_network(
     technology_index = {technology: i for i, technology in enumerate(VRE_TECHS)}
     center_count = len(centers)
     edge_count = len(edges)
-    coefficient_tolerance = float(config.raw["numerics"]["coefficient_zero_tolerance"])
+    resource_coefficient_tolerance = float(
+        config.raw["numerics"]["coefficient_zero_tolerance"]
+    )
 
     if not np.isclose(
         centers.groupby("province_code").annual_demand_share_in_province.sum().to_numpy(float),
@@ -123,19 +133,52 @@ def attach_annual_load_center_network(
     site_center = data.vre_sites.grid_uid.map(route_lookup).astype(str)
     sites_with_center = data.vre_sites.assign(_load_center_id=site_center)
     vre_capacity = artifacts.variables["vre_capacity"]
+    retained_vre_flh = vre_site_cf_hours[
+        vre_site_cf_hours >= resource_coefficient_tolerance
+    ]
+    vre_row_scale = select_annual_capacity_link_row_scale(
+        config,
+        "vre",
+        np.concatenate((np.ones(1, dtype=float), retained_vre_flh)),
+    )
+    scaled_vre_site_cf_hours = vre_row_scale.coefficients(vre_site_cf_hours)
+    vre_scaled_row_count = 0
+    vre_scaled_row_names: list[str] = []
     for center_id, center_position in center_index.items():
         center_sites = sites_with_center.loc[sites_with_center._load_center_id.eq(center_id)]
         for technology, technology_position in technology_index.items():
             positions = center_sites.index[
                 center_sites.technology.eq(technology)
             ].to_numpy(dtype=int)
-            positions = positions[vre_site_cf_hours[positions] >= coefficient_tolerance]
+            positions = positions[
+                vre_site_cf_hours[positions] >= resource_coefficient_tolerance
+            ]
             if len(positions):
-                model.addConstr(
-                    center_vre_generation[center_position, technology_position]
-                    <= vre_site_cf_hours[positions] @ vre_capacity[positions],
-                    name=f"load_center_vre_availability_{center_position}_{technology}",
+                constraint_name = (
+                    f"load_center_vre_availability_"
+                    f"{center_position}_{technology}"
                 )
+                if vre_row_scale.enabled:
+                    model.addConstr(
+                        vre_row_scale.factor
+                        * center_vre_generation[
+                            center_position, technology_position
+                        ]
+                        <= scaled_vre_site_cf_hours[positions]
+                        @ vre_capacity[positions],
+                        name=constraint_name,
+                    )
+                else:
+                    model.addConstr(
+                        center_vre_generation[
+                            center_position, technology_position
+                        ]
+                        <= vre_site_cf_hours[positions]
+                        @ vre_capacity[positions],
+                        name=constraint_name,
+                    )
+                vre_scaled_row_count += 1
+                vre_scaled_row_names.append(constraint_name)
             else:
                 center_vre_generation[center_position, technology_position].UB = 0.0
     for province_code in provinces:
@@ -167,7 +210,7 @@ def attach_annual_load_center_network(
                 wave_center.eq(center_id)
             ].to_numpy(dtype=int)
             positions = positions[
-                wave_site_cf_hours[positions] >= coefficient_tolerance
+                wave_site_cf_hours[positions] >= resource_coefficient_tolerance
             ]
             if len(positions):
                 model.addConstr(
@@ -208,14 +251,36 @@ def attach_annual_load_center_network(
     for p in range(len(provinces)):
         station_rows = hydro_block.ror_station_rows[p]
         if len(station_rows):
-            ror_full_load_hours[station_rows] = hydro_block.ror_capacity_factor[p].sum(axis=0)
+            raw_ror_cf = np.asarray(
+                hydro_block.ror_capacity_factor[p], dtype=float
+            )
+            ror_full_load_hours[station_rows] = np.where(
+                raw_ror_cf >= resource_coefficient_tolerance,
+                raw_ror_cf,
+                0.0,
+            ).sum(axis=0)
+    retained_ror_flh = ror_full_load_hours[
+        ror_full_load_hours >= resource_coefficient_tolerance
+    ]
+    ror_row_scale = select_annual_capacity_link_row_scale(
+        config,
+        "ror",
+        np.concatenate((np.ones(1, dtype=float), retained_ror_flh)),
+    )
+    scaled_ror_full_load_hours = ror_row_scale.coefficients(
+        ror_full_load_hours
+    )
+    ror_scaled_row_count = 0
+    ror_scaled_row_names: list[str] = []
     for center_id, center_position in center_index.items():
         station_rows = data.hydro_stations.index[hydro_center.eq(center_id)].to_numpy(dtype=int)
         ror_rows = station_rows[
             data.hydro_stations.loc[station_rows, "operation_type_model"]
             .eq("run_of_river").to_numpy()
         ]
-        ror_rows = ror_rows[ror_full_load_hours[ror_rows] >= coefficient_tolerance]
+        ror_rows = ror_rows[
+            ror_full_load_hours[ror_rows] >= resource_coefficient_tolerance
+        ]
         reservoir_station_rows = station_rows[
             ~data.hydro_stations.loc[station_rows, "operation_type_model"]
             .eq("run_of_river").to_numpy()
@@ -229,11 +294,26 @@ def attach_annual_load_center_network(
         )
         reservoir_route_counts[reservoir_local_rows] += 1
         if len(ror_rows):
-            model.addConstr(
-                center_ror_generation[center_position]
-                <= ror_full_load_hours[ror_rows] @ hydro_capacity[ror_rows],
-                name=f"load_center_ror_availability_{center_position}",
+            constraint_name = (
+                f"load_center_ror_availability_{center_position}"
             )
+            if ror_row_scale.enabled:
+                model.addConstr(
+                    ror_row_scale.factor
+                    * center_ror_generation[center_position]
+                    <= scaled_ror_full_load_hours[ror_rows]
+                    @ hydro_capacity[ror_rows],
+                    name=constraint_name,
+                )
+            else:
+                model.addConstr(
+                    center_ror_generation[center_position]
+                    <= ror_full_load_hours[ror_rows]
+                    @ hydro_capacity[ror_rows],
+                    name=constraint_name,
+                )
+            ror_scaled_row_count += 1
+            ror_scaled_row_names.append(constraint_name)
         else:
             center_ror_generation[center_position].UB = 0.0
         if len(reservoir_local_rows):
@@ -325,7 +405,7 @@ def attach_annual_load_center_network(
         )
         if center_wave_generation is not None:
             spatial_injection += center_wave_generation[center_position]
-        if share >= coefficient_tolerance:
+        if share > 0.0:
             model.addConstr(
                 center_injection[center_position]
                 == spatial_injection + share * province_non_spatial_injection[p],
@@ -417,6 +497,55 @@ def attach_annual_load_center_network(
                 "bidirectional_flow_tolerance_gwh"
             ]
         ),
+    )
+    scaling = row_scaling_metadata(
+        config,
+        {"vre": vre_row_scale, "ror": ror_row_scale},
+    )
+    scaling["families"]["vre"]["constraint_rows"] = (
+        vre_scaled_row_count
+    )
+    scaling["families"]["vre"]["matrix_nonzeros_scaled"] = int(
+        len(retained_vre_flh) + vre_scaled_row_count
+    )
+    scaling["families"]["vre"]["constraint_name_order_sha256"] = (
+        ordered_name_sha256(vre_scaled_row_names)
+    )
+    scaling["families"]["vre"]["constraint_names"] = vre_scaled_row_names
+    scaling["families"]["ror"]["constraint_rows"] = (
+        ror_scaled_row_count
+    )
+    scaling["families"]["ror"]["matrix_nonzeros_scaled"] = int(
+        len(retained_ror_flh) + ror_scaled_row_count
+    )
+    scaling["families"]["ror"]["constraint_name_order_sha256"] = (
+        ordered_name_sha256(ror_scaled_row_names)
+    )
+    scaling["families"]["ror"]["constraint_names"] = ror_scaled_row_names
+    if (
+        hours >= 2160
+        and scaling["profile"] == BINARY_POWER2_SAFE_8192_V1
+        and any(
+            family["exponent"] != MAX_BINARY_EXPONENT
+            for family in scaling["families"].values()
+        )
+    ):
+        raise ValueError(
+            "The formal 2160/8760 annual capacity-link candidate requires "
+            "VRE and ROR exponent 13; safe scaling selected a smaller value"
+        )
+    validate_row_scaling_registry(
+        scaling, model=model, allow_none=False
+    )
+    artifacts.index["annual_capacity_link_row_scaling"] = scaling
+    artifacts.index["load_center_vre_site_cf_hours"] = np.asarray(
+        vre_site_cf_hours, dtype=float
+    )
+    artifacts.index["load_center_ror_full_load_hours"] = np.asarray(
+        ror_full_load_hours, dtype=float
+    )
+    artifacts.index["resource_coefficient_zero_tolerance"] = (
+        resource_coefficient_tolerance
     )
     regularization = float(
         config.raw["load_center_network"]["flow_regularization_yuan_per_mwh"]

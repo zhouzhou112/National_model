@@ -176,10 +176,11 @@ def audit_pair(base_root: Path, scenario_root: Path) -> dict[str, Any]:
             "base_qc_status": base_qc.get("status"),
             "scenario_qc_status": scenario_qc.get("status"),
             "base_hard_check_failures": sum(
-                not bool(value) for value in base_qc.get("hard_checks", {}).values()
+                value is not True
+                for value in base_qc.get("hard_checks", {}).values()
             ),
             "scenario_hard_check_failures": sum(
-                not bool(value)
+                value is not True
                 for value in scenario_qc.get("hard_checks", {}).values()
             ),
             "base_result_manifest_valid": base_result_manifest,

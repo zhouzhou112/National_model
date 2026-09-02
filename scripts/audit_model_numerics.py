@@ -298,6 +298,7 @@ def main() -> None:
     parser.add_argument("--config", default="config/optimization_2030.json")
     parser.add_argument("--scenario-config")
     parser.add_argument("--solver-config")
+    parser.add_argument("--formulation-config")
     parser.add_argument("--planning-year", type=int)
     parser.add_argument("--hours", type=int, default=24)
     parser.add_argument(
@@ -374,6 +375,7 @@ def main() -> None:
         args.config,
         args.scenario_config,
         args.solver_config,
+        args.formulation_config,
     )
     config = (
         base_config.for_planning_year(args.planning_year)

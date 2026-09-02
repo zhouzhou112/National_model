@@ -71,6 +71,7 @@ class PlanningState:
         *,
         expected_boundary_year: int,
         allow_test_only: bool = False,
+        allow_unaccepted_candidate: bool = False,
     ) -> "PlanningState":
         root = Path(path).resolve()
         metadata_path = root / STATE_METADATA
@@ -80,6 +81,11 @@ class PlanningState:
                 f"Planning state requires {metadata_path} and {cohorts_path}"
             )
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        candidate = metadata.get("candidate_unaccepted") is True
+        if candidate and not allow_unaccepted_candidate:
+            raise ValueError("Candidate state requires explicit allow_unaccepted_candidate=True")
+        if candidate and metadata.get("scientifically_accepted") is not False:
+            raise ValueError("Candidate state must preserve scientifically_accepted=false")
         if metadata.get("format") != STATE_FORMAT:
             raise ValueError("Unsupported planning-state format")
         if int(metadata.get("planning_year", -1)) != int(expected_boundary_year):
@@ -127,7 +133,7 @@ class PlanningState:
         if sha256_file(source_qc_path) != metadata["source_solution_qc_sha256"]:
             raise ValueError("Planning-state source solution QC SHA256 mismatch")
         source_qc_payload = json.loads(source_qc_path.read_text(encoding="utf-8"))
-        if source_qc_payload.get("status") != "PASS":
+        if not candidate and source_qc_payload.get("status") != "PASS":
             raise ValueError("Planning-state source solution QC is not PASS")
         source_solve_path = root.parent / "solve_report.json"
         if not source_solve_path.is_file():
@@ -137,7 +143,7 @@ class PlanningState:
         if sha256_file(source_solve_path) != metadata["source_solve_report_sha256"]:
             raise ValueError("Planning-state source solve-report SHA256 mismatch")
         source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
-        if source_solve.get("status") != "OPTIMAL":
+        if not candidate and source_solve.get("status") != "OPTIMAL":
             raise ValueError("Planning-state source solve is not OPTIMAL")
         if source_solve.get("result_use") != state_use:
             raise ValueError("Planning-state use does not match source solve result_use")
@@ -151,7 +157,7 @@ class PlanningState:
             and recorded_contract_mode != source_contract_mode
         ):
             raise ValueError("Planning-state source solution-contract mode mismatch")
-        if source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+        if not candidate and source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
             if metadata.get("source_capacity_state_policy") != (
                 "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
             ):
@@ -216,6 +222,9 @@ class PlanningState:
         if (numeric.retire_year <= numeric.build_year).any():
             raise ValueError("Planning-state retire_year must be later than build_year")
         cohorts[["build_year", "retire_year", "capacity_delta"]] = numeric
+        if candidate:
+            metadata = dict(metadata, candidate_use_acknowledged=True,
+                            source_qc_status=source_qc_payload.get("status"))
         return cls(root=root, metadata=metadata, cohorts=cohorts)
 
     def active_adjustment(
@@ -262,10 +271,11 @@ def write_planning_state(
     new_cohorts: pd.DataFrame,
     source_solution_qc: str,
     state_use: str,
+    candidate: bool = False,
 ) -> Path:
     """Write an additive, checksummed state bundle for the next planning year."""
     output_dir = Path(output_dir)
-    state_dir = output_dir / "planning_state"
+    state_dir = output_dir / ("planning_state_candidate" if candidate else "planning_state")
     state_dir.mkdir(parents=True, exist_ok=True)
     missing = sorted(set(STATE_COLUMNS).difference(new_cohorts.columns))
     if missing:
@@ -287,7 +297,13 @@ def write_planning_state(
     retained = previous_state.cohorts.loc[
         previous_state.cohorts.retire_year.gt(config.planning_year)
     ].copy()
-    retained_mask = new_cohorts.capacity_delta.abs().gt(tolerance)
+    retained_mask = (
+        pd.Series(True, index=new_cohorts.index)
+        if candidate else new_cohorts.capacity_delta.abs().gt(tolerance)
+    )
+    if candidate:
+        new_cohorts.to_csv(state_dir / "raw_new_cohorts.csv.gz", index=False,
+                          compression="gzip", encoding="utf-8", lineterminator="\n")
     additions = new_cohorts.loc[retained_mask, STATE_COLUMNS].copy()
     omitted_small = new_cohorts.loc[~retained_mask, STATE_COLUMNS].copy()
     frames = [frame for frame in (retained, additions) if not frame.empty]
@@ -347,7 +363,7 @@ def write_planning_state(
     checkpoint_relative: str | None = None
     checkpoint_sha256: str | None = None
     source_capacity_state_policy = "ACCEPTED_OPTIMAL_BASIC_OR_DEFAULT_CAPACITY_STATE"
-    if source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
+    if not candidate and source_contract_mode == "OPTIMAL_PRIMAL_DUAL_NONBASIC":
         from .primal_dual_checkpoint import (
             CHECKPOINT_DIRECTORY,
             CHECKPOINT_MANIFEST,
@@ -408,6 +424,17 @@ def write_planning_state(
         "capacity_cohorts_sha256": sha256_file(cohorts_path),
         "state_transition_summary_sha256": sha256_file(state_dir / STATE_SUMMARY),
     }
+    if candidate:
+        source_qc = json.loads(source_qc_path.read_text(encoding="utf-8"))
+        metadata.update(
+            candidate_unaccepted=True, scientifically_accepted=False,
+            author_decision="PENDING", source_capacity_state_policy="UNFILTERED_CANDIDATE_CAPACITY_STATE",
+            source_qc_status=source_qc.get("status"), source_solver_contract=source_contract,
+            cohort_zero_tolerance=0.0, configured_accepted_cohort_zero_tolerance=tolerance,
+            raw_new_cohorts_sha256=sha256_file(state_dir / "raw_new_cohorts.csv.gz"),
+            predecessor_state_metadata=(previous_state.metadata if previous_state.root else None),
+            predecessor_state_path=(str(previous_state.root) if previous_state.root else None),
+        )
     (state_dir / STATE_METADATA).write_text(
         json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -422,6 +449,7 @@ def export_solution_planning_state(
     output_dir: str | Path,
     *,
     state_use: str,
+    candidate: bool = False,
 ) -> Path:
     """Convert one accepted full-year solution into transferable cohorts."""
     variables = artifacts.variables
@@ -667,4 +695,5 @@ def export_solution_planning_state(
         new_cohorts=new_cohorts,
         source_solution_qc="solution_qc.json",
         state_use=state_use,
+        candidate=candidate,
     )

@@ -27,7 +27,9 @@ def _value(expression: Any) -> np.ndarray:
 
 def _write_json(payload: dict[str, Any], path: Path) -> None:
     path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False)
+        + "\n",
+        encoding="utf-8",
     )
 
 
@@ -65,6 +67,7 @@ def assess_interprovincial_bidirectionality(
     configured_hours: int,
     tolerance_gw: float,
     warning_contract: dict[str, Any],
+    allow_unaccepted_capacity: bool = False,
 ) -> dict[str, Any]:
     """Classify AC counterflow without weakening full-year scientific QC.
 
@@ -91,7 +94,7 @@ def assess_interprovincial_bidirectionality(
         or not np.isfinite(efficiency).all()
     ):
         raise ValueError("Directionality assessment requires finite inputs")
-    if (capacity < 0.0).any() or (efficiency <= 0.0).any() or (efficiency > 1.0).any():
+    if ((capacity < 0.0).any() and not allow_unaccepted_capacity) or (efficiency <= 0.0).any() or (efficiency > 1.0).any():
         raise ValueError("Invalid line capacity or efficiency")
     if optimization_hours <= 0 or configured_hours <= 0:
         raise ValueError("Optimization and configured hours must be positive")
@@ -187,6 +190,8 @@ def assess_interprovincial_bidirectionality(
         classification = "HARD_FAIL"
     return {
         "accepted": accepted,
+        "negative_capacity_count": int(np.count_nonzero(capacity < 0.0)),
+        "minimum_line_capacity_gw": float(capacity.min()) if capacity.size else None,
         "strict_pass": strict_pass,
         "warning_applied": warning_applied,
         "within_warning_budget": within_warning_budget,
@@ -209,6 +214,8 @@ def export_operational_solution(
     data: ModelData,
     config: ModelConfig,
     output_dir: str | Path,
+    *,
+    enforce_qc: bool = True,
 ) -> dict[str, Any]:
     """Export chronological arrays, compact tables, and hard solution QC."""
     output_dir = Path(output_dir)
@@ -1078,6 +1085,7 @@ def export_operational_solution(
         warning_contract=config.raw["network"][
             "diagnostic_bidirectional_flow_warning"
         ],
+        allow_unaccepted_capacity=not enforce_qc,
     )
     dc_edge_mask = (
         data.lines.preset_technology.astype(str).str.upper().eq("DC").to_numpy()
@@ -2447,6 +2455,6 @@ def export_operational_solution(
         "annual_co2_shipped_mtco2": float(co2_ship.sum()),
     }
     _write_json(carbon, output_dir / "annual_carbon_ccs.json")
-    if qc["status"] != "PASS":
+    if enforce_qc and qc["status"] != "PASS":
         raise RuntimeError(f"Production solution QC failed: {hard_checks}")
     return qc

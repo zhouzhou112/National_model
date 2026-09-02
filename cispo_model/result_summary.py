@@ -610,5 +610,16 @@ def finalize_result_manifest(output_dir: str | Path, config: ModelConfig) -> Pat
         "files": files,
     }
     path = output_dir / "result_manifest.json"
+    preservation_path = output_dir / "preservation_report.json"
+    if preservation_path.is_file():
+        preservation = json.loads(preservation_path.read_text(encoding="utf-8"))
+        manifest.update(
+            schema_version="cispo_preserved_result_manifest_v1",
+            manifest_purpose="ARTIFACT_INTEGRITY_NOT_SCIENTIFIC_ACCEPTANCE",
+            export_status=preservation.get("status", "PARTIAL"),
+            qc_status=preservation.get("qc_status", "NOT_EVALUATED"),
+            scientifically_accepted=False,
+            author_decision="PENDING",
+        )
     _write_json(manifest, path)
     return path
