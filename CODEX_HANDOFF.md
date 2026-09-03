@@ -12,8 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-09-03 14:53+08:00 current override：最终唯一候选已收敛为提交
-  `af96fb6361af4bb09dd90513c48ad76796f30a7d`上的
+- 2026-09-03 15:12+08:00 current override：最终唯一候选已收敛为不可变提交
+  `7be4d21e6b79bb243a94072120dd850caad2f5db`上的
   `barrier_stagea_final_full_year_cloud_v6_threads32`。它保持Base 2030/8760h、原变量/目标/约束/单位、
   水库精确零上界和`annual_capacity_link_rows_8192_v1`不变；只运行一条32线程Stage A，参数为
   `Method=2/Presolve=2/Aggregate=1/Crossover=0/SolutionTarget=1/BarConvTol=1e-2/
@@ -28,14 +28,22 @@ This is the repository's single handoff document for work continued across Codex
   云wrapper只接受该32线程profile；`SoftMemLimit=min(0.85*cgroup_limit, cgroup_limit-64 GiB)`，兼容
   cgroup v2/v1并以Slurm申请内存作显式fallback；EXIT路径始终写原子`terminal_status.json`，只允许
   `COMPLETED_ACCEPTED / COMPLETED_PRESERVED_REVIEW_REQUIRED / INCOMPLETE_NO_USABLE_STAGEA`三类终态。
-- 本地`CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`下完整回归
-  `310/310 OK`（1项环境跳过），focused 60项、`py_compile`、`git diff --check`、bash语法和3段shell内嵌
+- 本地`CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`下最终完整回归
+  `312/312 OK`（1项环境跳过），focused测试、`py_compile`、`git diff --check`、bash语法和3段shell内嵌
   Python解析均通过。canonical profile JSON SHA256为
   `289b43d461af93cfb42c287f8a4e62c4a7e96e540f6f5d014f54bfe664336aa5`。14:50实时复核固定服务器无
-  CISPO/Gurobi（checkout仍clean `ba8e09f`）；ParaCloud队列为空，旧`4466067/4466068`保持终态。
-  当前尚未推送、部署、构建或启动v6；正式启动前必须在计算节点复核Gurobi13/WLS、分区计费和目标根不存在，
-  并要求新构建精确匹配`50,907,234/41,458,383/492,835,195`、Fingerprint`0x94cf2e50`及MPS流SHA
-  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`，任一不符不得进入求解。
+  CISPO/Gurobi（checkout仍clean `ba8e09f`）；实现已双远端推送。不可变云release为
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_7be4d21_v2`；compute smoke
+  `4478205`为`COMPLETED 0:0`、Gurobi13.0.2/WLS PASS。唯一正式作业`4478232`于15:11运行在`m4cg1701`，
+  `120 CPU/700G/billing=120`、Gurobi Threads32、双时限unlimited、preflight PASS、双stderr 0；有效
+  SoftMemLimit为`638.876385280` decimal GB。runner会在optimize前要求新构建精确匹配
+  `50,907,234/41,458,383/492,835,195`、Fingerprint`0x94cf2e50`及MPS流SHA
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`，任一不符自动停止。
+- 第一版云尝试`4478059`暴露cgroup v1 task子层`memory.limit_in_bytes=9223372036854771712`的unlimited哨兵；
+  wrapper曾错误算出超大SoftMemLimit。该作业在建模初期、无模型/无solver/无解时通过batch TERM于2分39秒
+  止损，终态明确为`INCOMPLETE_NO_USABLE_STAGEA`。提交`7be4d21`改为取raw cgroup与
+  `SLURM_MEM_PER_NODE`的较小者；`4478232`实测effective limit=`751619276800 bytes`，问题已闭合。v1 release/
+  失败根保留且不得重标。
 - 2026-09-03 01:29+08:00 current override：作者再次明确，国家尺度8760h不能以过严求解停止容差换取
   不可接受的Barrier超级长尾；`BarConvTol=1e-2`是当前唯一允许的重启方向，科学接受必须与算法停止条件
   分离，继续依靠原单位物理QC、显式primal/dual/complementarity与相对gap报告，而不能把`1e-9`硬编码成
@@ -2827,6 +2835,18 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-03 15:12+08:00 — v6不可变云release与唯一正式作业启动
+
+- Git/验证：最终tip`7be4d21e6b79bb243a94072120dd850caad2f5db`已推送origin/GitHub；它包含
+  `af96fb6`验收实现、`2f6ef8b`的pre-optimize精确LP身份门禁及cgroup v1哨兵修复。本地完整回归
+  `312/312 OK`（1 skipped），云compute smoke`4478205`为Gurobi13.0.2/WLS `COMPLETED 0:0`。
+- 纠错证据：初次作业`4478059`因cgroup v1子层返回unlimited哨兵，在无solver/无解的建模初期以batch TERM
+  止损；wall 2分39秒、MaxRSS约191MiB，terminal为`INCOMPLETE_NO_USABLE_STAGEA`。未覆盖旧release或输出。
+- 正式运行：新release`20260903_8760_stagea_final_7be4d21_v2`，代码tar SHA256
+  `7c4e9a4952d7429f311911d2b3445bdbbae29d2efc4aa0347370083d9dbe331e`。作业`4478232`、节点`m4cg1701`、
+  `120 CPU/700G/billing120`、Threads32、unlimited；preflight PASS，SoftMemLimit=`638.876385280 GB`，
+  stderr 0。下一步只读等待build/archive/精确LP身份门禁；不改release、不启动第二任务或Stage B。
 
 ### 2026-09-03 14:53+08:00 — 最终单路8760h Stage A v6本地闭合
 

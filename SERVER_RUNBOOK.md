@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-03 15:12 current override：只读监测job 4478232
+
+- 活动唯一作业是`4478232`，release=`20260903_8760_stagea_final_7be4d21_v2`、tip=`7be4d21`、
+  case=`2030_base_8760_rows8192_stagea_final_t32_mem700_7be4d21_v2`。禁止更新release、并发第二作业或Stage B。
+- 当前已核验`120 CPU/700G/billing120`、Threads32、双时限unlimited、preflight PASS、stderr 0、
+  SoftMemLimit=`638.876385280 GB`。下一门禁是`final_stage_a_lp_identity.json=PASS`；出现前不得声称模型身份闭合
+  或进入Barrier。出现后核对raw三元组、Fingerprint、MPS流SHA及`solver_start`，再只读监测Presolve/Barrier。
+- `4478059`是已终止的cgroup哨兵失败尝试，不得恢复或重标。其terminal明确无可用Stage A；v1 release只作
+  故障证据。cgroup v1必须取task raw limit与`SLURM_MEM_PER_NODE`较小者，禁止直接采用接近`2^63`的哨兵值。
+
 ## 2026-09-03 14:53 current override：只允许最终v6单路Stage A
 
 - 唯一候选提交为`af96fb6361af4bb09dd90513c48ad76796f30a7d`，profile只能是

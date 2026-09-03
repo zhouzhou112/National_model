@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-09-03 15:12：最终v6唯一作业4478232运行中
+
+- 最终不可变tip为`7be4d21e6b79bb243a94072120dd850caad2f5db`，已双推送；云release为
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_7be4d21_v2`。smoke
+  `4478205`为`COMPLETED 0:0`，Gurobi13.0.2/WLS/v6 canonical PASS、stderr 0。
+- 唯一正式作业`4478232`于15:11在`m4cg1701`运行：`120 CPU/700G/billing120`、Gurobi Threads32、
+  Slurm/Gurobi均无时限、preflight PASS。cgroup raw unlimited哨兵与Slurm申请取小后effective limit为
+  `751619276800 bytes`，SoftMemLimit=`638.876385280 decimal GB`；当前双stderr 0，处于build。
+- 初次`4478059`因旧wrapper误把cgroup v1 unlimited哨兵当真实上限，已在无solver/无解时于2分39秒止损；
+  terminal=`INCOMPLETE_NO_USABLE_STAGEA`。v1根保留。`4478232`将于optimize前自动校验精确raw维度、
+  Fingerprint和解压MPS SHA；只读等待，不启动第二作业或Stage B。
+
 ## 2026-09-03 14:53：最终单路32线程v6已本地闭合，尚未部署
 
 - 实现提交`af96fb6361af4bb09dd90513c48ad76796f30a7d`固定唯一v6：`BarConvTol=1e-2`、
