@@ -372,6 +372,10 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         self.assertIn("barrier_stagea_final_full_year_cloud_v6_threads32", source)
         self.assertIn("memory.max", source)
         self.assertIn("memory.limit_in_bytes", source)
+        self.assertIn(
+            "raw_cgroup_memory_limit_bytes < slurm_memory_limit_bytes", source
+        )
+        self.assertIn("effective_memory_limit_bytes", source)
         self.assertIn("0.85 * limit", source)
         self.assertIn("64 * 1024**3", source)
         self.assertIn("terminal_status.json", source)

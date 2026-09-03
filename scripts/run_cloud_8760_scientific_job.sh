@@ -103,23 +103,35 @@ if [[ -z "$cgroup_memory_file" ]]; then
     cgroup_memory_file="/sys/fs/cgroup/memory${cgroup_relative}/memory.limit_in_bytes"
   fi
 fi
-cgroup_memory_limit_bytes=""
+raw_cgroup_memory_limit_bytes=""
 if [[ -n "$cgroup_memory_file" ]]; then
   raw_cgroup_limit=$(<"$cgroup_memory_file")
   if [[ "$raw_cgroup_limit" =~ ^[0-9]+$ ]]; then
-    cgroup_memory_limit_bytes=$raw_cgroup_limit
+    raw_cgroup_memory_limit_bytes=$raw_cgroup_limit
   fi
 fi
-if [[ -z "$cgroup_memory_limit_bytes" \
-  && "${SLURM_MEM_PER_NODE:-}" =~ ^[0-9]+$ ]]; then
-  cgroup_memory_limit_bytes=$((SLURM_MEM_PER_NODE * 1024 * 1024))
+slurm_memory_limit_bytes=""
+if [[ "${SLURM_MEM_PER_NODE:-}" =~ ^[0-9]+$ ]]; then
+  slurm_memory_limit_bytes=$((SLURM_MEM_PER_NODE * 1024 * 1024))
 fi
-if [[ -z "$cgroup_memory_limit_bytes" ]]; then
+if [[ -n "$raw_cgroup_memory_limit_bytes" \
+  && -n "$slurm_memory_limit_bytes" ]]; then
+  if (( raw_cgroup_memory_limit_bytes < slurm_memory_limit_bytes )); then
+    effective_memory_limit_bytes=$raw_cgroup_memory_limit_bytes
+  else
+    effective_memory_limit_bytes=$slurm_memory_limit_bytes
+  fi
+elif [[ -n "$raw_cgroup_memory_limit_bytes" ]]; then
+  effective_memory_limit_bytes=$raw_cgroup_memory_limit_bytes
+else
+  effective_memory_limit_bytes=$slurm_memory_limit_bytes
+fi
+if [[ -z "$effective_memory_limit_bytes" ]]; then
   echo "cannot resolve the Slurm cgroup memory limit" >&2
   exit 69
 fi
 soft_mem_limit_gb=$(
-  "$PYTHON" - "$cgroup_memory_limit_bytes" <<'PY'
+  "$PYTHON" - "$effective_memory_limit_bytes" <<'PY'
 import sys
 
 limit = int(sys.argv[1])
@@ -138,7 +150,9 @@ PY
   echo "slurm_cpus_per_task=$allocated_cpus"
   echo "slurm_mem_per_node_mb=${SLURM_MEM_PER_NODE:-UNSET}"
   echo "cgroup_memory_file=${cgroup_memory_file:-UNAVAILABLE}"
-  echo "cgroup_memory_limit_bytes=$cgroup_memory_limit_bytes"
+  echo "raw_cgroup_memory_limit_bytes=${raw_cgroup_memory_limit_bytes:-UNAVAILABLE}"
+  echo "slurm_memory_limit_bytes=${slurm_memory_limit_bytes:-UNAVAILABLE}"
+  echo "effective_memory_limit_bytes=$effective_memory_limit_bytes"
   echo "resolved_soft_mem_limit_gb_decimal=$soft_mem_limit_gb"
   echo "gurobi_threads=$CISPO_EXPECTED_THREADS"
   echo "git_commit=$actual_sha"
