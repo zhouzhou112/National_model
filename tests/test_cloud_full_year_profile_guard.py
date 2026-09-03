@@ -1,19 +1,24 @@
 from __future__ import annotations
 
+import gzip
+import hashlib
 import json
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from cispo_model.config import load_model_config
 from scripts.run_cispo_2030_full_year import (
+    FINAL_STAGE_A_EXPECTED_LP_IDENTITY,
     cloud_full_year_profile_role,
     cloud_full_year_required_memory_gib,
     persist_postsolve_finalization_error,
     require_canonical_direct_nonbasic_profiles,
     resolve_host_memory_soft_limit_gb,
+    validate_final_stage_a_lp_identity,
     write_strict_json_atomic,
 )
 
@@ -374,6 +379,53 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         self.assertIn('result_manifest = read("result_manifest.json")', source)
         self.assertIn('trap \'finalize_wrapper "$?"\' EXIT', source)
         self.assertNotIn("Stage B watcher", source)
+
+    def test_final_v6_exact_lp_identity_is_frozen(self) -> None:
+        self.assertEqual(
+            FINAL_STAGE_A_EXPECTED_LP_IDENTITY,
+            {
+                "constraints": 50_907_234,
+                "variables": 41_458_383,
+                "nonzeros": 492_835_195,
+                "gurobi_fingerprint_unsigned_hex": "0x94cf2e50",
+                "uncompressed_mps_sha256": (
+                    "8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a"
+                ),
+            },
+        )
+
+    def test_final_v6_identity_gate_hashes_uncompressed_mps_stream(self) -> None:
+        payload = b"NAME tiny\nENDATA\n"
+
+        class Model:
+            NumConstrs = 2
+            NumVars = 3
+            NumNZs = 4
+            Fingerprint = -1
+
+            @staticmethod
+            def update() -> None:
+                return None
+
+        expected = {
+            "constraints": 2,
+            "variables": 3,
+            "nonzeros": 4,
+            "gurobi_fingerprint_unsigned_hex": "0xffffffff",
+            "uncompressed_mps_sha256": hashlib.sha256(payload).hexdigest(),
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive = root / "model_archive"
+            archive.mkdir()
+            with gzip.open(archive / "original.mps.gz", "wb") as stream:
+                stream.write(payload)
+            with patch.dict(
+                FINAL_STAGE_A_EXPECTED_LP_IDENTITY, expected, clear=True
+            ):
+                report = validate_final_stage_a_lp_identity(Model(), root)
+            self.assertEqual(report["status"], "PASS")
+            self.assertEqual(report["actual"], expected)
 
     def test_noncloud_nonbasic_profile_cannot_enter_direct_acceptance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

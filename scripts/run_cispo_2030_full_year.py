@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import sys
@@ -69,6 +70,15 @@ CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
 CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256 = (
     "8f7dcb53cf45b41f9201d51fb527f3dbf6e2eb046e0db60de2a690b3267b09d7"
 )
+FINAL_STAGE_A_EXPECTED_LP_IDENTITY = {
+    "constraints": 50_907_234,
+    "variables": 41_458_383,
+    "nonzeros": 492_835_195,
+    "gurobi_fingerprint_unsigned_hex": "0x94cf2e50",
+    "uncompressed_mps_sha256": (
+        "8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a"
+    ),
+}
 
 
 def write_strict_json_atomic(path: str | Path, payload) -> None:
@@ -86,6 +96,59 @@ def write_strict_json_atomic(path: str | Path, payload) -> None:
         encoding="utf-8",
     )
     temporary.replace(target)
+
+
+def validate_final_stage_a_lp_identity(model, output_dir: str | Path) -> dict:
+    """Fail before optimize if the paid v6 run is not the reviewed exact LP."""
+    root = Path(output_dir)
+    model.update()
+    actual = {
+        "constraints": int(model.NumConstrs),
+        "variables": int(model.NumVars),
+        "nonzeros": int(model.NumNZs),
+        "gurobi_fingerprint_unsigned_hex": (
+            f"0x{int(model.Fingerprint) & 0xffffffff:08x}"
+        ),
+    }
+    archive_root = root / "model_archive"
+    compressed = archive_root / "original.mps.gz"
+    uncompressed = archive_root / "original.mps"
+    source = compressed if compressed.is_file() else uncompressed
+    digest = hashlib.sha256()
+    stream_error = None
+    try:
+        opener = gzip.open if source == compressed else open
+        with opener(source, "rb") as stream:
+            while chunk := stream.read(8 * 1024 * 1024):
+                digest.update(chunk)
+        actual["uncompressed_mps_sha256"] = digest.hexdigest()
+    except (OSError, EOFError) as error:
+        stream_error = repr(error)
+        actual["uncompressed_mps_sha256"] = None
+    expected = dict(FINAL_STAGE_A_EXPECTED_LP_IDENTITY)
+    failures = [
+        key
+        for key, expected_value in expected.items()
+        if actual.get(key) != expected_value
+    ]
+    if stream_error is not None:
+        failures.append("mps_stream_read")
+    report = {
+        "schema_version": "cispo_final_stage_a_lp_identity_v1",
+        "status": "PASS" if not failures else "FAIL",
+        "expected": expected,
+        "actual": actual,
+        "archive_path": str(source),
+        "mps_stream_error": stream_error,
+        "failures": sorted(set(failures)),
+    }
+    write_strict_json_atomic(root / "final_stage_a_lp_identity.json", report)
+    if failures:
+        raise RuntimeError(
+            "Final Stage A exact LP identity mismatch: "
+            + ", ".join(sorted(set(failures)))
+        )
+    return report
 
 
 def annotate_dual_publication_status(output_dir: str | Path, report: dict) -> None:
@@ -1571,6 +1634,15 @@ def main() -> None:
             presolved=args.archive_presolved_model,
             include_name_catalog=args.archive_model_name_catalog,
         )
+    if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+        if not archive_original_model:
+            raise RuntimeError(
+                "Final Stage A requires --archive-original-model for exact LP identity"
+            )
+        build_report["final_stage_a_lp_identity"] = (
+            validate_final_stage_a_lp_identity(artifacts.model, output_dir)
+        )
+        write_strict_json_atomic(output_dir / "build_report.json", build_report)
     if args.recover_stage_a_from:
         import shutil
         from cispo_model.offline_solution import (
