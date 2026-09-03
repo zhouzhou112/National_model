@@ -38,9 +38,16 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
-    {"barrier_stagea_final_full_year_cloud_v6_threads32"}
+    {
+        "barrier_stagea_final_full_year_cloud_v6_threads32",
+        "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+    }
+)
+CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS = frozenset(
+    {"barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem"}
 )
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
+CLOUD_NO_SOFTMEM_MIN_AVAILABLE_MEMORY_GIB = 500.0
 OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB = 90.0
 FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
     "barrier_checkpoint_fixed_server_host_memory_"
@@ -51,6 +58,7 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
         "barrier_checkpoint_full_year_cloud_v5_threads32",
         "barrier_checkpoint_full_year_cloud_v5_threads64",
         "barrier_stagea_final_full_year_cloud_v6_threads32",
+        "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
@@ -65,6 +73,9 @@ CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
     ),
     "barrier_stagea_final_full_year_cloud_v6_threads32": (
         "289b43d461af93cfb42c287f8a4e62c4a7e96e540f6f5d014f54bfe664336aa5"
+    ),
+    "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem": (
+        "017718ec2e263f928ce9ee6d223d7cc02a721cea54ea0034940c8af143aace50"
     ),
 }
 CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256 = (
@@ -99,7 +110,7 @@ def write_strict_json_atomic(path: str | Path, payload) -> None:
 
 
 def validate_final_stage_a_lp_identity(model, output_dir: str | Path) -> dict:
-    """Fail before optimize if the paid v6 run is not the reviewed exact LP."""
+    """Fail before optimize if a paid final run is not the reviewed exact LP."""
     root = Path(output_dir)
     model.update()
     actual = {
@@ -282,9 +293,12 @@ def cloud_full_year_profile_role(profile_id: object) -> str | None:
 def cloud_full_year_required_memory_gib(
     configured_required_gib: float,
     profile_role: str | None,
+    profile_id: str | None = None,
 ) -> float:
     """Apply the cloud full-year memory floor to every Stage A/B version."""
     required_gib = float(configured_required_gib)
+    if profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
+        return max(required_gib, CLOUD_NO_SOFTMEM_MIN_AVAILABLE_MEMORY_GIB)
     if profile_role is not None:
         required_gib = max(
             required_gib,
@@ -783,6 +797,10 @@ def main() -> None:
     profile_id = config.raw.get("solver_profile", {}).get("id")
     runtime_soft_mem_limit_policy = None
     if args.runtime_soft_mem_limit_gb is not None:
+        if profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
+            raise SystemExit(
+                f"{profile_id} forbids --runtime-soft-mem-limit-gb"
+            )
         if profile_id not in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
             raise SystemExit(
                 "--runtime-soft-mem-limit-gb is restricted to the final "
@@ -1115,6 +1133,7 @@ def main() -> None:
     required_gb = cloud_full_year_required_memory_gib(
         required_gb,
         cloud_full_year_role,
+        profile_id,
     )
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"

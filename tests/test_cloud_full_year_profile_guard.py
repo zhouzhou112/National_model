@@ -158,6 +158,14 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             cloud_full_year_required_memory_gib("700", "STAGE_A"),
             700.0,
         )
+        self.assertEqual(
+            cloud_full_year_required_memory_gib(
+                80.0,
+                "STAGE_A",
+                "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+            ),
+            500.0,
+        )
 
     def test_host_memory_fraction_resolves_to_decimal_gb(self) -> None:
         gib = 1024**3
@@ -365,24 +373,76 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             1e-2,
         )
 
-    def test_final_cloud_wrapper_is_single_stage_a_and_cgroup_limited(self) -> None:
+    def test_final_v7_profile_is_canonical_and_has_no_soft_memory_limit(self) -> None:
+        formulation = (
+            ROOT
+            / "config"
+            / "formulation_profiles"
+            / "annual_capacity_link_rows_8192_v1.json"
+        )
+        profile = (
+            PROFILES
+            / "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json"
+        )
+        config = load_model_config(
+            solver_path=profile,
+            formulation_path=formulation,
+        )
+        require_canonical_direct_nonbasic_profiles(config)
+        self.assertEqual(
+            cloud_full_year_profile_role(config.raw["solver_profile"]["id"]),
+            "STAGE_A",
+        )
+        self.assertIsNone(config.raw["numerics"]["soft_mem_limit_gb"])
+        self.assertIsNone(config.raw["numerics"]["time_limit_seconds"])
+        self.assertEqual(config.raw["numerics"]["threads"], 32)
+        self.assertFalse(config.raw["solver_profile"]["stage_b_required"])
+
+    def test_final_cloud_wrapper_is_single_stage_a_without_softmem(self) -> None:
         source = (ROOT / "scripts" / "run_cloud_8760_scientific_job.sh").read_text(
             encoding="utf-8"
         )
-        self.assertIn("barrier_stagea_final_full_year_cloud_v6_threads32", source)
-        self.assertIn("memory.max", source)
-        self.assertIn("memory.limit_in_bytes", source)
         self.assertIn(
-            "raw_cgroup_memory_limit_bytes < slurm_memory_limit_bytes", source
+            "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+            source,
         )
-        self.assertIn("effective_memory_limit_bytes", source)
-        self.assertIn("0.85 * limit", source)
-        self.assertIn("64 * 1024**3", source)
+        self.assertIn('assert numerics["soft_mem_limit_gb"] is None', source)
+        self.assertIn("gurobi_soft_mem_limit=UNSET_PROFILE_NULL", source)
+        self.assertNotIn("--runtime-soft-mem-limit-gb", source)
+        self.assertNotIn("resolved_soft_mem_limit", source)
+        self.assertNotIn("memory.max", source)
+        self.assertNotIn("memory.limit_in_bytes", source)
         self.assertIn("terminal_status.json", source)
         self.assertIn("wrapper_rc == 0", source)
         self.assertIn('result_manifest = read("result_manifest.json")', source)
         self.assertIn('trap \'finalize_wrapper "$?"\' EXIT', source)
         self.assertNotIn("Stage B watcher", source)
+
+    def test_final_v7_rejects_runtime_softmem_override(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            result = self.run_runner(
+                "--solver-config",
+                str(
+                    PROFILES
+                    / "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json"
+                ),
+                "--formulation-config",
+                str(
+                    ROOT
+                    / "config"
+                    / "formulation_profiles"
+                    / "annual_capacity_link_rows_8192_v1.json"
+                ),
+                "--runtime-soft-mem-limit-gb",
+                "400",
+                "--output-dir",
+                str(Path(temporary) / "output"),
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "forbids --runtime-soft-mem-limit-gb",
+            result.stdout + result.stderr,
+        )
 
     def test_final_v6_exact_lp_identity_is_frozen(self) -> None:
         self.assertEqual(

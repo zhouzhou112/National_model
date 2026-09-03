@@ -27,11 +27,11 @@ control_root="$release_root/run_control/$CISPO_CASE_ID"
 environment_file="$release_root/manifests/cloud_environment_paths.env"
 formulation_profile="$repo_root/config/formulation_profiles/annual_capacity_link_rows_8192_v1.json"
 solver_profile="$repo_root/$CISPO_SOLVER_PROFILE"
-expected_profile="config/solver_profiles/barrier_stagea_final_full_year_cloud_v6_threads32.json"
+expected_profile="config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json"
 
 if [[ "$CISPO_SOLVER_PROFILE" != "$expected_profile" \
   || "$CISPO_EXPECTED_THREADS" != "32" ]]; then
-  echo "final Stage A wrapper requires the canonical v6 32-thread profile" >&2
+  echo "final Stage A wrapper requires the canonical v7 32-thread no-SoftMemLimit profile" >&2
   exit 64
 fi
 
@@ -82,6 +82,7 @@ assert float(numerics["optimality_tolerance"]) == 1e-6
 assert int(numerics["numeric_focus"]) == 1
 assert int(numerics["scale_flag"]) == 2
 assert int(numerics["aggregate"]) == 1
+assert numerics["soft_mem_limit_gb"] is None
 PY
 
 allocated_cpus=${SLURM_CPUS_PER_TASK:-0}
@@ -90,70 +91,13 @@ if (( allocated_cpus < CISPO_EXPECTED_THREADS )); then
   exit 68
 fi
 
-cgroup_memory_file=""
-cgroup_relative=$(awk -F: '$1 == "0" {print $3}' /proc/self/cgroup 2>/dev/null || true)
-if [[ -n "$cgroup_relative" \
-  && -f "/sys/fs/cgroup${cgroup_relative}/memory.max" ]]; then
-  cgroup_memory_file="/sys/fs/cgroup${cgroup_relative}/memory.max"
-fi
-if [[ -z "$cgroup_memory_file" ]]; then
-  cgroup_relative=$(awk -F: '$2 ~ /(^|,)memory(,|$)/ {print $3}' /proc/self/cgroup 2>/dev/null || true)
-  if [[ -n "$cgroup_relative" \
-    && -f "/sys/fs/cgroup/memory${cgroup_relative}/memory.limit_in_bytes" ]]; then
-    cgroup_memory_file="/sys/fs/cgroup/memory${cgroup_relative}/memory.limit_in_bytes"
-  fi
-fi
-raw_cgroup_memory_limit_bytes=""
-if [[ -n "$cgroup_memory_file" ]]; then
-  raw_cgroup_limit=$(<"$cgroup_memory_file")
-  if [[ "$raw_cgroup_limit" =~ ^[0-9]+$ ]]; then
-    raw_cgroup_memory_limit_bytes=$raw_cgroup_limit
-  fi
-fi
-slurm_memory_limit_bytes=""
-if [[ "${SLURM_MEM_PER_NODE:-}" =~ ^[0-9]+$ ]]; then
-  slurm_memory_limit_bytes=$((SLURM_MEM_PER_NODE * 1024 * 1024))
-fi
-if [[ -n "$raw_cgroup_memory_limit_bytes" \
-  && -n "$slurm_memory_limit_bytes" ]]; then
-  if (( raw_cgroup_memory_limit_bytes < slurm_memory_limit_bytes )); then
-    effective_memory_limit_bytes=$raw_cgroup_memory_limit_bytes
-  else
-    effective_memory_limit_bytes=$slurm_memory_limit_bytes
-  fi
-elif [[ -n "$raw_cgroup_memory_limit_bytes" ]]; then
-  effective_memory_limit_bytes=$raw_cgroup_memory_limit_bytes
-else
-  effective_memory_limit_bytes=$slurm_memory_limit_bytes
-fi
-if [[ -z "$effective_memory_limit_bytes" ]]; then
-  echo "cannot resolve the Slurm cgroup memory limit" >&2
-  exit 69
-fi
-soft_mem_limit_gb=$(
-  "$PYTHON" - "$effective_memory_limit_bytes" <<'PY'
-import sys
-
-limit = int(sys.argv[1])
-reserve = 64 * 1024**3
-soft_bytes = min(int(0.85 * limit), limit - reserve)
-if soft_bytes <= 0:
-    raise SystemExit("Slurm memory allocation is too small for the 64 GiB reserve")
-print(f"{soft_bytes / 1_000_000_000:.9f}")
-PY
-)
-
 {
   echo "recorded_at=$(date --iso-8601=seconds)"
   echo "host=$(hostname -f)"
   echo "job_id=${SLURM_JOB_ID:-UNSET}"
   echo "slurm_cpus_per_task=$allocated_cpus"
   echo "slurm_mem_per_node_mb=${SLURM_MEM_PER_NODE:-UNSET}"
-  echo "cgroup_memory_file=${cgroup_memory_file:-UNAVAILABLE}"
-  echo "raw_cgroup_memory_limit_bytes=${raw_cgroup_memory_limit_bytes:-UNAVAILABLE}"
-  echo "slurm_memory_limit_bytes=${slurm_memory_limit_bytes:-UNAVAILABLE}"
-  echo "effective_memory_limit_bytes=$effective_memory_limit_bytes"
-  echo "resolved_soft_mem_limit_gb_decimal=$soft_mem_limit_gb"
+  echo "gurobi_soft_mem_limit=UNSET_PROFILE_NULL"
   echo "gurobi_threads=$CISPO_EXPECTED_THREADS"
   echo "git_commit=$actual_sha"
   echo "solver_profile=$CISPO_SOLVER_PROFILE"
@@ -272,7 +216,6 @@ trap 'forward_signal HUP' HUP
   --formulation-config "$formulation_profile" \
   --archive-original-model \
   --allow-nonbasic-planning-state \
-  --runtime-soft-mem-limit-gb "$soft_mem_limit_gb" \
   --output-dir "$output_root" \
   > "$control_root/wrapper_stdout.log" \
   2> "$control_root/wrapper_stderr.log" &
