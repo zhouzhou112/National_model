@@ -36,6 +36,9 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
+CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
+    {"barrier_stagea_final_full_year_cloud_v6_threads32"}
+)
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
 OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB = 90.0
 FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
@@ -46,6 +49,7 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
         "barrier_checkpoint_full_year_cloud_v4",
         "barrier_checkpoint_full_year_cloud_v5_threads32",
         "barrier_checkpoint_full_year_cloud_v5_threads64",
+        "barrier_stagea_final_full_year_cloud_v6_threads32",
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
@@ -57,6 +61,9 @@ CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
     ),
     "barrier_checkpoint_full_year_cloud_v5_threads64": (
         "880caab8644cbd0fd03e392464ded86c7300c99b45799c2c74dbb92422e14118"
+    ),
+    "barrier_stagea_final_full_year_cloud_v6_threads32": (
+        "289b43d461af93cfb42c287f8a4e62c4a7e96e540f6f5d014f54bfe664336aa5"
     ),
 }
 CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256 = (
@@ -79,6 +86,27 @@ def write_strict_json_atomic(path: str | Path, payload) -> None:
         encoding="utf-8",
     )
     temporary.replace(target)
+
+
+def annotate_dual_publication_status(output_dir: str | Path, report: dict) -> None:
+    """Keep dual availability separate from permission to publish prices."""
+    path = Path(output_dir) / "dual_export_status.json"
+    if not path.is_file():
+        return
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    allowed = bool(
+        report.get("solution_contract", {}).get(
+            "dual_publication_allowed", False
+        )
+    )
+    payload["publication_allowed"] = allowed
+    payload["publication_quality_checks"] = report.get(
+        "solution_contract", {}
+    ).get("dual_publication_checks")
+    payload["publication_status"] = (
+        "ALLOWED" if allowed else "WITHHELD_NUMERICAL_QUALITY"
+    )
+    write_strict_json_atomic(path, payload)
 
 
 def persist_postsolve_finalization_error(
@@ -179,6 +207,8 @@ def cloud_full_year_profile_role(profile_id: object) -> str | None:
     """Classify every version of the fail-closed cloud Stage A/B profiles."""
     if not isinstance(profile_id, str):
         return None
+    if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+        return "STAGE_A"
     if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX):
         return "STAGE_A"
     if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX):
@@ -536,6 +566,14 @@ def main() -> None:
         ),
     )
     parser.add_argument("--output-dir")
+    parser.add_argument(
+        "--runtime-soft-mem-limit-gb",
+        type=float,
+        help=(
+            "Runtime Gurobi SoftMemLimit derived from the current Slurm "
+            "cgroup. Restricted to the canonical final cloud Stage A profile."
+        ),
+    )
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--write-mps", action="store_true")
@@ -680,6 +718,36 @@ def main() -> None:
         or config.horizon(args.horizon)["test_only"]
     )
     profile_id = config.raw.get("solver_profile", {}).get("id")
+    runtime_soft_mem_limit_policy = None
+    if args.runtime_soft_mem_limit_gb is not None:
+        if profile_id not in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+            raise SystemExit(
+                "--runtime-soft-mem-limit-gb is restricted to the final "
+                "cloud Stage A profile"
+            )
+        runtime_soft_mem_limit_gb = float(args.runtime_soft_mem_limit_gb)
+        profile_soft_mem_limit_gb = float(
+            config.raw["numerics"]["soft_mem_limit_gb"]
+        )
+        if (
+            not np.isfinite(runtime_soft_mem_limit_gb)
+            or runtime_soft_mem_limit_gb <= 0.0
+        ):
+            raise SystemExit(
+                "Runtime SoftMemLimit must be finite and positive"
+            )
+        config.raw["numerics"]["soft_mem_limit_gb"] = (
+            runtime_soft_mem_limit_gb
+        )
+        runtime_soft_mem_limit_policy = {
+            "policy": "SLURM_CGROUP_DERIVED_BY_CLOUD_WRAPPER",
+            "profile_declared_soft_mem_limit_gb_decimal": (
+                profile_soft_mem_limit_gb
+            ),
+            "resolved_gurobi_soft_mem_limit_gb_decimal": (
+                runtime_soft_mem_limit_gb
+            ),
+        }
     required_formulation_profile_id = config.raw.get(
         "solver_profile", {}
     ).get("required_formulation_profile_id")
@@ -747,9 +815,6 @@ def main() -> None:
         int(numerics.get("method", -1)) == 2
         and int(numerics.get("crossover", -1)) == 0
         and int(numerics.get("solution_target", -1)) == 1
-    )
-    direct_nonbasic_scientific_tolerance = bool(
-        float(numerics.get("barrier_convergence_tolerance", 1.0)) <= 1e-8
     )
     direct_nonbasic_scientific_acceptance = bool(
         config.raw.get("solver_profile", {}).get(
@@ -893,16 +958,6 @@ def main() -> None:
             f"{profile_id} requires --engineering-barrier-checkpoint-only; "
             "this solver profile does not authorize direct scientific "
             "nonbasic acceptance"
-        )
-    if (
-        nonbasic_primal_dual_requested
-        and not args.engineering_barrier_checkpoint_only
-        and not direct_nonbasic_scientific_tolerance
-    ):
-        raise SystemExit(
-            "Direct scientific Stage A acceptance requires "
-            "BarConvTol <= 1e-8; use --engineering-barrier-checkpoint-only "
-            "for a looser preservation-only run"
         )
     if cloud_full_year_role is not None and requested_test_only:
         raise SystemExit(
@@ -1115,6 +1170,7 @@ def main() -> None:
         "minimum_available_memory_gb": required_gb,
         "memory_gate_pass": available_gb >= required_gb,
         "host_memory_soft_limit_policy": host_memory_soft_limit_policy,
+        "runtime_soft_mem_limit_policy": runtime_soft_mem_limit_policy,
         "scale_estimate": selected_scale.__dict__,
         "gurobi_required_for_build": True,
         "solution_contract_requested": {
@@ -1622,6 +1678,12 @@ def main() -> None:
             "acceptance_status"
         ) == "PASS"
     )
+    if direct_nonbasic_scientific_acceptance:
+        report["stage_a_completion_status"] = (
+            "PENDING_CHECKPOINT"
+            if report.get("status") == "OPTIMAL"
+            else "STAGE_A_INFRASTRUCTURE_FAILED"
+        )
     engineering_checkpoint_completed = False
     raw_checkpoint_saved = False
     semantic_artifacts = artifacts
@@ -1706,6 +1768,12 @@ def main() -> None:
                 if complete_barrier
                 else "INCOMPLETE_BARRIER_RECOVERY_SAVED"
             )
+            if direct_nonbasic_scientific_acceptance:
+                report["stage_a_completion_status"] = (
+                    "STAGE_A_COMPLETED_REVIEW_REQUIRED"
+                    if complete_barrier
+                    else "STAGE_A_INFRASTRUCTURE_FAILED"
+                )
             # Persist this milestone before any optional downstream export.
             (output_dir / "solve_report.json").write_text(
                 json.dumps(report, ensure_ascii=False, indent=2) + "\n",
@@ -1944,6 +2012,12 @@ def main() -> None:
         or (nonbasic_primal_dual_requested and not solver_solution_accepted)
         or planning_state.metadata.get("candidate_unaccepted")
     ):
+        if direct_nonbasic_scientific_acceptance:
+            report["stage_a_completion_status"] = (
+                "STAGE_A_COMPLETED_REVIEW_REQUIRED"
+                if raw_checkpoint_saved
+                else "STAGE_A_INFRASTRUCTURE_FAILED"
+            )
         report["runtime_memory"] = memory_monitor.snapshot()
         preserved = preserve_stage_a(
             semantic_artifacts,
@@ -1984,6 +2058,8 @@ def main() -> None:
                 output_dir,
                 enforce_qc=not nonbasic_primal_dual_requested,
             )
+            if nonbasic_primal_dual_requested:
+                annotate_dual_publication_status(output_dir, report)
             if nonbasic_primal_dual_requested:
                 master_qc_pass = load_center_physical_qc_pass(master_qc)
                 qc["load_center_physical_qc"] = master_qc
@@ -2103,6 +2179,10 @@ def main() -> None:
             or not qc_hard_checks_are_strictly_true(qc)
         )
     ):
+        if direct_nonbasic_scientific_acceptance:
+            report["stage_a_completion_status"] = (
+                "STAGE_A_COMPLETED_REVIEW_REQUIRED"
+            )
         report["solution_export_status"] = (
             "PRESERVED_UNACCEPTED_ORIGINAL_UNIT_QC_FAIL"
         )
@@ -2148,6 +2228,11 @@ def main() -> None:
                     output_dir / CHECKPOINT_DIRECTORY / CHECKPOINT_MANIFEST
                 ),
             }
+            if direct_nonbasic_scientific_acceptance:
+                report["stage_a_completion_status"] = (
+                    "STAGE_A_PRIMAL_FINAL_ACCEPTED"
+                )
+                report["scientifically_accepted"] = True
             # Persist the accepted solver/QC/checkpoint milestone before any
             # planning-state, dashboard, catalog, or presentation packaging.
             # A later packaging failure must never obscure the costly accepted
@@ -2326,6 +2411,9 @@ def main() -> None:
                 config,
                 output_dir,
                 state_use=scope_report["result_use"],
+                retain_all_capacity_deltas=(
+                    direct_nonbasic_scientific_acceptance
+                ),
             )
         if qc is not None:
             finalization_stage = "result_dashboard"

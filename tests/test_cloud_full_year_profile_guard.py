@@ -333,6 +333,48 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         self.assertLessEqual(left["soft_mem_limit_gb"], 520)
         self.assertLessEqual(right["soft_mem_limit_gb"], 700)
 
+    def test_final_v6_profile_is_canonical_and_uses_split_acceptance(self) -> None:
+        formulation = (
+            ROOT
+            / "config"
+            / "formulation_profiles"
+            / "annual_capacity_link_rows_8192_v1.json"
+        )
+        profile = PROFILES / "barrier_stagea_final_full_year_cloud_v6_threads32.json"
+        config = load_model_config(
+            solver_path=profile,
+            formulation_path=formulation,
+        )
+        require_canonical_direct_nonbasic_profiles(config)
+        self.assertEqual(
+            cloud_full_year_profile_role(config.raw["solver_profile"]["id"]),
+            "STAGE_A",
+        )
+        self.assertFalse(config.raw["solver_profile"]["stage_b_required"])
+        self.assertEqual(
+            config.raw["numerics"]["barrier_convergence_tolerance"], 1e-2
+        )
+        self.assertEqual(
+            config.raw["solver_profile"]["stage_a_acceptance"]
+            ["maximum_relative_primal_dual_objective_gap"],
+            1e-2,
+        )
+
+    def test_final_cloud_wrapper_is_single_stage_a_and_cgroup_limited(self) -> None:
+        source = (ROOT / "scripts" / "run_cloud_8760_scientific_job.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("barrier_stagea_final_full_year_cloud_v6_threads32", source)
+        self.assertIn("memory.max", source)
+        self.assertIn("memory.limit_in_bytes", source)
+        self.assertIn("0.85 * limit", source)
+        self.assertIn("64 * 1024**3", source)
+        self.assertIn("terminal_status.json", source)
+        self.assertIn("wrapper_rc == 0", source)
+        self.assertIn('result_manifest = read("result_manifest.json")', source)
+        self.assertIn('trap \'finalize_wrapper "$?"\' EXIT', source)
+        self.assertNotIn("Stage B watcher", source)
+
     def test_noncloud_nonbasic_profile_cannot_enter_direct_acceptance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_runner(

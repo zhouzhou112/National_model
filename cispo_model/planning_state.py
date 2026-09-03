@@ -272,6 +272,7 @@ def write_planning_state(
     source_solution_qc: str,
     state_use: str,
     candidate: bool = False,
+    retain_all_capacity_deltas: bool = False,
 ) -> Path:
     """Write an additive, checksummed state bundle for the next planning year."""
     output_dir = Path(output_dir)
@@ -299,7 +300,8 @@ def write_planning_state(
     ].copy()
     retained_mask = (
         pd.Series(True, index=new_cohorts.index)
-        if candidate else new_cohorts.capacity_delta.abs().gt(tolerance)
+        if candidate or retain_all_capacity_deltas
+        else new_cohorts.capacity_delta.abs().gt(tolerance)
     )
     if candidate:
         new_cohorts.to_csv(state_dir / "raw_new_cohorts.csv.gz", index=False,
@@ -358,6 +360,7 @@ def write_planning_state(
             "Planning state requires source solution_qc.json and solve_report.json"
         )
     source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
+    source_qc = json.loads(source_qc_path.read_text(encoding="utf-8"))
     source_contract = source_solve.get("solution_contract") or {}
     source_contract_mode = source_contract.get("mode")
     checkpoint_relative: str | None = None
@@ -409,6 +412,15 @@ def write_planning_state(
         "source_solution_qc_sha256": sha256_file(source_qc_path),
         "source_solve_report_sha256": sha256_file(source_solve_path),
         "source_solution_contract_mode": source_contract_mode,
+        "source_solver_profile_id": source_solve.get("solver_profile_id"),
+        "source_formulation_profile_id": source_solve.get(
+            "formulation_profile_id"
+        ),
+        "source_actual_relative_primal_dual_gap": source_contract.get(
+            "relative_primal_dual_objective_gap"
+        ),
+        "source_qc_status": source_qc.get("status"),
+        "source_qc_hard_checks": source_qc.get("hard_checks"),
         "source_solution_basis_required": source_contract.get("basis_required"),
         "source_capacity_state_policy": source_capacity_state_policy,
         "source_barrier_checkpoint_manifest": checkpoint_relative,
@@ -418,6 +430,9 @@ def write_planning_state(
         "candidate_new_cohort_rows": int(len(new_cohorts)),
         "new_cohort_rows": int(len(additions)),
         "cohort_zero_tolerance": tolerance,
+        "retain_all_capacity_deltas": bool(
+            candidate or retain_all_capacity_deltas
+        ),
         "omitted_small_new_cohort_rows": int(len(omitted_small)),
         "omitted_small_capacity_by_unit": omitted_by_unit,
         "active_next_planning_year_rows": int(len(active_next)),
@@ -425,7 +440,6 @@ def write_planning_state(
         "state_transition_summary_sha256": sha256_file(state_dir / STATE_SUMMARY),
     }
     if candidate:
-        source_qc = json.loads(source_qc_path.read_text(encoding="utf-8"))
         metadata.update(
             candidate_unaccepted=True, scientifically_accepted=False,
             author_decision="PENDING", source_capacity_state_policy="UNFILTERED_CANDIDATE_CAPACITY_STATE",
@@ -450,6 +464,7 @@ def export_solution_planning_state(
     *,
     state_use: str,
     candidate: bool = False,
+    retain_all_capacity_deltas: bool = False,
 ) -> Path:
     """Convert one accepted full-year solution into transferable cohorts."""
     variables = artifacts.variables
@@ -696,4 +711,5 @@ def export_solution_planning_state(
         source_solution_qc="solution_qc.json",
         state_use=state_use,
         candidate=candidate,
+        retain_all_capacity_deltas=retain_all_capacity_deltas,
     )

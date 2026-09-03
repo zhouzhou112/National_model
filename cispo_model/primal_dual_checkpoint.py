@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import json
 import hashlib
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -180,6 +181,8 @@ def _write_vector(model: Any, attribute: str, path: Path, expected: int) -> dict
     temporary = path.with_suffix(path.suffix + ".part")
     with temporary.open("wb") as stream:
         np.save(stream, array, allow_pickle=False)
+        stream.flush()
+        os.fsync(stream.fileno())
     temporary.replace(path)
     result = {
         "path": path.name,
@@ -715,10 +718,15 @@ def export_barrier_primal_dual_checkpoint(
             "publication_status": (
                 "SCIENTIFICALLY_ACCEPTED"
                 if accepted_primary
+                and bool(contract.get("dual_publication_allowed"))
                 else (
-                    "PENDING_ORIGINAL_UNIT_QC"
-                    if pending_qc
-                    else "ENGINEERING_ONLY_NOT_FOR_PUBLICATION"
+                    "WITHHELD_NUMERICAL_QUALITY"
+                    if accepted_primary
+                    else (
+                        "PENDING_ORIGINAL_UNIT_QC"
+                        if pending_qc
+                        else "ENGINEERING_ONLY_NOT_FOR_PUBLICATION"
+                    )
                 )
             ),
             "warning": (
@@ -754,11 +762,19 @@ def export_barrier_primal_dual_checkpoint(
             + ", ".join(solver_evidence_failures)
         )
     manifest_path = checkpoint_root / CHECKPOINT_MANIFEST
-    manifest_path.write_text(
-        json.dumps(metadata, ensure_ascii=False, indent=2, allow_nan=False)
-        + "\n",
-        encoding="utf-8",
+    manifest_temporary = manifest_path.with_suffix(
+        manifest_path.suffix + ".part"
     )
+    with manifest_temporary.open("w", encoding="utf-8") as stream:
+        stream.write(
+            json.dumps(
+                metadata, ensure_ascii=False, indent=2, allow_nan=False
+            )
+            + "\n"
+        )
+        stream.flush()
+        os.fsync(stream.fileno())
+    manifest_temporary.replace(manifest_path)
     return metadata
 
 
@@ -930,13 +946,19 @@ def promote_pending_qc_checkpoint(
     )
     metadata["engineering_shadow_prices"]["publication_status"] = (
         "SCIENTIFICALLY_ACCEPTED"
+        if bool(contract.get("dual_publication_allowed"))
+        else "WITHHELD_NUMERICAL_QUALITY"
     )
     temporary = manifest_path.with_suffix(manifest_path.suffix + ".part")
-    temporary.write_text(
-        json.dumps(metadata, ensure_ascii=False, indent=2, allow_nan=False)
-        + "\n",
-        encoding="utf-8",
-    )
+    with temporary.open("w", encoding="utf-8") as stream:
+        stream.write(
+            json.dumps(
+                metadata, ensure_ascii=False, indent=2, allow_nan=False
+            )
+            + "\n"
+        )
+        stream.flush()
+        os.fsync(stream.fileno())
     temporary.replace(manifest_path)
     return metadata
 

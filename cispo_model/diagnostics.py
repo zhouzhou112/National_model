@@ -59,6 +59,20 @@ def _last_barrier_metrics(path: Path) -> dict | None:
                 "relative_primal_dual_objective_gap": absolute_gap
                 / max(1.0, abs(primal), abs(dual)),
             }
+            for key in (
+                "primal_infeasibility",
+                "dual_infeasibility",
+                "complementarity",
+                "runtime_seconds",
+                "work_units",
+                "memory_used_gb",
+                "max_memory_used_gb",
+            ):
+                value = record.get(key)
+                if isinstance(value, (int, float)) and math.isfinite(
+                    float(value)
+                ):
+                    latest[key] = float(value)
     return latest
 
 
@@ -95,6 +109,9 @@ def _zero_iteration_presolve_metrics(
         "dual_objective": objective,
         "absolute_primal_dual_objective_gap": 0.0,
         "relative_primal_dual_objective_gap": 0.0,
+        "primal_infeasibility": 0.0,
+        "dual_infeasibility": 0.0,
+        "complementarity": 0.0,
         "source": "gurobi_optimal_complete_presolve_elimination",
     }
 
@@ -142,6 +159,75 @@ def _evaluate_nonbasic_quality_gate(
             and relative_gap <= relative_gap_limit
         ),
     }
+
+
+def _evaluate_final_stage_a_quality(
+    *,
+    status_name: str,
+    solution_quality: dict,
+    barrier_metrics: dict | None,
+    limits: dict[str, float],
+) -> tuple[dict[str, bool], dict[str, bool]]:
+    """Separate capacity/dispatch acceptance from dual publication quality."""
+
+    def quality_within(key: str, limit_key: str) -> bool:
+        value = solution_quality.get(key)
+        return bool(
+            value is not None
+            and math.isfinite(float(value))
+            and float(value) <= float(limits[limit_key])
+        )
+
+    def metric_within(key: str, limit_key: str) -> bool:
+        value = None if barrier_metrics is None else barrier_metrics.get(key)
+        return bool(
+            value is not None
+            and math.isfinite(float(value))
+            and float(value) <= float(limits[limit_key])
+        )
+
+    primal_checks = {
+        "optimal_status": status_name == "OPTIMAL",
+        "constraint_violation": quality_within(
+            "maximum_constraint_violation", "maximum_constraint_violation"
+        ),
+        "constraint_residual": quality_within(
+            "maximum_constraint_residual", "maximum_constraint_residual"
+        ),
+        "bound_violation": quality_within(
+            "maximum_bound_violation", "maximum_bound_violation"
+        ),
+        "barrier_primal_infeasibility": metric_within(
+            "primal_infeasibility", "maximum_barrier_primal_infeasibility"
+        ),
+        "relative_primal_dual_objective_gap": metric_within(
+            "relative_primal_dual_objective_gap",
+            "maximum_relative_primal_dual_objective_gap",
+        ),
+    }
+    dual_checks = {
+        "dual_violation": quality_within(
+            "maximum_dual_violation",
+            "maximum_dual_violation_for_publication",
+        ),
+        "dual_residual": quality_within(
+            "maximum_dual_residual",
+            "maximum_dual_residual_for_publication",
+        ),
+        "complementarity_violation": quality_within(
+            "maximum_complementarity_violation",
+            "maximum_complementarity_violation_for_publication",
+        ),
+        "barrier_dual_infeasibility": metric_within(
+            "dual_infeasibility",
+            "maximum_barrier_dual_infeasibility_for_publication",
+        ),
+        "barrier_complementarity": metric_within(
+            "complementarity",
+            "maximum_barrier_complementarity_for_publication",
+        ),
+    }
+    return primal_checks, dual_checks
 
 
 class SolverTelemetry:
@@ -726,23 +812,6 @@ def solve_and_report(
             ),
         }
         if nonbasic_primal_dual_contract:
-            primal_limit = max(
-                10.0 * float(model.Params.FeasibilityTol),
-                1e-8,
-            )
-            dual_limit = max(
-                10.0 * float(model.Params.OptimalityTol),
-                1e-8,
-            )
-            complementarity_limit = max(
-                10.0 * float(model.Params.OptimalityTol),
-                10.0 * float(model.Params.BarConvTol),
-                1e-8,
-            )
-            relative_gap_limit = max(
-                10.0 * float(model.Params.BarConvTol),
-                1e-8,
-            )
             barrier_metrics = _last_barrier_metrics(
                 output_dir / "solver_telemetry.jsonl"
             )
@@ -758,16 +827,84 @@ def solve_and_report(
                 if barrier_metrics is not None
                 else None
             )
-            quality_gate_checks = _evaluate_nonbasic_quality_gate(
-                status_name=status_name,
-                solution_quality=solution_quality,
-                barrier_metrics=barrier_metrics,
-                primal_limit=primal_limit,
-                dual_limit=dual_limit,
-                complementarity_limit=complementarity_limit,
-                relative_gap_limit=relative_gap_limit,
+            fixed_acceptance = config.raw.get("solver_profile", {}).get(
+                "stage_a_acceptance"
             )
-            strict_quality_pass = all(quality_gate_checks.values())
+            if fixed_acceptance is None:
+                primal_limit = max(
+                    10.0 * float(model.Params.FeasibilityTol), 1e-8
+                )
+                dual_limit = max(
+                    10.0 * float(model.Params.OptimalityTol), 1e-8
+                )
+                complementarity_limit = max(
+                    10.0 * float(model.Params.OptimalityTol),
+                    10.0 * float(model.Params.BarConvTol),
+                    1e-8,
+                )
+                relative_gap_limit = max(
+                    10.0 * float(model.Params.BarConvTol), 1e-8
+                )
+                quality_gate_checks = _evaluate_nonbasic_quality_gate(
+                    status_name=status_name,
+                    solution_quality=solution_quality,
+                    barrier_metrics=barrier_metrics,
+                    primal_limit=primal_limit,
+                    dual_limit=dual_limit,
+                    complementarity_limit=complementarity_limit,
+                    relative_gap_limit=relative_gap_limit,
+                )
+                primal_quality_gate_checks = quality_gate_checks
+                dual_publication_checks = {
+                    "legacy_combined_gate": all(quality_gate_checks.values())
+                }
+                strict_quality_pass = all(quality_gate_checks.values())
+                dual_publication_allowed = strict_quality_pass
+                acceptance_policy = "LEGACY_SOLVER_TOLERANCE_DERIVED_V1"
+            else:
+                primal_quality_gate_checks, dual_publication_checks = (
+                    _evaluate_final_stage_a_quality(
+                        status_name=status_name,
+                        solution_quality=solution_quality,
+                        barrier_metrics=barrier_metrics,
+                        limits=fixed_acceptance,
+                    )
+                )
+                quality_gate_checks = primal_quality_gate_checks
+                strict_quality_pass = all(
+                    primal_quality_gate_checks.values()
+                )
+                dual_publication_allowed = all(
+                    dual_publication_checks.values()
+                )
+                primal_limit = max(
+                    float(fixed_acceptance["maximum_constraint_violation"]),
+                    float(fixed_acceptance["maximum_constraint_residual"]),
+                    float(fixed_acceptance["maximum_bound_violation"]),
+                )
+                dual_limit = max(
+                    float(
+                        fixed_acceptance[
+                            "maximum_dual_violation_for_publication"
+                        ]
+                    ),
+                    float(
+                        fixed_acceptance[
+                            "maximum_dual_residual_for_publication"
+                        ]
+                    ),
+                )
+                complementarity_limit = float(
+                    fixed_acceptance[
+                        "maximum_complementarity_violation_for_publication"
+                    ]
+                )
+                relative_gap_limit = float(
+                    fixed_acceptance[
+                        "maximum_relative_primal_dual_objective_gap"
+                    ]
+                )
+                acceptance_policy = "FIXED_STAGE_A_PRIMAL_AND_DUAL_SPLIT_V1"
             barrier_primal_difference: float | None = None
             barrier_primal_difference_status = "COLLECTED"
             if variables_for_locations is None:
@@ -791,18 +928,25 @@ def solve_and_report(
                     barrier_primal_difference = None
                     barrier_primal_difference_status = "UNAVAILABLE"
             if barrier_primal_difference_status == "COLLECTED":
-                strict_quality_pass = bool(
-                    strict_quality_pass
-                    and barrier_primal_difference is not None
+                x_barx_pass = bool(
+                    barrier_primal_difference is not None
                     and math.isfinite(barrier_primal_difference)
                     and barrier_primal_difference <= primal_limit
                 )
+                primal_quality_gate_checks["x_barx_consistency"] = (
+                    x_barx_pass
+                )
+                strict_quality_pass = bool(strict_quality_pass and x_barx_pass)
             elif barrier_primal_difference_status != (
                 "DEFERRED_TO_CHECKPOINT_EXPORT_MODEL_SIZE"
             ):
+                primal_quality_gate_checks["x_barx_consistency"] = False
                 strict_quality_pass = False
             report["solution_contract"].update(
                 strict_quality_pass=strict_quality_pass,
+                primal_final_solver_quality_pass=strict_quality_pass,
+                dual_publication_allowed=dual_publication_allowed,
+                acceptance_policy=acceptance_policy,
                 acceptance_status=(
                     "PASS" if strict_quality_pass else "HARD_FAIL"
                 ),
@@ -826,6 +970,9 @@ def solve_and_report(
                     else "UNAVAILABLE"
                 ),
                 quality_gate_checks=quality_gate_checks,
+                primal_quality_gate_checks=primal_quality_gate_checks,
+                dual_publication_checks=dual_publication_checks,
+                fixed_stage_a_acceptance_limits=fixed_acceptance,
                 maximum_x_barx_difference=barrier_primal_difference,
                 maximum_x_barx_difference_status=(
                     barrier_primal_difference_status

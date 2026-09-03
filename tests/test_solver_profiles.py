@@ -10,6 +10,7 @@ import numpy as np
 
 from cispo_model.config import load_model_config
 from cispo_model.diagnostics import (
+    _evaluate_final_stage_a_quality,
     _evaluate_nonbasic_quality_gate,
     _last_barrier_metrics,
     _zero_iteration_presolve_metrics,
@@ -18,6 +19,60 @@ from cispo_model.diagnostics import (
 
 
 class SolverProfileTests(unittest.TestCase):
+    def test_final_stage_a_primal_acceptance_is_independent_of_dual_publication(self):
+        limits = {
+            "maximum_relative_primal_dual_objective_gap": 1e-2,
+            "maximum_barrier_primal_infeasibility": 1e-2,
+            "maximum_constraint_violation": 1e-5,
+            "maximum_constraint_residual": 1e-5,
+            "maximum_bound_violation": 1e-5,
+            "maximum_dual_violation_for_publication": 1e-5,
+            "maximum_dual_residual_for_publication": 1e-5,
+            "maximum_complementarity_violation_for_publication": 1e-5,
+            "maximum_barrier_dual_infeasibility_for_publication": 1e-2,
+            "maximum_barrier_complementarity_for_publication": 1e-2,
+        }
+        primal, dual = _evaluate_final_stage_a_quality(
+            status_name="OPTIMAL",
+            solution_quality={
+                "maximum_constraint_violation": 1e-6,
+                "maximum_constraint_residual": 1e-6,
+                "maximum_bound_violation": 1e-6,
+                "maximum_dual_violation": 2e-5,
+                "maximum_dual_residual": 2e-5,
+                "maximum_complementarity_violation": 2e-5,
+            },
+            barrier_metrics={
+                "relative_primal_dual_objective_gap": 1e-2,
+                "primal_infeasibility": 1e-2,
+                "dual_infeasibility": 2e-2,
+                "complementarity": 2e-2,
+            },
+            limits=limits,
+        )
+        self.assertTrue(all(primal.values()))
+        self.assertFalse(all(dual.values()))
+
+        above_limit, _ = _evaluate_final_stage_a_quality(
+            status_name="OPTIMAL",
+            solution_quality={
+                "maximum_constraint_violation": 1e-6,
+                "maximum_constraint_residual": 1e-6,
+                "maximum_bound_violation": 1e-6,
+                "maximum_dual_violation": 0.0,
+                "maximum_dual_residual": 0.0,
+                "maximum_complementarity_violation": 0.0,
+            },
+            barrier_metrics={
+                "relative_primal_dual_objective_gap": 0.0100001,
+                "primal_infeasibility": 1e-2,
+                "dual_infeasibility": 0.0,
+                "complementarity": 0.0,
+            },
+            limits=limits,
+        )
+        self.assertFalse(above_limit["relative_primal_dual_objective_gap"])
+
     def test_nonbasic_quality_gate_is_fail_closed_for_each_new_metric(self):
         quality = {
             "maximum_constraint_violation": 0.0,
@@ -87,6 +142,9 @@ class SolverProfileTests(unittest.TestCase):
                                 "iteration": 8,
                                 "primal_objective": 100.0,
                                 "dual_objective": 99.999999,
+                                "primal_infeasibility": 2e-3,
+                                "dual_infeasibility": 3e-3,
+                                "complementarity": 4e-3,
                             }
                         ),
                     )
@@ -99,6 +157,9 @@ class SolverProfileTests(unittest.TestCase):
         self.assertAlmostEqual(
             metrics["relative_primal_dual_objective_gap"], 1e-8, places=14
         )
+        self.assertEqual(metrics["primal_infeasibility"], 2e-3)
+        self.assertEqual(metrics["dual_infeasibility"], 3e-3)
+        self.assertEqual(metrics["complementarity"], 4e-3)
 
     def test_zero_iteration_gap_requires_explicit_complete_presolve_log(self):
         model = gp.Model("zero_iteration_presolve_gap")

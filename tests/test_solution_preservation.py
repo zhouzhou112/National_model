@@ -226,6 +226,45 @@ class PreservationTests(unittest.TestCase):
                 PlanningState.load(state, expected_boundary_year=2030, allow_test_only=True,
                                    allow_unaccepted_candidate=True)
 
+    def test_accepted_stage_a_can_retain_every_finite_capacity_delta(self):
+        config = load_model_config()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_json(root / "solution_qc.json", {
+                "status": "PASS", "hard_checks": {"balance": True}
+            })
+            write_json(root / "solve_report.json", {
+                "status": "OPTIMAL",
+                "planning_year": 2030,
+                "result_use": "SCIENTIFIC_PRODUCTION",
+                "solver_profile_id": "barrier_stagea_final_full_year_cloud_v6_threads32",
+                "formulation_profile_id": "annual_capacity_link_rows_8192_v1",
+                "solution_contract": {
+                    "mode": "OPTIMAL_BASIC_OR_DEFAULT",
+                    "relative_primal_dual_objective_gap": 1e-2,
+                },
+            })
+            rows = pd.DataFrame([
+                ["storage", str(i), 11, "battery", 2030, 2050, value, "GW", "new_build"]
+                for i, value in enumerate([0.0, -1e-10, 2.0])
+            ], columns=STATE_COLUMNS)
+            state = write_planning_state(
+                root,
+                config=config,
+                previous_state=PlanningState.empty(2025),
+                new_cohorts=rows,
+                source_solution_qc="solution_qc.json",
+                state_use="SCIENTIFIC_PRODUCTION",
+                retain_all_capacity_deltas=True,
+            )
+            finalize_result_manifest(root, config)
+            loaded = PlanningState.load(state, expected_boundary_year=2030)
+            np.testing.assert_array_equal(
+                loaded.cohorts.capacity_delta, rows.capacity_delta
+            )
+            self.assertTrue(loaded.metadata["retain_all_capacity_deltas"])
+            self.assertEqual(loaded.metadata["omitted_small_new_cohort_rows"], 0)
+
     def test_failed_export_does_not_suppress_other_stages_or_manifest(self):
         config = load_model_config()
         with tempfile.TemporaryDirectory() as temporary:

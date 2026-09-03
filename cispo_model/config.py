@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
@@ -1148,6 +1149,50 @@ def load_model_config(
             raise ValueError(
                 "direct_nonbasic_scientific_acceptance must be boolean"
             )
+        stage_b_required = payload.get("stage_b_required")
+        if stage_b_required is not None and not isinstance(
+            stage_b_required, bool
+        ):
+            raise ValueError("stage_b_required must be boolean")
+        stage_a_acceptance = payload.get("stage_a_acceptance")
+        if stage_a_acceptance is not None:
+            allowed_acceptance_keys = {
+                "maximum_relative_primal_dual_objective_gap",
+                "maximum_barrier_primal_infeasibility",
+                "maximum_constraint_violation",
+                "maximum_constraint_residual",
+                "maximum_bound_violation",
+                "maximum_dual_violation_for_publication",
+                "maximum_dual_residual_for_publication",
+                "maximum_complementarity_violation_for_publication",
+                "maximum_barrier_dual_infeasibility_for_publication",
+                "maximum_barrier_complementarity_for_publication",
+            }
+            if not isinstance(stage_a_acceptance, dict):
+                raise ValueError("stage_a_acceptance must be an object")
+            unknown_acceptance = set(stage_a_acceptance).difference(
+                allowed_acceptance_keys
+            )
+            missing_acceptance = allowed_acceptance_keys.difference(
+                stage_a_acceptance
+            )
+            if unknown_acceptance or missing_acceptance:
+                raise ValueError(
+                    "stage_a_acceptance keys differ from the fixed contract: "
+                    f"missing={sorted(missing_acceptance)}, "
+                    f"unknown={sorted(unknown_acceptance)}"
+                )
+            stage_a_acceptance = {
+                key: float(value)
+                for key, value in stage_a_acceptance.items()
+            }
+            if any(
+                not math.isfinite(value) or value <= 0.0
+                for value in stage_a_acceptance.values()
+            ):
+                raise ValueError(
+                    "stage_a_acceptance limits must be finite and positive"
+                )
         required_formulation_profile_id = payload.get(
             "required_formulation_profile_id"
         )
@@ -1170,6 +1215,8 @@ def load_model_config(
             "direct_nonbasic_scientific_acceptance": (
                 direct_nonbasic_scientific_acceptance
             ),
+            "stage_b_required": stage_b_required,
+            "stage_a_acceptance": stage_a_acceptance,
             "required_formulation_profile_id": (
                 required_formulation_profile_id
             ),
