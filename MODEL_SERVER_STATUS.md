@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-09-03 14:53：最终单路32线程v6已本地闭合，尚未部署
+
+- 实现提交`af96fb6361af4bb09dd90513c48ad76796f30a7d`固定唯一v6：`BarConvTol=1e-2`、
+  `FeasibilityTol=OptimalityTol=1e-6`、`Method2/Threads32/Presolve2/Aggregate1/Crossover0/
+  SolutionTarget1/NumericFocus1/ScaleFlag2`、无时限、无自动Stage B。模型边界、行缩放和精确零上界未改。
+- primal终解按固定1% gap/primal infeasibility、`1e-5` solver primal质量和全部原单位物理QC验收；dual质量
+  只控制影子价格发表。BarX/BarPi先原子落盘，QC/打包失败降为保全待复核；v6 accepted/candidate state保留
+  所有有限容量增量。wrapper从Slurm cgroup计算SoftMemLimit并始终生成三态terminal JSON。
+- 本地完整回归`310/310 OK`（1 skipped），focused 60项、编译、diff、bash及heredoc解析全部通过。
+  14:50固定服务器无CISPO/Gurobi，ParaCloud队列为空；旧`4466067/4466068`保持终态。v6当前未推送、部署、
+  构建或启动；下一步仅按新不可变release做Gurobi13/WLS与精确LP身份门禁，再提交唯一32线程作业。
+
 ## 2026-09-03 01:29：严格容差线程对照已在Presolve受控停止，等待0.01新profile
 
 - 作业`4466067/4466068`已通过精确`STOP_REQUESTED`受控终止，未用`scancel`；两者均停在Barrier 0步，

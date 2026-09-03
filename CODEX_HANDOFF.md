@@ -12,6 +12,30 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-03 14:53+08:00 current override：最终唯一候选已收敛为提交
+  `af96fb6361af4bb09dd90513c48ad76796f30a7d`上的
+  `barrier_stagea_final_full_year_cloud_v6_threads32`。它保持Base 2030/8760h、原变量/目标/约束/单位、
+  水库精确零上界和`annual_capacity_link_rows_8192_v1`不变；只运行一条32线程Stage A，参数为
+  `Method=2/Presolve=2/Aggregate=1/Crossover=0/SolutionTarget=1/BarConvTol=1e-2/
+  FeasibilityTol=OptimalityTol=1e-6/NumericFocus=1/ScaleFlag=2`，无`TimeLimit`且明确`stage_b_required=false`。
+  不再创建32/64对照，也不自动运行Stage B。
+- v6验收不再从`10*BarConvTol`推导成0.1。primal终解硬门槛固定为：实际相对primal-dual gap与末次
+  Barrier primal infeasibility均`<=1e-2`，Gurobi constraint violation/residual/bound violation均
+  `<=1e-5`，并继续通过全部原单位物理QC。dual residual/violation/complementarity和Barrier dual/
+  complementarity独立决定影子价格是否可发表，不反向否决已通过的容量与调度终解。`BarX/BarPi`在语义
+  导出前以临时文件、flush/fsync和原子rename保存；QC或打包失败保留为review-required，不能丢解或误报接受。
+- v6 accepted与candidate planning state保留所有有限`capacity_delta`，不再按`<=1e-8`删除微小增量。
+  云wrapper只接受该32线程profile；`SoftMemLimit=min(0.85*cgroup_limit, cgroup_limit-64 GiB)`，兼容
+  cgroup v2/v1并以Slurm申请内存作显式fallback；EXIT路径始终写原子`terminal_status.json`，只允许
+  `COMPLETED_ACCEPTED / COMPLETED_PRESERVED_REVIEW_REQUIRED / INCOMPLETE_NO_USABLE_STAGEA`三类终态。
+- 本地`CISPO_WAVE_ROOT=D:\codeenv\pycharmproject\National_RL\wave_energy`下完整回归
+  `310/310 OK`（1项环境跳过），focused 60项、`py_compile`、`git diff --check`、bash语法和3段shell内嵌
+  Python解析均通过。canonical profile JSON SHA256为
+  `289b43d461af93cfb42c287f8a4e62c4a7e96e540f6f5d014f54bfe664336aa5`。14:50实时复核固定服务器无
+  CISPO/Gurobi（checkout仍clean `ba8e09f`）；ParaCloud队列为空，旧`4466067/4466068`保持终态。
+  当前尚未推送、部署、构建或启动v6；正式启动前必须在计算节点复核Gurobi13/WLS、分区计费和目标根不存在，
+  并要求新构建精确匹配`50,907,234/41,458,383/492,835,195`、Fingerprint`0x94cf2e50`及MPS流SHA
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`，任一不符不得进入求解。
 - 2026-09-03 01:29+08:00 current override：作者再次明确，国家尺度8760h不能以过严求解停止容差换取
   不可接受的Barrier超级长尾；`BarConvTol=1e-2`是当前唯一允许的重启方向，科学接受必须与算法停止条件
   分离，继续依靠原单位物理QC、显式primal/dual/complementarity与相对gap报告，而不能把`1e-9`硬编码成
@@ -2803,6 +2827,18 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-03 14:53+08:00 — 最终单路8760h Stage A v6本地闭合
+
+- Git/范围：实现提交`af96fb6361af4bb09dd90513c48ad76796f30a7d`，仅新增v6 solver profile，并修改
+  `config.py`、`diagnostics.py`、`planning_state.py`、`primal_dual_checkpoint.py`、年度runner、单一云wrapper
+  及三份专项测试；未改`monolithic.py`、数据加载、目标、物理约束、时空尺度、场景或输入。
+- 验收/保全：算法停止恢复`BarConvTol=1e-2`；固定1% primal/gap门槛与`1e-5`原始solver primal质量门槛
+  独立于dual发表门槛。完整`BarX/BarPi`检查点先原子持久化；三态terminal JSON fail-closed；v6 accepted与
+  candidate state均不删除有限微小容量增量。Stage B明确关闭。
+- 验证：focused `60/60`、正确wave root下完整`310/310 OK`（1 skipped）、`py_compile`、diff check、bash
+  语法和所有shell Python heredoc解析通过。14:50固定服务器与ParaCloud只读复核无活动模型/云作业；未部署或
+  启动。未解决事项是Gurobi13计算节点验证、不可变release、精确LP身份复核和唯一32线程正式提交。
 
 ### 2026-09-03 01:29+08:00 — 过严容差线程对照受控停止与数值尺度复核
 

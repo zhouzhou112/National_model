@@ -1,5 +1,19 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-03 14:53 current override：只允许最终v6单路Stage A
+
+- 唯一候选提交为`af96fb6361af4bb09dd90513c48ad76796f30a7d`，profile只能是
+  `barrier_stagea_final_full_year_cloud_v6_threads32`；禁止再次启动32/64对照、Stage B或第二个求解。
+- 参数锁为`Method2/Threads32/Presolve2/Aggregate1/Crossover0/SolutionTarget1/BarConvTol1e-2/
+  FeasibilityTol1e-6/OptimalityTol1e-6/NumericFocus1/ScaleFlag2`且无`TimeLimit`。SoftMemLimit必须由当前Slurm
+  cgroup按`min(0.85*limit, limit-64GiB)`计算并写入launch identity。
+- 启动前必须确认队列空、目标根不存在、Gurobi13/WLS可用、分区/计费明确，并在新构建中复核raw
+  `50,907,234 rows / 41,458,383 cols / 492,835,195 nnz`、Fingerprint`0x94cf2e50`和解压MPS流SHA256
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`；不匹配即停止，不允许通过改模型绕过。
+- 终态只看`terminal_status.json`三类：接受、保全待复核、无可用Stage A。接受要求runner rc0、primal门禁、
+  原单位QC、accepted checkpoint及闭合result manifest；dual不达标只禁止影子价格发表。任何EXIT都必须留下
+  terminal JSON；计划内停止仍只创建精确`STOP_REQUESTED`，禁止直接`scancel`破坏保全。
+
 ## 2026-09-03 01:29 current override：0.01停止容差与科学验收必须解耦
 
 - `4466067/4466068`已在Barrier 0步受控停止，当前无活动线程对照。归档原MPS完整、解压流SHA一致；没有
