@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-03 15:47 current override：只读监测job 4478922
+
+- 活动唯一作业是`4478922`，release=`20260903_8760_stagea_final_2820fc3_v3`、tip=`2820fc3`、case=
+  `2030_base_8760_rows8192_stagea_final_t32_mem550_no_softmem_2820fc3_v3`。禁止更新release、并发第二作业或Stage B。
+- 当前已核验`94 CPU/550G/billing94`、Gurobi Threads32、双时限unlimited、preflight PASS、stderr 0；profile和
+  config均为`soft_mem_limit_gb=null`，wrapper不允许运行时SoftMem覆盖。不得重新加入代码级内存自停；Slurm
+  550G是唯一运行期内存硬上限。
+- 下一门禁是`final_stage_a_lp_identity.json=PASS`；出现前不得声称模型身份闭合或进入Barrier。出现后核对raw
+  `50,907,234/41,458,383/492,835,195`、Fingerprint`0x94cf2e50`、MPS流SHA与`solver_start`，再只读监测。
+- 完成解保全顺序为原MPS/PRM预归档→BarX/BarPi原子检查点→原单位QC→正式候选/planning state。硬OOM前若
+  solver未返回则不保证有最终向量；原MPS可重建但Gurobi Barrier私有分解不能原位续算。旧`4478232`和
+  `4478059`均为`INCOMPLETE_NO_USABLE_STAGEA`，不得恢复或重标。
+
 ## 2026-09-03 15:12 current override：只读监测job 4478232
 
 - 活动唯一作业是`4478232`，release=`20260903_8760_stagea_final_7be4d21_v2`、tip=`7be4d21`、

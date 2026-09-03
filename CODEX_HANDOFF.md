@@ -12,6 +12,36 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-03 15:47+08:00 current override：作者要求取消代码级`SoftMemLimit`并改为Slurm `550G`。
+  唯一活动正式作业为`4478922`，release
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3`，不可变实现
+  `2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`，profile
+  `barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem`。Slurm为`94 CPU/550G/billing94`，Gurobi仍
+  `Threads=32`；94核仅由集群约6GB/CPU计费规则推导。Slurm与Gurobi均无时限，profile和实际config中的
+  `soft_mem_limit_gb=null`，wrapper不传运行时覆盖，launch identity明确
+  `gurobi_soft_mem_limit=UNSET_PROFILE_NULL`。作业在`m4cg1605`运行，preflight PASS、双stderr 0、当前处于build。
+- v7除内存策略外保持最终v6的Base 2030/8760h、变量、目标、物理约束、单位、数据、精确水库零上界、
+  `annual_capacity_link_rows_8192_v1`与数值参数不变：`Method2/Presolve2/Aggregate1/Crossover0/
+  SolutionTarget1/BarConvTol1e-2/FeasibilityTol1e-6/OptimalityTol1e-6/NumericFocus1/ScaleFlag2`，不自动Stage B。
+  v7专属启动内存门槛为500GiB，旧云profile仍保留640GiB规则；求解过程中没有应用级内存终止阈值，若超过
+  Slurm 550G硬上限可能被系统OOM kill。
+- 完整结果保全合同不变且已写入release manifest：`--archive-original-model`在`optimize()`前保存原MPS/PRM并
+  执行精确LP身份门禁；求解器返回可接受的非基解后，完整`BarX/BarPi`先以临时文件、flush/fsync、原子rename和
+  校验和落盘，之后才进行语义导出与原单位物理QC。通过QC后晋级为正式候选并导出planning state；QC/打包失败
+  降为`COMPLETED_PRESERVED_REVIEW_REQUIRED`而不丢弃已保存向量。Gurobi私有Barrier分解状态不能持久化，
+  因此原MPS可精确重建、BarX/BarPi可作完整解证据/后续起点，但不能在中断的Barrier迭代处原位续算；硬OOM发生
+  在求解器返回前也无法凭空保存尚未返回的最终解。
+- 本地完整回归`314 tests OK`（1 skipped），`py_compile`和diff check通过；云compute smoke`4478920`为
+  `COMPLETED 0:0`、Gurobi13.0.2/WLS/v7 canonical PASS。代码tar SHA256为
+  `9e2b085a47e87860339cad32fc2201f7c4873692739fb0b443f300c6357ef0ef`，canonical profile JSON SHA256为
+  `017718ec2e263f928ce9ee6d223d7cc02a721cea54ea0034940c8af143aace50`。runner仍须在optimize前精确匹配
+  `50,907,234/41,458,383/492,835,195`、Fingerprint`0x94cf2e50`与MPS流SHA
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`；门禁尚未出现前不得声称进入Barrier。
+- 被替换的700G作业`4478232`按作者要求于15:34停止，wall`21:07`、batch MaxRSS约18.47GiB，仍在build且
+  无solver/无解，terminal=`INCOMPLETE_NO_USABLE_STAGEA`；更早`4478059`同样保持失败证据。二者不得恢复或重标。
+
+以下15:12及更早条目为历史快照，已被上述current override取代：
+
 - 2026-09-03 15:12+08:00 current override：最终唯一候选已收敛为不可变提交
   `7be4d21e6b79bb243a94072120dd850caad2f5db`上的
   `barrier_stagea_final_full_year_cloud_v6_threads32`。它保持Base 2030/8760h、原变量/目标/约束/单位、
@@ -2835,6 +2865,22 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    以后单独明确授权，不是Stage A或规划序列的默认下一步。
 
 ## Version history
+
+### 2026-09-03 15:47+08:00 — 550G无SoftMemLimit正式候选启动
+
+- Git/范围：实现提交`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`新增v7 canonical profile，修改年度runner、
+  单一云wrapper与专项测试。仅取消Gurobi`SoftMemLimit`、为v7设置500GiB启动门槛；未改模型变量、目标、物理
+  约束、数据、单位、时空范围或最终验收阈值。实现已推送origin和GitHub。
+- 验证：本地完整回归`314 tests OK`（1 skipped）；云smoke`4478920=COMPLETED 0:0`，Gurobi13.0.2/WLS、
+  canonical v7和`soft_mem_limit_gb=null`通过。不可变release为
+  `20260903_8760_stagea_final_2820fc3_v3`，代码tar SHA256
+  `9e2b085a47e87860339cad32fc2201f7c4873692739fb0b443f300c6357ef0ef`。
+- 运行：旧`4478232`在solver前按作者指令停止，terminal为`INCOMPLETE_NO_USABLE_STAGEA`。新唯一正式作业
+  `4478922`于15:44运行在`m4cg1605`：`94 CPU/550G/billing94`、Gurobi Threads32、无SoftMemLimit、双时限
+  unlimited、preflight PASS、双stderr 0。下一步只读等待原模型归档与精确LP身份门禁；不得启动第二作业或Stage B。
+- 输出/保全：正式根会保存原MPS/PRM、LP身份报告、solve/QC/manifest、原子BarX/BarPi检查点与可接受的planning
+  state。求解返回后的后处理失败保留review-required候选；系统硬OOM不能保证保存尚未返回的求解器状态，且
+  Gurobi Barrier私有分解不可原位续算。
 
 ### 2026-09-03 15:12+08:00 — v6不可变云release与唯一正式作业启动
 

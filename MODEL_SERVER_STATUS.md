@@ -1,5 +1,17 @@
 # CISPO 2030 full-year server status
 
+## 2026-09-03 15:47：最终v7无SoftMemLimit唯一作业4478922运行中
+
+- 不可变tip`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`已双推送；release为
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3`。smoke
+  `4478920=COMPLETED 0:0`，Gurobi13.0.2/WLS/v7 canonical与`soft_mem_limit_gb=null`通过。
+- 唯一正式作业`4478922`于15:44在`m4cg1605`运行：`94 CPU/550G/billing94`、Gurobi Threads32、Slurm与
+  Gurobi无时限、无SoftMemLimit、preflight PASS、双stderr 0，当前build。v7保留原模型/验收边界；500GiB
+  启动门槛只作用于v7，运行中不按内存阈值自停，550G Slurm硬上限仍可能触发系统OOM。
+- 原MPS/PRM在optimize前归档；求解返回后先原子保存完整BarX/BarPi，再做原单位QC并晋级正式候选。
+  `4478232`按作者要求在solver前停止，terminal=`INCOMPLETE_NO_USABLE_STAGEA`。下一步只读等待
+  `final_stage_a_lp_identity.json=PASS`与`solver_start`；不启动第二作业或Stage B。
+
 ## 2026-09-03 15:12：最终v6唯一作业4478232运行中
 
 - 最终不可变tip为`7be4d21e6b79bb243a94072120dd850caad2f5db`，已双推送；云release为
