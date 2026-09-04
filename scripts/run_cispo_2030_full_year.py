@@ -41,10 +41,14 @@ CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
     {
         "barrier_stagea_final_full_year_cloud_v6_threads32",
         "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+        "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem",
     }
 )
 CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS = frozenset(
-    {"barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem"}
+    {
+        "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+        "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem",
+    }
 )
 CLOUD_FULL_YEAR_MIN_AVAILABLE_MEMORY_GIB = 640.0
 CLOUD_NO_SOFTMEM_MIN_AVAILABLE_MEMORY_GIB = 500.0
@@ -59,6 +63,7 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
         "barrier_checkpoint_full_year_cloud_v5_threads64",
         "barrier_stagea_final_full_year_cloud_v6_threads32",
         "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
+        "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem",
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
@@ -76,6 +81,9 @@ CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
     ),
     "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem": (
         "017718ec2e263f928ce9ee6d223d7cc02a721cea54ea0034940c8af143aace50"
+    ),
+    "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem": (
+        "c1f50c5c146f6ec9765bb871ccaaf65ed7512a599ce7c39478047e262093236b"
     ),
 }
 CANONICAL_DIRECT_FORMULATION_PROFILE_JSON_SHA256 = (

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Single final 32-thread 8760 h Stage A payload.  It never launches Stage B.
+# Final 32/64-thread 8760 h Stage A payload.  It never launches Stage B.
 
 require_env() {
   local name=$1
@@ -27,13 +27,16 @@ control_root="$release_root/run_control/$CISPO_CASE_ID"
 environment_file="$release_root/manifests/cloud_environment_paths.env"
 formulation_profile="$repo_root/config/formulation_profiles/annual_capacity_link_rows_8192_v1.json"
 solver_profile="$repo_root/$CISPO_SOLVER_PROFILE"
-expected_profile="config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json"
-
-if [[ "$CISPO_SOLVER_PROFILE" != "$expected_profile" \
-  || "$CISPO_EXPECTED_THREADS" != "32" ]]; then
-  echo "final Stage A wrapper requires the canonical v7 32-thread no-SoftMemLimit profile" >&2
-  exit 64
-fi
+profile_threads_pair="$CISPO_SOLVER_PROFILE:$CISPO_EXPECTED_THREADS"
+case "$profile_threads_pair" in
+  "config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json:32"|\
+  "config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json:64")
+    ;;
+  *)
+    echo "final Stage A wrapper requires a canonical profile/thread pair (v7:32 or v8:64)" >&2
+    exit 64
+    ;;
+esac
 
 if [[ ! -d "$repo_root" || ! -f "$environment_file" ]]; then
   echo "release repository or environment manifest is missing" >&2
