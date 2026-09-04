@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Final 32/54/64-thread 8760 h Stage A payload.  It never launches Stage B.
+# Final 32/44/54/64-thread 8760 h Stage A payload.  It never launches Stage B.
 
 require_env() {
   local name=$1
@@ -31,10 +31,11 @@ profile_threads_pair="$CISPO_SOLVER_PROFILE:$CISPO_EXPECTED_THREADS"
 case "$profile_threads_pair" in
   "config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json:32"|\
   "config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json:64"|\
-  "config/solver_profiles/barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json:54")
+  "config/solver_profiles/barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json:54"|\
+  "config/solver_profiles/barrier_stagea_final_full_year_cloud_v10_threads44_no_softmem.json:44")
     ;;
   *)
-    echo "final Stage A wrapper requires a canonical profile/thread pair (v7:32, v8:64, or v9:54)" >&2
+    echo "final Stage A wrapper requires a canonical profile/thread pair (v7:32, v8:64, v9:54, or v10:44)" >&2
     exit 64
     ;;
 esac
