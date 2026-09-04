@@ -174,6 +174,14 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             ),
             500.0,
         )
+        self.assertEqual(
+            cloud_full_year_required_memory_gib(
+                80.0,
+                "STAGE_A",
+                "barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem",
+            ),
+            500.0,
+        )
 
     def test_host_memory_fraction_resolves_to_decimal_gb(self) -> None:
         gib = 1024**3
@@ -444,6 +452,44 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         self.assertEqual(v8_numerics.pop("threads"), 64)
         self.assertEqual(v7_numerics, v8_numerics)
 
+    def test_final_v9_profile_is_canonical_54_thread_v7_equivalent(self) -> None:
+        formulation = (
+            ROOT
+            / "config"
+            / "formulation_profiles"
+            / "annual_capacity_link_rows_8192_v1.json"
+        )
+        v7_path = (
+            PROFILES
+            / "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json"
+        )
+        v9_path = (
+            PROFILES
+            / "barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json"
+        )
+        config = load_model_config(
+            solver_path=v9_path,
+            formulation_path=formulation,
+        )
+        require_canonical_direct_nonbasic_profiles(config)
+        self.assertEqual(
+            cloud_full_year_profile_role(config.raw["solver_profile"]["id"]),
+            "STAGE_A",
+        )
+        self.assertEqual(config.raw["numerics"]["threads"], 54)
+        self.assertIsNone(config.raw["numerics"]["soft_mem_limit_gb"])
+        self.assertIsNone(config.raw["numerics"]["time_limit_seconds"])
+        self.assertFalse(config.raw["solver_profile"]["stage_b_required"])
+
+        v7 = json.loads(v7_path.read_text(encoding="utf-8"))
+        v9 = json.loads(v9_path.read_text(encoding="utf-8"))
+        self.assertEqual(v7["stage_a_acceptance"], v9["stage_a_acceptance"])
+        v7_numerics = dict(v7["numerics"])
+        v9_numerics = dict(v9["numerics"])
+        self.assertEqual(v7_numerics.pop("threads"), 32)
+        self.assertEqual(v9_numerics.pop("threads"), 54)
+        self.assertEqual(v7_numerics, v9_numerics)
+
     def test_final_cloud_wrapper_is_single_stage_a_without_softmem(self) -> None:
         source = (ROOT / "scripts" / "run_cloud_8760_scientific_job.sh").read_text(
             encoding="utf-8"
@@ -456,7 +502,11 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
             "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem",
             source,
         )
-        self.assertIn("v7:32 or v8:64", source)
+        self.assertIn(
+            "barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem",
+            source,
+        )
+        self.assertIn("v7:32, v8:64, or v9:54", source)
         self.assertIn('assert numerics["soft_mem_limit_gb"] is None', source)
         self.assertIn("gurobi_soft_mem_limit=UNSET_PROFILE_NULL", source)
         self.assertNotIn("--runtime-soft-mem-limit-gb", source)
@@ -473,6 +523,7 @@ class CloudFullYearProfileGuardTests(unittest.TestCase):
         for profile_name in (
             "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json",
             "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json",
+            "barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json",
         ):
             with self.subTest(profile_name=profile_name):
                 with tempfile.TemporaryDirectory() as temporary:
