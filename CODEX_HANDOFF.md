@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-04 10:59+08:00 三条正式8760任务均`RUNNING`、`TimeLimit=UNLIMITED`、wrapper stderr 0且
+  `STOP_REQUESTED`均不存在。A8 Threads32 `4479238`已运行17:34:33，最新Barrier iter33（solver time
+  `59322 s`），batch MaxRSS `503822896K`（约480.48GiB）；M9 Threads32 `4990379`已运行13:08:42，
+  最新iter31（`44665 s`），MaxRSS `507835764K`（约484.31GiB）。二者相同iteration的目标与残差继续逐值
+  一致，M9到iter31比A8的`56874 s`快约21.5%，当前无数值分叉或错误证据；M9旧辅助step`4990379.0`
+  的`FAILED 1:0`仍只是已记录的零秒只读`srun`失败，不是batch/solver失败。
+- 新A8 Threads64 `4486932`已运行2:37:11，实际`64 CPU/700G/billing64`，MaxRSS `116045116K`
+  （约110.67GiB），已保存同样大小`4,142,715,779 bytes`的`original.mps.gz`并通过冻结LP身份：
+  `50,907,234 rows / 41,458,383 vars / 492,835,195 nnz`、Fingerprint`0x94cf2e50`、MPS流SHA256
+  `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`全部一致。它当前位于Presolve
+  `6535 s`，已消去`13,223,670 rows / 9,304,518 cols`，尚未完成Presolve/ordering或进入Barrier，故现在
+  不能评价64线程Barrier加速比；持续5秒心跳且消元数已推进，不构成卡死证据。三条任务均未修改或中断。
 - 2026-09-04 08:24+08:00 current override：作者授权的第三条正式8760对照已按A8
   `64 CPU + 700G + Gurobi Threads=64`启动。作业`4486932`于08:21:26进入`RUNNING`，节点`m4cg1606`，
   `Req/AllocTRES=cpu64,mem700G,billing64`，Slurm `TimeLimit=UNLIMITED`。case为
@@ -2953,6 +2965,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-09-04 10:59+08:00 — 三条正式8760任务只读运行复核
+
+- Git/范围：模型、profile、release、数据、作业和控制文件均未改变；只读查询A8/M9的`squeue/sacct/sstat`、
+  既有Gurobi日志、LP身份报告和stderr。未附加`srun`、未发送信号、未创建`STOP_REQUESTED`、未启动Stage B。
+- 状态：A8 Threads32 `4479238`为Barrier iter33/solver time59322s/MaxRSS约480.48GiB；M9 Threads32
+  `4990379`为iter31/44665s/约484.31GiB。共同iter31时A8为56874s，M9快约21.5%；同迭代目标和残差仍一致，
+  两者均属早期Barrier收敛推进，离`1e-2`接受线尚远，不能宣称接近完成。
+- 新64线程门禁：A8 `4486932`为RUNNING，wall2:37:11、MaxRSS约110.67GiB，原MPS归档大小与两条旧任务
+  相同，冻结rows/vars/nnz/fingerprint/MPS SHA身份报告为PASS。最新Presolve time6535s，消去
+  `13,223,670 rows / 9,304,518 cols`；尚未形成Presolved/Ordering/Barrier statistics，因此暂不比较64线程
+  求解速度。三条wrapper stderr均为0、无停止请求、双时限unlimited。
+- 下一步：继续只读等待`4486932`进入Barrier，再在相同iteration上比较runtime/Work/残差/RSS与billing；
+  不主动停止任一任务，不启动第四条任务或Stage B。
 
 ### 2026-09-04 08:24+08:00 — A8 Threads64/700G/billing64正式8760对照启动
 
