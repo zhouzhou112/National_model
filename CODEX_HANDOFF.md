@@ -12,6 +12,98 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-04 08:24+08:00 current override：作者授权的第三条正式8760对照已按A8
+  `64 CPU + 700G + Gurobi Threads=64`启动。作业`4486932`于08:21:26进入`RUNNING`，节点`m4cg1606`，
+  `Req/AllocTRES=cpu64,mem700G,billing64`，Slurm `TimeLimit=UNLIMITED`。case为
+  `2030_base_8760_rows8192_stagea_final_t64_mem700_slurm64_no_softmem_33f6b28_v1`，不可变release为
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260904_8760_stagea_final_33f6b28_v1`，实现提交
+  `33f6b28ab9d9310d52cb5cde2a6558f52164fdb0`已推送origin/GitHub。launch identity已实证
+  `SLURM_CPUS_PER_TASK=64`、CPU affinity `0-63`、`gurobi_threads=64`、
+  `gurobi_soft_mem_limit=UNSET_PROFILE_NULL`、Git/profile身份正确；preflight为`PASS`
+  （67 PASS/3 WARN/2 INFO/0 HARD_FAIL），正式wrapper/Slurm stderr均为0，`STOP_REQUESTED`不存在。
+- 新v8 profile相对正式v7只把`Threads 32 -> 64`并更新profile id/资源说明；Base 2030、8760h、输入数据、
+  变量、目标、约束、单位、年度行`1/8192`缩放、所有其他数值参数、原MPS/BarX/BarPi保全、原单位QC和
+  `stage_b_required=false`均不变。wrapper只接受精确`v7:32`或`v8:64`配对，v8 canonical JSON SHA256为
+  `c1f50c5c146f6ec9765bb871ccaaf65ed7512a599ce7c39478047e262093236b`。本地定向测试26/26、py_compile和
+  diff check通过；本机全量discover因缺少`gurobipy/zarr`而不能作为有效回归。A8计算节点smoke`4486930`
+  为`COMPLETED 0:0`，同一release的26项守卫、shell语法、Gurobi13.0.2 Academic WLS及最小LP全部通过。
+  正式任务复用已校验父release的数据路径而不复制/修改输入；代码archive SHA256为
+  `eb1d0f186507d7819db4136f8cbbdb00fc0e93c1f8dce63596ae1ab600280724`，repo/archive已设只读。
+- 原A8 Threads32作业`4479238`和M9 Threads32作业`4990379`继续`RUNNING`，分别位于`m4cg1605`和
+  `wqd10nbn11c08`，未被新提交修改或中断。三条正式任务均不由Codex主动停止；只允许自然完成、程序/调度器
+  自身失败，或作者后续明确下达停止指令。下一步只读等待`4486932`完成原MPS归档与精确LP身份门禁，再按三者
+  相同Barrier iteration比较Threads64的实际wall/Work/残差/内存和billing64经济性，不能用构建期总wall混比。
+- 2026-09-04 08:13+08:00 A8资源计费双重复探针完成：`64 CPU+700G`作业`4486907/4486909`均运行1秒，
+  实际`AllocTRES=cpu64,mem700G,billing64`；`48 CPU+600G`作业`4486908/4486910`均运行2秒，实际被扩为
+  `cpu96,mem600G,billing96`。四个作业均`COMPLETED 0:0`、stderr 0，结果在两个相同750G/128核节点上重复，
+  不是单次偶然。按0.12元/核时，前者7.68元/小时，后者11.52元/小时；因此A8当前规则下`64+700`严格优于
+  `48+600`，且与现有`32请求+550G→实际billing64`小时费相同。这里只验证资源/计费，没有启动第三条8760；
+  当前正式A8 `4479238`与M9 `4990379`继续RUNNING且未受影响。若要让Gurobi实际使用64线程，不能仅改变
+  Slurm申请：当前正式v7 profile/wrapper硬锁Threads32，必须另建并验证64线程profile与全套保全身份后再提交。
+- 2026-09-04 08:07+08:00 无侵入吞吐采样：Barrier期间相隔约24/25秒读取`sstat`累计CPU时间，A8增加
+  781 CPU-s（约32.54核），M9增加788 CPU-s（约31.52核），两边32个Gurobi线程均持续繁忙；同期
+  `fs/disk`增量仅约0.53/0.76 MB/s，排除共享文件系统或WLS网络为Barrier瓶颈。Slurm/普通用户接口没有
+  暴露内存控制器GB/s/uncore计数器，因此不能把CPU满载等同于已达到DRAM理论带宽，也不能据此证明32线程
+  已是吞吐上限。拓扑与资源状态显示A8 cpuset `0-63`位于一块64核socket，当前约382GiB平均RSS、峰值约
+  480.5GiB已超过该768GB双路节点的单socket等分容量，且节点总CPULoad约62.6（存在其他负载）；M9 cpuset
+  `0-101`位于128核socket，当前/峰值约382/484.3GiB可容纳于1.5TB双路节点的单socket容量，节点CPULoad约
+  32.6。故现有证据只支持“A8更可能受跨NUMA/共享带宽影响，M9带宽余量相对更好”的强推断，不支持任何
+  一边已饱和的定论。两条作业均未修改或中断。
+- 2026-09-04 08:02+08:00 current override：A8 `4479238`与M9 `4990379`均为`RUNNING`且已进入同一原LP的
+  Barrier。A8 wall `14:37:25`、iter25、`64 CPU/550G/billing64`；M9 wall `10:11:34`、iter21、
+  `102 CPU/550G/billing102`。两边结构完全一致：Dense cols 37,696、AA' NZ `7.469e8`、Factor NZ
+  `3.375e10`、Factor Ops `1.849e15`，且每个相同iteration的objective/residual/Work逐值一致，证明对照身份
+  闭合。A8/M9 ordering分别为`3482.83/2297.70 s`；同到iter21的solver runtime分别为
+  `44439.78/34231.42 s`，M9缩短22.97%；稳定iter10→21平均分别约`1236.5/1038.7 s/iter`，M9快15.99%。
+  但按作业启动至iter21估算，A8/M9约`13.16/10.13 h`，以0.12元/核时计约`101.1/124.0元`，M9同进度
+  贵约22.7%，当前经济性仍由A8领先。两边batch MaxRSS约`480.5/484.3 GiB`，双stderr 0、
+  `STOP_REQUESTED`均不存在，继续运行且不得由Codex主动中断。
+- M9作业下有一个`4990379.0 FAILED 0:00`辅助step，是08:00只读硬件信息检查中的`srun --overlap`命令因
+  shell/grep退出码1立即结束；它不是solver/batch、没有终止或修改主进程，主`4990379.batch`持续RUNNING。
+  后续状态检查不再向正式allocation启动辅助`srun` step，只使用`squeue/sstat`和已有日志。
+- 2026-09-03 21:51+08:00 current override：作者明确要求启动M9正式对照且不得由Codex主动中断；最终是否
+  中断仅由作者判断。M9作业`4990379`已于21:49:56在`wqd10nbn11c08`进入`RUNNING`，case为
+  `2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_m9_v1`，使用不可变release
+  `/publicfs10/fs10-m9/home/m9s005194/National_model_cloud/20260903_8760_stagea_final_2820fc3_m9_v1`和实现
+  `2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`。请求`32 CPU/550G`，实际分配
+  `102 CPU/550G/billing102`，payload记录`gurobi_threads=32`、`gurobi_soft_mem_limit=UNSET_PROFILE_NULL`、
+  Slurm/Gurobi均无时限，Stage B不自动启动；三个小写proxy变量均显式设置为`172.18.1.5:8888`。
+  WLS已成功取得Academic license 2847107，preflight为`PASS`（67 PASS/3 WARN/2 INFO/0 HARD_FAIL）、
+  `wrapper_stderr.log`和Slurm stderr均为0，`STOP_REQUESTED`不存在，当前处于正式模型构建。除自然完成或
+  程序/调度器自身失败外，禁止watcher、定时器或Codex创建停止文件/发送终止信号。
+- A8正式作业`4479238`必须保留且继续运行，未因M9对照发生任何改动：21:51时wall约`04:27:28`，
+  `64 CPU/550G/billing64`，峰值RSS `114446880K`（约109.14GiB）。当前两条作业只能按相同原LP身份门禁、
+  Presolve阶段节点以及Barrier逐迭代wall/Work/残差做比较；不得用提交时间或构建迁移时间直接比较。
+- 2026-09-03 21:17+08:00 M9对照部署状态：已从已登录计费中心核实M9账号`m9s005194`并通过SSH进入
+  `bscc-m9`；目标分区为`amd_m9_1.5T`（66个AMD EPYC 9755、256核、1.5TB节点，
+  `DefMemPerCPU=5400/MaxMemPerCPU=5528`）。同一不可变实现与约2.9GB输入已部署到
+  `/publicfs10/fs10-m9/home/m9s005194/National_model_cloud/20260903_8760_stagea_final_2820fc3_m9_v1`；release
+  tar SHA256=`094b3b87635fc7728d3f2d932aec383aaaa43e3fc1647ead6eb8c1ed8930a749`，运行环境压缩包SHA256=
+  `3d57ffbffde95f27e6c03c811eb87c487d5d31f93b969f8f8fed4105b3eb337a`，两端一致。
+- 2026-09-03 21:38+08:00 M9 WLS门禁已闭合：1核网络探针`4990291`在计算节点`wqd10nbn10c13`
+  原样设置`http_proxy/https_proxy/ftp_proxy=172.18.1.5:8888`后，经代理访问`token.gurobi.com`返回
+  `HTTP/1.1 200 Connection established`和`HTTP/2 302`；随后同代理环境下的Gurobi smoke `4990292`
+  成功取得Academic WLS license 2847107，以Gurobi 13.0.2完成最小LP并打印
+  `M9_CLOUD_RELEASE_2820FC3_V7_NO_SOFTMEM_SMOKE_PASS`，Slurm终态`COMPLETED 0:0`、wall 6秒。
+  因而此前失败是M9公网直连及旧代理`172.16.110.3:8888`/`172.18.1.1:8888`不可用，不是许可证文件缺失、
+  路径、权限或复制损坏。该门禁已成为随后提交正式M9对照作业`4990379`的前置证据。
+- A8正式作业`4479238`保持正常：21:38时wall约`04:14:14`，
+  `AllocTRES billing=64`、峰值RSS `114446880K`（约109.14GiB）、双stderr 0。不得因M9许可阻塞停止A8。
+- 2026-09-03 17:25+08:00 current override：作者要求停止94核作业并实跑Slurm `32 CPU + 550G`方案。
+  `4478922`已通过其专属`STOP_REQUESTED`受控停止；求解器在Presolve `2602.08 s`后以0次Barrier迭代退出，
+  Slurm wall为`01:38:18`，terminal=`INCOMPLETE_NO_USABLE_STAGEA`，不得重标为可续接解。该旧根已保留约
+  4.14 GB `model_archive/original.mps.gz`、build/solve/manifest等审计文件，没有覆盖或删除。
+- 当前唯一活动正式作业为`4479238`，case
+  `2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_v4`，继续使用不可变release
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3`、实现
+  `2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`和v7 canonical profile。提交请求为`32 CPU/550G`；A8实际
+  分配为`64 CPU/550G`且`AllocTRES billing=64`，`SLURM_CPUS_PER_TASK=32`、Gurobi `Threads=32`、
+  `SoftMemLimit`未设置、Slurm/Gurobi均无时限。作业17:24:04启动于`m4cg1605`，preflight `PASS`
+  （67 PASS/3 WARN/2 INFO/0 HARD_FAIL）、双stderr 0，当前处于模型构建初期。
+- 本次只改变Slurm申请核数和全新输出/控制目录；Base 2030/8760h、模型变量、目标、约束、数据、单位、
+  数值参数、完整模型/结果保全合同及不自动Stage B的边界均未改变。此前仅依据排队态`ReqTRES billing=32`
+  估价不充分；秒级实际探针`4479220`和正式作业`4479238`均证明本组合分配后为`billing=64`。后续费用与
+  性能比较应按实际`AllocTRES`记录，不能按请求态字段推断。
 - 2026-09-03 15:47+08:00 current override：作者要求取消代码级`SoftMemLimit`并改为Slurm `550G`。
   唯一活动正式作业为`4478922`，release
   `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3`，不可变实现
@@ -2851,20 +2943,168 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 ### Exact next action
 
-1. 提交、双远端推送、正确checkout部署、服务器全套测试、detached `tmux`持久性和launcher监督集成均已
-   完成。现在只重复只读检查`MemAvailable`、实时`vmstat si/so`和memory PSI；在自然达到
-   `MemAvailable>=100 GiB`前不创建正式tag，不降低阈值、不drop caches、不干预其他用户任务。
-2. 门槛满足后，以精确SHA`ba8e09f97a6526e299f807eb9be8c579a217caeb`、
-   `barrier_checkpoint_fixed_server_host_memory_95_v2`、`annual_capacity_link_rows_8192_v1`和CPU`0-31`的
-   32个物理核，通过已验证的detached `tmux`方式启动唯一2160h/start2880 Stage A资格运行。runner必须按
-   `host_memory_soft_limit_fraction=0.95`解析有效Gurobi `SoftMemLimit`；按首个iteration>=30和结构阈值
-   判定，不启动其他数值支线，绝不自动Stage B。
-3. 只有2160h iter30、结构、内存和警告门槛全部通过，才保全证据、更新handoff并准备唯一8760h Stage A：
-   `barrier_checkpoint_full_year_cloud_v4`、`Threads=32`、`soft_mem_limit_gb=600`、无`TimeLimit`，使用足够内存
-   的云节点和不可变代码/数据/场景身份。2160未通过则先停止放大并只诊断这条路线；Stage B始终需要作者
-   以后单独明确授权，不是Stage A或规划序列的默认下一步。
+1. 不启动第四条正式求解、不创建`STOP_REQUESTED`、不向正式allocation附加诊断`srun`；仅用`squeue/sacct/
+   sstat`及既有control/output日志观察`4479238`、`4990379`、`4486932`，保持三个结果根和release不变。
+2. 对`4486932`先要求原MPS归档完成，并精确通过`50,907,234 rows / 41,458,383 vars / 492,835,195 nnz`、
+   Fingerprint`0x94cf2e50`、解压MPS流SHA256
+   `8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a`；在这些门禁出现前只称其为build阶段。
+3. 进入Barrier后，以三条相同iteration的runtime、Work、primal/dual residual、complementarity、RSS及实际
+   `AllocTRES billing`比较，不以提交时刻或构建耗时替代求解吞吐。三条均不自动Stage B；只有作者明确指令
+   才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-09-04 08:24+08:00 — A8 Threads64/700G/billing64正式8760对照启动
+
+- Git/改动：实现提交`33f6b28ab9d9310d52cb5cde2a6558f52164fdb0`已推送origin与GitHub。新增
+  `config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json`，并最小修改
+  `scripts/run_cispo_2030_full_year.py`的final/no-SoftMem/direct-acceptance canonical allowlist、
+  `scripts/run_cloud_8760_scientific_job.sh`的精确profile/thread配对守卫及专项测试。v8相对v7的求解参数只改
+  `threads:32 -> 64`；未改LP、数据、研究范围、物理/数值验收或结果保全合同。
+- 验证：本地`tests.test_cloud_full_year_profile_guard`为26/26 PASS，py_compile/diff check PASS；全量本机
+  discover因当前解释器缺`gurobipy/zarr`产生环境性import errors，未误记为全回归通过。A8计算节点smoke
+  `4486930`为`COMPLETED 0:0`、wall13秒、billing1；remote bash语法、同一release 26项守卫、v8 canonical、
+  Gurobi13.0.2 Academic WLS和最小LP均PASS。smoke stderr的126字节仅为unittest进度/摘要，非程序报错。
+- Release：新根
+  `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260904_8760_stagea_final_33f6b28_v1`；代码archive
+  SHA256=`eb1d0f186507d7819db4136f8cbbdb00fc0e93c1f8dce63596ae1ab600280724`，v8 canonical/file SHA256分别为
+  `c1f50c5c146f6ec9765bb871ccaaf65ed7512a599ce7c39478047e262093236b`/
+  `d32b219d93437e44915c66e8d776713da5a3ecc87148aee46200f5393a4d7e6a`。repo/archive已只读；数据环境清单
+  复用上一不可变A8 release的已校验输入路径，无数据复制或修改。release manifest SHA256为
+  `dd96f1fa02eeb64a6b8a38c484ffbc1c82c1f6fba62adfd42ac54f6af759bac5`。
+- 作业：正式`4486932`于08:21:26在`amd_a8_768/m4cg1606`开始，case为
+  `2030_base_8760_rows8192_stagea_final_t64_mem700_slurm64_no_softmem_33f6b28_v1`。请求与实际均为
+  `64 CPU/700G/billing64`，Gurobi Threads64、无SoftMemLimit、Slurm/Gurobi双时限unlimited、不自动Stage B；
+  preflight `PASS`（67/3/2/0），双正式stderr 0，`STOP_REQUESTED`不存在。原A8 `4479238`与M9 `4990379`
+  同时继续RUNNING且未受影响。
+- 下一步：只读等待新任务归档原MPS并通过冻结LP身份，进入Barrier后对齐相同iteration与旧两条作业比较。
+  不主动停止三条任务、不启动第四条任务、不自动Stage B；最终停止决策归作者。
+
+### 2026-09-04 08:13+08:00 — A8 `64+700`与`48+600`实际计费探针
+
+- 范围/命令：按作者要求仅用`sbatch`提交四个1--2秒`true`探针，每个均为单节点、单任务、1分钟硬上限；
+  `64c700g`和`48c600g`各重复两次。未加载模型/Gurobi、未修改代码或正式release、未触碰两条活动作业。
+- 证据：`4486907/4486909`请求与实际均为`64 CPU/700G`且`billing64`，节点`m4cg1606`；
+  `4486908/4486910`请求`48 CPU/600G`但实际`AllocCPUS/billing96`，节点`m4cg1701`。两节点均为
+  128核/750G、双socket、每socket64核；四个探针均`COMPLETED 0:0`、stderr 0。
+- 结论：A8站点插件/调度器的内存与CPU放置粒度不是单调的简单每6G折一核；在当前配置中，恰好64核任务
+  可取得700G而仍按64核记账，48核600G则扩大为96核。最终财务仍应以计费平台扣款复核，但Slurm
+  `AllocTRES billing`的双重复证据明确支持优先选择`64+700`。这一规则可能被管理员调整，不视为永久合同。
+- 下一步边界：尚未提交第三条正式8760。现有canonical v7和wrapper只允许Gurobi Threads32；要测试64线程
+  的Barrier吞吐，需新增最小v8 Threads64 profile/allowlist、保持原LP和保存/QC合同、做回归与WLS smoke、
+  部署全新不可变release/output/control后提交。不得仅把Slurm改64而仍误称64线程求解；启动前须获得作者对
+  第三条长期付费8760任务的明确确认。A8/M9现有作业继续且不得主动中断。
+
+### 2026-09-04 08:07+08:00 — 32线程CPU占用与带宽瓶颈边界核验
+
+- 范围：只读两条正式作业的`sstat`累计CPU时间/RSS/I/O及`scontrol show node`，未向allocation添加step、
+  未使用profiler、未发信号或改文件；模型/release/profile和运行态均不变。
+- 采样：A8在24秒内累计CPU增加781秒，约32.54核；M9在25秒内增加788秒，约31.52核。二者均与Gurobi
+  Threads32一致，少量A8超出32来自wrapper/watcher等辅助进程。同期Slurm累计文件I/O增速约0.53/0.76MB/s，
+  Barrier不是磁盘或网络受限。
+- 解释边界：CPU时间只证明线程被调度运行，不能测出因DRAM等待造成的stall，也不能给出内存控制器GB/s。
+  当前用户权限/Slurm统计不含AMD Data Fabric/uncore内存流量计数，因此不声称达到理论带宽上限。A8的
+  单socket cpuset、超过半节点内存的RSS及同时存在的约30核其他节点负载，使其较可能承受remote-NUMA和共享
+  内存带宽代价；M9当前节点负载约等于本作业32线程且工作集可落在单socket容量内，带宽/NUMA条件更有利。
+- 下一步：正式作业期间继续只读，不附加perf/uProf。若完成后必须定量确定32线程上限，应在隔离诊断作业中
+  对同一原MPS固定少量Barrier迭代做16/24/32/48/64线程扫描，并同步采集AMD uncore/DF实际GB/s；没有该实验
+  前，不把当前32线程标为饱和点。
+
+### 2026-09-04 08:02+08:00 — A8/M9同LP Barrier首轮实测对照
+
+- Git/范围：正式release、模型、数据、profile和两条作业均未改动；只读检查`squeue/sacct/sstat`、节点与
+  control/output日志，并更新`CODEX_HANDOFF.md`。未创建`STOP_REQUESTED`、未发信号、未启动Stage B。
+- 可比性：A8/M9原始MPS归档大小均`4,142,715,779 bytes`，Barrier结构均为Dense cols 37,696、Free vars 26、
+  AA' NZ `7.469e8`、Factor NZ `3.375e10`、Factor Ops `1.849e15`、Threads 32；同iteration的primal/dual
+  objective、primal/dual residual、complementarity和Work完全相同。A8已到iter25，M9已到iter21，残差持续
+  下降，无数值警告或stderr。
+- 性能/费用：A8/M9构建至solver start约`2942/2241 s`；ordering `3482.83/2297.70 s`；同到iter21的solver
+  runtime `44439.783/34231.424 s`。稳定iter10→21平均`1236.50/1038.74 s/iter`，M9约快15.99%；按提交后
+  到iter21总wall约`13.16/10.13 h`，M9约快23.0%。在`billing64/102`且均按0.12元/核时的假设下，同进度
+  费用约`101.1/124.0元`，M9贵约22.7%；除非后续长尾使M9总耗时降到A8的62.75%以内，否则A8总经济性更好。
+- 资源/运行：A8/M9 `sstat MaxRSS`约`503822896/507835764 K`（约480.5/484.3GiB）；Gurobi当前内存约
+  362.87 decimal GB，日志峰值约586.70/575.13 decimal GB。两条主job/batch均RUNNING，双stderr 0，
+  `STOP_REQUESTED`均不存在。M9的`4990379.0 FAILED 0:00`仅为本轮`srun --overlap`只读CPU信息命令因
+  shell/grep退出码1形成的独立辅助step，未影响solver；以后不再向正式allocation添加诊断step。
+- 下一步：仅通过scheduler和已有日志观察两边相同iteration的wall/Work/残差与内存，不因暂时快慢自行停止；
+  最终中断权归作者。等待更多Barrier迭代后更新滚动中位数和达到共同收敛阈值的实际总费用。
+
+### 2026-09-03 21:51+08:00 — M9正式8760对照启动，禁止Codex主动中断
+
+- Git/范围：正式模型仍为不可变release commit`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`，未改模型、
+  数据、solver/formulation profile或正式wrapper。新增忽略目录
+  `.codex_tmp/m9_submit_formal_8760.sh`作为一次性可审计提交器，并更新`CODEX_HANDOFF.md`；A8作业、release
+  和结果根均未改动。提交器初版SHA256=`6b7d25fab04f1db75845209f9dcbd053552e0281c367a0949e575abdf97598ae`
+  把release wrapper误要求为可执行文件，两个本地SSH调用均在`test -x`处以rc1退出，未创建control、
+  未调用`sbatch`、未产生作业或计费；随后只将该前置检查修正为`test -f`，正式wrapper内容未变。
+  实际提交版本的本地/远端SHA256均为`be1e88078b416a5e6e6665e37bd43db06a64760822b438a297f65d130cf5fc52`。
+- 提交：修正版经远端`bash -n`后，从release repo调用`sbatch --partition=amd_m9_1.5T --nodes=1 --ntasks=1
+  --cpus-per-task=32 --mem=550G`，显式导出release/case/profile/commit/thread身份及
+  `http_proxy/https_proxy/ftp_proxy=172.18.1.5:8888`，未设置Slurm time limit。返回作业`4990379`；新control/
+  output仅属于case
+  `2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_m9_v1`，未复用历史目录。
+- 启动证据：`4990379`于21:49:56运行在`wqd10nbn11c08`，`AllocTRES=cpu=102,mem=550G,node=1,billing=102`；
+  `launch_identity.txt`锁定`slurm_cpus_per_task=102`但payload `gurobi_threads=32`、v7 no-SoftMemLimit profile、
+  `slurm_time_limit=UNLIMITED`、实现SHA和profile/formulation SHA。WLS成功取得Academic license 2847107，
+  `preflight_report.json=PASS`且计数`67/3/2/0`，scope为2030/full_year/base/SCIENTIFIC_PRODUCTION，双stderr 0。
+- 停止边界：作者要求本轮不由Codex主动中断。control中`STOP_REQUESTED`不存在；没有启动任何外部watcher、
+  定时器或自动停止任务。正式wrapper只保留人工创建`STOP_REQUESTED`后的优雅终止能力，不含自动Stage B、
+  Gurobi/Slurm TimeLimit或SoftMemLimit。下一步只读观察原MPS归档、精确结构/指纹/SHA门禁及Barrier逐迭代性能；
+  无论性能快慢，Codex不得自行触发停止。A8 `4479238`保持运行，作为同模型对照。
+
+### 2026-09-03 21:38+08:00 — M9代理`172.18.1.5:8888`通过网络与WLS双门禁
+
+- Git/范围：正式模型release仍为不可变commit`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`，模型、数据、
+  solver/formulation profile和许可证文件均未改变。本里程碑只修改忽略目录中的
+  `.codex_tmp/m9_netprobe.sh`候选代理并更新`CODEX_HANDOFF.md`；未启动正式8760任务。
+- 精确测试：将本地探针上传为
+  `/publicfs10/fs10-m9/home/m9s005194/m9_netprobe_172_18_1_5_exact.sh`，以
+  `sbatch -p amd_m9_1.5T -N 1 -n 1 -c 1 --mem=1G -t 00:03:00`提交`4990291`；计算节点
+  `wqd10nbn10c13`确认三个proxy变量均为`172.18.1.5:8888`，对`https://token.gurobi.com`返回代理隧道
+  200及上游HTTP/2 302，任务`COMPLETED 0:0`、wall 1秒、billing 1。
+- WLS验证：同一不可变release和运行环境通过`--export=ALL,http_proxy=172.18.1.5:8888,
+  https_proxy=172.18.1.5:8888,ftp_proxy=172.18.1.5:8888`提交smoke `4990292`。日志位于
+  `/publicfs10/fs10-m9/home/m9s005194/m9_wls_proxy_1_5_4990292.out`，先确认Academic license 2847107，
+  再由Gurobi 13.0.2将1变量最小LP解至optimal并打印release/profile smoke PASS；终态
+  `COMPLETED 0:0`、wall 6秒、billing 1，stderr为空。许可证内容未读取或记录。
+- 结论/下一步：M9缺失的是可用WLS网络出口而非许可证；`172.18.1.5:8888`已经实测闭合该出口。
+  两项探针均已结束且M9零活动作业。正式对照仍需使用全新case/output/control目录，显式继承这三个proxy
+  变量，并在提交后再次核对`AllocTRES billing=102`、preflight、模型指纹/MPS SHA及solver启动；未经作者
+  后续启动指令不提交正式8760任务。A8作业`4479238`继续运行，未受本测试影响。
+
+### 2026-09-03 21:17+08:00 — M9 release完成但WLS出口门禁阻止正式提交
+
+- Git/范围：模型仍为不可变release commit`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`，未改模型/profile/
+  数据。新增本机SSH别名`paracloud-bscc-m9`，以及忽略目录`.codex_tmp`中的M9环境清单和smoke/netprobe脚本；
+  更新`CODEX_HANDOFF.md`。M9远端建立全新版本根，没有覆盖A8输出。
+- 部署证据：跨集群单文件release包2.6GB，经两端SHA256一致后解包为约14MB repo和2.9GB数据；720MB运行
+  环境压缩至252MB、四分片校验传输并重组，整包SHA256一致后解压。Gurobi许可证内容未显示，目标文件权限
+  设为600；M9环境路径均指向`/publicfs10/fs10-m9/home/m9s005194`。
+- 资源/计费证据：`amd_m9_1.5T`的550G请求触发内存折核，`4989770`的请求态为`billing32`、实际
+  `AllocCPUS/AllocTRES billing=102`，因此挂牌0.12元/核时下约293.76元/天，不是32核费用。
+- 许可门禁：smoke`4989770`能加载复制的Python/Gurobi并打印WLS参数，但4分09秒未取得令牌，已取消；1核
+  探针证明计算节点DNS正常、公网443超时，且M9没有A8注入的HTTP(S)代理。随后`4990077`原样注入
+  `172.16.110.3:8888`，变量生效但Gurobi令牌端点仍超时，故该M8/A8代理明确不可复用。所有M9探针均已结束、当前零作业。
+  后续候选`172.18.1.1:8888`也由`4990190`在计算节点实测失败，不得写入正式环境。
+  下一步仅在取得平台确认的M9官方代理/许可证方案后重跑同一smoke；smoke明确PASS前不得提交付费8760任务。
+- A8对照：`4479238`未受迁移影响，持续正常Presolve、stderr0。后续若M9许可门禁闭合，两条正式任务应按
+  相同模型指纹、Presolve日志节点及Barrier逐迭代时间/Work/残差比较，不能按总wall混比数据迁移时间。
+
+### 2026-09-03 17:25+08:00 — 94核任务受控停止并启动32核/550G任务
+
+- Git/范围：模型release仍锁定`2820fc35f3e9005ce0bf771b0b94444ca1dc85d8`；未改模型、profile、数据或
+  云release。本里程碑仅修改`CODEX_HANDOFF.md`并执行云端作业切换。
+- 停止证据：创建旧case控制目录中的`STOP_REQUESTED`，wrapper于17:21:11记录
+  `controlled_stop_seen/controlled_sigterm_forwarded`。`4478922`最终`FAILED 2:0`是包装器对无可用Stage A
+  的fail-closed分类；Gurobi记录Presolve `2602.08 s`、0 iterations、`Solve interrupted`，terminal明确
+  `INCOMPLETE_NO_USABLE_STAGEA`。旧输出根及约4.14 GB原始MPS归档完整保留。
+- 新运行：以`sbatch -c 32 --mem=550G`和全新v4 case根提交`4479238`；Slurm实分配
+  `AllocCPUS=64/AllocTRES billing=64`，节点`m4cg1605`，而payload保持`SLURM_CPUS_PER_TASK=32`、Gurobi
+  `Threads=32`、`gurobi_soft_mem_limit=UNSET_PROFILE_NULL`、双时限unlimited。launch identity中的commit、
+  solver/formulation profile及SHA256与v7 release一致。
+- 验证/输出：新输出根的`preflight_report.json`为`PASS`（67/3/2/0），2030、8760h、31省和monolithic LP
+  边界通过；启动后双stderr为0。下一步只读观察build、原MPS归档、精确LP身份门禁及Barrier进展；不得并发
+  启动其他正式作业或Stage B。费用预算以最终`AllocTRES billing=64`而非`ReqTRES billing=32`为准。
 
 ### 2026-09-03 15:47+08:00 — 550G无SoftMemLimit正式候选启动
 
