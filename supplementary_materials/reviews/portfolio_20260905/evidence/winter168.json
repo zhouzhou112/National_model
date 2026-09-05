@@ -1,0 +1,1526 @@
+{
+  "generated_at": "2026-09-05T15:22:30.720540+08:00",
+  "scope": "LOCAL_REAL_INPUT_SERVICE_BLOCK_ONLY_NOT_SYSTEM_PLANNING",
+  "arguments": {
+    "output": "output\\portfolio_20260905\\winter168",
+    "year": 2030,
+    "hours": 168,
+    "start": 0,
+    "provinces": null,
+    "cases": [
+      "case1_thermal_v5",
+      "case2_ev_v5",
+      "case3_thermal_ev_v5"
+    ],
+    "threads": 4,
+    "time_limit": 300,
+    "bar_tol": 0.01,
+    "force_enrollment": true
+  },
+  "province_codes": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    21,
+    22,
+    23,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    50,
+    51,
+    52,
+    53,
+    54,
+    61,
+    62,
+    63,
+    64,
+    65
+  ],
+  "hashes": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load\\hourly_load_2025_2060.csv.gz": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_availability_hourly_v5.csv.gz": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_mobility_hourly_v5.csv.gz": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flexible_load_v5.manifest.json": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flex_enablement_cost_v5.csv": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_hourly_envelope_v5.csv.gz": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_portfolio.py": "6ce87baec9cfda00e4c45424f5468eca5d41e99568fdf86850f07f0b60538da9",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_load.py": "93c62b6e18e0399605b69e1764e0b9c9dfb379c9b34931834f1fbc70738d1263",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_load_numerics.py": "c4b9836e3060fc11d1e60988fd043a7e76d9b8ac15538235476940fba119c538",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\config.py": "50bde8bcbf733d3238a208833311318853978e1421b4370655df6ac0cd5638a9",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\solution_export.py": "abb89b24a55c141695623a8b38c97b1160b5def831559f452d6a15f322ab90be"
+  },
+  "cases": [
+    {
+      "case": "case1_thermal_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 25198,
+      "variables": 15189,
+      "nonzeros": 65399,
+      "build_seconds": 0.3162079000030644,
+      "solve_seconds": 0.04799985885620117,
+      "matrix_min": 0.10132825956607122,
+      "matrix_max": 5.0,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 31,
+        "optimization_hours": 168,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 168,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 4966,
+          "fixed_zero_up_variables_omitted": 242,
+          "possible_down_variables": 5208,
+          "active_down_variables": 4915,
+          "fixed_zero_down_variables_omitted": 293
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 4966,
+          "decay_anchor_state_variables": 3,
+          "retained_state_variables": 4969,
+          "redundant_inactive_state_variables_omitted": 239,
+          "retained_transition_rows": 4969,
+          "redundant_inactive_transition_rows_omitted": 239,
+          "maximum_retained_transition_gap_hours": 37,
+          "minimum_retained_transition_coefficient": 0.10132825956607122,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 4969,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 239,
+          "redundant_state_bound_rows_omitted": 239,
+          "redundant_state_transition_rows_omitted": 239
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 31,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 20,
+            "province_code": 46,
+            "maximum_cyclic_zero_control_run_hours": 142,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": 3.8158447888427935
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 4966,
+            "decay_anchor_state_variables": 3,
+            "retained_state_variables": 4969,
+            "redundant_inactive_state_variables_omitted": 239,
+            "retained_transition_rows": 4969,
+            "redundant_inactive_transition_rows_omitted": 239,
+            "maximum_retained_transition_gap_hours": 37,
+            "minimum_retained_transition_coefficient": 0.10132825956607122,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 80,
+          "fixed_zero_up_variables_omitted": 5128,
+          "possible_down_variables": 5208,
+          "active_down_variables": 49,
+          "fixed_zero_down_variables_omitted": 5159
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 80,
+          "decay_anchor_state_variables": 6,
+          "retained_state_variables": 86,
+          "redundant_inactive_state_variables_omitted": 5122,
+          "retained_transition_rows": 86,
+          "redundant_inactive_transition_rows_omitted": 5122,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 86,
+          "inactive_provinces_omitted": 29,
+          "fixed_zero_state_variables_omitted": 4872,
+          "redundant_state_variables_eliminated": 5122,
+          "redundant_state_bound_rows_omitted": 5122,
+          "redundant_state_transition_rows_omitted": 5122
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 29,
+          "worst_active_province": {
+            "province_position": 18,
+            "province_code": 44,
+            "maximum_cyclic_zero_control_run_hours": 165,
+            "retention_per_hour": 0.92,
+            "inverse_decay_amplification_log10": 5.975008487983378
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 80,
+            "decay_anchor_state_variables": 6,
+            "retained_state_variables": 86,
+            "redundant_inactive_state_variables_omitted": 5122,
+            "retained_transition_rows": 86,
+            "redundant_inactive_transition_rows_omitted": 5122,
+            "maximum_retained_transition_gap_hours": 27,
+            "minimum_retained_transition_coefficient": 0.10526193234946256,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 5208,
+        "ev_charge_deviation_constraints_omitted": 10416,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 5208,
+        "effective_load_static_lower_bound_min_gw": 1.4019028205272535,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 5208,
+        "redundant_raw_variables_omitted": 21391,
+        "net_raw_variables_removed": 21391,
+        "thermal_fixed_zero_raw_variables_omitted": 10822,
+        "thermal_fixed_zero_state_variables_omitted": 4872,
+        "thermal_redundant_state_variables_eliminated": 5361,
+        "thermal_tautological_contracted_power_rows_omitted": 10822,
+        "redundant_raw_constraint_rows_omitted": 42376,
+        "net_raw_constraint_rows_removed": 42376
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 142,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 3.8158447888427935
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 4966,
+              "decay_anchor_state_variables": 3,
+              "retained_state_variables": 4969,
+              "redundant_inactive_state_variables_omitted": 239,
+              "retained_transition_rows": 4969,
+              "redundant_inactive_transition_rows_omitted": 239,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 29,
+            "worst_active_province": {
+              "province_position": 18,
+              "province_code": 44,
+              "maximum_cyclic_zero_control_run_hours": 165,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 5.975008487983378
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 80,
+              "decay_anchor_state_variables": 6,
+              "retained_state_variables": 86,
+              "redundant_inactive_state_variables_omitted": 5122,
+              "retained_transition_rows": 86,
+              "redundant_inactive_transition_rows_omitted": 5122,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "objective": 88592.21641720006,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 0.0,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 0.0,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "disabled_enrollment_violation": 0.0,
+        "heating_transition_gwh": 7.157818614589946e-12,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 2.8168858976223584e-12,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 2.842170943040401e-14
+      },
+      "max_qc_residual": 7.157818614589946e-12,
+      "gurobi_quality": {
+        "ConstrVio": 7.157818614589946e-12,
+        "ConstrResidual": 0.0,
+        "BoundVio": 0.0
+      },
+      "capacity_gw": [
+        [
+          3.4100955233651065e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.3463123678914625e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.2284641655154755e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.424243049124734e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.2564375102565906e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.430573811506444e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.3778585779433925e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.3033147739444946e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.375034663133313e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.7638651789690595e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.330869739491626e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.2932743123775246e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          4.1122116661391963e-07,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.4035902803588644e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.001506260479162e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.9615851577362758e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.280227375924223e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.081530516777999e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.380279818819459e-07,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.6287213101514354e-07,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          9.384905814994149e-08,
+          0.0,
+          0.0
+        ],
+        [
+          3.42045160888168e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.894141808112326e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.073187568058852e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.039067735681529e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.823766630565782e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.3107500114478455e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.348587791158373e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.209648491447671e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          2.953024932555058e-08,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          3.426542733936024e-08,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 7.094599453709438e-05,
+        "flexible_load_v5_v2g_infrastructure": 0.0,
+        "flexible_load_v5_thermal_activation": 3.711467243217857e-05,
+        "flexible_load_v5_ev_v1g_relocation": 0.0,
+        "flexible_load_v5_ev_v2g_participation": 0.0,
+        "flexible_load_v5_ev_v2g_degradation": 0.0
+      },
+      "passed": true
+    },
+    {
+      "case": "case2_ev_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 41851,
+      "variables": 31434,
+      "nonzeros": 140957,
+      "build_seconds": 0.6996561999840196,
+      "solve_seconds": 0.03900003433227539,
+      "matrix_min": 0.000870038629739,
+      "matrix_max": 12.96613257523194,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 31,
+        "optimization_hours": 168,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 168,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 0,
+          "fixed_zero_up_variables_omitted": 5208,
+          "possible_down_variables": 5208,
+          "active_down_variables": 0,
+          "fixed_zero_down_variables_omitted": 5208
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 0,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 0,
+          "redundant_inactive_state_variables_omitted": 5208,
+          "retained_transition_rows": 0,
+          "redundant_inactive_transition_rows_omitted": 5208,
+          "maximum_retained_transition_gap_hours": 0,
+          "minimum_retained_transition_coefficient": null,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 0,
+          "inactive_provinces_omitted": 31,
+          "fixed_zero_state_variables_omitted": 5208,
+          "redundant_state_variables_eliminated": 5208,
+          "redundant_state_bound_rows_omitted": 5208,
+          "redundant_state_transition_rows_omitted": 5208
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 31,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 5208,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 5208,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 0,
+          "fixed_zero_up_variables_omitted": 5208,
+          "possible_down_variables": 5208,
+          "active_down_variables": 0,
+          "fixed_zero_down_variables_omitted": 5208
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 0,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 0,
+          "redundant_inactive_state_variables_omitted": 5208,
+          "retained_transition_rows": 0,
+          "redundant_inactive_transition_rows_omitted": 5208,
+          "maximum_retained_transition_gap_hours": 0,
+          "minimum_retained_transition_coefficient": null,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 0,
+          "inactive_provinces_omitted": 31,
+          "fixed_zero_state_variables_omitted": 5208,
+          "redundant_state_variables_eliminated": 5208,
+          "redundant_state_bound_rows_omitted": 5208,
+          "redundant_state_transition_rows_omitted": 5208
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 31,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 5208,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 5208,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 5208,
+        "ev_charge_deviation_constraints_omitted": 10416,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 5208,
+        "effective_load_static_lower_bound_min_gw": 1.4051691126929866,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 5208,
+        "redundant_raw_variables_omitted": 36456,
+        "net_raw_variables_removed": 36456,
+        "thermal_fixed_zero_raw_variables_omitted": 20832,
+        "thermal_fixed_zero_state_variables_omitted": 10416,
+        "thermal_redundant_state_variables_eliminated": 10416,
+        "thermal_tautological_contracted_power_rows_omitted": 20832,
+        "redundant_raw_constraint_rows_omitted": 62496,
+        "net_raw_constraint_rows_removed": 62496
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": false,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 5208,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 5208,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 5208,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 5208,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+      },
+      "objective": 89271.96654125668,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 2.7755575615628914e-17,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 1.7942385724389887e-06,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 3.894691952832652e-07,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "heating_transition_gwh": 0.0,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 0.0,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 2.842170943040401e-14
+      },
+      "max_qc_residual": 1.7942385724389887e-06,
+      "gurobi_quality": {
+        "ConstrVio": 1.7942385723834775e-06,
+        "ConstrResidual": 0.0,
+        "BoundVio": 0.0
+      },
+      "capacity_gw": [
+        [
+          0.0,
+          0.0,
+          0.27467599304886087,
+          0.09155866434962028
+        ],
+        [
+          0.0,
+          0.0,
+          0.1471321549002797,
+          0.04904405163342657
+        ],
+        [
+          0.0,
+          0.0,
+          0.2830260436092579,
+          0.09434201453641931
+        ],
+        [
+          0.0,
+          0.0,
+          0.1421176173396226,
+          0.04737253911320755
+        ],
+        [
+          0.0,
+          0.0,
+          0.07110739596093835,
+          0.023702465320312775
+        ],
+        [
+          0.0,
+          0.0,
+          0.1281503876249432,
+          0.040943778652322176
+        ],
+        [
+          0.0,
+          0.0,
+          0.0700855120577123,
+          0.02336183735257077
+        ],
+        [
+          0.0,
+          0.0,
+          0.05439663596923695,
+          0.01813221198974565
+        ],
+        [
+          0.0,
+          0.0,
+          0.4876384064734736,
+          0.1557994427254848
+        ],
+        [
+          0.0,
+          0.0,
+          0.7105707638877666,
+          0.18989246236973298
+        ],
+        [
+          0.0,
+          0.0,
+          0.5977304447609414,
+          0.19097361683892852
+        ],
+        [
+          0.0,
+          0.0,
+          0.2439829405973896,
+          0.08132764686579655
+        ],
+        [
+          0.0,
+          0.0,
+          0.20482635447348535,
+          0.0682754514911618
+        ],
+        [
+          0.0,
+          0.0,
+          0.1800203834323833,
+          0.04810852855764005
+        ],
+        [
+          0.0,
+          0.0,
+          0.4994549268452962,
+          0.16648497561509876
+        ],
+        [
+          0.0,
+          0.0,
+          0.5839613164602648,
+          0.1462846501679435
+        ],
+        [
+          0.0,
+          0.0,
+          0.3192553719534358,
+          0.07997475018299925
+        ],
+        [
+          0.0,
+          0.0,
+          0.2916297735913633,
+          0.07305442707568795
+        ],
+        [
+          0.0,
+          0.0,
+          1.2769110258883194,
+          0.3198713295769701
+        ],
+        [
+          0.0,
+          0.0,
+          0.21593480563623904,
+          0.07197826854541302
+        ],
+        [
+          0.0,
+          0.0,
+          0.1136187508274296,
+          0.028461952442427274
+        ],
+        [
+          0.0,
+          0.0,
+          0.2119569111541708,
+          0.05309605572302588
+        ],
+        [
+          0.0,
+          0.0,
+          0.4323949383142023,
+          0.10831666499605647
+        ],
+        [
+          0.0,
+          0.0,
+          0.15013358357550285,
+          0.03760906438962135
+        ],
+        [
+          0.0,
+          0.0,
+          0.1398146547772459,
+          0.04660488492574865
+        ],
+        [
+          0.0,
+          0.0,
+          0.0059055557246529,
+          0.0019685185748843
+        ],
+        [
+          0.0,
+          0.0,
+          0.183273993435344,
+          0.06109133114511465
+        ],
+        [
+          0.0,
+          0.0,
+          0.0500651189603438,
+          0.016688372986781275
+        ],
+        [
+          0.0,
+          0.0,
+          0.01388299807306485,
+          0.00462766602435495
+        ],
+        [
+          0.0,
+          0.0,
+          0.0232538700783435,
+          0.0077512900261145
+        ],
+        [
+          0.0,
+          0.0,
+          0.0615641698383268,
+          0.020521389946108925
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 632.1415862046335,
+        "flexible_load_v5_v2g_infrastructure": 94.68881216562882,
+        "flexible_load_v5_thermal_activation": 0.0,
+        "flexible_load_v5_ev_v1g_relocation": 42.824302194628835,
+        "flexible_load_v5_ev_v2g_participation": 0.0730210673913859,
+        "flexible_load_v5_ev_v2g_degradation": 0.1947228463770288
+      },
+      "passed": true
+    },
+    {
+      "case": "case3_thermal_ev_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 67017,
+      "variables": 46499,
+      "nonzeros": 206263,
+      "build_seconds": 1.0074459000024945,
+      "solve_seconds": 0.14899992942810059,
+      "matrix_min": 0.000870038629739,
+      "matrix_max": 12.96613257523194,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 31,
+        "optimization_hours": 168,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 168,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 4966,
+          "fixed_zero_up_variables_omitted": 242,
+          "possible_down_variables": 5208,
+          "active_down_variables": 4915,
+          "fixed_zero_down_variables_omitted": 293
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 4966,
+          "decay_anchor_state_variables": 3,
+          "retained_state_variables": 4969,
+          "redundant_inactive_state_variables_omitted": 239,
+          "retained_transition_rows": 4969,
+          "redundant_inactive_transition_rows_omitted": 239,
+          "maximum_retained_transition_gap_hours": 37,
+          "minimum_retained_transition_coefficient": 0.10132825956607122,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 4969,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 239,
+          "redundant_state_bound_rows_omitted": 239,
+          "redundant_state_transition_rows_omitted": 239
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 31,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 20,
+            "province_code": 46,
+            "maximum_cyclic_zero_control_run_hours": 142,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": 3.8158447888427935
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 4966,
+            "decay_anchor_state_variables": 3,
+            "retained_state_variables": 4969,
+            "redundant_inactive_state_variables_omitted": 239,
+            "retained_transition_rows": 4969,
+            "redundant_inactive_transition_rows_omitted": 239,
+            "maximum_retained_transition_gap_hours": 37,
+            "minimum_retained_transition_coefficient": 0.10132825956607122,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 5208,
+          "active_up_variables": 80,
+          "fixed_zero_up_variables_omitted": 5128,
+          "possible_down_variables": 5208,
+          "active_down_variables": 49,
+          "fixed_zero_down_variables_omitted": 5159
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 5208,
+          "control_support_state_variables": 80,
+          "decay_anchor_state_variables": 6,
+          "retained_state_variables": 86,
+          "redundant_inactive_state_variables_omitted": 5122,
+          "retained_transition_rows": 86,
+          "redundant_inactive_transition_rows_omitted": 5122,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 86,
+          "inactive_provinces_omitted": 29,
+          "fixed_zero_state_variables_omitted": 4872,
+          "redundant_state_variables_eliminated": 5122,
+          "redundant_state_bound_rows_omitted": 5122,
+          "redundant_state_transition_rows_omitted": 5122
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 29,
+          "worst_active_province": {
+            "province_position": 18,
+            "province_code": 44,
+            "maximum_cyclic_zero_control_run_hours": 165,
+            "retention_per_hour": 0.92,
+            "inverse_decay_amplification_log10": 5.975008487983378
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 5208,
+            "control_support_state_variables": 80,
+            "decay_anchor_state_variables": 6,
+            "retained_state_variables": 86,
+            "redundant_inactive_state_variables_omitted": 5122,
+            "retained_transition_rows": 86,
+            "redundant_inactive_transition_rows_omitted": 5122,
+            "maximum_retained_transition_gap_hours": 27,
+            "minimum_retained_transition_coefficient": 0.10526193234946256,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 5208,
+        "ev_charge_deviation_constraints_omitted": 10416,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 5208,
+        "effective_load_static_lower_bound_min_gw": 1.3962612420405598,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 5208,
+        "redundant_raw_variables_omitted": 21391,
+        "net_raw_variables_removed": 21391,
+        "thermal_fixed_zero_raw_variables_omitted": 10822,
+        "thermal_fixed_zero_state_variables_omitted": 4872,
+        "thermal_redundant_state_variables_eliminated": 5361,
+        "thermal_tautological_contracted_power_rows_omitted": 10822,
+        "redundant_raw_constraint_rows_omitted": 42376,
+        "net_raw_constraint_rows_removed": 42376
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 142,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 3.8158447888427935
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 4966,
+              "decay_anchor_state_variables": 3,
+              "retained_state_variables": 4969,
+              "redundant_inactive_state_variables_omitted": 239,
+              "retained_transition_rows": 4969,
+              "redundant_inactive_transition_rows_omitted": 239,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 29,
+            "worst_active_province": {
+              "province_position": 18,
+              "province_code": 44,
+              "maximum_cyclic_zero_control_run_hours": 165,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 5.975008487983378
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 5208,
+              "control_support_state_variables": 80,
+              "decay_anchor_state_variables": 6,
+              "retained_state_variables": 86,
+              "redundant_inactive_state_variables_omitted": 5122,
+              "retained_transition_rows": 86,
+              "redundant_inactive_transition_rows_omitted": 5122,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "objective": 89272.03551116513,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 2.7755575615628914e-17,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 1.5627747707025463e-09,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 3.392495936949125e-10,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "heating_transition_gwh": 3.801036567839685e-09,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 1.495858847216664e-09,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 2.842170943040401e-14
+      },
+      "max_qc_residual": 3.801036567839685e-09,
+      "gurobi_quality": {
+        "ConstrVio": 3.801036567826132e-09,
+        "ConstrResidual": 0.0,
+        "BoundVio": 0.0
+      },
+      "capacity_gw": [
+        [
+          4.735626231129383e-05,
+          0.0,
+          0.27467599304886087,
+          0.09155866434962028
+        ],
+        [
+          4.702046662226865e-05,
+          0.0,
+          0.1471321549002797,
+          0.04904405163342657
+        ],
+        [
+          4.732096835228253e-05,
+          0.0,
+          0.2830260436092579,
+          0.09434201453641931
+        ],
+        [
+          4.732271882940532e-05,
+          0.0,
+          0.1421176173396226,
+          0.04737253911320755
+        ],
+        [
+          4.773375787400574e-05,
+          0.0,
+          0.07110739596093835,
+          0.023702465320312775
+        ],
+        [
+          4.730230199275799e-05,
+          0.0,
+          0.1281503876249432,
+          0.040943778652322176
+        ],
+        [
+          4.6847755657564903e-05,
+          0.0,
+          0.0700855120577123,
+          0.02336183735257077
+        ],
+        [
+          4.7248504627069087e-05,
+          0.0,
+          0.05439663596923695,
+          0.01813221198974565
+        ],
+        [
+          4.7421109919964426e-05,
+          0.0,
+          0.4876384064734736,
+          0.1557994427254848
+        ],
+        [
+          4.464085411878563e-05,
+          0.0,
+          0.7105707638877666,
+          0.18989246236973298
+        ],
+        [
+          4.748599802251256e-05,
+          0.0,
+          0.5977304447609414,
+          0.19097361683892852
+        ],
+        [
+          4.749962726805152e-05,
+          0.0,
+          0.2439829405973896,
+          0.08132764686579655
+        ],
+        [
+          0.0003865489350554142,
+          0.0,
+          0.20482635447348535,
+          0.0682754514911618
+        ],
+        [
+          4.736984251057529e-05,
+          0.0,
+          0.1800203834323833,
+          0.04810852855764005
+        ],
+        [
+          4.583014283785096e-05,
+          0.0,
+          0.4994549268452962,
+          0.16648497561509876
+        ],
+        [
+          4.5822902781554614e-05,
+          0.0,
+          0.5839613164602648,
+          0.1462846501679435
+        ],
+        [
+          4.749066063544871e-05,
+          0.0,
+          0.3192553719534358,
+          0.07997475018299925
+        ],
+        [
+          4.602843807861851e-05,
+          0.0,
+          0.2916297735913633,
+          0.07305442707568795
+        ],
+        [
+          0.0002289243605474358,
+          0.0,
+          1.2769110258883194,
+          0.3198713295769701
+        ],
+        [
+          0.00030891097807220756,
+          0.0,
+          0.21593480563623904,
+          0.07197826854541302
+        ],
+        [
+          0.0,
+          0.00015887733459869302,
+          0.1136187508274296,
+          0.028461952442427274
+        ],
+        [
+          4.733224018814628e-05,
+          0.0,
+          0.2119569111541708,
+          0.05309605572302588
+        ],
+        [
+          4.564701334043014e-05,
+          0.0,
+          0.4323949383142023,
+          0.10831666499605647
+        ],
+        [
+          4.605202194582928e-05,
+          0.0,
+          0.15013358357550285,
+          0.03760906438962135
+        ],
+        [
+          4.589256455789879e-05,
+          0.0,
+          0.1398146547772459,
+          0.04660488492574865
+        ],
+        [
+          4.4999855279719464e-05,
+          0.0,
+          0.0059055557246529,
+          0.0019685185748843
+        ],
+        [
+          4.749705757480183e-05,
+          0.0,
+          0.183273993435344,
+          0.06109133114511465
+        ],
+        [
+          4.7015369553621153e-05,
+          0.0,
+          0.0500651189603438,
+          0.016688372986781275
+        ],
+        [
+          4.8232188963768185e-05,
+          0.0,
+          0.01388299807306485,
+          0.00462766602435495
+        ],
+        [
+          4.617340063957042e-05,
+          0.0,
+          0.0232538700783435,
+          0.0077512900261145
+        ],
+        [
+          4.7174652580045346e-05,
+          0.0,
+          0.0615641698383268,
+          0.020521389946108925
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 632.235467016047,
+        "flexible_load_v5_v2g_infrastructure": 94.68881216562882,
+        "flexible_load_v5_thermal_activation": 0.04960931419526075,
+        "flexible_load_v5_ev_v1g_relocation": 43.13792049969097,
+        "flexible_load_v5_ev_v2g_participation": 0.06410122507635986,
+        "flexible_load_v5_ev_v2g_degradation": 0.17093660020362456
+      },
+      "passed": true
+    }
+  ],
+  "passed": true
+}

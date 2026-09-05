@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-05 15:51+0800 V5三情景的4h总wall边界与未通过门禁
+
+- 2026-09-05 15:51+0800 V5三情景里程碑：作者明确case1=Base+冷热、case2=Base+EV、case3=Base+冷热+EV。
+  实现提交`87b534f2cf1f24b9a2bbe084b85f7adc2066f976`（父`860ab84`）新增可选签约/两EV服务池/冷热共享功率，
+  保留原始负荷、旧V5及Base供给侧。主比较显式沿用Base峰值容量约束，不给未经事件验证的静态firm credit。
+  127项本地回归PASS；三组全国24h basic求解/QC/导出/manifest均PASS；31省8760h独立服务块三组PASS，联合
+  2,303,225变量/3,310,291行（含62条诊断份额固定行），最大物理残差1.99e-11。不能当全国全年规划验证。
+  无Crossover的全国24h Base/联合均暴露水库行残差；BarHomogeneous1、NumericFocus3、Aggregate0对照仍未通过
+  原单位QC。候选全年profile虽已独立注册，正式无Crossover数值资格仍NOT_QUALIFIED，禁止误报可直接正式投产。
+  云端仅部署新不可变release`20260905_v5_portfolios_87b534f_v1`，282文件校验、三配置/预算guard/语法检查PASS，
+  三个小时V5输入SHA与本地一致；本轮零云端作业，wrapper强制Slurm总wall<=4h（含build/archive）。原T32
+  `4479238`继续RUNNING；T44作者在另一任务受控停止，按现有15:23交接保留，未由本轮干预。
+  详情及证据：`supplementary_materials/reviews/portfolio_20260905/REVIEW_CN.md`、`delivery_manifest.json`。
+  下一步：从本地失败原模型定位水库尺度/近零边界/周期行依赖，做数学等价数值处理门禁；不热改Base，不启动
+  新云端全年任务、不自动Stage B，不因部署完成而宣称全年可解性成立。
+
 ## 2026-09-03 15:47 current override：只读监测job 4478922
 
 - 活动唯一作业是`4478922`，release=`20260903_8760_stagea_final_2820fc3_v3`、tip=`2820fc3`、case=

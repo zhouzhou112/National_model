@@ -1,0 +1,19 @@
+{
+  "status": "POST_SOLVE_FINALIZATION_FAILED",
+  "scientifically_accepted": false,
+  "failed_stage": "solve_report",
+  "error_type": "ValueError",
+  "error": "Out of range float values are not JSON compliant: inf",
+  "accepted_checkpoint_retained": false,
+  "immutable_evidence": {
+    "solve_report.json": {
+      "bytes": 68960,
+      "sha256": "a9e58f688a6dbbf53e7c169c9c548d642117494f9cd321dae07c3c91706a79c3"
+    },
+    "solution_qc.json": {
+      "bytes": 17559,
+      "sha256": "8f15aff5d2b5afe92fc787738ee77131d4f4a11b4927258cf07ec9a6ac24b881"
+    }
+  },
+  "recovery": "Keep this output immutable. Repair/retry packaging from the checksummed checkpoint or use --recover-stage-a-from into a new output directory; never rerun into this directory."
+}

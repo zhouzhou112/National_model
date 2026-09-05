@@ -1,0 +1,978 @@
+{
+  "generated_at": "2026-09-05T15:23:10.878707+08:00",
+  "scope": "LOCAL_REAL_INPUT_SERVICE_BLOCK_ONLY_NOT_SYSTEM_PLANNING",
+  "arguments": {
+    "output": "output\\portfolio_20260905\\longchain8760",
+    "year": 2030,
+    "hours": 8760,
+    "start": 0,
+    "provinces": [
+      46,
+      63
+    ],
+    "cases": [
+      "case1_thermal_v5",
+      "case2_ev_v5",
+      "case3_thermal_ev_v5"
+    ],
+    "threads": 4,
+    "time_limit": 300,
+    "bar_tol": 0.01,
+    "force_enrollment": true
+  },
+  "province_codes": [
+    46,
+    63
+  ],
+  "hashes": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load\\hourly_load_2025_2060.csv.gz": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_availability_hourly_v5.csv.gz": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_mobility_hourly_v5.csv.gz": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flexible_load_v5.manifest.json": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flex_enablement_cost_v5.csv": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_hourly_envelope_v5.csv.gz": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_portfolio.py": "6ce87baec9cfda00e4c45424f5468eca5d41e99568fdf86850f07f0b60538da9",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_load.py": "93c62b6e18e0399605b69e1764e0b9c9dfb379c9b34931834f1fbc70738d1263",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\flexible_load_numerics.py": "c4b9836e3060fc11d1e60988fd043a7e76d9b8ac15538235476940fba119c538",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\config.py": "50bde8bcbf733d3238a208833311318853978e1421b4370655df6ac0cd5638a9",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\solution_export.py": "abb89b24a55c141695623a8b38c97b1160b5def831559f452d6a15f322ab90be"
+  },
+  "cases": [
+    {
+      "case": "case1_thermal_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 75717,
+      "variables": 44914,
+      "nonzeros": 194758,
+      "build_seconds": 1.0088086999894585,
+      "solve_seconds": 0.56600022315979,
+      "matrix_min": 0.10132825956607122,
+      "matrix_max": 5.0,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 2,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 8070,
+          "fixed_zero_up_variables_omitted": 9450,
+          "possible_down_variables": 17520,
+          "active_down_variables": 7590,
+          "fixed_zero_down_variables_omitted": 9930
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 8070,
+          "decay_anchor_state_variables": 212,
+          "retained_state_variables": 8282,
+          "redundant_inactive_state_variables_omitted": 9238,
+          "retained_transition_rows": 8282,
+          "redundant_inactive_transition_rows_omitted": 9238,
+          "maximum_retained_transition_gap_hours": 37,
+          "minimum_retained_transition_coefficient": 0.10132825956607122,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 8282,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 9238,
+          "redundant_state_bound_rows_omitted": 9238,
+          "redundant_state_transition_rows_omitted": 9238
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 0,
+            "province_code": 46,
+            "maximum_cyclic_zero_control_run_hours": 6378,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": 171.3905497411221
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 8070,
+            "decay_anchor_state_variables": 212,
+            "retained_state_variables": 8282,
+            "redundant_inactive_state_variables_omitted": 9238,
+            "retained_transition_rows": 8282,
+            "redundant_inactive_transition_rows_omitted": 9238,
+            "maximum_retained_transition_gap_hours": 37,
+            "minimum_retained_transition_coefficient": 0.10132825956607122,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 7058,
+          "fixed_zero_up_variables_omitted": 10462,
+          "possible_down_variables": 17520,
+          "active_down_variables": 6508,
+          "fixed_zero_down_variables_omitted": 11012
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 7058,
+          "decay_anchor_state_variables": 340,
+          "retained_state_variables": 7398,
+          "redundant_inactive_state_variables_omitted": 10122,
+          "retained_transition_rows": 7398,
+          "redundant_inactive_transition_rows_omitted": 10122,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 7398,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 10122,
+          "redundant_state_bound_rows_omitted": 10122,
+          "redundant_state_transition_rows_omitted": 10122
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 1,
+            "province_code": 63,
+            "maximum_cyclic_zero_control_run_hours": 6332,
+            "retention_per_hour": 0.92,
+            "inverse_decay_amplification_log10": 229.29547724794392
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 7058,
+            "decay_anchor_state_variables": 340,
+            "retained_state_variables": 7398,
+            "redundant_inactive_state_variables_omitted": 10122,
+            "retained_transition_rows": 7398,
+            "redundant_inactive_transition_rows_omitted": 10122,
+            "maximum_retained_transition_gap_hours": 27,
+            "minimum_retained_transition_coefficient": 0.10526193234946256,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 17520,
+        "ev_charge_deviation_constraints_omitted": 35040,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 17520,
+        "effective_load_static_lower_bound_min_gw": 3.8795917621294973,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 17520,
+        "redundant_raw_variables_omitted": 77734,
+        "net_raw_variables_removed": 77734,
+        "thermal_fixed_zero_raw_variables_omitted": 40854,
+        "thermal_fixed_zero_state_variables_omitted": 0,
+        "thermal_redundant_state_variables_eliminated": 19360,
+        "thermal_tautological_contracted_power_rows_omitted": 40854,
+        "redundant_raw_constraint_rows_omitted": 149654,
+        "net_raw_constraint_rows_removed": 149654
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 0,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 8070,
+              "decay_anchor_state_variables": 212,
+              "retained_state_variables": 8282,
+              "redundant_inactive_state_variables_omitted": 9238,
+              "retained_transition_rows": 8282,
+              "redundant_inactive_transition_rows_omitted": 9238,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 1,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 7058,
+              "decay_anchor_state_variables": 340,
+              "retained_state_variables": 7398,
+              "redundant_inactive_state_variables_omitted": 10122,
+              "retained_transition_rows": 7398,
+              "redundant_inactive_transition_rows_omitted": 10122,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "objective": 72982.14298292852,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 0.0,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 0.0,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "disabled_enrollment_violation": 0.0,
+        "heating_transition_gwh": 5.287702170430432e-09,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 7.439075422960191e-07,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 3.552713678800501e-15
+      },
+      "max_qc_residual": 7.439075422960191e-07,
+      "gurobi_quality": {
+        "ConstrVio": 7.439075422960191e-07,
+        "ConstrResidual": 0.0,
+        "BoundVio": 7.753046240513325e-07
+      },
+      "capacity_gw": [
+        [
+          3.3127292236384167e-07,
+          3.4718674577540463e-06,
+          0.0,
+          0.0
+        ],
+        [
+          2.6817079714431044e-06,
+          5.5701735311875833e-08,
+          0.0,
+          0.0
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 0.00026162200347491473,
+        "flexible_load_v5_v2g_infrastructure": 0.0,
+        "flexible_load_v5_thermal_activation": 0.0005788745968431323,
+        "flexible_load_v5_ev_v1g_relocation": 0.0,
+        "flexible_load_v5_ev_v2g_participation": 0.0,
+        "flexible_load_v5_ev_v2g_degradation": 0.0
+      },
+      "passed": true
+    },
+    {
+      "case": "case2_ev_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 140173,
+      "variables": 105132,
+      "nonzeros": 473062,
+      "build_seconds": 2.454186799994204,
+      "solve_seconds": 0.3250000476837158,
+      "matrix_min": 0.002045318879938,
+      "matrix_max": 1.9263049413034787,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 2,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 0,
+          "fixed_zero_up_variables_omitted": 17520,
+          "possible_down_variables": 17520,
+          "active_down_variables": 0,
+          "fixed_zero_down_variables_omitted": 17520
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 0,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 0,
+          "redundant_inactive_state_variables_omitted": 17520,
+          "retained_transition_rows": 0,
+          "redundant_inactive_transition_rows_omitted": 17520,
+          "maximum_retained_transition_gap_hours": 0,
+          "minimum_retained_transition_coefficient": null,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 0,
+          "inactive_provinces_omitted": 2,
+          "fixed_zero_state_variables_omitted": 17520,
+          "redundant_state_variables_eliminated": 17520,
+          "redundant_state_bound_rows_omitted": 17520,
+          "redundant_state_transition_rows_omitted": 17520
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 2,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 17520,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 17520,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 0,
+          "fixed_zero_up_variables_omitted": 17520,
+          "possible_down_variables": 17520,
+          "active_down_variables": 0,
+          "fixed_zero_down_variables_omitted": 17520
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 0,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 0,
+          "redundant_inactive_state_variables_omitted": 17520,
+          "retained_transition_rows": 0,
+          "redundant_inactive_transition_rows_omitted": 17520,
+          "maximum_retained_transition_gap_hours": 0,
+          "minimum_retained_transition_coefficient": null,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 0,
+          "inactive_provinces_omitted": 2,
+          "fixed_zero_state_variables_omitted": 17520,
+          "redundant_state_variables_eliminated": 17520,
+          "redundant_state_bound_rows_omitted": 17520,
+          "redundant_state_transition_rows_omitted": 17520
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 2,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 17520,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 17520,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 17520,
+        "ev_charge_deviation_constraints_omitted": 35040,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 17520,
+        "effective_load_static_lower_bound_min_gw": 3.7697042625135486,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 17520,
+        "redundant_raw_variables_omitted": 122640,
+        "net_raw_variables_removed": 122640,
+        "thermal_fixed_zero_raw_variables_omitted": 70080,
+        "thermal_fixed_zero_state_variables_omitted": 35040,
+        "thermal_redundant_state_variables_eliminated": 35040,
+        "thermal_tautological_contracted_power_rows_omitted": 70080,
+        "redundant_raw_constraint_rows_omitted": 210240,
+        "net_raw_constraint_rows_removed": 210240
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": false,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 17520,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 17520,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 17520,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 17520,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+      },
+      "objective": 72959.38810838842,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 9.121507431320008e-08,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 1.9799819055144052e-08,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "heating_transition_gwh": 0.0,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 0.0,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 3.552713678800501e-15
+      },
+      "max_qc_residual": 9.121507431320008e-08,
+      "gurobi_quality": {
+        "ConstrVio": 9.121507432707787e-08,
+        "ConstrResidual": 0.0,
+        "BoundVio": 0.0
+      },
+      "capacity_gw": [
+        [
+          0.0,
+          0.0,
+          0.1136187508274296,
+          0.028461952442427274
+        ],
+        [
+          0.0,
+          0.0,
+          0.01388299807306485,
+          0.00462766602435495
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 9.6354820420366,
+        "flexible_load_v5_v2g_infrastructure": 1.323584738671289,
+        "flexible_load_v5_thermal_activation": 0.0,
+        "flexible_load_v5_ev_v1g_relocation": 31.482419090572005,
+        "flexible_load_v5_ev_v2g_participation": 0.15033142145185924,
+        "flexible_load_v5_ev_v2g_degradation": 0.40088379053829126
+      },
+      "passed": true
+    },
+    {
+      "case": "case3_thermal_ev_v5",
+      "solver_version": [
+        13,
+        0,
+        2
+      ],
+      "status": 2,
+      "rows": 215887,
+      "variables": 150038,
+      "nonzeros": 667814,
+      "build_seconds": 3.1308987000084016,
+      "solve_seconds": 1.0390000343322754,
+      "matrix_min": 0.002045318879938,
+      "matrix_max": 5.0,
+      "structural_audit": {
+        "schema_version": "cispo_flexible_load_structural_audit_v2",
+        "formulation": "integrated_service_constrained_v5",
+        "contract_version": "v5",
+        "portfolio_contract": "optional_service_pools_v1",
+        "province_count": 2,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "heating_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 8070,
+          "fixed_zero_up_variables_omitted": 9450,
+          "possible_down_variables": 17520,
+          "active_down_variables": 7590,
+          "fixed_zero_down_variables_omitted": 9930
+        },
+        "heating_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 8070,
+          "decay_anchor_state_variables": 212,
+          "retained_state_variables": 8282,
+          "redundant_inactive_state_variables_omitted": 9238,
+          "retained_transition_rows": 8282,
+          "redundant_inactive_transition_rows_omitted": 9238,
+          "maximum_retained_transition_gap_hours": 37,
+          "minimum_retained_transition_coefficient": 0.10132825956607122,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 8282,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 9238,
+          "redundant_state_bound_rows_omitted": 9238,
+          "redundant_state_transition_rows_omitted": 9238
+        },
+        "heating_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 0,
+            "province_code": 46,
+            "maximum_cyclic_zero_control_run_hours": 6378,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": 171.3905497411221
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 8070,
+            "decay_anchor_state_variables": 212,
+            "retained_state_variables": 8282,
+            "redundant_inactive_state_variables_omitted": 9238,
+            "retained_transition_rows": 8282,
+            "redundant_inactive_transition_rows_omitted": 9238,
+            "maximum_retained_transition_gap_hours": 37,
+            "minimum_retained_transition_coefficient": 0.10132825956607122,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling_sparse_hourly_control": {
+          "possible_up_variables": 17520,
+          "active_up_variables": 7058,
+          "fixed_zero_up_variables_omitted": 10462,
+          "possible_down_variables": 17520,
+          "active_down_variables": 6508,
+          "fixed_zero_down_variables_omitted": 11012
+        },
+        "cooling_sparse_state": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 17520,
+          "control_support_state_variables": 7058,
+          "decay_anchor_state_variables": 340,
+          "retained_state_variables": 7398,
+          "redundant_inactive_state_variables_omitted": 10122,
+          "retained_transition_rows": 7398,
+          "redundant_inactive_transition_rows_omitted": 10122,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+          "active_state_variables": 7398,
+          "inactive_provinces_omitted": 0,
+          "fixed_zero_state_variables_omitted": 0,
+          "redundant_state_variables_eliminated": 10122,
+          "redundant_state_bound_rows_omitted": 10122,
+          "redundant_state_transition_rows_omitted": 10122
+        },
+        "cooling_state_chain_numerical_risk": {
+          "active_provinces": 2,
+          "inactive_provinces_with_state_chain_omitted": 0,
+          "worst_active_province": {
+            "province_position": 1,
+            "province_code": 63,
+            "maximum_cyclic_zero_control_run_hours": 6332,
+            "retention_per_hour": 0.92,
+            "inverse_decay_amplification_log10": 229.29547724794392
+          },
+          "automatic_presolve_aggregation_risk": true,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 17520,
+            "control_support_state_variables": 7058,
+            "decay_anchor_state_variables": 340,
+            "retained_state_variables": 7398,
+            "redundant_inactive_state_variables_omitted": 10122,
+            "retained_transition_rows": 7398,
+            "redundant_inactive_transition_rows_omitted": 10122,
+            "maximum_retained_transition_gap_hours": 27,
+            "minimum_retained_transition_coefficient": 0.10526193234946256,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": true,
+          "aggregate_zero_required_for_solve": false
+        },
+        "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+        "firm_capacity_credit_contract": "disabled_baseline_adequacy_retained",
+        "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+        "ev_charge_deviation_variables_omitted": 17520,
+        "ev_charge_deviation_constraints_omitted": 35040,
+        "minimum_departure_energy_min_gwh": 0.0,
+        "minimum_departure_energy_max_gwh": 0.0,
+        "minimum_departure_positive_cells": 0,
+        "departure_soc_constraint_rows_added": 0,
+        "departure_soc_constraint_rows_omitted_as_redundant": 17520,
+        "effective_load_static_lower_bound_min_gw": 3.762330032239653,
+        "effective_load_redundancy_safety_margin_gw": 1e-06,
+        "effective_load_naturally_nonnegative": true,
+        "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+        "effective_load_nonnegative_constraint_rows_added": 0,
+        "effective_load_nonnegative_constraint_rows_omitted": 17520,
+        "redundant_raw_variables_omitted": 77734,
+        "net_raw_variables_removed": 77734,
+        "thermal_fixed_zero_raw_variables_omitted": 40854,
+        "thermal_fixed_zero_state_variables_omitted": 0,
+        "thermal_redundant_state_variables_eliminated": 19360,
+        "thermal_tautological_contracted_power_rows_omitted": 40854,
+        "redundant_raw_constraint_rows_omitted": 149654,
+        "net_raw_constraint_rows_removed": 149654
+      },
+      "prebuild_legacy_guard": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 0,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 8070,
+              "decay_anchor_state_variables": 212,
+              "retained_state_variables": 8282,
+              "redundant_inactive_state_variables_omitted": 9238,
+              "retained_transition_rows": 8282,
+              "redundant_inactive_transition_rows_omitted": 9238,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 2,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 1,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 17520,
+              "control_support_state_variables": 7058,
+              "decay_anchor_state_variables": 340,
+              "retained_state_variables": 7398,
+              "redundant_inactive_state_variables_omitted": 10122,
+              "retained_transition_rows": 7398,
+              "redundant_inactive_transition_rows_omitted": 10122,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "objective": 72959.54903506597,
+      "physical_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 3.186492515683259e-08,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 6.916831095729603e-09,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "heating_transition_gwh": 1.0498493875004247e-06,
+        "heating_inventory_gwh": 0.0,
+        "heating_contract_power_gw": 0.0,
+        "cooling_transition_gwh": 0.0001476994830711521,
+        "cooling_inventory_gwh": 0.0,
+        "cooling_contract_power_gw": 0.0,
+        "load_reconstruction_gw": 7.105427357601002e-15
+      },
+      "max_qc_residual": 0.0001476994830711521,
+      "gurobi_quality": {
+        "ConstrVio": 0.0001476994830711521,
+        "ConstrResidual": 0.0,
+        "BoundVio": 0.00015448148558447672
+      },
+      "capacity_gw": [
+        [
+          5.549478705142498e-05,
+          0.0007346862851107068,
+          0.1136187508274296,
+          0.028461952442427274
+        ],
+        [
+          0.0004038154217699901,
+          1.0088904613642057e-05,
+          0.01388299807306485,
+          0.00462766602435495
+        ]
+      ],
+      "costs_million_cny": {
+        "flexible_load_v5_enablement": 9.68364545797843,
+        "flexible_load_v5_v2g_infrastructure": 1.323584738671289,
+        "flexible_load_v5_thermal_activation": 0.12721527618943634,
+        "flexible_load_v5_ev_v1g_relocation": 31.469203953067463,
+        "flexible_load_v5_ev_v2g_participation": 0.1514175457089236,
+        "flexible_load_v5_ev_v2g_degradation": 0.40378012189046575
+      },
+      "passed": false
+    }
+  ],
+  "passed": false
+}

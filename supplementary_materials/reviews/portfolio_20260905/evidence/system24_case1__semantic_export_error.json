@@ -1,0 +1,6 @@
+{
+  "status": "SEMANTIC_EXPORT_FAILED_PRESERVED_UNACCEPTED",
+  "error_type": "AttributeError",
+  "error": "'numpy.float64' object has no attribute 'getValue'",
+  "scientifically_accepted": false
+}

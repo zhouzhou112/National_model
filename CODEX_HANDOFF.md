@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-05 15:51+0800 V5三情景里程碑：作者明确case1=Base+冷热、case2=Base+EV、case3=Base+冷热+EV。
+  实现提交`87b534f2cf1f24b9a2bbe084b85f7adc2066f976`（父`860ab84`）新增可选签约/两EV服务池/冷热共享功率，
+  保留原始负荷、旧V5及Base供给侧。主比较显式沿用Base峰值容量约束，不给未经事件验证的静态firm credit。
+  127项本地回归PASS；三组全国24h basic求解/QC/导出/manifest均PASS；31省8760h独立服务块三组PASS，联合
+  2,303,225变量/3,310,291行（含62条诊断份额固定行），最大物理残差1.99e-11。不能当全国全年规划验证。
+  无Crossover的全国24h Base/联合均暴露水库行残差；BarHomogeneous1、NumericFocus3、Aggregate0对照仍未通过
+  原单位QC。候选全年profile虽已独立注册，正式无Crossover数值资格仍NOT_QUALIFIED，禁止误报可直接正式投产。
+  云端仅部署新不可变release`20260905_v5_portfolios_87b534f_v1`，282文件校验、三配置/预算guard/语法检查PASS，
+  三个小时V5输入SHA与本地一致；本轮零云端作业，wrapper强制Slurm总wall<=4h（含build/archive）。原T32
+  `4479238`继续RUNNING；T44作者在另一任务受控停止，按现有15:23交接保留，未由本轮干预。
+  详情及证据：`supplementary_materials/reviews/portfolio_20260905/REVIEW_CN.md`、`delivery_manifest.json`。
+  下一步：从本地失败原模型定位水库尺度/近零边界/周期行依赖，做数学等价数值处理门禁；不热改Base，不启动
+  新云端全年任务、不自动Stage B，不因部署完成而宣称全年可解性成立。
+
 - 2026-09-04 10:59+08:00 三条正式8760任务均`RUNNING`、`TimeLimit=UNLIMITED`、wrapper stderr 0且
   `STOP_REQUESTED`均不存在。A8 Threads32 `4479238`已运行17:34:33，最新Barrier iter33（solver time
   `59322 s`），batch MaxRSS `503822896K`（约480.48GiB）；M9 Threads32 `4990379`已运行13:08:42，
@@ -7810,3 +7824,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Environment note: pytest 9.1.1 was installed from locally verified offline wheels because server PyPI TLS validation remains unresolved.
 - Unresolved items: listed in the current snapshot above.
 - Next action: run and audit the server-side 744h `one_month` optimization.
+
+## 2026-09-05 V5 optional portfolios implementation and code-only deployment
+
+- 2026-09-05 15:51+0800 V5三情景里程碑：作者明确case1=Base+冷热、case2=Base+EV、case3=Base+冷热+EV。
+  实现提交`87b534f2cf1f24b9a2bbe084b85f7adc2066f976`（父`860ab84`）新增可选签约/两EV服务池/冷热共享功率，
+  保留原始负荷、旧V5及Base供给侧。主比较显式沿用Base峰值容量约束，不给未经事件验证的静态firm credit。
+  127项本地回归PASS；三组全国24h basic求解/QC/导出/manifest均PASS；31省8760h独立服务块三组PASS，联合
+  2,303,225变量/3,310,291行（含62条诊断份额固定行），最大物理残差1.99e-11。不能当全国全年规划验证。
+  无Crossover的全国24h Base/联合均暴露水库行残差；BarHomogeneous1、NumericFocus3、Aggregate0对照仍未通过
+  原单位QC。候选全年profile虽已独立注册，正式无Crossover数值资格仍NOT_QUALIFIED，禁止误报可直接正式投产。
+  云端仅部署新不可变release`20260905_v5_portfolios_87b534f_v1`，282文件校验、三配置/预算guard/语法检查PASS，
+  三个小时V5输入SHA与本地一致；本轮零云端作业，wrapper强制Slurm总wall<=4h（含build/archive）。原T32
+  `4479238`继续RUNNING；T44作者在另一任务受控停止，按现有15:23交接保留，未由本轮干预。
+  详情及证据：`supplementary_materials/reviews/portfolio_20260905/REVIEW_CN.md`、`delivery_manifest.json`。
+  下一步：从本地失败原模型定位水库尺度/近零边界/周期行依赖，做数学等价数值处理门禁；不热改Base，不启动
+  新云端全年任务、不自动Stage B，不因部署完成而宣称全年可解性成立。
+
+- Changed files: `cispo_model/{config,diagnostics,flexible_load,flexible_load_numerics,flexible_portfolio,portfolio_release,preflight,solution_export}.py`;
+  three case overlays, independent solver profiles, scenario catalog, runner/wrapper, local real-input validator and tests;
+  model contract and review report. Existing unrelated dirty files were not included in implementation commit.
+- Commands: local `unittest discover` (127 tests); `validate_flexible_portfolios.py --hours 8760 --force-enrollment --bar-tol 1e-9`;
+  three `run_cispo_2030_full_year.py --diagnostic-hours 24` cases; bounded nonbasic contrasts. See evidence JSON for exact parameters.
+- Outputs: `output/portfolio_20260905/`; immutable release full path is in `delivery_manifest.json`. No `sbatch`, `srun`, signal or STOP action in this task.

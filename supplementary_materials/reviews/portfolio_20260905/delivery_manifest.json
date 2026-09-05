@@ -1,0 +1,76 @@
+{
+  "generated_at": "2026-09-05T15:49:35.893705+08:00",
+  "commit": "87b534f2cf1f24b9a2bbe084b85f7adc2066f976",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260905_v5_portfolios_87b534f_v1",
+  "archive_sha256": "1d861b3800f066823cb5b21dd4edb27fa1544a31b28889c9be0459faa19a1c21",
+  "source_file_count": 282,
+  "scope": "CODE_ONLY_DEPLOYMENT_NO_CLOUD_COMPUTE_JOB",
+  "server_checks": "CONFIG_CANONICAL_PROFILE_BUDGET_PYCOMPILE_BASH_SYNTAX_CHECKSUMS",
+  "annual_nonbasic_qualification": "PENDING_SYSTEM_WATER_NUMERICS",
+  "cloud_jobs_submitted": [],
+  "local_regression": {
+    "tests": 127,
+    "status": "PASS"
+  },
+  "result_manifest_checks": {
+    "system24_case1_v2": [
+      true,
+      []
+    ],
+    "system24_case2_v2": [
+      true,
+      []
+    ],
+    "system24_case3_v2": [
+      true,
+      []
+    ]
+  },
+  "shared_cloud_input_hashes": {
+    "thermal_hourly_envelope_v5.csv.gz": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+    "ev_availability_hourly_v5.csv.gz": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+    "ev_mobility_hourly_v5.csv.gz": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6"
+  },
+  "full_year_flexible_block": "ALL_THREE_PASS_31_PROVINCES_8760_HOURS",
+  "full_system_nonbasic": "NOT_QUALIFIED_WATER_CONSTRAINT_RESIDUALS",
+  "evidence": {
+    "evidence/all31_full8760_strict.json": "60822af2388c2fe214cd41c8da3ad99043babfb99268cfe4d2b72e3462160f24",
+    "evidence/cloud_deployment_verification.txt": "a2bc79ac8f84a09f5582bc7b534af34b99ae59b257b4d66a575d2e6c567d0554",
+    "evidence/longchain8760.json": "c386a445ab2885f3317e317de015089a942e3a5a53c99ba7d08d59551e8c7c30",
+    "evidence/longchain8760_strict.json": "5895fd3aa179089e9df1c8e4babd57e102bd7aa2475425afa88ba164ab3cc459",
+    "evidence/regression_127_tests.log": "b8a05cdb6c59c587d961cf3c6395e68cf8a22e9263e80d1a880cc10781a4b7b2",
+    "evidence/system24_base_nonbasic__build_report.json": "e9ecd7f5860910d5dd24ea3e0d38838f5a7307fa45f77558d0a1127b44505ab1",
+    "evidence/system24_base_nonbasic__solution_qc.json": "04410e402c5eea43a04d97106c8d63591c049204a7fd267e4d965a8b88ed73da",
+    "evidence/system24_base_nonbasic__solve_report.json": "b91c684bb7e7a75ea510edcf47d11ecc376f045be79596dca331f8f86c261050",
+    "evidence/system24_case1__build_report.json": "cc05ebb504f9458ea3803a2772b470fbc88955d63ea34284dd9a47c717b3e1cd",
+    "evidence/system24_case1__semantic_export_error.json": "741532c28945c41bf0f390a691b93ee96661cda5a72a91f6b1769eefaf2f4f05",
+    "evidence/system24_case1__solution_qc.json": "fc9c3e2c846fe8650fbdd85dfab5f82e6df6df0679c2b8a4694e5415867e5aa0",
+    "evidence/system24_case1__solve_report.json": "9b009d146ecdd1c4a8c36ff675103e2b3228df910abec2565bc200b4b145c8e3",
+    "evidence/system24_case1_v2__build_report.json": "cf8652c60512316649f0c6cdb66979e27bf5471643f3728be704a65f0634a2ec",
+    "evidence/system24_case1_v2__solution_qc.json": "54d6d683863f659c04e71fc11d1e1f1ec07dd41eaa83dbbaf3cc16798565461f",
+    "evidence/system24_case1_v2__solve_report.json": "43bcb139fda365068e99532e841e0891f3b6c8fdcc11add360e6723dad80ad0d",
+    "evidence/system24_case2__build_report.json": "783d2c218979b987fe423165af990364227822c44fc9e25c037feadf85cb2e69",
+    "evidence/system24_case2__finalization_error.json": "3de46282eafc3eed1bbd5fe20603774db4af20a61bd2fe1a04eaf238741d0595",
+    "evidence/system24_case2__solution_qc.json": "8f15aff5d2b5afe92fc787738ee77131d4f4a11b4927258cf07ec9a6ac24b881",
+    "evidence/system24_case2__solve_report.json": "a9e58f688a6dbbf53e7c169c9c548d642117494f9cd321dae07c3c91706a79c3",
+    "evidence/system24_case2_v2__build_report.json": "e70641d649120173dc94b44663ad15081a6bf994b7ee0559d5dd9ab863770d8a",
+    "evidence/system24_case2_v2__solution_qc.json": "d56fedef3c317492de384c845b364149345e2c92b5bf6929083c7f9523d389a0",
+    "evidence/system24_case2_v2__solve_report.json": "b2e32a0514904ba13390e05c378121cd951bd2c941ff0749b235f6f135dc9096",
+    "evidence/system24_case3_aggregate0__build_report.json": "c34f19ad9879ff520ef9ea7d3769fd8553aefe9cba7800cc2333788b3ecc35e0",
+    "evidence/system24_case3_aggregate0__solution_qc.json": "299c11ab07f706aae1c438922168ec579fd2aaab4734f9eb97d551e57ed84f6f",
+    "evidence/system24_case3_aggregate0__solve_report.json": "f23a64f7c5bee8aff06ed25ca0dca8a539d94364177a96741d8bd71d4126d983",
+    "evidence/system24_case3_homogeneous__build_report.json": "813aa8e2a1c9577e276b5b9cb79852c9b5768f69f07e3e449b3deb529cc787e8",
+    "evidence/system24_case3_homogeneous__solution_qc.json": "702756ae172ddcc30db5d3528d96e3a3f447183f10933d437a668fc9855b3de8",
+    "evidence/system24_case3_homogeneous__solve_report.json": "cd85a47e3eb331919b1b1dc0dad3c7028f103d127ae0f5c60050302c61b479c1",
+    "evidence/system24_case3_nonbasic__build_report.json": "71e7448dedf381dba9bc5a54568e4e5b5e36956fea460f9472653f0675684cbd",
+    "evidence/system24_case3_nonbasic__solution_qc.json": "57e8afffa2b4cf04f1bc189b24c164608dcbc7e11d5fdc519d6cce45330af78b",
+    "evidence/system24_case3_nonbasic__solve_report.json": "3ff8afb5ac9a380681a41e5597a0ae50506465dd0f0a9486ab85f759caf27efa",
+    "evidence/system24_case3_numericfocus3__build_report.json": "f1cb288a03ea886b8fd0191b0e5b5f1679a339a91edef1505ff91e1057304163",
+    "evidence/system24_case3_numericfocus3__solution_qc.json": "62329eceff1189b6c28a0ae257fa318b910cd2a0d86e40129cdd8333e49d9bb9",
+    "evidence/system24_case3_numericfocus3__solve_report.json": "51cad103b084261ddd91560d4a33950978c2ecab3e3174ed861e98085edcc6ff",
+    "evidence/system24_case3_v2__build_report.json": "1259469b94492c934184fedced1447508e42b841250612b5b155442f00782a6e",
+    "evidence/system24_case3_v2__solution_qc.json": "2429ad7729e0000640d65aebdeb320ad77801a5302216284c5e5680210d4fdd4",
+    "evidence/system24_case3_v2__solve_report.json": "ed8f67a54b50a03fc10baff753450746028bd1dceeae9e317be48d9e7c4b5b25",
+    "evidence/winter168.json": "9956773a4dcf14c39bfec808b3935fb028e91b6b09ce9cc70b2a04fb9a9c2b44"
+  }
+}

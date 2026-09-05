@@ -1,0 +1,52 @@
+{
+  "status": "FAIL",
+  "export_incomplete": true,
+  "scientifically_accepted": false,
+  "solver_contract": {
+    "contract_version": "cispo_lp_solution_contract_v1",
+    "mode": "OPTIMAL_BASIC_OR_DEFAULT",
+    "basis_required": true,
+    "barrier_status_code": 13,
+    "strict_quality_pass": true,
+    "acceptance_status": "PASS",
+    "dual_attribute": "Pi"
+  },
+  "solver_quality": {
+    "maximum_constraint_violation": 1.0042952580668896e-11,
+    "maximum_constraint_residual": 1.6370904631912708e-11,
+    "maximum_bound_violation": 1.0935446992377251e-11,
+    "maximum_dual_violation": 3.410605131648481e-13,
+    "maximum_dual_residual": 1.021405182655144e-12,
+    "maximum_complementarity_violation": 0.0,
+    "maximum_violation": 1.6370904631912708e-11,
+    "kappa": 175191509.5568492,
+    "kappa_exact_computed": false
+  },
+  "raw_lp_qc": {
+    "status": "FAIL",
+    "tolerance": 1e-05,
+    "maximum_constraint_violation": 0.020798189721564914,
+    "constraint_location": {
+      "index": 195618,
+      "name": "reservoir_independent_hourly_transition[297,22]",
+      "sense": "=",
+      "rhs": 0.0018958110809326174,
+      "lhs_minus_rhs": -0.020798189721564914
+    },
+    "violated_constraint_count": 416,
+    "maximum_bound_violation": 1.683939099272891e-11,
+    "bound_location": {
+      "index": 346310,
+      "name": "load_center_reservoir_generation_gwh[109]",
+      "value": -1.683939099272891e-11,
+      "lower": 0.0,
+      "upper": Infinity
+    },
+    "violated_bound_count": 0,
+    "constraints_checked": 219766,
+    "variables_checked": 348988,
+    "annual_capacity_link_row_scaling_applied": true,
+    "optimize_called": false,
+    "presolve_called": false
+  }
+}
