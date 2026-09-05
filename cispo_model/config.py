@@ -524,21 +524,27 @@ class ModelConfig:
                     "integrated_service_constrained_v5 EV reference-energy "
                     "tolerance must be nonnegative"
                 )
-            for component in ("heating", "cooling"):
-                if not bool(flexible.get(component, {}).get("enabled", False)):
-                    raise ValueError(
-                        "integrated_service_constrained_v5 requires "
-                        f"flexible_load.{component}.enabled=true"
-                    )
-            if not bool(flexible.get("ev_v1g", {}).get("enabled", False)):
-                raise ValueError(
-                    "integrated_service_constrained_v5 requires ev_v1g.enabled=true"
-                )
-            if not bool(flexible.get("ev_v2g", {}).get("enabled", False)):
-                raise ValueError(
-                    "integrated_service_constrained_v5 requires ev_v2g.enabled=true"
-                )
-            if capacity_margin_load_basis != "firm_flexibility_derated_v1":
+            portfolio = flexible.get("portfolio_contract")
+            if portfolio not in {None, "optional_service_pools_v1"}:
+                raise ValueError("Unknown V5 portfolio_contract")
+            optional_portfolio = portfolio == "optional_service_pools_v1"
+            if optional_portfolio:
+                if capacity_margin_load_basis != "baseline_peak_v1":
+                    raise ValueError("Optional V5 portfolios retain baseline_peak_v1; "
+                                     "firm credit requires a separately qualified event contract")
+                if bool(flexible["ev_v2g"]["enabled"]):
+                    if not bool(flexible["ev_v1g"]["enabled"]):
+                        raise ValueError("V2G requires smart charging enrollment")
+                    v1g_share = float(flexible["ev_v1g"]["shiftable_energy_fraction"])
+                    v2g_share = float(flexible["ev_v2g"]["participation_fraction"])
+                    if not 0 < v2g_share <= v1g_share:
+                        raise ValueError("V2G participation must be positive and nested in V1G")
+            else:
+                for component in ("heating", "cooling", "ev_v1g", "ev_v2g"):
+                    if not bool(flexible.get(component, {}).get("enabled", False)):
+                        raise ValueError("integrated_service_constrained_v5 requires "
+                                         f"{component}.enabled=true without portfolio_contract")
+            if not optional_portfolio and capacity_margin_load_basis != "firm_flexibility_derated_v1":
                 raise ValueError(
                     "integrated_service_constrained_v5 requires "
                     "security.capacity_margin_load_basis="

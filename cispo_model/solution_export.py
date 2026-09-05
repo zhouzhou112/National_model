@@ -6,6 +6,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .flexible_portfolio import audit_ev_pools, is_optional_portfolio
+
 import numpy as np
 import pandas as pd
 from gurobipy import GurobiError
@@ -266,6 +268,18 @@ def export_operational_solution(
         variables.get("ev_mobility_discharge", zero_load)
     )
     ev_mobility_soc = _value(variables.get("ev_mobility_soc", zero_load))
+    optional_portfolio = is_optional_portfolio(config.raw["flexible_load"])
+    portfolio_values = {}
+    if optional_portfolio:
+        portfolio_values = {
+            key: _value(variables[key]) for key in (
+                "ev_enrolled_service_fraction", "ev_bidirectional_service_fraction",
+                "ev_v1g_pool_charge", "ev_v2g_pool_charge",
+                "ev_v1g_pool_inventory", "ev_v2g_pool_inventory",
+            )
+        }
+    enrollment = (portfolio_values["ev_enrolled_service_fraction"][:, None]
+                  if optional_portfolio else 1.0)
     if "ev_mobility_charge_deviation" in variables:
         ev_mobility_charge_deviation = _value(
             variables["ev_mobility_charge_deviation"]
@@ -280,7 +294,7 @@ def export_operational_solution(
             * baseline_components["ev"]
         )
         ev_mobility_charge_deviation = np.abs(
-            ev_mobility_charge - flexible_ev_baseline
+            ev_mobility_charge - enrollment * flexible_ev_baseline
         )
     else:
         ev_mobility_charge_deviation = zero_load.copy()
@@ -563,7 +577,7 @@ def export_operational_solution(
         eta_c = float(ev_settings["charge_efficiency"])
         eta_d = float(ev_settings["discharge_efficiency"])
         retention = 1.0 - float(ev_settings["self_discharge_fraction_per_hour"])
-        withdrawal = v4.ev_mobility["driving_energy_withdrawal_gwh"][
+        withdrawal = enrollment * v4.ev_mobility["driving_energy_withdrawal_gwh"][
             :, selected_hours
         ]
         periodic = (
@@ -585,7 +599,7 @@ def export_operational_solution(
         v4_ev_transition_max = max(float(np.abs(values).max()) for values in transitions)
         v4_ev_departure_violation = float(
             np.maximum(
-                v4.ev_mobility["minimum_departure_energy_gwh"][
+                enrollment * v4.ev_mobility["minimum_departure_energy_gwh"][
                     :, selected_hours
                 ]
                 - ev_mobility_soc,
@@ -595,7 +609,7 @@ def export_operational_solution(
         v4_ev_soc_upper_violation = float(
             np.maximum(
                 ev_mobility_soc
-                - v4.ev_availability["fleet_energy_capacity_gwh"][
+                - enrollment * v4.ev_availability["fleet_energy_capacity_gwh"][
                     :, selected_hours
                 ],
                 0.0,
@@ -1150,7 +1164,30 @@ def export_operational_solution(
         daily_energy_residuals["ev"],
         service_contract_formulation=service_contract_formulation,
     )
+    portfolio_qc = {}
+    if optional_portfolio:
+        portfolio_qc = audit_ev_pools(
+            settings=config.raw["flexible_load"], baseline_ev=baseline_components["ev"],
+            availability={key: value[:, selected_hours] for key, value in v4.ev_availability.items()},
+            full_availability=v4.ev_availability,
+            mobility={key: value[:, selected_hours] for key, value in v4.ev_mobility.items()},
+            capacity=flexible_service_capacity,
+            values={**portfolio_values, "ev_mobility_discharge": ev_mobility_discharge,
+                    "actual_ev_load": _value(variables["actual_ev_load"]),
+                    "ev_mobility_v1g_relocated": ev_mobility_v1g_relocated},
+        )
+        for column, component, up, down in (
+            (0, "heating", heating_up, heating_down), (1, "cooling", cooling_up, cooling_down)
+        ):
+            available = v4.thermal_availability[component][:, selected_hours]
+            portfolio_qc[f"{component}_shared_contract_violation_gw"] = float(np.maximum(
+                up + down - available * flexible_service_capacity[:, column, None], 0).max())
+            if not config.raw["flexible_load"][component]["enabled"]:
+                portfolio_qc[f"{component}_disabled_power_violation_gw"] = float(
+                    np.abs(up).max() + np.abs(down).max() + np.abs(flexible_service_capacity[:, column]).max())
+        portfolio_qc["disabled_firm_credit_violation_gw"] = float(np.abs(firm_flexible_capacity_credit).max())
     qc = {
+        "optional_portfolio_qc": portfolio_qc,
         "generated_at": datetime.now().astimezone().isoformat(),
         "flexible_load_structural_audit": artifacts.index.get(
             "flexible_load_structural_audit", {}
@@ -1582,6 +1619,9 @@ def export_operational_solution(
                 and qc["maximum_v4_ev_charge_power_violation_gw"] <= tolerance
                 and qc["maximum_v4_ev_discharge_power_violation_gw"] <= tolerance
             )
+        ),
+        "optional_portfolio_physical_contract": (
+            not optional_portfolio or all(value <= tolerance for value in portfolio_qc.values())
         ),
         "v5_v2g_contract_nesting": (
             not v5_formulation
@@ -2154,6 +2194,7 @@ def export_operational_solution(
         ev_v2g_charge_gw=v2g_charge,
         ev_v2g_discharge_gw=v2g_discharge,
         ev_v2g_soc_gwh=v2g_soc,
+        **portfolio_values,
         ev_mobility_charge_gw=ev_mobility_charge,
         ev_mobility_discharge_gw=ev_mobility_discharge,
         ev_mobility_soc_gwh=ev_mobility_soc,
@@ -2212,6 +2253,10 @@ def export_operational_solution(
                 "ev_v1g_backlog_peak_gwh": float(ev_backlog[p].max()),
                 "ev_v2g_charge_gwh": float(v2g_charge[p].sum()),
                 "ev_v2g_discharge_gwh": float(v2g_discharge[p].sum()),
+                **({
+                    "ev_enrolled_service_fraction": float(portfolio_values["ev_enrolled_service_fraction"][p]),
+                    "ev_bidirectional_service_fraction": float(portfolio_values["ev_bidirectional_service_fraction"][p]),
+                } if optional_portfolio else {}),
                 "ev_mobility_charge_gwh": float(ev_mobility_charge[p].sum()),
                 "ev_mobility_discharge_gwh": float(ev_mobility_discharge[p].sum()),
                 "ev_mobility_soc_peak_gwh": float(ev_mobility_soc[p].max()),
@@ -2255,7 +2300,25 @@ def export_operational_solution(
         index=False,
         encoding="utf-8-sig",
     )
-    if v5_formulation:
+    if optional_portfolio:
+        v2g_definition = (
+            "disjoint V1G-only and V2G service pools with proportional endogenous enrollment; "
+            "separate inventories and mobility obligations; no reserve or firm capacity credit"
+        )
+        state_definition = (
+            "periodic nonnegative thermal service inventories and two proportional EV service "
+            "inventories; reconstructed service baselines are not measured vehicle SOC or trips"
+        )
+        ev_energy_flow_accounting = {
+            "ev_mobility_charge_gwh": "sum of V1G-only and V2G pool grid charging",
+            "ev_mobility_soc_gwh": "sum of two separate service inventories, not transferable between pools",
+            "ev_enrolled_service_fraction": "alpha: enrolled fraction of the fixed 15% eligible V5 service pool",
+            "ev_bidirectional_service_fraction": "beta: bidirectional fraction of that same eligible pool; beta <= (10%/15%)*alpha",
+            "ev_v2g_charge_gwh": "legacy deviation-storage field is zero; use ev_v2g_pool_charge for actual V2G pool charging",
+            "ev_v2g_discharge_gwh": "compatibility alias of ev_mobility_discharge_gwh",
+            "actual_ev_load": "immutable EV baseline minus enrolled reference plus both pool charges, before V2G export",
+        }
+    elif v5_formulation:
         v2g_definition = (
             "one physical EV-fleet state of charge with endogenous smart-charging "
             "and nested bidirectional-power contracts; V2G receives no reserve "

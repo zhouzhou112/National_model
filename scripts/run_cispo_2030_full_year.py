@@ -35,6 +35,7 @@ from cispo_model.run_contract import (
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 
 
+PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
@@ -62,6 +63,7 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
 )
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     {
+        PORTFOLIO_STAGE_A_PROFILE_ID,
         "barrier_checkpoint_full_year_cloud_v4",
         "barrier_checkpoint_full_year_cloud_v5_threads32",
         "barrier_checkpoint_full_year_cloud_v5_threads64",
@@ -73,6 +75,7 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
+    PORTFOLIO_STAGE_A_PROFILE_ID: "3c7ca270e1a2ef3cf6079ea670c5ee439c9d5620f234db097c448da2a6642a7e",
     "barrier_checkpoint_full_year_cloud_v4": (
         "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d"
     ),
@@ -301,7 +304,7 @@ def cloud_full_year_profile_role(profile_id: object) -> str | None:
     """Classify every version of the fail-closed cloud Stage A/B profiles."""
     if not isinstance(profile_id, str):
         return None
-    if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+    if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID or profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
         return "STAGE_A"
     if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX):
         return "STAGE_A"
@@ -317,7 +320,7 @@ def cloud_full_year_required_memory_gib(
 ) -> float:
     """Apply the cloud full-year memory floor to every Stage A/B version."""
     required_gib = float(configured_required_gib)
-    if profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
+    if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID or profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
         return max(required_gib, CLOUD_NO_SOFTMEM_MIN_AVAILABLE_MEMORY_GIB)
     if profile_role is not None:
         required_gib = max(
@@ -932,6 +935,12 @@ def main() -> None:
         )
     if direct_nonbasic_scientific_acceptance:
         require_canonical_direct_nonbasic_profiles(config)
+    if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID:
+        from cispo_model.flexible_portfolio import is_optional_portfolio
+        if not is_optional_portfolio(config.raw["flexible_load"]):
+            raise SystemExit("Portfolio Stage A requires optional_service_pools_v1")
+        if not archive_original_model:
+            raise SystemExit("Portfolio Stage A requires --archive-original-model")
     requested_optimization_hours = int(
         args.diagnostic_hours
         if args.diagnostic_hours is not None
@@ -1681,6 +1690,11 @@ def main() -> None:
         build_report["final_stage_a_lp_identity"] = (
             validate_final_stage_a_lp_identity(artifacts.model, output_dir)
         )
+        write_strict_json_atomic(output_dir / "build_report.json", build_report)
+    if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID:
+        from cispo_model.portfolio_release import archive_portfolio_lp_identity
+        build_report["portfolio_lp_identity"] = archive_portfolio_lp_identity(
+            artifacts.model, config, output_dir)
         write_strict_json_atomic(output_dir / "build_report.json", build_report)
     if args.recover_stage_a_from:
         import shutil

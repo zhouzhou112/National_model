@@ -1,5 +1,10 @@
 # 配置、参数与情景接口
 
+2026-09-05 当前研究情景覆盖：`base`、`case1_thermal_v5`（冷热）、`case2_ev_v5`（EV）、
+`case3_thermal_ev_v5`（冷热+EV）。三者保持同一原始需求与 Base 容量充裕度口径，采用可选签约与分离 EV 服务池。
+精确约束、接口与尚未通过的无 Crossover 全国数值门禁见 [FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md](FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md)。
+下文 V4/V5 两情景说明属于历史合同，不再定义当前论文主比较；旧配置保留用于复核。
+
 ## 1. 运行时权威层级
 
 1. `optimization_2030.json` 定义模型边界、财务、安全、网络、水电和 Base 开关；

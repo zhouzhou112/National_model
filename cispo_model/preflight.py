@@ -226,6 +226,10 @@ def estimate_full_model_scale(
             if flex_formulation == "comfort_envelope_v3":
                 flexible_constraints += p * days + p * h
 
+    if flex_enabled and flex.get("portfolio_contract") == "optional_service_pools_v1":
+        from .flexible_portfolio import estimate_portfolio_size
+        flexible_variables, flexible_constraints = estimate_portfolio_size(flex, data, h)
+
     blocks = {
         "vre_site_capacity_and_new": 2 * n_vre,
         "vre_availability_and_dispatch": 2 * p * v * h,

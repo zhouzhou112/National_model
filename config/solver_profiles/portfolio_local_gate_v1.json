@@ -1,0 +1,22 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "portfolio_local_gate_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Local truncated-horizon integration gate, at most 600 solver seconds; no annual scientific interpretation.",
+  "numerics": {
+    "method": 2,
+    "threads": 4,
+    "presolve": 2,
+    "crossover": 1,
+    "crossover_basis": 1,
+    "barrier_convergence_tolerance": 1e-8,
+    "feasibility_tolerance": 1e-7,
+    "optimality_tolerance": 1e-7,
+    "numeric_focus": 1,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "time_limit_seconds": 600,
+    "soft_mem_limit_gb": 16,
+    "output_flag": 1
+  }
+}

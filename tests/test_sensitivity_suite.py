@@ -25,19 +25,22 @@ class SensitivitySuiteTests(unittest.TestCase):
         implemented = {row["scenario_id"]: row for row in catalog["implemented"]}
         self.assertEqual(
             [row["scenario_id"] for row in catalog["primary_analysis"]],
-            ["base", "flex_integrated_v5_central"],
+            ["base", "case1_thermal_v5", "case2_ev_v5", "case3_thermal_ev_v5"],
         )
         self.assertEqual(
             [
                 row["scenario_id"]
                 for row in select_scenarios(catalog, requested=None)
             ],
-            ["base", "flex_integrated_v5_central"],
+            ["base", "case1_thermal_v5", "case2_ev_v5", "case3_thermal_ev_v5"],
         )
         self.assertEqual(
             set(implemented),
             {
                 "base",
+                "case1_thermal_v5",
+                "case2_ev_v5",
+                "case3_thermal_ev_v5",
                 "flex_integrated_v5_central",
                 "flexible_load_comfort_v3_v2g_5pct",
                 "hydro_aggregate_flex_v1",

@@ -1,0 +1,89 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "case2_ev_v5",
+  "scenario_family": "integrated_demand_flexibility",
+  "description": "case2_ev_v5: immutable Base demand with optional paid service pools; baseline adequacy retained.",
+  "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+  "analysis_role": "CENTRAL_COUNTERFACTUAL",
+  "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+  "parent_baseline_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "supersedes": null,
+  "overrides": {
+    "features": {
+      "flexible_load": true
+    },
+    "security": {
+      "capacity_margin_load_basis": "baseline_peak_v1"
+    },
+    "flexible_load": {
+      "contract_version": "v5",
+      "formulation": "integrated_service_constrained_v5",
+      "state_boundary": "periodic_selected_horizon_v1",
+      "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+      "shift_throughput_cost_yuan_per_mwh": 300.0,
+      "degradation_cost_yuan_per_mwh": 400.0,
+      "v5_input_files": {
+        "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+        "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+        "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+        "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+        "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+        "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+      },
+      "heating": {
+        "enabled": false
+      },
+      "cooling": {
+        "enabled": false
+      },
+      "ev_v1g": {
+        "enabled": true,
+        "shiftable_energy_fraction": 0.15,
+        "maximum_power_to_daily_average_ratio": 2.0
+      },
+      "ev_v2g": {
+        "enabled": true,
+        "state_boundary": "periodic_selected_horizon_v1",
+        "participation_fraction": 0.1,
+        "power_duration_hours": 4.0,
+        "charge_efficiency": 0.94,
+        "discharge_efficiency": 0.94,
+        "self_discharge_fraction_per_hour": 0.0,
+        "national_contracted_power_cap_gw_by_planning_year": {
+          "2030": 10.0,
+          "2040": 20.0,
+          "2050": 30.0,
+          "2060": 40.0
+        }
+      },
+      "firm_capacity_credit": {
+        "contract_version": "derated_peak_service_v1",
+        "required_event_duration_hours": 4.0,
+        "derating_fraction": {
+          "heating": 0.6,
+          "cooling": 0.6,
+          "ev_v1g": 0.5,
+          "ev_v2g": 0.5
+        },
+        "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+        "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+        "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+        "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+      },
+      "reliability_treatment": {
+        "hourly_reserve_and_inertia_use_effective_load": true,
+        "planning_capacity_margin_uses_baseline_peak": true,
+        "flexibility_provides_no_reserve_credit": true
+      },
+      "parameter_status": {
+        "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+        "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+        "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+        "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+        "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+        "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+      },
+      "portfolio_contract": "optional_service_pools_v1"
+    }
+  }
+}

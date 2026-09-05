@@ -12,6 +12,8 @@ This repository implements a continuous linear capacity-expansion and chronologi
 
 The full mathematical specification is in [cispo_full_lp_model_spec.md](cispo_full_lp_model_spec.md). Current validated implementation and server evidence are in [CODEX_HANDOFF.md](CODEX_HANDOFF.md).
 
+The current demand-flexibility research design compares Base with thermal-only, EV-only and combined optional V5 portfolios. See [the contracting and qualification contract](config/FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md). Legacy V5 remains reproducible; full-system nonbasic annual qualification is still pending.
+
 The production spatial layer is `city_337`: 337 city-level load centers and a 642-edge within-province network. The retained 278-node Natural Earth layer is a replication/sensitivity input only. For a browser-reviewable code-and-data index, see [GITHUB_WEB_REVIEW_GUIDE.md](GITHUB_WEB_REVIEW_GUIDE.md).
 
 ## Repository layout

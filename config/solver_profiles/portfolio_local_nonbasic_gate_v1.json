@@ -1,0 +1,23 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "portfolio_local_nonbasic_gate_v1",
+  "minimum_gurobi_major_version": 13,
+  "description": "Local engineering-only nonbasic integration gate, 600 seconds maximum; no planning-state use.",
+  "numerics": {
+    "method": 2,
+    "threads": 4,
+    "presolve": 2,
+    "crossover": 0,
+    "crossover_basis": 1,
+    "barrier_convergence_tolerance": 1e-09,
+    "feasibility_tolerance": 1e-07,
+    "optimality_tolerance": 1e-07,
+    "numeric_focus": 1,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "time_limit_seconds": 600,
+    "soft_mem_limit_gb": 16,
+    "output_flag": 1,
+    "solution_target": 1
+  }
+}

@@ -539,7 +539,10 @@ def prebuild_flexible_load_solver_compatibility(
             )
         risks = _thermal_state_chain_numerical_risks(
             thermal_envelopes={
-                key: value[:, int(hour_start):hour_stop]
+                key: (value[:, int(hour_start):hour_stop]
+                      if settings.get("portfolio_contract") != "optional_service_pools_v1"
+                      or settings[key.split("_")[0]]["enabled"]
+                      else np.zeros_like(value[:, int(hour_start):hour_stop]))
                 for key, value in service.thermal_envelopes_gw.items()
             },
             thermal_parameters=service.thermal_parameters,
