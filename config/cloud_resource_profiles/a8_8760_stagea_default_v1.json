@@ -2,7 +2,7 @@
   "cloud_resource_profile_version": "v1",
   "profile_id": "a8_8760_stagea_default_v1",
   "decision_status": "AUTHOR_SELECTED_DEFAULT",
-  "validation_status": "FULL_YEAR_ORDERING_AND_EARLY_BARRIER_VALIDATED_TERMINAL_QC_PENDING",
+  "validation_status": "FULL_YEAR_ORDERING_AND_BARRIER_THROUGHPUT_VALIDATED_AUTHOR_CONTROLLED_STOP",
   "platform": "ParaCloud BSCC-A8",
   "partition": "amd_a8_768",
   "workload_scope": {
@@ -48,11 +48,15 @@
     "threads32_stable_seconds_per_iteration": 1234.0,
     "threads44_peak_rss_gib": 628.1597,
     "threads32_peak_rss_gib": 480.483,
-    "observed_threads44_cumulative_speedup_at_iteration_39_percent": 10.36
+    "observed_threads44_cumulative_speedup_at_iteration_39_percent": 10.36,
+    "threads44_last_completed_barrier_iteration": 40,
+    "threads44_solver_runtime_seconds_at_last_iteration": 60881.53819608688,
+    "threads44_terminal_classification": "AUTHOR_CONTROLLED_STOP_RECOVERY_ONLY",
+    "threads44_preservation_status": "COMPLETE"
   },
   "revalidation_conditions": [
-    "Threads44 job terminates with OUT_OF_MEMORY or node failure",
-    "Threads44 terminal solver or original-unit QC is not scientifically acceptable",
+    "A future uninterrupted Threads44 job terminates with OUT_OF_MEMORY or node failure",
+    "A future uninterrupted Threads44 production job reaches solver terminal state but fails scientific solver or original-unit QC acceptance; the author-controlled stop of job 4496031 is excluded from this trigger",
     "Slurm partition, memory policy, billing rule, node topology, Gurobi version, model identity or solver profile changes",
     "Runtime AllocTRES does not report cpu=64,mem=700G,billing=64"
   ],
