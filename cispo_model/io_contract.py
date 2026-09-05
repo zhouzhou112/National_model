@@ -129,6 +129,12 @@ NPZ_DIMENSIONS = {
         "hour_index": "hour",
     },
     "flexible_load_dispatch.npz": {
+        "ev_enrolled_service_fraction": "province",
+        "ev_bidirectional_service_fraction": "province",
+        "ev_v1g_pool_charge": "province,hour",
+        "ev_v2g_pool_charge": "province,hour",
+        "ev_v1g_pool_inventory": "province,hour",
+        "ev_v2g_pool_inventory": "province,hour",
         "baseline_total_load_gw": "province,hour",
         "effective_total_load_gw": "province,hour",
         "baseline_base_residual_gw": "province,hour",
@@ -549,6 +555,16 @@ def write_run_provenance(
 
 def _infer_unit(field: str) -> str:
     lower = field.lower()
+    portfolio_units = {
+        "ev_enrolled_service_fraction": "fraction_of_eligible_service_pool",
+        "ev_bidirectional_service_fraction": "fraction_of_eligible_service_pool",
+        "ev_v1g_pool_charge": "GW",
+        "ev_v2g_pool_charge": "GW",
+        "ev_v1g_pool_inventory": "GWh",
+        "ev_v2g_pool_inventory": "GWh",
+    }
+    if lower in portfolio_units:
+        return portfolio_units[lower]
     suffixes = (
         ("_cny_per_kwh", "CNY/kWh"),
         ("_million_cny_per_year", "million CNY/year"),

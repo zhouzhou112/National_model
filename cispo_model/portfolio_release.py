@@ -7,6 +7,20 @@ import re
 from pathlib import Path
 
 
+def require_qualified_portfolio_stage_a() -> None:
+    """Fail closed until the unresolved original-unit residual gate is reviewed.
+
+    No runtime flag promotes this candidate profile to production. This guard
+    must be revised with reproducible qualification evidence before launch.
+    Build-only, preflight and offline recovery remain available in the runner.
+    """
+    raise ValueError(
+        'PORTFOLIO_STAGE_A_NOT_QUALIFIED: full-system nonbasic water residuals '
+        'have not passed original-unit QC; optimization launch is blocked. '
+        'Use preflight/build-only or offline recovery without optimization.'
+    )
+
+
 def validate_cloud_budget(time_limit: str) -> int:
     """Reject missing/unlimited/>4h Slurm wall limits, including build time."""
     match = re.fullmatch(r'(?:(\d+)-)?(\d+):(\d{2}):(\d{2})', time_limit.strip())

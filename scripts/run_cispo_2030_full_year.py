@@ -936,16 +936,33 @@ def main() -> None:
     if direct_nonbasic_scientific_acceptance:
         require_canonical_direct_nonbasic_profiles(config)
     if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID:
+        if not (args.preflight_only or args.build_only or args.recover_stage_a_from):
+            from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
+            try:
+                require_qualified_portfolio_stage_a()
+            except ValueError as error:
+                raise SystemExit(str(error)) from error
         from cispo_model.flexible_portfolio import is_optional_portfolio
         if not is_optional_portfolio(config.raw["flexible_load"]):
             raise SystemExit("Portfolio Stage A requires optional_service_pools_v1")
-        if not archive_original_model:
+        if not archive_original_model and not args.preflight_only:
             raise SystemExit("Portfolio Stage A requires --archive-original-model")
     requested_optimization_hours = int(
         args.diagnostic_hours
         if args.diagnostic_hours is not None
         else config.horizon(args.horizon)["hours"]
     )
+    from cispo_model.flexible_portfolio import is_optional_portfolio
+    if (
+        is_optional_portfolio(config.raw["flexible_load"])
+        and requested_optimization_hours == 8760
+        and not (args.preflight_only or args.build_only or args.recover_stage_a_from)
+    ):
+        from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
+        try:
+            require_qualified_portfolio_stage_a()
+        except ValueError as error:
+            raise SystemExit(str(error)) from error
     if nonbasic_primal_dual_requested and (
         args.basis_in
         or args.export_warm_start_basis
@@ -1129,6 +1146,11 @@ def main() -> None:
         planning_state = PlanningState.load(
             args.state_in,
             expected_boundary_year=config.boundary_year,
+            expected_scenario_id=config.raw["scenario"]["id"],
+            expected_scenario_sha256=(
+                hashlib.sha256(config.scenario_path.read_bytes()).hexdigest()
+                if config.scenario_path else None
+            ),
             allow_test_only=args.allow_diagnostic_state_in,
             allow_unaccepted_candidate=args.allow_candidate_state_in,
         )

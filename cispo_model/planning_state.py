@@ -72,6 +72,8 @@ class PlanningState:
         expected_boundary_year: int,
         allow_test_only: bool = False,
         allow_unaccepted_candidate: bool = False,
+        expected_scenario_id: str | None = None,
+        expected_scenario_sha256: str | None = None,
     ) -> "PlanningState":
         root = Path(path).resolve()
         metadata_path = root / STATE_METADATA
@@ -143,6 +145,16 @@ class PlanningState:
         if sha256_file(source_solve_path) != metadata["source_solve_report_sha256"]:
             raise ValueError("Planning-state source solve-report SHA256 mismatch")
         source_solve = json.loads(source_solve_path.read_text(encoding="utf-8"))
+        if expected_scenario_id is not None:
+            if source_solve.get("scenario_id") != expected_scenario_id:
+                raise ValueError("Planning-state source scenario mismatch or missing identity")
+        if expected_scenario_sha256 is not None:
+            identity_path = root.parent / "run_identity.json"
+            identity = json.loads(identity_path.read_text(encoding="utf-8"))
+            recorded_sha = ((identity.get("analysis_case") or {}).get(
+                "scenario_configuration") or {}).get("sha256")
+            if recorded_sha != expected_scenario_sha256:
+                raise ValueError("Planning-state source scenario configuration SHA256 mismatch")
         if not candidate and source_solve.get("status") != "OPTIMAL":
             raise ValueError("Planning-state source solve is not OPTIMAL")
         if source_solve.get("result_use") != state_use:
@@ -205,6 +217,13 @@ class PlanningState:
                 "Planning-state source result manifest is invalid: "
                 + ", ".join(manifest_failures[:10])
             )
+        if expected_scenario_id is not None and not candidate:
+            from .run_contract import solver_result_is_accepted
+
+            if not solver_result_is_accepted(
+                source_solve, source_qc_payload, result_manifest_valid=manifest_ok
+            ):
+                raise ValueError("Planning-state source fails strict scientific acceptance")
         cohorts = pd.read_csv(cohorts_path)
         missing = sorted(set(STATE_COLUMNS).difference(cohorts.columns))
         if missing:
@@ -413,6 +432,7 @@ def write_planning_state(
         "source_solve_report_sha256": sha256_file(source_solve_path),
         "source_solution_contract_mode": source_contract_mode,
         "source_solver_profile_id": source_solve.get("solver_profile_id"),
+        "source_scenario_id": source_solve.get("scenario_id"),
         "source_formulation_profile_id": source_solve.get(
             "formulation_profile_id"
         ),

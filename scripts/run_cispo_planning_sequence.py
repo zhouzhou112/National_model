@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import atexit
+import hashlib
 import json
 import subprocess
 import sys
@@ -150,6 +151,7 @@ def accepted(
             PlanningState.load(
                 output_dir / "planning_state",
                 expected_boundary_year=int(solve["planning_year"]),
+                expected_scenario_id=expected_scenario_id,
                 allow_test_only=expected_result_use != "SCIENTIFIC_PRODUCTION",
             )
         except (FileNotFoundError, KeyError, TypeError, ValueError):
@@ -335,6 +337,11 @@ def main() -> None:
         PlanningState.load(
             args.state_in,
             expected_boundary_year=first_year_config.boundary_year,
+            expected_scenario_id=config.raw["scenario"]["id"],
+            expected_scenario_sha256=(
+                hashlib.sha256(config.scenario_path.read_bytes()).hexdigest()
+                if config.scenario_path else None
+            ),
             allow_test_only=args.diagnostic_hours is not None,
         )
         if args.state_in

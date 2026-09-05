@@ -60,6 +60,7 @@ export PATH="$GUROBI_HOME/bin:$PATH"
 export LD_LIBRARY_PATH="$GUROBI_HOME/lib:${LD_LIBRARY_PATH:-}"
 
 cd "$repo_root"
+"$PYTHON" -c 'from cispo_model.portfolio_release import require_qualified_portfolio_stage_a; require_qualified_portfolio_stage_a()'
 "$PYTHON" - "${SLURM_JOB_ID:-}" <<'PY'
 import re, subprocess, sys
 from cispo_model.portfolio_release import validate_cloud_budget

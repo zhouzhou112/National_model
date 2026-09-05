@@ -824,9 +824,9 @@ def export_operational_solution(
     heating_overlap = np.minimum(heating_up, heating_down)
     cooling_overlap = np.minimum(cooling_up, cooling_down)
     ev_grid_charge_for_overlap = (
-        ev_mobility_charge
-        if service_contract_formulation
-        else v2g_charge
+        portfolio_values["ev_v2g_pool_charge"]
+        if optional_portfolio
+        else (ev_mobility_charge if service_contract_formulation else v2g_charge)
     )
     ev_v2g_overlap = np.minimum(
         ev_grid_charge_for_overlap,

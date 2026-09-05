@@ -85,6 +85,15 @@ def offline_artifacts(artifacts, primal, dual, *, objective=None):
         raise ValueError("Invalid saved dual vector")
 
     def wrap(value):
+        from .flexible_load import SparseThermalStateView
+
+        if isinstance(value, SparseThermalStateView):
+            # Retained nodes must come from the archived vector, not live X.
+            return SparseThermalStateView(
+                active=wrap(value.active),
+                retained_mask=value.retained_mask,
+                retention_per_hour=value.retention_per_hour,
+            )
         if isinstance(value, (gp.Var, gp.MVar, gp.LinExpr, gp.MLinExpr)):
             return SavedValue(value, primal)
         if isinstance(value, (gp.Constr, gp.MConstr)):
@@ -216,8 +225,11 @@ residuals are evaluated in bounded row blocks. No solver routine is called.
             offset = int(np.argmax(violation))
             bound_maximum = float(violation[offset])
             bound_location = {"index": start + offset, "name": block[offset].VarName,
-                              "value": float(values[offset]), "lower": float(lower[offset]),
-                              "upper": float(upper[offset])}
+                              "value": float(values[offset]),
+                              "lower": float(lower[offset]) if np.isfinite(lower[offset]) else None,
+                              "upper": float(upper[offset]) if np.isfinite(upper[offset]) else None,
+                              "lower_bound_unbounded": bool(not np.isfinite(lower[offset])),
+                              "upper_bound_unbounded": bool(not np.isfinite(upper[offset]))}
     return {"status": "FAIL" if violated or bound_violated else "PASS", "tolerance": tolerance,
             "maximum_constraint_violation": maximum, "constraint_location": location,
             "violated_constraint_count": violated, "maximum_bound_violation": bound_maximum,
