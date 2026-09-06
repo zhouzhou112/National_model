@@ -1,0 +1,34 @@
+{
+  "status": "OFFLINE_DIAGNOSTIC_ONLY",
+  "optimize_called": false,
+  "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\output\\portfolio_prelaunch_20260905\\offline_case3_final",
+  "independent_reservoirs": 482,
+  "violated_independent_hours": 350,
+  "threshold_million_m3": 1e-05,
+  "threshold_relaxed": false,
+  "worst": {
+    "independent_subset_index": 348,
+    "reservoir_local_index": 475,
+    "hydrochn_row_id": "HydroCHN_01147",
+    "plant_name_model": "Gengda hydroelectric plant",
+    "maximum_residual_hour_index": 16,
+    "constraint_name": "reservoir_independent_hourly_transition[348,15]",
+    "max_absolute_balance_residual_m3": 42651.77930521954,
+    "max_absolute_balance_residual_million_m3": 0.04265177930521954,
+    "selected_horizon_inflow_m3": 9776.164877414703,
+    "active_storage_upper_m3": 2965618074.0,
+    "storage_at_max_residual_m3": 1482789662.770936,
+    "previous_storage_at_max_residual_m3": 1482832314.5502412,
+    "inflow_at_max_residual_m3s": 0.0,
+    "total_release_at_max_residual_m3s": 3.021953930918642e-14,
+    "residual_to_selected_inflow": 4.362833466910468,
+    "exact_zero_selected_inflow": false,
+    "violated_hour_count": 16
+  },
+  "observations": [
+    "Large free cyclic inventories coexist with small hourly inflows; this is a numerical-scale diagnostic, not proof of the sole solver failure cause.",
+    "Do not map independent subset row indices directly to the full reservoir table.",
+    "A fixed affine coordinate shift x=z+c is mathematically equivalent if ALL bounds, RHS, objective constant and exports are transformed. No such transformation is applied here.",
+    "Fixing initial inventory to zero or enlarging feasibility tolerance is not an equivalent substitute and is not authorized."
+  ]
+}

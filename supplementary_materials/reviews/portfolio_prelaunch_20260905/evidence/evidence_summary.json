@@ -1,0 +1,409 @@
+{
+  "smoke_report_semantic_differences": [],
+  "bundle_manifest_remote_rows": 77,
+  "bundle_manifest_local_rows": 262,
+  "common_rows": 76,
+  "identical_common": 75,
+  "differing_common": [
+    "smoke_test_report.json"
+  ],
+  "remote_only": [
+    "model_input_files.json"
+  ],
+  "local_only_count": 186,
+  "interpretation": "The smoke-report JSON is semantically equal with different byte formatting. The local bundle inventory contains additional files; 74 of 76 recorded runtime input hashes are identical, with only these two validation sidecars differing. No new full Zarr payload audit is claimed.",
+  "existing_result_manifests": {
+    "system24_case1_v2": {
+      "valid": true,
+      "failures": []
+    },
+    "system24_case2_v2": {
+      "valid": true,
+      "failures": []
+    },
+    "system24_case3_v2": {
+      "valid": true,
+      "failures": []
+    }
+  },
+  "three_cases_baseline_arrays_identical": true,
+  "replayed_flexible_arrays_max_absolute_difference": {
+    "baseline_total_load_gw": 0.0,
+    "effective_total_load_gw": 2.842170943040401e-14,
+    "baseline_base_residual_gw": 0.0,
+    "baseline_heating_gw": 0.0,
+    "baseline_cooling_gw": 0.0,
+    "baseline_ev_gw": 0.0,
+    "actual_base_residual_gw": 0.0,
+    "actual_heating_gw": 3.552713678800501e-15,
+    "actual_cooling_gw": 0.0,
+    "actual_ev_gw": 8.881784197001252e-16,
+    "heating_shift_up_gw": 0.0,
+    "heating_shift_down_gw": 0.0,
+    "cooling_shift_up_gw": 0.0,
+    "cooling_shift_down_gw": 0.0,
+    "ev_v1g_shift_up_gw": 0.0,
+    "ev_v1g_shift_down_gw": 0.0,
+    "heating_state_gwh": 0.0,
+    "cooling_state_gwh": 0.0,
+    "heating_comfort_debt_gwh": 0.0,
+    "cooling_comfort_debt_gwh": 0.0,
+    "ev_v1g_backlog_gwh": 0.0,
+    "ev_v2g_charge_gw": 0.0,
+    "ev_v2g_discharge_gw": 0.0,
+    "ev_v2g_soc_gwh": 0.0,
+    "ev_enrolled_service_fraction": 0.0,
+    "ev_bidirectional_service_fraction": 0.0,
+    "ev_v1g_pool_charge": 0.0,
+    "ev_v2g_pool_charge": 0.0,
+    "ev_v1g_pool_inventory": 0.0,
+    "ev_v2g_pool_inventory": 0.0,
+    "ev_mobility_charge_gw": 0.0,
+    "ev_mobility_discharge_gw": 0.0,
+    "ev_mobility_soc_gwh": 0.0,
+    "ev_mobility_charge_deviation_gw": 0.0,
+    "ev_mobility_v1g_relocated_gw": 0.0,
+    "flexible_service_capacity_gw": 0.0,
+    "firm_flexible_capacity_credit_gw": 0.0,
+    "firm_flexible_capacity_credit_upper_gw": 0.0,
+    "province_codes": 0.0,
+    "hour_index": 0.0
+  },
+  "raw_violation_families": [
+    {
+      "family": "reservoir_independent_hourly_transition",
+      "rows": 338,
+      "maximum": 0.042651779305288
+    },
+    {
+      "family": "reservoir_independent_cyclic_first_hour",
+      "rows": 12,
+      "maximum": 0.0045734135117925
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h21",
+      "rows": 1,
+      "maximum": 0.0018132831249718
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h7",
+      "rows": 1,
+      "maximum": 0.0011303073819185
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h10",
+      "rows": 1,
+      "maximum": 0.0010784178045317
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h19",
+      "rows": 1,
+      "maximum": 0.0010291834645759
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h15",
+      "rows": 1,
+      "maximum": 0.0010247485841259
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h9",
+      "rows": 1,
+      "maximum": 0.0009531624973144
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h5",
+      "rows": 1,
+      "maximum": 0.0008693007521371
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h18",
+      "rows": 1,
+      "maximum": 0.0007446225503234
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h17",
+      "rows": 1,
+      "maximum": 0.0007208811877421
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h2",
+      "rows": 1,
+      "maximum": 0.000707127394138
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h13",
+      "rows": 1,
+      "maximum": 0.0007063150592081
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h9",
+      "rows": 1,
+      "maximum": 0.0006348996793082
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h16",
+      "rows": 1,
+      "maximum": 0.0005813599934037
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h14",
+      "rows": 1,
+      "maximum": 0.0004699140789576
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h3",
+      "rows": 1,
+      "maximum": 0.0004210718754707
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h0",
+      "rows": 1,
+      "maximum": 0.000419248996975
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h6",
+      "rows": 1,
+      "maximum": 0.0003550559279254
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h12",
+      "rows": 1,
+      "maximum": 0.0003496776414557
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h8",
+      "rows": 1,
+      "maximum": 0.0002989974010695
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h22",
+      "rows": 1,
+      "maximum": 0.0002947209591068
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h7",
+      "rows": 1,
+      "maximum": 0.0002919601495897
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h13",
+      "rows": 1,
+      "maximum": 0.0002775016308525
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h17",
+      "rows": 1,
+      "maximum": 0.0002684630338058
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h1",
+      "rows": 1,
+      "maximum": 0.0002641661864561
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h10",
+      "rows": 1,
+      "maximum": 0.00026221061248
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h18",
+      "rows": 1,
+      "maximum": 0.0002249362332692
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h12",
+      "rows": 1,
+      "maximum": 0.0002210897620549
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h11",
+      "rows": 1,
+      "maximum": 0.0002118872101097
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h14",
+      "rows": 1,
+      "maximum": 0.0002087602175784
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h11",
+      "rows": 1,
+      "maximum": 0.0001948285855593
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h19",
+      "rows": 1,
+      "maximum": 0.0001936228569517
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h23",
+      "rows": 1,
+      "maximum": 0.0001588037005833
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h4",
+      "rows": 1,
+      "maximum": 0.0001456281788221
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h22",
+      "rows": 1,
+      "maximum": 0.0001423024648853
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h23",
+      "rows": 1,
+      "maximum": 0.0001371966436726
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h20",
+      "rows": 1,
+      "maximum": 0.0001350941092344
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h16",
+      "rows": 1,
+      "maximum": 0.000131902067356
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h12",
+      "rows": 1,
+      "maximum": 0.0001045093326019
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row68_h15",
+      "rows": 1,
+      "maximum": 9.48885157049972e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h10",
+      "rows": 1,
+      "maximum": 7.725054907609775e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h20",
+      "rows": 1,
+      "maximum": 7.48227343459348e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h11",
+      "rows": 1,
+      "maximum": 7.291168748963629e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h8",
+      "rows": 1,
+      "maximum": 6.670280443727279e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h7",
+      "rows": 1,
+      "maximum": 6.398722201511191e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h1",
+      "rows": 1,
+      "maximum": 5.929498063590017e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h22",
+      "rows": 1,
+      "maximum": 5.0170769875762746e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h8",
+      "rows": 1,
+      "maximum": 4.767820728876586e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h1",
+      "rows": 1,
+      "maximum": 4.435417629678113e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h5",
+      "rows": 1,
+      "maximum": 3.226445510880467e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h16",
+      "rows": 1,
+      "maximum": 3.222247158651043e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h13",
+      "rows": 1,
+      "maximum": 3.184293551389601e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h0",
+      "rows": 1,
+      "maximum": 3.136525969598552e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h1",
+      "rows": 1,
+      "maximum": 2.910313164966283e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h15",
+      "rows": 1,
+      "maximum": 2.543679772993528e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h19",
+      "rows": 1,
+      "maximum": 2.423714910353283e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h21",
+      "rows": 1,
+      "maximum": 2.1541104067296145e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h0",
+      "rows": 1,
+      "maximum": 1.6815895506840662e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h21",
+      "rows": 1,
+      "maximum": 1.676288863245645e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h17",
+      "rows": 1,
+      "maximum": 1.631800530565215e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h19",
+      "rows": 1,
+      "maximum": 1.6272063415908632e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h9",
+      "rows": 1,
+      "maximum": 1.5305218829143997e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row335_h2",
+      "rows": 1,
+      "maximum": 1.4223775826667406e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h16",
+      "rows": 1,
+      "maximum": 1.1450685015552153e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row130_h4",
+      "rows": 1,
+      "maximum": 1.1207044140110156e-05
+    },
+    {
+      "family": "reservoir_cascade_s4_8_9_12_row11_h10",
+      "rows": 1,
+      "maximum": 1.0140933676848363e-05
+    }
+  ]
+}

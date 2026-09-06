@@ -1,0 +1,21 @@
+{
+  "schema_version": "cispo_final_stage_a_lp_identity_v1",
+  "status": "PASS",
+  "expected": {
+    "constraints": 50907234,
+    "variables": 41458383,
+    "nonzeros": 492835195,
+    "gurobi_fingerprint_unsigned_hex": "0x94cf2e50",
+    "uncompressed_mps_sha256": "8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a"
+  },
+  "actual": {
+    "constraints": 50907234,
+    "variables": 41458383,
+    "nonzeros": 492835195,
+    "gurobi_fingerprint_unsigned_hex": "0x94cf2e50",
+    "uncompressed_mps_sha256": "8216816027025ffc16eb7fb80ce55d6beb822242f03f1a24433102248603713a"
+  },
+  "archive_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/outputs/2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_v4/model_archive/original.mps.gz",
+  "mps_stream_error": null,
+  "failures": []
+}

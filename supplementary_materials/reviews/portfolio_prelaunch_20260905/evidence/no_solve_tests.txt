@@ -1,0 +1,30 @@
+test_formal_cli_blocks_before_loading_inputs (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_full_year_portfolio_cannot_bypass_guard_with_other_solver_profile (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+Set parameter LicenseID to value 2808889
+test_raw_violation_with_infinite_bound_is_strict_json_serializable (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_service_output_dictionary_has_units_and_dimensions (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_sparse_thermal_recovery_uses_saved_vector_and_cyclic_decay (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_state_cannot_cross_scenarios_or_same_name_configuration_changes (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_unqualified_formal_profile_cannot_launch (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_zero_contract_vector_is_feasible_and_reconstructs_base_in_all_cases (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_capacity_cohort_expires_by_technology_lifetime (test_planning_sequence.PlanningSequenceTests) ... ok
+test_diagnostic_state_requires_explicit_test_only_permission (test_planning_sequence.PlanningSequenceTests) ... ok
+test_dry_run_forwards_profiles_and_locks_sequence_identity (test_planning_sequence.PlanningSequenceTests) ... ok
+test_nonbasic_sequence_explicitly_exports_checkpoint_and_state (test_planning_sequence.PlanningSequenceTests) ... ok
+test_sequence_acceptance_requires_explicit_passing_hard_checks (test_planning_sequence.PlanningSequenceTests) ... ok
+test_solution_export_maps_capacity_decisions_to_checksummed_cohorts (test_planning_sequence.PlanningSequenceTests) ... ok
+test_state_rejects_modified_source_solve_or_qc (test_planning_sequence.PlanningSequenceTests) ... ok
+test_year_specific_boundaries_are_exact (test_planning_sequence.PlanningSequenceTests) ... ok
+test_baseline_contract_is_immutable_while_analysis_case_changes (test_run_contract.RunContractTests) ... ok
+test_configuration_identity_changes_with_solver_profile (test_run_contract.RunContractTests) ... ok
+test_input_manifest_detects_same_path_mutation (test_run_contract.RunContractTests) ... ok
+test_output_claim_allows_wrapper_logs_but_never_reuses_root (test_run_contract.RunContractTests) ... ok
+test_output_claim_rejects_existing_scientific_file (test_run_contract.RunContractTests) ... ok
+test_sequence_claim_is_atomic_and_releasable (test_run_contract.RunContractTests) ... ok
+test_sequence_identity_locks_horizon_and_year_range (test_run_contract.RunContractTests) ... ok
+test_solver_success_requires_optimal_qc_and_manifest (test_run_contract.RunContractTests) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 6.347s
+
+OK

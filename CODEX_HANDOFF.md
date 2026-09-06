@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-06 V5正式启动前不求解审查覆盖：作者继续要求暂不启动优化。核心修复提交
+  `b225ab522a3bd7a38ea5ef1318beb4c161cdd8db`，无优化/presolve/松弛、新云作业或Base干预。
+  24项不求解回归PASS；修复压缩冷热状态离线向量映射、无限边界严格JSON、情景ID/配置SHA与科学接受
+  续接检查、EV字段单位/维度与V2G同池对流统计。未改物理方程、参数或签约上限。未资格portfolio
+  profile及其他profile下8760h入口已本地拦截，preflight/build-only/离线恢复保留；旧云release未覆盖。
+  T32冻结供给核心源码SHA与本地一致，解析Base科学配置零差异；76项共同输入74项SHA一致，两项验证
+  sidecar差异已解释为JSON格式与数据包清单范围。23:44快照job4479238仍RUNNING，非当前状态保证。
+  旧case3全国24h保存向量在新代码中精确LP身份/顺序校验通过、离线容量成本运行导出完成；415条超限
+  行均为水库，最大0.0426517793 million m3，整体HARD_FAIL保留，柔性增量最大8.88e-16。
+  进一步离线定位为独立子集348→全表475、hour16、HydroCHN_01147；24h来水9776m3、库存约14.8亿m3，
+  水量误差42652m3。不能据此放宽容差或擅自固定初始库存，等价坐标处理仅为待验证候选。
+  详情：`supplementary_materials/reviews/portfolio_prelaunch_20260905/REVIEW_CN.md`及evidence。
+  下一步仅离线审查水库大库存/小通量的等价处理；重新求解需作者解除当前禁令，正式全年资格仍未闭合。
+
 - 2026-09-05 15:51+0800 V5三情景里程碑：作者明确case1=Base+冷热、case2=Base+EV、case3=Base+冷热+EV。
   实现提交`87b534f2cf1f24b9a2bbe084b85f7adc2066f976`（父`860ab84`）新增可选签约/两EV服务池/冷热共享功率，
   保留原始负荷、旧V5及Base供给侧。主比较显式沿用Base峰值容量约束，不给未经事件验证的静态firm credit。
@@ -7847,3 +7861,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 - Commands: local `unittest discover` (127 tests); `validate_flexible_portfolios.py --hours 8760 --force-enrollment --bar-tol 1e-9`;
   three `run_cispo_2030_full_year.py --diagnostic-hours 24` cases; bounded nonbasic contrasts. See evidence JSON for exact parameters.
 - Outputs: `output/portfolio_20260905/`; immutable release full path is in `delivery_manifest.json`. No `sbatch`, `srun`, signal or STOP action in this task.
+
+## 2026-09-06 V5 prelaunch no-solve identity, preservation and continuation audit
+
+核心修复Git：`b225ab522a3bd7a38ea5ef1318beb4c161cdd8db`（父a09aee7）；本记录同时归档水库离线诊断脚本。
+修改范围：`offline_solution.py`、`planning_state.py`、`portfolio_release.py`、`io_contract.py`、
+`solution_export.py`，单年/sequence/portfolio wrapper，三个只读审查脚本、`test_portfolio_no_solve.py`
+与`FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md`。物理建模代码及Base参数文件未改；未发布或覆盖云端release。
+命令：`python -m unittest test_portfolio_no_solve test_planning_sequence test_run_contract -v`（24 PASS），
+`audit_portfolio_base_readonly.py`只读SSH，`audit_portfolio_saved_result.py`只构建/保存向量回放，
+`analyze_portfolio_water_residuals.py`只读物理数组，py_compile、git diff --check、远端bash -n纯语法PASS。
+输出：`output/portfolio_prelaunch_20260905/`；归档小证据和完整说明见
+`supplementary_materials/reviews/portfolio_prelaunch_20260905/REVIEW_CN.md`及`evidence/`。
+验证：Base核心SHA/科学配置一致；精确24h LP/向量重放通过；旧三组basic manifest有效；柔性数组重放
+最大差2.84e-14；原415条水库超限/HARD_FAIL未被掩盖。最大行映射与库存/来水尺度已独立复核。
+未闭合：全年nonbasic数值资格、配对季节窗口与跨年实解、全规模中断保全验收；云端4h测试边界未扩大。
+确切下一步：继续离线检查水库尺度/周期偏置，只提出并证明等价变换；禁止自行求解、改运行Base或Stage B。

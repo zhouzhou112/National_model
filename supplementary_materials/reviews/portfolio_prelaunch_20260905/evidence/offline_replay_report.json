@@ -1,0 +1,60 @@
+{
+  "recorded_at": "2026-09-05T23:50:57.481220+08:00",
+  "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\output\\portfolio_20260905\\system24_case3_nonbasic",
+  "source_snapshot_sha256": "9d04ab6318a3e071234bc7fd3723ef47c2f5f577632a52e309943c1d3f88209d",
+  "source_checkpoint_manifest_sha256": "7055e3c32dc5a242748b8669045b7d25949465e58f5cbca1eab5ec8f4372ba35",
+  "status": "OFFLINE_EXPORT_COMPLETE",
+  "scientifically_accepted": false,
+  "optimize_called": false,
+  "presolve_called": false,
+  "exact_lp_identity_pass": true,
+  "hours": 24,
+  "raw_lp_qc": {
+    "status": "FAIL",
+    "tolerance": 1e-05,
+    "maximum_constraint_violation": 0.04265177930528807,
+    "constraint_location": {
+      "index": 202829,
+      "name": "reservoir_independent_hourly_transition[348,15]",
+      "sense": "=",
+      "rhs": 0.0,
+      "lhs_minus_rhs": -0.04265177930528807
+    },
+    "violated_constraint_count": 415,
+    "maximum_bound_violation": 6.640243910283061e-12,
+    "bound_location": {
+      "index": 350836,
+      "name": "load_center_reservoir_generation_gwh[109]",
+      "value": -6.640243910283061e-12,
+      "lower": 0.0,
+      "upper": null,
+      "lower_bound_unbounded": false,
+      "upper_bound_unbounded": true
+    },
+    "violated_bound_count": 0,
+    "constraints_checked": 225811,
+    "variables_checked": 353514,
+    "annual_capacity_link_row_scaling_applied": true,
+    "optimize_called": false,
+    "presolve_called": false
+  },
+  "semantic_qc_status": "HARD_FAIL",
+  "optional_portfolio_qc": {
+    "enrollment_fraction_violation": 0.0,
+    "contract_charge_residual_gw": 0.0,
+    "contract_v2g_residual_gw": 7.888609052210118e-31,
+    "discharge_pool_power_violation_gw": 0.0,
+    "v1g_transition_residual_gwh": 1.722513927035645e-16,
+    "v1g_inventory_violation_gwh": 0.0,
+    "v1g_connection_violation_gw": 0.0,
+    "v2g_transition_residual_gwh": 8.802759984776879e-17,
+    "v2g_inventory_violation_gwh": 0.0,
+    "v2g_connection_violation_gw": 0.0,
+    "baseline_reconstruction_residual_gw": 8.881784197001252e-16,
+    "relocation_lower_bound_violation_gw": 0.0,
+    "heating_shared_contract_violation_gw": 0.0,
+    "cooling_shared_contract_violation_gw": 0.0,
+    "disabled_firm_credit_violation_gw": 0.0
+  },
+  "interpretation": "Diagnostic replay only; no new optimum, no repaired vector, no planning state."
+}
