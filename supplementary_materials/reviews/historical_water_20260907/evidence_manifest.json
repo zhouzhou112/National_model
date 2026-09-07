@@ -1,0 +1,23 @@
+{
+  "base_git_commit": "0b077e8ec0a354f63e7c49a1e197ca4ef452a226",
+  "optimize_called": false,
+  "presolve_called": false,
+  "remote_model_changes": false,
+  "sha256": {
+    "comparison.csv": "83cf1d1afcde90677f9ca3bbad96dba67288bad5c76184365e5a2941cfbafd4a",
+    "REVIEW_CN.md": "44f850e959da25123472264f183a736fbcfa2410c73f6413a697986fa3b1b778",
+    "evidence/audit_cloud_readonly.py": "dba80c0d9588017ad9aa4d318d2bdd4611cf64631cfb1b77391a3990dff124da",
+    "evidence/cloud_reports.json": "02cc2a4888076f52ab172a005183d6f0beda875d1850b0703b1f1bd9baa04ca6",
+    "evidence/fixed_reports_v2.json": "06ef76df85f20587d3c6e1cc282174845bd18c7efdde2d4502ef023773e37572",
+    "evidence/cloud_8760_readonly/water_balance_audit.json": "0ca8380ed251131e82a9b09fa8d767c4fa5fa513dcf25da476fbf849ee7bb2e3",
+    "evidence/cloud_8760_readonly/water_residual_by_station.csv": "e5005568d37aedbdf2680d2a350cf16f3ca20dd92f692db45049a60975da28c3",
+    "evidence/fixed_2160_stagea/download_identity.json": "047146c13d25469257f1f308a5f3babe0ba47b14d1356d1ca682b07d0c4cec9e",
+    "evidence/fixed_2160_stagea/water_balance_audit.json": "b5fd050c776e193b8a80092be9345f076d1335c9584bb466d3d7b9cd11b46fab",
+    "evidence/fixed_2160_stagea/water_residual_by_station.csv": "6f22224e49beb2115b5e39641e8eb6193da7214925e5908e9b3dd33b2c1d3c66",
+    "evidence/fixed_744_strict/download_identity.json": "3df3670b7d6406631c0645979f49154571a0ce6bc921b73f6b21d45327c7a362",
+    "evidence/fixed_744_strict/water_balance_audit.json": "4ab768a91f6098cd095d0101593d33661a55c834e0ddf1ae8e08592ca93d01ee",
+    "evidence/fixed_744_strict/water_residual_by_station.csv": "d2883c59e71dd0c0b3235c517e088315088d5adf4949eb46028c6fa2a56250d7",
+    "evidence/local_24_case3/water_balance_audit.json": "da2002c39465d7dc81f68ffbd83ba120026068e248379a023a3bb089d2ce85e6",
+    "evidence/local_24_case3/water_residual_by_station.csv": "139665e7aa9945d1d0035d98c7296423a2d3aa63e656def10a2c5ecc8b1a1188"
+  }
+}

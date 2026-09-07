@@ -1,0 +1,621 @@
+reservoir_local_index,hydrochn_row_id,is_cascade,maximum_residual_hour_index,maximum_absolute_residual_m3,hours_above_1m3,hours_above_10m3,plant_name_model
+245,HydroCHN_00343,False,743,0.002678399999999984,0,0,Bobona hydroelectric plant
+484,HydroCHN_01248,False,743,0.002678399999999984,0,0,Zangao hydroelectric plant
+1,HydroCHN_00001,True,406,2.384185791015625e-06,0,0,Three Gorges Dam hydroelectric plant
+4,HydroCHN_00004,True,97,1.5450641512870789e-06,0,0,Wudongde hydroelectric plant
+5,HydroCHN_00005,True,281,1.214444637298584e-06,0,0,Xiangjiaba hydroelectric plant
+3,HydroCHN_00003,True,103,8.670613169670105e-07,0,0,Xiluodu hydroelectric plant
+493,HydroCHN_01397,True,58,8.177012205123901e-07,0,0,Guanyinyan hydroelectric plant
+139,HydroCHN_00167,True,721,6.174668669700623e-07,0,0,Yinjiang hydroelectric plant
+6,HydroCHN_00006,True,475,6.16069883108139e-07,0,0,Longtan hydroelectric plant
+62,HydroCHN_00068,True,519,5.727633833885193e-07,0,0,Tianshengqiao Stage 1 hydroelectric plant
+2,HydroCHN_00002,True,44,5.62518835067749e-07,0,0,Baihetan hydroelectric plant
+37,HydroCHN_00043,True,216,5.098991096019745e-07,0,0,Xiaolangdi hydroelectric plant
+105,HydroCHN_00119,True,451,5.005858838558197e-07,0,0,Letan hydroelectric plant
+45,HydroCHN_00051,True,417,4.4889748096466064e-07,0,0,Datengxia hydroelectric plant
+166,HydroCHN_00210,True,526,2.966262400150299e-07,0,0,Lingjintan hydroelectric plant
+30,HydroCHN_00033,True,71,2.8801150619983673e-07,0,0,Ertan hydroelectric plant
+119,HydroCHN_00136,True,60,2.3830216377973557e-07,0,0,Caojie hydroelectric plant
+94,HydroCHN_00103,False,187,2.2165477275848389e-07,0,0,
+57,HydroCHN_00063,True,534,2.0954757928848267e-07,0,0,Longyangxia hydroelectric plant
+25,HydroCHN_00028,True,223,2.0788866095244884e-07,0,0,Liyuan hydroelectric plant
+18,HydroCHN_00021,True,535,1.9185245037078857e-07,0,0,Gezhouba hydroelectric plant
+107,HydroCHN_00121,True,508,1.9185245037078857e-07,0,0,Tongzilin hydroelectric plant
+53,HydroCHN_00059,False,430,1.825392246246338e-07,0,0,Shuikou hydroelectric plant
+14,HydroCHN_00016,False,165,1.7229467630386353e-07,0,0,
+123,HydroCHN_00143,True,204,1.7043203115463257e-07,0,0,Qiaogong hydroelectric plant
+136,HydroCHN_00160,True,623,1.6530975699424744e-07,0,0,Shaping Stage 2 hydroelectric plant
+104,HydroCHN_00118,False,431,1.5774276107549667e-07,0,0,Changzhou hydroelectric plant
+163,HydroCHN_00207,True,500,1.482476363889873e-07,0,0,Qingtongxia hydroelectric plant
+55,HydroCHN_00061,True,63,1.4062970876693726e-07,0,0,Xiaowan hydroelectric plant
+40,HydroCHN_00046,True,403,1.3457611203193665e-07,0,0,Pengshui hydroelectric plant
+36,HydroCHN_00042,True,693,1.2665987014770508e-07,0,0,Yantan hydroelectric plant
+385,HydroCHN_00695,False,345,1.1245720088481903e-07,0,0,Jinniuping hydroelectric plant
+498,HydroCHN_01448,False,175,1.1152587831020355e-07,0,0,Dachaoshan hydroelectric plant
+211,HydroCHN_00286,True,355,1.1082738637924194e-07,0,0,Bailongtan hydroelectric plant
+348,HydroCHN_00565,False,426,1.0852818377315998e-07,0,0,Guding hydroelectric plant
+13,HydroCHN_00015,True,115,1.0617077350616455e-07,0,0,Guandi hydroelectric plant
+290,HydroCHN_00425,True,478,9.73232090473175e-08,0,0,Xinji hydroelectric plant
+111,HydroCHN_00125,True,660,9.685754776000977e-08,0,0,Dahua hydroelectric plant
+158,HydroCHN_00200,False,257,8.998904377222061e-08,0,0,Jufudu hydroelectric plant
+43,HydroCHN_00049,True,407,8.568167686462402e-08,0,0,Wuqiangxi hydroelectric plant
+127,HydroCHN_00148,False,316,8.42846930027008e-08,0,0,
+159,HydroCHN_00201,False,587,8.271308615803719e-08,0,0,Yayangshan hydroelectric plant
+74,HydroCHN_00083,True,347,7.88422767072916e-08,0,0,Mamaya Stage 1 hydroelectric plant
+54,HydroCHN_00060,True,249,7.82310962677002e-08,0,0,Miaowei hydroelectric plant
+20,HydroCHN_00023,False,441,7.776543498039246e-08,0,0,
+73,HydroCHN_00082,True,105,7.543712854385376e-08,0,0,Danjiangkou hydroelectric plant
+47,HydroCHN_00053,True,48,7.513153832405806e-08,0,0,Yangfanggou hydroelectric plant
+42,HydroCHN_00048,True,716,6.949994713068008e-08,0,0,Houziyan hydroelectric plant
+88,HydroCHN_00097,True,477,6.845220923423767e-08,0,0,Tuokou hydroelectric plant
+201,HydroCHN_00273,False,318,6.414484232664108e-08,0,0,Sinanjiang hydroelectric plant
+120,HydroCHN_00137,True,448,6.376649253070354e-08,0,0,Wuqiangxi Expansion hydroelectric plant
+46,HydroCHN_00052,True,462,5.774199962615967e-08,0,0,Manwan hydroelectric plant
+114,HydroCHN_00128,True,414,5.75091689825058e-08,0,0,Dongqing hydroelectric plant
+417,HydroCHN_00805,False,327,5.740730557590723e-08,0,0,Shunchang Dam hydroelectric plant
+197,HydroCHN_00268,True,10,5.611218512058258e-08,0,0,Yunpeng hydroelectric plant
+100,HydroCHN_00112,False,555,5.50062395632267e-08,0,0,Dongfeng hydroelectric plant
+135,HydroCHN_00159,True,529,5.2619725465774536e-08,0,0,Pingban hydroelectric plant
+103,HydroCHN_00116,True,687,5.122274160385132e-08,0,0,Yinpan hydroelectric plant
+128,HydroCHN_00149,True,286,4.190951585769653e-08,0,0,Zhexi hydroelectric plant
+392,HydroCHN_00739,True,220,4.0046870708465576e-08,0,0,Pubugou hydroelectric plant
+489,HydroCHN_01379,False,260,3.934837877750397e-08,0,0,Kehe hydroelectric plant
+58,HydroCHN_00064,True,536,3.864988684654236e-08,0,0,Wujiangdu hydroelectric plant
+413,HydroCHN_00793,False,418,3.614695742726326e-08,0,0,Wangcun hydroelectric plant
+34,HydroCHN_00040,True,33,3.5390257835388184e-08,0,0,Lijiaxia hydroelectric plant
+274,HydroCHN_00393,False,581,3.463355824351311e-08,0,0,Shimenkan hydroelectric plant
+19,HydroCHN_00022,True,525,3.4458935260772705e-08,0,0,Changheba hydroelectric plant
+61,HydroCHN_00067,False,624,3.3527612686157227e-08,0,0,
+190,HydroCHN_00252,False,647,3.166496753692627e-08,0,0,Honghua hydroelectric plant
+258,HydroCHN_00364,True,236,3.096647560596466e-08,0,0,Anjiang hydroelectric plant
+243,HydroCHN_00339,True,118,3.073364496231079e-08,0,0,Shenxigou hydroelectric plant
+286,HydroCHN_00416,False,513,2.9802322387695312e-08,0,0,Dayuandu hydroelectric plant
+113,HydroCHN_00127,True,707,2.9802322387695312e-08,0,0,Jinsha hydroelectric plant
+143,HydroCHN_00172,False,389,2.9802322387695312e-08,0,0,Xiajiang hydroelectric plant
+480,HydroCHN_01198,False,568,2.9802322387695312e-08,0,0,Baise hydroelectric plant
+156,HydroCHN_00197,False,415,2.9802322387695312e-08,0,0,Fuchunjiang hydroelectric plant
+64,HydroCHN_00070,True,408,2.9336661100387573e-08,0,0,Suwalong hydroelectric plant
+276,HydroCHN_00396,True,464,2.8172507882118225e-08,0,0,Qingshuitang hydroelectric plant
+7,HydroCHN_00007,False,383,2.7939677238464355e-08,0,0,
+72,HydroCHN_00081,True,31,2.7706846594810486e-08,0,0,Silin hydroelectric plant
+138,HydroCHN_00165,False,568,2.7066562324762344e-08,0,0,Malutang II hydroelectric plant
+323,HydroCHN_00491,False,210,2.6600901037454605e-08,0,0,Chitan hydroelectric plant
+260,HydroCHN_00369,True,213,2.6309862732887268e-08,0,0,Xixiayuan hydroelectric plant
+186,HydroCHN_00246,False,286,2.5960616767406464e-08,0,0,Xiangbiling hydroelectric plant
+181,HydroCHN_00239,False,427,2.537854015827179e-08,0,0,Longtoushan hydroelectric plant
+251,HydroCHN_00354,False,347,2.293381839990616e-08,0,0,Nalan hydroelectric plant
+145,HydroCHN_00176,False,479,2.0605511963367462e-08,0,0,Tanguanyao hydroelectric plant
+252,HydroCHN_00355,False,417,2.0489096641540527e-08,0,0,
+215,HydroCHN_00292,True,446,1.885928213596344e-08,0,0,Tongwan hydroelectric plant
+101,HydroCHN_00113,False,597,1.862645149230957e-08,0,0,Xin’anjiang hydroelectric plant
+39,HydroCHN_00045,False,44,1.862645149230957e-08,0,0,
+411,HydroCHN_00788,False,354,1.8044374883174896e-08,0,0,Liaofang hydroelectric plant
+363,HydroCHN_00626,False,309,1.792795956134796e-08,0,0,Guiping hydroelectric plant
+164,HydroCHN_00208,True,552,1.7229467630386353e-08,0,0,Hongjiang hydroelectric plant
+487,HydroCHN_01350,False,454,1.641456037759781e-08,0,0,Zuojiang hydroelectric plant
+115,HydroCHN_00130,False,405,1.6007106751203537e-08,0,0,
+361,HydroCHN_00618,False,554,1.4901161193847656e-08,0,0,Jinjitan hydroelectric plant
+298,HydroCHN_00436,False,159,1.4901161193847656e-08,0,0,Guigang Multi-Purpose Navigation hydroelectric plant
+434,HydroCHN_00868,True,707,1.4901161193847656e-08,0,0,Shaigutan hydroelectric plant
+428,HydroCHN_00843,True,485,1.4901161193847656e-08,0,0,Guojundu hydroelectric plant
+203,HydroCHN_00275,True,516,1.4901161193847656e-08,0,0,Dafutan hydroelectric plant
+253,HydroCHN_00356,False,347,1.4901161193847656e-08,0,0,Shuangpai hydroelectric plant
+284,HydroCHN_00414,False,315,1.4901161193847656e-08,0,0,Puxiqiao hydroelectric plant
+304,HydroCHN_00448,False,419,1.4901161193847656e-08,0,0,Waixiong hydroelectric plant
+339,HydroCHN_00536,False,519,1.4901161193847656e-08,0,0,Dapu hydroelectric plant
+189,HydroCHN_00251,False,357,1.4901161193847656e-08,0,0,Wachun hydroelectric plant
+184,HydroCHN_00243,True,398,1.4901161193847656e-08,0,0,Jiayan hydroelectric plant
+355,HydroCHN_00603,False,425,1.4901161193847656e-08,0,0,Luodong hydroelectric plant
+452,HydroCHN_00969,False,451,1.4901161193847656e-08,0,0,Guangxi Xiafu hydroelectric plant
+369,HydroCHN_00646,False,510,1.4901161193847656e-08,0,0,Jingnan hydroelectric plant
+508,HydroCHN_01601,True,34,1.4901161193847656e-08,0,0,Tuoba hydroelectric plant
+16,HydroCHN_00019,True,483,1.4435499906539917e-08,0,0,Goupitan hydroelectric plant
+66,HydroCHN_00072,True,729,1.3969838619232178e-08,0,0,Shatuo hydroelectric plant
+474,HydroCHN_01132,True,523,1.3504177331924438e-08,0,0,Shawan hydroelectric plant
+99,HydroCHN_00111,True,383,1.2158125173300505e-08,0,0,Longtoushi hydroelectric plant
+234,HydroCHN_00323,False,344,1.210719347000122e-08,0,0,
+268,HydroCHN_00384,False,554,1.146690919995308e-08,0,0,Jinggangshan hydroelectric plant
+322,HydroCHN_00490,True,451,1.1175870895385742e-08,0,0,Fenghuanggu hydroelectric plant
+216,HydroCHN_00294,True,74,1.1175870895385742e-08,0,0,Tongjiezi hydroelectric plant
+264,HydroCHN_00380,True,395,1.0710209608078003e-08,0,0,Xiaoxi hydroelectric plant
+83,HydroCHN_00092,True,233,1.0710209608078003e-08,0,0,Gongguoqiao hydroelectric plant
+297,HydroCHN_00433,True,235,1.0652001947164536e-08,0,0,Baoning hydroelectric plant
+137,HydroCHN_00162,False,358,1.0652001947164536e-08,0,0,Weiyuan hydroelectric plant
+118,HydroCHN_00135,False,434,1.0477378964424133e-08,0,0,Zangmu hydroelectric plant
+169,HydroCHN_00218,True,9,1.0477378964424133e-08,0,0,Gaobazhou hydroelectric plant
+97,HydroCHN_00107,True,363,1.0477378964424133e-08,0,0,Batang hydroelectric plant
+10,HydroCHN_00011,False,33,1.0244548320770264e-08,0,0,
+112,HydroCHN_00126,False,561,1.0222720447927713e-08,0,0,Xinjiang Bulunkou - Kongur hydroelectric plant
+116,HydroCHN_00131,False,549,9.313225746154785e-09,0,0,Wan’an hydroelectric plant
+513,HydroCHN_01659,True,379,9.313225746154785e-09,0,0,Sichuan Jialingjiang River Cangxi hydroelectric plant
+373,HydroCHN_00653,False,406,9.255018085241318e-09,0,0,Ouyanghai hydroelectric plant
+196,HydroCHN_00266,True,571,8.96397978067398e-09,0,0,Dongxiguan hydroelectric plant
+308,HydroCHN_00460,True,634,8.96397978067398e-09,0,0,Xiuguan hydroelectric plant
+329,HydroCHN_00509,False,313,8.96397978067398e-09,0,0,Amojiang Sanjiangkou hydroelectric plant
+214,HydroCHN_00289,True,424,8.758433978073299e-09,0,0,Shannipo hydroelectric plant
+320,HydroCHN_00487,False,44,8.614733815193176e-09,0,0,Jiangkou hydroelectric plant
+96,HydroCHN_00105,False,316,8.505594450980425e-09,0,0,Zipingpu hydroelectric plant
+496,HydroCHN_01442,False,451,8.501956472173333e-09,0,0,Mowu Dam hydroelectric plant
+140,HydroCHN_00169,False,201,8.498318493366241e-09,0,0,Jiacha hydroelectric plant
+95,HydroCHN_00104,False,596,8.381903171539307e-09,0,0,Shuifeng hydroelectric plant
+395,HydroCHN_00744,True,85,8.32369551062584e-09,0,0,Sichuan Xiaolongmen hydroelectric plant
+443,HydroCHN_00919,False,417,8.265487849712372e-09,0,0,Yemao hydroelectric plant
+56,HydroCHN_00062,True,530,8.149072527885437e-09,0,0,Tianshengqiao Stage 2 hydroelectric plant
+87,HydroCHN_00096,True,4,7.974449545145035e-09,0,0,Huangjinping hydroelectric plant
+174,HydroCHN_00225,False,488,7.450580596923828e-09,0,0,Wanmipo hydroelectric plant
+15,HydroCHN_00018,True,211,7.450580596923828e-09,0,0,Lianghekou hydroelectric plant
+376,HydroCHN_00670,False,358,7.450580596923828e-09,0,0,Zhaoping hydroelectric plant
+132,HydroCHN_00155,True,530,7.450580596923828e-09,0,0,Sanbanxi hydroelectric plant
+80,HydroCHN_00089,True,680,7.450580596923828e-09,0,0,Zhentouba Stage 1 hydroelectric plant
+432,HydroCHN_00866,False,271,7.450580596923828e-09,0,0,Hongmen hydroelectric plant
+41,HydroCHN_00047,False,366,7.450580596923828e-09,0,0,
+229,HydroCHN_00313,False,282,7.450580596923828e-09,0,0,Wanjiakouzi hydroelectric plant
+236,HydroCHN_00328,False,354,7.450580596923828e-09,0,0,
+102,HydroCHN_00114,False,198,7.334165275096893e-09,0,0,Dagu hydroelectric plant
+192,HydroCHN_00255,True,740,5.122274160385132e-09,0,0,Huangfeng hydroelectric plant
+162,HydroCHN_00205,True,549,5.005858838558197e-09,0,0,Shuhe hydroelectric plant
+93,HydroCHN_00102,True,59,4.6566128730773926e-09,0,0,Angu hydroelectric plant
+153,HydroCHN_00193,False,721,4.627509042620659e-09,0,0,Haokou hydroelectric plant
+416,HydroCHN_00803,False,476,4.540197551250458e-09,0,0,Guangxi Nabi hydroelectric plant
+468,HydroCHN_01067,False,512,4.532921593636274e-09,0,0,Tongxinxi hydroelectric plant
+408,HydroCHN_00775,False,307,4.423782229423523e-09,0,0,Xiaqiao hydroelectric plant
+390,HydroCHN_00722,False,474,4.249159246683121e-09,0,0,Gaotan hydroelectric plant
+177,HydroCHN_00232,True,119,4.190951585769653e-09,0,0,Bingling hydroelectric plant
+247,HydroCHN_00346,True,691,4.190951585769653e-09,0,0,Guazhi hydroelectric plant
+473,HydroCHN_01094,False,428,4.185494617559016e-09,0,0,Baishi hydroelectric plant
+98,HydroCHN_00110,True,22,4.103640094399452e-09,0,0,Baozhusi hydroelectric plant
+8,HydroCHN_00008,True,694,4.0745362639427185e-09,0,0,Jinping Stage 1 hydroelectric plant
+205,HydroCHN_00277,False,308,3.754394128918648e-09,0,0,Dahuashui hydroelectric plant
+134,HydroCHN_00158,True,399,3.725290298461914e-09,0,0,Bikou hydroelectric plant
+235,HydroCHN_00324,False,339,3.725290298461914e-09,0,0,Longma hydroelectric plant
+188,HydroCHN_00249,False,417,3.725290298461914e-09,0,0,Longjiang hydroelectric plant
+129,HydroCHN_00152,False,400,3.725290298461914e-09,0,0,Zhelin hydroelectric plant
+351,HydroCHN_00580,False,304,3.725290298461914e-09,0,0,Hemianshi hydroelectric plant
+35,HydroCHN_00041,True,590,3.725290298461914e-09,0,0,Shuibuya hydroelectric plant
+340,HydroCHN_00538,False,103,3.725290298461914e-09,0,0,Hongyanzi hydroelectric plant
+237,HydroCHN_00330,False,383,3.725290298461914e-09,0,0,
+324,HydroCHN_00493,False,350,3.725290298461914e-09,0,0,Pangduo hydroelectric plant
+108,HydroCHN_00122,False,308,3.725290298461914e-09,0,0,Tankeng hydroelectric plant
+165,HydroCHN_00209,False,283,3.725290298461914e-09,0,0,Hunanzhen hydroelectric plant
+151,HydroCHN_00191,False,283,3.725290298461914e-09,0,0,
+379,HydroCHN_00679,False,315,3.725290298461914e-09,0,0,Nanjindu hydroelectric plant
+110,HydroCHN_00124,False,349,3.725290298461914e-09,0,0,Suofengying hydroelectric plant
+362,HydroCHN_00621,False,356,3.725290298461914e-09,0,0,Weiyuan River Jinggu County Simao District hydroelectric plant
+399,HydroCHN_00752,True,47,3.4924596548080444e-09,0,0,Guangzhao hydroelectric plant
+466,HydroCHN_01052,True,381,3.259629011154175e-09,0,0,Shangshipan hydroelectric plant
+225,HydroCHN_00308,True,323,2.7939677238464355e-09,0,0,Huanglongtan hydroelectric plant
+210,HydroCHN_00285,False,573,2.6193447411060333e-09,0,0,Chencun hydroelectric plant
+78,HydroCHN_00087,False,357,2.444721758365631e-09,0,0,
+357,HydroCHN_00606,False,465,2.3865140974521637e-09,0,0,Yutang hydroelectric plant
+318,HydroCHN_00484,False,118,2.3342181521002203e-09,0,0,Kushitayi hydroelectric plant
+440,HydroCHN_00891,False,619,2.3283064365386963e-09,0,0,Wangjianglou hydroelectric plant
+377,HydroCHN_00673,False,548,2.3283064365386963e-09,0,0,Mangtangxi hydroelectric plant
+144,HydroCHN_00173,True,680,2.3283064365386963e-09,0,0,Shaping Stage 1 hydroelectric plant
+389,HydroCHN_00710,True,381,2.3283064365386963e-09,0,0,Bailong River Zhaohua hydroelectric plant
+447,HydroCHN_00944,False,383,2.2992026060819626e-09,0,0,Fujian Jiangle Gaotang hydroelectric plant
+191,HydroCHN_00254,False,596,2.0954757928848267e-09,0,0,
+296,HydroCHN_00432,False,355,2.0081643015146255e-09,0,0,Baihuatan hydroelectric plant
+266,HydroCHN_00382,False,499,1.979060471057892e-09,0,0,
+179,HydroCHN_00234,False,142,1.9354047253727913e-09,0,0,Guidufu hydroelectric plant
+482,HydroCHN_01233,False,404,1.9208528101444244e-09,0,0,Sankeshu hydroelectric plant
+82,HydroCHN_00091,False,59,1.8917489796876907e-09,0,0,Jinkang hydroelectric plant
+282,HydroCHN_00409,False,694,1.888111000880599e-09,0,0,Shiti hydroelectric plant
+44,HydroCHN_00050,True,229,1.862645149230957e-09,0,0,Liujiaxia hydroelectric plant
+461,HydroCHN_01041,False,328,1.862645149230957e-09,0,0,Fenshui Wuliting hydroelectric plant
+228,HydroCHN_00312,False,367,1.862645149230957e-09,0,0,Nongling hydroelectric plant
+435,HydroCHN_00880,False,318,1.862645149230957e-09,0,0,Kongtou hydroelectric plant
+601,HydroCHN_01839,True,91,1.862645149230957e-09,0,0,Daxia hydroelectric plant
+146,HydroCHN_00178,False,175,1.862645149230957e-09,0,0,Mulihe Shawan hydroelectric plant
+454,HydroCHN_00975,False,442,1.862645149230957e-09,0,0,Hunan Zhugaotan hydroelectric plant
+148,HydroCHN_00184,False,225,1.862645149230957e-09,0,0,
+240,HydroCHN_00335,False,327,1.862645149230957e-09,0,0,
+241,HydroCHN_00336,True,17,1.862645149230957e-09,0,0,Nina hydroelectric plant
+349,HydroCHN_00572,False,251,1.862645149230957e-09,0,0,Tongtou hydroelectric plant
+367,HydroCHN_00642,False,408,1.862645149230957e-09,0,0,Yutan hydroelectric plant
+494,HydroCHN_01427,False,608,1.862645149230957e-09,0,0,Baohu hydroelectric plant
+223,HydroCHN_00305,False,356,1.862645149230957e-09,0,0,Tianhuaban hydroelectric plant
+617,HydroCHN_01887,True,330,1.862645149230957e-09,0,0,Leidatan hydroelectric plant
+167,HydroCHN_00211,False,223,1.862645149230957e-09,0,0,Hanpingzui hydroelectric plant
+354,HydroCHN_00596,False,340,1.862645149230957e-09,0,0,Caoyutan hydroelectric plant
+121,HydroCHN_00138,False,288,1.862645149230957e-09,0,0,Dongjiang hydroelectric plant
+378,HydroCHN_00678,False,251,1.862645149230957e-09,0,0,Julongtan hydroelectric plant
+427,HydroCHN_00842,False,177,1.862645149230957e-09,0,0,Tongkou hydroelectric plant
+401,HydroCHN_00759,False,160,1.862645149230957e-09,0,0,Yanzhou hydroelectric plant
+314,HydroCHN_00474,False,89,1.862645149230957e-09,0,0,Jiyu hydroelectric plant
+157,HydroCHN_00199,True,37,1.862645149230957e-09,0,0,Kangyang hydroelectric plant
+404,HydroCHN_00766,False,265,1.862645149230957e-09,0,0,Mingtai hydroelectric plant
+86,HydroCHN_00095,True,353,1.862645149230957e-09,0,0,Ankang hydroelectric plant
+311,HydroCHN_00465,False,257,1.862645149230957e-09,0,0,Maotan hydroelectric plant
+602,HydroCHN_01840,True,535,1.862645149230957e-09,0,0,Yangqu hydroelectric plant
+490,HydroCHN_01380,False,271,1.862645149230957e-09,0,0,Xiaodongjiang hydroelectric plant
+492,HydroCHN_01389,False,440,1.862645149230957e-09,0,0,Youchou hydroelectric plant
+141,HydroCHN_00170,False,260,1.862645149230957e-09,0,0,Zhaixiangkou hydroelectric plant
+212,HydroCHN_00287,True,235,1.862645149230957e-09,0,0,Zhiganglaka hydroelectric plant
+183,HydroCHN_00242,False,356,1.775333657860756e-09,0,0,Xiaotiandu hydroelectric plant
+438,HydroCHN_00886,False,522,1.7462298274040222e-09,0,0,Guizhou Tongzihe Yangjiayuan hydroelectric plant
+359,HydroCHN_00612,True,196,1.6880221664905548e-09,0,0,Hunan Dongping hydroelectric plant
+303,HydroCHN_00443,False,528,1.673470251262188e-09,0,0,Shimen Sanjiangkou hydroelectric plant
+131,HydroCHN_00154,False,21,1.6298145055770874e-09,0,0,
+471,HydroCHN_01080,False,410,1.431544660590589e-09,0,0,Gaofengshan hydroelectric plant
+450,HydroCHN_00958,False,536,1.2514647096395493e-09,0,0,Luoshuidong hydroelectric plant
+479,HydroCHN_01185,False,297,1.2269083526916802e-09,0,0,Wanba hydroelectric plant
+51,HydroCHN_00057,False,505,1.2173586583230644e-09,0,0,
+459,HydroCHN_01028,False,503,1.2150849215686321e-09,0,0,Luyutan hydroelectric plant
+360,HydroCHN_00616,False,514,1.1968950275331736e-09,0,0,Shangyoujiang hydroelectric plant
+209,HydroCHN_00284,False,303,1.1673364497255534e-09,0,0,Shiziping hydroelectric plant
+109,HydroCHN_00123,False,118,1.1641532182693481e-09,0,0,Mianhuatan hydroelectric plant
+317,HydroCHN_00482,False,263,1.1641532182693481e-09,0,0,Laojiangdi hydroelectric plant
+437,HydroCHN_00884,False,360,1.1641532182693481e-09,0,0,Yuxi hydroelectric plant
+277,HydroCHN_00398,False,185,1.1641532182693481e-09,0,0,
+420,HydroCHN_00825,False,467,1.1573320080060512e-09,0,0,Fushui hydroelectric plant
+332,HydroCHN_00522,False,403,1.1350493878126144e-09,0,0,Yutian hydroelectric plant
+418,HydroCHN_00807,False,526,1.076841726899147e-09,0,0,Yutiao hydroelectric plant
+142,HydroCHN_00171,True,137,1.0477378964424133e-09,0,0,Banduo hydroelectric plant
+465,HydroCHN_01050,False,646,9.89530235528946e-10,0,0,Chengbihe hydroelectric plant
+246,HydroCHN_00344,True,114,9.89530235528946e-10,0,0,Wudu Dam hydroelectric plant
+388,HydroCHN_00704,False,326,9.313225746154785e-10,0,0,Guxian Dam hydroelectric plant
+525,HydroCHN_01761,False,0,9.313225746154785e-10,0,0,
+372,HydroCHN_00650,False,497,9.313225746154785e-10,0,0,Yangtoupu hydroelectric plant
+398,HydroCHN_00750,False,10,9.313225746154785e-10,0,0,Xuanhan Jiangkou hydroelectric plant
+396,HydroCHN_00746,False,333,9.313225746154785e-10,0,0,Mengli hydroelectric plant
+421,HydroCHN_00827,False,301,9.313225746154785e-10,0,0,Baishuiyu hydroelectric plant
+343,HydroCHN_00553,False,477,9.313225746154785e-10,0,0,Dahekou hydroelectric plant
+342,HydroCHN_00549,False,491,9.313225746154785e-10,0,0,Geliqiao hydroelectric plant
+356,HydroCHN_00604,False,194,9.313225746154785e-10,0,0,Shaanxi Yang hydroelectric plant
+514,HydroCHN_01665,False,566,9.313225746154785e-10,0,0,Ansha hydroelectric plant
+501,HydroCHN_01476,False,195,9.313225746154785e-10,0,0,Zaoshi hydroelectric plant
+313,HydroCHN_00473,True,151,9.313225746154785e-10,0,0,Zilanba hydroelectric plant
+306,HydroCHN_00456,True,4,9.313225746154785e-10,0,0,Tongzihao hydroelectric plant
+410,HydroCHN_00778,False,322,9.313225746154785e-10,0,0,Meishan hydroelectric plant
+412,HydroCHN_00791,False,158,9.313225746154785e-10,0,0,Chahan Wusu hydroelectric plant
+503,HydroCHN_01520,False,69,9.313225746154785e-10,0,0,Sichuan Muchuan County Huogu hydroelectric plant
+439,HydroCHN_00889,False,347,9.313225746154785e-10,0,0,Hualiangting hydroelectric plant
+207,HydroCHN_00281,False,217,9.313225746154785e-10,0,0,
+155,HydroCHN_00195,False,416,9.313225746154785e-10,0,0,Jiangya hydroelectric plant
+33,HydroCHN_00039,False,15,9.313225746154785e-10,0,0,
+436,HydroCHN_00883,False,461,9.313225746154785e-10,0,0,Daao hydroelectric plant
+48,HydroCHN_00054,False,76,9.313225746154785e-10,0,0,
+125,HydroCHN_00145,True,165,9.313225746154785e-10,0,0,Yanguoxia hydroelectric plant
+491,HydroCHN_01384,False,342,9.313225746154785e-10,0,0,Yinzidu hydroelectric plant
+204,HydroCHN_00276,False,236,9.313225746154785e-10,0,0,Shanxi hydroelectric plant
+154,HydroCHN_00194,False,201,9.313225746154785e-10,0,0,
+76,HydroCHN_00085,False,162,9.313225746154785e-10,0,0,
+453,HydroCHN_00973,False,415,9.313225746154785e-10,0,0,Duping hydroelectric plant
+383,HydroCHN_00693,False,282,9.313225746154785e-10,0,0,Dongjin hydroelectric plant
+488,HydroCHN_01378,False,338,9.313225746154785e-10,0,0,Dongsong hydroelectric plant
+89,HydroCHN_00098,False,27,9.313225746154785e-10,0,0,
+588,HydroCHN_01825,False,21,9.313225746154785e-10,0,0,
+244,HydroCHN_00340,False,215,9.313225746154785e-10,0,0,Longshou 2 hydroelectric plant
+106,HydroCHN_00120,False,250,9.313225746154785e-10,0,0,Hongjiadu hydroelectric plant
+28,HydroCHN_00031,False,212,9.313225746154785e-10,0,0,
+147,HydroCHN_00181,False,191,9.313225746154785e-10,0,0,Xinfengjiang hydroelectric plant
+133,HydroCHN_00156,False,384,9.313225746154785e-10,0,0,
+423,HydroCHN_00833,False,409,9.313225746154785e-10,0,0,Xiakou hydroelectric plant
+426,HydroCHN_00840,False,286,9.313225746154785e-10,0,0,Bailianhe hydroelectric plant
+586,HydroCHN_01823,False,57,9.313225746154785e-10,0,0,
+262,HydroCHN_00372,False,118,9.313225746154785e-10,0,0,Shiyazi hydroelectric plant
+126,HydroCHN_00146,False,70,9.313225746154785e-10,0,0,Jiangpinghe hydroelectric plant
+23,HydroCHN_00026,False,39,9.313225746154785e-10,0,0,
+257,HydroCHN_00362,False,362,9.313225746154785e-10,0,0,
+200,HydroCHN_00272,False,299,9.167706593871117e-10,0,0,
+250,HydroCHN_00351,False,480,6.984919309616089e-10,0,0,Fengshuba hydroelectric plant
+481,HydroCHN_01226,False,243,6.539266905747354e-10,0,0,Shankou hydroelectric plant
+149,HydroCHN_00185,False,544,6.484697223640978e-10,0,0,Xunyang hydroelectric plant
+347,HydroCHN_00563,True,242,6.402842700481415e-10,0,0,Shuidong hydroelectric plant
+198,HydroCHN_00270,False,265,6.348273018375039e-10,0,0,Qiafuqihai hydroelectric plant
+299,HydroCHN_00437,False,355,5.92763171880506e-10,0,0,Wuyiqiao hydroelectric plant
+403,HydroCHN_00764,False,363,5.875335773453116e-10,0,0,Liangqian hydroelectric plant
+283,HydroCHN_00410,False,465,5.779838829766959e-10,0,0,Shuanghekou hydroelectric plant
+269,HydroCHN_00385,False,375,5.748006515204906e-10,0,0,
+195,HydroCHN_00262,False,353,5.668994162988383e-10,0,0,Guolangqiao hydroelectric plant
+168,HydroCHN_00215,False,151,5.547917680814862e-10,0,0,Wawushan hydroelectric plant
+497,HydroCHN_01444,False,598,5.238689482212067e-10,0,0,Jinshuitan hydroelectric plant
+224,HydroCHN_00306,False,560,5.111360223963857e-10,0,0,Hanjiang Baihe Jiahe hydroelectric plant
+267,HydroCHN_00383,False,316,5.07498043589294e-10,0,0,Wenquan hydroelectric plant
+117,HydroCHN_00133,False,83,4.656612873077393e-10,0,0,
+346,HydroCHN_00559,False,247,4.656612873077393e-10,0,0,Duonuo hydroelectric plant
+345,HydroCHN_00557,False,303,4.656612873077393e-10,0,0,Shuanghe hydroelectric plant
+122,HydroCHN_00142,False,170,4.656612873077393e-10,0,0,
+456,HydroCHN_00990,False,256,4.656612873077393e-10,0,0,Baiyangxi hydroelectric plant
+422,HydroCHN_00830,False,1,4.656612873077393e-10,0,0,Yangliutan hydroelectric plant
+460,HydroCHN_01031,False,199,4.656612873077393e-10,0,0,Fujian Yongan Fenghai hydroelectric plant
+485,HydroCHN_01262,False,78,4.656612873077393e-10,0,0,Baishan hydroelectric plant
+618,HydroCHN_01945,False,105,4.656612873077393e-10,0,0,Guoduo hydroelectric plant
+17,HydroCHN_00020,False,30,4.656612873077393e-10,0,0,
+478,HydroCHN_01178,False,188,4.656612873077393e-10,0,0,Yuzixi hydroelectric plant
+374,HydroCHN_00663,True,623,4.656612873077393e-10,0,0,Xiushan hydroelectric plant
+616,HydroCHN_01881,True,122,4.656612873077393e-10,0,0,Maerdang hydroelectric plant
+506,HydroCHN_01569,False,38,4.656612873077393e-10,0,0,Jiulongxia hydroelectric plant
+470,HydroCHN_01070,False,283,4.656612873077393e-10,0,0,Zhaolaihe hydroelectric plant
+463,HydroCHN_01048,False,217,4.656612873077393e-10,0,0,Kizil hydroelectric plant
+52,HydroCHN_00058,False,662,4.656612873077393e-10,0,0,
+612,HydroCHN_01851,False,36,4.656612873077393e-10,0,0,
+511,HydroCHN_01657,False,126,4.656612873077393e-10,0,0,Shuangling hydroelectric plant
+611,HydroCHN_01850,False,615,4.656612873077393e-10,0,0,
+67,HydroCHN_00075,False,46,4.656612873077393e-10,0,0,
+464,HydroCHN_01049,False,201,4.656612873077393e-10,0,0,Ximen hydroelectric plant
+510,HydroCHN_01655,False,453,4.656612873077393e-10,0,0,Honglin hydroelectric plant
+0,HydroCHN_00000,False,8,4.656612873077393e-10,0,0,
+512,HydroCHN_01658,False,187,4.656612873077393e-10,0,0,Lechangxia hydroelectric plant
+451,HydroCHN_00968,False,393,4.656612873077393e-10,0,0,Danzhuwo hydroelectric plant
+534,HydroCHN_01771,False,24,4.656612873077393e-10,0,0,
+259,HydroCHN_00368,False,169,4.656612873077393e-10,0,0,Kalasuke hydroelectric plant
+280,HydroCHN_00402,False,235,4.656612873077393e-10,0,0,Dukouba hydroelectric plant
+255,HydroCHN_00358,False,174,4.656612873077393e-10,0,0,Xiaoqi hydroelectric plant
+430,HydroCHN_00861,False,110,4.656612873077393e-10,0,0,Ya'an Daxing hydroelectric plant
+287,HydroCHN_00417,False,428,4.656612873077393e-10,0,0,Shidi hydroelectric plant
+431,HydroCHN_00862,False,192,4.656612873077393e-10,0,0,Gongchuan hydroelectric plant
+231,HydroCHN_00317,True,205,4.656612873077393e-10,0,0,Pankou hydroelectric plant
+206,HydroCHN_00279,False,224,4.656612873077393e-10,0,0,Hongkou hydroelectric plant
+445,HydroCHN_00924,False,497,4.656612873077393e-10,0,0,Douyan hydroelectric plant
+519,HydroCHN_01749,False,354,4.656612873077393e-10,0,0,Luhun hydroelectric plant
+194,HydroCHN_00257,False,158,4.656612873077393e-10,0,0,Huanren hydroelectric plant
+182,HydroCHN_00240,False,193,4.656612873077393e-10,0,0,Yele hydroelectric plant
+305,HydroCHN_00450,False,466,4.656612873077393e-10,0,0,Dongping hydroelectric plant
+321,HydroCHN_00489,False,9,4.656612873077393e-10,0,0,Woluoqiao hydroelectric plant
+175,HydroCHN_00226,False,454,4.656612873077393e-10,0,0,Maoergai hydroelectric plant
+499,HydroCHN_01454,False,210,4.656612873077393e-10,0,0,Guangxi Baise Tianlin Dongba hydroelectric plant
+160,HydroCHN_00202,True,215,4.656612873077393e-10,0,0,Fujiang Gucheng hydroelectric plant
+170,HydroCHN_00219,False,67,4.656612873077393e-10,0,0,Nierji hydroelectric plant
+319,HydroCHN_00486,False,184,4.656612873077393e-10,0,0,Laodukou hydroelectric plant
+178,HydroCHN_00233,False,311,4.656612873077393e-10,0,0,Qiaoqi hydroelectric plant
+150,HydroCHN_00188,False,263,4.656612873077393e-10,0,0,
+171,HydroCHN_00220,False,177,4.656612873077393e-10,0,0,
+152,HydroCHN_00192,True,210,3.901732270605862e-10,0,0,Jiemian hydroelectric plant
+254,HydroCHN_00357,False,176,3.4924596548080444e-10,0,0,Qingxi hydroelectric plant
+249,HydroCHN_00349,False,71,3.2014213502407074e-10,0,0,Se'ergu hydroelectric plant
+365,HydroCHN_00630,False,353,3.012701199622825e-10,0,0,Hubei Fang County Sanliping hydroelectric plant
+405,HydroCHN_00770,False,250,2.9740476747974753e-10,0,0,Watuo hydroelectric plant
+368,HydroCHN_00643,False,360,2.9331204132176936e-10,0,0,Koktokay hydroelectric plant
+302,HydroCHN_00441,False,550,2.745537130977027e-10,0,0,Hubei Eping hydroelectric plant
+221,HydroCHN_00302,False,136,2.6193447411060333e-10,0,0,Maojiahe hydroelectric plant
+419,HydroCHN_00812,False,383,2.610249794088304e-10,0,0,Mengzhouba hydroelectric plant
+352,HydroCHN_00582,False,119,2.546585164964199e-10,0,0,Jinping hydroelectric plant
+218,HydroCHN_00299,False,136,2.3374013835564256e-10,0,0,Tianlonghu hydroelectric plant
+476,HydroCHN_01154,False,387,2.3283064365386963e-10,0,0,Yongxi Stage 3 hydroelectric plant
+457,HydroCHN_00999,False,720,2.3283064365386963e-10,0,0,Songshanhekou hydroelectric plant
+387,HydroCHN_00703,False,345,2.3283064365386963e-10,0,0,Yunnan Sayutuo hydroelectric plant
+393,HydroCHN_00740,True,3,2.3283064365386963e-10,0,0,Dala River hydroelectric plant
+394,HydroCHN_00742,False,431,2.3283064365386963e-10,0,0,Xiaoxiang hydroelectric plant
+402,HydroCHN_00763,False,390,2.3283064365386963e-10,0,0,Songshuling hydroelectric plant
+449,HydroCHN_00953,False,183,2.3283064365386963e-10,0,0,Fujian Zhangping Huakou Plant hydroelectric plant
+455,HydroCHN_00983,False,85,2.3283064365386963e-10,0,0,Luogu hydroelectric plant
+483,HydroCHN_01244,False,442,2.3283064365386963e-10,0,0,Puding hydroelectric plant
+233,HydroCHN_00320,False,2,2.3283064365386963e-10,0,0,Muxingtu hydroelectric plant
+518,HydroCHN_01724,False,70,2.3283064365386963e-10,0,0,Shanzai hydroelectric plant
+176,HydroCHN_00229,False,94,2.3283064365386963e-10,0,0,Daguangba hydroelectric plant
+312,HydroCHN_00470,False,392,2.3283064365386963e-10,0,0,Laohuzui hydroelectric plant
+202,HydroCHN_00274,False,321,2.3283064365386963e-10,0,0,Yunnan Yanjin Hengjiang Wannianqiao hydroelectric plant
+301,HydroCHN_00439,False,461,2.3283064365386963e-10,0,0,Chongqing Shizitan hydroelectric plant
+300,HydroCHN_00438,True,24,2.3283064365386963e-10,0,0,Qilinsi hydroelectric plant
+295,HydroCHN_00431,False,5,2.3283064365386963e-10,0,0,Jisha hydroelectric plant
+294,HydroCHN_00429,False,315,2.3283064365386963e-10,0,0,Dengke hydroelectric plant
+293,HydroCHN_00428,False,369,2.3283064365386963e-10,0,0,Lazhai hydroelectric plant
+559,HydroCHN_01796,False,654,2.3283064365386963e-10,0,0,
+227,HydroCHN_00311,False,337,2.3283064365386963e-10,0,0,Longbeiwan hydroelectric plant
+546,HydroCHN_01783,False,3,2.3283064365386963e-10,0,0,
+526,HydroCHN_01762,False,3,2.3283064365386963e-10,0,0,
+256,HydroCHN_00360,False,48,2.3283064365386963e-10,0,0,
+529,HydroCHN_01766,False,81,2.3283064365386963e-10,0,0,
+532,HydroCHN_01769,False,54,2.3283064365386963e-10,0,0,
+124,HydroCHN_00144,False,207,2.3283064365386963e-10,0,0,Kajiwa hydroelectric plant
+161,HydroCHN_00203,False,227,2.3283064365386963e-10,0,0,Shuanggou hydroelectric plant
+90,HydroCHN_00099,False,520,2.3283064365386963e-10,0,0,
+22,HydroCHN_00025,False,20,2.3283064365386963e-10,0,0,
+504,HydroCHN_01526,False,181,2.3283064365386963e-10,0,0,Renzhonghai hydroelectric plant
+375,HydroCHN_00667,False,261,2.3283064365386963e-10,0,0,Zhangwo hydroelectric plant
+9,HydroCHN_00009,False,23,2.3283064365386963e-10,0,0,
+358,HydroCHN_00610,True,434,2.3283064365386963e-10,0,0,Zhuxikou hydroelectric plant
+12,HydroCHN_00014,False,3,2.3283064365386963e-10,0,0,
+350,HydroCHN_00578,False,185,2.3283064365386963e-10,0,0,Salikete hydroelectric plant
+21,HydroCHN_00024,False,32,2.3283064365386963e-10,0,0,
+26,HydroCHN_00029,False,63,2.3283064365386963e-10,0,0,
+509,HydroCHN_01615,False,229,2.3283064365386963e-10,0,0,Sanxikou hydroelectric plant
+75,HydroCHN_00084,False,19,2.3283064365386963e-10,0,0,
+598,HydroCHN_01835,False,6,2.3283064365386963e-10,0,0,
+81,HydroCHN_00090,False,42,2.3283064365386963e-10,0,0,
+544,HydroCHN_01781,False,3,2.3283064365386963e-10,0,0,
+261,HydroCHN_00371,False,544,1.5006662579253316e-10,0,0,Bashan hydroelectric plant
+292,HydroCHN_00427,False,150,1.4705392459291033e-10,0,0,
+409,HydroCHN_00777,False,129,1.4551915228366852e-10,0,0,Guizhou Huidong hydroelectric plant
+270,HydroCHN_00386,False,45,1.4551915228366852e-10,0,0,Yaoheba hydroelectric plant
+516,HydroCHN_01699,True,86,1.418811734765768e-10,0,0,Dagangshan hydroelectric plant
+364,HydroCHN_00628,False,529,1.3642420526593924e-10,0,0,Doulingzi hydroelectric plant
+242,HydroCHN_00337,False,434,1.3460521586239338e-10,0,0,Kaitan hydroelectric plant
+469,HydroCHN_01069,True,173,1.3096723705530167e-10,0,0,Ludila hydroelectric plant
+180,HydroCHN_00237,False,66,1.3096723705530167e-10,0,0,Shangtongba hydroelectric plant
+316,HydroCHN_00477,False,53,1.2005330063402653e-10,0,0,Saizhu hydroelectric plant
+275,HydroCHN_00395,False,35,1.1823431123048067e-10,0,0,Lianbu hydroelectric plant
+330,HydroCHN_00514,True,163,1.1641532182693481e-10,0,0,Lalashan hydroelectric plant
+609,HydroCHN_01847,False,30,1.1641532182693481e-10,0,0,
+605,HydroCHN_01843,False,87,1.1641532182693481e-10,0,0,
+600,HydroCHN_01838,False,45,1.1641532182693481e-10,0,0,
+331,HydroCHN_00520,False,67,1.1641532182693481e-10,0,0,Niangyong hydroelectric plant
+542,HydroCHN_01779,False,69,1.1641532182693481e-10,0,0,
+591,HydroCHN_01828,False,0,1.1641532182693481e-10,0,0,
+63,HydroCHN_00069,False,72,1.1641532182693481e-10,0,0,
+84,HydroCHN_00093,False,324,1.1641532182693481e-10,0,0,
+85,HydroCHN_00094,False,301,1.1641532182693481e-10,0,0,
+327,HydroCHN_00504,False,326,1.1641532182693481e-10,0,0,Taipingwan hydroelectric plant
+589,HydroCHN_01826,False,33,1.1641532182693481e-10,0,0,
+500,HydroCHN_01460,True,4,1.1641532182693481e-10,0,0,Geheyan hydroelectric plant
+50,HydroCHN_00056,False,3,1.1641532182693481e-10,0,0,
+49,HydroCHN_00055,False,15,1.1641532182693481e-10,0,0,
+472,HydroCHN_01085,False,252,1.1641532182693481e-10,0,0,Shanmei hydroelectric plant
+38,HydroCHN_00044,False,9,1.1641532182693481e-10,0,0,
+613,HydroCHN_01852,False,570,1.1641532182693481e-10,0,0,
+475,HydroCHN_01147,False,428,1.1641532182693481e-10,0,0,Gengda hydroelectric plant
+615,HydroCHN_01854,False,27,1.1641532182693481e-10,0,0,
+29,HydroCHN_00032,False,17,1.1641532182693481e-10,0,0,
+341,HydroCHN_00548,False,190,1.1641532182693481e-10,0,0,Nanshui hydroelectric plant
+344,HydroCHN_00556,False,245,1.1641532182693481e-10,0,0,Huangtankou hydroelectric plant
+391,HydroCHN_00734,False,221,1.1641532182693481e-10,0,0,Fushi hydroelectric plant
+353,HydroCHN_00587,True,189,1.1641532182693481e-10,0,0,Sichuan Pingwu Xiannvbao hydroelectric plant
+366,HydroCHN_00639,False,133,1.1641532182693481e-10,0,0,Zhongliang Stage 1 hydroelectric plant
+325,HydroCHN_00494,False,112,1.1641532182693481e-10,0,0,Yinping hydroelectric plant
+584,HydroCHN_01821,False,6,1.1641532182693481e-10,0,0,
+172,HydroCHN_00223,False,41,1.1641532182693481e-10,0,0,Biedieli hydroelectric plant
+222,HydroCHN_00303,False,2,1.1641532182693481e-10,0,0,
+425,HydroCHN_00838,False,199,1.1641532182693481e-10,0,0,Hubei Shiyan Zhuxi Baishahe hydroelectric plant
+535,HydroCHN_01772,False,21,1.1641532182693481e-10,0,0,
+279,HydroCHN_00401,False,42,1.1641532182693481e-10,0,0,Dajinping hydroelectric plant
+429,HydroCHN_00847,False,504,1.1641532182693481e-10,0,0,Shangpei hydroelectric plant
+522,HydroCHN_01758,False,18,1.1641532182693481e-10,0,0,
+547,HydroCHN_01784,False,18,1.1641532182693481e-10,0,0,
+238,HydroCHN_00332,False,39,1.1641532182693481e-10,0,0,
+381,HydroCHN_00685,False,401,1.1641532182693481e-10,0,0,Longqiao hydroelectric plant
+232,HydroCHN_00319,False,3,1.1641532182693481e-10,0,0,Gudi hydroelectric plant
+551,HydroCHN_01788,False,21,1.1641532182693481e-10,0,0,
+520,HydroCHN_01756,False,0,1.1641532182693481e-10,0,0,
+226,HydroCHN_00310,False,232,1.1641532182693481e-10,0,0,Shapai hydroelectric plant
+552,HydroCHN_01789,False,60,1.1641532182693481e-10,0,0,
+424,HydroCHN_00835,True,411,1.1641532182693481e-10,0,0,Hunan Taojiang Baizhuzhou hydroelectric plant
+557,HydroCHN_01794,False,30,1.1641532182693481e-10,0,0,
+558,HydroCHN_01795,False,27,1.1641532182693481e-10,0,0,
+291,HydroCHN_00426,False,69,1.1641532182693481e-10,0,0,Liuping hydroelectric plant
+307,HydroCHN_00459,False,29,1.1641532182693481e-10,0,0,Dayingjiang I hydroelectric plant
+199,HydroCHN_00271,False,39,1.1641532182693481e-10,0,0,Xiabandi hydroelectric plant
+446,HydroCHN_00928,False,138,1.1641532182693481e-10,0,0,Xieka hydroelectric plant
+565,HydroCHN_01802,False,42,1.1641532182693481e-10,0,0,
+448,HydroCHN_00952,False,498,1.1641532182693481e-10,0,0,Chunyangtan hydroelectric plant
+187,HydroCHN_00248,False,2,1.1641532182693481e-10,0,0,Jiniu hydroelectric plant
+580,HydroCHN_01817,False,6,1.1641532182693481e-10,0,0,
+315,HydroCHN_00475,True,129,1.1641532182693481e-10,0,0,Xiangshui hydroelectric plant
+382,HydroCHN_00692,False,128,1.1641532182693481e-10,0,0,Huanghuazhai hydroelectric plant
+217,HydroCHN_00296,False,20,8.731149137020111e-11,0,0,Liuhong hydroelectric plant
+619,HydroCHN_01987,False,331,6.730260793119669e-11,0,0,Bala hydroelectric plant
+281,HydroCHN_00405,False,228,6.730260793119669e-11,0,0,Jiangseba hydroelectric plant
+265,HydroCHN_00381,False,88,6.548361852765083e-11,0,0,
+477,HydroCHN_01167,False,15,5.820766091346741e-11,0,0,Sichuan Jinhua hydroelectric plant
+554,HydroCHN_01791,False,0,5.820766091346741e-11,0,0,
+567,HydroCHN_01804,False,90,5.820766091346741e-11,0,0,
+564,HydroCHN_01801,False,42,5.820766091346741e-11,0,0,
+562,HydroCHN_01799,False,9,5.820766091346741e-11,0,0,
+561,HydroCHN_01798,False,45,5.820766091346741e-11,0,0,
+208,HydroCHN_00283,True,32,5.820766091346741e-11,0,0,Baoxing hydroelectric plant
+213,HydroCHN_00288,False,69,5.820766091346741e-11,0,0,Xinzang hydroelectric plant
+556,HydroCHN_01793,False,6,5.820766091346741e-11,0,0,
+555,HydroCHN_01792,False,0,5.820766091346741e-11,0,0,
+549,HydroCHN_01786,False,42,5.820766091346741e-11,0,0,
+230,HydroCHN_00314,False,729,5.820766091346741e-11,0,0,Lizhou hydroelectric plant
+569,HydroCHN_01806,False,39,5.820766091346741e-11,0,0,
+548,HydroCHN_01785,False,18,5.820766091346741e-11,0,0,
+239,HydroCHN_00333,False,118,5.820766091346741e-11,0,0,Xiaoshan hydroelectric plant
+541,HydroCHN_01778,False,18,5.820766091346741e-11,0,0,
+540,HydroCHN_01777,False,30,5.820766091346741e-11,0,0,
+539,HydroCHN_01776,False,18,5.820766091346741e-11,0,0,
+538,HydroCHN_01775,False,24,5.820766091346741e-11,0,0,
+536,HydroCHN_01773,False,18,5.820766091346741e-11,0,0,
+568,HydroCHN_01805,False,42,5.820766091346741e-11,0,0,
+571,HydroCHN_01808,False,3,5.820766091346741e-11,0,0,
+533,HydroCHN_01770,False,3,5.820766091346741e-11,0,0,
+597,HydroCHN_01834,False,0,5.820766091346741e-11,0,0,
+59,HydroCHN_00065,False,1,5.820766091346741e-11,0,0,
+60,HydroCHN_00066,False,12,5.820766091346741e-11,0,0,
+610,HydroCHN_01848,False,3,5.820766091346741e-11,0,0,
+65,HydroCHN_00071,False,8,5.820766091346741e-11,0,0,
+606,HydroCHN_01844,False,0,5.820766091346741e-11,0,0,
+604,HydroCHN_01842,False,3,5.820766091346741e-11,0,0,
+603,HydroCHN_01841,False,3,5.820766091346741e-11,0,0,
+69,HydroCHN_00078,False,13,5.820766091346741e-11,0,0,
+599,HydroCHN_01837,False,3,5.820766091346741e-11,0,0,
+592,HydroCHN_01829,False,12,5.820766091346741e-11,0,0,
+572,HydroCHN_01809,False,48,5.820766091346741e-11,0,0,
+590,HydroCHN_01827,False,15,5.820766091346741e-11,0,0,
+587,HydroCHN_01824,False,15,5.820766091346741e-11,0,0,
+585,HydroCHN_01822,False,27,5.820766091346741e-11,0,0,
+582,HydroCHN_01819,False,21,5.820766091346741e-11,0,0,
+581,HydroCHN_01818,False,39,5.820766091346741e-11,0,0,
+185,HydroCHN_00244,False,1,5.820766091346741e-11,0,0,Husong River hydroelectric plant
+578,HydroCHN_01815,False,54,5.820766091346741e-11,0,0,
+576,HydroCHN_01813,False,18,5.820766091346741e-11,0,0,
+574,HydroCHN_01811,False,30,5.820766091346741e-11,0,0,
+272,HydroCHN_00390,False,16,5.820766091346741e-11,0,0,Egongbao hydroelectric plant
+220,HydroCHN_00301,False,32,5.820766091346741e-11,0,0,Pingtou hydroelectric plant
+310,HydroCHN_00464,False,16,5.820766091346741e-11,0,0,Minzhi hydroelectric plant
+517,HydroCHN_01701,False,306,5.820766091346741e-11,0,0,Xiaoguanzi hydroelectric plant
+309,HydroCHN_00463,True,30,5.820766091346741e-11,0,0,Gaosheng hydroelectric plant
+397,HydroCHN_00748,True,105,5.820766091346741e-11,0,0,Sanjiang hydroelectric plant
+289,HydroCHN_00422,False,210,5.820766091346741e-11,0,0,Shuozhong hydroelectric plant
+384,HydroCHN_00694,False,429,5.820766091346741e-11,0,0,Liangjiang hydroelectric plant
+521,HydroCHN_01757,False,45,5.820766091346741e-11,0,0,
+380,HydroCHN_00682,False,237,5.820766091346741e-11,0,0,Xiaojin Yangjiawan hydroelectric plant
+523,HydroCHN_01759,False,63,5.820766091346741e-11,0,0,
+414,HydroCHN_00798,False,83,5.820766091346741e-11,0,0,Liuxihe hydroelectric plant
+495,HydroCHN_01441,True,36,5.820766091346741e-11,0,0,Gongzui hydroelectric plant
+442,HydroCHN_00901,False,199,5.820766091346741e-11,0,0,Zhouning hydroelectric plant
+531,HydroCHN_01768,False,93,5.820766091346741e-11,0,0,
+524,HydroCHN_01760,False,6,5.820766091346741e-11,0,0,
+336,HydroCHN_00529,False,714,5.820766091346741e-11,0,0,Rongge hydroelectric plant
+527,HydroCHN_01763,False,9,5.820766091346741e-11,0,0,
+337,HydroCHN_00530,False,287,5.820766091346741e-11,0,0,Bajiangkou hydroelectric plant
+278,HydroCHN_00399,False,188,5.820766091346741e-11,0,0,Xiaoyantou hydroelectric plant
+467,HydroCHN_01058,False,94,5.820766091346741e-11,0,0,Guanting hydroelectric plant
+530,HydroCHN_01767,False,3,5.820766091346741e-11,0,0,
+407,HydroCHN_00774,False,175,5.820766091346741e-11,0,0,Daixi hydroelectric plant
+219,HydroCHN_00300,False,212,3.637978807091713e-11,0,0,Nabang hydroelectric plant
+338,HydroCHN_00534,False,20,3.637978807091713e-11,0,0,Quxue hydroelectric plant
+486,HydroCHN_01285,True,447,3.4049207897624e-11,0,0,Luding hydroelectric plant
+502,HydroCHN_01491,False,412,3.278444182797102e-11,0,0,Jianke hydroelectric plant
+285,HydroCHN_00415,False,401,3.2741809263825417e-11,0,0,
+593,HydroCHN_01830,False,24,2.9103830456733704e-11,0,0,
+406,HydroCHN_00772,False,267,2.9103830456733704e-11,0,0,Yongkou hydroelectric plant
+573,HydroCHN_01810,False,6,2.9103830456733704e-11,0,0,
+583,HydroCHN_01820,False,21,2.9103830456733704e-11,0,0,
+386,HydroCHN_00698,True,70,2.9103830456733704e-11,0,0,Liushu hydroelectric plant
+594,HydroCHN_01831,False,75,2.9103830456733704e-11,0,0,
+596,HydroCHN_01833,False,27,2.9103830456733704e-11,0,0,
+577,HydroCHN_01814,False,24,2.9103830456733704e-11,0,0,
+607,HydroCHN_01845,False,51,2.9103830456733704e-11,0,0,
+462,HydroCHN_01044,False,102,2.9103830456733704e-11,0,0,Longyan Wan'anxi hydroelectric plant
+614,HydroCHN_01853,False,0,2.9103830456733704e-11,0,0,
+575,HydroCHN_01812,False,0,2.9103830456733704e-11,0,0,
+505,HydroCHN_01540,False,387,2.9103830456733704e-11,0,0,Guanmaozhou hydroelectric plant
+528,HydroCHN_01764,False,12,2.9103830456733704e-11,0,0,
+543,HydroCHN_01780,False,6,2.9103830456733704e-11,0,0,
+570,HydroCHN_01807,False,36,2.9103830456733704e-11,0,0,
+566,HydroCHN_01803,False,0,2.9103830456733704e-11,0,0,
+550,HydroCHN_01787,False,15,2.9103830456733704e-11,0,0,
+553,HydroCHN_01790,False,18,2.9103830456733704e-11,0,0,
+326,HydroCHN_00497,False,20,2.9103830456733704e-11,0,0,Diluo hydroelectric plant
+334,HydroCHN_00526,False,299,2.9103830456733704e-11,0,0,Cuijiaying hydroelectric plant
+537,HydroCHN_01774,False,135,2.9103830456733704e-11,0,0,
+560,HydroCHN_01797,False,0,2.9103830456733704e-11,0,0,
+545,HydroCHN_01782,False,39,2.9103830456733704e-11,0,0,
+515,HydroCHN_01687,False,394,2.9103830456733704e-11,0,0,Guwa hydroelectric plant
+328,HydroCHN_00506,False,61,2.9103830456733704e-11,0,0,Muzuo hydroelectric plant
+371,HydroCHN_00649,False,274,1.9404922113608336e-11,0,0,Luoyuan Huokou hydroelectric plant
+595,HydroCHN_01832,False,81,1.4551915228366852e-11,0,0,
+433,HydroCHN_00867,False,106,1.4551915228366852e-11,0,0,Yucheng hydroelectric plant
+273,HydroCHN_00391,False,255,1.4551915228366852e-11,0,0,Ziyili hydroelectric plant
+608,HydroCHN_01846,False,33,1.4551915228366852e-11,0,0,
+400,HydroCHN_00753,True,11,1.4551915228366852e-11,0,0,Gansu Tanchang County Shawan hydroelectric plant
+444,HydroCHN_00923,False,0,1.4551915228366852e-11,0,0,Jinping Stage 2 hydroelectric plant
+563,HydroCHN_01800,False,69,1.4551915228366852e-11,0,0,
+579,HydroCHN_01816,False,36,1.4551915228366852e-11,0,0,
+27,HydroCHN_00030,False,156,1.4551915228366852e-11,0,0,
+193,HydroCHN_00256,True,195,1.4551915228366852e-11,0,0,Suzhi hydroelectric plant
+415,HydroCHN_00802,False,453,1.4551915228366852e-11,0,0,Chengguan hydroelectric plant
+507,HydroCHN_01592,False,57,1.0913936421275139e-11,0,0,Sichuan Yaan Shuijinguan hydroelectric plant
+248,HydroCHN_00348,False,339,7.275957614183426e-12,0,0,Panjiakou hydroelectric plant
+70,HydroCHN_00079,False,78,7.275957614183426e-12,0,0,
+370,HydroCHN_00647,False,11,7.275957614183426e-12,0,0,Gaoqiao hydroelectric plant
+458,HydroCHN_01026,False,188,7.275957614183426e-12,0,0,Mienhuatan hydroelectric plant
+288,HydroCHN_00421,False,649,3.637978807091713e-12,0,0,Duobu hydroelectric plant
+71,HydroCHN_00080,False,705,3.637978807091713e-12,0,0,
+79,HydroCHN_00088,False,662,3.637978807091713e-12,0,0,
+441,HydroCHN_00897,False,101,3.637978807091713e-12,0,0,Fengkai Jiangkou hydroelectric plant
+68,HydroCHN_00077,True,23,3.637978807091713e-12,0,0,Wanjiazhai hydroelectric plant
+333,HydroCHN_00523,False,83,3.637978807091713e-12,0,0,Baishiyao hydroelectric plant
+32,HydroCHN_00035,False,732,1.8189894035458565e-12,0,0,
+263,HydroCHN_00376,False,288,1.8189894035458565e-12,0,0,Xiaoshixia hydroelectric plant
+91,HydroCHN_00100,False,114,1.8189894035458565e-12,0,0,
+271,HydroCHN_00389,False,167,1.8189894035458565e-12,0,0,Yamadu hydroelectric plant
+11,HydroCHN_00012,True,368,9.094947017729282e-13,0,0,Laxiwa hydroelectric plant
+24,HydroCHN_00027,False,183,9.094947017729282e-13,0,0,
+31,HydroCHN_00034,False,3,9.094947017729282e-13,0,0,
+77,HydroCHN_00086,False,40,9.094947017729282e-13,0,0,
+173,HydroCHN_00224,False,580,2.2737367544323206e-13,0,0,Tarileiga hydroelectric plant
+92,HydroCHN_00101,False,18,2.2737367544323206e-13,0,0,
+335,HydroCHN_00528,True,90,1.1368683772161603e-13,0,0,Haibowan hydroelectric plant
+130,HydroCHN_00153,True,38,1.1368683772161603e-13,0,0,Longkou hydroelectric plant

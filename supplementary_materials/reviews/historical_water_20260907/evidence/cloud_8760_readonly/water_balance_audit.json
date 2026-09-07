@@ -1,0 +1,25 @@
+{
+  "status": "READ_ONLY_SAVED_ARRAY_AUDIT",
+  "optimize_called": false,
+  "presolve_called": false,
+  "remote_writes": false,
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260828_8760_stagea_recovery_v1/recovered_8760/reservoir_dispatch.npz",
+  "source_sha256": "c3f02bb01044ea40b43ec1a5e759a79cfcd4b1dc6327081ef7c4dcd90978d07e",
+  "hours": 8760,
+  "reservoirs": 620,
+  "maximum_water_residual_m3": 0.038998539128543674,
+  "stations_above_1m3": 0,
+  "station_hours_above_1m3": 0,
+  "stations_above_10m3": 0,
+  "station_hours_above_10m3": 0,
+  "reported_overall_qc": "FAIL",
+  "reported_maximum_water_residual_m3": 0.03899853676557541,
+  "water_pass_at_current_physical_qc_1m3": true,
+  "worst": {
+    "hydrochn_row_id": "HydroCHN_00001",
+    "maximum_absolute_residual_m3": 0.038998539128543674,
+    "maximum_residual_hour_index": 1560,
+    "hours_above_1m3": 0,
+    "hours_above_10m3": 0
+  }
+}

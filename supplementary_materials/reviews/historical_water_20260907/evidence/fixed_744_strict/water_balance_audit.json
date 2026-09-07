@@ -1,0 +1,28 @@
+{
+  "status": "OFFLINE_WATER_AUDIT",
+  "optimize_called": false,
+  "presolve_called": false,
+  "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\output\\historical_water_20260907\\downloads\\fixed_744_strict\\reservoir_dispatch.npz",
+  "source_sha256": "cd4aeaf96ce56ee50d498582af83555aefde026d4e205d81d76bf2389603dff6",
+  "hours": 744,
+  "reservoirs": 620,
+  "maximum_water_residual_m3": 0.002678399999999984,
+  "stations_above_1m3": 0,
+  "station_hours_above_1m3": 0,
+  "stations_above_10m3": 0,
+  "station_hours_above_10m3": 0,
+  "worst": {
+    "reservoir_local_index": 245,
+    "hydrochn_row_id": "HydroCHN_00343",
+    "is_cascade": false,
+    "maximum_residual_hour_index": 743,
+    "maximum_absolute_residual_m3": 0.002678399999999984,
+    "hours_above_1m3": 0,
+    "hours_above_10m3": 0,
+    "plant_name_model": "Bobona hydroelectric plant"
+  },
+  "reported_maximum_water_residual_m3": 0.002678399999999984,
+  "reported_overall_qc": "PASS",
+  "water_pass_at_current_physical_qc_1m3": true,
+  "interpretation": "Audit of saved physical arrays, not an LP solve or certification of the complete result. The raw-LP generic 1e-5 million-m3 tolerance corresponds to 10 m3; the separate physical water QC is stricter at 1 m3."
+}

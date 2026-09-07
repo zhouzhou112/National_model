@@ -12,6 +12,16 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-07 历史长时段水库只读复核：未启动优化/presolve/云作业，未改Base或输入。
+  本地24h、固定744h严格/2160h工程候选、云端旧8760h保存水库数组独立重算完成。
+  旧8760h 620站×8760h最大残差0.038998539m3，严格744h为0.0026784m3，均通过1m3水量QC；
+  宽松Stage A历史744h/2160h仍有4877.90/14834.59m3残差，不能单独归因于24h截断。
+  更正此前口径：专门水量QC=1m3；10m3来自通用原LP行容差换算。24h分别27站473小时、24站415小时超限。
+  旧8760h水量通过但整体FAIL，输电方向/目标分项等未闭合；Crossover=0并非必然水量失败。
+  历史对照配置/版本不同，不能作为单因素因果证明；新柔性全年资格与禁止自行启动的门禁均保留。
+  证据/路径/SHA/复现命令：supplementary_materials/reviews/historical_water_20260907/REVIEW_CN.md。
+  下一步继续离线矩阵尺度/周期/验收对照，不依据24h失败擅改库容、来水或放宽水量守恒。
+
 - 2026-09-06 V5正式启动前不求解审查覆盖：作者继续要求暂不启动优化。核心修复提交
   `b225ab522a3bd7a38ea5ef1318beb4c161cdd8db`，无优化/presolve/松弛、新云作业或Base干预。
   24项不求解回归PASS；修复压缩冷热状态离线向量映射、无限边界严格JSON、情景ID/配置SHA与科学接受
@@ -7877,3 +7887,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 最大差2.84e-14；原415条水库超限/HARD_FAIL未被掩盖。最大行映射与库存/来水尺度已独立复核。
 未闭合：全年nonbasic数值资格、配对季节窗口与跨年实解、全规模中断保全验收；云端4h测试边界未扩大。
 确切下一步：继续离线检查水库尺度/周期偏置，只提出并证明等价变换；禁止自行求解、改运行Base或Stage B。
+
+## 2026-09-07 Historical long-horizon reservoir read-only comparison
+
+基线Git `0b077e8ec0a354f63e7c49a1e197ca4ef452a226`；审查提交见本条对应Git历史。
+新增 scripts/inspect_historical_water_qc.py、scripts/recompute_saved_reservoir_balance.py 与
+supplementary_materials/reviews/historical_water_20260907/（报告、逐站CSV、输入/结果SHA及证据）。
+命令：只读SSH历史报告扫描、固定服务器下载校验、本地数组重算、云端只读NumPy全年数组重算，
+python -m py_compile 两个新脚本、git diff --check。无Gurobi调用、远端写入、正式模型改动或作业启动。
+固定112/云端8个报告目录含备份和恢复，不是独立实验数。四组重算与原报告仅存在浮点顺序差异。
+旧8760h水量0超限，而整体FAIL；744h/2160h宽松Stage A水量失败。此前1m3与10m3两种容差口径已澄清。
+只停止本轮本地慢速SSH下载进程，未给求解器信号；未完成下载保留并标记不可用，全年证据来自完整远端文件。
+未闭合：新三情景全国全年数值资格、旧全年其他QC失败、短窗口与数值参数的独立因果贡献。
+确切下一步：仅离线对比现有合格Base和新情景的方程尺度/周期与验收，获得作者后续求解指令前不启动优化。

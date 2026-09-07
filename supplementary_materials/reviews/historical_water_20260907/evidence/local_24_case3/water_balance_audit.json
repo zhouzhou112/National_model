@@ -1,0 +1,28 @@
+{
+  "status": "OFFLINE_WATER_AUDIT",
+  "optimize_called": false,
+  "presolve_called": false,
+  "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\output\\portfolio_prelaunch_20260905\\offline_case3_final\\reservoir_dispatch.npz",
+  "source_sha256": "f31a026c303d83a487965a3a225a7f74e2a7dcaf83ead2f30df2c01ef2179818",
+  "hours": 24,
+  "reservoirs": 620,
+  "maximum_water_residual_m3": 42651.77930521954,
+  "stations_above_1m3": 27,
+  "station_hours_above_1m3": 473,
+  "stations_above_10m3": 24,
+  "station_hours_above_10m3": 415,
+  "worst": {
+    "reservoir_local_index": 475,
+    "hydrochn_row_id": "HydroCHN_01147",
+    "is_cascade": false,
+    "maximum_residual_hour_index": 16,
+    "maximum_absolute_residual_m3": 42651.77930521954,
+    "hours_above_1m3": 16,
+    "hours_above_10m3": 16,
+    "plant_name_model": "Gengda hydroelectric plant"
+  },
+  "reported_maximum_water_residual_m3": 42651.77930521954,
+  "reported_overall_qc": "HARD_FAIL",
+  "water_pass_at_current_physical_qc_1m3": false,
+  "interpretation": "Audit of saved physical arrays, not an LP solve or certification of the complete result. The raw-LP generic 1e-5 million-m3 tolerance corresponds to 10 m3; the separate physical water QC is stricter at 1 m3."
+}

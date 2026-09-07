@@ -1,0 +1,10 @@
+{
+  "host": "national-model-server",
+  "remote_source": "/data/zz2/National_model/outputs/relaxed_barrier_exact_reference_v0816_v1/base_744h_strict_crossover2",
+  "sha256": {
+    "reservoir_dispatch.npz": "cd4aeaf96ce56ee50d498582af83555aefde026d4e205d81d76bf2389603dff6",
+    "reservoir_station_index.csv": "48eb232ce564a13fa5e32e100b6148b63be3390f9e3e86b779de37f3f8a8212a",
+    "solution_qc.json": "ec361eebcc1318caed00b649cfbec665958cf293edff2119efcfba05400e5b83"
+  },
+  "verified": true
+}

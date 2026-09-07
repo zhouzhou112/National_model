@@ -1,0 +1,28 @@
+{
+  "status": "OFFLINE_WATER_AUDIT",
+  "optimize_called": false,
+  "presolve_called": false,
+  "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\output\\historical_water_20260907\\downloads\\fixed_2160_stagea\\reservoir_dispatch.npz",
+  "source_sha256": "f8b7ef719cb0fc9c7600c7ae44a72d7d235a0266c67fc8d7517f831cdb381438",
+  "hours": 2160,
+  "reservoirs": 620,
+  "maximum_water_residual_m3": 14834.593126268266,
+  "stations_above_1m3": 290,
+  "station_hours_above_1m3": 360183,
+  "stations_above_10m3": 177,
+  "station_hours_above_10m3": 3744,
+  "worst": {
+    "reservoir_local_index": 335,
+    "hydrochn_row_id": "HydroCHN_00528",
+    "is_cascade": true,
+    "maximum_residual_hour_index": 1856,
+    "maximum_absolute_residual_m3": 14834.593126268266,
+    "hours_above_1m3": 634,
+    "hours_above_10m3": 90,
+    "plant_name_model": "Haibowan hydroelectric plant"
+  },
+  "reported_maximum_water_residual_m3": 14834.593126268266,
+  "reported_overall_qc": "HARD_FAIL",
+  "water_pass_at_current_physical_qc_1m3": false,
+  "interpretation": "Audit of saved physical arrays, not an LP solve or certification of the complete result. The raw-LP generic 1e-5 million-m3 tolerance corresponds to 10 m3; the separate physical water QC is stricter at 1 m3."
+}

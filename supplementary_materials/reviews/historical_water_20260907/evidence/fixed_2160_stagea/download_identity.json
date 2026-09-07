@@ -1,0 +1,10 @@
+{
+  "host": "national-model-server",
+  "remote_source": "/home/zz2/National_model_server/outputs/2030_base_2160h_case1_v3_barrier16_stage_a_20260827_v1/engineering_macro_analysis",
+  "sha256": {
+    "reservoir_dispatch.npz": "f8b7ef719cb0fc9c7600c7ae44a72d7d235a0266c67fc8d7517f831cdb381438",
+    "reservoir_station_index.csv": "48eb232ce564a13fa5e32e100b6148b63be3390f9e3e86b779de37f3f8a8212a",
+    "solution_qc.json": "4a7c3789c9a4bb316087c0857b77bb9adc718423edb69c3c863c8710cf18ada0"
+  },
+  "verified": true
+}
