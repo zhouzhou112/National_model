@@ -1,0 +1,34 @@
+[
+  {
+    "case": "case1_thermal_v5",
+    "variables": 296,
+    "rows": 483,
+    "nnz": 1254,
+    "matrix_sha256": "08590d1ab12678d4d29f306fe5b6dcb92aeb428fdd58b2fa17d4c433e154947f",
+    "fingerprint": 2591058906
+  },
+  {
+    "case": "case2_ev_v5",
+    "variables": 300,
+    "rows": 393,
+    "nnz": 1314,
+    "matrix_sha256": "ef8899223c7687406df00d2efd8421193739f16a5eb658db481ce7b3051c0237",
+    "fingerprint": 3532179767
+  },
+  {
+    "case": "case3_thermal_ev_v5",
+    "variables": 588,
+    "rows": 873,
+    "nnz": 2562,
+    "matrix_sha256": "d4124254179f8d65800936a1972dc639e64bb09fdcfb307b6ba253e739f2506c",
+    "fingerprint": 1197885358
+  },
+  {
+    "case": "base",
+    "variables": 0,
+    "rows": 0,
+    "nnz": 0,
+    "matrix_sha256": "a4ff1213080bcf947e2fd5d12661b05faa6a37536aeecbced3a880aebe034619",
+    "fingerprint": 4184956321
+  }
+]

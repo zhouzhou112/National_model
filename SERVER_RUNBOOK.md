@@ -1,5 +1,21 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-07 最终自检：参数冻结，异常结果保全，未启动优化
+
+- 2026-09-07 正式运行前最终自检：作者冻结Base＋原三个V5情景，不继续扩模块，仍禁止自行优化。
+  实现Git `ba57c79c3cedd3f70b2516cc76ffb29532bf7a5d`；本地修改，未部署，未启动优化/presolve/松弛/Stage B/云作业。
+  修复异常跳过保全、损坏QC阻断导出、停止阶段竞态和wrapper恢复状态误判；归档不完整禁止开始求解。
+  新显式--allow-recovery-barrier-checkpoint支持未接受checkpoint/raw snapshot同年同LP恢复准备，
+  不改变默认科学接受/跨年门槛。Barrier内部迭代不能热续接；无可读有限向量或强杀只能依靠已落盘原模型重建。
+  30项禁止求解回归PASS，原三情景参数文件与2省24h矩阵/边界/目标SHA不变；真实V5五文件SHA全部通过。
+  31省2030全年输入负荷组件闭合误差1.14e-13GW、EV参考服务8.88e-16GWh；其余年份仅文件覆盖核验。
+  Base核心SHA/科学配置一致；17:40前后只读job4479238为RUNNING 4-00:16:14，非此刻状态保证。
+  纠正“仍沿用Base宽松”：Base BarConvTol=.01/Threads32，portfolio现有为1e-9/44；其余数值配置一致。
+  代入Base宽松参数的8760h建模前检查：EV PASS、冷热与联合BLOCKED；不能把结构PASS当全年求解合格。
+  profile/QC/启动保护未改；portfolio现有wrapper仍是2030、≤4h测试入口，非已授权十天正式作业。
+  详见supplementary_materials/reviews/portfolio_finalcheck_20260907/REVIEW_CN.md和evidence。
+  确切下一步：冻结当前研究参数，待作者明确正式数值配置与启动授权后准备独立release/调度；不得自动绕过资格或覆盖Base。
+
 ## 2026-09-06 V5启动前覆盖：本轮禁止优化，资格仍未闭合
 
 - 2026-09-06 V5正式启动前不求解审查覆盖：作者继续要求暂不启动优化。核心修复提交

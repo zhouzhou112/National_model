@@ -1,0 +1,1094 @@
+{
+  "generated_at": "2026-09-07T17:52:04.464283+08:00",
+  "optimize_called": false,
+  "presolve_called": false,
+  "remote_mutation": false,
+  "planning_year": 2030,
+  "provinces": 31,
+  "hours": 8760,
+  "cases": {
+    "case1_thermal_v5": {
+      "scenario_sha256": "9ffbcdb9d5f29ff32bc887fdb5de5fdf8c8da5c310fd73118149f224e62fecba",
+      "unchanged_from_head": true,
+      "solver_differences": {
+        "threads": {
+          "running_base": 32,
+          "portfolio": 44
+        },
+        "barrier_convergence_tolerance": {
+          "running_base": 0.01,
+          "portfolio": 1e-09
+        }
+      },
+      "existing_profile_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 1e-09,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": true,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 140380,
+              "decay_anchor_state_variables": 2943,
+              "retained_state_variables": 143323,
+              "redundant_inactive_state_variables_omitted": 128237,
+              "retained_transition_rows": 143323,
+              "redundant_inactive_transition_rows_omitted": 128237,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 29,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": {
+              "province_position": 28,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 87488,
+              "decay_anchor_state_variables": 5266,
+              "retained_state_variables": 92754,
+              "redundant_inactive_state_variables_omitted": 178806,
+              "retained_transition_rows": 92754,
+              "redundant_inactive_transition_rows_omitted": 178806,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Zero-control thermal states were eliminated exactly; the selected solver follows either the stable-basis route or the strict optimal primal-dual nonbasic route."
+      },
+      "running_base_numerics_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 140380,
+              "decay_anchor_state_variables": 2943,
+              "retained_state_variables": 143323,
+              "redundant_inactive_state_variables_omitted": 128237,
+              "retained_transition_rows": 143323,
+              "redundant_inactive_transition_rows_omitted": 128237,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 29,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": {
+              "province_position": 28,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 87488,
+              "decay_anchor_state_variables": 5266,
+              "retained_state_variables": 92754,
+              "redundant_inactive_state_variables_omitted": 178806,
+              "retained_transition_rows": 92754,
+              "redundant_inactive_transition_rows_omitted": 178806,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "parameters": {
+        "contract_version": "v5",
+        "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
+        "energy_conservation_window_hours": 24,
+        "shift_throughput_cost_yuan_per_mwh": 300.0,
+        "degradation_cost_yuan_per_mwh": 400.0,
+        "heating": {
+          "enabled": true,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "cooling": {
+          "enabled": true,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "ev_v1g": {
+          "enabled": false,
+          "shiftable_energy_fraction": 0.15,
+          "maximum_power_to_daily_average_ratio": 2.0
+        },
+        "ev_v2g": {
+          "enabled": false,
+          "participation_fraction": 0.1,
+          "usable_energy_to_daily_ev_energy_ratio": 1.0,
+          "power_duration_hours": 4.0,
+          "charge_efficiency": 0.94,
+          "discharge_efficiency": 0.94,
+          "self_discharge_fraction_per_hour": 0.0,
+          "state_boundary": "periodic_selected_horizon_v1",
+          "national_contracted_power_cap_gw_by_planning_year": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        "reliability_treatment": {
+          "hourly_reserve_and_inertia_use_effective_load": true,
+          "planning_capacity_margin_uses_baseline_peak": true,
+          "flexibility_provides_no_reserve_credit": true
+        },
+        "formulation": "integrated_service_constrained_v5",
+        "state_boundary": "periodic_selected_horizon_v1",
+        "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+        "v5_input_files": {
+          "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+          "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+          "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+          "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+          "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+          "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+        },
+        "firm_capacity_credit": {
+          "contract_version": "derated_peak_service_v1",
+          "required_event_duration_hours": 4.0,
+          "derating_fraction": {
+            "heating": 0.6,
+            "cooling": 0.6,
+            "ev_v1g": 0.5,
+            "ev_v2g": 0.5
+          },
+          "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+          "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+          "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+        },
+        "parameter_status": {
+          "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+          "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+          "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+          "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+          "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+          "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+        },
+        "portfolio_contract": "optional_service_pools_v1"
+      }
+    },
+    "case2_ev_v5": {
+      "scenario_sha256": "90b46fa800eb72e2e4792b9a660dd290a0af207b6b9160134ca45a5ea884fcbd",
+      "unchanged_from_head": true,
+      "solver_differences": {
+        "threads": {
+          "running_base": 32,
+          "portfolio": 44
+        },
+        "barrier_convergence_tolerance": {
+          "running_base": 0.01,
+          "portfolio": 1e-09
+        }
+      },
+      "existing_profile_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": false,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 1e-09,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": true,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 271560,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 271560,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 271560,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 271560,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+      },
+      "running_base_numerics_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": false,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 271560,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 271560,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 0,
+            "inactive_provinces_with_state_chain_omitted": 31,
+            "worst_active_province": null,
+            "automatic_presolve_aggregation_risk": false,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 0,
+              "decay_anchor_state_variables": 0,
+              "retained_state_variables": 0,
+              "redundant_inactive_state_variables_omitted": 271560,
+              "retained_transition_rows": 0,
+              "redundant_inactive_transition_rows_omitted": 271560,
+              "maximum_retained_transition_gap_hours": 0,
+              "minimum_retained_transition_coefficient": null,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": false,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+      },
+      "parameters": {
+        "contract_version": "v5",
+        "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
+        "energy_conservation_window_hours": 24,
+        "shift_throughput_cost_yuan_per_mwh": 300.0,
+        "degradation_cost_yuan_per_mwh": 400.0,
+        "heating": {
+          "enabled": false,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "cooling": {
+          "enabled": false,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "ev_v1g": {
+          "enabled": true,
+          "shiftable_energy_fraction": 0.15,
+          "maximum_power_to_daily_average_ratio": 2.0
+        },
+        "ev_v2g": {
+          "enabled": true,
+          "participation_fraction": 0.1,
+          "usable_energy_to_daily_ev_energy_ratio": 1.0,
+          "power_duration_hours": 4.0,
+          "charge_efficiency": 0.94,
+          "discharge_efficiency": 0.94,
+          "self_discharge_fraction_per_hour": 0.0,
+          "state_boundary": "periodic_selected_horizon_v1",
+          "national_contracted_power_cap_gw_by_planning_year": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        "reliability_treatment": {
+          "hourly_reserve_and_inertia_use_effective_load": true,
+          "planning_capacity_margin_uses_baseline_peak": true,
+          "flexibility_provides_no_reserve_credit": true
+        },
+        "formulation": "integrated_service_constrained_v5",
+        "state_boundary": "periodic_selected_horizon_v1",
+        "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+        "v5_input_files": {
+          "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+          "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+          "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+          "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+          "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+          "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+        },
+        "firm_capacity_credit": {
+          "contract_version": "derated_peak_service_v1",
+          "required_event_duration_hours": 4.0,
+          "derating_fraction": {
+            "heating": 0.6,
+            "cooling": 0.6,
+            "ev_v1g": 0.5,
+            "ev_v2g": 0.5
+          },
+          "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+          "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+          "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+        },
+        "parameter_status": {
+          "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+          "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+          "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+          "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+          "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+          "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+        },
+        "portfolio_contract": "optional_service_pools_v1"
+      }
+    },
+    "case3_thermal_ev_v5": {
+      "scenario_sha256": "0aca6e5bec6bec4ae78f199d1960d3e8264f1bd350330dba071f6a54ce198920",
+      "unchanged_from_head": true,
+      "solver_differences": {
+        "threads": {
+          "running_base": 32,
+          "portfolio": 44
+        },
+        "barrier_convergence_tolerance": {
+          "running_base": 0.01,
+          "portfolio": 1e-09
+        }
+      },
+      "existing_profile_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "PASS",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 1e-09,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": true,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 140380,
+              "decay_anchor_state_variables": 2943,
+              "retained_state_variables": 143323,
+              "redundant_inactive_state_variables_omitted": 128237,
+              "retained_transition_rows": 143323,
+              "redundant_inactive_transition_rows_omitted": 128237,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 29,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": {
+              "province_position": 28,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 87488,
+              "decay_anchor_state_variables": 5266,
+              "retained_state_variables": 92754,
+              "redundant_inactive_state_variables_omitted": 178806,
+              "retained_transition_rows": 92754,
+              "redundant_inactive_transition_rows_omitted": 178806,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Zero-control thermal states were eliminated exactly; the selected solver follows either the stable-basis route or the strict optimal primal-dual nonbasic route."
+      },
+      "running_base_numerics_prebuild": {
+        "schema_version": "cispo_solver_numerical_compatibility_v1",
+        "status": "BLOCKED",
+        "formulation": "integrated_service_constrained_v5",
+        "aggregate_parameter": 1,
+        "aggregate_parameter_source": "explicit_profile",
+        "aggregate_zero_required": false,
+        "stable_crossover_required": true,
+        "crossover_parameter": 0,
+        "crossover_basis_parameter": -1,
+        "solution_target_parameter": 1,
+        "barrier_convergence_tolerance": 0.01,
+        "stable_basic_route": false,
+        "accepted_basic_crossover_orders": [
+          1,
+          2,
+          4
+        ],
+        "strict_nonbasic_primal_dual_route": false,
+        "engineering_relaxed_nonbasic_route": false,
+        "engineering_relaxed_nonbasic_authorized": false,
+        "required_long_horizon_settings": {
+          "aggregate": "automatic_allowed",
+          "accepted_solver_routes": [
+            {
+              "method": 2,
+              "crossover": [
+                1,
+                2,
+                4
+              ],
+              "crossover_basis": 1,
+              "solution_form": "basic"
+            },
+            {
+              "method": 2,
+              "crossover": 0,
+              "solution_target": 1,
+              "maximum_barrier_convergence_tolerance": 1e-09,
+              "solution_form": "primal_dual_nonbasic"
+            }
+          ]
+        },
+        "inverse_decay_amplification_log10_threshold": 3.0,
+        "component_risks": {
+          "heating": {
+            "active_provinces": 31,
+            "inactive_provinces_with_state_chain_omitted": 0,
+            "worst_active_province": {
+              "province_position": 20,
+              "province_code": 46,
+              "maximum_cyclic_zero_control_run_hours": 6378,
+              "retention_per_hour": 0.94,
+              "inverse_decay_amplification_log10": 171.3905497411221
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 140380,
+              "decay_anchor_state_variables": 2943,
+              "retained_state_variables": 143323,
+              "redundant_inactive_state_variables_omitted": 128237,
+              "retained_transition_rows": 143323,
+              "redundant_inactive_transition_rows_omitted": 128237,
+              "maximum_retained_transition_gap_hours": 37,
+              "minimum_retained_transition_coefficient": 0.10132825956607122,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          },
+          "cooling": {
+            "active_provinces": 29,
+            "inactive_provinces_with_state_chain_omitted": 2,
+            "worst_active_province": {
+              "province_position": 28,
+              "province_code": 63,
+              "maximum_cyclic_zero_control_run_hours": 6332,
+              "retention_per_hour": 0.92,
+              "inverse_decay_amplification_log10": 229.29547724794392
+            },
+            "automatic_presolve_aggregation_risk": true,
+            "zero_control_state_compression_enabled": true,
+            "zero_control_state_compression": {
+              "representation": "active_control_hours_plus_decay_anchors_v1",
+              "possible_state_variables": 271560,
+              "control_support_state_variables": 87488,
+              "decay_anchor_state_variables": 5266,
+              "retained_state_variables": 92754,
+              "redundant_inactive_state_variables_omitted": 178806,
+              "retained_transition_rows": 92754,
+              "redundant_inactive_transition_rows_omitted": 178806,
+              "maximum_retained_transition_gap_hours": 27,
+              "minimum_retained_transition_coefficient": 0.10526193234946256,
+              "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+            },
+            "zero_control_state_compression_well_scaled": true,
+            "automatic_presolve_aggregation_risk_mitigated": true,
+            "aggregate_zero_required_for_solve": false
+          }
+        },
+        "reason": "Refusing optimize(): structurally compressed V5 long-chain states require either Crossover in {1,2,4} with CrossoverBasis=1 or Method=2/Crossover=0/SolutionTarget=1 with BarConvTol<=1e-9 until matched long-horizon gates establish evidence."
+      },
+      "parameters": {
+        "contract_version": "v5",
+        "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
+        "energy_conservation_window_hours": 24,
+        "shift_throughput_cost_yuan_per_mwh": 300.0,
+        "degradation_cost_yuan_per_mwh": 400.0,
+        "heating": {
+          "enabled": true,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "cooling": {
+          "enabled": true,
+          "maximum_reduction_fraction": 0.15,
+          "maximum_increase_fraction_of_daily_peak": 0.15
+        },
+        "ev_v1g": {
+          "enabled": true,
+          "shiftable_energy_fraction": 0.15,
+          "maximum_power_to_daily_average_ratio": 2.0
+        },
+        "ev_v2g": {
+          "enabled": true,
+          "participation_fraction": 0.1,
+          "usable_energy_to_daily_ev_energy_ratio": 1.0,
+          "power_duration_hours": 4.0,
+          "charge_efficiency": 0.94,
+          "discharge_efficiency": 0.94,
+          "self_discharge_fraction_per_hour": 0.0,
+          "state_boundary": "periodic_selected_horizon_v1",
+          "national_contracted_power_cap_gw_by_planning_year": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        "reliability_treatment": {
+          "hourly_reserve_and_inertia_use_effective_load": true,
+          "planning_capacity_margin_uses_baseline_peak": true,
+          "flexibility_provides_no_reserve_credit": true
+        },
+        "formulation": "integrated_service_constrained_v5",
+        "state_boundary": "periodic_selected_horizon_v1",
+        "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+        "v5_input_files": {
+          "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+          "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+          "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+          "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+          "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+          "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+        },
+        "firm_capacity_credit": {
+          "contract_version": "derated_peak_service_v1",
+          "required_event_duration_hours": 4.0,
+          "derating_fraction": {
+            "heating": 0.6,
+            "cooling": 0.6,
+            "ev_v1g": 0.5,
+            "ev_v2g": 0.5
+          },
+          "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+          "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+          "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+        },
+        "parameter_status": {
+          "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+          "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+          "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+          "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+          "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+          "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+        },
+        "portfolio_contract": "optional_service_pools_v1"
+      }
+    }
+  },
+  "data_file_checks": [
+    {
+      "path": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+      "sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+      "pass_hash": true,
+      "pass_size": true
+    },
+    {
+      "path": "flexibility/thermal_parameters_by_province_v5.csv",
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+      "pass_hash": true,
+      "pass_size": true
+    },
+    {
+      "path": "flexibility/ev_availability_hourly_v5.csv.gz",
+      "sha256": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+      "pass_hash": true,
+      "pass_size": true
+    },
+    {
+      "path": "flexibility/ev_mobility_hourly_v5.csv.gz",
+      "sha256": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+      "pass_hash": true,
+      "pass_size": true
+    },
+    {
+      "path": "flexibility/flex_enablement_cost_v5.csv",
+      "sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+      "pass_hash": true,
+      "pass_size": true
+    }
+  ],
+  "git_head": "45e716fa0af354f52725f3c8c2a7c6899b8bd081",
+  "manifest_coverage": {
+    "years": [
+      2025,
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "province_count": 31,
+    "hours_per_province_year": 8760,
+    "rows_per_hourly_table": 1357800
+  },
+  "baseline_component_closure_max_gw": 1.1368683772161603e-13,
+  "ev_reference_energy_max_gwh": 8.881784197001252e-16,
+  "thermal_parameters_by_province_v5.csv": {
+    "cooling": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "retention_per_hour": [
+        0.92
+      ],
+      "charge_efficiency": [
+        1
+      ],
+      "discharge_efficiency": [
+        1
+      ],
+      "positive_state_duration_hours": [
+        5
+      ],
+      "negative_state_duration_hours": [
+        5
+      ]
+    },
+    "heating": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "retention_per_hour": [
+        0.94
+      ],
+      "charge_efficiency": [
+        1
+      ],
+      "discharge_efficiency": [
+        1
+      ],
+      "positive_state_duration_hours": [
+        4
+      ],
+      "negative_state_duration_hours": [
+        4
+      ]
+    }
+  },
+  "flex_enablement_cost_v5.csv": {
+    "cooling": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "enablement_cost_yuan_per_kw_year": [
+        40
+      ],
+      "activation_cost_yuan_per_mwh": [
+        300
+      ],
+      "infrastructure_cost_yuan_per_kw_year": [
+        0
+      ],
+      "degradation_cost_yuan_per_mwh": [
+        0
+      ],
+      "comfort_debt_cost_yuan_per_gwh_hour": [
+        0
+      ]
+    },
+    "ev_v1g": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "enablement_cost_yuan_per_kw_year": [
+        60
+      ],
+      "activation_cost_yuan_per_mwh": [
+        300
+      ],
+      "infrastructure_cost_yuan_per_kw_year": [
+        0
+      ],
+      "degradation_cost_yuan_per_mwh": [
+        0
+      ],
+      "comfort_debt_cost_yuan_per_gwh_hour": [
+        0
+      ]
+    },
+    "ev_v2g": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "enablement_cost_yuan_per_kw_year": [
+        60
+      ],
+      "activation_cost_yuan_per_mwh": [
+        150
+      ],
+      "infrastructure_cost_yuan_per_kw_year": [
+        40
+      ],
+      "degradation_cost_yuan_per_mwh": [
+        400
+      ],
+      "comfort_debt_cost_yuan_per_gwh_hour": [
+        0
+      ]
+    },
+    "heating": {
+      "year": [
+        2025,
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "enablement_cost_yuan_per_kw_year": [
+        40
+      ],
+      "activation_cost_yuan_per_mwh": [
+        300
+      ],
+      "infrastructure_cost_yuan_per_kw_year": [
+        0
+      ],
+      "degradation_cost_yuan_per_mwh": [
+        0
+      ],
+      "comfort_debt_cost_yuan_per_gwh_hour": [
+        0
+      ]
+    }
+  },
+  "status": "PASS",
+  "formal_launch_authorized": false,
+  "full_year_solver_qualification": "NOT_ESTABLISHED_BY_NO_SOLVE_AUDIT"
+}

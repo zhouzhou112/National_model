@@ -12,6 +12,20 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-07 正式运行前最终自检：作者冻结Base＋原三个V5情景，不继续扩模块，仍禁止自行优化。
+  实现Git `ba57c79c3cedd3f70b2516cc76ffb29532bf7a5d`；本地修改，未部署，未启动优化/presolve/松弛/Stage B/云作业。
+  修复异常跳过保全、损坏QC阻断导出、停止阶段竞态和wrapper恢复状态误判；归档不完整禁止开始求解。
+  新显式--allow-recovery-barrier-checkpoint支持未接受checkpoint/raw snapshot同年同LP恢复准备，
+  不改变默认科学接受/跨年门槛。Barrier内部迭代不能热续接；无可读有限向量或强杀只能依靠已落盘原模型重建。
+  30项禁止求解回归PASS，原三情景参数文件与2省24h矩阵/边界/目标SHA不变；真实V5五文件SHA全部通过。
+  31省2030全年输入负荷组件闭合误差1.14e-13GW、EV参考服务8.88e-16GWh；其余年份仅文件覆盖核验。
+  Base核心SHA/科学配置一致；17:40前后只读job4479238为RUNNING 4-00:16:14，非此刻状态保证。
+  纠正“仍沿用Base宽松”：Base BarConvTol=.01/Threads32，portfolio现有为1e-9/44；其余数值配置一致。
+  代入Base宽松参数的8760h建模前检查：EV PASS、冷热与联合BLOCKED；不能把结构PASS当全年求解合格。
+  profile/QC/启动保护未改；portfolio现有wrapper仍是2030、≤4h测试入口，非已授权十天正式作业。
+  详见supplementary_materials/reviews/portfolio_finalcheck_20260907/REVIEW_CN.md和evidence。
+  确切下一步：冻结当前研究参数，待作者明确正式数值配置与启动授权后准备独立release/调度；不得自动绕过资格或覆盖Base。
+
 - 2026-09-07 冷热/EV文献响应候选：作者暂搁水库问题，转向技术经济参数与响应约束。
   实现Git `c343a27f94291b0208934271845ff9b54959b459`；无优化/presolve/松弛、无远端部署或运行Base干预。
   已核验Nature Communications DOI10.1038/s41467-026-76799-4正文/补充材料及参数定位。
@@ -7925,3 +7939,17 @@ audit_saved_primal零向量PASS；旧提交隔离源码快照矩阵/SHA/fingerpr
 证据限度：仅服务块矩阵比较与不求解验证，未重建全年供给侧LP、未证明新候选收敛或全年经济价值。
 未闭合：全国EV会话/出发需求、冷热时长校准、补贴/真实成本/价格年区分、新响应候选正式数值资格。
 确切下一步：继续离线完善数据与费用合同，不自行启动优化、不放宽物理约束、不扩大全年云端预算。
+
+## 2026-09-07 Final frozen-portfolio parameter, preservation and exact-LP recovery audit
+
+实现Git `ba57c79c3cedd3f70b2516cc76ffb29532bf7a5d`（父45e716f）。修改diagnostics.py、solution_preservation.py、
+primal_dual_checkpoint.py、单年runner、portfolio wrapper；新增audit_final_portfolio_no_solve.py及8项故障注入测试。
+不改科学模型、参数、输入、阈值、情景配置或当前运行Base；其他任务既有未提交文件均保留。
+命令：audit_portfolio_base_readonly.py只读SSH、audit_final_portfolio_no_solve.py真实输入核验、
+output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、check_legacy_matrix.py、py_compile、bash -n、git diff --check。
+输出：output/portfolio_finalcheck_20260907；可追溯小证据与完整说明归档至supplementary_materials/reviews/portfolio_finalcheck_20260907。
+测试覆盖故意违反约束/非有限/无向量、MPS和向量精确存取、损坏QC、求解异常、默认拒绝与显式同LP恢复、
+时间窗/Fingerprint/文件损坏拒绝、模拟中断wait、原模型和参数冻结。禁止实际调用优化器入口。
+未解决：Base宽松.01的冷热全年资格、全规模恢复计算与物理QC、实际Slurm信号/OOM/强杀完整性。
+不能承诺Barrier迭代热续接；保存完整不代表科学合格。现有1e-9 profile没有被改回.01。
+确切下一步：保持Base＋三情景研究范围；等待作者明确正式配置和运行授权，之后使用独立release；本轮不提交作业。

@@ -1,0 +1,7 @@
+{
+  "reference": "output/flex_literature_20260907/current_matrix.json",
+  "current": "output\\portfolio_finalcheck_20260907\\matrix_current.json",
+  "identical": true,
+  "scope": "2 provinces x 24h flexible service matrices/bounds/RHS/objective only",
+  "optimize_called": false
+}

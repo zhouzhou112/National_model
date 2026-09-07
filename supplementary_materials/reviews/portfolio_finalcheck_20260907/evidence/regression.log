@@ -1,0 +1,35 @@
+test_corrupt_qc_does_not_skip_summary_state_or_catalog (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_failed_qc_and_interrupted_starts_require_explicit_exact_lp_gate (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_nonfinite_and_absent_vectors_still_preserve_model_and_raw_evidence (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_optimizer_exception_closes_telemetry_under_installed_signal_guard (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_raw_exception_snapshot_has_explicit_same_lp_start_path (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_solver_exception_preserves_vectors_before_failing_semantics (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_violating_vector_and_archive_roundtrip_and_corruption_rejection (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_wrapper_signal_waits_for_exporter_to_exit (test_final_preservation_no_solve.FinalPreservationNoSolveTests) ... ok
+test_formal_cli_blocks_before_loading_inputs (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_full_year_portfolio_cannot_bypass_guard_with_other_solver_profile (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_raw_violation_with_infinite_bound_is_strict_json_serializable (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_service_output_dictionary_has_units_and_dimensions (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_sparse_thermal_recovery_uses_saved_vector_and_cyclic_decay (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_state_cannot_cross_scenarios_or_same_name_configuration_changes (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_unqualified_formal_profile_cannot_launch (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_zero_contract_vector_is_feasible_and_reconstructs_base_in_all_cases (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_jsonl_events_are_flushed_and_machine_readable (test_solver_telemetry.SolverTelemetryTests) ... ok
+test_progress_throttling_keeps_each_barrier_iteration (test_solver_telemetry.SolverTelemetryTests) ... ok
+test_exactly_one_solver_configuration_is_required (test_input_manifest_resume_identity.InputManifestResumeIdentityTests) ... ok
+test_only_solver_configuration_may_differ (test_input_manifest_resume_identity.InputManifestResumeIdentityTests) ... ok
+test_scientific_input_change_is_detected (test_input_manifest_resume_identity.InputManifestResumeIdentityTests) ... ok
+test_complete_engineering_checkpoint_is_eligible (test_checkpoint_campaign_gate.CheckpointCampaignGateTests) ... ok
+test_incomplete_recovery_is_not_eligible_even_when_vectors_exist (test_checkpoint_campaign_gate.CheckpointCampaignGateTests) ... ok
+test_vector_hash_mismatch_fails_closed (test_checkpoint_campaign_gate.CheckpointCampaignGateTests) ... ok
+test_current_solution_identity_evidence_binds_attribute_and_count (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+test_diagnostic_memory_uses_next_validated_tier (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+test_engineering_checkpoint_requires_explicit_stage_b_allow (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+test_export_prepare_and_apply_exact_checkpoint (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+test_incomplete_barrier_vector_export_is_recovery_only (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+test_pending_checkpoint_rejects_barrier_vector_identity_drift (test_primal_dual_checkpoint.PrimalDualCheckpointTests) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 1.687s
+
+OK

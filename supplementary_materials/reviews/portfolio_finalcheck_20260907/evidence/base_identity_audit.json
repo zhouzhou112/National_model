@@ -1,0 +1,739 @@
+{
+  "recorded_at": "2026-09-07T17:40:26.381439+08:00",
+  "git_head": "45e716fa0af354f52725f3c8c2a7c6899b8bd081",
+  "remote_release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3",
+  "job_status": "4479238 RUNNING 4-00:16:14 m4cg1605",
+  "optimize_called": false,
+  "remote_mutation": false,
+  "source_comparison": [
+    {
+      "path": "cispo_model/annual_capacity_link_scaling.py",
+      "remote_sha256": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64",
+      "local_sha256": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/basis_reuse.py",
+      "remote_sha256": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d",
+      "local_sha256": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/carbon_accounting.py",
+      "remote_sha256": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519",
+      "local_sha256": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/config.py",
+      "remote_sha256": "501af47c814b68ba20fb44548064f3d8f148081704988a5e66ea117358c50acc",
+      "local_sha256": "455afb51ad76333f15c0a7daeff6e2efbc6e4c1d9fe6a5827be86a2b6c537d6a",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/data.py",
+      "remote_sha256": "dd87fab2d17c14493f2b496a6d5ca029ad702156d49645d425e55f3329e71720",
+      "local_sha256": "dd87fab2d17c14493f2b496a6d5ca029ad702156d49645d425e55f3329e71720",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/diagnostics.py",
+      "remote_sha256": "f982cfdbd346e8ac025baa177e10b03b968204d6bd922d203c5f84ccbb8cb877",
+      "local_sha256": "ed449b2cc575f465cc1a606feb65ba413773665d3075295971a04d2eb7b7dc2b",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/flexible_load_numerics.py",
+      "remote_sha256": "d869e85bce2293605a73a4123be85b0d5331157fa83a12074a4a4c65ac207664",
+      "local_sha256": "c4b9836e3060fc11d1e60988fd043a7e76d9b8ac15538235476940fba119c538",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/flexible_load.py",
+      "remote_sha256": "e3a8c76b3649215a1311edea0bd4f8b8f727d83aad9165e8955b2ad6add78885",
+      "local_sha256": "ca77308e696416a65cf4a0c2ee7a0a41311b1213673def66719919a3334ad40d",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/hydro.py",
+      "remote_sha256": "55fe6f00d0ab67450b246bdf85cb5d3d66bdcb933901eb02fee9e0fcf3a91667",
+      "local_sha256": "55fe6f00d0ab67450b246bdf85cb5d3d66bdcb933901eb02fee9e0fcf3a91667",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/__init__.py",
+      "remote_sha256": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca",
+      "local_sha256": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/io_contract.py",
+      "remote_sha256": "e03bcb8d1b09f64c74ce47ce1a8cfbf7d834fc1f2fcfc76038606cd24931be1d",
+      "local_sha256": "7b5c7609cd27395aa754b7468bfecfd8e765fd3bed5abb036f601884775fe5ae",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/load_center.py",
+      "remote_sha256": "bc1a80aa645f49618b1449f5ad92b2322f5cb9ca01b57328628ce5366453efcc",
+      "local_sha256": "bc1a80aa645f49618b1449f5ad92b2322f5cb9ca01b57328628ce5366453efcc",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/master.py",
+      "remote_sha256": "4f179cb1dc5a299964fd74d33453cec3700e177164ac412309f56b66817e89e7",
+      "local_sha256": "4f179cb1dc5a299964fd74d33453cec3700e177164ac412309f56b66817e89e7",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/mga.py",
+      "remote_sha256": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e",
+      "local_sha256": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/model_structure_audit.py",
+      "remote_sha256": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a",
+      "local_sha256": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/monolithic.py",
+      "remote_sha256": "9c3d5e51e2080cf6f3dc49469d8035bec866611208e28cc159b028468b741a05",
+      "local_sha256": "9c3d5e51e2080cf6f3dc49469d8035bec866611208e28cc159b028468b741a05",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/offline_solution.py",
+      "remote_sha256": "2c7d0313371e52402d1d6115d3d846fdde569721538f838dd558f6eb385c9a7d",
+      "local_sha256": "1645f6046e2ec86de3a2562ccfef060a1634ae625f2e5f9c2d42a8bebbbcd86e",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/physical_lp_diff.py",
+      "remote_sha256": "fa64ebb6ef807e9eeba6b27c842597e6d89073173dc6058c9d1158c4d0e53e66",
+      "local_sha256": "fa64ebb6ef807e9eeba6b27c842597e6d89073173dc6058c9d1158c4d0e53e66",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/planning_state.py",
+      "remote_sha256": "ff3f2e66d05cb05a06592a2f8358719042e5e18f245a702ce9b90c1bc03f736e",
+      "local_sha256": "6edd1a20c42cbcccfd11e26e09dba40bcb602bdb838368182958941b22edccd4",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/preflight.py",
+      "remote_sha256": "2b60c9856d5089e1ea5f2507bcf5fbd47213da418ee616637ee2dfced10f368a",
+      "local_sha256": "45264663e09bea40f3439f478ee5563d53d11a24073d5be69b96267ae60ada24",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/price_basis.py",
+      "remote_sha256": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a",
+      "local_sha256": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/primal_dual_checkpoint.py",
+      "remote_sha256": "ebf95e5f4c1789e362f685f4a1c0a936ccca5af332be33bad8e976cccfaf09fe",
+      "local_sha256": "ebf95e5f4c1789e362f685f4a1c0a936ccca5af332be33bad8e976cccfaf09fe",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/result_dashboard.py",
+      "remote_sha256": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9",
+      "local_sha256": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/result_summary.py",
+      "remote_sha256": "5737ec206b4c9da30c54d0021f290233ab1f0ef218d150016edf16d8438739ea",
+      "local_sha256": "5737ec206b4c9da30c54d0021f290233ab1f0ef218d150016edf16d8438739ea",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/run_contract.py",
+      "remote_sha256": "986ecab6c3a05cf3664c2354fa797106dd7f5db95ac05c2ed17484bd5fbf939e",
+      "local_sha256": "986ecab6c3a05cf3664c2354fa797106dd7f5db95ac05c2ed17484bd5fbf939e",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/runtime_monitor.py",
+      "remote_sha256": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488",
+      "local_sha256": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/solution_export.py",
+      "remote_sha256": "c84a3f37c9194764f5ff1e3454dcb8d18fd992368ed1d8ecbe63096161bb0b0e",
+      "local_sha256": "6be4a991ccac448d68832a8789b0dc6341c4211720092239f8be3f580dd60c08",
+      "identical": false
+    },
+    {
+      "path": "cispo_model/solution_preservation.py",
+      "remote_sha256": "fd3e9a3116917c98a788268f45e4cce823cd93684b57e0cd80005446121c3824",
+      "local_sha256": "fd3e9a3116917c98a788268f45e4cce823cd93684b57e0cd80005446121c3824",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/solver_artifacts.py",
+      "remote_sha256": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8",
+      "local_sha256": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/solver_audit.py",
+      "remote_sha256": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d",
+      "local_sha256": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/technology_registry.py",
+      "remote_sha256": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7",
+      "local_sha256": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/timeblocks.py",
+      "remote_sha256": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea",
+      "local_sha256": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/wave_energy.py",
+      "remote_sha256": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424",
+      "local_sha256": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424",
+      "identical": true
+    },
+    {
+      "path": "cispo_model/zero_bound_certificate.py",
+      "remote_sha256": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367",
+      "local_sha256": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367",
+      "identical": true
+    },
+    {
+      "path": "config/optimization_2030.json",
+      "remote_sha256": "e66d706909c06d1a779a23f78592b2f933494c76968a62ff65117ed5b8aaaf65",
+      "local_sha256": "e66d706909c06d1a779a23f78592b2f933494c76968a62ff65117ed5b8aaaf65",
+      "identical": true
+    },
+    {
+      "path": "config/scenarios/base.json",
+      "remote_sha256": "aa5a3fc6410c103e15271dcdc8b4b4ce489e938ddc429a7c5ee827c0e32da6f7",
+      "local_sha256": "aa5a3fc6410c103e15271dcdc8b4b4ce489e938ddc429a7c5ee827c0e32da6f7",
+      "identical": true
+    },
+    {
+      "path": "config/formulation_profiles/annual_capacity_link_rows_8192_v1.json",
+      "remote_sha256": "62a0215f6c8ab5d92e87c3f350edfa7c27d6f1e1fd35b9f595ceb2686f9ca0d2",
+      "local_sha256": "62a0215f6c8ab5d92e87c3f350edfa7c27d6f1e1fd35b9f595ceb2686f9ca0d2",
+      "identical": true
+    }
+  ],
+  "core_source_identity_pass": true,
+  "base_resolved_differences": [],
+  "portfolio_differences": {
+    "case1_thermal_v5": {
+      "all_differences": [
+        {
+          "path": "features.flexible_load",
+          "remote_base": false,
+          "local": true
+        },
+        {
+          "path": "flexible_load.contract_version",
+          "remote_base": "v1",
+          "local": "v5"
+        },
+        {
+          "path": "flexible_load.degradation_cost_yuan_per_mwh",
+          "remote_base": 50.0,
+          "local": 400.0
+        },
+        {
+          "path": "flexible_load.ev_v1g.enabled",
+          "remote_base": true,
+          "local": false
+        },
+        {
+          "path": "flexible_load.ev_v1g.shiftable_energy_fraction",
+          "remote_base": 0.5,
+          "local": 0.15
+        },
+        {
+          "path": "flexible_load.ev_v2g.charge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.discharge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year",
+          "remote_base": null,
+          "local": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        {
+          "path": "flexible_load.ev_v2g.participation_fraction",
+          "remote_base": 0.2,
+          "local": 0.1
+        },
+        {
+          "path": "flexible_load.ev_v2g.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.firm_capacity_credit",
+          "remote_base": null,
+          "local": {
+            "contract_version": "derated_peak_service_v1",
+            "required_event_duration_hours": 4.0,
+            "derating_fraction": {
+              "heating": 0.6,
+              "cooling": 0.6,
+              "ev_v1g": 0.5,
+              "ev_v2g": 0.5
+            },
+            "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+            "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+            "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+            "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+          }
+        },
+        {
+          "path": "flexible_load.formulation",
+          "remote_base": null,
+          "local": "integrated_service_constrained_v5"
+        },
+        {
+          "path": "flexible_load.parameter_status",
+          "remote_base": null,
+          "local": {
+            "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+            "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+            "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+            "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+            "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+            "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+          }
+        },
+        {
+          "path": "flexible_load.portfolio_contract",
+          "remote_base": null,
+          "local": "optional_service_pools_v1"
+        },
+        {
+          "path": "flexible_load.shift_throughput_cost_yuan_per_mwh",
+          "remote_base": 2.0,
+          "local": 300.0
+        },
+        {
+          "path": "flexible_load.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.v5_input_files",
+          "remote_base": null,
+          "local": {
+            "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+            "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+            "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+            "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+            "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+            "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+          }
+        },
+        {
+          "path": "flexible_load.v5_reference_energy_closure_tolerance_fraction",
+          "remote_base": null,
+          "local": 1e-06
+        },
+        {
+          "path": "scenario.analysis_role",
+          "remote_base": "BASELINE",
+          "local": "CENTRAL_COUNTERFACTUAL"
+        },
+        {
+          "path": "scenario.description",
+          "remote_base": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
+          "local": "case1_thermal_v5: immutable Base demand with optional paid service pools; baseline adequacy retained."
+        },
+        {
+          "path": "scenario.evidence_status",
+          "remote_base": "MODEL_BASELINE",
+          "local": "LOCAL_QUALIFICATION_REQUIRED"
+        },
+        {
+          "path": "scenario.family",
+          "remote_base": "cispo_replication",
+          "local": "integrated_demand_flexibility"
+        },
+        {
+          "path": "scenario.id",
+          "remote_base": "base",
+          "local": "case1_thermal_v5"
+        },
+        {
+          "path": "scenario.parent_baseline_case_id",
+          "remote_base": null,
+          "local": "base_2024_vre_wave_on_flex_off_v1"
+        },
+        {
+          "path": "scenario.publication_status",
+          "remote_base": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+          "local": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION"
+        }
+      ],
+      "unexpected_base_differences": []
+    },
+    "case2_ev_v5": {
+      "all_differences": [
+        {
+          "path": "features.flexible_load",
+          "remote_base": false,
+          "local": true
+        },
+        {
+          "path": "flexible_load.contract_version",
+          "remote_base": "v1",
+          "local": "v5"
+        },
+        {
+          "path": "flexible_load.cooling.enabled",
+          "remote_base": true,
+          "local": false
+        },
+        {
+          "path": "flexible_load.degradation_cost_yuan_per_mwh",
+          "remote_base": 50.0,
+          "local": 400.0
+        },
+        {
+          "path": "flexible_load.ev_v1g.shiftable_energy_fraction",
+          "remote_base": 0.5,
+          "local": 0.15
+        },
+        {
+          "path": "flexible_load.ev_v2g.charge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.discharge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.enabled",
+          "remote_base": false,
+          "local": true
+        },
+        {
+          "path": "flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year",
+          "remote_base": null,
+          "local": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        {
+          "path": "flexible_load.ev_v2g.participation_fraction",
+          "remote_base": 0.2,
+          "local": 0.1
+        },
+        {
+          "path": "flexible_load.ev_v2g.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.firm_capacity_credit",
+          "remote_base": null,
+          "local": {
+            "contract_version": "derated_peak_service_v1",
+            "required_event_duration_hours": 4.0,
+            "derating_fraction": {
+              "heating": 0.6,
+              "cooling": 0.6,
+              "ev_v1g": 0.5,
+              "ev_v2g": 0.5
+            },
+            "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+            "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+            "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+            "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+          }
+        },
+        {
+          "path": "flexible_load.formulation",
+          "remote_base": null,
+          "local": "integrated_service_constrained_v5"
+        },
+        {
+          "path": "flexible_load.heating.enabled",
+          "remote_base": true,
+          "local": false
+        },
+        {
+          "path": "flexible_load.parameter_status",
+          "remote_base": null,
+          "local": {
+            "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+            "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+            "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+            "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+            "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+            "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+          }
+        },
+        {
+          "path": "flexible_load.portfolio_contract",
+          "remote_base": null,
+          "local": "optional_service_pools_v1"
+        },
+        {
+          "path": "flexible_load.shift_throughput_cost_yuan_per_mwh",
+          "remote_base": 2.0,
+          "local": 300.0
+        },
+        {
+          "path": "flexible_load.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.v5_input_files",
+          "remote_base": null,
+          "local": {
+            "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+            "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+            "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+            "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+            "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+            "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+          }
+        },
+        {
+          "path": "flexible_load.v5_reference_energy_closure_tolerance_fraction",
+          "remote_base": null,
+          "local": 1e-06
+        },
+        {
+          "path": "scenario.analysis_role",
+          "remote_base": "BASELINE",
+          "local": "CENTRAL_COUNTERFACTUAL"
+        },
+        {
+          "path": "scenario.description",
+          "remote_base": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
+          "local": "case2_ev_v5: immutable Base demand with optional paid service pools; baseline adequacy retained."
+        },
+        {
+          "path": "scenario.evidence_status",
+          "remote_base": "MODEL_BASELINE",
+          "local": "LOCAL_QUALIFICATION_REQUIRED"
+        },
+        {
+          "path": "scenario.family",
+          "remote_base": "cispo_replication",
+          "local": "integrated_demand_flexibility"
+        },
+        {
+          "path": "scenario.id",
+          "remote_base": "base",
+          "local": "case2_ev_v5"
+        },
+        {
+          "path": "scenario.parent_baseline_case_id",
+          "remote_base": null,
+          "local": "base_2024_vre_wave_on_flex_off_v1"
+        },
+        {
+          "path": "scenario.publication_status",
+          "remote_base": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+          "local": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION"
+        }
+      ],
+      "unexpected_base_differences": []
+    },
+    "case3_thermal_ev_v5": {
+      "all_differences": [
+        {
+          "path": "features.flexible_load",
+          "remote_base": false,
+          "local": true
+        },
+        {
+          "path": "flexible_load.contract_version",
+          "remote_base": "v1",
+          "local": "v5"
+        },
+        {
+          "path": "flexible_load.degradation_cost_yuan_per_mwh",
+          "remote_base": 50.0,
+          "local": 400.0
+        },
+        {
+          "path": "flexible_load.ev_v1g.shiftable_energy_fraction",
+          "remote_base": 0.5,
+          "local": 0.15
+        },
+        {
+          "path": "flexible_load.ev_v2g.charge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.discharge_efficiency",
+          "remote_base": 0.95,
+          "local": 0.94
+        },
+        {
+          "path": "flexible_load.ev_v2g.enabled",
+          "remote_base": false,
+          "local": true
+        },
+        {
+          "path": "flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year",
+          "remote_base": null,
+          "local": {
+            "2030": 10.0,
+            "2040": 20.0,
+            "2050": 30.0,
+            "2060": 40.0
+          }
+        },
+        {
+          "path": "flexible_load.ev_v2g.participation_fraction",
+          "remote_base": 0.2,
+          "local": 0.1
+        },
+        {
+          "path": "flexible_load.ev_v2g.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.firm_capacity_credit",
+          "remote_base": null,
+          "local": {
+            "contract_version": "derated_peak_service_v1",
+            "required_event_duration_hours": 4.0,
+            "derating_fraction": {
+              "heating": 0.6,
+              "cooling": 0.6,
+              "ev_v1g": 0.5,
+              "ev_v2g": 0.5
+            },
+            "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+            "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+            "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+            "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+          }
+        },
+        {
+          "path": "flexible_load.formulation",
+          "remote_base": null,
+          "local": "integrated_service_constrained_v5"
+        },
+        {
+          "path": "flexible_load.parameter_status",
+          "remote_base": null,
+          "local": {
+            "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+            "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+            "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+            "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+            "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+            "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file."
+          }
+        },
+        {
+          "path": "flexible_load.portfolio_contract",
+          "remote_base": null,
+          "local": "optional_service_pools_v1"
+        },
+        {
+          "path": "flexible_load.shift_throughput_cost_yuan_per_mwh",
+          "remote_base": 2.0,
+          "local": 300.0
+        },
+        {
+          "path": "flexible_load.state_boundary",
+          "remote_base": null,
+          "local": "periodic_selected_horizon_v1"
+        },
+        {
+          "path": "flexible_load.v5_input_files",
+          "remote_base": null,
+          "local": {
+            "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+            "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+            "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+            "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+            "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+            "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+          }
+        },
+        {
+          "path": "flexible_load.v5_reference_energy_closure_tolerance_fraction",
+          "remote_base": null,
+          "local": 1e-06
+        },
+        {
+          "path": "scenario.analysis_role",
+          "remote_base": "BASELINE",
+          "local": "CENTRAL_COUNTERFACTUAL"
+        },
+        {
+          "path": "scenario.description",
+          "remote_base": "CISPO-style wave-integrated economic optimum without demand-flexibility or complementarity extensions",
+          "local": "case3_thermal_ev_v5: immutable Base demand with optional paid service pools; baseline adequacy retained."
+        },
+        {
+          "path": "scenario.evidence_status",
+          "remote_base": "MODEL_BASELINE",
+          "local": "LOCAL_QUALIFICATION_REQUIRED"
+        },
+        {
+          "path": "scenario.family",
+          "remote_base": "cispo_replication",
+          "local": "integrated_demand_flexibility"
+        },
+        {
+          "path": "scenario.id",
+          "remote_base": "base",
+          "local": "case3_thermal_ev_v5"
+        },
+        {
+          "path": "scenario.parent_baseline_case_id",
+          "remote_base": null,
+          "local": "base_2024_vre_wave_on_flex_off_v1"
+        },
+        {
+          "path": "scenario.publication_status",
+          "remote_base": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+          "local": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION"
+        }
+      ],
+      "unexpected_base_differences": []
+    }
+  },
+  "recorded_input_comparison": null,
+  "status": "PASS",
+  "limitations": [
+    "Source/config equality is not a newly constructed 8760h matrix comparison.",
+    "Copied input manifests record hashes from launch; CF Zarr hashes cover metadata only.",
+    "Changed validation/export/flex modules require separate regression evidence."
+  ]
+}
