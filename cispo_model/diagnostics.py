@@ -593,21 +593,23 @@ def solve_and_report(
         apply_primal_dual_crossover_start(model, primal_dual_start)
     before = model_statistics(model)
     telemetry = SolverTelemetry(output_dir / "solver_telemetry.jsonl")
-    telemetry.write_event(
-        "solver_start",
-        model_statistics=before,
-        process_id=os.getpid(),
-    )
     termination: GracefulSolverTermination | None = None
     try:
         with GracefulSolverTermination(model, telemetry) as termination:
-            model.optimize(telemetry)
-        telemetry.write_event(
-            "solver_end",
-            status_code=int(model.Status),
-            runtime_seconds=float(model.Runtime),
-            work_units=float(model.Work),
-        )
+            telemetry.write_event("solver_start", model_statistics=before, process_id=os.getpid())
+            try:
+                model.optimize(telemetry)
+            finally:
+                # Written before restoring signal handlers, also after solver
+                # exceptions. The wrapper must never terminate an export phase.
+                end_metrics = {}
+                for key, attribute in (("status_code", "Status"), ("runtime_seconds", "Runtime"),
+                                       ("work_units", "Work")):
+                    try:
+                        end_metrics[key] = getattr(model, attribute)
+                    except (AttributeError, gp.GurobiError):
+                        pass
+                telemetry.write_event("solver_end", **end_metrics)
     finally:
         telemetry.close()
     status_name = {

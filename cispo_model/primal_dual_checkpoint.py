@@ -483,7 +483,8 @@ def export_barrier_primal_dual_checkpoint(
     numerical contract and physics QC have both passed. ``engineering_only``
     preserves an otherwise non-scientific Barrier result for an explicitly
     authorized deferred crossover. A checkpoint captured after an inline-
-    crossover failure remains recovery-only and cannot enter that workflow.
+    crossover failure remains recovery-only. Unaccepted finite vectors require
+    an explicit recovery acknowledgement and the exact same-LP identity gate.
     """
     if sum(bool(value) for value in (
         accepted_primary,
@@ -968,11 +969,12 @@ def validate_barrier_primal_dual_checkpoint(
     *,
     require_result_manifest: bool = True,
     allow_engineering: bool = False,
+    allow_recovery: bool = False,
 ) -> tuple[bool, list[str]]:
     """Validate a Barrier checkpoint without rebuilding the LP.
 
     The default remains the strict accepted-source gate used by planning-state
-    export and sequence resume. Engineering checkpoints require an explicit
+    export and sequence resume. Engineering/recovery checkpoints require an explicit
     opt-in and can only be consumed by the second exact-LP gate in
     :func:`prepare_primal_dual_crossover`.
     """
@@ -995,10 +997,13 @@ def validate_barrier_primal_dual_checkpoint(
 
     checkpoint_status = metadata.get("checkpoint_status")
     engineering = checkpoint_status == ENGINEERING_CHECKPOINT_STATUS
+    recovery = checkpoint_status in {RECOVERY_CHECKPOINT_STATUS, PENDING_QC_CHECKPOINT_STATUS}
     accepted = checkpoint_status == ACCEPTED_CHECKPOINT_STATUS
     if engineering and not allow_engineering:
         failures.append("engineering_checkpoint_requires_explicit_allow")
-    if not accepted and not engineering:
+    if recovery and not allow_recovery:
+        failures.append("recovery_checkpoint_requires_explicit_allow")
+    if not accepted and not engineering and not recovery:
         failures.append("checkpoint_status")
     failures.extend(
         _solver_evidence_failures(
@@ -1061,9 +1066,9 @@ def validate_barrier_primal_dual_checkpoint(
                 != sha256_file(solution_qc_path)
             ):
                 failures.append("acceptance_evidence_solution_qc_sha256")
-    elif engineering:
+    elif engineering or recovery:
         parameters = solve.get("solver_parameters", {})
-        if contract.get("barrier_status_code") != 2:
+        if engineering and contract.get("barrier_status_code") != 2:
             failures.append("barrier_status")
         if not (
             int(parameters.get("method", -1)) == 2
@@ -1089,9 +1094,9 @@ def validate_barrier_primal_dual_checkpoint(
         failures.append("schema_version")
     if accepted and not metadata.get("scientifically_accepted"):
         failures.append("scientifically_accepted")
-    if engineering and metadata.get("scientifically_accepted"):
+    if (engineering or recovery) and metadata.get("scientifically_accepted"):
         failures.append("engineering_scientifically_accepted")
-    if not metadata.get("deferred_crossover_eligible"):
+    if not metadata.get("deferred_crossover_eligible") and not (recovery and allow_recovery):
         failures.append("deferred_crossover_eligible")
 
     input_manifest = source_root / "input_manifest.csv"
@@ -1131,6 +1136,7 @@ def prepare_primal_dual_crossover(
     optimization_start_hour: int,
     result_use: str,
     allow_engineering_checkpoint: bool = False,
+    allow_recovery_checkpoint: bool = False,
     allow_compatible_implementation_bundle: bool = False,
     row_scaling_registry: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -1138,6 +1144,15 @@ def prepare_primal_dual_crossover(
     source_root = Path(source_output_dir).resolve()
     target_root = Path(target_output_dir).resolve()
     checkpoint_root = source_root / CHECKPOINT_DIRECTORY
+    if not (checkpoint_root / CHECKPOINT_MANIFEST).is_file() and (
+        source_root / "solution_snapshot" / "snapshot_manifest.json"
+    ).is_file():
+        if not allow_recovery_checkpoint:
+            raise PrimalDualCheckpointError("Raw snapshot requires explicit recovery acknowledgement")
+        return _prepare_snapshot_crossover(source_root, target_root, model, config,
+            optimization_hours=optimization_hours, optimization_start_hour=optimization_start_hour,
+            result_use=result_use, allow_compatible_implementation_bundle=allow_compatible_implementation_bundle,
+            row_scaling_registry=row_scaling_registry)
     metadata = _read_json(checkpoint_root / CHECKPOINT_MANIFEST)
     source_row_scaling_registry = validate_row_scaling_registry(
         metadata.get("annual_capacity_link_row_scaling"), model=model
@@ -1154,14 +1169,19 @@ def prepare_primal_dual_crossover(
     engineering_source = (
         metadata.get("checkpoint_status") == ENGINEERING_CHECKPOINT_STATUS
     )
+    recovery_source = metadata.get("checkpoint_status") in {
+        RECOVERY_CHECKPOINT_STATUS, PENDING_QC_CHECKPOINT_STATUS}
+    if recovery_source and not allow_recovery_checkpoint:
+        raise PrimalDualCheckpointError("Recovery Barrier checkpoint requires explicit acknowledgement")
     if engineering_source and not allow_engineering_checkpoint:
         raise PrimalDualCheckpointError(
             "Engineering Barrier checkpoint requires explicit acknowledgement"
         )
     checkpoint_valid, failures = validate_barrier_primal_dual_checkpoint(
         source_root,
-        require_result_manifest=not engineering_source,
+        require_result_manifest=not (engineering_source or recovery_source),
         allow_engineering=allow_engineering_checkpoint,
+        allow_recovery=allow_recovery_checkpoint,
     )
     if not checkpoint_valid:
         raise PrimalDualCheckpointError(
@@ -1169,7 +1189,7 @@ def prepare_primal_dual_crossover(
             + "; ".join(failures)
         )
     source_solve = _read_json(source_root / "solve_report.json")
-    if not engineering_source:
+    if not engineering_source and not recovery_source:
         source_qc = _read_json(source_root / "solution_qc.json")
         if (
             source_qc.get("status") != "PASS"
@@ -1180,7 +1200,7 @@ def prepare_primal_dual_crossover(
             )
     if metadata.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
         raise PrimalDualCheckpointError("Unsupported Barrier checkpoint schema")
-    if not metadata.get("deferred_crossover_eligible"):
+    if not metadata.get("deferred_crossover_eligible") and not (recovery_source and allow_recovery_checkpoint):
         raise PrimalDualCheckpointError(
             "Recovery-only Barrier checkpoints cannot enter formal deferred crossover"
         )
@@ -1335,6 +1355,7 @@ def prepare_primal_dual_crossover(
         "engineering_checkpoint_explicitly_allowed": bool(
             engineering_source and allow_engineering_checkpoint
         ),
+        "recovery_checkpoint_explicitly_allowed": bool(recovery_source and allow_recovery_checkpoint),
         "compatible_implementation_bundle_explicitly_allowed": bool(
             not implementation_bundle_matches
             and allow_compatible_implementation_bundle
@@ -1383,6 +1404,43 @@ def prepare_primal_dual_crossover(
         "materializes_python_model_object_lists": True,
         "result_use": result_use,
     }
+
+
+def _prepare_snapshot_crossover(source, target, model, config, *, optimization_hours,
+                               optimization_start_hour, result_use,
+                               allow_compatible_implementation_bundle, row_scaling_registry):
+    """Same-LP recovery from exception snapshots, with no scientific promotion."""
+    from .offline_solution import verify_recovery_inputs, read_snapshot
+    try:
+        evidence = verify_recovery_inputs(source, target,
+            allow_compatible_implementation=allow_compatible_implementation_bundle)
+        solve = _read_json(source / "solve_report.json")
+        for key, expected in {"planning_year": config.planning_year,
+                "optimization_hours": optimization_hours, "optimization_start_hour": optimization_start_hour,
+                "result_use": result_use, "scenario_id": config.raw["scenario"]["id"]}.items():
+            if solve.get(key) != expected:
+                raise ValueError(f"Snapshot source/target {key} differs")
+        root = source / "solution_snapshot"
+        primal, dual = read_snapshot(model, root, expected_row_scaling_registry=row_scaling_registry)
+        try:
+            if dual is None:
+                raise ValueError("Full primal/dual start unavailable; original model can only be rebuilt")
+        finally:
+            primal._mmap.close()
+            if dual is not None:
+                dual._mmap.close()
+        metadata = _read_json(root / "snapshot_manifest.json")
+        return {"source_output_dir": str(source), "source_checkpoint_status": "RAW_SNAPSHOT_RECOVERY_ONLY",
+                "source_scientifically_accepted": False, "recovery_checkpoint_explicitly_allowed": True,
+                "recovery_identity": evidence, "lp_warm_start": 2,
+                "source_checkpoint_manifest_sha256": sha256_file(root / "snapshot_manifest.json"),
+                "primal_path": str(root / metadata["attributes"][metadata["primal_attribute"]]["path"]),
+                "dual_path": str(root / metadata["attributes"][metadata["dual_attribute"]]["path"]),
+                "variables": int(model.NumVars), "constraints": int(model.NumConstrs),
+                "gurobi_fingerprint": int(model.Fingerprint), "result_use": result_use,
+                "annual_capacity_link_row_scaling": row_scaling_registry}
+    except (ValueError, OSError, KeyError) as error:
+        raise PrimalDualCheckpointError(f"Snapshot recovery rejected: {error}") from error
 
 
 def apply_primal_dual_crossover_start(model: Any, prepared: dict[str, Any]) -> None:

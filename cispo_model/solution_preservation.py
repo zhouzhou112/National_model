@@ -35,7 +35,10 @@ def replace_file(temporary, target):
 def write_json(path, payload):
     path = Path(path)
     temporary = path.with_name(path.name + ".part")
-    temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    with temporary.open("w", encoding="utf-8") as stream:
+        stream.write(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
     replace_file(temporary, path)
 
 
@@ -219,6 +222,25 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
         finally:
             write_json(root / "preservation_report.json", result)
 
+    def read_sidecar(name):
+        path = root / name
+        if not path.is_file():
+            return None
+        def read():
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+                if not isinstance(value, dict):
+                    raise ValueError(f"{name} must contain a JSON object")
+                return value
+            except (ValueError, UnicodeError):
+                import shutil
+                original = root / "failed_sidecars" / (name + ".original")
+                original.parent.mkdir(parents=True, exist_ok=True)
+                if not original.exists():
+                    shutil.copy2(path, original)
+                raise
+        return stage("read_" + name, read)
+
     if snapshot:
         row_scaling_registry = artifacts.index.get(
             "annual_capacity_link_row_scaling"
@@ -291,26 +313,26 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
     qc = stage("operation_carbon_dual_qc", lambda: export_operational_solution(
         artifacts, data, config, root, enforce_qc=False))
     if qc is None:
-        path = root / "solution_qc.json"
-        qc = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {"status": "NOT_EVALUATED"}
+        qc = read_sidecar("solution_qc.json") or {"status": "NOT_EVALUATED"}
         qc["export_incomplete"] = True
     qc["scientifically_accepted"] = False
     qc["solver_contract"] = report.get("solution_contract")
     qc["solver_quality"] = report.get("solution_quality")
     raw_qc_path = root / "raw_lp_qc.json"
     if raw_qc_path.is_file():
-        qc["raw_lp_qc"] = json.loads(raw_qc_path.read_text(encoding="utf-8"))
-        if qc["raw_lp_qc"]["status"] != "PASS":
+        qc["raw_lp_qc"] = read_sidecar("raw_lp_qc.json")
+        if not qc["raw_lp_qc"] or qc["raw_lp_qc"].get("status") != "PASS":
             qc["status"] = "FAIL"
     write_json(root / "solution_qc.json", qc)
     result["qc_status"] = qc.get("status")
     stage("summary", lambda: export_result_summary(artifacts, data, config, root))
     dual_path = root / "dual_export_status.json"
     if dual_path.is_file():
-        dual = json.loads(dual_path.read_text(encoding="utf-8"))
-        dual.update(scientifically_accepted=False, interpretation="RAW_DUAL_PENDING_AUTHOR_REVIEW")
-        write_json(dual_path, dual)
-        if not dual.get("available"):
+        dual = read_sidecar("dual_export_status.json")
+        if dual is not None:
+            dual.update(scientifically_accepted=False, interpretation="RAW_DUAL_PENDING_AUTHOR_REVIEW")
+            write_json(dual_path, dual)
+        if not dual or not dual.get("available"):
             result["stages"]["semantic_duals"] = "PARTIAL"
     # Freeze the source report before candidate state hashes it. Never mutate
     # it afterwards; final stage completeness belongs to preservation_report.
@@ -322,9 +344,93 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
     stage("output_catalog", lambda: write_output_catalog(root))
     result["status"] = "COMPLETE" if all(s == "COMPLETE" for s in result["stages"].values()) else "PARTIAL"
     archive = root / "model_archive" / "archive_manifest.json"
-    if archive.is_file() and json.loads(archive.read_text(encoding="utf-8")).get("status") != "COMPLETE":
+    archived = read_sidecar("model_archive/archive_manifest.json")
+    result["original_model_archived"] = bool(archived and archived.get("status") == "COMPLETE")
+    if archive.is_file() and not result["original_model_archived"]:
         result["status"] = "PARTIAL"
     write_json(root / "preservation_report.json", result)
     result["elapsed_seconds_before_manifest"] = time.perf_counter() - started
     write_json(root / "preservation_report.json", result)
+    return result
+
+
+def preserve_solver_exception(artifacts, data, config, output_dir, error, *, scope):
+    """Attempt every export after a solver/report exception; never accept its state."""
+    report = dict(scope, status="SOLVER_EXCEPTION", solver_exception=repr(error),
+                  scientifically_accepted=False, solution_contract={"acceptance_status": "FAIL"})
+    model = artifacts.model
+    for key, attribute in (("status_code", "Status"), ("solution_count", "SolCount"),
+                           ("runtime_seconds", "Runtime"), ("barrier_iterations", "BarIterCount")):
+        try:
+            report[key] = float(getattr(model, attribute))
+        except Exception:
+            report[key] = None
+    root = Path(output_dir)
+    write_json(root / "solve_report.json", report)
+    try:
+        return preserve_stage_a(artifacts, data, config, root, report)
+    except Exception as preservation_error:
+        # Retain the original exception and already written archive/raw arrays.
+        write_json(root / "preservation_exception.json", {
+            "solver_exception": repr(error), "preservation_exception": repr(preservation_error),
+            "scientifically_accepted": False, "status": "PARTIAL"})
+        return {"status": "PARTIAL", "error": repr(preservation_error)}
+
+
+def inspect_recovery_files(output_dir):
+    """Check archive and raw vectors independently of scientific QC/status.
+
+    Exact target-LP compatibility is checked again when consuming a start.
+    This does not claim that all semantic exports or Barrier internals exist.
+    """
+    from .primal_dual_checkpoint import validate_checkpoint_vector_integrity
+    root = Path(output_dir)
+    result = {"model_archive_complete": False, "finite_primal_dual_saved": False,
+              "vector_source": None, "barrier_hot_resume": False, "errors": []}
+    try:
+        archive_root = root / "model_archive"
+        archive = json.loads((archive_root / "archive_manifest.json").read_text(encoding="utf-8"))
+        names = {row["path"] for row in archive["files"]}
+        if archive.get("status") != "COMPLETE" or "parameters.prm" not in names or not (
+            names & {"original.mps", "original.mps.gz"}
+        ):
+            raise ValueError("Incomplete original model/parameter archive")
+        for row in archive["files"]:
+            path = archive_root / row["path"]
+            if path.stat().st_size != row["bytes"] or sha256_file(path) != row["sha256"]:
+                raise ValueError(f"Archive checksum mismatch: {row['path']}")
+        result["model_archive_complete"] = True
+    except Exception as error:
+        result["errors"].append(repr(error))
+    if (root / "barrier_checkpoint" / "barrier_checkpoint_manifest.json").is_file():
+        try:
+            valid, failures = validate_checkpoint_vector_integrity(root)
+        except Exception as error:
+            valid, failures = False, [repr(error)]
+        result["finite_primal_dual_saved"] = valid
+        if valid:
+            result["vector_source"] = "barrier_checkpoint"
+        else:
+            result["errors"].extend(failures)
+    if not result["finite_primal_dual_saved"] and (root / "solution_snapshot" / "snapshot_manifest.json").is_file():
+        try:
+            snapshot_root = root / "solution_snapshot"
+            snapshot = json.loads((snapshot_root / "snapshot_manifest.json").read_text(encoding="utf-8"))
+            for key, count in (("primal_attribute", "variables"), ("dual_attribute", "constraints")):
+                row = snapshot["attributes"][snapshot[key]]
+                path = snapshot_root / row["path"]
+                if path.stat().st_size != row["bytes"] or sha256_file(path) != row["sha256"]:
+                    raise ValueError(f"Snapshot checksum mismatch: {key}")
+                values = np.load(path, mmap_mode="r", allow_pickle=False)
+                try:
+                    if values.shape != (snapshot[count],) or values.dtype != np.dtype("<f8"):
+                        raise ValueError(f"Snapshot shape/dtype mismatch: {key}")
+                    for start in range(0, values.size, CHUNK_SIZE):
+                        if not np.isfinite(values[start:start + CHUNK_SIZE]).all():
+                            raise ValueError(f"Snapshot nonfinite: {key}")
+                finally:
+                    values._mmap.close()
+            result.update(finite_primal_dual_saved=True, vector_source="solution_snapshot")
+        except Exception as error:
+            result["errors"].append(repr(error))
     return result

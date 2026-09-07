@@ -159,25 +159,24 @@ checkpoint = read("barrier_checkpoint/barrier_checkpoint_manifest.json")
 preservation = read("preservation_report.json")
 result_manifest = read("result_manifest.json")
 stage = solve.get("stage_a_completion_status") if solve else None
-checkpoint_complete = bool(
-    checkpoint
-    and checkpoint.get("checkpoint_status") in {
-        "ACCEPTED_PRIMARY_BARRIER_SOLUTION",
-        "PENDING_ORIGINAL_UNIT_QC",
-        "ENGINEERING_BARRIER_CHECKPOINT",
-    }
-)
+from cispo_model.solution_preservation import inspect_recovery_files
+recovery_files = inspect_recovery_files(output)
+checkpoint_complete = recovery_files["finite_primal_dual_saved"]
+archive_complete = recovery_files["model_archive_complete"]
 if (
     wrapper_rc == 0
     and stage == "STAGE_A_PRIMAL_FINAL_ACCEPTED"
     and qc
     and qc.get("status") == "PASS"
     and checkpoint_complete
+    and archive_complete
     and result_manifest
 ):
     status = "COMPLETED_ACCEPTED"
-elif checkpoint_complete and solve:
+elif checkpoint_complete and archive_complete and solve:
     status = "COMPLETED_PRESERVED_REVIEW_REQUIRED"
+elif archive_complete:
+    status = "MODEL_ARCHIVED_NO_VERIFIED_FINITE_START"
 else:
     status = "INCOMPLETE_NO_USABLE_STAGEA"
 payload = {
@@ -189,6 +188,7 @@ payload = {
     "solution_qc_status": qc.get("status") if qc else None,
     "checkpoint_status": checkpoint.get("checkpoint_status") if checkpoint else None,
     "preservation_status": preservation.get("status") if preservation else None,
+    "recovery_files": recovery_files,
     "stage_b_started": False,
 }
 target = control / "terminal_status.json"
@@ -223,13 +223,12 @@ forward_signal() {
   local signal_name=$1
   printf '%s wrapper_received_%s\n' "$(date --iso-8601=seconds)" "$signal_name" \
     >> "$control_root/events.log"
-  if [[ -n "$runner_pid" ]] && kill -0 "$runner_pid" 2>/dev/null; then
-    kill -TERM "$runner_pid" 2>/dev/null || true
-  fi
+  touch "$control_root/STOP_REQUESTED"
 }
 trap 'forward_signal TERM' TERM
 trap 'forward_signal INT' INT
 trap 'forward_signal HUP' HUP
+trap 'forward_signal USR1' USR1
 
 "$PYTHON" scripts/run_cispo_2030_full_year.py \
   --planning-year 2030 \
@@ -259,7 +258,9 @@ echo "$runner_pid" > "$control_root/runner.pid"
           "$output_root/solver_telemetry.jsonl" 2>/dev/null; do
         sleep 10
       done
-      if kill -0 "$runner_pid" 2>/dev/null; then
+      if kill -0 "$runner_pid" 2>/dev/null \
+        && ! grep -q '"event":"solver_end"' "$output_root/solver_telemetry.jsonl" 2>/dev/null \
+        && [[ ! -f "$output_root/preservation_report.json" ]]; then
         printf '%s controlled_sigterm_forwarded\n' "$(date --iso-8601=seconds)" \
           >> "$control_root/events.log"
         kill -TERM "$runner_pid"
@@ -274,6 +275,12 @@ stop_watcher_pid=$!
 set +e
 wait "$runner_pid"
 runner_rc=$?
+# A trapped signal interrupts Bash wait even while the Python exporter lives.
+# Reap the child only after it actually exits; do not abandon preservation.
+while kill -0 "$runner_pid" 2>/dev/null; do
+  wait "$runner_pid"
+  runner_rc=$?
+done
 set -e
 kill "$stop_watcher_pid" 2>/dev/null || true
 wait "$stop_watcher_pid" 2>/dev/null || true

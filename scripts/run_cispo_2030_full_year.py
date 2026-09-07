@@ -598,6 +598,11 @@ def main() -> None:
         help="Explicitly acknowledge exact-LP deferred crossover from BarX/BarPi.",
     )
     parser.add_argument(
+        "--allow-recovery-barrier-checkpoint",
+        action="store_true",
+        help="Allow an unaccepted finite checkpoint only as an exact same-year LP start; never accept source results.",
+    )
+    parser.add_argument(
         "--allow-engineering-barrier-checkpoint",
         action="store_true",
         help=(
@@ -774,11 +779,11 @@ def main() -> None:
             "--allow-primal-dual-crossover requires --primal-dual-checkpoint-in"
         )
     if (
-        args.allow_engineering_barrier_checkpoint
+        (args.allow_engineering_barrier_checkpoint or args.allow_recovery_barrier_checkpoint)
         and not args.primal_dual_checkpoint_in
     ):
         raise SystemExit(
-            "--allow-engineering-barrier-checkpoint requires "
+            "Engineering/recovery checkpoint flags require "
             "--primal-dual-checkpoint-in"
         )
     if (
@@ -1584,6 +1589,7 @@ def main() -> None:
             allow_engineering_checkpoint=bool(
                 args.allow_engineering_barrier_checkpoint
             ),
+            allow_recovery_checkpoint=bool(args.allow_recovery_barrier_checkpoint),
             allow_compatible_implementation_bundle=bool(
                 args.allow_compatible_primal_dual_implementation
             ),
@@ -1698,12 +1704,14 @@ def main() -> None:
         from cispo_model.diagnostics import configure_gurobi
         configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
     if archive_original_model:
-        archive_model(
+        archive_report = archive_model(
             artifacts.model,
             output_dir,
             presolved=args.archive_presolved_model,
             include_name_catalog=args.archive_model_name_catalog,
         )
+        if archive_report["status"] != "COMPLETE":
+            raise RuntimeError("Original model/parameter archive is incomplete; optimization is blocked")
     if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
         if not archive_original_model:
             raise RuntimeError(
@@ -1792,14 +1800,27 @@ def main() -> None:
         raise RuntimeError(
             str(solver_numerical_compatibility["reason"])
         )
-    report = solve_and_report(
-        artifacts.model,
-        config,
-        output_dir,
-        compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
-        warm_start=warm_start,
-        primal_dual_start=primal_dual_start,
-    )
+    try:
+        report = solve_and_report(
+            artifacts.model,
+            config,
+            output_dir,
+            compute_iis=bool(config.raw["construction"]["compute_iis_on_infeasible"]),
+            warm_start=warm_start,
+            primal_dual_start=primal_dual_start,
+        )
+    except Exception as error:
+        from cispo_model.solution_preservation import preserve_solver_exception
+        preserve_solver_exception(artifacts, data, config, output_dir, error, scope={
+            "planning_year": config.planning_year,
+            "boundary_year": config.boundary_year,
+            "scenario_id": config.raw["scenario"]["id"],
+            "optimization_hours": optimization_hours,
+            "optimization_start_hour": optimization_start_hour,
+            "result_use": scope_report["result_use"],
+        })
+        write_json(output_dir / "preservation_runtime_memory.json", memory_monitor.stop())
+        raise
     report.update(
         boundary_year=config.boundary_year,
         planning_year=config.planning_year,
