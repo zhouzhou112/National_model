@@ -1,5 +1,16 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-07 授权正式冷热案例、无限时启动准备
+
+- 2026-09-07 作者正式授权启动2030 Base＋冷热44线程，并明确取消正式案例的一切时间上限。
+  此条覆盖此前仅对该案例的禁止启动/4h测试限制；其他情景、年份和自动Stage B仍未授权。
+  BarConvTol落实1e-4；既定A8 64 CPU/700G/billing64，Gurobi Threads44；Slurm无限时、Gurobi无TimeLimit/SoftMemLimit，无定时STOP。
+  新显式--authorize-thermal-stage-a-1e4严格限定case1/2030/44/1e-4；QC、保全、跨年接受和未压缩库存链保护不变。
+  4项范围测试＋30项不求解回归PASS；31省8760h真实输入在授权路线下建模前PASS，不代表全年数值合格。
+  计划独立冻结release和新输出目录；原Base4479238继续运行，不干预。正式提交前核验SHA、版本、预算、billing和preflight。
+  详细合同config/THERMAL_STAGE_A_LAUNCH_20260907.md；准备证据output/thermal_launch_20260907/。
+  当前里程碑为启动准备，尚无新作业号；准确提交状态由后续追加条目覆盖。
+
 ## 2026-09-07 最终自检：参数冻结，异常结果保全，未启动优化
 
 - 2026-09-07 正式运行前最终自检：作者冻结Base＋原三个V5情景，不继续扩模块，仍禁止自行优化。

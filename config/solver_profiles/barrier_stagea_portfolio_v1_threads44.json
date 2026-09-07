@@ -5,7 +5,7 @@
   "direct_nonbasic_scientific_acceptance": true,
   "stage_b_required": false,
   "required_formulation_profile_id": "annual_capacity_link_rows_8192_v1",
-  "description": "Optional V5 portfolios: Base Stage A architecture and original-unit acceptance, 44 threads, no crossover/Stage B/SoftMemLimit. BarConvTol tightened to 1e-9 after local real-input 8760h portfolio QC rejected 1e-2. Full-system annual convergence and memory remain unqualified. Deployment does not authorize job submission.",
+  "description": "Author-selected 1e-4 stopping target (2026-09-07): Base Stage A architecture, 44 threads, no crossover/automatic Stage B/SoftMemLimit. Only explicitly authorized 2030 thermal scenario may launch; other portfolios remain blocked. Execution authorization is not full-year numerical qualification; original-unit acceptance is unchanged.",
   "stage_a_acceptance": {
     "maximum_relative_primal_dual_objective_gap": 0.01,
     "maximum_barrier_primal_infeasibility": 0.01,
@@ -24,7 +24,7 @@
     "presolve": 2,
     "crossover": 0,
     "solution_target": 1,
-    "barrier_convergence_tolerance": 1e-09,
+    "barrier_convergence_tolerance": 0.0001,
     "feasibility_tolerance": 1e-06,
     "optimality_tolerance": 1e-06,
     "markowitz_tolerance": 0.01,

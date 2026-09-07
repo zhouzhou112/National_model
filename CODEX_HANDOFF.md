@@ -12,6 +12,15 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-07 作者正式授权启动2030 Base＋冷热44线程，并明确取消正式案例的一切时间上限。
+  此条覆盖此前仅对该案例的禁止启动/4h测试限制；其他情景、年份和自动Stage B仍未授权。
+  BarConvTol落实1e-4；既定A8 64 CPU/700G/billing64，Gurobi Threads44；Slurm无限时、Gurobi无TimeLimit/SoftMemLimit，无定时STOP。
+  新显式--authorize-thermal-stage-a-1e4严格限定case1/2030/44/1e-4；QC、保全、跨年接受和未压缩库存链保护不变。
+  4项范围测试＋30项不求解回归PASS；31省8760h真实输入在授权路线下建模前PASS，不代表全年数值合格。
+  计划独立冻结release和新输出目录；原Base4479238继续运行，不干预。正式提交前核验SHA、版本、预算、billing和preflight。
+  详细合同config/THERMAL_STAGE_A_LAUNCH_20260907.md；准备证据output/thermal_launch_20260907/。
+  当前里程碑为启动准备，尚无新作业号；准确提交状态由后续追加条目覆盖。
+
 - 2026-09-07 正式运行前最终自检：作者冻结Base＋原三个V5情景，不继续扩模块，仍禁止自行优化。
   实现Git `ba57c79c3cedd3f70b2516cc76ffb29532bf7a5d`；本地修改，未部署，未启动优化/presolve/松弛/Stage B/云作业。
   修复异常跳过保全、损坏QC阻断导出、停止阶段竞态和wrapper恢复状态误判；归档不完整禁止开始求解。
@@ -7953,3 +7962,12 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 未解决：Base宽松.01的冷热全年资格、全规模恢复计算与物理QC、实际Slurm信号/OOM/强杀完整性。
 不能承诺Barrier迭代热续接；保存完整不代表科学合格。现有1e-9 profile没有被改回.01。
 确切下一步：保持Base＋三情景研究范围；等待作者明确正式配置和运行授权，之后使用独立release；本轮不提交作业。
+
+## 2026-09-07 Author-approved unlimited 2030 thermal Stage A preparation
+
+父Git db6fda8。作者明确44线程启动，随后明确正式案例取消任何时间限制。仅开放2030冷热1e-4入口，
+未修改物理模型、输入或QC；其他情景仍默认拦截。修改portfolio_release/flexible_load_numerics/runner/wrapper/profile，
+新增test_authorized_thermal_launch.py及config/THERMAL_STAGE_A_LAUNCH_20260907.md。
+4项新范围回归、既有30项禁止求解回归、真实31省8760h建模前授权检查与bash -n均通过。
+输出output/thermal_launch_20260907；实施提交即本条所在提交。下一步独立release部署、SHA/版本/资源验证、只提交一个正式冷热作业。
+原Base不变；全年最终QC/内存与结果尚未产生，不因启动授权而提升科学接受状态。

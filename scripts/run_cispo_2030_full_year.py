@@ -75,7 +75,7 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
-    PORTFOLIO_STAGE_A_PROFILE_ID: "3c7ca270e1a2ef3cf6079ea670c5ee439c9d5620f234db097c448da2a6642a7e",
+    PORTFOLIO_STAGE_A_PROFILE_ID: "70bdf6d7b2a740082175dc29814ccbab741bbfec11ad81055bc29b6f283235be",
     "barrier_checkpoint_full_year_cloud_v4": (
         "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d"
     ),
@@ -598,6 +598,11 @@ def main() -> None:
         help="Explicitly acknowledge exact-LP deferred crossover from BarX/BarPi.",
     )
     parser.add_argument(
+        "--authorize-thermal-stage-a-1e4",
+        action="store_true",
+        help="Author-authorized 2030 thermal-only 44-thread execution at BarConvTol=1e-4; QC remains mandatory.",
+    )
+    parser.add_argument(
         "--allow-recovery-barrier-checkpoint",
         action="store_true",
         help="Allow an unaccepted finite checkpoint only as an exact same-year LP start; never accept source results.",
@@ -940,11 +945,16 @@ def main() -> None:
         )
     if direct_nonbasic_scientific_acceptance:
         require_canonical_direct_nonbasic_profiles(config)
+    if args.authorize_thermal_stage_a_1e4:
+        from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
+        require_qualified_portfolio_stage_a(config, author_authorized=True)
+        if args.horizon != 'full_year' or args.diagnostic_hours is not None:
+            raise SystemExit('Author thermal launch requires the full-year horizon')
     if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID:
         if not (args.preflight_only or args.build_only or args.recover_stage_a_from):
             from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
             try:
-                require_qualified_portfolio_stage_a()
+                require_qualified_portfolio_stage_a(config, author_authorized=args.authorize_thermal_stage_a_1e4)
             except ValueError as error:
                 raise SystemExit(str(error)) from error
         from cispo_model.flexible_portfolio import is_optional_portfolio
@@ -965,7 +975,7 @@ def main() -> None:
     ):
         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
         try:
-            require_qualified_portfolio_stage_a()
+            require_qualified_portfolio_stage_a(config, author_authorized=args.authorize_thermal_stage_a_1e4)
         except ValueError as error:
             raise SystemExit(str(error)) from error
     if nonbasic_primal_dual_requested and (
@@ -1237,6 +1247,7 @@ def main() -> None:
             data,
             hours=optimization_hours,
             hour_start=optimization_start_hour,
+            allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis
             ),
@@ -1329,6 +1340,7 @@ def main() -> None:
             "export_warm_start_basis": bool(args.export_warm_start_basis),
         },
         "barrier_first_workflow": {
+            "author_authorized_thermal_1e4_execution": args.authorize_thermal_stage_a_1e4,
             "nonbasic_primal_dual_requested": nonbasic_primal_dual_requested,
             "primary_checkpoint_requested": bool(
                 nonbasic_primal_dual_requested
@@ -1627,6 +1639,7 @@ def main() -> None:
         assess_flexible_load_solver_compatibility(
             compatibility_structural_audit,
             config.raw["numerics"],
+            allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis
             ),

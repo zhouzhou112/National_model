@@ -7,13 +7,25 @@ import re
 from pathlib import Path
 
 
-def require_qualified_portfolio_stage_a() -> None:
-    """Fail closed until the unresolved original-unit residual gate is reviewed.
+def require_qualified_portfolio_stage_a(config=None, *, author_authorized=False) -> None:
+    """Default blocked; author-approved 2030 thermal 1e-4 launch is QC-pending.
 
-    No runtime flag promotes this candidate profile to production. This guard
-    must be revised with reproducible qualification evidence before launch.
-    Build-only, preflight and offline recovery remain available in the runner.
+    The 2026-09-07 authorization permits execution, never scientific acceptance.
+    Other scenarios, years and numerical settings retain the previous block.
     """
+    if author_authorized and config is not None:
+        raw = config.raw
+        expected = dict(method=2, crossover=0, solution_target=1, threads=44,
+                        barrier_convergence_tolerance=1e-4, feasibility_tolerance=1e-6,
+                        optimality_tolerance=1e-6, aggregate=1, scale_flag=2, numeric_focus=1)
+        if (config.planning_year == 2030
+                and raw['scenario']['id'] == 'case1_thermal_v5'
+                and raw.get('solver_profile', {}).get('id') == 'barrier_stagea_portfolio_v1_threads44'
+                and raw['flexible_load'].get('portfolio_contract') == 'optional_service_pools_v1'
+                and raw['formulation'].get('annual_capacity_link_row_scaling') == 'binary_power2_safe_8192_v1'
+                and all(raw['numerics'].get(key) == value for key, value in expected.items())):
+            return
+        raise ValueError('AUTHOR_THERMAL_SCOPE_MISMATCH: authorization is only 2030 case1, Threads44, BarConvTol1e-4')
     raise ValueError(
         'PORTFOLIO_STAGE_A_NOT_QUALIFIED: full-system nonbasic water residuals '
         'have not passed original-unit QC; optimization launch is blocked. '
@@ -21,14 +33,18 @@ def require_qualified_portfolio_stage_a() -> None:
     )
 
 
-def validate_cloud_budget(time_limit: str) -> int:
-    """Reject missing/unlimited/>4h Slurm wall limits, including build time."""
+def validate_cloud_budget(time_limit: str, *, authorized_seconds: int = 14400) -> int:
+    """Default tests <=4h; explicit zero budget denotes author-approved unlimited run."""
+    if authorized_seconds == 0:
+        if time_limit.strip().upper() == 'UNLIMITED':
+            return 0
+        raise ValueError('Author requested an unlimited formal run; finite Slurm wall limit is forbidden')
     match = re.fullmatch(r'(?:(\d+)-)?(\d+):(\d{2}):(\d{2})', time_limit.strip())
     if not match:
         raise ValueError('Portfolio cloud tests require a finite Slurm wall limit <=04:00:00')
     days, hours, minutes, seconds = (int(value or 0) for value in match.groups())
     total = ((days*24+hours)*60+minutes)*60+seconds
-    if minutes >= 60 or seconds >= 60 or not 0 < total <= 14400:
+    if minutes >= 60 or seconds >= 60 or not 0 < total <= int(authorized_seconds):
         raise ValueError('Portfolio cloud test wall limit exceeds the authorized 4h budget')
     return total
 

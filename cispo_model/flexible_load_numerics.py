@@ -333,6 +333,7 @@ def assess_flexible_load_solver_compatibility(
     numerics: dict[str, Any],
     *,
     allow_engineering_relaxed_nonbasic: bool = False,
+    allow_authorized_thermal_nonbasic: bool = False,
 ) -> dict[str, Any]:
     """Block risky V5 solves without the stable long-horizon solver contract.
 
@@ -395,6 +396,9 @@ def assess_flexible_load_solver_compatibility(
         and 1e-9 < barrier_tolerance <= 5e-2
         and (not aggregate_zero_required or aggregate == 0)
     )
+    authorized_thermal_route = bool(allow_authorized_thermal_nonbasic
+        and method == 2 and crossover == 0 and solution_target == 1
+        and barrier_tolerance == 1e-4 and not aggregate_zero_required)
     stable_long_horizon_settings = (
         (not aggregate_zero_required or aggregate == 0)
         and (
@@ -402,6 +406,7 @@ def assess_flexible_load_solver_compatibility(
             or stable_basic_route
             or strict_nonbasic_primal_dual_route
             or engineering_relaxed_nonbasic_route
+            or authorized_thermal_route
         )
     )
     passed = (
@@ -419,6 +424,8 @@ def assess_flexible_load_solver_compatibility(
                 "Selected-horizon V5 inverse-decay risk is protected by "
                 "Aggregate=0 and an explicitly accepted solver route."
             )
+        elif authorized_thermal_route:
+            reason = "Author-approved thermal 1e-4 execution; original-unit QC and solver acceptance remain mandatory."
         elif engineering_relaxed_nonbasic_route:
             reason = (
                 "The explicitly acknowledged engineering-only relaxed Barrier "
@@ -449,6 +456,8 @@ def assess_flexible_load_solver_compatibility(
     return {
         "schema_version": "cispo_solver_numerical_compatibility_v1",
         "status": "PASS" if passed else "BLOCKED",
+        "author_authorized_thermal_route": authorized_thermal_route,
+        "scientific_acceptance_established": False,
         "formulation": structural_audit.get("formulation"),
         "aggregate_parameter": aggregate,
         "aggregate_parameter_source": (
@@ -508,6 +517,7 @@ def prebuild_flexible_load_solver_compatibility(
     hours: int,
     hour_start: int = 0,
     allow_engineering_relaxed_nonbasic: bool = False,
+    allow_authorized_thermal_nonbasic: bool = False,
 ) -> dict[str, Any]:
     """Assess the V5 numerical contract before allocating the full LP."""
     settings = config.raw["flexible_load"]
@@ -559,6 +569,7 @@ def prebuild_flexible_load_solver_compatibility(
     return assess_flexible_load_solver_compatibility(
         structural_audit,
         config.raw["numerics"],
+        allow_authorized_thermal_nonbasic=allow_authorized_thermal_nonbasic,
         allow_engineering_relaxed_nonbasic=(
             allow_engineering_relaxed_nonbasic
         ),

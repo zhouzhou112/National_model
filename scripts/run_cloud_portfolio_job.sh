@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Optional V5 portfolio Stage A payload. Deployment is not submission authorization.
-# Every invocation requires a real Slurm allocation capped at 4h INCLUDING build/archive.
+# Tests retain a 4h cap. Author-approved thermal execution requires an explicit wall budget.
 # The existing Base wrapper and its running jobs remain independent.
 
 require_env() {
@@ -19,7 +19,8 @@ for name in \
   CISPO_SCENARIO_ID \
   CISPO_SOLVER_PROFILE \
   CISPO_EXPECTED_GIT_SHA \
-  CISPO_EXPECTED_THREADS; do
+  CISPO_EXPECTED_THREADS \
+  CISPO_AUTHORIZED_WALL_SECONDS; do
   require_env "$name"
 done
 
@@ -36,7 +37,7 @@ case "$profile_threads_pair" in
   *) echo "Portfolio wrapper requires the canonical 44-thread portfolio profile" >&2; exit 64 ;;
 esac
 case "$CISPO_SCENARIO_ID" in
-  case1_thermal_v5|case2_ev_v5|case3_thermal_ev_v5) ;;
+  case1_thermal_v5) ;;
   *) echo "Unknown portfolio scenario" >&2; exit 64 ;;
 esac
 
@@ -60,17 +61,27 @@ export PATH="$GUROBI_HOME/bin:$PATH"
 export LD_LIBRARY_PATH="$GUROBI_HOME/lib:${LD_LIBRARY_PATH:-}"
 
 cd "$repo_root"
-"$PYTHON" -c 'from cispo_model.portfolio_release import require_qualified_portfolio_stage_a; require_qualified_portfolio_stage_a()'
-"$PYTHON" - "${SLURM_JOB_ID:-}" <<'PY'
+"$PYTHON" - "${SLURM_JOB_ID:-}" "$CISPO_AUTHORIZED_WALL_SECONDS" <<'PY'
 import re, subprocess, sys
-from cispo_model.portfolio_release import validate_cloud_budget
+from cispo_model.portfolio_release import validate_cloud_budget, require_qualified_portfolio_stage_a
+from cispo_model.config import load_model_config
+config = load_model_config(scenario_path='config/scenarios/case1_thermal_v5.json',
+    solver_path='config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json',
+    formulation_path='config/formulation_profiles/annual_capacity_link_rows_8192_v1.json')
+require_qualified_portfolio_stage_a(config, author_authorized=True)
 if not sys.argv[1]:
     raise SystemExit("Portfolio cloud wrapper requires a Slurm job")
 record = subprocess.check_output(["scontrol", "show", "job", "-o", sys.argv[1]], text=True)
 match = re.search(r"\bTimeLimit=(\S+)", record)
 if not match:
     raise SystemExit("Cannot verify actual Slurm wall budget")
-validate_cloud_budget(match.group(1))
+validate_cloud_budget(match.group(1), authorized_seconds=int(sys.argv[2]))
+allocation = re.search(r"\bAllocTRES=(\S+)", record)
+if not allocation:
+    raise SystemExit("Cannot verify billing/memory allocation")
+tres = dict(item.split("=", 1) for item in allocation.group(1).split(","))
+if tres.get("cpu") != "64" or tres.get("billing") != "64" or tres.get("mem") not in {"700G", "716800M"}:
+    raise SystemExit("Thermal launch requires actual cpu64/mem700G/billing64 allocation")
 PY
 if [[ ! -f "$release_root/manifests/portfolio_code.sha256" ]]; then
   echo "Missing immutable portfolio source checksums" >&2; exit 67
@@ -98,7 +109,7 @@ assert int(numerics["presolve"]) == 2
 assert int(numerics["crossover"]) == 0
 assert int(numerics["solution_target"]) == 1
 assert numerics["time_limit_seconds"] is None
-assert float(numerics["barrier_convergence_tolerance"]) == 1e-9
+assert float(numerics["barrier_convergence_tolerance"]) == 1e-4
 assert float(numerics["feasibility_tolerance"]) == 1e-6
 assert float(numerics["optimality_tolerance"]) == 1e-6
 assert int(numerics["numeric_focus"]) == 1
@@ -121,6 +132,7 @@ fi
   echo "slurm_mem_per_node_mb=${SLURM_MEM_PER_NODE:-UNSET}"
   echo "gurobi_soft_mem_limit=UNSET_PROFILE_NULL"
   echo "gurobi_threads=$CISPO_EXPECTED_THREADS"
+  echo "authorized_wall_seconds=$CISPO_AUTHORIZED_WALL_SECONDS"
   echo "git_commit=$actual_sha"
   echo "solver_profile=$CISPO_SOLVER_PROFILE"
   echo "slurm_time_limit=$(squeue -h -j "${SLURM_JOB_ID:-0}" -o %l 2>/dev/null || true)"
@@ -237,6 +249,7 @@ trap 'forward_signal USR1' USR1
   --solver-config "$solver_profile" \
   --formulation-config "$formulation_profile" \
   --archive-original-model \
+  --authorize-thermal-stage-a-1e4 \
   --allow-nonbasic-planning-state \
   --output-dir "$output_root" \
   > "$control_root/wrapper_stdout.log" \
