@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-09-07T20:11:41.037974+08:00",
+  "commit": "ffd651aded605568bc1e02cc460eae5ecd113b5b",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260907_thermal_stagea_1e4_t44_ffd651a_v2",
+  "case_id": "2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2",
+  "source_files": 307,
+  "archive_sha256": "f9815ee601b24fa2d89034b2c664305767a252d1b4524c2db30f8827bbfceb7a",
+  "host": "paracloud-bscc-a8",
+  "slurm_time": "UNLIMITED",
+  "gurobi_time_limit": null,
+  "threads": 44,
+  "cpus": 64,
+  "memory": "700G",
+  "status": "RUNNING",
+  "job_id": 4533060,
+  "submitted": true,
+  "released": true,
+  "automatic_stop": false,
+  "authorization": "Author requested 44-thread formal thermal case and explicitly removed all formal time limits.",
+  "scientific_acceptance": "PENDING_FUTURE_QC",
+  "existing_base_job_id": 4479238,
+  "first_attempt": {
+    "job_id": 4533016,
+    "status": "FAILED",
+    "exit_code": 67,
+    "elapsed_seconds": 1,
+    "reason": "CRLF in deployment git_commit.txt; no model built or optimization started; v1 retained"
+  }
+}

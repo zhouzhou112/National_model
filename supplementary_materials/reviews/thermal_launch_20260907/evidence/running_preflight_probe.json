@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-09-07T20:12:38.040427+08:00",
+  "job_id": 4533060,
+  "files": {
+    "preflight_report.json": {
+      "status": "PASS"
+    },
+    "run_scope.json": {
+      "planning_year": 2030,
+      "optimization_hours": 8760,
+      "scenario_id": "case1_thermal_v5"
+    },
+    "wrapper_stderr.log": {
+      "bytes": 0,
+      "tail": ""
+    },
+    "slurm-4533060.err": {
+      "bytes": 0,
+      "tail": ""
+    }
+  },
+  "queue": "4533060 RUNNING 2:26 UNLIMITED 64 700G m4cm2204 m4cm2204\n4479238 RUNNING 4-02:48:34 UNLIMITED 64 550G m4cg1605 m4cg1605",
+  "accounting": "4533060         RUNNING      0:0   00:02:26         64       700G                       billing=64,cpu=64,mem=700G,node=1",
+  "archive_files": []
+}

@@ -1,5 +1,18 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-09-07 正式冷热job4533060已提交，无限时
+
+- 2026-09-07 已提交并放行正式冷热作业 **4533060**，观测状态RUNNING，Slurm TimeLimit=UNLIMITED。
+  作者明确授权2030年Base＋冷热、44线程及取消所有正式时间限制；未提交EV/联合/下一年/Stage B。
+  部署Git `ffd651aded605568bc1e02cc460eae5ecd113b5b`；release=`20260907_thermal_stagea_1e4_t44_ffd651a_v2`。
+  case=`2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2`；原Base4479238保持运行，未停止或改参。
+  307源码文件SHA与V5五文件SHA通过，云Gurobi13.0.2，BarConvTol1e-4，Threads44，Gurobi无TimeLimit/SoftMemLimit，无定时STOP。
+  请求TRES cpu64/mem700G/node1/billing64核验通过；held提交后已scontrol release，勿重复提交。
+  首次4533016因部署git_commit.txt的CRLF在启动器Git校验处1秒失败，未建模/优化；保留v1，在v2以LF修正后重提。
+  20:12:38快照已在m4cm2204运行2:26，实际cpu64/mem700G/billing64；preflight PASS、两份stderr为0，正在建模，尚无MPS/Barrier结果。
+  只读状态/提交证据：supplementary_materials/reviews/thermal_launch_20260907/evidence/及output/thermal_launch_20260907/。
+  下一步仅跟进该作业分配、preflight、原始模型归档和Barrier启动；保留QC/完整保全，禁止自动停止或启动其他情景。
+
 ## 2026-09-07 授权正式冷热案例、无限时启动准备
 
 - 2026-09-07 作者正式授权启动2030 Base＋冷热44线程，并明确取消正式案例的一切时间上限。

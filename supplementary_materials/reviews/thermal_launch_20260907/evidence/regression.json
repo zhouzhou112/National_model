@@ -1,0 +1,9 @@
+{
+  "tests_run": 30,
+  "failures": 0,
+  "errors": 0,
+  "excluded_optimizer_test": "test_real_gurobi_accepts_memmapped_pstart_and_dstart",
+  "optimize_called": false,
+  "presolve_called": false,
+  "status": "PASS"
+}

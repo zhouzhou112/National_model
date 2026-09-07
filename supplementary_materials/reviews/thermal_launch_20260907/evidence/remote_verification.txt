@@ -1,0 +1,7 @@
+flexibility/thermal_hourly_envelope_v5.csv.gz HASH_PASS
+flexibility/thermal_parameters_by_province_v5.csv HASH_PASS
+flexibility/ev_availability_hourly_v5.csv.gz HASH_PASS
+flexibility/ev_mobility_hourly_v5.csv.gz HASH_PASS
+flexibility/flex_enablement_cost_v5.csv HASH_PASS
+{"config": "PASS", "gurobi": [13, 0, 2], "threads": 44, "barconv": 0.0001, "time_limit": null, "soft_mem_limit": null, "optimize_called": false}
+4479238 cispo8760_t32_m550_req32 RUNNING 4-02:44:55 UNLIMITED 64 550G

@@ -12,6 +12,17 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-07 已提交并放行正式冷热作业 **4533060**，观测状态RUNNING，Slurm TimeLimit=UNLIMITED。
+  作者明确授权2030年Base＋冷热、44线程及取消所有正式时间限制；未提交EV/联合/下一年/Stage B。
+  部署Git `ffd651aded605568bc1e02cc460eae5ecd113b5b`；release=`20260907_thermal_stagea_1e4_t44_ffd651a_v2`。
+  case=`2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2`；原Base4479238保持运行，未停止或改参。
+  307源码文件SHA与V5五文件SHA通过，云Gurobi13.0.2，BarConvTol1e-4，Threads44，Gurobi无TimeLimit/SoftMemLimit，无定时STOP。
+  请求TRES cpu64/mem700G/node1/billing64核验通过；held提交后已scontrol release，勿重复提交。
+  首次4533016因部署git_commit.txt的CRLF在启动器Git校验处1秒失败，未建模/优化；保留v1，在v2以LF修正后重提。
+  20:12:38快照已在m4cm2204运行2:26，实际cpu64/mem700G/billing64；preflight PASS、两份stderr为0，正在建模，尚无MPS/Barrier结果。
+  只读状态/提交证据：supplementary_materials/reviews/thermal_launch_20260907/evidence/及output/thermal_launch_20260907/。
+  下一步仅跟进该作业分配、preflight、原始模型归档和Barrier启动；保留QC/完整保全，禁止自动停止或启动其他情景。
+
 - 2026-09-07 作者正式授权启动2030 Base＋冷热44线程，并明确取消正式案例的一切时间上限。
   此条覆盖此前仅对该案例的禁止启动/4h测试限制；其他情景、年份和自动Stage B仍未授权。
   BarConvTol落实1e-4；既定A8 64 CPU/700G/billing64，Gurobi Threads44；Slurm无限时、Gurobi无TimeLimit/SoftMemLimit，无定时STOP。
@@ -7971,3 +7982,14 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 4项新范围回归、既有30项禁止求解回归、真实31省8760h建模前授权检查与bash -n均通过。
 输出output/thermal_launch_20260907；实施提交即本条所在提交。下一步独立release部署、SHA/版本/资源验证、只提交一个正式冷热作业。
 原Base不变；全年最终QC/内存与结果尚未产生，不因启动授权而提升科学接受状态。
+
+## 2026-09-07 Submitted unlimited formal thermal job4533060
+
+实施Git ffd651aded605568bc1e02cc460eae5ecd113b5b。作者44线程启动＋正式案例无限时授权已落实。
+新release /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260907_thermal_stagea_1e4_t44_ffd651a_v2；job4533060经sbatch --test-only、sbatch --hold --parsable、ReqTRES核验和scontrol release提交放行。
+首次4533016在1秒内因Git清单CRLF失败，未建模/优化；保留失败release/v1日志，只在独立v2修正清单为LF。
+观测状态RUNNING，TimeLimit=UNLIMITED，ReqTRES cpu64/mem700G/node1/billing64，Gurobi配置Threads44/BarConvTol1e-4/无TimeLimit/SoftMemLimit。
+34项不求解测试PASS、31省8760h真实输入建模前授权路线PASS、307代码SHA/V5五输入SHA/云Gurobi13.0.2配置校验PASS。
+本地准备脚本与证据output/thermal_launch_20260907；正式归档supplementary_materials/reviews/thermal_launch_20260907。
+未干预运行Base4479238，不启动其他情景或自动Stage B。排队/开始建模不代表有可用checkpoint或科学结果。
+确切下一步：等待资源分配后只读核验实际TRES、preflight、原始MPS/参数保全和Barrier阶段；不得重复提交或自动设时限。

@@ -1,0 +1,116 @@
+{
+  "schema_version": "cispo_solver_numerical_compatibility_v1",
+  "status": "PASS",
+  "author_authorized_thermal_route": true,
+  "scientific_acceptance_established": false,
+  "formulation": "integrated_service_constrained_v5",
+  "aggregate_parameter": 1,
+  "aggregate_parameter_source": "explicit_profile",
+  "aggregate_zero_required": false,
+  "stable_crossover_required": true,
+  "crossover_parameter": 0,
+  "crossover_basis_parameter": -1,
+  "solution_target_parameter": 1,
+  "barrier_convergence_tolerance": 0.0001,
+  "stable_basic_route": false,
+  "accepted_basic_crossover_orders": [
+    1,
+    2,
+    4
+  ],
+  "strict_nonbasic_primal_dual_route": false,
+  "engineering_relaxed_nonbasic_route": false,
+  "engineering_relaxed_nonbasic_authorized": false,
+  "required_long_horizon_settings": {
+    "aggregate": "automatic_allowed",
+    "accepted_solver_routes": [
+      {
+        "method": 2,
+        "crossover": [
+          1,
+          2,
+          4
+        ],
+        "crossover_basis": 1,
+        "solution_form": "basic"
+      },
+      {
+        "method": 2,
+        "crossover": 0,
+        "solution_target": 1,
+        "maximum_barrier_convergence_tolerance": 1e-09,
+        "solution_form": "primal_dual_nonbasic"
+      }
+    ]
+  },
+  "inverse_decay_amplification_log10_threshold": 3.0,
+  "component_risks": {
+    "heating": {
+      "active_provinces": 31,
+      "inactive_provinces_with_state_chain_omitted": 0,
+      "worst_active_province": {
+        "province_position": 20,
+        "province_code": 46,
+        "maximum_cyclic_zero_control_run_hours": 6378,
+        "retention_per_hour": 0.94,
+        "inverse_decay_amplification_log10": 171.3905497411221
+      },
+      "automatic_presolve_aggregation_risk": true,
+      "zero_control_state_compression_enabled": true,
+      "zero_control_state_compression": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 271560,
+        "control_support_state_variables": 140380,
+        "decay_anchor_state_variables": 2943,
+        "retained_state_variables": 143323,
+        "redundant_inactive_state_variables_omitted": 128237,
+        "retained_transition_rows": 143323,
+        "redundant_inactive_transition_rows_omitted": 128237,
+        "maximum_retained_transition_gap_hours": 37,
+        "minimum_retained_transition_coefficient": 0.10132825956607122,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+      },
+      "zero_control_state_compression_well_scaled": true,
+      "automatic_presolve_aggregation_risk_mitigated": true,
+      "aggregate_zero_required_for_solve": false
+    },
+    "cooling": {
+      "active_provinces": 29,
+      "inactive_provinces_with_state_chain_omitted": 2,
+      "worst_active_province": {
+        "province_position": 28,
+        "province_code": 63,
+        "maximum_cyclic_zero_control_run_hours": 6332,
+        "retention_per_hour": 0.92,
+        "inverse_decay_amplification_log10": 229.29547724794392
+      },
+      "automatic_presolve_aggregation_risk": true,
+      "zero_control_state_compression_enabled": true,
+      "zero_control_state_compression": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 271560,
+        "control_support_state_variables": 87488,
+        "decay_anchor_state_variables": 5266,
+        "retained_state_variables": 92754,
+        "redundant_inactive_state_variables_omitted": 178806,
+        "retained_transition_rows": 92754,
+        "redundant_inactive_transition_rows_omitted": 178806,
+        "maximum_retained_transition_gap_hours": 27,
+        "minimum_retained_transition_coefficient": 0.10526193234946256,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+      },
+      "zero_control_state_compression_well_scaled": true,
+      "automatic_presolve_aggregation_risk_mitigated": true,
+      "aggregate_zero_required_for_solve": false
+    }
+  },
+  "reason": "Author-approved thermal 1e-4 execution; original-unit QC and solver acceptance remain mandatory.",
+  "optimize_called": false,
+  "presolve_called": false,
+  "planning_year": 2030,
+  "hours": 8760,
+  "provinces": 31,
+  "threads": 44,
+  "barconv": 0.0001,
+  "gurobi_time_limit": null
+}
