@@ -12,6 +12,18 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-09-07 冷热/EV文献响应候选：作者暂搁水库问题，转向技术经济参数与响应约束。
+  实现Git `c343a27f94291b0208934271845ff9b54959b459`；无优化/presolve/松弛、无远端部署或运行Base干预。
+  已核验Nature Communications DOI10.1038/s41467-026-76799-4正文/补充材料及参数定位。
+  新可选proportional_enrollment_response_v1将冷热小时包络绑定同一年度签约群体，EV分别受意愿/设施上限约束；
+  中心费用、原舒适区间/留存率/时长、EV效率/服务义务/参与技术池均保持；另备4档意愿、2档设施、2档成本敏感性。
+  共11候选配置在config/scenarios/response_candidates_v1，不替换旧三情景，未运行或排队。
+  19项禁止求解回归PASS；真实31省168h联合服务块43818变量/62673行/194676非零，与旧对应规模相同，零整数。
+  真实全年比例系数供暖最小2.12e-4、制冷1.38e-6；2省24h旧三情景矩阵/边界/目标SHA与旧提交相同。
+  文献费用倍率量纲歧义仍未澄清，补贴不计入社会目标；归一化EV可用率/出发库存仍非实测出行数据。
+  详见config/FLEXIBLE_RESPONSE_V1_CONTRACT.md及supplementary_materials/reviews/flexible_response_20260907/REVIEW_CN.md。
+  下一步优先闭合EV停留/出发数据、冷热响应产品与真实费用口径；新候选全年资格仍未完成，禁止自行求解继续有效。
+
 - 2026-09-07 历史长时段水库只读复核：未启动优化/presolve/云作业，未改Base或输入。
   本地24h、固定744h严格/2160h工程候选、云端旧8760h保存水库数组独立重算完成。
   旧8760h 620站×8760h最大残差0.038998539m3，严格744h为0.0026784m3，均通过1m3水量QC；
@@ -7900,3 +7912,16 @@ python -m py_compile 两个新脚本、git diff --check。无Gurobi调用、远�
 只停止本轮本地慢速SSH下载进程，未给求解器信号；未完成下载保留并标记不可用，全年证据来自完整远端文件。
 未闭合：新三情景全国全年数值资格、旧全年其他QC失败、短窗口与数值参数的独立因果贡献。
 确切下一步：仅离线对比现有合格Base和新情景的方程尺度/周期与验收，获得作者后续求解指令前不启动优化。
+
+## 2026-09-07 Literature-informed thermal and EV response candidate
+
+实现Git `c343a27f94291b0208934271845ff9b54959b459`（父3e9a474）。新增flexible_response模块、候选配置生成器、不求解测试与合同；
+最小接入config/flexible_load/flexible_portfolio/solution_export，旧Base及水文/负荷/柔性输入未修改。
+来源：论文接收稿30页、补充49页、三份结果XLSX，Crossref/出版社核验；CodeOcean403/Figshare API404，未核验作者源码。
+输出：config/scenarios/response_candidates_v1/共11配置及manifest；研究审查/参数矩阵/小证据见上述报告目录。
+命令：build_flexible_response_scenarios.py --output-dir <new-directory>；PYTHONPATH=tests python -m unittest
+test_flexible_response_no_solve test_portfolio_no_solve -v（19 PASS）；真实31省全年数组尺度检查和6个168h块构建，
+audit_saved_primal零向量PASS；旧提交隔离源码快照矩阵/SHA/fingerprint比较PASS；py_compile、git diff --check PASS。
+证据限度：仅服务块矩阵比较与不求解验证，未重建全年供给侧LP、未证明新候选收敛或全年经济价值。
+未闭合：全国EV会话/出发需求、冷热时长校准、补贴/真实成本/价格年区分、新响应候选正式数值资格。
+确切下一步：继续离线完善数据与费用合同，不自行启动优化、不放宽物理约束、不扩大全年云端预算。
