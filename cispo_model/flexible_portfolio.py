@@ -11,6 +11,8 @@ from typing import Any, Callable
 import gurobipy as gp
 import numpy as np
 
+from .flexible_response import enrollment_limit, infrastructure_limit, response_settings
+
 PORTFOLIO_CONTRACT = "optional_service_pools_v1"
 
 
@@ -51,14 +53,15 @@ def attach_ev_pools(
     d: Any = zero
     relocated: Any = zero
     if enabled:
-        alpha = model.addMVar(p_count, lb=0, ub=(p_max > 0).astype(float),
+        alpha = model.addMVar(p_count, lb=0, ub=(p_max > 0).astype(float) * enrollment_limit(settings, "ev_v1g"),
                              name="ev_enrolled_service_fraction")
         model.addConstr(capacity[:, 2] == p_max * alpha,
                         name="ev_enrollment_charge_contract")
         if v2g_enabled:
-            beta = model.addMVar(p_count, lb=0, ub=rho * (d_max > 0),
+            beta = model.addMVar(p_count, lb=0, ub=rho * (d_max > 0) * infrastructure_limit(settings),
                                 name="ev_bidirectional_service_fraction")
-            model.addConstr(beta <= rho * alpha, name="ev_pool_participation_nesting")
+            model.addConstr(beta <= rho * enrollment_limit(settings, "ev_v2g") * alpha,
+                            name="ev_pool_participation_nesting")
             model.addConstr(capacity[:, 3] == (d_max / rho) * beta,
                             name="ev_enrollment_v2g_contract")
         one_way = alpha.reshape((p_count, 1)) - beta.reshape((p_count, 1))
@@ -167,6 +170,10 @@ def audit_ev_pools(*, settings: dict, baseline_ev: np.ndarray, availability: dic
         alpha * eligible - c1 - c2 - values["ev_mobility_v1g_relocated"])
     if not settings["ev_v1g"]["enabled"]:
         metrics["disabled_enrollment_violation"] = absolute(alpha)
+    if response_settings(settings):
+        metrics["response_v1g_enrollment_violation"] = positive(alpha - enrollment_limit(settings, "ev_v1g"))
+        metrics["response_v2g_willingness_violation"] = positive(beta - rho * enrollment_limit(settings, "ev_v2g") * alpha)
+        metrics["response_v2g_infrastructure_violation"] = positive(beta - rho * infrastructure_limit(settings))
     return metrics
 
 

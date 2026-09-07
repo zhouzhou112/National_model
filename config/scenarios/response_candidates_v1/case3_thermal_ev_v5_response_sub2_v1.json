@@ -1,0 +1,117 @@
+{
+  "scenario_override_version": "v1",
+  "scenario_id": "case3_thermal_ev_v5_response_sub2_v1",
+  "scenario_family": "integrated_demand_flexibility",
+  "description": "Exogenous willingness sensitivity within existing eligible cooling/V2G pools; no heating or V1G willingness extrapolation.",
+  "evidence_status": "NO_SOLVE_CANDIDATE_REQUIRES_QUALIFICATION",
+  "analysis_role": "SENSITIVITY",
+  "publication_status": "NOT_QUALIFIED_FOR_FORMAL_RESULTS",
+  "parent_baseline_case_id": "base_2024_vre_wave_on_flex_off_v1",
+  "supersedes": null,
+  "overrides": {
+    "features": {
+      "flexible_load": true
+    },
+    "security": {
+      "capacity_margin_load_basis": "baseline_peak_v1"
+    },
+    "flexible_load": {
+      "contract_version": "v5",
+      "formulation": "integrated_service_constrained_v5",
+      "state_boundary": "periodic_selected_horizon_v1",
+      "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+      "shift_throughput_cost_yuan_per_mwh": 300.0,
+      "degradation_cost_yuan_per_mwh": 400.0,
+      "v5_input_files": {
+        "thermal_hourly_envelope_file": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+        "thermal_parameters_file": "flexibility/thermal_parameters_by_province_v5.csv",
+        "ev_availability_hourly_file": "flexibility/ev_availability_hourly_v5.csv.gz",
+        "ev_mobility_hourly_file": "flexibility/ev_mobility_hourly_v5.csv.gz",
+        "enablement_cost_file": "flexibility/flex_enablement_cost_v5.csv",
+        "input_manifest_file": "flexibility/flexible_load_v5.manifest.json"
+      },
+      "heating": {
+        "enabled": true
+      },
+      "cooling": {
+        "enabled": true
+      },
+      "ev_v1g": {
+        "enabled": true,
+        "shiftable_energy_fraction": 0.15,
+        "maximum_power_to_daily_average_ratio": 2.0
+      },
+      "ev_v2g": {
+        "enabled": true,
+        "state_boundary": "periodic_selected_horizon_v1",
+        "participation_fraction": 0.1,
+        "power_duration_hours": 4.0,
+        "charge_efficiency": 0.94,
+        "discharge_efficiency": 0.94,
+        "self_discharge_fraction_per_hour": 0.0,
+        "national_contracted_power_cap_gw_by_planning_year": {
+          "2030": 10.0,
+          "2040": 20.0,
+          "2050": 30.0,
+          "2060": 40.0
+        }
+      },
+      "firm_capacity_credit": {
+        "contract_version": "derated_peak_service_v1",
+        "required_event_duration_hours": 4.0,
+        "derating_fraction": {
+          "heating": 0.6,
+          "cooling": 0.6,
+          "ev_v1g": 0.5,
+          "ev_v2g": 0.5
+        },
+        "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+        "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+        "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+        "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability"
+      },
+      "reliability_treatment": {
+        "hourly_reserve_and_inertia_use_effective_load": true,
+        "planning_capacity_margin_uses_baseline_peak": true,
+        "flexibility_provides_no_reserve_credit": true
+      },
+      "parameter_status": {
+        "thermal_service": "Existing V5 thermal envelopes and nonnegative periodic service inventories; increase plus reduction shares paid contracted power. No comfort debt or literal indoor-temperature state is introduced.",
+        "ev_v1g": "The 15% reference pool is an eligibility ceiling. Endogenous proportional enrollment leaves all nonparticipants at immutable baseline demand.",
+        "ev_v2g": "The bidirectional subset has separate charging and service inventory; its share is nested in enrolled V1G and limited by 10%/15%. No observed vehicle SOC or plug sessions are claimed.",
+        "capacity_value": "No flexible firm capacity credit. Retain the exact Base planning adequacy basis until a separately validated event-delivery contract exists.",
+        "price_basis": "All monetary parameters are expressed in 2025 constant CNY. Retail energy tariffs and incentive transfers are excluded from social system cost; real control, infrastructure, inconvenience and degradation costs are included.",
+        "legacy_scalar_alignment": "The inherited generic shift-throughput and degradation scalars are aligned to the V5 central V1G relocation and V2G degradation values for manifest readability; the optimization uses the service-specific cost input file.",
+        "response_revision": "Thermal hourly bounds scale with the same annual contracted population; old thermal retention/comfort/durations and EV efficiency/obligations are preserved. No observed session SOC is claimed."
+      },
+      "portfolio_contract": "optional_service_pools_v1",
+      "response_contract": {
+        "version": "proportional_enrollment_response_v1",
+        "maximum_enrollment_fraction": {
+          "heating": 1.0,
+          "cooling": 0.5,
+          "ev_v1g": 1.0,
+          "ev_v2g": 0.5
+        },
+        "v2g_infrastructure_fraction": 1.0,
+        "cost_multipliers": {}
+      }
+    }
+  },
+  "response_evidence": {
+    "parent_scenario_id": "case3_thermal_ev_v5",
+    "parent_scenario_sha256": "0aca6e5bec6bec4ae78f199d1960d3e8264f1bd350330dba071f6a54ce198920",
+    "doi": "10.1038/s41467-026-76799-4",
+    "transfer_status": "Mechanism-informed aggregate extension, not a reproduction or nationally calibrated parameter set.",
+    "incentive_ledger": {
+      "subsidy_level": 2,
+      "gamma": 1.0,
+      "expected_acceptance_fraction": 0.5,
+      "cooling_offer_yuan_per_kwh": 0.022,
+      "v2g_offer_yuan_per_kwh": 0.15,
+      "price_basis": "Paper-reported RMB; real price year unspecified; no 2025 deflator assumed.",
+      "objective_includes_incentive_payments": false,
+      "interpretation": "Eq.47 threshold as offer-price convention only. Paper Eq.9 multiplier remains unresolved; these are not national social costs."
+    }
+  }
+}

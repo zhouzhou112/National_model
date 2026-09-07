@@ -1,0 +1,273 @@
+{
+  "optimize_called": false,
+  "presolve_called": false,
+  "year": 2030,
+  "hours": 8760,
+  "provinces": 31,
+  "thermal": {
+    "heating": {
+      "annual_reference_contract_sum_gw": 3.2352941544079172,
+      "minimum_positive_coefficient": 0.00021197217602164552,
+      "maximum_coefficient": 1.0,
+      "coefficients_below_1e_9": 0,
+      "coefficients_below_1e_13": 0
+    },
+    "cooling": {
+      "annual_reference_contract_sum_gw": 10.225207985024682,
+      "minimum_positive_coefficient": 1.380029075903624e-06,
+      "maximum_coefficient": 1.0,
+      "coefficients_below_1e_9": 0,
+      "coefficients_below_1e_13": 0
+    }
+  },
+  "windows": [
+    {
+      "case": "case1_thermal_v5",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 12508,
+      "rows": 20916,
+      "nnz": 53874,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    },
+    {
+      "case": "case1_thermal_v5_response_v1",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 12508,
+      "rows": 20916,
+      "nnz": 53874,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    },
+    {
+      "case": "case2_ev_v5",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 31434,
+      "rows": 41789,
+      "nnz": 140895,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    },
+    {
+      "case": "case2_ev_v5_response_v1",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 31434,
+      "rows": 41789,
+      "nnz": 140895,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    },
+    {
+      "case": "case3_thermal_ev_v5",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 43818,
+      "rows": 62673,
+      "nnz": 194676,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    },
+    {
+      "case": "case3_thermal_ev_v5_response_v1",
+      "hours": 168,
+      "start_hour": 4368,
+      "variables": 43818,
+      "rows": 62673,
+      "nnz": 194676,
+      "binaries": 0,
+      "zero_contract_qc": "PASS",
+      "max_residual": 0.0
+    }
+  ],
+  "costs": {
+    "low": {
+      "heating": {
+        "enablement_cost_yuan_per_kw_year": [
+          10.0,
+          10.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          100.0,
+          100.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "cooling": {
+        "enablement_cost_yuan_per_kw_year": [
+          10.0,
+          10.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          100.0,
+          100.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "ev_v1g": {
+        "enablement_cost_yuan_per_kw_year": [
+          20.0,
+          20.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          100.0,
+          100.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "ev_v2g": {
+        "enablement_cost_yuan_per_kw_year": [
+          20.0,
+          20.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          100.0,
+          100.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          20.0,
+          20.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          250.0,
+          250.0
+        ]
+      }
+    },
+    "high": {
+      "heating": {
+        "enablement_cost_yuan_per_kw_year": [
+          120.0,
+          120.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          1000.0,
+          1000.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "cooling": {
+        "enablement_cost_yuan_per_kw_year": [
+          120.0,
+          120.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          1000.0,
+          1000.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "ev_v1g": {
+        "enablement_cost_yuan_per_kw_year": [
+          180.0,
+          180.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          400.0,
+          400.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          0.0,
+          0.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          0.0,
+          0.0
+        ]
+      },
+      "ev_v2g": {
+        "enablement_cost_yuan_per_kw_year": [
+          180.0,
+          180.0
+        ],
+        "activation_cost_yuan_per_mwh": [
+          300.0,
+          300.0
+        ],
+        "comfort_debt_cost_yuan_per_gwh_hour": [
+          0.0,
+          0.0
+        ],
+        "infrastructure_cost_yuan_per_kw_year": [
+          100.0,
+          100.0
+        ],
+        "degradation_cost_yuan_per_mwh": [
+          500.0,
+          500.0
+        ]
+      }
+    }
+  }
+}

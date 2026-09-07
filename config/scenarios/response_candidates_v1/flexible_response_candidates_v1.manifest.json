@@ -1,0 +1,63 @@
+{
+  "version": "response_candidates_v1",
+  "optimize_called": false,
+  "presolve_called": false,
+  "objective_includes_incentive_payments": false,
+  "paper_doi": "10.1038/s41467-026-76799-4",
+  "subsidy_levels": [
+    {
+      "subsidy_level": 1,
+      "gamma": 0.5,
+      "expected_acceptance_fraction": 0.15865525393145713,
+      "cooling_offer_yuan_per_kwh": 0.011,
+      "v2g_offer_yuan_per_kwh": 0.075,
+      "price_basis": "Paper-reported RMB; real price year unspecified; no 2025 deflator assumed.",
+      "objective_includes_incentive_payments": false,
+      "interpretation": "Eq.47 threshold as offer-price convention only. Paper Eq.9 multiplier remains unresolved; these are not national social costs."
+    },
+    {
+      "subsidy_level": 2,
+      "gamma": 1.0,
+      "expected_acceptance_fraction": 0.5,
+      "cooling_offer_yuan_per_kwh": 0.022,
+      "v2g_offer_yuan_per_kwh": 0.15,
+      "price_basis": "Paper-reported RMB; real price year unspecified; no 2025 deflator assumed.",
+      "objective_includes_incentive_payments": false,
+      "interpretation": "Eq.47 threshold as offer-price convention only. Paper Eq.9 multiplier remains unresolved; these are not national social costs."
+    },
+    {
+      "subsidy_level": 3,
+      "gamma": 1.5,
+      "expected_acceptance_fraction": 0.8413447460685428,
+      "cooling_offer_yuan_per_kwh": 0.033,
+      "v2g_offer_yuan_per_kwh": 0.22499999999999998,
+      "price_basis": "Paper-reported RMB; real price year unspecified; no 2025 deflator assumed.",
+      "objective_includes_incentive_payments": false,
+      "interpretation": "Eq.47 threshold as offer-price convention only. Paper Eq.9 multiplier remains unresolved; these are not national social costs."
+    },
+    {
+      "subsidy_level": 4,
+      "gamma": 2.0,
+      "expected_acceptance_fraction": 0.9772498680518209,
+      "cooling_offer_yuan_per_kwh": 0.044,
+      "v2g_offer_yuan_per_kwh": 0.3,
+      "price_basis": "Paper-reported RMB; real price year unspecified; no 2025 deflator assumed.",
+      "objective_includes_incentive_payments": false,
+      "interpretation": "Eq.47 threshold as offer-price convention only. Paper Eq.9 multiplier remains unresolved; these are not national social costs."
+    }
+  ],
+  "candidates": {
+    "case1_thermal_v5_response_v1.json": "83bad50c37f7d9a7aabbd7c3b0c3d6d6f365dd56feb7778b3d883b6619f82f62",
+    "case2_ev_v5_response_v1.json": "3a1d7d8085eeb81a588ca8887670fab5e4eff0865047eb819c394f997ac3fe71",
+    "case3_thermal_ev_v5_response_v1.json": "b775db38307c1f04f702e850bd9fcae9ed5b477bb3e2cd51a00e333fe3ac75d3",
+    "case3_thermal_ev_v5_response_sub1_v1.json": "af932920d8549cf4c1ba46e7ae9aaf52c1e59651a21931baa0fd71ab980e2cc1",
+    "case3_thermal_ev_v5_response_sub2_v1.json": "4d2ffdeae3115b457422611f519a26514848db86e31123115fe29ca9e6b27ba6",
+    "case3_thermal_ev_v5_response_sub3_v1.json": "2911ee7034a54569cf79e19ed5a8ac096ed4f8a1d670dd051b326e84dc26cfa0",
+    "case3_thermal_ev_v5_response_sub4_v1.json": "f8a3abbea0892835a20fbdc6252219c1b73535c626929860b17aa6fac4c42bb0",
+    "case3_thermal_ev_v5_response_infra25_v1.json": "c1751af09cf5704226ef7f6ffff0d0d7d1cc1e1e77c0bca14432da6f8358930d",
+    "case3_thermal_ev_v5_response_infra50_v1.json": "183cf36dd5965bb6ba68359d7a8435d343dece3524627ca7710b3e9a5f6869c3",
+    "case3_thermal_ev_v5_response_cost_low_v1.json": "1f01dd260f88d115ee8c358a61aba2c4c3067ede13b89ac164fc04e9f22cf00b",
+    "case3_thermal_ev_v5_response_cost_high_v1.json": "770873acc26b8bc37b78c5d135f39701097a2383e1e2fad0282972b00e01939f"
+  },
+  "implementation_boundary": "No new hourly states, binaries, fixed SOC or observed plug-session data. Existing Base/inputs/central cases remain immutable."
+}

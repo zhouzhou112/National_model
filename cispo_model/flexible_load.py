@@ -32,6 +32,9 @@ import numpy as np
 from .config import ModelConfig
 from .data import ModelData
 from .flexible_portfolio import attach_ev_pools, is_optional_portfolio
+from .flexible_response import (
+    response_settings, enrollment_limit, thermal_contract_profile, resolved_service_costs,
+)
 from .flexible_load_numerics import (
     _compressed_thermal_state_audit,
     _compressed_thermal_state_mask,
@@ -649,6 +652,20 @@ def _attach_service_constrained_v4(
             service_data.ev_availability["available_discharge_power_gw"].max(axis=1)
             if settings["ev_v2g"]["enabled"] else 0.0
         )
+    response_profiles = {}
+    if response_settings(settings):
+        for column, component in enumerate(("heating", "cooling")):
+            annual, up_coefficient, down_coefficient = thermal_contract_profile(
+                service_data.thermal_envelopes_gw[f"{component}_up"],
+                service_data.thermal_envelopes_gw[f"{component}_down"],
+                service_data.thermal_availability[component],
+            )
+            capacity_ub[:, column] = np.minimum(
+                capacity_ub[:, column], annual * enrollment_limit(settings, component))
+            response_profiles[component] = (up_coefficient[:, selected_hours], down_coefficient[:, selected_hours])
+        structural_audit["response_contract"] = response_settings(settings)
+        structural_audit["response_contract_additional_variables"] = 0
+        structural_audit["response_contract_additional_rows"] = 0
     capacity = model.addMVar(
         (p_count, len(V4_CAPACITY_SERVICES)),
         lb=0.0,
@@ -845,7 +862,7 @@ def _attach_service_constrained_v4(
                 up_provinces = np.nonzero(up_active_mask)[0]
                 model.addConstr(
                     up_active
-                    <= availability[up_active_mask]
+                    <= (response_profiles[component][0] if response_profiles else availability)[up_active_mask]
                     * capacity[up_provinces, column],
                     name=f"{component}_contracted_increase_power",
                 )
@@ -853,7 +870,7 @@ def _attach_service_constrained_v4(
                 down_provinces = np.nonzero(down_active_mask)[0]
                 model.addConstr(
                     down_active
-                    <= availability[down_active_mask]
+                    <= (response_profiles[component][1] if response_profiles else availability)[down_active_mask]
                     * capacity[down_provinces, column],
                     name=f"{component}_contracted_reduction_power",
                 )
@@ -1292,7 +1309,7 @@ def _attach_service_constrained_v4(
         ev_v2g_charge=_zero(shape),
     )
 
-    service_costs = service_data.service_costs
+    service_costs = resolved_service_costs(settings, service_data.service_costs)
     enablement_cost = gp.quicksum(
         (
             service_costs[service]["enablement_cost_yuan_per_kw_year"]

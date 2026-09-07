@@ -1,0 +1,15 @@
+parameter,paper_value,paper_unit,location,current_model,adoption,status
+EV efficiency,0.9,fraction,main p24 Eq19,0.94 each direction,retain current; candidate needs matching rebuilt input,NOT_APPLIED
+cooling baseline setpoint,25 or 26,degC,SI p48 Table43,BAIT regional baseline,mechanism support only,NOT_NATIONAL_CALIBRATION
+cooling comfort shift,1,degC increase,main p25 Eq23-25,+/-1 degC thermal envelope,retain existing envelope and state,DIFFERENT_RESPONSE_PRODUCT
+V2G unit subsidy,0.15,RMB/kWh,main p23 Eq9,150 CNY/MWh owner proxy plus 400 degradation,retain costs; separate offer ledger,PRICE_YEAR_AND_SCOPE_UNRESOLVED
+cooling unit subsidy,0.043,RMB/kWh,main p23 Eq9,300 CNY/MWh each direction,do not substitute directly,PRICE_AND_PRODUCT_UNRESOLVED
+V2G willingness mean,0.15,RMB/kWh,main p26 Eq46-47,no prior distribution,exogenous sensitivity within original eligible pool,ASSUMED_DISTRIBUTION_NOT_SURVEY
+V2G willingness standard deviation,0.075,RMB/kWh,main p26 Eq46-47,no prior distribution,analytic expected acceptance,ASSUMED_DISTRIBUTION_NOT_SURVEY
+cooling willingness mean,0.022,RMB/kWh,main p26 Eq46-47,no prior distribution,separate Eq47 offer convention,EQ9_MULTIPLIER_UNRESOLVED
+cooling willingness standard deviation,0.011,RMB/kWh,main p26 Eq46-47,no prior distribution,analytic expected acceptance,ASSUMED_DISTRIBUTION_NOT_SURVEY
+subsidy multipliers,0.5;1;1.5;2,dimensionless,main p26 Eq47,none,only cooling and V2G enrollment sensitivity,IMPLEMENTED_OPTIONAL
+infrastructure fraction main case,1,fraction,main p23-24 Eq10-13,no separate infrastructure cap,separate beta UB and 0.25/0.5 sensitivity,AGGREGATE_ADAPTATION
+AC charging power,5 or 7,kW,SI p48 Table44,reference-load-derived envelope,device scale check only,NOT_APPLIED
+vehicle battery capacity,28 to 78,kWh,SI p48 Table44,service inventory proxy,do not equate service inventory with observed SOC,NOT_APPLIED
+departure energy requirement,next24h or next session,energy obligation,main p24 Eq21,departure lower bound zero; reference replenishment proxy,requires actual arrival/departure inputs,DATA_GAP

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .flexible_portfolio import audit_ev_pools, is_optional_portfolio
+from .flexible_response import audit_thermal_response
 
 import numpy as np
 import pandas as pd
@@ -1182,6 +1183,14 @@ def export_operational_solution(
             available = v4.thermal_availability[component][:, selected_hours]
             portfolio_qc[f"{component}_shared_contract_violation_gw"] = float(np.maximum(
                 up + down - available * flexible_service_capacity[:, column, None], 0).max())
+            portfolio_qc.update(audit_thermal_response(
+                config.raw["flexible_load"], component=component,
+                full_up=v4.thermal_envelopes_gw[f"{component}_up"],
+                full_down=v4.thermal_envelopes_gw[f"{component}_down"],
+                full_availability=v4.thermal_availability[component],
+                selected_hours=selected_hours, capacity=flexible_service_capacity[:, column],
+                up=up, down=down,
+            ))
             if not config.raw["flexible_load"][component]["enabled"]:
                 portfolio_qc[f"{component}_disabled_power_violation_gw"] = float(
                     np.abs(up).max() + np.abs(down).max() + np.abs(flexible_service_capacity[:, column]).max())

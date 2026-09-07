@@ -1,0 +1,38 @@
+[
+  {
+    "file": "article.pdf",
+    "url": "https://www.nature.com/articles/s41467-026-76799-4_reference.pdf",
+    "bytes": 2579398,
+    "sha256": "ca126f985570c1402c86ab7550510117b2107b99f998f851f86343578311b27d"
+  },
+  {
+    "file": "supplement1.pdf",
+    "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-026-76799-4/MediaObjects/41467_2026_76799_MOESM1_ESM.pdf",
+    "bytes": 4922183,
+    "sha256": "ea05565ea3792e0d58e11c21c3edf14a3cb65b1a971b8c8ab13087d2ab9a745f"
+  },
+  {
+    "file": "supplement2.pdf",
+    "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-026-76799-4/MediaObjects/41467_2026_76799_MOESM2_ESM.pdf",
+    "bytes": 112397,
+    "sha256": "ee44de6d093c86787dbe11d0da0f165cee929eba32b72e3c6c1af5d5d8f11f4a"
+  },
+  {
+    "file": "supplement3.xlsx",
+    "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-026-76799-4/MediaObjects/41467_2026_76799_MOESM3_ESM.xlsx",
+    "bytes": 3673894,
+    "sha256": "8c166665882426ee4012c19a2092bdb10280819ac26a66ba76de6766658f7983"
+  },
+  {
+    "file": "supplement4.xlsx",
+    "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-026-76799-4/MediaObjects/41467_2026_76799_MOESM4_ESM.xlsx",
+    "bytes": 2371899,
+    "sha256": "9272fa302fc03ecccb4fa2496728333992c76cd2d715537f643f7def994b3bc9"
+  },
+  {
+    "file": "supplement5.xlsx",
+    "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-026-76799-4/MediaObjects/41467_2026_76799_MOESM5_ESM.xlsx",
+    "bytes": 609524,
+    "sha256": "9cf0793c61595d1c2a83afe974f941c2733422d66a63161ffe669ff2d2b0e785"
+  }
+]

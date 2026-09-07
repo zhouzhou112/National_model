@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .flexible_response import validate_response_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "config" / "optimization_2030.json"
@@ -486,6 +488,7 @@ class ModelConfig:
                     )
             if not bool(flexible.get("ev_v1g", {}).get("enabled", False)):
                 raise ValueError("service_constrained_v4 requires ev_v1g.enabled=true")
+        validate_response_contract(flexible)
         if flexible_formulation == "integrated_service_constrained_v5":
             if flexible.get("contract_version") != "v5":
                 raise ValueError(

@@ -1,0 +1,25 @@
+Set parameter LicenseID to value 2808889
+test_all_candidates_validate_and_recover_base_at_zero_contract (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_annual_normalization_survives_window_and_zero_profiles (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_candidate_cannot_bypass_full_year_launch_guard (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_central_refinement_adds_no_variables_rows_or_nonzeros (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_cost_sensitivity_uses_existing_ranges_without_mutating_input (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_ev_willingness_and_infrastructure_are_independent_bounds (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_invalid_or_silent_response_configuration_fails (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_nonzero_ev_service_witness_and_adversarial_qc (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_paper_participation_distribution_is_transparent_and_monotone (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_partial_thermal_contract_cannot_cherry_pick_full_population (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_tiny_positive_profiles_normalize_without_large_lp_coefficients (test_flexible_response_no_solve.ResponseNoSolveTests) ... ok
+test_formal_cli_blocks_before_loading_inputs (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_full_year_portfolio_cannot_bypass_guard_with_other_solver_profile (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_raw_violation_with_infinite_bound_is_strict_json_serializable (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_service_output_dictionary_has_units_and_dimensions (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_sparse_thermal_recovery_uses_saved_vector_and_cyclic_decay (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_state_cannot_cross_scenarios_or_same_name_configuration_changes (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_unqualified_formal_profile_cannot_launch (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+test_zero_contract_vector_is_feasible_and_reconstructs_base_in_all_cases (test_portfolio_no_solve.NoSolvePortfolioTests) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.768s
+
+OK

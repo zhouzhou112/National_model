@@ -1,0 +1,21 @@
+{
+  "status": "VERIFIED",
+  "doi": "10.1038/s41467-026-76799-4",
+  "title": [
+    "Facilitating megacity electricity decarbonization via grid-interactive demand-side resource management"
+  ],
+  "journal": [
+    "Nature Communications"
+  ],
+  "publisher": "Springer Science and Business Media LLC",
+  "published": {
+    "date-parts": [
+      [
+        2026,
+        8,
+        17
+      ]
+    ]
+  },
+  "code_access_status": "CodeOcean capsule 3633967/tree/v1 HTTP403; Figshare API article31046854 HTTP404; no author code reviewed"
+}

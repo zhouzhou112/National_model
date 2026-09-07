@@ -145,3 +145,10 @@ V1G 下移 300；V2G 放电计参与成本 150 和损耗外的电池退化 400�
 
 完整证据与未闭合项见 `supplementary_materials/reviews/portfolio_prelaunch_20260905/REVIEW_CN.md`。
 既有云端 `87b534f` release 仍是旧冻结代码；不能将本地新增拦截误称已覆盖该 release 或正在运行的 Base。
+
+## 7. 2026-09-07 文献支持的响应候选
+
+新增显式可选 `proportional_enrollment_response_v1`，见 [FLEXIBLE_RESPONSE_V1_CONTRACT.md](FLEXIBLE_RESPONSE_V1_CONTRACT.md)。
+它把冷热小时响应与同一年度签约群体绑定，并分别限制 EV 意愿和双向设施，提供费用敏感性。
+旧三情景仍未设置该合同，矩阵保持原样；新配置位于 `scenarios/response_candidates_v1/`，没有运行。
+新候选是研究假设的显式收紧，不是旧 LP 的等价数值改写；全年资格门禁继续保留。
