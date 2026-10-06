@@ -1,0 +1,70 @@
+{
+  "parameters": {
+    "Method": 2,
+    "Threads": 44,
+    "NumericFocus": 2,
+    "ScaleFlag": 2,
+    "Presolve": 2,
+    "BarConvTol": 0.0001,
+    "Crossover": 0,
+    "CrossoverBasis": 1,
+    "SolutionTarget": 1,
+    "FeasibilityTol": 1e-06,
+    "OptimalityTol": 1e-06,
+    "MarkowitzTol": 0.01,
+    "TimeLimit": 900.0,
+    "SoftMemLimit": null,
+    "DualReductions": 1,
+    "InfUnbdInfo": 0,
+    "Aggregate": 1,
+    "AggFill": -1,
+    "BarOrder": -1,
+    "BarCorrectors": -1,
+    "BarHomogeneous": -1,
+    "PreDual": -1,
+    "PrePasses": -1,
+    "PreSparsify": -1,
+    "LPWarmStart": 1,
+    "Seed": 0,
+    "BarIterLimit": 1000
+  },
+  "scientific_identity_unchanged": true,
+  "scientific_identity": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+    "resolved_scientific_configuration_sha256": "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0",
+    "scenario_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "base",
+    "scenario_id": "base",
+    "scenario_family": "cispo_replication",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "evidence_status": "MODEL_BASELINE",
+    "parent_baseline_case_id": null,
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "horizon_hours": 1,
+  "sections_identical": {
+    "NAME": "ff0d5ab3af4a4ab76df76947abf0c58ad948918af198bdc2b1d306ac38c03594",
+    "ROWS": "4b2987dc0170d8b35d4480d6e22427f1372dc6daabc5afa05bbaf706d6c4b61d",
+    "COLUMNS": "883baa21abb6fddcb1d9e61181624c12859851ef66fb89cb7fa8dadf7f1e0ddb",
+    "RHS": "c29a0b9afc40cb61798e886ea080aeb0dd0ae66f791ecc62e55a8d98cf3c78ae",
+    "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+    "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+  },
+  "changed_bound_columns": 20272,
+  "changed_family": "vre_new_gw only",
+  "screen": {
+    "source_sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368",
+    "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\rc_screen_2030\\vre_site_reduced_costs.csv",
+    "margin": 0.2,
+    "alignment": "grid_uid \u00d7 technology; exact one-to-one",
+    "sites": 36686,
+    "expandable_sites": 34439,
+    "retained_expandable": 14167,
+    "fixed_columns": 20272,
+    "fixed_headroom_gw": 39341.39949215136,
+    "original_headroom_gw": 55674.70315219389
+  },
+  "no_optimize_called": true
+}

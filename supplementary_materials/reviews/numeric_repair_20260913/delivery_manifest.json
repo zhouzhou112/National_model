@@ -1,0 +1,1780 @@
+{
+  "generated_at": "2026-09-13T14:01:23.706502+08:00",
+  "git_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "uncommitted": true,
+  "final_local_strict_acceptance": {
+    "24": true,
+    "168": true
+  },
+  "full_year_validated": false,
+  "cloud_solver_jobs_submitted": 0,
+  "raw_hydro_source_preserved": true,
+  "source_overlay": "supplementary_materials/reviews/numeric_repair_20260913/repair_source_overlay.tar.gz",
+  "files": [
+    {
+      "path": "cispo_full_lp_model_spec.md",
+      "bytes": 111507,
+      "sha256": "14a6880bcd9628e2860442327557d98725e847cfc191c07828ee796c8a98083c"
+    },
+    {
+      "path": "cispo_model/config.py",
+      "bytes": 61295,
+      "sha256": "be3a5828434ba4f446a6e8464909fa9e48c4f2064a009510fa3ebed6707af02f"
+    },
+    {
+      "path": "cispo_model/data.py",
+      "bytes": 73603,
+      "sha256": "d8f063db858b2f0e829789d57aef15ae3e2f37dd2725159b190b008debaf8df0"
+    },
+    {
+      "path": "cispo_model/hydro.py",
+      "bytes": 31482,
+      "sha256": "e695006ff296827e4e2e6569e8a1ba15fbdda033794b6b4019df479d0cf0dc41"
+    },
+    {
+      "path": "cispo_model/io_contract.py",
+      "bytes": 38730,
+      "sha256": "bfdfea4f33a20581039eb2b28e00cd6f045ef7efc57f1fe6f03d46ac044269ea"
+    },
+    {
+      "path": "cispo_model/master.py",
+      "bytes": 80791,
+      "sha256": "0250fddcb16e50efacea5a5070b7d312b5ee669b6ba830470fe2e7e7e603d479"
+    },
+    {
+      "path": "cispo_model/monolithic.py",
+      "bytes": 58750,
+      "sha256": "ee8cd5a59d62c8675269fb8a9be67c0f7c830ba92f289e2006b7306492c25f12"
+    },
+    {
+      "path": "cispo_model/numerical_cleanup.py",
+      "bytes": 3101,
+      "sha256": "c2f51ebf3cbd20800c77a5b57ac5829937c47d0d291c89b8ac647a172de6b763"
+    },
+    {
+      "path": "cispo_model/run_contract.py",
+      "bytes": 19316,
+      "sha256": "1e481457fc5a194245f64ed56594b5458dada8bfb083c9d8b78c4f572a3e0055"
+    },
+    {
+      "path": "config/hydro_storage_corrections_20260913.csv",
+      "bytes": 405,
+      "sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f"
+    },
+    {
+      "path": "config/optimization_2030_numeric_repaired.json",
+      "bytes": 15934,
+      "sha256": "616799d41d493ea1f7662f0323f840ee91dc318e14b0253444eb4c31772338d3"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/corrections.csv",
+      "bytes": 309,
+      "sha256": "b29dd3925af7b5e5481088ae5a2ced157eec41be7f26562a3db5360bcb3707f9"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/hydro_stations.csv",
+      "bytes": 861104,
+      "sha256": "af342cb6e13c1e4f6ffe29b7245c396f33ef4ca66a5c94bfe2fce7a198716a54"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/hydro_stations_original.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/manifest.json",
+      "bytes": 1245,
+      "sha256": "76e152c55cc88c7328b61e24bb9a8a0cfe00039c9eec6fce39382ad61c8972be"
+    },
+    {
+      "path": "scripts/prepare_hydro_storage_corrections.py",
+      "bytes": 3261,
+      "sha256": "1ba0648c2e470f30661dba6b9a08b41d6ae290fcf48899c83c95e7031a59af5e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/audit_cleanup_budget.py",
+      "bytes": 5960,
+      "sha256": "1e46d77a47db1461a9b922a7ca9d182921b2b4603143ef9e32d7dbac1fe84af1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/audit_repaired_hydro.py",
+      "bytes": 2487,
+      "sha256": "07710c96a4728a9ee68f7706d89c46b9c8fef6adf90e785624976f85aedada1a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/cleanup_budget.json",
+      "bytes": 1929,
+      "sha256": "34b9e71fce61dcedc0d5f37204038fca4291fb7c9aa9046d7eb58178dbc8252b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/cleanup_budget_stdout.txt",
+      "bytes": 2004,
+      "sha256": "713214a33b0441731bd327113ac6db0085b793234f47a79ba5309d89ce25e1af"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/compare_history.py",
+      "bytes": 1598,
+      "sha256": "0cb67e54865a3165997e59863aaffb3a92b8363aeb82318931f972d2e8879a9a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/cyclic_storage_bounds_8760.csv",
+      "bytes": 41956,
+      "sha256": "0e554e539c7ceab759940d10959aa7f06940b4a7961af0ee7acc8eae1569fdf2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/budget_before_wave_audit/cleanup_budget.json",
+      "bytes": 1740,
+      "sha256": "f1c1adf2a37e9be1db9f1bf97ebd36c3619d87b3bb54322de19f5515795a0122"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/budget_before_wave_audit/cleanup_budget_stdout.txt",
+      "bytes": 1801,
+      "sha256": "2b4c116a9beb758cc78aee18c1c8b48b487a62d5c96799964fdde662c14d9783"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/budget_before_wave_audit/cyclic_storage_bounds_8760.csv",
+      "bytes": 41956,
+      "sha256": "0e554e539c7ceab759940d10959aa7f06940b4a7961af0ee7acc8eae1569fdf2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/budget_before_wave_audit/resource_cleanup_by_site.csv",
+      "bytes": 4243895,
+      "sha256": "6f426bea3dc349fd234481fea7c0e6306ff91afb6396421d60664b25a5c63337"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/budget_before_wave_audit/resource_cleanup_summary.csv",
+      "bytes": 373,
+      "sha256": "6dd920c7c89ca0064bd37159c8a01a2ce092ddc5e9bd2822d5000341ce1e38a2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/comparison_stdout.txt",
+      "bytes": 6864,
+      "sha256": "51d8a479754402b6c0b34cc46a25d6c189285d1c164481e6aa98ef09a294bab4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/config.py.diff",
+      "bytes": 10765,
+      "sha256": "e64f97c687640560d0df3dd22b6d13cd2766f764a8e1e6e36905513bc9e8fd8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/data.py.diff",
+      "bytes": 1046,
+      "sha256": "662af59b257031a2b39f41746aabb0caa7444b753741367a4db5356c6e902bd7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/hydro.py.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/input_comparison.csv",
+      "bytes": 54972,
+      "sha256": "e829aebc7c059bbb7eee8bf154dbe5fd290a55413f87540ee3cad73ae68a6564"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/load_center.py.diff",
+      "bytes": 9852,
+      "sha256": "4679cb76208c564c15a3da2d35e06a89aed505e09206e0b9a744dfc752ff2c08"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/master.py.diff",
+      "bytes": 14185,
+      "sha256": "1075254a7bdae40c7fd96f9de4d369fea60038cd737dd3e6432f2d20734d3a38"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/monolithic.py.diff",
+      "bytes": 4386,
+      "sha256": "247b41f529796e60b15d43293ee1d3dba894ea66d5f2afbd3a58234eb5e53c92"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/new_input_manifest.csv",
+      "bytes": 29511,
+      "sha256": "decec651f1232b87877becb64a989e9f90a6fc62c3f92c298521cbd24c79cbf4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_config.py",
+      "bytes": 55693,
+      "sha256": "b60519f6c3bb98cab7da4513a04a4566214981b9939c184e1ae6769e5e5fa6c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_data.py",
+      "bytes": 75130,
+      "sha256": "aa117926a4d016eb47bb854b14532a839e1a383227356ab9b41b756ddf1a8e61"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_hydro.py",
+      "bytes": 30825,
+      "sha256": "f0456f3d625a8e8f858bed6577c10c97432b66ba436d51936165849795868cb2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_load_center.py",
+      "bytes": 19571,
+      "sha256": "d616b9309ef3bb32d53cf6555d38064c6bac18802b161bf3e23871f8d6fe53d7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_master.py",
+      "bytes": 76112,
+      "sha256": "9700f154ea0ff0d5c7e2a68de7189fc95917ce8a16abb770edb5e83542a336c0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/old_monolithic.py",
+      "bytes": 57421,
+      "sha256": "3d950284e3c17020b586972de4e381e012025e784f6f765b74e714f48c2b4d05"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/remote_final_status.txt",
+      "bytes": 212,
+      "sha256": "318019a0ff9f0188c561ed6b7c80cc2899422946a9a4630be9ecdc78d3dd9d1a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/remote_snapshot.txt",
+      "bytes": 441,
+      "sha256": "8b32fb0230bfea394503759b8b6d925d49278019d6fd50c02f66146131936008"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/history/run_comparison.csv",
+      "bytes": 2598,
+      "sha256": "c3cd8bacf8ad41440a28315b916b60365caa17751d42bb575b7d6236c80b054c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/hydro/hydro_block.npz",
+      "bytes": 5437986,
+      "sha256": "3b35ecdcced62881100597177ed2c5e227cfb404974d6395e73611f8d1da4bb7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/hydro/repaired_full_year_stdout.txt",
+      "bytes": 683,
+      "sha256": "7ffa672d5f12994a35f36bd55fdb71cf56fe354668df25eb9053a5180652f840"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/hydro/repaired_full_year_storage.csv",
+      "bytes": 56483,
+      "sha256": "280d34c1c1d377331eb74b13e44f6b9bbbc8a6830a24735889e2787f030b2c16"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/hydro/repaired_full_year_summary.json",
+      "bytes": 681,
+      "sha256": "fddf96e09af00d4d54307c032ef59ca339d24727c3428212ac4344d21a3a6a42"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/hydro/reservoir_audit.csv",
+      "bytes": 214913,
+      "sha256": "48f49eabca51c0d785fe0b7eeeaa0a1a56d4229aecd33ad387a269378375076f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/input_validation.json",
+      "bytes": 1599,
+      "sha256": "d5caa84dc87aaaac4c96bdd0252432581732e392262ae0b20e01eedcdf126cba"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/input_validation_stdout.txt",
+      "bytes": 1601,
+      "sha256": "fe3ecc96fe27c0d0bfd8d381a75e7589b5436800ffc1c0ae71bdf9d30737bb6f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/make_delivery_manifest.py",
+      "bytes": 2528,
+      "sha256": "8abdd2252867679aa035d2ecb467735192b001f834568478234b3848accad619"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_capped_24_final_stdout.txt",
+      "bytes": 21958,
+      "sha256": "bf90363981296ad60c82067dc1e2ca439ac4574a84e76cf58ba636ffb0c42de2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_capped_stdout.txt",
+      "bytes": 12971,
+      "sha256": "cfdc449e853c79064759d08c0e09a01478ac2670916a3c42982ccd9e34a772fc"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_168_final900_stdout.txt",
+      "bytes": 27588,
+      "sha256": "bc2859b5574740c8cf54bc57ecd1ad3cb52298e35248a5d3c1a543ed37b76ca5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_168_final_stdout.txt",
+      "bytes": 20905,
+      "sha256": "dc625543091d1b615458aaf8c1b9eeebcb0557aa8bcf79f1d11d6c8eee2c8d91"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_168_stdout.txt",
+      "bytes": 24032,
+      "sha256": "3c153898c92b3c0cdb725c408bf668d2158035d162a23a8831d2ea0200437a73"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_24_final_stdout.txt",
+      "bytes": 21196,
+      "sha256": "c0a7130c529d12882ca894ee966470772c6480847ac7a47fee23ea39175c78ae"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_nf2_168_fullcf_stdout.txt",
+      "bytes": 27405,
+      "sha256": "f521082be8f79930a4bcc2bdc820eeea398a84d37d363f90625883b34b90dcb2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_nf2_24_fullcf_stdout.txt",
+      "bytes": 23754,
+      "sha256": "94c438fd1f97b3898e25ba60ee4d0d92108ca82703fcfa98f29332ddfb9c00e0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_stdout.txt",
+      "bytes": 868,
+      "sha256": "3d715827be80246a145b2bd6f98216ab799da1d0203243d7c916caa64fef1ce1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_cleaned_stdout_v2.txt",
+      "bytes": 13996,
+      "sha256": "9d951c6a87d0af7dc776d259af24c0009c31797dfe66eb2f5ba69fc99e3a5383"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_physical_nf1_24_fullcf_stdout.txt",
+      "bytes": 21961,
+      "sha256": "836a9330eba5d85e72456e53695a449670b43a9e55a9642a49787c19b487c522"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_physical_nf2_24_fullcf_stdout.txt",
+      "bytes": 20610,
+      "sha256": "76c749e97e7fcb0a72717df37a57fcfe1b9b1435de6545e5d52cce38aa0524ea"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_physical_stdout.txt",
+      "bytes": 14655,
+      "sha256": "f2f4284120e0eff9f8de0b7483688611755c626b0738c52345e620ad21f7e471"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_rows_nf1_24_fullcf_stdout.txt",
+      "bytes": 22407,
+      "sha256": "cb8ffa69e2ce6734cd632b9edd4fe40757d48c4f552bb094d81ecd501f863466"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_summary.csv",
+      "bytes": 3525,
+      "sha256": "896834b968cdfdfc40270989db8552b2d9f3fe934d2cc2fccd59ddace2548683"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probe_summary_stdout.txt",
+      "bytes": 9636,
+      "sha256": "2ef4a19824d489990ac444ca3db5e87eef59b66aa21eea510d1bf4f285f7ed44"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0/build.json",
+      "bytes": 1030,
+      "sha256": "2f884246918ea23869c2863c551643aef08d3698c58e1a8e06f1e5ed6f769961"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0/configuration.json",
+      "bytes": 15613,
+      "sha256": "cc3afab26e221550562d712cf826ee28642b133258878a9f2fd5ee751793d9e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0/gurobi.log",
+      "bytes": 12312,
+      "sha256": "9f43e16c2527d24b4cf11aa106580f69b189587748733703cfd1fdb069fb514b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0/solution.npy",
+      "bytes": 2774264,
+      "sha256": "d3d2ef2c4b7efbee096e8cefaae69b1a0d00c2377c9eb30cde23ecc98fc51e91"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/build.json",
+      "bytes": 4997,
+      "sha256": "975ed6e6df9ce5757b39e45186cb224c7d23591fd232f5a0bd66dda5fa43ac43"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/configuration.json",
+      "bytes": 15613,
+      "sha256": "cc3afab26e221550562d712cf826ee28642b133258878a9f2fd5ee751793d9e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/gurobi.log",
+      "bytes": 12336,
+      "sha256": "acfe034b63ccf905d6c305e0ee7079297721bdd2bf27fcbd454b27781e4e9774"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/model.mps",
+      "bytes": 165266394,
+      "sha256": "a348cd6f1ca1625cb9c1b7aaf5bb059c0a971baf083105222075f4ddb23ede2e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5805,
+      "sha256": "01fbfef7daa31870c4208b70f5f9d871dc0e4f0e5ab74c78f0f42bae13091712"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_carbon_ccs.json",
+      "bytes": 720,
+      "sha256": "9d05fea09e958d69e63118a4cdc46dd09e9ddbd59b9d23fdce4ee3500a92f4b6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 386414,
+      "sha256": "b988d29fc36692c10697b79ad17e46a33727f2adcb1545e66c97470f65fc0fb4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8172,
+      "sha256": "72fcc86858ecd1507ae98b5d1f7d78cee835bb3a5ec37816f675b5687d35a615"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 16298,
+      "sha256": "8d989dad0dfa5993674dd23e31522473afee21c6da2c4ee901db6fabcbbc3076"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 10552,
+      "sha256": "a6ee6bbc614c1b98c4712510719267fc849671c2235370adba26ca9e7d8811fb"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/co2_source_sink_flows.csv",
+      "bytes": 12610,
+      "sha256": "89282f68692afedaaf71fe4ef67db648f46c50ae12a570e36a2c2d1d27c41130"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/cost_components.csv",
+      "bytes": 3715,
+      "sha256": "350ebd7108c49c7e974ff640587c8167ab2ab6d979f6f16d28bd68999851885f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/dac_capacity_capture.csv",
+      "bytes": 21340,
+      "sha256": "990bffc3ba0db96e3ab2c58db4d23e1a63fa8893d3228a7d4ee1601b8a056d78"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/dual_export_status.json",
+      "bytes": 510,
+      "sha256": "e9aa29a71a8f096e2ac8f525ce9e8a5fcc3bcdc0b9d6203125fd66cd54ec9a57"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/flexible_load_dispatch.npz",
+      "bytes": 53192,
+      "sha256": "5f30849aca617a077510064c28e14e8b6d09863e55a4d56e12f512cdd9a4aae9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 35535,
+      "sha256": "73db7bc86667f1ed2166c1b0910e960058dc72c95cea9148748d2f20d0d049b2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 109587,
+      "sha256": "4898d818fc77310d03f08db64233acc8cc7b87a53fc4d1d3f2a8442bf6757c48"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hourly_province_security.csv.gz",
+      "bytes": 97012,
+      "sha256": "8159beca92e51f040590c4e067393a2cdc364ed3c7b92e1d68e9989748783983"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hydro_capacity.csv",
+      "bytes": 309241,
+      "sha256": "7064ca0dedef934489e11263436a33f8198058c09c16484e51344d257ebcbcc3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 505,
+      "sha256": "af7f654b4f5d17970878ee6d993fd833886ce3c89cbc005b6c46af2ccb7fe210"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8126,
+      "sha256": "fab985f1845879de3e600a7dbe76dca77aad2da1684f5cf043759b1103815e2a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/hydro_dispatch.npz",
+      "bytes": 20314,
+      "sha256": "797e299f9bf947f50b97a6caa8f9256e21f44a6f1581ec0eb94fe03182fbe658"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/intra_grid_substation_design.csv",
+      "bytes": 1044465,
+      "sha256": "7c0047777bb0bda515c3c212655be31f7606191c5a8043c41715ab7fbab6fb2c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5693309,
+      "sha256": "2e461f283eb3390371e5cefcb93106844fc979cd1c238bfb5a42f27d98ff785e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/load_center_annual_balance.csv",
+      "bytes": 45746,
+      "sha256": "12008b01d0819516441033c4426d535d3cd9e1977b069dcc787f33cf3046c18e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/load_center_annual_generation.csv",
+      "bytes": 102725,
+      "sha256": "6a492bbcb5246f627839f6bf64b6742c00b575076efaf1f129e3cf73fe67b5b1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/load_center_intra_transmission.csv",
+      "bytes": 131290,
+      "sha256": "77fedef314b3d84dca671c25304d7fafb872d69a0307b1c0d14d4e626072f931"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/load_center_network_qc.csv",
+      "bytes": 510,
+      "sha256": "3eb99fa8bebb9373b67def40ce59dd70ded6b530754dbb74ced86b57d693514e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3391,
+      "sha256": "f41b1ff0ac5bed4a4d408deb0066f0260e278c60437597ce68eb6ee22d0c0f1c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/reservoir_dispatch.npz",
+      "bytes": 627837,
+      "sha256": "f7ab8a4210cdedf7ba5a540a3885ccd6ed3c03e334575598dcf9d506b787f233"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/reservoir_station_index.csv",
+      "bytes": 158515,
+      "sha256": "0c130732bec1878b628de85585d90cc7e6444ded9d3c3a298a6b7bd781149111"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/scenario_manifest.json",
+      "bytes": 6254,
+      "sha256": "cd5ddb53de7035c2a80ea56c15e944a9f166401bc1d5e6b6234932b91ecaaae9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/solution_qc.json",
+      "bytes": 10635,
+      "sha256": "0d391df4e9ac0649850555a4e829a3fa169562dbde9254f4746ad90b0e176fec"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/storage_capacity.csv",
+      "bytes": 9720,
+      "sha256": "f418036321ce2480db782c180d4c5912599916240b91be79670fb33958e142ee"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/storage_dispatch.npz",
+      "bytes": 56805,
+      "sha256": "a4efb0db90593d309e37b6211dcc03deaba5e4e2472479ffb790cf8f76ef91d2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/thermal_dispatch.npz",
+      "bytes": 236005,
+      "sha256": "b286cad042df89437f96d62f5a18dbfca971623e35e09b2f10cea988ea12749c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 29220,
+      "sha256": "0306d7db7005fe111d616451eb0895c021476c8f8b496fb84ca0cee08f34d054"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/time_index.csv",
+      "bytes": 860,
+      "sha256": "ec197815d058148f4b384111fd1aaf661e92dd8068b64c82b694f684543fcef9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/transmission_capacity.csv",
+      "bytes": 33351,
+      "sha256": "c356200c370f07b582d8541145b5ff1be3533f8499d1569f4e02fbad56110411"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/transmission_flows.npz",
+      "bytes": 83023,
+      "sha256": "3ec1082f175da24017e5a0676fe65501f2bd2252c41ea98b72a9fc8119d93d1f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/vre_capacity.csv",
+      "bytes": 3659735,
+      "sha256": "87a18441cc888b2a83db3fecfb426af00953e932864f0fce432216d502436ed6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/vre_dispatch.npz",
+      "bytes": 31046,
+      "sha256": "81226e2a0b66bec7bebdbe6084d657002e94b0f317e7001e237897b74089752a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/wave_capacity.csv",
+      "bytes": 228998,
+      "sha256": "21fb52e6e53da29ef2fa00ecd9fd7748c28c856f3f19afe69b079f592033679e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/physical_export/wave_dispatch.npz",
+      "bytes": 19170,
+      "sha256": "fd01d0c8c84f2675d7deda89c35615b5adb3ac2b9759d0069fc214fcc737cc71"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/result.json",
+      "bytes": 9646,
+      "sha256": "2b67037c825b2d7d515704710e318eadfaad7b5c053049b10539aca68f8ea9b3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/capped_nf2_24h_s0_cross0_fullcf_final/solution.npy",
+      "bytes": 2774264,
+      "sha256": "76319576c717e79de016342fd486ae1762701104c0eb94b46fc6a64d315fd392"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/build.json",
+      "bytes": 7863,
+      "sha256": "8002a2e05013dc4f688d8330957e3d71567da4e9fb66e923f384a5aaa7d7dfc1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/configuration.json",
+      "bytes": 15893,
+      "sha256": "42db6b543ab4e3996d709f57fbcd9ad95e81341f1d34358416867c5b12af8cd9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/gurobi.log",
+      "bytes": 14819,
+      "sha256": "1368a68b9cd09d92b2fffb8981e06634a4a6eed923a546307a62902d10131d84"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/model.mps",
+      "bytes": 825087048,
+      "sha256": "b491fa2f70569bf6d9aea84eb1c434a5a88ab9ce29b722966753bfbbd85cc1c5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/result.json",
+      "bytes": 9237,
+      "sha256": "d74113af0ca5cfb4457abd66b305f584d4e426d298757d8fd9d6cdf05f819f8c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0/solution.npy",
+      "bytes": 8195576,
+      "sha256": "1e8267cb4ddebdd5a2d3a1498a3f7bf094dea7b56caaebb2a1f7b653fa035c50"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/build.json",
+      "bytes": 7952,
+      "sha256": "f4affceb4b8acebc4f526e86453d5887f1ad8e0f378626ce2af1419eae270e6d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/configuration.json",
+      "bytes": 15893,
+      "sha256": "6b16aac8115bfc29ff68cc30bb32c42ba3e63db7e8ec304011bb6d53ee80506b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/gurobi.log",
+      "bytes": 15051,
+      "sha256": "68d66fb929eaa7a999cdc79badeeb2b6ec95c028380ff03820fbf3810a00f7dd"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/model.mps",
+      "bytes": 826023095,
+      "sha256": "66d151eff1e02056fb09ff7d0966d189a8bbdd28540fc3492b5913ee867b4e76"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5811,
+      "sha256": "6431b6b708abb0301e9cbf8392ba836bf6a94ef5185f3cbefe34daa644d2a5f6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_carbon_ccs.json",
+      "bytes": 713,
+      "sha256": "7d29d0f053df851bfe7f7b19e6a32164dd95f97b061b54e48124b916a932a91f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 385976,
+      "sha256": "b9e59f6e577169932ea34eba674f8b96180bcae613bc18faebbc2421b49c73ed"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8217,
+      "sha256": "e6458a3abe58576d2b8b088fe6a1d60b028490bb3217b4b9231ca3c54661f3fe"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 16245,
+      "sha256": "a069db75d701fea1bba03189b909564ab08066525a55d6d79aee167df0265c6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 10359,
+      "sha256": "7ff2b65b42b68e7ba9d0ca3019bc077abb4ea9e2f2396d2e4c5e571ff7f0be3e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/co2_source_sink_flows.csv",
+      "bytes": 2239,
+      "sha256": "8618986ea136b81a93a47f1a584b0fc62af6cb81c7e1569c89d529a788e236f4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/cost_components.csv",
+      "bytes": 3739,
+      "sha256": "6699946f0b51afd092c2fb0137422b406d8802f592c134eeb48715163a20c95f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/dac_capacity_capture.csv",
+      "bytes": 21173,
+      "sha256": "097d81229a4746ba9a1c0671a2e508ad19216bca8aa062a8adf1b9ed6752fa33"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/dual_export_status.json",
+      "bytes": 511,
+      "sha256": "3c88f44380838bcc83d15016d97c79a8a6f2776327f4acfc8c5d52300f079dc6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/flexible_load_dispatch.npz",
+      "bytes": 255935,
+      "sha256": "69227bc0def63b0a7584ddfa3323b9cacb148fedf694e9b157094425d9d977e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 242155,
+      "sha256": "cc3af0b12cdd0260d91e745a542a3d3559a01a69ed832fc3c58882086a0442bc"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 724942,
+      "sha256": "146e85a5e010827da936241243f7c84c68c3ae46e4dd9c1ea94133093cc331d8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hourly_province_security.csv.gz",
+      "bytes": 668446,
+      "sha256": "d4388fca100bd7b4476ea3e964ef140a1a3e0d7104f2d16beff742928b01b2cb"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hydro_capacity.csv",
+      "bytes": 311577,
+      "sha256": "b6915fa1218e9f0569b4f36648fab372eccea3fa0f06b1d391f9a21a3851ffa4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9069,
+      "sha256": "3f02ff90eb6c5fc6a4c3b29d4c9a05fb67cae83187ff673147b37d7e92932887"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 10067,
+      "sha256": "cdb486d3330bb89a94bb3310acf590a9e284d262b8b597f5c6daef47292b30e5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/hydro_dispatch.npz",
+      "bytes": 123724,
+      "sha256": "1fa573831f837d450d3b1519de0c7d259eb90dc35f0a2bd37afbb08476d943dc"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/intra_grid_substation_design.csv",
+      "bytes": 1044882,
+      "sha256": "0be781e75d3fc7e5cf3d537128db3b79efd93b3277f8e103445310ed4bb03ed9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5711968,
+      "sha256": "43657fc0f5cf02e409fb9c78e51e14c9ef7a62bbbca606fb177d22dd4da62359"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/load_center_annual_balance.csv",
+      "bytes": 45754,
+      "sha256": "d00edae3fd92d804ec00bcb8966ecca0e9a8f240a7f624bdee24e2a61052bc16"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/load_center_annual_generation.csv",
+      "bytes": 102305,
+      "sha256": "44745c5651503c4f0e650191af708637c3ffbcc7246e01ae162f532c36df5f8b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/load_center_intra_transmission.csv",
+      "bytes": 131297,
+      "sha256": "0eb28585464f19e24a382737bedacdf5a1cd093779275fedb069f0a0b57b034e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/load_center_network_qc.csv",
+      "bytes": 535,
+      "sha256": "a68b6814c346fe798a32af6ae25a9459b5f1aeaf37c2839482048e4c92a38bb2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3379,
+      "sha256": "08501bcad9fb37cda88b89b301e35eece17f77d0e75b899d4038238f68e72ba8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/reservoir_dispatch.npz",
+      "bytes": 4812345,
+      "sha256": "acd1e7cf24d3e8786d41ea91cd5142e1a53aafde60e950a11362e7681b428459"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/reservoir_station_index.csv",
+      "bytes": 158502,
+      "sha256": "94a8857c8cd024d07689c97e52c7a000d28a1860fdc50fc73f90faaec2aea6e3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/scenario_manifest.json",
+      "bytes": 6280,
+      "sha256": "f64ff043609992a39f80708885780f73509c95b771358047f7813e007a63bb9b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/solution_qc.json",
+      "bytes": 10610,
+      "sha256": "bcd55514b502bd1bc47572ad73e3b948a1253f74d2652313c09f4642307f3828"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/storage_capacity.csv",
+      "bytes": 9732,
+      "sha256": "a903a4e41a4e4b35e5000d928aac626359fc9f9f202425b7e5de1c2d51dbf6f5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/storage_dispatch.npz",
+      "bytes": 379665,
+      "sha256": "54a10c9f783920bfaba71d764f098e82dad989ff4d4e112f7cb2f8971fb023da"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/thermal_dispatch.npz",
+      "bytes": 1624955,
+      "sha256": "066943f0c94b12ad6e7079b30a43cec96e65e133a0c7470371f6313319407fdf"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 29198,
+      "sha256": "849f160d9285ad50b316ace1071356066ec35db6f1e08739c71b2b914504fa99"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/time_index.csv",
+      "bytes": 5832,
+      "sha256": "73220fd2ae355277f3f0bd5f67de17903c2969f284b217a97a133784d6545fda"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/transmission_capacity.csv",
+      "bytes": 33311,
+      "sha256": "78596581ab32e41c173131cc2354f9198547370b7c6513f2803c03d0966be927"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/transmission_flows.npz",
+      "bytes": 565128,
+      "sha256": "ab784632ed22ffdeefb6f6e94c5ca51f1080985f4c68401e55f53d9bb9e54d60"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/vre_capacity.csv",
+      "bytes": 3671624,
+      "sha256": "cd61ec78a45f1f9414c1b17805259f39e9c6e810793b80b0b8194c9e212b5beb"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/vre_dispatch.npz",
+      "bytes": 206460,
+      "sha256": "8a6019d3b3200e169993b55c4e7b9ef2aebb85881141e9c64d60f7667133cfb8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/wave_capacity.csv",
+      "bytes": 237982,
+      "sha256": "4fe5a7daf60892cabd9a0472cecdde7067b549cf23f321cb7523872c500eda85"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/physical_export/wave_dispatch.npz",
+      "bytes": 36269,
+      "sha256": "6f70e23777db3c623cf11b36da03912040989a44800169c43e4c33d4a12892c7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/result.json",
+      "bytes": 12378,
+      "sha256": "6f6766ca65061a0cb5c6426c1e01aa27c0b88a0d77bd77c38ac21f3d5e2e389d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross0_fullcf/solution.npy",
+      "bytes": 8195576,
+      "sha256": "93ee2fb98c448b627ad833042583f612d3f6d24d1cf3722ef2f5299889f4cef6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final/build.json",
+      "bytes": 4415,
+      "sha256": "7fbda12029e9f751b4bb2f93ea71a5db2aa735ffd3e9d4ffbeff63c45807ff20"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final/configuration.json",
+      "bytes": 15960,
+      "sha256": "f304651f0bd3cba87680d97b7d2d2e6605ce1f86f4598f7e9748c22f3593165c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final/gurobi.log",
+      "bytes": 16411,
+      "sha256": "be7a8e775006fa640f67b0c770521d07913454b9bfed383e1e878916b95050bf"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final/result.json",
+      "bytes": 4518,
+      "sha256": "2b59d80ed4356990e9ac8d130220a1bc70aca371b275a7baf1b59e92496fda11"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/build.json",
+      "bytes": 4415,
+      "sha256": "1b002bfd2414429f8adfc72b74989921dae81f399a07e44e40e36e8c813f6196"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/configuration.json",
+      "bytes": 15960,
+      "sha256": "98afb837b0b06ef6e66ef167e4578732a4cd25364638ec27853caf140658cbe2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/gurobi.log",
+      "bytes": 18679,
+      "sha256": "3bc9b873aa63f28bf5adc73cde8d8f371338d7e2b4ea5971e75ffc9e1257c383"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/model.mps",
+      "bytes": 826019039,
+      "sha256": "d2c6e44b6739e6fc0dac105c7edbeccad65071da99c4a297684aef268a70433f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5649,
+      "sha256": "f34914dd720bb305f15174685f3a3f213a4bc985146c7dcc943d1dbf11a02cc0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_carbon_ccs.json",
+      "bytes": 692,
+      "sha256": "4de1de3cbbff55812dbbd32f0861f94169983cbda8be50265722bd068808744c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 266014,
+      "sha256": "4b6e379f30d086606fcd0c3443f345732b106e9c116197974661e0861bf35778"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8217,
+      "sha256": "e6458a3abe58576d2b8b088fe6a1d60b028490bb3217b4b9231ca3c54661f3fe"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12942,
+      "sha256": "c9edd552cc46a44aa0c81bcb56143d7bf466e3f4be87b1ab29e9a87e5ee86578"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 5879,
+      "sha256": "a04ea9b7cfe715fc46a4c78056bfde8285e3cea91a90e7def01b21255f77a802"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1050,
+      "sha256": "472591c0863abe9816738231f15773049a912101b9f6f0549c02cb13ef116d9a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/cost_components.csv",
+      "bytes": 3525,
+      "sha256": "557202fac4420d5531b5e4305a930f69b1cc5037856c29efd244460560cf4df3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/dac_capacity_capture.csv",
+      "bytes": 7566,
+      "sha256": "f2c15a271ba78ed795d24ddc9d198d2507bf7f2bd42335cbc6139a05b4ec56a3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/dual_export_status.json",
+      "bytes": 493,
+      "sha256": "35a077f5205b3fc49414d8b17e1d813141102f021331aa9098f9d828ab503a7f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/flexible_load_dispatch.npz",
+      "bytes": 255935,
+      "sha256": "69227bc0def63b0a7584ddfa3323b9cacb148fedf694e9b157094425d9d977e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 75117,
+      "sha256": "431c63b54c7cd046662859a9faf8599891bef5d40650e2430609c0da2e191a6d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 466662,
+      "sha256": "fbbb042f070e30dbe6a3b60e6865dcdee7d607da712fbc2ae8689495f63ae312"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hourly_province_security.csv.gz",
+      "bytes": 398367,
+      "sha256": "e66e725c3d25ef14d3281fc62ea5cfde6e1d6f1a696a244b9c16fb9e9fdc2fe8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9069,
+      "sha256": "1b8590af8257bd19992dd2ee80ff114485a4a807d683ac1f03cc9fd890cb5eec"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 10067,
+      "sha256": "cdb486d3330bb89a94bb3310acf590a9e284d262b8b597f5c6daef47292b30e5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/hydro_dispatch.npz",
+      "bytes": 41448,
+      "sha256": "35033f27ee243f85aedde62fe192fc5ba05717782163697fb302cdf2b1c996b4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/load_center_annual_balance.csv",
+      "bytes": 45755,
+      "sha256": "4c83b880cacd462ec066caeca1fa2f7a619a5d166ddcea49fe6b16d7bc900f3a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/load_center_annual_generation.csv",
+      "bytes": 97770,
+      "sha256": "873af6e22ac2d3f08694c81a9bb3271b37e8ab108535e7f72be8f3a68222d447"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/load_center_intra_transmission.csv",
+      "bytes": 98076,
+      "sha256": "6d87e4dc34be873f5a78c2e74ec091a1c5de12ca361d5d6bf0e8511732487cdd"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/load_center_network_qc.csv",
+      "bytes": 514,
+      "sha256": "7dcde7a9a4059e208d529722f7cdca7abe42a26ef787d52e4c7ac3f9b345f936"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3321,
+      "sha256": "8624e59f18bb4f4e4e8a8759086d33403491dfa25dbdeab3bb41c2dce7082554"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/reservoir_dispatch.npz",
+      "bytes": 1291237,
+      "sha256": "2b4d69eec6be24095d1736294cbbf831b8802c8b9be69b4c7f319bc476854332"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/reservoir_station_index.csv",
+      "bytes": 158502,
+      "sha256": "94a8857c8cd024d07689c97e52c7a000d28a1860fdc50fc73f90faaec2aea6e3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/scenario_manifest.json",
+      "bytes": 6280,
+      "sha256": "f64ff043609992a39f80708885780f73509c95b771358047f7813e007a63bb9b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/solution_qc.json",
+      "bytes": 10382,
+      "sha256": "b9178f08029847f57bfe2a8d6574dbd43b196fd0beee6097dc8c3fc9c75075c0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/storage_dispatch.npz",
+      "bytes": 59592,
+      "sha256": "f6b40cc2f4063524551a8013c728a40a602352dc5ed85f9377da9df7eb3390e9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/thermal_dispatch.npz",
+      "bytes": 102139,
+      "sha256": "e6a0be32aed7e7edb1ce65a146a584f5364c103f32357eaecdc7f1b3d5443f64"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17421,
+      "sha256": "8d07601e201ba7739cfb9a6abaffbdef1e3bb996f7b2f98007f7d2843697c1c9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/time_index.csv",
+      "bytes": 5832,
+      "sha256": "73220fd2ae355277f3f0bd5f67de17903c2969f284b217a97a133784d6545fda"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/transmission_capacity.csv",
+      "bytes": 18948,
+      "sha256": "dc687f4f982ce6799ab07179da4e9b8af855df6a758244d80307fb054beceeb3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/transmission_flows.npz",
+      "bytes": 25015,
+      "sha256": "2d62e3b2e32fcb88b4d06aa123abc3dd864791a3a06648da455c3835ec3a4258"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/vre_capacity.csv",
+      "bytes": 2462124,
+      "sha256": "228a7517e01210de50135750bad3ebb9c17aa680de8813eef803f1412052306a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/vre_dispatch.npz",
+      "bytes": 179751,
+      "sha256": "87c2c2588274d85382a521c0739cdbb19de584b71104360a4449db4b17e552cf"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/physical_export/wave_dispatch.npz",
+      "bytes": 10343,
+      "sha256": "faa15f95bd1ad8016091432fc6606cd2b49e753e221232cff6bab513c4b438c3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/result.json",
+      "bytes": 8933,
+      "sha256": "69688978e5daaed8efd0afce823831262b8660be1e5975e805609662a9df692a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_168h_s0_cross2_fullcf_final900/solution.npy",
+      "bytes": 8195576,
+      "sha256": "9d66d633fc378371edbf5a4328a664801cab703690a69350f30a61f599de5b5a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/build.json",
+      "bytes": 7953,
+      "sha256": "2d814ea7e7f05ccd3a1c8825c395f2259e6efba404c5e0b17289dd0abed03d60"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/configuration.json",
+      "bytes": 15893,
+      "sha256": "8b2f89250da2e77e99a7c6f8f9c714bc1617b4cd6a47860d11e0406e53d271ad"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/gurobi.log",
+      "bytes": 11270,
+      "sha256": "b416269e481efa662e0889849b9e9f9b87eec46abcc634d87fa471e39930c83e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/model.mps",
+      "bytes": 165149482,
+      "sha256": "1e1570fd2057cf3397f5ba13bf3b7c6df61e3c7726325c0a794411ed5a79e6f9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5812,
+      "sha256": "1b0eec640a033745d45392d91eb8ed44d16a0eb5851e549ebb669ddbe7563f93"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_carbon_ccs.json",
+      "bytes": 723,
+      "sha256": "ae65891fd7e1339164523b1b9bdf5106ea4d2bad02e4e7d0ae4a23492b2e43c0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 386232,
+      "sha256": "cc3f5d15a4b00dfd31d403eda60f8090bc7739219f5ac9b575d187a48217e998"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8172,
+      "sha256": "72fcc86858ecd1507ae98b5d1f7d78cee835bb3a5ec37816f675b5687d35a615"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 16287,
+      "sha256": "769e3f728d52d589127d32eb17140ef1cda3e14c59815dfffc25dc00564cda91"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 10511,
+      "sha256": "5453e366a68dede771cca6fbcc25bb8667f36fa63de580644b5485340b38b610"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/co2_source_sink_flows.csv",
+      "bytes": 2256,
+      "sha256": "c0efb65fac0910d69f9ec366c5ff1fa8967ab6fd85c68ee9ec59d85cc3dfc6c1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/cost_components.csv",
+      "bytes": 3717,
+      "sha256": "934e981035fdae2749236b4177d8f53ee2272a40ffb65a576f087ca769e8ba30"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/dac_capacity_capture.csv",
+      "bytes": 21308,
+      "sha256": "b3ad5dbb52960360a006c208b99557ff625264ad9a6ab5c2cc152e71dcf8e26d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/dual_export_status.json",
+      "bytes": 510,
+      "sha256": "83ee0e8645df0a62708a061690171ba08d8dcbde138ef905ce6335ee168dfff5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/flexible_load_dispatch.npz",
+      "bytes": 53192,
+      "sha256": "5f30849aca617a077510064c28e14e8b6d09863e55a4d56e12f512cdd9a4aae9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 35272,
+      "sha256": "05311d6e3990bf666a2cce8c23705d9d4606aa3ece69d0b58fd108c1c3969c7e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 108641,
+      "sha256": "72e03febc7a2361effe5083cce2164a94a4b69f34bbcc7e28980abcc11be84f7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hourly_province_security.csv.gz",
+      "bytes": 95751,
+      "sha256": "e7e4ac23d5b3807f0593ef10aae9b55ffb4b74b217af6ef08a347ad5afceee05"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hydro_capacity.csv",
+      "bytes": 308753,
+      "sha256": "f51470f8620cbc3a9250cca99d4a7c626ffe306016b8c44a76250de7edea6e0a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 8610,
+      "sha256": "a92d1eebf779850068e5890ecdbeaa38c385a12ad1106ab6aefb47cd5d8b0ceb"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8126,
+      "sha256": "fab985f1845879de3e600a7dbe76dca77aad2da1684f5cf043759b1103815e2a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/hydro_dispatch.npz",
+      "bytes": 19733,
+      "sha256": "940b170f8a0f04f237b836b8d8836be217a3358eeac8ad7aaeeddd64879f0153"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/intra_grid_substation_design.csv",
+      "bytes": 1044673,
+      "sha256": "3e84b7b1933817f75f3a0b0db2a2fb61a8044b6dbbec9b0e095060af89a4be6b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5690468,
+      "sha256": "d2b55f8a4a28a74bf8a751fb8b04970bb0b410562fe3e1bf8b6240eefb23ca38"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/load_center_annual_balance.csv",
+      "bytes": 45752,
+      "sha256": "d45d3de6328373db647dcc530ec4564ea82a38dbef6a8463e3af93a9edde3213"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/load_center_annual_generation.csv",
+      "bytes": 102590,
+      "sha256": "53753226b02a9b42f1d0d3571037f4e5d678cccef72bf18426a3d292f460e4f3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/load_center_intra_transmission.csv",
+      "bytes": 131418,
+      "sha256": "d1d147374c8faebbc895c1ffda475516db194385051ca42825bc956a84ce5c70"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/load_center_network_qc.csv",
+      "bytes": 515,
+      "sha256": "f9c9cc62184e66697a86712be3a5a25beb6848582f51925a2f0b4084fd774ece"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3401,
+      "sha256": "bd49769c06f2dbf12895d7350a11682b99b04a45d6a62ca6250bed571281d66c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/reservoir_dispatch.npz",
+      "bytes": 618536,
+      "sha256": "40d4787c2f4bf102900d1551f1d783075c24b48898b0c58c934440fe293ce60d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/reservoir_station_index.csv",
+      "bytes": 158502,
+      "sha256": "94a8857c8cd024d07689c97e52c7a000d28a1860fdc50fc73f90faaec2aea6e3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/scenario_manifest.json",
+      "bytes": 6279,
+      "sha256": "40b7d504ea5da20393da1f1077c3ee9e12afcca59126abac3ab3ece72ab2fbba"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/solution_qc.json",
+      "bytes": 10483,
+      "sha256": "695eb3feedc1c0896836a1801b2969f62916183174a80e8e05178353b65f2d91"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/storage_capacity.csv",
+      "bytes": 9738,
+      "sha256": "6bd00ed947bf05c51b52af40f16675e3d732a48c0dac0e7a900982bab8b7939a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/storage_dispatch.npz",
+      "bytes": 56479,
+      "sha256": "8de82aaafe81a0d63815c2eceebed3c33f985b968ecf1e077e27ad05f303c075"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/thermal_dispatch.npz",
+      "bytes": 234775,
+      "sha256": "b56966574267ff51af22c439ff4fba90e348f49751230cc4864e9941e0ea3cdb"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 29258,
+      "sha256": "34ea3361dbf37334fa8089031c179e7f04dd0eb32c5c8f065b3f34cb9853c61f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/time_index.csv",
+      "bytes": 860,
+      "sha256": "ec197815d058148f4b384111fd1aaf661e92dd8068b64c82b694f684543fcef9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/transmission_capacity.csv",
+      "bytes": 33312,
+      "sha256": "9d355eff70d8da7f5c83503162995a0e4a92d1841a4768859c91ecd643897979"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/transmission_flows.npz",
+      "bytes": 82592,
+      "sha256": "4707d323fa6261f1f95e7e2fa3cbf1599ea7c97f7af0d59826ca71798a0f386d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/vre_capacity.csv",
+      "bytes": 3650912,
+      "sha256": "6744ce7ae0e0d0f854a4dfa86dd61a6872b4ade6a38f1d6377f0ed0a2ff64895"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/vre_dispatch.npz",
+      "bytes": 30775,
+      "sha256": "6c841e2234f2af6c3df8f5f928b6acf1f7748475f7e196376eaac24fa0f3f854"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/wave_capacity.csv",
+      "bytes": 228904,
+      "sha256": "c9946fc1a0ea5fb98d28b84e8f4ec522d5bb85ebc55a25c33cfc93d09465deb4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/physical_export/wave_dispatch.npz",
+      "bytes": 19100,
+      "sha256": "70a65f403e3d126c2441a64b6224886b2434817da41ca996e0050f7bffd32d90"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/result.json",
+      "bytes": 12508,
+      "sha256": "7494b0235c3905f54a91ef5d7888b8ac672f1d3015a2458de4690c64571958e0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_fullcf/solution.npy",
+      "bytes": 2774264,
+      "sha256": "6509f16615834cb47ef11a330930e252a64cebb7f999717a517a30ec2ebdfe5a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_v2/build.json",
+      "bytes": 1014,
+      "sha256": "98f9df62f4038d3c441e6daadf6609561bec3a6c30da5950338702f58302c642"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_v2/configuration.json",
+      "bytes": 15893,
+      "sha256": "90be34b9b50ba8399dcc6b15b7e216db133152329a0ce578ac6b04d27fd381b9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_v2/gurobi.log",
+      "bytes": 11341,
+      "sha256": "4de9571c06fb7777e8ab182368715819bb1ae141b090b5807aa21ffd5405cb6d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_v2/result.json",
+      "bytes": 2679,
+      "sha256": "481857fd6280acdc39bbf615f5e41bc41e4d86927f825e48e2df3728b71a004a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross0_v2/solution.npy",
+      "bytes": 2774264,
+      "sha256": "8bf985dceaf42237d632d343d405fa14bfd25a9062a3b7d47845164e6c3dc0a9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/build.json",
+      "bytes": 4388,
+      "sha256": "ca30f7f7cd6c016e23eeb7ba179f0194b0e7483f735e3772efa62a76bc258c63"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/configuration.json",
+      "bytes": 15960,
+      "sha256": "4ade99f63868bc92b1b02434f52531da7580a290e900bcf6257b37f427153dc3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/gurobi.log",
+      "bytes": 12198,
+      "sha256": "fc739fb3624637ef8c91f377c922ffc4ed13c4db428e544076ad65f94f6650b4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/model.mps",
+      "bytes": 165149122,
+      "sha256": "b44d4bdf5a8df89b1b86692bab8bc271ea8df10fcb6dd30f0b430cb9c03ec34f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5666,
+      "sha256": "a9565486d4b6f7db5ae98724fd6c64ca681c8a7457c905a0b70aff7bfd561c8d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_carbon_ccs.json",
+      "bytes": 684,
+      "sha256": "fbc81355d7c85e0672fd617672a17fed29706264d2252602940d30dc335b26db"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 265932,
+      "sha256": "d969029ef5add95d6c4228feef91dc9149940f2cbd4a8a568a5f9a609bd0526c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8172,
+      "sha256": "72fcc86858ecd1507ae98b5d1f7d78cee835bb3a5ec37816f675b5687d35a615"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12590,
+      "sha256": "69bf6c76c2bc8884bba467bbf34f08c9d8ef3b24a4981772ab6144f76156d976"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 5904,
+      "sha256": "198d1542d2b3cb8da64e9ba3f6302713e42714b3f3d4513e589efece58a2741d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1169,
+      "sha256": "196438c6a6170d1abf79c790713f35a8f4f8e13d0ebffa3f53cfaee2de7484a4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/cost_components.csv",
+      "bytes": 3493,
+      "sha256": "101ad2bb376cb9219a3e442c3de7df055a67c10496bd2b8bc7fa496e5e3a50c8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "a954e0e56099416a66172ceac6cb044ed058a0f29819768b26b7b3f79485e803"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/flexible_load_dispatch.npz",
+      "bytes": 53192,
+      "sha256": "5f30849aca617a077510064c28e14e8b6d09863e55a4d56e12f512cdd9a4aae9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 11046,
+      "sha256": "fe392dd945801271c9593d1cd6dc1166cb0e09d12994d4ee403a12afd3f0dfa4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 72784,
+      "sha256": "f74866ebe2624fe3a15a7c32eafaa35c76de44ea057df507d154bcfb321bb4f5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hourly_province_security.csv.gz",
+      "bytes": 58479,
+      "sha256": "b45deb39b8a57c458a947535454643669fc0ef2e0cc8362f986426048671e79f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 8611,
+      "sha256": "41864cbb29e04666ffbfdfee96cdfe6ac64fbb77bb9af00e195cc859efa424ae"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8126,
+      "sha256": "fab985f1845879de3e600a7dbe76dca77aad2da1684f5cf043759b1103815e2a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/hydro_dispatch.npz",
+      "bytes": 9239,
+      "sha256": "c9e4270af1732be85b3d3873900e48096517ff7ea30001838a649d1892dcb809"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/load_center_annual_balance.csv",
+      "bytes": 45756,
+      "sha256": "114882a285a57ee7fe0cd5a7b6bcce6c9c775a2cd1407dbd6bd28b4bb946d033"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/load_center_annual_generation.csv",
+      "bytes": 97781,
+      "sha256": "ab70f75f9001ac2a8212273b896971d0cb5303fb0964c3cc1f62bda1116f28b0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/load_center_intra_transmission.csv",
+      "bytes": 98473,
+      "sha256": "f7d3cba6794a577be51f9f4624928b3a58ce0e1dbe331558ae91e34b0a45218f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/load_center_network_qc.csv",
+      "bytes": 516,
+      "sha256": "4e76f4c8fed83402484f90476c96feeba8c4be33858f73b945781926572d9c57"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3310,
+      "sha256": "2974df788cb7689a213d913e06c4c7bd58a945bb4d984a7f861d21ba60eff13e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/reservoir_dispatch.npz",
+      "bytes": 203606,
+      "sha256": "14af24f49c90f3db90a3846c85cadda2e9200820241ccbdc2d7e3c296230991b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/reservoir_station_index.csv",
+      "bytes": 158502,
+      "sha256": "94a8857c8cd024d07689c97e52c7a000d28a1860fdc50fc73f90faaec2aea6e3"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/scenario_manifest.json",
+      "bytes": 6279,
+      "sha256": "40b7d504ea5da20393da1f1077c3ee9e12afcca59126abac3ab3ece72ab2fbba"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/solution_qc.json",
+      "bytes": 10390,
+      "sha256": "e4ba748ee3c58a025a45ffa694aa10b1a5c03fabb3c7b80fa0dbd12e2c235f8f"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/storage_dispatch.npz",
+      "bytes": 11142,
+      "sha256": "25a85ec616274c91635bf05f9e9cee9ed083ac9562c0cb664137bc0f82706112"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/thermal_dispatch.npz",
+      "bytes": 19248,
+      "sha256": "1fb04ac63fb4b1f00a99ea08f60213476a5abc664284d40201c5b5ce7a06a9da"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17401,
+      "sha256": "8bc805c2222d155d9d8046dfa804f547c9e02e32d0f15bdc5441177b9508a569"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/time_index.csv",
+      "bytes": 860,
+      "sha256": "ec197815d058148f4b384111fd1aaf661e92dd8068b64c82b694f684543fcef9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/transmission_capacity.csv",
+      "bytes": 19001,
+      "sha256": "17fd969950155f3418b3e89e0edb46fd16445e995879c3b50a24d89c96defaa5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/transmission_flows.npz",
+      "bytes": 5806,
+      "sha256": "1f635382a7c6d12c2620dd9e18c1c1222a54a22ae1b534f1222c720ec4b6c128"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/vre_capacity.csv",
+      "bytes": 2462124,
+      "sha256": "228a7517e01210de50135750bad3ebb9c17aa680de8813eef803f1412052306a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/vre_dispatch.npz",
+      "bytes": 27239,
+      "sha256": "935bfc6f4ef9fce3a112355653bc53567b50d9a8852bd6f8d9ff5f872f614fb8"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/physical_export/wave_dispatch.npz",
+      "bytes": 10048,
+      "sha256": "1fcbadae6fd57341a6c79a9c26939d2aeb31572bf18e4f45eb0ba5722db59f45"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/result.json",
+      "bytes": 9022,
+      "sha256": "de32184ccb9a8b4d9d7a8da57bea307897590dcd72db1eedac790d9bf1c5c516"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/cleaned_nf2_24h_s0_cross2_fullcf_final/solution.npy",
+      "bytes": 2774264,
+      "sha256": "15a05b6f86815c9f9ebf9eaca7a8b8e127b73269467cb9d3d8ffecb9ce57b36b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf1_24h_s0_cross0_fullcf/build.json",
+      "bytes": 7948,
+      "sha256": "ed210aeaa0087bc57ce9d41bda0358430058c76982ca20bb1e85b6ccc29e30b2"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf1_24h_s0_cross0_fullcf/configuration.json",
+      "bytes": 15569,
+      "sha256": "b5295e97abbcd06de49428305e8c41a9ad149240bc50558214357e52a53ef6c5"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf1_24h_s0_cross0_fullcf/gurobi.log",
+      "bytes": 13932,
+      "sha256": "d524ab9a74bc198e03dafed7f2b5a7d6601f13aa45d90123c86871376ef7fc3e"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf1_24h_s0_cross0_fullcf/result.json",
+      "bytes": 8053,
+      "sha256": "c466388361dccfeeecc65d80068af997f3305009884fe5770fb72ab0c980857b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0/build.json",
+      "bytes": 1024,
+      "sha256": "d19839b816c74a97df6a185a76b63c78aa58893e41b306384a36b8872f4197c6"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0/configuration.json",
+      "bytes": 15569,
+      "sha256": "ecabed0bf7eb2661b3bf63b0397805815d5af565271fb0f1cd223a6ca04a8d41"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0/gurobi.log",
+      "bytes": 13550,
+      "sha256": "8150408109ac184834f9cdcc2e114503115cd3b8c55d61eb4cfd980f5c692f30"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0/result.json",
+      "bytes": 1129,
+      "sha256": "df06781c9f0b21ef03bfbef3f8353b8eec5a423b5d534b9bcdd43bc85a1c5fb9"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0_fullcf/build.json",
+      "bytes": 7948,
+      "sha256": "23243bcc0e7cf35a0b93908855edf9c6c5a99e1b2c955aa315fe6cf434c55361"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0_fullcf/configuration.json",
+      "bytes": 15569,
+      "sha256": "ecabed0bf7eb2661b3bf63b0397805815d5af565271fb0f1cd223a6ca04a8d41"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0_fullcf/gurobi.log",
+      "bytes": 12582,
+      "sha256": "1bddf52c062da813ac925f7e7a44b33ff1f45f3ad917b157ec2eee8d50f68930"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/physical_nf2_24h_s0_cross0_fullcf/result.json",
+      "bytes": 8052,
+      "sha256": "c38f72396b313b9043a9e669ec69f661fd4de12409a39c12dd4f5875c7fdb5db"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/rows_nf1_24h_s0_cross0_fullcf/build.json",
+      "bytes": 7948,
+      "sha256": "c71e320ac3e3763c420dca002171c63652687ec7062e74ffcc542ac420794195"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/rows_nf1_24h_s0_cross0_fullcf/configuration.json",
+      "bytes": 16041,
+      "sha256": "c9888ef39f44c946dd42a39603a8e1fade6f53acf1a00dc667ba87b58fc67ed4"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/rows_nf1_24h_s0_cross0_fullcf/gurobi.log",
+      "bytes": 14378,
+      "sha256": "32653c4a91c4573025aca2bf6f520d2853eeeeb6a46555842d016dbfd7806285"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/probes/rows_nf1_24h_s0_cross0_fullcf/result.json",
+      "bytes": 8053,
+      "sha256": "a3ac0949c43f28bf5a5ed5a10d8aec4b24e8f21aae93d1d5e92aa165d39dfb2d"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/repair_source_overlay.tar.gz",
+      "bytes": 465618,
+      "sha256": "8997cfb65f1d9a7f2386f7f3d8b1e4d1b41c75a01241c6af9a9fffcda3f8cef1"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/resource_cleanup_by_site.csv",
+      "bytes": 4356480,
+      "sha256": "0980862108d6fe622be09a6fce632af48d2a6c6fb82e91288922b63bb29c5861"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/resource_cleanup_summary.csv",
+      "bytes": 408,
+      "sha256": "90836e1fafb06dc338d7727059e8890ea9a3b1221195932a98fe43f6869a5592"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/REVIEW_ZH.md",
+      "bytes": 15923,
+      "sha256": "2f48d741787c5bb983df65cd9d2c6376d0c9c0f2e9bb35ee88f4bed14d85b021"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/run_probe.py",
+      "bytes": 6774,
+      "sha256": "ff7017efc114f2d4f81a0bef191fd3921374bfde53dbf4a593d49ca4fd1676d0"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/summarize_probes.py",
+      "bytes": 4748,
+      "sha256": "ce7bea924c1d48b11df458d59671f642d230555bd9af6ee30c0d2092791b7158"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/test_cleanup_stdout.txt",
+      "bytes": 937,
+      "sha256": "44d6fdb31740baa166405a248f22980c94eac4f731fe3ff0c795e227ebc54450"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/test_contract_stdout.txt",
+      "bytes": 891,
+      "sha256": "4ea655bbd5ba38950259df4440ccf6e7e9e72a15208a0b6f5efc1249221a3efe"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/test_exact_zero_stdout.txt",
+      "bytes": 1160,
+      "sha256": "78b187b39254fb7e9a3ab2c19d71c45bbd5b872319f1cdb29bf313135afdbd42"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/test_hydro_stdout.txt",
+      "bytes": 1562,
+      "sha256": "0f63e510bceadb777fe4cff2f16e875a206a305904b75b542dfe80f0201251ee"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/test_io_stdout.txt",
+      "bytes": 215,
+      "sha256": "8dcc8a5efef28dac1676f64e3f7bf9bc1d962a5dd0fb6e4abbfde940c97d8c10"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/validate_repaired_inputs.py",
+      "bytes": 2661,
+      "sha256": "6e5638cc0ec54e5776b7886006cea197e7fe97826b684acabe20c999530de85b"
+    },
+    {
+      "path": "supplementary_materials/reviews/numeric_repair_20260913/VALIDATION_ZH.md",
+      "bytes": 2760,
+      "sha256": "504a9067a414444a98e8a5387e1f44dc1f1e9bb63f5c0e41f385949b91c78d7f"
+    },
+    {
+      "path": "tests/test_numerical_cleanup.py",
+      "bytes": 3776,
+      "sha256": "f4eff8a50e3a88dd5b349f621f304a54e7a7ad3ca46663ac4e6f926b1b113cbf"
+    }
+  ]
+}

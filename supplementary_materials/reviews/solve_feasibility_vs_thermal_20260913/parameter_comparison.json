@@ -1,0 +1,183 @@
+{
+  "rows": [
+    {
+      "parameter": "method",
+      "current": 2,
+      "thermal": 2,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "barrier_convergence_tolerance",
+      "current": 0.0001,
+      "thermal": 0.0001,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "crossover",
+      "current": 0,
+      "thermal": 0,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "solution_target",
+      "current": 1,
+      "thermal": 1,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "threads",
+      "current": 44,
+      "thermal": 44,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "numeric_focus",
+      "current": 2,
+      "thermal": 1,
+      "comparison": "DIFFERENT",
+      "note": ""
+    },
+    {
+      "parameter": "presolve",
+      "current": 2,
+      "thermal": 2,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "scale_flag",
+      "current": 2,
+      "thermal": 2,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "aggregate",
+      "current": 1,
+      "thermal": 1,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "feasibility_tolerance",
+      "current": 1e-06,
+      "thermal": 1e-06,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "optimality_tolerance",
+      "current": 1e-06,
+      "thermal": 1e-06,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "markowitz_tolerance",
+      "current": 0.01,
+      "thermal": 0.01,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "dual_reductions",
+      "current": 1,
+      "thermal": 1,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "inf_unbd_info",
+      "current": 0,
+      "thermal": 0,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "time_limit_seconds",
+      "current": 900,
+      "thermal": null,
+      "comparison": "DIFFERENT",
+      "note": ""
+    },
+    {
+      "parameter": "soft_mem_limit_gb",
+      "current": null,
+      "thermal": null,
+      "comparison": "SAME",
+      "note": ""
+    },
+    {
+      "parameter": "crossover_basis",
+      "current": 1,
+      "thermal": null,
+      "comparison": "DIFFERENT",
+      "note": "Thermal未显式设置，当前关闭Crossover，该项不启动基转换"
+    }
+  ],
+  "current_actual_readback": {
+    "Method": 2,
+    "Threads": 44,
+    "NumericFocus": 2,
+    "ScaleFlag": 2,
+    "Presolve": 2,
+    "BarConvTol": 0.0001,
+    "Crossover": 0,
+    "CrossoverBasis": 1,
+    "SolutionTarget": 1,
+    "FeasibilityTol": 1e-06,
+    "OptimalityTol": 1e-06,
+    "MarkowitzTol": 0.01,
+    "TimeLimit": 900.0,
+    "SoftMemLimit": null,
+    "DualReductions": 1,
+    "InfUnbdInfo": 0,
+    "Aggregate": 1,
+    "AggFill": -1,
+    "BarOrder": -1,
+    "BarCorrectors": -1,
+    "BarHomogeneous": -1,
+    "PreDual": -1,
+    "PrePasses": -1,
+    "PreSparsify": -1,
+    "LPWarmStart": 1,
+    "Seed": 0,
+    "BarIterLimit": 1000
+  },
+  "resource_allocation": {
+    "current": {
+      "slurm_cpus": 64,
+      "memory_gib": 700,
+      "job_wall_hours": 2
+    },
+    "thermal": {
+      "slurm_cpus": 64,
+      "memory_gib": 700,
+      "job_wall_hours": null
+    }
+  },
+  "model_differences": {
+    "annual_capacity_link_row_scaling": {
+      "current": "NONE",
+      "thermal": "binary_power2_safe_8192_v1"
+    },
+    "cf_cleanup_threshold": {
+      "current": 0.01,
+      "thermal": 1e-06
+    },
+    "city_flow_regularization_yuan_per_mwh": {
+      "current": 1.0,
+      "thermal": 0.001
+    },
+    "dac_2030": {
+      "current": false,
+      "thermal": true
+    },
+    "same_scientific_lp": false
+  }
+}

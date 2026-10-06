@@ -1,0 +1,57 @@
+{
+  "resource": [
+    {
+      "technology": "dpv",
+      "removed_entries": 37608,
+      "removed_potential_gwh": 0.23207620456037176,
+      "old_potential_gwh": 2242483.654338647,
+      "fraction_removed": 1.034907006396065e-07
+    },
+    {
+      "technology": "offwind",
+      "removed_entries": 0,
+      "removed_potential_gwh": 0.0,
+      "old_potential_gwh": 8985949.177567197,
+      "fraction_removed": 0.0
+    },
+    {
+      "technology": "onwind",
+      "removed_entries": 0,
+      "removed_potential_gwh": 0.0,
+      "old_potential_gwh": 18297738.753443744,
+      "fraction_removed": 0.0
+    },
+    {
+      "technology": "ror",
+      "removed_entries": 261060,
+      "removed_potential_gwh": 0.8794413560525194,
+      "old_potential_gwh": 126328.62168294097,
+      "fraction_removed": 6.961536857892248e-06
+    },
+    {
+      "technology": "upv",
+      "removed_entries": 26393,
+      "removed_potential_gwh": 4.9900013636710945,
+      "old_potential_gwh": 65100716.175346814,
+      "fraction_removed": 7.665048338685978e-08
+    },
+    {
+      "technology": "wave",
+      "removed_entries": 0,
+      "removed_potential_gwh": 0.0,
+      "old_potential_gwh": 17558112.410347816,
+      "fraction_removed": 0.0
+    }
+  ],
+  "inflow_removed_station_hours": 54945,
+  "inflow_removed_m3": 658097.8061280939,
+  "inflow_local_energy_gwh": 0.15966732241048825,
+  "inflow_including_downstream_energy_upper_gwh": 0.2780723747305247,
+  "reservoirs": 620,
+  "storage_bounds_reduced": 140,
+  "max_source_storage_m3": 44779949240.0,
+  "max_effective_storage_m3": 18482416540.0,
+  "tiny_headroom_sites": 5,
+  "discarded_headroom_gw": 1.3211559485304392e-09,
+  "notes": "Resource delta is at all-site technical upper capacities, not predicted dispatch; source correction impact must be evaluated separately. Stock cap preserves dispatch projection under current cyclic equations."
+}

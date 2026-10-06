@@ -1,0 +1,21 @@
+{
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\output_8760__gurobi.log": "98cff2b0f5c63724d7d0872d79b9fd5d577f3335dde464b59441c42eb68246f5",
+  "thread_comparison_20260930\\evidence\\base2040_t44__output_8760__gurobi.log": "2216ee953ef930dd6c2971bb3689e50ad902ef27a76b9bdcee7ec09cb5e68efe",
+  "thread_comparison_20260930\\evidence\\base2030_t48__output_8760__gurobi.log": "3318241e34dfcd6a0afb764850cebb66a98fb567aebe3b79940edf9f1b322b4a",
+  "cloud_failure_comparison_20260915\\evidence\\thermal\\gurobi.log": "43a2a16b59e510caacaf47d350bca64df528854ca7fb7b90c5bea5363c8dc6a1",
+  "cloud_failure_comparison_20260915\\evidence\\base_old\\gurobi.log": "a7691283dbe895013ca9862275d2390ae0c36d20e8dec8a6c99b24bf0556a5a2",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\extra__input_manifest.csv": "f1e7c04fdfcffec138a56595245deebcb399c3c425fa61134dbc03511479c6ae",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\extra_manifest.json": "64dd448859a5a0c9c1ddbfccfe29f5688bde1d60a24c204bdba39d8ccaa13a45",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\input_sources.json": "2a4e50510d79433c1459e498f4299dd4d58f9b0a613e1f000e617b7ac62092ae",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\manifest.json": "e371c3879cead245277cc88028d8f2a6ec7e5a8df80105b81f457376a72f3ac0",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\output_8760__build_report.json": "46310fd789a23a37d4eeb69b0c73d03c13ca7b8903c2fe469f73c1d1623ec6ef",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\output_8760__model_config_snapshot.json": "7c27e3afaebe34dd5a895e282185b996016e1492c16add105d2ac52fedafcccf",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\output_8760__solver_telemetry.jsonl": "844ad98759b572f8713d43f0435acbbb7d3212f767aac2751d3840c8c2ea96fc",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__annual_capacity_link_scaling.py": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__hydro.py": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__load_center.py": "bc1a80aa645f49618b1449f5ad92b2322f5cb9ca01b57328628ce5366453efcc",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__master.py": "fd7ff01cefbe2b1fa95a1124d35d7ec50dd6430488cc8dce98f15bb08cf6415c",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__monolithic.py": "0fce4df52de36e8d940f9ff36eb35048ac160f504b1fc7c3eb437b2a0e0a8292",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__cispo_model__numerical_cleanup.py": "901233f87e53c120859ebd61f56c04f1038818fef1df69d503a8a1837487ce26",
+  "barrier_jump_diagnosis_20261002\\evidence_20261002T221431Z\\repo__config__optimization_numeric_dac_by_year_v9.json": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+}

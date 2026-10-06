@@ -1,0 +1,53 @@
+[
+  {
+    "bar_conv_tol": 1e-08,
+    "threads": 8,
+    "runtime_seconds": 25.740000009536743,
+    "barrier_iterations": 88,
+    "barrier_seconds": 23.43,
+    "barrier_work": 43.94,
+    "simplex_iterations": 34281,
+    "total_work": 48.02,
+    "objective": 2134775.3913311474,
+    "raw_row_violation": 2.9611868512802175e-11,
+    "bound_violation": 6.111777750561487e-12,
+    "dual_violation": 4.766574690506786e-09,
+    "full_qc_pass": true,
+    "raw_mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3",
+    "result_path": "supplementary_materials\\reviews\\numeric_prelaunch_20260913\\probes\\cleaned_nf2_24h_s3960_cross2_v9_prelaunch\\result.json"
+  },
+  {
+    "bar_conv_tol": 1e-06,
+    "threads": 8,
+    "runtime_seconds": 26.347000122070312,
+    "barrier_iterations": 83,
+    "barrier_seconds": 23.02,
+    "barrier_work": 42.3,
+    "simplex_iterations": 64150,
+    "total_work": 47.22,
+    "objective": 2134775.3913311483,
+    "raw_row_violation": 1.9735324485736783e-11,
+    "bound_violation": 6.0458305028987525e-12,
+    "dual_violation": 1.7488215320327072e-09,
+    "full_qc_pass": true,
+    "raw_mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3",
+    "result_path": "supplementary_materials\\reviews\\solver_alignment_thermal_20260913\\probes\\cleaned_nf2_24h_s3960_cross2_tolerance_1e6\\result.json"
+  },
+  {
+    "bar_conv_tol": 0.0001,
+    "threads": 8,
+    "runtime_seconds": 31.189000129699707,
+    "barrier_iterations": 74,
+    "barrier_seconds": 20.48,
+    "barrier_work": 39.48,
+    "simplex_iterations": 232710,
+    "total_work": 60.56,
+    "objective": 2134775.3913311497,
+    "raw_row_violation": 1.291056150876102e-11,
+    "bound_violation": 6.0458305028987525e-12,
+    "dual_violation": 7.105427357601002e-14,
+    "full_qc_pass": true,
+    "raw_mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3",
+    "result_path": "supplementary_materials\\reviews\\solver_alignment_thermal_20260913\\probes\\cleaned_nf2_24h_s3960_cross2_tolerance_1e4\\result.json"
+  }
+]

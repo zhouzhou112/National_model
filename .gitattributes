@@ -13,3 +13,6 @@
 *.pdf binary
 *.gz binary
 *.npz binary
+
+# Preserve the exact bytes of the final regression evidence (SHA in the review).
+supplementary_materials/reviews/validation_coordination_20261005/unittest_verified_20261005T185140Z.log -text

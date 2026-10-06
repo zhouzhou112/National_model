@@ -1,0 +1,13 @@
+{
+  "ssh_host": "paracloud-bscc-a8",
+  "remote_base": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+  "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+  "environment_release": "20260903_8760_stagea_final_2820fc3_v3",
+  "predecessor_job": "4682935",
+  "boundary_year": 2040,
+  "planning_year": 2050,
+  "threads": 48,
+  "profile": "config/solver_profiles/barrier_checkpoint_full_year_cloud_2050_numeric_v1_threads48.json",
+  "authorization": "User requested continuation from completed 2040 into 2050 using 48 solver threads on 2026-09-30; retain upstream scientific rejection and engineering candidate provenance."
+}

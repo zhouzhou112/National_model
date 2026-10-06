@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "files": [
+    {
+      "path": "solve_report.json",
+      "remote_sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+      "local_sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+      "passed": true
+    },
+    {
+      "path": "planning_state_candidate/raw_new_cohorts.csv.gz",
+      "remote_sha256": "5a11ed57911523fac710fca0940b2960d469063981caa6ed2d785cab4816dcfc",
+      "local_sha256": "5a11ed57911523fac710fca0940b2960d469063981caa6ed2d785cab4816dcfc",
+      "passed": true
+    },
+    {
+      "path": "planning_state_candidate/state_transition_summary.csv",
+      "remote_sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+      "local_sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+      "passed": true
+    },
+    {
+      "path": "planning_state_candidate/capacity_cohorts.csv.gz",
+      "remote_sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+      "local_sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+      "passed": true
+    },
+    {
+      "path": "planning_state_candidate/state_metadata.json",
+      "remote_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+      "local_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+      "passed": true
+    },
+    {
+      "path": "original_result_manifest.json",
+      "remote_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+      "local_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+      "passed": true
+    },
+    {
+      "path": "result_manifest.json",
+      "remote_sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+      "local_sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+      "passed": true
+    },
+    {
+      "path": "solution_qc.json",
+      "remote_sha256": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a",
+      "local_sha256": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a",
+      "passed": true
+    },
+    {
+      "path": "run_identity.json",
+      "remote_sha256": "4dd32bb011407720b7f6b30cbef4cec2be230a50d109d68189ee7b30680b3bce",
+      "local_sha256": "4dd32bb011407720b7f6b30cbef4cec2be230a50d109d68189ee7b30680b3bce",
+      "passed": true
+    },
+    {
+      "path": "bound_closure_audit.json",
+      "remote_sha256": "e46e0580ccf88b44e70d752adda11e9063cc34bc5175666408c00a63c2a7f4d3",
+      "local_sha256": "e46e0580ccf88b44e70d752adda11e9063cc34bc5175666408c00a63c2a7f4d3",
+      "passed": true
+    }
+  ]
+}

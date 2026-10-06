@@ -1,0 +1,82 @@
+{
+  "queried_at_utc": "2026-09-13T17:57:48.436468+00:00",
+  "partition": {
+    "argv": [
+      "scontrol",
+      "show",
+      "partition",
+      "amd_a8_768"
+    ],
+    "returncode": 0,
+    "stdout": "PartitionName=amd_a8_768\n   AllowGroups=demo_qos1,para-ie,pcs_a8,paratera_bscc_a8,deploy_a8,amd_a8_768,amd_a8_768_2001,amd_a8_768_2002,amd_a8_768_2003,amd_a8_768_2004,amd_a8_768_2005,amd_a8_768_2006,amd_a8_768_2007,amd_a8_768_2008,amd_a8_768_2009,amd_a8_768_2010,new_amd_a8_768 AllowAccounts=ALL AllowQos=ALL\n   AllocNodes=ALL Default=NO QoS=N/A\n   DefaultTime=NONE DisableRootJobs=NO ExclusiveUser=NO GraceTime=0 Hidden=NO\n   MaxNodes=UNLIMITED MaxTime=UNLIMITED MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED\n   Nodes=m4cg[1601-1608,1701-1702,1705-1708,1801-1802],m4cm[1605-1608,1701-1708,1801-1808,1901-1906,1908,2002-2008,2101-2104,2108,2201-2206]\n   PriorityJobFactor=10 PriorityTier=10 RootOnly=NO ReqResv=NO OverSubscribe=NO\n   OverTimeLimit=NONE PreemptMode=OFF\n   State=UP TotalCPUs=7808 TotalNodes=61 SelectTypeParameters=NONE\n   JobDefaults=(null)\n   DefMemPerCPU=6000 MaxMemPerCPU=6144\n   TRES=cpu=7808,mem=45750G,node=61,billing=7808\n\n",
+    "stderr": ""
+  },
+  "nodes": {
+    "returncode": 0,
+    "count": 61,
+    "cpus": [
+      128
+    ],
+    "memory_mb": [
+      768000
+    ],
+    "examples": [
+      {
+        "name": "m4cg1601",
+        "cpus": 128,
+        "memory_mb": 768000,
+        "state": "mix@"
+      },
+      {
+        "name": "m4cg1602",
+        "cpus": 128,
+        "memory_mb": 768000,
+        "state": "alloc@"
+      },
+      {
+        "name": "m4cg1603",
+        "cpus": 128,
+        "memory_mb": 768000,
+        "state": "alloc@"
+      }
+    ]
+  },
+  "test_768g": {
+    "argv": [
+      "sbatch",
+      "--test-only",
+      "--account=bscc-a8",
+      "--partition=amd_a8_768",
+      "--nodes=1",
+      "--ntasks=1",
+      "--cpus-per-task=64",
+      "--mem=768G",
+      "--time=0",
+      "--wrap=true"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "allocation failure: Requested node configuration is not available\n"
+  },
+  "billing_config": [
+    "AccountingStorageTRES   = cpu,mem,energy,node,billing,fs/disk,vmem,pages",
+    "DefMemPerNode           = UNLIMITED",
+    "MaxMemPerNode           = UNLIMITED",
+    "PriorityFlags           = ",
+    "SelectType              = select/cons_tres",
+    "SelectTypeParameters    = CR_CORE_MEMORY"
+  ],
+  "jobs": {
+    "argv": [
+      "squeue",
+      "-u",
+      "a8s001819",
+      "-h",
+      "-o",
+      "%i %j %T %M %C %m %R"
+    ],
+    "returncode": 0,
+    "stdout": "4533060 cispo2030_thermal_t44 RUNNING 6-05:47:36 64 700G m4cm2204\n",
+    "stderr": ""
+  }
+}

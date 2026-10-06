@@ -9,6 +9,33 @@ tmp/
 transfer_bundle/
 downloads/
 
+# Local runtime bundles and temporary reconstruction/test workspaces
+/output/
+/.tmp*
+/.codex_tmp/
+/supplementary_materials/.chart-data-*/
+/supplementary_materials/.codex_tmp/
+/supplementary_materials/output/
+
+# Never publish connection notes or credential/key material
+*.lic
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.env
+.env.*
+/supplementary_materials/*ssh*.txt
+
+# Large reproducibility artifacts remain in immutable experiment archives.
+# Commit reviewed summaries, manifests and source scripts explicitly.
+/supplementary_materials/reviews/**/*.mps.gz
+/supplementary_materials/reviews/**/*.npy
+/supplementary_materials/reviews/**/*.npz
+/supplementary_materials/reviews/**/*.tar.gz
+/supplementary_materials/reviews/**/*.zip
+/supplementary_materials/reviews/git_sync_20261006/inventory_local.tsv
+
 # Abandoned local Benders prototype retained outside production history
 MODEL_IMPLEMENTATION_STATUS.md
 cispo_model/subproblem.py

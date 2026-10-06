@@ -1,0 +1,36 @@
+{
+  "resource_usage": "Command exited with non-zero status 1\n\tCommand being timed: \"/publicfs01/fs1-a8/home/a8s001819/.conda/envs/gurobipy310/bin/python scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9.json --solver-config config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json --horizon full_year --archive-original-model --allow-nonbasic-planning-state --output-dir /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/output_8760\"\n\tUser time (seconds): 2252.40\n\tSystem time (seconds): 156.69\n\tPercent of CPU this job got: 101%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 39:37.61\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 59814884\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 0\n\tMinor (reclaiming a frame) page faults: 68497149\n\tVoluntary context switches: 14364274\n\tInvoluntary context switches: 2919\n\tSwaps: 0\n\tFile system inputs: 0\n\tFile system outputs: 0\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 1\n",
+  "output_files": [
+    {
+      "name": "run_scope.json",
+      "bytes": 5149
+    },
+    {
+      "name": "run_environment.json",
+      "bytes": 1920
+    },
+    {
+      "name": "input_manifest.csv",
+      "bytes": 26661
+    },
+    {
+      "name": "preflight_report.json",
+      "bytes": 13346
+    },
+    {
+      "name": "run_identity.json",
+      "bytes": 6009
+    },
+    {
+      "name": "run_claim.json",
+      "bytes": 245
+    },
+    {
+      "name": "model_config_snapshot.json",
+      "bytes": 19372
+    }
+  ],
+  "archive_exists": false,
+  "gurobi_log_exists": false,
+  "build_report_exists": false
+}

@@ -1,0 +1,39 @@
+{
+  "created_at": "2026-09-14T08:53:37.636158+08:00",
+  "git_base_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "working_tree_dirty": true,
+  "failed_job": "4613045",
+  "replacement_job": "4614693",
+  "files": [
+    {
+      "path": "scripts/run_cispo_2030_full_year.py",
+      "sha256": "a869aac11f745f78e6608bbb093bd6e7bdfbc975e8a91204e5323485e1e00d46",
+      "bytes": 111231
+    },
+    {
+      "path": "tests/test_numeric_repaired_formal_launch.py",
+      "sha256": "722f987ad20b82382da9438116817a610a286fcea02b8c97c0bb988e25491b69",
+      "bytes": 8797
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "sha256": "6588e6ecaf87f87bf3bceecb6384aedede4357422c4e4c4118683e12a28ec64d",
+      "bytes": 1071962
+    },
+    {
+      "path": "MODEL_SERVER_STATUS.md",
+      "sha256": "ce49e4dfed0014f9cf6bfab05d8e14b9d3a77aa90227ce8d1fa049a7f6acb870",
+      "bytes": 324946
+    },
+    {
+      "path": "SERVER_RUNBOOK.md",
+      "sha256": "3ffda25e332b43e0c45c96b168b3805729718dbdc8b465043397f20e4724b474",
+      "bytes": 371071
+    },
+    {
+      "path": "cispo_full_lp_model_spec.md",
+      "sha256": "10d98bb880d65e5f039fe0e9c558208ec6f76863b0195b071dc96bd800da2fbc",
+      "bytes": 130669
+    }
+  ]
+}

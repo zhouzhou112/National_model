@@ -1,0 +1,18 @@
+{
+  "tests": 73,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "seconds": 38.2863420000067,
+  "patterns": [
+    "test_dac_year_schedule.py",
+    "test_planning_sequence.py",
+    "test_run_contract.py",
+    "test_numerical_cleanup.py",
+    "test_reservoir_spill_reduction.py",
+    "test_exact_zero_reservoir_bounds.py",
+    "test_hydro_station_model.py",
+    "test_bound_tightening.py",
+    "test_numeric_simplification.py"
+  ]
+}

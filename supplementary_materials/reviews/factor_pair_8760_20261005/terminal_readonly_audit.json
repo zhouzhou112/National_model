@@ -1,0 +1,90 @@
+{
+  "utc_collected": "2026-10-06T15:50:41.126499Z",
+  "accounting_TZ": "UTC",
+  "accounting": "JobIDRaw|State|ExitCode|ElapsedRaw|Start|End|Partition|AllocCPUS|ReqMem|AllocTRES|MaxRSS|CPUTimeRAW|TotalCPU\n4981130|COMPLETED|0:0|31436|2026-10-05T17:12:35|2026-10-06T01:56:31|amd_a8_768|64|786432000K|billing=64,cpu=64,mem=786432000K,node=1||2011904|4-22:18:29\n4981130.batch|COMPLETED|0:0|31436|2026-10-05T17:12:35|2026-10-06T01:56:31||64||cpu=64,mem=786432000K,node=1|728886896K|2011904|4-22:18:29\n4981130.extern|COMPLETED|0:0|31436|2026-10-05T17:12:35|2026-10-06T01:56:31||64||billing=64,cpu=64,mem=786432000K,node=1|72K|2011904|00:00.001\n4981131|COMPLETED|0:0|22137|2026-10-05T17:12:35|2026-10-05T23:21:32|amd_a8_768|64|786432000K|billing=64,cpu=64,mem=786432000K,node=1||1416768|3-18:52:07\n4981131.batch|COMPLETED|0:0|22137|2026-10-05T17:12:35|2026-10-05T23:21:32||64||cpu=64,mem=786432000K,node=1|692156088K|1416768|3-18:52:07\n4981131.extern|COMPLETED|0:0|22137|2026-10-05T17:12:35|2026-10-05T23:21:32||64||billing=64,cpu=64,mem=786432000K,node=1|72K|1416768|00:00.001\n",
+  "members": {
+    "member_F": {
+      "job": "4981130",
+      "release_hash_check_exit_code": 0,
+      "hash_check_stdout": "",
+      "hash_check_stderr": "",
+      "output_files": [
+        "annual_capacity_link_row_scaling.json",
+        "build_report.json",
+        "gurobi.log",
+        "input_manifest.csv",
+        "model_archive/archive_manifest.json",
+        "model_archive/original.mps.gz",
+        "model_archive/parameters.prm",
+        "model_config_snapshot.json",
+        "mps_section_sha256.json",
+        "preflight_report.json",
+        "run_claim.json",
+        "run_environment.json",
+        "run_identity.json",
+        "run_scope.json",
+        "solve_report.json",
+        "solver_parameters_before_optimize.json",
+        "solver_telemetry.jsonl"
+      ],
+      "forbidden_outputs": [],
+      "archive_sizes": {
+        "original.mps.gz": {
+          "recorded": 4143651443,
+          "actual": 4143651443
+        },
+        "parameters.prm": {
+          "recorded": 185,
+          "actual": 185
+        }
+      },
+      "stderr_bytes": 0,
+      "batch_exit": {
+        "exit_code": 0,
+        "job_id": "4981130"
+      }
+    },
+    "member_S": {
+      "job": "4981131",
+      "release_hash_check_exit_code": 0,
+      "hash_check_stdout": "",
+      "hash_check_stderr": "",
+      "output_files": [
+        "annual_capacity_link_row_scaling.json",
+        "build_report.json",
+        "candidate_selection.csv",
+        "gurobi.log",
+        "input_manifest.csv",
+        "model_archive/archive_manifest.json",
+        "model_archive/original.mps.gz",
+        "model_archive/parameters.prm",
+        "model_config_snapshot.json",
+        "mps_section_sha256.json",
+        "preflight_report.json",
+        "run_claim.json",
+        "run_environment.json",
+        "run_identity.json",
+        "run_scope.json",
+        "solve_report.json",
+        "solver_parameters_before_optimize.json",
+        "solver_telemetry.jsonl"
+      ],
+      "forbidden_outputs": [],
+      "archive_sizes": {
+        "original.mps.gz": {
+          "recorded": 4143496357,
+          "actual": 4143496357
+        },
+        "parameters.prm": {
+          "recorded": 185,
+          "actual": 185
+        }
+      },
+      "stderr_bytes": 0,
+      "batch_exit": {
+        "exit_code": 0,
+        "job_id": "4981131"
+      }
+    }
+  }
+}

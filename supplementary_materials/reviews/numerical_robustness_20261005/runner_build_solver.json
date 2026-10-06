@@ -1,0 +1,39 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "numerical_robustness_build_only_audit_v1",
+  "minimum_gurobi_major_version": 13,
+  "direct_nonbasic_scientific_acceptance": false,
+  "stage_b_required": false,
+  "description": "TEST_ONLY audit: actual one-hour build, no optimize or scientific acceptance",
+  "stage_a_acceptance": {
+    "maximum_relative_primal_dual_objective_gap": 0.01,
+    "maximum_barrier_primal_infeasibility": 0.01,
+    "maximum_constraint_violation": 1e-05,
+    "maximum_constraint_residual": 1e-05,
+    "maximum_bound_violation": 1e-05,
+    "maximum_dual_violation_for_publication": 1e-05,
+    "maximum_dual_residual_for_publication": 1e-05,
+    "maximum_complementarity_violation_for_publication": 1e-05,
+    "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+    "maximum_barrier_complementarity_for_publication": 0.01
+  },
+  "numerics": {
+    "method": 2,
+    "threads": 8,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 0.0001,
+    "feasibility_tolerance": 1e-06,
+    "optimality_tolerance": 1e-06,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": 8,
+    "bar_iter_limit": 2000000000
+  }
+}

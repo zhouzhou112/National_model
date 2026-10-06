@@ -1,0 +1,265 @@
+{
+  "checks": [
+    {
+      "path": "data/README.md",
+      "match": true
+    },
+    {
+      "path": "data/biomass/capacity_upper_by_province_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/biomass/fuel_potential_by_province_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/carbon/emissions_limits_by_scenario.csv",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/ev_availability_hourly_v4.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/ev_availability_hourly_v5.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/ev_mobility_hourly_v4.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/ev_mobility_hourly_v5.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/flex_enablement_cost_v4.csv",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/flex_enablement_cost_v5.csv",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/flexible_load_v4.manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/flexible_load_v5.manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/thermal_hourly_envelope_v4.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/thermal_hourly_envelope_v5.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/thermal_parameters_by_province_v4.csv",
+      "match": true
+    },
+    {
+      "path": "data/flexibility/thermal_parameters_by_province_v5.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/cascade_topology_edges.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/cascade_topology_nodes.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/classification_summary.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/grfr_monthly_p30_single_year_proxy_2019.nc",
+      "match": true
+    },
+    {
+      "path": "data/hydro/hydro_stations.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/provincial_aggregate_capacity_2025.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations_original.csv",
+      "match": true
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/hydro/timeseries_index.csv",
+      "match": true
+    },
+    {
+      "path": "data/load/flexible_load_envelope_v3.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/load/flexible_load_envelope_v3.manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/load/hourly_load_2025_2060.csv.gz",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/hydro_routes.csv",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/initial_spur_capacity_2025.csv",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/intra_edges.csv",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/load_centers.csv",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/substation_initial_capacity_2025.csv",
+      "match": true
+    },
+    {
+      "path": "data/load_center_network/city_337/vre_routes.csv",
+      "match": true
+    },
+    {
+      "path": "data/model_defaults.json",
+      "match": true
+    },
+    {
+      "path": "data/output_manifest.csv",
+      "match": true
+    },
+    {
+      "path": "data/qc_summary.csv",
+      "match": true
+    },
+    {
+      "path": "data/sets/model_years.csv",
+      "match": true
+    },
+    {
+      "path": "data/sets/provinces.csv",
+      "match": true
+    },
+    {
+      "path": "data/smoke_test_report.json",
+      "match": true
+    },
+    {
+      "path": "data/source_manifest.csv",
+      "match": true
+    },
+    {
+      "path": "data/storage/battery_capacity_floor_by_province_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/storage/phs_capacity_bounds_by_province_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/ccs_cost_parameters.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/dac_parameters_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/emission_factors_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/province_fuel_generation_cost_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/storage_technical_parameters.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/technoeconomic_price_basis_manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/technology/technology_capex_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/thermal_nuclear_om_parameters.csv",
+      "match": true
+    },
+    {
+      "path": "data/technology/thermal_nuclear_ruc_parameters.csv",
+      "match": true
+    },
+    {
+      "path": "data/thermal/capacity_floor_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/thermal/nuclear_capacity_floor_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/thermal/nuclear_capacity_upper_by_year.csv",
+      "match": true
+    },
+    {
+      "path": "data/transmission/candidate_corridors.csv",
+      "match": true
+    },
+    {
+      "path": "data/vre/existing_capacity_cohorts_2025.csv",
+      "match": true
+    },
+    {
+      "path": "data/vre/existing_capacity_cohorts_2025_manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/vre/hourly_cf_index.csv",
+      "match": true
+    },
+    {
+      "path": "data/vre/optimization_points.csv",
+      "match": true
+    },
+    {
+      "path": "data/wave/wave_input_manifest.json",
+      "match": true
+    },
+    {
+      "path": "data/wave/wave_sites.csv",
+      "match": true
+    }
+  ],
+  "all_match": true
+}

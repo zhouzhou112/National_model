@@ -1,0 +1,199 @@
+{
+  "git_baseline": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "committed": false,
+  "config": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+  "year_schedule": [
+    {
+      "year": 2030,
+      "boundary_year": 2025,
+      "dac_enabled": false,
+      "carbon_limit_mtpa": 4000.0,
+      "scientific_configuration_sha256": "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0"
+    },
+    {
+      "year": 2040,
+      "boundary_year": 2030,
+      "dac_enabled": true,
+      "carbon_limit_mtpa": 1300.0,
+      "scientific_configuration_sha256": "9875d9088167f8f8051bd842365f712f6ec3fd2819a681112eff60347f994017"
+    },
+    {
+      "year": 2050,
+      "boundary_year": 2040,
+      "dac_enabled": true,
+      "carbon_limit_mtpa": -100.0,
+      "scientific_configuration_sha256": "74b062e41cb83cb4616ca1b6f651f1d7796a556d3f36b512ce2997d6e137086c"
+    },
+    {
+      "year": 2060,
+      "boundary_year": 2050,
+      "dac_enabled": true,
+      "carbon_limit_mtpa": -550.0,
+      "scientific_configuration_sha256": "f579fb49e2213dfc22c81c588fda79f5ba8ea59fa52295b71cf8343e92f62792"
+    }
+  ],
+  "tests": {
+    "tests": 73,
+    "failures": 0,
+    "errors": 0,
+    "passed": true,
+    "seconds": 38.2863420000067,
+    "patterns": [
+      "test_dac_year_schedule.py",
+      "test_planning_sequence.py",
+      "test_run_contract.py",
+      "test_numerical_cleanup.py",
+      "test_reservoir_spill_reduction.py",
+      "test_exact_zero_reservoir_bounds.py",
+      "test_hydro_station_model.py",
+      "test_bound_tightening.py",
+      "test_numeric_simplification.py"
+    ]
+  },
+  "sequence_dry_run_passed": true,
+  "actual_2040_one_hour_model_built_in_tests": true,
+  "optimization_performed": false,
+  "server_actions": false,
+  "files": [
+    {
+      "path": "cispo_model/config.py",
+      "bytes": 64404,
+      "sha256": "fda195ff99583f46673ff02005ba8f74e057d5493a4f2e028378d00d6fddf082"
+    },
+    {
+      "path": "config/optimization_numeric_dac_by_year_v9.json",
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    {
+      "path": "tests/test_dac_year_schedule.py",
+      "bytes": 4585,
+      "sha256": "9ea78f60a0063e1dc21b0b380375a092c91b3db7c4d29d377eeab2b48613e128"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "bytes": 1028472,
+      "sha256": "022866f355df9e91877b6543245edcd9736bc6aa0bdd88673dda2133153f5847"
+    },
+    {
+      "path": "MODEL_SERVER_STATUS.md",
+      "bytes": 311106,
+      "sha256": "cbfe8391e9ca00c322f0f48360db5eb4a7c9856a80ae03179c0b9aab89ccc3e1"
+    },
+    {
+      "path": "SERVER_RUNBOOK.md",
+      "bytes": 353070,
+      "sha256": "31ef8f6aeb0426973aed9c5f5e35cdb4f1af3de24546de2aadeaf528b31226c2"
+    },
+    {
+      "path": "cispo_full_lp_model_spec.md",
+      "bytes": 117692,
+      "sha256": "faf97b9652c9caf00ff10d5bcd143d36a3d77dad37994d7e3915cc8d47465c27"
+    },
+    {
+      "path": "data/technology/dac_parameters_by_year.csv",
+      "bytes": 9014,
+      "sha256": "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6"
+    },
+    {
+      "path": "data/carbon/emissions_limits_by_scenario.csv",
+      "bytes": 1664,
+      "sha256": "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/config_schedule_delta.patch",
+      "bytes": 2405,
+      "sha256": "af17eb2b4e025cb6ff1aa72dd101eaeabf1184d2432425d75db58746586d90f3"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/dry_run.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/dry_run.stdout.log",
+      "bytes": 5161,
+      "sha256": "e7f5bc44a5cff8ee05c55153b4d4ae9d411562f547c8a1b59fdfb44a72f8f083"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/regression.json",
+      "bytes": 451,
+      "sha256": "2d48578d5d28024c999060ae66506f0b7469bb79cc324919e4ef2dd4635802dc"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/regression.log",
+      "bytes": 8265,
+      "sha256": "d1ad9b92af723a74751c86657ce51dc11f82a651378f34c93bb60f8a73581478"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/regression.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/regression.stdout.log",
+      "bytes": 424,
+      "sha256": "31bb888d0123eb7b883398bb66dbf8a253ea54a2da18d3b1dace6713f36b0513"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/REVIEW_ZH.md",
+      "bytes": 5897,
+      "sha256": "dbbf9a56d8fa0cad5541020bfed93afe5712ebad87d270b4d6ead3f757a90046"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/sequence_dry_run/sequence_claim_history/released_70a45546-ad21-46e8-838f-0c805082b66f.json",
+      "bytes": 420,
+      "sha256": "d30c1268109a60e44623d3980d2af0cf32ba8fde8331db4c2a35d2ef17080547"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/sequence_dry_run/sequence_identity.json",
+      "bytes": 4691,
+      "sha256": "921c9d1e747a1da1147bc003d4f1d1a491507a68f2a2a995aaa6a516a0a275f8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/sequence_dry_run/sequence_report.json",
+      "bytes": 5161,
+      "sha256": "e7f5bc44a5cff8ee05c55153b4d4ae9d411562f547c8a1b59fdfb44a72f8f083"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/cispo_full_lp_model_spec.md",
+      "bytes": 117692,
+      "sha256": "faf97b9652c9caf00ff10d5bcd143d36a3d77dad37994d7e3915cc8d47465c27"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/cispo_model/config.py",
+      "bytes": 64404,
+      "sha256": "fda195ff99583f46673ff02005ba8f74e057d5493a4f2e028378d00d6fddf082"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/CODEX_HANDOFF.md",
+      "bytes": 1028472,
+      "sha256": "022866f355df9e91877b6543245edcd9736bc6aa0bdd88673dda2133153f5847"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/config/optimization_numeric_dac_by_year_v9.json",
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/MODEL_SERVER_STATUS.md",
+      "bytes": 311106,
+      "sha256": "cbfe8391e9ca00c322f0f48360db5eb4a7c9856a80ae03179c0b9aab89ccc3e1"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/SERVER_RUNBOOK.md",
+      "bytes": 353070,
+      "sha256": "31ef8f6aeb0426973aed9c5f5e35cdb4f1af3de24546de2aadeaf528b31226c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/source_snapshot/tests/test_dac_year_schedule.py",
+      "bytes": 4585,
+      "sha256": "9ea78f60a0063e1dc21b0b380375a092c91b3db7c4d29d377eeab2b48613e128"
+    },
+    {
+      "path": "supplementary_materials/reviews/dac_year_schedule_20260913/year_schedule.json",
+      "bytes": 904,
+      "sha256": "a762d0a12b01053ae1daa0e2a360118af8bcdec8d2b2219ed87b7e7970aacbf6"
+    }
+  ]
+}

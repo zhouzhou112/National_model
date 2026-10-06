@@ -1,0 +1,13 @@
+{
+  "python": "C:/Users/ZZ/.conda/envs/RL/python.exe",
+  "environment": {
+    "PYTHONUTF8": "1"
+  },
+  "tests": "-m unittest discover -s tests -p test_full_year_numeric_probe.py",
+  "dry_run": "scripts/probe_full_year_numerics.py --output-dir <FRESH_OUTPUT> --dry-run",
+  "stage_package": "supplementary_materials/reviews/tolerance_1e4_readiness_20260913/stage_cloud_gate.py (fresh stage directory required)",
+  "bash_syntax": "D:/sloftware/Git/bin/bash.exe -n supplementary_materials/reviews/tolerance_1e4_readiness_20260913/cloud_preflight.sbatch",
+  "new_optimization_runs": 0,
+  "physical_evidence_run": "supplementary_materials/reviews/crossover_contract_20260913/commands.json",
+  "residual_reconstruction": "V - roll(V,1,hour) - (local_inflow+upstream_release-turbine-spill)*3600; kWh=abs(residual)*head_m*efficiency*rho*g/3.6e6; weather_hour=optimization_start_hour+selected_hour"
+}

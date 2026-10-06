@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-05T06:55:19.926181+08:00",
+  "logs": {
+    "tiny_bound_2030-4938029.out": "m4cl0401.para.bscc\n2026-10-05T06:49:35+08:00\nPython 3.10.20\nINPUT_VERIFIED year=2030 bytes=4048048342 SHA256=fa729325647ebde2d56c553397e02ef013ba09478cddc2f996f3250db14f6739 elapsed=5.4s\nPROGRESS lines=20000000 section=ROWS columns=0 elapsed=9.8s\nPROGRESS lines=40000000 section=ROWS columns=0 elapsed=19.8s\nPROGRESS lines=60000000 section=COLUMNS columns=38541 elapsed=38.0s\nPROGRESS lines=80000000 section=COLUMNS columns=41751 elapsed=65.3s\nPROGRESS lines=100000000 section=COLUMNS columns=45236 elapsed=92.6s\nPROGRESS lines=120000000 section=COLUMNS columns=48886 elapsed=120.2s\nPROGRESS lines=140000000 section=COLUMNS columns=53615 elapsed=148.5s\nPROGRESS lines=160000000 section=COLUMNS columns=58296 elapsed=177.0s\nPROGRESS lines=180000000 section=COLUMNS columns=63043 elapsed=205.2s\nPROGRESS lines=200000000 section=COLUMNS columns=67768 elapsed=233.6s\nPROGRESS lines=220000000 section=COLUMNS columns=72436 elapsed=261.9s\nPROGRESS lines=240000000 section=COLUMNS columns=79080 elapsed=285.5s\nPROGRESS lines=260000000 section=COLUMNS columns=80317 elapsed=306.8s\nPROGRESS lines=280000000 section=COLUMNS columns=931732 elapsed=329.6s\n",
+    "tiny_bound_2030-4938029.err": "",
+    "tiny_bound_2040-4938030.out": "m4cl1105.para.bscc\n2026-10-05T06:49:35+08:00\nPython 3.10.20\nINPUT_VERIFIED year=2040 bytes=4051693374 SHA256=62267732e960d713a7800b7879d50e7f35865fe8333370dc635c2dbc418723cc elapsed=8.8s\nPROGRESS lines=20000000 section=ROWS columns=0 elapsed=11.8s\nPROGRESS lines=40000000 section=ROWS columns=0 elapsed=23.8s\nPROGRESS lines=60000000 section=COLUMNS columns=38541 elapsed=45.5s\nPROGRESS lines=80000000 section=COLUMNS columns=41751 elapsed=78.2s\nPROGRESS lines=100000000 section=COLUMNS columns=45236 elapsed=110.9s\nPROGRESS lines=120000000 section=COLUMNS columns=48886 elapsed=143.3s\nPROGRESS lines=140000000 section=COLUMNS columns=53615 elapsed=176.7s\nPROGRESS lines=160000000 section=COLUMNS columns=58296 elapsed=209.9s\nPROGRESS lines=180000000 section=COLUMNS columns=63043 elapsed=242.8s\nPROGRESS lines=200000000 section=COLUMNS columns=67768 elapsed=275.8s\nPROGRESS lines=220000000 section=COLUMNS columns=72436 elapsed=308.6s\n",
+    "tiny_bound_2040-4938030.err": "",
+    "tiny_bound_2050-4938031.out": "m4cl0503.para.bscc\n2026-10-05T06:49:35+08:00\nPython 3.10.20\nINPUT_VERIFIED year=2050 bytes=4051434705 SHA256=4c04977cfe0b462993fb8e6c63958b7b3725a60cd5f82301315993def912e082 elapsed=7.1s\nPROGRESS lines=20000000 section=ROWS columns=0 elapsed=9.7s\nPROGRESS lines=40000000 section=ROWS columns=0 elapsed=19.6s\nPROGRESS lines=60000000 section=COLUMNS columns=38541 elapsed=37.6s\nPROGRESS lines=80000000 section=COLUMNS columns=41751 elapsed=64.9s\nPROGRESS lines=100000000 section=COLUMNS columns=45236 elapsed=92.1s\nPROGRESS lines=120000000 section=COLUMNS columns=48886 elapsed=119.2s\nPROGRESS lines=140000000 section=COLUMNS columns=53615 elapsed=147.0s\nPROGRESS lines=160000000 section=COLUMNS columns=58296 elapsed=174.6s\nPROGRESS lines=180000000 section=COLUMNS columns=63043 elapsed=202.3s\nPROGRESS lines=200000000 section=COLUMNS columns=67768 elapsed=229.9s\nPROGRESS lines=220000000 section=COLUMNS columns=72436 elapsed=257.5s\nPROGRESS lines=240000000 section=COLUMNS columns=79080 elapsed=280.6s\nPROGRESS lines=260000000 section=COLUMNS columns=80317 elapsed=301.5s\nPROGRESS lines=280000000 section=COLUMNS columns=714459 elapsed=324.1s\n",
+    "tiny_bound_2050-4938031.err": ""
+  },
+  "results": {
+    "2030": {
+      "archive_manifest_2030.json": 609,
+      "inputs_sha256_2030.txt": 819
+    },
+    "2040": {
+      "inputs_sha256_2040.txt": 827,
+      "archive_manifest_2040.json": 608
+    },
+    "2050": {
+      "archive_manifest_2050.json": 610,
+      "inputs_sha256_2050.txt": 827
+    }
+  },
+  "queue": {
+    "returncode": 0,
+    "stdout": "             JOBID        STATE         TIME               NODELIST(REASON)\n           4938029      RUNNING         5:44                       m4cl0401\n           4938030      RUNNING         5:44                       m4cl1105\n           4938031      RUNNING         5:44                       m4cl0503\n",
+    "stderr": ""
+  },
+  "accounting": {
+    "returncode": 0,
+    "stdout": "JobID|State|Elapsed|ExitCode|AllocCPUS|ReqMem|MaxRSS|NodeList\n4938029|RUNNING|00:05:44|0:0|4|16G||m4cl0401\n4938029.batch|RUNNING|00:05:44|0:0|4|||m4cl0401\n4938029.extern|RUNNING|00:05:44|0:0|4|||m4cl0401\n4938030|RUNNING|00:05:44|0:0|4|16G||m4cl1105\n4938030.batch|RUNNING|00:05:44|0:0|4|||m4cl1105\n4938030.extern|RUNNING|00:05:44|0:0|4|||m4cl1105\n4938031|RUNNING|00:05:44|0:0|4|16G||m4cl0503\n4938031.batch|RUNNING|00:05:44|0:0|4|||m4cl0503\n4938031.extern|RUNNING|00:05:44|0:0|4|||m4cl0503\n",
+    "stderr": ""
+  }
+}

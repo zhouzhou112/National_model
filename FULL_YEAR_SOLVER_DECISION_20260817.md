@@ -259,3 +259,33 @@ wrapper_stderr_and_time=audited
 
 因此本参数筛选与全年决策目标完成；这不把任何 744/1488 截断根重标为年度科学结果，也不声称当前
 cloud 已终态。后续只剩外部 job 的低频终态审计及任何新付费提交前的实时资源规则复核。
+
+## 2026-10-05 数值稳健性 A：24h 容量门槛未通过（不代表 744h 已否决）
+
+隔离验证 `numerics.hydro_capacity_headroom_zero_gw=1e-6`、`retrofit_upper_zero_gw=1e-6`，A3 续接截断独立只做代码/测试、实际配对关闭。2040/start2880/24h 的 A1/A2 on/off 均 OPTIMAL/QC PASS，目标相对差 1.6290758e-12；物理 LP 仅 67 个审计容量界变化，A/RHS/LB/目标/行方向精确一致；24h MPS 的 0<range<1e-6 全变量数为 0。
+
+但输出 `thermal_new_gw[13,8]`、`thermal_new_gw[13,9]`、`thermal_retrofit_to_ccs_gw[13,4]` 在未清零位置发生路径重分配，最大 0.00016583682648540254 GW，大于 1e-6 GW。按任务书“容量输出差异仅限被清零站点且不超过阈值”的固定门槛，**否决这一当前阈值组合直接进入情景建模入口**，全部开关保持默认关闭。该判断限于规定的 24h 容量门槛；不能表述为 744h 稳健性已否决、全年最优容量必然改变，或永久否定该技术。
+
+固定机 744h A/B/C 验证仍在运行，英国19:24 A off 尚无终态；B/C 暂无通过/否决结论。最终全套测试因本机蓝屏中断，不伪记已通过。完整证据与剩余行动：`supplementary_materials/reviews/numerical_robustness_20261005/REVIEW_ZH.md`、`A_24h_capacity_physical_lp_diff.json`、`A_capacity_decision_gate.json`。
+
+2026-10-05 英国19:37追加测试更正：前述蓝屏中断记录保留。作者授权恢复后，最终冻结源码已由根代理在本机独占串行完成 `python -m unittest discover -s tests -q`：411 tests / 110.818s / OK (skipped=1，Windows不适用Linux /proc) / rc0，source_unchanged=true。日志SHA `f2335935e2e62579f0bcbded12c3e5efbb2898bf0cfed4c59fe78133f517ea1b`。这仅补齐代码回归，不改变A的24h容量门槛否决，也不提前判定尚未完成的744h配对。
+
+2026-10-05 英国19:54追加入口及最终回归证据：B诊断profile的 `direct_nonbasic_scientific_acceptance` 改为false，数值参数仍仅增加BarHomogeneous=1；实际runner A/C 1h build-only审计与B参数入口fixture通过。A的物理白名单改由逐站清理审计独立导出，B/C没有A审计不能豁免界差；四组既有LP重新分析通过，原LP/解未改动。最终源码完整回归 **412 tests / 112.906s / OK (skipped=1) / rc0**，source_unchanged=true；日志 `supplementary_materials/reviews/validation_coordination_20261005/unittest_verified_20261005T185140Z.log`，SHA `bf65c47c52747ef14fb6385b1c1518e822d5f7af1c0771c2b4b98a7077fa2d79`。之前184739Z调用漏设CISPO_WAVE_ROOT的环境失败保留。A当前阈值晋级否决不变；B/C仍等待固定机744h终态，不能把这次代码回归写成稳健性通过。
+
+2026-10-05 英国22:26追加 A 的744h终态观察：off/on均OPTIMAL但物理QC均HARD_FAIL，轮数157→162（+3.1847%），PInf/DInf/Compl两侧均无单步>=10倍回升。on的163条轨迹0..162连续无重复，Runtime/Work不倒退，无残差0后转正。观测结果不满足“轮数不增加且无跳升，或轮数至少减少10%”的固定稳健性晋级规则，故**当前A1/A2阈值组合不晋级**，先前24h容量门槛否决独立保留。目标相对差8.402902688862481e-6仅报告为Cross0/1e-4终态数值差，不能直接解释成物理LP不等价或精确最优解改变。两侧10项参数回读相同、input_manifest远端SHA相同；但取证期间SSH转发握手失联，on的完整config/Factor原log/time console尚未取齐，不能宣称身份和成本证据全部闭合。部分快照 `supplementary_materials/reviews/numerical_robustness_20261005/server_evidence/20261005T2126Z/` 明列31文件已验SHA、1个0字节partial、24个未取，原件与SHA保留远端；后续补证不覆盖本记录。最后确认B_off744由原suite正常运行，不因网络失联推断远端终止，不重启或重提。
+
+## 2026-10-06 BarHomogeneous=1：744h隔离配对否决
+
+固定机2030/start2880/744h、12线程、Cross0/1e-4/NF2/Seed0，同输入manifest（字节相同）和有效配置，唯一数值差为BarHomogeneous默认−1→1。两侧OPTIMAL，但均物理QC HARD_FAIL；Barrier轮数142→265（+86.62%），runtime5105.36632514→11978.51019621秒（+134.63%），第2轮起平均相邻回调耗时33.41600906→43.88992734秒。Presolved rows/cols/nnz、Dense6627、Factor NZ8.416e8/Ops5.354e12完全相同。两侧完整轨迹均无>=10倍PInf/DInf/Compl跳升、无残差0后转正、无重复或Runtime/Work倒退。因此未满足“轮数不增且无跳升，或轮数减少至少10%”固定晋级规则，**否决当前BarHomogeneous=1候选**，默认配置保持不变。
+
+目标相对差3.9733594749168745e-5只作为Cross0/1e-4终态数值差，不直接解释为物理LP或精确最优解改变。off的QC失败为双向流与水库续接；on另外出现功率平衡、水库能量/库容、碳检查失败。不得把本次744h时间差外推全年倍率。原日志、参数、配置、输入身份、逐轮CSV/JSONL、QC/time均在 `supplementary_materials/reviews/numerical_robustness_20261005/server_evidence/20261006T1549Z/`，97个必要文件逐SHA全通过，归档SHA `85a63afdb8633c4a9f8a295de913f729350192be05a0348f8627c60f297fd178`。
+
+同次补证关闭了前述A的partial缺口：A完整配置仅指定A阈值差、全部输入manifest相同、Factor NZ8.601e8→8.259e8/Ops5.588e12→5.140e12，每轮仅改善1.78%，不改变157→162轮及24h容量门槛否决。C尚未最终判定：默认presolve将分段合回，已按原授权启动唯一AggFill5双侧五轮重试及随后默认AggFill−1的Cfull744工程等价性求解；不提前授予2160h资格，不增加云作业。
+
+## 2026-10-06 C年度分段：AggFill=5后仍未保留，否决当前2160h晋级
+
+默认AggFill−1的744h五轮配对中分段被presolve合回；按任务书唯一一次双侧AggFill=5重试也已自然完成（两侧status7/BarIterCount5/无解）。off/on同为Presolved3243048行、3064635列、35878945非零，Dense6675、Factor NZ8.385e8、Factor Ops5.495e12，均完全相同。两侧输入manifest字节相同、实参相同、配置仅C formulation不同；第2–5轮平均回调间隔29.23256129/28.57763875秒，约2.24%时间差不补足结构存续门槛。因此**否决当前block_hours=730的C分段进入2160h+晋级**；不追加第二次参数重试、不外推全年。
+
+41个必要证据文件SHA全通过，目录 `supplementary_materials/reviews/numerical_robustness_20261005/server_evidence/20261006T1626Z/`，归档SHA `e800c89ef6b6a95c3648056c1816518882c6250f8e2240c4d359d4191fa4e4e4`。此判定限于结构晋级，**不表示744h完整目标等价性已完成**。已授权的C_on744_full由原补验队列在16:19:12UTC正常启动（solver670416），gate可用107711418368字节、其他solver为空，仍继续运行。实际构建配置与B_off744仅C formulation不同、输入manifest字节同、gate源码SHA无变化；终态还需比对实际参数、QC和目标差<=1e-7。已恢复转发/跟进，前日PAUSED仅为中断历史；不重启旧suite，不停止在跑solver。
+
+2026-10-06英国22:14追加C终态：Cfull已OPTIMAL/134轮/Runtime4848.09546709s/Work7694.50628128/目标2313584.6588953873，QC HARD_FAIL；参考Boff为142轮/目标2313582.8385150842，相对差7.868230489839585e-7 > 1e-7，目标门槛亦未通过。终态配置仅C formulation差、输入manifest字节同、10项实参数相同，C启动至终态源SHA一致；Boff原gate没有同期源SHA，源身份仅有冻结包/修复早于B启动日志/后验manifest链，明确保留此局限，不造同期证明。两侧无>=10倍跳升/零后转正，结构/Dense/Factor同，QC失败均水库续接和省际双向流。该Cross0数值目标差不是数学不等价证明，也不能用轮数减少覆盖结构与等价性门槛；当前C否决不变。14份终态原件逐SHA通过，详见`numerical_robustness_20261005/server_evidence/20261006T2114Z/final_comparison.json`及REVIEW5.5。授权验证收尾，用户取消自动监听，保持PAUSED；不启动2160h或科学情景。

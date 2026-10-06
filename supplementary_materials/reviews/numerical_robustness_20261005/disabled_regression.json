@@ -1,0 +1,212 @@
+{
+  "mps_bytes_equal": true,
+  "solution_bytes_equal": true,
+  "scientific_sha_equal": true,
+  "physical_files": [
+    {
+      "file": "annual_adequacy_by_province.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "annual_carbon_ccs.json",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "annual_constraint_shadow_prices.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "annual_flexible_load_by_province.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "annual_generation_by_province_technology.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "annual_resource_accounting_by_province.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "co2_source_sink_flows.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "cost_components.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "dac_capacity_capture.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "dual_export_status.json",
+      "bytes_equal": false,
+      "payload_equal": false
+    },
+    {
+      "file": "flexible_load_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "hourly_marginal_prices.csv.gz",
+      "bytes_equal": false,
+      "payload_equal": true
+    },
+    {
+      "file": "hourly_province_balance.csv.gz",
+      "bytes_equal": false,
+      "payload_equal": true
+    },
+    {
+      "file": "hourly_province_security.csv.gz",
+      "bytes_equal": false,
+      "payload_equal": true
+    },
+    {
+      "file": "hydro_aggregate_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "hydro_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "hydro_cascade_reconciliation_audit.json",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "hydro_cascade_reconciliation_by_node.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "hydro_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "intra_grid_substation_design.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "intra_grid_vre_site_design.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "load_center_annual_balance.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "load_center_annual_generation.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "load_center_intra_transmission.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "load_center_network_qc.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "province_annual_load_center_accounts.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "reservoir_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "reservoir_station_index.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "scenario_manifest.json",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "solution_qc.json",
+      "bytes_equal": false,
+      "payload_equal": false
+    },
+    {
+      "file": "storage_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "storage_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "thermal_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "thermal_nuclear_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "time_index.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "transmission_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "transmission_flows.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "vre_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "vre_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "wave_capacity.csv",
+      "bytes_equal": true,
+      "payload_equal": true
+    },
+    {
+      "file": "wave_dispatch.npz",
+      "bytes_equal": true,
+      "payload_equal": true
+    }
+  ]
+}

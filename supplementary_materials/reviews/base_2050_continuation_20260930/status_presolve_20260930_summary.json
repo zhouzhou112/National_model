@@ -1,0 +1,70 @@
+{
+  "source": "status_presolve_20260930T175852.stdout.log",
+  "source_sha256": "b69ef41f995bacd950c485f38f39f20f8a5461cbf91285c6011039991872885c",
+  "collected_at": "2026-10-01T00:58:52.552481+08:00",
+  "job": {
+    "JobState": "RUNNING",
+    "RunTime": "02:49:15",
+    "NodeList": "m4cm1802",
+    "Restarts": "0",
+    "TimeLimit": "UNLIMITED",
+    "AllocTRES": "cpu=64,mem=750G,node=1,billing=64"
+  },
+  "max_rss_gib": 101.47514343261719,
+  "current_rss_gib": 87.05260467529297,
+  "archive": {
+    "schema_version": "cispo_model_archive_v1",
+    "files": [
+      {
+        "path": "original.mps.gz",
+        "bytes": 4051434705,
+        "sha256": "4c04977cfe0b462993fb8e6c63958b7b3725a60cd5f82301315993def912e082"
+      },
+      {
+        "path": "parameters.prm",
+        "bytes": 194,
+        "sha256": "9e598d79cfb87d8d29208151c9325c2615214415f1903d83d7f417ec4adc5d5b"
+      }
+    ],
+    "errors": [],
+    "warnings": [],
+    "presolved_status": "NOT_REQUESTED",
+    "uncrush_mapping_saved": false,
+    "factorization_saved": false,
+    "gurobi_fingerprint": -2142293841,
+    "full_name_catalog_requested": false,
+    "status": "COMPLETE"
+  },
+  "selected_log": [
+    "Thread count: 128 physical cores, 128 logical processors, using up to 48 threads",
+    "BarConvTol  0.0001",
+    "Crossover  0",
+    "CrossoverBasis  1",
+    "NumericFocus  2",
+    "Threads  48",
+    "Optimize a model with 50907233 rows, 41458383 columns and 485386301 nonzeros (Min)",
+    "Model fingerprint: 0x804f30af"
+  ],
+  "tail": [
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7280s)...",
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7285s)...",
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7290s)...",
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7295s)...",
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7300s)...",
+    "Presolve removed 13742492 rows and 7798936 columns (presolve time = 7305s)..."
+  ],
+  "error_files": {
+    "stderr.log": {
+      "exists": true,
+      "bytes": 0
+    },
+    "slurm-4844528.err": {
+      "exists": true,
+      "bytes": 0
+    },
+    "output_8760/model_archive/original.mps.gz": {
+      "exists": true,
+      "bytes": 4051434705
+    }
+  }
+}

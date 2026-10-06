@@ -1,5 +1,7 @@
 # CISPO 完整 LP/RUC 模型复现说明
 
+> 2026-10-02 文档口径更正（不改模型）：下方早期第 0.2 条“碳约束和生物质约束不缩放”已与当前实现不符。现行 `master.py:selected_horizon_annual_fraction` 按选取小时/8760 缩放碳、生物质、DAC 年吞吐及封存注入等年度流量边界；年化投资/固定成本不缩放，与 README 一致。短窗仍仅为工程测试，周期边界及全部物理约束沿用当前实现。本轮 2016h 诊断不得改成历史的 2160h，也不作为年度规划结果。
+
 > 目的：在本地复现 `Integrated Modeling for the Transition Pathway of China’s Power System` 补充材料 S4 中的 CISPO 电力系统优化模型。
 >
 > 本文档供 Codex / 本地 Python + Gurobi 实现使用。请优先将其作为**数学模型规格书**，而不是普通说明文档。实现时不得随意删减约束、改变符号含义或把连续 RUC 改成整数 UC。
@@ -2258,3 +2260,158 @@ raw/presolved 规模、因子结构、阶段时间、迭代数和峰值 RSS 后�
 声明的敏感性。方程、单位、证据边界、候选配置及不求解测试见
 `config/FLEXIBLE_RESPONSE_V1_CONTRACT.md`。这是可行域收紧的研究扩展，不能声称与旧模型等价。
 原物理状态、时空分辨率和供给侧保持不变；新增候选未经全国全年资格验证，不得自行启动优化。
+
+### 14.9 2026-09-13 水库输入修正与有预算的数值清理候选
+
+`config/optimization_2030_numeric_repaired.json` 使用独立科学基准
+`base_2024_water_corrected_numeric_cleanup_20260913_v1`；旧默认配置和历史源表保留。
+锦屏二级按竣工环保验收的直接证据将调节库容改为 4.96 GL，修正表、原表备份与账本在
+`data/hydro/repaired_20260913/`。这是物理输入纠错，不声称与旧输入科学等价。
+
+可选 `hydro.reduce_cyclic_inventory_range=true` 将库存数值界写为
+`0 <= V_i,t <= min(S_i, B_i)`，其中 `B_i` 是所选循环周期的入库水量安全上界，含拓扑传播的
+上游水量。当前库存仅进入时序差分和上下界，因此 `V_i,t - min_t(V_i,t)` 保留原调度与容量
+可行域投影；不固定特定小时库存。若未来加入指定期初库存、库存决定水头或绝对库存服务，必须重新证明适用性。
+
+候选将最终本地流量中 `0 < q < 0.01 m3/s` 的部分明确记为输入损失，并将资源 CF 截断值设为
+`1e-4`，新增容量剩余空间截断值设为 `1e-8 GW`。原有单位、目标函数及梯级传递规则保留。
+近零容量空间截断纳入科学配置指纹，实际电站表及修正账本纳入输入哈希，禁止与旧情景直接混用。
+完整推导、全年误差预算、分项测试与未通过记录见
+`supplementary_materials/reviews/numeric_repair_20260913/REVIEW_ZH.md` 及 `VALIDATION_ZH.md`。
+局部数值验收与全年水文数组审计不等于已通过 8760h LP 验收，也不构成自动重启云端全年作业的指令。
+
+### 14.10 2026-09-13 水库库容专项复核与候选v2
+
+`config/optimization_2030_storage_audited_v2.json` 在14.9候选上仅增加白竹洲、克孜尔的来源库容纠错，
+使用科学ID `base_2024_reservoir_storage_audited_20260913_v2`。三站调节库容分别为锦屏二级4.96GL、
+白竹洲3.84GL、克孜尔339.9GL；原表和v1保留。其他水文、单位、阈值、目标、约束及求解参数不变。
+新数据及修正账本：`data/hydro/repaired_storage_audit_20260913_v2/`。来源PDF/单位渲染、全小时审计和验证见
+`supplementary_materials/reviews/reservoir_storage_audit_20260913/REVIEW_ZH.md`。
+
+原库容大于所选年入流水量上界，只能证明14.9条件下库存范围可收紧，不能单独证明真实工程库容错误。
+620库×8760h已审计，140库原始库存界可收紧；共同估算模式/站点容量更新而保留旧水力参数另列核实队列。
+
+必须区分短窗回归和全年资格：短窗循环库存界24h合计仅保留原库存约0.54%，8760h保留约58.1%。
+三站物理纠错在当前起点24/168/744/2160h库存界中被窗口水量界遮蔽，v1/v2的24h完整MPS哈希完全相同。
+不能据短测试通过断言库容纠错已提高全年可求解性。v2尚无全国8760h LP构建/预处理/求解证据。
+旧4139552全年水量残差复算最大0.03899854m3，水量QC通过；其原整体QC失败不能替代单独的水库诊断。
+
+### 14.11 2026-09-13 孤立水库弃水界收紧与v3验收范围
+
+候选`config/optimization_2030_spill_tightened_v3.json`在v2上启用`hydro.limit_independent_spill_to_inflow`；默认false保持旧版本。
+仅对不接触任何梯级边的水库约束`spill[t] <= local_inflow[t]`，作为变量上界，不新增约束行。
+在自由循环期初库存、固定水头、库存无绝对服务且弃水无独立奖励/要求的当前模型中，任意可行发电轨迹均可改用只在溢满时弃水的周期库存轨迹，故保留发电/容量可行域投影。
+梯级的源站和目标站均不适用该收紧，避免切掉有下游发电价值的延迟放水。水量、功率、电量单位、其他约束和年化成本目标不变。
+482库全年4,222,320个弃水上界被收紧，1,321,812个上界成为精确零；不能把该数等同于已观测的全国预处理减列数。
+620库×8760h水力组件诊断全部OPTIMAL，独立物理水量重建最大残差5.8850e-6m3；该诊断固定既有装机、采用随负荷变化的发电价值，不含全国电力/碳/安全约束。
+另有保留全年水库上界的24h/168h全国集成测试OPTIMAL且完整QC PASS；仍不替代全国8760LP的实际求解验收。详见numeric_resolution_20260913/REVIEW_ZH.md。
+
+
+### 14.12 2026-09-13 允许小幅有损简化的最终数值候选v8
+
+最终配置`config/optimization_2030_numeric_final_v8.json`、科学ID`base_2024_numeric_simplified_water_20260913_v8`，
+沿用v2修正水库表和现有单位、变量结构、31省/小时尺度。用户明确允许数值稳定性所需的少量资源损失；以下不是全部科学等价变换。
+
+- 修正14.11对小正入流产生的过窄弃水界：孤立库正上界取`min(original_release_UB, max(local_inflow, 1m3/s))`，精确零仍为零。
+  这是变量上界的下限，不能解释成每小时至少弃水1m3/s。新上界夹在14.11界和原释放界之间，保留原发电/容量可行域投影。
+- CF清理阈值0.01；VRE既有/继承容量floor及新增headroom阈值均1e-5GW(10kW)。记录逐站损失，保留站点和技术潜力；所有相关配置进入科学指纹。
+- 省内负荷中心网络流量正则由0.001增至1CNY/MWh，为显式目标扰动。其他成本口径不改。
+- `features.dac=false`仅允许显式2030简化情景，DAC容量/捕集固定零且去掉相应小时电耗/年度需求链接；2030碳上限仍+4000Mt/年。
+  后续年份或已有继承DAC时拒绝直接关闭；该技术集合变更不得与旧基准静默混用。
+- 最终梯级分配的`0<beta<1e-4`清零，发生在自然流量协调和本地入流清理之后，不提高本地入流补偿。
+  21边时/12小时的原比例、索引、代理水量及损失预算逐项归档；含下游发电资源损失上界2.79309GWh。
+  原协调残差表示显式损失清理前的协调质量，最终实际水量约束另由独立物理重建检查。
+
+v7整体CO2行单位乘100试验虽压缩表面系数范围，未见可求解性收益，已从生产撤回；仍使用MtCO2物理行/变量与原影子价格定义。
+未对整个矩阵一律截断小数、未放宽FeasibilityTol/OptimalityTol掩盖误差。最终求解NF2/Scale2/Method2/BarConvTol1e-8/Crossover2/Basis1。
+50测试通过，最终620×8760水力QC及全年水库界下168h冬季/24h夏季集成QC通过；实际8760年度容量层仅Matrix0.05..1，不含小时LP。
+完整全国8760 LP未验收。资源损失按旧最优装机可用量计0.02823%，并非新最优发电损失；详细比较/反例/命令见numeric_doublecheck_20260913/REVIEW_ZH.md。
+
+
+### 14.13 2026-09-13 DAC按规划年启用
+
+用户确认2030可关闭DAC但后期必须可用。新配置config/optimization_numeric_dac_by_year_v9.json保留14.12的其他设置，
+以features.dac_by_planning_year明确2030=false、2040/2050/2060=true；for_planning_year解析当年features.dac。
+恢复可选不等于强制建设。按现有capacity=inherited+new，2030零DAC容量不限制2040新增，后续投产/退役批次正常继承。
+该政策明确排除2030提前建DAC；当前模型为逐年递推，不声称与任意全周期联合优化等价。
+年度表必须覆盖四年、值为布尔且与当年开关相符；旧配置无年度表时行为保持不变。完整年度表纳入既有科学配置身份。
+不改变DAC电/热耗、成本、寿命与封存约束；Base碳上限仍4000/1300/-100/-550Mt/年。
+73回归测试及2040一小时实际LP构建检查通过，四年dry-run通过；未求解后续年份，全国8760数值资格仍未完成。
+只开关DAC的既有局部冷启动结果24h较快而168h较慢，不能据系数范围变小宣称稳定加速。详见dac_year_schedule_20260913/REVIEW_ZH.md。
+
+
+### 14.14 2026-09-13 v9下一阶段诊断启动前核验
+
+本轮不改变14.12/14.13的物理模型。诊断入口改为默认v9/2030，仅保留有时限的单次全年资格验证。
+实际参数回读NF2/Scale2/Method2/Presolve2/BarConvTol1e-8/Crossover2/Basis1/SolutionTarget0，Feas/OptTol1e-6，Markowitz0.01。
+原始MPS和算法参数在求解前归档，原子终态记录及退出码避免TIME_LIMIT/NUMERIC被误报成功；实际optimize日志提供预处理与因子数据，不持有额外presolved年度模型。
+v9与v8夏季同窗口MPS逐字节相同，v9全年水库界下24h冷启动25.740s/严格QC PASS。新增5项启动测试通过；全年输入与服务器单变量许可烟测通过。
+仅证明可进入真正8760限时诊断，仍没有全国8760求解资格。预算32线程/900s优化/550GB软内存、Slurm700GiB/2h总墙钟；不自动启动后继年。
+详细命令、实际参数、失败尝试与证据见numeric_prelaunch_20260913/REVIEW_ZH.md。
+
+
+### 14.15 2026-09-13 恢复44线程资源默认与容差对照
+
+根据用户指出的已有默认，后续诊断恢复Slurm64CPU/700G、Gurobi Threads44和SoftMemLimit=null。
+由config/cloud_resource_profiles/a8_8760_stagea_default_v1.json读取资源字段，不继承其旧NF1/nonbasic/8192算法设置。
+同一v9夏季24h（真实全年水库界）上，BarConvTol1e-8/1e-6/1e-4三份原始MPS字节相同，最终QC均通过。
+Barrier轮数88/83/74，总时间25.740/26.347/31.189s；1e-4降低Barrier工作却增加总Work，不能宣称更松即更快。
+下一轮诊断默认1e-6作为折中测试参数，保留NF2/Crossover2/Basis1及原单位QC和1e-6可行性/最优性容差。
+物理模型与v9科学配置身份不改，源v9配置中的1e-8保留为可复现实验基准；有效诊断配置明确记录覆盖值。
+只更改线程/内存和诊断容差，900s优化/2h任务时限保留；当前未提交全国作业，也无8760数值资格通过证据。
+详见solver_alignment_thermal_20260913/REVIEW_ZH.md、tolerance_comparison.json/csv及参数回读。
+
+
+### 14.16 2026-09-13 Crossover约定更正与非基解验收限制
+
+- 2026-09-13 Crossover约定更正（覆盖上一条直接沿用Cross2启动的结论）：原定Stage A和Thermal均为Crossover0/SolutionTarget1。
+  先前本地修复采用Cross2后QC通过，再带入全国候选，不能称为沿用既定方案；用户提醒后诊断入口已恢复0/1，资源仍44线程/64CPU/700G/SoftMemLimit=null。
+  本次v9同MPS夏季24h无Crossover冷测试：BarConvTol1e-6/1e-4均OPTIMAL，但原行最大残差1.164401e-3/1.313795e-3，完整QC HARD_FAIL；耗时23.143/21.176s、83/74轮。
+  最差行reservoir_independent_hourly_transition[345,0]，另有跨省双向流及城市网络QC失败。此前Cross2的PASS不能作为无Cross全年资格；本轮未测Cross0/1e-8完整QC，不推荐据此启动多年/多日生产。
+  1e-6只保留为未验收诊断测试值；源v9和物理模型未改，不自动Crossover/Stage B。5项入口测试、参数实际回读和dry-run通过。
+  旧Cross2启动包保留但资格建议撤回，新Cross0诊断归档197文件哈希通过，非科学验收包；新全国任务未上传/提交，Thermal未修改。
+  Git0a03cc452e95d158f36923ceb5210267979b6234未提交；修改scripts/probe_full_year_numerics.py、tests/test_full_year_numeric_probe.py及四份交接文档。
+  命令/输出/失败记录/前后快照/差异/哈希：supplementary_materials/reviews/crossover_contract_20260913/；精确下一步本地定位该水库行和双向流残差，在固定Cross0下验证修复，再评估全国诊断。
+
+此条覆盖14.15中直接继承Crossover2作为全国诊断默认的选择。目标、物理模型、数据和严格QC阈值不变；仅纠正算法入口及此前证据适用范围。
+
+
+### 14.17 2026-09-13 用户选定1e-4与独立诊断保全
+
+- 2026-09-13 用户明确选定BarConvTol=1e-4：诊断入口和新包均更新为1e-4/Crossover0/SolutionTarget1/Threads44；NF2/Scale2/Presolve2、FeasTol=OptTol1e-6、Slurm64CPU/700G/无SoftMemLimit保持。
+  修复诊断遗漏：复用save_numeric_snapshot不依赖SolCount分块查询/保存BarX/X/BarPi/Pi等；城市QC失败后仍独立执行小时水库QC，严格阈值不变，不自动Stage B或接受结果。
+  8项启动/保存测试PASS、实际参数回读、dry-run和本地bash -n通过；科学配置身份不变，未新增模型变量/约束或修改输入。未重复求解24h，复用上轮同MPS的Cross0/1e-4真实冷解。
+  独立量级复核：最大水量残差1313.795m3在高凤山HydroCHN_01080/库索引471/气象小时3961；折算176.025kWh。620×24h中20站时>1m3，全部绝对残差折算310.895kWh，非实际损失或全年上界。
+  跨省反向重叠1.571604GWh/24h，最大42.1258MW、额外损耗37.115MWh；59项小时硬QC中57项PASS，水库平衡/跨省方向失败，城市QC另失败。目标相对Cross2差0.0033988%。不能把这些小样本QC失败等同于旧NUMERIC崩溃，也不能宣布全年已健康。
+  高凤山源调节库容3354.936947GL仍为估算来源待核实，duplicate_comid/工程字段需核对；本轮未找到足以直接替换的可靠工程值，未猜测修数据。
+  新本地包tolerance_1e4_readiness_20260913/cloud_gate_20260913_v9_t44_cross0_tol1e4.tar.gz，197文件/663247bytes/SHAd47f050c79a6e3c73d4216a80a3cbe0d8f168b62e630343ffdeb4905f9e2a6a2；未上传/提交，未连接或修改服务器/Thermal。
+  保留900s optimize/2h总墙钟早期诊断预算；历史44线程排序4155.5s更长，可能未到Barrier即截止，不能用这种TIME_LIMIT判定数值失败。要验证迭代须先安排覆盖排序的有限预算。
+  Git0a03cc452e95d158f36923ceb5210267979b6234未提交；改scripts/probe_full_year_numerics.py、tests/test_full_year_numeric_probe.py及四文档。报告/命令/参数/残差表/原始审计引用/快照/差异/哈希在supplementary_materials/reviews/tolerance_1e4_readiness_20260913/。
+  下一步固定用户选定1e-4/Cross0，优先核实高凤山异常库容及无Cross残差，在原单位下验证修复；全国8760未验收，不因这次参数更改直接启动多日生产任务。
+
+此条覆盖14.16的1e-6待测值，保留物理模型/源数据/单位/严格QC。向量可读或保存成功不是科学接受；各层失败必须完整报告。
+
+
+### 14.18 2026-09-13 9–10天求解目标的证据边界
+
+- 2026-09-13 20:55 9–10天可求解性判断与Thermal参数核对：当前尚无修复版全国8760构建/预处理/Barrier和峰值内存验收，不能承诺9–10天稳定完成。
+  实际solver主差异为当前NumericFocus2、Thermal1；两者BarConvTol1e-4/Method2/Crossover0/SolutionTarget1/Threads44/Presolve2/Scale2/FeasTol=OptTol1e-6一致，Slurm均64CPU/700G/无SoftMemLimit。
+  当前900s optimize/2h作业是早期诊断设置，不能直接用作多日启动；Thermal无限时，实际Presolve17794.52s约4.94h。本轮未变更预算、模型或参数。
+  模型层仍不同：当前去掉年度行8192缩放、采用水库/CF/小容量等修复、城市正则1CNY/MWh及2030DAC关闭；Thermal启用8192、旧输入/0.001CNY/MWh正则、热响应及DAC，不能当同LP速度对照。
+  20:54:34只读Slurm：4533060 RUNNING/6-00:44:22，64CPU/700G/billing64。20:55:28读取日志末iter483，P1.59165741e9、D-5.38091980e9、PInf21.5、DInf1.41e-4、Compl89.6，solver518073s。
+  项目诊断abs(P-D)/max(1,abs(P),abs(D))当前129.58%、历史最小97.57%；不是MIPGap，不据此预测再3–4天收敛，也未判定作业终态失败。
+  当前建议固定1e-4/Cross0/44/NF2，优先核实异常水库输入并在完整8760首12–24h观察收敛/内存；首日检查也不是截止保证。局部0.311MWh残差不应成为无条件收紧容差的理由，但QC记录不篡改。
+  本轮只读服务器、写对照报告及更新四文档，无求解/测试重跑，无提交/停止/重启/改参/自动监控。Git0a03cc452e95d158f36923ceb5210267979b6234未提交。
+  报告/参数CSV-JSON/服务器有效配置/日志摘要及哈希：supplementary_materials/reviews/solve_feasibility_vs_thermal_20260913/。下一步以实际全年首日数据评估目标，而非给无依据9–10天ETA。
+
+本次为评估与运行状态更新，不变更前述科学模型、输入或验收规则。详细算法差异与模型差异分别记录，不以局部耗时推断全年。
+
+
+## 2026-09-14 运行配置补充：v9修复版不限时正式Stage A
+
+本次无数学模型、变量、约束、单位、筛选阈值或数据源追加变更，仍为v9科学指纹937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0。新增独立solver profile barrier_stagea_numeric_repaired_v1_threads48与resource profile a8_8760_numeric_repaired_t48_m750_v1，运行既有物理年度行，不能套用旧8192要求。作者授权BarConvTol1e-4/Crossover0/SolutionTarget1/NF2/48线程，无TimeLimit/SoftMemLimit/Slurm时限，BarIterLimit置最大允许整数以去除默认1000轮截断；不更改原单位QC阈值，不自动Stage B。正式作业4613045已放行等待64CPU/750GiB资源，Req billing64；实际分配尚未回读，无全年数值/时长保证。新release版本v2修复PYTHONPATH依赖继承，原输入与共享环境未覆盖。Git基准0a03cc452e95d158f36923ceb5210267979b6234+dirty源码按202文件SHA冻结；验证、命令、输入、参数和结果路径见supplementary_materials/reviews/formal_launch_20260914/REVIEW_ZH.md。下一步观察实际全年构建、预处理及Barrier长尾；未新增自动监控任务。
+
+
+## 2026-09-14 08:51 构建后行缩放合同修复
+
+此前新增物理行Stage A入口仍遗漏构建后的8192/exponent13判断，导致4613045在optimize之前退出；不构成模型数值失败证据。本次将前后两处检查统一为修复版physical_v1/exponent0、旧版8192/exponent13，继续绑定真实矩阵系数和行名。不改变物理模型、输入、单位、年度DAC开关或solver profile；科学指纹937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0不变。45项相关测试通过，新v3作业4614693按同一64CPU750G/48线程、不限时设定已放行。Git0a03cc4基准+dirty源按203文件SHA冻结，包SHA987a351effdfca79d4020568aea0957a04a0d20b7fe1a5a238911610fb8c9547。详细命令、失败证据和验证边界见supplementary_materials/reviews/formal_launch_failure_20260914/REVIEW_ZH.md；下一步验证实际计算节点启动及全年构建后的检查，无全年收敛保证。

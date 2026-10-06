@@ -1,0 +1,13 @@
+{
+  "job_id": "4614693",
+  "released_at_utc": "2026-09-14T00:50:27.224105Z",
+  "verified_requested_resources": {
+    "cpu": "64",
+    "mem": "750G",
+    "node": "1",
+    "billing": "64"
+  },
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

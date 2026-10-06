@@ -1,0 +1,120 @@
+[
+  {
+    "tolerance": "1e6",
+    "status": 2,
+    "runtime": 23.14300012588501,
+    "barrier_iterations": 83,
+    "objective": 2134775.5787906684,
+    "constraint_violation": 0.0011644013254112906,
+    "raw_max_row_violation": 0.0011644013254112906,
+    "dual_violation": 9.860533969300133e-07,
+    "strict_acceptance": false,
+    "worst_rows": [
+      {
+        "name": "reservoir_independent_hourly_transition[345,0]",
+        "violation": 0.0011644013254112906
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[345,20]",
+        "violation": 0.0002635174746798069
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[345,21]",
+        "violation": 0.00015580991774175767
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[236,3]",
+        "violation": 0.00010923554968300664
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[345,22]",
+        "violation": 4.4536123341563656e-05
+      },
+      {
+        "name": "reservoir_cascade_s4_8_9_12_row1_h4",
+        "violation": 2.667256921995431e-07
+      },
+      {
+        "name": "reservoir_cascade_s4_8_9_12_row2_h0",
+        "violation": 2.418256364045135e-07
+      },
+      {
+        "name": "reservoir_cascade_s4_8_9_12_row1_h22",
+        "violation": 2.389151632087305e-07
+      },
+      {
+        "name": "reservoir_cascade_s4_8_9_12_row1_h15",
+        "violation": 2.3531356418970972e-07
+      },
+      {
+        "name": "reservoir_cascade_s4_8_9_12_row1_h23",
+        "violation": 2.1888808987569064e-07
+      }
+    ],
+    "failed_operational_checks": [
+      "unidirectional_interprovincial_flow",
+      "reservoir_transition"
+    ],
+    "master_status": "HARD_FAIL",
+    "mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+  },
+  {
+    "tolerance": "1e4",
+    "status": 2,
+    "runtime": 21.176000118255615,
+    "barrier_iterations": 74,
+    "objective": 2134847.9484086363,
+    "constraint_violation": 0.0013137949830479556,
+    "raw_max_row_violation": 0.0013137949830479556,
+    "dual_violation": 8.858275726044671e-06,
+    "strict_acceptance": false,
+    "worst_rows": [
+      {
+        "name": "reservoir_independent_hourly_transition[345,0]",
+        "violation": 0.0013137949830479556
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[236,3]",
+        "violation": 0.00010899816654941219
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[0,13]",
+        "violation": 4.132974811499324e-06
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[0,17]",
+        "violation": 3.974281571617055e-06
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[0,18]",
+        "violation": 3.6327757697574015e-06
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[0,12]",
+        "violation": 3.3986735956670344e-06
+      },
+      {
+        "name": "vre_availability_p65_dpv_h0[14]",
+        "violation": 3.3090814142155978e-06
+      },
+      {
+        "name": "vre_availability_p65_dpv_h0[15]",
+        "violation": 3.2992925724784072e-06
+      },
+      {
+        "name": "reservoir_independent_hourly_transition[345,22]",
+        "violation": 3.2030230569174488e-06
+      },
+      {
+        "name": "vre_availability_p65_dpv_h0[13]",
+        "violation": 3.117340327207785e-06
+      }
+    ],
+    "failed_operational_checks": [
+      "unidirectional_interprovincial_flow",
+      "reservoir_transition"
+    ],
+    "master_status": "HARD_FAIL",
+    "mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+  }
+]

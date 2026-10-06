@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "original_rows": 2030,
+  "changed_stations": 3,
+  "untouched_columns": 29,
+  "all_8760_hydrology_arrays_identical": true,
+  "original_backup_byte_identical": true,
+  "distinct_scientific_identity": true
+}

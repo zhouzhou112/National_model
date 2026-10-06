@@ -1,0 +1,71 @@
+{
+  "source": "supplementary_materials\\reviews\\crossover_contract_20260913\\probes\\cleaned_nf2_24h_s3960_cross0_tolerance_1e4",
+  "source_mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3",
+  "solver_status": 2,
+  "strict_acceptance": false,
+  "hard_checks_total": 59,
+  "hard_checks_passed": 57,
+  "failed_checks": [
+    "unidirectional_interprovincial_flow",
+    "reservoir_transition"
+  ],
+  "water": {
+    "max_residual_m3": 1313.7949830255552,
+    "absolute_residual_sum_m3": 1619.675758442694,
+    "station_hours_above_1m3": 20,
+    "station_hours": 14880,
+    "max_single_residual_equivalent_kwh": 176.0252839731446,
+    "absolute_residual_equivalent_sum_kwh": 310.89506397376937,
+    "generation_gwh": 903.865673777668,
+    "interpretation": "Uses current model heads and efficiency. Energy-equivalent residual is not dispatch loss or an annual error bound; cascade propagation is not counted."
+  },
+  "directionality": {
+    "accepted": false,
+    "negative_capacity_count": 0,
+    "minimum_line_capacity_gw": 5.6052663603606485e-05,
+    "strict_pass": false,
+    "warning_applied": false,
+    "within_warning_budget": false,
+    "classification": "HARD_FAIL",
+    "acceptance_scope": "TEST_ONLY_TRUNCATED_HORIZON",
+    "tolerance_gw": 1e-06,
+    "reference_hours": 168,
+    "horizon_scale": 0.14285714285714285,
+    "limits": {
+      "maximum_edge_hours": 2,
+      "maximum_opposing_flow_gw": 0.25,
+      "maximum_opposing_fraction_of_line_capacity": 0.15,
+      "maximum_opposing_energy_gwh": 0.17857142857142855,
+      "maximum_excess_loss_gwh": 0.005714285714285714,
+      "maximum_opposing_share_of_gross_flow": 5e-05,
+      "maximum_excess_loss_share_of_system_load": 1e-07
+    },
+    "observed": {
+      "edge_hours": 1152,
+      "maximum_opposing_flow_gw": 0.04212579873015948,
+      "maximum_opposing_fraction_of_line_capacity": 0.4075978358452549,
+      "opposing_energy_gwh": 1.5716035867778428,
+      "excess_loss_gwh": 0.037114992003914236,
+      "opposing_share_of_gross_flow": 0.000708065494360734,
+      "excess_loss_share_of_system_load": 1.1651660903366114e-06
+    }
+  },
+  "master": {
+    "maximum_center_balance_residual_gwh": 1.764019197381117e-08,
+    "maximum_province_net_exchange_residual_gwh": 3.410605131648481e-13,
+    "maximum_intra_capacity_violation_gwh": 1.4210854715202004e-14,
+    "maximum_vre_annual_availability_violation_gwh": 0.0,
+    "maximum_ror_annual_availability_violation_gwh": 0.0,
+    "bidirectional_flow_tolerance_gwh": 0.0001,
+    "maximum_bidirectional_minimum_flow_gwh": 0.1422873537287431,
+    "total_bidirectional_minimum_flow_gwh": 12.608529418396872,
+    "bidirectional_active_edge_count": 454,
+    "dpv_spur_augmentation_max_gw": 0.0
+  },
+  "relative_objective_difference_to_cross2": 3.3988155279085516e-05,
+  "storage_overlap_gwh": 0.4855529398417562,
+  "storage_max_overlap_mw": 2.193906262057502,
+  "cold_solve_reused_as_evidence": true,
+  "no_new_dispatch_solve": true,
+  "national_8760_qualified": false
+}

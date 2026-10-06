@@ -1,0 +1,176 @@
+{
+  "threshold_fraction": 0.0001,
+  "removed_edge_hours": 21,
+  "edges": [
+    {
+      "edge_index": 13,
+      "hour_indices": [
+        7836,
+        7837,
+        7838
+      ],
+      "removed_fractions": [
+        2.2968044906828694e-05,
+        2.2968044906828694e-05,
+        2.2968044906828694e-05
+      ],
+      "edge_id": "edge_0014",
+      "model_hour_indices": [
+        7836,
+        7837,
+        7838
+      ],
+      "discarded_natural_proxy_volume_m3": 94.90206848568985
+    },
+    {
+      "edge_index": 15,
+      "hour_indices": [
+        7836,
+        7837,
+        7838
+      ],
+      "removed_fractions": [
+        2.2968044906828694e-05,
+        2.2968044906828694e-05,
+        2.2968044906828694e-05
+      ],
+      "edge_id": "edge_0016",
+      "model_hour_indices": [
+        7836,
+        7837,
+        7838
+      ],
+      "discarded_natural_proxy_volume_m3": 0.019806514310142086
+    },
+    {
+      "edge_index": 54,
+      "hour_indices": [
+        3687,
+        3688,
+        3689
+      ],
+      "removed_fractions": [
+        5.6249922126429044e-05,
+        5.6249922126429044e-05,
+        5.6249922126429044e-05
+      ],
+      "edge_id": "edge_0055",
+      "model_hour_indices": [
+        3687,
+        3688,
+        3689
+      ],
+      "discarded_natural_proxy_volume_m3": 304.8204895601851
+    },
+    {
+      "edge_index": 70,
+      "hour_indices": [
+        3687,
+        3688,
+        3689
+      ],
+      "removed_fractions": [
+        5.6249922126429044e-05,
+        5.6249922126429044e-05,
+        5.6249922126429044e-05
+      ],
+      "edge_id": "edge_0071",
+      "model_hour_indices": [
+        3687,
+        3688,
+        3689
+      ],
+      "discarded_natural_proxy_volume_m3": 53.77326043981494
+    },
+    {
+      "edge_index": 78,
+      "hour_indices": [
+        3969,
+        3970,
+        3971
+      ],
+      "removed_fractions": [
+        3.403738493472926e-05,
+        3.403738493472926e-05,
+        3.403738493472926e-05
+      ],
+      "edge_id": "edge_0079",
+      "model_hour_indices": [
+        3969,
+        3970,
+        3971
+      ],
+      "discarded_natural_proxy_volume_m3": 0.0
+    },
+    {
+      "edge_index": 89,
+      "hour_indices": [
+        3969,
+        3970,
+        3971
+      ],
+      "removed_fractions": [
+        3.403738493472926e-05,
+        3.403738493472926e-05,
+        3.403738493472926e-05
+      ],
+      "edge_id": "edge_0090",
+      "model_hour_indices": [
+        3969,
+        3970,
+        3971
+      ],
+      "discarded_natural_proxy_volume_m3": 20.764160156249996
+    },
+    {
+      "edge_index": 99,
+      "hour_indices": [
+        2895,
+        2896,
+        2897
+      ],
+      "removed_fractions": [
+        7.432465762545549e-05,
+        7.432465762545549e-05,
+        7.432465762545549e-05
+      ],
+      "edge_id": "edge_0100",
+      "model_hour_indices": [
+        2895,
+        2896,
+        2897
+      ],
+      "discarded_natural_proxy_volume_m3": 719.82421875
+    }
+  ],
+  "interpretation": "Additional explicitly discarded routed water; no local-inflow compensation; not a matrix-wide coefficient cutoff",
+  "discarded_natural_proxy_volume_m3": 1194.10400390625,
+  "proxy_volume_interpretation": "Natural-flow proxy, not endogenous optimized routed release; worst-case downstream energy is audited separately",
+  "affected_groups": [
+    0,
+    1,
+    2
+  ],
+  "changed_model_hours": [
+    2895,
+    2896,
+    2897,
+    3687,
+    3688,
+    3689,
+    3969,
+    3970,
+    3971,
+    7836,
+    7837,
+    7838
+  ],
+  "minimum_remaining_cascade_coefficient": 0.0004325704476298486,
+  "maximum_cascade_coefficient": 3.6,
+  "conservative_including_downstream_energy_upper_gwh": 2.793087668303196,
+  "source_to_target_water_loss_upper_m3": 2158994.8859195425,
+  "local_inflow_unchanged": true,
+  "first_24h_transfer_arrays_unchanged": true,
+  "first_168h_transfer_arrays_unchanged": true,
+  "interpretation_of_upper_bound": "Each source may release its entire safe annual water budget during a removed-fraction hour; propagate resulting maximum losses downstream. This is deliberately conservative and is not a national dispatch-loss estimate."
+}

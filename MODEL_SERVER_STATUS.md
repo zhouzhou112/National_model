@@ -1,5 +1,146 @@
 # CISPO 2030 full-year server status
 
+> 2026-10-06英国22:12（北京10-07 05:12）原2050/4844528只读复查：squeue/sacct确认RUNNING/m4cm1802、6天7小时3分15秒，64CPU/750G/UNLIMITED、48线程沿用；未用scontrol/scancel。最新iter399，PInf2.52/DInf2.45e-7/Compl1.45，绝对目标差1.106989703e8；较385轮下降30.19%/37.97%/36.68%/36.61%。近389→399 PInf/Compl/目标差逐轮下降，DInf在394/399小幅回升；24.0967分钟/3821.32Work每轮，较前22.9067分钟略慢。117轮后无同定义大跃升，stderr空、无显式警告/终态；RSS当前420.08GiB/峰值685.98GiB，400条连续/源SHA核验PASS。历史匹配2030第196/167/167轮、2040第333/255/254轮，当前速度余2.54–3.03/4.55–5.87天；条件性安排仍约3–6天（英国10月9–12日），非保证上限且不含QC。证据`base_2050_continuation_20260930/status_20261006T211252Z/`。Git0a03cc4+既有dirty，仅取证与状态文档；原作业及其他窗口试验/自动化未操作，保留其他窗口连接阻塞记录。下一步继续观察原作业终态与QC，不自动改界或提交求解。
+
+> 2026-10-06英国16:49（北京23:49）原2050/4844528仍RUNNING，48线程沿用，iter385，运行6天1小时39分。PInf3.61/DInf3.95e-7/Compl2.29，较325轮下降74.03%/89.58%/83.41%，绝对目标差1.746321979e8下降83.22%。近期22.9067分钟/3298.72Work每轮，PInf/Compl/目标差逐轮下降，DInf有小幅波动；未见同类再次大跃升、显式警告或终态。RSS420.08GiB/峰值685.98GiB，stderr空，386条连续/源SHA核验PASS。历史类比条件性余约3–6天（英国10月9–12日），非保证日期、不含QC验收。证据status_20261006T154913Z/；仅只读核验，未操作原作业或其他窗口试验/自动化。
+
+> 2026-10-05英国17:23（北京10-06 00:23）只读核验2050/4844528仍RUNNING，48线程沿用，iter325，运行5天2小时13分。PInf13.9/DInf3.79e-6/Compl13.8，较273轮下降75.66%/38.97%/80.99%，目标绝对差1.040477959e9下降80.42%。近期21.41分钟/2639.79Work每轮，PInf/Compl/目标差逐轮下降，DInf小幅波动；未见同类再次大跃升、显式警告或终态。RSS420.07GiB/峰值685.98GiB，stderr空，326条迭代连续/源SHA核验PASS。历史类比条件性余约3–7天（英国10月8–12日），非保证日期、不含QC验收。证据status_20261005T162312Z/；仅squeue/sacct/sstat及文件读取，无scontrol/scancel，极小界建议未应用。
+
+> 2026-10-04英国22:30（北京10-05 05:30）2050/4844528 RUNNING/48线程/Restarts0，iter273，运行4天7小时21分。PInf57.1/DInf6.21e-6/Compl72.6，较250轮下降76.88%/37.02%/75.64%；目标差5.31280163e9，下降74.35%。近期22.31分钟每轮，DInf有局部波动；无同类再次大跃升、显式警告或终态。历史阶段对齐约2030第95–134轮、2040第139–226轮；条件性余时仍约4–8天（英国10月8–12日），非保证上限、不含QC验收。RSS当前420.06GiB/峰值685.98GiB、stderr空，274条迭代连续/源SHA核验PASS。证据status_20261004T213051Z/，未干预求解。
+
+> 2026-10-04英国14:04（北京21:04）复查仍RUNNING/iter250。应用户要求的条件性历史类比：当前约处于2030第80–110、2040第120–170轮阶段；历史对应剩余约3.6–3.9/7.0–7.7天。安排上粗估还需4–8天（英国10月8–12日），前提是不再大跳升/平台且后段类似历史，非保证上限或成功概率；仅Barrier完成、不含QC验收。详细方法/哈希与复现见convergence_eta_20261004/REVIEW_ZH.md；无作业改动。
+
+> 2026-10-04英国13:54（北京20:54）2050/4844528 RUNNING/48线程/Restarts0，iter250、运行3天22小时44分。PInf247/DInf9.86e-6/Compl298、目标绝对差2.071438044e10，四项均已优于116轮跃升前水平；首次同时达到该比较条件为242轮。最近10轮四项逐轮下降、21.005分钟/2447.91Work每轮，未见同类大跃升；仍未收敛。RSS当前420.04GiB/峰值685.98GiB、stderr空、无终态。证据status_20261004T125431Z/及SHA核验PASS，仅取证和交接。
+
+> 2026-10-03英国18:25（北京10-04 01:25）2050/4844528 RUNNING/48线程/Restarts0，iter193、运行3天3小时15分。PInf5.43e5/DInf0.00159/Compl6.47e5，较179轮下降约98.84%/98.55%/98.60%；最近10轮19.2117分钟/1644.16Work每轮。PInf/Compl/目标差持续下降，DInf末轮小幅回升；未见同类大跃升，仍未恢复116轮水平、未收敛。RSS当前420.00GiB/峰值685.98GiB、stderr空、无终态。证据status_20261003T172509Z/及SHA核验PASS，仅取证和交接。
+
+> 2026-10-03英国14:03（北京21:03）2050/4844528 RUNNING/48线程/Restarts0，iter179、运行2天22小时53分。PInf4.69e7/DInf0.11/Compl4.61e7，较138轮均下降超过99.9%；最近10轮三残差逐轮下降、19.3667分钟/1717.69Work每轮，117轮后未检出同类大跃升。仍远高于116轮水平、未收敛，不给ETA。当前RSS419.96GiB/峰值685.98GiB、stderr空、无终态。证据status_20261003T130314Z/及SHA核验PASS，仅只读取证和交接。
+
+> 2026-10-02英国23:14（北京10-03 06:14）2050/4844528仍RUNNING/48线程/Restarts0，iter138、2天8小时4分。PInf6.15e10/DInf3430/Compl6.16e10；最近10轮三残差逐轮下降约74%/84%/76%，但仍比跃升前差7–8个数量级，恢复迹象不等于成功保证。五例日志/冻结源码/输入诊断见barrier_jump_diagnosis_20261002/REVIEW_ZH.md；内部恢复/重初始化是推断，唯一根因未定。源SHA与离线复算通过；原作业继续保留，无参数或模型更改。
+
+> 2026-10-02英国23:03（北京10-03 06:03）2050/4844528仍RUNNING/m4cm1802，运行2天7小时54分、iter137、48线程/Restarts0。**116→117数值严重退步**：PInf3.72e3→4.40e11、Compl416→5.15e11；137轮虽回落至PInf7.32e10/DInf3890/Compl7.24e10，仍远高于跳升前，未收敛。最近10轮21.9283分钟/2884.03Work每轮，与前次近期速度接近。当前RSS419.82GiB、峰值685.98GiB，两份stderr空、无终态或显式数值警告；不能据RUNNING/空stderr称数值正常，也不能提前判定NUMERIC终态。证据status_20261002T220350Z/、SHA核验PASS；只读，无作业干预，跳升原因尚未定位。
+
+> 2026-10-02英国11:58（北京18:58）2050/4844528 RUNNING/m4cm1802，已运行1天20小时49分，Barrier iter108。最近98→108约21.9450分钟/2884.04Work每轮，较前次19.2283分钟慢约14.1%，内部Work也增加，不能归因线程。日志PInf4.79e3/DInf8.83e-5/Compl513；PInf/Compl持续下降，DInf在104轮回升后部分回落，尚未收敛。当前RSS419.58GiB、峰值685.98GiB，48线程配置不变，两份错误日志0字节、Restarts0、无终态文件。证据见base_2050_continuation_20260930/status_20261002T105846Z/，SHA核验PASS；只读，无作业干预。
+
+> 2026-10-01英国21:40（北京10-02 04:40）2050/4844528 RUNNING/m4cm1802，已运行1天6小时30分，Barrier iter67。最近57→67约19.2283分钟/1649.84Work每轮，三残差持续下降；最新PInf2.41e7/DInf0.0142/Compl2.64e6，仍未收敛。当前RSS418.90GiB、峰值685.98GiB，48线程配置不变，两份错误日志0字节、Restarts0。证据见base_2050_continuation_20260930/status_20261001T204025Z/；只读，无作业干预。
+
+> 2026-10-01英国14:48（北京21:48）2050/4844528 RUNNING/m4cm1802，已运行23小时38分，无重启。Presolve17448.75s、Ordering4729.31s已完成；Barrier iter47，最近37→47约21.4433分钟/轮，日志三残差下降但PInf6.15e9/DInf25.3/Compl6.34e8仍很大，远未收敛。Factor NZ3.519e10/Ops2.098e15；当前RSS418.24GiB/峰值685.98GiB（分配750GiB），两份stderr空。48线程设置不变；只读、无作业干预。完整证据见base_2050_continuation_20260930/status_20261001T134804Z/。
+
+> 2026-09-30英国17:58（北京10-01 00:58）2050/4844528仍RUNNING/m4cm1802、约2小时49分。全年构建与原模型归档已完成：50907233行/41458383列/485386301非零，MPS4051434705bytes、manifest COMPLETE/errors=[]。实证48线程/NF2/1e-4/Cross0；目前Presolve7305s，尚未Ordering/Barrier。当前RSS约87GiB、峰值101.5GiB，两份stderr均空，无重启。只读，无作业变更；证据见base_2050_continuation_20260930/status_presolve_20260930_summary.json。下一步等待Presolve/Ordering及Barrier首轮。
+
+> 2026-09-30英国15:09（北京22:09）2050已按用户授权启动：job4844528 RUNNING/m4cm1802，实际64CPU/750G/billing64/UNLIMITED；Gurobi48/NF2/1e-4/Cross0，无Time/SoftMem限制。计算节点许可、续接合同、7回归PASS，正式scope2050/边界2040/8760，当前全年构建，尚无Barrier。release=20260930_base2050_v9_t48_m750_tol1e4_v1。原2040候选129站小越界在独立bound-closed副本中仅扣回合计308.6947kW（单站最大7.2944kW），原结果和HARD_FAIL保留；派生173800条、仅130个容量值变化，边界复审零越界、输入及真实小构建/归档入口PASS。195原repo文件SHA一致，未改物理模型或原输入。详情base_2050_continuation_20260930/REVIEW_ZH.md；下一步只读构建/归档/Barrier，不自动2060/Stage B。此条覆盖下方队列空及未启动2050的历史状态。
+
+> 2026-09-30（英国时间）只读终态与线程对比：2040/4682935已COMPLETED/605轮/solver843709.49s，squeue空；2030/4614693为OPTIMAL/348轮/451391.62s但QC门禁退出2，两例QC均HARD_FAIL。V9/NF2共同iter10→348：48线程20.6596、44线程21.7142分钟/轮，44慢5.10%；额外257轮占日志总差90.86%，非线程因果分解。旧44/NF1约17分钟每轮不可作为当前V9优势证明。两例64CPU/750G/billing64；速度优先暂倾向48，未改配置或启动配对/2050/Stage B。证据与限制见supplementary_materials/reviews/thread_comparison_20260930/REVIEW_ZH.md。此条更新下方历史RUNNING状态。
+
+- 2026-09-19 19:22 北京时间：用户明确授权续接2040并恢复44线程。新Base2040 job4682935于19:19:50启动，当前RUNNING/m4cg1701，进入全年构建；实际64CPU/750GiB/billing64/UNLIMITED，Gurobi44线程/NF2/1e-4/Cross0，无TimeLimit/SoftMemLimit。尚未Barrier，不宣称收敛。
+
+<!-- dual_screening_20261002_status -->
+> 2026-10-02 筛选复核覆盖：Base2050/4844528保持运行，最新只读日志116→117的PInf3.72e3→4.40e11、Compl416→5.15e11；135仍未恢复。旧“残差持续改善”仅为历史状态。本轮24h联合全候选/筛选加回配对通过物理QC与定价，但无短窗提速；固定服务器转发上传中途失联，2016h尚未启动，不能登记为通过。下一轮联合独立2030→2060，见SCENARIO_EXECUTION_PLAN_20261002.md；本轮证据supplementary_materials/reviews/dual_screening_20261002/。云端作业未暂停、改参或新提交。
+  44/48日志同iter10→39复算：旧Base4496031为17.2264、新Base4614693为19.3270分钟/轮，后者慢12.19%；模型/NF/节点不同，不能因果归于线程数。
+  原2030候选86900条；2040真实小构建发现一站G000021474::dpv因2030清掉5.709kW存量、2040再叠加而超上限4.352942kW。独立derived candidate只收回该站4.352942kW（小于既有10kW清理尺度），原结果和HARD_FAIL/未接受标记保留，非原始精确解不变。
+  194个原repo文件SHA一致，物理代码/输入/上限/QC阈值未改；新44线程engineering profile、batch及状态副本。原/派生输入preflight PASS，2040真实1h构建80104行/238529列/452584nnz、真实入口两行归档fixture PASS；计算节点Gurobi13.0.2许可/7回归/44线程参数/续接合同PASS。
+  release=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1，output_8760；state=其下upstream_2030_bound_closed/planning_state_candidate。Git0a03cc452e95d158f36923ceb5210267979b6234+既有dirty，未提交。
+  命令/源码与输入身份/状态调整SHA/原日志/验证/局限见supplementary_materials/reviews/base_2040_continuation_20260919/REVIEW_ZH.md。此授权覆盖旧“不得自动推进后续年”，仅2040，不改变科学接受标记；下一步只读构建/归档/Ordering/Barrier与资源，不自动2050/Stage B。未来需统一跨年微小floor清理的cohort记账。
+
+
+> 2026-09-19 18:59北京时间终态：Base4614693于16:42:17结束，SlurmFAILED2:0但Gurobi OPTIMAL2/348轮/SolCount1，wall5天06:21、solver约5.224天。严格原始约束门禁及QC失败后完整保全退出；非NUMERIC/OOM/timeout。59项小时硬QC55过4败（功率平衡185.54kW、水库1.6018m3、跨省双向流、成本闭合73.83元），城市另619边反向流，对偶发布亦未过。保全COMPLETE；BarX/BarPi实际SHA/维度/有限值均PASS，原MPS存在，候选规划状态未接受。末轮原对偶相对差0.0073069%，队列现空。详见supplementary_materials/reviews/base_v9_terminal_20260919/REVIEW_ZH.md；只读，不自动重跑或Stage B。
+
+> 2026-09-15 23:31历史原因澄清：重新读取原4139552云端日志，607轮OPTIMAL及终点目标接近属实；QC失败不能否定其已完成求解。4479238在NF2→1、年度行/8192、线程/容差及少量物理行修正组合下NUMERIC；没有单因素全年证据锁定唯一根因。不能把容差放宽或求解后QC检查说成已证实触发原因。原输入/规模统计相同也不等于LP逐项相同。详见supplementary_materials/reviews/base_regression_explanation_20260915/REVIEW_ZH.md；本轮只读，不改当前V9。
+
+> 2026-09-15 23:25指数与部署独立复核：Base4614693仍RUNNING/iter98。203云端/198本地文件与冻结清单全部匹配，实际修正水库输入SHA一致，最终数值修复和48线程/1e-4/Cross0/NF2/无限时均应用。原矩阵[3.7e-5,5945.8478]，截图1.607e8是最大/最小之比的正指数；最小系数对应燃气CCS剩余排放，日志4.12e-8则是对偶残差。PInf470/Compl61.4仍未收敛；日志无独立presolved范围，不能据范围或小DInf宣称数值问题解决。仅只读采证，无作业变化；报告numeric_applied_verification_20260915/REVIEW_ZH.md。
+
+> 2026-09-15 23:22部署审计：引用任务“诊断最新 base 数值错误”最终保留修复均已部署；203云端文件/198本地对应文件SHA与冻结清单一致，实际修正表及运行配置/参数一致。Base4614693最新iter98/PInf470/DInf4.12e-8/Compl61.4，仍RUNNING。38.9倍仅原始矩阵极值比，不能作性能倍数或数值健康证明；原168h的6250→168不能外推8760，全年资源年度系数仍约5946。原Cross2局部QC通过不能当作当前Cross0验收。细节见supplementary_materials/reviews/deployed_repair_audit_20260915/REVIEW_ZH.md；只读无作业变更。
+
+> 2026-09-15 23:10三案例对照：旧Base4479238与Thermal4533060均NUMERIC12、无可用解，但尚未定位同一失败约束。当前Base4614693运行1天12:49/iter97，诊断相对目标差109.51%，尚未收敛。同iter97对偶残差/Compl较好，但相对Thermal的PInf仍较高。相对旧Base，raw nnz-1.73%、presolved nnz-2.85%/列+4.56%、Factor NZ-2.07%/Ops+0.27%；系数跨度改善约38.9倍，结构计算量没有大幅降低。共同50→97轮每轮新Base18.15分钟、旧Base20.69、Thermal17.16；模型/参数不同不能直接归因。峰值RSS678.11GiB、当前404.13GiB，内存峰值未降。纠正此前宽泛表述：早期DInf/目标差并非单调下降。报告及三日志SHA/解析证据见supplementary_materials/reviews/cloud_failure_comparison_20260915/REVIEW_ZH.md；只读、无作业改动，继续核验Base而不重提旧案例或给ETA。
+
+> 2026-09-15 23:05终态更正：当前仅Base V9 job4614693运行；Thermal4533060已于9月14日21:08:54结束，Slurm FAILED2:0，根因Gurobi status12 NUMERIC。Thermal Barrier568轮/605210.75s，末轮P3.574e8、D-2.556e8、PInf3.37、DInf6.71e-5、Compl7.84；solution_count0、BarX/X不可读、QC未评估、保全PARTIAL、仅原模型归档完整，无结果或续接状态。峰值RSS637.3GiB，非OOM/时限/用户停止。Base运行约1天12小时42分，Barrier iter97，P4.212e8、D-4.430e9、PInf516、DInf2.06e-7、Compl65.3，持续改善但远未收敛；Factor NZ3.305e10、Gurobi估300GB，Slurm峰值RSS678.1GiB、当前404.1GiB，750G分配尚存约71.9GiB峰值余量，stderr空、节点MIXED。本轮只读，未改Base。
+
+> 2026-09-14 16:12实时状态：Base4614693与Thermal4533060均RUNNING/UNLIMITED、stderr为空。Base Presolve在17124.39s结束，得到37,019,835行/33,634,377列/392,787,298非零，已进入Ordering约440s，尚无Barrier；峰值RSS约639.8GiB、当前约299.8GiB，750G分配尚未OOM但Factor峰值未知。Thermal最新iter550，P4.929e8、D-4.393e8、PInf4.62、DInf1.08e-4、Compl11.9；PInf/Compl继续改善，但DInf自iter547明显回升，仍未恢复或收敛。节点均MIXED且无重启标志。本轮只读，无作业改动。
+
+> 2026-09-14 11:32实时状态：Base V9 job4614693与Thermal4533060均RUNNING。Base实际64CPU/750G/billing64、Gurobi48线程/1e-4/Cross0/NF2/无限时且无内存软限；WLS和7项启动回归PASS，已构建50,907,233行/41,458,383列/484,299,937非零的physical_v1/exponent0全年LP并归档4,048,048,342-byte MPS。当前Presolve约1420s，已去除13,366,655行/7,591,741列，尚未Ordering/Barrier，RSS约96GiB、stderr为空。Thermal运行约6天15小时，iter534，P6.226e8、D-6.777e8、PInf5.80、DInf4.58e-5、Compl16.7，仍恢复未收敛，峰值RSS637.3GiB。m4cm2204的REBOOT_REQUESTED已清除；仅slurmd于09:30重启，OS BootTime未变且作业Restarts0。未改动两作业。
+
+> 2026-09-14 08:51 当前状态纠正：4613045已于05:05:59 FAILED1:0（39分41秒），原因是构建后的第二处旧8192校验遗漏，未进入优化，非NUMERIC/OOM/许可/时限问题。前次解除8192绑定不完整。本次统一前后校验，物理行exponent0、旧版仍exponent13，实际矩阵验证保留；45项测试PASS，新增真实runner两行矩阵归档路径回归。旧实际分配已证实64CPU/750G/billing64、UNLIMITED。新v3作业4614693已提交放行，当前PENDING；48线程/1e-4/Cross0/NF2/不限时等配置及输入不变，计算节点先跑入口7项回归。Thermal4533060未改动。详细更正、证据、源码SHA、命令及下一步见supplementary_materials/reviews/formal_launch_failure_20260914/REVIEW_ZH.md。
+
+
+> 2026-09-14 08:36终态更正：当前仅Thermal4533060仍RUNNING，约6天12小时，最新Barrier iter524，P=7.62334426e8、D=-9.49331512e8、PInf7.06、DInf4.46e-5、Compl21.9；仍在恢复且未收敛，峰值RSS约637.3GiB，stderr为空。新Base V9 job4613045已于05:05:59 FAILED1:0，实际64CPU/750G/billing64、wall39:41、峰值约56--57GiB、无swap；计算节点许可和输入preflight通过，但在建完整LP/调用optimize前被`exact VRE/ROR annual capacity-link exponent 13 runtime evidence`接受guard阻断。无MPS、gurobi.log、Barrier、解或续接状态；不是OOM、许可证或NUMERIC。未自动重提或改动Thermal。节点m4cm2204仍MIXED+REBOOT_REQUESTED。
+
+> 2026-09-14 02:14 当前执行状态更正：作者已授权正式不限时2030 Base。新作业4613045已放行，PENDING(Resources)，ReqTRES=64CPU/750G/billing64、Slurm UNLIMITED；Gurobi48线程、1e-4、Cross0/target1/NF2、无TimeLimit/SoftMemLimit，默认1000轮改为最大允许整数。768G超出节点RealMemory=768000MiB，实际改申请750GiB。实际分配与计算节点许可尚待启动脚本回读；不能据此宣称已进入Barrier或全年数值恢复。Thermal4533060保持RUNNING。源v9物理模型与数据修复不变；独立正式profile解除旧8192入口绑定。本地/云端输入PASS，66项必需身份一致，69+4项测试通过。202文件v2包SHA61c24b5283a20687e53b2b555f9cee39205bc6739252be412f37ea10662f2c2f，Git0a03cc4基准+dirty逐文件冻结。命令/新release/失败v1保留/验证/下一步详见 supplementary_materials/reviews/formal_launch_20260914/REVIEW_ZH.md。此条覆盖下方历史“仅诊断、未提交、待授权”。
+
+
+> 2026-09-13 20:55只读核对：Thermal4533060仍RUNNING约6天，日志iter483原对偶目标仍相差很大，不支持9–10天必然收尾的预测。修复版与其核心算法主差异为NF2对NF1，1e-4/Cross0/44线程及64CPU/700G资源一致；模型处理仍不同。当前900s/2h包仅早期诊断，全年收敛资格仍未验证。本轮无求解、改参或服务器变更。详情solve_feasibility_vs_thermal_20260913/REVIEW_ZH.md。
+
+
+> 2026-09-13 用户选定1e-4：当前诊断默认BarConvTol1e-4/Crossover0/SolutionTarget1/44线程，Slurm64CPU/700G/无软限；新包tolerance_1e4_readiness_20260913，未上传/提交。补齐不依赖SolCount的Barrier向量保存和各层QC独立导出，8测试通过。局部水量误差折算合计0.311MWh、跨省反向重叠1.572GWh/额外损耗37.115MWh，严格QC仍未过；高凤山源库容待核实，全国资格未知。900s是早期诊断预算，可能不覆盖历史4155.5s排序。详情同目录REVIEW_ZH.md。
+
+
+> 2026-09-13 Crossover更正：原定Stage A/Thermal为0/1，入口已恢复Crossover0/SolutionTarget1；44线程/64CPU/700G/无软限不变。新24h无Cross、BarConvTol1e-6及1e-4均OPTIMAL但完整QC HARD_FAIL（水库平衡等），先前Cross2通过不能冒充原定方案资格。撤回上轮可启动结论；1e-6仅为未验收测试值，新包仅归档诊断用途，未上传/提交。下一步本地定位失败行，详见crossover_contract_20260913/REVIEW_ZH.md。
+
+
+> 2026-09-13 默认资源纠正：下一阶段使用与Thermal相同的Slurm64CPU/700G、Gurobi44线程、无SoftMemLimit。前轮32线程/550GB包已被solver_alignment_thermal_20260913/cloud_gate_20260913_v9_t44_tol1e6.tar.gz替代。诊断BarConvTol=1e-6（同MPS24h配对QC通过，未证明更快），保留NF2/Crossover2及900s优化/2h总限；当前未上传或正式提交。详见同目录REVIEW_ZH.md及CODEX_HANDOFF当前快照。
+
+> 2026-09-13 启动前复查：v9夏季24h冷启动25.740s/严格QC通过、5项启动入口测试通过、全年输入及服务器许可小测试通过。新197文件v9限时包已准备，尚未上传/正式提交；Thermal4533060仍运行且未修改。下一步为单次32线程/700GiB Slurm/550GB Gurobi/900s优化/2h总墙钟的真正8760诊断，不自动链式生产。详情numeric_prelaunch_20260913/REVIEW_ZH.md。
+
+> 2026-09-13 19:26：新序列候选config/optimization_numeric_dac_by_year_v9.json已实现2030 DAC关闭、2040/2050/2060可选。73测试、2040一小时LP构建及四年份dry-run通过；未执行年度优化或服务器操作。v8历史包保留，后续序列应显式使用v9配置；不得因dry-run通过跳过全国8760资格。详情dac_year_schedule_20260913/REVIEW_ZH.md。
+
+> 2026-09-13 double check最终状态：使用config/optimization_2030_numeric_final_v8.json；v7单位变更撤回，v3限时包被v8包替代。本地50测试、620×8760水力QC、冬季168h和夏季24h集成QC通过；全国8760完整LP未验收。本轮未连接/变更服务器，未上传或提交。详情numeric_doublecheck_20260913/REVIEW_ZH.md。
+
+## 2026-09-13 最终v8本地交付与下一步
+
+- Git基线0a03cc452e95d158f36923ceb5210267979b6234，未提交；修改清单、命令、输入哈希和数值范围见CODEX_HANDOFF.md当前快照及numeric_doublecheck_20260913/delivery_manifest.json。
+- v8保留v2库容数据，增加1m3/s正弃水上界下限、CF=0.01、10kW微小容量阈值、1CNY/MWh省内正则、2030关闭DAC及beta<1e-4梯级毛刺清理。2030排放限制仍+4000Mt/年；不得把终期-550Mt套到2030。
+- 168h最终LP与已冷求解v6字节相同（冷启动597.799s），v8重新基/物理QC通过；24h夏季(start3960)独立冷启动24.843s、QC通过。50项测试及全部620库8760水量重建通过，不能代替全国电力8760验收。
+- 本地包numeric_doublecheck_20260913/cloud_gate_20260913_v8.tar.gz，196文件；SHAfe48ac2dd16866034ce9e8c7bb2ff79f24b21826da76da24d1d8a56e0b441e3d。原包与被否决的v7试验全部保留。
+- 输入检查命令：python scripts/probe_full_year_numerics.py --config config/optimization_2030_numeric_final_v8.json --output-dir <NEW_DIR> --validate-inputs-only。此模式不构建LP；不得去掉开关后在本地32GiB机器强行构建全年。
+- 预设的真正8760诊断仍为32线程/700GiB Slurm/550GB SoftMemLimit/900s求解/2h总限，新release和data_overlay，源数据只读。此前云端范围确认未收到，本轮只把本地包更新到最终v8，不重复发起确认或自行提交。
+- 精确下一步：取得云端诊断范围确认后，重新验证服务器/源release环境，再将v8部署到新目录进行限时诊断，检查完整raw/presolve/因子与终态；不得自动链式生产，也不得把TIME_LIMIT或水力子模型通过登记为全国全年通过。下方服务器状态均为历史查询时刻，不代表本轮刷新。
+
+
+
+## 2026-09-13 17:30 本地v3完成全年水力及168h压力检查；全国全年仍待验收
+
+- config/optimization_2030_spill_tightened_v3.json新增孤立水库弃水上界收紧；482库、4,222,320界、1,321,812个新零界。源数据沿用v2，单位与发电可行域投影保留。
+- 620库×8760h水力组件全部OPTIMAL，物理水量残差最大5.8850e-6m3；全国24/168h保留全年水库界的测试OPTIMAL/完整QC PASS。40项回归测试PASS。
+- 全国8760LP未构建/求解；本地32GiB不足以做该验收。限时诊断包已本地准备，192文件哈希通过；计划32线程/700GiB、900s求解/2h总限，尚待云端范围确认，未提交。
+- 本轮仅只读查询旧release路径及Thermal4533060（查询时RUNNING/5-20:58:02），没有上传、停止、重启或变更现有作业。
+- 证据：supplementary_materials/reviews/numeric_resolution_20260913/。不能把全年水力子模型通过称为全国电力模型全年通过。
+
+## 2026-09-13 水库专项审计完成；修正短窗资格解释
+
+- 水库候选config/optimization_2030_storage_audited_v2.json、data/hydro/repaired_storage_audit_20260913_v2/，在v1上新增白竹洲、克孜尔有来源的库容纠错；三站/29列保留检查通过。
+- 620库×8760h输入和旧4139552全年轨迹已本地审计；旧水量最大残差0.03899854m3，水量QC通过。73库共同估算模式、140库超过当前安全年入流水量；后者不能单独确认工程错误或9天NUMERIC唯一成因。
+- v2 24h OPTIMAL/完整QC PASS/54.15s；但v1/v2 MPS完全相同，**没有证明库容纠错提高求解速度**。短窗库存界合计24h保留0.54%，全年58.1%，此前直接延长744h的资格解释被替代。
+- 39项测试PASS；三处独立8760h水库诊断年度能量上限不变。全国8760 LP尚未构建/预处理/求解。
+- 本轮仅SCP只读下载旧reservoir_dispatch.npz，未改变服务器任务/输入，未刷新Thermal运行状态；下方13:40状态只代表当时。
+- 证据：supplementary_materials/reviews/reservoir_storage_audit_20260913/。下一步核实高优先级源参数，检查固定8760边界及全模型因子，不能凭短窗通过重启全年。
+
+## 2026-09-13 13:59 本地修复候选通过24h/168h；服务器未部署
+
+- 历史20天Base与失败Base原始数值范围相同；共同75项输入记录SHA相同。旧版Crossover同为0、严格QC曾HARD_FAIL。
+- 本地候选config/optimization_2030_numeric_repaired.json已完成水库来源纠错、循环库存范围收紧、CF/流量毛刺清理；
+  原表保留，新表data/hydro/repaired_20260913/，使用独立科学基准ID。
+- 生产全年CF送出设计24h/168h：OPTIMAL，完整QC PASS，41.536/766.854s，原行最大误差1.7735e-11/8.8088e-7。
+  39项单元检查和全8760水文数组审计PASS。早期600s TIME_LIMIT与其他不合格对照保留，未隐去。
+- 当前配置8线程/8GB/900s为本地验证预算，不是全年服务器配置；新8760模型尚未build/presolve/solve。
+- 本轮没有部署、提交、重启或停止任何云端作业。13:40只读：4479238 FAILED、4533060 RUNNING（5-17:30:45）。
+- 详细证据、变更和未决项：supplementary_materials/reviews/numeric_repair_20260913/；Git0a03cc452e95d158f36923ceb5210267979b6234未提交。
+- 下一步是固定候选的单一有限预算744h资格验证；当前本地通过不能视为全年资格通过。
+
+## 2026-09-13 Base数值失败终态；无可续接解
+
+- 2026-09-13 Base job4479238终态复核：07:16:40结束，9天13小时52分36秒，Slurm FAILED2:0；
+  Gurobi13.0.2 Barrier654轮/status12 NUMERIC，solution_count0、X/BarX不可读；QC NOT_EVALUATED、
+  preservation PARTIAL、INCOMPLETE_NO_USABLE_STAGEA。峰值480.48GiB，不支持OOM/超时归因。
+  原MPS4142715779 bytes保留（本轮仅stat、未重新下载或验证全部内容），无向量可续接，不能从iter654原地恢复。
+  655条日志复算PASS；按项目abs(P-D)/max(1,abs(P),abs(D))诊断式，最小目标差99.6060%，门槛1%；
+  iter633→634 Compl6.75e-6→0.0631，恶化9348倍。纠正旧线程仅按残差下降给出的1–2天ETA，不能宣称接近最优。
+  系数跨度6.247e9及历史水库大库存/小通量是风险证据，尚未定位本轮唯一病态约束，也未证明不可行。
+  Thermal4533060本轮仍RUNNING，最新读取iter454；旧总结iter366 Compl0.292纠正为0.257，随后跃升8.24e11。
+  证据/报告/不求解解析器：supplementary_materials/reviews/base_numeric_failure_20260913/；SSH/SCP只读取证。
+  Git0a03cc452e95d158f36923ceb5210267979b6234，未提交；仅新增该报告目录并更新三份交接文档，保留原dirty文件。
+  未改模型/输入/配置/服务器，无新求解/重启/Stage B/停止Thermal。下一步离线定位尺度来源与等价修复方案；
+  新实验需形成有限预算配对门禁，不盲目重跑全年；后续监测同时核对目标差、残差、异常与解可读性。
+
+
 ## 2026-09-07 正式冷热job4533060已提交，无限时
 
 - 2026-09-07 已提交并放行正式冷热作业 **4533060**，观测状态RUNNING，Slurm TimeLimit=UNLIMITED。
@@ -71,6 +212,89 @@
   详情及证据：`supplementary_materials/reviews/portfolio_20260905/REVIEW_CN.md`、`delivery_manifest.json`。
   下一步：从本地失败原模型定位水库尺度/近零边界/周期行依赖，做数学等价数值处理门禁；不热改Base，不启动
   新云端全年任务、不自动Stage B，不因部署完成而宣称全年可解性成立。
+
+## 2026-09-05 15:23：Threads44按作者指令受控停止，Threads32继续
+
+- 仅对exact job`4496031`创建`STOP_REQUESTED`，未调用`scancel`。Gurobi在Barrier iter40后status11
+  `INTERRUPTED`；Slurm于15:22:53终态`FAILED 2:0`，这是未接受中断解的fail-closed包装器返回，不是OOM。
+  elapsed`17:59:20`，batch MaxRSS`658673148K`（628.16GiB），双stderr为0。
+- 约5.1G/67文件、原MPS、BarX/BarPi与完整保全输出已落盘；preservation六阶段COMPLETE、errors空。但QC
+  HARD_FAIL、checkpoint recovery-only、terminal无可用Stage A，只能用于恢复取证/性能证据。
+- job`4479238`保持RUNNING，已到iter116（solver`162003 s`），未改参或创建STOP。作者明确未来A8默认仍为
+  `64 CPU/700G + Gurobi Threads44`；此次主动停止不触发默认失效，未来不间断任务仍须通过终态/QC。机器
+  合同修正提交为`860ab8424697dfc977e2f086fade4a2c6098e524`，已推送origin/GitHub。
+
+## 2026-09-05 15:09：Threads44记录为未来A8默认
+
+- 作者选择`amd_a8_768 + Slurm 64 CPU/700G + Gurobi Threads44 + automatic Ordering + no SoftMemLimit/time
+  limit`为未来全年Stage A默认；机器可读合同为`config/cloud_resource_profiles/a8_8760_stagea_default_v1.json`
+  （commit`779dc17`）。未来仍须逐作业核验实际billing64。
+- T44 job`4496031`正常至iter39，solver`59834 s`，比T32同iter39的`66750 s`快10.36%；峰值RSS保持
+  628.16GiB。T32 job`4479238`正常至iter115。两者双stderr0、无STOP、未被本次记录修改。
+- 默认的终态/QC仍pending；若T44自然OOM或验收失败，必须触发重审，不能隐去，v7 Threads32为fallback。
+
+## 2026-09-05 07:12：审查期间只读快照
+
+- `4479238`与`4496031`仍RUNNING，分别iter92/12，对应solver runtime132565/31905s；Slurm峰值RSS约
+  480.48/628.16GiB。仍未科学验收；本轮未发信号、改参数、附加计算step或启动任何云端任务。
+- 两release的`monolithic.py`、`flexible_load.py`与本地HEAD源码hash一致。详细只读证据及Base/V5审查见
+  `supplementary_materials/reviews/review_20260905/REVIEW_CN.md`和同目录`server_readonly_snapshot.txt`。
+- 待运行V5不能直接复用当前Base profile：真实本地全年冷热数据触发现有长链guard，且final profiles冻结
+  Base原LP身份。报告中的新技术/事件验证建议未实施，不改变下方作业运行边界。
+
+## 2026-09-05 06:55：Threads44已进入Barrier
+
+- job`4496031`正常RUNNING至iter11，Presolve`17453.62 s`、Ordering`4155.50 s`，Factor NZ/Ops
+  `3.374e10/1.881e15`；双stderr0、STOP不存在。
+- 44线程稳定步时约1029s，较32线程约1234s缩短16.6%；但Ordering慢19.3%，到近似收敛态的累计solver时间
+  目前仅快约7.2%。
+- T44当前/峰值RSS约396.77/628.16GiB，较T32峰值480.48GiB高147.68GiB，700G边界仍紧。T32 job
+  `4479238`正常至iter91；两作业均billing64且不得主动停止。
+
+## 2026-09-04 21:25：A8 Threads44/700G已启动
+
+- 实现`40214fb`只新增v10 Threads44 canonical profile及守卫；相对正式v7仅改变线程数，不改模型、数据、
+  Presolve/Ordering、容差、保存/QC或Stage B边界。没有SoftMemLimit或时限。
+- release计算节点smoke`4496030`为`COMPLETED 0:0`；job`4496031`在`m4cg1705`正常RUNNING，实际
+  `64 CPU/700G/billing64`、cpuset`0-63`、Gurobi Threads44，preflight PASS（67/3/2/0）、双stderr0。
+- Threads32 `4479238`继续RUNNING且未受影响。不得主动停止；只读等待44线程的原MPS身份、Presolve、Ordering
+  和Barrier证据。历史Ordering候选未证明综合收益，本轮保持自动ordering以保证单因素可比。
+
+## 2026-09-04 20:49：A8 Threads54/700G在Ordering OOM
+
+- job`4488786`在Presolve`17590.56 s`后进入Ordering，心跳到385s时被700G cgroup硬杀；Slurm终态
+  `OUT_OF_MEMORY 0:125`，batch MaxRSS约593.97GiB。相较Threads64峰值约677.30GiB有所下降，但仍未存活。
+- 原MPS/PRM与冻结LP identity PASS保留；terminal=`INCOMPLETE_NO_USABLE_STAGEA`、rc137，无BarX/BarPi、
+  solve report或可用checkpoint。不得作为正式结果或续接来源。
+- 当前仅A8 Threads32 `4479238`继续RUNNING，Barrier iter62，当前/峰值RSS约383.34/480.48GiB，双stderr 0。
+
+## 2026-09-04 17:53：M9作业4990379已受控停止
+
+- 按作者明确指令，只在M9 exact case control目录创建`STOP_REQUESTED`，未调用`scancel`。wrapper于
+  17:45:30转发SIGTERM，Gurobi于17:46:58在Barrier iter54后以status11 `INTERRUPTED`返回；Slurm最终
+  `FAILED 2:0`是受控停止wrapper的预期终态，不是OOM。
+- 保全已COMPLETE且errors空：原MPS/LP身份、BarX 331,667,192 bytes、BarPi 407,258,000 bytes、结果目录
+  约5.1G均保存，双stderr为0。但QC=`HARD_FAIL`、checkpoint=
+  `RECOVERY_ONLY_UNACCEPTED_SOLVER_RESULT`、terminal=`INCOMPLETE_NO_USABLE_STAGEA`，不得当正式解或续接输入。
+- M9作业已退出队列；A8 `4479238`与`4488786`继续RUNNING且未受影响。下一步只读监测A8，不恢复M9。
+
+## 2026-09-04 11:17：新License ID 2845749认证失败
+
+- 官方`grbgetkey`13.0.2明确返回`ERROR 203: License 2845749 is inactive`、exit1；未下载或安装新许可。
+- 原`/home/zz2/gurobi.lic`保持License ID`2840423`及原SHA256、owner`zz2`、mode600，未被覆盖；临时备份
+  核对一致后已删除。
+- 固定服务器许可证门禁继续FAIL，不得启动新求解。需要先在Gurobi门户/官方支持侧恢复2845749为active，
+  或提供另一有效许可，再重新认证并运行最小LP。
+
+## 2026-09-04 11:07：许可证撤销通知后的双端实测
+
+- 当前Windows设备可正常签出许可证并求解：Gurobi13.0.2 CLI和`RL`环境gurobipy12.0.1均完成一变量
+  LP，status2 `OPTIMAL`、objective=1。活动NODE License ID为`2808889`，到期`2027-04-21`。
+- 固定服务器SSH、Python3.11.15及gurobipy13.0.2可用，但`gp.Env()`等待150秒仍无法取得许可证；测试已由
+  timeout终止且无遗留进程。服务器文件的非秘密元数据为NODE License ID`2840423`、到期
+  `2027-07-02`，但文件存在/未到期不等于许可证当前可签出。
+- 当前固定服务器许可证门禁为FAIL：不得启动新的正式模型。此现象与撤销通知一致，但尚不能在没有官方
+  返回或网络诊断的情况下排除验证服务阻塞。KEY/CKEY及许可证正文不得披露。
 
 ## 2026-09-03 15:47：最终v7无SoftMemLimit唯一作业4478922运行中
 
@@ -2991,3 +3215,42 @@ The duplicate-COMID hydrology work currently present in the local worktree is ow
 
 Per-year production entry: `scripts/run_cispo_2030_full_year.py`.
 Sequential production entry: `scripts/run_cispo_planning_sequence.py`.
+
+
+## 2026-09-13 追加更正：无Crossover资格未通过
+
+- 2026-09-13 Crossover约定更正（覆盖上一条直接沿用Cross2启动的结论）：原定Stage A和Thermal均为Crossover0/SolutionTarget1。
+  先前本地修复采用Cross2后QC通过，再带入全国候选，不能称为沿用既定方案；用户提醒后诊断入口已恢复0/1，资源仍44线程/64CPU/700G/SoftMemLimit=null。
+  本次v9同MPS夏季24h无Crossover冷测试：BarConvTol1e-6/1e-4均OPTIMAL，但原行最大残差1.164401e-3/1.313795e-3，完整QC HARD_FAIL；耗时23.143/21.176s、83/74轮。
+  最差行reservoir_independent_hourly_transition[345,0]，另有跨省双向流及城市网络QC失败。此前Cross2的PASS不能作为无Cross全年资格；本轮未测Cross0/1e-8完整QC，不推荐据此启动多年/多日生产。
+  1e-6只保留为未验收诊断测试值；源v9和物理模型未改，不自动Crossover/Stage B。5项入口测试、参数实际回读和dry-run通过。
+  旧Cross2启动包保留但资格建议撤回，新Cross0诊断归档197文件哈希通过，非科学验收包；新全国任务未上传/提交，Thermal未修改。
+  Git0a03cc452e95d158f36923ceb5210267979b6234未提交；修改scripts/probe_full_year_numerics.py、tests/test_full_year_numeric_probe.py及四份交接文档。
+  命令/输出/失败记录/前后快照/差异/哈希：supplementary_materials/reviews/crossover_contract_20260913/；精确下一步本地定位该水库行和双向流残差，在固定Cross0下验证修复，再评估全国诊断。
+
+
+## 2026-09-13 追加：1e-4用户选择和剩余问题
+
+- 2026-09-13 用户明确选定BarConvTol=1e-4：诊断入口和新包均更新为1e-4/Crossover0/SolutionTarget1/Threads44；NF2/Scale2/Presolve2、FeasTol=OptTol1e-6、Slurm64CPU/700G/无SoftMemLimit保持。
+  修复诊断遗漏：复用save_numeric_snapshot不依赖SolCount分块查询/保存BarX/X/BarPi/Pi等；城市QC失败后仍独立执行小时水库QC，严格阈值不变，不自动Stage B或接受结果。
+  8项启动/保存测试PASS、实际参数回读、dry-run和本地bash -n通过；科学配置身份不变，未新增模型变量/约束或修改输入。未重复求解24h，复用上轮同MPS的Cross0/1e-4真实冷解。
+  独立量级复核：最大水量残差1313.795m3在高凤山HydroCHN_01080/库索引471/气象小时3961；折算176.025kWh。620×24h中20站时>1m3，全部绝对残差折算310.895kWh，非实际损失或全年上界。
+  跨省反向重叠1.571604GWh/24h，最大42.1258MW、额外损耗37.115MWh；59项小时硬QC中57项PASS，水库平衡/跨省方向失败，城市QC另失败。目标相对Cross2差0.0033988%。不能把这些小样本QC失败等同于旧NUMERIC崩溃，也不能宣布全年已健康。
+  高凤山源调节库容3354.936947GL仍为估算来源待核实，duplicate_comid/工程字段需核对；本轮未找到足以直接替换的可靠工程值，未猜测修数据。
+  新本地包tolerance_1e4_readiness_20260913/cloud_gate_20260913_v9_t44_cross0_tol1e4.tar.gz，197文件/663247bytes/SHAd47f050c79a6e3c73d4216a80a3cbe0d8f168b62e630343ffdeb4905f9e2a6a2；未上传/提交，未连接或修改服务器/Thermal。
+  保留900s optimize/2h总墙钟早期诊断预算；历史44线程排序4155.5s更长，可能未到Barrier即截止，不能用这种TIME_LIMIT判定数值失败。要验证迭代须先安排覆盖排序的有限预算。
+  Git0a03cc452e95d158f36923ceb5210267979b6234未提交；改scripts/probe_full_year_numerics.py、tests/test_full_year_numeric_probe.py及四文档。报告/命令/参数/残差表/原始审计引用/快照/差异/哈希在supplementary_materials/reviews/tolerance_1e4_readiness_20260913/。
+  下一步固定用户选定1e-4/Cross0，优先核实高凤山异常库容及无Cross残差，在原单位下验证修复；全国8760未验收，不因这次参数更改直接启动多日生产任务。
+
+
+## 2026-09-13 20:55 参数对照与全年完成时间判断
+
+- 2026-09-13 20:55 9–10天可求解性判断与Thermal参数核对：当前尚无修复版全国8760构建/预处理/Barrier和峰值内存验收，不能承诺9–10天稳定完成。
+  实际solver主差异为当前NumericFocus2、Thermal1；两者BarConvTol1e-4/Method2/Crossover0/SolutionTarget1/Threads44/Presolve2/Scale2/FeasTol=OptTol1e-6一致，Slurm均64CPU/700G/无SoftMemLimit。
+  当前900s optimize/2h作业是早期诊断设置，不能直接用作多日启动；Thermal无限时，实际Presolve17794.52s约4.94h。本轮未变更预算、模型或参数。
+  模型层仍不同：当前去掉年度行8192缩放、采用水库/CF/小容量等修复、城市正则1CNY/MWh及2030DAC关闭；Thermal启用8192、旧输入/0.001CNY/MWh正则、热响应及DAC，不能当同LP速度对照。
+  20:54:34只读Slurm：4533060 RUNNING/6-00:44:22，64CPU/700G/billing64。20:55:28读取日志末iter483，P1.59165741e9、D-5.38091980e9、PInf21.5、DInf1.41e-4、Compl89.6，solver518073s。
+  项目诊断abs(P-D)/max(1,abs(P),abs(D))当前129.58%、历史最小97.57%；不是MIPGap，不据此预测再3–4天收敛，也未判定作业终态失败。
+  当前建议固定1e-4/Cross0/44/NF2，优先核实异常水库输入并在完整8760首12–24h观察收敛/内存；首日检查也不是截止保证。局部0.311MWh残差不应成为无条件收紧容差的理由，但QC记录不篡改。
+  本轮只读服务器、写对照报告及更新四文档，无求解/测试重跑，无提交/停止/重启/改参/自动监控。Git0a03cc452e95d158f36923ceb5210267979b6234未提交。
+  报告/参数CSV-JSON/服务器有效配置/日志摘要及哈希：supplementary_materials/reviews/solve_feasibility_vs_thermal_20260913/。下一步以实际全年首日数据评估目标，而非给无依据9–10天ETA。

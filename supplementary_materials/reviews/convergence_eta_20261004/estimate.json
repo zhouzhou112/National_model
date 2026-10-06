@@ -1,0 +1,198 @@
+{
+  "as_of_uk": "2026-10-04T13:54:31.713261+01:00",
+  "current": {
+    "iteration": 250,
+    "primal": 3647655840.0,
+    "dual": -17066724600.0,
+    "pinf": 247.0,
+    "dinf": 9.86e-06,
+    "compl": 298.0,
+    "seconds": 338213,
+    "absolute_objective_difference": 20714380440.0
+  },
+  "recent_minutes_per_iteration": 21.005,
+  "method": "Individual log-scale nearest matches; DInf reported separately because it is non-monotonic. No fitted statistical model.",
+  "scope": "Conditional time to Barrier termination analogous to OPTIMAL historical solves; excludes postprocessing/QC acceptance.",
+  "cases": {
+    "2030": {
+      "terminal_iteration": 348,
+      "terminal_status": "OPTIMAL",
+      "qc_status": "HARD_FAIL",
+      "individual_matches": {
+        "pinf": {
+          "nearest": {
+            "iteration": 110,
+            "primal": 273837634.0,
+            "dual": -2303617420.0,
+            "pinf": 251.0,
+            "dinf": 3.84e-08,
+            "compl": 34.3,
+            "seconds": 143678,
+            "absolute_objective_difference": 2577455054.0
+          },
+          "first_at_or_below": 111
+        },
+        "dinf": {
+          "nearest": {
+            "iteration": 311,
+            "primal": 4214881.06,
+            "dual": 4181389.68,
+            "pinf": 0.00545,
+            "dinf": 8.56e-06,
+            "compl": 0.000435,
+            "seconds": 404936,
+            "absolute_objective_difference": 33491.37999999942
+          },
+          "first_at_or_below": 73
+        },
+        "compl": {
+          "nearest": {
+            "iteration": 81,
+            "primal": 1239982200.0,
+            "dual": -18264090500.0,
+            "pinf": 2420.0,
+            "dinf": 2.3e-07,
+            "compl": 276.0,
+            "seconds": 111641,
+            "absolute_objective_difference": 19504072700.0
+          },
+          "first_at_or_below": 81
+        },
+        "absolute_objective_difference": {
+          "nearest": {
+            "iteration": 81,
+            "primal": 1239982200.0,
+            "dual": -18264090500.0,
+            "pinf": 2420.0,
+            "dinf": 2.3e-07,
+            "compl": 276.0,
+            "seconds": 111641,
+            "absolute_objective_difference": 19504072700.0
+          },
+          "first_at_or_below": 81
+        }
+      },
+      "primary_stage_range": [
+        81,
+        110
+      ],
+      "remaining_iterations_range": [
+        238,
+        267
+      ],
+      "historical_remaining_days_range": [
+        3.5615002541795926,
+        3.9322988652907034
+      ],
+      "remaining_days_at_current_speed_range": [
+        3.471659722222222,
+        3.8946770833333333
+      ],
+      "2050_total_iterations_if_analogue_holds": [
+        488,
+        517
+      ]
+    },
+    "2040": {
+      "terminal_iteration": 605,
+      "terminal_status": "OPTIMAL",
+      "qc_status": "HARD_FAIL",
+      "individual_matches": {
+        "pinf": {
+          "nearest": {
+            "iteration": 170,
+            "primal": 708119532.0,
+            "dual": -1430390620.0,
+            "pinf": 247.0,
+            "dinf": 4.49e-06,
+            "compl": 31.0,
+            "seconds": 239895,
+            "absolute_objective_difference": 2138510152.0
+          },
+          "first_at_or_below": 170
+        },
+        "dinf": {
+          "nearest": {
+            "iteration": 100,
+            "primal": 6830850600.0,
+            "dual": -31910824200.0,
+            "pinf": 5170.0,
+            "dinf": 9.95e-06,
+            "compl": 718.0,
+            "seconds": 153871,
+            "absolute_objective_difference": 38741674800.0
+          },
+          "first_at_or_below": 101
+        },
+        "compl": {
+          "nearest": {
+            "iteration": 120,
+            "primal": 3877173720.0,
+            "dual": -13435625400.0,
+            "pinf": 2490.0,
+            "dinf": 3.92e-06,
+            "compl": 303.0,
+            "seconds": 178168,
+            "absolute_objective_difference": 17312799120.0
+          },
+          "first_at_or_below": 121
+        },
+        "absolute_objective_difference": {
+          "nearest": {
+            "iteration": 117,
+            "primal": 4182899420.0,
+            "dual": -16739431000.0,
+            "pinf": 2760.0,
+            "dinf": 4.95e-06,
+            "compl": 365.0,
+            "seconds": 174579,
+            "absolute_objective_difference": 20922330420.0
+          },
+          "first_at_or_below": 118
+        }
+      },
+      "primary_stage_range": [
+        117,
+        170
+      ],
+      "remaining_iterations_range": [
+        435,
+        488
+      ],
+      "historical_remaining_days_range": [
+        6.988593626262413,
+        7.744565848484635
+      ],
+      "remaining_days_at_current_speed_range": [
+        6.345260416666666,
+        7.11836111111111
+      ],
+      "2050_total_iterations_if_analogue_holds": [
+        685,
+        738
+      ]
+    }
+  },
+  "elapsed_wall_days": 3.9478472222222223,
+  "rounded_planning_scenarios": {
+    "remaining_days": [
+      4,
+      8
+    ],
+    "midpoint_days": 6,
+    "total_wall_days": [
+      7.947847222222222,
+      11.947847222222222
+    ],
+    "calendar_window_uk": [
+      "2026-10-08T13:54:31.713261+01:00",
+      "2026-10-12T13:54:31.713261+01:00"
+    ],
+    "conditions": [
+      "No further major numerical reset or stagnation.",
+      "2050 remaining iteration trajectory resembles one of the two successful historical solves.",
+      "Per-iteration cost stays within the recent/historical range."
+    ],
+    "caveat": "Not a guaranteed upper bound or success probability. A further NUMERIC failure or long plateau remains possible."
+  }
+}

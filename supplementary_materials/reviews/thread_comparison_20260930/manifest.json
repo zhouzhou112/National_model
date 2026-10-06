@@ -1,0 +1,94 @@
+{
+  "collected_utc": "2026-09-30T13:52:06.100001+00:00",
+  "git_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "source_state": "existing dirty working tree; no production changes",
+  "files": {
+    "base2040_t44__output_8760__gurobi.log": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/gurobi.log",
+      "sha256": "2216ee953ef930dd6c2971bb3689e50ad902ef27a76b9bdcee7ec09cb5e68efe"
+    },
+    "base2040_t44__output_8760__solver_telemetry.jsonl": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/solver_telemetry.jsonl",
+      "sha256": "edf82a756b29ce78f3ac4896e729a37d8cdf5dd22609576a891a5d45e85fe0da"
+    },
+    "base2040_t44__output_8760__solve_report.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json",
+      "sha256": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230"
+    },
+    "base2040_t44__output_8760__solution_qc.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/solution_qc.json",
+      "sha256": "09f86dc2d2eaf9f6b5b502c7d16519c019346260f6103429022b5e76b12c3d5c"
+    },
+    "base2040_t44__output_8760__run_scope.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/run_scope.json",
+      "sha256": "4611c24ea534107efff4eaf23a497ac5aae53857a9d0f1899de2e5dc2f43c911"
+    },
+    "base2040_t44__output_8760__model_config_snapshot.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/model_config_snapshot.json",
+      "sha256": "a03384f8834a02a35e54d43626043dd0770023bad45d36cd370defc3461cb373"
+    },
+    "base2040_t44__runtime_slurm_job.txt": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/runtime_slurm_job.txt",
+      "sha256": "7bca4454b2144b9557cda00bd6ea9d0aa4e34323917adbda037a980e1019e89e"
+    },
+    "base2040_t44__resource_usage.txt": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/resource_usage.txt",
+      "sha256": "568ad70365ce0b368d61a328be7d7473cab838253f3157aa9f0332eae2e3454d"
+    },
+    "base2040_t44__batch_exit.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/batch_exit.json",
+      "sha256": "176dc091459346f34e4a995e213583817d5f7dc031295b2413d767c3d1098aa6"
+    },
+    "base2030_t48__output_8760__gurobi.log": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/gurobi.log",
+      "sha256": "3318241e34dfcd6a0afb764850cebb66a98fb567aebe3b79940edf9f1b322b4a"
+    },
+    "base2030_t48__output_8760__solver_telemetry.jsonl": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solver_telemetry.jsonl",
+      "sha256": "66bb06dbf0d2d248f6634baca5b198dd2e82001eae7c5aede85e9c1f11ea6ebe"
+    },
+    "base2030_t48__output_8760__solve_report.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solve_report.json",
+      "sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237"
+    },
+    "base2030_t48__output_8760__solution_qc.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solution_qc.json",
+      "sha256": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a"
+    },
+    "base2030_t48__output_8760__solver_parameters_before_optimize.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solver_parameters_before_optimize.json",
+      "sha256": "ba5b5b29582deba201686df1682dcbd91e83c63ea35fe81cee85c33771447b79"
+    },
+    "base2030_t48__output_8760__run_scope.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/run_scope.json",
+      "sha256": "563c0d3b3e6f97cd1f8aac6fe9f7e46c4184925c35d3fad933b1f5ad0d693d7e"
+    },
+    "base2030_t48__output_8760__model_config_snapshot.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/model_config_snapshot.json",
+      "sha256": "1fe080a3a27db357a67a8074ff56062f2e091b247b44bf4dacdfe01c73c33f68"
+    },
+    "base2030_t48__runtime_slurm_job.txt": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/runtime_slurm_job.txt",
+      "sha256": "6fa28bacbb440d0da3a67e60d08a792d7c288d42ba085bef15102a8ceaf1360f"
+    },
+    "base2030_t48__resource_usage.txt": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/resource_usage.txt",
+      "sha256": "013259887d1dba4c66b2ac17baac8ec15db499289cd901259dd88a7198af1b4b"
+    },
+    "base2030_t48__batch_exit.json": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/batch_exit.json",
+      "sha256": "f1be2d9f755c01348d77e3816ec07891c949260a2113781dc8cea9ff9a0e9111"
+    },
+    "oldbase2030_t44__gurobi.log": {
+      "path": "supplementary_materials\\reviews\\base_2040_continuation_20260919\\evidence\\base_t44_4496031.log",
+      "sha256": "ac697544625d5e41fa17a03f35c3db8fec1f7f95a418ad9e289c926c4e3cb444"
+    },
+    "thermal2030_t44__gurobi.log": {
+      "path": "supplementary_materials\\reviews\\base_2040_continuation_20260919\\evidence\\thermal_t44_4533060.log",
+      "sha256": "9b9bf4450a0e35bba362708b7ce64d3065ae2483a728e35744ab7e85230c7de3"
+    },
+    "scheduler.json": {
+      "sha256": "b2677a168f8caa6e9cbdb030b228d813fcc8a297b533e496a4a159a3f42a5d35"
+    }
+  }
+}

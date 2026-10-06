@@ -1,0 +1,46 @@
+{
+  "modified_tracked/root_docs_or_other": {
+    "files": 9,
+    "bytes": 2129621
+  },
+  "modified_tracked/code_config_tests": {
+    "files": 17,
+    "bytes": 641097
+  },
+  "modified_tracked/other_supplementary": {
+    "files": 1,
+    "bytes": 15794
+  },
+  "untracked/temporary": {
+    "files": 55540,
+    "bytes": 3522203808
+  },
+  "untracked/root_docs_or_other": {
+    "files": 3,
+    "bytes": 17637
+  },
+  "untracked/code_config_tests": {
+    "files": 55,
+    "bytes": 428849
+  },
+  "untracked/local_runtime_and_outputs": {
+    "files": 1495,
+    "bytes": 807635340
+  },
+  "untracked/other_supplementary": {
+    "files": 27,
+    "bytes": 232087269
+  },
+  "untracked/manuscript_modules": {
+    "files": 8328,
+    "bytes": 657948536
+  },
+  "untracked/connection_or_credential_candidate_not_read": {
+    "files": 4,
+    "bytes": 3303
+  },
+  "untracked/review_evidence": {
+    "files": 9004,
+    "bytes": 4990324194
+  }
+}

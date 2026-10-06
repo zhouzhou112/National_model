@@ -1,0 +1,33 @@
+{
+  "retrieved_at": "2026-09-15T23:09:55.740634+08:00",
+  "remote_roots": {
+    "base_old": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/outputs/2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_v4",
+    "thermal": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260907_thermal_stagea_1e4_t44_ffd651a_v2/outputs/2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2",
+    "base_v9": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760"
+  },
+  "operation": "read-only SSH; no optimize or job mutation",
+  "files": {
+    "evidence\\base_old\\gurobi.log": "a7691283dbe895013ca9862275d2390ae0c36d20e8dec8a6c99b24bf0556a5a2",
+    "evidence\\base_old\\solve_report.json": "c738d2f82282b97bb52146242f9e7d2bcd305667157dd4d86b804cb5add7a526",
+    "evidence\\base_old\\solution_qc.json": "a9bd01767e3e5d31c2f2621a64df4e316148f9a6ee20727421c2cddefa3a9372",
+    "evidence\\base_old\\preservation_report.json": "a277fe2c1f3650dd15b7c9f8891f7397bfa8be37d6420cc4ce8766ea189f4c14",
+    "evidence\\base_old\\barrier_checkpoint_error.json": "93060d0a57567b09853dbb26c2e58d794ba65e8d4c1e18877acd863708f5c568",
+    "evidence\\base_old\\build_report.json": "3e0133ebb3c2e04a2ec93333a56574eb94106295dfd8129b38382fbc29efdcdd",
+    "evidence\\base_old\\model_config_snapshot.json": "8707eeb0015e4b3b66b9e1bd7ed2a43b6884ec2a93424f6bf1ddbd43891e1c40",
+    "evidence\\base_old\\model_archive__parameters.prm": "aa8bfcc4404098862406427679951ef4c33ea3b3f5a96a62731ade9657c85b07",
+    "evidence\\thermal\\gurobi.log": "43a2a16b59e510caacaf47d350bca64df528854ca7fb7b90c5bea5363c8dc6a1",
+    "evidence\\thermal\\solve_report.json": "31d2a8345a9727f63d161ba67c36102e31896b4175f7422922802f05d6796d51",
+    "evidence\\thermal\\solution_qc.json": "a9bd01767e3e5d31c2f2621a64df4e316148f9a6ee20727421c2cddefa3a9372",
+    "evidence\\thermal\\preservation_report.json": "8ca5006ea1721a495e2ba6d4dc6ad1ba6110c869310c308765170a7e796bca17",
+    "evidence\\thermal\\barrier_checkpoint_error.json": "93060d0a57567b09853dbb26c2e58d794ba65e8d4c1e18877acd863708f5c568",
+    "evidence\\thermal\\build_report.json": "2660c5cf566bf992dfb3536b9b868438ac43813ca4d2367ff241d55ecc97f461",
+    "evidence\\thermal\\model_config_snapshot.json": "83b14bd59ee68139eda7eb4130f695fc765ed159266610f921ba9777bd549600",
+    "evidence\\thermal\\model_archive__parameters.prm": "5e2c25a087ad257c47f4829e7d94869d53b41418b77b29b598ed1ca524e20967",
+    "evidence\\base_v9\\gurobi.log": "591f90a766230546a700f4f4620309047b9d8ca178037c3b1d273b04231854eb",
+    "evidence\\base_v9\\build_report.json": "8bf0e3751e1123b2edc8b0565015b5844ba1dce8f221e6d38573c042d42ea8c6",
+    "evidence\\base_v9\\model_config_snapshot.json": "87f679fe2b8c21ebbf54b69f84dc278e50994878fdea0799bae50a7cb46ceb50",
+    "evidence\\base_v9\\solver_parameters_before_optimize.json": "32c6bc085e00788fffea402fec214a3e0919f2abf662a2640e1b5d7b6fa1360b",
+    "evidence\\base_v9\\model_archive__parameters.prm": "94c8a867526bfb2f7080d0d13b8ed036513cb4b258b823270c802e1bf068d7b1"
+  },
+  "scheduler_command": "date '+%Y-%m-%d %H:%M:%S %Z'; squeue -u a8s001819 -o '%i|%j|%T|%M|%l|%N'; sacct -j 4479238,4533060,4614693 --format=JobID,State,ExitCode,Elapsed,Start,End,AllocCPUS,ReqMem,MaxRSS -P; sstat -j 4614693.batch --format=JobID,MaxRSS,AveRSS,MaxVMSize -P"
+}

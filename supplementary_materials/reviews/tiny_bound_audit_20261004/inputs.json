@@ -1,0 +1,33 @@
+{
+  "remote_base": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "remote_work_subdir": "claude_workspace/tiny_bound_audit_20261004",
+  "cases": {
+    "2030": {
+      "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+      "expected_dimensions": {
+        "rows": 50907233,
+        "columns": 41458383,
+        "nonzeros": 484299937
+      },
+      "dimensions_source_log": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2030_t48__output_8760__gurobi.log"
+    },
+    "2040": {
+      "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "expected_dimensions": {
+        "rows": 50907233,
+        "columns": 41458383,
+        "nonzeros": 485386301
+      },
+      "dimensions_source_log": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__gurobi.log"
+    },
+    "2050": {
+      "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "expected_dimensions": {
+        "rows": 50907233,
+        "columns": 41458383,
+        "nonzeros": 485386301
+      },
+      "dimensions_source_log": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261004T213051Z\\output_8760__gurobi.log"
+    }
+  }
+}

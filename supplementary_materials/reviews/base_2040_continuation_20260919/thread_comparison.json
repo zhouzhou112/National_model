@@ -1,0 +1,115 @@
+{
+  "base48_4614693": {
+    "sha256": "b918c8c9d55c5882412d6c8f28160a53079c98bf9c0f8ea4071a3284e481b933",
+    "last_iteration": 348,
+    "windows": {
+      "0-39": {
+        "mean_minutes": 18.85769230769231,
+        "median_minutes": 19.7
+      },
+      "10-39": {
+        "mean_minutes": 19.327011494252872,
+        "median_minutes": 19.75
+      },
+      "20-39": {
+        "mean_minutes": 19.398245614035087,
+        "median_minutes": 19.733333333333334
+      },
+      "50-97": {
+        "mean_minutes": 18.146808510638298,
+        "median_minutes": 18.316666666666666
+      },
+      "50-200": {
+        "mean_minutes": 19.828,
+        "median_minutes": 19.266666666666666
+      },
+      "200-300": {
+        "mean_minutes": 22.386000000000003,
+        "median_minutes": 22.366666666666667
+      },
+      "300-348": {
+        "mean_minutes": 21.109375,
+        "median_minutes": 20.858333333333334
+      },
+      "0-348": {
+        "mean_minutes": 20.568726053639846,
+        "median_minutes": 20.2
+      }
+    },
+    "threads": "48",
+    "factor_nz": "3.305e+10",
+    "factor_ops": "1.854e+15",
+    "presolved": "37019835 rows, 33634377 columns, 392787298 nonzeros",
+    "numeric_focus": "2"
+  },
+  "base44_4496031": {
+    "sha256": "ac697544625d5e41fa17a03f35c3db8fec1f7f95a418ad9e289c926c4e3cb444",
+    "last_iteration": 40,
+    "windows": {
+      "0-39": {
+        "mean_minutes": 16.23205128205128,
+        "median_minutes": 17.166666666666668
+      },
+      "10-39": {
+        "mean_minutes": 17.226436781609195,
+        "median_minutes": 17.166666666666668
+      },
+      "20-39": {
+        "mean_minutes": 17.186842105263157,
+        "median_minutes": 17.15
+      },
+      "0-40": {
+        "mean_minutes": 16.262916666666666,
+        "median_minutes": 17.166666666666668
+      }
+    },
+    "threads": "44",
+    "factor_nz": "3.374e+10",
+    "factor_ops": "1.881e+15",
+    "presolved": "37665849 rows, 32166850 columns, 404297898 nonzeros",
+    "numeric_focus": "1"
+  },
+  "thermal44_4533060": {
+    "sha256": "9b9bf4450a0e35bba362708b7ce64d3065ae2483a728e35744ab7e85230c7de3",
+    "last_iteration": 568,
+    "windows": {
+      "0-39": {
+        "mean_minutes": 16.405982905982906,
+        "median_minutes": 17.116666666666667
+      },
+      "10-39": {
+        "mean_minutes": 17.194827586206895,
+        "median_minutes": 17.15
+      },
+      "20-39": {
+        "mean_minutes": 17.136842105263156,
+        "median_minutes": 17.066666666666666
+      },
+      "50-97": {
+        "mean_minutes": 17.155673758865248,
+        "median_minutes": 17.1
+      },
+      "50-200": {
+        "mean_minutes": 17.12088888888889,
+        "median_minutes": 17.05
+      },
+      "200-300": {
+        "mean_minutes": 17.032500000000002,
+        "median_minutes": 16.983333333333334
+      },
+      "300-348": {
+        "mean_minutes": 17.060069444444444,
+        "median_minutes": 17.05
+      },
+      "0-568": {
+        "mean_minutes": 17.101525821596244,
+        "median_minutes": 17.05
+      }
+    },
+    "threads": "44",
+    "factor_nz": "3.377e+10",
+    "factor_ops": "1.874e+15",
+    "presolved": "38333142 rows, 32814908 columns, 408371559 nonzeros",
+    "numeric_focus": "1"
+  }
+}

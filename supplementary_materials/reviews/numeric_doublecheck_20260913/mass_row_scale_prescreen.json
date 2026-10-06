@@ -1,0 +1,62 @@
+{
+  "before": {
+    "raw": {
+      "variables": 346767,
+      "constraints": 216188,
+      "nonzeros": 1715784,
+      "coefficient_min_abs": 3.699999999999999e-05,
+      "coefficient_max_abs": 24.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 3853.189875762917,
+      "rhs_min_abs": 7.85753411585315e-06,
+      "rhs_max_abs": 2926.7699250253863,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    },
+    "presolved": {
+      "variables": 225961,
+      "constraints": 101910,
+      "nonzeros": 1206059,
+      "coefficient_min_abs": 3.699999999999999e-05,
+      "coefficient_max_abs": 24.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 3853.189875762917,
+      "rhs_min_abs": 7.85753411585315e-06,
+      "rhs_max_abs": 2926.7699250253863,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    }
+  },
+  "carbon_10kt_rows": {
+    "raw": {
+      "variables": 346767,
+      "constraints": 216188,
+      "nonzeros": 1715784,
+      "coefficient_min_abs": 0.0006090764641496,
+      "coefficient_max_abs": 100.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 3853.189875762917,
+      "rhs_min_abs": 1.0186e-05,
+      "rhs_max_abs": 2926.7699250253863,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    },
+    "presolved": {
+      "variables": 225961,
+      "constraints": 101910,
+      "nonzeros": 1206059,
+      "coefficient_min_abs": 0.0006090764641496,
+      "coefficient_max_abs": 100.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 3853.189875762917,
+      "rhs_min_abs": 3.6103391647338865e-05,
+      "rhs_max_abs": 2926.7699250253863,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    }
+  }
+}

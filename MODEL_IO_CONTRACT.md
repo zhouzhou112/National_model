@@ -96,3 +96,13 @@ Existing 2025 VRE is currently held as an exogenous floor because plant-level co
 ## 8. Multi-year architecture
 
 The default is myopic sequential planning, not a joint perfect-foresight solve. This requires four solves in total but keeps peak memory close to one 8760-hour model and permits validation between years. A joint four-year model would generally be much harder, not lighter: chronological blocks, RUC/storage/hydrology/network variables and inter-year capacity couplings would coexist in memory. A perfect-foresight variant should therefore be treated as a separate research formulation and first tested on reduced spatial/temporal instances.
+
+## 2026-10-05 opt-in 年度分段求和与容量清理
+
+`formulation.annual_dense_row_split.enabled` 默认缺省/false；关闭时不新增变量、约束或审计字段。开启时，`annual_block_<family>_<unit>[b] = sum(y_t, t in block b)`，原有年度行使用这些块的和。默认 `block_hours=730`，末块保留实际小时数，DAC 固定小时负荷乘每块实际时长；全年预算和小时物理约束不变。辅助变量目标系数为零。发电/输送/捕集/生物质用非负界，净排放与未额外证明非负的有效需求用自由界。
+
+变量后缀保留真实单位：电量 `_gwh`，排放/捕集 `_mtco2`，生物质 `_pj`，不能把这些年度流量统一命名为 GWh。实际 `master.py` 中的 carbon/biomass/co2_source 行已经引用年度变量；真正跨小时稠密项位于 `monolithic.py` 的排放、捕集、生物质 accounting 行，因此分段在源求和处实施，不对稀疏终端预算再加无效分层。
+
+消去块定义变量/行可严格恢复原年度行。一个原模型对偶解可提升至新模型：对 `block - sum(y)=0` 定义行，使用与原年度行相应系数一致的乘子；原年度行的物理 RHS 敏感性及对偶解释保留。实际数值对偶解可能因退化、冗余非负界或求解容差而重新分配，不承诺每个 Pi 数值逐字节相同。辅助行 Pi 仅为 formulation 诊断量，不作为新的土地价格、碳价格或独立经济约束导出。
+
+`numerics.hydro_capacity_headroom_zero_gw`、`retrofit_upper_zero_gw`、`inherited_floor_overrun_clip_gw` 均默认 0。前两项明确移除不超过阈值的容量区间，是可量化近似而非严格 LP 等价；仅非零配置进入科学指纹。续接截断只作用于本次构建的有效 floor，不修改已归档 cohort 文件；审计记录资产、截断量和阈值。后续再次导入仍从原始 cohort 重建 floor，重复同一显式检查，不累积截断；任何超过阈值的越界仍失败。水电、VRE、wave、nuclear、storage 的有限 GW 上界均使用同一检查；没有有限上界的资产及非 GW 存量不应用此 GW 截断。

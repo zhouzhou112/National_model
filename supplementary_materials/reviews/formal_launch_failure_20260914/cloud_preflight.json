@@ -1,0 +1,6 @@
+{
+  "archive_sha256": "987a351effdfca79d4020568aea0957a04a0d20b7fe1a5a238911610fb8c9547",
+  "returncode": 0,
+  "stdout": "{\n  \"status\": \"PASS\",\n  \"required_failures\": [],\n  \"optional_sidecar_differences\": [\n    \"validation_sidecar:output_manifest.csv\",\n    \"validation_sidecar:smoke_test_report.json\"\n  ],\n  \"total_reference_records\": 79,\n  \"required_records\": 66,\n  \"scope\": \"File SHA256 and recorded Zarr metadata identities; not a new full chunk-data hash\"\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,160 @@
+Set parameter LicenseID to value 2808889
+Read MPS format model from file C:\Users\ZZ\AppData\Local\Temp\tmpnqlddvxr\model_archive\original.mps
+Reading time = 0.00 seconds
+offline_test: 2 rows, 2 columns, 4 nonzeros
+Set parameter LogFile to value "C:\Users\ZZ\AppData\Local\Temp\tmpt7w0dn0z\gurobi.log"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter OptimalityTol to value 1e-06
+Set parameter MarkowitzTol to value 0.01
+Set parameter NumericFocus to value 2
+Set parameter ScaleFlag to value 2
+Set parameter Presolve to value 2
+Set parameter Method to value 2
+Set parameter BarConvTol to value 0.0001
+Set parameter Crossover to value 0
+Set parameter Threads to value 44
+Set parameter TimeLimit to value 900
+Set parameter SoftMemLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter DualReductions to value 1
+Set parameter InfUnbdInfo to value 0
+Set parameter CrossoverBasis to value 1
+Set parameter SolutionTarget to value 1
+Read MPS format model from file C:/Users/ZZ/AppData/Local/Temp/tmpt7w0dn0z/raw_model.mps
+Reading time = 0.00 seconds
+: 1 rows, 1 columns, 1 nonzeros
+Set parameter Threads to value 8
+Set parameter OutputFlag to value 1
+Set parameter DualReductions to value 1
+Set parameter InfUnbdInfo to value 0
+Set parameter Aggregate to value 1
+Set parameter BarIterLimit to value 2000000000
+Set parameter CrossoverBasis to value 1
+Set parameter SolutionTarget to value 1
+Set parameter WorkLimit to value 1
+Set parameter LogFile to value "C:\Users\ZZ\AppData\Local\Temp\tmpownls5d2\diagnostic.log"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter OptimalityTol to value 1e-06
+Set parameter MarkowitzTol to value 0.01
+Set parameter NumericFocus to value 2
+Set parameter ScaleFlag to value 2
+Set parameter Presolve to value 2
+Set parameter Method to value 2
+Set parameter BarConvTol to value 1e-08
+Set parameter Crossover to value 2
+Set parameter Threads to value 8
+Set parameter TimeLimit to value 900
+Set parameter SoftMemLimit to value 8
+Set parameter OutputFlag to value 1
+Set parameter DualReductions to value 1
+Set parameter InfUnbdInfo to value 0
+Set parameter CrossoverBasis to value 1
+Set parameter SolutionTarget to value 0
+Set parameter LogFile to value "C:\Users\ZZ\AppData\Local\Temp\tmpnu8h0j19\parameters.log"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter OptimalityTol to value 1e-06
+Set parameter MarkowitzTol to value 0.01
+Set parameter NumericFocus to value 2
+Set parameter ScaleFlag to value 2
+Set parameter Presolve to value 2
+Set parameter Method to value 2
+Set parameter BarConvTol to value 0.0001
+Set parameter Crossover to value 0
+Set parameter Threads to value 48
+Set parameter TimeLimit to value 1e+100
+Set parameter SoftMemLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter DualReductions to value 1
+Set parameter InfUnbdInfo to value 0
+Set parameter Aggregate to value 1
+Set parameter BarIterLimit to value 2000000000
+Set parameter BarHomogeneous to value 1
+Set parameter CrossoverBasis to value 1
+Set parameter SolutionTarget to value 1
+Set parameter Method to value 2
+Set parameter Crossover to value 0
+Set parameter Method to value 2
+Set parameter Crossover to value 2
+Read MPS format model from file C:\Users\ZZ\AppData\Local\Temp\tmp6spakuj7\model_archive\original.mps
+Reading time = 0.00 seconds
+offline_test: 2 rows, 2 columns, 4 nonzeros
+Set parameter LogFile to value "C:\Users\ZZ\AppData\Local\Temp\tmpr1c8l9j7\gurobi.log"
+Set parameter FeasibilityTol to value 1e-07
+Set parameter OptimalityTol to value 1e-07
+Set parameter MarkowitzTol to value 0.01
+Set parameter NumericFocus to value 2
+Set parameter ScaleFlag to value 2
+Set parameter Presolve to value 2
+Set parameter Method to value 2
+Set parameter BarConvTol to value 1e-10
+Set parameter Crossover to value 0
+Set parameter Threads to value 16
+Set parameter TimeLimit to value 21600
+Set parameter SoftMemLimit to value 48
+Set parameter OutputFlag to value 1
+Set parameter DualReductions to value 1
+Set parameter InfUnbdInfo to value 0
+Set parameter SolutionTarget to value 1
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: Intel(R) Core(TM) i9-14900HX, instruction set [SSE2|AVX|AVX2]
+Thread count: 24 physical cores, 32 logical processors, using up to 16 threads
+
+Non-default parameters:
+TimeLimit  21600
+SoftMemLimit  48
+FeasibilityTol  1e-07
+MarkowitzTol  0.01
+OptimalityTol  1e-07
+Method  2
+ScaleFlag  2
+BarConvTol  1e-10
+Crossover  0
+NumericFocus  2
+Presolve  2
+SolutionTarget  1
+Threads  16
+
+Optimize a model with 1 rows, 2 columns and 2 nonzeros (Min)
+Model fingerprint: 0x4eb877ef
+Model has 2 linear objective coefficients
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 2e+00]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 1e+00]
+
+Presolve removed 1 rows and 2 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Barrier solved model in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective 1.00000000e+00
+
+User-callback calls 48, time in user-callback 0.00 sec
+Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 11+.0 (26200.2))
+
+CPU model: Intel(R) Core(TM) i9-14900HX, instruction set [SSE2|AVX|AVX2]
+Thread count: 24 physical cores, 32 logical processors, using up to 32 threads
+
+Optimize a model with 0 rows, 1 columns and 0 nonzeros (Min)
+Model fingerprint: 0x0027da90
+Model has 1 linear objective coefficients
+Coefficient statistics:
+  Matrix range     [0e+00, 0e+00]
+  Objective range  [2e+00, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [0e+00, 0e+00]
+
+Presolve removed 0 rows and 1 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  2.000000000e+00
+----------------------------------------------------------------------
+Ran 412 tests in 112.906s
+
+OK (skipped=1)

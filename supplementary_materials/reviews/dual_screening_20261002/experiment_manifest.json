@@ -1,0 +1,1311 @@
+{
+  "git_head": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "working_tree_dirty": true,
+  "files": [
+    {
+      "path": "data/README.md",
+      "bytes": 3143,
+      "sha256": "eb36ae248f7eb4e295388805c163ec58b04292683d5f5c847cbb9e23363f8c6a"
+    },
+    {
+      "path": "data/biomass/capacity_upper_by_province_year.csv",
+      "bytes": 30164,
+      "sha256": "5321fe2cb6d561a3d38c8acdaaaaba06c56ffa9fbd3bf6afdde7dd4c24e96770"
+    },
+    {
+      "path": "data/biomass/fuel_potential_by_province_year.csv",
+      "bytes": 23514,
+      "sha256": "a886806b9dce30f0ce9f5f91203a6ea1791780b42554c5fb87a87363abea1180"
+    },
+    {
+      "path": "data/carbon/emissions_limits_by_scenario.csv",
+      "bytes": 1664,
+      "sha256": "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d"
+    },
+    {
+      "path": "data/flexibility/ev_availability_hourly_v4.csv.gz",
+      "bytes": 3792483,
+      "sha256": "58c5680b9113ea6f61b0630e020d31c2c84de927d44da95f38f0d4fa69cb354b"
+    },
+    {
+      "path": "data/flexibility/ev_availability_hourly_v5.csv.gz",
+      "bytes": 3788409,
+      "sha256": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422"
+    },
+    {
+      "path": "data/flexibility/ev_mobility_hourly_v4.csv.gz",
+      "bytes": 5352799,
+      "sha256": "f28123d9f8be53ecd23a2e859601452493e780c8407da049d61c26197d6ae456"
+    },
+    {
+      "path": "data/flexibility/ev_mobility_hourly_v5.csv.gz",
+      "bytes": 5232200,
+      "sha256": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6"
+    },
+    {
+      "path": "data/flexibility/flex_enablement_cost_v4.csv",
+      "bytes": 19191,
+      "sha256": "b2d8a4f758bb4c128e8f4c4df476cecff56e2f95d1bd7d9c97aeaba56881884f"
+    },
+    {
+      "path": "data/flexibility/flex_enablement_cost_v5.csv",
+      "bytes": 18327,
+      "sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a"
+    },
+    {
+      "path": "data/flexibility/flexible_load_v4.manifest.json",
+      "bytes": 3494,
+      "sha256": "6a663d1247ef61eb58af87075fba545a244244eea03a5395efaf74712faae552"
+    },
+    {
+      "path": "data/flexibility/flexible_load_v5.manifest.json",
+      "bytes": 2986,
+      "sha256": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba"
+    },
+    {
+      "path": "data/flexibility/thermal_hourly_envelope_v4.csv.gz",
+      "bytes": 7195581,
+      "sha256": "d76870555566bf7db21f46c3cc1780423cac874a27d8ca617d82a2bdf51266c4"
+    },
+    {
+      "path": "data/flexibility/thermal_hourly_envelope_v5.csv.gz",
+      "bytes": 7070656,
+      "sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd"
+    },
+    {
+      "path": "data/flexibility/thermal_parameters_by_province_v4.csv",
+      "bytes": 11928,
+      "sha256": "1e0660cf67c19fbdba95123ad412d9a81f7b6e4548c92e8a95c14abf0f398ee3"
+    },
+    {
+      "path": "data/flexibility/thermal_parameters_by_province_v5.csv",
+      "bytes": 13787,
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+    },
+    {
+      "path": "data/hydro/cascade_topology_edges.csv",
+      "bytes": 32475,
+      "sha256": "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de"
+    },
+    {
+      "path": "data/hydro/cascade_topology_nodes.csv",
+      "bytes": 18070,
+      "sha256": "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7"
+    },
+    {
+      "path": "data/hydro/classification_summary.csv",
+      "bytes": 809,
+      "sha256": "c5a11163780bfbc4c5e272b6fb818218afe56f283ef1a39b41b77387bb0a8bee"
+    },
+    {
+      "path": "data/hydro/grfr_monthly_p30_single_year_proxy_2019.nc",
+      "bytes": 182396,
+      "sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767"
+    },
+    {
+      "path": "data/hydro/hydro_stations.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "data/hydro/provincial_aggregate_capacity_2025.csv",
+      "bytes": 7064,
+      "sha256": "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199"
+    },
+    {
+      "path": "data/hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+      "bytes": 66506,
+      "sha256": "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "bytes": 733,
+      "sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "bytes": 861090,
+      "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations_original.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/manifest.json",
+      "bytes": 1245,
+      "sha256": "2767f5837127bdf6d1be7b291df71517c8aa6f254c4f42889c05de2dd136d6bc"
+    },
+    {
+      "path": "data/hydro/timeseries_index.csv",
+      "bytes": 1667,
+      "sha256": "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5"
+    },
+    {
+      "path": "data/load/flexible_load_envelope_v3.csv.gz",
+      "bytes": 6549964,
+      "sha256": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+    },
+    {
+      "path": "data/load/flexible_load_envelope_v3.manifest.json",
+      "bytes": 2210,
+      "sha256": "966bf1dff45bf96a2b4e94b474d74389e980def61030088a570c84e67e3658a4"
+    },
+    {
+      "path": "data/load/hourly_load_2025_2060.csv.gz",
+      "bytes": 45549980,
+      "sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+    },
+    {
+      "path": "data/load_center_network/city_337/hydro_routes.csv",
+      "bytes": 804092,
+      "sha256": "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc"
+    },
+    {
+      "path": "data/load_center_network/city_337/initial_spur_capacity_2025.csv",
+      "bytes": 6808149,
+      "sha256": "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc"
+    },
+    {
+      "path": "data/load_center_network/city_337/intra_edges.csv",
+      "bytes": 247942,
+      "sha256": "5c925c74fdaf6fe525128cd641b7ce9feea781c6cf2b560a4044cc853eefeccf"
+    },
+    {
+      "path": "data/load_center_network/city_337/load_centers.csv",
+      "bytes": 228029,
+      "sha256": "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3"
+    },
+    {
+      "path": "data/load_center_network/city_337/substation_initial_capacity_2025.csv",
+      "bytes": 2833870,
+      "sha256": "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d"
+    },
+    {
+      "path": "data/load_center_network/city_337/vre_routes.csv",
+      "bytes": 8456982,
+      "sha256": "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27"
+    },
+    {
+      "path": "data/model_defaults.json",
+      "bytes": 2324,
+      "sha256": "bde57d1b2e51530047a6a8eb622a725410e4f4d9797a428608b7e2cf1bb4f592"
+    },
+    {
+      "path": "data/output_manifest.csv",
+      "bytes": 36250,
+      "sha256": "699519e9192f5b01c5e12bb35a1e33791140223da394cd3ca7b6be5654a73d8d"
+    },
+    {
+      "path": "data/qc_summary.csv",
+      "bytes": 8912,
+      "sha256": "34e944d82dc8530fdbc8724d441fee6a64f3ea822b5f94c46287e19bc4bdfa20"
+    },
+    {
+      "path": "data/sets/model_years.csv",
+      "bytes": 247,
+      "sha256": "533b208d7e026f0b8860370cd808e0bc55004813f57a4facc4acc90ae0412eab"
+    },
+    {
+      "path": "data/sets/provinces.csv",
+      "bytes": 616,
+      "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+    },
+    {
+      "path": "data/smoke_test_report.json",
+      "bytes": 22529,
+      "sha256": "9a643fbb85e3e1994764e729a7dd52e5a01aad5b164175dad8d46a323f9e4329"
+    },
+    {
+      "path": "data/source_manifest.csv",
+      "bytes": 9725,
+      "sha256": "4d2601f9c62c01e5ebf42568ca4803ae2243a31e182b2c0e03eb9846008324e2"
+    },
+    {
+      "path": "data/storage/battery_capacity_floor_by_province_year.csv",
+      "bytes": 23308,
+      "sha256": "8e6039bcd179dbc4dd732e2dde9a12ea537e48f36db63cdf317c7081a9ff3d0d"
+    },
+    {
+      "path": "data/storage/phs_capacity_bounds_by_province_year.csv",
+      "bytes": 36478,
+      "sha256": "21e3d51dbde54e7a651ba11d9a998d5b4ec6302dc9a0ee11383f7c5b99abe319"
+    },
+    {
+      "path": "data/technology/ccs_cost_parameters.csv",
+      "bytes": 322,
+      "sha256": "23fe9546861fa2745c0a9bb2a6a5be6841bff537d735561685b7f38dee886b74"
+    },
+    {
+      "path": "data/technology/dac_parameters_by_year.csv",
+      "bytes": 9014,
+      "sha256": "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6"
+    },
+    {
+      "path": "data/technology/emission_factors_by_year.csv",
+      "bytes": 2386,
+      "sha256": "6c1002b18c623901483397e2ef405eb51cb61577c6e92b62d206ed7fa943dec9"
+    },
+    {
+      "path": "data/technology/province_fuel_generation_cost_by_year.csv",
+      "bytes": 508789,
+      "sha256": "1b8a9ad4f117428ca906f8352dfe59edd4d070e38036f3644cb73e91113abbd4"
+    },
+    {
+      "path": "data/technology/storage_technical_parameters.csv",
+      "bytes": 722,
+      "sha256": "4a36c0a329e3d5932551dad73f09f02a59aa5f098ed5ccd9981f220ffd5ec374"
+    },
+    {
+      "path": "data/technology/technoeconomic_price_basis_manifest.json",
+      "bytes": 3275,
+      "sha256": "397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75"
+    },
+    {
+      "path": "data/technology/technology_capex_by_year.csv",
+      "bytes": 24186,
+      "sha256": "09d66c89812ab7d2777b167375903776d65524b371c4810dc4498060a51091ce"
+    },
+    {
+      "path": "data/technology/thermal_nuclear_om_parameters.csv",
+      "bytes": 1716,
+      "sha256": "3df7296fe416ee485b0fbc2f470f19c9cd4dbc930f330ccf60c0b65bab97f908"
+    },
+    {
+      "path": "data/technology/thermal_nuclear_ruc_parameters.csv",
+      "bytes": 2166,
+      "sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f"
+    },
+    {
+      "path": "data/thermal/capacity_floor_by_year.csv",
+      "bytes": 54592,
+      "sha256": "50b62750d1b44141847c9b18f94d131a22eaf329a25eaea42c4e9635428944bb"
+    },
+    {
+      "path": "data/thermal/nuclear_capacity_floor_by_year.csv",
+      "bytes": 9186,
+      "sha256": "90ade3212ea5be9704e5177879593a64cbabff3be3327022b3ae8ef3c9130f01"
+    },
+    {
+      "path": "data/thermal/nuclear_capacity_upper_by_year.csv",
+      "bytes": 20796,
+      "sha256": "dac3ff4e422b51d076c32c61549389e7d0b10daf0bca6ce327865b17f18afb01"
+    },
+    {
+      "path": "data/transmission/candidate_corridors.csv",
+      "bytes": 65820,
+      "sha256": "aac273c1e576eb13b58f1e9296a862102cafefbaafdedab77e91c8e8387311cb"
+    },
+    {
+      "path": "data/vre/existing_capacity_cohorts_2025.csv",
+      "bytes": 1858671,
+      "sha256": "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0"
+    },
+    {
+      "path": "data/vre/existing_capacity_cohorts_2025_manifest.json",
+      "bytes": 2645,
+      "sha256": "8c6b9a7069d4883212793ca1012f600b54ff7c20d8f48834e7f7c60d058539d2"
+    },
+    {
+      "path": "data/vre/hourly_cf_index.csv",
+      "bytes": 10231,
+      "sha256": "fcdd4be53b4ccc3eb72ed2c1dc502e3b431e3b2a775b651f7401a8d229b5b2d6"
+    },
+    {
+      "path": "data/vre/optimization_points.csv",
+      "bytes": 6727712,
+      "sha256": "0042fe90a23930ab06df524fde3fe4b7ec252ba55a7e7745e49054140c9e8878"
+    },
+    {
+      "path": "data/wave/wave_input_manifest.json",
+      "bytes": 3093,
+      "sha256": "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9"
+    },
+    {
+      "path": "data/wave/wave_sites.csv",
+      "bytes": 226773,
+      "sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
+    },
+    {
+      "path": "repo/cispo_model/__init__.py",
+      "bytes": 159,
+      "sha256": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca"
+    },
+    {
+      "path": "repo/cispo_model/annual_capacity_link_scaling.py",
+      "bytes": 20285,
+      "sha256": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64"
+    },
+    {
+      "path": "repo/cispo_model/basis_reuse.py",
+      "bytes": 15177,
+      "sha256": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d"
+    },
+    {
+      "path": "repo/cispo_model/carbon_accounting.py",
+      "bytes": 5759,
+      "sha256": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519"
+    },
+    {
+      "path": "repo/cispo_model/config.py",
+      "bytes": 64404,
+      "sha256": "fda195ff99583f46673ff02005ba8f74e057d5493a4f2e028378d00d6fddf082"
+    },
+    {
+      "path": "repo/cispo_model/data.py",
+      "bytes": 73603,
+      "sha256": "d8f063db858b2f0e829789d57aef15ae3e2f37dd2725159b190b008debaf8df0"
+    },
+    {
+      "path": "repo/cispo_model/diagnostics.py",
+      "bytes": 42159,
+      "sha256": "7c8e86b80e38f9801ea0f84dd298e952e94290640fd09bb644fb1765beefc00d"
+    },
+    {
+      "path": "repo/cispo_model/flexible_load.py",
+      "bytes": 69362,
+      "sha256": "ca77308e696416a65cf4a0c2ee7a0a41311b1213673def66719919a3334ad40d"
+    },
+    {
+      "path": "repo/cispo_model/flexible_load_numerics.py",
+      "bytes": 22989,
+      "sha256": "a721bd60890b80fba1663adda6e7794505bd32c61394298b7d4c23d16ae7e606"
+    },
+    {
+      "path": "repo/cispo_model/flexible_portfolio.py",
+      "bytes": 11481,
+      "sha256": "44dd572a2f9c70661cbdfb0d20dcb84cf6788aaedcc8cfecd30f3dabb4f7b096"
+    },
+    {
+      "path": "repo/cispo_model/flexible_response.py",
+      "bytes": 6411,
+      "sha256": "632ed817308a4829ec767a7090b86bc0f9ef2f819e7364a8bedaf898d2c973a1"
+    },
+    {
+      "path": "repo/cispo_model/hydro.py",
+      "bytes": 33049,
+      "sha256": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6"
+    },
+    {
+      "path": "repo/cispo_model/io_contract.py",
+      "bytes": 38730,
+      "sha256": "bfdfea4f33a20581039eb2b28e00cd6f045ef7efc57f1fe6f03d46ac044269ea"
+    },
+    {
+      "path": "repo/cispo_model/load_center.py",
+      "bytes": 23738,
+      "sha256": "bc1a80aa645f49618b1449f5ad92b2322f5cb9ca01b57328628ce5366453efcc"
+    },
+    {
+      "path": "repo/cispo_model/master.py",
+      "bytes": 81871,
+      "sha256": "fd7ff01cefbe2b1fa95a1124d35d7ec50dd6430488cc8dce98f15bb08cf6415c"
+    },
+    {
+      "path": "repo/cispo_model/mga.py",
+      "bytes": 15789,
+      "sha256": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e"
+    },
+    {
+      "path": "repo/cispo_model/model_structure_audit.py",
+      "bytes": 11287,
+      "sha256": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a"
+    },
+    {
+      "path": "repo/cispo_model/monolithic.py",
+      "bytes": 59919,
+      "sha256": "0fce4df52de36e8d940f9ff36eb35048ac160f504b1fc7c3eb437b2a0e0a8292"
+    },
+    {
+      "path": "repo/cispo_model/numerical_cleanup.py",
+      "bytes": 7149,
+      "sha256": "901233f87e53c120859ebd61f56c04f1038818fef1df69d503a8a1837487ce26"
+    },
+    {
+      "path": "repo/cispo_model/offline_solution.py",
+      "bytes": 18203,
+      "sha256": "1645f6046e2ec86de3a2562ccfef060a1634ae625f2e5f9c2d42a8bebbbcd86e"
+    },
+    {
+      "path": "repo/cispo_model/physical_lp_diff.py",
+      "bytes": 5391,
+      "sha256": "fa64ebb6ef807e9eeba6b27c842597e6d89073173dc6058c9d1158c4d0e53e66"
+    },
+    {
+      "path": "repo/cispo_model/planning_state.py",
+      "bytes": 29724,
+      "sha256": "6edd1a20c42cbcccfd11e26e09dba40bcb602bdb838368182958941b22edccd4"
+    },
+    {
+      "path": "repo/cispo_model/portfolio_release.py",
+      "bytes": 4706,
+      "sha256": "219f4094110154cb2298ed62692eadd62603dc0f6d78c016404e5d574856d75a"
+    },
+    {
+      "path": "repo/cispo_model/preflight.py",
+      "bytes": 32753,
+      "sha256": "45264663e09bea40f3439f478ee5563d53d11a24073d5be69b96267ae60ada24"
+    },
+    {
+      "path": "repo/cispo_model/price_basis.py",
+      "bytes": 1618,
+      "sha256": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a"
+    },
+    {
+      "path": "repo/cispo_model/primal_dual_checkpoint.py",
+      "bytes": 61280,
+      "sha256": "8d7ffbbdecafd141cf6ab8b3dbeea574e0eecd6d65d278f632c1b96f5f3db40d"
+    },
+    {
+      "path": "repo/cispo_model/result_dashboard.py",
+      "bytes": 40219,
+      "sha256": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9"
+    },
+    {
+      "path": "repo/cispo_model/result_summary.py",
+      "bytes": 27069,
+      "sha256": "5737ec206b4c9da30c54d0021f290233ab1f0ef218d150016edf16d8438739ea"
+    },
+    {
+      "path": "repo/cispo_model/run_contract.py",
+      "bytes": 19533,
+      "sha256": "e69f08b94cbba3e28db1a9d6ee702c438d473b76d29c4c81695b125027527adc"
+    },
+    {
+      "path": "repo/cispo_model/runtime_monitor.py",
+      "bytes": 1898,
+      "sha256": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488"
+    },
+    {
+      "path": "repo/cispo_model/solution_export.py",
+      "bytes": 109051,
+      "sha256": "6be4a991ccac448d68832a8789b0dc6341c4211720092239f8be3f580dd60c08"
+    },
+    {
+      "path": "repo/cispo_model/solution_preservation.py",
+      "bytes": 20609,
+      "sha256": "f93bd5517bfeffc670ef74b53bec92f895c72aff7b56f37a8020dadc86b7b8f5"
+    },
+    {
+      "path": "repo/cispo_model/solver_artifacts.py",
+      "bytes": 5862,
+      "sha256": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8"
+    },
+    {
+      "path": "repo/cispo_model/solver_audit.py",
+      "bytes": 19498,
+      "sha256": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d"
+    },
+    {
+      "path": "repo/cispo_model/subproblem.py",
+      "bytes": 25293,
+      "sha256": "6eb5fc907bd7036fb6675e16bf365920ccc5a355478500cc70f4ddac6586aaca"
+    },
+    {
+      "path": "repo/cispo_model/technology_registry.py",
+      "bytes": 3069,
+      "sha256": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7"
+    },
+    {
+      "path": "repo/cispo_model/timeblocks.py",
+      "bytes": 960,
+      "sha256": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea"
+    },
+    {
+      "path": "repo/cispo_model/wave_energy.py",
+      "bytes": 11497,
+      "sha256": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424"
+    },
+    {
+      "path": "repo/cispo_model/zero_bound_certificate.py",
+      "bytes": 3970,
+      "sha256": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367"
+    },
+    {
+      "path": "repo/config/beccs_lifecycle_sensitivity_v1.json",
+      "bytes": 1212,
+      "sha256": "28605f1b22d191351296a3b29f6ffb68f79b6e87e019597709b89e02ec5d7026"
+    },
+    {
+      "path": "repo/config/capacity_bounds_v0719.json",
+      "bytes": 2352,
+      "sha256": "0d557055463e5913338eb0c37787db163415a784561f99055d24bd3f784c1b1b"
+    },
+    {
+      "path": "repo/config/cloud_resource_profiles/a8_8760_numeric_repaired_t48_m750_v1.json",
+      "bytes": 1466,
+      "sha256": "e296c6511a40f54c4272794b971197bb575bb42567873813cc53fb6cb166d4bc"
+    },
+    {
+      "path": "repo/config/cloud_resource_profiles/a8_8760_stagea_default_v1.json",
+      "bytes": 2887,
+      "sha256": "0d555bcae34125073dd86994b2258e65fc59305ff93e690b017c1b5eabaf4bf1"
+    },
+    {
+      "path": "repo/config/critical_parameter_registry.csv",
+      "bytes": 11230,
+      "sha256": "b44d0bccc06211dbbf1e365ac4cbb7ee13ae0b8a2837b7b780e3c020245b71a1"
+    },
+    {
+      "path": "repo/config/flexible_load_v4_central_parameters.csv",
+      "bytes": 3451,
+      "sha256": "be2f5e7ba79604b5ea66e495a00404b60625764d0abec6f6185928037477c5a3"
+    },
+    {
+      "path": "repo/config/flexible_load_v4_parameter_registry.csv",
+      "bytes": 3141,
+      "sha256": "4e6757c3904eb57b9ab2dbdb6d2f6e8f66720031762a004e0ee8ee8b201cbd07"
+    },
+    {
+      "path": "repo/config/flexible_load_v4_source_count_qa.csv",
+      "bytes": 169,
+      "sha256": "deabb1830ee5c7599c0bd6eeb6982c8d885f62c0a0ea5cf0cf463d4a406c18f5"
+    },
+    {
+      "path": "repo/config/flexible_load_v4_source_registry.csv",
+      "bytes": 3355,
+      "sha256": "4d3c8afab23d6d43c8e43a7ce5de16644a55432175084677f7f7ff9375152aea"
+    },
+    {
+      "path": "repo/config/flexible_load_v5_central_parameters.csv",
+      "bytes": 5834,
+      "sha256": "1c54429817e105ed8c2621973d363945cc16080de391e32e111cc529697b120f"
+    },
+    {
+      "path": "repo/config/flexible_load_v5_parameter_registry.csv",
+      "bytes": 2505,
+      "sha256": "11be49c53c4515912700b980605a3c95d0781a830761e766940eea92126e9c2f"
+    },
+    {
+      "path": "repo/config/flexible_load_v5_source_count_qa.csv",
+      "bytes": 219,
+      "sha256": "d0235e5f7a3e411a935cdd05185743a9e61033305026d9ee237e8db7d9885d6a"
+    },
+    {
+      "path": "repo/config/flexible_load_v5_source_registry.csv",
+      "bytes": 7289,
+      "sha256": "7b7e5fb919170b330ffbf49a20ca3e23f872c7bef139266b16bfe8e77c7521fe"
+    },
+    {
+      "path": "repo/config/formulation_profiles/annual_capacity_link_rows_8192_v1.json",
+      "bytes": 505,
+      "sha256": "62a0215f6c8ab5d92e87c3f350edfa7c27d6f1e1fd35b9f595ceb2686f9ca0d2"
+    },
+    {
+      "path": "repo/config/formulation_profiles/annual_emissions_province_hierarchy_v1.json",
+      "bytes": 391,
+      "sha256": "b168e27294efcbdb476d961c6b731ace8fea18f0df357cd7d0d665b1d31de528"
+    },
+    {
+      "path": "repo/config/fuel_prices_supplementary_table2.json",
+      "bytes": 5879,
+      "sha256": "376c52da6bd019ba5e500cea98836622fc55bbc10f75c6ebe0f730963663b8a1"
+    },
+    {
+      "path": "repo/config/gridded_load_center_config.json",
+      "bytes": 2710,
+      "sha256": "7d0954402922db50aabd1efaf1141c259430eb2da0dedc9b3b5a6f26d6b7b12c"
+    },
+    {
+      "path": "repo/config/hydro_storage_corrections_20260913.csv",
+      "bytes": 405,
+      "sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f"
+    },
+    {
+      "path": "repo/config/hydro_storage_corrections_20260913_v2.csv",
+      "bytes": 994,
+      "sha256": "cca0145c63e88854f18034b4b70bf8049888f89baa4c483b59e5687301bf5198"
+    },
+    {
+      "path": "repo/config/land_point_province_corrections.csv",
+      "bytes": 7550,
+      "sha256": "a3c6af922e797d0342e856e6e08a01219cbf77eae2be6f32d57df9b8eb67ce33"
+    },
+    {
+      "path": "repo/config/m2_model_boundary_audit_v1.json",
+      "bytes": 8726,
+      "sha256": "3589296f61f53a36c7471280fa9df64a3e27d2c91cb526259c1a4ffb8813e6c0"
+    },
+    {
+      "path": "repo/config/mga/base_min_onwind_new_national_epsilon_1pct.json",
+      "bytes": 252,
+      "sha256": "876ec9343b3c2ae81aafdde569fe10ff086315761f5ab1047e016e761b8f7961"
+    },
+    {
+      "path": "repo/config/model_data_config.json",
+      "bytes": 6923,
+      "sha256": "e6ea1d7729430da9629590f51e3e438617e7a3a2c54086fe99f2425b8c66bc7c"
+    },
+    {
+      "path": "repo/config/model_input_files.json",
+      "bytes": 7677,
+      "sha256": "3be2f1b269a5c5c4bce1946ee60b443177410cfbafc533362fe7faf8ad5d650e"
+    },
+    {
+      "path": "repo/config/optimization_2030.json",
+      "bytes": 14978,
+      "sha256": "e66d706909c06d1a779a23f78592b2f933494c76968a62ff65117ed5b8aaaf65"
+    },
+    {
+      "path": "repo/config/optimization_2030_numeric_final_v8.json",
+      "bytes": 16543,
+      "sha256": "dae7693dd45f9fad8bc48afe804df904d9aeedfa8bd6a68790ea7cb7d4000144"
+    },
+    {
+      "path": "repo/config/optimization_2030_numeric_repaired.json",
+      "bytes": 15934,
+      "sha256": "616799d41d493ea1f7662f0323f840ee91dc318e14b0253444eb4c31772338d3"
+    },
+    {
+      "path": "repo/config/optimization_2030_numeric_simplified_no_dac_v6.json",
+      "bytes": 16398,
+      "sha256": "bdedf7c57617fc03131b763bebedd7db2fd35e588970c3c3683af9cf9c0058b1"
+    },
+    {
+      "path": "repo/config/optimization_2030_numeric_simplified_v5.json",
+      "bytes": 16259,
+      "sha256": "28a9628e1d74b7dd4645da50cf9df1a2d61467dcbb16dd7fac1c85ed96ca887f"
+    },
+    {
+      "path": "repo/config/optimization_2030_spill_floor_v4.json",
+      "bytes": 16076,
+      "sha256": "0d2359f8899ca7122ee2b53bb8b0cce75ed48c58adbaf6602ba4c15c6bc1170c"
+    },
+    {
+      "path": "repo/config/optimization_2030_spill_tightened_v3.json",
+      "bytes": 16017,
+      "sha256": "eaa138315a7e429262385120479ff88e7ae569cf816e91a25aa51dcc37bdceb2"
+    },
+    {
+      "path": "repo/config/optimization_2030_storage_audited_v2.json",
+      "bytes": 15989,
+      "sha256": "f4105ea39a15d3dfa5547329adab8c43a7ed8fc59f2ec4c3c6de0258eaf684c4"
+    },
+    {
+      "path": "repo/config/optimization_numeric_dac_by_year_v9.json",
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    {
+      "path": "repo/config/physical_lp_diff_whitelist_v1.json",
+      "bytes": 1207,
+      "sha256": "fd2ab41dd66d5b5c8acc450b65a3c050000f1a295394a47050ef9859300db353"
+    },
+    {
+      "path": "repo/config/release_contract_v0729.json",
+      "bytes": 5237,
+      "sha256": "88eb771e657e8f1db668ef21a11e479ecee4cf130d0fe58d3773bac230bd2a0f"
+    },
+    {
+      "path": "repo/config/release_contract_v0730_v5.json",
+      "bytes": 2738,
+      "sha256": "8398689e97cad71d719b25c22de48cac913304b651391efb10d51b65bdcfe0be"
+    },
+    {
+      "path": "repo/config/release_contract_v0805_power_curve_v3_qc.json",
+      "bytes": 2618,
+      "sha256": "e2e5504fb2aeeb0db725ff442a8c780b5336ee101729c6297b3dbaa600e1c45b"
+    },
+    {
+      "path": "repo/config/scenario_parameter_registry.csv",
+      "bytes": 5939,
+      "sha256": "d02f4867970f35b5426227c0fbb99e0161fc636533c3a253476b4427c4dc7d9a"
+    },
+    {
+      "path": "repo/config/scenarios/base.json",
+      "bytes": 537,
+      "sha256": "aa5a3fc6410c103e15271dcdc8b4b4ce489e938ddc429a7c5ee827c0e32da6f7"
+    },
+    {
+      "path": "repo/config/scenarios/case1_thermal_v5.json",
+      "bytes": 4708,
+      "sha256": "9ffbcdb9d5f29ff32bc887fdb5de5fdf8c8da5c310fd73118149f224e62fecba"
+    },
+    {
+      "path": "repo/config/scenarios/case2_ev_v5.json",
+      "bytes": 4698,
+      "sha256": "90b46fa800eb72e2e4792b9a660dd290a0af207b6b9160134ca45a5ea884fcbd"
+    },
+    {
+      "path": "repo/config/scenarios/case3_thermal_ev_v5.json",
+      "bytes": 4712,
+      "sha256": "0aca6e5bec6bec4ae78f199d1960d3e8264f1bd350330dba071f6a54ce198920"
+    },
+    {
+      "path": "repo/config/scenarios/flex_integrated_v5_central.json",
+      "bytes": 4994,
+      "sha256": "ea284b4c493b3357d19f2f5b12fd58b04efd24171b490ccc67259431f59358df"
+    },
+    {
+      "path": "repo/config/scenarios/flexible_load_comfort_v3_v2g_5pct.json",
+      "bytes": 2918,
+      "sha256": "9c657abc3f037bd5d5ad4ee0bf71900c52f8868a6bc6c368ab2e315f26370b19"
+    },
+    {
+      "path": "repo/config/scenarios/flexible_load_comfort_v4_v1g.json",
+      "bytes": 2923,
+      "sha256": "24ef759c9becd69cfca98926b2b3a5823c1f3e5a4ead25517c7da0dc75435781"
+    },
+    {
+      "path": "repo/config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json",
+      "bytes": 2622,
+      "sha256": "2738e7bbe915d169f822009f920285d0c4e8854a65e791b475ffb02a5ebc96f5"
+    },
+    {
+      "path": "repo/config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json",
+      "bytes": 2193,
+      "sha256": "99180c02acf7203443e1c583b686817b29a788967f5dbc5fa5e0c4b34b2c53a6"
+    },
+    {
+      "path": "repo/config/scenarios/hydro_aggregate_flex_v1.json",
+      "bytes": 1029,
+      "sha256": "d95de356fa2558ca261bf8cf05dbd29344c3da0b0c92f7d1cbdab0d8ed22450f"
+    },
+    {
+      "path": "repo/config/scenarios/phs_power_energy_separated_central_v1.json",
+      "bytes": 1378,
+      "sha256": "a681a5bfab2e6e1fd4e112c4d1c2515a15c80da86f335c176afca96c93a07bba"
+    },
+    {
+      "path": "repo/config/scenarios/phs_power_energy_separated_high_energy_cost_v1.json",
+      "bytes": 1338,
+      "sha256": "201cd12bd611696d8bc6fef5161ab7f97872ba40d22af7fdb8f746f577b0966b"
+    },
+    {
+      "path": "repo/config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json",
+      "bytes": 1334,
+      "sha256": "7790e0fb44c1bed355d2f43dcf4c10c81879cbe6449973acbfa6a1ee87684923"
+    },
+    {
+      "path": "repo/config/scenarios/phs_power_energy_separated_template_v1.json",
+      "bytes": 1219,
+      "sha256": "b834266abf2eb660f6840b7ca445afc175148d538def91cd5e9e301f74abaf20"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case1_thermal_v5_response_v1.json",
+      "bytes": 5515,
+      "sha256": "83bad50c37f7d9a7aabbd7c3b0c3d6d6f365dd56feb7778b3d883b6619f82f62"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case2_ev_v5_response_v1.json",
+      "bytes": 5505,
+      "sha256": "3a1d7d8085eeb81a588ca8887670fab5e4eff0865047eb819c394f997ac3fe71"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_high_v1.json",
+      "bytes": 6445,
+      "sha256": "770873acc26b8bc37b78c5d135f39701097a2383e1e2fad0282972b00e01939f"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_low_v1.json",
+      "bytes": 6491,
+      "sha256": "1f01dd260f88d115ee8c358a61aba2c4c3067ede13b89ac164fc04e9f22cf00b"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra25_v1.json",
+      "bytes": 5520,
+      "sha256": "c1751af09cf5704226ef7f6ffff0d0d7d1cc1e1e77c0bca14432da6f8358930d"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra50_v1.json",
+      "bytes": 5519,
+      "sha256": "183cf36dd5965bb6ba68359d7a8435d343dece3524627ca7710b3e9a5f6869c3"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub1_v1.json",
+      "bytes": 6085,
+      "sha256": "af932920d8549cf4c1ba46e7ae9aaf52c1e59651a21931baa0fd71ab980e2cc1"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub2_v1.json",
+      "bytes": 6036,
+      "sha256": "4d2ffdeae3115b457422611f519a26514848db86e31123115fe29ca9e6b27ba6"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub3_v1.json",
+      "bytes": 6096,
+      "sha256": "2911ee7034a54569cf79e19ed5a8ac096ed4f8a1d670dd051b326e84dc26cfa0"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub4_v1.json",
+      "bytes": 6080,
+      "sha256": "f8a3abbea0892835a20fbdc6252219c1b73535c626929860b17aa6fac4c42bb0"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_v1.json",
+      "bytes": 5519,
+      "sha256": "b775db38307c1f04f702e850bd9fcae9ed5b477bb3e2cd51a00e333fe3ac75d3"
+    },
+    {
+      "path": "repo/config/scenarios/response_candidates_v1/flexible_response_candidates_v1.manifest.json",
+      "bytes": 3692,
+      "sha256": "d0170adcada69011c4e82ac524c8ef90ce94446eff52f09a3055d82eca7c9257"
+    },
+    {
+      "path": "repo/config/scenarios/scenario_catalog.json",
+      "bytes": 3889,
+      "sha256": "3908af07adff1e989ef058bc07071b097687cf6b35927a2228bf1585f5b88837"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json",
+      "bytes": 522,
+      "sha256": "7b6d698d47dfd509f781fcf4ae5118f6a5e5c2a4a528de2c0c5153ec26ddea70"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_auto_order_v1.json",
+      "bytes": 376,
+      "sha256": "92f24bc364a19260f549c966f3a31e50a558aff6aa8d0ba198489b7ec73c0a3b"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_auto_order_v2.json",
+      "bytes": 483,
+      "sha256": "a76ee3b7ae692edaab9d9f50dc29c482c028789a5b08b9d629e3295946cb1b97"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json",
+      "bytes": 582,
+      "sha256": "b348d8ef422d1a7cc34a5cedaa064d99493a75ded658aa745095da3b6cff8ee8"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover_2_v1.json",
+      "bytes": 412,
+      "sha256": "0afcb91f987fe37e189aedefa7169fc2f4b5c32690217659d6f36cfc29dad731"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover_3_v1.json",
+      "bytes": 414,
+      "sha256": "04ddbcb8c861bb66312f7c005ba8fe4eaf69be8d14904288d3b3bcc80926882a"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover_4_v1.json",
+      "bytes": 412,
+      "sha256": "0d25855681b03b675998338aa3f5b0ba61d1f445e07cae7af69e7574576ee49d"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover_fast_basis_v1.json",
+      "bytes": 451,
+      "sha256": "7e5714818d9149fc3eef1fca5cc555499233cf72edcda1cd7db38532c5613251"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_crossover_stable_basis_v1.json",
+      "bytes": 463,
+      "sha256": "2d8de3ef9a22af6747052700d35f0637543d2a62e2953f7b7a01f91bb657186c"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_deferred_crossover2_744_validation_v1.json",
+      "bytes": 952,
+      "sha256": "eb8af2127bfb143763c139b8d73a71df772ff3dcbade64554cc8a0b0c4ea86aa"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_deferred_crossover_v1.json",
+      "bytes": 632,
+      "sha256": "f07fb8f99d726b539cb520669ef2fc76030326b8c832c9e940663f5c2cb330d2"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_factor_barorder1_5iter_v1.json",
+      "bytes": 818,
+      "sha256": "25c8502a9e43ef8f971b8a8d20542ed1b79a646d213886e4a9a0b4a57fa9c6b0"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scale2_5iter_v1.json",
+      "bytes": 809,
+      "sha256": "258d566e4de0895cbd84235e7eca7e5669b20f74901edde942abadfc91e3aa51"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json",
+      "bytes": 815,
+      "sha256": "8d3b355de64783f84ee1e32cd8d3a03615c2313fdff31382c1bc66f8364d075b"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json",
+      "bytes": 815,
+      "sha256": "741a441025d8acada112560bf0e0df06603d1005b7d6ca53336d4eefcf210bcb"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_factor_presparsify2_5iter_v1.json",
+      "bytes": 816,
+      "sha256": "d0bd17ac0db805132c68aeb5836a36fd80a894f8d70d0b66230f2f6fa81d3222"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_long_v1.json",
+      "bytes": 860,
+      "sha256": "547b1e9aa35eb3599251124845261258d17d18e648819d83f28354020a2575a3"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_long_v1.json",
+      "bytes": 793,
+      "sha256": "7bf00c92951431d19a21a807a5f34cb03986167b0dc4c98e25b29c5b9e101cec"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_v1.json",
+      "bytes": 865,
+      "sha256": "7a0af4ef74df4cafe17219a28fdf3b8cf0ce5ae09729d6f70714bbf4004d1ab9"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_v1.json",
+      "bytes": 894,
+      "sha256": "bedbe1edeaafee1de8ff24e442f78c9b9ca280fd596070005f1c678564e52549"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_long_v1.json",
+      "bytes": 844,
+      "sha256": "92e08221a0befd61f47abaa35b0e2c700998769c74f69e96caa884ca650aca98"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_v1.json",
+      "bytes": 878,
+      "sha256": "0165a7c67d34e8d876e8c7f4444e1fe8d6805ea8c7d7d38bb04c9ea9b78cce8e"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_infeasibility_diagnostic_v1.json",
+      "bytes": 484,
+      "sha256": "7f7ad08f8b84ed0b4c2ffabbf2a2c572f758655811347d11dd6e33022b13b359"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_long_v1.json",
+      "bytes": 870,
+      "sha256": "5aed440492f54d81961faf60f7a7675c1dfae8db587c1526233c8369f17f9753"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json",
+      "bytes": 830,
+      "sha256": "87d6ea8b214b30b8fcb955bccb01307e69fb53f8728d9ce6f382ed1cb4643ec3"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_predual1_v1.json",
+      "bytes": 406,
+      "sha256": "b0a19c83a4b8240be4b031de203f284c9b0c762adff3c611f1f7a5dbe2416680"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_predual2_v1.json",
+      "bytes": 438,
+      "sha256": "21ca93e77740e96e75b7ce61c1cc910b045710b879ca65e9d3b3da11db1b542d"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_presparsify_lp_v1.json",
+      "bytes": 447,
+      "sha256": "0234de4717df170099134014f2f5f2c3944984b92d270aa0ccedca9a5f249747"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_16_sparse_amd_v1.json",
+      "bytes": 418,
+      "sha256": "b6d55ac9607997794c470e91b2b1e789a2419e83ce0832deab91e9894704c834"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_32_engineering_factor_threads32_5iter_v1.json",
+      "bytes": 783,
+      "sha256": "3186e7b0506442be21307512e790b90bc790bd63fdee783eabe6d95ad9dfbc58"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_32_force_dual_v1.json",
+      "bytes": 371,
+      "sha256": "28a3471f143e6433d5e4ba4cc4a00e31b18661267851b497f409d5ed90cda28c"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_32_limited_presolve_fast_basis_v1.json",
+      "bytes": 483,
+      "sha256": "d902b1cda21c97ffbee299c4938f429d1bc364da4515c76864c646adadab335e"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_32_reference_v1.json",
+      "bytes": 364,
+      "sha256": "6b1464ec81ae4d4b4a73da29e1ac9efbf68d9e0833d81a6f76381f00505006fc"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v1.json",
+      "bytes": 951,
+      "sha256": "ed984d6a05f8571d2b50ba405073c952b5f0231a7bf5c953d3046509cddb3fe3"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v2.json",
+      "bytes": 923,
+      "sha256": "7a05a7c2a39928f434a8c9d6f82130df94fd744add4ebd85a6469ff33e6e033f"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_2040_numeric_v1_threads44.json",
+      "bytes": 1632,
+      "sha256": "8ae49ace4391ef095be67826c19808a7845b46b2bdf6597bc3f4f1c6259c9c40"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_2050_numeric_v1_threads48.json",
+      "bytes": 1590,
+      "sha256": "d65451e94ff9e7504fc10705b9fa6e6ad5afaf265dc9a23c502c418fd7cf3e31"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v1.json",
+      "bytes": 844,
+      "sha256": "723ae81e3b4939267eff864e37ee65747b5d2a3e15639e7ce8d1870e1afb9599"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v2.json",
+      "bytes": 886,
+      "sha256": "7c876383811227fafca3adf8bbc8b9f8b599c5060b3f0fafd55f024af72b3655"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v3.json",
+      "bytes": 879,
+      "sha256": "023adef7ad2fbb09d521b16b7ea8edf8ac5985435ea1d74405d2b919dfc2600d"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v4.json",
+      "bytes": 935,
+      "sha256": "a5fb74272b222a212cbfac206c0753369ee091a83272009fab4447e02e42b91b"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads32.json",
+      "bytes": 967,
+      "sha256": "de0f90dfc44fa7786c7e58461c292c7582d651b7fe9ec7e822a83558753bdabb"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads64.json",
+      "bytes": 967,
+      "sha256": "74c0166802a2c18dcdd86345811fd2cb4de178a4d441ecf9b3e6dbf1aeddc3e5"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v10_threads44_no_softmem.json",
+      "bytes": 1657,
+      "sha256": "4ab12c9bf066dd88a9a9b2cd06af6a450a43b73fd1a09df1f6248d9373581843"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v6_threads32.json",
+      "bytes": 1517,
+      "sha256": "c887ecc42da316c14679c91ebd61977f0e977b72473fd93fb6c9f5079975c390"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json",
+      "bytes": 1581,
+      "sha256": "b62e9e981b03e801e631f3d3ad9bd349f2e3e554819604eb49f5109217c9d935"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json",
+      "bytes": 1581,
+      "sha256": "d32b219d93437e44915c66e8d776713da5a3ecc87148aee46200f5393a4d7e6a"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json",
+      "bytes": 1653,
+      "sha256": "d54012d754be37a778aa7c1c5b8a080eb36c3d501e8535b8d07577481bf5b8e5"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json",
+      "bytes": 1712,
+      "sha256": "b00a7ef898d5c0fb7c4538b5ed75f958232117246afbf1115b6c0c340e34ce23"
+    },
+    {
+      "path": "repo/config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json",
+      "bytes": 1676,
+      "sha256": "e54d9c7f2b7aa611b7fdb1997d46dc073e8057502552f6a15d9c0958b38bb415"
+    },
+    {
+      "path": "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v1.json",
+      "bytes": 947,
+      "sha256": "007c8820e7e1bce829b9aa54a035bd8cbaaafa6751b9c8d01aa5a4f4c3602743"
+    },
+    {
+      "path": "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v2.json",
+      "bytes": 896,
+      "sha256": "fea46465bc0d0208e5bab126157852a31492f6d2db3c0d65bf13fdafa949a6d9"
+    },
+    {
+      "path": "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v3.json",
+      "bytes": 967,
+      "sha256": "89fd5b04113ddf6ef98fa2816760d2ed14e4fda2e416a0321fefe00079a3238f"
+    },
+    {
+      "path": "repo/config/solver_profiles/dual_simplex_16_v1.json",
+      "bytes": 332,
+      "sha256": "029e82c98bfbeb49a20067db736223eb6f2b00d9dfc0a9ad6c9867b1f749ce40"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case1_v3_barrier16_stage_a_v1.json",
+      "bytes": 719,
+      "sha256": "506b69e815839e5f696bce6e758e3cce193a7e662c89b790c30f3e4bebcb484d"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case1_v3_stage_b_v1.json",
+      "bytes": 744,
+      "sha256": "51a268542a0188ff24ef7230355caa78140a83d7eb20b966cbb494b26c0e843d"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case2_v3_barrier32_screen_v1.json",
+      "bytes": 691,
+      "sha256": "735ad5bbaee042a0c60ed234d21ebc5fab18c5d7cc2dc6394b83baccdecc19e2"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case3_dual_simplex_screen_v1.json",
+      "bytes": 646,
+      "sha256": "a52285fa9ecd84da4adc7a0d050ee2fa078eae9f2a4700b3d7ed446d84462b0d"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json",
+      "bytes": 785,
+      "sha256": "b2ae01b9f0ebdf63f9527c95edfc112e2030b678eeaeeab7f2bc9311ae357a3d"
+    },
+    {
+      "path": "repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_unlimited_v2.json",
+      "bytes": 799,
+      "sha256": "9c5c5ea38572dc26454c8a735e91e161e240a887dc98f5897cdff74d02c87122"
+    },
+    {
+      "path": "repo/config/solver_profiles/pdhg_cpu_32_v1.json",
+      "bytes": 368,
+      "sha256": "a1ebf0cd298550c975baff7751e296e06a37d075189119a265623c2020f3f552"
+    },
+    {
+      "path": "repo/config/solver_profiles/portfolio_local_gate_v1.json",
+      "bytes": 624,
+      "sha256": "a0fc8b7d41f0de14663a887746ae8a0d6da5ee81e3c97a6746dc889d703b54f8"
+    },
+    {
+      "path": "repo/config/solver_profiles/portfolio_local_nonbasic_gate_v1.json",
+      "bytes": 672,
+      "sha256": "47dcbe228a3a5fcaeb6c6c72c02cbba41cf217116120e742aadcec9d11756239"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_aggfill0_v1.json",
+      "bytes": 468,
+      "sha256": "01c922bd93e831ce8109dc9fcabb7adab305da253a4794b7a5f68e1df00dde7a"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_barorder1_v1.json",
+      "bytes": 461,
+      "sha256": "4dedf4a8e0ec26b6438078626afbe73729b201e4e16967c584d264196e79d7c9"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_numeric3_v1.json",
+      "bytes": 457,
+      "sha256": "d90c04fa74404ec16d0d9ee3dbb4026f2d466e513989a1082808ae4266d12cef"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale0_v1.json",
+      "bytes": 469,
+      "sha256": "cf17e5e266e944ad184f353b49d4d22fdc302a00c0e339c6c20e8ab4a421f8d6"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale1_v1.json",
+      "bytes": 469,
+      "sha256": "23874a1231fc70018222ee8e8e53c5ef4045d5ad1f1d6256de55c1bbf8300e0e"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale3_v1.json",
+      "bytes": 469,
+      "sha256": "b85b1df487369e5a31c86565584e554224ffd6e09250290e375c62e43aefc087"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve0_v1.json",
+      "bytes": 467,
+      "sha256": "eced58ec47c0a0a992a07ffd9c4766769e44c546b0555f85521aa28b1d169d07"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve1_v1.json",
+      "bytes": 432,
+      "sha256": "8845201d7d7eca8a0a5bdaf15971faa38ce02a31daa6281b5d812419eadde92e"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale0_v1.json",
+      "bytes": 461,
+      "sha256": "e3bb9906029552ea5ea22ad6a59750d529a1789f49f61910fa40e71cf092f708"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale1_v1.json",
+      "bytes": 431,
+      "sha256": "8abc566aab1806a133e7e0946ef5635963b5eb448a63ea8b344032b164004506"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale3_v1.json",
+      "bytes": 431,
+      "sha256": "8b92083d9c02a74afef50e62728c43516c2cd5b159ac9ebd5323a4ff3dad13c5"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning2_dual_simplex16_v1.json",
+      "bytes": 469,
+      "sha256": "ae951232fb3e9827f420844299b4bef5c9a026525d35b3888555e9b8317e9a60"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning3_barrier_crossover1_stablebasis_v1.json",
+      "bytes": 486,
+      "sha256": "92daf537293e5bb2bef0207151c6b3aadfb38b14bcfca913639b9d0d1d169ec5"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning3_barrier_crossover2_stablebasis_v1.json",
+      "bytes": 507,
+      "sha256": "2a0fb43f2b0baee92095580f315207e7077d3abc15df0e0738b12bcda14cf2d0"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning3_barrier_crossover4_stablebasis_v1.json",
+      "bytes": 507,
+      "sha256": "04e2204dca3a7754f55473f39f514908009b65a79d18f8cbb666875f69a6f00a"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_aggregate0_v1.json",
+      "bytes": 566,
+      "sha256": "300d4e72ccf8e13f1e5c2fcd85669f215c8c973ab45466ed6242519b6314b43d"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_amd_sparse_v1.json",
+      "bytes": 595,
+      "sha256": "bbd8f47d321beceed71b7bf4feca3eb840e8d6314b0af6476b41e08218f4ca6d"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_numeric_auto_v1.json",
+      "bytes": 637,
+      "sha256": "4fc18a42cc5d4bfdf018732355df3169cd8452972701cbff47ddd253fb3214f0"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_predual1_v1.json",
+      "bytes": 569,
+      "sha256": "2e1dbd285bc84650d09579fd1b2906ed0476d23ba6503fd520ccd75293dbfb8f"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_predual2_v1.json",
+      "bytes": 582,
+      "sha256": "ff10e7c769dc30361384d92e5e417fe9902337bfdd7d3bfb90e9af3b8442a41f"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_presparsify2_v1.json",
+      "bytes": 575,
+      "sha256": "572f81185d13287fa3c2c5eb04336337566b56ac43488ec15e2f49bea7810b67"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_threads32_v1.json",
+      "bytes": 547,
+      "sha256": "b7ecdb86e65fcc1e6cd18f02c79a909e6db266bee7e570f7105116a6b705ef96"
+    },
+    {
+      "path": "repo/config/solver_profiles/tuning_barrier_nonbasic_threads8_v1.json",
+      "bytes": 544,
+      "sha256": "b2a53d3530c3d0f087096444263280a323ae5a718d5038f504f2ca22e51c56fe"
+    },
+    {
+      "path": "repo/config/technoeconomic_price_basis_2025.json",
+      "bytes": 1921,
+      "sha256": "537e2a82121c654484639dd6e5cb84d5a19396c4f82ee18d132bb53d0d57dccb"
+    },
+    {
+      "path": "repo/config/technology_parameters.json",
+      "bytes": 13171,
+      "sha256": "f6ff7b0270fd15b125565b4517c042c4c82da6cee3c7ff309eb6d74e9bb916e5"
+    },
+    {
+      "path": "repo/supplementary_materials/reviews/dual_screening_20261002/prepare_experiment.py",
+      "bytes": 2284,
+      "sha256": "d91afac4b5547eb9ed86819dc802122193a5683529ac099d6ba3a19ac1d7584b"
+    },
+    {
+      "path": "repo/supplementary_materials/reviews/dual_screening_20261002/run_screen_probe.py",
+      "bytes": 11305,
+      "sha256": "340dedfd456b5c16b079f19fe0fb2bdd9d1a70ba24bb40e65cde1f5dfc35905d"
+    },
+    {
+      "path": "repo/supplementary_materials/reviews/dual_screening_20261002/supervise_probe.py",
+      "bytes": 2226,
+      "sha256": "77bdadcb1cb744c1742ee62fd58ccd90e1b92c6144a7ed2a95e89d915c0ae44f"
+    },
+    {
+      "path": "source_screen.csv",
+      "bytes": 7470093,
+      "sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368"
+    }
+  ]
+}

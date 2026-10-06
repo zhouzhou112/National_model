@@ -1,0 +1,48 @@
+{
+  "prior_hash_records_verified": 28,
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "effective_cloud_parameters": {
+    "Method": 2,
+    "Threads": 32,
+    "NumericFocus": 2,
+    "ScaleFlag": 2,
+    "Presolve": 2,
+    "BarConvTol": 1e-08,
+    "Crossover": 2,
+    "CrossoverBasis": 1,
+    "SolutionTarget": 0,
+    "FeasibilityTol": 1e-06,
+    "OptimalityTol": 1e-06,
+    "MarkowitzTol": 0.01,
+    "TimeLimit": 900.0,
+    "SoftMemLimit": 550.0,
+    "DualReductions": 1,
+    "InfUnbdInfo": 0,
+    "Aggregate": 1,
+    "AggFill": -1,
+    "BarOrder": -1,
+    "BarCorrectors": -1,
+    "BarHomogeneous": -1,
+    "PreDual": -1,
+    "PrePasses": -1,
+    "PreSparsify": -1,
+    "LPWarmStart": -1,
+    "Seed": 0,
+    "BarIterLimit": 1000
+  },
+  "annual_link_scaling": "physical_v1",
+  "dac_by_year": {
+    "2030": false,
+    "2040": true,
+    "2050": true,
+    "2060": true
+  },
+  "source_data_correction_sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94",
+  "full_8760_qualification": false,
+  "cloud_uploaded": false,
+  "cloud_job_submitted": false
+}

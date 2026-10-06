@@ -1,0 +1,30 @@
+{
+  "old_output_manifest_verified": {
+    "vre_capacity.csv": true,
+    "hydro_capacity.csv": true,
+    "wave_capacity.csv": true,
+    "dac_capacity_capture.csv": true
+  },
+  "annual_load_gwh": 10607999.999996534,
+  "cf_energy_at_old_portfolio_gwh": {
+    "1e-06": 5186324.282753702,
+    "0.0001": 5186323.84033551,
+    "0.001": 5186300.877026129,
+    "0.005": 5185903.218845949,
+    "0.01": 5184859.708568803
+  },
+  "additional_loss_v3_to_v5_gwh": 1464.131766706705,
+  "additional_loss_v3_to_v5_fraction": 0.00028230627546232956,
+  "newly_rounded_headroom_sites": 124,
+  "removed_headroom_gw": 2.6952275924884716e-05,
+  "headroom_8760_nameplate_energy_upper_gwh": 0.2361019371019901,
+  "dac_guard_candidate_mtpa": {
+    "koh_cl": 11101.39534883359,
+    "koh_b": 1697.2799999994454,
+    "ssor": 7777.759674131879,
+    "mgo_am": 11714.355828217038
+  },
+  "old_dac_total_mtpa": 1.2052250902557841e-06,
+  "old_dac_maximum_guard_utilization": 9.075956145730095e-11,
+  "interpretation": "DAC guard is an explicit modeling approximation, not implied by existing constraints; old portfolio energy figures are availability ceilings, not dispatch or reoptimized losses"
+}

@@ -1,0 +1,76 @@
+{
+  "scope": "ANNUAL_CAPACITY_LAYER_ONLY",
+  "hours": 8760,
+  "compute_max_cf": true,
+  "national_hourly_lp_built": false,
+  "solver_called": false,
+  "raw": {
+    "variables": 229014,
+    "constraints": 71200,
+    "nonzeros": 396988,
+    "coefficient_min_abs": 0.05,
+    "coefficient_max_abs": 1.0,
+    "objective_coefficient_min_abs": 13.3532532,
+    "objective_coefficient_max_abs": 3853.189875762917,
+    "rhs_min_abs": 1.0186e-05,
+    "rhs_max_abs": 4000.0,
+    "quadratic_constraints": 0,
+    "integer_variables": 0,
+    "binary_variables": 0,
+    "min_bound": 1.0186e-05,
+    "max_bound": 3266.5810623168945
+  },
+  "maximum_bound_variables": [
+    {
+      "name": "co2_ship_mt[19,1089]",
+      "value": 3266.5810623168945
+    },
+    {
+      "name": "co2_ship_mt[16,1089]",
+      "value": 3266.5810623168945
+    },
+    {
+      "name": "co2_ship_mt[9,1089]",
+      "value": 3266.5810623168945
+    },
+    {
+      "name": "co2_ship_mt[20,1089]",
+      "value": 3266.5810623168945
+    },
+    {
+      "name": "co2_ship_mt[10,1089]",
+      "value": 3266.5810623168945
+    }
+  ],
+  "dac_all_bounds_zero": true,
+  "largest_rhs": [
+    {
+      "name": "annual_net_carbon_limit",
+      "value": 4000.0
+    },
+    {
+      "name": "annual_biomass_fuel_limit[19]",
+      "value": 3477.4868063292497
+    },
+    {
+      "name": "co2_sink_injection_capacity[1089]",
+      "value": 3266.5810623168945
+    },
+    {
+      "name": "annual_biomass_fuel_limit[24]",
+      "value": 2921.5678365476224
+    },
+    {
+      "name": "co2_sink_injection_capacity[1055]",
+      "value": 2484.703290939331
+    }
+  ],
+  "resource_link_full_year": {
+    "maximum_flh": 5945.847911834717,
+    "maximum_flh_to_min_positive_cf": 592037.0563789948,
+    "newly_all_zero_sites": 10,
+    "newly_all_zero_capacity_floor_gw": 0.5489999999999999,
+    "newly_all_zero_capacity_potential_gw": 1.2210999999999999,
+    "interpretation": "Input-based annual/hourly link coefficients, not a full national MPS measurement"
+  }
+}

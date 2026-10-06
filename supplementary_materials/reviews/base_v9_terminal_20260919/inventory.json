@@ -1,0 +1,322 @@
+[
+  {
+    "path": "output_8760/annual_storage_operation_by_technology.csv",
+    "bytes": 383
+  },
+  {
+    "path": "output_8760/dual_export_status.json",
+    "bytes": 593
+  },
+  {
+    "path": "output_8760/hourly_province_security.csv.gz",
+    "bytes": 36238474
+  },
+  {
+    "path": "output_8760/output_data_dictionary.csv",
+    "bytes": 138531
+  },
+  {
+    "path": "output_8760/run_scope.json",
+    "bytes": 5149
+  },
+  {
+    "path": "output_8760/reservoir_dispatch.npz",
+    "bytes": 236864149
+  },
+  {
+    "path": "output_8760/wave_capacity.csv",
+    "bytes": 243933
+  },
+  {
+    "path": "output_8760/solve_report.json",
+    "bytes": 71557
+  },
+  {
+    "path": "output_8760/annual_resource_accounting_by_province.csv",
+    "bytes": 8557
+  },
+  {
+    "path": "output_8760/cost_components.csv",
+    "bytes": 3520
+  },
+  {
+    "path": "output_8760/run_environment.json",
+    "bytes": 1920
+  },
+  {
+    "path": "output_8760/annual_capacity_by_technology.csv",
+    "bytes": 1215
+  },
+  {
+    "path": "output_8760/gurobi.log",
+    "bytes": 306291
+  },
+  {
+    "path": "output_8760/transmission_capacity.csv",
+    "bytes": 32254
+  },
+  {
+    "path": "output_8760/co2_source_sink_flows.csv",
+    "bytes": 4834798
+  },
+  {
+    "path": "output_8760/vre_dispatch.npz",
+    "bytes": 11473624
+  },
+  {
+    "path": "output_8760/solver_telemetry.jsonl",
+    "bytes": 153937
+  },
+  {
+    "path": "output_8760/build_report.json",
+    "bytes": 68385
+  },
+  {
+    "path": "output_8760/transmission_flows.npz",
+    "bytes": 30064496
+  },
+  {
+    "path": "output_8760/preservation_runtime_memory.json",
+    "bytes": 159
+  },
+  {
+    "path": "output_8760/hydro_capacity.csv",
+    "bytes": 310766
+  },
+  {
+    "path": "output_8760/input_manifest.csv",
+    "bytes": 26661
+  },
+  {
+    "path": "output_8760/dac_capacity_capture.csv",
+    "bytes": 5333
+  },
+  {
+    "path": "output_8760/hourly_national_balance.csv.gz",
+    "bytes": 797094
+  },
+  {
+    "path": "output_8760/annual_generation_by_technology.csv",
+    "bytes": 506
+  },
+  {
+    "path": "output_8760/load_center_network_qc.csv",
+    "bytes": 510
+  },
+  {
+    "path": "output_8760/intra_grid_vre_site_design.csv",
+    "bytes": 5674391
+  },
+  {
+    "path": "output_8760/time_index.csv",
+    "bytes": 335459
+  },
+  {
+    "path": "output_8760/load_center_annual_generation.csv",
+    "bytes": 99124
+  },
+  {
+    "path": "output_8760/wave_dispatch.npz",
+    "bytes": 967192
+  },
+  {
+    "path": "output_8760/hourly_marginal_prices.csv.gz",
+    "bytes": 15168099
+  },
+  {
+    "path": "output_8760/storage_capacity.csv",
+    "bytes": 9415
+  },
+  {
+    "path": "output_8760/hydro_aggregate_capacity.csv",
+    "bytes": 9698
+  },
+  {
+    "path": "output_8760/preflight_report.json",
+    "bytes": 13346
+  },
+  {
+    "path": "output_8760/run_summary.json",
+    "bytes": 2006
+  },
+  {
+    "path": "output_8760/solver_parameters_before_optimize.json",
+    "bytes": 589
+  },
+  {
+    "path": "output_8760/annual_summary.json",
+    "bytes": 2006
+  },
+  {
+    "path": "output_8760/result_manifest.json",
+    "bytes": 13615
+  },
+  {
+    "path": "output_8760/thermal_nuclear_capacity.csv",
+    "bytes": 28951
+  },
+  {
+    "path": "output_8760/vre_capacity.csv",
+    "bytes": 3632003
+  },
+  {
+    "path": "output_8760/hydro_cascade_reconciliation_by_node.csv",
+    "bytes": 12141
+  },
+  {
+    "path": "output_8760/solution_qc.json",
+    "bytes": 13743
+  },
+  {
+    "path": "output_8760/hydro_cascade_reconciliation_audit.json",
+    "bytes": 16560
+  },
+  {
+    "path": "output_8760/flexible_load_dispatch.npz",
+    "bytes": 11763866
+  },
+  {
+    "path": "output_8760/run_identity.json",
+    "bytes": 6273
+  },
+  {
+    "path": "output_8760/province_annual_load_center_accounts.csv",
+    "bytes": 3355
+  },
+  {
+    "path": "output_8760/storage_dispatch.npz",
+    "bytes": 19746236
+  },
+  {
+    "path": "output_8760/annual_capacity_by_province_technology.csv",
+    "bytes": 35963
+  },
+  {
+    "path": "output_8760/annual_adequacy_by_province.csv",
+    "bytes": 5757
+  },
+  {
+    "path": "output_8760/run_claim.json",
+    "bytes": 245
+  },
+  {
+    "path": "output_8760/load_center_annual_balance.csv",
+    "bytes": 45407
+  },
+  {
+    "path": "output_8760/preservation_report.json",
+    "bytes": 4188
+  },
+  {
+    "path": "output_8760/load_center_intra_transmission.csv",
+    "bytes": 130057
+  },
+  {
+    "path": "output_8760/annual_generation_by_province_technology.csv",
+    "bytes": 15082
+  },
+  {
+    "path": "output_8760/annual_carbon_ccs.json",
+    "bytes": 621
+  },
+  {
+    "path": "output_8760/model_config_snapshot.json",
+    "bytes": 19372
+  },
+  {
+    "path": "output_8760/scenario_manifest.json",
+    "bytes": 6547
+  },
+  {
+    "path": "output_8760/annual_capacity_link_row_scaling.json",
+    "bytes": 60857
+  },
+  {
+    "path": "output_8760/intra_grid_substation_design.csv",
+    "bytes": 1037652
+  },
+  {
+    "path": "output_8760/hourly_province_balance.csv.gz",
+    "bytes": 36994610
+  },
+  {
+    "path": "output_8760/reservoir_station_index.csv",
+    "bytes": 157869
+  },
+  {
+    "path": "output_8760/hydro_dispatch.npz",
+    "bytes": 6713778
+  },
+  {
+    "path": "output_8760/annual_constraint_shadow_prices.csv",
+    "bytes": 383075
+  },
+  {
+    "path": "output_8760/annual_flexible_load_by_province.csv",
+    "bytes": 8026
+  },
+  {
+    "path": "output_8760/thermal_dispatch.npz",
+    "bytes": 100845869
+  },
+  {
+    "path": "output_8760/output_catalog.csv",
+    "bytes": 7528
+  },
+  {
+    "path": "output_8760/monthly_energy_by_technology.csv",
+    "bytes": 5371
+  },
+  {
+    "path": "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz",
+    "bytes": 939502
+  },
+  {
+    "path": "output_8760/planning_state_candidate/state_transition_summary.csv",
+    "bytes": 2382
+  },
+  {
+    "path": "output_8760/planning_state_candidate/capacity_cohorts.csv.gz",
+    "bytes": 961111
+  },
+  {
+    "path": "output_8760/planning_state_candidate/state_metadata.json",
+    "bytes": 7073
+  },
+  {
+    "path": "output_8760/visualizations/capacity_by_technology.svg",
+    "bytes": 5996
+  },
+  {
+    "path": "output_8760/visualizations/generation_by_technology.svg",
+    "bytes": 5568
+  },
+  {
+    "path": "output_8760/visualizations/national_dispatch_first_week.svg",
+    "bytes": 16901
+  },
+  {
+    "path": "output_8760/model_archive/original.mps.gz",
+    "bytes": 4048048342
+  },
+  {
+    "path": "output_8760/model_archive/archive_manifest.json",
+    "bytes": 609
+  },
+  {
+    "path": "output_8760/model_archive/parameters.prm",
+    "bytes": 194
+  },
+  {
+    "path": "output_8760/barrier_checkpoint/primal_barx.npy",
+    "bytes": 331667192
+  },
+  {
+    "path": "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+    "bytes": 76749
+  },
+  {
+    "path": "output_8760/barrier_checkpoint/dual_barpi.npy",
+    "bytes": 407257992
+  }
+]

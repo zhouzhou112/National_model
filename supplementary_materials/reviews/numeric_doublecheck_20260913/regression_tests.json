@@ -1,0 +1,14 @@
+{
+  "tests": 44,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "seconds": 23.086434602737427,
+  "patterns": [
+    "test_numerical_cleanup.py",
+    "test_reservoir_spill_reduction.py",
+    "test_exact_zero_reservoir_bounds.py",
+    "test_hydro_station_model.py",
+    "test_bound_tightening.py"
+  ]
+}

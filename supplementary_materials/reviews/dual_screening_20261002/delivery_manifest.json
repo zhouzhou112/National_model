@@ -1,0 +1,1172 @@
+{
+  "generated_at_utc": "2026-10-02T21:37:10.519298+00:00",
+  "decision": {
+    "status": "MECHANISM_VALIDATED_LONG_HORIZON_SPEED_UNVERIFIED",
+    "hours_2016": "NOT_STARTED_SSH_TUNNEL_UNAVAILABLE",
+    "production_changed": false,
+    "cloud_base_interrupted": false,
+    "physical_deletion": "PENDING_USER_CONFIRMATION",
+    "git_head": "0a03cc452e95d158f36923ceb5210267979b6234",
+    "checked_unchanged_core_config_input_files": 257,
+    "executed_probe_sha256": "5dee4995f52afa25a5266132f1aeb8d35999584cc0c76d742d1f78cc755c8f55",
+    "publication_accepted": false,
+    "scenario_priority": "case3_thermal_ev_v5 independent 2030->2040->2050->2060"
+  },
+  "files": [
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/audit_source_screen.py",
+      "bytes": 1382,
+      "sha256": "bb8b47087fbe30598c348c319f2966fd47fd872171de524198cb36da57d6f16b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/base2050_readonly_tail.txt",
+      "bytes": 3420,
+      "sha256": "930e40d7b55a707f5bde0bad8f7fe0ed416bff97e2223182dc23b4be52f5a86a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/CURRENT_SNAPSHOT.md",
+      "bytes": 3116,
+      "sha256": "ce38f25e90bb25af4731c1fe2d0c7a8f80dbc76eca19a588e06303210e821a31"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/decision.json",
+      "bytes": 571,
+      "sha256": "2442e12c773c78f243f7d4685bb2bb213952ab37164591ab5997c6f7898c5f9e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/deletion_candidates.csv",
+      "bytes": 1174,
+      "sha256": "75a0a2ff11b5922e161b1429cd7db8ae745e971ccea5fb6f366a76feb0230212"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/executed_probe_source.py",
+      "bytes": 11380,
+      "sha256": "5dee4995f52afa25a5266132f1aeb8d35999584cc0c76d742d1f78cc755c8f55"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/experiment_manifest.json",
+      "bytes": 51200,
+      "sha256": "b69745cc384550da652df1256db170eeb4a4362c1a4703f84599dbebe77475ae"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/experiment_v2_manifest.json",
+      "bytes": 52308,
+      "sha256": "e0f015a1ef7c7742e31993d727a51ff0c610a40242a27e7ad7d703ac26e07d14"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/finalize_evidence.py",
+      "bytes": 2941,
+      "sha256": "2db4e671dd28bce803c0741ad6fd2dca350f7148c62130185606dcf6b369dad5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/install_remote.py",
+      "bytes": 959,
+      "sha256": "9a5287b27619dc8223848fb4819ddfc5fcdc223daee096535a3a118b5714a03e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/build.json",
+      "bytes": 909,
+      "sha256": "2ba3f679d6faa5a381ad1f0bc8dd260b9078150a4ae135d01c23e7433fd09063"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/candidate_selection.csv",
+      "bytes": 1610107,
+      "sha256": "51ed52708af0473f24298396eb14ae482b7087245d1dfd774f4918a1e4da3dd8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/effective_config.json",
+      "bytes": 16805,
+      "sha256": "b21f4587f3fd4bc6378275dec03ceecd3fb53d6f5ee8c059ccdd50445577bf6b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/input_manifest.csv",
+      "bytes": 22383,
+      "sha256": "2e35ea94dfab704c7deffc3f44edca2eabc8b2c5a932ed51896dcd69c4fb4d17"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/model_config_snapshot.json",
+      "bytes": 18182,
+      "sha256": "1df946cc36f7b71869849eb1bad689a360a479d0a8799f9e2f52451bd9d50a2a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/round_00/gurobi.log",
+      "bytes": 1024,
+      "sha256": "4fb5f8860620636e485e0e7d136e9ab21604719a2a65d26efda8741f03dd16e9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/run_environment.json",
+      "bytes": 10342,
+      "sha256": "f9e0875ff4e9946cdc7d8e9a5d3418a2bfcc107f8b4656d486cbbbeff5a94d09"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full/scope.json",
+      "bytes": 1120,
+      "sha256": "409cd77e21e070e46b526b8d2f4c0120f5be11a44763cbdc32ef8f48d4b936e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full.stderr.log",
+      "bytes": 711,
+      "sha256": "da25929b53ecc1eae8de8d4af7d7ba3e9898ea4b9beaaf67344ee165d1a03988"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full.stdout.log",
+      "bytes": 1030,
+      "sha256": "42f9111d92480b9ae9e4ed14db085e8caf320e4dfd2f908c32518f877faef9a6"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/build.json",
+      "bytes": 909,
+      "sha256": "29b6547782d72253409299eeeb5e9bbef80efd35d215e484a3efd9e708474d75"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/candidate_selection.csv",
+      "bytes": 1610107,
+      "sha256": "51ed52708af0473f24298396eb14ae482b7087245d1dfd774f4918a1e4da3dd8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/effective_config.json",
+      "bytes": 16805,
+      "sha256": "b21f4587f3fd4bc6378275dec03ceecd3fb53d6f5ee8c059ccdd50445577bf6b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/input_manifest.csv",
+      "bytes": 22383,
+      "sha256": "2e35ea94dfab704c7deffc3f44edca2eabc8b2c5a932ed51896dcd69c4fb4d17"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/model_config_snapshot.json",
+      "bytes": 18182,
+      "sha256": "ccd4eac679aee51536e5f077e2d801d4fd20f60840bcdfa959311db9fd6f5f5a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/result.json",
+      "bytes": 2367,
+      "sha256": "7da3e9c224794a99897a9241b1d9f774e33a9f574a4be5c2319b9812d135e8d5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/gurobi.log",
+      "bytes": 9016,
+      "sha256": "d26308dcd65f0f3faf9dbb22163b75af6335fc59dd12206306048ca5250e3fe0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5703,
+      "sha256": "754c1ad09e9b57689e2409b97ab402d84b9abb4f2dca4a0d0de0980aeb441a51"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_carbon_ccs.json",
+      "bytes": 692,
+      "sha256": "11f9ffe89ae67d2da6d559382a69c7c9e95af9d79ac84c3472c74aac06d8052b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 266108,
+      "sha256": "d308f0ae0d40086208033fb0036f6dc14497cb0ad9fecdadfdb5617b0ffbc738"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8176,
+      "sha256": "4162ff2ddfc98afe2f45c314a900db3d11ec8e1776608b21d51bfcdcf180c3ad"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12655,
+      "sha256": "1c9a4bf660057f5f5330fac8334c741277a2344cfb76aa939c3f5c50f4ad2c4f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 6123,
+      "sha256": "b0b7a8c328ed79e3116fa870b1b50fe3411dad645c3c3eb5fc4a2a85166f8049"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1169,
+      "sha256": "196438c6a6170d1abf79c790713f35a8f4f8e13d0ebffa3f53cfaee2de7484a4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/cost_components.csv",
+      "bytes": 3489,
+      "sha256": "8de8e3397de672ff17d5549a13577a93f00df1d59ad0fab90eb92a5f425ea4d8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "61b6c43052f978c8f55bfd25f22968291230f66e8bff7828e17e6657459b5d2d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "e411d2aa9fb89d316f436f37aaec2335746ef4ab456bd41f96dd17c7b80b7031"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/load_center_annual_balance.csv",
+      "bytes": 45867,
+      "sha256": "3a8cf214de6a396d3c7826d39303c404329e05bea9ea5f69e04ee4fc9d0f32d1"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/load_center_annual_generation.csv",
+      "bytes": 97941,
+      "sha256": "4ef80b08330a266e6c682abf2ba1659b5f45524e2517bc7feebc30f400c15aab"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/load_center_intra_transmission.csv",
+      "bytes": 99298,
+      "sha256": "cc9ec4552c79dd78e809b8b15669f94858d7632dbb1d0f3a08c2e805607fe6b9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/load_center_network_qc.csv",
+      "bytes": 517,
+      "sha256": "30019f8c877953a6d850896bd8dfacf9097fa5d09e4e846ade9e8cc9bf6e7420"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3297,
+      "sha256": "6ce4e8771773708c8c53df77bbd40462a14640471c0033dbeeb57640ccc15b97"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/scenario_manifest.json",
+      "bytes": 6707,
+      "sha256": "89c889fd1fc079dd097a25a2421c5528228bbf5154cb259b2660fe53e4c2fd60"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/solution_qc.json",
+      "bytes": 10395,
+      "sha256": "6ad0e1d639e880859eb6b2f41f3d0e0f6391287d0a5020720eabbfcd08fda80a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17372,
+      "sha256": "a0f13233d18da81f5f70ebe9c5716f18756169142e6b5fcce49aa8e89ba54058"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/transmission_capacity.csv",
+      "bytes": 18720,
+      "sha256": "b5f2492ff562134f87a81b3e9798944e20a88ec14260c6efbbff0b110d17829a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/vre_capacity.csv",
+      "bytes": 2461927,
+      "sha256": "677967b865245395548023247565c0acc9c8ad7916919df396cf901e30d10ea9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/pricing.csv",
+      "bytes": 2836513,
+      "sha256": "65f15bfb5ec5c18b549d80aee98794cafa8a57eecb60bbfbc8ffdb03ca655983"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/pricing_identity_checks.json",
+      "bytes": 1042,
+      "sha256": "ff2f240470f4b3646578d92143d73b0452ae54a49187ea38c2e389dc36449296"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/round_00/result.json",
+      "bytes": 1253,
+      "sha256": "574df50b1f43870771d068d3638ddaf8d97155f58840f8949f86b4604db2bb52"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/run_environment.json",
+      "bytes": 10483,
+      "sha256": "cd6c306726e9252dc3fc9317fd7544de4b13127eec0613c21139daae62f0e289"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2/scope.json",
+      "bytes": 1123,
+      "sha256": "b7bb7b79dc24416953b09200bf32610582674f173a5d4bf8fdb0ec16b9b7c7ae"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_base24_full_v2.stdout.log",
+      "bytes": 10157,
+      "sha256": "66af33c54977635d9cb12d0231ae26182d3fc9a88f674c4044e9bdfa760dc190"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/build.json",
+      "bytes": 918,
+      "sha256": "dea0612fa4589a313fd1f3a716e827fc43f60b88eb1f5b9a373cab33448bb976"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/candidate_selection.csv",
+      "bytes": 1610107,
+      "sha256": "51ed52708af0473f24298396eb14ae482b7087245d1dfd774f4918a1e4da3dd8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/effective_config.json",
+      "bytes": 19495,
+      "sha256": "7a2dc27e1dd770b7d69c2dd6812b7104bde4d5e7b8b8d86560c0518eb469c594"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/input_manifest.csv",
+      "bytes": 22817,
+      "sha256": "c3e3ba427a519776ab8a3d02d3d29670dfcc91fc7c3ef8cb98cc1c2ff8a7d673"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/model_config_snapshot.json",
+      "bytes": 21180,
+      "sha256": "1861d3cfa74781ca9e5e6ba768f2cbb120568affc4a31d87ca4496eb4f04b091"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/result.json",
+      "bytes": 1270,
+      "sha256": "dd5284fa9c9906210a72cf49b6ea7ef42b2e2a453167ff8c3d9b95d973e68f0a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/round_00/gurobi.log",
+      "bytes": 3086,
+      "sha256": "7b431591e1be83ffafd47bbffaa19a099fc2470b3d1d607706af9da2af453250"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/round_00/result.json",
+      "bytes": 234,
+      "sha256": "93f405ef36fbf5e8aac0564ae2464d05c0f037ae27ea58a6d91e07916fab6d70"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/run_environment.json",
+      "bytes": 10500,
+      "sha256": "511e68e4adc40d020864e7cf8ab76e9ba6cdaffef3d9b35baf754b632b3a25e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/scenario_parent_migration.json",
+      "bytes": 380,
+      "sha256": "ac6d9f03644e9a5f35cda91db8789c3c0e992ddd639316aed65165aa7788b589"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/scenario_v9_diagnostic.json",
+      "bytes": 4726,
+      "sha256": "1c267f8b37c9d098a1b9386a3e5769728314597a44ac303230ed7f4d76f1eaac"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full/scope.json",
+      "bytes": 1140,
+      "sha256": "27a890f23b8404567df74ccd84bcc019c7d3388949325a5b9e84f6f82cddb52e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_full.stdout.log",
+      "bytes": 3296,
+      "sha256": "959a1e78c0cce700af6a8b1e13963c0f16a7cbad00d5a7b60193c80f5da7eada"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/build.json",
+      "bytes": 1117,
+      "sha256": "59b7a19b21fc84773f581452ac2fa0f2772a53eae301387ae9727d8af977615f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/candidate_selection.csv",
+      "bytes": 1630379,
+      "sha256": "6df750101eee763d01b099ea0f81e537c0deed92f8086f6e29e085143794e80c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/effective_config.json",
+      "bytes": 19495,
+      "sha256": "7a2dc27e1dd770b7d69c2dd6812b7104bde4d5e7b8b8d86560c0518eb469c594"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/input_manifest.csv",
+      "bytes": 22821,
+      "sha256": "e59b5621ade3c9d7b6e225f910ff1a77abaca49f4d1750a1810ac855fcdd6a37"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/model_config_snapshot.json",
+      "bytes": 21182,
+      "sha256": "effcd6fc6da4a9184e57d62f6928e791276395aec6b83fb768846d93066a5458"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/result.json",
+      "bytes": 1472,
+      "sha256": "b1442619b212947d2e13ce86d540b1d230b958e39e29f96762813223e5146ca3"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/round_00/gurobi.log",
+      "bytes": 3086,
+      "sha256": "c97ba1dce32cb7592074a461b5e7fb52a12a173daa7aebaba9cafdc2925d740d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/round_00/result.json",
+      "bytes": 237,
+      "sha256": "48da9f90b22c02fb38755dea6f3970606dd9d093b6426b0ec7aa34bb92eec590"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/run_environment.json",
+      "bytes": 10602,
+      "sha256": "3d476b90b09eed457ade54bf6c0a91d7b659c0400e51853dbef14a16f3ab1ea5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/scenario_parent_migration.json",
+      "bytes": 380,
+      "sha256": "ac6d9f03644e9a5f35cda91db8789c3c0e992ddd639316aed65165aa7788b589"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/scenario_v9_diagnostic.json",
+      "bytes": 4726,
+      "sha256": "1c267f8b37c9d098a1b9386a3e5769728314597a44ac303230ed7f4d76f1eaac"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen/scope.json",
+      "bytes": 1214,
+      "sha256": "83a1f5c61dbd9f587d3f10860471fee59b75e64078abbf6ae73da993ec3a4b6a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_168_screen.stdout.log",
+      "bytes": 3299,
+      "sha256": "1bde3e2245b43ad226201e9076d66e979d179e63ed8438d7f9aa58a57e3a7fb3"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/build.json",
+      "bytes": 921,
+      "sha256": "19898b65777edcd067b17a5bb99d566a8d3aa83ba816a324ed9c0fea8773057d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/candidate_selection.csv",
+      "bytes": 1610107,
+      "sha256": "51ed52708af0473f24298396eb14ae482b7087245d1dfd774f4918a1e4da3dd8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/effective_config.json",
+      "bytes": 19497,
+      "sha256": "16e72f5bd2192c8614b13b64a00a22b7d529bad5ac8f42977fc1ac803ee0d61f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/input_manifest.csv",
+      "bytes": 22815,
+      "sha256": "7abb36a552d5ed37df9ec5d6f31d4313e25557c0b2b9b60b618a959783f2b289"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/model_config_snapshot.json",
+      "bytes": 21181,
+      "sha256": "a301542b508d231b620fdeebd53e13a685532e9b86ca6b04f15fed9f96bfca60"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/result.json",
+      "bytes": 2378,
+      "sha256": "0f81109704cd0477f08731a602ca0f46dea97235d76d426c8be5e6af4a2e08b3"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/gurobi.log",
+      "bytes": 8791,
+      "sha256": "ce858ec78a99c5674dba9c396c1b1af5c03f8b0a74293a4740e9be9d232a4547"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5744,
+      "sha256": "173bd07496e9ee95d162f486eb6c798140413fe3b0b44ba46e08b5ac49e8d2f5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_carbon_ccs.json",
+      "bytes": 684,
+      "sha256": "2172bb2aac70a16ef3bed61424db3c125bce0b885bb4fc335504078e4cbf6d60"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 266134,
+      "sha256": "53e14c1016c9c2226b245a768fdc89e9d0a76156797bbd2cdc0b281b47865393"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8680,
+      "sha256": "1149527b61e956ff216f45973ecf959e72e9b4839c1fbdcfcb3436f4b4bbfd38"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12632,
+      "sha256": "73a98db21bd55ca0abac498f381dd40920cb122afd862e9f74df7e13e28fbeb0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 6117,
+      "sha256": "44d21350c0bfcc31ba9ce880f224e2eedb740295f70a3c5aba390958cb37de17"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1169,
+      "sha256": "196438c6a6170d1abf79c790713f35a8f4f8e13d0ebffa3f53cfaee2de7484a4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/cost_components.csv",
+      "bytes": 4280,
+      "sha256": "f307ec7cd03c2812532cc54e17f42229c66539e2cb3189d81e66ce27bee8295e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "a2d9e03b654cf3480e04729682b7af9ea754d96fca30845ee263d699cdf2bc10"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "506ecdf0788e1050ed328a5629205a3fd6e3e482637077145137f08613405e2e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/load_center_annual_balance.csv",
+      "bytes": 45866,
+      "sha256": "d2615958df3d185cdb17e6fc00519fbcc75df6214758a3bbd351821a6c368e29"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/load_center_annual_generation.csv",
+      "bytes": 97885,
+      "sha256": "13d86394dfd0e958c31650e091377db9c92130c1858d02f6dedd390799a43f8d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/load_center_intra_transmission.csv",
+      "bytes": 99272,
+      "sha256": "a6578ecfd11ef3d4295d1ba4d6e02c6a8c61d3ff31c7b09a8f065cba7ff12e5d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/load_center_network_qc.csv",
+      "bytes": 516,
+      "sha256": "1dd9ed06f6bc92009965376f13bbdc2e6bd34c4aefa64d309b8bb1593c1c8165"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3294,
+      "sha256": "3632a1a4d27f2153350fbe19c18fc0e0bed65d51b6b160898208ed1042285484"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/scenario_manifest.json",
+      "bytes": 9964,
+      "sha256": "ddbc9fb490f973def4c91df84fed227c2fb12a95545fb80dc5b5fe21fa537153"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/solution_qc.json",
+      "bytes": 18111,
+      "sha256": "34892aed153eb130c0bf85bb8cc04224999eda548cb2aae7b1f3269a70e1959a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17377,
+      "sha256": "8f51573997cb4ef34fc4cb5f7abe2d6a52ab428d044f360a072b301238d47aa0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/transmission_capacity.csv",
+      "bytes": 18720,
+      "sha256": "9f480a39949c41c30a0203d1f78bb02a18e157fba07c9729e4325392c47e75dc"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/vre_capacity.csv",
+      "bytes": 2461927,
+      "sha256": "677967b865245395548023247565c0acc9c8ad7916919df396cf901e30d10ea9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/pricing.csv",
+      "bytes": 2836726,
+      "sha256": "3518b249c506d5b5a5128825ee22c14e06a5a78d0a9990b85f7409c265e482f0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/pricing_identity_checks.json",
+      "bytes": 1006,
+      "sha256": "30934b3aa62873a58ae11770896c1368216d7ed79acc2ce284c46f84daa7dbb5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/round_00/result.json",
+      "bytes": 1252,
+      "sha256": "2ac06bf3c16319c5fa473608c5b707f498fb047c3bcab266aa1d7c761ac6408d"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/run_environment.json",
+      "bytes": 10497,
+      "sha256": "aca531bae368049e7f0edba774bddbd9271b32c7750afa420a17d5a46696cad0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/scenario_parent_migration.json",
+      "bytes": 380,
+      "sha256": "ac6d9f03644e9a5f35cda91db8789c3c0e992ddd639316aed65165aa7788b589"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/scenario_v9_diagnostic.json",
+      "bytes": 4726,
+      "sha256": "1c267f8b37c9d098a1b9386a3e5769728314597a44ac303230ed7f4d76f1eaac"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full/scope.json",
+      "bytes": 1137,
+      "sha256": "c59c1d76546ebbd68227dbc5792677247d1a953f1fbce46f10fddd3552e0c97a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_full.stdout.log",
+      "bytes": 9931,
+      "sha256": "83c48c271b9700fa6a15694c17e2ae891ec2076bc0f91c9161b52a02b21bf6c8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/build.json",
+      "bytes": 1121,
+      "sha256": "b651fde6aefc352ee505577f0abde42ffc9f119b58e55d7a3e381d5048a6a928"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/candidate_selection.csv",
+      "bytes": 1630379,
+      "sha256": "6df750101eee763d01b099ea0f81e537c0deed92f8086f6e29e085143794e80c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/effective_config.json",
+      "bytes": 19497,
+      "sha256": "16e72f5bd2192c8614b13b64a00a22b7d529bad5ac8f42977fc1ac803ee0d61f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/input_manifest.csv",
+      "bytes": 22819,
+      "sha256": "43a4157834cf043d134d73e9dd71018cf0b6ac47a5acf2ceff30a57d51d4a3c0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/model_config_snapshot.json",
+      "bytes": 21183,
+      "sha256": "df5324344c08fff4af009539e5b6d8050926360da1db521cc587b660500947e8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/result.json",
+      "bytes": 4019,
+      "sha256": "07772157449391a3ae670bdce11c0857f44ae045c2bf469b6875bd0c45880b19"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/gurobi.log",
+      "bytes": 8821,
+      "sha256": "d159adf2f95f0bcbd01482836d3c1379b9b41f909e1b4c83f65d976aaf45824e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5747,
+      "sha256": "a507c1581a4af34319b755e3ab2b5e944a4238f779cd8c137f921e73ec0086fd"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_carbon_ccs.json",
+      "bytes": 702,
+      "sha256": "7ba28e7ed009fef3e9f868a11f0d56160710f87197b78fc64dcae30d5bf6b631"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 266310,
+      "sha256": "3d393a0cc623898b49129f7a6f121bf2f9e74d1c399a7772f42f74760edb8e00"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8680,
+      "sha256": "1149527b61e956ff216f45973ecf959e72e9b4839c1fbdcfcb3436f4b4bbfd38"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12661,
+      "sha256": "7c0a78c5ad06d1a34e727c8847561e406862ad996e7a6e2b6fa73dfed4d852d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 5998,
+      "sha256": "81cad96c6d1cade995b6229c040fa463fa77a71cb5a6061c362ac839766ddc1f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1168,
+      "sha256": "7e6b7fb3d4bed798240651f81156c2b409c8688b268b9161214f73cfe94d6eda"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/cost_components.csv",
+      "bytes": 4284,
+      "sha256": "ad3a8d6f443f7ea3534d476ce477f323e5ce5bab780f8c8456942794c56c0892"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "d1e336ff64be54c8de1a45eebe68d7259a218b4c2d320e6f0af2f54926301060"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "9f42d9811a7ace27c564fd0b85bd2816ab93ee50af5dfd6c254368039f637c2f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/load_center_annual_balance.csv",
+      "bytes": 45862,
+      "sha256": "8ceff449d818ca01033095b0d535a9c7642d6da937f10b75175cf6b36d1fa2fc"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/load_center_annual_generation.csv",
+      "bytes": 97908,
+      "sha256": "767414ff85411c1a05175d18e623435cf40eed7eb9046759f357847e556a1295"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/load_center_intra_transmission.csv",
+      "bytes": 99302,
+      "sha256": "eaed086e0939b4c0f1d40bf96b58b76f2db3e375132e4b2d551fb69d00a7a1d5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/load_center_network_qc.csv",
+      "bytes": 517,
+      "sha256": "1403b0ce260c8fe66f326473fb62fe6a0379bc000bd7c78dea1e174eae73e857"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3307,
+      "sha256": "0ad9d1e82b485fa692f0f3123af7042a4aaa14e2c34595ff39b3b5f9800caae8"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/scenario_manifest.json",
+      "bytes": 9964,
+      "sha256": "ddbc9fb490f973def4c91df84fed227c2fb12a95545fb80dc5b5fe21fa537153"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/solution_qc.json",
+      "bytes": 18060,
+      "sha256": "087ce4781b89e3e2f6223d859d1e3f95bc8219123effa0e0e269dbbd675a36e9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17362,
+      "sha256": "4ba6d702dba02d941a8e8ed69c1e8dedd8e13bbbe8aed883f9c1f59b16dabbca"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/transmission_capacity.csv",
+      "bytes": 18720,
+      "sha256": "7c1881727903ac5b37fbbb6d658e60622f72ab8a375109be6d10543e988e1e75"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/vre_capacity.csv",
+      "bytes": 2461927,
+      "sha256": "677967b865245395548023247565c0acc9c8ad7916919df396cf901e30d10ea9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/pricing.csv",
+      "bytes": 2877505,
+      "sha256": "a7b3267458dfe4697182e59b61c4161bc9d1b3972ce867ea51f3a39a0079e14c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/pricing_identity_checks.json",
+      "bytes": 1062,
+      "sha256": "12b6e7508f738fab57fed9bcc5a94b4447f08f8903c7e7475c760734dcce006c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_00/result.json",
+      "bytes": 1293,
+      "sha256": "01fd4ec37d01898ae8495e6e2fe1e8327b8a5ebeba2efce3f9e7a04d3060a3b5"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/gurobi.log",
+      "bytes": 8864,
+      "sha256": "74847ac093b27104c76e0d08aa54ac7eb97504c92ce53fa566546ca76d18638c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5747,
+      "sha256": "a507c1581a4af34319b755e3ab2b5e944a4238f779cd8c137f921e73ec0086fd"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_carbon_ccs.json",
+      "bytes": 701,
+      "sha256": "eddce53444446d5c4886a032f8a674831c4c859be76105c237f00948686f29a1"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 266108,
+      "sha256": "1bf89161fd995a990a0b242801f5036fe193c603434ce18731990e3012a226d0"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8680,
+      "sha256": "1149527b61e956ff216f45973ecf959e72e9b4839c1fbdcfcb3436f4b4bbfd38"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12668,
+      "sha256": "d08233fff8e7f9e4c21da3888a75406c7a1e99a2cf7ee28ff9c5da0886098dfa"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 6121,
+      "sha256": "3ec09d945a54f7f10abca6d78eef45fffa9f4b5bc25903c4f2d4d107413910db"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1168,
+      "sha256": "d08224f6f5ec9673609c2cf312e2b7f55f8c1eb666789effbc7aa62282e625b4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/cost_components.csv",
+      "bytes": 4288,
+      "sha256": "3ea0d23c49fadc030b18305d4ade68e4babf88e0fb0664b76d71e81068a70477"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "250d25b6c4ae8db532aa2d6a11ac47b0a000c034c2efc6ba39dfacbd9b9a61f7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "3cb902112ff881341ab7e9a273b62517d8f74ab6d1e4456ebb4f7117bfe32c9b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/load_center_annual_balance.csv",
+      "bytes": 45853,
+      "sha256": "b23eb34ea3ff558527c88229424d6229385146d07daa601eb962c0ca29a801db"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/load_center_annual_generation.csv",
+      "bytes": 97873,
+      "sha256": "fc79554faa51156ba5a5afaa818f7cac34f77923cc12eeba1d283138c56bec21"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/load_center_intra_transmission.csv",
+      "bytes": 99275,
+      "sha256": "34e13127887557972c7b79bfc9802eaad16d2bc3b1b21628eb506adc96dbdfcc"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/load_center_network_qc.csv",
+      "bytes": 515,
+      "sha256": "b8059dd7103efdb8c9323354cdbde745696fe6010b80dc489dcce38f55dc0c3b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3291,
+      "sha256": "11d27a6a7912bcb853b1fc41d5c0c769e790a97ae9162011feb9475f34541103"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/scenario_manifest.json",
+      "bytes": 9964,
+      "sha256": "ddbc9fb490f973def4c91df84fed227c2fb12a95545fb80dc5b5fe21fa537153"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/solution_qc.json",
+      "bytes": 18096,
+      "sha256": "8c8c3e9278ec5cc106cc47e0af2fbd5ebfb2e25b23ecd24033085537bd148a00"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17373,
+      "sha256": "3543baed6d8a670dec248fab307baf388f39a6e9b3738efbac781601a0131156"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/transmission_capacity.csv",
+      "bytes": 18718,
+      "sha256": "f9e07b6862fa81963c9d0d2d12dfe23a13984099e6e0a7afd615d761494aeab2"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/vre_capacity.csv",
+      "bytes": 2461927,
+      "sha256": "677967b865245395548023247565c0acc9c8ad7916919df396cf901e30d10ea9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/pricing.csv",
+      "bytes": 2877463,
+      "sha256": "d4a7684260e3d8da275905470b1de689968c1a3f2a991c9b03a3970832f66226"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/round_01/result.json",
+      "bytes": 1266,
+      "sha256": "fa0939852a76b0a79267ab243c7265e4a2521387a6ec1c68e2fdbe21f0f15351"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/run_environment.json",
+      "bytes": 10599,
+      "sha256": "f9cab861c554a07cf9672f72d2da50f0448e2d95279b29673b0d10e168528d80"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/scenario_parent_migration.json",
+      "bytes": 380,
+      "sha256": "ac6d9f03644e9a5f35cda91db8789c3c0e992ddd639316aed65165aa7788b589"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/scenario_v9_diagnostic.json",
+      "bytes": 4726,
+      "sha256": "1c267f8b37c9d098a1b9386a3e5769728314597a44ac303230ed7f4d76f1eaac"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen/scope.json",
+      "bytes": 1211,
+      "sha256": "81875bf59644be56de57177ca0065fe93546fd93ffbe2d2f5fb5389443c8b785"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/local_case3_24_screen.stdout.log",
+      "bytes": 19946,
+      "sha256": "85638d12634e823f732dc1ca465a6f82af61aceb5580f374a6fe9907ac2bfa25"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/paired_identity_audit.json",
+      "bytes": 1204,
+      "sha256": "de71ac8ae0da9a0d1c2db56dee498a8349f613e72ae53690005360757add4ec4"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/paired_results.csv",
+      "bytes": 1365,
+      "sha256": "a86dcd960a3fb3b067b3b8258577f2a62596e3fd78e9792e31b047bda8c05b5b"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/prepare_experiment.py",
+      "bytes": 2741,
+      "sha256": "ce308d2ec8b4d4e187a01dd833138bd447e5221b46936172ac9abd071a12e418"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/REVIEW_ZH.md",
+      "bytes": 14186,
+      "sha256": "02f663d75587013d78b834b24a9efcf75994c9d42b519c1246f6719d25458cb9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/run_remote.sh",
+      "bytes": 628,
+      "sha256": "c98b5af8779a018b8a2fc938fdc16cb53bc1a6cf8daf77628e6837c755016e2a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/run_screen_probe.py",
+      "bytes": 11554,
+      "sha256": "5767bc9a89cb6b05238c29f59b33b5cec1dc604c7411eb1ed9358f687f0315cb"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/source_screen_audit.json",
+      "bytes": 1501,
+      "sha256": "abc55671b7a63e0cb9442d3579acb531476dda67298e8663e8f9a711c85b3c76"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/source_screen_margins.csv",
+      "bytes": 327,
+      "sha256": "3f138eda0a8bad9505800400adf77fb4325687a9e9014159e0ede6853f39c847"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/summarize_experiment.py",
+      "bytes": 4837,
+      "sha256": "bf8d6e7a66fecb71ba7bf03020a2ad83267cb2d5204e268626a4b46c2336ab3a"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/summary.stdout.json",
+      "bytes": 5524,
+      "sha256": "69e5e5e01b6da86d67be907be10f11950c6a7ab06bef781f0f38b31bc1253d49"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/supervise_probe.py",
+      "bytes": 2226,
+      "sha256": "77bdadcb1cb744c1742ee62fd58ccd90e1b92c6144a7ed2a95e89d915c0ae44f"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/test_pricing_mechanism.py",
+      "bytes": 1990,
+      "sha256": "3865799c8bb52f168cf3731981668338d4154329823f0ff97d9e73b4758612f9"
+    },
+    {
+      "path": "supplementary_materials/reviews/dual_screening_20261002/update_handoff.py",
+      "bytes": 4222,
+      "sha256": "07d9f1b3c2af90464d87cb51e7da7b048c7ceb78e0b30da6cc922efa65b1170c"
+    }
+  ],
+  "candidate_package": {
+    "file": "experiment_v2.tar.gz",
+    "bytes": 82718241,
+    "sha256": "cd230fd4934942cadc4051237c3f09c8632491c435e4597cf058b400c7b99c4c"
+  }
+}

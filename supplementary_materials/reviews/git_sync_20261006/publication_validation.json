@@ -1,0 +1,9 @@
+{
+  "python_syntax_files": 160,
+  "tested_source_count": 351,
+  "tested_source_drift": [],
+  "regression_reused": "unittest_verified_20261005T185140Z.log",
+  "history_commits": 11,
+  "history_file_versions": 190,
+  "history_secret_findings": []
+}

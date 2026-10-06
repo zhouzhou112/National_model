@@ -2,6 +2,8 @@
 
 This repository implements a continuous linear capacity-expansion and chronological-dispatch model for China's 31 provincial regions. The production horizon is one continuous 8760-hour year. The model is intended for reproducible research: every accepted case records its exact inputs, configuration, solver environment, outputs, hard QC and SHA256 manifest.
 
+2026-10-02 当前顺序：正在运行的 Base 保持不动；下一轮优先 Base＋冷热＋V1G/V2G，从 2030 独立求解至 2060。见 [当前情景执行计划](SCENARIO_EXECUTION_PLAN_20261002.md) 和 [文档/代码版本使用边界](DOCUMENT_STATUS_20261002.md)。对偶筛选尚属隔离验证，不能把初筛候选集当永久资源删减。
+
 ## Scientific boundary
 
 - `2025` is a fixed boundary state, not an optimization year.

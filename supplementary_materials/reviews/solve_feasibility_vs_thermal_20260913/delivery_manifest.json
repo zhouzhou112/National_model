@@ -1,0 +1,126 @@
+{
+  "git_baseline": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "committed": false,
+  "model_changed": false,
+  "solver_parameters_changed": false,
+  "server_read_only": true,
+  "new_optimization_runs": 0,
+  "completion_in_9_to_10_days_validated": false,
+  "files": [
+    {
+      "path": "current_reference/default_dry_run/effective_config.json",
+      "bytes": 16777,
+      "sha256": "5615090681b6a9d4abe3950a396e9e0f18024bbdc86e31c4e14d23cbf5cbb2ab"
+    },
+    {
+      "path": "current_reference/default_dry_run/plan.json",
+      "bytes": 821,
+      "sha256": "a40e6e10e16ba4a9dc86f0eeeb91808a3ae529b1a5bb34a603fbedfe01916e00"
+    },
+    {
+      "path": "current_reference/parameter_readback.json",
+      "bytes": 1959,
+      "sha256": "56066dc5eeca3bee3cfae6b972365600894a8f52f76161bd69b0dbedb01a548f"
+    },
+    {
+      "path": "current_reference/residual_triage.json",
+      "bytes": 3076,
+      "sha256": "9046216fccfce9f253cdcc0ed1ed7b3ea1a176ae6fa84b5264a9e0c3c1df60da"
+    },
+    {
+      "path": "parameter_comparison.csv",
+      "bytes": 614,
+      "sha256": "e4acc07eae538d0cb01e3d0767731af668f2f407c9660397f452bd23a54dc460"
+    },
+    {
+      "path": "parameter_comparison.json",
+      "bytes": 3949,
+      "sha256": "756d397c460ff33eebacc8c949c9bd5369988160a66a48d77fdc202a0984a7bd"
+    },
+    {
+      "path": "REVIEW_ZH.md",
+      "bytes": 5618,
+      "sha256": "0ecd8d4e22f576a97c8b360a0163b78f1a2554b0acc4b17d7a8553e84df766c2"
+    },
+    {
+      "path": "source_snapshot/cispo_full_lp_model_spec.md",
+      "bytes": 128541,
+      "sha256": "47a5e311a2df9744a5d849c0cdb67d697054ceb2b23abc30448e84f2654b9977"
+    },
+    {
+      "path": "source_snapshot/CODEX_HANDOFF.md",
+      "bytes": 1059494,
+      "sha256": "de819ef09fb3a0c9b4ca1b76a9b94f63f818a3fc396ef80324f072aec812bcb5"
+    },
+    {
+      "path": "source_snapshot/MODEL_SERVER_STATUS.md",
+      "bytes": 322476,
+      "sha256": "e13ebe6ac46847576c4d693edc56cffc4d4791a475c67aacbb99531239bd1dde"
+    },
+    {
+      "path": "source_snapshot/scripts/probe_full_year_numerics.py",
+      "bytes": 12978,
+      "sha256": "2c078061bf1412280c973431139ef0785017e09ef38d47661abc5649f9211738"
+    },
+    {
+      "path": "source_snapshot/SERVER_RUNBOOK.md",
+      "bytes": 368545,
+      "sha256": "0b7fc6b66f5b9f223f3a57ab48a9451f8c52856480fad4a1a97edcad40ef267b"
+    },
+    {
+      "path": "thermal_effective_config.json",
+      "bytes": 696,
+      "sha256": "bae8a0148acc821dd0e567c58cd5db1b732c8d63aaa3cc46dafb047d067ea43b"
+    },
+    {
+      "path": "thermal_effective_config.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "thermal_effective_config_v2.json",
+      "bytes": 2900,
+      "sha256": "3b0e6c4837f663692bea3e7c5a4243ef9714c63e69e8294aad4de32f248c4038"
+    },
+    {
+      "path": "thermal_effective_config_v2.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "thermal_log_compact.json",
+      "bytes": 5113,
+      "sha256": "d149114d1f387840c66ef094a2eb81f0af9af3fc3de6f2bf3a632e9eb0cd5b62"
+    },
+    {
+      "path": "thermal_log_review.json",
+      "bytes": 306709,
+      "sha256": "5756567443a057d9c795bb23b86057f3e2c32308594a9302ce4d9d0f5c8e4b05"
+    },
+    {
+      "path": "thermal_log_review.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "thermal_readback.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "thermal_readback.stderr.log",
+      "bytes": 263,
+      "sha256": "bb87b60a4b4fadda6e3df1216e73725a7c9880454601a9c2f74d4e90e7a6ecf9"
+    },
+    {
+      "path": "thermal_readback_v2.json",
+      "bytes": 3644,
+      "sha256": "d0bceb4ded9151810681fd158fa33157c0698162516c82c8704d00a37a759263"
+    },
+    {
+      "path": "thermal_readback_v2.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

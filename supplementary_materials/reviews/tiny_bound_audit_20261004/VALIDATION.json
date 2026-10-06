@@ -1,0 +1,30 @@
+{
+  "verified_at": "2026-10-05T00:14:12.859955+01:00",
+  "status": "PASS",
+  "checks": [
+    "All three authorized jobs COMPLETED/0:0; stderr empty",
+    "Uploaded parser, input specification and sbatch content hashes unchanged under documented LF upload normalization",
+    "Archive compressed bytes and SHA256 agree with manifests; metadata unchanged throughout audit",
+    "All dimensions and matrix nonzeros agree with original solver logs",
+    "24 downloaded result files verified by bytes/SHA256",
+    "Independent delivered-CSV width/count/family-sum checks passed",
+    "All tiny hydro capacity/new pairs agree; no double-counting in physical sums",
+    "Six local MPS mechanism fixtures passed",
+    "CODEX_HANDOFF git diff --check passed"
+  ],
+  "newline_normalization": {
+    "inputs.json": {
+      "local_bytes_sha256": "85222d61dd3b5a3ef708e62dee314967e44a4f1ec57c29045f0766f86e0159b4",
+      "LF_upload_sha256": "998b0d46d31676dee4a437139b0072a7d0c4c249e7766c0e37467b261a9e7390",
+      "reason": "dispatch.py reads text before UTF-8 upload; Windows CRLF normalizes to LF. JSON content identical."
+    }
+  },
+  "jobs": {
+    "2030": "4938029",
+    "2040": "4938030",
+    "2050": "4938031"
+  },
+  "git_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "production_model_or_job_changed": false,
+  "model_server_status_edited": false
+}

@@ -1,0 +1,31 @@
+{
+  "primal": {
+    "entries": 41458383,
+    "shape": [
+      41458383
+    ],
+    "dtype": "float64",
+    "bytes": 331667192,
+    "sha256": "c4fe9534de1b364f20d01739aed57289b8b6d7460e94fbd50ded5a494d935b90",
+    "hash_match": true,
+    "all_finite": true,
+    "shape_match": true
+  },
+  "dual": {
+    "entries": 50907233,
+    "shape": [
+      50907233
+    ],
+    "dtype": "float64",
+    "bytes": 407257992,
+    "sha256": "f2aa7651125202126e3c20ae8b60e03ac721d7e3d82c295b6cbcee1f80800b5e",
+    "hash_match": true,
+    "all_finite": true,
+    "shape_match": true
+  },
+  "source_sha256": {
+    "repo/scripts/run_cispo_2030_full_year.py": "a869aac11f745f78e6608bbb093bd6e7bdfbc975e8a91204e5323485e1e00d46",
+    "repo/cispo_model/solution_export.py": "6be4a991ccac448d68832a8789b0dc6341c4211720092239f8be3f580dd60c08"
+  },
+  "load_center_network_qc_csv": "\ufeffmaximum_center_balance_residual_gwh,maximum_province_net_exchange_residual_gwh,maximum_intra_capacity_violation_gwh,maximum_vre_annual_availability_violation_gwh,maximum_ror_annual_availability_violation_gwh,bidirectional_flow_tolerance_gwh,maximum_bidirectional_minimum_flow_gwh,total_bidirectional_minimum_flow_gwh,bidirectional_active_edge_count,dpv_spur_augmentation_max_gw\n2.673201713321305e-07,1.862645149230957e-09,2.9103830456733704e-11,0.0,0.0,0.0001,0.40753754014160726,1.8219019413695219,619,0.0\n"
+}

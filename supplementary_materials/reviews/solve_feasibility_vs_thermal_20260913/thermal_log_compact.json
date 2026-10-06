@@ -1,0 +1,166 @@
+{
+  "queried_at_utc": "2026-09-13T12:55:28.594603+00:00",
+  "log_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260907_thermal_stagea_1e4_t44_ffd651a_v2/outputs/2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2/gurobi.log",
+  "log_bytes": 327070,
+  "log_sha256_at_read": "8cc51ebb8e6c61619f1d86ee41989059c3124c12f74d3111a2bee8a15bb06b29",
+  "parameter_lines": [
+    "Set parameter FeasibilityTol to value 1e-06",
+    "Set parameter OptimalityTol to value 1e-06",
+    "Set parameter MarkowitzTol to value 0.01",
+    "Set parameter NumericFocus to value 1",
+    "Set parameter ScaleFlag to value 2",
+    "Set parameter Presolve to value 2",
+    "Set parameter Method to value 2",
+    "Set parameter BarConvTol to value 0.0001",
+    "Set parameter Crossover to value 0",
+    "Set parameter Threads to value 44",
+    "Set parameter DualReductions to value 1",
+    "Set parameter InfUnbdInfo to value 0",
+    "Set parameter Aggregate to value 1",
+    "Set parameter SolutionTarget to value 1",
+    "MarkowitzTol  0.01",
+    "Method  2",
+    "ScaleFlag  2",
+    "BarConvTol  0.0001",
+    "Crossover  0",
+    "NumericFocus  1",
+    "Presolve  2",
+    "SolutionTarget  1",
+    "Threads  44"
+  ],
+  "barrier_rows": 484,
+  "last": {
+    "iteration": 483,
+    "primal": 1591657410.0,
+    "dual": -5380919800.0,
+    "primal_infeasibility": 21.5,
+    "dual_infeasibility": 0.000141,
+    "complementarity": 89.6,
+    "seconds": 518073,
+    "relative_primal_dual_gap": 1.2957965309202342
+  },
+  "last_10": [
+    {
+      "iteration": 474,
+      "primal": 1826931430.0,
+      "dual": -7441208320.0,
+      "primal_infeasibility": 30.2,
+      "dual_infeasibility": 0.000182,
+      "complementarity": 119.0,
+      "seconds": 508897,
+      "relative_primal_dual_gap": 1.2455154259140537
+    },
+    {
+      "iteration": 475,
+      "primal": 1715371840.0,
+      "dual": -6852837690.0,
+      "primal_infeasibility": 25.9,
+      "dual_infeasibility": 0.000171,
+      "complementarity": 110.0,
+      "seconds": 509950,
+      "relative_primal_dual_gap": 1.2503155506664276
+    },
+    {
+      "iteration": 476,
+      "primal": 1706039700.0,
+      "dual": -6567390790.0,
+      "primal_infeasibility": 25.6,
+      "dual_infeasibility": 0.000165,
+      "complementarity": 106.0,
+      "seconds": 510972,
+      "relative_primal_dual_gap": 1.259774354009471
+    },
+    {
+      "iteration": 477,
+      "primal": 1694309060.0,
+      "dual": -6415151900.0,
+      "primal_infeasibility": 25.2,
+      "dual_infeasibility": 0.000162,
+      "complementarity": 104.0,
+      "seconds": 511987,
+      "relative_primal_dual_gap": 1.2641105131119343
+    },
+    {
+      "iteration": 478,
+      "primal": 1683666710.0,
+      "dual": -6256539890.0,
+      "primal_infeasibility": 24.8,
+      "dual_infeasibility": 0.000159,
+      "complementarity": 102.0,
+      "seconds": 513003,
+      "relative_primal_dual_gap": 1.2691050867734497
+    },
+    {
+      "iteration": 479,
+      "primal": 1682927430.0,
+      "dual": -6176576030.0,
+      "primal_infeasibility": 24.8,
+      "dual_infeasibility": 0.000157,
+      "complementarity": 101.0,
+      "seconds": 514011,
+      "relative_primal_dual_gap": 1.2724693133907719
+    },
+    {
+      "iteration": 480,
+      "primal": 1645259370.0,
+      "dual": -5925143980.0,
+      "primal_infeasibility": 23.4,
+      "dual_infeasibility": 0.000152,
+      "complementarity": 97.3,
+      "seconds": 515027,
+      "relative_primal_dual_gap": 1.2776741587298948
+    },
+    {
+      "iteration": 481,
+      "primal": 1641335930.0,
+      "dual": -5729553620.0,
+      "primal_infeasibility": 23.2,
+      "dual_infeasibility": 0.000148,
+      "complementarity": 94.7,
+      "seconds": 516035,
+      "relative_primal_dual_gap": 1.2864683776185692
+    },
+    {
+      "iteration": 482,
+      "primal": 1635796000.0,
+      "dual": -5582565640.0,
+      "primal_infeasibility": 23.1,
+      "dual_infeasibility": 0.000145,
+      "complementarity": 92.8,
+      "seconds": 517043,
+      "relative_primal_dual_gap": 1.2930186773406214
+    },
+    {
+      "iteration": 483,
+      "primal": 1591657410.0,
+      "dual": -5380919800.0,
+      "primal_infeasibility": 21.5,
+      "dual_infeasibility": 0.000141,
+      "complementarity": 89.6,
+      "seconds": 518073,
+      "relative_primal_dual_gap": 1.2957965309202342
+    }
+  ],
+  "min_recorded_gap": 0.9756642784642009,
+  "recent_24h": {
+    "iteration": 400,
+    "primal": 2805678470000.0,
+    "dual": -1333176730000000.0,
+    "primal_infeasibility": 11400000000.0,
+    "dual_infeasibility": 510.0,
+    "complementarity": 10900000000.0,
+    "seconds": 432325,
+    "relative_primal_dual_gap": 1.0021045060319946
+  },
+  "json_files": [
+    "run_scope.json",
+    "run_environment.json",
+    "build_report.json",
+    "portfolio_lp_identity.json",
+    "preflight_report.json",
+    "run_identity.json",
+    "run_claim.json",
+    "model_config_snapshot.json",
+    "annual_capacity_link_row_scaling.json"
+  ]
+}

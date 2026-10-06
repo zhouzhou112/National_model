@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "rows": 2030,
+  "changed_station_ids": [
+    "HydroCHN_00923"
+  ],
+  "unchanged_columns": 29,
+  "source_backup_exact": true,
+  "configuration_valid": true,
+  "invalid_options_rejected": 4,
+  "legacy_defaults_preserved": true,
+  "manifest": {
+    "source_sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142",
+    "corrected_sha256": "af342cb6e13c1e4f6ffe29b7245c396f33ef4ca66a5c94bfe2fce7a198716a54",
+    "correction_authority_sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f",
+    "changed_stations": 1,
+    "untouched_columns": [
+      "hydrochn_row_id",
+      "plant_name_model",
+      "lon",
+      "lat",
+      "comid",
+      "province_code",
+      "province_name_en",
+      "province_name_zh",
+      "province_assignment_distance_deg",
+      "existing_capacity_gw",
+      "capacity_potential_gw",
+      "head_m",
+      "q_rated_m3s",
+      "v_max_gl",
+      "v_min_gl",
+      "gross_storage_duration_days_at_qrated",
+      "operation_type_model",
+      "operation_type_source_model",
+      "operation_type_confidence_model",
+      "installed_operation_type_assigned",
+      "potential_operation_type_paper",
+      "operation_type_scope",
+      "status_model",
+      "technology_type_ght",
+      "duplicate_comid_flag",
+      "river_ght",
+      "river_group_stage2",
+      "environmental_flow_method",
+      "stage2_issue_flags"
+    ],
+    "validation": "PASS",
+    "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\hydro_stations.csv"
+  }
+}

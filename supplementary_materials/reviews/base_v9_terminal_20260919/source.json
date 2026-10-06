@@ -1,0 +1,77 @@
+{
+  "retrieved_at": "2026-09-19T11:57:47.965643+01:00",
+  "remote_root": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+  "files": [
+    {
+      "remote_path": "batch_exit.json",
+      "local_path": "batch_exit.json",
+      "sha256": "2cb6d09e0064ec5e0ae74d4d6671a49b311fe516d4ef849221efeeb9020a22b3"
+    },
+    {
+      "remote_path": "stderr.log",
+      "local_path": "stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "remote_path": "resource_usage.txt",
+      "local_path": "resource_usage.txt",
+      "sha256": "06ed784755a80251d4957bdd9f2704836f41c2917f0a8c1961634bb956039e04"
+    },
+    {
+      "remote_path": "runtime_slurm_job.txt",
+      "local_path": "runtime_slurm_job.txt",
+      "sha256": "092ffb3439f496adf0b325032264f08bc236f5c12794dfa09ac33ef1c1c3cc98"
+    },
+    {
+      "remote_path": "output_8760/gurobi.log",
+      "local_path": "output_8760__gurobi.log",
+      "sha256": "b918c8c9d55c5882412d6c8f28160a53079c98bf9c0f8ea4071a3284e481b933"
+    },
+    {
+      "remote_path": "output_8760/solve_report.json",
+      "local_path": "output_8760__solve_report.json",
+      "sha256": "686b08438a3f281036d4866a0869b1ba8e6b405606e19d352f3b0aeb11df0fab"
+    },
+    {
+      "remote_path": "output_8760/solution_qc.json",
+      "local_path": "output_8760__solution_qc.json",
+      "sha256": "cace8d06f3c8d59caf92c02d32b81bf20a762b95a93459b47b89113d8ac2c4a5"
+    },
+    {
+      "remote_path": "output_8760/preservation_report.json",
+      "local_path": "output_8760__preservation_report.json",
+      "sha256": "2d3817a9d8dd16e3c6f28179b14818944731eb93e36a2369517d46b3c2feb210"
+    },
+    {
+      "remote_path": "output_8760/run_summary.json",
+      "local_path": "output_8760__run_summary.json",
+      "sha256": "f2ac848a15e31be6d20b10528ce922b496049d91f5bfad50ebbb68cea7529c3a"
+    },
+    {
+      "remote_path": "output_8760/result_manifest.json",
+      "local_path": "output_8760__result_manifest.json",
+      "sha256": "602933b58601dda8cc89eee550f39f03a273e9c35d98fca66361f267ed3018fc"
+    },
+    {
+      "remote_path": "output_8760/model_archive/archive_manifest.json",
+      "local_path": "output_8760__model_archive__archive_manifest.json",
+      "sha256": "cd8b57114c5fcce263bdc5fc2148e8de47184d53016e4fce1e5c133de0121962"
+    },
+    {
+      "remote_path": "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+      "local_path": "output_8760__barrier_checkpoint__barrier_checkpoint_manifest.json",
+      "sha256": "5e36c674797e1284298ac4f2757d72e882b1b440f47bbdd97aa4ac3dc30f7356"
+    },
+    {
+      "remote_path": "output_8760/planning_state_candidate/state_metadata.json",
+      "local_path": "output_8760__planning_state_candidate__state_metadata.json",
+      "sha256": "414e0b98124cd95c0d650bc843caa6089f55d997aa7d939264dbd12a78598f56"
+    },
+    {
+      "remote_path": "output_8760/solver_parameters_before_optimize.json",
+      "local_path": "output_8760__solver_parameters_before_optimize.json",
+      "sha256": "32c6bc085e00788fffea402fec214a3e0919f2abf662a2640e1b5d7b6fa1360b"
+    }
+  ],
+  "scheduler_command": "date '+%Y-%m-%d %H:%M:%S %Z'; squeue -u a8s001819 -o '%i|%j|%T|%M|%l|%N'; sacct -j 4614693 --format=JobID,State,ExitCode,Elapsed,Start,End,AllocCPUS,ReqMem,MaxRSS,NodeList -P"
+}

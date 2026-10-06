@@ -1,0 +1,37 @@
+{
+  "queried_at_utc": "2026-09-14T00:43:19.909255Z",
+  "accounting": {
+    "returncode": 0,
+    "stdout": "JobID|JobName|State|ExitCode|Elapsed|Start|End|AllocCPUS|ReqMem|ReqTRES|AllocTRES|MaxRSS|NodeList\n4613045|cispo2030_base_v9_t48|FAILED|1:0|00:39:41|2026-09-14T04:26:18|2026-09-14T05:05:59|64|750G|billing=64,cpu=64,mem=750G,node=1|billing=64,cpu=64,mem=750G,node=1||m4cg1602\n4613045.batch|batch|FAILED|1:0|00:39:41|2026-09-14T04:26:18|2026-09-14T05:05:59|64|||cpu=64,mem=750G,node=1|56.00G|m4cg1602\n4613045.extern|extern|COMPLETED|0:0|00:39:41|2026-09-14T04:26:18|2026-09-14T05:05:59|64|||billing=64,cpu=64,mem=750G,node=1|0|m4cg1602\n",
+    "stderr": ""
+  },
+  "new_job": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "slurm_load_jobs error: Invalid job id specified\n"
+  },
+  "queue": {
+    "returncode": 0,
+    "stdout": "4533060 cispo2030_thermal_t44 RUNNING 6-12:33:08 64 700G m4cm2204\n",
+    "stderr": ""
+  },
+  "start_estimate": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "slurm_load_jobs error: Invalid job id specified\n"
+  },
+  "compute_node_smoke.json": "{\n  \"status\": \"PASS\",\n  \"job_id\": \"4613045\",\n  \"gurobi_version\": [\n    13,\n    0,\n    2\n  ],\n  \"allocation\": {\n    \"cpu\": \"64\",\n    \"mem\": \"750G\",\n    \"node\": \"1\",\n    \"billing\": \"64\"\n  },\n  \"time_limit\": \"UNLIMITED\",\n  \"available_memory_gib\": 732.4158248901367\n}",
+  "batch_exit.json": "{\"exit_code\":1,\"job_id\":\"4613045\"}\n",
+  "runtime_slurm_job.txt": "JobId=4613045 JobName=cispo2030_base_v9_t48 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1018974 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:03 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-09-14T02:11:52 EligibleTime=2026-09-14T02:12:23 AccrueTime=2026-09-14T02:12:23 StartTime=2026-09-14T04:26:18 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-09-14T04:26:18 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:699573 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cg1602 BatchHost=m4cg1602 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/formal_base.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/slurm-4613045.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/slurm-4613045.out Power= TresPerTask=cpu:64 \n",
+  "stdout.log": [],
+  "stderr.log": [
+    "Traceback (most recent call last):",
+    "  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/repo/scripts/run_cispo_2030_full_year.py\", line 2689, in <module>",
+    "    main()",
+    "  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v2/repo/scripts/run_cispo_2030_full_year.py\", line 1546, in main",
+    "    raise RuntimeError(",
+    "RuntimeError: Direct nonbasic scientific acceptance requires exact VRE/ROR annual capacity-link exponent 13 runtime evidence"
+  ],
+  "slurm-4613045.out": [],
+  "slurm-4613045.err": []
+}

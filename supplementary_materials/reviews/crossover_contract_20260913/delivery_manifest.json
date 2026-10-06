@@ -1,0 +1,1756 @@
+{
+  "git_baseline": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "committed": false,
+  "cloud_job_submitted": false,
+  "national_8760_tested": false,
+  "stage_a_cross0_scientifically_qualified": false,
+  "prior_cross2_launch_recommendation_withdrawn": true,
+  "current_report": "supplementary_materials\\reviews\\crossover_contract_20260913\\REVIEW_ZH.md",
+  "files": [
+    {
+      "path": "before_correction/cispo_full_lp_model_spec.md",
+      "bytes": 119759,
+      "sha256": "6ccfbd711893b6629c1550b270fc5d97bbb98facc32005eeb0143ec0c4ea2c35"
+    },
+    {
+      "path": "before_correction/CODEX_HANDOFF.md",
+      "bytes": 1039169,
+      "sha256": "d69becffae50acf3e8fc13e4143f56924b6601d9212f64be6ae077fc139a2391"
+    },
+    {
+      "path": "before_correction/MODEL_SERVER_STATUS.md",
+      "bytes": 311978,
+      "sha256": "169416d035a9683a03f0c74427717eaaaf5bf623ecd4081d69b6a6f368da9db7"
+    },
+    {
+      "path": "before_correction/scripts/probe_full_year_numerics.py",
+      "bytes": 11219,
+      "sha256": "b613032a721d3fc32d7a42cf7454a0c319a8766bbf2ad2aa1036ff1b658eea0e"
+    },
+    {
+      "path": "before_correction/SERVER_RUNBOOK.md",
+      "bytes": 356121,
+      "sha256": "c837536b04bf10c80e44d20103136b7acf51c1803e5874a01415a427d9874f27"
+    },
+    {
+      "path": "before_correction/tests/test_full_year_numeric_probe.py",
+      "bytes": 4636,
+      "sha256": "d19afdf3a8e6b29865a4ca452ace5f178e1f8bf4c588c0a24149e27856e4ba79"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/cloud_preflight.sbatch",
+      "bytes": 2040,
+      "sha256": "a72f02e23431adffcc4d245ec9f966417f3fc7c837e4fc151441a508210c5a58"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/data_overrides/hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "bytes": 733,
+      "sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/data_overrides/hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "bytes": 861090,
+      "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/data_overrides/hydro/repaired_storage_audit_20260913_v2/hydro_stations_original.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/data_overrides/hydro/repaired_storage_audit_20260913_v2/manifest.json",
+      "bytes": 1245,
+      "sha256": "2767f5837127bdf6d1be7b291df71517c8aa6f254c4f42889c05de2dd136d6bc"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/prepare_cloud_data_overlay.py",
+      "bytes": 1472,
+      "sha256": "5391a400ec213efbb451ef461f7b86c172f2f9715f2698145b8615764507e9b0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/release_files.sha256",
+      "bytes": 24714,
+      "sha256": "43fbf3a67067e08f73e3021cf5761f7ce95937688969a18458441425c78690f7"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/__init__.py",
+      "bytes": 159,
+      "sha256": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/annual_capacity_link_scaling.py",
+      "bytes": 20285,
+      "sha256": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/basis_reuse.py",
+      "bytes": 15177,
+      "sha256": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/carbon_accounting.py",
+      "bytes": 5759,
+      "sha256": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/config.py",
+      "bytes": 64404,
+      "sha256": "fda195ff99583f46673ff02005ba8f74e057d5493a4f2e028378d00d6fddf082"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/data.py",
+      "bytes": 73603,
+      "sha256": "d8f063db858b2f0e829789d57aef15ae3e2f37dd2725159b190b008debaf8df0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/diagnostics.py",
+      "bytes": 40693,
+      "sha256": "5ac77e8df995f9dd9a7feb8149ed670e542e1a1a7424a864c43b26d24875a4e5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/flexible_load.py",
+      "bytes": 69362,
+      "sha256": "ca77308e696416a65cf4a0c2ee7a0a41311b1213673def66719919a3334ad40d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/flexible_load_numerics.py",
+      "bytes": 22989,
+      "sha256": "a721bd60890b80fba1663adda6e7794505bd32c61394298b7d4c23d16ae7e606"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/flexible_portfolio.py",
+      "bytes": 11481,
+      "sha256": "44dd572a2f9c70661cbdfb0d20dcb84cf6788aaedcc8cfecd30f3dabb4f7b096"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/flexible_response.py",
+      "bytes": 6411,
+      "sha256": "632ed817308a4829ec767a7090b86bc0f9ef2f819e7364a8bedaf898d2c973a1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/hydro.py",
+      "bytes": 33049,
+      "sha256": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/io_contract.py",
+      "bytes": 38730,
+      "sha256": "bfdfea4f33a20581039eb2b28e00cd6f045ef7efc57f1fe6f03d46ac044269ea"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/load_center.py",
+      "bytes": 23738,
+      "sha256": "bc1a80aa645f49618b1449f5ad92b2322f5cb9ca01b57328628ce5366453efcc"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/master.py",
+      "bytes": 81871,
+      "sha256": "fd7ff01cefbe2b1fa95a1124d35d7ec50dd6430488cc8dce98f15bb08cf6415c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/mga.py",
+      "bytes": 15789,
+      "sha256": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/model_structure_audit.py",
+      "bytes": 11287,
+      "sha256": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/monolithic.py",
+      "bytes": 59919,
+      "sha256": "0fce4df52de36e8d940f9ff36eb35048ac160f504b1fc7c3eb437b2a0e0a8292"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/numerical_cleanup.py",
+      "bytes": 7149,
+      "sha256": "901233f87e53c120859ebd61f56c04f1038818fef1df69d503a8a1837487ce26"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/offline_solution.py",
+      "bytes": 18203,
+      "sha256": "1645f6046e2ec86de3a2562ccfef060a1634ae625f2e5f9c2d42a8bebbbcd86e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/physical_lp_diff.py",
+      "bytes": 5391,
+      "sha256": "fa64ebb6ef807e9eeba6b27c842597e6d89073173dc6058c9d1158c4d0e53e66"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/planning_state.py",
+      "bytes": 29724,
+      "sha256": "6edd1a20c42cbcccfd11e26e09dba40bcb602bdb838368182958941b22edccd4"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/portfolio_release.py",
+      "bytes": 4706,
+      "sha256": "219f4094110154cb2298ed62692eadd62603dc0f6d78c016404e5d574856d75a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/preflight.py",
+      "bytes": 32753,
+      "sha256": "45264663e09bea40f3439f478ee5563d53d11a24073d5be69b96267ae60ada24"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/price_basis.py",
+      "bytes": 1618,
+      "sha256": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/primal_dual_checkpoint.py",
+      "bytes": 61280,
+      "sha256": "8d7ffbbdecafd141cf6ab8b3dbeea574e0eecd6d65d278f632c1b96f5f3db40d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/result_dashboard.py",
+      "bytes": 40219,
+      "sha256": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/result_summary.py",
+      "bytes": 27069,
+      "sha256": "5737ec206b4c9da30c54d0021f290233ab1f0ef218d150016edf16d8438739ea"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/run_contract.py",
+      "bytes": 19533,
+      "sha256": "e69f08b94cbba3e28db1a9d6ee702c438d473b76d29c4c81695b125027527adc"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/runtime_monitor.py",
+      "bytes": 1898,
+      "sha256": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/solution_export.py",
+      "bytes": 109051,
+      "sha256": "6be4a991ccac448d68832a8789b0dc6341c4211720092239f8be3f580dd60c08"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/solution_preservation.py",
+      "bytes": 20609,
+      "sha256": "f93bd5517bfeffc670ef74b53bec92f895c72aff7b56f37a8020dadc86b7b8f5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/solver_artifacts.py",
+      "bytes": 5862,
+      "sha256": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/solver_audit.py",
+      "bytes": 19498,
+      "sha256": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/subproblem.py",
+      "bytes": 25293,
+      "sha256": "6eb5fc907bd7036fb6675e16bf365920ccc5a355478500cc70f4ddac6586aaca"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/technology_registry.py",
+      "bytes": 3069,
+      "sha256": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/timeblocks.py",
+      "bytes": 960,
+      "sha256": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/wave_energy.py",
+      "bytes": 11497,
+      "sha256": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/cispo_model/zero_bound_certificate.py",
+      "bytes": 3970,
+      "sha256": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/beccs_lifecycle_sensitivity_v1.json",
+      "bytes": 1212,
+      "sha256": "28605f1b22d191351296a3b29f6ffb68f79b6e87e019597709b89e02ec5d7026"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/capacity_bounds_v0719.json",
+      "bytes": 2352,
+      "sha256": "0d557055463e5913338eb0c37787db163415a784561f99055d24bd3f784c1b1b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/cloud_resource_profiles/a8_8760_stagea_default_v1.json",
+      "bytes": 2887,
+      "sha256": "0d555bcae34125073dd86994b2258e65fc59305ff93e690b017c1b5eabaf4bf1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/critical_parameter_registry.csv",
+      "bytes": 11230,
+      "sha256": "b44d0bccc06211dbbf1e365ac4cbb7ee13ae0b8a2837b7b780e3c020245b71a1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v4_central_parameters.csv",
+      "bytes": 3451,
+      "sha256": "be2f5e7ba79604b5ea66e495a00404b60625764d0abec6f6185928037477c5a3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v4_parameter_registry.csv",
+      "bytes": 3141,
+      "sha256": "4e6757c3904eb57b9ab2dbdb6d2f6e8f66720031762a004e0ee8ee8b201cbd07"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v4_source_count_qa.csv",
+      "bytes": 169,
+      "sha256": "deabb1830ee5c7599c0bd6eeb6982c8d885f62c0a0ea5cf0cf463d4a406c18f5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v4_source_registry.csv",
+      "bytes": 3355,
+      "sha256": "4d3c8afab23d6d43c8e43a7ce5de16644a55432175084677f7f7ff9375152aea"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v5_central_parameters.csv",
+      "bytes": 5834,
+      "sha256": "1c54429817e105ed8c2621973d363945cc16080de391e32e111cc529697b120f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v5_parameter_registry.csv",
+      "bytes": 2505,
+      "sha256": "11be49c53c4515912700b980605a3c95d0781a830761e766940eea92126e9c2f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v5_source_count_qa.csv",
+      "bytes": 219,
+      "sha256": "d0235e5f7a3e411a935cdd05185743a9e61033305026d9ee237e8db7d9885d6a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/flexible_load_v5_source_registry.csv",
+      "bytes": 7289,
+      "sha256": "7b7e5fb919170b330ffbf49a20ca3e23f872c7bef139266b16bfe8e77c7521fe"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/formulation_profiles/annual_capacity_link_rows_8192_v1.json",
+      "bytes": 505,
+      "sha256": "62a0215f6c8ab5d92e87c3f350edfa7c27d6f1e1fd35b9f595ceb2686f9ca0d2"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/formulation_profiles/annual_emissions_province_hierarchy_v1.json",
+      "bytes": 391,
+      "sha256": "b168e27294efcbdb476d961c6b731ace8fea18f0df357cd7d0d665b1d31de528"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/fuel_prices_supplementary_table2.json",
+      "bytes": 5879,
+      "sha256": "376c52da6bd019ba5e500cea98836622fc55bbc10f75c6ebe0f730963663b8a1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/gridded_load_center_config.json",
+      "bytes": 2710,
+      "sha256": "7d0954402922db50aabd1efaf1141c259430eb2da0dedc9b3b5a6f26d6b7b12c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/hydro_storage_corrections_20260913.csv",
+      "bytes": 405,
+      "sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/hydro_storage_corrections_20260913_v2.csv",
+      "bytes": 994,
+      "sha256": "cca0145c63e88854f18034b4b70bf8049888f89baa4c483b59e5687301bf5198"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/land_point_province_corrections.csv",
+      "bytes": 7550,
+      "sha256": "a3c6af922e797d0342e856e6e08a01219cbf77eae2be6f32d57df9b8eb67ce33"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/m2_model_boundary_audit_v1.json",
+      "bytes": 8726,
+      "sha256": "3589296f61f53a36c7471280fa9df64a3e27d2c91cb526259c1a4ffb8813e6c0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/mga/base_min_onwind_new_national_epsilon_1pct.json",
+      "bytes": 252,
+      "sha256": "876ec9343b3c2ae81aafdde569fe10ff086315761f5ab1047e016e761b8f7961"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/model_data_config.json",
+      "bytes": 6923,
+      "sha256": "e6ea1d7729430da9629590f51e3e438617e7a3a2c54086fe99f2425b8c66bc7c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/model_input_files.json",
+      "bytes": 7677,
+      "sha256": "3be2f1b269a5c5c4bce1946ee60b443177410cfbafc533362fe7faf8ad5d650e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030.json",
+      "bytes": 14978,
+      "sha256": "e66d706909c06d1a779a23f78592b2f933494c76968a62ff65117ed5b8aaaf65"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_numeric_final_v8.json",
+      "bytes": 16543,
+      "sha256": "dae7693dd45f9fad8bc48afe804df904d9aeedfa8bd6a68790ea7cb7d4000144"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_numeric_repaired.json",
+      "bytes": 15934,
+      "sha256": "616799d41d493ea1f7662f0323f840ee91dc318e14b0253444eb4c31772338d3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_numeric_simplified_no_dac_v6.json",
+      "bytes": 16398,
+      "sha256": "bdedf7c57617fc03131b763bebedd7db2fd35e588970c3c3683af9cf9c0058b1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_numeric_simplified_v5.json",
+      "bytes": 16259,
+      "sha256": "28a9628e1d74b7dd4645da50cf9df1a2d61467dcbb16dd7fac1c85ed96ca887f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_spill_floor_v4.json",
+      "bytes": 16076,
+      "sha256": "0d2359f8899ca7122ee2b53bb8b0cce75ed48c58adbaf6602ba4c15c6bc1170c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_spill_tightened_v3.json",
+      "bytes": 16017,
+      "sha256": "eaa138315a7e429262385120479ff88e7ae569cf816e91a25aa51dcc37bdceb2"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_2030_storage_audited_v2.json",
+      "bytes": 15989,
+      "sha256": "f4105ea39a15d3dfa5547329adab8c43a7ed8fc59f2ec4c3c6de0258eaf684c4"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/optimization_numeric_dac_by_year_v9.json",
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/physical_lp_diff_whitelist_v1.json",
+      "bytes": 1207,
+      "sha256": "fd2ab41dd66d5b5c8acc450b65a3c050000f1a295394a47050ef9859300db353"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/release_contract_v0729.json",
+      "bytes": 5237,
+      "sha256": "88eb771e657e8f1db668ef21a11e479ecee4cf130d0fe58d3773bac230bd2a0f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/release_contract_v0730_v5.json",
+      "bytes": 2738,
+      "sha256": "8398689e97cad71d719b25c22de48cac913304b651391efb10d51b65bdcfe0be"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/release_contract_v0805_power_curve_v3_qc.json",
+      "bytes": 2618,
+      "sha256": "e2e5504fb2aeeb0db725ff442a8c780b5336ee101729c6297b3dbaa600e1c45b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenario_parameter_registry.csv",
+      "bytes": 5939,
+      "sha256": "d02f4867970f35b5426227c0fbb99e0161fc636533c3a253476b4427c4dc7d9a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/base.json",
+      "bytes": 537,
+      "sha256": "aa5a3fc6410c103e15271dcdc8b4b4ce489e938ddc429a7c5ee827c0e32da6f7"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/case1_thermal_v5.json",
+      "bytes": 4708,
+      "sha256": "9ffbcdb9d5f29ff32bc887fdb5de5fdf8c8da5c310fd73118149f224e62fecba"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/case2_ev_v5.json",
+      "bytes": 4698,
+      "sha256": "90b46fa800eb72e2e4792b9a660dd290a0af207b6b9160134ca45a5ea884fcbd"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/case3_thermal_ev_v5.json",
+      "bytes": 4712,
+      "sha256": "0aca6e5bec6bec4ae78f199d1960d3e8264f1bd350330dba071f6a54ce198920"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/flex_integrated_v5_central.json",
+      "bytes": 4994,
+      "sha256": "ea284b4c493b3357d19f2f5b12fd58b04efd24171b490ccc67259431f59358df"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/flexible_load_comfort_v3_v2g_5pct.json",
+      "bytes": 2918,
+      "sha256": "9c657abc3f037bd5d5ad4ee0bf71900c52f8868a6bc6c368ab2e315f26370b19"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/flexible_load_comfort_v4_v1g.json",
+      "bytes": 2923,
+      "sha256": "24ef759c9becd69cfca98926b2b3a5823c1f3e5a4ead25517c7da0dc75435781"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json",
+      "bytes": 2622,
+      "sha256": "2738e7bbe915d169f822009f920285d0c4e8854a65e791b475ffb02a5ebc96f5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json",
+      "bytes": 2193,
+      "sha256": "99180c02acf7203443e1c583b686817b29a788967f5dbc5fa5e0c4b34b2c53a6"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/hydro_aggregate_flex_v1.json",
+      "bytes": 1029,
+      "sha256": "d95de356fa2558ca261bf8cf05dbd29344c3da0b0c92f7d1cbdab0d8ed22450f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/phs_power_energy_separated_central_v1.json",
+      "bytes": 1378,
+      "sha256": "a681a5bfab2e6e1fd4e112c4d1c2515a15c80da86f335c176afca96c93a07bba"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/phs_power_energy_separated_high_energy_cost_v1.json",
+      "bytes": 1338,
+      "sha256": "201cd12bd611696d8bc6fef5161ab7f97872ba40d22af7fdb8f746f577b0966b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json",
+      "bytes": 1334,
+      "sha256": "7790e0fb44c1bed355d2f43dcf4c10c81879cbe6449973acbfa6a1ee87684923"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/phs_power_energy_separated_template_v1.json",
+      "bytes": 1219,
+      "sha256": "b834266abf2eb660f6840b7ca445afc175148d538def91cd5e9e301f74abaf20"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case1_thermal_v5_response_v1.json",
+      "bytes": 5515,
+      "sha256": "83bad50c37f7d9a7aabbd7c3b0c3d6d6f365dd56feb7778b3d883b6619f82f62"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case2_ev_v5_response_v1.json",
+      "bytes": 5505,
+      "sha256": "3a1d7d8085eeb81a588ca8887670fab5e4eff0865047eb819c394f997ac3fe71"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_high_v1.json",
+      "bytes": 6445,
+      "sha256": "770873acc26b8bc37b78c5d135f39701097a2383e1e2fad0282972b00e01939f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_low_v1.json",
+      "bytes": 6491,
+      "sha256": "1f01dd260f88d115ee8c358a61aba2c4c3067ede13b89ac164fc04e9f22cf00b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra25_v1.json",
+      "bytes": 5520,
+      "sha256": "c1751af09cf5704226ef7f6ffff0d0d7d1cc1e1e77c0bca14432da6f8358930d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra50_v1.json",
+      "bytes": 5519,
+      "sha256": "183cf36dd5965bb6ba68359d7a8435d343dece3524627ca7710b3e9a5f6869c3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub1_v1.json",
+      "bytes": 6085,
+      "sha256": "af932920d8549cf4c1ba46e7ae9aaf52c1e59651a21931baa0fd71ab980e2cc1"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub2_v1.json",
+      "bytes": 6036,
+      "sha256": "4d2ffdeae3115b457422611f519a26514848db86e31123115fe29ca9e6b27ba6"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub3_v1.json",
+      "bytes": 6096,
+      "sha256": "2911ee7034a54569cf79e19ed5a8ac096ed4f8a1d670dd051b326e84dc26cfa0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub4_v1.json",
+      "bytes": 6080,
+      "sha256": "f8a3abbea0892835a20fbdc6252219c1b73535c626929860b17aa6fac4c42bb0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_v1.json",
+      "bytes": 5519,
+      "sha256": "b775db38307c1f04f702e850bd9fcae9ed5b477bb3e2cd51a00e333fe3ac75d3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/response_candidates_v1/flexible_response_candidates_v1.manifest.json",
+      "bytes": 3692,
+      "sha256": "d0170adcada69011c4e82ac524c8ef90ce94446eff52f09a3055d82eca7c9257"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/scenarios/scenario_catalog.json",
+      "bytes": 3889,
+      "sha256": "3908af07adff1e989ef058bc07071b097687cf6b35927a2228bf1585f5b88837"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json",
+      "bytes": 522,
+      "sha256": "7b6d698d47dfd509f781fcf4ae5118f6a5e5c2a4a528de2c0c5153ec26ddea70"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_auto_order_v1.json",
+      "bytes": 376,
+      "sha256": "92f24bc364a19260f549c966f3a31e50a558aff6aa8d0ba198489b7ec73c0a3b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_auto_order_v2.json",
+      "bytes": 483,
+      "sha256": "a76ee3b7ae692edaab9d9f50dc29c482c028789a5b08b9d629e3295946cb1b97"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json",
+      "bytes": 582,
+      "sha256": "b348d8ef422d1a7cc34a5cedaa064d99493a75ded658aa745095da3b6cff8ee8"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover_2_v1.json",
+      "bytes": 412,
+      "sha256": "0afcb91f987fe37e189aedefa7169fc2f4b5c32690217659d6f36cfc29dad731"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover_3_v1.json",
+      "bytes": 414,
+      "sha256": "04ddbcb8c861bb66312f7c005ba8fe4eaf69be8d14904288d3b3bcc80926882a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover_4_v1.json",
+      "bytes": 412,
+      "sha256": "0d25855681b03b675998338aa3f5b0ba61d1f445e07cae7af69e7574576ee49d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover_fast_basis_v1.json",
+      "bytes": 451,
+      "sha256": "7e5714818d9149fc3eef1fca5cc555499233cf72edcda1cd7db38532c5613251"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_crossover_stable_basis_v1.json",
+      "bytes": 463,
+      "sha256": "2d8de3ef9a22af6747052700d35f0637543d2a62e2953f7b7a01f91bb657186c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_deferred_crossover2_744_validation_v1.json",
+      "bytes": 952,
+      "sha256": "eb8af2127bfb143763c139b8d73a71df772ff3dcbade64554cc8a0b0c4ea86aa"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_deferred_crossover_v1.json",
+      "bytes": 632,
+      "sha256": "f07fb8f99d726b539cb520669ef2fc76030326b8c832c9e940663f5c2cb330d2"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_factor_barorder1_5iter_v1.json",
+      "bytes": 818,
+      "sha256": "25c8502a9e43ef8f971b8a8d20542ed1b79a646d213886e4a9a0b4a57fa9c6b0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scale2_5iter_v1.json",
+      "bytes": 809,
+      "sha256": "258d566e4de0895cbd84235e7eca7e5669b20f74901edde942abadfc91e3aa51"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json",
+      "bytes": 815,
+      "sha256": "8d3b355de64783f84ee1e32cd8d3a03615c2313fdff31382c1bc66f8364d075b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json",
+      "bytes": 815,
+      "sha256": "741a441025d8acada112560bf0e0df06603d1005b7d6ca53336d4eefcf210bcb"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_factor_presparsify2_5iter_v1.json",
+      "bytes": 816,
+      "sha256": "d0bd17ac0db805132c68aeb5836a36fd80a894f8d70d0b66230f2f6fa81d3222"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_long_v1.json",
+      "bytes": 860,
+      "sha256": "547b1e9aa35eb3599251124845261258d17d18e648819d83f28354020a2575a3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_long_v1.json",
+      "bytes": 793,
+      "sha256": "7bf00c92951431d19a21a807a5f34cb03986167b0dc4c98e25b29c5b9e101cec"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_v1.json",
+      "bytes": 865,
+      "sha256": "7a0af4ef74df4cafe17219a28fdf3b8cf0ce5ae09729d6f70714bbf4004d1ab9"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_v1.json",
+      "bytes": 894,
+      "sha256": "bedbe1edeaafee1de8ff24e442f78c9b9ca280fd596070005f1c678564e52549"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_long_v1.json",
+      "bytes": 844,
+      "sha256": "92e08221a0befd61f47abaa35b0e2c700998769c74f69e96caa884ca650aca98"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_v1.json",
+      "bytes": 878,
+      "sha256": "0165a7c67d34e8d876e8c7f4444e1fe8d6805ea8c7d7d38bb04c9ea9b78cce8e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_infeasibility_diagnostic_v1.json",
+      "bytes": 484,
+      "sha256": "7f7ad08f8b84ed0b4c2ffabbf2a2c572f758655811347d11dd6e33022b13b359"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_long_v1.json",
+      "bytes": 870,
+      "sha256": "5aed440492f54d81961faf60f7a7675c1dfae8db587c1526233c8369f17f9753"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json",
+      "bytes": 830,
+      "sha256": "87d6ea8b214b30b8fcb955bccb01307e69fb53f8728d9ce6f382ed1cb4643ec3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_predual1_v1.json",
+      "bytes": 406,
+      "sha256": "b0a19c83a4b8240be4b031de203f284c9b0c762adff3c611f1f7a5dbe2416680"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_predual2_v1.json",
+      "bytes": 438,
+      "sha256": "21ca93e77740e96e75b7ce61c1cc910b045710b879ca65e9d3b3da11db1b542d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_presparsify_lp_v1.json",
+      "bytes": 447,
+      "sha256": "0234de4717df170099134014f2f5f2c3944984b92d270aa0ccedca9a5f249747"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_16_sparse_amd_v1.json",
+      "bytes": 418,
+      "sha256": "b6d55ac9607997794c470e91b2b1e789a2419e83ce0832deab91e9894704c834"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_32_engineering_factor_threads32_5iter_v1.json",
+      "bytes": 783,
+      "sha256": "3186e7b0506442be21307512e790b90bc790bd63fdee783eabe6d95ad9dfbc58"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_32_force_dual_v1.json",
+      "bytes": 371,
+      "sha256": "28a3471f143e6433d5e4ba4cc4a00e31b18661267851b497f409d5ed90cda28c"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_32_limited_presolve_fast_basis_v1.json",
+      "bytes": 483,
+      "sha256": "d902b1cda21c97ffbee299c4938f429d1bc364da4515c76864c646adadab335e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_32_reference_v1.json",
+      "bytes": 364,
+      "sha256": "6b1464ec81ae4d4b4a73da29e1ac9efbf68d9e0833d81a6f76381f00505006fc"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v1.json",
+      "bytes": 951,
+      "sha256": "ed984d6a05f8571d2b50ba405073c952b5f0231a7bf5c953d3046509cddb3fe3"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v2.json",
+      "bytes": 923,
+      "sha256": "7a05a7c2a39928f434a8c9d6f82130df94fd744add4ebd85a6469ff33e6e033f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v1.json",
+      "bytes": 844,
+      "sha256": "723ae81e3b4939267eff864e37ee65747b5d2a3e15639e7ce8d1870e1afb9599"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v2.json",
+      "bytes": 886,
+      "sha256": "7c876383811227fafca3adf8bbc8b9f8b599c5060b3f0fafd55f024af72b3655"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v3.json",
+      "bytes": 879,
+      "sha256": "023adef7ad2fbb09d521b16b7ea8edf8ac5985435ea1d74405d2b919dfc2600d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v4.json",
+      "bytes": 935,
+      "sha256": "a5fb74272b222a212cbfac206c0753369ee091a83272009fab4447e02e42b91b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads32.json",
+      "bytes": 967,
+      "sha256": "de0f90dfc44fa7786c7e58461c292c7582d651b7fe9ec7e822a83558753bdabb"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads64.json",
+      "bytes": 967,
+      "sha256": "74c0166802a2c18dcdd86345811fd2cb4de178a4d441ecf9b3e6dbf1aeddc3e5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v10_threads44_no_softmem.json",
+      "bytes": 1657,
+      "sha256": "4ab12c9bf066dd88a9a9b2cd06af6a450a43b73fd1a09df1f6248d9373581843"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v6_threads32.json",
+      "bytes": 1517,
+      "sha256": "c887ecc42da316c14679c91ebd61977f0e977b72473fd93fb6c9f5079975c390"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json",
+      "bytes": 1581,
+      "sha256": "b62e9e981b03e801e631f3d3ad9bd349f2e3e554819604eb49f5109217c9d935"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json",
+      "bytes": 1581,
+      "sha256": "d32b219d93437e44915c66e8d776713da5a3ecc87148aee46200f5393a4d7e6a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json",
+      "bytes": 1653,
+      "sha256": "d54012d754be37a778aa7c1c5b8a080eb36c3d501e8535b8d07577481bf5b8e5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json",
+      "bytes": 1676,
+      "sha256": "e54d9c7f2b7aa611b7fdb1997d46dc073e8057502552f6a15d9c0958b38bb415"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v1.json",
+      "bytes": 947,
+      "sha256": "007c8820e7e1bce829b9aa54a035bd8cbaaafa6751b9c8d01aa5a4f4c3602743"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v2.json",
+      "bytes": 896,
+      "sha256": "fea46465bc0d0208e5bab126157852a31492f6d2db3c0d65bf13fdafa949a6d9"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v3.json",
+      "bytes": 967,
+      "sha256": "89fd5b04113ddf6ef98fa2816760d2ed14e4fda2e416a0321fefe00079a3238f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/dual_simplex_16_v1.json",
+      "bytes": 332,
+      "sha256": "029e82c98bfbeb49a20067db736223eb6f2b00d9dfc0a9ad6c9867b1f749ce40"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case1_v3_barrier16_stage_a_v1.json",
+      "bytes": 719,
+      "sha256": "506b69e815839e5f696bce6e758e3cce193a7e662c89b790c30f3e4bebcb484d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case1_v3_stage_b_v1.json",
+      "bytes": 744,
+      "sha256": "51a268542a0188ff24ef7230355caa78140a83d7eb20b966cbb494b26c0e843d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case2_v3_barrier32_screen_v1.json",
+      "bytes": 691,
+      "sha256": "735ad5bbaee042a0c60ed234d21ebc5fab18c5d7cc2dc6394b83baccdecc19e2"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case3_dual_simplex_screen_v1.json",
+      "bytes": 646,
+      "sha256": "a52285fa9ecd84da4adc7a0d050ee2fa078eae9f2a4700b3d7ed446d84462b0d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json",
+      "bytes": 785,
+      "sha256": "b2ae01b9f0ebdf63f9527c95edfc112e2030b678eeaeeab7f2bc9311ae357a3d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_unlimited_v2.json",
+      "bytes": 799,
+      "sha256": "9c5c5ea38572dc26454c8a735e91e161e240a887dc98f5897cdff74d02c87122"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/pdhg_cpu_32_v1.json",
+      "bytes": 368,
+      "sha256": "a1ebf0cd298550c975baff7751e296e06a37d075189119a265623c2020f3f552"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/portfolio_local_gate_v1.json",
+      "bytes": 624,
+      "sha256": "a0fc8b7d41f0de14663a887746ae8a0d6da5ee81e3c97a6746dc889d703b54f8"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/portfolio_local_nonbasic_gate_v1.json",
+      "bytes": 672,
+      "sha256": "47dcbe228a3a5fcaeb6c6c72c02cbba41cf217116120e742aadcec9d11756239"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_aggfill0_v1.json",
+      "bytes": 468,
+      "sha256": "01c922bd93e831ce8109dc9fcabb7adab305da253a4794b7a5f68e1df00dde7a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_barorder1_v1.json",
+      "bytes": 461,
+      "sha256": "4dedf4a8e0ec26b6438078626afbe73729b201e4e16967c584d264196e79d7c9"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_numeric3_v1.json",
+      "bytes": 457,
+      "sha256": "d90c04fa74404ec16d0d9ee3dbb4026f2d466e513989a1082808ae4266d12cef"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale0_v1.json",
+      "bytes": 469,
+      "sha256": "cf17e5e266e944ad184f353b49d4d22fdc302a00c0e339c6c20e8ab4a421f8d6"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale1_v1.json",
+      "bytes": 469,
+      "sha256": "23874a1231fc70018222ee8e8e53c5ef4045d5ad1f1d6256de55c1bbf8300e0e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale3_v1.json",
+      "bytes": 469,
+      "sha256": "b85b1df487369e5a31c86565584e554224ffd6e09250290e375c62e43aefc087"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve0_v1.json",
+      "bytes": 467,
+      "sha256": "eced58ec47c0a0a992a07ffd9c4766769e44c546b0555f85521aa28b1d169d07"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve1_v1.json",
+      "bytes": 432,
+      "sha256": "8845201d7d7eca8a0a5bdaf15971faa38ce02a31daa6281b5d812419eadde92e"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_scale0_v1.json",
+      "bytes": 461,
+      "sha256": "e3bb9906029552ea5ea22ad6a59750d529a1789f49f61910fa40e71cf092f708"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_scale1_v1.json",
+      "bytes": 431,
+      "sha256": "8abc566aab1806a133e7e0946ef5635963b5eb448a63ea8b344032b164004506"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_barrier_nonbasic_scale3_v1.json",
+      "bytes": 431,
+      "sha256": "8b92083d9c02a74afef50e62728c43516c2cd5b159ac9ebd5323a4ff3dad13c5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning2_dual_simplex16_v1.json",
+      "bytes": 469,
+      "sha256": "ae951232fb3e9827f420844299b4bef5c9a026525d35b3888555e9b8317e9a60"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning3_barrier_crossover1_stablebasis_v1.json",
+      "bytes": 486,
+      "sha256": "92daf537293e5bb2bef0207151c6b3aadfb38b14bcfca913639b9d0d1d169ec5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning3_barrier_crossover2_stablebasis_v1.json",
+      "bytes": 507,
+      "sha256": "2a0fb43f2b0baee92095580f315207e7077d3abc15df0e0738b12bcda14cf2d0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning3_barrier_crossover4_stablebasis_v1.json",
+      "bytes": 507,
+      "sha256": "04e2204dca3a7754f55473f39f514908009b65a79d18f8cbb666875f69a6f00a"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_aggregate0_v1.json",
+      "bytes": 566,
+      "sha256": "300d4e72ccf8e13f1e5c2fcd85669f215c8c973ab45466ed6242519b6314b43d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_amd_sparse_v1.json",
+      "bytes": 595,
+      "sha256": "bbd8f47d321beceed71b7bf4feca3eb840e8d6314b0af6476b41e08218f4ca6d"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_numeric_auto_v1.json",
+      "bytes": 637,
+      "sha256": "4fc18a42cc5d4bfdf018732355df3169cd8452972701cbff47ddd253fb3214f0"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_predual1_v1.json",
+      "bytes": 569,
+      "sha256": "2e1dbd285bc84650d09579fd1b2906ed0476d23ba6503fd520ccd75293dbfb8f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_predual2_v1.json",
+      "bytes": 582,
+      "sha256": "ff10e7c769dc30361384d92e5e417fe9902337bfdd7d3bfb90e9af3b8442a41f"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_presparsify2_v1.json",
+      "bytes": 575,
+      "sha256": "572f81185d13287fa3c2c5eb04336337566b56ac43488ec15e2f49bea7810b67"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_threads32_v1.json",
+      "bytes": 547,
+      "sha256": "b7ecdb86e65fcc1e6cd18f02c79a909e6db266bee7e570f7105116a6b705ef96"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/solver_profiles/tuning_barrier_nonbasic_threads8_v1.json",
+      "bytes": 544,
+      "sha256": "b2a53d3530c3d0f087096444263280a323ae5a718d5038f504f2ca22e51c56fe"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/technoeconomic_price_basis_2025.json",
+      "bytes": 1921,
+      "sha256": "537e2a82121c654484639dd6e5cb84d5a19396c4f82ee18d132bb53d0d57dccb"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/config/technology_parameters.json",
+      "bytes": 13171,
+      "sha256": "f6ff7b0270fd15b125565b4517c042c4c82da6cee3c7ff309eb6d74e9bb916e5"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/scripts/probe_full_year_numerics.py",
+      "bytes": 11547,
+      "sha256": "577f5045014a0ebbdf3f738d9a9e7a4253ff05e23c89d8cbf1c47727c3796a6b"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/scripts/run_cispo_2030_full_year.py",
+      "bytes": 108748,
+      "sha256": "4befbaf10fa526cc0b5d7c9d0105189ffaadbafd3ae242c3ce38a7364d9ef3fc"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6/repo/scripts/run_cispo_planning_sequence.py",
+      "bytes": 23613,
+      "sha256": "b4bfdf0681399fb742f17300ddb45d0ec2f12d38e0790ddbf1048dd7db3249f2"
+    },
+    {
+      "path": "cloud_gate_20260913_v9_t44_cross0_tol1e6.tar.gz",
+      "bytes": 662949,
+      "sha256": "ddcc5f6e25e06d0fef01e12eef50d5b118489654c60aa10e34a1792d2c5d07b7"
+    },
+    {
+      "path": "cloud_gate_manifest.json",
+      "bytes": 39689,
+      "sha256": "a37f30b7ed20211e8721e883ae4bf0fb327d22f23cf9b3559549db98e6a1156f"
+    },
+    {
+      "path": "cloud_preflight.sbatch",
+      "bytes": 2040,
+      "sha256": "a72f02e23431adffcc4d245ec9f966417f3fc7c837e4fc151441a508210c5a58"
+    },
+    {
+      "path": "commands.json",
+      "bytes": 1601,
+      "sha256": "45d1b4c0366d78a512e53cab50834533414bfa753697f111aba3d240df7f4449"
+    },
+    {
+      "path": "comparison.json",
+      "bytes": 3740,
+      "sha256": "e88dc3d4734d32817fee0ab73ba74a35c565a208712dd2f91375720ac7c964a7"
+    },
+    {
+      "path": "cross0_tol1e4.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cross0_tol1e4.stdout.log",
+      "bytes": 16604,
+      "sha256": "e5075f00717b0c8fe4489bd26b4bd7078ccc3b6ae5623462b9a62b18c65152e8"
+    },
+    {
+      "path": "cross0_tol1e6.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cross0_tol1e6.stdout.log",
+      "bytes": 17278,
+      "sha256": "61046435f660e165a174f7b64cb7ed4888780ea4b0944507d7e1e5033a7582f8"
+    },
+    {
+      "path": "crossover_contract.patch",
+      "bytes": 3486,
+      "sha256": "2086da16c9b4726d835d00a527492861f3c3ebed4df8d2f5f1d14f9201d9d525"
+    },
+    {
+      "path": "default_dry_run/effective_config.json",
+      "bytes": 16776,
+      "sha256": "d4e20a85846780ea6eb8503bda5240eed66180c3a213fcc214b3e1da41599a32"
+    },
+    {
+      "path": "default_dry_run/plan.json",
+      "bytes": 819,
+      "sha256": "fd74932d0e65a386a2c8ae39388d1c780b7b8cbcdee69149c74bc4835593cb5b"
+    },
+    {
+      "path": "default_dry_run.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "default_dry_run.stdout.log",
+      "bytes": 767,
+      "sha256": "74fdf41c9f3dca14ce3cc0424a8d8846ffa95239c1daf45c1251b402b7d24ed1"
+    },
+    {
+      "path": "launch_tests.stderr.log",
+      "bytes": 647,
+      "sha256": "2366e2591be751de4d2c0e763dfc4c01b07ef595b02e0f2edb6cdfde72665660"
+    },
+    {
+      "path": "launch_tests.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "launch_tests_retry.stderr.log",
+      "bytes": 764,
+      "sha256": "6642e1ea4d5b3e6ab7c62ac10887c2f244d473eefe25c826ced80e3ffafa394a"
+    },
+    {
+      "path": "launch_tests_retry.stdout.log",
+      "bytes": 938,
+      "sha256": "061e4977ba5a5e34cf815aeecd5d55c1581a14f6f27f0c7e00358fa16b81de5f"
+    },
+    {
+      "path": "launch_tests_utf8.stderr.log",
+      "bytes": 108,
+      "sha256": "b43d4e666a793bff5e1fc677f7476e7023c9b883355bbfc7c9499bebe1d6b541"
+    },
+    {
+      "path": "launch_tests_utf8.stdout.log",
+      "bytes": 938,
+      "sha256": "e84c33abe5f698627c77a41de44193a9ff5cad04f624dfa9a0884f20b36a2983"
+    },
+    {
+      "path": "package_verification.json",
+      "bytes": 777,
+      "sha256": "d8a094585becdfaba4eb278d11d5d6572e882f3ac2878233b73655829d3ebb0b"
+    },
+    {
+      "path": "parameter_readback.json",
+      "bytes": 1997,
+      "sha256": "e0f44e9db15a18c688b4f76040c7bec95c03bd031e19389157b06f608dbdffd9"
+    },
+    {
+      "path": "parameter_readback.log",
+      "bytes": 807,
+      "sha256": "b92aebcf8d4ba09d5fc33056b678bcd1c0bb7d6f635c9e263dd7b84a90e3ee55"
+    },
+    {
+      "path": "parameter_readback.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "parameter_readback.stdout.log",
+      "bytes": 841,
+      "sha256": "8e20cafcf7d7e877d386dc07cd3224476354ea481d0a50fa90206f5c10b31e50"
+    },
+    {
+      "path": "prepare_cloud_data_overlay.py",
+      "bytes": 1472,
+      "sha256": "5391a400ec213efbb451ef461f7b86c172f2f9715f2698145b8615764507e9b0"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/build.json",
+      "bytes": 3143,
+      "sha256": "271c01f7419abcddc2ae7a9c43f5c9f1a4e544c6ce7e6dc4eda9d3910979773b"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/configuration.json",
+      "bytes": 16794,
+      "sha256": "f5721221b090352bac9b7c9c51e19c7609dbee320a1716bf70ee70bf119b79be"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/executed_probe_source.py",
+      "bytes": 10096,
+      "sha256": "705dcb8ca675683f0892a52b5b9aed6cad08646e1da4fa87e50093e73c3f6742"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/gurobi.log",
+      "bytes": 8713,
+      "sha256": "e50a86faf0f0bc09fc0b6b22e966daf3ba9b243d416d5592ef61bfbde50113f5"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/model.mps",
+      "bytes": 171262268,
+      "sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5806,
+      "sha256": "6a93a55ca4d6bfabc1e5ff1aa4d3cb76ec2e34b5c58a1e60c73c4e399ed523a8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_carbon_ccs.json",
+      "bytes": 704,
+      "sha256": "404d95a01d6fdeff1902ac4cb40257293af5c31641b2c41611cf992182f3c30d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 378634,
+      "sha256": "0a6ff1e5da466bbc265e4e6d22079a897d0c127140dddd322396a4a1279ff1ca"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8176,
+      "sha256": "4162ff2ddfc98afe2f45c314a900db3d11ec8e1776608b21d51bfcdcf180c3ad"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 15964,
+      "sha256": "07b60c57d4a0499565eb42e8c5348fe7a3cd95a852b8bc9f8e3738eb4356fac8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 9328,
+      "sha256": "dbb27625f7c70290508dd558d37d341d2aa97b324ccfca35135563fcb4b90d97"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/co2_source_sink_flows.csv",
+      "bytes": 4939614,
+      "sha256": "f7d38201f7e10abb1eb05c4d566452da638d47fb4ebd8bef85407deab7448132"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/cost_components.csv",
+      "bytes": 3637,
+      "sha256": "1ffeef64a79f1ddcbbcf54579f4480dc9f09e4143a4cbfc23e40a0d3d864876c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/dual_export_status.json",
+      "bytes": 510,
+      "sha256": "a9bca87fa4f4b4445838e796d9b1506a88d241bb072a27b78621fafcf91721bc"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/flexible_load_dispatch.npz",
+      "bytes": 51946,
+      "sha256": "bb926939c61ce5e94014df2eacad4629b6266b7f8b74b3ec3767bdcf871d4ac0"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 43868,
+      "sha256": "71fc7935ab2bc54587d99543fab382b478c2a61827e147b18414802fc27dd2d5"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 108512,
+      "sha256": "3377efbf7eaa9da14006a6c9151f24a93b77af985d99906e3b92ca4ad87882e8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hourly_province_security.csv.gz",
+      "bytes": 101456,
+      "sha256": "adbcbb53c8cd6ff982c7a19a8e48aaefd993d36093ad28264c6fc324394449c7"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hydro_capacity.csv",
+      "bytes": 311641,
+      "sha256": "ff520eac2f265294eb6e12162825309075e008285cee3bf93b798be691bceeb5"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "0e3c4432ee735a2bd0e89695c5f1d4dd3a0ed8f7d6946502de8612296772afb8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/hydro_dispatch.npz",
+      "bytes": 21293,
+      "sha256": "8925864dad1a0018cbf0c45f81ba354e698e1f6a41bfc1f8861e5cca3ec35fab"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/intra_grid_substation_design.csv",
+      "bytes": 1044695,
+      "sha256": "5f2f7940e34bd52bce23727107eebe7d96a350e571e6c8d2ee255847aa514505"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5698438,
+      "sha256": "066a33e0edc229525ec7ca8bbf2cd817bb5fadc86c17e25d80fe4042f765aa69"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/load_center_annual_balance.csv",
+      "bytes": 45873,
+      "sha256": "f231fdbd6012375ecce82bb43fdeefd56687ed418586a245b0913d52c2244a0b"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/load_center_annual_generation.csv",
+      "bytes": 102176,
+      "sha256": "3ec8475b343776edce9dcf00a6133fbc28025a1726519cf542eba038306efb0e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/load_center_intra_transmission.csv",
+      "bytes": 130785,
+      "sha256": "b1c7e449555bc5c456783324332d335ebe0caff4c8e652f958443e3fabf97913"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/load_center_network_qc.csv",
+      "bytes": 511,
+      "sha256": "4735fcba43f08df80f8944245d1c131441aed97a3dc2905edfda945d35a775c5"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3394,
+      "sha256": "90e89e5dd44f153697b9dd68ae846c1197c3e19e85617abd189e3098645e685c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/reservoir_dispatch.npz",
+      "bytes": 646195,
+      "sha256": "ffef2103aefc125f0dc0ef7d41ecb780ca325a244b7e525610a94d53e70b3781"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/scenario_manifest.json",
+      "bytes": 6707,
+      "sha256": "89c889fd1fc079dd097a25a2421c5528228bbf5154cb259b2660fe53e4c2fd60"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/solution_qc.json",
+      "bytes": 10598,
+      "sha256": "a2374b5649d6a576b650652b33898d456d224a4d5397b1165f2b141f1ebadce2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/storage_capacity.csv",
+      "bytes": 9715,
+      "sha256": "c402eca08d76760de91921f945d0d144970f4ab58a79b8f1bee02ab2ae9eb7d9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/storage_dispatch.npz",
+      "bytes": 56481,
+      "sha256": "46c82a8388ece5f6047e77ed43b900680d876cb51851c6c6d092a00381975ab0"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/thermal_dispatch.npz",
+      "bytes": 296888,
+      "sha256": "38ceed466b2e7f39fe17c1b062a7548dfc84c653ebc6052827cb26060ad103d4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 29145,
+      "sha256": "708772143dc469f8bdaef75ec908aa5f685e937d3634db901713eb012797eeef"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/transmission_capacity.csv",
+      "bytes": 33501,
+      "sha256": "01308f4c4a5266dc99469e049ec328cefdb16c70bf3fcbfe7d727165e2c2f5ba"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/transmission_flows.npz",
+      "bytes": 85555,
+      "sha256": "b5064659d9d7d9dc6dd26b422fa038e1b7f21e11605401b24ed2ad9677676d1b"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/vre_capacity.csv",
+      "bytes": 3648376,
+      "sha256": "65a37308266df9cc9e3d52ad4172137652ad80579fa9432a18143fd306bee242"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/vre_dispatch.npz",
+      "bytes": 35635,
+      "sha256": "de65b86c63d8820acd2ba09c906d9da4dac5ef86f9876274b188e2537d8d4297"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/wave_capacity.csv",
+      "bytes": 219070,
+      "sha256": "12eaeff19e8695162705293be375452b2a17313a42e0ab92e64bf760b820a920"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/physical_export/wave_dispatch.npz",
+      "bytes": 16608,
+      "sha256": "cc842a58d2b76939e6ffa6507063251df1234004f92d42ec425525794d291336"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/raw_model.mps",
+      "bytes": 171262268,
+      "sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/result.json",
+      "bytes": 7915,
+      "sha256": "585341382eb8088a6a226f224bf96ec74fda7d159d60b06a021f8aa9295be965"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/solution.npy",
+      "bytes": 2774264,
+      "sha256": "a4266ccb842ac128a5a35a91112459e28bbd9b23aa213d25ec4f0453d6f40192"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e4/solver_parameters.json",
+      "bytes": 584,
+      "sha256": "f1fea674735a3f63d9f97bc9b344e39c8f428d56ff2dd92172b91279ea2d2614"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/build.json",
+      "bytes": 3143,
+      "sha256": "201243407df8d06aa3689e2ea0a39b122aae63bceab298cee13a24e48c6156e7"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/configuration.json",
+      "bytes": 16793,
+      "sha256": "8eac3f0c16715cca167e3b903e015063c8fbdd30555e5e3551de15d24cd73835"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/executed_probe_source.py",
+      "bytes": 10096,
+      "sha256": "705dcb8ca675683f0892a52b5b9aed6cad08646e1da4fa87e50093e73c3f6742"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/gurobi.log",
+      "bytes": 9385,
+      "sha256": "de2001aa72081bbee941a4ae408d4d3d57234653d9b4b959dcb3eabce88a5c42"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/model.mps",
+      "bytes": 171262268,
+      "sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5814,
+      "sha256": "82f1bf78c4148a5a0f31e59fb832fb9d84782c24d83c0ffa52689a3999cfc34c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_carbon_ccs.json",
+      "bytes": 705,
+      "sha256": "3e93bb0ecd7a018934c2f4bbc4d999c935188edd93ed38f3c65e01dfbf84251f"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 385852,
+      "sha256": "a84ccf5fe91117cab8427c274ea4e0d81be77d72e85275c7d59f63f0e502fd07"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8176,
+      "sha256": "4162ff2ddfc98afe2f45c314a900db3d11ec8e1776608b21d51bfcdcf180c3ad"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 16205,
+      "sha256": "4802caa421a003d97597e96380d6c8c36dd79a7de8acdfe6ff0430daedf75d0f"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 9408,
+      "sha256": "8edb7168362c7f61683b30e1202eac937adc770631c5c736e61a614b589dbca6"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/co2_source_sink_flows.csv",
+      "bytes": 245166,
+      "sha256": "5085d3331f095b8041a046152f13dd33b9577c7f8dd521c94b76550311e1be7c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/cost_components.csv",
+      "bytes": 3667,
+      "sha256": "0dcafff546bab474e9b10d5479134bba0aa2e59fcbc9124980c2907e63510035"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/dual_export_status.json",
+      "bytes": 510,
+      "sha256": "e41a1cec912a0a36c1682424d70c7676a81bb48e95e2c5fd6eb847f822f0e741"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/flexible_load_dispatch.npz",
+      "bytes": 51946,
+      "sha256": "bb926939c61ce5e94014df2eacad4629b6266b7f8b74b3ec3767bdcf871d4ac0"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 43636,
+      "sha256": "bfd2693b48f3ff15d3e5babbdc3bf8f1f8a89a3654710365205baa754b9ef38d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 107847,
+      "sha256": "ee63da44b012938058c442a194b25eff2d4003238e1d5184716646bd1997e1db"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hourly_province_security.csv.gz",
+      "bytes": 99960,
+      "sha256": "3e8e439e517389e93eafb45cd7a16fae427f91ae0d1c0d1344748dd84239ab83"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hydro_capacity.csv",
+      "bytes": 310467,
+      "sha256": "ea41645d87c10dbbe39b70144a3d529e33eaa94f218fe68261ce482c7b6a6c4d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 9928,
+      "sha256": "4d758b3412cf5fa8ffb0da2fc3eaed4f04d36baa44e5091362435804ac62d449"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8730,
+      "sha256": "e54b5815a0c99ad690063484907702eb6dd436af5af03de21da245325ff7b97e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/hydro_dispatch.npz",
+      "bytes": 19972,
+      "sha256": "37cd8a8344c11bc676a80ab66cb6d7d9b56dbae6fee0a6ab7d388b49482f46c2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/intra_grid_substation_design.csv",
+      "bytes": 1044428,
+      "sha256": "f80aec85cf3ddf43f09af8fce3c5d8ecffe3a82dc2d2ca935e311974fce421e9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5708164,
+      "sha256": "9a6f46448faf37fce45e8cd687bcaef650d429d902e10e3e1c13fb893de7913d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/load_center_annual_balance.csv",
+      "bytes": 45833,
+      "sha256": "caeee11a210180f80c35d3abf7e9a081c6c810064339bd96b0b593472f9d3c2c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/load_center_annual_generation.csv",
+      "bytes": 102165,
+      "sha256": "d684f00df154fcc9efd7d4a54a14c4e29375b80c12e6be3e58259b99cec9bca4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/load_center_intra_transmission.csv",
+      "bytes": 130990,
+      "sha256": "6e9a7aea7d406f7b77a963999ebc6b6845b95840def2be68b6c7953af98d694b"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/load_center_network_qc.csv",
+      "bytes": 516,
+      "sha256": "a9f16619e2056713cfc5225d484a95d732ac143bb1674b4c5cf6ccb61d9c4cc1"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3392,
+      "sha256": "3fa9c6d0d6b1ceb11fb16610421a0189aa71829af6f7f1a471de108e9eed59f2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/reservoir_dispatch.npz",
+      "bytes": 629166,
+      "sha256": "33c967e21830802fe5e4b4f32f262c70f6e36da3c3e90a455bdf674b2fc02051"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/scenario_manifest.json",
+      "bytes": 6707,
+      "sha256": "89c889fd1fc079dd097a25a2421c5528228bbf5154cb259b2660fe53e4c2fd60"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/solution_qc.json",
+      "bytes": 10610,
+      "sha256": "6e12000087d43b3dd13daf633eb2112a97bd190f9b22861bc5262be684a9406e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/storage_capacity.csv",
+      "bytes": 9726,
+      "sha256": "9e3fbcb88275a4aed4e9abe45b59c425c3e53074ef2df8d7088cfd41ec028bc4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/storage_dispatch.npz",
+      "bytes": 56068,
+      "sha256": "2896770ab077dd3ff7d5eb2d4945b3c0fdc0b61504112ec0104a9fa5cd587200"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/thermal_dispatch.npz",
+      "bytes": 286710,
+      "sha256": "70186f142c77df4eda267d73b8b9b416bec3119340e9a77a2fdeb618186d6e26"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 29139,
+      "sha256": "067c101e1528d685221e715eb9d2572e3817d8ac868c2d65c2554b881ac64d26"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/time_index.csv",
+      "bytes": 966,
+      "sha256": "2ed5ccd22bc06fc2d0763a42f05293c8a2655c38d240c0186fbcabededbafe72"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/transmission_capacity.csv",
+      "bytes": 33278,
+      "sha256": "d38c0c508f5b435e1117ed9409e84680a12f0cdd3ab7f8641bad7c82a91c5957"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/transmission_flows.npz",
+      "bytes": 84985,
+      "sha256": "3373dd7314cd1a50340923fb1421b3dc2e83e57497a53829892f3e998a3e8e71"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/vre_capacity.csv",
+      "bytes": 3666251,
+      "sha256": "38009630c21886a0545e437f809557e689cd9e3565643d47eee1718e82f51ea3"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/vre_dispatch.npz",
+      "bytes": 34909,
+      "sha256": "8494f35a67f729d20c06d2e8ea102b2c890b6687f0530df31369232d06015fc4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/wave_capacity.csv",
+      "bytes": 218632,
+      "sha256": "d8b215aba039b55fa2b0c6c844569c19acf6848d4f0fa7dcd8bfac6b9b0591cf"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/physical_export/wave_dispatch.npz",
+      "bytes": 16660,
+      "sha256": "5d699ec3a742e80aedfb613c93855c4c4a9e7440d7c268744aee2b1d677db83a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/raw_model.mps",
+      "bytes": 171262268,
+      "sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/result.json",
+      "bytes": 7917,
+      "sha256": "c9c900c7455d5cc9b63bfe7907505d3d684d4a1f42513ec0b28e945d1914391a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/solution.npy",
+      "bytes": 2774264,
+      "sha256": "da35f3c18d16a2e816a562e26bd1e7fd1ae0c15db321ffdbe7727777a9bd3f00"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s3960_cross0_tolerance_1e6/solver_parameters.json",
+      "bytes": 583,
+      "sha256": "77fccb1e4f606bb14365db538c2de8599c143d034f7fe35085c2498fceeb764b"
+    },
+    {
+      "path": "REVIEW_ZH.md",
+      "bytes": 5139,
+      "sha256": "593b344d611ada8e38baf21c4f09de63ea1f04f6873af25cf1698ac02b4d27f3"
+    },
+    {
+      "path": "run_numeric_probe.py",
+      "bytes": 10096,
+      "sha256": "705dcb8ca675683f0892a52b5b9aed6cad08646e1da4fa87e50093e73c3f6742"
+    },
+    {
+      "path": "source_snapshot/cispo_full_lp_model_spec.md",
+      "bytes": 123890,
+      "sha256": "17c5f18b92069f02d46e376b3e68e7efba3b618018c80827fd67c2339170b2dc"
+    },
+    {
+      "path": "source_snapshot/CODEX_HANDOFF.md",
+      "bytes": 1050982,
+      "sha256": "4bf410ae005c2effda4fa30138b4ae8515a66de6d92343ef46d4a8986258db0d"
+    },
+    {
+      "path": "source_snapshot/config/cloud_resource_profiles/a8_8760_stagea_default_v1.json",
+      "bytes": 2887,
+      "sha256": "0d555bcae34125073dd86994b2258e65fc59305ff93e690b017c1b5eabaf4bf1"
+    },
+    {
+      "path": "source_snapshot/config/optimization_numeric_dac_by_year_v9.json",
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    {
+      "path": "source_snapshot/MODEL_SERVER_STATUS.md",
+      "bytes": 317176,
+      "sha256": "b0a88745f0eef9497011df2f31766042a213aa0e55a4305265d065321f0546f3"
+    },
+    {
+      "path": "source_snapshot/scripts/probe_full_year_numerics.py",
+      "bytes": 11547,
+      "sha256": "577f5045014a0ebbdf3f738d9a9e7a4253ff05e23c89d8cbf1c47727c3796a6b"
+    },
+    {
+      "path": "source_snapshot/SERVER_RUNBOOK.md",
+      "bytes": 363245,
+      "sha256": "4f171c9383729aa4a958ba3babe8ad8706fa98fc0d08193827d40b243e9fad32"
+    },
+    {
+      "path": "source_snapshot/tests/test_full_year_numeric_probe.py",
+      "bytes": 4959,
+      "sha256": "75df49e6788ceeff6e597cc47d93cfdecad9fe8107011e36c29d421bbd97e9b2"
+    },
+    {
+      "path": "stage_cloud_gate.py",
+      "bytes": 2592,
+      "sha256": "951454700bc99e625e72e725f3943c00bc98b11f0b9a7ae608e890a8872df94e"
+    },
+    {
+      "path": "stage_package.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stage_package.stdout.log",
+      "bytes": 609,
+      "sha256": "d56339c0581355fe6413549dd35b4b3c776eb8908a27b5d748f7ce77c23da71a"
+    }
+  ],
+  "launch_tests_passed": 5,
+  "local_cross0_qc_passed": false,
+  "current_resources": {
+    "config": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+    "hours": 8760,
+    "solver_time_limit_seconds": 900,
+    "threads": 44,
+    "soft_mem_limit_gb": null,
+    "barrier_convergence_tolerance": 1e-06,
+    "crossover": 0,
+    "solution_target": 1,
+    "resource_profile": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\cloud_resource_profiles\\a8_8760_stagea_default_v1.json",
+    "slurm_cpus_per_task": 64,
+    "slurm_memory_gib": 700,
+    "minimum_available_memory_gib": 128,
+    "available_memory_gib": 9.690975189208984,
+    "dry_run": true,
+    "validate_inputs_only": false,
+    "production_state_will_be_written": false,
+    "interpretation": "A bounded precheck can expose failures; only OPTIMAL plus full QC certifies a solution"
+  },
+  "new_package": {
+    "archive": "supplementary_materials\\reviews\\crossover_contract_20260913\\cloud_gate_20260913_v9_t44_cross0_tol1e6.tar.gz",
+    "sha256": "ddcc5f6e25e06d0fef01e12eef50d5b118489654c60aa10e34a1792d2c5d07b7",
+    "bytes": 662949,
+    "files_verified": 197,
+    "status": "HASH_PASS",
+    "stage_a_contract_matches": true,
+    "ready_for_scientific_acceptance": false
+  }
+}

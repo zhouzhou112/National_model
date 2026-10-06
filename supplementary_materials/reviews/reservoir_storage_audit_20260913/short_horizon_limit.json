@@ -1,0 +1,8 @@
+{
+  "v1_24h_mps_sha256": "b44d4bdf5a8df89b1b86692bab8bc271ea8df10fcb6dd30f0b430cb9c03ec34f",
+  "v2_24h_mps_sha256": "b44d4bdf5a8df89b1b86692bab8bc271ea8df10fcb6dd30f0b430cb9c03ec34f",
+  "identical_24h_lp": true,
+  "interpretation": "A regression solve of an identical truncated LP cannot demonstrate improved full-year solvability from the new physical corrections.",
+  "all_horizons_use_local_cleanup_m3s": 0.01,
+  "only_water_arrays_built": true
+}

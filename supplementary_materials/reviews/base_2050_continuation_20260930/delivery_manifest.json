@@ -1,0 +1,30 @@
+{
+  "generated_utc": "2026-09-30T14:14:19.127249+00:00",
+  "git_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "state": "existing dirty tree; no commit",
+  "job": {
+    "JobId": "4844528",
+    "JobState": "RUNNING",
+    "NodeList": "m4cm1802",
+    "RunTime": "00:04:15",
+    "StartTime": "2026-09-30T22:09:37",
+    "AllocTRES": "cpu=64,mem=750G,node=1,billing=64",
+    "TimeLimit": "UNLIMITED",
+    "Restarts": "0"
+  },
+  "files": {
+    "supplementary_materials/reviews/base_2050_continuation_20260930/audit_state_bounds.py": "14a9ac2adf13044632a121328feaf56c5fc6105e80cc3411b229d74a11eddb60",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/deploy.py": "9d1afb396612cb5c5b907542ba8a71918216f57affac60fed042dab33a18cdbf",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/prepare_bound_closed_state.py": "21f362ae743e7dab1fe28eff1d9d4ed1ae2f0e6dbc137ff4af8651c202c8e6db",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/prepare_local.py": "962239efc5d9683510ab1a8260dcdd152df84e38a9e26cfbd3240d3620a53972",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/validate_2050.py": "1c08872582a78288b5f113265c45b2430cb0114a7c00cc2af553d1c26359205b",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/launch_config.json": "f91ecca00c2477c6691668a96c9d05e68d1cdfc57ea07cde67a5d4837c03cf38",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/base_2050.sbatch": "037dbf53e21ebcc98f4a93280be27612ff252f185f7e0daa56f04da2e6780658",
+    "supplementary_materials/reviews/base_2050_continuation_20260930/REVIEW_ZH.md": "eb5e29d5a34ba36a58ee9952f61609d84574e203375b234c0776baa91789ec68",
+    "config/solver_profiles/barrier_checkpoint_full_year_cloud_2050_numeric_v1_threads48.json": "d65451e94ff9e7504fc10705b9fa6e6ad5afaf265dc9a23c502c418fd7cf3e31",
+    "CODEX_HANDOFF.md": "5fa093b67772f87ec5b174b717c07b198ab70d218a82e559dd7aeb2bbb7894c6",
+    "MODEL_SERVER_STATUS.md": "4b26e9c54b4e55ca89f166bbc77f2fe52db6f016c0fcec2bdd53a5055b61f65a",
+    "SERVER_RUNBOOK.md": "99c114cc6f72bed91aac354885a48397dde1819ba9161144a2f9feb828a98aa3"
+  },
+  "evidence_manifest_sha256": "9fb11abc9a15fc864731f1720fa862231a6775683a1e9fe11d7183e1bf40d626"
+}

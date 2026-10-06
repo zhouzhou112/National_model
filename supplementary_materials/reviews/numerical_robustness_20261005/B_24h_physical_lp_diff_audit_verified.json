@@ -1,0 +1,73 @@
+{
+  "schema_version": "cispo_physical_lp_release_diff_v1",
+  "status": "PASS",
+  "scope": "ORIGINAL_PHYSICAL_LP_NO_ROW_SCALING",
+  "checks": {
+    "matrix_changes_whitelisted": true,
+    "rhs_identical": true,
+    "lower_bounds_identical": true,
+    "objective_identical": true,
+    "constraint_senses_identical": true,
+    "upper_bound_changes_are_exact_zero_certificate_candidates": true,
+    "row_scaling_absent_from_physical_diff": true
+  },
+  "approved_change_counts": {},
+  "changed_matrix_coefficients": 0,
+  "changed_upper_bounds": 0,
+  "failure_count": 0,
+  "failures": [],
+  "change_examples": [],
+  "auxiliary_variables_eliminated": 0,
+  "explicit_capacity_interval_whitelist": {},
+  "maximum_matrix_difference": 0.0,
+  "maximum_rhs_difference": 0.0,
+  "reference_solve": {
+    "status": 2,
+    "solution_count": 1,
+    "runtime": 29.681999921798706,
+    "work": 42.70936647203876,
+    "barrier_iterations": 77,
+    "objective": 2112723.3677720963,
+    "production_result": false,
+    "parameters": {
+      "Method": 2,
+      "Threads": 8,
+      "Crossover": 2,
+      "SolutionTarget": 0,
+      "BarConvTol": 1e-08,
+      "NumericFocus": 2,
+      "BarHomogeneous": -1,
+      "AggFill": -1,
+      "BarIterLimit": 2000000000,
+      "Seed": 0
+    },
+    "constraint_violation": 1.9753088054130785e-12,
+    "bound_violation": 4.92872409552092e-12,
+    "physical_qc": "PASS"
+  },
+  "candidate_solve": {
+    "status": 2,
+    "solution_count": 1,
+    "runtime": 40.855000019073486,
+    "work": 58.561196848717735,
+    "barrier_iterations": 84,
+    "objective": 2112723.3677720996,
+    "production_result": false,
+    "parameters": {
+      "Method": 2,
+      "Threads": 8,
+      "Crossover": 2,
+      "SolutionTarget": 0,
+      "BarConvTol": 1e-08,
+      "NumericFocus": 2,
+      "BarHomogeneous": 1,
+      "AggFill": -1,
+      "BarIterLimit": 2000000000,
+      "Seed": 0
+    },
+    "constraint_violation": 3.0411229090532288e-12,
+    "bound_violation": 4.96447327691385e-12,
+    "physical_qc": "PASS"
+  },
+  "relative_objective_difference": 1.5428565144292911e-15
+}

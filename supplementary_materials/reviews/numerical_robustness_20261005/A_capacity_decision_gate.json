@@ -1,0 +1,7 @@
+{
+  "inspection_tolerance_gw": 1e-08,
+  "changed_count": 3,
+  "max_capacity_decision_difference_gw": 0.00016583682648540254,
+  "gate": "FAIL",
+  "reason": "Unscreened thermal new/retrofit decision changes exceed 1e-6 GW."
+}

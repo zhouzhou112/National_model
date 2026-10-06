@@ -1,0 +1,23 @@
+{
+  "matrix_rhs_objective_sections_identical": true,
+  "section_sha256": {
+    "NAME": "0fd2bd068f07faa9cc968b84a36236faaaee3b7c688b57b28eab85a75f4e1d71",
+    "ROWS": "4710690ec419c9d272984c584e435ec606b25dbf0e62cad83ca03b6c1b89d34e",
+    "COLUMNS": "179916c9644e47b794fad874b8f92ad8a1b0d017cfa06258fb7866031694ac8e",
+    "RHS": "50fb3442567cedc108b7d14fb14262219df5850dd83c2eeadccd3cbfb3d3f848",
+    "ENDATA": "264e674ecfcfae64cfe6ee25b267033785021582f77c1ed449a9a8813a56b937"
+  },
+  "changed_bound_columns": 20272,
+  "changed_family": "vre_new_gw only",
+  "restricted_bound_gw": 0,
+  "absolute_objective_difference_million_cny": 1.3969838619232178e-08,
+  "relative_objective_difference": 6.543910181200533e-15,
+  "full_solver_seconds": 23.59500002861023,
+  "screen_all_rounds_solver_seconds": 43.83899974822998,
+  "screen_reentered_sites": 100,
+  "final_pricing_gate": true,
+  "final_physical_qc": "PASS",
+  "local_case3_24_full_max_rc_identity_error": 1.1368683772161603e-13,
+  "local_case3_24_screen_max_rc_identity_error": 1.1368683772161603e-13,
+  "warning": "24h zero VRE investment and zero flex enrollment; mechanism validation, not annual speed or scientific evidence"
+}

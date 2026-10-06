@@ -1,0 +1,610 @@
+{
+  "source": "supplementary_materials\\reviews\\numeric_doublecheck_20260913\\probes\\cleaned_nf2_24h_s0_cross2_annual_bounds_no_dac_v6\\model.mps",
+  "source_sha256": "fdc137b83f8f2460268c54b3fee3d84f8c4655cc2b4ccb8638b5e4707f97218a",
+  "results": {
+    "raw": {
+      "variables": 346767,
+      "constraints": 216188,
+      "nonzeros": 1715784,
+      "matrix": {
+        "min": 3.699999999999999e-05,
+        "max": 24.0,
+        "span": 648648.6486486488
+      },
+      "objective": {
+        "min": 0.001,
+        "max": 3853.189875762917,
+        "span": 3853189.8757629166
+      },
+      "rhs": {
+        "min": 7.85753411585315e-06,
+        "max": 2926.7699250253863,
+        "span": 372479442.2617159
+      },
+      "bounds": {
+        "min": 7.85753411585315e-06,
+        "max": 18482.41654,
+        "span": 2352190428.637194
+      },
+      "max_row_span": 27027.027027027034,
+      "max_column_span": 27027.027027027034,
+      "column_spans_above_1e6": 0,
+      "small_coefficient_count": 2976,
+      "small_coefficient_row_families": {
+        "annual_emissions_accounting": 2976
+      },
+      "high_column_spans": [
+        {
+          "variable": "gross_generation_gw[28,7,5]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[28,7,5]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,12]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,12]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,23]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,23]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,22]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,22]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,21]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,21]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,20]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,20]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,19]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,19]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,18]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,18]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,17]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,17]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,16]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,16]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,15]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,15]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,14]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,14]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,13]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,13]"
+        },
+        {
+          "variable": "gross_generation_gw[19,5,11]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[19,5,11]"
+        },
+        {
+          "variable": "gross_generation_gw[8,7,20]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[8,7,20]"
+        }
+      ],
+      "extreme_entries": [
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[3,7,11]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,7]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,6]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,5]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,4]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,3]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,2]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,1]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[11,5,0]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[10,7,23]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "load_center_ror_availability_253",
+          "variable": "hydro_capacity_gw[379]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_248",
+          "variable": "hydro_capacity_gw[705]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_277",
+          "variable": "hydro_capacity_gw[1765]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_277",
+          "variable": "hydro_capacity_gw[1200]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_281",
+          "variable": "hydro_capacity_gw[365]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_277",
+          "variable": "hydro_capacity_gw[1169]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_296",
+          "variable": "hydro_capacity_gw[890]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_268",
+          "variable": "hydro_capacity_gw[10]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_268",
+          "variable": "hydro_capacity_gw[17]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_248",
+          "variable": "hydro_capacity_gw[307]",
+          "coefficient": -24.0
+        }
+      ],
+      "small_bounds": [],
+      "objective_extremes": [
+        {
+          "variable": "wave_capacity_gw[824]",
+          "value": 3853.189875762917
+        },
+        {
+          "variable": "wave_capacity_gw[765]",
+          "value": 3740.2487282923757
+        },
+        {
+          "variable": "wave_capacity_gw[744]",
+          "value": 3700.120376453545
+        },
+        {
+          "variable": "wave_capacity_gw[725]",
+          "value": 3670.7889976861134
+        },
+        {
+          "variable": "wave_capacity_gw[764]",
+          "value": 3670.497695701438
+        },
+        {
+          "variable": "wave_capacity_gw[804]",
+          "value": 3658.8919495800346
+        },
+        {
+          "variable": "wave_capacity_gw[707]",
+          "value": 3648.9319750807836
+        },
+        {
+          "variable": "wave_capacity_gw[743]",
+          "value": 3632.7670915430053
+        },
+        {
+          "variable": "wave_capacity_gw[785]",
+          "value": 3617.1997256277327
+        },
+        {
+          "variable": "wave_capacity_gw[763]",
+          "value": 3608.172657712243
+        }
+      ],
+      "weak_objective_families": {},
+      "empty_rows": 0,
+      "empty_columns": 18911
+    },
+    "presolved": {
+      "variables": 225961,
+      "constraints": 101910,
+      "nonzeros": 1206059,
+      "matrix": {
+        "min": 3.699999999999999e-05,
+        "max": 24.0,
+        "span": 648648.6486486488
+      },
+      "objective": {
+        "min": 0.001,
+        "max": 3853.189875762917,
+        "span": 3853189.8757629166
+      },
+      "rhs": {
+        "min": 7.85753411585315e-06,
+        "max": 2926.7699250253863,
+        "span": 372479442.2617159
+      },
+      "bounds": {
+        "min": 7.85753411585315e-06,
+        "max": 18482.41654,
+        "span": 2352190428.637194
+      },
+      "max_row_span": 3003.003003003003,
+      "max_column_span": 27027.027027027034,
+      "column_spans_above_1e6": 0,
+      "small_coefficient_count": 2472,
+      "small_coefficient_row_families": {
+        "annual_emissions_accounting": 2472
+      },
+      "high_column_spans": [
+        {
+          "variable": "gross_generation_gw[15,5,0]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[15,5,0]"
+        },
+        {
+          "variable": "gross_generation_gw[15,7,14]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[15,7,14]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,15]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,15]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,14]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,14]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,13]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,13]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,12]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,12]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,11]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,11]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,10]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,10]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,9]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,9]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,8]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,8]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,7]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,7]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,6]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,6]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,5]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,5]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,4]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,4]"
+        },
+        {
+          "variable": "gross_generation_gw[4,5,3]",
+          "minimum": 3.699999999999999e-05,
+          "maximum": 1.0,
+          "span": 27027.027027027034,
+          "small_row": "annual_emissions_accounting",
+          "large_row": "thermal_minimum_generation[4,5,3]"
+        }
+      ],
+      "extreme_entries": [
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[24,5,23]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,20]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,19]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,18]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,17]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,16]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,15]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,14]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[15,7,23]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[0,5,13]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "load_center_ror_availability_278",
+          "variable": "hydro_capacity_gw[946]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_276",
+          "variable": "hydro_capacity_gw[895]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_253",
+          "variable": "hydro_capacity_gw[379]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_296",
+          "variable": "hydro_capacity_gw[1634]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_208",
+          "variable": "hydro_capacity_gw[854]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_190",
+          "variable": "hydro_capacity_gw[1466]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_169",
+          "variable": "hydro_capacity_gw[1078]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_277",
+          "variable": "hydro_capacity_gw[1071]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_310",
+          "variable": "hydro_capacity_gw[367]",
+          "coefficient": -24.0
+        },
+        {
+          "row": "load_center_ror_availability_277",
+          "variable": "hydro_capacity_gw[1169]",
+          "coefficient": -24.0
+        }
+      ],
+      "small_bounds": [],
+      "objective_extremes": [
+        {
+          "variable": "wave_capacity_gw[824]",
+          "value": 3853.189875762917
+        },
+        {
+          "variable": "wave_capacity_gw[765]",
+          "value": 3740.2487282923757
+        },
+        {
+          "variable": "wave_capacity_gw[744]",
+          "value": 3700.120376453545
+        },
+        {
+          "variable": "wave_capacity_gw[725]",
+          "value": 3670.7889976861134
+        },
+        {
+          "variable": "wave_capacity_gw[764]",
+          "value": 3670.497695701438
+        },
+        {
+          "variable": "wave_capacity_gw[804]",
+          "value": 3658.8919495800346
+        },
+        {
+          "variable": "wave_capacity_gw[707]",
+          "value": 3648.9319750807836
+        },
+        {
+          "variable": "wave_capacity_gw[743]",
+          "value": 3632.7670915430053
+        },
+        {
+          "variable": "wave_capacity_gw[785]",
+          "value": 3617.1997256277327
+        },
+        {
+          "variable": "wave_capacity_gw[763]",
+          "value": 3608.172657712243
+        }
+      ],
+      "weak_objective_families": {},
+      "empty_rows": 0,
+      "empty_columns": 0
+    }
+  }
+}

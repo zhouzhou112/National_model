@@ -1,0 +1,668 @@
+{
+  "source": "supplementary_materials\\reviews\\numeric_resolution_20260913\\probes\\cleaned_nf2_24h_s0_cross2_annual_bounds_spill\\model.mps",
+  "source_sha256": "1681521f12471c7ded3326542a227feb8041b2f066f0c78cb0d7b3736659db44",
+  "results": {
+    "raw": {
+      "variables": 346767,
+      "constraints": 216223,
+      "nonzeros": 1738542,
+      "matrix": {
+        "min": 3.699999999999999e-05,
+        "max": 6250.0,
+        "span": 168918918.91891897
+      },
+      "objective": {
+        "min": 1e-06,
+        "max": 3853.189875762917,
+        "span": 3853189875.762917
+      },
+      "rhs": {
+        "min": 5.5e-07,
+        "max": 2926.7699250253863,
+        "span": 5321399863.68252
+      },
+      "bounds": {
+        "min": 5.5e-07,
+        "max": 18482.41654,
+        "span": 33604393709.090904
+      },
+      "max_row_span": 46239.7309677682,
+      "max_column_span": 34023.171141855644,
+      "column_spans_above_1e6": 0,
+      "small_coefficient_count": 2976,
+      "small_coefficient_row_families": {
+        "annual_emissions_accounting": 2976
+      },
+      "high_column_spans": [
+        {
+          "variable": "vre_capacity_gw[24067]",
+          "minimum": 0.00010426860535517335,
+          "maximum": 3.547548604721669,
+          "span": 34023.171141855644,
+          "small_row": "vre_availability_p51_dpv_h0[19]",
+          "large_row": "load_center_vre_availability_252_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[12159]",
+          "minimum": 0.00010426860535517335,
+          "maximum": 3.547548604721669,
+          "span": 34023.171141855644,
+          "small_row": "vre_availability_p51_upv_h0[19]",
+          "large_row": "load_center_vre_availability_252_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[22885]",
+          "minimum": 0.0001187820453196764,
+          "maximum": 3.9770803947467357,
+          "span": 33482.16798290749,
+          "small_row": "vre_availability_p54_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_281_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[10852]",
+          "minimum": 0.00011593019007705152,
+          "maximum": 3.583973144268384,
+          "span": 30914.92511041638,
+          "small_row": "vre_availability_p51_upv_h0[19]",
+          "large_row": "load_center_vre_availability_252_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[22219]",
+          "minimum": 0.00011593019007705152,
+          "maximum": 3.583973144268384,
+          "span": 30914.92511041638,
+          "small_row": "vre_availability_p51_dpv_h0[19]",
+          "large_row": "load_center_vre_availability_252_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[22148]",
+          "minimum": 0.00011904393613804132,
+          "maximum": 3.637430608694558,
+          "span": 30555.362387183297,
+          "small_row": "vre_availability_p54_dpv_h0[10]",
+          "large_row": "load_center_vre_availability_285_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[10823]",
+          "minimum": 0.00011904393613804132,
+          "maximum": 3.637430608694558,
+          "span": 30555.362387183297,
+          "small_row": "vre_availability_p54_upv_h0[10]",
+          "large_row": "load_center_vre_availability_285_upv"
+        },
+        {
+          "variable": "hydro_capacity_gw[331]",
+          "minimum": 0.00010092256707139313,
+          "maximum": 3.0,
+          "span": 29725.759927190367,
+          "small_row": "ror_availability_p22_h0[15]",
+          "large_row": "inertia_p22[0]"
+        },
+        {
+          "variable": "hydro_capacity_gw[1473]",
+          "minimum": 0.00010104830289492384,
+          "maximum": 3.0,
+          "span": 29688.77174631604,
+          "small_row": "ror_availability_p42_h0[15]",
+          "large_row": "inertia_p42[0]"
+        },
+        {
+          "variable": "vre_capacity_gw[21381]",
+          "minimum": 0.00012463699385989457,
+          "maximum": 3.6918451259407448,
+          "span": 29620.781211160924,
+          "small_row": "vre_availability_p63_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_316_dpv"
+        },
+        {
+          "variable": "hydro_capacity_gw[227]",
+          "minimum": 0.0001017116810544394,
+          "maximum": 3.0,
+          "span": 29495.13732247039,
+          "small_row": "ror_availability_p53_h0[21]",
+          "large_row": "inertia_p53[0]"
+        },
+        {
+          "variable": "hydro_capacity_gw[1354]",
+          "minimum": 0.0001018237744574435,
+          "maximum": 3.0,
+          "span": 29462.66739752245,
+          "small_row": "ror_availability_p51_h0[3]",
+          "large_row": "inertia_p51[0]"
+        },
+        {
+          "variable": "vre_capacity_gw[20093]",
+          "minimum": 0.00010743502207333222,
+          "maximum": 3.119315092895704,
+          "span": 29034.434327816718,
+          "small_row": "vre_availability_p63_upv_h0[9]",
+          "large_row": "load_center_vre_availability_312_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[34498]",
+          "minimum": 0.00010743502207333222,
+          "maximum": 3.119315092895704,
+          "span": 29034.434327816718,
+          "small_row": "vre_availability_p63_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_312_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[24775]",
+          "minimum": 0.00014635303523391485,
+          "maximum": 4.082666130154394,
+          "span": 27896.012704000994,
+          "small_row": "vre_availability_p54_dpv_h0[20]",
+          "large_row": "load_center_vre_availability_280_dpv"
+        }
+      ],
+      "extreme_entries": [
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[1,7,7]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,11]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,10]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,9]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,8]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,7]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,6]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,12]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,5]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "annual_emissions_accounting",
+          "variable": "gross_generation_gw[18,7,3]",
+          "coefficient": -3.699999999999999e-05
+        },
+        {
+          "row": "province_annual_effective_demand_p35",
+          "variable": "dac_capture_mt[12,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p36",
+          "variable": "dac_capture_mt[13,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p44",
+          "variable": "dac_capture_mt[18,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p13",
+          "variable": "dac_capture_mt[2,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p54",
+          "variable": "dac_capture_mt[25,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p21",
+          "variable": "dac_capture_mt[5,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p42",
+          "variable": "dac_capture_mt[16,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p37",
+          "variable": "dac_capture_mt[14,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p64",
+          "variable": "dac_capture_mt[29,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p61",
+          "variable": "dac_capture_mt[26,0]",
+          "coefficient": -6250.0
+        }
+      ],
+      "small_bounds": [
+        {
+          "variable": "vre_capacity_gw[23331]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[25844]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[29005]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[31257]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[32437]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        }
+      ],
+      "objective_extremes": [
+        {
+          "variable": "wave_capacity_gw[824]",
+          "value": 3853.189875762917
+        },
+        {
+          "variable": "wave_capacity_gw[765]",
+          "value": 3740.2487282923757
+        },
+        {
+          "variable": "wave_capacity_gw[744]",
+          "value": 3700.120376453545
+        },
+        {
+          "variable": "wave_capacity_gw[725]",
+          "value": 3670.7889976861134
+        },
+        {
+          "variable": "wave_capacity_gw[764]",
+          "value": 3670.497695701438
+        },
+        {
+          "variable": "wave_capacity_gw[804]",
+          "value": 3658.8919495800346
+        },
+        {
+          "variable": "wave_capacity_gw[707]",
+          "value": 3648.9319750807836
+        },
+        {
+          "variable": "wave_capacity_gw[743]",
+          "value": 3632.7670915430053
+        },
+        {
+          "variable": "wave_capacity_gw[785]",
+          "value": 3617.1997256277327
+        },
+        {
+          "variable": "wave_capacity_gw[763]",
+          "value": 3608.172657712243
+        }
+      ],
+      "weak_objective_families": {
+        "intra_load_center_flow_forward_gwh": 642,
+        "intra_load_center_flow_reverse_gwh": 642
+      },
+      "empty_rows": 0,
+      "empty_columns": 18911
+    },
+    "presolved": {
+      "variables": 226466,
+      "constraints": 102114,
+      "nonzeros": 1237540,
+      "matrix": {
+        "min": 3.699999999999999e-05,
+        "max": 6250.0,
+        "span": 168918918.91891897
+      },
+      "objective": {
+        "min": 1e-06,
+        "max": 885518.6434698392,
+        "span": 885518643469.8392
+      },
+      "rhs": {
+        "min": 7.85753411585315e-06,
+        "max": 2926.7699250253863,
+        "span": 372479442.2617159
+      },
+      "bounds": {
+        "min": 5.5e-07,
+        "max": 18482.41654,
+        "span": 33604393709.090904
+      },
+      "max_row_span": 284589.1698565987,
+      "max_column_span": 34023.171141855644,
+      "column_spans_above_1e6": 0,
+      "small_coefficient_count": 2472,
+      "small_coefficient_row_families": {
+        "annual_net_carbon_limit": 2472
+      },
+      "high_column_spans": [
+        {
+          "variable": "vre_capacity_gw[24067]",
+          "minimum": 0.00010426860535517335,
+          "maximum": 3.547548604721669,
+          "span": 34023.171141855644,
+          "small_row": "vre_availability_p51_dpv_h0[19]",
+          "large_row": "load_center_vre_availability_252_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[12159]",
+          "minimum": 0.00010426860535517335,
+          "maximum": 3.547548604721669,
+          "span": 34023.171141855644,
+          "small_row": "vre_availability_p51_upv_h0[19]",
+          "large_row": "load_center_vre_availability_252_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[22885]",
+          "minimum": 0.0001187820453196764,
+          "maximum": 3.9770803947467357,
+          "span": 33482.16798290749,
+          "small_row": "vre_availability_p54_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_281_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[22219]",
+          "minimum": 0.00011593019007705152,
+          "maximum": 3.583973144268384,
+          "span": 30914.92511041638,
+          "small_row": "vre_availability_p51_dpv_h0[19]",
+          "large_row": "load_center_vre_availability_252_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[10852]",
+          "minimum": 0.00011593019007705152,
+          "maximum": 3.583973144268384,
+          "span": 30914.92511041638,
+          "small_row": "vre_availability_p51_upv_h0[19]",
+          "large_row": "load_center_vre_availability_252_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[22148]",
+          "minimum": 0.00011904393613804132,
+          "maximum": 3.637430608694558,
+          "span": 30555.362387183297,
+          "small_row": "vre_availability_p54_dpv_h0[10]",
+          "large_row": "load_center_vre_availability_285_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[10823]",
+          "minimum": 0.00011904393613804132,
+          "maximum": 3.637430608694558,
+          "span": 30555.362387183297,
+          "small_row": "vre_availability_p54_upv_h0[10]",
+          "large_row": "load_center_vre_availability_285_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[21381]",
+          "minimum": 0.00012463699385989457,
+          "maximum": 3.6918451259407448,
+          "span": 29620.781211160924,
+          "small_row": "vre_availability_p63_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_316_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[34498]",
+          "minimum": 0.00010743502207333222,
+          "maximum": 3.119315092895704,
+          "span": 29034.434327816718,
+          "small_row": "vre_availability_p63_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_312_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[20093]",
+          "minimum": 0.00010743502207333222,
+          "maximum": 3.119315092895704,
+          "span": 29034.434327816718,
+          "small_row": "vre_availability_p63_upv_h0[9]",
+          "large_row": "load_center_vre_availability_312_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[12589]",
+          "minimum": 0.00014635303523391485,
+          "maximum": 4.082666130154394,
+          "span": 27896.012704000994,
+          "small_row": "vre_availability_p54_upv_h0[20]",
+          "large_row": "load_center_vre_availability_280_upv"
+        },
+        {
+          "variable": "vre_capacity_gw[24775]",
+          "minimum": 0.00014635303523391485,
+          "maximum": 4.082666130154394,
+          "span": 27896.012704000994,
+          "small_row": "vre_availability_p54_dpv_h0[20]",
+          "large_row": "load_center_vre_availability_280_dpv"
+        },
+        {
+          "variable": "hydro_capacity_gw[1440]",
+          "minimum": 0.00010908163676504046,
+          "maximum": 3.0,
+          "span": 27502.337597499903,
+          "small_row": "ror_availability_p35_h0[9]",
+          "large_row": "inertia_p35[0]"
+        },
+        {
+          "variable": "vre_capacity_gw[21712]",
+          "minimum": 0.0001328523940173909,
+          "maximum": 3.6432081257662503,
+          "span": 27422.97685120631,
+          "small_row": "vre_availability_p63_dpv_h0[9]",
+          "large_row": "load_center_vre_availability_316_dpv"
+        },
+        {
+          "variable": "vre_capacity_gw[25347]",
+          "minimum": 0.00011225254274904728,
+          "maximum": 3.036499263951555,
+          "span": 27050.605621825227,
+          "small_row": "vre_availability_p51_dpv_h0[19]",
+          "large_row": "load_center_vre_availability_253_dpv"
+        }
+      ],
+      "extreme_entries": [
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,7,23]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,10]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,11]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,12]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,13]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,14]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,15]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,16]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,17]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "annual_net_carbon_limit",
+          "variable": "gross_generation_gw[18,5,18]",
+          "coefficient": 3.699999999999999e-05
+        },
+        {
+          "row": "province_annual_effective_demand_p51",
+          "variable": "dac_capture_mt[22,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p42",
+          "variable": "dac_capture_mt[16,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p44",
+          "variable": "dac_capture_mt[18,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p65",
+          "variable": "dac_capture_mt[30,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p22",
+          "variable": "dac_capture_mt[6,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p64",
+          "variable": "dac_capture_mt[29,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p41",
+          "variable": "dac_capture_mt[15,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p34",
+          "variable": "dac_capture_mt[11,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p63",
+          "variable": "dac_capture_mt[28,0]",
+          "coefficient": -6250.0
+        },
+        {
+          "row": "province_annual_effective_demand_p45",
+          "variable": "dac_capture_mt[19,0]",
+          "coefficient": -6250.0
+        }
+      ],
+      "small_bounds": [
+        {
+          "variable": "vre_capacity_gw[23331]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[25844]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[29005]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[31257]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        },
+        {
+          "variable": "vre_capacity_gw[32437]",
+          "attribute": "LB",
+          "value": 5.5e-07
+        }
+      ],
+      "objective_extremes": [
+        {
+          "variable": "dac_capture_mt[18,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[23,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[27,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[3,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[7,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[26,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[8,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[25,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[24,3]",
+          "value": 885518.6434698392
+        },
+        {
+          "variable": "dac_capture_mt[16,3]",
+          "value": 885518.6434698392
+        }
+      ],
+      "weak_objective_families": {
+        "intra_load_center_flow_forward_gwh": 203,
+        "intra_load_center_flow_reverse_gwh": 203
+      },
+      "empty_rows": 0,
+      "empty_columns": 0
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "status": "MECHANISM_VALIDATED_LONG_HORIZON_SPEED_UNVERIFIED",
+  "hours_2016": "NOT_STARTED_SSH_TUNNEL_UNAVAILABLE",
+  "production_changed": false,
+  "cloud_base_interrupted": false,
+  "physical_deletion": "PENDING_USER_CONFIRMATION",
+  "git_head": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "checked_unchanged_core_config_input_files": 257,
+  "executed_probe_sha256": "5dee4995f52afa25a5266132f1aeb8d35999584cc0c76d742d1f78cc755c8f55",
+  "publication_accepted": false,
+  "scenario_priority": "case3_thermal_ev_v5 independent 2030->2040->2050->2060"
+}

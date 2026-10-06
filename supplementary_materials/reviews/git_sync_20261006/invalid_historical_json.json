@@ -1,0 +1,10 @@
+[
+  {
+    "path": "supplementary_materials/reviews/formal_launch_20260914/remote_preflight_result.json",
+    "reason": "Extra data: line 7 column 1 (char 142)"
+  },
+  {
+    "path": "supplementary_materials/reviews/solve_feasibility_vs_thermal_20260913/thermal_readback.json",
+    "reason": "Expecting value: line 1 column 1 (char 0)"
+  }
+]

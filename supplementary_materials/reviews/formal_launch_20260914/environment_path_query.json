@@ -1,0 +1,18 @@
+{
+  "20260903_8760_stagea_final_2820fc3_v3": [
+    "PYTHON=/publicfs01/fs1-a8/home/a8s001819/.conda/envs/gurobipy310/bin/python",
+    "PYTHONPATH=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260806_8760_stagea_3f739fd_v5/python_overlay",
+    "GUROBI_HOME=/publicfs01/fs1-a8/home/a8s001819/staging/gurobi1302/gurobi1302install/gurobi1302/linux64",
+    "CISPO_DATA_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1",
+    "CISPO_CF_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/hourly_cf",
+    "CISPO_WAVE_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/wave_energy_20260727"
+  ],
+  "20260907_thermal_stagea_1e4_t44_ffd651a_v2": [
+    "PYTHON=/publicfs01/fs1-a8/home/a8s001819/.conda/envs/gurobipy310/bin/python",
+    "PYTHONPATH=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260806_8760_stagea_3f739fd_v5/python_overlay",
+    "GUROBI_HOME=/publicfs01/fs1-a8/home/a8s001819/staging/gurobi1302/gurobi1302install/gurobi1302/linux64",
+    "CISPO_DATA_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/model_ready_20260805_power_curve_v3_qc_d63a251_v1",
+    "CISPO_CF_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/hourly_cf",
+    "CISPO_WAVE_ROOT=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/data/wave_energy_20260727"
+  ]
+}

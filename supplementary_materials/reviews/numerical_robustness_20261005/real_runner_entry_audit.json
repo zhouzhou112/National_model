@@ -1,0 +1,3484 @@
+[
+  {
+    "case": "real_runner_A1h",
+    "command": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\run_cispo_2030_full_year.py",
+      "--solver-config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\runner_build_solver.json",
+      "--diagnostic-hours",
+      "1",
+      "--diagnostic-start-hour",
+      "2880",
+      "--build-only",
+      "--archive-original-model",
+      "--engineering-barrier-checkpoint-only",
+      "--config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\runner_A_config.json",
+      "--planning-year",
+      "2040",
+      "--state-in",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\planning_state_candidate",
+      "--allow-candidate-state-in",
+      "--output-dir",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\real_runner_A1h"
+    ],
+    "actual_national_builder": true,
+    "optimize_called": false,
+    "audit_key": "numerical_robustness_audit",
+    "audit": {
+      "retrofit_upper_cleanup": [
+        {
+          "cutoff_gw": 1e-06,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-06,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-06,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-06,
+          "site_rows": [
+            3
+          ],
+          "asset_ids": [
+            "14::gchp::gchpccs"
+          ],
+          "removed_gw": [
+            2.220446049250313e-16
+          ],
+          "total_removed_gw": 2.220446049250313e-16
+        },
+        {
+          "cutoff_gw": 1e-06,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        }
+      ],
+      "hydro_capacity_headroom_cleanup": {
+        "cutoff_gw": 1e-06,
+        "site_rows": [
+          595,
+          723,
+          757,
+          854,
+          895,
+          1013,
+          1071,
+          1078,
+          1134,
+          1136,
+          1148,
+          1152,
+          1236,
+          1246,
+          1288,
+          1320,
+          1337,
+          1349,
+          1361,
+          1388,
+          1416,
+          1458,
+          1459,
+          1466,
+          1496,
+          1518,
+          1538,
+          1563,
+          1572,
+          1634,
+          1638,
+          1715,
+          1755
+        ],
+        "asset_ids": [
+          "HydroCHN_00595",
+          "HydroCHN_00723",
+          "HydroCHN_00757",
+          "HydroCHN_00854",
+          "HydroCHN_00895",
+          "HydroCHN_01013",
+          "HydroCHN_01071",
+          "HydroCHN_01078",
+          "HydroCHN_01134",
+          "HydroCHN_01136",
+          "HydroCHN_01148",
+          "HydroCHN_01152",
+          "HydroCHN_01236",
+          "HydroCHN_01246",
+          "HydroCHN_01288",
+          "HydroCHN_01320",
+          "HydroCHN_01337",
+          "HydroCHN_01349",
+          "HydroCHN_01361",
+          "HydroCHN_01388",
+          "HydroCHN_01416",
+          "HydroCHN_01458",
+          "HydroCHN_01459",
+          "HydroCHN_01466",
+          "HydroCHN_01496",
+          "HydroCHN_01518",
+          "HydroCHN_01538",
+          "HydroCHN_01563",
+          "HydroCHN_01572",
+          "HydroCHN_01634",
+          "HydroCHN_01638",
+          "HydroCHN_01715",
+          "HydroCHN_01755"
+        ],
+        "removed_gw": [
+          7.201115369281919e-08,
+          1.1247016579868374e-07,
+          1.2039282810266672e-07,
+          2.9270416659898935e-07,
+          1.3098042930120846e-07,
+          1.3183327170207537e-07,
+          4.067316919723063e-08,
+          7.802661616020112e-07,
+          1.1724010619967862e-07,
+          7.706064190232675e-08,
+          5.457263030014814e-08,
+          2.837046850015512e-07,
+          7.495057200226918e-08,
+          3.0174110002278987e-08,
+          5.244521984991424e-07,
+          3.38004264993641e-08,
+          6.016195740199404e-08,
+          2.1744639699949886e-08,
+          6.40875786987738e-08,
+          5.398565229922103e-08,
+          2.868360689939342e-08,
+          5.8558262398811234e-08,
+          2.898102057988239e-07,
+          1.4817349999751706e-08,
+          1.4917591099894434e-08,
+          8.432155799986685e-08,
+          2.1220355800669055e-08,
+          2.0980921859939383e-07,
+          6.725079910140097e-08,
+          1.666173063998022e-07,
+          7.418254430006932e-08,
+          4.5083748439860016e-07,
+          1.3423953730030969e-07
+        ],
+        "total_removed_gw": 4.6925323645991696e-06
+      }
+    },
+    "statistics": {
+      "variables": 238529,
+      "constraints": 79990,
+      "nonzeros": 452548,
+      "coefficient_min_abs": 2.9176454125368068e-05,
+      "coefficient_max_abs": 6250.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 2684.396781204636,
+      "rhs_min_abs": 5.822134224443606e-10,
+      "rhs_max_abs": 745.8680960883796,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    }
+  },
+  {
+    "case": "real_runner_C1h",
+    "command": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\run_cispo_2030_full_year.py",
+      "--solver-config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\runner_build_solver.json",
+      "--diagnostic-hours",
+      "1",
+      "--diagnostic-start-hour",
+      "2880",
+      "--build-only",
+      "--archive-original-model",
+      "--engineering-barrier-checkpoint-only",
+      "--config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+      "--formulation-config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\formulation_profiles\\annual_dense_row_split_v1.json",
+      "--output-dir",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\numerical_robustness_20261005\\real_runner_C1h"
+    ],
+    "actual_national_builder": true,
+    "optimize_called": false,
+    "audit_key": "annual_dense_row_split",
+    "audit": {
+      "enabled": true,
+      "block_hours": 730,
+      "hours": 1,
+      "families": [
+        {
+          "family": "vre_p11_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p11_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p11_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p11_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p12_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p12_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p12_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p12_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p13_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p13_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p13_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p13_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p14_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p14_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p14_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p14_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p15_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p15_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p15_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p15_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p21_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p21_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p21_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p21_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p22_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p22_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p22_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p22_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p23_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p23_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p23_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p23_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p31_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p31_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p31_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p31_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p32_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p32_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p32_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p32_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p33_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p33_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p33_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p33_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p34_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p34_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p34_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p34_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p35_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p35_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p35_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p35_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p36_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p36_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p36_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p36_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p37_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p37_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p37_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p37_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p41_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p41_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p41_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p41_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p42_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p42_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p42_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p42_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p43_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p43_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p43_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p43_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p44_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p44_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p44_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p44_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p45_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p45_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p45_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p45_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p46_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p46_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p46_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p46_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p50_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p50_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p50_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p50_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p51_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p51_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p51_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p51_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p52_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p52_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p52_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p52_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p53_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p53_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p53_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p53_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p54_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p54_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p54_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p54_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p61_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p61_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p61_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p61_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p62_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p62_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p62_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p62_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p63_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p63_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p63_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p63_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p64_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p64_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p64_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p64_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p65_onwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p65_offwind",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p65_upv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "vre_p65_dpv",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "wave_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc3",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc8",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc24",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc26",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc29",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc30",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc40",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc55",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc86",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc88",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc92",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc93",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc96",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc103",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc104",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc109",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc113",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc115",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc116",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc119",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc120",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc121",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc122",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc125",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc126",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc127",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc128",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc129",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc130",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc131",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc151",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc160",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc167",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc168",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc169",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc170",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc175",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc178",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc182",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc183",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc185",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc186",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc187",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc188",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc189",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc190",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc191",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc192",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc193",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc194",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc202",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc204",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc206",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc208",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc213",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc214",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc215",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc217",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc221",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc223",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc224",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc225",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc226",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc227",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc231",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc232",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc233",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc235",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc236",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc237",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc238",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc239",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc240",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc242",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc243",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc245",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc246",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc247",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc248",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc251",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc252",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc253",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc254",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc255",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc256",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc257",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc258",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc259",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc260",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc261",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc263",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc264",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc266",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc267",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc268",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc269",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc270",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc271",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc272",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc273",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc275",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc276",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc277",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc278",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc279",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc281",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc282",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc283",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc292",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc294",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc296",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc299",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc302",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc306",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc307",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc308",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc309",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc311",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc314",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc315",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc316",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc317",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc320",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc322",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc329",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc330",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc331",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc332",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc333",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc334",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "reservoir_lc336",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "ror_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p11",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p12",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p13",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p14",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p15",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p21",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p22",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p23",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p31",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p32",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p33",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p34",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p35",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p36",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p37",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p41",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p42",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p43",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p44",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p45",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p46",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p50",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p51",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p52",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p53",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p54",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p61",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p62",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p63",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p64",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "non_spatial_injection_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "effective_demand_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "external_sent_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "external_received_p65",
+          "unit": "gwh",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p11",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p11",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p11",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p12",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p12",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p12",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p13",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p13",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p13",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p14",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p14",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p14",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p15",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p15",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p15",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p21",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p21",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p21",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p22",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p22",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p22",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p23",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p23",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p23",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p31",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p31",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p31",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p32",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p32",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p32",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p33",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p33",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p33",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p34",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p34",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p34",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p35",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p35",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p35",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p36",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p36",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p36",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p37",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p37",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p37",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p41",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p41",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p41",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p42",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p42",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p42",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p43",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p43",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p43",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p44",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p44",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p44",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p45",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p45",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p45",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p46",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p46",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p46",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p50",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p50",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p50",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p51",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p51",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p51",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p52",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p52",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p52",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p53",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p53",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p53",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p54",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p54",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p54",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p61",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p61",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p61",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p62",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p62",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p62",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p63",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p63",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p63",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p64",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p64",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p64",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "emissions_p65",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "free"
+        },
+        {
+          "family": "captured_p65",
+          "unit": "mtco2",
+          "blocks": 1,
+          "lower_bound": "zero"
+        },
+        {
+          "family": "biomass_p65",
+          "unit": "pj",
+          "blocks": 1,
+          "lower_bound": "zero"
+        }
+      ]
+    },
+    "statistics": {
+      "variables": 239066,
+      "constraints": 80527,
+      "nonzeros": 453374,
+      "coefficient_min_abs": 2.9176454125368068e-05,
+      "coefficient_max_abs": 21.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 3853.189875762917,
+      "rhs_min_abs": 3.2739725482721457e-07,
+      "rhs_max_abs": 517.0825132196699,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    }
+  },
+  {
+    "case": "real_runner_B_fixture_v2",
+    "mock_scope": "Only builder replaced with 2 actual Gurobi annual rows",
+    "optimize_called": false,
+    "direct_scientific_acceptance": false,
+    "parameters": {
+      "Method": 2,
+      "Threads": 48,
+      "BarHomogeneous": 1,
+      "Crossover": 0,
+      "SolutionTarget": 1,
+      "BarConvTol": 0.0001,
+      "NumericFocus": 2,
+      "ScaleFlag": 2,
+      "Presolve": 2,
+      "Aggregate": 1
+    }
+  }
+]

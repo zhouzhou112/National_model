@@ -1,0 +1,801 @@
+{
+  "generated_at": "2026-09-13T08:32:59.551520+00:00",
+  "git_head": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "git_commit_created": false,
+  "changed_this_review": [
+    "cispo_model/config.py",
+    "scripts/audit_reservoir_storage.py",
+    "config/hydro_storage_corrections_20260913_v2.csv",
+    "config/optimization_2030_storage_audited_v2.json",
+    "CODEX_HANDOFF.md",
+    "MODEL_SERVER_STATUS.md",
+    "SERVER_RUNBOOK.md",
+    "cispo_full_lp_model_spec.md"
+  ],
+  "previous_uncommitted_prerequisites": [
+    "cispo_model/numerical_cleanup.py",
+    "cispo_model/monolithic.py",
+    "cispo_model/hydro.py",
+    "cispo_model/master.py",
+    "cispo_model/data.py",
+    "cispo_model/io_contract.py",
+    "cispo_model/run_contract.py",
+    "scripts/prepare_hydro_storage_corrections.py",
+    "config/optimization_2030_numeric_repaired.json",
+    "config/hydro_storage_corrections_20260913.csv",
+    "tests/test_numerical_cleanup.py"
+  ],
+  "audit_complete": true,
+  "physical_input_globally_certified": false,
+  "full_year_national_lp_built": false,
+  "full_year_national_lp_solved": false,
+  "short_horizon_performance_improvement_proven": false,
+  "independent_8760_station_energy_checks": 6,
+  "validation": {
+    "status": "PASS",
+    "original_rows": 2030,
+    "changed_stations": 3,
+    "untouched_columns": 29,
+    "all_8760_hydrology_arrays_identical": true,
+    "original_backup_byte_identical": true,
+    "distinct_scientific_identity": true
+  },
+  "tests": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "success": true
+  },
+  "review_queue_counts": {
+    "NO_SELECTED_FLAG_NOT_ENGINEERING_CERTIFICATION": 466,
+    "CYCLIC_BOUND_REDUCIBLE_NOT_PHYSICAL_CERTIFICATION": 70,
+    "CHECK_ESTIMATED_STORAGE_SOURCE": 45,
+    "CHECK_ESTIMATED_STORAGE_AND_WATER_MATCH": 25,
+    "CHECK_STORAGE_WATER_INCONSISTENCY_NOT_AUTOMATIC_STORAGE_ERROR": 11,
+    "CORRECTED_FROM_ENGINEERING_SOURCE": 3
+  },
+  "source_files": [
+    {
+      "path": "cispo_model/config.py",
+      "bytes": 61358,
+      "sha256": "92b83dd54285193f38d3718adec501015b3c1b62c3da5c1abb932a638620e717"
+    },
+    {
+      "path": "scripts/audit_reservoir_storage.py",
+      "bytes": 15852,
+      "sha256": "799e22bef14d47232e8ce5cdb197ff858b0800b8df803ac70a34f52cf4fe8377"
+    },
+    {
+      "path": "config/hydro_storage_corrections_20260913_v2.csv",
+      "bytes": 994,
+      "sha256": "cca0145c63e88854f18034b4b70bf8049888f89baa4c483b59e5687301bf5198"
+    },
+    {
+      "path": "config/optimization_2030_storage_audited_v2.json",
+      "bytes": 15989,
+      "sha256": "f4105ea39a15d3dfa5547329adab8c43a7ed8fc59f2ec4c3c6de0258eaf684c4"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "bytes": 1023337,
+      "sha256": "79f124fd786b7f55c8031d0d8e73d7805ec47428ec5727c2abcc9c3d7de51e2c"
+    },
+    {
+      "path": "MODEL_SERVER_STATUS.md",
+      "bytes": 310663,
+      "sha256": "ca0367c502139131e1c5c11eb3f35e3b7b00b49f7c2d899c96326ec91373d236"
+    },
+    {
+      "path": "SERVER_RUNBOOK.md",
+      "bytes": 353931,
+      "sha256": "c1f89605b52c96963241c0a1386746c5cd18b85224b4452bfd889bae7a56e974"
+    },
+    {
+      "path": "cispo_full_lp_model_spec.md",
+      "bytes": 112941,
+      "sha256": "a4e7c596ffec0c6512072f613a282a62fb6d289b66cdd3132eee2ef7de642069"
+    },
+    {
+      "path": "cispo_model/numerical_cleanup.py",
+      "bytes": 3101,
+      "sha256": "c2f51ebf3cbd20800c77a5b57ac5829937c47d0d291c89b8ac647a172de6b763"
+    },
+    {
+      "path": "cispo_model/monolithic.py",
+      "bytes": 58750,
+      "sha256": "ee8cd5a59d62c8675269fb8a9be67c0f7c830ba92f289e2006b7306492c25f12"
+    },
+    {
+      "path": "cispo_model/hydro.py",
+      "bytes": 31482,
+      "sha256": "e695006ff296827e4e2e6569e8a1ba15fbdda033794b6b4019df479d0cf0dc41"
+    },
+    {
+      "path": "cispo_model/master.py",
+      "bytes": 80791,
+      "sha256": "0250fddcb16e50efacea5a5070b7d312b5ee669b6ba830470fe2e7e7e603d479"
+    },
+    {
+      "path": "cispo_model/data.py",
+      "bytes": 73603,
+      "sha256": "d8f063db858b2f0e829789d57aef15ae3e2f37dd2725159b190b008debaf8df0"
+    },
+    {
+      "path": "cispo_model/io_contract.py",
+      "bytes": 38730,
+      "sha256": "bfdfea4f33a20581039eb2b28e00cd6f045ef7efc57f1fe6f03d46ac044269ea"
+    },
+    {
+      "path": "cispo_model/run_contract.py",
+      "bytes": 19316,
+      "sha256": "1e481457fc5a194245f64ed56594b5458dada8bfb083c9d8b78c4f572a3e0055"
+    },
+    {
+      "path": "scripts/prepare_hydro_storage_corrections.py",
+      "bytes": 3261,
+      "sha256": "1ba0648c2e470f30661dba6b9a08b41d6ae290fcf48899c83c95e7031a59af5e"
+    },
+    {
+      "path": "config/optimization_2030_numeric_repaired.json",
+      "bytes": 15934,
+      "sha256": "616799d41d493ea1f7662f0323f840ee91dc318e14b0253444eb4c31772338d3"
+    },
+    {
+      "path": "config/hydro_storage_corrections_20260913.csv",
+      "bytes": 405,
+      "sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f"
+    },
+    {
+      "path": "tests/test_numerical_cleanup.py",
+      "bytes": 3776,
+      "sha256": "f4eff8a50e3a88dd5b349f621f304a54e7a7ad3ca46663ac4e6f926b1b113cbf"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "bytes": 733,
+      "sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "bytes": 861090,
+      "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations_original.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "data/hydro/repaired_storage_audit_20260913_v2/manifest.json",
+      "bytes": 1245,
+      "sha256": "2767f5837127bdf6d1be7b291df71517c8aa6f254c4f42889c05de2dd136d6bc"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/corrections.csv",
+      "bytes": 309,
+      "sha256": "b29dd3925af7b5e5481088ae5a2ced157eec41be7f26562a3db5360bcb3707f9"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/hydro_stations.csv",
+      "bytes": 861104,
+      "sha256": "af342cb6e13c1e4f6ffe29b7245c396f33ef4ca66a5c94bfe2fce7a198716a54"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/hydro_stations_original.csv",
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    {
+      "path": "data/hydro/repaired_20260913/manifest.json",
+      "bytes": 1245,
+      "sha256": "76e152c55cc88c7328b61e24bb9a8a0cfe00039c9eec6fce39382ad61c8972be"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "__pycache__/audit_old_storage_solution.cpython-310.pyc",
+      "bytes": 5042,
+      "sha256": "3c30a14aa96661976b88e145a552ccdadb376387efbe020efe316374c50dc74f"
+    },
+    {
+      "path": "__pycache__/check_storage_generation_budget.cpython-310.pyc",
+      "bytes": 3902,
+      "sha256": "e32c24d41f698f567ce4326e3fcbed8471d8811563d03efd39ec1aaa0274ff7d"
+    },
+    {
+      "path": "__pycache__/compare_storage_horizons.cpython-310.pyc",
+      "bytes": 3586,
+      "sha256": "62d1c3e5206351fbba39f3fdee6a3f8e3f14bc6473c4ca9ad4e69c132b2cb9ef"
+    },
+    {
+      "path": "__pycache__/finalize_evidence.cpython-310.pyc",
+      "bytes": 6547,
+      "sha256": "a33b5c55575416cfa2abc7da03137d7e7b6206bd6a531f96ef7628bab09c23f2"
+    },
+    {
+      "path": "audit_old_storage_solution.py",
+      "bytes": 5330,
+      "sha256": "f2db722592b8d5a0a2f9582c0c1a99bd2a01f0b2ba3fafeda36c22c87b1287b7"
+    },
+    {
+      "path": "check_storage_generation_budget.py",
+      "bytes": 4318,
+      "sha256": "4ce535dccddb455f2611285f705abcb8f16c08b836d2fe700ef12d94f1e2c326"
+    },
+    {
+      "path": "compare_storage_horizons.py",
+      "bytes": 3586,
+      "sha256": "ae4b1b4b970c71e3072ea3a8cf3e4b0f2faba9d2afe80bc9e1b9bcfcdef1e6d3"
+    },
+    {
+      "path": "corrected_station_bounds_by_horizon.csv",
+      "bytes": 1245,
+      "sha256": "0d219b184ea44b8e915451b97f6e4bb9ccee008b2ae5b86e1d670a91a6db0c81"
+    },
+    {
+      "path": "current_tracked_diff.patch",
+      "bytes": 111038,
+      "sha256": "5305d457b9ac05dbfc4b8f92b36026ce28226e4883da7badd7febfef7c0e4816"
+    },
+    {
+      "path": "finalize_evidence.py",
+      "bytes": 6133,
+      "sha256": "e98ff4711ece8d75b1f850bd25f6b0497eefd89ab7ed6a9c278dce955de96208"
+    },
+    {
+      "path": "horizon_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "horizon_stdout.log",
+      "bytes": 3146,
+      "sha256": "54ee841ceb7e49e9301aab5b7ff9add9dec9d81fe15fad37a767aaa4d19dd1dd"
+    },
+    {
+      "path": "horizon_storage_bounds.csv",
+      "bytes": 1487,
+      "sha256": "8ebf10b3345090ca84fde639d310d0c7e27113a560b3efd29cdd764cc4201f4a"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00835_corrected.log",
+      "bytes": 68,
+      "sha256": "c332f4b08c0062bf767182cdd4844849b5ff869f1b28806f6ae0603e5046409a"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00835_corrected.npz",
+      "bytes": 18050,
+      "sha256": "66a54de976bb273f0ff6f5925020a04e79d8cee35e6f64d551e4b570ffbd6d26"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00835_original.log",
+      "bytes": 68,
+      "sha256": "7063ffad27421825718799fc6d4b7a55a3f8b82eaac4be687816021b3cf7f923"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00835_original.npz",
+      "bytes": 18988,
+      "sha256": "30337f32b19d159d19da28d2af79201a4f7687ca58aa367f50d68429ec85adf1"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00923_corrected.log",
+      "bytes": 68,
+      "sha256": "c332f4b08c0062bf767182cdd4844849b5ff869f1b28806f6ae0603e5046409a"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00923_corrected.npz",
+      "bytes": 19192,
+      "sha256": "765a91039284a4087e83fb677aef744ea18a374441e3da9fce9b1c7f17265494"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00923_original.log",
+      "bytes": 68,
+      "sha256": "c332f4b08c0062bf767182cdd4844849b5ff869f1b28806f6ae0603e5046409a"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_00923_original.npz",
+      "bytes": 19756,
+      "sha256": "21cb436d5a7f4f3b6ae1c6c889812920bb6d8c03517e1a9989d10d5ecc8789b5"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_01048_corrected.log",
+      "bytes": 68,
+      "sha256": "552c5b9133cf0c839604659646e6cc7d6a2c8efb8f0ad392968574f060de21de"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_01048_corrected.npz",
+      "bytes": 36735,
+      "sha256": "0f30c08af0b260cd4b2d1e03324ab7a3b8a2732a64cb3717fba4668da6867f2b"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_01048_original.log",
+      "bytes": 68,
+      "sha256": "552c5b9133cf0c839604659646e6cc7d6a2c8efb8f0ad392968574f060de21de"
+    },
+    {
+      "path": "isolated_energy_checks/HydroCHN_01048_original.npz",
+      "bytes": 36239,
+      "sha256": "5963e95e16feacd94f27ca2ed373bc92891d62bb851b21a904a274516ecff1fa"
+    },
+    {
+      "path": "isolated_energy_checks/results.csv",
+      "bytes": 1433,
+      "sha256": "11cc1fea517fb4a6d57ee9539e33e025e1354a8a4be3369c06544bcb72f09f37"
+    },
+    {
+      "path": "isolated_energy_checks/results.json",
+      "bytes": 2975,
+      "sha256": "0c2de8e0e7e480764218ab19daaf827eb40021795bce2a4740eebed8d68e4f74"
+    },
+    {
+      "path": "isolated_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "isolated_stdout.log",
+      "bytes": 2564,
+      "sha256": "e39f7afd483115ca19ff996f6f05743bd0e91416e868ca685d203628e65de187"
+    },
+    {
+      "path": "old_4139552_storage_summary.json",
+      "bytes": 4618,
+      "sha256": "d97f2d308ae324e7bec30a0150439c886c0dec23d28196a0d875cd5a5453f07b"
+    },
+    {
+      "path": "old_4139552_storage_trajectories.csv",
+      "bytes": 555012,
+      "sha256": "41bf3aa893fb498ae8f3ddb04a1aadda702efe0aef6551449593f54086264d7e"
+    },
+    {
+      "path": "original_vs_v1/affine_volume_pattern_stations.csv",
+      "bytes": 55958,
+      "sha256": "0d87fe146a0129bdb17da9a4e96ff685a0591a43a9c1996cb291ccdd19000383"
+    },
+    {
+      "path": "original_vs_v1/audit.json",
+      "bytes": 3789,
+      "sha256": "31dcfc87d7bf4e164bdf3776fdfb4865ea26d3697671c96aa578f6c657e393ea"
+    },
+    {
+      "path": "original_vs_v1/effective_config.json",
+      "bytes": 15938,
+      "sha256": "65a934d4eab2eb2a940d9f2ba33c5dabec9b9675a2322095e1cb57477236105d"
+    },
+    {
+      "path": "original_vs_v1/excess_inventory_stations.csv",
+      "bytes": 104741,
+      "sha256": "051155cbaab19043a71236c050ea21ec5d95c2abe92de012e98f8a0cfde8381d"
+    },
+    {
+      "path": "original_vs_v1/hourly_water_evidence.npz",
+      "bytes": 20671673,
+      "sha256": "19e0b9595b57149d2408229b77326f5cfe4525d0941cf8418d7fc54abcb6e802"
+    },
+    {
+      "path": "original_vs_v1/hours_8760.csv",
+      "bytes": 748406,
+      "sha256": "c5e3c0c879769f763b97297fcb38db8eb1bb731c0bdb534e247088c30d15f09c"
+    },
+    {
+      "path": "original_vs_v1/reservoirs_620.csv",
+      "bytes": 451993,
+      "sha256": "4058c28ee05b012d855e3c78bc2c1bef3d743750e697a64750303691ea159a7a"
+    },
+    {
+      "path": "original_vs_v1/source_lineage.csv",
+      "bytes": 423,
+      "sha256": "e6cea19eed5e706adbf26330228b61e361380aabe161a10fad4f7e2c108c6ccb"
+    },
+    {
+      "path": "original_vs_v1/source_manifest.json",
+      "bytes": 2510,
+      "sha256": "e1fe883899a1d2168222e38b71c90733df5eb747e4c736c5d733557af62dcb0c"
+    },
+    {
+      "path": "original_vs_v2/affine_volume_pattern_stations.csv",
+      "bytes": 55934,
+      "sha256": "d451197f850f3cd34b3b2b56fdede6a011ba61311ac1f4a39628f767e78ff061"
+    },
+    {
+      "path": "original_vs_v2/audit.json",
+      "bytes": 3789,
+      "sha256": "bbf64cb68bb7c089bd0fc78868f25d6696e2ac1e41c8e7a7b4d6136f6dfcadfc"
+    },
+    {
+      "path": "original_vs_v2/effective_config.json",
+      "bytes": 15988,
+      "sha256": "9211e32be08e76a6cdc32080ee8bfb08c841b6250f765fd975c09059bd709d72"
+    },
+    {
+      "path": "original_vs_v2/excess_inventory_stations.csv",
+      "bytes": 104717,
+      "sha256": "5487e13dbd1ab43a2ed9b41449c3c0700790a137f6ad9c790adf4539ec2de8d2"
+    },
+    {
+      "path": "original_vs_v2/hourly_water_evidence.npz",
+      "bytes": 20671681,
+      "sha256": "0a250a503f15d27b26a2590fbf9167fde2b1d325c0439de32a581835392ff50e"
+    },
+    {
+      "path": "original_vs_v2/hours_8760.csv",
+      "bytes": 748406,
+      "sha256": "c5e3c0c879769f763b97297fcb38db8eb1bb731c0bdb534e247088c30d15f09c"
+    },
+    {
+      "path": "original_vs_v2/reservoirs_620.csv",
+      "bytes": 451972,
+      "sha256": "ac51d336cd774ac47de34f11fad3808d8b98ea4f2a9cad7d7de5d4e9f410160f"
+    },
+    {
+      "path": "original_vs_v2/source_lineage.csv",
+      "bytes": 423,
+      "sha256": "e6cea19eed5e706adbf26330228b61e361380aabe161a10fad4f7e2c108c6ccb"
+    },
+    {
+      "path": "original_vs_v2/source_manifest.json",
+      "bytes": 2529,
+      "sha256": "57695cc718e01335075821196dd02b7d06e4fbb590c4c725328aeab46afbbf74"
+    },
+    {
+      "path": "probe_stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "probe_stdout.log",
+      "bytes": 21131,
+      "sha256": "b2184453b3faf1917a7f50e507eb20e652d6d1a6bb75db5730efb9bee9ebe1da"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/build.json",
+      "bytes": 4387,
+      "sha256": "939338a9f49b374b5706bc6e8a65cb5b62f30b7319a9657ccb639eea1e4c1f6e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/configuration.json",
+      "bytes": 16010,
+      "sha256": "5ca9004ae20275d5e2866bfda7f8772c9311f141a305877d999a8e79a156fea2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/gurobi.log",
+      "bytes": 12134,
+      "sha256": "cfa39f21b6f63971fa3b154a2a3053bb64d92cf1a77405245967d68436e358e2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/model.mps",
+      "bytes": 165149122,
+      "sha256": "b44d4bdf5a8df89b1b86692bab8bc271ea8df10fcb6dd30f0b430cb9c03ec34f"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_adequacy_by_province.csv",
+      "bytes": 5666,
+      "sha256": "a9565486d4b6f7db5ae98724fd6c64ca681c8a7457c905a0b70aff7bfd561c8d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_carbon_ccs.json",
+      "bytes": 684,
+      "sha256": "fbc81355d7c85e0672fd617672a17fed29706264d2252602940d30dc335b26db"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_constraint_shadow_prices.csv",
+      "bytes": 265932,
+      "sha256": "d969029ef5add95d6c4228feef91dc9149940f2cbd4a8a568a5f9a609bd0526c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_flexible_load_by_province.csv",
+      "bytes": 8172,
+      "sha256": "72fcc86858ecd1507ae98b5d1f7d78cee835bb3a5ec37816f675b5687d35a615"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_generation_by_province_technology.csv",
+      "bytes": 12590,
+      "sha256": "69bf6c76c2bc8884bba467bbf34f08c9d8ef3b24a4981772ab6144f76156d976"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/annual_resource_accounting_by_province.csv",
+      "bytes": 5904,
+      "sha256": "198d1542d2b3cb8da64e9ba3f6302713e42714b3f3d4513e589efece58a2741d"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/co2_source_sink_flows.csv",
+      "bytes": 1169,
+      "sha256": "196438c6a6170d1abf79c790713f35a8f4f8e13d0ebffa3f53cfaee2de7484a4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/cost_components.csv",
+      "bytes": 3493,
+      "sha256": "101ad2bb376cb9219a3e442c3de7df055a67c10496bd2b8bc7fa496e5e3a50c8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/dac_capacity_capture.csv",
+      "bytes": 7690,
+      "sha256": "39310673cecef5de393cebc8e2950d6c0d2635234b60b72a97302c33125b90e4"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/dual_export_status.json",
+      "bytes": 492,
+      "sha256": "4b6d24e6040ebd3bb4b25b072ac65db3aac1ff0a6486500b00020503ad2db60a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/flexible_load_dispatch.npz",
+      "bytes": 53192,
+      "sha256": "5f30849aca617a077510064c28e14e8b6d09863e55a4d56e12f512cdd9a4aae9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hourly_marginal_prices.csv.gz",
+      "bytes": 11046,
+      "sha256": "21db92bd02bdf9c4c49be6b05a5ddd74bac01cf821775f33ce173c824c80e6db"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hourly_province_balance.csv.gz",
+      "bytes": 72784,
+      "sha256": "12a5818f822b2dd3b202d288c3a09fd30b17e0ed60915d7ecc0e038f07ac1a61"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hourly_province_security.csv.gz",
+      "bytes": 58479,
+      "sha256": "f4404eaa3bfe2b2bb78f21aed829880d296cbf7d6ffb051e13bd6e0ca2dea736"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hydro_aggregate_capacity.csv",
+      "bytes": 9730,
+      "sha256": "918f040ac4ceb7e50bdc5ccb16dfb3e48591a5ca5cc22069bff2981ecf9ec4d9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hydro_capacity.csv",
+      "bytes": 268105,
+      "sha256": "694426e4a348863b845c55288e4f5cb9cb5e104a5d6291456ea112d61a7e4d6c"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hydro_cascade_reconciliation_audit.json",
+      "bytes": 8611,
+      "sha256": "41864cbb29e04666ffbfdfee96cdfe6ac64fbb77bb9af00e195cc859efa424ae"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8126,
+      "sha256": "fab985f1845879de3e600a7dbe76dca77aad2da1684f5cf043759b1103815e2a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/hydro_dispatch.npz",
+      "bytes": 9239,
+      "sha256": "c9e4270af1732be85b3d3873900e48096517ff7ea30001838a649d1892dcb809"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/intra_grid_substation_design.csv",
+      "bytes": 983470,
+      "sha256": "ffd17669472eae8a6cbd31dcbd12e69053fee3cf6d05439fc91ea7b260abf4c2"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/intra_grid_vre_site_design.csv",
+      "bytes": 5062226,
+      "sha256": "972121b17017628279572d45e5a7707597aa22d5d990f6d135e2624d0348920f"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/load_center_annual_balance.csv",
+      "bytes": 45756,
+      "sha256": "114882a285a57ee7fe0cd5a7b6bcce6c9c775a2cd1407dbd6bd28b4bb946d033"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/load_center_annual_generation.csv",
+      "bytes": 97781,
+      "sha256": "ab70f75f9001ac2a8212273b896971d0cb5303fb0964c3cc1f62bda1116f28b0"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/load_center_intra_transmission.csv",
+      "bytes": 98473,
+      "sha256": "f7d3cba6794a577be51f9f4624928b3a58ce0e1dbe331558ae91e34b0a45218f"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/load_center_network_qc.csv",
+      "bytes": 516,
+      "sha256": "4e76f4c8fed83402484f90476c96feeba8c4be33858f73b945781926572d9c57"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/province_annual_load_center_accounts.csv",
+      "bytes": 3310,
+      "sha256": "2974df788cb7689a213d913e06c4c7bd58a945bb4d984a7f861d21ba60eff13e"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/reservoir_dispatch.npz",
+      "bytes": 203614,
+      "sha256": "9fbebba961359c5517c61f536defc76107d0f57ffa080f90546556594f20dcc9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/reservoir_station_index.csv",
+      "bytes": 158490,
+      "sha256": "2100f95ba93a594e8a0199efc186db33d4db15108dd8d926fb04e4816fc9fa39"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/scenario_manifest.json",
+      "bytes": 6303,
+      "sha256": "92cb8af2b2d32e799c5330021fe5de59e5d9086273fb58412f9f67af0e019440"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/solution_qc.json",
+      "bytes": 10390,
+      "sha256": "e69328d097343f5430a068be5cfd9ab9ab94024b9f327e25ee1ca804c10e9319"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/storage_capacity.csv",
+      "bytes": 6455,
+      "sha256": "c171d0edabdf8c389468c3b7d944bbbfb07ce21db04e44d2c6105f1db43fc1e7"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/storage_dispatch.npz",
+      "bytes": 11142,
+      "sha256": "25a85ec616274c91635bf05f9e9cee9ed083ac9562c0cb664137bc0f82706112"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/thermal_dispatch.npz",
+      "bytes": 19248,
+      "sha256": "1fb04ac63fb4b1f00a99ea08f60213476a5abc664284d40201c5b5ce7a06a9da"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/thermal_nuclear_capacity.csv",
+      "bytes": 17401,
+      "sha256": "8bc805c2222d155d9d8046dfa804f547c9e02e32d0f15bdc5441177b9508a569"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/time_index.csv",
+      "bytes": 860,
+      "sha256": "ec197815d058148f4b384111fd1aaf661e92dd8068b64c82b694f684543fcef9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/transmission_capacity.csv",
+      "bytes": 19001,
+      "sha256": "17fd969950155f3418b3e89e0edb46fd16445e995879c3b50a24d89c96defaa5"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/transmission_flows.npz",
+      "bytes": 5806,
+      "sha256": "1f635382a7c6d12c2620dd9e18c1c1222a54a22ae1b534f1222c720ec4b6c128"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/vre_capacity.csv",
+      "bytes": 2462124,
+      "sha256": "228a7517e01210de50135750bad3ebb9c17aa680de8813eef803f1412052306a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/vre_dispatch.npz",
+      "bytes": 27239,
+      "sha256": "935bfc6f4ef9fce3a112355653bc53567b50d9a8852bd6f8d9ff5f872f614fb8"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/wave_capacity.csv",
+      "bytes": 197988,
+      "sha256": "1c771c48ea2dcba9cd11610307c63de5b1998d342a318cd66ed9ab41182d2e8a"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/physical_export/wave_dispatch.npz",
+      "bytes": 10048,
+      "sha256": "1fcbadae6fd57341a6c79a9c26939d2aeb31572bf18e4f45eb0ba5722db59f45"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/result.json",
+      "bytes": 9021,
+      "sha256": "e1ed8932b899b856391e82e2c247d0b865c4efe7c27e8408557d1ae8274a11e9"
+    },
+    {
+      "path": "probes/cleaned_nf2_24h_s0_cross2_storage_v2/solution.npy",
+      "bytes": 2774264,
+      "sha256": "15a05b6f86815c9f9ebf9eaca7a8b8e127b73269467cb9d3d8ffecb9ce57b36b"
+    },
+    {
+      "path": "REVIEW_ZH.md",
+      "bytes": 15311,
+      "sha256": "f225d0a91b97a632ac068814d65b137b38518d2d0d87bc5a11c08c71d2d678ae"
+    },
+    {
+      "path": "run_storage_probe.py",
+      "bytes": 6888,
+      "sha256": "3bb1947ee71e45d21a866c66a775f411adde06e783e0c6c677c8e1a362c79fd5"
+    },
+    {
+      "path": "short_horizon_limit.json",
+      "bytes": 456,
+      "sha256": "21bfb2dd2a5952abc237991527887e9c9491ce4a7090da4b322181f8f2dc4545"
+    },
+    {
+      "path": "sources/generation_scripts/build_cispo_data_package.py",
+      "bytes": 155371,
+      "sha256": "d5cf5f1fb69d0892ca99227647b6f7e3e01ceb3fae468d0cfe07538545597d0e"
+    },
+    {
+      "path": "sources/generation_scripts/run_hydro_phs_pipeline.py",
+      "bytes": 16107,
+      "sha256": "ed6f623912e046c9c9f4b0e10ad6c79c2135f58a66e8135e0c27de602e8b44da"
+    },
+    {
+      "path": "sources/generation_scripts/stage2_pipeline.py",
+      "bytes": 34650,
+      "sha256": "8e366f9a42f1a8d49387b527b74d21f30a8cdf32f8a99d61f652f013deddb258"
+    },
+    {
+      "path": "sources/old_4139552_reservoir_dispatch.npz",
+      "bytes": 233244197,
+      "sha256": "c3f02bb01044ea40b43ec1a5e759a79cfcd4b1dc6327081ef7c4dcd90978d07e"
+    },
+    {
+      "path": "sources/render_stderr.log",
+      "bytes": 94,
+      "sha256": "6b76dedf9fefb6759a7c6ef6ed89ea38f6b993e297a0acdcbd6c6c84b47b8b17"
+    },
+    {
+      "path": "sources/xinhua_hydropower_2018_prospectus.pdf",
+      "bytes": 3599438,
+      "sha256": "954babf38eceb03b2052954b7d5841fd4f971e15755f6622f5c5c90346aa796d"
+    },
+    {
+      "path": "sources/xinhua_page_59.txt",
+      "bytes": 2517,
+      "sha256": "97d432f62fb34d0429dd7f38a1f1cdb9bf57147d76627c6db1e2b2b9a860a3eb"
+    },
+    {
+      "path": "sources/xinhua_page_60.txt",
+      "bytes": 2199,
+      "sha256": "29045e928ad2320a28ec406cffd7e11a210e14c52d1c99fae57877c6f9b532a1"
+    },
+    {
+      "path": "sources/xinhua_page_61.txt",
+      "bytes": 1914,
+      "sha256": "49b3a02799f0873ae5e73159c06243be0893a5a0a7747694c57ef2dfd18534b6"
+    },
+    {
+      "path": "sources/xinhua_page_63.txt",
+      "bytes": 2207,
+      "sha256": "c5aa553cbb53ceb412d2fc6dfc44a0ed88286180788b3bbe0e3b2dee1926cd6e"
+    },
+    {
+      "path": "sources/xinhua_page_66.txt",
+      "bytes": 2653,
+      "sha256": "9713f9fa5ee59e643e315ae5a60db75631536cc2949b4fb875b3eb95afe80684"
+    },
+    {
+      "path": "sources/xinhua_verified-059.png",
+      "bytes": 272863,
+      "sha256": "ad5e4cc0ff608972b87a1b2de72f8f21c7e6214294dc53aab61fc8bd87a28b71"
+    },
+    {
+      "path": "sources/xinhua_verified-060.png",
+      "bytes": 242282,
+      "sha256": "08400cfb9fd9a593d891759ad97f5a7f90880589c82bcff27a815df223895442"
+    },
+    {
+      "path": "storage_audit_source_overlay.tar.gz",
+      "bytes": 1455331,
+      "sha256": "25cca2747a6d2b49b6b76a053538ddc4d7265ba06d9a9e638246666c59e38146"
+    },
+    {
+      "path": "storage_review_queue.csv",
+      "bytes": 476702,
+      "sha256": "5469f27d8909131e9af0a57be6b141d5f743c2e7ba94731c9c2db2b97bec7485"
+    },
+    {
+      "path": "unit_test_summary.json",
+      "bytes": 73,
+      "sha256": "af6386eb2cd515e685081b76842551a3ae1845557ef2871be66062facd0f86e8"
+    },
+    {
+      "path": "unit_test_summary_missing_wave_environment.json",
+      "bytes": 74,
+      "sha256": "e14f3ba45abc5b01c19f7946ee0e159736679f009f8968133e628cb043a31ec4"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 236,
+      "sha256": "03f01fff9dd9c23ea83f047a6de5fd6128a8839383e38d141eeb494df6755edc"
+    }
+  ],
+  "commands": [
+    "python scripts/audit_reservoir_storage.py --output-dir supplementary_materials/reviews/reservoir_storage_audit_20260913/original_vs_v1",
+    "python scripts/audit_reservoir_storage.py --config config/optimization_2030_storage_audited_v2.json --output-dir supplementary_materials/reviews/reservoir_storage_audit_20260913/original_vs_v2",
+    "python supplementary_materials/reviews/reservoir_storage_audit_20260913/audit_old_storage_solution.py",
+    "python supplementary_materials/reviews/reservoir_storage_audit_20260913/compare_storage_horizons.py",
+    "python supplementary_materials/reviews/reservoir_storage_audit_20260913/check_storage_generation_budget.py",
+    "python supplementary_materials/reviews/reservoir_storage_audit_20260913/run_storage_probe.py --case cleaned_nf2 --hours 24 --time-limit 180 --crossover 2 --tag _storage_v2"
+  ],
+  "runtime": "Windows RL Python 3.10 with existing Gurobi 13.0.2 overlay and CISPO_WAVE_ROOT; PDF read/render uses bundled runtime",
+  "server_actions": "Read-only SCP of old archived reservoir_dispatch.npz; no job submission or remote mutation"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "year": 2030,
+    "boundary_year": 2025,
+    "dac_enabled": false,
+    "carbon_limit_mtpa": 4000.0,
+    "scientific_configuration_sha256": "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0"
+  },
+  {
+    "year": 2040,
+    "boundary_year": 2030,
+    "dac_enabled": true,
+    "carbon_limit_mtpa": 1300.0,
+    "scientific_configuration_sha256": "9875d9088167f8f8051bd842365f712f6ec3fd2819a681112eff60347f994017"
+  },
+  {
+    "year": 2050,
+    "boundary_year": 2040,
+    "dac_enabled": true,
+    "carbon_limit_mtpa": -100.0,
+    "scientific_configuration_sha256": "74b062e41cb83cb4616ca1b6f651f1d7796a556d3f36b512ce2997d6e137086c"
+  },
+  {
+    "year": 2060,
+    "boundary_year": 2050,
+    "dac_enabled": true,
+    "carbon_limit_mtpa": -550.0,
+    "scientific_configuration_sha256": "f579fb49e2213dfc22c81c588fda79f5ba8ea59fa52295b71cf8343e92f62792"
+  }
+]

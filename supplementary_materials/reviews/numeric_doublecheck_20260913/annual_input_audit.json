@@ -1,0 +1,133 @@
+{
+  "hydro": {
+    "qc": {
+      "stations": 620,
+      "hours": 8760,
+      "station_hours": 5431200,
+      "all_finite": true,
+      "water_residual_m3": 5.885027348995209e-06,
+      "turbine_lower_violation_m3s": 2.3393632709990517e-09,
+      "turbine_upper_violation_m3s": 0.0,
+      "spill_upper_violation_m3s": 0.0,
+      "spill_lower_violation_m3s": 0.0,
+      "storage_lower_violation_m3": 1.3875345317160281e-05,
+      "storage_upper_violation_m3": 1.3868208043277264e-05,
+      "generation_upper_violation_gw": 1.7763568394002505e-15,
+      "isolated_spill_upper_violation_m3s": 1.8189894035458565e-12,
+      "passed": true
+    },
+    "local_rhs_million_m3": {
+      "min": 3.60001802444458e-05,
+      "max": 50.582703515625,
+      "span": 1405068.0627752976
+    },
+    "inventory_bound_million_m3": {
+      "min": 0.0032250370000000005,
+      "max": 18482.41654,
+      "span": 5730916.1228227755
+    },
+    "source_storage_million_m3": {
+      "min": 0.0032250370000000005,
+      "max": 44779.94924,
+      "span": 13885096.276414812
+    },
+    "release_upper_scaled": {
+      "min": 0.000895843612112007,
+      "max": 15297.147939467479,
+      "span": 17075690.14574263
+    },
+    "spill_upper_scaled": {
+      "min": 1.0000050067901613e-05,
+      "max": 15297.147939467479,
+      "span": 1529707135.0241146
+    },
+    "eligible": 482,
+    "v4_bound_check": {
+      "spill_upper_scaled": {
+        "min": 0.0009132789243831426,
+        "max": 15297.147939467479,
+        "span": 16749699.934003903
+      },
+      "positive_bounds_relaxed": 390333,
+      "tightened_vs_original_release": 4222299,
+      "newly_zero_vs_original_release": 1321812,
+      "v3_bounds_contained": true,
+      "original_release_contains_v4": true,
+      "zero_bounds_identical": true,
+      "existing_v3_solutions_v4_spill_violation_m3s": 0.0,
+      "v3_positive_bounds_below_1e_4": 97059,
+      "v4_positive_bounds_below_1e_4": 0
+    }
+  },
+  "tiny_existing_vre": [
+    {
+      "cutoff_gw": 1e-06,
+      "sites": 5,
+      "floor_gw": 2.75e-06,
+      "nameplate_8760_energy_upper_gwh": 0.02409,
+      "actual_cf_energy_upper_gwh": 0.003605844973510839
+    },
+    {
+      "cutoff_gw": 1e-05,
+      "sites": 47,
+      "floor_gw": 0.00020063000000000004,
+      "nameplate_8760_energy_upper_gwh": 1.7575188000000004,
+      "actual_cf_energy_upper_gwh": 0.3163193164111302
+    },
+    {
+      "cutoff_gw": 0.0001,
+      "sites": 129,
+      "floor_gw": 0.003645591,
+      "nameplate_8760_energy_upper_gwh": 31.93537716,
+      "actual_cf_energy_upper_gwh": 5.427273480780823
+    }
+  ],
+  "ccs_sinks": {
+    "count": 3241,
+    "annual_total_mtpa": 362808.73576366226,
+    "individual_range": {
+      "min": 0.0028679999522864,
+      "max": 3266.5810623168945,
+      "span": 1138975.284749479
+    },
+    "field": "ccs_inj_rec_mtpa"
+  },
+  "dac": [
+    {
+      "technology": "koh_cl",
+      "year": 2030,
+      "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year": 494.6497640487911,
+      "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": 161.38360295999996,
+      "variable_om_yuan_per_tco2": 16.04398392,
+      "average_power_gw_per_mtco2_per_year": 0.1090816844241501,
+      "lifetime_years": 25.0
+    },
+    {
+      "technology": "koh_b",
+      "year": 2030,
+      "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year": 413.49676144069537,
+      "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": 134.16505451999998,
+      "variable_om_yuan_per_tco2": 1516.6484423999998,
+      "average_power_gw_per_mtco2_per_year": 0.7134703196347032,
+      "lifetime_years": 25.0
+    },
+    {
+      "technology": "ssor",
+      "year": 2030,
+      "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year": 1857.864144398245,
+      "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": 567.24217992,
+      "variable_om_yuan_per_tco2": 354.83509368,
+      "average_power_gw_per_mtco2_per_year": 0.1556950786402841,
+      "lifetime_years": 25.0
+    },
+    {
+      "technology": "mgo_am",
+      "year": 2030,
+      "annualized_capex_million_yuan_per_mtco2_per_year_capacity_year": 543.0839001877475,
+      "fixed_om_million_yuan_per_mtco2_per_year_capacity_year": 175.49989919999996,
+      "variable_om_yuan_per_tco2": 13.3532532,
+      "average_power_gw_per_mtco2_per_year": 0.1033739218670725,
+      "lifetime_years": 25.0
+    }
+  ]
+}

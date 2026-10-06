@@ -1,0 +1,17 @@
+[
+  {
+    "path": "formal_base.sbatch",
+    "old_sha256": "4c9e97cf39e5f03f6abcec007b038d499ef1cd7b25c604b765252026fe65e4c7",
+    "new_sha256": "feb473a7521b7bc4d3c6bee355ddbd84b4495859bf451e5c1635f27275caf9ff"
+  },
+  {
+    "path": "repo/scripts/run_cispo_2030_full_year.py",
+    "old_sha256": "7756aec9e260241cf9469b4ab8d854ad3f0e789fa22a9a905c0714abf673d1f2",
+    "new_sha256": "a869aac11f745f78e6608bbb093bd6e7bdfbc975e8a91204e5323485e1e00d46"
+  },
+  {
+    "path": "repo/tests/test_numeric_repaired_formal_launch.py",
+    "old_sha256": null,
+    "new_sha256": "722f987ad20b82382da9438116817a610a286fcea02b8c97c0bb988e25491b69"
+  }
+]

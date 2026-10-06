@@ -1,0 +1,109 @@
+{
+  "source_sha256": "c3f02bb01044ea40b43ec1a5e759a79cfcd4b1dc6327081ef7c4dcd90978d07e",
+  "source_run": 4139552,
+  "scope": "Old nonbasic engineering result, not a scientifically accepted solution",
+  "hours": 8760,
+  "reservoirs": 620,
+  "checked_station_hours": 5431200,
+  "original_input_hydrology_max_difference_m3s": 0.0,
+  "maximum_water_residual_m3": 0.03899853676557541,
+  "reservoirs_with_water_residual_above_1m3": 0,
+  "station_hours_with_water_residual_above_1m3": 0,
+  "station_hours_with_water_residual_above_10m3": 0,
+  "offset_above_10times_excursion_reservoirs": 34,
+  "offset_above_100times_excursion_reservoirs": 7,
+  "largest_offset_m3": 20388557851.758286,
+  "largest_offset_to_excursion": 2625.080803458877,
+  "residual_change_from_subtracting_constant_offset_m3": 1.9073486328125e-06,
+  "notes": [
+    "Subtracting a constant inventory offset preserves flows and exact equations but does not repair pre-existing infeasibility.",
+    "A corrected physical regulating volume can require redispatch; it is different from an equivalent offset removal.",
+    "Large offsets and residuals are evidence of exposure to cancellation; they do not establish the unique cause of the failed 9-day run."
+  ],
+  "worst_stations": [
+    {
+      "hydrochn_row_id": "HydroCHN_00001",
+      "plant_name_local_ght": "长江三峡水电站",
+      "old_max_water_residual_m3": 0.03899853676557541,
+      "old_worst_water_hour": 1560,
+      "source_storage_to_safe_annual_water": 0.1399671415024584
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00528",
+      "plant_name_local_ght": "黄河海勃湾水利枢纽工程",
+      "old_max_water_residual_m3": 0.036248755616977824,
+      "old_worst_water_hour": 5927,
+      "source_storage_to_safe_annual_water": 4444.922063489021
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00018",
+      "plant_name_local_ght": "两河口混合式抽水蓄能电站",
+      "old_max_water_residual_m3": 0.02407968952320516,
+      "old_worst_water_hour": 6823,
+      "source_storage_to_safe_annual_water": 0.9350665924876372
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00004",
+      "plant_name_local_ght": "金沙江乌东德水电站",
+      "old_max_water_residual_m3": 0.020697140600532293,
+      "old_worst_water_hour": 2845,
+      "source_storage_to_safe_annual_water": 0.0728830468060172
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_01397",
+      "plant_name_local_ght": "金沙江观音岩水电站",
+      "old_max_water_residual_m3": 0.016634239815175533,
+      "old_worst_water_hour": 2783,
+      "source_storage_to_safe_annual_water": 0.0764876188421255
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00136",
+      "plant_name_local_ght": "嘉陵江草街航电枢纽",
+      "old_max_water_residual_m3": 0.01644625747576356,
+      "old_worst_water_hour": 2737,
+      "source_storage_to_safe_annual_water": 0.0616845322247763
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_01069",
+      "plant_name_local_ght": "金沙江鲁地拉水电站",
+      "old_max_water_residual_m3": 0.014262805756288799,
+      "old_worst_water_hour": 7668,
+      "source_storage_to_safe_annual_water": 132.3132031419534
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00835",
+      "plant_name_local_ght": "白竹洲水电站",
+      "old_max_water_residual_m3": 0.013836578221742002,
+      "old_worst_water_hour": 6207,
+      "source_storage_to_safe_annual_water": 276.72614828175364
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00003",
+      "plant_name_local_ght": "金沙江溪洛渡水电站",
+      "old_max_water_residual_m3": 0.012724526226520538,
+      "old_worst_water_hour": 5775,
+      "source_storage_to_safe_annual_water": 0.0975056261378848
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00843",
+      "plant_name_local_ght": "过军渡水电站",
+      "old_max_water_residual_m3": 0.010231468681013212,
+      "old_worst_water_hour": 334,
+      "source_storage_to_safe_annual_water": 1.3663235924849968
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_01285",
+      "plant_name_local_ght": "大渡河泸定水电站",
+      "old_max_water_residual_m3": 0.00983404800081189,
+      "old_worst_water_hour": 2924,
+      "source_storage_to_safe_annual_water": 141.7618432834514
+    },
+    {
+      "hydrochn_row_id": "HydroCHN_00028",
+      "plant_name_local_ght": "金沙江梨园水电站",
+      "old_max_water_residual_m3": 0.009135442785918713,
+      "old_worst_water_hour": 3337,
+      "source_storage_to_safe_annual_water": 0.0329364337655256
+    }
+  ]
+}

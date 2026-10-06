@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-06T16:27:09.8623229Z",
+  "git_head": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "tested_source_count": 351,
+  "tested_source_drift": [],
+  "factor_delivery_files": 68,
+  "factor_delivery_sha_failures": [],
+  "local_solver_processes": [],
+  "regression_reused": "unittest_verified_20261005T185140Z",
+  "no_new_solver_or_tests_started": true
+}

@@ -1,0 +1,16 @@
+{
+  "retrieved_at": "2026-09-13T12:43:22.068321+08:00",
+  "remote_output": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/outputs/2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_v4",
+  "remote_run_control": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3/run_control/2030_base_8760_rows8192_stagea_final_t32_mem550_slurm32_no_softmem_2820fc3_v4",
+  "files": [
+    "gurobi.log",
+    "solve_report.json",
+    "solution_qc.json",
+    "preservation_report.json",
+    "barrier_checkpoint_error.json",
+    "final_stage_a_lp_identity.json",
+    "model_config_snapshot.json",
+    "model_archive/parameters.prm"
+  ],
+  "operation": "read-only SSH/SCP; no solve or job mutation"
+}

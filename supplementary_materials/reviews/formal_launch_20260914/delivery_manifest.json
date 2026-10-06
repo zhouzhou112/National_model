@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-09-14T02:18:34.936634+08:00",
+  "git_base_commit": "0a03cc452e95d158f36923ceb5210267979b6234",
+  "working_tree_dirty": true,
+  "job_id": "4613045",
+  "release": "20260914_base_v9_t48_m750_tol1e4_v2",
+  "files": [
+    {
+      "path": "cispo_model/diagnostics.py",
+      "bytes": 42159,
+      "sha256": "7c8e86b80e38f9801ea0f84dd298e952e94290640fd09bb644fb1765beefc00d"
+    },
+    {
+      "path": "scripts/run_cispo_2030_full_year.py",
+      "bytes": 110600,
+      "sha256": "7756aec9e260241cf9469b4ab8d854ad3f0e789fa22a9a905c0714abf673d1f2"
+    },
+    {
+      "path": "tests/test_numeric_repaired_formal_launch.py",
+      "bytes": 4148,
+      "sha256": "99ac7ec02ef115b528f230c1f77609ae6c6a31ca38c1ddbf105139b4edbb23bf"
+    },
+    {
+      "path": "config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json",
+      "bytes": 1712,
+      "sha256": "b00a7ef898d5c0fb7c4538b5ed75f958232117246afbf1115b6c0c340e34ce23"
+    },
+    {
+      "path": "config/cloud_resource_profiles/a8_8760_numeric_repaired_t48_m750_v1.json",
+      "bytes": 1466,
+      "sha256": "e296c6511a40f54c4272794b971197bb575bb42567873813cc53fb6cb166d4bc"
+    },
+    {
+      "path": "CODEX_HANDOFF.md",
+      "bytes": 1064711,
+      "sha256": "23559fb14693c6928f85c00560b245fa831aa2e5006b2ae9df70d4f8062d6831"
+    },
+    {
+      "path": "MODEL_SERVER_STATUS.md",
+      "bytes": 323470,
+      "sha256": "10320bbdb3c2ab0dd738ef6e40d088a8ef0f977081475f483ad7c939ae01688d"
+    },
+    {
+      "path": "SERVER_RUNBOOK.md",
+      "bytes": 369539,
+      "sha256": "a3f8e5858ef80ef0747d1c53263cc053ea146ad0c1d761a62c936c1bdf1780cd"
+    },
+    {
+      "path": "cispo_full_lp_model_spec.md",
+      "bytes": 129719,
+      "sha256": "a1cbcdcb404f567257a56bd8382048b61f51afec0f301a9caee43f181fb1bdd3"
+    }
+  ]
+}

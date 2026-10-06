@@ -1,0 +1,27 @@
+{
+  "status": 2,
+  "runtime": 25.740000009536743,
+  "barrier_iterations": 88,
+  "raw_max_row_violation": 2.9611868512802175e-11,
+  "bound_violation": 6.111777750561487e-12,
+  "dual_violation": 4.766574690506786e-09,
+  "strict_acceptance": true,
+  "raw": {
+    "variables": 346767,
+    "constraints": 213230,
+    "nonzeros": 1810105,
+    "coefficient_min_abs": 3.699999999999999e-05,
+    "coefficient_max_abs": 24.0,
+    "objective_coefficient_min_abs": 0.001,
+    "objective_coefficient_max_abs": 3853.189875762917,
+    "rhs_min_abs": 7.85753411585315e-06,
+    "rhs_max_abs": 3483.4054072542203,
+    "quadratic_constraints": 0,
+    "integer_variables": 0,
+    "binary_variables": 0,
+    "min_bound": 7.85753411585315e-06,
+    "max_bound": 18482.41654
+  },
+  "mps_identical_to_v8": true,
+  "mps_sha256": "c8b0c338f86b550e59d42f48e6a5271f1c8b64fb0e6de3b1d78eef393c8e75c3"
+}

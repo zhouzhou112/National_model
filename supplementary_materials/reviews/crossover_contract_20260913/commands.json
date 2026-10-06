@@ -1,0 +1,60 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\crossover_contract_20260913\\run_numeric_probe.py",
+      "--case",
+      "cleaned_nf2",
+      "--hours",
+      "24",
+      "--start",
+      "3960",
+      "--time-limit",
+      "180",
+      "--crossover",
+      "0",
+      "--tag",
+      "_tolerance_1e6",
+      "--config",
+      "config/optimization_numeric_dac_by_year_v9.json",
+      "--cf-cutoff",
+      "0.01",
+      "--spill-reduction",
+      "--spill-positive-bound-floor",
+      "1",
+      "--annual-water-bounds",
+      "--bar-conv-tol",
+      "1e-6"
+    ],
+    "CISPO_WAVE_ROOT": "D:\\codeenv\\pycharmproject\\National_RL\\wave_energy"
+  },
+  {
+    "argv": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\crossover_contract_20260913\\run_numeric_probe.py",
+      "--case",
+      "cleaned_nf2",
+      "--hours",
+      "24",
+      "--start",
+      "3960",
+      "--time-limit",
+      "180",
+      "--crossover",
+      "0",
+      "--tag",
+      "_tolerance_1e4",
+      "--config",
+      "config/optimization_numeric_dac_by_year_v9.json",
+      "--cf-cutoff",
+      "0.01",
+      "--spill-reduction",
+      "--spill-positive-bound-floor",
+      "1",
+      "--annual-water-bounds",
+      "--bar-conv-tol",
+      "1e-4"
+    ],
+    "CISPO_WAVE_ROOT": "D:\\codeenv\\pycharmproject\\National_RL\\wave_energy"
+  }
+]

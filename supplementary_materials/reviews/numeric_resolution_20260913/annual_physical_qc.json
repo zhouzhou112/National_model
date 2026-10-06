@@ -1,0 +1,15 @@
+{
+  "stations": 620,
+  "hours": 8760,
+  "station_hours": 5431200,
+  "maximum_water_residual_m3": 5.885027348995209e-06,
+  "maximum_storage_upper_violation_m3": 1.3868208043277264e-05,
+  "maximum_storage_lower_violation_m3": 1.3875345317160281e-05,
+  "maximum_generation_upper_violation_gw": 1.7763568394002505e-15,
+  "maximum_generation_lower_violation_gw": 1.1126667674332677e-12,
+  "maximum_spill_lower_violation_m3s": 0.0,
+  "all_values_finite": true,
+  "total_generation_gwh": 342733.1046768718,
+  "national_electricity_constraints_checked": false,
+  "pass": true
+}

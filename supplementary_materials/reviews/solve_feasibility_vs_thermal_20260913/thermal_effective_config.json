@@ -1,0 +1,21 @@
+{
+  "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260907_thermal_stagea_1e4_t44_ffd651a_v2/outputs/2030_case1_thermal_v5_8760_rows8192_t44_m700_tol1e4_ffd651a_v2/model_config_snapshot.json",
+  "sha256": "9cd72af62adb84a5a30806760549df95bb654afa96cd193f19cd29a6926a4cda",
+  "top_level_keys": [
+    "generated_at",
+    "source_path",
+    "source_sha256",
+    "scenario_source_path",
+    "scenario_source_sha256",
+    "solver_source_path",
+    "solver_source_sha256",
+    "formulation_source_path",
+    "formulation_source_sha256",
+    "resolved_configuration"
+  ],
+  "numerics": null,
+  "features": null,
+  "formulation": null,
+  "solver_profile": null,
+  "row_scaling": null
+}

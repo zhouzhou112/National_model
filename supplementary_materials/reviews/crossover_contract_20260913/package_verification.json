@@ -1,0 +1,20 @@
+[
+  {
+    "archive": "supplementary_materials\\reviews\\solver_alignment_thermal_20260913\\cloud_gate_20260913_v9_t44_tol1e6.tar.gz",
+    "sha256": "d743fa82f33f5b8b5f3427ceff1513bed8a13f55570f6dacc3b85e2d1ef624fd",
+    "bytes": 662855,
+    "files_verified": 197,
+    "status": "HASH_PASS",
+    "stage_a_contract_matches": false,
+    "ready_for_scientific_acceptance": false
+  },
+  {
+    "archive": "supplementary_materials\\reviews\\crossover_contract_20260913\\cloud_gate_20260913_v9_t44_cross0_tol1e6.tar.gz",
+    "sha256": "ddcc5f6e25e06d0fef01e12eef50d5b118489654c60aa10e34a1792d2c5d07b7",
+    "bytes": 662949,
+    "files_verified": 197,
+    "status": "HASH_PASS",
+    "stage_a_contract_matches": true,
+    "ready_for_scientific_acceptance": false
+  }
+]

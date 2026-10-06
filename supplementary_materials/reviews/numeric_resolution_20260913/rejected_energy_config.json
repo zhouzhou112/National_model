@@ -1,0 +1,424 @@
+{
+  "boundary_year": 2025,
+  "planning_year": 2030,
+  "planning_interval_years": 5,
+  "planning_sequence": {
+    "years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "initial_boundary_year": 2025,
+    "state_format": "capacity_cohorts_v2",
+    "retirement_rule": "active_when_planning_year_lt_retire_year",
+    "cohort_zero_tolerance": 1e-08,
+    "existing_vre_retirement": {
+      "mode": "cohort_survival_v1",
+      "cohort_file": "vre/existing_capacity_cohorts_2025.csv",
+      "baseline_year": 2025,
+      "unknown_start_year_policy": "boundary_censored_2025_v1",
+      "site_rebuild_policy": "retain_same_site_technical_upper_v1",
+      "connection_reuse_policy": "proxy_reused_independent_of_generator_cohort_v1"
+    },
+    "existing_hydro_retirement": "paper_assumption_operational_through_2060",
+    "model_build_retirement": "technology_lifetime_from_build_year"
+  },
+  "weather_year": 2024,
+  "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+  "hours": 8760,
+  "vre_scenario": "B",
+  "carbon_scenario": "Base_-550Mt",
+  "ccs_injection_field": "ccs_inj_rec_mtpa",
+  "ruc_formula_variant": "CISPO_original",
+  "capacity_bound_profile": "V0719_nuclear_biomass_battery_corrected",
+  "scenario": {
+    "id": "base",
+    "family": "cispo_replication",
+    "description": "Storage v2 physical data; equivalent reservoir GW/GWh coordinates; local validation candidate",
+    "evidence_status": "MODEL_BASELINE",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "parent_baseline_case_id": null,
+    "supersedes": null
+  },
+  "scientific_case": {
+    "contract_version": "scientific_case_v1",
+    "case_id": "base_2024_reservoir_storage_audited_20260913_v2",
+    "label": "Base storage audit v2: three source-backed regulating-storage corrections; local candidate",
+    "weather_bundle": {
+      "contract_version": "hybrid_weather_bundle_v1",
+      "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+      "wave": "2023 wave_grid.nc reference chronology",
+      "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+    },
+    "parameter_registry": {
+      "path": "config/critical_parameter_registry.csv",
+      "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+    }
+  },
+  "time_boundary": "cyclic_year",
+  "objective_unit": "million_CNY_per_year",
+  "monetary_price_basis": {
+    "contract_version": "technoeconomic_2025_cny_v2",
+    "target": "2025 constant CNY",
+    "source_config": "config/technoeconomic_price_basis_2025.json",
+    "planning_year_rule": "common source-to-2025 conversion applied to the full trajectory; no year-specific inflation escalation"
+  },
+  "strict_load_balance": true,
+  "allow_debug_slacks": false,
+  "features": {
+    "vre": true,
+    "thermal_ruc": true,
+    "hydro": true,
+    "storage": true,
+    "transmission": true,
+    "reserve": true,
+    "capacity_margin": true,
+    "inertia": true,
+    "carbon": true,
+    "dac": true,
+    "ccs_source_sink": true,
+    "intra_grid_spur_trunk": true,
+    "annual_load_center_transmission": true,
+    "flexible_load": false,
+    "wave_energy": true,
+    "csp": false
+  },
+  "wave_energy": {
+    "contract_version": "wave_existing_grid_v2",
+    "sites_file": "wave/wave_sites.csv",
+    "cf_filename": "wave_grid.nc",
+    "time_reference_year": 2023,
+    "scenario_by_planning_year": {
+      "2030": "medium",
+      "2040": "medium",
+      "2050": "medium",
+      "2060": "medium"
+    },
+    "profile_year_by_planning_year": {
+      "2030": 2030,
+      "2040": 2040,
+      "2050": 2050,
+      "2060": 2050
+    },
+    "cost_year_by_planning_year": {
+      "2030": 2030,
+      "2040": 2040,
+      "2050": 2050,
+      "2060": 2050
+    },
+    "potential_fraction": 1.0,
+    "maximum_distance_to_shore_km": null,
+    "maximum_water_depth_m": null,
+    "exclude_imputed_cf": false,
+    "eur_to_cny": 8.1185,
+    "currency_basis": "2024 EUR source values converted at the approved 2025 EUR/CNY rate",
+    "capex_eur_per_kw_by_year": {
+      "2030": 2777,
+      "2040": 2012,
+      "2050": 1731
+    },
+    "fixed_om_fraction_by_year": {
+      "2030": 0.027,
+      "2040": 0.024,
+      "2050": 0.024
+    },
+    "lifetime_years_by_year": {
+      "2030": 25,
+      "2040": 30,
+      "2050": 30
+    },
+    "depth_adder_eur_per_kw_m_by_year": {
+      "2030": 0.66,
+      "2040": 0.46,
+      "2050": 0.36
+    },
+    "distance_adder_eur_per_kw_km_by_year": {
+      "2030": 2.97,
+      "2040": 2.52,
+      "2050": 2.14
+    },
+    "capacity_credit": 0.0,
+    "reserve_requirement_fraction": 0.05,
+    "connection_treatment": "independent_cost_adders_no_shared_offwind_export",
+    "evidence_status": "ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY",
+    "cost_source_doi": "10.1016/j.apenergy.2024.123119",
+    "potential_note": "Raw NetCDF capacity potential is identical across all ten CF scenarios; potential_fraction is therefore an explicit sensitivity scalar, not a source scenario."
+  },
+  "flexible_load": {
+    "contract_version": "v1",
+    "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
+    "energy_conservation_window_hours": 24,
+    "shift_throughput_cost_yuan_per_mwh": 2.0,
+    "degradation_cost_yuan_per_mwh": 50.0,
+    "heating": {
+      "enabled": true,
+      "maximum_reduction_fraction": 0.15,
+      "maximum_increase_fraction_of_daily_peak": 0.15
+    },
+    "cooling": {
+      "enabled": true,
+      "maximum_reduction_fraction": 0.15,
+      "maximum_increase_fraction_of_daily_peak": 0.15
+    },
+    "ev_v1g": {
+      "enabled": true,
+      "shiftable_energy_fraction": 0.5,
+      "maximum_power_to_daily_average_ratio": 2.0
+    },
+    "ev_v2g": {
+      "enabled": false,
+      "participation_fraction": 0.2,
+      "usable_energy_to_daily_ev_energy_ratio": 1.0,
+      "power_duration_hours": 4.0,
+      "charge_efficiency": 0.95,
+      "discharge_efficiency": 0.95,
+      "self_discharge_fraction_per_hour": 0.0
+    },
+    "reliability_treatment": {
+      "hourly_reserve_and_inertia_use_effective_load": true,
+      "planning_capacity_margin_uses_baseline_peak": true,
+      "flexibility_provides_no_reserve_credit": true
+    }
+  },
+  "explicit_data_gaps": {
+    "csp": "TODO_SOURCE_DATA_REQUIRED: no 0.25-degree CSP potential or hourly CSP solar-field profile is present; capacity is fixed to zero",
+    "phs_water_pairing": "MODEL_SCOPE: PHS is province-level 8-hour storage with GHT 2026 operating capacity floor and year-available project-pipeline upper; open-loop/closed-loop reservoir water pairing is not represented",
+    "thermal_online_fuel": "TODO_SOURCE_DATA_REQUIRED: f_on is not present in the extracted RUC table; first block implementation charges fuel on gross generation only",
+    "capacity_credit": "SOFT_ASSUMPTION: values are explicit configuration parameters, not extracted CISPO source data",
+    "inertia_threshold": "SOFT_ASSUMPTION: minimum system inertia seconds is explicit configuration, not extracted CISPO source data",
+    "spur_trunk_cost": "SOFT_ASSUMPTION: proxy costs use the 330-kV AC anchor and must be sensitivity-tested"
+  },
+  "finance": {
+    "real_wacc_fraction": 0.074,
+    "default_lifetime_years": {
+      "onwind": 25,
+      "offwind": 25,
+      "upv": 25,
+      "dpv": 25,
+      "csp": 25,
+      "hydro": 40,
+      "coal": 40,
+      "coalccs": 40,
+      "cchp": 40,
+      "cchpccs": 40,
+      "gas": 30,
+      "gasccs": 30,
+      "gchp": 30,
+      "gchpccs": 30,
+      "bio": 30,
+      "bioccs": 30,
+      "nuclear": 60,
+      "battery": 15,
+      "phs": 40,
+      "transmission": 50,
+      "spur": 40,
+      "trunk": 40
+    }
+  },
+  "security": {
+    "up_reserve_load_fraction": 0.05,
+    "down_reserve_load_fraction": 0.05,
+    "up_reserve_vre_fraction": 0.05,
+    "down_reserve_vre_fraction": 0.05,
+    "capacity_margin_fraction": 0.05,
+    "capacity_margin_load_basis": "baseline_peak_v1",
+    "inertia_reference_seconds": 3.5,
+    "inertia_tolerance_fraction": 1.0,
+    "capacity_credit": {
+      "coal": 1.0,
+      "coalccs": 1.0,
+      "cchp": 1.0,
+      "cchpccs": 1.0,
+      "gas": 1.0,
+      "gasccs": 1.0,
+      "gchp": 1.0,
+      "gchpccs": 1.0,
+      "bio": 0.9,
+      "bioccs": 0.9,
+      "nuclear": 1.0,
+      "onwind": 0.05,
+      "offwind": 0.1,
+      "upv": 0.05,
+      "dpv": 0.05,
+      "ror": 0.4,
+      "reservoir": 0.8,
+      "battery": 1.0,
+      "phs": 1.0
+    },
+    "non_synchronous_inertia_seconds": {
+      "ror": 3.0,
+      "reservoir": 3.0,
+      "battery": 0.0,
+      "phs": 3.0
+    }
+  },
+  "thermal": {
+    "biomass_minimum_online_fraction": 0.5,
+    "chp_winter_months": [
+      1,
+      2,
+      11,
+      12
+    ],
+    "nuclear_fuel_yuan_per_mwh": 69.276276,
+    "ramping_cost_yuan_per_mwh": 1.004004
+  },
+  "storage_design": {
+    "phs_energy_capacity_mode": "fixed_duration_v1",
+    "phs_existing_duration_h": 8.0,
+    "phs_new_duration_min_h": 4.0,
+    "phs_new_duration_max_h": 48.0,
+    "phs_reference_duration_h": 8.0,
+    "phs_power_capex_yuan_per_kw_by_planning_year": {},
+    "phs_energy_capex_yuan_per_kwh_by_planning_year": {},
+    "phs_reference_capex_closure_tolerance_fraction": 1e-06
+  },
+  "hydro": {
+    "reservoir_efficiency": 0.85,
+    "water_density_kg_per_m3": 1000.0,
+    "gravity_m_per_s2": 9.81,
+    "reservoir_flow_variable_scale_m3s": 1000.0,
+    "reservoir_volume_variable_scale_m3": 1000000.0,
+    "hydrology_flow_zero_tolerance_m3s": 0.0001,
+    "cascade_inflow_reconciliation": "target_bounded_proportional_transfer_v1",
+    "classification_column": "operation_type_model",
+    "installed_type_rule": "use_assigned_GHT_or_115MW_proxy_label_regardless_of_confidence",
+    "potential_reservoir_threshold_mw": 750.0,
+    "potential_type_rule": "paper_rule_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
+    "reservoir_dispatch_resolution": "station",
+    "reservoir_inflow_rule": "core_cascade_local_GRFR_inflow_plus_upstream_release_other_reservoirs_independent",
+    "cascade_hydraulic_coupling": true,
+    "cascade_scope": "stage2_recommended_core_reservoir_groups_only",
+    "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
+    "cascade_max_lag_h": 168,
+    "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split",
+    "duplicate_comid_flow_allocation": "static_capacity_potential_share_v1",
+    "environmental_flow_dataset": "monthly_environmental_flow_2019_p30",
+    "environmental_flow_variable": "monthly_p30_proxy_m3s",
+    "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data",
+    "provincial_aggregate_mode": "fixed_existing_monthly_profile_v1",
+    "provincial_aggregate_capacity_file": "hydro/provincial_aggregate_capacity_2025.csv",
+    "provincial_aggregate_monthly_profile_file": "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+    "provincial_aggregate_national_conventional_target_gw": 380.0,
+    "provincial_aggregate_up_reserve_credit": 0.0,
+    "provincial_aggregate_down_reserve_credit": 0.0,
+    "provincial_aggregate_capacity_credit": 0.0,
+    "provincial_aggregate_inertia_seconds": 0.0,
+    "provincial_aggregate_connection_treatment": "province_non_spatial_existing_no_spur_trunk",
+    "station_parameters_file": "hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+    "station_corrections_file": "hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+    "local_inflow_cleanup_m3s": 0.01,
+    "reduce_cyclic_inventory_range": true,
+    "reservoir_variable_units": "energy_gw_gwh"
+  },
+  "network": {
+    "flow_regularization_yuan_per_mwh": 1.004004,
+    "diagnostic_bidirectional_flow_warning": {
+      "enabled": true,
+      "reference_hours": 168,
+      "maximum_edge_hours_per_reference": 8,
+      "maximum_opposing_flow_gw": 0.25,
+      "maximum_opposing_fraction_of_line_capacity": 0.15,
+      "maximum_opposing_energy_gwh_per_reference": 1.25,
+      "maximum_excess_loss_gwh_per_reference": 0.04,
+      "maximum_opposing_share_of_gross_flow": 5e-05,
+      "maximum_excess_loss_share_of_system_load": 1e-07,
+      "scope": "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY",
+      "full_year_policy": "STRICT_ZERO_ABOVE_1E-6_GW"
+    },
+    "spur_capex_million_yuan_per_gw_km": 1.218860856,
+    "trunk_capex_million_yuan_per_gw_km": 1.218860856,
+    "substation_capex_million_yuan_per_gw": 241.964964,
+    "spur_fixed_om_fraction": 0.01,
+    "trunk_fixed_om_fraction": 0.01,
+    "intra_grid_vre_connection": {
+      "spur_rule": "site_full_weather_max_cf_v1",
+      "trunk_rule": "cispo_potential_weighted_equivalent_peak_cf_v1",
+      "initial_vre_interface_rule": "same_design_rule_observed_2025_v1",
+      "existing_interface_reuse": "proxy_reused_independent_of_generator_cohort_v1"
+    }
+  },
+  "load_center_network": {
+    "scenario": "city_337",
+    "input_subdirectory": "load_center_network/city_337",
+    "expected_load_center_count": 337,
+    "expected_intra_edge_count": 642,
+    "spatial_generation_technologies": [
+      "onwind",
+      "offwind",
+      "upv",
+      "dpv",
+      "ror",
+      "reservoir"
+    ],
+    "province_share_allocated_terms": [
+      "thermal_nuclear_biomass",
+      "storage_charge_discharge",
+      "dac",
+      "received_interprovincial_energy"
+    ],
+    "topology_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",
+    "voltage_class": "AC_500kV",
+    "design_utilization_fraction": 0.5,
+    "flow_regularization_yuan_per_mwh": 0.001,
+    "flow_regularization_status": "numerical tie-breaker; excluded from economic price rebasing",
+    "bidirectional_flow_tolerance_gwh": 0.0001,
+    "bidirectional_flow_tolerance_status": "numerical-dust threshold for the annual load-center proxy; maximum opposing flow above 0.1 MWh per edge remains a hard failure",
+    "intra_loss_fraction_per_km": 0.0,
+    "partial_horizon_interpretation": "test-period aggregate energy only; scientific interpretation requires full_year"
+  },
+  "numerics": {
+    "coefficient_zero_tolerance": 0.0001,
+    "feasibility_tolerance": 1e-06,
+    "optimality_tolerance": 1e-06,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "presolve": 2,
+    "method": 2,
+    "barrier_convergence_tolerance": 1e-08,
+    "crossover": 2,
+    "crossover_basis": 1,
+    "solution_target": 0,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "threads": 8,
+    "time_limit_seconds": 900,
+    "soft_mem_limit_gb": 8,
+    "output_flag": 1,
+    "capacity_headroom_zero_gw": 1e-08
+  },
+  "construction": {
+    "architecture": "full_year_monolithic_lp",
+    "build_hour_chunk_size": 168,
+    "hour_chunk_size": 168,
+    "horizons": {
+      "one_month": {
+        "hours": 744,
+        "minimum_available_memory_gb": 8,
+        "test_only": true,
+        "definition": "first 31 days (January), cyclic over the selected test horizon"
+      },
+      "six_months": {
+        "hours": 4344,
+        "minimum_available_memory_gb": 32,
+        "test_only": true,
+        "definition": "first six calendar months (January-June), cyclic over the selected test horizon"
+      },
+      "full_year": {
+        "hours": 8760,
+        "minimum_available_memory_gb": 96,
+        "test_only": false,
+        "definition": "full non-leap calendar year, production scientific horizon"
+      }
+    },
+    "write_lp": false,
+    "compute_iis_on_infeasible": true,
+    "stop_before_build_if_estimated_memory_gb_exceeds": 80
+  },
+  "formulation": {
+    "annual_emissions_accounting": "national_dense_v1"
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "collected_at": "2026-10-03T06:14:31.118275+08:00",
+  "cases": {
+    "2050_v9": {
+      "first": {
+        "iteration": 0,
+        "primal": 64454460000000.0,
+        "dual": -73736228900000.0,
+        "pinf": 441000000000.0,
+        "dinf": 146.0,
+        "compl": 51600000000.0,
+        "seconds": 22442,
+        "absolute_objective_difference": 138190688900000.0
+      },
+      "last": {
+        "iteration": 138,
+        "primal": 14677245100000.0,
+        "dual": -1.39417333e+16,
+        "pinf": 61500000000.0,
+        "dinf": 3430.0,
+        "compl": 61600000000.0,
+        "seconds": 199017,
+        "absolute_objective_difference": 1.39564105451e+16
+      },
+      "jumps": [
+        {
+          "before": {
+            "iteration": 116,
+            "primal": 4986627380.0,
+            "dual": -18597816600.0,
+            "pinf": 3720.0,
+            "dinf": 7.53e-05,
+            "compl": 416.0,
+            "seconds": 168458,
+            "absolute_objective_difference": 23584443980.0
+          },
+          "after": {
+            "iteration": 117,
+            "primal": 64296180600000.0,
+            "dual": -737630356000000.0,
+            "pinf": 440000000000.0,
+            "dinf": 7.28e-12,
+            "compl": 515000000000.0,
+            "seconds": 170754,
+            "absolute_objective_difference": 801926536600000.0
+          },
+          "compl_ratio": 1237980769.2307692,
+          "pinf_ratio": 118279569.89247312
+        }
+      ],
+      "status": "RUNNING_SNAPSHOT",
+      "stats": [
+        "Matrix range     [3e-05, 6e+03]",
+        "Bounds range     [2e-16, 4e+05]",
+        "RHS range        [4e-08, 2e+06]",
+        "Dense cols : 38570",
+        "Factor NZ  : 3.519e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 2.098e+15 (roughly 2200 seconds per iteration)"
+      ]
+    },
+    "2040_v9": {
+      "first": {
+        "iteration": 0,
+        "primal": 54590175800000.0,
+        "dual": -91241013800000.0,
+        "pinf": 374000000000.0,
+        "dinf": 141.0,
+        "compl": 55300000000.0,
+        "seconds": 36205,
+        "absolute_objective_difference": 145831189600000.0
+      },
+      "last": {
+        "iteration": 605,
+        "primal": 5088076.37,
+        "dual": 5084224.88,
+        "pinf": 0.00176,
+        "dinf": 2.95e-08,
+        "compl": 4.99e-05,
+        "seconds": 843701,
+        "absolute_objective_difference": 3851.4900000002235
+      },
+      "jumps": [],
+      "status": "OPTIMAL_LOG",
+      "stats": [
+        "Matrix range     [3e-05, 6e+03]",
+        "Bounds range     [2e-16, 4e+05]",
+        "RHS range        [6e-10, 2e+06]",
+        "Dense cols : 37222",
+        "Factor NZ  : 3.333e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.872e+15 (roughly 2000 seconds per iteration)"
+      ]
+    },
+    "2030_v9": {
+      "first": {
+        "iteration": 0,
+        "primal": 3289851720000.0,
+        "dual": -24281127000000.0,
+        "pinf": 164000000000.0,
+        "dinf": 97.8,
+        "compl": 8730000000.0,
+        "seconds": 21907,
+        "absolute_objective_difference": 27570978720000.0
+      },
+      "last": {
+        "iteration": 348,
+        "primal": 4192778.84,
+        "dual": 4192472.47,
+        "pinf": 5.83e-05,
+        "dinf": 1.93e-07,
+        "compl": 3.98e-06,
+        "seconds": 451382,
+        "absolute_objective_difference": 306.3699999996461
+      },
+      "jumps": [],
+      "status": "OPTIMAL_LOG",
+      "stats": [
+        "Matrix range     [4e-05, 6e+03]",
+        "Bounds range     [1e-05, 2e+04]",
+        "RHS range        [1e-05, 1e+06]",
+        "Dense cols : 37557",
+        "Factor NZ  : 3.305e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.854e+15 (roughly 2000 seconds per iteration)"
+      ]
+    },
+    "thermal_old": {
+      "first": {
+        "iteration": 0,
+        "primal": 35807006500000.0,
+        "dual": -266372777000000.0,
+        "pinf": 573000000000.0,
+        "dinf": 80.5,
+        "compl": 57300000000.0,
+        "seconds": 22391,
+        "absolute_objective_difference": 302179783500000.0
+      },
+      "last": {
+        "iteration": 568,
+        "primal": 357440265.0,
+        "dual": -255555165.0,
+        "pinf": 3.37,
+        "dinf": 6.71e-05,
+        "compl": 7.84,
+        "seconds": 605211,
+        "absolute_objective_difference": 612995430.0
+      },
+      "jumps": [
+        {
+          "before": {
+            "iteration": 366,
+            "primal": 20593256.8,
+            "dual": 501151.763,
+            "pinf": 1.92,
+            "dinf": 0.000699,
+            "compl": 0.257,
+            "seconds": 396009,
+            "absolute_objective_difference": 20092105.037
+          },
+          "after": {
+            "iteration": 367,
+            "primal": 51462816200000.0,
+            "dual": -2664115710000000.0,
+            "pinf": 823000000000.0,
+            "dinf": 7.28e-12,
+            "compl": 824000000000.0,
+            "seconds": 398013,
+            "absolute_objective_difference": 2715578526200000.0
+          },
+          "compl_ratio": 3206225680933.852,
+          "pinf_ratio": 428645833333.3334
+        }
+      ],
+      "status": "NUMERICAL_TERMINATION_LOG",
+      "stats": [
+        "Matrix range     [1e-06, 6e+03]",
+        "Bounds range     [6e-11, 4e+05]",
+        "RHS range        [3e-07, 1e+06]",
+        "Dense cols : 37755",
+        "Factor NZ  : 3.377e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.874e+15 (roughly 2000 seconds per iteration)"
+      ]
+    },
+    "base_old": {
+      "first": {
+        "iteration": 0,
+        "primal": 79363891100000.0,
+        "dual": -283834921000000.0,
+        "pinf": 562000000000.0,
+        "dinf": 30.7,
+        "compl": 154000000000.0,
+        "seconds": 21267,
+        "absolute_objective_difference": 363198812100000.0
+      },
+      "last": {
+        "iteration": 654,
+        "primal": 1158432590.0,
+        "dual": 4187901.62,
+        "pinf": 8.19e-05,
+        "dinf": 0.000146,
+        "compl": 0.0633,
+        "seconds": 824483,
+        "absolute_objective_difference": 1154244688.38
+      },
+      "jumps": [
+        {
+          "before": {
+            "iteration": 633,
+            "primal": 1062852680.0,
+            "dual": 4187929.28,
+            "pinf": 8.4e-05,
+            "dinf": 0.000152,
+            "compl": 6.75e-06,
+            "seconds": 797838,
+            "absolute_objective_difference": 1058664750.72
+          },
+          "after": {
+            "iteration": 634,
+            "primal": 1162117470.0,
+            "dual": 4187931.73,
+            "pinf": 8.2e-05,
+            "dinf": 0.000146,
+            "compl": 0.0631,
+            "seconds": 799089,
+            "absolute_objective_difference": 1157929538.27
+          },
+          "compl_ratio": 9348.14814814815,
+          "pinf_ratio": 0.9761904761904763
+        }
+      ],
+      "status": "NUMERICAL_TERMINATION_LOG",
+      "stats": [
+        "Matrix range     [1e-06, 6e+03]",
+        "Bounds range     [6e-11, 4e+05]",
+        "RHS range        [3e-07, 1e+06]",
+        "Dense cols : 37696",
+        "Factor NZ  : 3.375e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.849e+15 (roughly 2600 seconds per iteration)"
+      ]
+    }
+  },
+  "current_selected": [
+    {
+      "iteration": 0,
+      "primal": 64454460000000.0,
+      "dual": -73736228900000.0,
+      "pinf": 441000000000.0,
+      "dinf": 146.0,
+      "compl": 51600000000.0,
+      "seconds": 22442,
+      "absolute_objective_difference": 138190688900000.0
+    },
+    {
+      "iteration": 108,
+      "primal": 6080928030.0,
+      "dual": -22040841500.0,
+      "pinf": 4790.0,
+      "dinf": 8.83e-05,
+      "compl": 513.0,
+      "seconds": 157973,
+      "absolute_objective_difference": 28121769530.0
+    },
+    {
+      "iteration": 116,
+      "primal": 4986627380.0,
+      "dual": -18597816600.0,
+      "pinf": 3720.0,
+      "dinf": 7.53e-05,
+      "compl": 416.0,
+      "seconds": 168458,
+      "absolute_objective_difference": 23584443980.0
+    },
+    {
+      "iteration": 117,
+      "primal": 64296180600000.0,
+      "dual": -737630356000000.0,
+      "pinf": 440000000000.0,
+      "dinf": 7.28e-12,
+      "compl": 515000000000.0,
+      "seconds": 170754,
+      "absolute_objective_difference": 801926536600000.0
+    },
+    {
+      "iteration": 118,
+      "primal": 58933939800000.0,
+      "dual": -1001489580000000.0,
+      "pinf": 403000000000.0,
+      "dinf": 31800.0,
+      "compl": 480000000000.0,
+      "seconds": 172490,
+      "absolute_objective_difference": 1060423519800000.0
+    },
+    {
+      "iteration": 128,
+      "primal": 36693136900000.0,
+      "dual": -1.51464481e+16,
+      "pinf": 235000000000.0,
+      "dinf": 21400.0,
+      "compl": 256000000000.0,
+      "seconds": 185772,
+      "absolute_objective_difference": 1.51831412369e+16
+    },
+    {
+      "iteration": 132,
+      "primal": 25394966100000.0,
+      "dual": -1.96157175e+16,
+      "pinf": 146000000000.0,
+      "dinf": 11900.0,
+      "compl": 155000000000.0,
+      "seconds": 191061,
+      "absolute_objective_difference": 1.96411124661e+16
+    },
+    {
+      "iteration": 138,
+      "primal": 14677245100000.0,
+      "dual": -1.39417333e+16,
+      "pinf": 61500000000.0,
+      "dinf": 3430.0,
+      "compl": 61600000000.0,
+      "seconds": 199017,
+      "absolute_objective_difference": 1.39564105451e+16
+    }
+  ],
+  "current_vs_prejump116": {
+    "pinf": 16532258.064516129,
+    "dinf": 45551128.81806109,
+    "compl": 148076923.07692307,
+    "absolute_objective_difference": 591763.3910273766
+  },
+  "decrease_since117_percent": {
+    "pinf": 86.02272727272727,
+    "compl": 88.03883495145631
+  },
+  "recent10_decrease_percent": {
+    "pinf": 73.82978723404256,
+    "dinf": 83.97196261682242,
+    "compl": 75.9375,
+    "absolute_objective_difference": 8.079557929808646
+  },
+  "recent10_minutes_per_iteration": 22.075,
+  "latest_residuals_monotonic_last10": {
+    "pinf": true,
+    "dinf": true,
+    "compl": true
+  },
+  "absolute_objective_difference_monotonic_since132": true,
+  "statistics": {
+    "variables": 41458383,
+    "constraints": 50907233,
+    "nonzeros": 485386301,
+    "coefficient_min_abs": 3.233333332999999e-05,
+    "coefficient_max_abs": 6250.0,
+    "objective_coefficient_min_abs": 0.001,
+    "objective_coefficient_max_abs": 2282.1265455852517,
+    "rhs_min_abs": 3.586748565394586e-08,
+    "rhs_max_abs": 1912999.999999375,
+    "quadratic_constraints": 0,
+    "integer_variables": 0,
+    "binary_variables": 0
+  },
+  "matrix_coefficient_ratio": 193298969.09209272,
+  "annual_scaling": {
+    "vre": {
+      "exponent": 0,
+      "row_scale": 1.0,
+      "original_coefficient_max_abs": 5925.004025482573
+    },
+    "ror": {
+      "exponent": 0,
+      "row_scale": 1.0,
+      "original_coefficient_max_abs": 5945.8478236198425
+    }
+  },
+  "features": {
+    "vre": true,
+    "thermal_ruc": true,
+    "hydro": true,
+    "storage": true,
+    "transmission": true,
+    "reserve": true,
+    "capacity_margin": true,
+    "inertia": true,
+    "carbon": true,
+    "dac": true,
+    "ccs_source_sink": true,
+    "intra_grid_spur_trunk": true,
+    "annual_load_center_transmission": true,
+    "flexible_load": false,
+    "wave_energy": true,
+    "csp": false,
+    "dac_by_planning_year": {
+      "2030": false,
+      "2040": true,
+      "2050": true,
+      "2060": true
+    }
+  },
+  "numerics": {
+    "coefficient_zero_tolerance": 0.01,
+    "feasibility_tolerance": 1e-06,
+    "optimality_tolerance": 1e-06,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "presolve": 2,
+    "method": 2,
+    "barrier_convergence_tolerance": 0.0001,
+    "crossover": 0,
+    "crossover_basis": 1,
+    "solution_target": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "threads": 48,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": null,
+    "output_flag": 1,
+    "capacity_headroom_zero_gw": 1e-05,
+    "capacity_floor_zero_gw": 1e-05,
+    "aggregate": 1,
+    "bar_iter_limit": 2000000000
+  },
+  "carbon_limits": [
+    {
+      "scenario": "Base_-550Mt",
+      "year": "2040",
+      "emissions_limit_mtco2_per_year": "1300.0",
+      "constraint_active": "True",
+      "is_default": "True",
+      "source_method": "Carbon_emission.xlsx CISPO pathway block"
+    },
+    {
+      "scenario": "Base_-550Mt",
+      "year": "2050",
+      "emissions_limit_mtco2_per_year": "-100.0",
+      "constraint_active": "True",
+      "is_default": "True",
+      "source_method": "Carbon_emission.xlsx CISPO pathway block"
+    }
+  ],
+  "gas_ccs_residual_coefficient": 3.233333333e-05
+}

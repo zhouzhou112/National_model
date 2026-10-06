@@ -1,0 +1,82 @@
+{
+  "gap_definition": "abs(primal-dual)/max(1,abs(primal),abs(dual)); log-rounded diagnostic, not a certified optimality gap",
+  "selected_iterations": [
+    {
+      "iteration": 481,
+      "primal_objective": 10342199700.0,
+      "dual_objective": 4124028.55,
+      "primal_residual": 0.104,
+      "dual_residual": 0.0102,
+      "complementarity": 0.00988,
+      "runtime_seconds": 609106,
+      "relative_objective_gap": 0.9996012426108926
+    },
+    {
+      "iteration": 550,
+      "primal_objective": 5733499660.0,
+      "dual_objective": 4184108.56,
+      "primal_residual": 0.00835,
+      "dual_residual": 0.00159,
+      "complementarity": 0.000721,
+      "runtime_seconds": 694991,
+      "relative_objective_gap": 0.9992702347940838
+    },
+    {
+      "iteration": 600,
+      "primal_objective": 3116964890.0,
+      "dual_objective": 4187670.44,
+      "primal_residual": 0.000677,
+      "dual_residual": 0.000552,
+      "complementarity": 5.61e-05,
+      "runtime_seconds": 757092,
+      "relative_objective_gap": 0.9986564909815201
+    },
+    {
+      "iteration": 633,
+      "primal_objective": 1062852680.0,
+      "dual_objective": 4187929.28,
+      "primal_residual": 8.4e-05,
+      "dual_residual": 0.000152,
+      "complementarity": 6.75e-06,
+      "runtime_seconds": 797838,
+      "relative_objective_gap": 0.9960597274120813
+    },
+    {
+      "iteration": 634,
+      "primal_objective": 1162117470.0,
+      "dual_objective": 4187931.73,
+      "primal_residual": 8.2e-05,
+      "dual_residual": 0.000146,
+      "complementarity": 0.0631,
+      "runtime_seconds": 799089,
+      "relative_objective_gap": 0.9963962922526239
+    },
+    {
+      "iteration": 654,
+      "primal_objective": 1158432590.0,
+      "dual_objective": 4187901.62,
+      "primal_residual": 8.19e-05,
+      "dual_residual": 0.000146,
+      "complementarity": 0.0633,
+      "runtime_seconds": 824483,
+      "relative_objective_gap": 0.9963848551429307
+    }
+  ],
+  "complementarity_jump_633_to_634": 9348.14814814815,
+  "min_log_relative_objective_gap": 0.9960597274120813,
+  "matrix_coefficient_ratio": 6246963921.145116,
+  "evidence_sha256": {
+    "archive_and_thermal.txt": "c80cec59b8227fcc4355d1e3b23f32117b3e83411f06c32a251c68ce547871fe",
+    "barrier_checkpoint_error.json": "40a0fd4e1f12b0cbbbcd72d3743dbe73ea7e4c1af23930cbc71d642cc2058065",
+    "final_stage_a_lp_identity.json": "42ae525350eedf09ed6b6825090f747f4df09d494a5d9c7fff59f72dd4a51c12",
+    "gurobi.log": "4c456793333135d4b75f22db378a4fdd8e2c9d87d7eac8a2798601fa32c75e48",
+    "model_config_snapshot.json": "95927966b133c89feeab7f6a524158882db6b8683f34c8ac307a878e8e85ccc2",
+    "parameters.prm": "d249773a4ca9071d3f75c08c12c41630d73f131e7699611ea1cb27c8185e7b95",
+    "preservation_report.json": "5893b0d168e0da376653013a8b84de8faa01db4e3ae3414f368c156c9f982c2b",
+    "scheduler.txt": "c4f8cc2bbc8e474be5c174fcedce9eee150dee7e0d8c074c67f295fd9cf066f0",
+    "solution_qc.json": "872a466e1750a3a66f214b033081c0db9eaa88f3724ccb3d6224c01e226fdcbb",
+    "solve_report.json": "b794a6cdd1a21e2fdf629f01b99fb9a361a49880d70f8682231bd43b5124c5e6",
+    "terminal_status.json": "67f946daca89a4d8caed0b04de63cb3f0d40ca9186f4a76b73e2d380ab5eb461"
+  },
+  "validation": "PASS: 655 consecutive iterations; NUMERIC and no solution verified"
+}

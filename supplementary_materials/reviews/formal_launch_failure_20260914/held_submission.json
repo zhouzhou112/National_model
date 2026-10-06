@@ -1,0 +1,15 @@
+{
+  "submitted_at_utc": "2026-09-14T00:49:52.993708Z",
+  "args": [
+    "sbatch",
+    "--hold",
+    "--parsable",
+    "--export=ALL,SOURCE_RELEASE=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260903_8760_stagea_final_2820fc3_v3",
+    "formal_base.sbatch"
+  ],
+  "returncode": 0,
+  "stdout": "4614693\n",
+  "stderr": "",
+  "job_id": "4614693",
+  "scontrol": "JobId=4614693 JobName=cispo2030_base_v9_t48 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=0 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-09-14T08:49:52 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-09-14T08:49:52 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:224022 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/formal_base.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/slurm-4614693.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/slurm-4614693.out Power= TresPerTask=cpu:64 \n"
+}
