@@ -16,3 +16,6 @@
 
 # Preserve the exact bytes of the final regression evidence (SHA in the review).
 supplementary_materials/reviews/validation_coordination_20261005/unittest_verified_20261005T185140Z.log -text
+
+# Unified-diff evidence needs the leading space on empty context lines.
+supplementary_materials/reviews/git_sync_20261006/production_to_local.patch -whitespace

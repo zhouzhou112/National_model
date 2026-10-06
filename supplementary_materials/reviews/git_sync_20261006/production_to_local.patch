@@ -1,0 +1,624 @@
+--- production2050/cispo_model/master.py
++++ local/cispo_model/master.py
+@@ -20,7 +20,8 @@
+     compute_intra_grid_vre_design,
+ )
+ from .timeblocks import TimeBlock
+-from .planning_state import stable_asset_id
++from .planning_state import stable_asset_id, clip_inherited_floor_overrun
++from .numerical_cleanup import zero_capacity_headroom, zero_retrofit_upper
+ from .technology_registry import fixed_om_fraction
+ from .wave_energy import wave_cost_parameters
+ 
+@@ -849,6 +850,15 @@
+     wacc = float(config.raw["finance"]["real_wacc_fraction"])
+     lifetimes = config.raw["finance"]["default_lifetime_years"]
+ 
++    numerical_robustness_audit = {}
++    clip_threshold = float(config.raw["numerics"].get("inherited_floor_overrun_clip_gw", 0.0))
++    def inherited_floor(floor, upper, ids, family):
++        value, audit = clip_inherited_floor_overrun(floor, upper,
++            threshold_gw=clip_threshold, asset_ids=ids, asset_class=family)
++        if audit is not None:
++            numerical_robustness_audit.setdefault("inherited_floor_clipping", []).append(audit)
++        return value
++
+     # VRE site capacity remains at 0.25-degree resolution. Sequential years
+     # add only active model-built cohorts to the unchanged observed baseline.
+     vre_asset_ids = [
+@@ -869,6 +879,7 @@
+     # to zero; the cutoff and removed amounts are part of the scientific audit.
+     site_floor[floor_cleanup_rows] = 0.0
+     site_upper = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
++    site_floor = inherited_floor(site_floor, site_upper, vre_asset_ids, "vre")
+     if (site_floor < -1e-9).any() or (site_floor > site_upper + 1e-9).any():
+         raise ValueError("Inherited VRE capacity is outside the active site bounds")
+     site_headroom = site_upper - site_floor
+@@ -928,6 +939,7 @@
+         )
+         wave_floor = np.asarray(wave_inherited, dtype=float)
+         wave_upper = wave_sites.capacity_upper_gw.to_numpy(dtype=float)
++        wave_floor = inherited_floor(wave_floor, wave_upper, wave_asset_ids, "wave")
+         if (wave_floor < -1e-9).any() or (wave_floor > wave_upper + 1e-9).any():
+             raise ValueError(
+                 "Inherited wave capacity is outside the active site bounds"
+@@ -993,6 +1005,8 @@
+         data.nuclear_upper.set_index("province_code")
+         .capacity_upper_gw.reindex(provinces).to_numpy(dtype=float)
+     )
++    thermal_floor[:, nuclear_k] = inherited_floor(thermal_floor[:, nuclear_k], nuclear_upper,
++        [stable_asset_id(p, "nuclear") for p in provinces], "nuclear")
+     if (thermal_floor[:, nuclear_k] > nuclear_upper + 1e-9).any():
+         raise ValueError(
+             "Inherited nuclear capacity exceeds the configured province upper bound"
+@@ -1058,6 +1072,11 @@
+                 survivor_upper,
+                 np.maximum(future_exogenous + future_inherited, 0.0),
+             )
++        retrofit_zero = float(config.raw["numerics"].get("retrofit_upper_zero_gw", 0.0))
++        if retrofit_zero > 0:
++            survivor_upper, retrofit_audit = zero_retrofit_upper(survivor_upper, retrofit_zero,
++                [stable_asset_id(p, non_ccs, ccs) for p in provinces])
++            numerical_robustness_audit.setdefault("retrofit_upper_cleanup", []).append(retrofit_audit)
+         retrofit_survivor_upper[:, pair_position] = survivor_upper
+         thermal_retrofit[:, pair_position].UB = survivor_upper
+         model.addConstr(
+@@ -1140,12 +1159,17 @@
+         + hydro_inherited
+     )
+     hydro_upper = data.hydro_stations.capacity_potential_gw.to_numpy(dtype=float)
++    hydro_floor = inherited_floor(hydro_floor, hydro_upper, hydro_asset_ids, "hydro")
+     if (hydro_floor < -1e-9).any() or (hydro_floor > hydro_upper + 1e-9).any():
+         raise ValueError("Inherited hydropower capacity is outside station bounds")
++    hydro_headroom, hydro_upper, hydro_cleanup = zero_capacity_headroom(hydro_floor, hydro_upper,
++        float(config.raw["numerics"].get("hydro_capacity_headroom_zero_gw", 0.0)), hydro_asset_ids)
++    if hydro_cleanup["cutoff_gw"] > 0:
++        numerical_robustness_audit["hydro_capacity_headroom_cleanup"] = hydro_cleanup
+     hydro_new = model.addMVar(
+         len(data.hydro_stations),
+         lb=0.0,
+-        ub=hydro_upper - hydro_floor,
++        ub=hydro_headroom,
+         name="hydro_new_gw",
+     )
+     hydro_cap = model.addMVar(len(data.hydro_stations), lb=hydro_floor, ub=hydro_upper, name="hydro_capacity_gw")
+@@ -1194,6 +1218,7 @@
+         unit="GW",
+     ).reshape(p_count, len(STORAGE_TECHS))
+     storage_floor = storage_exogenous_floor + storage_inherited
++    storage_floor = inherited_floor(storage_floor, storage_upper, storage_asset_ids, "storage")
+     if (
+         (storage_floor < -1e-9).any()
+         or (storage_floor > storage_upper + 1e-9).any()
+@@ -1877,6 +1902,8 @@
+         "constraint_handles": constraint_handles,
+         **index_extra,
+     }
++    if numerical_robustness_audit:
++        index["numerical_robustness_audit"] = numerical_robustness_audit
+     if config.raw["features"]["annual_load_center_transmission"]:
+         index["intra_asset_ids"] = intra_asset_ids
+         index["intra_capacity_floor_gw"] = intra_floor
+--- production2050/cispo_model/planning_state.py
++++ local/cispo_model/planning_state.py
+@@ -35,6 +35,30 @@
+ 
+ def stable_asset_id(*parts: object) -> str:
+     return "::".join(str(part) for part in parts)
++
++
++def clip_inherited_floor_overrun(floor, upper, *, threshold_gw, asset_ids, asset_class):
++    """Close small imported GW overruns without mutating the archived cohorts.
++
++    Bounds exist only at model construction, not in ``active_adjustment``.
++    Zero preserves legacy validation exactly; positive thresholds fail closed
++    for every overrun greater than the threshold (including legacy tolerances).
++    """
++    values = np.asarray(floor, dtype=float)
++    upper = np.asarray(upper, dtype=float)
++    if threshold_gw <= 0:
++        return values, None
++    excess = values - upper
++    if (excess > threshold_gw).any():
++        raise ValueError(f"Inherited {asset_class} capacity exceeds clipping threshold")
++    rows = np.flatnonzero(excess.ravel() > 0)
++    result = values.copy()
++    result.ravel()[rows] = upper.ravel()[rows]
++    return result, {"asset_class": asset_class, "cutoff_gw": float(threshold_gw),
++        "site_rows": rows.tolist(), "asset_ids": [str(asset_ids[i]) for i in rows],
++        "clipped_gw": excess.ravel()[rows].tolist(),
++        "total_clipped_gw": float(excess.ravel()[rows].sum()),
++        "archived_cohorts_modified": False}
+ 
+ 
+ def sha256_file(path: Path) -> str:
+--- production2050/cispo_model/physical_lp_diff.py
++++ local/cispo_model/physical_lp_diff.py
+@@ -104,6 +104,17 @@
+             and reference_upper[column] > 0.0
+             and candidate_upper[column] == 0.0
+         )
++        # Opt-in per-column allowance, never a broad family exemption. The
++        # caller must supply independently audited original/replacement bounds.
++        closing = whitelist.get("capacity_interval_closures", {}).get(name)
++        if closing is not None:
++            permitted = permitted or bool(
++                reference_upper[column] == float(closing["original_upper_gw"])
++                and candidate_upper[column] == float(closing["closed_upper_gw"])
++                and candidate_upper[column] == reference_lower[column]
++                and 0 < reference_upper[column] - reference_lower[column]
++                <= float(closing["maximum_removed_gw"])
++            )
+         entry = {
+             "kind": "upper_bound",
+             "variable": name,
+@@ -111,8 +122,9 @@
+             "candidate": float(candidate_upper[column]),
+         }
+         if permitted:
+-            counts["exact_zero_reservoir_release_upper_bound"] += 1
+-            entry["rule_id"] = "exact_zero_reservoir_release_upper_bound"
++            rule_id = "capacity_interval_closure" if closing is not None else "exact_zero_reservoir_release_upper_bound"
++            counts[rule_id] += 1
++            entry["rule_id"] = rule_id
+         else:
+             failures.append(entry)
+         if len(examples) < maximum_examples:
+--- production2050/cispo_model/run_contract.py
++++ local/cispo_model/run_contract.py
+@@ -172,6 +172,13 @@
+         payload["scientific_coefficient_screening"]["capacity_floor_zero_gw"] = float(
+             config.raw["numerics"]["capacity_floor_zero_gw"]
+         )
++    for key in ("hydro_capacity_headroom_zero_gw", "retrofit_upper_zero_gw",
++                "inherited_floor_overrun_clip_gw"):
++        if float(config.raw["numerics"].get(key, 0.0)) != 0.0:
++            payload["scientific_coefficient_screening"][key] = float(config.raw["numerics"][key])
++    # Explicitly disabled opt-in controls have the historical Base identity.
++    if not payload.get("formulation", {}).get("annual_dense_row_split", {}).get("enabled", False):
++        payload.get("formulation", {}).pop("annual_dense_row_split", None)
+     payload.pop("numerics", None)
+     payload.pop("solver_profile", None)
+     payload.pop("construction", None)
+--- production2050/cispo_model/monolithic.py
++++ local/cispo_model/monolithic.py
+@@ -15,6 +15,7 @@
+ from scipy import sparse
+ 
+ from .carbon_accounting import resolve_beccs_carbon_factors
++from .annual_dense_split import annual_sum, annual_split_enabled
+ from .config import ModelConfig, resolve_minimum_system_inertia_seconds
+ from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
+ from .flexible_load import attach_flexible_load
+@@ -1234,31 +1235,64 @@
+     capture_fraction = float(emission_table.loc["coal", "ccs_capture_fraction"])
+     beccs_carbon = resolve_beccs_carbon_factors(emission_table)
+     fuel_load = ruc.fuel_load_mj_per_kwh.to_numpy(dtype=float)
+-    for p in range(p_count):
+-        emissions = gp.LinExpr()
+-        captured = gp.LinExpr()
+-        biomass_fuel_pj = gp.LinExpr()
++    if annual_split_enabled(config):
++        emission_factors = np.zeros(k_count)
++        capture_factors = np.zeros(k_count)
++        biomass_factors = np.zeros(k_count)
+         for technology, k in k_index.items():
+-            generation = gross[p, k].sum()
+-            if technology.startswith("coal") or technology.startswith("cchp"):
+-                base_factor = coal_factor
+-            elif technology.startswith("gas") or technology.startswith("gchp"):
+-                base_factor = gas_factor
+-            else:
+-                base_factor = 0.0
++            base_factor = (coal_factor if technology.startswith(("coal", "cchp"))
++                           else gas_factor if technology.startswith(("gas", "gchp")) else 0.0)
++            emission_factors[k] = base_factor
+             if technology.endswith("ccs") and technology != "bioccs":
+-                emissions += base_factor * (1.0 - capture_fraction) * generation
+-                captured += base_factor * capture_fraction * generation
++                emission_factors[k] = base_factor * (1.0 - capture_fraction)
++                capture_factors[k] = base_factor * capture_fraction
+             elif technology == "bioccs":
+-                emissions += beccs_carbon.net_emissions * generation
+-                captured += beccs_carbon.stored * generation
+-            else:
+-                emissions += base_factor * generation
++                emission_factors[k] = beccs_carbon.net_emissions
++                capture_factors[k] = beccs_carbon.stored
+             if technology in {"bio", "bioccs"}:
+-                biomass_fuel_pj += fuel_load[k] / 1000.0 * generation
+-        model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj, name=f"annual_biomass_p{provinces[p]}")
+-        model.addConstr(variables["annual_captured"][0, p] == captured, name=f"annual_captured_p{provinces[p]}")
+-        province_emissions.append(emissions)
++                biomass_factors[k] = fuel_load[k] / 1000.0
++        for p in range(p_count):
++            def account(factors, t):
++                return gp.quicksum(float(factors[k]) * gross[p, k, t].sum()
++                                   for k in range(k_count) if factors[k] != 0)
++            emissions = annual_sum(model, config, hours, f"emissions_p{provinces[p]}",
++                lambda t: account(emission_factors, t), unit="mtco2")
++            captured = annual_sum(model, config, hours, f"captured_p{provinces[p]}",
++                lambda t: account(capture_factors, t), unit="mtco2", nonnegative=True)
++            biomass_fuel_pj = annual_sum(model, config, hours, f"biomass_p{provinces[p]}",
++                lambda t: account(biomass_factors, t), unit="pj", nonnegative=True)
++            model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj,
++                            name=f"annual_biomass_p{provinces[p]}")
++            model.addConstr(variables["annual_captured"][0, p] == captured,
++                            name=f"annual_captured_p{provinces[p]}")
++            province_emissions.append(emissions)
++        artifacts.index["annual_dense_row_split"] = model._annual_dense_split_audit
++    else:
++        for p in range(p_count):
++            emissions = gp.LinExpr()
++            captured = gp.LinExpr()
++            biomass_fuel_pj = gp.LinExpr()
++            for technology, k in k_index.items():
++                generation = gross[p, k].sum()
++                if technology.startswith("coal") or technology.startswith("cchp"):
++                    base_factor = coal_factor
++                elif technology.startswith("gas") or technology.startswith("gchp"):
++                    base_factor = gas_factor
++                else:
++                    base_factor = 0.0
++                if technology.endswith("ccs") and technology != "bioccs":
++                    emissions += base_factor * (1.0 - capture_fraction) * generation
++                    captured += base_factor * capture_fraction * generation
++                elif technology == "bioccs":
++                    emissions += beccs_carbon.net_emissions * generation
++                    captured += beccs_carbon.stored * generation
++                else:
++                    emissions += base_factor * generation
++                if technology in {"bio", "bioccs"}:
++                    biomass_fuel_pj += fuel_load[k] / 1000.0 * generation
++            model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj, name=f"annual_biomass_p{provinces[p]}")
++            model.addConstr(variables["annual_captured"][0, p] == captured, name=f"annual_captured_p{provinces[p]}")
++            province_emissions.append(emissions)
+     emissions_accounting = artifacts.index["annual_emissions_accounting"]
+     if emissions_accounting == "province_hierarchical_v2":
+         for p, province_code in enumerate(provinces):
+--- production2050/cispo_model/numerical_cleanup.py
++++ local/cispo_model/numerical_cleanup.py
+@@ -7,6 +7,35 @@
+ from __future__ import annotations
+ 
+ import numpy as np
++
++
++def zero_capacity_headroom(floor, upper, threshold, asset_ids):
++    """Opt-in GW bound approximation, with the removed feasible range recorded."""
++    floor = np.asarray(floor, dtype=float)
++    upper = np.asarray(upper, dtype=float)
++    headroom = upper - floor
++    rows = np.flatnonzero((np.abs(headroom) <= threshold) & (headroom != 0)) if threshold > 0 else np.array([], dtype=int)
++    removed = headroom[rows].copy()
++    if threshold > 0:
++        headroom[rows] = 0.0
++        upper = upper.copy()
++        upper[rows] = floor[rows]
++    return headroom, upper, {
++        "cutoff_gw": float(threshold), "site_rows": rows.tolist(),
++        "asset_ids": [str(asset_ids[i]) for i in rows],
++        "removed_gw": removed.tolist(), "total_removed_gw": float(removed.sum()),
++    }
++
++
++def zero_retrofit_upper(upper, threshold, asset_ids):
++    """Discard only positive retrofit UB below the explicit GW cutoff."""
++    values = np.asarray(upper, dtype=float).copy()
++    rows = np.flatnonzero((values > 0) & (values < threshold))
++    removed = values[rows].copy()
++    values[rows] = 0.0
++    return values, {"cutoff_gw": float(threshold), "site_rows": rows.tolist(),
++        "asset_ids": [str(asset_ids[i]) for i in rows],
++        "removed_gw": removed.tolist(), "total_removed_gw": float(removed.sum())}
+ 
+ 
+ def clean_cascade_transfer_fractions(fractions, threshold: float):
+--- production2050/cispo_model/config.py
++++ local/cispo_model/config.py
+@@ -964,6 +964,11 @@
+                 "existing injection without spur/trunk construction"
+             )
+         numerics = self.raw.get("numerics", {})
++        for key in ("hydro_capacity_headroom_zero_gw", "retrofit_upper_zero_gw",
++                    "inherited_floor_overrun_clip_gw"):
++            value = float(numerics.get(key, 0.0))
++            if not math.isfinite(value) or not 0.0 <= value <= 1e-4:
++                raise ValueError(f"{key} must be in [0, 1e-4] GW")
+         headroom_zero = float(numerics.get("capacity_headroom_zero_gw", 1e-12))
+         if not math.isfinite(headroom_zero) or not 0.0 <= headroom_zero <= 1e-4:
+             raise ValueError("capacity_headroom_zero_gw must be in [0, 1e-4] GW")
+@@ -1036,6 +1041,14 @@
+         if int(numerics.get("pdhg_iteration_limit", 2_000_000_000)) < 0:
+             raise ValueError("numerics.pdhg_iteration_limit must be nonnegative")
+         formulation = self.raw.get("formulation", {})
++        split = formulation.get("annual_dense_row_split", {})
++        if not isinstance(split, dict) or set(split).difference({"enabled", "block_hours"}):
++            raise ValueError("annual_dense_row_split must contain enabled/block_hours only")
++        if not isinstance(split.get("enabled", False), bool):
++            raise ValueError("annual_dense_row_split.enabled must be boolean")
++        width = split.get("block_hours", 730)
++        if isinstance(width, bool) or not isinstance(width, int) or not 1 <= width <= 8760:
++            raise ValueError("annual_dense_row_split.block_hours must be an integer in [1, 8760]")
+         if formulation.get("annual_emissions_accounting") not in {
+             "national_dense_v1",
+             "province_hierarchical_v2",
+@@ -1311,6 +1324,7 @@
+         allowed_formulation = {
+             "annual_emissions_accounting",
+             "annual_capacity_link_row_scaling",
++            "annual_dense_row_split",
+         }
+         unknown = set(overrides).difference(allowed_formulation)
+         if unknown:
+--- production2050/cispo_model/load_center.py
++++ local/cispo_model/load_center.py
+@@ -10,6 +10,7 @@
+ from .data import VRE_TECHS, ModelData
+ from .hydro import HydroLinearBlock
+ from .master import MasterArtifacts
++from .annual_dense_split import annual_sum, annual_split_enabled
+ from .annual_capacity_link_scaling import (
+     BINARY_POWER2_SAFE_8192_V1,
+     MAX_BINARY_EXPONENT,
+@@ -189,7 +190,8 @@
+         for technology, technology_position in technology_index.items():
+             model.addConstr(
+                 center_vre_generation[center_positions, technology_position].sum()
+-                == vre_generation[p, technology_position, :].sum(),
++                == annual_sum(model, config, hours, f"vre_p{province_code}_{technology}",
++                    lambda t: vre_generation[p, technology_position, t].sum(), nonnegative=True),
+                 name=f"load_center_vre_generation_closure_p{province_code}_{technology}",
+             )
+ 
+@@ -227,7 +229,8 @@
+             ].to_numpy(dtype=int)
+             model.addConstr(
+                 center_wave_generation[center_positions].sum()
+-                == wave_generation[p, :].sum(),
++                == annual_sum(model, config, hours, f"wave_p{province_code}",
++                    lambda t: wave_generation[p, t].sum(), nonnegative=True),
+                 name=f"load_center_wave_generation_closure_p{province_code}",
+             )
+ 
+@@ -319,7 +322,8 @@
+         if len(reservoir_local_rows):
+             model.addConstr(
+                 center_reservoir_generation[center_position]
+-                == reservoir_generation[reservoir_local_rows, :].sum(),
++                == annual_sum(model, config, hours, f"reservoir_lc{center_position}",
++                    lambda t: reservoir_generation[reservoir_local_rows, t].sum(), nonnegative=True),
+                 name=f"load_center_reservoir_generation_{center_position}",
+             )
+         else:
+@@ -335,7 +339,8 @@
+             centers.province_code.eq(province_code)
+         ].to_numpy(dtype=int)
+         model.addConstr(
+-            center_ror_generation[center_positions].sum() == ror_generation[p, :].sum(),
++            center_ror_generation[center_positions].sum() == annual_sum(model, config, hours,
++                f"ror_p{province_code}", lambda t: ror_generation[p, t].sum(), nonnegative=True),
+             name=f"load_center_ror_generation_closure_p{province_code}",
+         )
+ 
+@@ -345,14 +350,20 @@
+         int(edge_row): position
+         for position, edge_row in enumerate(interprovincial_reverse_edge_rows)
+     }
++    sent_components = [[] for _ in provinces]
++    received_components = [[] for _ in provinces]
+     for edge, row in enumerate(data.lines.itertuples(index=False)):
+         p_from = province_index[int(row.from_province_code)]
+         p_to = province_index[int(row.to_province_code)]
+         efficiency = float(interprovincial_efficiency[edge])
++        sent_components[p_from].append((interprovincial_flow_forward, edge, 1.0))
++        received_components[p_to].append((interprovincial_flow_forward, edge, efficiency))
+         sent_energy[p_from] += interprovincial_flow_forward[edge, :].sum()
+         received_energy[p_to] += efficiency * interprovincial_flow_forward[edge, :].sum()
+         reverse_position = reverse_position_by_edge.get(edge)
+         if reverse_position is not None:
++            sent_components[p_to].append((interprovincial_flow_reverse_ac, reverse_position, 1.0))
++            received_components[p_from].append((interprovincial_flow_reverse_ac, reverse_position, efficiency))
+             sent_energy[p_to] += interprovincial_flow_reverse_ac[
+                 reverse_position, :
+             ].sum()
+@@ -367,24 +378,30 @@
+         p = province_index[province_code]
+         model.addConstr(
+             province_non_spatial_injection[p]
+-            == actual_thermal[p, :, :].sum()
+-            + storage_discharge[p, :, :].sum()
+-            + hydro_aggregate_generation[p, :].sum(),
++            == annual_sum(model, config, hours, f"non_spatial_injection_p{province_code}",
++                lambda t: actual_thermal[p, :, t].sum() + storage_discharge[p, :, t].sum()
++                + hydro_aggregate_generation[p, t].sum(), nonnegative=True),
+             name=f"province_annual_non_spatial_injection_p{province_code}",
+         )
+         model.addConstr(
+             province_effective_demand[p]
+-            == effective_load[p, :].sum()
+-            + storage_charge[p, :, :].sum()
+-            + float(hours) * dac_load[p],
++            == annual_sum(model, config, hours, f"effective_demand_p{province_code}",
++                lambda t: effective_load[p, t].sum() + storage_charge[p, :, t].sum()
++                + float(hours if t.stop is None else t.stop - t.start) * dac_load[p]),
+             name=f"province_annual_effective_demand_p{province_code}",
+         )
+         model.addConstr(
+-            province_external_sent[p] == sent_energy[p],
++            province_external_sent[p] == (annual_sum(model, config, hours,
++                f"external_sent_p{province_code}",
++                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),
++                nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),
+             name=f"province_annual_external_sent_p{province_code}",
+         )
+         model.addConstr(
+-            province_external_received[p] == received_energy[p],
++            province_external_received[p] == (annual_sum(model, config, hours,
++                f"external_received_p{province_code}",
++                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in received_components[p]),
++                nonnegative=True) if annual_split_enabled(config) else received_energy[p]),
+             name=f"province_annual_external_received_p{province_code}",
+         )
+         model.addConstr(
+--- production2050/scripts/run_cispo_2030_full_year.py
++++ local/scripts/run_cispo_2030_full_year.py
+@@ -33,6 +33,7 @@
+     solver_result_is_accepted,
+ )
+ from cispo_model.runtime_monitor import PeakMemoryMonitor
++from cispo_model.factor_screen import PROFILE_ID as FACTOR_SCREEN_PROFILE_ID, RESULT_USE as FACTOR_SCREEN_RESULT_USE
+ 
+ 
+ PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
+@@ -520,6 +521,7 @@
+         description="Sequential CISPO planning-year expansion plus chronological operation"
+     )
+     parser.add_argument("--config", default="config/optimization_2030.json")
++    parser.add_argument("--vre-screen-csv", type=Path, help="Exact VRE candidate CSV; restricted to TEST_ONLY factor profile")
+     parser.add_argument(
+         "--scenario-config",
+         help="Optional v1 partial override under config/scenarios; recorded in provenance.",
+@@ -877,6 +879,13 @@
+         or config.horizon(args.horizon)["test_only"]
+     )
+     profile_id = config.raw.get("solver_profile", {}).get("id")
++    factor_screen = profile_id == FACTOR_SCREEN_PROFILE_ID
++    if args.vre_screen_csv and not factor_screen:
++        raise SystemExit("--vre-screen-csv is restricted to TEST_ONLY factor screen")
++    if factor_screen:
++        from cispo_model.factor_screen import validate_factor_screen_contract
++        validate_factor_screen_contract(config, args)
++        requested_test_only = True
+     runtime_soft_mem_limit_policy = None
+     if args.runtime_soft_mem_limit_gb is not None:
+         if profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
+@@ -1025,6 +1034,7 @@
+     if (
+         is_optional_portfolio(config.raw["flexible_load"])
+         and requested_optimization_hours == 8760
++        and not factor_screen
+         and not (args.preflight_only or args.build_only or args.recover_stage_a_from)
+     ):
+         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
+@@ -1149,6 +1159,7 @@
+         nonbasic_primal_dual_requested
+         and not args.engineering_barrier_checkpoint_only
+         and not direct_nonbasic_scientific_acceptance
++        and not factor_screen
+     ):
+         raise SystemExit(
+             f"{profile_id} requires --engineering-barrier-checkpoint-only; "
+@@ -1250,6 +1261,8 @@
+         required_gb = diagnostic_memory_requirement_gb(
+             config, optimization_hours
+         )
++    if factor_screen and optimization_hours == 8760:
++        required_gb = 500.0
+     required_gb = cloud_full_year_required_memory_gib(
+         required_gb,
+         cloud_full_year_role,
+@@ -1303,7 +1316,7 @@
+             hour_start=optimization_start_hour,
+             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
+             allow_engineering_relaxed_nonbasic=bool(
+-                args.engineering_relaxed_barrier_analysis
++                args.engineering_relaxed_barrier_analysis or factor_screen
+             ),
+         )
+     )
+@@ -1321,13 +1334,14 @@
+         "selected_time_end_bj": selected_time_end_bj,
+         "configured_full_year_hours": config.hours,
+         "definition": definition,
+-        "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
++        "result_use": FACTOR_SCREEN_RESULT_USE if factor_screen else "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
+         "offline_recovery": ({
+             "source": str(Path(args.recover_stage_a_from).resolve()),
+             "minimum_available_memory_gib": (OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB if optimization_hours > 744 else required_gb),
+             "optimize_called": False, "presolve_called": False,
+         } if args.recover_stage_a_from else None),
+         "scientific_acceptance_mode": (
++            "NONE" if factor_screen else
+             "ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS"
+             if args.engineering_relaxed_barrier_analysis
+             else "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
+@@ -1537,6 +1551,10 @@
+         optimization_hours=optimization_hours,
+         optimization_start_hour=optimization_start_hour,
+     )
++    screen_report = None
++    if args.vre_screen_csv:
++        from cispo_model.factor_screen import apply_vre_screen
++        screen_report = apply_vre_screen(artifacts, data.vre_sites, args.vre_screen_csv, output_dir)
+     row_scaling_registry = artifacts.index.get(
+         "annual_capacity_link_row_scaling"
+     )
+@@ -1675,7 +1693,7 @@
+             config.raw["numerics"],
+             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
+             allow_engineering_relaxed_nonbasic=bool(
+-                args.engineering_relaxed_barrier_analysis
++                args.engineering_relaxed_barrier_analysis or factor_screen
+             ),
+         )
+     )
+@@ -1735,6 +1753,12 @@
+         "primal_dual_start": primal_dual_start,
+         "mga": mga_run,
+     }
++    for audit_key in ("numerical_robustness_audit", "annual_dense_row_split"):
++        if artifacts.index.get(audit_key):
++            build_report[audit_key] = artifacts.index[audit_key]
++    if factor_screen:
++        build_report["vre_screen"] = screen_report
++        build_report["scientific_acceptance_mode"] = "NONE"
+     (output_dir / "build_report.json").write_text(
+         json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
+         encoding="utf-8",
+@@ -1750,7 +1774,7 @@
+     ):
+         from cispo_model.diagnostics import configure_gurobi
+         configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
+-        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
++        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen:
+             # Read back the actual model before the multi-day optimize call.
+             from cispo_model.diagnostics import validate_unlimited_stage_a_parameters
+             write_strict_json_atomic(
+@@ -1766,6 +1790,10 @@
+         )
+         if archive_report["status"] != "COMPLETE":
+             raise RuntimeError("Original model/parameter archive is incomplete; optimization is blocked")
++    if factor_screen and archive_original_model:
++        from cispo_model.factor_screen import mps_section_sha256
++        write_strict_json_atomic(output_dir / "mps_section_sha256.json",
++            mps_section_sha256(next((output_dir / "model_archive").glob("original.mps*"))))
+     if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+         if not archive_original_model:
+             raise RuntimeError(
+@@ -1854,6 +1882,13 @@
+         raise RuntimeError(
+             str(solver_numerical_compatibility["reason"])
+         )
++    if factor_screen:
++        from cispo_model.factor_screen import solve_factor_screen
++        report = solve_factor_screen(artifacts.model, config, output_dir)
++        report["memory_at_exit"] = memory_monitor.stop()
++        write_strict_json_atomic(output_dir / "solve_report.json", report)
++        print(json.dumps(report, indent=2))
++        return
+     try:
+         report = solve_and_report(
+             artifacts.model,
+--- factor_F/scripts/run_cispo_2030_full_year.py
++++ local/scripts/run_cispo_2030_full_year.py
+@@ -1753,6 +1753,9 @@
+         "primal_dual_start": primal_dual_start,
+         "mga": mga_run,
+     }
++    for audit_key in ("numerical_robustness_audit", "annual_dense_row_split"):
++        if artifacts.index.get(audit_key):
++            build_report[audit_key] = artifacts.index[audit_key]
+     if factor_screen:
+         build_report["vre_screen"] = screen_report
+         build_report["scientific_acceptance_mode"] = "NONE"

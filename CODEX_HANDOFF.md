@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-06英国23:36代码追溯：重新读取云2050包10个差异文件，SHA均匹配既有清单；196文件中186原字节同、2040 profile仅换行、9个Python有文本差异（归一换行240增/41删）。8个模型模块的10月5日前冻结本地副本与云生产逐SHA相同，证明新增差异来自10月5日A/C与factor/审计，而非9月V9修复尚未部署。新增模型模块仅annual_dense_split/factor_screen；155个local-only主要工具/测试（2模型/4配置/82脚本/67测试），不能全算新模型。865e966是8月至10月既有dirty成果补提交，并非10月6日新写72文件。完整时间线/逐文件patch/缺口见git_sync_20261006/CODE_CHANGE_PROVENANCE_ZH.md及code_provenance.json。已披露固定机10月5日17:19:45UTC实验模块替换与B身份metadata差异；补充新release冻结约定。351受测源码SHA仍匹配412回归，无模型/远端修改、无求解/监听；本轮仅审计脚本和文档待收尾同步。最新同步SHA以Git实查为准，原4844528未操作。
+
 - 2026-10-06英国23:27 GitHub同步完成：工程提交`865e966`（72文件）、文档/小型证据提交`95e8faf`（403文件）已普通atomic push到GitHub `main`与`codex/validation-pair-20261005`，ls-remote确认两ref=95e8faf；旧main之前落后277个已提交历史也已快进补齐，无强推。当前分支上游指向github，remote.pushDefault=github；origin固定机裸库未推送，服务器工作目录与云运行包未改。351受测源码仍与412回归SHA一致、160所选Python语法/JSON/常见凭据扫描完成，原回归log Git字节SHA保留。工程目录无待提交改动；仅受跟踪历史稿件`MODEL_V0719_REVIEW_REPORT.md`及未审核论文/原始实验资料留本地，均未删除。新同步策略见GIT_SYNC_POLICY_ZH.md、版本差异见git_sync_20261006/REVIEW与SYNC_RESULT；本交接/收据作为文档收尾提交再次同步。自动监听仍取消，不自动部署、不触碰4844528。
 
 - 2026-10-06 Git同步审计：用户授权审查安全范围后提交并尽量保持本地/GitHub同步。确有17项tracked工程源码/配置/测试修改、55项新增，非仅文档；351受测源SHA仍匹配412回归，未因Git任务修改模型。GitHub main原796a6fc落后本地HEAD277提交，工程分支860ab84落后11，均无远端独有历史；仓库public。约74456个未跟踪项/9.51GiB主要是临时树、runtime、原始证据和论文产物，明确清单仅选择工程/说明及小型证据；未审核论文与MODEL_V0719_REVIEW_REPORT改写留本地，凭据候选不读不传。云2050冻结repo196文件中8模型/runner共9项代码不同及1项JSON格式不同，固定机主repo clean/ba8e09f且较旧，数值副本仅B身份metadata与本地不同。本轮只读核验远端，不部署、不操作4844528。详见`reviews/git_sync_20261006/REVIEW_ZH.md`；Git提交/推送终态随后记录，尚不以本条预先宣称成功。
@@ -9492,3 +9494,12 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 - 257核心/科学配置/输入逐SHA与起始一致；执行源码SHA5dee4995f52afa25a5266132f1aeb8d35999584cc0c76d742d1f78cc755c8f55已核验保全。修订包experiment_v2.tar.gz为266文件/82718241bytes；旧失败上传保留。编译、shell语法、git diff --check通过。
 - 证据/复现：本轮review的paired_results.csv、paired_identity_audit.json、REVIEW_ZH.md、decision.json、delivery_manifest.json；python review/summarize_experiment.py及finalize_evidence.py。
 - 未决：2016h尚未启动，固定SSH转发仍握手超时；删除6候选仍待用户确认。精确下一步是恢复转发后在新目录核验v2包并执行2016h同参数配对，不自动启动全年或干预Base。
+
+
+### 2026-10-06 23:36英国时间：逐文件追溯开发时间与实际运行源码
+
+- 用户要求说明代码改动何时产生并避免本地/运行代码代际差异；工程来源commit为865e966，审计开始本地/GitHub main与工作分支均428a3f6（实时ls-remote及fetch确认）。865e966为8月至10月已有成果补录，不是当日新开发72文件。
+- 只读核验云2050既有冻结包，10个差异文件重新取回SHA与cloud_versions清单一致。186/196原字节相同，1项2040 profile仅换行；9项已有Python的归一文本差异240增/41删，8项模型的旧冻结本地副本与云生产相同。相对该云包，新增模型模块只有annual_dense_split.py、factor_screen.py；A助手是在已有numerical_cleanup.py中追加，非另一个新模块。
+- 证据：git_sync_20261006/CODE_CHANGE_PROVENANCE_ZH.md、code_provenance.json、production_to_local.patch、trace_deployed_code.py；时间线以dated handoff/review/冻结SHA为依据，不用mtime或统一Git作者字段伪造编辑时间。已披露固定机C模块中途修复、B元数据差异及缺少同期加载模块SHA的局限。
+- 变更仅上述审计产物、GIT_SYNC_POLICY_ZH.md和本交接。命令：python supplementary_materials/reviews/git_sync_20261006/trace_deployed_code.py；git ls-remote/fetch；逐项diff和AST/JSON校验。351项受测源SHA仍等于最终412回归，不重复测试/求解；不改服务器目录、作业4844528或自动化。
+- 后续约定：小批及时提交；新实验使用已提交已测源码，commit+文件SHA+有效配置/输入/继承状态共同定位，新修复建新release；显式V9参数复现云任务，不把默认optimization_2030.json或Git相同当作云运行模型相同。当前生产V9不自动升级A/B/C或factor；本轮审计安全范围收尾同步GitHub，最终提交号见Git实际历史。
