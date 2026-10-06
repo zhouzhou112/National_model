@@ -22,6 +22,7 @@ def main():
         d=ROOT/'supplementary_materials/reviews'/name
         for p in d.iterdir():
             if p.is_file() and p.suffix in allowed and p.stat().st_size<1024**2:
+                if p.name=='thread_reference.json' or p.name.startswith('windows_restart_events_'):continue
                 if name=='git_sync_20261006' and p.name in {'selected_files.json','secret_scan.json','publication_validation.json'}:continue
                 paths.add(p.relative_to(ROOT).as_posix())
     selected_json=['factor_pair_8760_20261005/final_assessment.json','numerical_robustness_20261005/server_evidence/20261006T2114Z/final_comparison.json','validation_coordination_20261005/unittest_verified_20261005T185140Z.json','validation_coordination_20261005/final_source_integrity_20261006.json','git_sync_20261006/inventory_summary.json','git_sync_20261006/cloud_versions.json','git_sync_20261006/fixed_versions.json']

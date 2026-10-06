@@ -2,6 +2,8 @@
 
 This repository implements a continuous linear capacity-expansion and chronological-dispatch model for China's 31 provincial regions. The production horizon is one continuous 8760-hour year. The model is intended for reproducible research: every accepted case records its exact inputs, configuration, solver environment, outputs, hard QC and SHA256 manifest.
 
+2026-10-06 GitHub同步说明：`main`与当前审查后的工程工作分支已同步；云端运行包保持冻结，不随Git更新。8760h初筛通过五轮每轮成本门槛，A/B/C当前数值候选未晋级，均不代表科学QC接受。详见[版本差异与提交范围](supplementary_materials/reviews/git_sync_20261006/REVIEW_ZH.md)、[同步结果](supplementary_materials/reviews/git_sync_20261006/SYNC_RESULT_ZH.md)和[后续同步约定](GIT_SYNC_POLICY_ZH.md)。原始数据/大规模运行输出及未审核稿件未随本次Git发布。
+
 2026-10-02 当前顺序：正在运行的 Base 保持不动；下一轮优先 Base＋冷热＋V1G/V2G，从 2030 独立求解至 2060。见 [当前情景执行计划](SCENARIO_EXECUTION_PLAN_20261002.md) 和 [文档/代码版本使用边界](DOCUMENT_STATUS_20261002.md)。对偶筛选尚属隔离验证，不能把初筛候选集当永久资源删减。
 
 ## Scientific boundary

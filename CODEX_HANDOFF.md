@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-06英国23:27 GitHub同步完成：工程提交`865e966`（72文件）、文档/小型证据提交`95e8faf`（403文件）已普通atomic push到GitHub `main`与`codex/validation-pair-20261005`，ls-remote确认两ref=95e8faf；旧main之前落后277个已提交历史也已快进补齐，无强推。当前分支上游指向github，remote.pushDefault=github；origin固定机裸库未推送，服务器工作目录与云运行包未改。351受测源码仍与412回归SHA一致、160所选Python语法/JSON/常见凭据扫描完成，原回归log Git字节SHA保留。工程目录无待提交改动；仅受跟踪历史稿件`MODEL_V0719_REVIEW_REPORT.md`及未审核论文/原始实验资料留本地，均未删除。新同步策略见GIT_SYNC_POLICY_ZH.md、版本差异见git_sync_20261006/REVIEW与SYNC_RESULT；本交接/收据作为文档收尾提交再次同步。自动监听仍取消，不自动部署、不触碰4844528。
+
 - 2026-10-06 Git同步审计：用户授权审查安全范围后提交并尽量保持本地/GitHub同步。确有17项tracked工程源码/配置/测试修改、55项新增，非仅文档；351受测源SHA仍匹配412回归，未因Git任务修改模型。GitHub main原796a6fc落后本地HEAD277提交，工程分支860ab84落后11，均无远端独有历史；仓库public。约74456个未跟踪项/9.51GiB主要是临时树、runtime、原始证据和论文产物，明确清单仅选择工程/说明及小型证据；未审核论文与MODEL_V0719_REVIEW_REPORT改写留本地，凭据候选不读不传。云2050冻结repo196文件中8模型/runner共9项代码不同及1项JSON格式不同，固定机主repo clean/ba8e09f且较旧，数值副本仅B身份metadata与本地不同。本轮只读核验远端，不部署、不操作4844528。详见`reviews/git_sync_20261006/REVIEW_ZH.md`；Git提交/推送终态随后记录，尚不以本条预先宣称成功。
 
 - 2026-10-06英国22:14两项授权验证收尾：用户恢复22端口并明确取消自动监听，原生`automation`保持PAUSED（工具确认），不再自动恢复。Cfull原队列已自然完成/rc0，134轮OPTIMAL/Runtime4848.095467s/Work7694.506281/目标2313584.6588953873/QC HARD_FAIL；相对Boff目标差7.86823048984e-7>1e-7，目标门槛未过，默认及AggFill5结构门槛否决亦保留。14份终态原件逐SHA全PASS，证据`numerical_robustness_20261005/server_evidence/20261006T2114Z/`及`final_comparison.json`；配置仅C formulation差、输入manifest字节同、10项实参数同、Cgate至终态源码SHA同。Boff原gate未记录源SHA，冻结包/修复早于B启动日志/后验manifest支持来源，但不能称同期加载模块逐SHA证明，此局限已写报告。任务1最终PASS（仅五轮每轮成本下降39.24%），A/B/C当前候选均否决；两份REVIEW、decision已完整更新。351受测源码仍与最终412回归一致（final_source_integrity_20261006.json），本轮无模型修改/本机求解/重复测试，无新云作业，不碰4844528。不执行进一步调参、2160h或科学情景，旧“待取证/运行/恢复转发”条目均为历史。
@@ -3650,6 +3652,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-06 23:27英国时间：工程与GitHub main/工作分支快进同步完成
+
+- Git提交：`865e9661c6fa1f203ff433dfa5f169af133e266e`版本化72项已验证工程文件；`95e8faf97abff438a13cfeabbad9565d0f1fb913`保存403项文档/配置小证据/审查报告。用户授权条件下审查后同步，未改模型实际内容，A/B/C仍默认关闭且否决状态保留。
+- 命令：git fetch、祖先关系0/279核验、git push --atomic github HEAD:refs/heads/codex/validation-pair-20261005 HEAD:refs/heads/main，成功；git ls-remote两ref均95e8faf。设置当前分支GitHub上游及remote.pushDefault=github，未向origin部署或pull任何服务器。
+- 验证：351受测源码无漂移，复用412 tests/OK(skip1)，160所选Python AST和JSON解析通过；474候选文件约9.06MB与11未推送历史190文件版本凭据扫描无命中。后排除机器事件/对话引用元数据，2个无效历史JSON原件保留；最终测试log原SHA在Git index逐字节相同。已有EOF空行/原log CRLF显式保留，不伪称修改代码后未重测。
+- 输出/未提交：审计目录git_sync_20261006含分类、云/固定机manifest、风险边界、同步收据。工程无剩余diff；MODEL_V0719_REVIEW_REPORT历史稿件改写和论文模块/原实验资料保留本地，非丢失。`.gitignore`排除runtime/临时树/密钥许可证/大模型归档，无文件删除。
+- 后续：本交接/README收尾提交同步后，按新GIT_SYNC_POLICY_ZH逐任务执行。云2050及F/S冻结包、固定主repo及数值副本仅只读，不为对齐GitHub改变运行身份；4844528未操作，自动监听不恢复。
 
 ### 2026-10-06 Git同步审计与发布范围准备
 
