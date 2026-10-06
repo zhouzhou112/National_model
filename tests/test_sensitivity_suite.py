@@ -182,7 +182,13 @@ class SensitivitySuiteTests(unittest.TestCase):
                 check=False,
                 env=environment,
             )
-            self.assertEqual(completed.returncode, 0, completed.stderr)
+            # Include nested-process diagnostics before TemporaryDirectory
+            # removes them; the suite's stderr otherwise names a missing file.
+            child_errors = "\n".join(
+                f"{path.name}:\n{path.read_text(encoding='utf-8', errors='replace')}"
+                for path in sorted(output_root.glob("*.stderr.log"))
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr + child_errors)
             report = json.loads(
                 (output_root / "sensitivity_suite_report.json").read_text(
                     encoding="utf-8"

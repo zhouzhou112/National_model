@@ -400,7 +400,12 @@ def write_run_provenance(
         )
     add_file("input_contract", "config/model_input_files.json", contract_path, True)
     for logical_path in contract["required_model_tables"]:
+        if logical_path == "hydro/hydro_stations.csv":
+            logical_path = str(config.raw["hydro"].get("station_parameters_file", logical_path))
         add_file("model_table", logical_path, data_root / logical_path, True)
+    if config.raw["hydro"].get("station_corrections_file"):
+        correction_path = str(config.raw["hydro"]["station_corrections_file"])
+        add_file("model_table", correction_path, data_root / correction_path, True)
     if (
         bool(config.raw["features"]["flexible_load"])
         and str(

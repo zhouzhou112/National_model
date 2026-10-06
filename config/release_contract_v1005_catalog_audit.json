@@ -1,0 +1,27 @@
+{
+  "contract_version": "national_model_release_v1005_catalog_audit",
+  "inherits": "config/release_contract_v0805_power_curve_v3_qc.json",
+  "release_status": "CATALOG_AUDIT_ONLY_NOT_V9_SCIENTIFIC_OR_SOLVER_ACCEPTANCE",
+  "audit_scope_note": "Synchronizes only the already-established optional-portfolios scenario catalog. Inherited legacy Base, solver and data checks remain unchanged; passing this audit is not V9 production qualification.",
+  "primary_scenarios": [
+    "base",
+    "case1_thermal_v5",
+    "case2_ev_v5",
+    "case3_thermal_ev_v5"
+  ],
+  "implemented_scenarios": [
+    "base",
+    "case1_thermal_v5",
+    "case2_ev_v5",
+    "case3_thermal_ev_v5",
+    "flex_integrated_v5_central",
+    "flexible_load_comfort_v4_v1g",
+    "flexible_load_comfort_v4_v1g_effective_peak_sensitivity",
+    "flexible_load_comfort_v4_v2g_sensitivity",
+    "hydro_aggregate_flex_v1",
+    "phs_power_energy_separated_central_v1",
+    "phs_power_energy_separated_low_energy_cost_v1",
+    "phs_power_energy_separated_high_energy_cost_v1",
+    "flexible_load_comfort_v3_v2g_5pct"
+  ]
+}

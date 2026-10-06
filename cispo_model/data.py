@@ -1244,7 +1244,7 @@ def load_model_data(
     ).any():
         raise ValueError("Nuclear capacity floor exceeds the configured upper bound")
     hydro = _read(
-        "hydro/hydro_stations.csv",
+        str(config.raw["hydro"].get("station_parameters_file", "hydro/hydro_stations.csv")),
         usecols=[
             "hydrochn_row_id", "plant_name_model", "lon", "lat", "comid",
             "province_code", "existing_capacity_gw", "capacity_potential_gw",

@@ -33,9 +33,14 @@ from cispo_model.run_contract import (
     solver_result_is_accepted,
 )
 from cispo_model.runtime_monitor import PeakMemoryMonitor
+from cispo_model.factor_screen import PROFILE_ID as FACTOR_SCREEN_PROFILE_ID, RESULT_USE as FACTOR_SCREEN_RESULT_USE
 
 
 PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
+NUMERIC_REPAIRED_STAGE_A_PROFILE_ID = "barrier_stagea_numeric_repaired_v1_threads48"
+NUMERIC_REPAIRED_SCIENTIFIC_SHA256 = (
+    "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0"
+)
 CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX = "barrier_checkpoint_full_year_cloud_"
 CLOUD_FULL_YEAR_STAGE_B_PROFILE_PREFIX = "deferred_crossover2_full_year_cloud_"
 CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
@@ -49,6 +54,7 @@ CLOUD_FINAL_STAGE_A_PROFILE_IDS = frozenset(
 )
 CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS = frozenset(
     {
+        NUMERIC_REPAIRED_STAGE_A_PROFILE_ID,
         "barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem",
         "barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem",
         "barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem",
@@ -63,6 +69,7 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
 )
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     {
+        NUMERIC_REPAIRED_STAGE_A_PROFILE_ID,
         PORTFOLIO_STAGE_A_PROFILE_ID,
         "barrier_checkpoint_full_year_cloud_v4",
         "barrier_checkpoint_full_year_cloud_v5_threads32",
@@ -75,6 +82,9 @@ DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     }
 )
 CANONICAL_DIRECT_SOLVER_PROFILE_JSON_SHA256 = {
+    NUMERIC_REPAIRED_STAGE_A_PROFILE_ID: (
+        "c0d3072dc6442f952ae441bc4633611a846955fa707abe02052f4035a7609706"
+    ),
     PORTFOLIO_STAGE_A_PROFILE_ID: "70bdf6d7b2a740082175dc29814ccbab741bbfec11ad81055bc29b6f283235be",
     "barrier_checkpoint_full_year_cloud_v4": (
         "694d920f7a6279c20c8316f574233a1bc86ed7c4391fda282bb5363c49a3fe8d"
@@ -259,9 +269,46 @@ def _canonical_json_sha256(payload) -> str:
     return hashlib.sha256(serialized).hexdigest()
 
 
+def direct_nonbasic_row_scaling_contract(config) -> tuple[str, int]:
+    """Use one annual-row contract before and after model construction."""
+    from cispo_model.annual_capacity_link_scaling import (
+        PHYSICAL_V1, BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT,
+    )
+    if config.raw.get("solver_profile", {}).get("id") == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
+        return PHYSICAL_V1, 0
+    return BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT
+
+
+def require_direct_nonbasic_runtime_row_scaling(config, registry, model) -> dict:
+    """Validate actual LP rows against the selected, already reviewed profile."""
+    from cispo_model.annual_capacity_link_scaling import validate_row_scaling_registry
+    expected_profile, expected_exponent = direct_nonbasic_row_scaling_contract(config)
+    validated = validate_row_scaling_registry(registry, model=model, allow_none=False)
+    if validated["profile"] != expected_profile or any(
+        int(family["exponent"]) != expected_exponent
+        for family in validated["families"].values()
+    ):
+        raise RuntimeError(
+            "Direct nonbasic scientific acceptance requires exact VRE/ROR "
+            f"annual capacity-link {expected_profile} exponent {expected_exponent} runtime evidence"
+        )
+    return validated
+
+
 def require_canonical_direct_nonbasic_profiles(config) -> None:
     """Bind direct scientific acceptance to the reviewed profile contents."""
     profile_id = config.raw.get("solver_profile", {}).get("id")
+    repaired = profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID
+    if repaired:
+        from cispo_model.run_contract import analysis_case_identity
+        identity = analysis_case_identity(config)
+        if (
+            identity["resolved_scientific_configuration_sha256"]
+            != NUMERIC_REPAIRED_SCIENTIFIC_SHA256
+            or config.formulation_path is not None
+            or config.planning_year != 2030
+        ):
+            raise SystemExit("Repaired Stage A requires the reviewed 2030 v9 physical-row model")
     candidates = (
         (
             "solver",
@@ -275,6 +322,8 @@ def require_canonical_direct_nonbasic_profiles(config) -> None:
         ),
     )
     for label, candidate_path, expected_sha256 in candidates:
+        if repaired and label == "formulation":
+            continue
         if candidate_path is None or expected_sha256 is None:
             raise SystemExit(
                 f"Direct nonbasic scientific acceptance requires the canonical "
@@ -291,12 +340,13 @@ def require_canonical_direct_nonbasic_profiles(config) -> None:
                 f"Direct nonbasic scientific acceptance {label} profile "
                 "content differs from the reviewed canonical profile"
             )
+    expected_row_profile, _ = direct_nonbasic_row_scaling_contract(config)
     if config.raw.get("formulation", {}).get(
-        "annual_capacity_link_row_scaling"
-    ) != "binary_power2_safe_8192_v1":
+        "annual_capacity_link_row_scaling", "physical_v1"
+    ) != expected_row_profile:
         raise SystemExit(
             "Direct nonbasic scientific acceptance requires "
-            "binary_power2_safe_8192_v1 annual capacity-link row scaling"
+            f"{expected_row_profile} annual capacity-link row scaling"
         )
 
 
@@ -304,7 +354,7 @@ def cloud_full_year_profile_role(profile_id: object) -> str | None:
     """Classify every version of the fail-closed cloud Stage A/B profiles."""
     if not isinstance(profile_id, str):
         return None
-    if profile_id == PORTFOLIO_STAGE_A_PROFILE_ID or profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
+    if profile_id in {PORTFOLIO_STAGE_A_PROFILE_ID, NUMERIC_REPAIRED_STAGE_A_PROFILE_ID} or profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
         return "STAGE_A"
     if profile_id.startswith(CLOUD_FULL_YEAR_STAGE_A_PROFILE_PREFIX):
         return "STAGE_A"
@@ -471,6 +521,7 @@ def main() -> None:
         description="Sequential CISPO planning-year expansion plus chronological operation"
     )
     parser.add_argument("--config", default="config/optimization_2030.json")
+    parser.add_argument("--vre-screen-csv", type=Path, help="Exact VRE candidate CSV; restricted to TEST_ONLY factor profile")
     parser.add_argument(
         "--scenario-config",
         help="Optional v1 partial override under config/scenarios; recorded in provenance.",
@@ -828,6 +879,13 @@ def main() -> None:
         or config.horizon(args.horizon)["test_only"]
     )
     profile_id = config.raw.get("solver_profile", {}).get("id")
+    factor_screen = profile_id == FACTOR_SCREEN_PROFILE_ID
+    if args.vre_screen_csv and not factor_screen:
+        raise SystemExit("--vre-screen-csv is restricted to TEST_ONLY factor screen")
+    if factor_screen:
+        from cispo_model.factor_screen import validate_factor_screen_contract
+        validate_factor_screen_contract(config, args)
+        requested_test_only = True
     runtime_soft_mem_limit_policy = None
     if args.runtime_soft_mem_limit_gb is not None:
         if profile_id in CLOUD_NO_SOFTMEM_STAGE_A_PROFILE_IDS:
@@ -945,6 +1003,11 @@ def main() -> None:
         )
     if direct_nonbasic_scientific_acceptance:
         require_canonical_direct_nonbasic_profiles(config)
+    if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
+        if not archive_original_model and not args.preflight_only:
+            raise SystemExit("Repaired Stage A requires --archive-original-model")
+        if args.archive_presolved_model:
+            raise SystemExit("Repaired Stage A archives the original LP without an extra presolved copy")
     if args.authorize_thermal_stage_a_1e4:
         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
         require_qualified_portfolio_stage_a(config, author_authorized=True)
@@ -971,6 +1034,7 @@ def main() -> None:
     if (
         is_optional_portfolio(config.raw["flexible_load"])
         and requested_optimization_hours == 8760
+        and not factor_screen
         and not (args.preflight_only or args.build_only or args.recover_stage_a_from)
     ):
         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
@@ -1095,6 +1159,7 @@ def main() -> None:
         nonbasic_primal_dual_requested
         and not args.engineering_barrier_checkpoint_only
         and not direct_nonbasic_scientific_acceptance
+        and not factor_screen
     ):
         raise SystemExit(
             f"{profile_id} requires --engineering-barrier-checkpoint-only; "
@@ -1196,6 +1261,8 @@ def main() -> None:
         required_gb = diagnostic_memory_requirement_gb(
             config, optimization_hours
         )
+    if factor_screen and optimization_hours == 8760:
+        required_gb = 500.0
     required_gb = cloud_full_year_required_memory_gib(
         required_gb,
         cloud_full_year_role,
@@ -1249,7 +1316,7 @@ def main() -> None:
             hour_start=optimization_start_hour,
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
             allow_engineering_relaxed_nonbasic=bool(
-                args.engineering_relaxed_barrier_analysis
+                args.engineering_relaxed_barrier_analysis or factor_screen
             ),
         )
     )
@@ -1267,13 +1334,14 @@ def main() -> None:
         "selected_time_end_bj": selected_time_end_bj,
         "configured_full_year_hours": config.hours,
         "definition": definition,
-        "result_use": "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
+        "result_use": FACTOR_SCREEN_RESULT_USE if factor_screen else "TEST_ONLY_TRUNCATED_HORIZON" if test_only else "SCIENTIFIC_PRODUCTION",
         "offline_recovery": ({
             "source": str(Path(args.recover_stage_a_from).resolve()),
             "minimum_available_memory_gib": (OFFLINE_RECOVERY_MIN_AVAILABLE_MEMORY_GIB if optimization_hours > 744 else required_gb),
             "optimize_called": False, "presolve_called": False,
         } if args.recover_stage_a_from else None),
         "scientific_acceptance_mode": (
+            "NONE" if factor_screen else
             "ENGINEERING_RELAXED_BARRIER_MACRO_ANALYSIS"
             if args.engineering_relaxed_barrier_analysis
             else "ENGINEERING_BARRIER_CHECKPOINT_ONLY"
@@ -1483,6 +1551,10 @@ def main() -> None:
         optimization_hours=optimization_hours,
         optimization_start_hour=optimization_start_hour,
     )
+    screen_report = None
+    if args.vre_screen_csv:
+        from cispo_model.factor_screen import apply_vre_screen
+        screen_report = apply_vre_screen(artifacts, data.vre_sites, args.vre_screen_csv, output_dir)
     row_scaling_registry = artifacts.index.get(
         "annual_capacity_link_row_scaling"
     )
@@ -1496,30 +1568,6 @@ def main() -> None:
         raise RuntimeError(
             "Requested annual capacity-link row scaling has no runtime registry"
         )
-    if direct_nonbasic_scientific_acceptance:
-        from cispo_model.annual_capacity_link_scaling import (
-            BINARY_POWER2_SAFE_8192_V1,
-            MAX_BINARY_EXPONENT,
-            validate_row_scaling_registry,
-        )
-
-        validated_direct_registry = validate_row_scaling_registry(
-            row_scaling_registry,
-            model=artifacts.model,
-            allow_none=False,
-        )
-        if (
-            validated_direct_registry["profile"]
-            != BINARY_POWER2_SAFE_8192_V1
-            or any(
-                int(family["exponent"]) != MAX_BINARY_EXPONENT
-                for family in validated_direct_registry["families"].values()
-            )
-        ):
-            raise RuntimeError(
-                "Direct nonbasic scientific acceptance requires exact VRE/ROR "
-                "annual capacity-link exponent 13 runtime evidence"
-            )
     row_scaling_manifest_path = None
     if row_scaling_registry is not None:
         row_scaling_manifest_path = (
@@ -1529,6 +1577,10 @@ def main() -> None:
             json.dumps(row_scaling_registry, ensure_ascii=False, indent=2)
             + "\n",
             encoding="utf-8",
+        )
+    if direct_nonbasic_scientific_acceptance:
+        require_direct_nonbasic_runtime_row_scaling(
+            config, row_scaling_registry, artifacts.model,
         )
     # Every run records a constant-memory Gurobi identity. Exact ordered names
     # and the raw CSR pattern are materialized only for explicit guarded basis
@@ -1641,7 +1693,7 @@ def main() -> None:
             config.raw["numerics"],
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
             allow_engineering_relaxed_nonbasic=bool(
-                args.engineering_relaxed_barrier_analysis
+                args.engineering_relaxed_barrier_analysis or factor_screen
             ),
         )
     )
@@ -1701,6 +1753,12 @@ def main() -> None:
         "primal_dual_start": primal_dual_start,
         "mga": mga_run,
     }
+    for audit_key in ("numerical_robustness_audit", "annual_dense_row_split"):
+        if artifacts.index.get(audit_key):
+            build_report[audit_key] = artifacts.index[audit_key]
+    if factor_screen:
+        build_report["vre_screen"] = screen_report
+        build_report["scientific_acceptance_mode"] = "NONE"
     (output_dir / "build_report.json").write_text(
         json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -1716,6 +1774,13 @@ def main() -> None:
     ):
         from cispo_model.diagnostics import configure_gurobi
         configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
+        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen:
+            # Read back the actual model before the multi-day optimize call.
+            from cispo_model.diagnostics import validate_unlimited_stage_a_parameters
+            write_strict_json_atomic(
+                output_dir / "solver_parameters_before_optimize.json",
+                validate_unlimited_stage_a_parameters(artifacts.model, config),
+            )
     if archive_original_model:
         archive_report = archive_model(
             artifacts.model,
@@ -1725,6 +1790,10 @@ def main() -> None:
         )
         if archive_report["status"] != "COMPLETE":
             raise RuntimeError("Original model/parameter archive is incomplete; optimization is blocked")
+    if factor_screen and archive_original_model:
+        from cispo_model.factor_screen import mps_section_sha256
+        write_strict_json_atomic(output_dir / "mps_section_sha256.json",
+            mps_section_sha256(next((output_dir / "model_archive").glob("original.mps*"))))
     if profile_id in CLOUD_FINAL_STAGE_A_PROFILE_IDS:
         if not archive_original_model:
             raise RuntimeError(
@@ -1813,6 +1882,13 @@ def main() -> None:
         raise RuntimeError(
             str(solver_numerical_compatibility["reason"])
         )
+    if factor_screen:
+        from cispo_model.factor_screen import solve_factor_screen
+        report = solve_factor_screen(artifacts.model, config, output_dir)
+        report["memory_at_exit"] = memory_monitor.stop()
+        write_strict_json_atomic(output_dir / "solve_report.json", report)
+        print(json.dumps(report, indent=2))
+        return
     try:
         report = solve_and_report(
             artifacts.model,

@@ -1,0 +1,2 @@
+hydrochn_row_id,expected_plant_name,expected_capacity_gw,expected_active_storage_gl,corrected_active_storage_gl,source_url,url_date,reason
+HydroCHN_00923,Jinping Stage 2 hydroelectric plant,4.8,4522.893565,4.96,https://www.mee.gov.cn/gkml/sthjbgw/spwj1/201612/t20161213_368984.htm,2016-12-13,MEE completed-project acceptance states 4.96 million m3 regulating storage; replace inconsistent inventory value

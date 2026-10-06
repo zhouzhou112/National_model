@@ -100,6 +100,9 @@ class ModelConfig:
         raw["boundary_year"] = boundary_year
         raw["planning_year"] = planning_year
         raw["planning_interval_years"] = planning_year - boundary_year
+        dac_schedule = raw["features"].get("dac_by_planning_year")
+        if dac_schedule is not None:
+            raw["features"]["dac"] = dac_schedule[str(planning_year)]
         config = ModelConfig(
             self.path,
             raw,
@@ -196,8 +199,39 @@ class ModelConfig:
         scientific_case = self.raw.get("scientific_case", {})
         if scientific_case.get("contract_version") != "scientific_case_v1":
             raise ValueError("scientific_case.contract_version must be scientific_case_v1")
-        if scientific_case.get("case_id") != "base_2024_vre_wave_on_flex_off_v1":
+        if scientific_case.get("case_id") not in {
+            "base_2024_vre_wave_on_flex_off_v1",
+            "base_2024_water_corrected_numeric_cleanup_20260913_v1",
+            "base_2024_reservoir_storage_audited_20260913_v2",
+            "base_2024_numeric_simplified_20260913_v5",
+            "base_2024_numeric_simplified_no_dac_20260913_v6",
+            "base_2024_numeric_simplified_water_20260913_v8",
+            "base_2024_numeric_water_dac_by_year_20260913_v9",
+        }:
             raise ValueError("Production Base scientific_case.case_id is not explicit")
+        dac_enabled = self.raw["features"].get("dac", True)
+        if not isinstance(dac_enabled, bool):
+            raise ValueError("features.dac must be boolean")
+        dac_schedule = self.raw["features"].get("dac_by_planning_year")
+        if dac_schedule is not None:
+            if not isinstance(dac_schedule, dict) or set(dac_schedule) != {
+                str(year) for year in years
+            }:
+                raise ValueError("features.dac_by_planning_year must cover every planning year")
+            if not all(isinstance(value, bool) for value in dac_schedule.values()):
+                raise ValueError("features.dac_by_planning_year values must be boolean")
+            if dac_enabled != dac_schedule[str(self.planning_year)]:
+                raise ValueError("features.dac must match the active planning-year schedule")
+            if not all(dac_schedule[str(year)] for year in years if year != 2030):
+                raise ValueError("DAC may only be disabled in 2030; later years must remain enabled")
+        if not dac_enabled and (
+            self.planning_year != 2030 or scientific_case.get("case_id") not in {
+                "base_2024_numeric_simplified_no_dac_20260913_v6",
+                "base_2024_numeric_simplified_water_20260913_v8",
+                "base_2024_numeric_water_dac_by_year_20260913_v9",
+            }
+        ):
+            raise ValueError("Disabling DAC requires the explicit 2030 no-DAC scientific case")
         weather_bundle = scientific_case.get("weather_bundle", {})
         if weather_bundle.get("contract_version") != "hybrid_weather_bundle_v1":
             raise ValueError("scientific_case.weather_bundle must be explicit")
@@ -817,6 +851,26 @@ class ModelConfig:
         if self.raw["construction"].get("architecture") != "full_year_monolithic_lp":
             raise ValueError("Production architecture must be full_year_monolithic_lp")
         hydro = self.raw.get("hydro", {})
+        cleanup = float(hydro.get("local_inflow_cleanup_m3s", 0.0))
+        if not math.isfinite(cleanup) or not 0.0 <= cleanup <= 0.01:
+            raise ValueError("local_inflow_cleanup_m3s must be in [0, 0.01]")
+        if not isinstance(hydro.get("reduce_cyclic_inventory_range", False), bool):
+            raise ValueError("reduce_cyclic_inventory_range must be boolean")
+        transfer_cleanup = float(hydro.get("cascade_transfer_cleanup_fraction", 0.0))
+        if not math.isfinite(transfer_cleanup) or not 0.0 <= transfer_cleanup <= 1e-3:
+            raise ValueError("cascade_transfer_cleanup_fraction must be in [0, 1e-3]")
+        if not isinstance(hydro.get("limit_independent_spill_to_inflow", False), bool):
+            raise ValueError("limit_independent_spill_to_inflow must be boolean")
+        spill_bound_floor = float(hydro.get("independent_spill_positive_bound_floor_m3s", 0.0))
+        if not math.isfinite(spill_bound_floor) or spill_bound_floor < 0:
+            raise ValueError("independent_spill_positive_bound_floor_m3s must be finite and nonnegative")
+        if spill_bound_floor > 0 and not hydro.get("limit_independent_spill_to_inflow", False):
+            raise ValueError("Positive spill bound floor requires independent spill reduction")
+        for key in ("station_parameters_file", "station_corrections_file"):
+            if key in hydro:
+                relative = Path(hydro[key])
+                if relative.is_absolute() or ".." in relative.parts:
+                    raise ValueError(f"hydro.{key} must stay relative to the data root")
         if float(hydro.get("reservoir_flow_variable_scale_m3s", 0.0)) <= 0.0:
             raise ValueError("reservoir_flow_variable_scale_m3s must be positive")
         if float(hydro.get("reservoir_volume_variable_scale_m3", 0.0)) <= 0.0:
@@ -910,12 +964,23 @@ class ModelConfig:
                 "existing injection without spur/trunk construction"
             )
         numerics = self.raw.get("numerics", {})
+        for key in ("hydro_capacity_headroom_zero_gw", "retrofit_upper_zero_gw",
+                    "inherited_floor_overrun_clip_gw"):
+            value = float(numerics.get(key, 0.0))
+            if not math.isfinite(value) or not 0.0 <= value <= 1e-4:
+                raise ValueError(f"{key} must be in [0, 1e-4] GW")
+        headroom_zero = float(numerics.get("capacity_headroom_zero_gw", 1e-12))
+        if not math.isfinite(headroom_zero) or not 0.0 <= headroom_zero <= 1e-4:
+            raise ValueError("capacity_headroom_zero_gw must be in [0, 1e-4] GW")
+        floor_zero = float(numerics.get("capacity_floor_zero_gw", 0.0))
+        if not math.isfinite(floor_zero) or not 0.0 <= floor_zero <= 1e-4:
+            raise ValueError("capacity_floor_zero_gw must be in [0, 1e-4] GW")
         coefficient_tolerance = float(
             numerics.get("coefficient_zero_tolerance", 0.0)
         )
-        if not 0.0 < coefficient_tolerance <= 1e-4:
+        if not 0.0 < coefficient_tolerance <= 1e-2:
             raise ValueError(
-                "coefficient_zero_tolerance must be in (0, 1e-4]"
+                "coefficient_zero_tolerance must be in (0, 1e-2]; changes require a resource-loss audit"
             )
         threads = int(numerics.get("threads", 0))
         if threads == 0 or threads < -1:
@@ -976,6 +1041,14 @@ class ModelConfig:
         if int(numerics.get("pdhg_iteration_limit", 2_000_000_000)) < 0:
             raise ValueError("numerics.pdhg_iteration_limit must be nonnegative")
         formulation = self.raw.get("formulation", {})
+        split = formulation.get("annual_dense_row_split", {})
+        if not isinstance(split, dict) or set(split).difference({"enabled", "block_hours"}):
+            raise ValueError("annual_dense_row_split must contain enabled/block_hours only")
+        if not isinstance(split.get("enabled", False), bool):
+            raise ValueError("annual_dense_row_split.enabled must be boolean")
+        width = split.get("block_hours", 730)
+        if isinstance(width, bool) or not isinstance(width, int) or not 1 <= width <= 8760:
+            raise ValueError("annual_dense_row_split.block_hours must be an integer in [1, 8760]")
         if formulation.get("annual_emissions_accounting") not in {
             "national_dense_v1",
             "province_hierarchical_v2",
@@ -1251,6 +1324,7 @@ def load_model_config(
         allowed_formulation = {
             "annual_emissions_accounting",
             "annual_capacity_link_row_scaling",
+            "annual_dense_row_split",
         }
         unknown = set(overrides).difference(allowed_formulation)
         if unknown:

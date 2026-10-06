@@ -13,6 +13,7 @@ from netCDF4 import Dataset
 from .config import ModelConfig
 from .data import DATA_ROOT, ModelData
 from .timeblocks import TimeBlock
+from .numerical_cleanup import clean_cascade_transfer_fractions
 
 
 @dataclass
@@ -583,6 +584,44 @@ class HydroProfileReader:
         cascade_station_local_rows_array = np.asarray(
             sorted(cascade_station_local_rows), dtype=np.int64
         )
+        # Explicit, source-unit cleanup after allocation/reconciliation so the
+        # threshold applies to the actual RHS entering the water balances.
+        cleanup = float(constants.get("local_inflow_cleanup_m3s", 0.0))
+        if not np.isfinite(cleanup) or not 0.0 <= cleanup <= 0.01:
+            raise ValueError("local_inflow_cleanup_m3s must be in [0, 0.01]")
+        if cleanup > 0:
+            dust = (reservoir_local_inflow_m3s > 0) & (reservoir_local_inflow_m3s < cleanup)
+            removed_by_station = np.where(dust, reservoir_local_inflow_m3s, 0.0).sum(axis=1)
+            cascade_reconciliation_audit["local_inflow_cleanup"] = {
+                "threshold_m3s": cleanup,
+                "removed_station_hours": int(dust.sum()),
+                "removed_volume_m3": float(removed_by_station.sum() * 3600.0),
+                "removed_local_energy_gwh": float(removed_by_station @ reservoir_conversion),
+                "removed_volume_by_station_m3": (removed_by_station * 3600.0).tolist(),
+                "interpretation": "explicit discarded water; no redistribution or additional inflow; cascade downstream energy impact reported separately",
+            }
+            reservoir_local_inflow_m3s[dust] = 0.0
+            reservoir_inflow = reservoir_local_inflow_m3s * reservoir_conversion[:, None]
+        transfer_cleanup = float(constants.get("cascade_transfer_cleanup_fraction", 0.0))
+        if not np.isfinite(transfer_cleanup) or not 0.0 <= transfer_cleanup <= 1e-3:
+            raise ValueError("cascade_transfer_cleanup_fraction must be in [0, 1e-3]")
+        if transfer_cleanup > 0:
+            cascade_edge_transfer_fraction, transfer_audit = clean_cascade_transfer_fractions(
+                cascade_edge_transfer_fraction, transfer_cleanup
+            )
+            for entry in transfer_audit["edges"]:
+                edge = entry["edge_index"]
+                source, _, lag, _ = edge_contracts[edge]
+                positions = np.asarray(entry["hour_indices"], dtype=int)
+                discarded = _cyclic_shift_previous(node_to_natural[source], lag)[positions] * np.asarray(entry["removed_fractions"])
+                entry["edge_id"] = cascade_edge_ids[edge]
+                entry["model_hour_indices"] = (positions + block.hour_start).tolist()
+                entry["discarded_natural_proxy_volume_m3"] = float(discarded.sum() * 3600.0)
+            transfer_audit["discarded_natural_proxy_volume_m3"] = sum(
+                entry["discarded_natural_proxy_volume_m3"] for entry in transfer_audit["edges"]
+            )
+            transfer_audit["proxy_volume_interpretation"] = "Natural-flow proxy, not endogenous optimized routed release; worst-case downstream energy is audited separately"
+            cascade_reconciliation_audit["cascade_transfer_cleanup"] = transfer_audit
         return HydroLinearBlock(
             ror_station_rows=ror_rows,
             ror_capacity_factor=ror_cf,

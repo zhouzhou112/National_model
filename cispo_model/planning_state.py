@@ -37,6 +37,30 @@ def stable_asset_id(*parts: object) -> str:
     return "::".join(str(part) for part in parts)
 
 
+def clip_inherited_floor_overrun(floor, upper, *, threshold_gw, asset_ids, asset_class):
+    """Close small imported GW overruns without mutating the archived cohorts.
+
+    Bounds exist only at model construction, not in ``active_adjustment``.
+    Zero preserves legacy validation exactly; positive thresholds fail closed
+    for every overrun greater than the threshold (including legacy tolerances).
+    """
+    values = np.asarray(floor, dtype=float)
+    upper = np.asarray(upper, dtype=float)
+    if threshold_gw <= 0:
+        return values, None
+    excess = values - upper
+    if (excess > threshold_gw).any():
+        raise ValueError(f"Inherited {asset_class} capacity exceeds clipping threshold")
+    rows = np.flatnonzero(excess.ravel() > 0)
+    result = values.copy()
+    result.ravel()[rows] = upper.ravel()[rows]
+    return result, {"asset_class": asset_class, "cutoff_gw": float(threshold_gw),
+        "site_rows": rows.tolist(), "asset_ids": [str(asset_ids[i]) for i in rows],
+        "clipped_gw": excess.ravel()[rows].tolist(),
+        "total_clipped_gw": float(excess.ravel()[rows].sum()),
+        "archived_cohorts_modified": False}
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:

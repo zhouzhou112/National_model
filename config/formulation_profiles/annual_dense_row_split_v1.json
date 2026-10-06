@@ -1,0 +1,11 @@
+{
+  "formulation_profile_version": "v1",
+  "profile_id": "annual_dense_row_split_v1",
+  "description": "TEST_ONLY exact annual temporal sums; 730-hour blocks; physical account units retained.",
+  "formulation": {
+    "annual_dense_row_split": {
+      "enabled": true,
+      "block_hours": 730
+    }
+  }
+}

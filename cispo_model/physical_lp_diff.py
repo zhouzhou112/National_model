@@ -104,6 +104,17 @@ def compare_physical_lp_arrays(
             and reference_upper[column] > 0.0
             and candidate_upper[column] == 0.0
         )
+        # Opt-in per-column allowance, never a broad family exemption. The
+        # caller must supply independently audited original/replacement bounds.
+        closing = whitelist.get("capacity_interval_closures", {}).get(name)
+        if closing is not None:
+            permitted = permitted or bool(
+                reference_upper[column] == float(closing["original_upper_gw"])
+                and candidate_upper[column] == float(closing["closed_upper_gw"])
+                and candidate_upper[column] == reference_lower[column]
+                and 0 < reference_upper[column] - reference_lower[column]
+                <= float(closing["maximum_removed_gw"])
+            )
         entry = {
             "kind": "upper_bound",
             "variable": name,
@@ -111,8 +122,9 @@ def compare_physical_lp_arrays(
             "candidate": float(candidate_upper[column]),
         }
         if permitted:
-            counts["exact_zero_reservoir_release_upper_bound"] += 1
-            entry["rule_id"] = "exact_zero_reservoir_release_upper_bound"
+            rule_id = "capacity_interval_closure" if closing is not None else "exact_zero_reservoir_release_upper_bound"
+            counts[rule_id] += 1
+            entry["rule_id"] = rule_id
         else:
             failures.append(entry)
         if len(examples) < maximum_examples:

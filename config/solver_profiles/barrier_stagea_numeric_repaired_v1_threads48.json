@@ -1,0 +1,39 @@
+{
+  "solver_profile_version": "v1",
+  "profile_id": "barrier_stagea_numeric_repaired_v1_threads48",
+  "minimum_gurobi_major_version": 13,
+  "direct_nonbasic_scientific_acceptance": true,
+  "stage_b_required": false,
+  "description": "Author-authorized 2026-09-14 full 2030 Base v9 run: physical annual rows, repaired reservoir inputs and screening, 48 Gurobi threads on 64 CPU/750 GiB, BarConvTol=1e-4, NumericFocus=2, no crossover, solver time limit or SoftMemLimit. Preserve available primal/dual values independently of strict original-unit QC; no automatic Stage B or later year. Full-year numerical qualification remains pending.",
+  "stage_a_acceptance": {
+    "maximum_relative_primal_dual_objective_gap": 0.01,
+    "maximum_barrier_primal_infeasibility": 0.01,
+    "maximum_constraint_violation": 1e-05,
+    "maximum_constraint_residual": 1e-05,
+    "maximum_bound_violation": 1e-05,
+    "maximum_dual_violation_for_publication": 1e-05,
+    "maximum_dual_residual_for_publication": 1e-05,
+    "maximum_complementarity_violation_for_publication": 1e-05,
+    "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+    "maximum_barrier_complementarity_for_publication": 0.01
+  },
+  "numerics": {
+    "method": 2,
+    "threads": 48,
+    "presolve": 2,
+    "crossover": 0,
+    "solution_target": 1,
+    "barrier_convergence_tolerance": 0.0001,
+    "feasibility_tolerance": 1e-06,
+    "optimality_tolerance": 1e-06,
+    "markowitz_tolerance": 0.01,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "aggregate": 1,
+    "dual_reductions": 1,
+    "inf_unbd_info": 0,
+    "time_limit_seconds": null,
+    "soft_mem_limit_gb": null,
+    "bar_iter_limit": 2000000000
+  }
+}

@@ -178,7 +178,9 @@ class PortfolioTests(unittest.TestCase):
         require_canonical_direct_nonbasic_profiles(cfg)
         self.assertEqual(cloud_full_year_profile_role(PORTFOLIO_STAGE_A_PROFILE_ID), 'STAGE_A')
         self.assertNotIn(PORTFOLIO_STAGE_A_PROFILE_ID, CLOUD_FINAL_STAGE_A_PROFILE_IDS)
-        self.assertEqual(cfg.raw['numerics']['barrier_convergence_tolerance'], 1e-9)
+        # The author-selected stopping target was changed on 2026-09-07;
+        # canonical-profile validation must preserve that recorded choice.
+        self.assertEqual(cfg.raw['numerics']['barrier_convergence_tolerance'], 1e-4)
 
 
 if __name__ == '__main__':

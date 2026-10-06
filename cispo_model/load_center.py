@@ -10,6 +10,7 @@ from .config import ModelConfig
 from .data import VRE_TECHS, ModelData
 from .hydro import HydroLinearBlock
 from .master import MasterArtifacts
+from .annual_dense_split import annual_sum, annual_split_enabled
 from .annual_capacity_link_scaling import (
     BINARY_POWER2_SAFE_8192_V1,
     MAX_BINARY_EXPONENT,
@@ -189,7 +190,8 @@ def attach_annual_load_center_network(
         for technology, technology_position in technology_index.items():
             model.addConstr(
                 center_vre_generation[center_positions, technology_position].sum()
-                == vre_generation[p, technology_position, :].sum(),
+                == annual_sum(model, config, hours, f"vre_p{province_code}_{technology}",
+                    lambda t: vre_generation[p, technology_position, t].sum(), nonnegative=True),
                 name=f"load_center_vre_generation_closure_p{province_code}_{technology}",
             )
 
@@ -227,7 +229,8 @@ def attach_annual_load_center_network(
             ].to_numpy(dtype=int)
             model.addConstr(
                 center_wave_generation[center_positions].sum()
-                == wave_generation[p, :].sum(),
+                == annual_sum(model, config, hours, f"wave_p{province_code}",
+                    lambda t: wave_generation[p, t].sum(), nonnegative=True),
                 name=f"load_center_wave_generation_closure_p{province_code}",
             )
 
@@ -319,7 +322,8 @@ def attach_annual_load_center_network(
         if len(reservoir_local_rows):
             model.addConstr(
                 center_reservoir_generation[center_position]
-                == reservoir_generation[reservoir_local_rows, :].sum(),
+                == annual_sum(model, config, hours, f"reservoir_lc{center_position}",
+                    lambda t: reservoir_generation[reservoir_local_rows, t].sum(), nonnegative=True),
                 name=f"load_center_reservoir_generation_{center_position}",
             )
         else:
@@ -335,7 +339,8 @@ def attach_annual_load_center_network(
             centers.province_code.eq(province_code)
         ].to_numpy(dtype=int)
         model.addConstr(
-            center_ror_generation[center_positions].sum() == ror_generation[p, :].sum(),
+            center_ror_generation[center_positions].sum() == annual_sum(model, config, hours,
+                f"ror_p{province_code}", lambda t: ror_generation[p, t].sum(), nonnegative=True),
             name=f"load_center_ror_generation_closure_p{province_code}",
         )
 
@@ -345,14 +350,20 @@ def attach_annual_load_center_network(
         int(edge_row): position
         for position, edge_row in enumerate(interprovincial_reverse_edge_rows)
     }
+    sent_components = [[] for _ in provinces]
+    received_components = [[] for _ in provinces]
     for edge, row in enumerate(data.lines.itertuples(index=False)):
         p_from = province_index[int(row.from_province_code)]
         p_to = province_index[int(row.to_province_code)]
         efficiency = float(interprovincial_efficiency[edge])
+        sent_components[p_from].append((interprovincial_flow_forward, edge, 1.0))
+        received_components[p_to].append((interprovincial_flow_forward, edge, efficiency))
         sent_energy[p_from] += interprovincial_flow_forward[edge, :].sum()
         received_energy[p_to] += efficiency * interprovincial_flow_forward[edge, :].sum()
         reverse_position = reverse_position_by_edge.get(edge)
         if reverse_position is not None:
+            sent_components[p_to].append((interprovincial_flow_reverse_ac, reverse_position, 1.0))
+            received_components[p_from].append((interprovincial_flow_reverse_ac, reverse_position, efficiency))
             sent_energy[p_to] += interprovincial_flow_reverse_ac[
                 reverse_position, :
             ].sum()
@@ -367,24 +378,30 @@ def attach_annual_load_center_network(
         p = province_index[province_code]
         model.addConstr(
             province_non_spatial_injection[p]
-            == actual_thermal[p, :, :].sum()
-            + storage_discharge[p, :, :].sum()
-            + hydro_aggregate_generation[p, :].sum(),
+            == annual_sum(model, config, hours, f"non_spatial_injection_p{province_code}",
+                lambda t: actual_thermal[p, :, t].sum() + storage_discharge[p, :, t].sum()
+                + hydro_aggregate_generation[p, t].sum(), nonnegative=True),
             name=f"province_annual_non_spatial_injection_p{province_code}",
         )
         model.addConstr(
             province_effective_demand[p]
-            == effective_load[p, :].sum()
-            + storage_charge[p, :, :].sum()
-            + float(hours) * dac_load[p],
+            == annual_sum(model, config, hours, f"effective_demand_p{province_code}",
+                lambda t: effective_load[p, t].sum() + storage_charge[p, :, t].sum()
+                + float(hours if t.stop is None else t.stop - t.start) * dac_load[p]),
             name=f"province_annual_effective_demand_p{province_code}",
         )
         model.addConstr(
-            province_external_sent[p] == sent_energy[p],
+            province_external_sent[p] == (annual_sum(model, config, hours,
+                f"external_sent_p{province_code}",
+                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),
+                nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),
             name=f"province_annual_external_sent_p{province_code}",
         )
         model.addConstr(
-            province_external_received[p] == received_energy[p],
+            province_external_received[p] == (annual_sum(model, config, hours,
+                f"external_received_p{province_code}",
+                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in received_components[p]),
+                nonnegative=True) if annual_split_enabled(config) else received_energy[p]),
             name=f"province_annual_external_received_p{province_code}",
         )
         model.addConstr(

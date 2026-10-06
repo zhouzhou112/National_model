@@ -1,5 +1,7 @@
 # 配置、参数与情景接口
 
+2026-10-02 当前覆盖：运行中的 Base 使用 `optimization_numeric_dac_by_year_v9.json`。下一轮优先 `case3_thermal_ev_v5` 独立 2030→2060；旧 V5 overlay 的 parent ID 仍是修复前 Base，不能直接叠加 V9 或绕过身份校验。隔离试验显式派生 parent、保留全部物理 overrides；正式组合尚待资格验证。详见 [当前执行计划](../SCENARIO_EXECUTION_PLAN_20261002.md)。下文早期默认/V4 口径是历史接口说明，不能覆盖本条。
+
 2026-09-05 当前研究情景覆盖：`base`、`case1_thermal_v5`（冷热）、`case2_ev_v5`（EV）、
 `case3_thermal_ev_v5`（冷热+EV）。三者保持同一原始需求与 Base 容量充裕度口径，采用可选签约与分离 EV 服务池。
 精确约束、接口与尚未通过的无 Crossover 全国数值门禁见 [FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md](FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md)。

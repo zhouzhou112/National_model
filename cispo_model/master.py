@@ -20,7 +20,8 @@ from .data import (
     compute_intra_grid_vre_design,
 )
 from .timeblocks import TimeBlock
-from .planning_state import stable_asset_id
+from .planning_state import stable_asset_id, clip_inherited_floor_overrun
+from .numerical_cleanup import zero_capacity_headroom, zero_retrofit_upper
 from .technology_registry import fixed_om_fraction
 from .wave_energy import wave_cost_parameters
 
@@ -849,6 +850,15 @@ def build_master(
     wacc = float(config.raw["finance"]["real_wacc_fraction"])
     lifetimes = config.raw["finance"]["default_lifetime_years"]
 
+    numerical_robustness_audit = {}
+    clip_threshold = float(config.raw["numerics"].get("inherited_floor_overrun_clip_gw", 0.0))
+    def inherited_floor(floor, upper, ids, family):
+        value, audit = clip_inherited_floor_overrun(floor, upper,
+            threshold_gw=clip_threshold, asset_ids=ids, asset_class=family)
+        if audit is not None:
+            numerical_robustness_audit.setdefault("inherited_floor_clipping", []).append(audit)
+        return value
+
     # VRE site capacity remains at 0.25-degree resolution. Sequential years
     # add only active model-built cohorts to the unchanged observed baseline.
     vre_asset_ids = [
@@ -861,15 +871,24 @@ def build_master(
     site_floor = (
         data.vre_sites.capacity_floor_gw.to_numpy(dtype=float) + vre_inherited
     )
+    floor_zero = float(config.raw["numerics"].get("capacity_floor_zero_gw", 0.0))
+    floor_cleanup_rows = np.flatnonzero((site_floor > 0.0) & (site_floor < floor_zero))
+    floor_cleanup_values = site_floor[floor_cleanup_rows].copy()
+    # Explicitly authorized approximation: discard negligible inherited/site
+    # floors, retaining technical potential and all site identities. Defaults
+    # to zero; the cutoff and removed amounts are part of the scientific audit.
+    site_floor[floor_cleanup_rows] = 0.0
     site_upper = data.vre_sites.capacity_upper_gw.to_numpy(dtype=float)
+    site_floor = inherited_floor(site_floor, site_upper, vre_asset_ids, "vre")
     if (site_floor < -1e-9).any() or (site_floor > site_upper + 1e-9).any():
         raise ValueError("Inherited VRE capacity is outside the active site bounds")
     site_headroom = site_upper - site_floor
     # Capacity floors and potentials originate from independently aggregated
-    # decimal tables. Snap sub-watt residual headroom to exact zero so roundoff
+    # decimal tables. Snap residual headroom below the configured GW cutoff to zero so roundoff
     # cannot create negative upper bounds or effectively fixed expansion
-    # columns. The 1e-12 GW threshold is far below the source-data precision.
-    site_headroom[np.abs(site_headroom) <= 1e-12] = 0.0
+    # columns. Legacy runs retain 1e-12 GW; larger cutoffs require an impact audit.
+    headroom_zero = float(config.raw["numerics"].get("capacity_headroom_zero_gw", 1e-12))
+    site_headroom[np.abs(site_headroom) <= headroom_zero] = 0.0
     if (site_headroom < 0.0).any():
         raise ValueError("VRE capacity headroom is negative after tolerance closure")
     site_effective_upper = site_floor + site_headroom
@@ -920,6 +939,7 @@ def build_master(
         )
         wave_floor = np.asarray(wave_inherited, dtype=float)
         wave_upper = wave_sites.capacity_upper_gw.to_numpy(dtype=float)
+        wave_floor = inherited_floor(wave_floor, wave_upper, wave_asset_ids, "wave")
         if (wave_floor < -1e-9).any() or (wave_floor > wave_upper + 1e-9).any():
             raise ValueError(
                 "Inherited wave capacity is outside the active site bounds"
@@ -985,6 +1005,8 @@ def build_master(
         data.nuclear_upper.set_index("province_code")
         .capacity_upper_gw.reindex(provinces).to_numpy(dtype=float)
     )
+    thermal_floor[:, nuclear_k] = inherited_floor(thermal_floor[:, nuclear_k], nuclear_upper,
+        [stable_asset_id(p, "nuclear") for p in provinces], "nuclear")
     if (thermal_floor[:, nuclear_k] > nuclear_upper + 1e-9).any():
         raise ValueError(
             "Inherited nuclear capacity exceeds the configured province upper bound"
@@ -1050,6 +1072,11 @@ def build_master(
                 survivor_upper,
                 np.maximum(future_exogenous + future_inherited, 0.0),
             )
+        retrofit_zero = float(config.raw["numerics"].get("retrofit_upper_zero_gw", 0.0))
+        if retrofit_zero > 0:
+            survivor_upper, retrofit_audit = zero_retrofit_upper(survivor_upper, retrofit_zero,
+                [stable_asset_id(p, non_ccs, ccs) for p in provinces])
+            numerical_robustness_audit.setdefault("retrofit_upper_cleanup", []).append(retrofit_audit)
         retrofit_survivor_upper[:, pair_position] = survivor_upper
         thermal_retrofit[:, pair_position].UB = survivor_upper
         model.addConstr(
@@ -1132,12 +1159,17 @@ def build_master(
         + hydro_inherited
     )
     hydro_upper = data.hydro_stations.capacity_potential_gw.to_numpy(dtype=float)
+    hydro_floor = inherited_floor(hydro_floor, hydro_upper, hydro_asset_ids, "hydro")
     if (hydro_floor < -1e-9).any() or (hydro_floor > hydro_upper + 1e-9).any():
         raise ValueError("Inherited hydropower capacity is outside station bounds")
+    hydro_headroom, hydro_upper, hydro_cleanup = zero_capacity_headroom(hydro_floor, hydro_upper,
+        float(config.raw["numerics"].get("hydro_capacity_headroom_zero_gw", 0.0)), hydro_asset_ids)
+    if hydro_cleanup["cutoff_gw"] > 0:
+        numerical_robustness_audit["hydro_capacity_headroom_cleanup"] = hydro_cleanup
     hydro_new = model.addMVar(
         len(data.hydro_stations),
         lb=0.0,
-        ub=hydro_upper - hydro_floor,
+        ub=hydro_headroom,
         name="hydro_new_gw",
     )
     hydro_cap = model.addMVar(len(data.hydro_stations), lb=hydro_floor, ub=hydro_upper, name="hydro_capacity_gw")
@@ -1186,6 +1218,7 @@ def build_master(
         unit="GW",
     ).reshape(p_count, len(STORAGE_TECHS))
     storage_floor = storage_exogenous_floor + storage_inherited
+    storage_floor = inherited_floor(storage_floor, storage_upper, storage_asset_ids, "storage")
     if (
         (storage_floor < -1e-9).any()
         or (storage_floor > storage_upper + 1e-9).any()
@@ -1366,12 +1399,18 @@ def build_master(
         planning_year=config.planning_year,
         unit="MtCO2_per_year",
     ).reshape(p_count, len(DAC_TECHS))
+    dac_enabled = bool(config.raw["features"].get("dac", True))
+    if not dac_enabled and np.any(dac_floor > 0.0):
+        raise ValueError("Cannot disable DAC when active inherited DAC capacity exists")
     dac_new = model.addMVar(
         (p_count, len(DAC_TECHS)), lb=0.0, name="dac_new_capacity_mtpa"
     )
     dac_cap = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capacity_mtpa")
     dac_mass = model.addMVar((p_count, len(DAC_TECHS)), lb=0.0, name="dac_capture_mt")
     model.addConstr(dac_cap == dac_floor + dac_new, name="dac_capacity_accounting")
+    if not dac_enabled:
+        dac_new.UB = 0.0
+        dac_cap.UB = 0.0
     constraint_handles["dac_selected_horizon_capacity"] = model.addConstr(
         dac_mass <= annual_flow_scaling_factor * dac_cap,
         name="dac_selected_horizon_capacity",
@@ -1471,7 +1510,7 @@ def build_master(
     # Each DAC capture component is nonnegative and appears in one province
     # source balance, whose total is bounded by all sink injection capacities.
     # This finite component-wise UB is therefore implied by existing rows.
-    dac_mass.UB = float(selected_horizon_sink_injection_upper.sum())
+    dac_mass.UB = float(selected_horizon_sink_injection_upper.sum()) if dac_enabled else 0.0
     variables["co2_ship"] = co2_ship
     province_centers = (
         data.vre_points.groupby("province_code")[["lon", "lat"]]
@@ -1802,6 +1841,12 @@ def build_master(
         "wave_asset_ids": wave_asset_ids,
         "wave_capacity_floor_gw": wave_floor,
         "vre_capacity_floor_gw": site_floor,
+        "vre_capacity_floor_cleanup": {
+            "cutoff_gw": floor_zero,
+            "site_rows": floor_cleanup_rows.tolist(),
+            "removed_gw": floor_cleanup_values.tolist(),
+            "total_removed_gw": float(floor_cleanup_values.sum()),
+        },
         "vre_capacity_effective_upper_gw": site_effective_upper,
         "thermal_asset_ids": thermal_asset_ids,
         "thermal_exogenous_floor_gw": thermal_exogenous_floor,
@@ -1857,6 +1902,8 @@ def build_master(
         "constraint_handles": constraint_handles,
         **index_extra,
     }
+    if numerical_robustness_audit:
+        index["numerical_robustness_audit"] = numerical_robustness_audit
     if config.raw["features"]["annual_load_center_transmission"]:
         index["intra_asset_ids"] = intra_asset_ids
         index["intra_capacity_floor_gw"] = intra_floor

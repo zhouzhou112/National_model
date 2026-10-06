@@ -15,6 +15,7 @@ from gurobipy import GRB
 from scipy import sparse
 
 from .carbon_accounting import resolve_beccs_carbon_factors
+from .annual_dense_split import annual_sum, annual_split_enabled
 from .config import ModelConfig, resolve_minimum_system_inertia_seconds
 from .data import STORAGE_TECHS, THERMAL_TECHS, VRE_TECHS, ModelData
 from .flexible_load import attach_flexible_load
@@ -23,6 +24,7 @@ from .load_center import attach_annual_load_center_network
 from .master import MasterArtifacts, build_master
 from .technology_registry import transmission_loss_fraction_per_km
 from .timeblocks import TimeBlock
+from .numerical_cleanup import cyclic_inventory_upper_m3, independent_spill_upper_scaled
 
 
 def _vector_sum(terms: list[Any], length: int):
@@ -38,6 +40,7 @@ def _reservoir_release_upper_scaled(
     hydro: Any,
     *,
     flow_scale_m3s: float,
+    preserve_exact_hourly_zeros: bool = False,
 ) -> np.ndarray:
     """Return provably valid cyclic-horizon bounds on hourly total release.
 
@@ -169,8 +172,14 @@ def _reservoir_release_upper_scaled(
                 "Cascade release-bound graph is cyclic or has unresolved rows"
             )
     release_upper = np.minimum(hourly_upper, aggregate_upper[:, None])
+    # The nonnegative local/storage/upstream upper-bound sums above can also
+    # certify an individual dry hour, including cascade stations. Preserve
+    # exact derived zeros before padding; this is not a tolerance-based cutoff.
+    exact_dry_hour = release_upper == 0.0
     release_upper = release_upper * (1.0 + 1.0e-12) + 1.0e-12
     release_upper[exact_zero_total, :] = 0.0
+    if preserve_exact_hourly_zeros:
+        release_upper[exact_dry_hour] = 0.0
     if not np.isfinite(release_upper).all() or (release_upper < 0.0).any():
         raise ValueError("Reservoir release upper bounds are invalid")
     return release_upper
@@ -777,6 +786,7 @@ def build_full_year_monolithic(
     reservoir_release_upper = _reservoir_release_upper_scaled(
         hydro,
         flow_scale_m3s=reservoir_flow_scale_m3s,
+        preserve_exact_hourly_zeros=bool(hydro_constants.get("reduce_cyclic_inventory_range", False)),
     )
     reservoir_capacity_upper = data.hydro_stations.capacity_potential_gw.to_numpy(
         dtype=float
@@ -788,10 +798,12 @@ def build_full_year_monolithic(
         reservoir_capacity_flow_upper[:, None],
         reservoir_release_upper,
     )
-    reservoir_volume_upper = (
-        hydro.reservoir_active_storage_m3[:, None]
-        / reservoir_volume_scale_m3
+    source_storage_m3 = hydro.reservoir_active_storage_m3
+    storage_reduction = bool(hydro_constants.get("reduce_cyclic_inventory_range", False))
+    effective_storage_m3 = (
+        cyclic_inventory_upper_m3(hydro) if storage_reduction else source_storage_m3
     )
+    reservoir_volume_upper = effective_storage_m3[:, None] / reservoir_volume_scale_m3
     if (
         not np.isfinite(reservoir_volume_upper).all()
         or (reservoir_volume_upper < 0.0).any()
@@ -800,6 +812,10 @@ def build_full_year_monolithic(
     reservoir_flow_bound_audit = {
         "schema_version": "cispo_reservoir_bound_audit_v2",
         "method": "cyclic_total_plus_hourly_storage_cascade_v1",
+        "cyclic_inventory_range_reduced": storage_reduction,
+        "source_storage_upper_m3": source_storage_m3.tolist(),
+        "effective_storage_upper_m3": effective_storage_m3.tolist(),
+        "inventory_offset_only_dispatch_projection_preserved": storage_reduction,
         "exact_zero_release_bound_policy": (
             "raw_zero_inflow_topological_certificate_v1"
         ),
@@ -825,6 +841,20 @@ def build_full_year_monolithic(
             reservoir_count * hours
         ),
     }
+    reservoir_spill_upper = reservoir_release_upper
+    if hydro_constants.get("limit_independent_spill_to_inflow", False):
+        reservoir_spill_upper, spill_rows = independent_spill_upper_scaled(
+            hydro, reservoir_release_upper, reservoir_flow_scale_m3s,
+            positive_bound_floor_m3s=float(hydro_constants.get("independent_spill_positive_bound_floor_m3s", 0.0)),
+        )
+        reservoir_flow_bound_audit["independent_spill_reduction"] = {
+            "method": "cyclic_isolated_station_overflow_spill_v1",
+            "positive_bound_floor_m3s": float(hydro_constants.get("independent_spill_positive_bound_floor_m3s", 0.0)),
+            "eligible_station_local_rows": np.flatnonzero(spill_rows).tolist(),
+            "tightened_entries": int(np.count_nonzero(reservoir_spill_upper < reservoir_release_upper)),
+            "new_zero_entries": int(np.count_nonzero((reservoir_spill_upper == 0) & (reservoir_release_upper > 0))),
+            "generation_capacity_projection_preserved": True,
+        }
     reservoir_turbine_flow = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
@@ -834,7 +864,7 @@ def build_full_year_monolithic(
     reservoir_spill_flow = model.addMVar(
         (reservoir_count, hours),
         lb=0.0,
-        ub=reservoir_release_upper,
+        ub=reservoir_spill_upper,
         name="reservoir_spill_flow_1000m3s",
     )
     reservoir_volume = model.addMVar(
@@ -843,7 +873,7 @@ def build_full_year_monolithic(
         ub=reservoir_volume_upper,
         name="reservoir_active_storage_million_m3",
     )
-    del reservoir_release_upper, reservoir_turbine_upper, reservoir_volume_upper
+    del reservoir_release_upper, reservoir_spill_upper, reservoir_turbine_upper, reservoir_volume_upper
     scaled_volume_to_energy = (
         conversion * reservoir_volume_scale_m3 / 3600.0
     )
@@ -1027,7 +1057,10 @@ def build_full_year_monolithic(
     annual_flow_scaling_factor = float(
         artifacts.index["annual_flow_scaling_factor"]
     )
-    dac_load = dac_capture @ (dac_power / annual_flow_scaling_factor)
+    dac_load = (
+        dac_capture @ (dac_power / annual_flow_scaling_factor)
+        if config.raw["features"].get("dac", True) else np.zeros(p_count)
+    )
     province_emissions: list[gp.LinExpr] = []
     power_balance_constraints = []
     for p in range(p_count):
@@ -1202,31 +1235,64 @@ def build_full_year_monolithic(
     capture_fraction = float(emission_table.loc["coal", "ccs_capture_fraction"])
     beccs_carbon = resolve_beccs_carbon_factors(emission_table)
     fuel_load = ruc.fuel_load_mj_per_kwh.to_numpy(dtype=float)
-    for p in range(p_count):
-        emissions = gp.LinExpr()
-        captured = gp.LinExpr()
-        biomass_fuel_pj = gp.LinExpr()
+    if annual_split_enabled(config):
+        emission_factors = np.zeros(k_count)
+        capture_factors = np.zeros(k_count)
+        biomass_factors = np.zeros(k_count)
         for technology, k in k_index.items():
-            generation = gross[p, k].sum()
-            if technology.startswith("coal") or technology.startswith("cchp"):
-                base_factor = coal_factor
-            elif technology.startswith("gas") or technology.startswith("gchp"):
-                base_factor = gas_factor
-            else:
-                base_factor = 0.0
+            base_factor = (coal_factor if technology.startswith(("coal", "cchp"))
+                           else gas_factor if technology.startswith(("gas", "gchp")) else 0.0)
+            emission_factors[k] = base_factor
             if technology.endswith("ccs") and technology != "bioccs":
-                emissions += base_factor * (1.0 - capture_fraction) * generation
-                captured += base_factor * capture_fraction * generation
+                emission_factors[k] = base_factor * (1.0 - capture_fraction)
+                capture_factors[k] = base_factor * capture_fraction
             elif technology == "bioccs":
-                emissions += beccs_carbon.net_emissions * generation
-                captured += beccs_carbon.stored * generation
-            else:
-                emissions += base_factor * generation
+                emission_factors[k] = beccs_carbon.net_emissions
+                capture_factors[k] = beccs_carbon.stored
             if technology in {"bio", "bioccs"}:
-                biomass_fuel_pj += fuel_load[k] / 1000.0 * generation
-        model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj, name=f"annual_biomass_p{provinces[p]}")
-        model.addConstr(variables["annual_captured"][0, p] == captured, name=f"annual_captured_p{provinces[p]}")
-        province_emissions.append(emissions)
+                biomass_factors[k] = fuel_load[k] / 1000.0
+        for p in range(p_count):
+            def account(factors, t):
+                return gp.quicksum(float(factors[k]) * gross[p, k, t].sum()
+                                   for k in range(k_count) if factors[k] != 0)
+            emissions = annual_sum(model, config, hours, f"emissions_p{provinces[p]}",
+                lambda t: account(emission_factors, t), unit="mtco2")
+            captured = annual_sum(model, config, hours, f"captured_p{provinces[p]}",
+                lambda t: account(capture_factors, t), unit="mtco2", nonnegative=True)
+            biomass_fuel_pj = annual_sum(model, config, hours, f"biomass_p{provinces[p]}",
+                lambda t: account(biomass_factors, t), unit="pj", nonnegative=True)
+            model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj,
+                            name=f"annual_biomass_p{provinces[p]}")
+            model.addConstr(variables["annual_captured"][0, p] == captured,
+                            name=f"annual_captured_p{provinces[p]}")
+            province_emissions.append(emissions)
+        artifacts.index["annual_dense_row_split"] = model._annual_dense_split_audit
+    else:
+        for p in range(p_count):
+            emissions = gp.LinExpr()
+            captured = gp.LinExpr()
+            biomass_fuel_pj = gp.LinExpr()
+            for technology, k in k_index.items():
+                generation = gross[p, k].sum()
+                if technology.startswith("coal") or technology.startswith("cchp"):
+                    base_factor = coal_factor
+                elif technology.startswith("gas") or technology.startswith("gchp"):
+                    base_factor = gas_factor
+                else:
+                    base_factor = 0.0
+                if technology.endswith("ccs") and technology != "bioccs":
+                    emissions += base_factor * (1.0 - capture_fraction) * generation
+                    captured += base_factor * capture_fraction * generation
+                elif technology == "bioccs":
+                    emissions += beccs_carbon.net_emissions * generation
+                    captured += beccs_carbon.stored * generation
+                else:
+                    emissions += base_factor * generation
+                if technology in {"bio", "bioccs"}:
+                    biomass_fuel_pj += fuel_load[k] / 1000.0 * generation
+            model.addConstr(variables["annual_biomass"][0, p] == biomass_fuel_pj, name=f"annual_biomass_p{provinces[p]}")
+            model.addConstr(variables["annual_captured"][0, p] == captured, name=f"annual_captured_p{provinces[p]}")
+            province_emissions.append(emissions)
     emissions_accounting = artifacts.index["annual_emissions_accounting"]
     if emissions_accounting == "province_hierarchical_v2":
         for p, province_code in enumerate(provinces):

@@ -5,7 +5,11 @@ set -euo pipefail
 # Gurobi profiles intentionally have no SoftMemLimit.  The external 95% whole-
 # host guard remains as the last-resort protection on this shared machine.
 SERVER_ROOT=${CISPO_SERVER_ROOT:-/home/zz2/National_model_server}
+TOOLS_ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 ENV_FILE=${CISPO_SERVER_ENV:-$SERVER_ROOT/server_env_20260825.sh}
+# The shared environment exports the CPU interpreter.  Preserve an explicit
+# caller override before sourcing it; Case 4 otherwise selects the GPU build.
+REQUESTED_PYTHON=${CISPO_PYTHON:-}
 if [[ ! -f "$ENV_FILE" ]]; then
   printf 'missing server environment: %s\n' "$ENV_FILE" >&2
   exit 90
@@ -15,7 +19,7 @@ source "$ENV_FILE"
 set +a
 
 REPO_ROOT=${CISPO_REPO_ROOT:-$SERVER_ROOT/repo}
-PYTHON=${CISPO_PYTHON:-$SERVER_ROOT/envs/cispo-2030-v1/bin/python}
+PYTHON=${REQUESTED_PYTHON:-${CISPO_PYTHON:-$SERVER_ROOT/envs/cispo-2030-v1/bin/python}}
 CASE_ID=${CASE_ID:-case1_v3_barrier16_stage_a}
 HOURS=${HOURS:-2160}
 START_HOUR=${START_HOUR:-2880}
@@ -40,7 +44,8 @@ case "$CASE_ID" in
     PROFILE=config/solver_profiles/large_lp_2160_case3_dual_simplex_screen_v1.json
     ;;
   case4_gpu_pdhg_screen)
-    PROFILE=config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json
+    PROFILE=${CASE4_SOLVER_PROFILE:-config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json}
+    PYTHON=${REQUESTED_PYTHON:-$SERVER_ROOT/envs/cispo-2030-gurobi-gpu13.0.2-cu129-v1/bin/python}
     mkdir -p "$GPU_RUNTIME_ROOT/mps_pipe" "$GPU_RUNTIME_ROOT/mps_log"
     chmod 700 "$GPU_RUNTIME_ROOT" "$GPU_RUNTIME_ROOT/mps_pipe" \
       "$GPU_RUNTIME_ROOT/mps_log"
@@ -83,9 +88,9 @@ if [[ -s "$CONTROL_ROOT/git_status.txt" ]]; then
   printf 'refuse dirty server checkout\n' >&2
   exit 95
 fi
-if pgrep -af '[r]un_cispo_2030_full_year.py|[r]un_cispo_planning_sequence.py' \
+if pgrep -af '[r]un_cispo_2030_full_year.py|[r]un_cispo_planning_sequence.py|[r]ecover_historical_stage_a.py|[r]un_historical_stage_a_recovery.sh' \
     >"$CONTROL_ROOT/preexisting_solver_processes.txt"; then
-  printf 'refuse pre-existing CISPO solver\n' >&2
+  printf 'refuse pre-existing CISPO solver or historical recovery\n' >&2
   exit 96
 fi
 
@@ -108,11 +113,16 @@ snapshot() {
     nvidia-smi --query-gpu=index,name,memory.total,memory.used,utilization.gpu \
       --format=csv,noheader,nounits 2>/dev/null || true
     # Do not persist other users' complete command lines on this shared host.
-    ps -eo user:16,pid,ppid,pgid,%cpu,%mem,rss,etimes,comm --sort=-rss | head -25
+    ps -eo user:16,pid,ppid,pgid,%cpu,%mem,rss,etimes,comm --sort=-rss | sed -n '1,25p'
   } >"$CONTROL_ROOT/resource_${label}.txt" 2>&1
 }
 
 snapshot before
+test -f "$TOOLS_ROOT/monitor_case_resources.py"
+if [[ "$CASE_ID" == case4_gpu_pdhg_screen ]]; then
+  "$PYTHON" -c 'import importlib.metadata as m; import psutil; v=m.version("gurobipy"); print(v); assert "+cu" in v, "GPU-enabled gurobipy required"' \
+    >"$CONTROL_ROOT/gpu_environment_version.txt"
+fi
 printf '%s start case=%s hours=%s start_hour=%s profile=%s python=%s output=%s\n' \
   "$(date --iso-8601=seconds)" "$CASE_ID" "$HOURS" "$START_HOUR" \
   "$PROFILE" "$PYTHON" "$OUTPUT_ROOT" >"$CONTROL_ROOT/events.log"
@@ -129,11 +139,22 @@ setsid /usr/bin/time -v -o "$CONTROL_ROOT/time.txt" \
     >"$CONTROL_ROOT/stdout.log" 2>"$CONTROL_ROOT/stderr.log" &
 run_pid=$!
 printf '%s\n' "$run_pid" >"$CONTROL_ROOT/run.pid"
+"$PYTHON" "$TOOLS_ROOT/monitor_case_resources.py" \
+  --process-group "$run_pid" --output-dir "$CONTROL_ROOT" --gpu-device "$GPU_DEVICE" \
+  --interval 2 --stop-file "$CONTROL_ROOT/telemetry.stop" \
+  >"$CONTROL_ROOT/telemetry.stdout.log" 2>"$CONTROL_ROOT/telemetry.stderr.log" &
+telemetry_pid=$!
+printf '%s\n' "$telemetry_pid" >"$CONTROL_ROOT/telemetry.pid"
 
 printf 'timestamp\tmem_total_kib\tmem_available_kib\thost_used_percent\tswap_used_kib\tpsi_some_avg10\tprocess_group_rss_kib\n' \
   >"$CONTROL_ROOT/resource_monitor.tsv"
 guard_triggered=0
 while kill -0 "$run_pid" 2>/dev/null; do
+  if ! kill -0 "$telemetry_pid" 2>/dev/null && [[ ! -f "$CONTROL_ROOT/telemetry_failure_reported" ]]; then
+    printf '%s telemetry process exited; inspect telemetry.stderr.log\n' "$(date --iso-8601=seconds)" \
+      >>"$CONTROL_ROOT/events.log"
+    touch "$CONTROL_ROOT/telemetry_failure_reported"
+  fi
   read -r mem_total mem_available swap_total swap_free < <(
     awk '
       /MemTotal:/ {mt=$2}
@@ -174,6 +195,12 @@ set +e
 wait "$run_pid"
 rc=$?
 set -e
+touch "$CONTROL_ROOT/telemetry.stop"
+set +e
+wait "$telemetry_pid"
+telemetry_rc=$?
+set -e
+printf '%s\n' "$telemetry_rc" >"$CONTROL_ROOT/telemetry_return_code.txt"
 printf '%s\n' "$rc" >"$CONTROL_ROOT/return_code.txt"
 printf '%s end rc=%s host_guard_triggered=%s\n' \
   "$(date --iso-8601=seconds)" "$rc" "$guard_triggered" \

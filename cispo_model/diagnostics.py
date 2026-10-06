@@ -395,6 +395,33 @@ class GracefulSolverTermination:
             signal.signal(signum, previous)
 
 
+def validate_unlimited_stage_a_parameters(model, config: ModelConfig) -> dict:
+    """Reject runtime/profile drift before an authorized unlimited Stage A."""
+    parameter_keys = {
+        "Method": "method", "Threads": "threads", "NumericFocus": "numeric_focus",
+        "ScaleFlag": "scale_flag", "Presolve": "presolve", "Aggregate": "aggregate",
+        "BarConvTol": "barrier_convergence_tolerance", "Crossover": "crossover",
+        "SolutionTarget": "solution_target", "FeasibilityTol": "feasibility_tolerance",
+        "OptimalityTol": "optimality_tolerance", "MarkowitzTol": "markowitz_tolerance",
+        "BarIterLimit": "bar_iter_limit", "DualReductions": "dual_reductions",
+        "InfUnbdInfo": "inf_unbd_info",
+    }
+    snapshot = {}
+    for name, key in parameter_keys.items():
+        actual = getattr(model.Params, name)
+        if actual != config.raw["numerics"][key]:
+            raise RuntimeError(f"Active {name} differs from the reviewed profile")
+        snapshot[name] = actual
+    for name in ("TimeLimit", "SoftMemLimit", "MemLimit", "WorkLimit"):
+        if getattr(model.Params, name) < GRB.INFINITY:
+            raise RuntimeError(f"Unlimited Stage A must not inherit a finite {name}")
+        snapshot[name] = None
+    for name in ("BarOrder", "BarCorrectors", "BarHomogeneous", "CrossoverBasis",
+                 "LPWarmStart", "Seed", "PreDual", "PrePasses", "PreSparsify"):
+        snapshot[name] = getattr(model.Params, name)
+    return snapshot
+
+
 def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> None:
     numerics = config.raw["numerics"]
     minimum_major = int(
@@ -426,13 +453,16 @@ def configure_gurobi(model: gp.Model, config: ModelConfig, log_path: Path) -> No
         # local installations require the explicit logical-CPU count.
         configured_threads = int(os.cpu_count() or 1)
     model.Params.Threads = configured_threads
-    # A null profile value deliberately leaves Gurobi's default unlimited
-    # TimeLimit in place.  This is distinct from choosing a very large but
-    # still terminating wall-clock budget for a costly full-year solve.
-    if numerics.get("time_limit_seconds") is not None:
-        model.Params.TimeLimit = float(numerics["time_limit_seconds"])
-    if numerics.get("soft_mem_limit_gb") is not None:
-        model.Params.SoftMemLimit = float(numerics["soft_mem_limit_gb"])
+    # Null means unlimited, including on a reused model/environment that
+    # previously had a diagnostic budget. Do not inherit a stale limit.
+    model.Params.TimeLimit = (
+        GRB.INFINITY if numerics.get("time_limit_seconds") is None
+        else float(numerics["time_limit_seconds"])
+    )
+    model.Params.SoftMemLimit = (
+        GRB.INFINITY if numerics.get("soft_mem_limit_gb") is None
+        else float(numerics["soft_mem_limit_gb"])
+    )
     model.Params.OutputFlag = int(numerics["output_flag"])
     model.Params.DualReductions = int(numerics.get("dual_reductions", 1))
     model.Params.InfUnbdInfo = int(numerics.get("inf_unbd_info", 0))

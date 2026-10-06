@@ -1,0 +1,40 @@
+{
+  "cloud_resource_profile_version": "v1",
+  "profile_id": "a8_8760_numeric_repaired_t48_m750_v1",
+  "decision_status": "AUTHOR_AUTHORIZED_TRIAL_20260914",
+  "validation_status": "SCHEDULER_TEST_ONLY_PASS_ACTUAL_ALLOCATION_PENDING",
+  "platform": "ParaCloud BSCC-A8",
+  "partition": "amd_a8_768",
+  "workload_scope": {
+    "model": "CISPO 2030 Base v9 numeric repaired",
+    "horizon_hours": 8760,
+    "solver_stage": "STAGE_A_DIRECT_NONBASIC",
+    "automatic_stage_b": false
+  },
+  "slurm": {
+    "nodes": 1,
+    "tasks": 1,
+    "cpus_per_task": 64,
+    "memory_gib": 750,
+    "time_limit_seconds": null,
+    "expected_billing_cpus": 64,
+    "require_runtime_alloc_tres_verification": true
+  },
+  "gurobi": {
+    "solver_profile": "config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json",
+    "threads": 48,
+    "soft_mem_limit_gb": null,
+    "crossover": 0,
+    "time_limit_seconds": null
+  },
+  "operational_contract": {
+    "use_new_immutable_release_and_output_roots": true,
+    "archive_original_model_before_optimize": true,
+    "preserve_barx_and_barpi": true,
+    "require_original_unit_qc_before_scientific_acceptance": true,
+    "do_not_auto_stop_active_job": true,
+    "do_not_auto_launch_stage_b": true,
+    "require_compute_node_wls_smoke": true
+  },
+  "resource_note": "Node RealMemory=768000 MiB=750 GiB; --mem=768G is rejected. This trial does not rewrite historical 44-thread profiles."
+}

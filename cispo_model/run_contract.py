@@ -162,6 +162,23 @@ def _scientific_configuration_payload(config: ModelConfig) -> dict[str, Any]:
             config.raw["numerics"]["coefficient_zero_tolerance"]
         )
     }
+    # This optional cleanup changes capacity bounds, not just the solver.
+    # Absent legacy keys keep their historical identity byte-for-byte.
+    if "capacity_headroom_zero_gw" in config.raw["numerics"]:
+        payload["scientific_coefficient_screening"]["capacity_headroom_zero_gw"] = float(
+            config.raw["numerics"]["capacity_headroom_zero_gw"]
+        )
+    if "capacity_floor_zero_gw" in config.raw["numerics"]:
+        payload["scientific_coefficient_screening"]["capacity_floor_zero_gw"] = float(
+            config.raw["numerics"]["capacity_floor_zero_gw"]
+        )
+    for key in ("hydro_capacity_headroom_zero_gw", "retrofit_upper_zero_gw",
+                "inherited_floor_overrun_clip_gw"):
+        if float(config.raw["numerics"].get(key, 0.0)) != 0.0:
+            payload["scientific_coefficient_screening"][key] = float(config.raw["numerics"][key])
+    # Explicitly disabled opt-in controls have the historical Base identity.
+    if not payload.get("formulation", {}).get("annual_dense_row_split", {}).get("enabled", False):
+        payload.get("formulation", {}).pop("annual_dense_row_split", None)
     payload.pop("numerics", None)
     payload.pop("solver_profile", None)
     payload.pop("construction", None)
