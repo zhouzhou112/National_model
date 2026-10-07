@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-07英国13:03（北京20:03）原2050/4844528 RUNNING/m4cm1802、6天21小时53分44秒，iter435、48线程沿用。PInf0.792/Compl0.397较399下降68.57%/72.62%，仍近指数衰减（399–435每轮3.11%/3.49%，log拟合R²0.9972/0.9988）。DInf需修正此前同步下降判断：405轮20.88倍、424轮8.46倍上跳，现2.98e-5为399的121.63倍；已从424峰值连续11轮回落39.18%。没有117式PInf/Compl同步暴涨，但不能称无数值跃升。近10轮25.5333分钟，RSS420.08GiB/峰685.98GiB，stderr空、无终态；436条连续及源SHA通过。证据`base_2050_continuation_20260930/status_20261007T120321Z/`，含独立对偶跳升统计与指数拟合。历史余时类比未考虑对偶反弹，不据此缩短/承诺先前3–6天预期。Git基准a857302；仅只读取证/交接并按GIT_SYNC_POLICY同步已审查小文件，保留未审核稿件/原日志本地。无模型/配置/作业改动、无scontrol/scancel、无新求解或监听；下一步关注对偶回落及终态QC。
+
 - 2026-10-06英国23:36代码追溯：重新读取云2050包10个差异文件，SHA均匹配既有清单；196文件中186原字节同、2040 profile仅换行、9个Python有文本差异（归一换行240增/41删）。8个模型模块的10月5日前冻结本地副本与云生产逐SHA相同，证明新增差异来自10月5日A/C与factor/审计，而非9月V9修复尚未部署。新增模型模块仅annual_dense_split/factor_screen；155个local-only主要工具/测试（2模型/4配置/82脚本/67测试），不能全算新模型。865e966是8月至10月既有dirty成果补提交，并非10月6日新写72文件。完整时间线/逐文件patch/缺口见git_sync_20261006/CODE_CHANGE_PROVENANCE_ZH.md及code_provenance.json。已披露固定机10月5日17:19:45UTC实验模块替换与B身份metadata差异；补充新release冻结约定。351受测源码SHA仍匹配412回归，无模型/远端修改、无求解/监听；本轮仅审计脚本和文档待收尾同步。最新同步SHA以Git实查为准，原4844528未操作。
 
 - 2026-10-06英国23:27 GitHub同步完成：工程提交`865e966`（72文件）、文档/小型证据提交`95e8faf`（403文件）已普通atomic push到GitHub `main`与`codex/validation-pair-20261005`，ls-remote确认两ref=95e8faf；旧main之前落后277个已提交历史也已快进补齐，无强推。当前分支上游指向github，remote.pushDefault=github；origin固定机裸库未推送，服务器工作目录与云运行包未改。351受测源码仍与412回归SHA一致、160所选Python语法/JSON/常见凭据扫描完成，原回归log Git字节SHA保留。工程目录无待提交改动；仅受跟踪历史稿件`MODEL_V0719_REVIEW_REPORT.md`及未审核论文/原始实验资料留本地，均未删除。新同步策略见GIT_SYNC_POLICY_ZH.md、版本差异见git_sync_20261006/REVIEW与SYNC_RESULT；本交接/收据作为文档收尾提交再次同步。自动监听仍取消，不自动部署、不触碰4844528。
@@ -3654,6 +3656,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-07 13:03英国时间：原2050进至435轮，披露对偶残差两次上跳
+
+- Git基准：`a857302d609536a81d85d8a8e0f87141c6fa7e37`；本轮只修改三份状态交接文档并新增本地快照。按GIT_SYNC_POLICY审查小文件后同步GitHub，不推origin或部署运行包；实际提交见本条所在Git提交。
+- 文件/输出：`base_2050_continuation_20260930/status_20261007T120321Z/`的REVIEW_ZH、summary、scheduler、analyze、SHA，以及本地保留原日志/取证源码。CODEX_HANDOFF/MODEL_SERVER_STATUS/SERVER_RUNBOOK仅追加新状态，其他作者未审核稿件保留。
+- 命令/验证：squeue/sacct/sstat和指定文件只读；`python supplementary_materials/reviews/base_2050_continuation_20260930/status_20261007T120321Z/analyze.py`离线复算，4源SHA一致、436条迭代连续，三调度命令exit0。无生产源码变化，文档/分析验证不重跑模型回归。
+- 结果：RUNNING、435轮，PInf0.792/DInf2.98e-5/Compl0.397；原始残差和互补性仍近指数下降，对偶405/424各20.88/8.46倍上跳后回落。此前“指数衰减”仅在当时350–399窗口成立，不外推三项同步；旧PInf/Compl跳升判据不能覆盖此对偶异常。
+- 未决/下一步：尚无终态和QC；关注对偶继续回落，不能凭PInf/Compl拟合承诺ETA。仅按用户请求做后续只读检查；无scancel/scontrol、改参/改界、作业提交或后台监听。
+
 
 ### 2026-10-06 23:27英国时间：工程与GitHub main/工作分支快进同步完成
 
