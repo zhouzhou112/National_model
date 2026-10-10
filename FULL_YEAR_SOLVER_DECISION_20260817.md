@@ -289,3 +289,15 @@ cloud 已终态。后续只剩外部 job 的低频终态审计及任何新付费
 41个必要证据文件SHA全通过，目录 `supplementary_materials/reviews/numerical_robustness_20261005/server_evidence/20261006T1626Z/`，归档SHA `e800c89ef6b6a95c3648056c1816518882c6250f8e2240c4d359d4191fa4e4e4`。此判定限于结构晋级，**不表示744h完整目标等价性已完成**。已授权的C_on744_full由原补验队列在16:19:12UTC正常启动（solver670416），gate可用107711418368字节、其他solver为空，仍继续运行。实际构建配置与B_off744仅C formulation不同、输入manifest字节同、gate源码SHA无变化；终态还需比对实际参数、QC和目标差<=1e-7。已恢复转发/跟进，前日PAUSED仅为中断历史；不重启旧suite，不停止在跑solver。
 
 2026-10-06英国22:14追加C终态：Cfull已OPTIMAL/134轮/Runtime4848.09546709s/Work7694.50628128/目标2313584.6588953873，QC HARD_FAIL；参考Boff为142轮/目标2313582.8385150842，相对差7.868230489839585e-7 > 1e-7，目标门槛亦未通过。终态配置仅C formulation差、输入manifest字节同、10项实参数相同，C启动至终态源SHA一致；Boff原gate没有同期源SHA，源身份仅有冻结包/修复早于B启动日志/后验manifest链，明确保留此局限，不造同期证明。两侧无>=10倍跳升/零后转正，结构/Dense/Factor同，QC失败均水库续接和省际双向流。该Cross0数值目标差不是数学不等价证明，也不能用轮数减少覆盖结构与等价性门槛；当前C否决不变。14份终态原件逐SHA通过，详见`numerical_robustness_20261005/server_evidence/20261006T2114Z/final_comparison.json`及REVIEW5.5。授权验证收尾，用户取消自动监听，保持PAUSED；不启动2160h或科学情景。
+
+## 2026-10-10 作者决定：不执行 Stage B，科学验收改为相对口径
+
+作者与 Claude 决策：对当前 5,000 万行规模的全年 LP，deferred Crossover（Stage B）的退化清理代价（744h 严格参考中 Crossover 45,468 s 对 Barrier 7,735 s）配不上收益，且 8760h 无任何 Crossover 实测，失败风险不可控。因此：
+
+- 第 2 节"科学结果必须来自最终 basic solution，而不是 raw Barrier checkpoint"自本日起作废；科学结果采用 Stage A 内点解（Method 2、Crossover 0、BarConvTol 1e-4、NF2、48 线程）。
+- `approved_stage_b_profile` 与 `stage_b_required` 仅保留为历史记录，不构成任何作业的前置条件。
+- 物理 QC 改为相对口径 `relative_v1`（省级功率平衡 `max(1 MW, 1e-6×省峰值)`、水库 `max(1 m³, 1e-6×活动库容)`、省际双向流重叠电量 ≤ 全年交换电量 1e-4 并披露额外损耗、成本闭合相对目标 1e-7），严格口径并行记录。
+- 工程对偶可用于分析与发表，图注标明等级与容差；运行侧精确电价如有需要，由容量固定后的运行级 LP（Base-frozen 框架）另行产生。
+- 本决定不改变已归档结果的任何文件；Base 2030/2040 按新口径的判定在各自 review 目录追加，不改写原 `solution_qc.json`。
+- 本决定不授权新作业；作业排程见 `SCENARIO_EXECUTION_PLAN_20261002.md` 2026-10-10 条目。
+
