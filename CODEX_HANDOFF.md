@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-11英国00:18（北京07:18）原2050/4844528 RUNNING/m4cm1802、10天9小时9分19秒，iter642/48线程沿用。PInf0.00575/Compl0.00180/目标差138551.01，较628下降28.84%/31.56%/31.65%；DInf6.65e-6，较628升9.925倍，636→642升15.287倍，新反弹未恢复。其他三项逐轮下降，近期拟合每轮2.41%/2.62%/2.63%，较前窗放缓；无同步PInf/Compl大跃升、显式警告/终态，stderr空。近10轮22.555分钟，RSS420.09GiB/峰685.98GiB，643条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261010T231856Z/`（UTC日期）；历史其他三项类比余0.41–1.36天，但未覆盖新对偶反弹，当前不可靠承诺此前1–2天。Git基准15c00c8，保留作者新决定/其他稿件；未改冻结运行包，无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读观察对偶恢复和终态，按最新作者规则验收。
+
 - 2026-10-10（Claude 决策层记录）作者确认七项决定：不执行 Stage B；物理 QC 改相对口径并行记录严格口径；等价性门槛按求解方式分档；对偶筛选证书 1e-3/1e-2/一轮重解规则；工程对偶可发表并标注等级；续接年 A1/A2 启用为文档化近似；`case1`/`case2` 消融移出主计划。规则已写入 `AGENTS.md`、`FULL_YEAR_SOLVER_DECISION_20260817.md`、`SCENARIO_EXECUTION_PLAN_20261002.md`。情景集重排为 Base / Flex-coopt(`case3_thermal_ev_v5`) / Base-frozen / Late-entry（待定）。Flex-coopt 启动合同草案 `claude_workspace/tasks/TASK_case3_launch_contract_20261010.md`；启动前新增前置条件：柔性参数资格验证（Base 2030 全年影子电价下，当前 300 CNY/MWh 激活成本与 40–100 CNY/kW-yr 签约成本使冷热/EV 的套利价值为零，详见 `claude_workspace/evidence/base2030_prices/` 与本日分析）。未改模型/作业，4844528 未干预。
 
 - 2026-10-10英国18:57（北京10-11 01:57）原2050/4844528 RUNNING/m4cm1802、10天3小时48分18秒，iter628/48线程沿用。PInf0.00808/DInf6.70e-7/Compl0.00263/目标差202708.07，较610下降41.87%/39.64%/44.98%/44.98%。DInf611进一步升至2.21e-6，当前较该峰下降69.68%，仍为609反弹前2.669倍；614/627有小反弹，不能称完全恢复或单调下降。其他三项逐轮下降，近指数拟合每轮2.95%/3.29%/3.28%，暂无PInf/Compl大跃升、警告/终态，stderr空。近10轮23.1883分钟，RSS420.09GiB/峰685.98GiB；629条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261010T175755Z/`。历史对应2030第290–307/2040第505–571轮，当前速度余0.66–0.93/0.55–1.61天，条件性约1–2天，不保证/不含QC。Git基准ea7e392；仅取证/交接及小文件GitHub同步，未改模型/作业、无scontrol/scancel、新求解、监听或部署。下一步只读观察残差及终态/QC。
@@ -3674,6 +3676,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-11 00:18 BST｜原2050第642轮：对偶再次反弹，时间估计不确定性增加
+
+- Git：基准`15c00c8dbe363fd064db67d9ffcbfabffcc4c609`；保留2026-10-10作者决策记录，本条所在提交仅只读取证/交接与GitHub小文件同步，不部署运行包。
+- 文件：`base_2050_continuation_20260930/status_20261010T231856Z/`的REVIEW_ZH.md、summary.json、scheduler.json、analyze.py、sha256.json及本文件/MODEL_SERVER_STATUS.md/SERVER_RUNBOOK.md；原日志/telemetry/采集脚本留本地/云端。
+- 验证：SSH别名paracloud-bscc-a8只读squeue/sacct/sstat与冻结release指定文件；`python analyze.py`复算，643条连续、4源SHA匹配、三命令exit0，JSON/AST/本地文件SHA和暂存diff检查，未改生产代码或执行求解测试。
+- 结果：RUNNING/642轮，PInf0.00575/DInf6.65e-6/Compl0.00180/目标差138551.01；628以来PInf/Compl/目标差下降28.84%/31.56%/31.65%，DInf636→642升15.287倍且尚未恢复。近10轮22.555分钟，RSS420.09/峰685.98GiB，无显式警告、stderr空、无终态。历史其他三项阶段对应2030第295–311、2040第518–579轮，余0.41–1.36天仅作类比，不能覆盖当前新对偶反弹或据此承诺1–2天。
+- 未决/下一步：只读观察对偶恢复、其他残差及终态；验收遵循2026-10-10作者决定（不执行Stage B、relative_v1与严格口径并行），历史QC未按新口径复核。本次不修改作业/冻结模型/配置/数据、不提交作业、不部署/监听、无scontrol/scancel；未审核稿件保留。
+
 
 ### 2026-10-10 18:57 BST｜原2050第628轮：对偶反弹回落，主要指标继续下降
 
