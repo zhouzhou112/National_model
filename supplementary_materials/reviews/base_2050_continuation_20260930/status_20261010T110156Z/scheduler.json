@@ -1,0 +1,43 @@
+{
+  "collected_at": "2026-10-10T19:01:56.664289+08:00",
+  "source_sha256": {
+    "output_8760/gurobi.log": "7bb32b38ec131e90cc739a9cd4c84444499ab366c278b29f53306a038b12a000",
+    "output_8760/solver_telemetry.jsonl": "dc82c9492c5e2bbf9da516c1200a70a286ce6c376a374e37fd88d87de369489e",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "slurm-4844528.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands": {
+    "queue": [
+      "squeue",
+      "-h",
+      "-j",
+      "4844528",
+      "-o",
+      "%i|%T|%M|%l|%C|%m|%N"
+    ],
+    "accounting": [
+      "sacct",
+      "-j",
+      "4844528",
+      "--format=JobID,State,Elapsed,Start,ExitCode,AllocTRES",
+      "--parsable2"
+    ],
+    "resources": [
+      "sstat",
+      "-j",
+      "4844528.batch",
+      "--format=JobID,MaxRSS,AveRSS,AveCPU",
+      "--parsable2"
+    ]
+  },
+  "queue": "4844528|RUNNING|9-20:52:19|UNLIMITED|64|750G|m4cm1802\n",
+  "queue_returncode": 0,
+  "queue_stderr": "",
+  "accounting": "JobID|State|Elapsed|Start|ExitCode|AllocTRES\n4844528|RUNNING|9-20:52:19|2026-09-30T22:09:37|0:0|billing=64,cpu=64,mem=750G,node=1\n4844528.batch|RUNNING|9-20:52:19|2026-09-30T22:09:37|0:0|cpu=64,mem=750G,node=1\n4844528.extern|RUNNING|9-20:52:19|2026-09-30T22:09:37|0:0|billing=64,cpu=64,mem=750G,node=1\n",
+  "accounting_returncode": 0,
+  "accounting_stderr": "",
+  "resources": "JobID|MaxRSS|AveRSS|AveCPU\n4844528.batch|719304860K|440493920K|411-01:17:27\n",
+  "resources_returncode": 0,
+  "resources_stderr": "",
+  "terminal_artifacts": []
+}
