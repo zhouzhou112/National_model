@@ -1339,6 +1339,7 @@ def build_full_year_monolithic(
         **flexible_load.variables,
     )
     artifacts.cost_components.update({f"operating_{k}": v for k, v in operating_costs.items()})
+    artifacts.cost_components.update({f"operating_detail_{k}": v for k, v in flexible_load.cost_details.items()})
     primary_objective_components = tuple(
         artifacts.index["primary_objective_components"]
     )

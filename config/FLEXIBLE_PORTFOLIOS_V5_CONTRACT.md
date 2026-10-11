@@ -152,3 +152,17 @@ V1G 下移 300；V2G 放电计参与成本 150 和损耗外的电池退化 400�
 它把冷热小时响应与同一年度签约群体绑定，并分别限制 EV 意愿和双向设施，提供费用敏感性。
 旧三情景仍未设置该合同，矩阵保持原样；新配置位于 `scenarios/response_candidates_v1/`，没有运行。
 新候选是研究假设的显式收紧，不是旧 LP 的等价数值改写；全年资格门禁继续保留。
+
+## 8. 2026-10-11 参数路径与容量信用
+
+作者已确认资源成本口径。`case3_thermal_ev_v5` 现在以 V9 为基线，使用 `participation_pathway_v2` 年份列和独立输入目录 `data/flexibility/participation_pathway_v2/`。V5 是柔性服务物理模型代际，case3 是冷热与 EV 的资源组合，V9 是系统基线配置代际，三者不是可互换的版本号。
+
+2030/2040/2050/2060 的供暖参与率为 0.25/0.40/0.50/0.60，制冷为 0.20/0.30/0.40/0.50，V1G 为 0.20/0.30/0.40/0.50，V2G 为 0.10/0.15/0.20/0.25。成本中心值及上下界以 `flexible_load_v5_central_parameters.csv` 为单源；2025 兼容输入使用 2030 参数，不新增作者未定案的年份假设。
+
+冷热激活为 `1e-3 * (release_cost * down + precondition_cost * up)`，功率 GW、一步 1 h、电量 GWh、目标 million CNY。两个新成本分项是既有 `flexible_load_v5_thermal_activation` 的非加总明细；预处理中心值为零。缺新列或关闭方向计费开关时维持旧双向激活表达式。
+
+`firm_flexibility_derated_v1` 只在 `optional_portfolio_authorization="author_2026_10_11_derated_credit_v1"` 下对可选组合开放。峰窗沿用每省全年不可变负荷峰所在四小时窗口。信用同时受折减后签约 K、热包络或 `alpha * b_t`、`beta * D_t / rho`、`beta * Q_t / duration` 约束；`rho=f_v2g/f_v1g`。不增加备用信用，不改 S50–S54。零签约必须零信用。
+
+敏感性身份：`case3_thermal_ev_v5_nocredit` 保留新成本与年度资源池但关闭信用；`case3_thermal_ev_v5_compensation_basis` 保留旧输入、旧固定参与率、旧双向激活与无信用，派生到 V9。原情景字节存于 `scenarios/legacy/case3_thermal_ev_v5.json`，原参数表存于 `legacy/flexible_load_v5_central_parameters.csv`，用于历史复现。
+
+本轮只授权本机输入重建、单元测试、24h 诊断和价格接受者试验；没有新全年系统求解授权。价格接受者使用外生 Base 2030 电价，不表达容量信用收益；2060 输入复用 2030 电价仅为 TEST_ONLY。详细证据见 `../supplementary_materials/reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md`。生产 Stage A 与精度规则以 AGENTS.md 2026-10-10 作者决定为准；此前历史段落不构成新的执行授权。

@@ -49,6 +49,8 @@ def require_finite_load_center_qc_inputs(**values: Any) -> None:
 
 def cost_component_accounting_scope(name: str) -> str:
     """Classify cost rows without changing the legacy value column."""
+    if name.startswith("operating_detail_"):
+        return "DIAGNOSTIC_DETAIL_NOT_ADDITIVE"
     if name == "annual_operation":
         return "COMPOSITE_SEE_COMPONENT_ROWS"
     if name in {

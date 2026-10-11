@@ -29,6 +29,38 @@ ANALYSIS_ROLES = {
 }
 
 
+def resolve_flexibility_year(raw: dict, year: int) -> None:
+    """Resolve explicit annual pathways, retaining them for subsequent year views."""
+    flex = raw.get("flexible_load", {})
+    for section, key in (("ev_v1g", "shiftable_energy_fraction"),
+                         ("ev_v2g", "participation_fraction")):
+        settings = flex.get(section, {})
+        value = settings.get(key + "_by_planning_year", settings.get(key))
+        if isinstance(value, dict):
+            if set(value) != {"2030", "2040", "2050", "2060"}:
+                raise ValueError(f"{section}.{key} pathway must cover all planning years")
+            if any(not math.isfinite(float(v)) or not 0 <= float(v) <= 1 for v in value.values()):
+                raise ValueError(f"Invalid {section}.{key} pathway")
+            if any(float(value[a]) > float(value[b]) for a, b in zip(("2030", "2040", "2050"), ("2040", "2050", "2060"))):
+                raise ValueError(f"{section}.{key} pathway must be nondecreasing")
+            settings[key + "_by_planning_year"] = deepcopy(value)
+            settings[key] = float(value[str(year)])
+    firm = flex.get("firm_capacity_credit", {})
+    paths = firm.get("derating_fraction_by_planning_year", firm.get("derating_fraction", {}))
+    if any(isinstance(v, dict) for v in paths.values()):
+        resolved = {}
+        for service, value in paths.items():
+            if isinstance(value, dict):
+                if set(value) != {"2030", "2040", "2050", "2060"} or any(
+                    not math.isfinite(float(v)) or not 0 <= float(v) <= 1 for v in value.values()
+                ):
+                    raise ValueError("Invalid firm derating pathway")
+                value = value[str(year)]
+            resolved[service] = float(value)
+        firm["derating_fraction_by_planning_year"] = deepcopy(paths)
+        firm["derating_fraction"] = resolved
+
+
 @dataclass(frozen=True)
 class ModelConfig:
     path: Path
@@ -100,6 +132,7 @@ class ModelConfig:
         raw["boundary_year"] = boundary_year
         raw["planning_year"] = planning_year
         raw["planning_interval_years"] = planning_year - boundary_year
+        resolve_flexibility_year(raw, planning_year)
         dac_schedule = raw["features"].get("dac_by_planning_year")
         if dac_schedule is not None:
             raw["features"]["dac"] = dac_schedule[str(planning_year)]
@@ -562,11 +595,18 @@ class ModelConfig:
                     "tolerance must be nonnegative"
                 )
             portfolio = flexible.get("portfolio_contract")
+            if flexible.get("thermal_activation_contract") not in {None, "directional_resource_cost_v1"}:
+                raise ValueError("Unknown thermal_activation_contract")
             if portfolio not in {None, "optional_service_pools_v1"}:
                 raise ValueError("Unknown V5 portfolio_contract")
             optional_portfolio = portfolio == "optional_service_pools_v1"
             if optional_portfolio:
-                if capacity_margin_load_basis != "baseline_peak_v1":
+                authorized_credit = (
+                    flexible.get("firm_capacity_credit", {}).get("optional_portfolio_authorization")
+                    == "author_2026_10_11_derated_credit_v1"
+                    and capacity_margin_load_basis == "firm_flexibility_derated_v1"
+                )
+                if capacity_margin_load_basis != "baseline_peak_v1" and not authorized_credit:
                     raise ValueError("Optional V5 portfolios retain baseline_peak_v1; "
                                      "firm credit requires a separately qualified event contract")
                 if bool(flexible["ev_v2g"]["enabled"]):
@@ -1104,6 +1144,13 @@ def load_model_config(
     solver_path: str | Path | None = None,
     formulation_path: str | Path | None = None,
 ) -> ModelConfig:
+    # Only an explicit scenario declaration can select a different default base.
+    # Explicit caller paths continue to be checked against the scenario parent.
+    if path is None and scenario_path is not None:
+        declaration = Path(scenario_path)
+        if not declaration.is_absolute():
+            declaration = ROOT / declaration
+        path = json.loads(declaration.read_text(encoding="utf-8")).get("base_config")
     config_path = Path(path) if path else DEFAULT_CONFIG
     if not config_path.is_absolute():
         config_path = ROOT / config_path
@@ -1338,6 +1385,7 @@ def load_model_config(
             "description": str(payload.get("description", "")),
         }
         resolved_formulation = resolved_formulation.resolve()
+    resolve_flexibility_year(raw, int(raw["planning_year"]))
     config = ModelConfig(
         config_path.resolve(),
         raw,

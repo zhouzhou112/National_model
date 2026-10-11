@@ -511,6 +511,14 @@ def export_result_summary(
         "storage_discharge_gwh": float(storage_discharge.sum()),
         "interprovincial_transmission_losses_gwh": transmission_losses,
     }
+    directional_costs = {
+        key.removeprefix("operating_detail_"): float(_value(value))
+        for key, value in artifacts.cost_components.items()
+        if key.startswith("operating_detail_flexible_load_v5_thermal_")
+    }
+    if directional_costs:
+        summary["thermal_activation_detail_million_cny"] = directional_costs
+        summary["thermal_activation_detail_accounting"] = "NON_ADDITIVE_COMPONENTS_OF_THERMAL_ACTIVATION"
     if mga_metadata is not None:
         summary["analysis_mode"] = "MGA_CONSTRAINED_SECONDARY_OBJECTIVE"
         summary["mga"] = {

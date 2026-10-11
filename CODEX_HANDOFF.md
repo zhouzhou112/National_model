@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-11 柔性参数落地阶段：作者定案 participation_pathway_v2、方向激活成本、年度参与率和授权四小时信用已实现；三种 case3 身份派生 V9，原配置/数据保留。419项回归通过（Windows跳过1），全年度输入校验 PASS，24h 新情景与零签约/Base 对照通过，旧服务 fixture MPS 字节及解向量一致。价格接受者：旧口径及只改参与率均零签约；新成本非零但初试 Barrier 原单位残差未过，正在本机独立数值诊断，尚不能接受其签约数值。未访问云端/4844528，无生产 Stage B、部署或凭据读取。详见 reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md；当前仅提交已验证落地代码，下一步闭合价格诊断、汇总差异并小文件同步。
+
 - 2026-10-11英国15:43（北京22:43）原2050/4844528 RUNNING/m4cm1802、11天0小时33分42秒，iter682/48线程沿用。PInf0.00118/Compl0.000338/目标差26080.73，较670下降36.56%/37.52%/37.44%；DInf4.39e-6较670上升78.46%，679–682连续4轮上升，为678的1.969倍，低于642峰值但反弹尚未恢复，不能沿用上次连续下降描述。其他三项逐轮下降，近期拟合每轮3.56%/3.65%/3.65%，较前窗放缓；暂无同步大跃升/显式警告/终态，stderr空。22.3867分钟每轮，RSS420.09GiB/峰685.98GiB；683条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T144319Z/`。历史主指标约9–15小时类比未覆盖新对偶反弹，不将此前半天至一天作倒计时；2040 PInf匹配终轮不等于整体结束。Git基准e577e13；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读关注对偶恢复/终态，按作者最新规则验收。
 
 - 2026-10-11英国11:30（北京18:30）原2050/4844528 RUNNING/m4cm1802、10天20小时21分1秒，iter670/48线程沿用。PInf0.00186/DInf2.46e-6/Compl0.000541/目标差41691.32，较642下降67.65%/63.01%/69.94%/69.91%。DInf646/651/654小反弹后654→670连续16轮下降，仍为636反弹前5.655倍；近10轮四项逐轮下降，无新大跃升/显式警告/终态，stderr空。拟合每轮下降3.98%/3.60%/4.29%/4.28%，PInf/Compl/目标差较前窗加快。23.46分钟每轮，RSS423.31GiB/峰685.98GiB；671条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T103038Z/`。历史对应2030第309–321/2040第553–604轮，余10.56–15.25/0.39–20.33小时，仅条件性半天至一天安排，不以2040 PInf单项判仅余1轮，不保证/不含验收。Git基准78319c4；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读观察恢复/终态，验收按最新作者规则。
@@ -9631,3 +9633,7 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 - 证据：git_sync_20261006/CODE_CHANGE_PROVENANCE_ZH.md、code_provenance.json、production_to_local.patch、trace_deployed_code.py；时间线以dated handoff/review/冻结SHA为依据，不用mtime或统一Git作者字段伪造编辑时间。已披露固定机C模块中途修复、B元数据差异及缺少同期加载模块SHA的局限。
 - 变更仅上述审计产物、GIT_SYNC_POLICY_ZH.md和本交接。命令：python supplementary_materials/reviews/git_sync_20261006/trace_deployed_code.py；git ls-remote/fetch；逐项diff和AST/JSON校验。351项受测源SHA仍等于最终412回归，不重复测试/求解；不改服务器目录、作业4844528或自动化。
 - 后续约定：小批及时提交；新实验使用已提交已测源码，commit+文件SHA+有效配置/输入/继承状态共同定位，新修复建新release；显式V9参数复现云任务，不把默认optimization_2030.json或Git相同当作云运行模型相同。当前生产V9不自动升级A/B/C或factor；本轮审计安全范围收尾同步GitHub，最终提交号见Git实际历史。
+
+## 2026-10-11 柔性参数落地：代码与短窗验证阶段
+
+Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提交。范围为 cispo_model 的参数解析、方向计费、信用与输出，config 的年度注册表/三情景/目录/legacy存档，构建/校验/价格工具与相关 tests。运行 `python -m unittest discover -s tests -q`：419 tests/215.470s/OK(skipped=1)，日志 `supplementary_materials/reviews/flex_parameter_implementation_20261011/unittest_verified.log`；输入校验全年度 PASS。`solve24_verified/`、`zero24_retry/`、`base24/` 均本机，生产未变；Base/V9/legacy科学指纹不变，旧fixture MPS字节相同，零签约信用与K严格零，目标相对差1.1e-14。新数据单独位于 `data/flexibility/participation_pathway_v2/`，+2C敏感性包络独立。未闭合：新成本价格接受者原单位数值残差、预期10–20GW冷热签约与实测的差异；下一步保留失败结果，完成同一服务块的本地独立求解复核，再追加最终结果。没有云端操作、Stage B生产求解或新全年系统作业。

@@ -22,6 +22,8 @@
     "phs_power_energy_separated_central_v1",
     "phs_power_energy_separated_low_energy_cost_v1",
     "phs_power_energy_separated_high_energy_cost_v1",
-    "flexible_load_comfort_v3_v2g_5pct"
+    "flexible_load_comfort_v3_v2g_5pct",
+    "case3_thermal_ev_v5_nocredit",
+    "case3_thermal_ev_v5_compensation_basis"
   ]
 }

@@ -216,7 +216,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--catalog", default="config/scenarios/scenario_catalog.json"
     )
-    parser.add_argument("--config", default="config/optimization_2030.json")
+    parser.add_argument("--config", default=None,
+                        help="Explicit common base; otherwise use each scenario's declared base")
     parser.add_argument(
         "--scenario",
         action="append",
@@ -277,12 +278,14 @@ def main() -> None:
     if args.dry_run and args.resume:
         raise SystemExit("--dry-run and --resume are mutually exclusive")
 
-    base_config_path = resolve_project_path(args.config)
+    base_config_path = resolve_project_path(args.config or "config/optimization_2030.json")
     if not base_config_path.is_file():
         raise SystemExit(f"Base config is missing: {base_config_path}")
     try:
         for scenario in selected:
-            load_model_config(base_config_path, scenario["config_path"])
+            resolved = load_model_config(base_config_path if args.config else None, scenario["config_path"])
+            scenario["base_config_path"] = resolved.path
+            scenario["base_config_sha256"] = sha256_file(resolved.path)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         raise SystemExit(f"Scenario/base config validation failed: {exc}") from exc
 
@@ -322,6 +325,10 @@ def main() -> None:
             resume_mismatches.append("catalog_sha256")
         if existing_report.get("base_config_sha256") != sha256_file(base_config_path):
             resume_mismatches.append("base_config_sha256")
+        expected_bases = {r["scenario_id"]: r["base_config_sha256"] for r in selected}
+        previous_bases = existing_report.get("scenario_base_sha256", {r["scenario_id"]: existing_report.get("base_config_sha256") for r in selected})
+        if previous_bases != expected_bases:
+            resume_mismatches.append("scenario_base_sha256")
         if existing_report.get("scenario_ids") != expected_scenario_ids:
             resume_mismatches.append("scenario_ids")
         if existing_scenario_hashes != expected_scenario_hashes:
@@ -357,6 +364,7 @@ def main() -> None:
         "catalog_sha256": catalog["catalog_sha256"],
         "base_config": str(base_config_path),
         "base_config_sha256": sha256_file(base_config_path),
+        "scenario_base_sha256": {r["scenario_id"]: r["base_config_sha256"] for r in selected},
         "scenario_ids": [row["scenario_id"] for row in selected],
         "state_isolation": "one independent planning-state chain per scenario",
         "full_year_authorization": "not supported by this diagnostic suite wrapper",
@@ -373,7 +381,7 @@ def main() -> None:
             sys.executable,
             str(sequence_script),
             "--config",
-            str(base_config_path),
+            str(scenario["base_config_path"]),
             "--scenario-config",
             str(scenario["config_path"]),
             "--diagnostic-hours",

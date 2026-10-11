@@ -60,7 +60,7 @@ def _load_components(
     return provinces, components
 
 
-def build_audit(data_root: Path) -> dict[str, Any]:
+def build_audit(data_root: Path, scenario_path: str | Path | None = None) -> dict[str, Any]:
     from cispo_model import data as data_module
     from cispo_model.config import load_model_config
     from cispo_model.flexible_load_numerics import (
@@ -70,13 +70,32 @@ def build_audit(data_root: Path) -> dict[str, Any]:
         _thermal_state_chain_numerical_risks,
     )
 
-    scenario_path = (
+    scenario_path = scenario_path or (
         PROJECT_ROOT
         / "config"
         / "scenarios"
         / "flex_integrated_v5_central.json"
     )
     config = load_model_config(scenario_path=scenario_path)
+    pathway = config.raw["flexible_load"].get("parameter_contract") == "participation_pathway_v2"
+    if pathway:
+        from scripts.build_flexible_load_v5_inputs import parameters
+        annual_parameters = parameters(PROJECT_ROOT / "config/flexible_load_v5_central_parameters.csv")
+        import hashlib
+        files = config.raw["flexible_load"]["v5_input_files"]
+        manifest = json.loads((data_root / files["input_manifest_file"]).read_text(encoding="utf-8"))
+        if manifest.get("parameter_contract") != "participation_pathway_v2":
+            raise ValueError("Missing pathway identity in input manifest")
+        for source in manifest["source_manifests"]:
+            logical = Path(source["path"])
+            resolved = data_root / Path(*logical.parts[1:]) if logical.parts[0] == "data" else PROJECT_ROOT / logical
+            if hashlib.sha256(resolved.read_bytes()).hexdigest() != source["sha256"]:
+                raise ValueError(f"Pathway source SHA mismatch: {logical}")
+        parameter_frame = pd.read_csv(PROJECT_ROOT / "config/flexible_load_v5_central_parameters.csv")
+        for year in config.planning_years:
+            low, central, high = [parameter_frame[f"{level}_{year}"].to_numpy(float) for level in ("low", "central", "high")]
+            if not np.isfinite([low, central, high]).all() or (low < 0).any() or (low > central).any() or (central > high).any():
+                raise ValueError(f"Invalid low/central/high pathway for {year}")
     data_module.DATA_ROOT = data_root
     per_year = {}
     for planning_year in config.planning_years:
@@ -90,6 +109,14 @@ def build_audit(data_root: Path) -> dict[str, Any]:
         )
         if service.contract_version != "v5":
             raise ValueError("V5 loader returned the wrong contract identity")
+        if pathway:
+            if service.legacy_bidirectional_activation:
+                raise ValueError("Pathway inputs require directional activation columns")
+            for name in ("heating", "cooling"):
+                for direction in ("release", "precondition"):
+                    actual = service.service_costs[name][f"activation_cost_{direction}_yuan_per_mwh"]
+                    if not np.allclose(actual, annual_parameters[f"thermal.activation_cost_{direction}"][planning_year]):
+                        raise ValueError("Directional costs do not match year-specific registry")
         cap = float(
             year_config.raw["flexible_load"]["ev_v2g"][
                 "national_contracted_power_cap_gw_by_planning_year"
@@ -440,9 +467,10 @@ def build_audit(data_root: Path) -> dict[str, Any]:
         "all_parameter_source_ids_resolve": not unknown_source_ids,
         "source_registry_ids_unique": not duplicated_source_ids,
         "low_central_high_parameter_order": parameter_pass,
-        "v1g_central_participation_is_15_percent": all(
-            np.isclose(row["v1g_shiftable_energy_fraction"], 0.15)
-            for row in per_year.values()
+        "v1g_central_participation_matches_contract": all(
+            np.isclose(row["v1g_shiftable_energy_fraction"],
+                       annual_parameters["ev.v1g_participation_fraction"][int(year)] if pathway else 0.15)
+            for year, row in per_year.items()
         ),
         "effective_load_static_lower_bound_positive_all_years": all(
             row["minimum_static_effective_load_gw"] >= 1e-6
@@ -484,8 +512,9 @@ def main() -> None:
         ),
     )
     parser.add_argument("--output")
+    parser.add_argument("--scenario-config")
     args = parser.parse_args()
-    report = build_audit(Path(args.data_root).resolve())
+    report = build_audit(Path(args.data_root).resolve(), args.scenario_config)
     if args.output:
         path = Path(args.output)
         path.parent.mkdir(parents=True, exist_ok=True)

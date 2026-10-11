@@ -42,7 +42,7 @@ class NoSolvePortfolioTests(unittest.TestCase):
     def test_zero_contract_vector_is_feasible_and_reconstructs_base_in_all_cases(self):
         for case in CASES:
             with self.subTest(case=case):
-                config = load_model_config(scenario_path=f'config/scenarios/{case}.json')
+                config = load_model_config(scenario_path=('config/scenarios/legacy/case3_thermal_ev_v5.json' if case == 'case3_thermal_ev_v5' else f'config/scenarios/{case}.json'))
                 data = fixture()
                 model = self.model()
                 block = attach_flexible_load(model, config, data, hours=24)
@@ -101,7 +101,7 @@ class NoSolvePortfolioTests(unittest.TestCase):
     def test_formal_cli_blocks_before_loading_inputs(self):
         from scripts import run_cispo_2030_full_year as runner
         argv = ['run_cispo_2030_full_year.py', '--horizon', 'full_year',
-            '--scenario-config', 'config/scenarios/case3_thermal_ev_v5.json',
+            '--scenario-config', 'config/scenarios/legacy/case3_thermal_ev_v5.json',
             '--solver-config', 'config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json',
             '--formulation-config', 'config/formulation_profiles/annual_capacity_link_rows_8192_v1.json',
             '--archive-original-model']

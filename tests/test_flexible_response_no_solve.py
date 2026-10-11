@@ -59,7 +59,7 @@ class ResponseNoSolveTests(unittest.TestCase):
 
     def test_central_refinement_adds_no_variables_rows_or_nonzeros(self):
         for case in CASES:
-            old = load_model_config(scenario_path=f"config/scenarios/{case}.json")
+            old = load_model_config(scenario_path=("config/scenarios/legacy/case3_thermal_ev_v5.json" if case == "case3_thermal_ev_v5" else f"config/scenarios/{case}.json"))
             new = load_model_config(scenario_path=CANDIDATES/f"{case}_response_v1.json")
             old_model, _ = self.build(old)
             new_model, _ = self.build(new)

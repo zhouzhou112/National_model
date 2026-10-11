@@ -13,6 +13,7 @@ SERVICES = ("heating", "cooling", "ev_v1g", "ev_v2g")
 COST_FIELDS = (
     "enablement_cost_yuan_per_kw_year", "activation_cost_yuan_per_mwh",
     "infrastructure_cost_yuan_per_kw_year", "degradation_cost_yuan_per_mwh",
+    "activation_cost_release_yuan_per_mwh", "activation_cost_precondition_yuan_per_mwh",
 )
 
 

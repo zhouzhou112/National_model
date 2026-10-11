@@ -66,16 +66,27 @@ def write_canonical_csv(
                 frame.to_csv(text_handle, **csv_options)
 
 
-def parameters(path: Path) -> dict[str, float]:
+def parameters(path: Path) -> dict[str, dict[int, float]]:
     frame = pd.read_csv(path)
     if frame.parameter_id.duplicated().any():
         raise ValueError("Duplicate V5 central parameter IDs")
-    return dict(zip(frame.parameter_id, frame.central_value.astype(float)))
+    result = {row["parameter_id"]: {
+        year: float(row.get(f"central_{max(2030, year)}", row["central_value"])) for year in YEARS
+    } for row in frame.to_dict("records")}
+    if any(not np.isfinite(v) or v < 0 for values in result.values() for v in values.values()):
+        raise ValueError("Parameters must be finite and nonnegative")
+    for key in ("thermal.heating.enrolled_fraction", "thermal.cooling.enrolled_fraction",
+                "ev.v1g_participation_fraction", "ev.v2g_participation_fraction"):
+        values = list(result[key].values())
+        if max(values) > 1 or any(a > b for a, b in zip(values, values[1:])):
+            raise ValueError(f"Participation must be in [0,1] and nondecreasing: {key}")
+    return result
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", default=str(ROOT / "data"))
+    parser.add_argument("--output-subdir", default=None)
     parser.add_argument(
         "--parameter-file",
         default=str(ROOT / "config" / "flexible_load_v5_central_parameters.csv"),
@@ -87,9 +98,10 @@ def main() -> None:
     args = parse_args()
     data_root = Path(args.data_root).resolve()
     parameter_path = Path(args.parameter_file).resolve()
-    output_root = data_root / "flexibility"
-    output_root.mkdir(parents=True, exist_ok=True)
     p = parameters(parameter_path)
+    default_subdir = "flexibility/participation_pathway_v2" if "thermal.activation_cost_release" in p else "flexibility"
+    output_root = data_root / (args.output_subdir or default_subdir)
+    output_root.mkdir(parents=True, exist_ok=True)
 
     load_path = data_root / "load" / "hourly_load_2025_2060.csv.gz"
     envelope_path = data_root / "load" / "flexible_load_envelope_v3.csv.gz"
@@ -128,7 +140,7 @@ def main() -> None:
         ("heating", "thermal.heating.enrolled_fraction"),
         ("cooling", "thermal.cooling.enrolled_fraction"),
     ):
-        fraction = p[fraction_key]
+        fraction = merged.year.map(p[fraction_key])
         thermal[f"{component}_increase_limit_gw"] = (
             fraction * merged[f"{component}_increase_limit_gw"]
         )
@@ -146,23 +158,24 @@ def main() -> None:
     parameter_rows = []
     for province_code in provinces.province_code.astype(int):
         for year in YEARS:
+            annual = {key: values[year] for key, values in p.items()}
             for component in ("heating", "cooling"):
                 parameter_rows.append(
                     {
                         "province_code": province_code,
                         "year": year,
                         "component": component,
-                        "retention_per_hour": p[
+                        "retention_per_hour": annual[
                             f"thermal.{component}.retention_per_hour"
                         ],
-                        "charge_efficiency": p["thermal.charge_efficiency"],
-                        "discharge_efficiency": p[
+                        "charge_efficiency": annual["thermal.charge_efficiency"],
+                        "discharge_efficiency": annual[
                             "thermal.discharge_efficiency"
                         ],
-                        "positive_state_duration_hours": p[
+                        "positive_state_duration_hours": annual[
                             f"thermal.{component}.duration_hours"
                         ],
-                        "negative_state_duration_hours": p[
+                        "negative_state_duration_hours": annual[
                             f"thermal.{component}.duration_hours"
                         ],
                     }
@@ -176,11 +189,11 @@ def main() -> None:
         compressed=False,
     )
 
-    ev_fraction = p["ev.v1g_participation_fraction"]
-    v2g_fraction = p["ev.v2g_participation_fraction"]
-    eta_charge = p["ev.charge_efficiency"]
-    power_ratio = p["ev.charge_power_to_daily_average_ratio"]
-    inventory_duration = p["ev.service_inventory_duration_hours"]
+    ev_fraction = merged.year.map(p["ev.v1g_participation_fraction"]).to_numpy(float)
+    v2g_fraction = merged.year.map(p["ev.v2g_participation_fraction"]).to_numpy(float)
+    eta_charge = merged.year.map(p["ev.charge_efficiency"]).to_numpy(float)
+    power_ratio = merged.year.map(p["ev.charge_power_to_daily_average_ratio"]).to_numpy(float)
+    inventory_duration = merged.year.map(p["ev.service_inventory_duration_hours"]).to_numpy(float)
     ev = merged[key + ["ev_gw"]].copy()
     ev["day_index"] = ev.hour_index // 24
     ev["flexible_ev_baseline_gw"] = ev_fraction * ev.ev_gw
@@ -224,8 +237,10 @@ def main() -> None:
     )
 
     cost_rows = []
+    pathway = "thermal.activation_cost_release" in p and "thermal.activation_cost_precondition" in p
     for province_code in provinces.province_code.astype(int):
         for year in YEARS:
+            annual = {key: values[year] for key, values in p.items()}
             for service in ("heating", "cooling", "ev_v1g", "ev_v2g"):
                 thermal_service = service in {"heating", "cooling"}
                 cost_rows.append(
@@ -234,36 +249,41 @@ def main() -> None:
                         "year": year,
                         "service": service,
                         "enablement_cost_yuan_per_kw_year": (
-                            p["thermal.enablement_cost"]
+                            annual["thermal.enablement_cost"]
                             if thermal_service
-                            else p[
+                            else annual[
                                 "ev.v1g_enablement_cost"
                                 if service == "ev_v1g"
                                 else "ev.v2g_availability_cost"
                             ]
                         ),
                         "activation_cost_yuan_per_mwh": (
-                            p["thermal.activation_cost"]
+                            annual["thermal.activation_cost"]
                             if thermal_service
-                            else p[
+                            else annual[
                                 "ev.v1g_activation_cost"
                                 if service == "ev_v1g"
                                 else "ev.v2g_owner_compensation_cost"
                             ]
                         ),
                         "infrastructure_cost_yuan_per_kw_year": (
-                            p["ev.v2g_infrastructure_cost"]
+                            annual["ev.v2g_infrastructure_cost"]
                             if service == "ev_v2g"
                             else 0.0
                         ),
                         "degradation_cost_yuan_per_mwh": (
-                            p["ev.v2g_degradation_cost"]
+                            annual["ev.v2g_degradation_cost"]
                             if service == "ev_v2g"
                             else 0.0
                         ),
                         "comfort_debt_cost_yuan_per_gwh_hour": 0.0,
                     }
                 )
+                if pathway:
+                    cost_rows[-1].update({
+                        "activation_cost_release_yuan_per_mwh": annual["thermal.activation_cost_release"] if thermal_service else 0.0,
+                        "activation_cost_precondition_yuan_per_mwh": annual["thermal.activation_cost_precondition"] if thermal_service else 0.0,
+                    })
     cost_output = output_root / "flex_enablement_cost_v5.csv"
     write_canonical_csv(
         pd.DataFrame(cost_rows),
@@ -355,13 +375,13 @@ def main() -> None:
                 "PASS"
                 if (
                     thermal.heating_reduction_limit_gw
-                    <= p["thermal.heating.enrolled_fraction"]
+                    <= merged.year.map(p["thermal.heating.enrolled_fraction"])
                     * merged.heating_gw
                     + 1e-12
                 ).all()
                 and (
                     thermal.cooling_reduction_limit_gw
-                    <= p["thermal.cooling.enrolled_fraction"]
+                    <= merged.year.map(p["thermal.cooling.enrolled_fraction"])
                     * merged.cooling_gw
                     + 1e-12
                 ).all()
@@ -387,6 +407,9 @@ def main() -> None:
     }
     if "HARD_FAIL" in manifest["qc"].values():
         raise ValueError(f"V5 input generation QC failed: {manifest['qc']}")
+    if pathway:
+        manifest["parameter_contract"] = "participation_pathway_v2"
+        manifest["qc"]["participation_nondecreasing"] = "PASS"
     manifest_output = output_root / "flexible_load_v5.manifest.json"
     manifest_output.write_bytes(
         (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode(

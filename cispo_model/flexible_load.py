@@ -32,6 +32,7 @@ import numpy as np
 from .config import ModelConfig
 from .data import ModelData
 from .flexible_portfolio import attach_ev_pools, is_optional_portfolio
+from .flexible_credit import enabled as optional_credit_enabled, attach_optional_credit
 from .flexible_response import (
     response_settings, enrollment_limit, thermal_contract_profile, resolved_service_costs,
 )
@@ -53,6 +54,7 @@ class FlexibleLoadBlock:
     costs: dict[str, Any]
     day_slices: tuple[slice, ...]
     structural_audit: dict[str, Any] = field(default_factory=dict)
+    cost_details: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -774,6 +776,8 @@ def _attach_service_constrained_v4(
             variables["firm_flexible_capacity_credit_upper"] = firm_ub
 
     thermal_activation_terms: dict[str, Any] = {}
+    thermal_release_terms: dict[str, Any] = {}
+    thermal_precondition_terms: dict[str, Any] = {}
     thermal_fixed_zero_controls_omitted = 0
     thermal_fixed_zero_states_omitted = 0
     thermal_redundant_states_eliminated = 0
@@ -781,6 +785,12 @@ def _attach_service_constrained_v4(
         params = service_data.thermal_parameters[component]
         up_ub = thermal_envelopes[f"{component}_up"]
         down_ub = thermal_envelopes[f"{component}_down"]
+        if response_settings(settings) and np.any(capacity_ub[:, column] == 0):
+            # A zero enrollment cap already forces both controls to zero.
+            # Eliminate them before constructing compressed states with zero UB.
+            allowed = (capacity_ub[:, column] > 0)[:, None]
+            up_ub = np.where(allowed, up_ub, 0.0)
+            down_ub = np.where(allowed, down_ub, 0.0)
         availability = thermal_availability[component]
         k_service = capacity[:, column].reshape((p_count, 1))
         positive_duration = params["positive_state_duration_hours"]
@@ -942,6 +952,8 @@ def _attach_service_constrained_v4(
             }
         )
         thermal_activation_terms[component] = up.sum(axis=1) + down.sum(axis=1)
+        thermal_release_terms[component] = down.sum(axis=1)
+        thermal_precondition_terms[component] = up.sum(axis=1)
         structural_audit[f"{component}_sparse_hourly_control"] = {
             "possible_up_variables": cell_count,
             "active_up_variables": int(up_active_mask.sum()),
@@ -1010,12 +1022,16 @@ def _attach_service_constrained_v4(
         fixed_ev_baseline = ev_block["fixed_baseline"]
         charge_ub, discharge_ub = ev_block["charge_upper"], ev_block["discharge_upper"]
         variables.update(ev_block["extra_variables"])
+        if optional_credit_enabled(config):
+            attach_optional_credit(model, config, data, variables)
         charge_deviation = None
         minimum_departure = ev_mobility["minimum_departure_energy_gwh"]
         minimum_departure_positive_cells = int((minimum_departure > 0).sum())
         departure_soc_constraint_rows_added = minimum_departure_positive_cells * (1 + int(v2g_enabled))
         structural_audit["ev_shared_connection_power_contract"] = "disjoint_proportional_service_pools_v1"
         structural_audit["firm_capacity_credit_contract"] = "disabled_baseline_adequacy_retained"
+        if optional_credit_enabled(config):
+            structural_audit["firm_capacity_credit_contract"] = "author_2026_10_11_derated_credit_v1"
     else:
         ev_settings = settings["ev_v2g"]
         shiftable_fraction = float(settings["ev_v1g"]["shiftable_energy_fraction"])
@@ -1310,6 +1326,15 @@ def _attach_service_constrained_v4(
     )
 
     service_costs = resolved_service_costs(settings, service_data.service_costs)
+    directional = settings.get("thermal_activation_contract") == "directional_resource_cost_v1"
+    cost_details = {}
+    if directional:
+        legacy = service_data.legacy_bidirectional_activation is True or any("activation_cost_release_yuan_per_mwh" not in service_costs[c]
+                     or "activation_cost_precondition_yuan_per_mwh" not in service_costs[c]
+                     for c in ("heating", "cooling"))
+        structural_audit["legacy_bidirectional_activation"] = legacy
+    else:
+        legacy = True
     enablement_cost = gp.quicksum(
         (
             service_costs[service]["enablement_cost_yuan_per_kw_year"]
@@ -1326,6 +1351,12 @@ def _attach_service_constrained_v4(
         for component in ("heating", "cooling")
     )
     thermal_comfort_cost = gp.LinExpr(0.0)
+    if directional and not legacy:
+        for direction, terms in (("release", thermal_release_terms), ("precondition", thermal_precondition_terms)):
+            cost_details[f"flexible_load_v5_thermal_{direction}"] = gp.quicksum(
+                (1e-3 * service_costs[c][f"activation_cost_{direction}_yuan_per_mwh"] * terms[c]).sum()
+                for c in ("heating", "cooling"))
+        thermal_activation_cost = gp.quicksum(cost_details.values())
     if v5_formulation:
         ev_relocation_measure = v1g_relocated
     else:
@@ -1404,6 +1435,7 @@ def _attach_service_constrained_v4(
         costs=costs,
         day_slices=day_slices,
         structural_audit=structural_audit,
+        cost_details=cost_details,
     )
 
 

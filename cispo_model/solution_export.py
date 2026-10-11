@@ -8,6 +8,7 @@ from typing import Any
 
 from .flexible_portfolio import audit_ev_pools, is_optional_portfolio
 from .flexible_response import audit_thermal_response
+from .flexible_credit import enabled as optional_credit_enabled, audit_optional_credit
 
 import numpy as np
 import pandas as pd
@@ -1194,7 +1195,13 @@ def export_operational_solution(
             if not config.raw["flexible_load"][component]["enabled"]:
                 portfolio_qc[f"{component}_disabled_power_violation_gw"] = float(
                     np.abs(up).max() + np.abs(down).max() + np.abs(flexible_service_capacity[:, column]).max())
-        portfolio_qc["disabled_firm_credit_violation_gw"] = float(np.abs(firm_flexible_capacity_credit).max())
+        if optional_credit_enabled(config):
+            portfolio_qc.update(audit_optional_credit(
+                config.raw["flexible_load"], data, flexible_service_capacity,
+                portfolio_values["ev_enrolled_service_fraction"],
+                portfolio_values["ev_bidirectional_service_fraction"], firm_flexible_capacity_credit))
+        else:
+            portfolio_qc["disabled_firm_credit_violation_gw"] = float(np.abs(firm_flexible_capacity_credit).max())
     qc = {
         "optional_portfolio_qc": portfolio_qc,
         "generated_at": datetime.now().astimezone().isoformat(),

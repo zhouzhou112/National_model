@@ -1,0 +1,32 @@
+parameter_id,central_value,low_value,high_value,unit,evidence_status,source_ids,model_use
+thermal.heating.enrolled_fraction,0.25,0.10,0.40,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"LOCAL_ENVELOPE_V3;IEA_EBC_67;NDRC_DEMAND_2023",scales the accepted BAIT +/-1 C heating envelope
+thermal.cooling.enrolled_fraction,0.20,0.10,0.40,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"LOCAL_ENVELOPE_V3;IEA_EBC_67;SHANGHAI_HVAC_2025",scales the accepted BAIT +/-1 C cooling envelope
+thermal.heating.retention_per_hour,0.94,0.90,0.98,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"APPLIED_ENERGY_2016_TES;IEA_EBC_67",equivalent heating-service inventory retention
+thermal.cooling.retention_per_hour,0.92,0.85,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"ENBUILD_2019_AC;ECM_2023_COOL",equivalent cooling-service inventory retention
+thermal.heating.duration_hours,4,2,8,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"APPLIED_ENERGY_2017_HVAC;IEA_EBC_67",heating service energy-to-power upper duration
+thermal.cooling.duration_hours,5,2,10,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"APPLIED_ENERGY_2017_HVAC;ECM_2023_COOL",cooling service energy-to-power upper duration
+thermal.charge_efficiency,1.0,1.0,1.0,fraction,MODEL_CONVENTION,"LOCAL_ENVELOPE_V3",avoids double counting thermal loss already represented by retention
+thermal.discharge_efficiency,1.0,1.0,1.0,fraction,MODEL_CONVENTION,"LOCAL_ENVELOPE_V3",avoids double counting thermal loss already represented by retention
+thermal.enablement_cost,40,10,120,CNY_per_kW_year,ENGINEERING_ASSUMPTION,"IEA_DEMAND_FLEX;NDRC_DEMAND_2023",annual contracted control and aggregation cost
+thermal.activation_cost,300,100,1000,CNY_per_MWh,ENGINEERING_ASSUMPTION,"ANHUI_DR_2025;ZHEJIANG_HVAC_2025;NDRC_DEMAND_2023",thermal service activation and inconvenience cost
+ev.v1g_participation_fraction,0.15,0.10,0.25,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"BEIJING_ORDERLY_CHARGING_EVS34;BEIJING_PRICE_SUBSIDY_2026;NDRC_VGI_2023",share of immutable EV charging baseline enrolled in smart charging
+ev.v2g_participation_fraction,0.10,0.05,0.30,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"NDRC_VGI_2023;NDRC_VGI_PILOT_2025;NATURE_COMM_V2G_2025",share of EV charging baseline defining the provincial V2G power envelope
+ev.charge_efficiency,0.94,0.90,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"IEA_V2G_2026;NATURE_COMM_V2G_2025",grid-to-fleet service inventory efficiency
+ev.discharge_efficiency,0.94,0.90,0.97,fraction,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"IEA_V2G_2026;NATURE_COMM_V2G_2025",fleet service inventory-to-grid efficiency
+ev.charge_power_to_daily_average_ratio,2.0,1.5,3.0,ratio,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"POWER_CURVE_EV;NATURE_COMM_V2G_2025",smart-charge upper bound
+ev.service_inventory_duration_hours,24,12,36,hour,SCENARIO_ASSUMPTION_REQUIRES_SENSITIVITY,"POWER_CURVE_EV;NATURE_COMM_V2G_2025",aggregate schedulable fleet-service inventory duration
+ev.v1g_enablement_cost,60,20,180,CNY_per_kW_year,ENGINEERING_ASSUMPTION,"IEA_DEMAND_FLEX;NDRC_VGI_2023",annual metering control aggregation and availability cost
+ev.v1g_activation_cost,300,100,400,CNY_per_MWh,ENGINEERING_ASSUMPTION,"BEIJING_ORDERLY_CHARGING_EVS34;BEIJING_PRICE_SUBSIDY_2026",V1G participant inconvenience cost per MWh relocated once
+ev.v2g_availability_cost,60,20,180,CNY_per_kW_year,ENGINEERING_ASSUMPTION,"IEA_V2G_2026;NDRC_VGI_PILOT_2025",incremental annual V2G availability contract
+ev.v2g_infrastructure_cost,40,20,100,CNY_per_kW_year,ENGINEERING_DERIVATION,"IET_V2G_INCENTIVE_2026;IEA_V2G_2026",annualized bidirectional charger platform and maintenance cost
+ev.v2g_owner_compensation_cost,150,100,300,CNY_per_MWh,ENGINEERING_ASSUMPTION,"IET_V2G_INCENTIVE_2026;NDRC_VGI_PILOT_2025",incremental owner participation compensation excluding degradation
+ev.v2g_degradation_cost,400,250,500,CNY_per_MWh,ENGINEERING_DERIVATION,"IET_V2G_INCENTIVE_2026;APPLIED_ENERGY_V2G_DEGRADATION_2025",battery degradation cost per discharged MWh
+firm.heating.derating_fraction,0.60,0.30,0.80,fraction,ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC,"NREL_RA_2024;ESIG_CAPACITY_2023;MANTEGNA_RA_2024;CPUC_ELCC_2026;NDRC_DEMAND_2023;CHINA_DR_CAPACITY_2023",derated four-hour peak-window heating capacity credit
+firm.cooling.derating_fraction,0.60,0.30,0.80,fraction,ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC,"NREL_RA_2024;ESIG_CAPACITY_2023;MANTEGNA_RA_2024;CPUC_ELCC_2026;NDRC_DEMAND_2023;CHINA_DR_CAPACITY_2023",derated four-hour peak-window cooling capacity credit
+firm.ev_v1g.derating_fraction,0.50,0.20,0.70,fraction,ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC,"NREL_RA_2024;ESIG_CAPACITY_2023;MANTEGNA_RA_2024;CPUC_ELCC_2026;NDRC_VGI_2023;CHINA_DR_CAPACITY_2023",derated four-hour peak-window charging-reduction capacity credit
+firm.ev_v2g.derating_fraction,0.50,0.20,0.70,fraction,ENGINEERING_ASSUMPTION_NOT_CHINA_ELCC,"NREL_RA_2024;ESIG_CAPACITY_2023;MANTEGNA_RA_2024;CPUC_ELCC_2026;NATURE_COMM_V2G_2025;CHINA_DR_CAPACITY_2023",derated four-hour peak-window V2G discharge capacity credit
+firm.ev_v2g.required_event_duration,4,2,6,hour,ENGINEERING_ASSUMPTION,"NREL_RA_2024;ESIG_CAPACITY_2023;MANTEGNA_RA_2024;NATURE_COMM_V2G_2025",continuous peak-window duration supporting firm flexibility credit
+ev.v2g_national_cap_2030,10,5,10,GW,POLICY_SCALE_ANCHORED_SCENARIO_CAP,"NDRC_VGI_2023",scenario upper bound anchored to the national 2030 ten-gigawatt-scale V2G goal
+ev.v2g_national_cap_2040,20,10,30,GW,SCENARIO_EXTRAPOLATION,"NDRC_VGI_2023;NDRC_VGI_PILOT_2025",post-2030 national contracted V2G power cap
+ev.v2g_national_cap_2050,30,15,50,GW,SCENARIO_EXTRAPOLATION,"NDRC_VGI_2023;NDRC_VGI_PILOT_2025",post-2030 national contracted V2G power cap
+ev.v2g_national_cap_2060,40,20,70,GW,SCENARIO_EXTRAPOLATION,"NDRC_VGI_2023;NDRC_VGI_PILOT_2025",post-2030 national contracted V2G power cap

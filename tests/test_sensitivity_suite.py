@@ -41,6 +41,8 @@ class SensitivitySuiteTests(unittest.TestCase):
                 "case1_thermal_v5",
                 "case2_ev_v5",
                 "case3_thermal_ev_v5",
+                "case3_thermal_ev_v5_nocredit",
+                "case3_thermal_ev_v5_compensation_basis",
                 "flex_integrated_v5_central",
                 "flexible_load_comfort_v3_v2g_5pct",
                 "hydro_aggregate_flex_v1",

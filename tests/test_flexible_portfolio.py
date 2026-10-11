@@ -48,7 +48,7 @@ def fixture(hours=24, provinces=2):
 
 class PortfolioTests(unittest.TestCase):
     def build(self, case='case3_thermal_ev_v5', hours=24, data=None, mutate=None, start=0):
-        config = load_model_config(scenario_path=f'config/scenarios/{case}.json')
+        config = load_model_config(scenario_path=('config/scenarios/legacy/case3_thermal_ev_v5.json' if case == 'case3_thermal_ev_v5' else f'config/scenarios/{case}.json'))
         if mutate:
             mutate(config.raw)
             config.validate()
@@ -172,7 +172,7 @@ class PortfolioTests(unittest.TestCase):
         from scripts.run_cispo_2030_full_year import (
             require_canonical_direct_nonbasic_profiles, cloud_full_year_profile_role,
             CLOUD_FINAL_STAGE_A_PROFILE_IDS, PORTFOLIO_STAGE_A_PROFILE_ID)
-        cfg = load_model_config(scenario_path='config/scenarios/case3_thermal_ev_v5.json',
+        cfg = load_model_config(scenario_path='config/scenarios/legacy/case3_thermal_ev_v5.json',
             solver_path='config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json',
             formulation_path='config/formulation_profiles/annual_capacity_link_rows_8192_v1.json')
         require_canonical_direct_nonbasic_profiles(cfg)

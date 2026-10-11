@@ -29,8 +29,8 @@ from cispo_model.solution_export import _value
 CASES = ('case1_thermal_v5', 'case2_ev_v5', 'case3_thermal_ev_v5')
 
 
-def read_service_inputs(year: int):
-    config = load_model_config(scenario_path=ROOT/'config/scenarios/case3_thermal_ev_v5.json').for_planning_year(year)
+def read_service_inputs(year: int, config=None):
+    config = config or load_model_config(scenario_path=ROOT/'config/scenarios/legacy/case3_thermal_ev_v5.json').for_planning_year(year)
     provinces = pd.read_csv(DATA_ROOT/'sets/provinces.csv').sort_values('province_code').reset_index(drop=True)
     frames = [frame.loc[frame.year.eq(year)] for frame in pd.read_csv(
         DATA_ROOT/'load/hourly_load_2025_2060.csv.gz', chunksize=100000)]
@@ -112,11 +112,11 @@ def main():
     if not 0 < args.time_limit <= 3600 or not 1 <= args.threads <= 16:
         parser.error('Local per-case budget must be <=3600s and 1..16 threads')
     args.output.mkdir(parents=True, exist_ok=False)
-    data = select_provinces(read_service_inputs(args.year), args.provinces)
     reports = []
     for case in args.cases:
-        print(f'Building {case}: {len(data.provinces)} provinces x {args.hours} hours', flush=True)
         config = load_model_config(scenario_path=ROOT/f'config/scenarios/{case}.json').for_planning_year(args.year)
+        data = select_provinces(read_service_inputs(args.year, config), args.provinces)
+        print(f'Building {case}: {len(data.provinces)} provinces x {args.hours} hours', flush=True)
         config.raw['numerics'].update(method=2, crossover=0, solution_target=1,
             barrier_convergence_tolerance=args.bar_tol, aggregate=1)
         before = time.perf_counter()

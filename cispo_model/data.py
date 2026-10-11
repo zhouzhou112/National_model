@@ -274,6 +274,7 @@ class FlexibleLoadV4Data:
     ev_mobility: dict[str, np.ndarray]
     service_costs: dict[str, dict[str, np.ndarray]]
     contract_version: str = "v4"
+    legacy_bidirectional_activation: bool | None = None
 
 
 @dataclass
@@ -972,6 +973,12 @@ def _load_flexible_load_v4_data(
     )
     service_columns = base_service_columns + optional_service_columns
     service_cost_raw = _read(str(files["enablement_cost_file"]))
+    directional_columns = ("activation_cost_release_yuan_per_mwh", "activation_cost_precondition_yuan_per_mwh")
+    legacy_bidirectional = not all(c in service_cost_raw for c in directional_columns)
+    service_columns += directional_columns
+    if legacy_bidirectional:
+        for column in directional_columns:
+            service_cost_raw[column] = service_cost_raw["activation_cost_yuan_per_mwh"]
     require_columns(
         service_cost_raw,
         ["province_code", "year", "service", *base_service_columns],
@@ -1012,6 +1019,7 @@ def _load_flexible_load_v4_data(
         ev_availability=ev_availability,
         ev_mobility=ev_mobility,
         service_costs=service_costs,
+        legacy_bidirectional_activation=legacy_bidirectional,
         contract_version=contract_version,
     )
 

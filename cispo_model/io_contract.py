@@ -637,6 +637,16 @@ def write_output_catalog(output_dir: str | Path) -> tuple[Path, Path]:
                         "description": column.replace("_", " "),
                     }
                 )
+            if path.name == "cost_components.csv" and "cost_component" in columns:
+                costs = pd.read_csv(path)
+                for key in ("flexible_load_v5_thermal_release", "flexible_load_v5_thermal_precondition"):
+                    name = "operating_detail_" + key
+                    if costs.cost_component.eq(name).any():
+                        dictionary_rows.append({
+                            "file_path": relative, "field": name, "storage": "row_key",
+                            "dtype": "float", "shape": "scalar", "dimensions": "run",
+                            "unit": "million CNY", "description": "Non-additive directional component of thermal activation cost",
+                        })
         elif path.suffix.lower() == ".npz":
             file_format = "npz"
             with np.load(path, allow_pickle=False) as archive:
