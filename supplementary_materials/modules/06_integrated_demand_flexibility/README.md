@@ -1,5 +1,13 @@
 # Module 06: integrated demand flexibility
 
+## 2026-10-11 参数修订
+
+本轮已将作者需求侧柔性修订并入中科大在线总稿的第 3.3、6.9、6.10、7.2 节，在线 pdfLaTeX 编译及引用、标签、编号、变化页版式核验通过。当前论文参数以[总稿镜像](../LATEX_manuscript/Article_Title__1_/Supplement_material.tex)及其 `06_model_formulation.tex`、`07_technoeconomic_parameters.tex`、`02_sp.bib` 为准；完整证据见[本轮审查报告](../../reviews/si_flexibility_revision_20261011/REVIEW_ZH.md)。
+
+中央路径的供热/制冷参与率分别为 0.25/0.40/0.50/0.60 和 0.20/0.30/0.40/0.50；EV 合格池为 0.20/0.30/0.40/0.50，全体 EV 中 V2G 上限份额为 0.10/0.15/0.20/0.25，全国 V2G 功率上限为 10/60/120/200 GW（2030/2040/2050/2060）。真实资源成本与政策补偿支付分开，热服务仅对释放方向计活动成本，并采用四小时窗口的折减容量信用。具体成本、折减系数及敏感性口径见新 Tables S13、S20。
+
+**本条记录论文文档修订，不代表模型代码、注册表或求解结果已经按新参数验收。** 参数落地和重算由独立任务处理。本目录既有独立 `.tex`、手工参考文献、生成表和 PDF 保留为历史交付，本轮未重新生成，不能继续作为 2026-10-11 总稿的最新参数来源；下文旧生成/编译命令仅复现原交付，不能用来覆盖在线总稿。最新交付 PDF 为[在线编译下载副本](../../output/pdf/Supplement_material_flexibility_revision_20261011.pdf)。
+
 本目录记录 `flex_integrated_v5_central` 的论文补充材料、参考文献与可复现性边界。
 
 ## 文件

@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "original_section": {
+    "file": "Supplement_material.tex",
+    "first_line": 1883,
+    "last_line": 1953
+  },
+  "protected_equations": [
+    "eq:m-thermal-flex",
+    "eq:m-ev-contract",
+    "eq:m-ev-pools",
+    "eq:m-ev-load",
+    "eq:m-effective-load"
+  ],
+  "new_bib_keys": [
+    "li2026megacity",
+    "zhang2026chinatimes",
+    "xu2023evbatteries",
+    "han2026v2gwta",
+    "jia2026v2gtransport",
+    "roth2024heatpumps",
+    "odenweller2025dsm",
+    "brattle2023vpp",
+    "lbnl2015autodr",
+    "blonz2021thermostat",
+    "pjm2025elcc",
+    "e3spp2025",
+    "neso2025derating",
+    "ndrc2023dsm",
+    "ndrc2025vpp",
+    "ndrcnea2026plan",
+    "ndrc2023capacityprice",
+    "ndrc2026capacity114",
+    "anhui2025dr",
+    "jiangsu2024dr",
+    "guangdong2025v2gtariff",
+    "shanghai2025ac",
+    "bnef2025battery",
+    "shanghai2026ac",
+    "desnz2025clf"
+  ],
+  "aliases": {
+    "wei2025dsfr": "wei2025demandflex",
+    "chen2021joule": "chen2021carbonneutral"
+  },
+  "verify_entries": [
+    "zhang2026chinatimes",
+    "han2026v2gwta",
+    "jia2026v2gtransport",
+    "roth2024heatpumps",
+    "odenweller2025dsm",
+    "blonz2021thermostat",
+    "e3spp2025",
+    "neso2025derating",
+    "ndrcnea2026plan",
+    "ndrc2026capacity114",
+    "jiangsu2024dr",
+    "guangdong2025v2gtariff",
+    "shanghai2025ac"
+  ],
+  "unresolved_verify": [
+    "neso2025derating"
+  ],
+  "labels": 157,
+  "cited_keys": 121,
+  "bib_keys": 133,
+  "inputs": {
+    "CODEX_PROMPT_SI_flexibility_integration.md": "f4f860d0935ce487510db083deeb8c92d35e3a3bbe03ee772127e5a318a09f65",
+    "S3_3_demand_flexibility_revised.tex": "6cfe3c9772eab94937e499b1faa457eedfc9da12077082e7f26c914c3b4d952d",
+    "S6_S7_flexibility_updates.tex": "d0351549e181920e21ab531903076d0140195cde7efc047a0b2c82ce7ba18492",
+    "flexibility_additions.bib": "526e27857349f5b3832f34973503860127d6aeaeed2a969f68ffb90cf861ccb0"
+  },
+  "targets": {
+    "Supplement_material.tex": "4c68d3367b108398a37110b923c54c24555f87695dda0cbbdae366bbd9bd9679",
+    "06_model_formulation.tex": "f890dcf2acf0c54232cda920adebcf46b9f0952c30002f559fd7045aa174d46c",
+    "07_technoeconomic_parameters.tex": "c30afd90fb73c9b28234603f423e6095fd1b4beb42b3a0bb80f47a9acb01fbb3",
+    "02_sp.bib": "0d11ef431d9daa57a398c88f1a99ecc9a980be8b73de0a52df9b16c24c464740"
+  }
+}

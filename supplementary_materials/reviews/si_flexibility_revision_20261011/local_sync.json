@@ -1,0 +1,44 @@
+[
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/Supplement_material.tex",
+    "before_sha256": "21c9bcf53e2b03b619b8c02b7eb70a4d34a0c7af7e999a7ed199fb8694ce775b",
+    "after_sha256": "4c68d3367b108398a37110b923c54c24555f87695dda0cbbdae366bbd9bd9679",
+    "online_text_changed": true
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/06_model_formulation.tex",
+    "before_sha256": null,
+    "after_sha256": "f890dcf2acf0c54232cda920adebcf46b9f0952c30002f559fd7045aa174d46c",
+    "online_text_changed": true
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/07_technoeconomic_parameters.tex",
+    "before_sha256": null,
+    "after_sha256": "c30afd90fb73c9b28234603f423e6095fd1b4beb42b3a0bb80f47a9acb01fbb3",
+    "online_text_changed": true
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/02_sp.bib",
+    "before_sha256": "fbd8f1d39d59f83b6a51c0cac68d884b47066016102b8a6de596295b4c4459cd",
+    "after_sha256": "0d11ef431d9daa57a398c88f1a99ecc9a980be8b73de0a52df9b16c24c464740",
+    "online_text_changed": true
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/04_grid_connection.tex",
+    "before_sha256": null,
+    "after_sha256": "87543e37f6ed6916e6698b2a312b5c8b16a160093f4364fe91adb55ad3c73a2f",
+    "online_text_changed": false
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/05_other_generation.tex",
+    "before_sha256": null,
+    "after_sha256": "3669b104496e9a8332e1c7ab072d8c153067ed21c4b2505bb1af82fcd87e87db",
+    "online_text_changed": false
+  },
+  {
+    "path": "supplementary_materials/modules/LATEX_manuscript/Article_Title__1_/supplement-nature.bst",
+    "before_sha256": null,
+    "after_sha256": "474e69ab93041369c4d906c7f062440e33757906ae7ba2c55434ab9d00aaffcc",
+    "online_text_changed": false
+  }
+]

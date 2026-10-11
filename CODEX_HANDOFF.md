@@ -14,6 +14,8 @@ This is the repository's single handoff document for work continued across Codex
 
 - 2026-10-11 柔性参数落地验收：实现提交 `cad25a5`（GitHub工作分支已同步），419项回归通过/Windows跳过1，全年度输入与24h新情景/零签约/Base QC及manifest均PASS；Base数据/指纹不变，legacy服务fixture MPS字节与解向量一致。最终价格接受者用Presolve=0、Barrier/Cross0/1e-8：2030供暖2.6523/制冷2.8863/V1G21.7826GW、31省alpha≈1、V2G≈0，最大物理残差8.13e-9；成本单因素冷热5.5386/V1G16.3369GW，只改参与率仍零；2060配2030价格代理冷热19.0049/V1G191.1421GW、V2G≈0，QC1.78e-8。冷热5.54GW低于预期10–20GW，如实保留，不改定案。初试Presolve后原单位残差/加严超时/关闭缩放数值失败均保留，本机单纯形辅助诊断在取得合格Barrier解后停止。最终24h源码bundle及三个新成本价格试验源码/输入SHA与当前一致。报告 `supplementary_materials/reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md`。没有服务器/4844528操作或生产Stage B；下一步仅在另行授权的Base-frozen中检验容量信用收益，不据此启动全年。
 
+- 2026-10-11 补充材料柔性参数整合完成（仅文档）：在线 USTC 项目 `6a26c6aedd9bc0323aea31d8` 的 S3.3/6.9/6.10/7.2 与实际 `02_sp.bib` 已定点同步；run6 在线 pdfLaTeX 编译 97 页，零未定义引用/重复标签/编译错误/溢出，表 S1–S26 连续，四新表正文均引用。原 S50–S54 式体逐字保留（自动顺延 S51–S55）。13 项 VERIFY 已闭合12项，NESO2025保留note、正文采用可核实2024官方口径。报告 `supplementary_materials/reviews/si_flexibility_revision_20261011/REVIEW_ZH.md`；最终 PDF SHA `d4f8a93198b4466f750ed3de573dfcf60e5612ac070fb46a2283c29cdfc96c17`。本地总稿/分章/bib及Module06说明已同步；Git基准 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本轮不改模型/配置/数据、不求解、不commit/push，不核验或操作模型服务器；另一个参数任务的工作区改动保留。下一步由参数落地任务验收代码与稿件一致性并统一审查提交，NESO直接报告仍待补证。
+
 - 2026-10-11英国15:43（北京22:43）原2050/4844528 RUNNING/m4cm1802、11天0小时33分42秒，iter682/48线程沿用。PInf0.00118/Compl0.000338/目标差26080.73，较670下降36.56%/37.52%/37.44%；DInf4.39e-6较670上升78.46%，679–682连续4轮上升，为678的1.969倍，低于642峰值但反弹尚未恢复，不能沿用上次连续下降描述。其他三项逐轮下降，近期拟合每轮3.56%/3.65%/3.65%，较前窗放缓；暂无同步大跃升/显式警告/终态，stderr空。22.3867分钟每轮，RSS420.09GiB/峰685.98GiB；683条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T144319Z/`。历史主指标约9–15小时类比未覆盖新对偶反弹，不将此前半天至一天作倒计时；2040 PInf匹配终轮不等于整体结束。Git基准e577e13；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读关注对偶恢复/终态，按作者最新规则验收。
 
 - 2026-10-11英国11:30（北京18:30）原2050/4844528 RUNNING/m4cm1802、10天20小时21分1秒，iter670/48线程沿用。PInf0.00186/DInf2.46e-6/Compl0.000541/目标差41691.32，较642下降67.65%/63.01%/69.94%/69.91%。DInf646/651/654小反弹后654→670连续16轮下降，仍为636反弹前5.655倍；近10轮四项逐轮下降，无新大跃升/显式警告/终态，stderr空。拟合每轮下降3.98%/3.60%/4.29%/4.28%，PInf/Compl/目标差较前窗加快。23.46分钟每轮，RSS423.31GiB/峰685.98GiB；671条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T103038Z/`。历史对应2030第309–321/2040第553–604轮，余10.56–15.25/0.39–20.33小时，仅条件性半天至一天安排，不以2040 PInf单项判仅余1轮，不保证/不含验收。Git基准78319c4；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读观察恢复/终态，验收按最新作者规则。
@@ -9633,6 +9635,18 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 - 证据：git_sync_20261006/CODE_CHANGE_PROVENANCE_ZH.md、code_provenance.json、production_to_local.patch、trace_deployed_code.py；时间线以dated handoff/review/冻结SHA为依据，不用mtime或统一Git作者字段伪造编辑时间。已披露固定机C模块中途修复、B元数据差异及缺少同期加载模块SHA的局限。
 - 变更仅上述审计产物、GIT_SYNC_POLICY_ZH.md和本交接。命令：python supplementary_materials/reviews/git_sync_20261006/trace_deployed_code.py；git ls-remote/fetch；逐项diff和AST/JSON校验。351项受测源SHA仍等于最终412回归，不重复测试/求解；不改服务器目录、作业4844528或自动化。
 - 后续约定：小批及时提交；新实验使用已提交已测源码，commit+文件SHA+有效配置/输入/继承状态共同定位，新修复建新release；显式V9参数复现云任务，不把默认optimization_2030.json或Git相同当作云运行模型相同。当前生产V9不自动升级A/B/C或factor；本轮审计安全范围收尾同步GitHub，最终提交号见Git实际历史。
+
+
+### 2026-10-11 16:51 UTC：2026-10-11 补充材料柔性参数整合完成
+
+- Git 基准 `3100bb325b691d8d398c680dcfd879b80f8f4026` + 并行参数任务已有/持续更新的 dirty；本轮不 commit/push，不将其他窗口源码变化归为本轮成果。
+- 输入：`claude_workspace/latex/` 中任务书、S3.3稿、S6/S7补丁及bib，原样备份/SHA见本轮review的 `author_inputs/` 和 `preflight.json`；线上完整59文件新快照为合并基线，不回推旧本地目录。
+- 改动：在线四目标 `Supplement_material.tex`、`06_model_formulation.tex`、`07_technoeconomic_parameters.tex`、`02_sp.bib`；对应本地镜像及缺失依赖文本、Module06两份README、本轮review证据与本交接。明确变更表/逐文件diff见 `supplementary_materials/reviews/si_flexibility_revision_20261011/REVIEW_ZH.md`。
+- 命令：`olcli pull` 隔离快照；`python reviews/si_flexibility_revision_20261011/prepare_revision.py`；`node reviews/si_flexibility_revision_20261011/work/publish.mjs run5/readback run6`；bundled Python 执行 `validate_revision.py --run run6`、`finalize_revision.py`。在线root/compiler未切换，4目标有变才上传。
+- 输出/证据：run6在线编译97页/43425528bytes；交付 `supplementary_materials/output/pdf/Supplement_material_flexibility_revision_20261011.pdf`，SHA `d4f8a93198b4466f750ed3de573dfcf60e5612ac070fb46a2283c29cdfc96c17`；run6的log/blg/aux/bbl、最终readback、validation/visual_review/local_sync、manuscript_changes.diff。21文本回读核验，17非目标文本与55非目标实体未变；非目标二进制仅初始下载哈希，未宣称最终逐字复核。
+- 验证：157唯一label、133bib键/121引用键，未定义引用/引文及重复标签/键为0；表S1–S26连续，四新表有正文引用；S6除授权成本/充裕度外40式原样，S50–S54与S3.3有效负荷式逐字保留。39–97页接触表及变化表/公式放大审查通过，仅两个原字号替代警告。
+- 差异/未决：实际原服务表S17而非任务书S16，保留tab:te-flex后为S20；修正rho分母说明和引用元数据，不改变物理公式。12/13 VERIFY闭合，NESO2025直接报告/因子待核，正文改用DESNZ可证2024口径；科学参数/不约束上限/经济性沿用作者稿，未重跑模型。
+- 下一步：作者审读S11–S14/S20和容量信用；独立参数落地任务完成实现/注册表/结果验收后统一明确清单提交。当前模型服务器状态沿用各自已验历史条目，本轮未核验或触碰任何作业、Stage B、部署、监听。
 
 ## 2026-10-11 柔性参数落地：代码与短窗验证阶段
 

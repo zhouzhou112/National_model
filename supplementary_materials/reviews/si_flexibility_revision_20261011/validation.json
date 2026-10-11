@@ -1,0 +1,317 @@
+{
+  "status": "PASS",
+  "run": "run6",
+  "pages": 97,
+  "pdf_sha256": "d4f8a93198b4466f750ed3de573dfcf60e5612ac070fb46a2283c29cdfc96c17",
+  "pdf_bytes": 43425528,
+  "targets": [
+    "Supplement_material.tex",
+    "06_model_formulation.tex",
+    "07_technoeconomic_parameters.tex",
+    "02_sp.bib"
+  ],
+  "target_hashes": {
+    "Supplement_material.tex": "4c68d3367b108398a37110b923c54c24555f87695dda0cbbdae366bbd9bd9679",
+    "06_model_formulation.tex": "f890dcf2acf0c54232cda920adebcf46b9f0952c30002f559fd7045aa174d46c",
+    "07_technoeconomic_parameters.tex": "c30afd90fb73c9b28234603f423e6095fd1b4beb42b3a0bb80f47a9acb01fbb3",
+    "02_sp.bib": "0d11ef431d9daa57a398c88f1a99ecc9a980be8b73de0a52df9b16c24c464740"
+  },
+  "unchanged_non_target_texts": 17,
+  "unchanged_non_target_entities": 55,
+  "non_target_binary_contents_rechecked": false,
+  "labels": 157,
+  "missing_refs": [],
+  "missing_citations": [],
+  "duplicate_labels": [],
+  "bib_keys": 133,
+  "cited_keys": 121,
+  "original_bib_prefix_unchanged": true,
+  "unchanged_model_equations_except_cost_adequacy": 40,
+  "protected_S50_S54": true,
+  "effective_load_equation_unchanged": true,
+  "table_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "positions": {
+    "tab:flex-policy-anchors": {
+      "number": "S11",
+      "page": 43,
+      "pdf_mention_pages": [
+        40,
+        43
+      ],
+      "pdf_mention_count": 2
+    },
+    "tab:flex-literature": {
+      "number": "S12",
+      "page": 44,
+      "pdf_mention_pages": [
+        41,
+        44
+      ],
+      "pdf_mention_count": 2
+    },
+    "tab:flexibility-parameters": {
+      "number": "S13",
+      "page": 45,
+      "pdf_mention_pages": [
+        41,
+        45,
+        76
+      ],
+      "pdf_mention_count": 3
+    },
+    "tab:flex-resource-scale": {
+      "number": "S14",
+      "page": 46,
+      "pdf_mention_pages": [
+        42,
+        46
+      ],
+      "pdf_mention_count": 2
+    },
+    "tab:te-flex": {
+      "number": "S20",
+      "page": 80,
+      "pdf_mention_pages": [
+        80
+      ],
+      "pdf_mention_count": 2
+    },
+    "sec:demand_flexibility_representation": {
+      "number": "3.3",
+      "page": 39
+    },
+    "eq:effective_load": {
+      "number": "S24",
+      "page": 47
+    },
+    "sec:flex_formulation": {
+      "number": "6.9",
+      "page": 74
+    },
+    "eq:m-thermal-flex": {
+      "number": "S51",
+      "page": 74
+    },
+    "eq:m-ev-contract": {
+      "number": "S52",
+      "page": 74
+    },
+    "eq:m-ev-pools": {
+      "number": "S53",
+      "page": 75
+    },
+    "eq:m-ev-load": {
+      "number": "S54",
+      "page": 75
+    },
+    "eq:m-effective-load": {
+      "number": "S55",
+      "page": 75
+    },
+    "eq:m-flexcost": {
+      "number": "S56",
+      "page": 75
+    },
+    "eq:m-adequacy": {
+      "number": "S58",
+      "page": 76
+    },
+    "flex:credit_th": {
+      "number": "S59",
+      "page": 76
+    },
+    "flex:credit_v1g": {
+      "number": "S60",
+      "page": 76
+    },
+    "flex:credit_v2g": {
+      "number": "S61",
+      "page": 76
+    },
+    "sec:scenario_parameters": {
+      "number": "7.2",
+      "page": 79
+    }
+  },
+  "warnings": [
+    "LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <16> not available",
+    "LaTeX Font Warning: Size substitutions with differences"
+  ],
+  "latex_errors": [],
+  "legacy_matches": [
+    {
+      "line": 113,
+      "text": "          \\orgaddress{\\city{Hefei}, \\postcode{230026}, \\country{China}}}"
+    },
+    {
+      "line": 1705,
+      "text": "Zhuo et~al.\\ \\citep{zhuo2022supplycost}, NDC/BAU & 9.540 & 11.047 & 12.300 & -- & ST 21 \\\\"
+    },
+    {
+      "line": 1752,
+      "text": "Guangxi & 1.031 & 1.145 & 1.214 & 1.257 & 1.283 & 1.300 & 1.310 & 1.316 \\\\"
+    },
+    {
+      "line": 1822,
+      "text": "Inner Mongolia & 0.300 & 1.449 & 1.883 & 4.074 & 5.434 & 6.955 & 7.783 & 8.660 \\\\"
+    },
+    {
+      "line": 1915,
+      "text": "study did so (300~CNY~MWh$^{-1}$ per direction); under the resulting cost the"
+    },
+    {
+      "line": 2011,
+      "text": "sensitivity uses 300/300/150+400 for thermal, V1G, and V2G respectively."
+    },
+    {
+      "line": 2033,
+      "text": "against a no-credit case (\\texttt{baseline\\_peak\\_v1}). Flexible demand is not"
+    },
+    {
+      "line": 2136,
+      "text": "EV eligible pool $f_y$ & 0.20/0.30/0.40/0.50 & 0.15--0.70 & fraction & P/L & 50~GW 2030 plan; PyPSA-Eur 0.5; China TIMES 20--50\\% \\\\"
+    },
+    {
+      "line": 2137,
+      "text": "V2G participation $\\rho_y f_y$ & 0.10/0.15/0.20/0.25 & 0.05--0.50 & fraction & S & Surveys 12--43\\%; active class two thirds \\\\"
+    },
+    {
+      "line": 2138,
+      "text": "National V2G ceiling & 10/60/120/200 & 5--300 & GW & P\\newline(2030) & Policy anchor; later values non-binding \\\\"
+    },
+    {
+      "line": 2153,
+      "text": "300~CNY~MWh$^{-1}$ per direction for thermal services, 300 for V1G relocation,"
+    },
+    {
+      "line": 2154,
+      "text": "150 plus 400 for V2G, fixed participation of 0.25/0.20/0.15/0.10, and no"
+    },
+    {
+      "line": 2212,
+      "text": "Independent Guangdong and Hainan dispatch data are compared with reconstructed 2024 daily energy (Figure~\\ref{fig:external-validation}). Correlations are 0.865 and 0.851, and peak errors are 4.15\\% and 4.05\\%, respectively. Mean absolute percentage errors (MAPE) of 12.65\\% and 17.22\\% indicate remaining magnitude uncertainty. These observations are not used to recalibrate other provinces."
+    },
+    {
+      "line": 2236,
+      "text": "Guangdong dispatch-load comparison & 2024 validation-only & coverage $=0.984$; MAPE $=12.65\\%$; $r=0.865$; peak error $=4.15\\%$ & PASS WITH WARNING \\\\"
+    },
+    {
+      "line": 2418,
+      "text": "The Global Nuclear Power Tracker supplies operating capacity and projects under construction, in pre-construction, or announced \\citep{gem2026nuclear}. Reported commissioning dates are used where available; otherwise, availability dates are assigned by project status. This prescribed pipeline yields national capacity floors of 106.8, 146.3, 185.8, and 185.8~GW in 2030, 2040, 2050, and 2060. Announced projects are therefore scenario commitments rather than assured completions. Separate provincial development ceilings sum to 110, 205, 300, and 300~GW. The 2030 ceiling uses a national planning benchmark \\citep{nea2026nuclearbenchmark}; the longer-term ceilings are study assumptions rather than binding policy targets. Nuclear operation retains minimum-output and ramping restrictions, with a 60-year lifetime for new investment."
+    },
+    {
+      "line": 2857,
+      "text": "Here, $\\rho=\\rho_y=q_y/f_y$, where $q_y=0.10/0.15/0.20/0.25$ in 2030/2040/2050/2060, expresses the V2G envelope relative to the same eligible service population; thus $q_y=\\rho_y f_y$ and $\\rho_y=0.50$ in the central pathway. The V1G-only and V2G shares are $\\alpha_p-\\beta_p$ and $\\beta_p$, respectively. Each has its own inventory; energy cannot move between pools. Suppressing $p$,"
+    },
+    {
+      "line": 2956,
+      "text": "(\\texttt{baseline\\_peak\\_v1}) is reported as a sensitivity."
+    },
+    {
+      "line": 3056,
+      "text": "Reference ($-550$ Mt) & 4000 & 1300 & $-100$ & $-550$ \\\\"
+    },
+    {
+      "line": 3096,
+      "text": "V2G & 0.10/\\allowbreak 0.15/\\allowbreak 0.20/\\allowbreak 0.25 & 4 & 1.00 & availability 50/\\allowbreak 40/\\allowbreak 30/\\allowbreak 30 + infrastructure 40/\\allowbreak 30/\\allowbreak 20/\\allowbreak 15 & owner 150/\\allowbreak 120/\\allowbreak 100/\\allowbreak 100 + degradation 150/\\allowbreak 110/\\allowbreak 80/\\allowbreak 60 \\\\"
+    },
+    {
+      "line": 3106,
+      "text": "compensation-basis sensitivity (300/\\allowbreak 300/\\allowbreak 150+400, fixed participation, no credit)"
+    },
+    {
+      "line": 3259,
+      "text": "AC & 750 & 148.59 & 3001.97 \\\\"
+    }
+  ],
+  "rendered_pages": [
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97
+  ],
+  "visual_review": "PASS",
+  "visual_review_evidence": "visual_review.json"
+}
