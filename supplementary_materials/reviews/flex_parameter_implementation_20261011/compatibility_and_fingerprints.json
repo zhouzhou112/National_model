@@ -1,0 +1,49 @@
+{
+  "protected_original_files_unchanged": {
+    "data\\flexibility\\ev_availability_hourly_v5.csv.gz": true,
+    "data\\flexibility\\ev_mobility_hourly_v5.csv.gz": true,
+    "data\\flexibility\\flexible_load_v5.manifest.json": true,
+    "data\\flexibility\\flex_enablement_cost_v5.csv": true,
+    "data\\flexibility\\thermal_hourly_envelope_v5.csv.gz": true,
+    "data\\flexibility\\thermal_parameters_by_province_v5.csv": true,
+    "data\\load\\flexible_load_envelope_v3.csv.gz": true,
+    "data\\load\\hourly_load_2025_2060.csv.gz": true,
+    "data\\load\\hourly_load_2030_2060.csv.gz": true,
+    "config\\optimization_numeric_dac_by_year_v9.json": true
+  },
+  "base": {
+    "resolved_config_equal": true,
+    "old_scientific_sha256": "e18a7bcb9fe4cccc2790497c611bc8d8b9cf1019d3e82695ab6465b9fd22acf0",
+    "current_scientific_sha256": "e18a7bcb9fe4cccc2790497c611bc8d8b9cf1019d3e82695ab6465b9fd22acf0"
+  },
+  "base_v9": {
+    "resolved_config_equal": true,
+    "old_scientific_sha256": "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0",
+    "current_scientific_sha256": "937c3c6f4540dc2d217bd17eda44a4de0de76b41414e32d491d4283515b0d4f0"
+  },
+  "legacy_case3": {
+    "resolved_config_equal": true,
+    "old_scientific_sha256": "731452f6ccbeaaccb717581d3be59905cd9b998a49813e72de792c819dbe4f65",
+    "current_scientific_sha256": "731452f6ccbeaaccb717581d3be59905cd9b998a49813e72de792c819dbe4f65",
+    "solution_exact_equal": true,
+    "MPS_byte_equal": true
+  },
+  "case3_thermal_ev_v5": {
+    "2030": "324d98cc7f4154e21fdcfcdb48768016c53ad59ffd9a7d513286e04c8a9739a1",
+    "2040": "19bc67296054df8d55bb53618a16dd92f94f01cbf3aa0f731cac55333d945a83",
+    "2050": "ffbde5e32f5d3158c3ae157344357c1b840092575eb52cbe6a510f4a7410cfda",
+    "2060": "b9e8a4a7602e2e4115a85146e738adc4118499a23a604168075c7412f7b17e86"
+  },
+  "case3_thermal_ev_v5_nocredit": {
+    "2030": "0ae7f2cf5a910cd287572ddd9c3570a55d41be17fef7953319021775345548da",
+    "2040": "0e5dc41372ff6e1ab75ad32aebc6cef6dfa1fa0531321ab7b90e0bbf158900d9",
+    "2050": "0215045ecabb8e59f2761d7876e765829fc5501f9d77d9e198521dfeb011ca14",
+    "2060": "e0058c175b4e7065e130431bd3d7d6a662b99b3c0961c0ac92e630547defb066"
+  },
+  "case3_thermal_ev_v5_compensation_basis": {
+    "2030": "1af70972de55982d11cc86291dca9681244fbaefbeec49e1d1db86fdcae381e7",
+    "2040": "f91590a90ef3a0e1c0be3a48e95b583a82c427064b3e66ba9c3e86172964c99f",
+    "2050": "6ea824556066ca54f0167c8a525a25c4055fe75292664f48a7e89c07531b6cb7",
+    "2060": "226ba11dc9ac3ae9b96451da9ad0e735e79f275c75232c86914d0760efcdb6f6"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "build24": {
+    "build_report.json": {
+      "sha256": "4b2bf3ea7c30560186e163bd034f33494afd50a1e1874110d6c3889059e16ac3"
+    }
+  },
+  "solve24_verified": {
+    "build_report.json": {
+      "sha256": "55c6c248d98e578e40653ab8fa455cde2d151251321a2db305acf7184a88f333"
+    },
+    "solution_qc.json": {
+      "sha256": "1e16b0f6a0d20938022f75faa64b5df108bfc3b9f08d5e78f06764f504b9a60d",
+      "status": "PASS",
+      "optional_portfolio_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 5.551115123125783e-17,
+        "v1g_transition_residual_gwh": 4.440892098500626e-16,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 4.440892098500626e-16,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 8.326672684688674e-17,
+        "heating_shared_contract_violation_gw": 0.0,
+        "cooling_shared_contract_violation_gw": 0.0,
+        "firm_credit_bound_violation_gw": 0.0,
+        "firm_credit_zero_when_unenrolled": 0.0
+      }
+    },
+    "run_summary.json": {
+      "sha256": "dd52ada4a18ca325ed8dda1d282f29ed475ab266cae91063ef058803604597ec",
+      "optimization_hours": 24,
+      "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+      "objective_interpretation": "mixed annual capacity/policy terms plus truncated operating terms; not a planning result",
+      "objective_million_cny_per_year": 2121316.0332089867,
+      "thermal_activation_detail_million_cny": {
+        "flexible_load_v5_thermal_release": 0.0,
+        "flexible_load_v5_thermal_precondition": 0.0
+      },
+      "thermal_activation_detail_accounting": "NON_ADDITIVE_COMPONENTS_OF_THERMAL_ACTIVATION"
+    },
+    "result_manifest.json": {
+      "sha256": "5390ebec7110572d76da99f02100b9296fa9fd674c21cde3880e80207dd0c48e"
+    }
+  },
+  "zero24_retry": {
+    "build_report.json": {
+      "sha256": "d5698dba70f36d1e854a438a5190d39df4b7031f3035ae3b6572f6fc7e13d5a6"
+    },
+    "solution_qc.json": {
+      "sha256": "de4c664e51eae5923ebb85dc9dca53221fe4d5daa39ebadc5f75d7a2e3477fdc",
+      "status": "PASS",
+      "optional_portfolio_qc": {
+        "enrollment_fraction_violation": 0.0,
+        "contract_charge_residual_gw": 0.0,
+        "contract_v2g_residual_gw": 0.0,
+        "discharge_pool_power_violation_gw": 0.0,
+        "v1g_transition_residual_gwh": 0.0,
+        "v1g_inventory_violation_gwh": 0.0,
+        "v1g_connection_violation_gw": 0.0,
+        "v2g_transition_residual_gwh": 0.0,
+        "v2g_inventory_violation_gwh": 0.0,
+        "v2g_connection_violation_gw": 0.0,
+        "baseline_reconstruction_residual_gw": 0.0,
+        "relocation_lower_bound_violation_gw": 0.0,
+        "response_v1g_enrollment_violation": 0.0,
+        "response_v2g_willingness_violation": 0.0,
+        "response_v2g_infrastructure_violation": 0.0,
+        "heating_shared_contract_violation_gw": 0.0,
+        "heating_proportional_up_violation_gw": 0.0,
+        "heating_proportional_down_violation_gw": 0.0,
+        "heating_enrollment_cap_violation_gw": 0.0,
+        "cooling_shared_contract_violation_gw": 0.0,
+        "cooling_proportional_up_violation_gw": 0.0,
+        "cooling_proportional_down_violation_gw": 0.0,
+        "cooling_enrollment_cap_violation_gw": 0.0,
+        "firm_credit_bound_violation_gw": 0.0,
+        "firm_credit_zero_when_unenrolled": 0.0
+      }
+    },
+    "run_summary.json": {
+      "sha256": "f63ae5d5bd9fdc49079aefd43d744811f281283b7f1c4d98ec9298ca36fe222a",
+      "optimization_hours": 24,
+      "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+      "objective_interpretation": "mixed annual capacity/policy terms plus truncated operating terms; not a planning result",
+      "objective_million_cny_per_year": 2122268.556483912
+    },
+    "result_manifest.json": {
+      "sha256": "90b651f217ce0a188d1edd2f63ee017eadbf88d379967117b703047ee4ee8405"
+    }
+  },
+  "base24": {
+    "build_report.json": {
+      "sha256": "93607c5d033a384e246357a7c09625d6131519f71069cae559eb6e293d8da851"
+    },
+    "solution_qc.json": {
+      "sha256": "01f42f66203a2f8fd21343add20a6da2b3e9fb8f5a595a5c075fc6792f8c2331",
+      "status": "PASS",
+      "optional_portfolio_qc": {}
+    },
+    "run_summary.json": {
+      "sha256": "3bd3413eed34afc766d3f722452c8aa148730f50585c26e904aace58858ba332",
+      "optimization_hours": 24,
+      "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+      "objective_interpretation": "mixed annual capacity/policy terms plus truncated operating terms; not a planning result",
+      "objective_million_cny_per_year": 2122268.556483888
+    },
+    "result_manifest.json": {
+      "sha256": "6d4bb0927faad1cba285ba7b42042970b995162b4059f1347e867879924912fc"
+    }
+  }
+}

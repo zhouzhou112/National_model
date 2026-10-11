@@ -1,0 +1,5 @@
+{
+  "pid": 34748,
+  "time": "2026-10-11T18:06:24.7375180+01:00",
+  "reason": "Same LP passed Barrier Presolve=0; stop redundant local direct-simplex diagnostic"
+}

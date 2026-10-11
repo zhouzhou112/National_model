@@ -1,0 +1,44 @@
+{
+  "central_loaded_source_matches_final": true,
+  "implementation_commit": "cad25a5",
+  "unit_test_command": "python -m unittest discover -s tests -q",
+  "unit_test_status": "419 tests / OK (skipped=1)",
+  "unit_test_sha256": "b53abeaad4d44145eea401b32b0a9cdaf6024ed95f082301ff3f74d5eaaaf468",
+  "scope": "LOCAL_ONLY_NO_SERVER_OPERATION",
+  "final_24h_implementation_bundle": {
+    "git_commit": "3100bb325b691d8d398c680dcfd879b80f8f4026",
+    "source_bundle_sha256": "92944cd7043b28a576fc112a3ba3127100cfb6997a820551cf5adb6de2c02ae2",
+    "source_file_count": 44
+  },
+  "current_implementation_bundle": {
+    "git_commit": "cad25a54818e92ea7e7cd1fcf905d67fb07aaea0",
+    "source_bundle_sha256": "92944cd7043b28a576fc112a3ba3127100cfb6997a820551cf5adb6de2c02ae2",
+    "source_file_count": 44
+  },
+  "final_24h_source_bundle_matches_final": true,
+  "final_price_tests": {
+    "price_taker_2030_v2central_presolve0": {
+      "status": 2,
+      "local_diagnostic_passed": true,
+      "source_sha_matches_current": true,
+      "input_sha_matches_current": true
+    },
+    "price_taker_2030_cost_only_presolve0": {
+      "status": 2,
+      "local_diagnostic_passed": true,
+      "source_sha_matches_current": true,
+      "input_sha_matches_current": true
+    },
+    "price_taker_2060_presolve0_prices2030": {
+      "status": 2,
+      "local_diagnostic_passed": true,
+      "source_sha_matches_current": true,
+      "input_sha_matches_current": true
+    }
+  },
+  "legacy_fixture_archive_sha256": {
+    "before/legacy_case3.mps": "2d22169df303dc0a75d00a76fbb1b663378a47acb64057c82b434283866e88a3",
+    "legacy_case3_verified.mps": "2d22169df303dc0a75d00a76fbb1b663378a47acb64057c82b434283866e88a3",
+    "before/legacy_case3_solution.json": "91fdeaf0b89aa180bd570358009d66cf2af6e1f4e4f165ff134936c45329b388"
+  }
+}

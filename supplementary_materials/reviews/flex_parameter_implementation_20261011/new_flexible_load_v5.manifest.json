@@ -1,0 +1,86 @@
+{
+  "contract_version": "flexible_load_v5",
+  "manifest_generation": "deterministic_content_v2_cross_environment_csv",
+  "serialization": {
+    "encoding": "utf-8",
+    "line_terminator": "LF",
+    "float_format": "%.17g",
+    "gzip_compresslevel": 6,
+    "gzip_mtime": 0,
+    "gzip_filename": ""
+  },
+  "builder": "scripts/build_flexible_load_v5_inputs.py",
+  "scientific_boundary": "Integrated aggregate thermal, V1G and V2G service inventory. No measured EV connection, trip-chain or departure-SOC data are claimed.",
+  "price_basis": "2025 constant CNY",
+  "source_manifests": [
+    {
+      "path": "data/load/hourly_load_2025_2060.csv.gz",
+      "sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+    },
+    {
+      "path": "data/load/flexible_load_envelope_v3.manifest.json",
+      "sha256": "966bf1dff45bf96a2b4e94b474d74389e980def61030088a570c84e67e3658a4"
+    },
+    {
+      "path": "config/flexible_load_v5_source_registry.csv",
+      "sha256": "e9f0d339f462be9f599aed79e9b8b6b6386950149d572be06bd7170122b892c5"
+    },
+    {
+      "path": "config/flexible_load_v5_source_count_qa.csv",
+      "sha256": "3f1a9bef649c1d59875b9bb09ff596dbe9ed57368e7b2f0183514865aa83184e"
+    },
+    {
+      "path": "config/flexible_load_v5_parameter_registry.csv",
+      "sha256": "753d248624e7b89043ed29925c3d3fae4acea5e320baccf2f32edc69a659b375"
+    },
+    {
+      "path": "config/flexible_load_v5_central_parameters.csv",
+      "sha256": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536"
+    }
+  ],
+  "generated_files": {
+    "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz": {
+      "sha256": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c",
+      "size_bytes": 7066220
+    },
+    "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv": {
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+      "size_bytes": 13787
+    },
+    "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz": {
+      "sha256": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a",
+      "size_bytes": 3787326
+    },
+    "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz": {
+      "sha256": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669",
+      "size_bytes": 5192557
+    },
+    "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv": {
+      "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+      "size_bytes": 20979
+    }
+  },
+  "coverage": {
+    "years": [
+      2025,
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "province_count": 31,
+    "hours_per_province_year": 8760,
+    "rows_per_hourly_table": 1357800
+  },
+  "qc": {
+    "load_envelope_key_closure": "PASS",
+    "thermal_reduction_not_above_scaled_baseline": "PASS",
+    "ev_reference_service_energy_closure": "PASS",
+    "ev_charge_cap_contains_flexible_baseline": "PASS",
+    "fabricated_departure_soc_forbidden": "PASS",
+    "v1g_relocation_cost_counts_moved_energy_once": "PASS",
+    "source_count_qa": "PASS",
+    "participation_nondecreasing": "PASS"
+  },
+  "parameter_contract": "participation_pathway_v2"
+}

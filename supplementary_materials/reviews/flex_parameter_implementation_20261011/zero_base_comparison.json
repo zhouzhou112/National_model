@@ -1,0 +1,8 @@
+{
+  "firm_flexible_capacity_credit_gw": 0.0,
+  "flexible_service_capacity_gw": 0.0,
+  "ev_enrolled_service_fraction": 0.0,
+  "ev_bidirectional_service_fraction": 0.0,
+  "effective_load_byte_equal": false,
+  "max_load_difference_gw": 5.684341886080802e-14
+}

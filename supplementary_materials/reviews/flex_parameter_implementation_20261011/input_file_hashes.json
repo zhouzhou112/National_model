@@ -1,0 +1,9 @@
+{
+  "data\\flexibility\\participation_pathway_v2\\ev_availability_hourly_v5.csv.gz": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a",
+  "data\\flexibility\\participation_pathway_v2\\ev_mobility_hourly_v5.csv.gz": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669",
+  "data\\flexibility\\participation_pathway_v2\\flexible_load_v5.manifest.json": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492",
+  "data\\flexibility\\participation_pathway_v2\\flex_enablement_cost_v5.csv": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+  "data\\flexibility\\participation_pathway_v2\\thermal_hourly_envelope_v5.csv.gz": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c",
+  "data\\flexibility\\participation_pathway_v2\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+  "data\\load\\flexible_load_envelope_v3_cool2c.csv.gz": "bf5a67edfc0e48b614b45253b4c0d565fc0db7c3c551cba185ec415e58a12a14"
+}

@@ -1,0 +1,12 @@
+{
+  "data\\flexibility\\ev_availability_hourly_v5.csv.gz": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+  "data\\flexibility\\ev_mobility_hourly_v5.csv.gz": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+  "data\\flexibility\\flexible_load_v5.manifest.json": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba",
+  "data\\flexibility\\flex_enablement_cost_v5.csv": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+  "data\\flexibility\\thermal_hourly_envelope_v5.csv.gz": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+  "data\\flexibility\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+  "data\\load\\flexible_load_envelope_v3.csv.gz": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df",
+  "data\\load\\hourly_load_2025_2060.csv.gz": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+  "data\\load\\hourly_load_2030_2060.csv.gz": "22232fd513cccb6d181159890c3e506d7f5d35753275366629ad705122a67f14",
+  "config\\optimization_numeric_dac_by_year_v9.json": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+}

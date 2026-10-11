@@ -1,0 +1,14 @@
+{
+  "solve24_verified": {
+    "passed": true,
+    "errors": []
+  },
+  "zero24_retry": {
+    "passed": true,
+    "errors": []
+  },
+  "base24": {
+    "passed": true,
+    "errors": []
+  }
+}

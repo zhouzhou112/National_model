@@ -12,7 +12,7 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
-- 2026-10-11 柔性参数落地阶段：作者定案 participation_pathway_v2、方向激活成本、年度参与率和授权四小时信用已实现；三种 case3 身份派生 V9，原配置/数据保留。419项回归通过（Windows跳过1），全年度输入校验 PASS，24h 新情景与零签约/Base 对照通过，旧服务 fixture MPS 字节及解向量一致。价格接受者：旧口径及只改参与率均零签约；新成本非零但初试 Barrier 原单位残差未过，正在本机独立数值诊断，尚不能接受其签约数值。未访问云端/4844528，无生产 Stage B、部署或凭据读取。详见 reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md；当前仅提交已验证落地代码，下一步闭合价格诊断、汇总差异并小文件同步。
+- 2026-10-11 柔性参数落地验收：实现提交 `cad25a5`（GitHub工作分支已同步），419项回归通过/Windows跳过1，全年度输入与24h新情景/零签约/Base QC及manifest均PASS；Base数据/指纹不变，legacy服务fixture MPS字节与解向量一致。最终价格接受者用Presolve=0、Barrier/Cross0/1e-8：2030供暖2.6523/制冷2.8863/V1G21.7826GW、31省alpha≈1、V2G≈0，最大物理残差8.13e-9；成本单因素冷热5.5386/V1G16.3369GW，只改参与率仍零；2060配2030价格代理冷热19.0049/V1G191.1421GW、V2G≈0，QC1.78e-8。冷热5.54GW低于预期10–20GW，如实保留，不改定案。初试Presolve后原单位残差/加严超时/关闭缩放数值失败均保留，本机单纯形辅助诊断在取得合格Barrier解后停止。最终24h源码bundle及三个新成本价格试验源码/输入SHA与当前一致。报告 `supplementary_materials/reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md`。没有服务器/4844528操作或生产Stage B；下一步仅在另行授权的Base-frozen中检验容量信用收益，不据此启动全年。
 
 - 2026-10-11英国15:43（北京22:43）原2050/4844528 RUNNING/m4cm1802、11天0小时33分42秒，iter682/48线程沿用。PInf0.00118/Compl0.000338/目标差26080.73，较670下降36.56%/37.52%/37.44%；DInf4.39e-6较670上升78.46%，679–682连续4轮上升，为678的1.969倍，低于642峰值但反弹尚未恢复，不能沿用上次连续下降描述。其他三项逐轮下降，近期拟合每轮3.56%/3.65%/3.65%，较前窗放缓；暂无同步大跃升/显式警告/终态，stderr空。22.3867分钟每轮，RSS420.09GiB/峰685.98GiB；683条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T144319Z/`。历史主指标约9–15小时类比未覆盖新对偶反弹，不将此前半天至一天作倒计时；2040 PInf匹配终轮不等于整体结束。Git基准e577e13；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读关注对偶恢复/终态，按作者最新规则验收。
 
@@ -9637,3 +9637,12 @@ output/portfolio_finalcheck_20260907/run_no_solve_regression.py（30 PASS）、c
 ## 2026-10-11 柔性参数落地：代码与短窗验证阶段
 
 Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提交。范围为 cispo_model 的参数解析、方向计费、信用与输出，config 的年度注册表/三情景/目录/legacy存档，构建/校验/价格工具与相关 tests。运行 `python -m unittest discover -s tests -q`：419 tests/215.470s/OK(skipped=1)，日志 `supplementary_materials/reviews/flex_parameter_implementation_20261011/unittest_verified.log`；输入校验全年度 PASS。`solve24_verified/`、`zero24_retry/`、`base24/` 均本机，生产未变；Base/V9/legacy科学指纹不变，旧fixture MPS字节相同，零签约信用与K严格零，目标相对差1.1e-14。新数据单独位于 `data/flexibility/participation_pathway_v2/`，+2C敏感性包络独立。未闭合：新成本价格接受者原单位数值残差、预期10–20GW冷热签约与实测的差异；下一步保留失败结果，完成同一服务块的本地独立求解复核，再追加最终结果。没有云端操作、Stage B生产求解或新全年系统作业。
+
+## 2026-10-11 柔性参数落地：最终本机复核与证据交付
+
+- Git实现 `cad25a5`，本条随小文件证据提交；参数、源码、输入路径、成本与信用合同见上一阶段条目。最终源码与通过的419回归相同（价格工具随后仅增诊断/溯源能力，已实际运行验证）。
+- 命令：任务规定的builder/validator/unittest/full_year 24h门禁；价格工具以Base2030价格运行旧口径、cost_only、participation_only、新中央和2060代理，新成本合格复核显式 `--presolve 0 --time-limit 600`，保持Barrier/Cross0。
+- 结果：2030新中央冷热5.538590GW、V1G21.782594GW、alpha≈1、V2G数值零；cost_only冷热相同/V1G16.336946GW；旧口径和participation_only零签约；2060代理冷热19.004930GW/V1G191.142105GW/V2G数值零。三个新成本解原单位最大残差8.13e-9/3.31e-9/1.78e-8。预期冷热10–20GW未实现，实际池上界13.460502GW与经济签约量区分。
+- 证据：review内 price_taker_comparison.csv、price_taker_reports、compatibility_and_fingerprints.json、input_file_hashes.json、new_flexible_load_v5.manifest.json、validation_provenance.json、result_manifest_verification.json、unittest_verified.log；大型原始输入/MPS/数组保留本地，不混入Git。
+- 差异：实际旧表31行、新表33行；代码信用创建位于flexible_load而非master；基线CLI补显式V9；旧输入保持原目录、新输入独立目录；零签约目标相对差1.1e-14/有效负荷舍入5.68e-14GW，不声称全套输出字节相同；初试失败保留。价格试验不表达容量信用收益，source-registry VERIFY与独立论文任务核验未混为同一完成范围。
+- 下一步：由作者单独授权Base-frozen容量信用对照；后续全国全年遵循启动合同及最新作者精度规则。本轮不操作服务器、4844528、生产Stage B或部署；同目录另一个SI任务的交接/文稿及既有未审查稿件只保留，不纳入本提交。
