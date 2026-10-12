@@ -272,7 +272,7 @@
   "tests/test_beccs_lifecycle_sensitivity.py": "82d4914ba01d080aad70fa317a929b70fcff0164131377d02eafadef64941e82",
   "tests/test_bound_tightening.py": "6a7d0a502b298dabc7e3cd3ec4b7c257bcf96c5f4f2eb31afa3262fde5ad727b",
   "tests/test_campaign_launcher.py": "915ed7b082ac2374368e8e325a213f0e590ed8f424786a9c760302eb4f5b9fb9",
-  "tests/test_capacity_headroom_cleanup.py": "0581806741ca6dcaebf4117f44ca08c255f4eddb8905368245757f7fc2910d29",
+  "tests/test_capacity_headroom_cleanup.py": "4b266941c74dce5359a58f5386773718046ad1393cec5222a7bb98f44d7268b3",
   "tests/test_carbon_accounting.py": "b142e1dc4a4f594ca829e348ad008b00eb912692e0ff458dfcf3d0d6bac55120",
   "tests/test_case4_resources.py": "692d6934592b3ee58a779e64fbedc8b0b4ceb718330288bc62886693ea5fa7bb",
   "tests/test_ccs_model_structure.py": "4666958fdada9fba24bcad7b26bfc1436bbd9dc35d2bde5962c6125f1b1d1bc1",
