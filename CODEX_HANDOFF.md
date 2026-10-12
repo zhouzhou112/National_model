@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12英国18:17:06（北京10月13日01:17:06）Base2060 Job5124127已按用户“放行，启动这个任务吧”释放并在m4cm2108运行；实际AllocTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0。启动可用内存724.571716GiB>=700，Gurobi13.0.2/节点smoke PASS，7项启动回归PASS。冻结清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9再次全部核验，冻结源码680a5c4不变，未重复提交。17:17:45UTC时全年runner已创建output_8760身份/输入/preflight文件、stderr为空，尚未取得全年结果。备份262文件/9层SHA完成，三年验收JSON source_bytes逐字节同步已核验；未重启传输。证据revision_6d_general/release_job.json及startup_verified.json。后续只读查构建/Barrier进展与终态，禁止原地修改冻结包；无自动监听。
+
 - 2026-10-12英国18:09:31（云端北京时间10月13日01:09:31）Base2060已按授权held提交：Job5124127，PENDING/JobHeldUser/Priority0，ReqTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0，未释放。新release20261012_base2060_v9a12_t48_m750_tol1e4_v1冻结源码680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0，371源码/50输入SHA通过，release清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9；云端合同/preflight_v2 PASS，D3/D4/436测试通过。备份262文件9层SHA完成。验收JSON此前仅LF规范化文本一致（Windows CRLF与服务器LF字节SHA不同），本轮保留原件并另存source_bytes精确副本，三年逐字节SHA现均VERIFIED_BYTES_WITH_CANONICAL_LF；科学内容无差异。停止于held检查点，只有用户明确回复放行后才可release，节点可用内存>=700GiB检查已写batch。
 
 - 2026-10-12 第6d节实现及D3/D4通过：显式other_capacity_headroom_zero_gw_gwh=1e-5、capacity_cancellation_rhs_zero=1e-12，旧V9关闭。实际广东PHS两UB收口5.489kW、山西gchp退役相消RHS2.22e-16归零；全审计白名单181UB+1RHS通过，矩阵/LB/目标不变。2060 1h80104行238529列452584nnz、与同条件2050增幅0，2050当前/冻结MPS各段SHA相同。24h102轮OPTIMAL/relative_v1 PASS/保全COMPLETE；436测试通过跳过1。准备新20261012_base2060_v9a12_t48_m750_tol1e4_v1，只准hold，尚未宣称提交；备份262文件9层SHA与三份验收JSON同步均完成。详见base_2060_launch_20261012/REVIEW_ZH.md及revision_6d_general/final_gates.json。
@@ -9755,3 +9757,12 @@ Git基准0f58a6ce0219e67fa352560d2f485acf6c193cdb；模型/config/data证据读�
 - 2026-10-12英国18:09:31（云端北京时间10月13日01:09:31）Base2060已按授权held提交：Job5124127，PENDING/JobHeldUser/Priority0，ReqTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0，未释放。新release20261012_base2060_v9a12_t48_m750_tol1e4_v1冻结源码680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0，371源码/50输入SHA通过，release清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9；云端合同/preflight_v2 PASS，D3/D4/436测试通过。备份262文件9层SHA完成。验收JSON此前仅LF规范化文本一致（Windows CRLF与服务器LF字节SHA不同），本轮保留原件并另存source_bytes精确副本，三年逐字节SHA现均VERIFIED_BYTES_WITH_CANONICAL_LF；科学内容无差异。停止于held检查点，只有用户明确回复放行后才可release，节点可用内存>=700GiB检查已写batch。
 
 运行命令：deploy_2060.py prepare、preflight、submit、collect。首次preflight因本地部署助手覆盖PYTHONPATH而漏掉既有云端xarray依赖，合同本身PASS；修正为保留环境PYTHONPATH，在新preflight_v2目录通过，无依赖安装/模型改动。冻结batch原本正确保留PYTHONPATH，不改冻结包。held收据/冻结身份/实际求解器参数见revision_6d_general/held_submission.json、cloud_source_repo_sha256.json、continuation_contract_check.json、cloud_preflight.json。release源提交680a5c4；后续提交仅同步收据、操作助手修复和文档，不替换冻结源码。下一步停等作者放行，严禁自动release、Stage B、case3或后台监听。保留其他SI会话32行handoff及稿件。
+
+
+## 2026-10-12 Base2060获作者放行并启动
+
+- 2026-10-12英国18:17:06（北京10月13日01:17:06）Base2060 Job5124127已按用户“放行，启动这个任务吧”释放并在m4cm2108运行；实际AllocTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0。启动可用内存724.571716GiB>=700，Gurobi13.0.2/节点smoke PASS，7项启动回归PASS。冻结清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9再次全部核验，冻结源码680a5c4不变，未重复提交。17:17:45UTC时全年runner已创建output_8760身份/输入/preflight文件、stderr为空，尚未取得全年结果。备份262文件/9层SHA完成，三年验收JSON source_bytes逐字节同步已核验；未重启传输。证据revision_6d_general/release_job.json及startup_verified.json。后续只读查构建/Barrier进展与终态，禁止原地修改冻结包；无自动监听。
+
+Git操作基准eb7d91202bb4b53ef551d210c4ee25b73001f161；生产冻结源680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0。本次仅新增release_job.json、startup_verified.json和CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md、base_2060_launch_20261012/REVIEW_ZH.md交接记录，不更改模型、数据、运行脚本或参数。释放前scontrol show job -o 5124127验证JobHeldUser/资源/WorkDir/Command，sha256sum --quiet -c release_files.sha256及合同、preflight_v2均通过，再执行一次scontrol release 5124127。远端release_job.json先以排他创建记录attempt，成功回执returncode=0；未再次sbatch。
+
+运行证据：18:17:45英国时间RUNNING/39秒、实际分配符合合同，compute_node_smoke.json记录724.5717163085938GiB；startup_regression.log记录7项/4.287s/OK，含小fixture一次numpy.ndarray size changed RuntimeWarning，测试通过，生产stderr当时为空。stdout当时187bytes，output_8760已生成run_identity/input_manifest/preflight等7文件，无batch_exit.json；这是启动通过，不表示全年构建或科学求解已经完成。后续可用ssh paracloud-bscc-a8只读scontrol和冻结目录日志，具体路径见启动收据。下一步等待云端自主运行，在后续用户查进度时读取构建/Barrier/终态及保全QC，不建立后台轮询。备份与验收JSON沿用已核验完成状态，保留原LF归档及source_bytes副本。另一个SI会话32行handoff及稿件改动保留且不纳入本次提交。
