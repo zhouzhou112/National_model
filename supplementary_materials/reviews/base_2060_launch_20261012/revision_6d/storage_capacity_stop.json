@@ -1,0 +1,93 @@
+{
+  "status": "STOP_AUTHOR_REVIEW_REQUIRED",
+  "trigger": "D2: unauthorized GW capacity intervals with 0 < UB-LB < 1e-5",
+  "capacity_intervals": [
+    {
+      "variable": "storage_new_gw[18,1]",
+      "family": "storage_new_gw",
+      "lb": 0.0,
+      "ub": 5.48878463746405e-06,
+      "width": 5.48878463746405e-06,
+      "gw_capacity": true,
+      "province_code": 44,
+      "technology": "phs",
+      "exogenous_floor_gw": 11.63941785025425,
+      "inherited_gw": 26.799994511215374,
+      "input_upper_gw": 38.43941785025426,
+      "interval_kw": 5.48878463746405
+    },
+    {
+      "variable": "storage_capacity_gw[18,1]",
+      "family": "storage_capacity_gw",
+      "lb": 38.43941236146962,
+      "ub": 38.43941785025426,
+      "width": 5.48878463746405e-06,
+      "gw_capacity": true,
+      "province_code": 44,
+      "technology": "phs",
+      "exogenous_floor_gw": 11.63941785025425,
+      "inherited_gw": 26.799994511215374,
+      "input_upper_gw": 38.43941785025426,
+      "interval_kw": 5.48878463746405
+    }
+  ],
+  "affected_storage_cohorts_unchanged_from_original": true,
+  "shanghai_changed_rows": [
+    {
+      "before": {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "province_code": "31.0",
+        "technology": "bio",
+        "build_year": "2040",
+        "retire_year": "2070",
+        "capacity_delta": "9.38903373581476e-09",
+        "unit": "GW",
+        "action": "new_build"
+      },
+      "after": {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "province_code": "31.0",
+        "technology": "bio",
+        "build_year": "2040",
+        "retire_year": "2070",
+        "capacity_delta": "0.0",
+        "unit": "GW",
+        "action": "new_build"
+      }
+    },
+    {
+      "before": {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "province_code": "31",
+        "technology": "bio",
+        "build_year": "2050",
+        "retire_year": "2080",
+        "capacity_delta": "7.813569123747005e-09",
+        "unit": "GW",
+        "action": "new_build"
+      },
+      "after": {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "province_code": "31",
+        "technology": "bio",
+        "build_year": "2050",
+        "retire_year": "2080",
+        "capacity_delta": "0.0",
+        "unit": "GW",
+        "action": "new_build"
+      }
+    }
+  ],
+  "all_other_6c_v2_fields_text_exact": true,
+  "retrofit_and_ccs_unchanged_from_6c_v2": true,
+  "original_sha256": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+  "previous_6c_v2_sha256": "1ac6b93cf4792e15100cd054295b45dcea705bfd80f63425240e0d294d87eb72",
+  "prepared_sha256": "3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af",
+  "no_optimization": true,
+  "no_submission": true,
+  "proposed_not_applied": "Explicit opt-in PHS headroom closure: for 0 < upper-floor < 1e-5 GW set effective upper=floor and new-build upper=0; retain inherited state; audit paired bounds and extend D4 whitelist only with author approval"
+}

@@ -1,0 +1,20 @@
+{
+  "20260914_base_v9_t48_m750_tol1e4_v3": {
+    "files": 87,
+    "bytes": 5314976517,
+    "status": "SHA_VERIFIED",
+    "manifest_sha256": "61a500678cca11037fff94458efc26b6f05d8db3bf9c131ceafc2b470675ac11"
+  },
+  "20260919_base2040_v9_t44_m750_tol1e4_v1": {
+    "files": 87,
+    "bytes": 5320516058,
+    "status": "SHA_VERIFIED",
+    "manifest_sha256": "b0d66156c6b13f8028c0776fb0ed34ccb8ebf02902f0eebeaf407b881b61627c"
+  },
+  "20260930_base2050_v9_t48_m750_tol1e4_v1": {
+    "files": 88,
+    "bytes": 5322218103,
+    "status": "SHA_VERIFIED",
+    "manifest_sha256": "8c3a45e6a952bf0938d4ee05e3d4fbaa399321ed1c6a03260f7909b22e1abb0b"
+  }
+}

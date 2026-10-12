@@ -1,0 +1,4 @@
+asset_class,asset_id,province_code,technology,build_year,retire_year,capacity_delta,unit,action
+storage,44::phs,44.0,phs,2030,2070,10.13124663661552,GW,new_build
+storage,44::phs,44.0,phs,2040,2080,16.66840696863428,GW,new_build
+storage,44::phs,44.0,phs,2050,2090,0.0003409059655723,GW,new_build

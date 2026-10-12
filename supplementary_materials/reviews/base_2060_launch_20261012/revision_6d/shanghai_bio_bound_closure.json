@@ -1,0 +1,41 @@
+{
+  "authorization": "User 2026-10-12 after fb68d3d, overrides 6c protection only for Shanghai bio positive new_build",
+  "province_code": 31,
+  "shared_upper_gw": 0.3399999999999999,
+  "before_floor_gw": [
+    0.33394329155715097,
+    0.0060567256454518
+  ],
+  "after_floor_gw": [
+    0.3339432743545481,
+    0.0060567256454518
+  ],
+  "initial_excess_gw": 1.720260284221453e-08,
+  "total_reduction_gw": 1.7202602859561766e-08,
+  "retrofit_pairs_unchanged": true,
+  "ccs_capacity_unchanged": true,
+  "affected_rows": [
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2040,
+      "before_gw": 9.389033735814761e-09,
+      "after_gw": 0.0,
+      "reduction_gw": 9.389033735814761e-09,
+      "original_excess_gw": 1.720260284221453e-08,
+      "reason": "AUTHOR_SHANGHAI_SHARED_BIOMASS_BOUND_CLOSE_20261012"
+    },
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2050,
+      "before_gw": 7.813569123747005e-09,
+      "after_gw": 0.0,
+      "reduction_gw": 7.813569123747005e-09,
+      "original_excess_gw": 1.720260284221453e-08,
+      "reason": "AUTHOR_SHANGHAI_SHARED_BIOMASS_BOUND_CLOSE_20261012"
+    }
+  ]
+}

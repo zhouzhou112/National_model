@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--revision',choices=['6b','6c'],default='6b')
     parser.add_argument('--output-dir',type=Path)
     parser.add_argument('--state-output',type=Path)
+    parser.add_argument('--shanghai-bio-bound-close',action='store_true',help='Explicit author authorization 2026-10-12 after fb68d3d; only Shanghai non-CCS bio new builds')
     args=parser.parse_args()
     evidence_dir=args.output_dir or HERE/('revision_'+args.revision);evidence_dir.mkdir(exist_ok=True)
     source=HERE.parent/'base_acceptance_relative_v1_20261012/evidence/2050'
@@ -100,6 +101,36 @@ def main():
             original_inherited_gw=before,original_headroom_gw=upper-base-before,
             after_deletion_inherited_gw=inherited,after_deletion_excess_gw=np.maximum(floor-upper,0),
             prepared_inherited_gw=after,prepared_headroom_gw=upper-effective))
+    shared_closure=None
+    if args.shanghai_bio_bound_close:
+        assert args.revision=='6c'
+        # Preserve the prepared CCS stock and both sides of every retrofit.
+        snapshot=clean.copy(deep=True)
+        thermal=data.thermal_floor.set_index(['province_code','technology'])
+        upper=float(data.biomass_capacity_bounds.set_index('province_code').loc[31,'capacity_upper_gw'])
+        ids=[stable_asset_id(31,t) for t in ['bio','bioccs']]
+        all_thermal_ids=clean.loc[clean.asset_class.eq('thermal'),'asset_id'].drop_duplicates().tolist()
+        positions=[all_thermal_ids.index(i) for i in ids]
+        def inherited_pair():
+            return working.active_adjustment('thermal',all_thermal_ids,planning_year=2060,unit='GW')[positions]
+        exo=np.array([float(thermal.loc[(31,t),'capacity_floor_gw']) for t in ['bio','bioccs']])
+        before=exo+inherited_pair()
+        excess=float(before.sum()-upper)
+        assert 0<excess<1e-5,excess
+        allowed=clean.asset_class.eq('thermal')&clean.asset_id.eq(ids[0])&clean.technology.eq('bio')&clean.action.eq('new_build')&clean.unit.eq('GW')&clean.build_year.le(2060)&clean.retire_year.gt(2060)&clean.capacity_delta.gt(0)
+        left=excess+max(0,upper-math.nextafter(upper,-math.inf));changes=[]
+        for index in clean.loc[allowed].sort_values('build_year',kind='stable').index:
+            if left<=0:break
+            old=float(clean.at[index,'capacity_delta']);new=max(0.,math.nextafter(old-min(old,left),-math.inf))
+            clean.at[index,'capacity_delta']=new;left-=old-new
+            row=dict(asset_class='thermal',asset_id=ids[0],technology='bio',build_year=int(clean.at[index,'build_year']),before_gw=old,after_gw=new,reduction_gw=old-new,original_excess_gw=excess,reason='AUTHOR_SHANGHAI_SHARED_BIOMASS_BOUND_CLOSE_20261012')
+            touched.append(row);changes.append(row)
+        after=exo+inherited_pair()
+        assert left<1e-12 and after.sum()<=upper+1e-12 and after[0]>=0
+        assert after[1]==before[1]
+        pd.testing.assert_frame_equal(snapshot.loc[~allowed],clean.loc[~allowed],check_exact=True)
+        shared_closure=dict(authorization='User 2026-10-12 after fb68d3d, overrides 6c protection only for Shanghai bio positive new_build',province_code=31,shared_upper_gw=upper,before_floor_gw=before.tolist(),after_floor_gw=after.tolist(),initial_excess_gw=excess,total_reduction_gw=math.fsum(r['reduction_gw'] for r in changes),retrofit_pairs_unchanged=True,ccs_capacity_unchanged=True,affected_rows=changes)
+        save(evidence_dir/'shanghai_bio_bound_closure.json',shared_closure)
     target.mkdir();state=target/'planning_state_candidate';state.mkdir()
     for name in ['solution_qc.json','solve_report.json','run_identity.json']:
         shutil.copy2(source/name,target/name)
@@ -123,6 +154,7 @@ def main():
     metadata=dict(original.metadata);metadata.pop('candidate_use_acknowledged',None)
     closure=dict(rule='OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER',threshold_gw=1e-5,affected_rows=touched,
         total_reduction_gw=math.fsum(r['reduction_gw'] for r in touched))
+    if shared_closure:closure['shanghai_bio_shared_upper']=shared_closure
     metadata.update(cohort_rows=len(clean),capacity_cohorts_sha256=sha(state/'capacity_cohorts.csv.gz'),
         state_transition_summary_sha256=sha(state/'state_transition_summary.csv'),
         continuation_cleanup=dict(gate,applied=True,state_changed=True),continuation_bound_closure=closure,

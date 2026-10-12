@@ -38,3 +38,8 @@
 执行：`collect_evidence.py` 核对云端小文件；`assess_on_t550.py` 在已核验 T1 备份上运行独立离线评估，不重启备份；`finalize_acceptance.py` 在三年全部 PASS 后写正式记录。各证据 SHA 见 `evidence_manifest.json`、`collection_manifest.json` 与 `acceptance_server_sha256.json`，可追溯回各冻结 `result_manifest.json`。没有原 manifest 条目的文件（包括 manifest 本身）通过两端 SHA 核对。水库逐时残差从原 npz 重算并与原 QC 最大值一致。
 
 差异：无新增科学判据；严格口径仍为 HARD_FAIL，作者验收为独立旁置记录，不伪装成历史严格 QC 已通过。
+
+
+## 2026-10-12 连接恢复后的完成核验
+
+T550原自主备份完成：262文件、15,957,710,678bytes，三年T1/T2/T3共9层SHA VERIFIED；三个backup_manifest均COMPLETE且与计划path/bytes/SHA逐项一致，见cloud_backup_20261012/backup_completion_verification.json。没有重复启动传输。三年正式验收JSON已同步到各release旁acceptance_relative_v1_20261012/，远端SHA与本地相同，acceptance_sync_status.json=VERIFIED，原归档未改。上海收口后2060在广东PHS极小余量处按D2停止，尚无新release/held作业。

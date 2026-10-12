@@ -38,3 +38,8 @@ T550 的专用公钥登记后已成功直连，远端返回 `ln301.para.bscc`。
 - 本机转发中途短暂握手超时，用户重连后先核实没有启动记录/进程，再启动单次备份，未重复启动。云端直连认证本身已通过。
 
 下一步：完成三层传输、目标逐文件 SHA 与源不变核验，收集三个 `backup_manifest.json` 后追加完成记录。原文件不删、不移动；2060 继续暂停。
+
+
+## 2026-10-12 连接恢复后的完成核验
+
+T550原自主备份完成：262文件、15,957,710,678bytes，三年T1/T2/T3共9层SHA VERIFIED；三个backup_manifest均COMPLETE且与计划path/bytes/SHA逐项一致，见cloud_backup_20261012/backup_completion_verification.json。没有重复启动传输。三年正式验收JSON已同步到各release旁acceptance_relative_v1_20261012/，远端SHA与本地相同，acceptance_sync_status.json=VERIFIED，原归档未改。上海收口后2060在广东PHS极小余量处按D2停止，尚无新release/held作业。

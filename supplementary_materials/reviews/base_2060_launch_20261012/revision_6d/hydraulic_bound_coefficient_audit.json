@@ -1,0 +1,9 @@
+{
+  "reservoir_spill_flow_1000m3s": {
+    "columns": 620,
+    "min_nonzero_abs_bound": 1.0185317205034905e-05,
+    "small_nonzero_bounds_lt_1e_6": 0,
+    "coefficient_min_abs": 0.1552524253571734,
+    "coefficient_max_abs": 3.6
+  }
+}

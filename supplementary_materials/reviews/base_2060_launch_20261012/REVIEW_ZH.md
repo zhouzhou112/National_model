@@ -141,3 +141,49 @@ D1 余项已补齐 31 省 × 5 个改造对的 2060 上界/A2 清零审计，见
 本轮分别重试只读备份查询及幂等的正式 JSON 同步，均因本机→T550 `127.0.0.1:22` SSH banner 超时未能完成。备份没有重复启动。最后成功快照仍为英国16:34：三年 T1/T2 全部 SHA VERIFIED，2030 T3 当时约54%；最新进度、最终 backup_manifest 尚未核验。正式验收 JSON 已在本地且三年均 PASS；T550 已有离线 assessment，正式 JSON 的服务器同步仍为 PENDING_CONNECTION。需作者恢复本机转发后再核验，这一网络问题不是本轮 2060 停止原因。
 
 Git 基准 `3ad53ed29c30231d81cd7d5bf954b47fb6e386a1`。本轮保留全部原始/失败证据和 SI 并行改动，下一步是作者裁定共享上限收口与关联保护的冲突，再在新目录准备状态并继续 D3/D4/E；不能直接“放行”不存在的 held 作业。
+
+
+## 2026-10-12 上海共享上限授权执行与广东 PHS 极小余量停止
+
+本轮遵照用户对上海 bio+bioccs 最小 bound-close 的单独授权，新建 `upstream_2050_prepared_6d/` 和 `revision_6d/`（6d 仅为本地版本标签，并非任务书新增条款）。旧原件、6b/6c 派生状态全部保留。
+
+上海仅扣减非 CCS bio 的 2040、2050 两条正 new_build，合计 **17.202602860 W**；扣减后两条均为零。共享下界回到 0.34 GW，CCS 下界仍为 0.0060567256454518 GW。逐字段核验显示，相对 `_6c_v2` 仅这两处 capacity_delta 改变；全部其他字段、CCS cohort、retrofit_in/out 均逐字不变。未裁负下界、未回配改造。最终 cohort SHA `3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af`。
+
+6b 门禁重新通过：发电/储能删除 **0.630823710364 GW**，网络删除 **0.498170601184 GW**，全部适用比例门禁通过；34 条负 new_build 置零与 94 条 VRE bound-close 沿用，上海另增加 2 条 bound-close，总 bound-close 减量 0.00018113672834068744 GW。受保护组数仍为 105，逐组保护记录和上海例外分开披露。
+
+### 1h LP 已完成构建，但触发任务书 D2 的另一停止条件
+
+| 审计项 | 2060 1h 观测 |
+|---|---:|
+| 行 / 列 / 非零元 | 80,104 / 238,529 / 452,584 |
+| 0 < UB−LB < 1e-5 GW 容量列 | **2**（广东 PHS，总容量与新建量各一列） |
+| 最小 / 最大绝对系数 | 2.917645412536807e-5 / 6250 |
+| 系数跨度 | 2.142138305e8，低于 1e9 |
+| 最小 / 最大非零绝对 RHS | 2.220446049250313e-16 / 828.996703385963 |
+| 非零绝对 bound < 1e-6 | 465 列 co2_ship_mt（1h 年度预算缩放，单列披露） |
+
+最大系数定位在 `strict_power_balance_p11[0]` 的 `dac_capture_mt[0,0]`，值 −6250；最小定位在 `storage_cyclic_first_hour[0,0]` 的 `storage_soc_gwh[0,0,0]`，是 1h 储能循环约束。本轮未执行同条件 2050 身份构建，故维度增幅门禁仍待正式对照，不拿全年维度代替同窗比较。
+
+广东 PHS（省码 44，变量下标 [18,1]）外生下界 11.63941785025425 GW，2060 继承新增 26.799994511215374 GW，总下界 **38.43941236146962 GW**；上界 **38.43941785025426 GW**，剩余 **5.48878463746405e-6 GW = 5.488784637 kW**。因此 `storage_new_gw` 和 `storage_capacity_gw` 各有一条极小正区间。广东 PHS 全部 cohort 与原 2050 状态逐字相同，问题不是本轮删除或上海处理引入。6b 的 1 MW 删除针对资产组新建总量，此组约 26.8 GW，不能整组删除；A1 只覆盖水电，A2 只覆盖改造，也不能自动扩展至 PHS。
+
+任务书 D2 明文要求：规则之外 GW 容量列仍有 `0 < UB−LB < 1e-5` 时停止，不自行扩大规则。因此本轮停止于 D3 构建审计，**没有 optimize、D4 身份/白名单/24h、release 或 held 提交**。这不是求解 INFEASIBLE，无 IIS。建议作者明确授权 PHS 极小余量收口：仅在 0 < upper−inherited_floor < 1e-5 GW 时，将有效容量上界收至现有继承下界、新建上界置零，保留原继承容量/原始潜力输入，将成对界变化写审计并扩展 D4 白名单；本轮未实施。
+
+D1 水力实际 LP 审计已补：`reservoir_spill_flow_1000m3s` 620 列，最小非零 bound 1.0185317205034905e-5（1000 m³/s），无绝对值 <1e-6 非零界；这些列在包括梯级水量行内的非零系数范围 0.1552524253571734–3.6。详见 `hydraulic_bound_coefficient_audit.json` 与行/列族 CSV。未修改水力阈值。
+
+### 复现与验证
+
+在现有 RL Python、Gurobi 13 overlay、CISPO_DATA_ROOT/CISPO_WAVE_ROOT 环境中：
+
+1. `prepare_state_6b.py --revision 6c --shanghai-bio-bound-close --output-dir NEW_EVIDENCE_DIR --state-output NEW_STATE_DIR`（新目录防覆盖）。
+2. `build_gate.py --year 2060 --a12 --state-in NEW_STATE_DIR/planning_state_candidate --output NEW_BUILD_DIR`。
+3. 本次固定证据只读重审：`audit_shanghai_followup.py`；输出 `revision_6d/storage_capacity_stop.json`，复核两条上海更改、其他字段不变及广东 PHS 原始 cohort 不变。
+
+生产模型和配置本轮无修改，已有完整 429 项回归记录仍适用；本轮验证是派生状态实数据逐字段核验、PlanningState manifest 加载校验以及完整 1h build-only。大 MPS/NPZ/派生状态留本地，Git 保存脚本、摘要、CSV 小证据和 SHA。Git 基准 fb68d3ddd449f27fc721589973d82b0650effc8a；改动与本停止记录同次提交，保留 SI 并行改动。
+
+### T550 备份与验收 JSON
+
+T550 已恢复连接，原自主备份已于 2026-10-12 15:50 UTC 完成，进程正常结束：**262 文件、15,957,710,678 bytes，三年 T1/T2/T3 共 9 层全部 VERIFIED**。2030/2040/2050 各 87/87/88 文件。三份 backup_manifest 状态 COMPLETE、源未变；本轮逐项核对与备份计划的 path/bytes/SHA 完全一致（`cloud_backup_20261012/backup_completion_verification.json`）。没有重复启动传输。
+
+三个年份正式验收 JSON 均 PASS，已同步到 T550 各 release 旁的 `acceptance_relative_v1_20261012/`，远端 SHA 与本地完全一致，`acceptance_sync_status.json=VERIFIED`；原 output_8760 归档未改。当前仅需作者裁定 PHS 余量规则，备份和验收同步均不再阻塞。
+
+补充验证：`python -m unittest discover -s tests -p test_continuation_cleanup_6c.py -q` 的 2 项及 `-p test_relative_acceptance.py` 的 10 项均通过。初次按 tests 包导入因 tests 不是可导入包而失败，改用项目 discover 入口后通过；没有测试内容失败。暂存范围及凭据特征扫描通过，未包含模型大文件或 SI。

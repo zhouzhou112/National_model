@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12 上海共享上限按用户授权完成：仅两条非CCS bio正新建合计17.202602860W扣除，CCS/retrofit及其余字段逐字不变。新状态upstream_2050_prepared_6d/（cohort SHA3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af），6b总量/比例PASS。完整2060 1h构建发现广东PHS容量/新建各一条5.488784637kW极小区间，触发任务书D2规则外极小GW容量界停止；未optimize/D4/release/held提交。需作者授权PHS余量收口，建议继承不变、有效上界收至下界、新建上界归零并审计。T550原自主备份COMPLETE：262文件15,957,710,678bytes、9层SHA VERIFIED，三份manifest与计划逐项一致；三年正式验收JSON已同步且远端SHA VERIFIED，未重复传输。详细报告base_2060_launch_20261012/REVIEW_ZH.md及revision_6d/storage_capacity_stop.json。
+
 - 2026-10-12英国17:36 Base2060第6c节执行后安全网停止：按存在2060存续retrofit_out记录的一般规则保护105个候选删除组，全部new_build共7.311997892MW（2060存续6.873160798MW，含原负下界四组存续0.801002010MW）；发电/储能删0.630823710364GW、网络删0.498170601184GW，6b门禁全PASS。新状态upstream_2050_prepared_6c_v2/共43286cohort，原状态和旧6b派生不变、retrofit记录逐字相同。原四组负下界消除，但上海bio+bioccs共享容量上限超17.202603W（原guard1W）：受保护bio新建17.203W保留、bioccs负尾差-16.996W被6b删除。按6c第3条停止，未optimize/完整D3/D4/部署/held提交；需作者明确共享上限bound-close与关联new_build保护的关系。备份未重启；本机→T550仍banner超时，最新进度未知、正式验收JSON同步PENDING_CONNECTION，旧快照T1/T2均VERIFIED。详见base_2060_launch_20261012/REVIEW_ZH.md新增6c节。
 
 - 2026-10-12英国16:56 Base2060第6b节重审通过但新构建停止：发电/储能删0.638135708256GW、网络删0.498170601184GW，全部适用比例门禁通过；三年relative_v1离线验收PASS（正式JSON本地完成，T550旁置assessment完成，正式JSON同步待连接恢复）。清理派生状态42971条、34条负new_build置零、94条VRE bound-close；2060 1h build-only发现内蒙古bio/黑龙江coal/海南coal/西藏gas继承下界合计-0.439794MW，原状态无负下界，因删除new_build而保留retrofit_out。已停止，未求解、未部署/创建release/提交held；需作者明确四组共0.801002MW新建cohort的改造关联豁免或成对回退规则。备份未重复启动，最后成功快照15:34UTC三年T1/T2均VERIFIED、2030T3约54%；后续本机→T550握手超时，最新进度未知。详见base_2060_launch_20261012/REVIEW_ZH.md新增第6b节停止记录。
@@ -9728,3 +9730,10 @@ Git基准a4f039762392afdf55acb8476b412ec339100238；本条与代码/证据同次
 - 2026-10-12英国17:36 Base2060第6c节执行后安全网停止：按存在2060存续retrofit_out记录的一般规则保护105个候选删除组，全部new_build共7.311997892MW（2060存续6.873160798MW，含原负下界四组存续0.801002010MW）；发电/储能删0.630823710364GW、网络删0.498170601184GW，6b门禁全PASS。新状态upstream_2050_prepared_6c_v2/共43286cohort，原状态和旧6b派生不变、retrofit记录逐字相同。原四组负下界消除，但上海bio+bioccs共享容量上限超17.202603W（原guard1W）：受保护bio新建17.203W保留、bioccs负尾差-16.996W被6b删除。按6c第3条停止，未optimize/完整D3/D4/部署/held提交；需作者明确共享上限bound-close与关联new_build保护的关系。备份未重启；本机→T550仍banner超时，最新进度未知、正式验收JSON同步PENDING_CONNECTION，旧快照T1/T2均VERIFIED。详见base_2060_launch_20261012/REVIEW_ZH.md新增6c节。
 
 Git基准3ad53ed29c30231d81cd7d5bf954b47fb6e386a1；本条与修改/证据同次提交。改audit_cleanup_6b.py（显式6c开关）、prepare_state_6b.py（新目录及未改CSV字段逐字保留），新增audit_state_6c.py、fetch_2050_identity.py、两项保护规则测试；生产模型/QC/配置SHA与上次429项完整测试相同，新增2项与原relative_v1 10项测试通过。独立字段验证128处变化仅34负值置零+94VRE bound-close，retrofit逐字不变。D1补齐5改造对上界与容量族检查；2050冻结源码/原上游206文件只读SHA已取回，但未完成模型身份比较/24h或创建新release。停止证据revision_6c_v2/capacity_accounting_stop.json、biomass_shared_bound_cohorts.csv与validation_summary.json；cohort SHA1ac6b93cf4792e15100cd054295b45dcea705bfd80f63425240e0d294d87eb72。下一步作者明确仅从非CCS bio新建量扣除共享上界微小超量是否可覆盖6c保护；本轮未执行建议。网络恢复后核验备份并同步验收JSON，不重复传输；其他会话SI改动32行handoff及稿件保持未暂存。
+
+
+## 2026-10-12 上海授权收口完成；广东PHS极小余量停止
+
+- 2026-10-12 上海共享上限按用户授权完成：仅两条非CCS bio正新建合计17.202602860W扣除，CCS/retrofit及其余字段逐字不变。新状态upstream_2050_prepared_6d/（cohort SHA3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af），6b总量/比例PASS。完整2060 1h构建发现广东PHS容量/新建各一条5.488784637kW极小区间，触发任务书D2规则外极小GW容量界停止；未optimize/D4/release/held提交。需作者授权PHS余量收口，建议继承不变、有效上界收至下界、新建上界归零并审计。T550原自主备份COMPLETE：262文件15,957,710,678bytes、9层SHA VERIFIED，三份manifest与计划逐项一致；三年正式验收JSON已同步且远端SHA VERIFIED，未重复传输。详细报告base_2060_launch_20261012/REVIEW_ZH.md及revision_6d/storage_capacity_stop.json。
+
+Git基准fb68d3ddd449f27fc721589973d82b0650effc8a；本条与准备器显式上海开关、只读诊断和小证据同次提交。生产模型/配置无修改，实数据两处字段差异核验与1h完整构建完成；原429项回归记录仍适用。下一步取得PHS授权后在新目录复核D3/D4再执行E的hold提交，不能释放不存在的作业。SI会话32行handoff和稿件保持未暂存。
