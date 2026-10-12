@@ -3280,3 +3280,10 @@ Sequential production entry: `scripts/run_cispo_planning_sequence.py`.
   当前建议固定1e-4/Cross0/44/NF2，优先核实异常水库输入并在完整8760首12–24h观察收敛/内存；首日检查也不是截止保证。局部0.311MWh残差不应成为无条件收紧容差的理由，但QC记录不篡改。
   本轮只读服务器、写对照报告及更新四文档，无求解/测试重跑，无提交/停止/重启/改参/自动监控。Git0a03cc452e95d158f36923ceb5210267979b6234未提交。
   报告/参数CSV-JSON/服务器有效配置/日志摘要及哈希：supplementary_materials/reviews/solve_feasibility_vs_thermal_20260913/。下一步以实际全年首日数据评估目标，而非给无依据9–10天ETA。
+
+
+## 2026-10-12 Base2060启动前停止（未提交）
+
+- 2026-10-12 Base2060启动前D2停止：按全部模型new_build/GW资产跨cohort合计<1MW拟删1.136306309440GW>1GW；gasccs删除占2050装机0.7218187%、wave100%，均>0.1%。未删状态/改模型/构建/求解/创建release/提交held作业。三年51小文件源SHA、48manifest成员核验通过，尚未正式验收；旧双向流重叠比例判据按本日AGENTS被额外损耗/负荷替代，历史记录保留。t550转发重试已恢复，可用1.481TB，备份后空间估算36.36%，但D2停止故未备份。详见base_2060_launch_20261012/REVIEW_ZH.md；下一步作者明确清理豁免/阈值与总量口径后重审，不把单独放行当现存Job释放。
+
+- 只读复现及逐文件SHA：supplementary_materials/reviews/base_2060_launch_20261012/REVIEW_ZH.md。held Job不存在；未备份、部署或改写任何冻结release。固定机转发命令：ssh -o BatchMode=yes -o HostName=127.0.0.1 -o BindAddress=127.0.0.1 national-model-server。

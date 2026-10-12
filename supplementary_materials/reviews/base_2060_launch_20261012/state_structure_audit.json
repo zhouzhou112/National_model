@@ -1,0 +1,450 @@
+{
+  "generated_at_utc": "2026-10-12T14:53:50.846867+00:00",
+  "status": "STOP_AUTHOR_REVIEW_REQUIRED",
+  "source_output_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050",
+  "source_sha256": {
+    "planning_state_candidate\\capacity_cohorts.csv.gz": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+    "planning_state_candidate\\state_metadata.json": "6e037825364273199760c7f22f0a3640fe51d981ae9660c561c1d72c84a9adbb",
+    "result_manifest.json": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+    "annual_capacity_by_technology.csv": "4c4a056e2faf6d5e612fe8e0f8614d63e0ec0c88f1418fc6318101d20b7658ab"
+  },
+  "rule": "GW; action=new_build; build_year>2025; sum by asset_class,technology,asset_id over all model vintages; select 0<sum<0.001 GW",
+  "selected_assets": 50523,
+  "selected_cohort_rows": 151569,
+  "total_deletion_gw": 1.1363063094399655,
+  "total_stop_limit_gw": 1.0,
+  "total_stop_triggered": true,
+  "generation_and_storage_deletion_gw": 0.6381357082563748,
+  "connection_and_transmission_deletion_gw": 0.4981706011835907,
+  "asset_sum_is_not_unique_generator_capacity": true,
+  "all_cohorts_active_at_2050": true,
+  "negative_new_build_rows": 521,
+  "negative_new_build_total_gw": -6.44218720355077e-05,
+  "negative_new_build_min_gw": -6.459644757106283e-07,
+  "negative_aggregate_groups": 109,
+  "negative_tail_policy": "Disclosed unchanged; not silently clamped or included as positive deletion candidates",
+  "by_technology": [
+    {
+      "asset_class": "hydro",
+      "technology": "hydro",
+      "assets": 1005,
+      "cohort_rows": 3015,
+      "deletion_gw": 0.011047538997648527
+    },
+    {
+      "asset_class": "hydro_spur",
+      "technology": "hydro",
+      "assets": 1005,
+      "cohort_rows": 3015,
+      "deletion_gw": 0.011047538997648527
+    },
+    {
+      "asset_class": "interprovincial_transmission",
+      "technology": "AC",
+      "assets": 11,
+      "cohort_rows": 33,
+      "deletion_gw": 0.006375976623492529
+    },
+    {
+      "asset_class": "interprovincial_transmission",
+      "technology": "DC",
+      "assets": 17,
+      "cohort_rows": 51,
+      "deletion_gw": 0.005369493609096364
+    },
+    {
+      "asset_class": "intra_load_center_transmission",
+      "technology": "AC_500kV",
+      "assets": 378,
+      "cohort_rows": 1134,
+      "deletion_gw": 0.018188992073318023
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "assets": 11,
+      "cohort_rows": 33,
+      "deletion_gw": 0.0013973528830809054
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bioccs",
+      "assets": 8,
+      "cohort_rows": 24,
+      "deletion_gw": 0.0009556469811562685
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "assets": 20,
+      "cohort_rows": 60,
+      "deletion_gw": 0.003472726982086916
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coalccs",
+      "assets": 25,
+      "cohort_rows": 75,
+      "deletion_gw": 0.00499547275673455
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "assets": 10,
+      "cohort_rows": 30,
+      "deletion_gw": 0.002441918026785687
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gasccs",
+      "assets": 10,
+      "cohort_rows": 30,
+      "deletion_gw": 0.002534384242063507
+    },
+    {
+      "asset_class": "trunk",
+      "technology": "AC_trunk",
+      "assets": 1613,
+      "cohort_rows": 4839,
+      "deletion_gw": 0.08275646165876781
+    },
+    {
+      "asset_class": "vre",
+      "technology": "dpv",
+      "assets": 12867,
+      "cohort_rows": 38601,
+      "deletion_gw": 0.23532501569775702
+    },
+    {
+      "asset_class": "vre",
+      "technology": "offwind",
+      "assets": 727,
+      "cohort_rows": 2181,
+      "deletion_gw": 0.023163200659490495
+    },
+    {
+      "asset_class": "vre",
+      "technology": "onwind",
+      "assets": 7917,
+      "cohort_rows": 23751,
+      "deletion_gw": 0.0787081240063369
+    },
+    {
+      "asset_class": "vre",
+      "technology": "upv",
+      "assets": 6916,
+      "cohort_rows": 20748,
+      "deletion_gw": 0.26274514520652587
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "offwind",
+      "assets": 677,
+      "cohort_rows": 2031,
+      "deletion_gw": 0.020744660237104688
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "onwind",
+      "assets": 7829,
+      "cohort_rows": 23487,
+      "deletion_gw": 0.08182524093319193
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "upv",
+      "assets": 8193,
+      "cohort_rows": 24579,
+      "deletion_gw": 0.2718622370509709
+    },
+    {
+      "asset_class": "wave",
+      "technology": "wave",
+      "assets": 1284,
+      "cohort_rows": 3852,
+      "deletion_gw": 0.011349181816708086
+    }
+  ],
+  "actions_taken": "READ_ONLY_AUDIT; no cohorts deleted, no derived state, no build, no submission",
+  "remaining_D1": "headroom/retrofit/bound audits not run after D2 total stop",
+  "capacity_table_rows": [
+    {
+      "asset_group": "generation",
+      "technology": "onwind",
+      "unit": "GW",
+      "capacity": "1388.8134085748468",
+      "new_capacity": "335.5591095017117"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "offwind",
+      "unit": "GW",
+      "capacity": "434.66158636187606",
+      "new_capacity": "164.54811797496578"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "upv",
+      "unit": "GW",
+      "capacity": "2584.494534294001",
+      "new_capacity": "1357.3174064402124"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "dpv",
+      "unit": "GW",
+      "capacity": "286.74900287548917",
+      "new_capacity": "227.2405077294119"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "wave",
+      "unit": "GW",
+      "capacity": "0.011349181816708086",
+      "new_capacity": "0.0041660834972020696"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "coal",
+      "unit": "GW",
+      "capacity": "593.2873518257383",
+      "new_capacity": "0.012452286718434836"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "coalccs",
+      "unit": "GW",
+      "capacity": "5.316602524904453",
+      "new_capacity": "0.006633557993701235"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "cchp",
+      "unit": "GW",
+      "capacity": "322.9905802214694",
+      "new_capacity": "0.0"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "cchpccs",
+      "unit": "GW",
+      "capacity": "0.0902197785306748",
+      "new_capacity": "0.0"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "gas",
+      "unit": "GW",
+      "capacity": "358.86054682533063",
+      "new_capacity": "188.26645605128144"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "gasccs",
+      "unit": "GW",
+      "capacity": "0.3511109189706994",
+      "new_capacity": "0.04595960169554807"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "gchp",
+      "unit": "GW",
+      "capacity": "96.68981252671229",
+      "new_capacity": "0.0"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "gchpccs",
+      "unit": "GW",
+      "capacity": "0.7529274732877079",
+      "new_capacity": "0.0"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "bio",
+      "unit": "GW",
+      "capacity": "206.57555681292314",
+      "new_capacity": "34.85270583028538"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "bioccs",
+      "unit": "GW",
+      "capacity": "142.6524539146908",
+      "new_capacity": "47.961826857253534"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "nuclear",
+      "unit": "GW",
+      "capacity": "292.24369319675566",
+      "new_capacity": "48.06552588490298"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "ror",
+      "unit": "GW",
+      "capacity": "26.295077545378984",
+      "new_capacity": "0.23914543689456974"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "reservoir",
+      "unit": "GW",
+      "capacity": "288.27816005164277",
+      "new_capacity": "0.454767767752919"
+    },
+    {
+      "asset_group": "generation",
+      "technology": "hydro_aggregate",
+      "unit": "GW",
+      "capacity": "82.11049999999996",
+      "new_capacity": "0.0"
+    },
+    {
+      "asset_group": "storage_power",
+      "technology": "battery",
+      "unit": "GW",
+      "capacity": "205.78924851081638",
+      "new_capacity": "177.626240040496"
+    },
+    {
+      "asset_group": "storage_power",
+      "technology": "phs",
+      "unit": "GW",
+      "capacity": "449.929486100876",
+      "new_capacity": "20.84200717406197"
+    }
+  ],
+  "generation_storage_technology_gates": [
+    {
+      "asset_class": "hydro",
+      "technology": "hydro",
+      "deletion_gw": 0.011047538997648527,
+      "installed_2050_gw": 314.5732375970218,
+      "fraction": 3.511913181820245e-05,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "deletion_gw": 0.0013973528830809054,
+      "installed_2050_gw": 206.57555681292314,
+      "fraction": 6.764367017276695e-06,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bioccs",
+      "deletion_gw": 0.0009556469811562685,
+      "installed_2050_gw": 142.6524539146908,
+      "fraction": 6.699127529399289e-06,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "deletion_gw": 0.003472726982086916,
+      "installed_2050_gw": 593.2873518257383,
+      "fraction": 5.853364261685682e-06,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coalccs",
+      "deletion_gw": 0.00499547275673455,
+      "installed_2050_gw": 5.316602524904453,
+      "fraction": 0.0009395986879467402,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "deletion_gw": 0.002441918026785687,
+      "installed_2050_gw": 358.86054682533063,
+      "fraction": 6.804643331199765e-06,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gasccs",
+      "deletion_gw": 0.002534384242063507,
+      "installed_2050_gw": 0.3511109189706994,
+      "fraction": 0.007218186917949437,
+      "limit": 0.001,
+      "stop_triggered": true
+    },
+    {
+      "asset_class": "vre",
+      "technology": "dpv",
+      "deletion_gw": 0.23532501569775702,
+      "installed_2050_gw": 286.74900287548917,
+      "fraction": 0.000820665506550824,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "vre",
+      "technology": "offwind",
+      "deletion_gw": 0.023163200659490495,
+      "installed_2050_gw": 434.66158636187606,
+      "fraction": 5.329019491546706e-05,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "vre",
+      "technology": "onwind",
+      "deletion_gw": 0.0787081240063369,
+      "installed_2050_gw": 1388.8134085748468,
+      "fraction": 5.667292922171921e-05,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "vre",
+      "technology": "upv",
+      "deletion_gw": 0.26274514520652587,
+      "installed_2050_gw": 2584.494534294001,
+      "fraction": 0.00010166210132005531,
+      "limit": 0.001,
+      "stop_triggered": false
+    },
+    {
+      "asset_class": "wave",
+      "technology": "wave",
+      "deletion_gw": 0.011349181816708086,
+      "installed_2050_gw": 0.011349181816708086,
+      "fraction": 1.0,
+      "limit": 0.001,
+      "stop_triggered": true
+    }
+  ],
+  "additional_stops": [
+    {
+      "asset_class": "thermal",
+      "technology": "gasccs",
+      "deletion_gw": 0.002534384242063507,
+      "installed_2050_gw": 0.3511109189706994,
+      "fraction": 0.007218186917949437,
+      "limit": 0.001,
+      "stop_triggered": true
+    },
+    {
+      "asset_class": "wave",
+      "technology": "wave",
+      "deletion_gw": 0.011349181816708086,
+      "installed_2050_gw": 0.011349181816708086,
+      "fraction": 1.0,
+      "limit": 0.001,
+      "stop_triggered": true
+    }
+  ],
+  "network_technology_fraction_gate": "NOT_COMPLETED_AFTER_TOTAL_AND_GENERATION_STOP"
+}

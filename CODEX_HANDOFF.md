@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12 Base2060启动前D2停止：按全部模型new_build/GW资产跨cohort合计<1MW拟删1.136306309440GW>1GW；gasccs删除占2050装机0.7218187%、wave100%，均>0.1%。未删状态/改模型/构建/求解/创建release/提交held作业。三年51小文件源SHA、48manifest成员核验通过，尚未正式验收；旧双向流重叠比例判据按本日AGENTS被额外损耗/负荷替代，历史记录保留。t550转发重试已恢复，可用1.481TB，备份后空间估算36.36%，但D2停止故未备份。详见base_2060_launch_20261012/REVIEW_ZH.md；下一步作者明确清理豁免/阈值与总量口径后重审，不把单独放行当现存Job释放。
+
 - 2026-10-12英国12:10（北京19:10）取证：原2050/4844528已COMPLETED/0:0，结束英国04:54:27（北京11:54:27），总运行11天13小时44分50秒；Gurobi716轮OPTIMAL、runtime996416.02秒，目标5751972.5053 million CNY。终轮打印PInf2.25e-4/DInf1.45e-6/Compl6.01e-5、目标差4631.44，callback相对差0.08052%；717条连续/8源SHA PASS，stderr空。preservation COMPLETE/errors=[]，BarPi导出可用。原冻结包旧QC HARD_FAIL/PENDING不能自动当新口径结论；新口径功率平衡0.265kW和成本相对闭合1.68e-11可过，但双向流重叠0.12034%高于0.01%约12倍、额外损耗198.73GWh，水库29.27m³尚缺逐站分母复核，科学验收未全部通过。证据`base_2050_continuation_20260930/status_20261012T111059Z/`。Git基准a4d4727；仅取证/交接小文件同步，本次交接条目部分暂存，其他SI未提交内容/稿件留工作区。未改作业/归档/模型，无scontrol/scancel、Stage B、新求解、部署或监听。下一步按作者新口径验收，不据此自动启动2060/case3。
 
 - 2026-10-11 柔性参数落地验收：实现提交 `cad25a5`（GitHub工作分支已同步），419项回归通过/Windows跳过1，全年度输入与24h新情景/零签约/Base QC及manifest均PASS；Base数据/指纹不变，legacy服务fixture MPS字节与解向量一致。最终价格接受者用Presolve=0、Barrier/Cross0/1e-8：2030供暖2.6523/制冷2.8863/V1G21.7826GW、31省alpha≈1、V2G≈0，最大物理残差8.13e-9；成本单因素冷热5.5386/V1G16.3369GW，只改参与率仍零；2060配2030价格代理冷热19.0049/V1G191.1421GW、V2G≈0，QC1.78e-8。冷热5.54GW低于预期10–20GW，如实保留，不改定案。初试Presolve后原单位残差/加严超时/关闭缩放数值失败均保留，本机单纯形辅助诊断在取得合格Barrier解后停止。最终24h源码bundle及三个新成本价格试验源码/输入SHA与当前一致。报告 `supplementary_materials/reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md`。没有服务器/4844528操作或生产Stage B；下一步仅在另行授权的Base-frozen中检验容量信用收益，不据此启动全年。
@@ -9672,3 +9674,14 @@ Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提�
 - 证据：review内 price_taker_comparison.csv、price_taker_reports、compatibility_and_fingerprints.json、input_file_hashes.json、new_flexible_load_v5.manifest.json、validation_provenance.json、result_manifest_verification.json、unittest_verified.log；大型原始输入/MPS/数组保留本地，不混入Git。
 - 差异：实际旧表31行、新表33行；代码信用创建位于flexible_load而非master；基线CLI补显式V9；旧输入保持原目录、新输入独立目录；零签约目标相对差1.1e-14/有效负荷舍入5.68e-14GW，不声称全套输出字节相同；初试失败保留。价格试验不表达容量信用收益，source-registry VERIFY与独立论文任务核验未混为同一完成范围。
 - 下一步：由作者单独授权Base-frozen容量信用对照；后续全国全年遵循启动合同及最新作者精度规则。本轮不操作服务器、4844528、生产Stage B或部署；同目录另一个SI任务的交接/文稿及既有未审查稿件只保留，不纳入本提交。
+
+
+### 2026-10-12：Base2060 D2清理停止条件取证（未提交）
+
+- Git基准 ba3424ba2544e9eaced7e26ace2d6140cb1ce0d4；本次按明确清单同步作者AGENTS新增规则、只读审计工具、小证据与交接；不含另一SI会话的交接块或modules改动。
+- 命令：python supplementary_materials/reviews/base_acceptance_relative_v1_20261012/collect_evidence.py；python supplementary_materials/reviews/base_2060_launch_20261012/audit_cohort_cleanup.py；独立pandas分组验证。源目录、SHA、运行日期、完整逐技术量见两目录报告、collection_manifest.json、state_structure_audit.json、validation.json。
+- 三年各17小文件取回，51源端SHA及48manifest成员bytes/SHA核对通过。严格QC不改写；新口径三项初查符合预期，正式relative_v1代码/验收记录未完成，不签ACCEPTED。
+- D2明确STOP：50523资产/151569条cohort，拟删1.136306309440GW，其中发电储能0.638135708256、接入输电0.498170601184；gasccs0.7218187%、wave100%越过单技术0.1%。全部原始状态保留，521条负new_build尾差仅披露未清零。其余D1、D3/D4门禁未执行。
+- 初次固定机连接失败；用户要求重试后127.0.0.1:22/BatchMode成功到t550，盘总4029616283648、可用1481126653952bytes；云端别名在固定机未解析。三个output共15956401851bytes，备份后估算36.36%空闲。因D2停止未备份、未创建backup_manifest。
+- 云端仅只读读取/盘点，未操作旧作业、未提交任何新作业或held，未Stage B/case3、未建立监听，未访问凭据、SI modules或在线LaTeX。审计语法/独立分组/SHA检查PASS，无生产代码更改所以未运行全套模型测试。
+- 精确下一步：请作者/决策层明确wave/gasccs是否具名豁免、1GW是否含网络或修改清理阈值。新规则先复审，再依次完成A/B/C/D/E，最终只held提交，收到放行后释放；当前没有可释放Job。

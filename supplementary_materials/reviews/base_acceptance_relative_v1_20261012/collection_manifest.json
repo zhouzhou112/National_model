@@ -1,0 +1,516 @@
+{
+  "2030": {
+    "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+    "files": {
+      "solution_qc.json": {
+        "bytes": 13743,
+        "sha256": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a",
+        "archive_manifest_check": "PASS"
+      },
+      "solve_report.json": {
+        "bytes": 71557,
+        "sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+        "archive_manifest_check": "PASS"
+      },
+      "preservation_report.json": {
+        "bytes": 4188,
+        "sha256": "e50d6aaac2742b6ccf4cdb771bf8ef83fc8fbaf345c7a49a0c5e1105e4da9363",
+        "archive_manifest_check": "PASS"
+      },
+      "result_manifest.json": {
+        "bytes": 13615,
+        "sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+        "archive_manifest_check": "NOT_LISTED_SOURCE_SHA_RECORDED"
+      },
+      "run_identity.json": {
+        "bytes": 6273,
+        "sha256": "4dd32bb011407720b7f6b30cbef4cec2be230a50d109d68189ee7b30680b3bce",
+        "archive_manifest_check": "PASS"
+      },
+      "build_report.json": {
+        "bytes": 68385,
+        "sha256": "0e1ec435227c7c75f0363cd2e9b0a063261ecd3cee7fc29582f2706d6c907915",
+        "archive_manifest_check": "PASS"
+      },
+      "run_summary.json": {
+        "bytes": 2006,
+        "sha256": "994106b1e705ad72e725a345b31d2f65c4af0d331906678f9421ac3a67911f08",
+        "archive_manifest_check": "PASS"
+      },
+      "reservoir_station_index.csv": {
+        "bytes": 157869,
+        "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+        "archive_manifest_check": "PASS"
+      },
+      "vre_capacity.csv": {
+        "bytes": 3632003,
+        "sha256": "30602e73d73238de087ef2422818c0ff29337ff8140dd38a599f797c63177aee",
+        "archive_manifest_check": "PASS"
+      },
+      "hydro_capacity.csv": {
+        "bytes": 310766,
+        "sha256": "d14207c03c7bfdc768fc6a03f939058a5a8eb1920870f22e3acf5a1a98ec049d",
+        "archive_manifest_check": "PASS"
+      },
+      "thermal_nuclear_capacity.csv": {
+        "bytes": 28951,
+        "sha256": "318b31a812db9cc5d83667b3ae7cea251a74e54d7a91d28db230347de18485b2",
+        "archive_manifest_check": "PASS"
+      },
+      "storage_capacity.csv": {
+        "bytes": 9415,
+        "sha256": "187b7a0ff2ac0048e5f3d78317dbca7c66274746206e17561b634ca48d927627",
+        "archive_manifest_check": "PASS"
+      },
+      "wave_capacity.csv": {
+        "bytes": 243933,
+        "sha256": "880e016b509bf70a39d9da11843bf655fc068de44acde2d6874c1cc46c630eb1",
+        "archive_manifest_check": "PASS"
+      },
+      "annual_capacity_by_technology.csv": {
+        "bytes": 1215,
+        "sha256": "3828f392b6a642705ef23ac0b69075a11aeac55cdeb5069c2947223f0a1a2d2c",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_metadata.json": {
+        "bytes": 7073,
+        "sha256": "11b3e17c07d03234a4b3668dcf35ef3f83fad308ea063a8e9571fa66219bf46e",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_transition_summary.csv": {
+        "bytes": 2382,
+        "sha256": "dac26fce0f9860e89d4acba7021ec9deb3160a851f65f651cb5a5d7be7797274",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/capacity_cohorts.csv.gz": {
+        "bytes": 961111,
+        "sha256": "9d3a155efd5c73a74da5869732b0e0cb245d02d636bd3c9d601e2e6f34d409d0",
+        "archive_manifest_check": "PASS"
+      }
+    },
+    "inventory_bytes": {
+      "annual_storage_operation_by_technology.csv": 383,
+      "dual_export_status.json": 593,
+      "hourly_province_security.csv.gz": 36238474,
+      "output_data_dictionary.csv": 138531,
+      "run_scope.json": 5149,
+      "reservoir_dispatch.npz": 236864149,
+      "wave_capacity.csv": 243933,
+      "solve_report.json": 71557,
+      "annual_resource_accounting_by_province.csv": 8557,
+      "cost_components.csv": 3520,
+      "run_environment.json": 1920,
+      "annual_capacity_by_technology.csv": 1215,
+      "gurobi.log": 306291,
+      "transmission_capacity.csv": 32254,
+      "co2_source_sink_flows.csv": 4834798,
+      "vre_dispatch.npz": 11473624,
+      "solver_telemetry.jsonl": 153937,
+      "build_report.json": 68385,
+      "transmission_flows.npz": 30064496,
+      "preservation_runtime_memory.json": 159,
+      "hydro_capacity.csv": 310766,
+      "input_manifest.csv": 26661,
+      "dac_capacity_capture.csv": 5333,
+      "hourly_national_balance.csv.gz": 797094,
+      "annual_generation_by_technology.csv": 506,
+      "load_center_network_qc.csv": 510,
+      "intra_grid_vre_site_design.csv": 5674391,
+      "time_index.csv": 335459,
+      "load_center_annual_generation.csv": 99124,
+      "wave_dispatch.npz": 967192,
+      "hourly_marginal_prices.csv.gz": 15168099,
+      "storage_capacity.csv": 9415,
+      "hydro_aggregate_capacity.csv": 9698,
+      "preflight_report.json": 13346,
+      "run_summary.json": 2006,
+      "solver_parameters_before_optimize.json": 589,
+      "annual_summary.json": 2006,
+      "result_manifest.json": 13615,
+      "thermal_nuclear_capacity.csv": 28951,
+      "vre_capacity.csv": 3632003,
+      "hydro_cascade_reconciliation_by_node.csv": 12141,
+      "solution_qc.json": 13743,
+      "hydro_cascade_reconciliation_audit.json": 16560,
+      "flexible_load_dispatch.npz": 11763866,
+      "run_identity.json": 6273,
+      "province_annual_load_center_accounts.csv": 3355,
+      "storage_dispatch.npz": 19746236,
+      "annual_capacity_by_province_technology.csv": 35963,
+      "annual_adequacy_by_province.csv": 5757,
+      "run_claim.json": 245,
+      "load_center_annual_balance.csv": 45407,
+      "preservation_report.json": 4188,
+      "load_center_intra_transmission.csv": 130057,
+      "annual_generation_by_province_technology.csv": 15082,
+      "annual_carbon_ccs.json": 621,
+      "model_config_snapshot.json": 19372,
+      "scenario_manifest.json": 6547,
+      "annual_capacity_link_row_scaling.json": 60857,
+      "intra_grid_substation_design.csv": 1037652,
+      "hourly_province_balance.csv.gz": 36994610,
+      "reservoir_station_index.csv": 157869,
+      "hydro_dispatch.npz": 6713778,
+      "annual_constraint_shadow_prices.csv": 383075,
+      "annual_flexible_load_by_province.csv": 8026,
+      "thermal_dispatch.npz": 100845869,
+      "output_catalog.csv": 7528,
+      "monthly_energy_by_technology.csv": 5371,
+      "planning_state_candidate/raw_new_cohorts.csv.gz": 939502,
+      "planning_state_candidate/state_transition_summary.csv": 2382,
+      "planning_state_candidate/capacity_cohorts.csv.gz": 961111,
+      "planning_state_candidate/state_metadata.json": 7073,
+      "visualizations/capacity_by_technology.svg": 5996,
+      "visualizations/generation_by_technology.svg": 5568,
+      "visualizations/national_dispatch_first_week.svg": 16901,
+      "model_archive/original.mps.gz": 4048048342,
+      "model_archive/archive_manifest.json": 609,
+      "model_archive/parameters.prm": 194,
+      "barrier_checkpoint/primal_barx.npy": 331667192,
+      "barrier_checkpoint/barrier_checkpoint_manifest.json": 76749,
+      "barrier_checkpoint/dual_barpi.npy": 407257992
+    }
+  },
+  "2040": {
+    "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "files": {
+      "solution_qc.json": {
+        "bytes": 13784,
+        "sha256": "09f86dc2d2eaf9f6b5b502c7d16519c019346260f6103429022b5e76b12c3d5c",
+        "archive_manifest_check": "PASS"
+      },
+      "solve_report.json": {
+        "bytes": 80184,
+        "sha256": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230",
+        "archive_manifest_check": "PASS"
+      },
+      "preservation_report.json": {
+        "bytes": 4180,
+        "sha256": "00572cfcda785fa13e944e8f3f543b483a6fb34bf2b369ce7d43be8bbcae83f7",
+        "archive_manifest_check": "PASS"
+      },
+      "result_manifest.json": {
+        "bytes": 13450,
+        "sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+        "archive_manifest_check": "NOT_LISTED_SOURCE_SHA_RECORDED"
+      },
+      "run_identity.json": {
+        "bytes": 6220,
+        "sha256": "102ec202659adb05cc4b4403702d2e5ff2805b2c079dad4bd3200f5c3ed6e651",
+        "archive_manifest_check": "PASS"
+      },
+      "build_report.json": {
+        "bytes": 68389,
+        "sha256": "e87a32abc95969640df4f362c6b2384289dd4a780b3b4c56b4ea2114a404651e",
+        "archive_manifest_check": "PASS"
+      },
+      "run_summary.json": {
+        "bytes": 2009,
+        "sha256": "2e6fe330bd9ca710c9645a12f34d7866a95718e65c4e699e99a1a5f465a77841",
+        "archive_manifest_check": "PASS"
+      },
+      "reservoir_station_index.csv": {
+        "bytes": 157869,
+        "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+        "archive_manifest_check": "PASS"
+      },
+      "vre_capacity.csv": {
+        "bytes": 3804184,
+        "sha256": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+        "archive_manifest_check": "PASS"
+      },
+      "hydro_capacity.csv": {
+        "bytes": 354711,
+        "sha256": "8ee576b58faa6ec9c42e8b205b4526cf9c572add409ea62b2e4571008130c489",
+        "archive_manifest_check": "PASS"
+      },
+      "thermal_nuclear_capacity.csv": {
+        "bytes": 38818,
+        "sha256": "6a55ca5625ff34c6808d3d3d9162d6d94ddbf7ecf38cee6b1bbd78fa440c47d0",
+        "archive_manifest_check": "PASS"
+      },
+      "storage_capacity.csv": {
+        "bytes": 11560,
+        "sha256": "03ac0cbcdd6e127173ec4b4a21bb193400706213ab4fead8b6a7fcb14a9198d9",
+        "archive_manifest_check": "PASS"
+      },
+      "wave_capacity.csv": {
+        "bytes": 267280,
+        "sha256": "95201cff62afa2731ad83e514d0c7dbf1966e7d49204d4568c2e7f10883543ba",
+        "archive_manifest_check": "PASS"
+      },
+      "annual_capacity_by_technology.csv": {
+        "bytes": 1209,
+        "sha256": "a05db4dd76b310fd750cbb7cafd2e3ebe7c568ef8daf74e0eb722b0668c07eac",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_metadata.json": {
+        "bytes": 16003,
+        "sha256": "cd3f09c479b72a115c493695017419c403fc9a032099573f4c4e462a046ba308",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_transition_summary.csv": {
+        "bytes": 2439,
+        "sha256": "5c2d24c4108e927b6a6e45a88790bd9a3e9afed1e533ff54b0e3995fcd78e42f",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/capacity_cohorts.csv.gz": {
+        "bytes": 1963977,
+        "sha256": "565a36313b12032da3e2ec89b4b48d0c8cdec381e641d6d35a9a095e3fa1df15",
+        "archive_manifest_check": "PASS"
+      }
+    },
+    "inventory_bytes": {
+      "annual_storage_operation_by_technology.csv": 382,
+      "dual_export_status.json": 593,
+      "hourly_province_security.csv.gz": 36579718,
+      "output_data_dictionary.csv": 134618,
+      "run_scope.json": 5296,
+      "reservoir_dispatch.npz": 236171082,
+      "wave_capacity.csv": 267280,
+      "solve_report.json": 80184,
+      "annual_resource_accounting_by_province.csv": 9266,
+      "cost_components.csv": 3536,
+      "run_environment.json": 2331,
+      "annual_capacity_by_technology.csv": 1209,
+      "gurobi.log": 556417,
+      "transmission_capacity.csv": 37416,
+      "co2_source_sink_flows.csv": 4830320,
+      "vre_dispatch.npz": 11624571,
+      "solver_telemetry.jsonl": 266471,
+      "build_report.json": 68389,
+      "transmission_flows.npz": 30206641,
+      "preservation_runtime_memory.json": 159,
+      "hydro_capacity.csv": 354711,
+      "input_manifest.csv": 27941,
+      "dac_capacity_capture.csv": 19007,
+      "hourly_national_balance.csv.gz": 807390,
+      "annual_generation_by_technology.csv": 502,
+      "load_center_network_qc.csv": 508,
+      "intra_grid_vre_site_design.csv": 5932371,
+      "time_index.csv": 335483,
+      "load_center_annual_generation.csv": 98923,
+      "wave_dispatch.npz": 967427,
+      "hourly_marginal_prices.csv.gz": 14977076,
+      "storage_capacity.csv": 11560,
+      "hydro_aggregate_capacity.csv": 9698,
+      "preflight_report.json": 13642,
+      "run_summary.json": 2009,
+      "annual_summary.json": 2009,
+      "result_manifest.json": 13450,
+      "thermal_nuclear_capacity.csv": 38818,
+      "vre_capacity.csv": 3804184,
+      "hydro_cascade_reconciliation_by_node.csv": 12141,
+      "solution_qc.json": 13784,
+      "hydro_cascade_reconciliation_audit.json": 16559,
+      "flexible_load_dispatch.npz": 11753494,
+      "run_identity.json": 6220,
+      "province_annual_load_center_accounts.csv": 3323,
+      "storage_dispatch.npz": 20188520,
+      "annual_capacity_by_province_technology.csv": 35452,
+      "annual_adequacy_by_province.csv": 5771,
+      "run_claim.json": 249,
+      "load_center_annual_balance.csv": 45396,
+      "preservation_report.json": 4180,
+      "load_center_intra_transmission.csv": 128411,
+      "annual_generation_by_province_technology.csv": 14974,
+      "annual_carbon_ccs.json": 639,
+      "model_config_snapshot.json": 19316,
+      "scenario_manifest.json": 6547,
+      "annual_capacity_link_row_scaling.json": 60857,
+      "intra_grid_substation_design.csv": 1047888,
+      "hourly_province_balance.csv.gz": 37457857,
+      "reservoir_station_index.csv": 157869,
+      "hydro_dispatch.npz": 6967355,
+      "annual_constraint_shadow_prices.csv": 382851,
+      "annual_flexible_load_by_province.csv": 8036,
+      "thermal_dispatch.npz": 99657727,
+      "output_catalog.csv": 7451,
+      "monthly_energy_by_technology.csv": 5350,
+      "planning_state_candidate/raw_new_cohorts.csv.gz": 944542,
+      "planning_state_candidate/state_transition_summary.csv": 2439,
+      "planning_state_candidate/capacity_cohorts.csv.gz": 1963977,
+      "planning_state_candidate/state_metadata.json": 16003,
+      "visualizations/capacity_by_technology.svg": 6002,
+      "visualizations/generation_by_technology.svg": 5571,
+      "visualizations/national_dispatch_first_week.svg": 16895,
+      "model_archive/original.mps.gz": 4051693374,
+      "model_archive/archive_manifest.json": 608,
+      "model_archive/parameters.prm": 194,
+      "barrier_checkpoint/primal_barx.npy": 331667192,
+      "barrier_checkpoint/barrier_checkpoint_manifest.json": 76898,
+      "barrier_checkpoint/dual_barpi.npy": 407257992
+    }
+  },
+  "2050": {
+    "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "files": {
+      "solution_qc.json": {
+        "bytes": 13740,
+        "sha256": "0f1fa6bf2f374f1956364a4a5a24b01e3ec3bc3cc5f1b4f95d9832ce7249cff2",
+        "archive_manifest_check": "PASS"
+      },
+      "solve_report.json": {
+        "bytes": 165192,
+        "sha256": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1",
+        "archive_manifest_check": "PASS"
+      },
+      "preservation_report.json": {
+        "bytes": 4184,
+        "sha256": "00f6e3991f5ff35f8265ef542a89cec1c89b5d07a978eb88a5f6713460cb70af",
+        "archive_manifest_check": "PASS"
+      },
+      "result_manifest.json": {
+        "bytes": 13452,
+        "sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+        "archive_manifest_check": "NOT_LISTED_SOURCE_SHA_RECORDED"
+      },
+      "run_identity.json": {
+        "bytes": 6219,
+        "sha256": "0f8e639f7b430331b30c3c952953154d3b247bfa3e085871b0d7260cb8643912",
+        "archive_manifest_check": "PASS"
+      },
+      "build_report.json": {
+        "bytes": 68390,
+        "sha256": "46310fd789a23a37d4eeb69b0c73d03c13ca7b8903c2fe469f73c1d1623ec6ef",
+        "archive_manifest_check": "PASS"
+      },
+      "run_summary.json": {
+        "bytes": 2001,
+        "sha256": "427a0543f6168eeaafecf6b6e979a5fea31b930a217611aa92f08fe6827fbabb",
+        "archive_manifest_check": "PASS"
+      },
+      "reservoir_station_index.csv": {
+        "bytes": 157869,
+        "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+        "archive_manifest_check": "PASS"
+      },
+      "vre_capacity.csv": {
+        "bytes": 3794637,
+        "sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+        "archive_manifest_check": "PASS"
+      },
+      "hydro_capacity.csv": {
+        "bytes": 355283,
+        "sha256": "1fc630f218e81ab75d6c0c39977739b04847bce7fd13e139b9d28c0f0ce956d5",
+        "archive_manifest_check": "PASS"
+      },
+      "thermal_nuclear_capacity.csv": {
+        "bytes": 39848,
+        "sha256": "72274368520f7a0b5f09fded9bf6b90291c7487a94faca1b5a934c76f3b46883",
+        "archive_manifest_check": "PASS"
+      },
+      "storage_capacity.csv": {
+        "bytes": 11523,
+        "sha256": "e514a31f90d76a5cd1d0c39724839376167f99cc5ca2f94e1b15ddc5648b7612",
+        "archive_manifest_check": "PASS"
+      },
+      "wave_capacity.csv": {
+        "bytes": 267482,
+        "sha256": "95b2326a3707beabf5ad9c2cf77c5f9ce1c262728aa2e6dedbc91249153a44d0",
+        "archive_manifest_check": "PASS"
+      },
+      "annual_capacity_by_technology.csv": {
+        "bytes": 1209,
+        "sha256": "4c4a056e2faf6d5e612fe8e0f8614d63e0ec0c88f1418fc6318101d20b7658ab",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_metadata.json": {
+        "bytes": 101009,
+        "sha256": "6e037825364273199760c7f22f0a3640fe51d981ae9660c561c1d72c84a9adbb",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/state_transition_summary.csv": {
+        "bytes": 2433,
+        "sha256": "69d096fdf0be400f55a9c723a45495f46485b7026bc768605fcb8d2081ca11a7",
+        "archive_manifest_check": "PASS"
+      },
+      "planning_state_candidate/capacity_cohorts.csv.gz": {
+        "bytes": 2941319,
+        "sha256": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+        "archive_manifest_check": "PASS"
+      }
+    },
+    "inventory_bytes": {
+      "annual_storage_operation_by_technology.csv": 380,
+      "dual_export_status.json": 593,
+      "hourly_province_security.csv.gz": 36703243,
+      "output_data_dictionary.csv": 134618,
+      "run_scope.json": 5297,
+      "reservoir_dispatch.npz": 237304510,
+      "wave_capacity.csv": 267482,
+      "solve_report.json": 165192,
+      "annual_resource_accounting_by_province.csv": 9140,
+      "cost_components.csv": 3544,
+      "run_environment.json": 2331,
+      "annual_capacity_by_technology.csv": 1209,
+      "gurobi.log": 338465,
+      "transmission_capacity.csv": 37734,
+      "co2_source_sink_flows.csv": 4835401,
+      "vre_dispatch.npz": 11648028,
+      "solver_telemetry.jsonl": 315415,
+      "build_report.json": 68390,
+      "transmission_flows.npz": 30216478,
+      "preservation_runtime_memory.json": 158,
+      "hydro_capacity.csv": 355283,
+      "input_manifest.csv": 27943,
+      "dac_capacity_capture.csv": 21208,
+      "hourly_national_balance.csv.gz": 808210,
+      "annual_generation_by_technology.csv": 502,
+      "load_center_network_qc.csv": 491,
+      "intra_grid_vre_site_design.csv": 5864456,
+      "time_index.csv": 335459,
+      "load_center_annual_generation.csv": 99460,
+      "wave_dispatch.npz": 963660,
+      "hourly_marginal_prices.csv.gz": 15081372,
+      "storage_capacity.csv": 11523,
+      "hydro_aggregate_capacity.csv": 9698,
+      "preflight_report.json": 13643,
+      "run_summary.json": 2001,
+      "annual_summary.json": 2001,
+      "result_manifest.json": 13452,
+      "thermal_nuclear_capacity.csv": 39848,
+      "vre_capacity.csv": 3794637,
+      "hydro_cascade_reconciliation_by_node.csv": 12141,
+      "solution_qc.json": 13740,
+      "hydro_cascade_reconciliation_audit.json": 16559,
+      "flexible_load_dispatch.npz": 11765692,
+      "run_identity.json": 6219,
+      "province_annual_load_center_accounts.csv": 3335,
+      "storage_dispatch.npz": 20222997,
+      "annual_capacity_by_province_technology.csv": 35540,
+      "annual_adequacy_by_province.csv": 5783,
+      "run_claim.json": 249,
+      "load_center_annual_balance.csv": 45402,
+      "preservation_report.json": 4184,
+      "load_center_intra_transmission.csv": 128426,
+      "annual_generation_by_province_technology.csv": 14971,
+      "annual_carbon_ccs.json": 637,
+      "model_config_snapshot.json": 19313,
+      "scenario_manifest.json": 6547,
+      "annual_capacity_link_row_scaling.json": 60857,
+      "intra_grid_substation_design.csv": 1047103,
+      "hourly_province_balance.csv.gz": 37374810,
+      "reservoir_station_index.csv": 157869,
+      "hydro_dispatch.npz": 6857729,
+      "annual_constraint_shadow_prices.csv": 381719,
+      "annual_flexible_load_by_province.csv": 8018,
+      "thermal_dispatch.npz": 99665169,
+      "output_catalog.csv": 7453,
+      "monthly_energy_by_technology.csv": 5357,
+      "planning_state_candidate/raw_new_cohorts.csv.gz": 959905,
+      "planning_state_candidate/state_transition_summary.csv": 2433,
+      "planning_state_candidate/capacity_cohorts.csv.gz": 2941319,
+      "planning_state_candidate/state_metadata.json": 101009,
+      "visualizations/capacity_by_technology.svg": 6002,
+      "visualizations/generation_by_technology.svg": 5569,
+      "visualizations/national_dispatch_first_week.svg": 16896,
+      "model_archive/original.mps.gz": 4051434705,
+      "model_archive/archive_manifest.json": 610,
+      "model_archive/parameters.prm": 194,
+      "barrier_checkpoint/primal_barx.npy": 331667192,
+      "barrier_checkpoint/barrier_checkpoint_manifest.json": 76911,
+      "barrier_checkpoint/dual_barpi.npy": 407257992
+    }
+  }
+}
