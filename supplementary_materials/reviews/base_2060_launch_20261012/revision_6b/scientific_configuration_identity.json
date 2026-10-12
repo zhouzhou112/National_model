@@ -1,0 +1,78 @@
+{
+  "v9": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+    "resolved_scientific_configuration_sha256": "f579fb49e2213dfc22c81c588fda79f5ba8ea59fa52295b71cf8343e92f62792",
+    "scenario_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "base",
+    "scenario_id": "base",
+    "scenario_family": "cispo_replication",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "evidence_status": "MODEL_BASELINE",
+    "parent_baseline_case_id": null,
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "v9_a12": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9_a12.json",
+    "resolved_scientific_configuration_sha256": "d02df5925b724cff854a0af49e104b073d40110f6e77a943387dfe5b71be6daa",
+    "scenario_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "base",
+    "scenario_id": "base",
+    "scenario_family": "cispo_replication",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "evidence_status": "MODEL_BASELINE",
+    "parent_baseline_case_id": null,
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  }
+}

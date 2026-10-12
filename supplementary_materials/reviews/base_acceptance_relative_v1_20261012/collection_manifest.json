@@ -72,6 +72,26 @@
         "sha256": "3828f392b6a642705ef23ac0b69075a11aeac55cdeb5069c2947223f0a1a2d2c",
         "archive_manifest_check": "PASS"
       },
+      "intra_grid_vre_site_design.csv": {
+        "bytes": 5674391,
+        "sha256": "adaf3de80d7528d697f09f1924ee7459d8cf15d9fe7aaf3fb5ab6bb66ff88953",
+        "archive_manifest_check": "PASS"
+      },
+      "intra_grid_substation_design.csv": {
+        "bytes": 1037652,
+        "sha256": "33e764603b2c2927dfe90fba9be81fe9ccd9382eff7e4afe8d082096957e63d7",
+        "archive_manifest_check": "PASS"
+      },
+      "transmission_capacity.csv": {
+        "bytes": 32254,
+        "sha256": "e162145b239e1e8d7047fccc445deaf87a31ddcb230c3d37fcdbf75439f7d272",
+        "archive_manifest_check": "PASS"
+      },
+      "load_center_intra_transmission.csv": {
+        "bytes": 130057,
+        "sha256": "ed4c3e748d4b6acf29b40e41e3d56ee0ee1501b56ca63cf2eddf3ea18808c449",
+        "archive_manifest_check": "PASS"
+      },
       "planning_state_candidate/state_metadata.json": {
         "bytes": 7073,
         "sha256": "11b3e17c07d03234a4b3668dcf35ef3f83fad308ea063a8e9571fa66219bf46e",
@@ -244,6 +264,26 @@
         "sha256": "a05db4dd76b310fd750cbb7cafd2e3ebe7c568ef8daf74e0eb722b0668c07eac",
         "archive_manifest_check": "PASS"
       },
+      "intra_grid_vre_site_design.csv": {
+        "bytes": 5932371,
+        "sha256": "28f0716b5045b8c2a2a516758fb49b2f551cb23ab2973361ce5b08c25fd62d3a",
+        "archive_manifest_check": "PASS"
+      },
+      "intra_grid_substation_design.csv": {
+        "bytes": 1047888,
+        "sha256": "5a740f76a0ef11ced47b47580387da7cfd6940ec120184970187923b31c5b7e5",
+        "archive_manifest_check": "PASS"
+      },
+      "transmission_capacity.csv": {
+        "bytes": 37416,
+        "sha256": "80ba8adc10712431e22d6ecb8c5e71faca5cf08439067362856e0d8154d1a4a7",
+        "archive_manifest_check": "PASS"
+      },
+      "load_center_intra_transmission.csv": {
+        "bytes": 128411,
+        "sha256": "c44ea47755ead6a512683442981f883e37a0acc20b765b98e3928fa4316be284",
+        "archive_manifest_check": "PASS"
+      },
       "planning_state_candidate/state_metadata.json": {
         "bytes": 16003,
         "sha256": "cd3f09c479b72a115c493695017419c403fc9a032099573f4c4e462a046ba308",
@@ -413,6 +453,26 @@
       "annual_capacity_by_technology.csv": {
         "bytes": 1209,
         "sha256": "4c4a056e2faf6d5e612fe8e0f8614d63e0ec0c88f1418fc6318101d20b7658ab",
+        "archive_manifest_check": "PASS"
+      },
+      "intra_grid_vre_site_design.csv": {
+        "bytes": 5864456,
+        "sha256": "7b895dbfd5e03b5e9064754d13a783eca6abbb68896ccc48d71a9e3dca6f8057",
+        "archive_manifest_check": "PASS"
+      },
+      "intra_grid_substation_design.csv": {
+        "bytes": 1047103,
+        "sha256": "0a391ce610a565e4d79f3f23956f5cd80a59383620d5a8c9bacb9bd116a4a75b",
+        "archive_manifest_check": "PASS"
+      },
+      "transmission_capacity.csv": {
+        "bytes": 37734,
+        "sha256": "5ec4f0cb75eed4fc9bc4f39dc81e068ee54a367621260a8fa4360c7329c4874b",
+        "archive_manifest_check": "PASS"
+      },
+      "load_center_intra_transmission.csv": {
+        "bytes": 128426,
+        "sha256": "69a04695b21f8741f4c4800ffbfb5c86c6b9b72bb9341e7cd9e1a3d162ac7ee0",
         "archive_manifest_check": "PASS"
       },
       "planning_state_candidate/state_metadata.json": {

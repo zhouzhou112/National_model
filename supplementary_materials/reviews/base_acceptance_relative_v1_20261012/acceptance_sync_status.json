@@ -1,0 +1,5 @@
+{
+  "status": "PENDING_CONNECTION",
+  "error": "Connection timed out during banner exchange\nConnection to 127.0.0.1 port 22 timed out\n",
+  "local_acceptance_complete": true
+}

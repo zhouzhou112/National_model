@@ -48,3 +48,48 @@ python supplementary_materials/reviews/base_2060_launch_20261012/audit_cohort_cl
 为及早发现不允许继续的情况，在代码实现及备份前进行了只读 D2 预检查；没有将 A–E 未完成部分描述为通过。历史 handoff 的双向流重叠比例否决口径已被 10 月 12 日额外损耗判据取代，原归档与历史记录不改写。
 
 建议作者/决策层明确：波浪能、燃气 CCS 的小技术容量是否保留（作为具名清理豁免），以及 1 GW 合计是否包含接入/输电资产。也可指定新的、更低 cohort 清理阈值并要求重新审计；当前授权下不能自行降低阈值、增加豁免或忽略超限。收到明确修订后先重新执行停止检查，随后完成 A/B/C 与 D/E 全部门禁，才可 held 提交。单独“放行”不对应任何现存 held 作业。
+
+## 2026-10-12 16:54 英国：按第 6b 节复审通过，2060 构建出现新停止条件
+
+本节追加纠正上文旧停止状态；上文及 `b4a3bfb` 原始证据不改写。当前 **STOP_AUTHOR_REVIEW_REQUIRED**，没有创建云端 release、没有 2060 held Job，没有调用 optimize。原 2050 状态保持字节不变；本地派生状态仅用于本次失败门禁，不可作为生产就绪包。
+
+### 第 6b 节清理门禁
+
+- 发电与储能正删除量 **0.638135708256 GW**；接入与输电 **0.498170601184 GW**，分别小于 1 GW。储能删除为零，保守计入第一组。
+- 已补齐网络各技术的 2050 装机分母。装机 ≥1 GW 的全部比例检查通过；最大比例为 coalccs 的 **0.093959868795%**。波浪与 gasccs 按绝对量披露，不设比例否决。
+- 整组删除 72,566 个资产组、217,698 条 cohort；其中正合计组 50,523 个、非正组 22,043 个。保留组 34 条负 new_build 置零，增加量 **6.640521466e-15 GW**。
+- 删除后 bound-close 94 条风光 cohort，合计减少 **0.000181119526 GW（0.181120 MW）**。逐行原值、新值和原因记录在派生 metadata / `bound_closure_audit.json`。没有修改 retrofit_in/out 或非 GW cohort。
+- 证据：`revision_6b/cleanup_gate.json`、`revision_6b/deletion_by_technology.csv`、`revision_6b/state_structure_audit.json`。旧版 `state_structure_audit.json` 保留原样。原始源状态 capsule 和派生状态的完整文件位于本地 `upstream_2050_source_capsule/`、`upstream_2050_prepared/`；不将其大文件混入 Git。
+
+### 新停止：删除新建 cohort 与历史改造扣减存在关联
+
+使用真实 2060 输入、v9_a12、准备好的继承状态进行 1h build-only，在 `master.py` 原有负容量下界检查处停止：`Inherited thermal retrofit/build cohorts make a capacity floor negative`。这不是求解器 INFEASIBLE 结果，尚未生成完整 LP，因此无 IIS；未放松约束或执行修复性求解。
+
+| 省份 | 技术 | 原继承下界 MW | 删除后下界 MW | 被删、仍在 2060 存续的新建量 MW |
+|---|---|---:|---:|---:|
+| 内蒙古（15） | bio | 0.076722754 | -0.245349727 | 0.322072481 |
+| 黑龙江（23） | coal | 0.093171872 | -0.054065539 | 0.147237412 |
+| 海南（46） | coal | 0.069473465 | -0.092907754 | 0.162381219 |
+| 西藏（54） | gas | 0.121839627 | -0.047471271 | 0.169310898 |
+| 合计 | | | **-0.439794291** | **0.801002010** |
+
+原状态这四组下界均为非负，负下界由本次删除产生。例如内蒙古 bio 的 2060 外生容量 192 MW，而存续 retrofit_out 为 -192.245349727 MW；原来另有 0.322072481 MW 新建量支撑扣减，整组删除后剩余 -0.245349727 MW。其余三组 2060 外生容量为零，删除新建量后只剩负改造扣减。
+
+证据：`revision_6b/thermal_floor_stop.json` 和 `thermal_floor_stop_cohorts.csv`。源 cohort SHA `976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af`；派生 cohort SHA `d7f2f7120c470d3b01d9d23999a8f9e99dbefe4e31217aa56e56ed1eaa598e3e`。
+
+### A–E 交付与边界
+
+- A：新增 `cispo_model/relative_acceptance.py`、只读离线 CLI，导出和保全路径异常隔离。严格 QC 原字段/status/hard_checks 不改，candidate 写出不因相对口径异常中断。边界、异常、历史 2050 对照与配置身份测试见 `tests/test_relative_acceptance.py`。首轮完整回归 427 项通过、跳过 1；补充 BarConvTol 记录与新配置身份测试后的最终回归 **429 项通过、跳过 1，157.837 秒**，日志为本地 `revision_6b/unittest_final.log`，摘要与 SHA 随 Git 保存。2060 的实际解导出联调仍待构建问题解决后的 24h 门禁。
+- B：三年 relative_v1 全 PASS，补齐逐省峰荷、水库最大残差站点/活动库容、各重叠量、微小新建和历史 bound-close 披露。正式作者验收 JSON 已在本地生成；固定服务器已完成三年离线 assessment。正式验收 JSON 同步遇本机→T550 SSH banner 超时，状态见相邻目录 `acceptance_sync_status.json`，不能宣称此最后一步已完成。归档不改写。
+- C：没有重复启动传输。最后成功快照为 **2026-10-12 15:34 UTC（英国16:34）**：三年 T1/T2 均 SHA VERIFIED，已核验 3,806,534,257 bytes；当时正在传输 2030 T3，约 54%。此后本机→T550 握手超时，最新进度和最终 backup_manifest 暂未核验；不能据此认定 T550→云端传输失败，也不能宣称全部备份完成。
+- D1/D2：分组分箱、风光/水电 headroom 及 bound-close 已记录；v9_a12 只增加 A1/A2=1e-5 GW，A3=0。原有科学指纹随配置如实变化。D1 的改造上界/水力系数完整构建审计尚未完成。
+- D3/D4：1h 构建在上述下界检查处失败；矩阵范围、与 2050 行列非零元对照、MPS 身份、A1/A2 白名单、24h 工程门禁均尚未完成，不能填 PASS。
+- E：2060 profile 已准备，除 profile_id/description 外与 2050 逐键相同；尚未部署、冻结 release 或提交。继续保持仅授权 held 提交、作者“放行”前不可释放的边界。
+
+### 复现、差异与作者需定案事项
+
+使用项目 RL Python、Gurobi 13 overlay、`CISPO_DATA_ROOT` 与 `CISPO_WAVE_ROOT` 环境，按序运行 `audit_cleanup_6b.py`、`prepare_state_6b.py`、`build_gate.py --year 2060 --a12 --state-in .../upstream_2050_prepared/planning_state_candidate --output NEW_DIRECTORY`、`diagnose_thermal_floor.py`。准备脚本拒绝覆盖已有派生状态；诊断脚本只读。
+
+第 6b 节没有授权删除/重配 retrofit_out，bound-close 只减少超上界，不解决负下界。直接将负下界裁零会掩盖容量账不闭合，因此不执行。建议最小具名例外：保留上述四组全部 new_build cohort（本次被删存续量合计 0.801002 MW），保留原 retrofit 配对与寿命结构，再重新执行所有清理及工程门禁。若作者坚持所有 <1 MW 新建组均删除，需另定 retrofit_out/retrofit_in 的成对回退规则；这会改变继承 CCS 容量，不在现有授权内。
+
+下一步是作者/决策层明确这一改造关联规则后重新生成新版本派生状态，不能只凭“放行”跳过当前构建失败。Git 基准 `a4f039762392afdf55acb8476b412ec339100238`；本节及配套代码按安全明确清单提交，不带 SI 会话改动。

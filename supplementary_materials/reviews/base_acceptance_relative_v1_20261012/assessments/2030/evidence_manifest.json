@@ -1,0 +1,39 @@
+{
+  "source_sha256": {
+    "solution_qc.json": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a",
+    "solve_report.json": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+    "preservation_report.json": "e50d6aaac2742b6ccf4cdb771bf8ef83fc8fbaf345c7a49a0c5e1105e4da9363",
+    "result_manifest.json": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+    "run_identity.json": "4dd32bb011407720b7f6b30cbef4cec2be230a50d109d68189ee7b30680b3bce",
+    "build_report.json": "0e1ec435227c7c75f0363cd2e9b0a063261ecd3cee7fc29582f2706d6c907915",
+    "planning_state_candidate/state_metadata.json": "11b3e17c07d03234a4b3668dcf35ef3f83fad308ea063a8e9571fa66219bf46e",
+    "planning_state_candidate/capacity_cohorts.csv.gz": "9d3a155efd5c73a74da5869732b0e0cb245d02d636bd3c9d601e2e6f34d409d0",
+    "hourly_province_balance.csv.gz": "a431f72ac7ed3e0e1665d8482b8569da1655a1c2d4c15f547e075df72a04a033",
+    "reservoir_dispatch.npz": "0acaae94b45e5f41bd1c988e4915b29a818b20048233624671f1e7ff7a79ef7a",
+    "vre_capacity.csv": "30602e73d73238de087ef2422818c0ff29337ff8140dd38a599f797c63177aee",
+    "hydro_capacity.csv": "d14207c03c7bfdc768fc6a03f939058a5a8eb1920870f22e3acf5a1a98ec049d",
+    "thermal_nuclear_capacity.csv": "318b31a812db9cc5d83667b3ae7cea251a74e54d7a91d28db230347de18485b2",
+    "storage_capacity.csv": "187b7a0ff2ac0048e5f3d78317dbca7c66274746206e17561b634ca48d927627",
+    "wave_capacity.csv": "880e016b509bf70a39d9da11843bf655fc068de44acde2d6874c1cc46c630eb1",
+    "transmission_capacity.csv": "e162145b239e1e8d7047fccc445deaf87a31ddcb230c3d37fcdbf75439f7d272"
+  },
+  "archive": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760",
+  "sidecar": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/acceptance_relative_v1_20261012",
+  "manifest_verified": [
+    "solution_qc.json",
+    "solve_report.json",
+    "preservation_report.json",
+    "run_identity.json",
+    "build_report.json",
+    "planning_state_candidate/state_metadata.json",
+    "planning_state_candidate/capacity_cohorts.csv.gz",
+    "hourly_province_balance.csv.gz",
+    "reservoir_dispatch.npz",
+    "vre_capacity.csv",
+    "hydro_capacity.csv",
+    "thermal_nuclear_capacity.csv",
+    "storage_capacity.csv",
+    "wave_capacity.csv",
+    "transmission_capacity.csv"
+  ]
+}

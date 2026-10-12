@@ -28,6 +28,8 @@ for year,release in releases.items():
            'run_summary.json','reservoir_station_index.csv','vre_capacity.csv',
            'hydro_capacity.csv','thermal_nuclear_capacity.csv','storage_capacity.csv',
            'wave_capacity.csv','annual_capacity_by_technology.csv',
+           'intra_grid_vre_site_design.csv','intra_grid_substation_design.csv',
+           'transmission_capacity.csv','load_center_intra_transmission.csv',
            'planning_state_candidate/state_metadata.json',
            'planning_state_candidate/state_transition_summary.csv',
            'planning_state_candidate/capacity_cohorts.csv.gz']

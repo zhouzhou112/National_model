@@ -323,6 +323,14 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
         qc["raw_lp_qc"] = read_sidecar("raw_lp_qc.json")
         if not qc["raw_lp_qc"] or qc["raw_lp_qc"].get("status") != "PASS":
             qc["status"] = "FAIL"
+    # This profile must never block strict QC, state export or preservation.
+    try:
+        from .relative_acceptance import add_relative_profile
+        add_relative_profile(qc, report)
+    except Exception as error:
+        qc.setdefault("acceptance_profiles", {})["relative_v1"] = {
+            "status": "ERROR", "error_type": type(error).__name__, "error": str(error)
+        }
     write_json(root / "solution_qc.json", qc)
     result["qc_status"] = qc.get("status")
     stage("summary", lambda: export_result_summary(artifacts, data, config, root))

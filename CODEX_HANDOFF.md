@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12英国16:56 Base2060第6b节重审通过但新构建停止：发电/储能删0.638135708256GW、网络删0.498170601184GW，全部适用比例门禁通过；三年relative_v1离线验收PASS（正式JSON本地完成，T550旁置assessment完成，正式JSON同步待连接恢复）。清理派生状态42971条、34条负new_build置零、94条VRE bound-close；2060 1h build-only发现内蒙古bio/黑龙江coal/海南coal/西藏gas继承下界合计-0.439794MW，原状态无负下界，因删除new_build而保留retrofit_out。已停止，未求解、未部署/创建release/提交held；需作者明确四组共0.801002MW新建cohort的改造关联豁免或成对回退规则。备份未重复启动，最后成功快照15:34UTC三年T1/T2均VERIFIED、2030T3约54%；后续本机→T550握手超时，最新进度未知。详见base_2060_launch_20261012/REVIEW_ZH.md新增第6b节停止记录。
+
 - 2026-10-12英国16:24 T550直连云端备份已启动：用户登记专用公钥后hostname验证到ln301.para.bscc；单次串行rsync PID4080225，三年262文件/15957710678bytes，T1→T2→T3全部纳入，预计磁盘可用仍36.3589%。目标/home/zz2/National_model_server/cloud_backup/<release>/；启动不等于完成，需各层SHA及最终backup_manifest。2060清理/提交按用户本轮明确要求暂停，未恢复。详见cloud_backup_20261012/REVIEW_ZH.md。
 
 - 2026-10-12 T550云端直连准备：用户本轮明确授权在t550生成专用备份密钥并由其登记平台公钥，覆盖原任务不创建密钥的限制，仅限此用途。t550可解析云端真实域名并收到SSH-2.0-ParaCloud；新专用Ed25519身份及独立ssh_config已创建，私钥留t550/600权限、未读取或复制内容。严格主机验证通过，当前Permission denied(publickey)待用户登记公钥；尚未完成直连认证/文件备份，2060 D2停止不变。入口与公钥指纹见SERVER_RUNBOOK本日新增条目。
@@ -9710,3 +9712,10 @@ Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提�
 - 计划262文件/15957710678bytes，原报告OPTIMAL/preservation COMPLETE；T1结果表日志与调度/T2 BarX-BarPi/T3原MPS按层按年串行。使用原manifest或小文件源端SHA，目标逐文件实际SHA校验，最终再查源未变；全部通过后才写backup_manifest。初始可用1481082150912bytes，预计剩余36.3589%，T3全纳入。
 - 当前状态RUNNING，首个2030 T1已SHA核验通过，其余待完成；不宣称已备份成功或科学验收完成。无源端修改/删除、无求解、新作业、后台监控服务或SI改动，私钥未读取/复制。
 - 下一步完成传输与SHA，取回3份backup_manifest并更新交接；2060保持暂停。
+
+
+## 2026-10-12 Base2060第6b节续办：A/B落地，改造关联下界停止
+
+- 2026-10-12英国16:56 Base2060第6b节重审通过但新构建停止：发电/储能删0.638135708256GW、网络删0.498170601184GW，全部适用比例门禁通过；三年relative_v1离线验收PASS（正式JSON本地完成，T550旁置assessment完成，正式JSON同步待连接恢复）。清理派生状态42971条、34条负new_build置零、94条VRE bound-close；2060 1h build-only发现内蒙古bio/黑龙江coal/海南coal/西藏gas继承下界合计-0.439794MW，原状态无负下界，因删除new_build而保留retrofit_out。已停止，未求解、未部署/创建release/提交held；需作者明确四组共0.801002MW新建cohort的改造关联豁免或成对回退规则。备份未重复启动，最后成功快照15:34UTC三年T1/T2均VERIFIED、2030T3约54%；后续本机→T550握手超时，最新进度未知。详见base_2060_launch_20261012/REVIEW_ZH.md新增第6b节停止记录。
+
+Git基准a4f039762392afdf55acb8476b412ec339100238；本条与代码/证据同次提交。新增relative_acceptance与离线CLI、异常隔离、边界/配置测试、v9_a12与2060 profile、独立6b清理/状态准备/1h审计/只读诊断工具。历史严格QC/status/hard_checks和candidate未被科学晋级，原归档/状态保留；派生状态标记仅作失败门禁证据。完整命令、SHA、原427项及最终回归日志位置见报告。D3完整矩阵审计、D4身份/白名单/24h与E部署提交未完成，不能填PASS。当前精确下一步：作者裁定改造关联规则后重生成新派生状态、重跑门禁；另在连接可用时同步正式验收sidecar、只读核对备份manifest，不重复传输。保留其他SI会话23行handoff及稿件改动，不碰modules或在线LaTeX。

@@ -19,3 +19,22 @@
 输出盘点：2030 为 5,314,638,348 bytes，2040 为 5,319,922,492 bytes，2050 为 5,321,841,011 bytes。用户要求重试后固定服务器已连接到 t550，目标盘总量 4,029,616,283,648 bytes、可用 1,481,126,653,952 bytes，备份这三个目录后估算剩余 36.36%，满足 30% 空间门槛。因 D2 停止，未备份 T1/T2/T3。固定机的云端别名无法解析，若续办备份可采用本机流式中转。
 
 停止证据及精确下一步见 `../base_2060_launch_20261012/REVIEW_ZH.md`。
+
+
+## 2026-10-12 续办：三年正式验收
+
+# Base 2030/2040/2050 正式验收（2026-10-12）
+
+作者决定 `ACCEPTED_RELATIVE_V1_20261012`：三年均通过修订后的 relative_v1。冻结归档和原 candidate 标记不变，验收 JSON 作为旁置证据保存。固定服务器每个 release 的 `acceptance_relative_v1_20261012/` 已有离线 assessment；正式验收 JSON 的同步结果以 `acceptance_sync_status.json` 为准。
+
+| 年份 | 原严格失败项（保留） | relative_v1 | 最大功率残差 GW | 成本闭合相对残差 | 双向流额外损耗/系统负荷 | 最大水量残差 m³（暂缓） |
+|---|---|---|---:|---:|---:|---:|
+| 2030 | power_balance, unidirectional_interprovincial_flow, reservoir_transition, objective_components | PASS | 0.00018554081 | 1.76094334e-11 | 9.18896362e-07 | 1.60177381 |
+| 2040 | unidirectional_interprovincial_flow, reservoir_transition, objective_components | PASS | 2.05983415e-06 | 2.22481716e-11 | 1.31236237e-05 | 232.508416 |
+| 2050 | unidirectional_interprovincial_flow, reservoir_transition, objective_components | PASS | 2.65384249e-07 | 1.68087365e-11 | 1.25301109e-05 | 29.2747617 |
+
+水量项按作者决定暂缓逐站判定；站点、小时及活动库容见每年的 `assessments/<year>/acceptance_relative_v1.json`。小于 1 MW 新建量、储能充放电、火电启停与双向流重叠、历史 bound-close 和数值清理披露均保存在对应 assessment 中。省际结果报告净流。工程对偶等级为 `BARRIER_DUAL_ENGINEERING_GRADE`，BarConvTol=1e-4。
+
+执行：`collect_evidence.py` 核对云端小文件；`assess_on_t550.py` 在已核验 T1 备份上运行独立离线评估，不重启备份；`finalize_acceptance.py` 在三年全部 PASS 后写正式记录。各证据 SHA 见 `evidence_manifest.json`、`collection_manifest.json` 与 `acceptance_server_sha256.json`，可追溯回各冻结 `result_manifest.json`。没有原 manifest 条目的文件（包括 manifest 本身）通过两端 SHA 核对。水库逐时残差从原 npz 重算并与原 QC 最大值一致。
+
+差异：无新增科学判据；严格口径仍为 HARD_FAIL，作者验收为独立旁置记录，不伪装成历史严格 QC 已通过。

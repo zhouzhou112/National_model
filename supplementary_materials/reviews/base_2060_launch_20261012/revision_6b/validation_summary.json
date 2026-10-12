@@ -1,0 +1,23 @@
+{
+  "command": "python -m unittest discover -s tests -q",
+  "status": "PASS",
+  "tests": 429,
+  "skipped": 1,
+  "seconds": 157.837,
+  "python": "C:/Users/ZZ/.conda/envs/RL/python.exe",
+  "gurobi_overlay": "output/portfolio_runtime_gurobi13",
+  "log": "supplementary_materials\\reviews\\base_2060_launch_20261012\\revision_6b\\unittest_final.log",
+  "log_sha256": "1e67156486a4a76441c195c83e7d88ef418a62f7a3a9886e389a7b6241bdc79d",
+  "source_sha256": {
+    "cispo_model/relative_acceptance.py": "d9968a49f99e5e87942be9d7280ab8e3154380027450e2b49f4dfc3390108d52",
+    "cispo_model/solution_export.py": "857ac684936a6022a3c58473eaf7eb5704cb04615a685c8e2d70cd8ce37be2be",
+    "cispo_model/solution_preservation.py": "72055d61073b0db82698ca0012c2018b542213cd600c5ffca17251fcebca53c0",
+    "scripts/assess_relative_v1.py": "7a8285f63966541c12feb4b164a7ed9c69de159ff35079b71f23dc07a55ce58e",
+    "tests/test_relative_acceptance.py": "419930cdaa3b09248e138fda94e2c0cd70573fc2fbaedfa0a878c6f0cd0aa987",
+    "config/optimization_numeric_dac_by_year_v9_a12.json": "87a3381c8a312a6387a7726b4c76ed714ae5528e3ee32d56d198545a41bbcb7c",
+    "config/solver_profiles/barrier_checkpoint_full_year_cloud_2060_numeric_v1_threads48.json": "cb1224f674010694b2a20aa9a9e8a4f143ad349b8ade6c9ec7db1adaf49acdbf"
+  },
+  "source_git_base": "a4f039762392afdf55acb8476b412ec339100238",
+  "scripts_syntax": "PASS",
+  "real_2060_solve": "NOT_RUN_BUILD_STOP"
+}

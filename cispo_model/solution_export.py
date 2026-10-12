@@ -2534,6 +2534,46 @@ def export_operational_solution(
         "annual_co2_shipped_mtco2": float(co2_ship.sum()),
     }
     _write_json(carbon, output_dir / "annual_carbon_ccs.json")
+    # Independent author profile: legacy QC, hard checks and enforcement below
+    # remain unchanged. Final preservation supplies the completed solver report.
+    try:
+        from .relative_acceptance import add_relative_profile, capacity_disclosures
+
+        def relative_inputs():
+            worst_row, worst_hour = np.unravel_index(
+                np.abs(reservoir_cycle_residual).argmax(), reservoir_cycle_residual.shape
+            )
+            metadata = data.planning_state.metadata
+            return {
+                "power_by_province": [
+                    {"province_code": int(province),
+                     "annual_peak_load_gw": float(data.load_gw[p].max()),
+                     "maximum_residual_gw": float(np.abs(balance_residual[p]).max())}
+                    for p, province in enumerate(provinces)
+                ],
+                "reservoir_worst": {
+                    "hydrochn_row_id": str(reservoir_index.iloc[worst_row].hydrochn_row_id),
+                    "hour_index": int(hour_start + worst_hour),
+                    "residual_m3": float(reservoir_cycle_residual[worst_row, worst_hour]),
+                    "active_storage_m3": float(reservoir_active_storage[worst_row]),
+                },
+                "barrier_convergence_tolerance": float(config.raw["numerics"]["barrier_convergence_tolerance"]),
+                "disclosures": {
+                    "new_build_below_1mw": capacity_disclosures(output_dir),
+                    "numerical_robustness_audit": artifacts.index.get("numerical_robustness_audit", {}),
+                    "continuation_cleanup": metadata.get("continuation_cleanup", {}),
+                    "continuation_bound_closure": metadata.get("continuation_bound_closure", {}),
+                },
+            }
+
+        report_path = output_dir / "solve_report.json"
+        solve_report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else {}
+        add_relative_profile(qc, solve_report, inputs_factory=relative_inputs)
+        _write_json(qc, output_dir / "solution_qc.json")
+    except Exception as error:
+        qc.setdefault("acceptance_profiles", {})["relative_v1"] = {
+            "status": "ERROR", "error_type": type(error).__name__, "error": str(error)
+        }
     if enforce_qc and qc["status"] != "PASS":
         raise RuntimeError(f"Production solution QC failed: {hard_checks}")
     return qc

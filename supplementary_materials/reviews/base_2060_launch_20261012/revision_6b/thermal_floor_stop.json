@@ -1,0 +1,82 @@
+{
+  "status": "STOP_AUTHOR_REVIEW_REQUIRED",
+  "trigger": "Inherited thermal retrofit/build cohorts make a capacity floor negative",
+  "builder_guard_gw": -1e-09,
+  "affected_province_technology_pairs": 4,
+  "original_negative_floor_count": 0,
+  "total_deficit_gw": 0.0004397942911022392,
+  "maximum_deficit_gw": 0.0002453497269603866,
+  "affected": [
+    {
+      "province_code": 15,
+      "technology": "bio",
+      "asset_id": "15::bio",
+      "exogenous_2060_gw": 0.192,
+      "original_floor_gw": 7.672275439857268e-05,
+      "prepared_floor_gw": -0.0002453497269603866,
+      "deficit_gw": 0.0002453497269603866,
+      "original_active_by_action_gw": {
+        "new_build": 0.00032207248135899104,
+        "retrofit_out": -0.1922453497269604
+      },
+      "prepared_active_by_action_gw": {
+        "retrofit_out": -0.1922453497269604
+      }
+    },
+    {
+      "province_code": 23,
+      "technology": "coal",
+      "asset_id": "23::coal",
+      "exogenous_2060_gw": 0.0,
+      "original_floor_gw": 9.317187215818201e-05,
+      "prepared_floor_gw": -5.406553941194643e-05,
+      "deficit_gw": 5.406553941194643e-05,
+      "original_active_by_action_gw": {
+        "new_build": 0.00014723741157012844,
+        "retrofit_out": -5.406553941194643e-05
+      },
+      "prepared_active_by_action_gw": {
+        "retrofit_out": -5.406553941194643e-05
+      }
+    },
+    {
+      "province_code": 46,
+      "technology": "coal",
+      "asset_id": "46::coal",
+      "exogenous_2060_gw": 0.0,
+      "original_floor_gw": 6.947346530239429e-05,
+      "prepared_floor_gw": -9.29077538096794e-05,
+      "deficit_gw": 9.29077538096794e-05,
+      "original_active_by_action_gw": {
+        "new_build": 0.0001623812191120737,
+        "retrofit_out": -9.29077538096794e-05
+      },
+      "prepared_active_by_action_gw": {
+        "retrofit_out": -9.29077538096794e-05
+      }
+    },
+    {
+      "province_code": 54,
+      "technology": "gas",
+      "asset_id": "54::gas",
+      "exogenous_2060_gw": 0.0,
+      "original_floor_gw": 0.00012183962706975464,
+      "prepared_floor_gw": -4.74712709202268e-05,
+      "deficit_gw": 4.74712709202268e-05,
+      "original_active_by_action_gw": {
+        "new_build": 0.00016931089798998144,
+        "retrofit_out": -4.74712709202268e-05
+      },
+      "prepared_active_by_action_gw": {
+        "retrofit_out": -4.74712709202268e-05
+      }
+    }
+  ],
+  "state_sha256": {
+    "original": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+    "prepared": "d7f2f7120c470d3b01d9d23999a8f9e99dbefe4e31217aa56e56ed1eaa598e3e"
+  },
+  "no_rule_expansion": true,
+  "no_optimization": true,
+  "no_2060_submission": true
+}
