@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12英国16:24 T550直连云端备份已启动：用户登记专用公钥后hostname验证到ln301.para.bscc；单次串行rsync PID4080225，三年262文件/15957710678bytes，T1→T2→T3全部纳入，预计磁盘可用仍36.3589%。目标/home/zz2/National_model_server/cloud_backup/<release>/；启动不等于完成，需各层SHA及最终backup_manifest。2060清理/提交按用户本轮明确要求暂停，未恢复。详见cloud_backup_20261012/REVIEW_ZH.md。
+
 - 2026-10-12 T550云端直连准备：用户本轮明确授权在t550生成专用备份密钥并由其登记平台公钥，覆盖原任务不创建密钥的限制，仅限此用途。t550可解析云端真实域名并收到SSH-2.0-ParaCloud；新专用Ed25519身份及独立ssh_config已创建，私钥留t550/600权限、未读取或复制内容。严格主机验证通过，当前Permission denied(publickey)待用户登记公钥；尚未完成直连认证/文件备份，2060 D2停止不变。入口与公钥指纹见SERVER_RUNBOOK本日新增条目。
 
 - 2026-10-12 Base2060启动前D2停止：按全部模型new_build/GW资产跨cohort合计<1MW拟删1.136306309440GW>1GW；gasccs删除占2050装机0.7218187%、wave100%，均>0.1%。未删状态/改模型/构建/求解/创建release/提交held作业。三年51小文件源SHA、48manifest成员核验通过，尚未正式验收；旧双向流重叠比例判据按本日AGENTS被额外损耗/负荷替代，历史记录保留。t550转发重试已恢复，可用1.481TB，备份后空间估算36.36%，但D2停止故未备份。详见base_2060_launch_20261012/REVIEW_ZH.md；下一步作者明确清理豁免/阈值与总量口径后重审，不把单独放行当现存Job释放。
@@ -9698,3 +9700,13 @@ Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提�
 - 独立ssh_config使用paracloud-backup别名、User a8s001819@BSCC-A8、IdentitiesOnly/BatchMode、禁用agent转发与密码认证；known_hosts仅复制本机既有匹配云域名的公开主机键，StrictHostKeyChecking=yes。
 - 验证：ssh -F /home/zz2/.ssh/paracloud_backup_20261012/ssh_config paracloud-backup hostname 已通过网络和主机验证，到认证阶段Permission denied(password,publickey)，符合尚未登记公钥状态。OpenSSH提示云端未使用PQ交换，未因此降低校验或改云端配置。
 - 下一步：用户登记公钥后，复测上述命令及只读release文件/小文件SHA；认证通过才进行顺序直连备份。当前无文件备份、新作业、后台轮询、模型或SI改动。
+
+
+### 2026-10-12：T550直连认证通过，三年结果备份启动
+
+- Git基准ababe5d；用户本轮授权验证直连并开始备份，同时明确暂停2060清理/提交。
+- 专用公钥认证/严格主机验证PASS，T550直接到ln301.para.bscc。本机转发曾超时，用户重连后确认无先前运行记录，再启动一次性备份PID4080225。
+- 新工具与计划：supplementary_materials/reviews/cloud_backup_20261012/；backup_on_t550.py plan/run、collect_status.py一次性只读；tool_sha256.json记录源码。固定机工具在backup_tools/，操作记录在cloud_backup/_operations/20261012_base2030_2040_2050/。
+- 计划262文件/15957710678bytes，原报告OPTIMAL/preservation COMPLETE；T1结果表日志与调度/T2 BarX-BarPi/T3原MPS按层按年串行。使用原manifest或小文件源端SHA，目标逐文件实际SHA校验，最终再查源未变；全部通过后才写backup_manifest。初始可用1481082150912bytes，预计剩余36.3589%，T3全纳入。
+- 当前状态RUNNING，首个2030 T1已SHA核验通过，其余待完成；不宣称已备份成功或科学验收完成。无源端修改/删除、无求解、新作业、后台监控服务或SI改动，私钥未读取/复制。
+- 下一步完成传输与SHA，取回3份backup_manifest并更新交接；2060保持暂停。

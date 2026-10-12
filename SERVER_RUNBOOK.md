@@ -5221,3 +5221,10 @@ The driver stops at the first non-optimal/QC-failed year. Do not manually copy a
 
 - 专用配置：/home/zz2/.ssh/paracloud_backup_20261012/ssh_config；公钥：同目录id_ed25519.pub；指纹SHA256:rfM+Ce+DJQVYFkZkxMAaROxcS1ZSWqvieAAVZkIs2NY。私钥留服务器且权限600，不读取/复制内容。
 - 连接命令（在T550执行）：ssh -F /home/zz2/.ssh/paracloud_backup_20261012/ssh_config paracloud-backup hostname。真实域名ssh.cn-zhongwei-1.paracloud.com、用户a8s001819@BSCC-A8、22端口；BatchMode/IdentitiesOnly/严格主机验证已配置。用户登记公钥前认证被拒，不能标记为直连备份已完成。
+
+
+## 2026-10-12 T550直连备份启动，尚未完成
+
+- 2026-10-12英国16:24 T550直连云端备份已启动：用户登记专用公钥后hostname验证到ln301.para.bscc；单次串行rsync PID4080225，三年262文件/15957710678bytes，T1→T2→T3全部纳入，预计磁盘可用仍36.3589%。目标/home/zz2/National_model_server/cloud_backup/<release>/；启动不等于完成，需各层SHA及最终backup_manifest。2060清理/提交按用户本轮明确要求暂停，未恢复。详见cloud_backup_20261012/REVIEW_ZH.md。
+
+只读状态命令：python supplementary_materials/reviews/cloud_backup_20261012/collect_status.py。三份最终backup_manifest尚待生成，未修改云端输出或启动2060。
