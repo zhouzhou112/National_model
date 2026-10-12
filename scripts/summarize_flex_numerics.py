@@ -22,7 +22,7 @@ def main():
     p.add_argument("--f-root", type=Path)
     p.add_argument("--output", required=True, type=Path)
     a=p.parse_args(); a.output.mkdir(parents=True,exist_ok=False)
-    rows=[]; metrics=[]; frames=[]; decisions={}; source=[]
+    rows=[]; metrics=[]; frames=[]; decisions={}; storage_decisions={}; source=[]
     roots=[a.p_root]+([a.f_root] if a.f_root else [])
     for root in roots:
         if not root.exists(): continue
@@ -43,6 +43,7 @@ def main():
                 ConstrVio=s.get("ConstrVio"), BoundVio=s.get("BoundVio"),
                 M_gw_gwh=diag.get("maximum_service_residual_gw_gwh"), parallel=False, **params)
             for key,val in diag.get("physical_qc",{}).items():
+                row[key]=val
                 metrics.append(dict(run=d.name,family=key,value=val,unit="GWh" if key.endswith("_gwh") else "GW" if key.endswith("_gw") else "dimensionless"))
             for component, worst in diag.get("thermal_worst",{}).items():
                 row[component+"_worst"]=json.dumps(worst,sort_keys=True)
@@ -55,6 +56,7 @@ def main():
             storage=d/"storage_capacity.csv"
             if storage.exists():
                 table=pd.read_csv(storage)
+                storage_decisions[d.name]=table
                 row["storage_new_gw"]=table.new_capacity_gw.sum(); row["storage_new_gwh"]=table.new_energy_capacity_gwh.sum()
             qc=read(d/"solution_qc.json")
             row["power_balance_gw"]=qc.get("maximum_power_balance_residual_gw")
@@ -62,7 +64,7 @@ def main():
             if profile.exists():
                 frame=pd.read_csv(profile); frame["run"]=d.name; frames.append(frame)
             rows.append(row)
-            for name in ("solver_result.json","solver_parameters.json","service_diagnostics.json","thermal_residual_profile.csv.gz","report.json","solution_qc.json","model_archive/archive_manifest.json","solution_snapshot/snapshot_manifest.json"):
+            for name in ("solver_result.json","solver_parameters.json","service_diagnostics.json","service_decisions.csv","storage_capacity.csv","scope.json","effective_config.json","thermal_residual_profile.csv.gz","report.json","solution_qc.json","model_archive/archive_manifest.json","solution_snapshot/snapshot_manifest.json"):
                 file=d/name
                 if file.exists(): source.append(dict(run=d.name,path=str(file),sha256=hashlib.sha256(file.read_bytes()).hexdigest(),bytes=file.stat().st_size))
     runs=pd.DataFrame(rows); runs.to_csv(a.output/"runs.csv",index=False)
@@ -78,7 +80,17 @@ def main():
             for province in left.index:
                 relative=abs(right[province]-left[province])/max(abs(left[province]),1e-12)
                 if relative>0.01: differences.append(dict(reference=base,run=name,province_code=province,decision=col,reference_value=left[province],value=right[province],absolute_change=abs(right[province]-left[province]),relative_change=relative,denominator_floor=1e-12))
-    pd.DataFrame(differences).to_csv(a.output/"decision_changes_above_1pct.csv",index=False)
+    for name,table in storage_decisions.items():
+        base="F1" if name.startswith("F6_F1") else "F2" if name.startswith("F6_F2") else None
+        if base not in storage_decisions: continue
+        left=storage_decisions[base].set_index(["province_code","technology"])
+        right=table.set_index(["province_code","technology"])
+        for key in left.index:
+            for col in ("new_capacity_gw","new_energy_capacity_gwh"):
+                reference=float(left.loc[key,col]); value=float(right.loc[key,col])
+                relative=abs(value-reference)/max(abs(reference),1e-12)
+                if relative>0.01: differences.append(dict(reference=base,run=name,province_code=key[0],technology=key[1],decision=col,reference_value=reference,value=value,absolute_change=abs(value-reference),relative_change=relative,denominator_floor=1e-12))
+    pd.DataFrame(differences,columns=["reference","run","province_code","technology","decision","reference_value","value","absolute_change","relative_change","denominator_floor"]).to_csv(a.output/"decision_changes_above_1pct.csv",index=False)
     conclusion=dict(state="PENDING_F_SERIES",rule=None)
     if not runs.empty and set(("F1","F2","F4","F5")).issubset(set(runs.run)):
         r=runs.set_index("run"); m=r.M_gw_gwh

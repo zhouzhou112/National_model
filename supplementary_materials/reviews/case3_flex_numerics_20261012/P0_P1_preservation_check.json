@@ -1,0 +1,30 @@
+[
+  {
+    "run": "P0",
+    "parameter_check": true,
+    "archive_status": "COMPLETE",
+    "snapshot_status": "COMPLETE",
+    "available_attributes": [
+      "BarPi",
+      "BarX",
+      "Pi",
+      "RC",
+      "Slack",
+      "X"
+    ]
+  },
+  {
+    "run": "P1",
+    "parameter_check": true,
+    "archive_status": "COMPLETE",
+    "snapshot_status": "COMPLETE",
+    "available_attributes": [
+      "BarPi",
+      "BarX",
+      "Pi",
+      "RC",
+      "Slack",
+      "X"
+    ]
+  }
+]

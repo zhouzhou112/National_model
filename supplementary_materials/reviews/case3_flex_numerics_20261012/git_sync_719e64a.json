@@ -1,0 +1,9 @@
+{
+  "commit": "719e64aafe6b2ea7938a2a2abef6f4e084940249",
+  "github_refs": [
+    "main",
+    "codex/validation-pair-20261005"
+  ],
+  "verification": "git ls-remote both exact SHA",
+  "remaining_existing_handoff_SI_added_lines": 32
+}

@@ -3362,3 +3362,12 @@ Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show jo
 - T550资源初查96逻辑核/可用约51.09GiB，其他用户预测训练占主要内存、未见CISPO求解器。89.35MB实验包传输后连接失效，127.0.0.1:22握手/直接地址均超时；无部署和F启动回执，**F未启动**。部分传输保留、不覆盖；排程准备F1/F2/F3/F4、条件F6、最后F5，16线程串行/保留15GiB。制冷/供暖数据选窗8月5088/12月8016。
 - 只读squeue确认Base2060/5124127 RUNNING/m4cm2108（运行4:17:44），未控制作业。Base2030–2050正式验收与262文件/15.96GB/9层SHA备份沿用共识和既有核验证据，本轮不接触cloud_backup。
 - 待办：恢复T550连接，核验新包与输入SHA并启动F；P/F齐备后按任务书第4节形成三情形结论及H1/H2/H3机制报告。case3全年仍待夜间结论、生产代码和作者确认；本轮无云端提交、release/模型/生产profile修改。Git同步仅明确清单，SI既有未提交内容保留。
+
+
+## 2026-10-12 T550连接恢复、F队列启动（更正前述阻塞状态）
+
+作者恢复连接后，远端原包89345689bytes与本地SHA `e134e5239a1baaf25493fe8897676185f9645e7f5118decfa81d25c26f20f040` 完全一致；因此未重复传输、不删除或覆盖该包。新根 `/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7` 安装281文件逐项SHA PASS，冻结求解源码 `aef0cb7ece951154d2c1bbc70f32d2ac5614b7ff`。安装器提交 `2a940e6`；运行Python为 `/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python`，Gurobi13.0.2。旧历史路径 `/home/zz2/.local/envs/cispo-2030/bin/python` 不存在，未改环境或许可证。
+
+flock启动器PID491302，F1求解进程PID491311（已只读实查CPU/RSS），启动可用约60.17GiB；16线程串行，现有 `run_control/numerical_validation_solver.lock` 控制本实验独占求解器。F1/F2/F3/F4，若F1/F2残差失败则插入F6，F5最后单独执行。每次资源门禁与2秒RSS日志保存；105GiB可用条件未满足时F5等待、不挤占其他用户训练。此时只确认F1开始加载/构建，未宣称求解完成。
+
+P0和P1的原模型归档、BarX/BarPi/X/Pi/RC/Slack快照全部COMPLETE，参数回读逐项匹配；P1的完整M=0.0008026169445524904GWh，低于本任务1MWh门槛，旧严格标签仍保留。本机P2继续运行。完整结论待F1/F2/F5及F4时长序列、必要F6齐备。未改变Base2060/备份/生产源码或profile，未提交云端作业。证据 `T550_install_launch.log`、远端 `install_validation.json`/`launch_receipt.json`/`queue_active.json`。

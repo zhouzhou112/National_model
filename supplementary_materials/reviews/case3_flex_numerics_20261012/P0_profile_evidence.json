@@ -1,0 +1,22 @@
+[
+  {
+    "component": "cooling",
+    "cells": 271560,
+    "above_1mwh_count": 1,
+    "max_gwh": 7.220764389091675,
+    "worst_province": 35,
+    "worst_hour": 1542,
+    "worst_distance_to_cycle_boundary_h": 1542,
+    "max_cycle_hour0_gwh": 0.0
+  },
+  {
+    "component": "heating",
+    "cells": 271560,
+    "above_1mwh_count": 6,
+    "max_gwh": 0.1633027206803779,
+    "worst_province": 62,
+    "worst_hour": 3177,
+    "worst_distance_to_cycle_boundary_h": 3177,
+    "max_cycle_hour0_gwh": 8.185633822660438e-18
+  }
+]
