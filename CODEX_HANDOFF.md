@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12 T550云端直连准备：用户本轮明确授权在t550生成专用备份密钥并由其登记平台公钥，覆盖原任务不创建密钥的限制，仅限此用途。t550可解析云端真实域名并收到SSH-2.0-ParaCloud；新专用Ed25519身份及独立ssh_config已创建，私钥留t550/600权限、未读取或复制内容。严格主机验证通过，当前Permission denied(publickey)待用户登记公钥；尚未完成直连认证/文件备份，2060 D2停止不变。入口与公钥指纹见SERVER_RUNBOOK本日新增条目。
+
 - 2026-10-12 Base2060启动前D2停止：按全部模型new_build/GW资产跨cohort合计<1MW拟删1.136306309440GW>1GW；gasccs删除占2050装机0.7218187%、wave100%，均>0.1%。未删状态/改模型/构建/求解/创建release/提交held作业。三年51小文件源SHA、48manifest成员核验通过，尚未正式验收；旧双向流重叠比例判据按本日AGENTS被额外损耗/负荷替代，历史记录保留。t550转发重试已恢复，可用1.481TB，备份后空间估算36.36%，但D2停止故未备份。详见base_2060_launch_20261012/REVIEW_ZH.md；下一步作者明确清理豁免/阈值与总量口径后重审，不把单独放行当现存Job释放。
 
 - 2026-10-12英国12:10（北京19:10）取证：原2050/4844528已COMPLETED/0:0，结束英国04:54:27（北京11:54:27），总运行11天13小时44分50秒；Gurobi716轮OPTIMAL、runtime996416.02秒，目标5751972.5053 million CNY。终轮打印PInf2.25e-4/DInf1.45e-6/Compl6.01e-5、目标差4631.44，callback相对差0.08052%；717条连续/8源SHA PASS，stderr空。preservation COMPLETE/errors=[]，BarPi导出可用。原冻结包旧QC HARD_FAIL/PENDING不能自动当新口径结论；新口径功率平衡0.265kW和成本相对闭合1.68e-11可过，但双向流重叠0.12034%高于0.01%约12倍、额外损耗198.73GWh，水库29.27m³尚缺逐站分母复核，科学验收未全部通过。证据`base_2050_continuation_20260930/status_20261012T111059Z/`。Git基准a4d4727；仅取证/交接小文件同步，本次交接条目部分暂存，其他SI未提交内容/稿件留工作区。未改作业/归档/模型，无scontrol/scancel、Stage B、新求解、部署或监听。下一步按作者新口径验收，不据此自动启动2060/case3。
@@ -9685,3 +9687,14 @@ Git起点 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本条随落地代码提�
 - 初次固定机连接失败；用户要求重试后127.0.0.1:22/BatchMode成功到t550，盘总4029616283648、可用1481126653952bytes；云端别名在固定机未解析。三个output共15956401851bytes，备份后估算36.36%空闲。因D2停止未备份、未创建backup_manifest。
 - 云端仅只读读取/盘点，未操作旧作业、未提交任何新作业或held，未Stage B/case3、未建立监听，未访问凭据、SI modules或在线LaTeX。审计语法/独立分组/SHA检查PASS，无生产代码更改所以未运行全套模型测试。
 - 精确下一步：请作者/决策层明确wave/gasccs是否具名豁免、1GW是否含网络或修改清理阈值。新规则先复审，再依次完成A/B/C/D/E，最终只held提交，收到放行后释放；当前没有可释放Job。
+
+
+### 2026-10-12：T550到云端直连身份准备，待平台公钥登记
+
+- Git基准 b4a3bfb3b622183eb1ee0ee2b9789c53f87a5a51；仅更新本任务交接/服务器说明，不包含SI会话的未提交块。
+- 用户明确要求在T550生成公钥并交其添加至超算平台，目的是T550直接备份云端文件；该新授权覆盖此前任务书不创建密钥限制，不授权恢复2060清理/提交。
+- 网络：t550/zz2，OpenSSH10.2p1；真实云域名解析到36.103.203.5/.6，22端口返回SSH-2.0-ParaCloud。纠正：此前只因别名未配置而失败，不是已证实网络不通。
+- 新独立目录 /home/zz2/.ssh/paracloud_backup_20261012（700）；ssh-keygen生成专用Ed25519，私钥600、只保存在T550、未读取内容，公钥交用户。无覆盖既有身份或全局SSH配置。公钥指纹 SHA256:rfM+Ce+DJQVYFkZkxMAaROxcS1ZSWqvieAAVZkIs2NY；不把公私钥内容提交Git。
+- 独立ssh_config使用paracloud-backup别名、User a8s001819@BSCC-A8、IdentitiesOnly/BatchMode、禁用agent转发与密码认证；known_hosts仅复制本机既有匹配云域名的公开主机键，StrictHostKeyChecking=yes。
+- 验证：ssh -F /home/zz2/.ssh/paracloud_backup_20261012/ssh_config paracloud-backup hostname 已通过网络和主机验证，到认证阶段Permission denied(password,publickey)，符合尚未登记公钥状态。OpenSSH提示云端未使用PQ交换，未因此降低校验或改云端配置。
+- 下一步：用户登记公钥后，复测上述命令及只读release文件/小文件SHA；认证通过才进行顺序直连备份。当前无文件备份、新作业、后台轮询、模型或SI改动。

@@ -5213,3 +5213,11 @@ The driver stops at the first non-optimal/QC-failed year. Do not manually copy a
 - 2026-10-12 Base2060启动前D2停止：按全部模型new_build/GW资产跨cohort合计<1MW拟删1.136306309440GW>1GW；gasccs删除占2050装机0.7218187%、wave100%，均>0.1%。未删状态/改模型/构建/求解/创建release/提交held作业。三年51小文件源SHA、48manifest成员核验通过，尚未正式验收；旧双向流重叠比例判据按本日AGENTS被额外损耗/负荷替代，历史记录保留。t550转发重试已恢复，可用1.481TB，备份后空间估算36.36%，但D2停止故未备份。详见base_2060_launch_20261012/REVIEW_ZH.md；下一步作者明确清理豁免/阈值与总量口径后重审，不把单独放行当现存Job释放。
 
 - 只读复现及逐文件SHA：supplementary_materials/reviews/base_2060_launch_20261012/REVIEW_ZH.md。held Job不存在；未备份、部署或改写任何冻结release。固定机转发命令：ssh -o BatchMode=yes -o HostName=127.0.0.1 -o BindAddress=127.0.0.1 national-model-server。
+
+
+## 2026-10-12 T550云端直连准备：待公钥登记
+
+- 2026-10-12 T550云端直连准备：用户本轮明确授权在t550生成专用备份密钥并由其登记平台公钥，覆盖原任务不创建密钥的限制，仅限此用途。t550可解析云端真实域名并收到SSH-2.0-ParaCloud；新专用Ed25519身份及独立ssh_config已创建，私钥留t550/600权限、未读取或复制内容。严格主机验证通过，当前Permission denied(publickey)待用户登记公钥；尚未完成直连认证/文件备份，2060 D2停止不变。入口与公钥指纹见SERVER_RUNBOOK本日新增条目。
+
+- 专用配置：/home/zz2/.ssh/paracloud_backup_20261012/ssh_config；公钥：同目录id_ed25519.pub；指纹SHA256:rfM+Ce+DJQVYFkZkxMAaROxcS1ZSWqvieAAVZkIs2NY。私钥留服务器且权限600，不读取/复制内容。
+- 连接命令（在T550执行）：ssh -F /home/zz2/.ssh/paracloud_backup_20261012/ssh_config paracloud-backup hostname。真实域名ssh.cn-zhongwei-1.paracloud.com、用户a8s001819@BSCC-A8、22端口；BatchMode/IdentitiesOnly/严格主机验证已配置。用户登记公钥前认证被拒，不能标记为直连备份已完成。
