@@ -43,3 +43,8 @@
 ## 2026-10-12 连接恢复后的完成核验
 
 T550原自主备份完成：262文件、15,957,710,678bytes，三年T1/T2/T3共9层SHA VERIFIED；三个backup_manifest均COMPLETE且与计划path/bytes/SHA逐项一致，见cloud_backup_20261012/backup_completion_verification.json。没有重复启动传输。三年正式验收JSON已同步到各release旁acceptance_relative_v1_20261012/，远端SHA与本地相同，acceptance_sync_status.json=VERIFIED，原归档未改。上海收口后2060在广东PHS极小余量处按D2停止，尚无新release/held作业。
+
+
+## 2026-10-12 字节SHA同步纠正（保留历史原件）
+
+此前“服务器SHA与本地一致”表述不准确：finalize_acceptance.py通过read_text比较，规范化了本地CRLF与服务器LF；内容完全一致但原字节SHA不同。本轮verify_acceptance_bytes.py复核逐字节差异只为换行，保留canonical原件，在每个sidecar下新增source_bytes/acceptance_relative_v1.json，严格核对本地原字节SHA。状态VERIFIED_BYTES_WITH_CANONICAL_LF，三份副本全部通过，详见acceptance_byte_sync_verification.json。2050本地/精确副本SHA af768ce2860b9533dd0e9098976165521dea1adb80196020403a726fc9dd244b，与2060派生state及云端launch引用相同。旧服务器LF版SHA10baa056...保留，并未改变验收内容。finalize_acceptance.py现在调用精确核验步骤，不再把文本相等当字节相等。

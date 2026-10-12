@@ -219,3 +219,10 @@ RHS最小项为山西gchp `thermal_non_ccs_capacity_accounting_gchp[3]`，2.2204
 E工具 deploy_2060.py 仅有prepare/preflight/submit/collect，没有release入口；源必须已提交且相关工程无dirty，上传后逐文件核验，submit使用--hold且防重复attempt。base_2060.sbatch运行前验证AllocTRES64CPU/750G/billing64、UNLIMITED、可用内存>=700GiB。提交前仍须新云端合同/preflight通过；当前本条不预宣称held成功，后续收据另记。
 
 备份与验收JSON同步均维持已核验完成（262文件、15.958GB、9层SHA VERIFIED；3份正式JSON远端SHA一致），未重复传输或建立监听。AGENTS.md作者第4条同步纳入本轮提交，SI目录/在线LaTeX及其他会话未提交内容不动。
+
+
+## 2026-10-12 Base2060 held提交检查点与验收同步更正
+
+- 2026-10-12英国18:09:31（云端北京时间10月13日01:09:31）Base2060已按授权held提交：Job5124127，PENDING/JobHeldUser/Priority0，ReqTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0，未释放。新release20261012_base2060_v9a12_t48_m750_tol1e4_v1冻结源码680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0，371源码/50输入SHA通过，release清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9；云端合同/preflight_v2 PASS，D3/D4/436测试通过。备份262文件9层SHA完成。验收JSON此前仅LF规范化文本一致（Windows CRLF与服务器LF字节SHA不同），本轮保留原件并另存source_bytes精确副本，三年逐字节SHA现均VERIFIED_BYTES_WITH_CANONICAL_LF；科学内容无差异。停止于held检查点，只有用户明确回复放行后才可release，节点可用内存>=700GiB检查已写batch。
+
+运行命令：deploy_2060.py prepare、preflight、submit、collect。首次preflight因本地部署助手覆盖PYTHONPATH而漏掉既有云端xarray依赖，合同本身PASS；修正为保留环境PYTHONPATH，在新preflight_v2目录通过，无依赖安装/模型改动。冻结batch原本正确保留PYTHONPATH，不改冻结包。held收据/冻结身份/实际求解器参数见revision_6d_general/held_submission.json、cloud_source_repo_sha256.json、continuation_contract_check.json、cloud_preflight.json。release源提交680a5c4；后续提交仅同步收据、操作助手修复和文档，不替换冻结源码。下一步停等作者放行，严禁自动release、Stage B、case3或后台监听。保留其他SI会话32行handoff及稿件。

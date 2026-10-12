@@ -75,6 +75,10 @@ print(json.dumps(result))
         status=dict(status='PENDING_CONNECTION',error=str(error),local_acceptance_complete=True)
     (HERE/'acceptance_sync_status.json').write_text(json.dumps(status,indent=2)+'\n',encoding='utf-8')
     if status['status']!='VERIFIED':raise RuntimeError(status['error'])
-    print('Three acceptance sidecars written and server SHA verified.')
+    # read_text equality above normalizes Windows CRLF; it is not byte equality.
+    # Preserve canonical server copies and verify exact source-byte siblings.
+    from verify_acceptance_bytes import main as verify_bytes
+    verify_bytes()
+    print('Three acceptance sidecars content-verified; exact source-byte copies SHA verified.')
 
 if __name__=='__main__':main()

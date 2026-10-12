@@ -1,8 +1,34 @@
 {
-  "status": "VERIFIED",
-  "server_sha256": {
-    "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/acceptance_relative_v1_20261012/acceptance_relative_v1.json": "3e6301d268fca6cfac93b74d3b32f92f9e4c811ba44edf22359ff8b4d0b36e7b",
-    "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/acceptance_relative_v1_20261012/acceptance_relative_v1.json": "19bf4596ae081d6e3ff75c5023839d3c5e01d0b80109f74f6bfa612f3fc4c2a6",
-    "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/acceptance_relative_v1_20261012/acceptance_relative_v1.json": "10baa0564e5d18a0e350569240a1afb3d2742ea1d65853c80324b79a6c5b09d9"
-  }
+  "status": "VERIFIED_BYTES_WITH_CANONICAL_LF",
+  "historical_canonical_files_unchanged": true,
+  "records": [
+    {
+      "planning_year": 2030,
+      "canonical_path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/acceptance_relative_v1_20261012/acceptance_relative_v1.json",
+      "canonical_sha256": "3e6301d268fca6cfac93b74d3b32f92f9e4c811ba44edf22359ff8b4d0b36e7b",
+      "canonical_lf_content_equal": true,
+      "source_bytes_path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/acceptance_relative_v1_20261012/source_bytes/acceptance_relative_v1.json",
+      "local_sha256": "952f34bc32e1aab89466def7b8d8f7366d566fbb1ae341063a8ef86d5957f2fe",
+      "server_source_bytes_sha256": "952f34bc32e1aab89466def7b8d8f7366d566fbb1ae341063a8ef86d5957f2fe"
+    },
+    {
+      "planning_year": 2040,
+      "canonical_path": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/acceptance_relative_v1_20261012/acceptance_relative_v1.json",
+      "canonical_sha256": "19bf4596ae081d6e3ff75c5023839d3c5e01d0b80109f74f6bfa612f3fc4c2a6",
+      "canonical_lf_content_equal": true,
+      "source_bytes_path": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/acceptance_relative_v1_20261012/source_bytes/acceptance_relative_v1.json",
+      "local_sha256": "1f099891fd86aea37e894e93416f76a7492cb2d6bb78b20ca4a8954581864943",
+      "server_source_bytes_sha256": "1f099891fd86aea37e894e93416f76a7492cb2d6bb78b20ca4a8954581864943"
+    },
+    {
+      "planning_year": 2050,
+      "canonical_path": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/acceptance_relative_v1_20261012/acceptance_relative_v1.json",
+      "canonical_sha256": "10baa0564e5d18a0e350569240a1afb3d2742ea1d65853c80324b79a6c5b09d9",
+      "canonical_lf_content_equal": true,
+      "source_bytes_path": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/acceptance_relative_v1_20261012/source_bytes/acceptance_relative_v1.json",
+      "local_sha256": "af768ce2860b9533dd0e9098976165521dea1adb80196020403a726fc9dd244b",
+      "server_source_bytes_sha256": "af768ce2860b9533dd0e9098976165521dea1adb80196020403a726fc9dd244b"
+    }
+  ],
+  "correction": "Earlier VERIFIED used read_text equality; canonical LF and local CRLF had different byte SHA. Exact immutable source_bytes copies now verified."
 }

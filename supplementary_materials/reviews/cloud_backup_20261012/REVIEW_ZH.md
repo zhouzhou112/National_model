@@ -43,3 +43,6 @@ T550 的专用公钥登记后已成功直连，远端返回 `ln301.para.bscc`。
 ## 2026-10-12 连接恢复后的完成核验
 
 T550原自主备份完成：262文件、15,957,710,678bytes，三年T1/T2/T3共9层SHA VERIFIED；三个backup_manifest均COMPLETE且与计划path/bytes/SHA逐项一致，见cloud_backup_20261012/backup_completion_verification.json。没有重复启动传输。三年正式验收JSON已同步到各release旁acceptance_relative_v1_20261012/，远端SHA与本地相同，acceptance_sync_status.json=VERIFIED，原归档未改。上海收口后2060在广东PHS极小余量处按D2停止，尚无新release/held作业。
+
+
+补充：备份262原文件的SHA核验结论不变；旁置验收JSON的跨Windows/Linux换行字节差异已单独纠正，新增source_bytes精确副本，原canonical与output_8760均未改，见base_acceptance_relative_v1_20261012/acceptance_byte_sync_verification.json。

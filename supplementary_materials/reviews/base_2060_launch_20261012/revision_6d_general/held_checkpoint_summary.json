@@ -1,0 +1,16 @@
+{
+  "job_id": "5124127",
+  "status": "HELD_NOT_RELEASED",
+  "release_source_commit": "680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0",
+  "release_manifest_sha256": "41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9",
+  "required_resources": {
+    "cpu": 64,
+    "mem": "750G",
+    "billing": 64,
+    "time_limit": "UNLIMITED"
+  },
+  "all_gates": "PASS",
+  "backup": "COMPLETE",
+  "acceptance_sync": "VERIFIED_BYTES_WITH_CANONICAL_LF",
+  "next_action": "Await explicit user \u653e\u884c; no automatic release"
+}

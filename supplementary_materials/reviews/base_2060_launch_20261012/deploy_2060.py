@@ -59,7 +59,7 @@ export https_proxy="$http_proxy" HTTP_PROXY="$http_proxy" HTTPS_PROXY="$http_pro
 export PYTHONDONTWRITEBYTECODE=1 PYTHONUTF8=1
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 export CISPO_DATA_ROOT="{REMOTE}/data_overlay"
-export PYTHONPATH="{REMOTE}/repo"
+export PYTHONPATH="{REMOTE}/repo${{PYTHONPATH:+:$PYTHONPATH}}"
 export UPSTREAM_STATE="{STATE}"
 cd "{REMOTE}/repo"
 '''
@@ -146,7 +146,7 @@ print(json.dumps(dict(status='FROZEN',source_commit=identity['source_commit'],re
     elif mode=='preflight':
         script=environment()+f'''
 "$PYTHON" "{REMOTE}/validate_2060.py" --contract-only > "{REMOTE}/contract.log" 2>&1
-"$PYTHON" scripts/run_cispo_2030_full_year.py --config {CONFIG} --solver-config {PROFILE} --planning-year 2060 --horizon full_year --state-in "$UPSTREAM_STATE" --allow-candidate-state-in --engineering-barrier-checkpoint-only --preflight-only --output-dir "{REMOTE}/preflight" > "{REMOTE}/preflight.log" 2>&1
+"$PYTHON" scripts/run_cispo_2030_full_year.py --config {CONFIG} --solver-config {PROFILE} --planning-year 2060 --horizon full_year --state-in "$UPSTREAM_STATE" --allow-candidate-state-in --engineering-barrier-checkpoint-only --preflight-only --output-dir "{REMOTE}/preflight_v2" > "{REMOTE}/preflight.log" 2>&1
 '''
         code='script='+repr(script)+'\n'+'''
 assert not (root/'submission_attempt.json').exists()
@@ -155,15 +155,15 @@ if p.returncode:
     for name in ['contract.log','preflight.log']:
         if (root/name).exists():print((root/name).read_text()[-4500:])
     raise SystemExit(p.returncode)
-assert json.loads((root/'preflight/preflight_report.json').read_text())['status']=='PASS'
+assert json.loads((root/'preflight_v2/preflight_report.json').read_text())['status']=='PASS'
 assert json.loads((root/'continuation_contract_check.json').read_text())['status']=='PASS'
-print(json.dumps(dict(status='PASS',contract=json.loads((root/'continuation_contract_check.json').read_text()),preflight=json.loads((root/'preflight/preflight_report.json').read_text()))))
+print(json.dumps(dict(status='PASS',contract=json.loads((root/'continuation_contract_check.json').read_text()),preflight=json.loads((root/'preflight_v2/preflight_report.json').read_text()))))
 '''
         result=json.loads(remote(code,'cloud_preflight'));(EVIDENCE/'cloud_preflight.json').write_text(json.dumps(result,indent=2)+'\n');print('Cloud contract and preflight PASS')
     elif mode=='submit':
         exports='ALL,SOURCE_RELEASE='+ENV_SOURCE+',UPSTREAM_STATE='+STATE
         code='exports='+repr(exports)+'\n'+'''
-assert json.loads((root/'preflight/preflight_report.json').read_text())['status']=='PASS'
+assert json.loads((root/'preflight_v2/preflight_report.json').read_text())['status']=='PASS'
 assert json.loads((root/'continuation_contract_check.json').read_text())['status']=='PASS'
 assert not (root/'submission_attempt.json').exists(),'No blind repeat submissions'
 subprocess.check_call(['sha256sum','--quiet','-c','release_files.sha256'],cwd=str(root))

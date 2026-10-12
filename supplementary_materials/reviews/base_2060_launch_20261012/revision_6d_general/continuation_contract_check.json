@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "planning_year": 2060,
+  "boundary_year": 2050,
+  "cohort_rows": 43286,
+  "source_commit": "680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0",
+  "scientific_identity": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261012_base2060_v9a12_t48_m750_tol1e4_v1/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+    "resolved_scientific_configuration_sha256": "d02df5925b724cff854a0af49e104b073d40110f6e77a943387dfe5b71be6daa",
+    "scenario_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "base",
+    "scenario_id": "base",
+    "scenario_family": "cispo_replication",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "evidence_status": "MODEL_BASELINE",
+    "parent_baseline_case_id": null,
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "actual_solver_parameters": {
+    "Method": 2,
+    "Threads": 48,
+    "NumericFocus": 2,
+    "ScaleFlag": 2,
+    "Presolve": 2,
+    "Aggregate": 1,
+    "BarConvTol": 0.0001,
+    "Crossover": 0,
+    "SolutionTarget": 1,
+    "FeasibilityTol": 1e-06,
+    "OptimalityTol": 1e-06,
+    "MarkowitzTol": 0.01,
+    "BarIterLimit": 2000000000,
+    "DualReductions": 1,
+    "InfUnbdInfo": 0,
+    "TimeLimit": null,
+    "SoftMemLimit": null,
+    "MemLimit": null,
+    "WorkLimit": null,
+    "BarOrder": -1,
+    "BarCorrectors": -1,
+    "BarHomogeneous": -1,
+    "CrossoverBasis": 1,
+    "LPWarmStart": -1,
+    "Seed": 0,
+    "PreDual": -1,
+    "PrePasses": -1,
+    "PreSparsify": -1
+  },
+  "upstream_remains_unaccepted_candidate": true,
+  "author_acceptance_sidecar_sha256": "af768ce2860b9533dd0e9098976165521dea1adb80196020403a726fc9dd244b",
+  "optimize_called": false
+}
