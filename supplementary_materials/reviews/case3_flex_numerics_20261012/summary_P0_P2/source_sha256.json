@@ -1,0 +1,146 @@
+[
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solver_result.json",
+    "sha256": "55b62b660f305755b117f747a4ba8844d727432971121a666e851fa1f702fb29",
+    "bytes": 306
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solver_parameters.json",
+    "sha256": "307246985fb64583fe181e50f6544dfb1a0a2b8568f33c9e6530a5dd235fd83c",
+    "bytes": 281
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\service_diagnostics.json",
+    "sha256": "d407ee69ea199b4492b5ba477b2c6cb86818afab70fd88d47d1c1cc9a479d8c7",
+    "bytes": 1965
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\service_decisions.csv",
+    "sha256": "6f81495dc95cd8421f3b123622cd4304173e29ac2c35189658debb3f43fe5ab0",
+    "bytes": 4063
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\thermal_residual_profile.csv.gz",
+    "sha256": "b393f1d2d5dae65c5fa575acae0025aaed51ca195df556bfa5edab4792aa770a",
+    "bytes": 3600495
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\report.json",
+    "sha256": "b9a8846c660a65d3c918f2326b809c66d3369735c2905de5b39f4ceffd9def65",
+    "bytes": 34457
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\model_archive\\archive_manifest.json",
+    "sha256": "e98c3560d21751e9136eca4c3b6426d73187f64e8dd44a196fa0b6703b62fc92",
+    "bytes": 1596
+  },
+  {
+    "run": "P0",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "d4aa23fad78215da9b661228e69b4e9c4cdc5de91730553196daa64f7d9e30f0",
+    "bytes": 2084
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solver_result.json",
+    "sha256": "fa3ba1b2f44701560a86aa25f7e61cbee57a19fa18d2ff7f751da9f0af663964",
+    "bytes": 311
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solver_parameters.json",
+    "sha256": "2f3fffcfa5e6d3fd0e57dc5232a960021eef4e8dc7cf8b9e3a9d3ee609378771",
+    "bytes": 282
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\service_diagnostics.json",
+    "sha256": "77b6707df903b6ee917f18a971e978b16c6c845d1dc8cb0c0e7857b59a8c142f",
+    "bytes": 1973
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\service_decisions.csv",
+    "sha256": "22b810a40fb16e9bd0c95eec7334b15c89f6605553eff698b99964286408303c",
+    "bytes": 4064
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\thermal_residual_profile.csv.gz",
+    "sha256": "8e76b30b0faa111b76275b93dc15a64eba50ef70c9b543fb43a64cd40edb21a2",
+    "bytes": 3445270
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\report.json",
+    "sha256": "65ab93bc4bb6bff408943b0a95f8044296589988d6d5247b6341b5ea00d5dd81",
+    "bytes": 34451
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\model_archive\\archive_manifest.json",
+    "sha256": "4b0c9497245427ec95f0edd2b4a0595f9c23ea9752199dbb3f12124214877243",
+    "bytes": 1596
+  },
+  {
+    "run": "P1",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "6d75ab429480951743a72e180f88c00fe5d662787601718410f37c846c87054a",
+    "bytes": 2084
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solver_result.json",
+    "sha256": "4b1a2d9ffe1e38cb8af67216208aafa6ead59bd4b041a14730a29abda094df1e",
+    "bytes": 310
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solver_parameters.json",
+    "sha256": "5796703856af9ac08c035f36eca19fb4788ab912502b854cfce381f3383e0fcf",
+    "bytes": 281
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\service_diagnostics.json",
+    "sha256": "0e117efe4839c90c7a447fa9d0299f057e31f767bd00027219038be01c6c9235",
+    "bytes": 1986
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\service_decisions.csv",
+    "sha256": "5c3eea95e164424b62e6e12f20878687cdff050d13c045fe81b2e0b23193e8cd",
+    "bytes": 4047
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\thermal_residual_profile.csv.gz",
+    "sha256": "7440c6d9679bc7360567466a24aaf40188b4bf4467d8ec126f208158e008e312",
+    "bytes": 3530166
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\report.json",
+    "sha256": "67b2d983d36b90f9230b25282f8d32a4228e17f566bd5e4ddafd22806ed7c078",
+    "bytes": 34476
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\model_archive\\archive_manifest.json",
+    "sha256": "e8b5bf9872a234eb200805c80b5803e5e711cadff70a38c403b65949a2efe45e",
+    "bytes": 1596
+  },
+  {
+    "run": "P2",
+    "path": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "2f91e0873b8438846423962125e90b6ca9f1c17f5b9cb00ce535f8e1ff7b1182",
+    "bytes": 2084
+  }
+]

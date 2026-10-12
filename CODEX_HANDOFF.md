@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12 夜间最新：P0/P1/P2已导出保全，P3运行；T550 F1已构建并归档。阶段报告summary_P0_P2；最终判定PENDING_F_SERIES。应用内有限续办case3负责本批结果收尾（每30分钟、最多48次，完成停止）。
+
 - 2026-10-12 夜间实验续报：T550连接已恢复，281文件SHA核验通过；新独立F队列已启动（flock491302/F1 PID491311，16线程串行），取代前述“F未启动/连接阻塞”的当前状态。源码aef0cb7、安装器2a940e6；P0复现7.220764GWh，P1完整M0.000802617GWh通过任务门槛，P2运行中。F结果尚待完成，case3生产参数不变。实验原件全保全，Base2060和cloud_backup未改动。
 
 - 2026-10-12 晚：研究共识 `RESEARCH_DESIGN_CONSENSUS_20261012.md` 生效，文档已追加同步。Base2060只读确认RUNNING/m4cm2108；Base2030–2050已按修订relative_v1正式验收并完成T550备份（本轮未触碰备份）。case3待夜间数值结论、生产代码和作者确认。夜间诊断代码aef0cb7，本机P0–P5运行；P0复现7.220764GWh异常。T550实验包传输遇SSH中断，F尚未启动，精确下一步是恢复连接后核验新包并启动独立F队列。详见 `supplementary_materials/reviews/case3_flex_numerics_20261012/REVIEW_ZH.md`。
@@ -9797,3 +9799,10 @@ Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show jo
 flock启动器PID491302，F1求解进程PID491311（已只读实查CPU/RSS），启动可用约60.17GiB；16线程串行，现有 `run_control/numerical_validation_solver.lock` 控制本实验独占求解器。F1/F2/F3/F4，若F1/F2残差失败则插入F6，F5最后单独执行。每次资源门禁与2秒RSS日志保存；105GiB可用条件未满足时F5等待、不挤占其他用户训练。此时只确认F1开始加载/构建，未宣称求解完成。
 
 P0和P1的原模型归档、BarX/BarPi/X/Pi/RC/Slack快照全部COMPLETE，参数回读逐项匹配；P1的完整M=0.0008026169445524904GWh，低于本任务1MWh门槛，旧严格标签仍保留。本机P2继续运行。完整结论待F1/F2/F5及F4时长序列、必要F6齐备。未改变Base2060/备份/生产源码或profile，未提交云端作业。证据 `T550_install_launch.log`、远端 `install_validation.json`/`launch_receipt.json`/`queue_active.json`。
+
+
+## 2026-10-12 P2终态及本批夜间实验续办
+
+P0/P1/P2已完整保全，M分别7.2207643891/0.000802616945/0.000811915475GWh；P2为92轮OPTIMAL，收紧容差未降低残差。P3运行、P4/P5串行排队；T550 F1已构建并原模型归档，结果尚未齐备。阶段小证据见 `supplementary_materials/reviews/case3_flex_numerics_20261012/summary_P0_P2/` 与 REVIEW_ZH.md。9084be4已推送GitHub main/工作分支，冻结运行源码仍aef0cb7，未部署后续汇总代码。
+
+应用内有限续办case3每30分钟最多48次，仅完成本批夜间实验收尾，无变化保持安静；完成/需外部介入即停止。精确下一步是只读检查现有P/F队列、保全所有原件，结果齐备后按任务书第4节出具三情形结论、H1/H2/H3证据和报告提交。禁止重复启动、云端操作、生产修改、备份目录访问或凭据读取。当前报告结论仍PENDING_F_SERIES。
