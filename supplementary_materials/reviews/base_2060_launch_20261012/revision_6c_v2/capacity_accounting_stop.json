@@ -1,0 +1,402 @@
+{
+  "status": "STOP_AUTHOR_REVIEW_REQUIRED",
+  "trigger": "Inherited biomass plus BECCS capacity exceeds shared upper",
+  "guard_tolerance_gw": 1e-09,
+  "capacity_guards": [
+    {
+      "stage": "original",
+      "family": "thermal",
+      "negative_count": 0,
+      "minimum_gw": 0.0
+    },
+    {
+      "stage": "original",
+      "family": "nuclear",
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    },
+    {
+      "stage": "original",
+      "family": "vre",
+      "negative_count": 0,
+      "over_upper_count": 94,
+      "maximum_excess_gw": 7.472839396818667e-06,
+      "headroom_bins": [
+        {
+          "lower_gw": 0,
+          "upper_gw": 1e-06,
+          "count": 109,
+          "sum_gw": 6.276072080543208e-05
+        },
+        {
+          "lower_gw": 1e-06,
+          "upper_gw": 1e-05,
+          "count": 2723,
+          "sum_gw": 0.011443342456587345
+        },
+        {
+          "lower_gw": 1e-05,
+          "upper_gw": 0.0001,
+          "count": 1565,
+          "sum_gw": 0.04910612975069469
+        },
+        {
+          "lower_gw": 0.0001,
+          "upper_gw": 0.001,
+          "count": 574,
+          "sum_gw": 0.1960800117348307
+        },
+        {
+          "lower_gw": 0.001,
+          "upper_gw": null,
+          "count": 31611,
+          "sum_gw": 53530.50959467345
+        }
+      ]
+    },
+    {
+      "stage": "original",
+      "family": "hydro",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0,
+      "headroom_bins": [
+        {
+          "lower_gw": 0,
+          "upper_gw": 1e-06,
+          "count": 83,
+          "sum_gw": 1.1389863071468997e-05
+        },
+        {
+          "lower_gw": 1e-06,
+          "upper_gw": 1e-05,
+          "count": 6,
+          "sum_gw": 1.8620625455947892e-05
+        },
+        {
+          "lower_gw": 1e-05,
+          "upper_gw": 0.0001,
+          "count": 7,
+          "sum_gw": 0.00019821926136794586
+        },
+        {
+          "lower_gw": 0.0001,
+          "upper_gw": 0.001,
+          "count": 3,
+          "sum_gw": 0.0013827031788481488
+        },
+        {
+          "lower_gw": 0.001,
+          "upper_gw": null,
+          "count": 1138,
+          "sum_gw": 406.76560164259956
+        }
+      ]
+    },
+    {
+      "stage": "original",
+      "family": "storage",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    },
+    {
+      "stage": "original",
+      "family": "wave",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    },
+    {
+      "stage": "prepared",
+      "family": "thermal",
+      "negative_count": 0,
+      "minimum_gw": 0.0
+    },
+    {
+      "stage": "prepared",
+      "family": "nuclear",
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    },
+    {
+      "stage": "prepared",
+      "family": "vre",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0,
+      "headroom_bins": [
+        {
+          "lower_gw": 0,
+          "upper_gw": 1e-06,
+          "count": 202,
+          "sum_gw": 6.206430112322978e-05
+        },
+        {
+          "lower_gw": 1e-06,
+          "upper_gw": 1e-05,
+          "count": 2701,
+          "sum_gw": 0.011397696734487345
+        },
+        {
+          "lower_gw": 1e-05,
+          "upper_gw": 0.0001,
+          "count": 1560,
+          "sum_gw": 0.04894539029994813
+        },
+        {
+          "lower_gw": 0.0001,
+          "upper_gw": 0.001,
+          "count": 601,
+          "sum_gw": 0.22155692224870652
+        },
+        {
+          "lower_gw": 0.001,
+          "upper_gw": null,
+          "count": 31612,
+          "sum_gw": 53530.99883995014
+        }
+      ]
+    },
+    {
+      "stage": "prepared",
+      "family": "hydro",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0,
+      "headroom_bins": [
+        {
+          "lower_gw": 0,
+          "upper_gw": 1e-06,
+          "count": 83,
+          "sum_gw": 1.1389863071468997e-05
+        },
+        {
+          "lower_gw": 1e-06,
+          "upper_gw": 1e-05,
+          "count": 6,
+          "sum_gw": 1.8620625455947892e-05
+        },
+        {
+          "lower_gw": 1e-05,
+          "upper_gw": 0.0001,
+          "count": 7,
+          "sum_gw": 0.00019821926136794586
+        },
+        {
+          "lower_gw": 0.0001,
+          "upper_gw": 0.001,
+          "count": 3,
+          "sum_gw": 0.0013827031788481488
+        },
+        {
+          "lower_gw": 0.001,
+          "upper_gw": null,
+          "count": 1138,
+          "sum_gw": 406.77664918159724
+        }
+      ]
+    },
+    {
+      "stage": "prepared",
+      "family": "storage",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    },
+    {
+      "stage": "prepared",
+      "family": "wave",
+      "negative_count": 0,
+      "over_upper_count": 0,
+      "maximum_excess_gw": 0.0
+    }
+  ],
+  "biomass_failures": [
+    {
+      "stage": "prepared",
+      "province_code": 31,
+      "bio_floor_gw": 0.33394329155715097,
+      "bioccs_floor_gw": 0.0060567256454518,
+      "shared_upper_gw": 0.3399999999999999,
+      "shared_floor_gw": 0.34000001720260276,
+      "excess_gw": 1.720260284221453e-08,
+      "fails": true
+    }
+  ],
+  "retrofit_pairs_unchanged": true,
+  "active_retrofit_out_rows": 372,
+  "active_zero_retrofit_out_rows": 71,
+  "protected_candidate_groups": 105,
+  "protected_positive_groups": 41,
+  "protected_new_build_all_cohorts_gw": 0.0073119978919529245,
+  "protected_new_build_active_2060_gw": 0.0068731607980072685,
+  "retrofit_upper_bins": {
+    "coal": [
+      {
+        "lower_gw": 0,
+        "upper_gw": 1e-06,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-06,
+        "upper_gw": 1e-05,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-05,
+        "upper_gw": 0.0001,
+        "count": 2,
+        "sum_gw": 0.0001626453374605763
+      },
+      {
+        "lower_gw": 0.0001,
+        "upper_gw": 0.001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.001,
+        "upper_gw": null,
+        "count": 27,
+        "sum_gw": 374.4531891804008
+      }
+    ],
+    "cchp": [
+      {
+        "lower_gw": 0,
+        "upper_gw": 1e-06,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-06,
+        "upper_gw": 1e-05,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-05,
+        "upper_gw": 0.0001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.0001,
+        "upper_gw": 0.001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.001,
+        "upper_gw": null,
+        "count": 24,
+        "sum_gw": 61.77678022146935
+      }
+    ],
+    "gas": [
+      {
+        "lower_gw": 0,
+        "upper_gw": 1e-06,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-06,
+        "upper_gw": 1e-05,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-05,
+        "upper_gw": 0.0001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.0001,
+        "upper_gw": 0.001,
+        "count": 1,
+        "sum_gw": 0.00012183962706975464
+      },
+      {
+        "lower_gw": 0.001,
+        "upper_gw": null,
+        "count": 30,
+        "sum_gw": 332.5729069343686
+      }
+    ],
+    "gchp": [
+      {
+        "lower_gw": 0,
+        "upper_gw": 1e-06,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-06,
+        "upper_gw": 1e-05,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-05,
+        "upper_gw": 0.0001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.0001,
+        "upper_gw": 0.001,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 0.001,
+        "upper_gw": null,
+        "count": 14,
+        "sum_gw": 38.23421713109848
+      }
+    ],
+    "bio": [
+      {
+        "lower_gw": 0,
+        "upper_gw": 1e-06,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-06,
+        "upper_gw": 1e-05,
+        "count": 0,
+        "sum_gw": 0.0
+      },
+      {
+        "lower_gw": 1e-05,
+        "upper_gw": 0.0001,
+        "count": 2,
+        "sum_gw": 0.0001657154563462354
+      },
+      {
+        "lower_gw": 0.0001,
+        "upper_gw": 0.001,
+        "count": 4,
+        "sum_gw": 0.000596820755863231
+      },
+      {
+        "lower_gw": 0.001,
+        "upper_gw": null,
+        "count": 25,
+        "sum_gw": 187.7179912915353
+      }
+    ]
+  },
+  "state_sha256": {
+    "original": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+    "prepared": "1ac6b93cf4792e15100cd054295b45dcea705bfd80f63425240e0d294d87eb72"
+  },
+  "no_optimization": true,
+  "no_submission": true
+}

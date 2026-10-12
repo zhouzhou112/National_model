@@ -1,0 +1,13 @@
+{
+  "checked_at_utc": "2026-10-12T16:32:33Z",
+  "backup_query": "SSH_BANNER_TIMEOUT",
+  "acceptance_sync": "PENDING_CONNECTION",
+  "no_duplicate_transfer": true,
+  "last_verified_snapshot_utc": "2026-10-12T15:34:00Z",
+  "last_verified_stages": 6,
+  "last_verified_bytes": 3806534257,
+  "last_observed_t3": "2030 TRANSFERRING 54%; current progress unverified",
+  "connection": "127.0.0.1:22 via national-model-server",
+  "does_not_block_preparation": true,
+  "actual_stop": "Shanghai biomass shared capacity bound"
+}

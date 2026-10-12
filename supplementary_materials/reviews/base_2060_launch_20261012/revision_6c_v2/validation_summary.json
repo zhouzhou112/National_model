@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "two_rule_tests": "PASS",
+  "ten_relative_profile_tests": "PASS",
+  "unchanged_production_source_matches_previous_429_test_suite": true,
+  "source_cohort_rows": 260669,
+  "prepared_cohort_rows": 43286,
+  "deleted_rows": 217383,
+  "changed_capacity_text_rows": 128,
+  "all_other_fields_exact": true,
+  "retrofit_rows_text_exact": true,
+  "source_sha256": "976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af",
+  "prepared_sha256": "1ac6b93cf4792e15100cd054295b45dcea705bfd80f63425240e0d294d87eb72",
+  "original_6b_derivative_unchanged": true,
+  "state_generator_sha256": "cd90e5f941bcf434b84466bbd906b29de11c98b4642b094e93b21530c982155c",
+  "cleanup_rule_sha256": "32d4e88593ebe8d2800dcf3153c2e7dc567f4315ff45e8001d2d4a7c736b4c81",
+  "input_sha256": {
+    "biomass/capacity_upper_by_province_year.csv": "5321fe2cb6d561a3d38c8acdaaaaba06c56ffa9fbd3bf6afdde7dd4c24e96770",
+    "thermal/capacity_floor_by_year.csv": "50b62750d1b44141847c9b18f94d131a22eaf329a25eaea42c4e9635428944bb"
+  },
+  "final_cleanup_reassessment_matches_saved_gate": true,
+  "helper_script_sha256": {
+    "audit_state_6c.py": "f0c38a8d3e8ac0ee0d9c00828079642545eaa4e8edb8607a38f34c9f06e41150",
+    "fetch_2050_identity.py": "593161d4b931618bc8f0cc133f23fcfb71e8b816ad484634b3ce85ab9ec663ba",
+    "prepare_state_6b.py": "cd90e5f941bcf434b84466bbd906b29de11c98b4642b094e93b21530c982155c"
+  },
+  "test_sha256": "b0b6c11482075e2fafe985f00854535e3320a5218897b705ca81a25955c910ee"
+}

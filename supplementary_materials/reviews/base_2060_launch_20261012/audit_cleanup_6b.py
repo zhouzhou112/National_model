@@ -15,7 +15,16 @@ HERE=Path(__file__).resolve().parent
 NETWORK={'vre_spur','hydro_spur','trunk','intra_load_center_transmission','interprovincial_transmission'}
 GENERATION={'vre','hydro','thermal','wave','storage'}
 
-def assess(source):
+def active_retrofit_assets(cohorts,planning_year=2060):
+    """Author 6c: existence of a surviving row, including an exact-zero row.
+
+    No unapproved minimum-retrofit threshold or 'would become negative' filter.
+    Retirement at the boundary means the cohort is no longer active.
+    """
+    active=cohorts.action.eq('retrofit_out') & cohorts.build_year.le(planning_year) & cohorts.retire_year.gt(planning_year)
+    return set(cohorts.loc[active,['asset_class','technology','asset_id']].itertuples(index=False,name=None))
+
+def assess(source, *, protect_active_retrofit=False):
     source=Path(source)
     inputs={}
     def read(name):
@@ -29,6 +38,13 @@ def assess(source):
     sums=c.groupby(keys,dropna=False).capacity_delta.agg(lambda x: math.fsum(x))
     assert set(c.asset_class)<=NETWORK|GENERATION
     selected=sums[sums<.001]
+    protected=[]
+    if protect_active_retrofit:
+        protected_keys=active_retrofit_assets(cohorts)
+        for key,value in selected.items():
+            if key in protected_keys:
+                protected.append(dict(zip(keys,key),new_build_gw=float(value)))
+        selected=selected[[key not in protected_keys for key in selected.index]]
     deleted_keys=set(selected.index)
     delete=eligible & pd.Series([tuple(r) in deleted_keys for r in cohorts[keys].itertuples(index=False,name=None)],index=cohorts.index)
     negative=eligible & ~delete & cohorts.capacity_delta.lt(0)
@@ -64,7 +80,8 @@ def assess(source):
     generation=math.fsum(r['positive_deleted_gw'] for r in rows if r['asset_class'] in GENERATION)
     network=math.fsum(r['positive_deleted_gw'] for r in rows if r['asset_class'] in NETWORK)
     failures=[r for r in rows if not r['ratio_gate_pass']]
-    report=dict(rule_version='AUTHOR_TASK_6B_20261012',
+    report=dict(rule_version='AUTHOR_TASK_6C_20261012' if protect_active_retrofit else 'AUTHOR_TASK_6B_20261012',
+        retrofit_protected_groups=protected,retrofit_protected_new_build_gw=math.fsum(r['new_build_gw'] for r in protected),
         status='PASS' if generation<=1 and network<=1 and not failures else 'STOP_AUTHOR_REVIEW_REQUIRED',
         threshold_gw=.001,generation_and_storage_deleted_gw=generation,network_deleted_gw=network,
         separate_total_limit_gw=1,ratio_limit=.001,ratio_gate_minimum_installed_gw=1,

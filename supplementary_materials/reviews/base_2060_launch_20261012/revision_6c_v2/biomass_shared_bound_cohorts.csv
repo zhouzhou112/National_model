@@ -1,0 +1,15 @@
+stage,asset_class,asset_id,province_code,technology,build_year,retire_year,capacity_delta,unit,action
+original,thermal,31::bio,31.0,bio,2040,2070,9.389033735814761e-09,GW,new_build
+original,thermal,31::bio,31.0,bio,2040,2070,-0.0032257118213117,GW,retrofit_out
+original,thermal,31::bio,31.0,bio,2050,2080,7.813569123747005e-09,GW,new_build
+original,thermal,31::bio,31.0,bio,2050,2080,-0.0028310138241401,GW,retrofit_out
+original,thermal,31::bioccs,31.0,bioccs,2040,2070,-1.4682101345461772e-08,GW,new_build
+original,thermal,31::bioccs,31.0,bioccs,2040,2070,0.0032257118213117,GW,retrofit_in
+original,thermal,31::bioccs,31.0,bioccs,2050,2080,-2.313804609282294e-09,GW,new_build
+original,thermal,31::bioccs,31.0,bioccs,2050,2080,0.0028310138241401,GW,retrofit_in
+prepared,thermal,31::bio,31.0,bio,2040,2070,9.389033735814761e-09,GW,new_build
+prepared,thermal,31::bio,31.0,bio,2040,2070,-0.0032257118213117,GW,retrofit_out
+prepared,thermal,31::bio,31.0,bio,2050,2080,7.813569123747005e-09,GW,new_build
+prepared,thermal,31::bio,31.0,bio,2050,2080,-0.0028310138241401,GW,retrofit_out
+prepared,thermal,31::bioccs,31.0,bioccs,2040,2070,0.0032257118213117,GW,retrofit_in
+prepared,thermal,31::bioccs,31.0,bioccs,2050,2080,0.0028310138241401,GW,retrofit_in

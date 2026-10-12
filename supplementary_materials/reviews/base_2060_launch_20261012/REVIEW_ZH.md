@@ -93,3 +93,51 @@ python supplementary_materials/reviews/base_2060_launch_20261012/audit_cohort_cl
 第 6b 节没有授权删除/重配 retrofit_out，bound-close 只减少超上界，不解决负下界。直接将负下界裁零会掩盖容量账不闭合，因此不执行。建议最小具名例外：保留上述四组全部 new_build cohort（本次被删存续量合计 0.801002 MW），保留原 retrofit 配对与寿命结构，再重新执行所有清理及工程门禁。若作者坚持所有 <1 MW 新建组均删除，需另定 retrofit_out/retrofit_in 的成对回退规则；这会改变继承 CCS 容量，不在现有授权内。
 
 下一步是作者/决策层明确这一改造关联规则后重新生成新版本派生状态，不能只凭“放行”跳过当前构建失败。Git 基准 `a4f039762392afdf55acb8476b412ec339100238`；本节及配套代码按安全明确清单提交，不带 SI 会话改动。
+
+## 2026-10-12 英国17:33：按第 6c 节执行，上海共享生物质上限触发安全网
+
+**当前 STOP_AUTHOR_REVIEW_REQUIRED，未完成 D3/D4/E，没有 held Job。** 本节追加于 `3ad53ed`，前两次停止证据及原 `upstream_2050_prepared/` 均未覆盖。新状态位于本地 `upstream_2050_prepared_6c_v2/planning_state_candidate`，仅为本轮构建失败的诊断产物，不得部署生产。
+
+### 6c 实际豁免及 6b 门禁
+
+严格按“存在 2060 仍存续 retrofit_out cohort”保护资产组，没有添加“仅当删除会导致负下界”的隐含条件，也没有另设改造量阈值。退休年等于 2060 的 cohort 不算存续。
+
+- 实际保护 **105 个原候选删除组（315 条 new_build）**，其中 41 组新建合计为正、64 组为零；105 组中 26 组的存续 retrofit_out 合计恰为零，按记录存在的一般规则同样保留，未人为新增非零筛选。
+- 全部受保护 new_build cohort 合计 **7.311997892 MW**，其中 2060 仍存续 **6.873160798 MW**。此前报告的四组只是“删除后会变负”的子集：四组全部新建 cohort 0.836157012 MW，其中 2060 存续 **0.801002010 MW**。逐组见 `revision_6c_v2/retrofit_protected_groups_detailed.csv`。
+- 新的发电/储能删除合计 **0.630823710364 GW**；接入/输电 **0.498170601184 GW**。两项独立总量门禁、全部适用的逐技术比例门禁均 PASS。
+- 删除 217,383 条，留下 43,286 条 cohort；保留组内 34 条负 new_build 置零，增加约 6.64e-15 GW；94 条 VRE bound-close 仍合计减少 0.000181119526 GW。
+- 原四组负继承下界全部消除。只读扩展核查覆盖 thermal、nuclear、bio+bioccs、VRE、hydro、storage、wave：准备后除下述上海共享上限外，没有发现这些容量族的负下界或超界。
+
+### 新停止的定量证据与原因
+
+1h build-only 在原有 `master.py` 检查处退出：`Inherited biomass plus BECCS capacity exceeds the configured shared upper bound`。原 guard 容差 1e-9 GW（1 W）不变，没有构成完整 LP，未执行 optimize，也不把此次构建异常称作求解器 INFEASIBLE。
+
+| 上海（31）2060 容量账 | 原状态 | 按 6c 准备后 |
+|---|---:|---:|
+| 存续 bio 新建量 | 17.202602860 W | 17.202602860 W（受保护） |
+| 存续 bioccs 新建尾差 | -16.995905955 W | 0 W（按 6b 整组删除） |
+| bio→bioccs 存续改造配对 | ±6.056725645 MW | 完全不变 |
+| bio+bioccs 共享上限 | 340 MW | 340 MW |
+| 共享下界超上限 | 0.206697 W（原 guard 内） | **17.202603 W（超出原 guard）** |
+
+因此新问题来自“保护 bio 微小新建”和“删除 bioccs 非正新建组”的组合，不是改造配对改变、模型约束改变或浮点读写误差造成。证据在 `revision_6c_v2/capacity_accounting_stop.json`、`biomass_shared_bound_audit.csv`、`biomass_shared_bound_cohorts.csv`；原与准备后逐行存续记录同时保存。
+
+第 6c 节第 3 条规定“出现本节未覆盖的新容量账问题，照常停止回报”。本轮不将受保护 bio 新建量自行清零，不重配 retrofit，不修改继承 CCS，也不加大 1 W guard。建议作者明确一个最小规则：是否允许对共享 bio+bioccs 上限执行 ≤1e-5 GW 的 bound-close，只从非 CCS 的 bio 正新建量扣减，保留全部改造配对及 CCS 容量；这需要明确覆盖 6c 对关联新建量的保护。本轮未执行该建议。
+
+### 精度保全、验证及剩余门禁
+
+准备器原先用 pandas 浮点重写 CSV，会在个别未改动 retrofit 值的末位产生约 3.6e-15 GW 的读写差异。本轮审计发现后改为保留未改行的原始字段文本，仅对获授权的 capacity_delta 写新值；初稿 `upstream_2050_prepared_6c/` 留存，最终另建 `_6c_v2/`。两版构建均在相同共享上限检查停止，修复的是保全精度，没有借此修改科学规则。
+
+独立逐字段核验通过：删除行全部是 GW/new_build；128 行 capacity_delta 文本变化仅为 34 条置零与 94 条 bound-close；其余字段逐字相同；所有 retrofit_in/out 记录逐字相同；旧 6b 派生状态 SHA 不变。最终 cohort SHA：`1ac6b93cf4792e15100cd054295b45dcea705bfd80f63425240e0d294d87eb72`。原 cohort SHA：`976f18bebdf93fd974f1d29eadd880f0ebc20571002131fadf5714de0ab9b5af`。
+
+新增 2 项保护规则测试（存续边界/动作及不引入隐含幅度阈值）通过，原 relative_v1 的 10 项测试通过。生产源码/配置 SHA 与上轮 429 项完整回归的记录全部相同，因此本轮不重复完整求解测试。详细验证与两个相关容量输入 SHA 见 `revision_6c_v2/validation_summary.json`。
+
+D1 余项已补齐 31 省 × 5 个改造对的 2060 上界/A2 清零审计，见 `retrofit_upper_audit.csv`；风光/水电 headroom 及分箱在本轮结构审计中。水力系数、完整 D3 矩阵和维度审计仍被构建失败阻断。已只读取回 2050 冻结源码及其原上游状态（206 文件 SHA 核验，`revision_6c/frozen_2050_source_sha256.json`）；未执行 D4 身份比较、A1/A2 白名单或 24h 求解，不能填 PASS。没有新云端 release，没有提交或释放任何作业。
+
+复现：使用既有 RL Python、Gurobi 13 overlay 与数据环境，运行 `prepare_state_6b.py --revision 6c --output-dir NEW_EVIDENCE_DIR --state-output NEW_STATE_DIR`；随后 `build_gate.py --year 2060 --a12 --state-in NEW_STATE_DIR/planning_state_candidate --output NEW_BUILD_DIR`，只读诊断 `audit_state_6c.py --state-in NEW_STATE_DIR/planning_state_candidate --output-dir NEW_EVIDENCE_DIR`。准备器拒绝覆盖既有派生状态。
+
+### 备份与正式验收 JSON 同步
+
+本轮分别重试只读备份查询及幂等的正式 JSON 同步，均因本机→T550 `127.0.0.1:22` SSH banner 超时未能完成。备份没有重复启动。最后成功快照仍为英国16:34：三年 T1/T2 全部 SHA VERIFIED，2030 T3 当时约54%；最新进度、最终 backup_manifest 尚未核验。正式验收 JSON 已在本地且三年均 PASS；T550 已有离线 assessment，正式 JSON 的服务器同步仍为 PENDING_CONNECTION。需作者恢复本机转发后再核验，这一网络问题不是本轮 2060 停止原因。
+
+Git 基准 `3ad53ed29c30231d81cd7d5bf954b47fb6e386a1`。本轮保留全部原始/失败证据和 SI 并行改动，下一步是作者裁定共享上限收口与关联保护的冲突，再在新目录准备状态并继续 D3/D4/E；不能直接“放行”不存在的 held 作业。

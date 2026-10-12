@@ -1,0 +1,13 @@
+{
+  "status": "BUILD_FAILED_BEFORE_OPTIMIZE",
+  "year": 2060,
+  "optimization_hours": 1,
+  "config": "config/optimization_numeric_dac_by_year_v9_a12.json",
+  "state": "upstream_2050_prepared_6c_v2/planning_state_candidate",
+  "exception": "Inherited biomass plus BECCS capacity exceeds the configured shared upper bound",
+  "guard_source": "cispo_model/master.py:1111",
+  "log_sha256": "4c2b546f3312c0ce8fd74751de43c7989518137357bbf76c2542be1338548b65",
+  "full_lp_available": false,
+  "iis_available": false,
+  "submitted": false
+}

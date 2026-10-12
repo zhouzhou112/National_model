@@ -5,7 +5,7 @@ Run with the project Python/data environment. Inputs are SHA-verified original
 overwrite. All source files and non-new-build/non-GW cohorts remain unchanged.
 """
 from pathlib import Path
-import hashlib,json,math,shutil,sys
+import argparse,csv,gzip,hashlib,json,math,shutil,sys
 import numpy as np
 import pandas as pd
 HERE=Path(__file__).resolve().parent
@@ -23,12 +23,21 @@ def bins(values):
                  sum_gw=float(a[(a>l)&(a<=u)].sum())) for l,u in zip(edges[:-1],edges[1:])]
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--revision',choices=['6b','6c'],default='6b')
+    parser.add_argument('--output-dir',type=Path)
+    parser.add_argument('--state-output',type=Path)
+    args=parser.parse_args()
+    evidence_dir=args.output_dir or HERE/('revision_'+args.revision);evidence_dir.mkdir(exist_ok=True)
     source=HERE.parent/'base_acceptance_relative_v1_20261012/evidence/2050'
     acceptance=HERE.parent/'base_acceptance_relative_v1_20261012/assessments/2050/acceptance_relative_v1.json'
     accepted=json.loads(acceptance.read_text())
     assert accepted['author_decision']=='ACCEPTED_RELATIVE_V1_20261012'
-    gate,cohorts,delete,negative=assess(source)
+    gate,cohorts,delete,negative=assess(source,protect_active_retrofit=args.revision=='6c')
     assert gate['status']=='PASS'
+    save(evidence_dir/'cleanup_gate.json',gate)
+    pd.DataFrame(gate['by_technology']).to_csv(evidence_dir/'deletion_by_technology.csv',index=False)
+    pd.DataFrame(gate['retrofit_protected_groups']).to_csv(evidence_dir/'retrofit_protected_groups.csv',index=False)
     # A compact, explicitly derived capsule preserves original bytes while its
     # own manifest enumerates only copied state dependencies. Original full
     # output manifest remains separate and SHA-linked; never edit evidence.
@@ -48,7 +57,7 @@ def main():
     original=PlanningState.load(capsule/'planning_state_candidate',expected_boundary_year=2050,
         expected_scenario_id='base',allow_unaccepted_candidate=True)
     pd.testing.assert_frame_equal(cohorts,original.cohorts,check_dtype=False)
-    target=HERE/'upstream_2050_prepared';assert not target.exists(),'Never overwrite prepared state'
+    target=args.state_output or HERE/('upstream_2050_prepared_6c' if args.revision=='6c' else 'upstream_2050_prepared');assert not target.exists(),'Never overwrite prepared state'
     cfg=load_model_config(ROOT/'config/optimization_numeric_dac_by_year_v9_a12.json').for_planning_year(2060)
     data=load_model_data(cfg,planning_state=original)
     clean=cohorts.loc[~delete].copy();clean.loc[negative[~delete],'capacity_delta']=0.0
@@ -96,7 +105,18 @@ def main():
         shutil.copy2(source/name,target/name)
     shutil.copy2(source/'result_manifest.json',target/'original_result_manifest.json')
     shutil.copy2(acceptance,target/'acceptance_relative_v1.json')
-    clean.to_csv(state/'capacity_cohorts.csv.gz',index=False,compression={'method':'gzip','mtime':0})
+    # Preserve the exact original text of every untouched cohort (especially
+    # retrofit pairs). A pandas float CSV round trip can change a last bit.
+    with gzip.open(source/'planning_state_candidate/capacity_cohorts.csv.gz','rt',encoding='utf-8-sig',newline='') as handle:
+        reader=csv.DictReader(handle);fields=reader.fieldnames;records=list(reader)
+    retained=[]
+    for index,record in enumerate(records):
+        if bool(delete.iloc[index]):continue
+        if float(clean.at[index,'capacity_delta'])!=float(cohorts.at[index,'capacity_delta']):
+            record['capacity_delta']=repr(float(clean.at[index,'capacity_delta']))
+        retained.append(record)
+    with gzip.open(state/'capacity_cohorts.csv.gz','wt',encoding='utf-8',newline='') as handle:
+        writer=csv.DictWriter(handle,fieldnames=fields,lineterminator='\n');writer.writeheader();writer.writerows(retained)
     active=clean[clean.build_year.le(2050)&clean.retire_year.gt(2050)]
     summary=active.groupby(['asset_class','technology','unit','action'],dropna=False).agg(cohort_rows=('asset_id','size'),capacity_delta=('capacity_delta','sum')).reset_index()
     summary.insert(0,'active_planning_year',2050);summary.to_csv(state/'state_transition_summary.csv',index=False)
@@ -105,17 +125,17 @@ def main():
         total_reduction_gw=math.fsum(r['reduction_gw'] for r in touched))
     metadata.update(cohort_rows=len(clean),capacity_cohorts_sha256=sha(state/'capacity_cohorts.csv.gz'),
         state_transition_summary_sha256=sha(state/'state_transition_summary.csv'),
-        continuation_cleanup=gate,continuation_bound_closure=closure,
-        acceptance_relative_v1_sha256=sha(acceptance),source_capacity_state_policy='AUTHOR_6B_CLEANED_BOUND_CLOSED_DERIVATIVE')
+        continuation_cleanup=dict(gate,applied=True,state_changed=True),continuation_bound_closure=closure,
+        acceptance_relative_v1_sha256=sha(acceptance),source_capacity_state_policy='AUTHOR_'+args.revision.upper()+'_CLEANED_BOUND_CLOSED_DERIVATIVE')
     save(state/'state_metadata.json',metadata)
     save(target/'bound_closure_audit.json',closure)
-    for family,frame in bound_tables.items():frame.to_csv(HERE/('state_bounds_'+family+'.csv'),index=False)
+    for family,frame in bound_tables.items():frame.to_csv(evidence_dir/('state_bounds_'+family+'.csv'),index=False)
     audit=dict(source_capacity_cohorts_sha256=sha(source/'planning_state_candidate/capacity_cohorts.csv.gz'),
         source_state_metadata_sha256=sha(source/'planning_state_candidate/state_metadata.json'),
         acceptance_sha256=sha(acceptance),cohort_distribution=distribution,cleanup_gate=gate,bound_closure=closure,
         headroom={f:dict(original=bins(t.original_headroom_gw),prepared=bins(t.prepared_headroom_gw),
             after_deletion_overshoots=int(t.after_deletion_excess_gw.gt(0).sum())) for f,t in bound_tables.items()})
-    save(HERE/'revision_6b/state_structure_audit.json',audit)
+    save(evidence_dir/'state_structure_audit.json',audit)
     save(target/'result_manifest.json',dict(manifest_purpose='AUTHOR_6B_DERIVED_STATE_INTEGRITY',
         source_manifest_sha256=sha(source/'result_manifest.json'),files=[dict(path=p.relative_to(target).as_posix(),bytes=p.stat().st_size,sha256=sha(p)) for p in sorted(target.rglob('*')) if p.is_file()]))
     loaded=PlanningState.load(state,expected_boundary_year=2050,expected_scenario_id='base',allow_unaccepted_candidate=True)
