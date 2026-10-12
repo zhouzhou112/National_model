@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "d3": {
+    "statistics_2060": {
+      "variables": 238529,
+      "constraints": 80104,
+      "nonzeros": 452584,
+      "coefficient_min_abs": 2.9176454125368068e-05,
+      "coefficient_max_abs": 6250.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 2282.1265455852517,
+      "rhs_min_abs": 4.977284524433668e-08,
+      "rhs_max_abs": 828.996703385963,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    },
+    "statistics_2050": {
+      "variables": 238529,
+      "constraints": 80104,
+      "nonzeros": 452584,
+      "coefficient_min_abs": 2.9176454125368068e-05,
+      "coefficient_max_abs": 6250.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 2282.1265455852517,
+      "rhs_min_abs": 3.586748565394586e-08,
+      "rhs_max_abs": 756.4059667194446,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    },
+    "fractional_growth": {
+      "variables": 0.0,
+      "constraints": 0.0,
+      "nonzeros": 0.0
+    },
+    "coefficient_span": 214213830.54789406,
+    "tiny_capacity_columns": 0,
+    "tiny_rhs_rows": 0
+  },
+  "d4": {
+    "identity_2050_mps_sections_exact": true,
+    "identity_section_sha256": {
+      "*": "395f7e309ff96a9985016d51e530d149d60bb053ad7e8348799097dff6da6853",
+      "NAME": "d5ef80a9d79acfb3c3505be15b2255a0b57f450c5842f2bfccb2cec2adb92787",
+      "ROWS": "6af7422139768b64901196f80d02abc9a564bfbdfdc8d010847e18d065cd8147",
+      "COLUMNS": "35b415152a5911eff72a58af3d5d15219361152e52fcadd73945d7bd92af4699",
+      "RHS": "74f5a68d73ec03847eccdbb5691ad82f9cbcac0a3db80caa6b4309332d20b780",
+      "BOUNDS": "e78f8b8a7cf1b143922eebb1628bf6f00afb632ca92885e56c72cee475d4f541",
+      "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+    },
+    "whitelist_status": "PASS",
+    "changed_upper_bounds": 181,
+    "changed_rhs": 1,
+    "matrix_changed": 0,
+    "gate24h": {
+      "solver_status": "OPTIMAL",
+      "objective_million_cny": 3212495.75499684,
+      "runtime_seconds": 44.60800004005432,
+      "relative_v1_status": "PASS",
+      "strict_legacy_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "reservoir_transition"
+      ],
+      "preservation": "COMPLETE",
+      "scientific_annual_conclusion": false
+    }
+  },
+  "unit_tests": {
+    "tests": 436,
+    "skipped": 1,
+    "status": "PASS"
+  },
+  "backup_status": "COMPLETE_262_FILES_9_TIERS_SHA_VERIFIED",
+  "acceptance_json_sync": "VERIFIED"
+}

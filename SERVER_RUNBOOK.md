@@ -5249,3 +5249,10 @@ Git基准3ad53ed29c30231d81cd7d5bf954b47fb6e386a1；本条与修改/证据同次
 - 2026-10-12 上海共享上限按用户授权完成：仅两条非CCS bio正新建合计17.202602860W扣除，CCS/retrofit及其余字段逐字不变。新状态upstream_2050_prepared_6d/（cohort SHA3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af），6b总量/比例PASS。完整2060 1h构建发现广东PHS容量/新建各一条5.488784637kW极小区间，触发任务书D2规则外极小GW容量界停止；未optimize/D4/release/held提交。需作者授权PHS余量收口，建议继承不变、有效上界收至下界、新建上界归零并审计。T550原自主备份COMPLETE：262文件15,957,710,678bytes、9层SHA VERIFIED，三份manifest与计划逐项一致；三年正式验收JSON已同步且远端SHA VERIFIED，未重复传输。详细报告base_2060_launch_20261012/REVIEW_ZH.md及revision_6d/storage_capacity_stop.json。
 
 Git基准fb68d3ddd449f27fc721589973d82b0650effc8a；本条与准备器显式上海开关、只读诊断和小证据同次提交。生产模型/配置无修改，实数据两处字段差异核验与1h完整构建完成；原429项回归记录仍适用。下一步取得PHS授权后在新目录复核D3/D4再执行E的hold提交，不能释放不存在的作业。SI会话32行handoff和稿件保持未暂存。
+
+
+## 2026-10-12 第6d节容量/RHS清理与D3/D4验收
+
+- 2026-10-12 第6d节实现及D3/D4通过：显式other_capacity_headroom_zero_gw_gwh=1e-5、capacity_cancellation_rhs_zero=1e-12，旧V9关闭。实际广东PHS两UB收口5.489kW、山西gchp退役相消RHS2.22e-16归零；全审计白名单181UB+1RHS通过，矩阵/LB/目标不变。2060 1h80104行238529列452584nnz、与同条件2050增幅0，2050当前/冻结MPS各段SHA相同。24h102轮OPTIMAL/relative_v1 PASS/保全COMPLETE；436测试通过跳过1。准备新20261012_base2060_v9a12_t48_m750_tol1e4_v1，只准hold，尚未宣称提交；备份262文件9层SHA与三份验收JSON同步均完成。详见base_2060_launch_20261012/REVIEW_ZH.md及revision_6d_general/final_gates.json。
+
+Git基准0f58a6ce0219e67fa352560d2f485acf6c193cdb；模型/config/data证据读取/审计白名单/测试及AGENTS作者修订同次提交。命令及输入/状态/测试SHA见上述报告，原始潜力与继承容量不改。下一步冻结已提交源码、云端新overlay补原始退役表、preflight通过后sbatch --hold并核对ReqTRES，停等放行。保留SI会话32行handoff和稿件改动。

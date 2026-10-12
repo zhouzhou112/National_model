@@ -21,7 +21,8 @@ from .data import (
 )
 from .timeblocks import TimeBlock
 from .planning_state import stable_asset_id, clip_inherited_floor_overrun
-from .numerical_cleanup import zero_capacity_headroom, zero_retrofit_upper
+from .numerical_cleanup import (zero_capacity_headroom, zero_retrofit_upper,
+    close_capacity_columns, zero_cancellation_rhs)
 from .technology_registry import fixed_om_fraction
 from .wave_energy import wave_cost_parameters
 
@@ -1081,9 +1082,21 @@ def build_master(
             numerical_robustness_audit.setdefault("retrofit_upper_cleanup", []).append(retrofit_audit)
         retrofit_survivor_upper[:, pair_position] = survivor_upper
         thermal_retrofit[:, pair_position].UB = survivor_upper
+        rhs_left = thermal_exogenous_floor[:, non_ccs_k].copy()
+        rhs_right = thermal_inherited[:, non_ccs_k].copy()
+        certificates = data.thermal_floor.attrs.get("retirement_rhs_cancellation", {})
+        for p, province in enumerate(provinces):
+            if rhs_right[p] == 0 and (province, non_ccs) in certificates:
+                rhs_left[p], rhs_right[p] = certificates[(province, non_ccs)]
+        accounting_floor, rhs_audit = zero_cancellation_rhs(
+            thermal_floor[:, non_ccs_k], rhs_left, rhs_right,
+            float(config.raw["numerics"].get("capacity_cancellation_rhs_zero", 0.0)),
+            f"thermal_non_ccs_capacity_accounting_{non_ccs}")
+        if rhs_audit:
+            numerical_robustness_audit.setdefault("capacity_rhs_cleanup", []).extend(rhs_audit)
         model.addConstr(
             thermal_cap[:, non_ccs_k]
-            == thermal_floor[:, non_ccs_k]
+            == accounting_floor
             - thermal_retrofit[:, pair_position]
             + thermal_new[:, non_ccs_k],
             name=f"thermal_non_ccs_capacity_accounting_{non_ccs}",
@@ -1904,6 +1917,33 @@ def build_master(
         "constraint_handles": constraint_handles,
         **index_extra,
     }
+    # Explicit stock-family registry: never scan operational variables or infer
+    # a finite potential for technologies whose current contract is unbounded.
+    cutoff = float(config.raw["numerics"].get("other_capacity_headroom_zero_gw_gwh", 0.0))
+    if cutoff > 0:
+        registry = [
+            ("storage_capacity", "storage_new", storage_floor, "GW"),
+            ("thermal_capacity", "thermal_new", thermal_floor, "GW"),
+            ("line_capacity", "line_new", line_floor, "GW"),
+            ("wave_capacity", "wave_new", wave_floor, "GW"),
+            ("phs_energy_capacity", None, phs_energy_floor, "GWh"),
+        ]
+        if "intra_load_center_capacity" in variables:
+            registry.append(("intra_load_center_capacity", "intra_load_center_new", intra_floor, "GW"))
+        for name in ("spur_augmentation", "hydro_spur_augmentation", "trunk_augmentation"):
+            if name in variables:
+                registry.append((name, None, 0., "GW"))
+        closures = []
+        for capacity_key, new_key, floor, unit in registry:
+            if capacity_key not in variables:
+                continue
+            closures.extend(close_capacity_columns(variables[capacity_key],
+                variables[new_key] if new_key else None, floor, cutoff, unit=unit))
+        numerical_robustness_audit["other_capacity_headroom_cleanup"] = closures
+        model.update()
+        # Export effective bounds, without changing original resource inputs.
+        index["storage_capacity_upper_gw"] = np.asarray(storage_cap.UB)
+        index["nuclear_capacity_upper_gw"] = np.asarray(thermal_cap[:, nuclear_k].UB)
     if numerical_robustness_audit:
         index["numerical_robustness_audit"] = numerical_robustness_audit
     if config.raw["features"]["annual_load_center_transmission"]:

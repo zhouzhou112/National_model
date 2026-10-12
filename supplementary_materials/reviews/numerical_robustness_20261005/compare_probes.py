@@ -36,6 +36,12 @@ def audited_capacity_closures(reference, candidate, audit):
         for row,removed in zip(record['site_rows'],record['removed_gw']):
             if not float(removed)<float(record['cutoff_gw']):raise ValueError('Retrofit requires strict cutoff')
             add(f'thermal_retrofit_to_ccs_gw[{row},{pair}]',float(removed),float(record['cutoff_gw']))
+    for record in audit.get('other_capacity_headroom_cleanup', []):
+        name=record['variable']
+        add(name, float(record['removed_headroom']), float(record['cutoff']))
+        i=names[name]
+        if record['original_upper']!=float(reference['upper'][i]) or record['closed_upper']!=float(candidate['upper'][i]):
+            raise ValueError('General capacity audit values disagree: '+name)
     return closures
 
 
@@ -74,8 +80,13 @@ def compare(reference,candidate):
     closures=audited_capacity_closures(ref,cand,build.get('numerical_robustness_audit') or {})
     kwargs={f'{side}_{field}':payload[key] for side,payload in [('reference',ref),('candidate',cand)] for field,key in
         [('rhs','rhs'),('lower','lower'),('upper','upper'),('objective','objective'),('senses','senses')]}
+    rhs_records=(build.get('numerical_robustness_audit') or {}).get('capacity_rhs_cleanup',[])
+    rhs_closures={r['row']:r for r in rhs_records}
+    if len(rhs_closures)!=len(rhs_records):raise ValueError('Duplicate RHS audit row')
     result=compare_physical_lp_arrays(reference_matrix=ar,candidate_matrix=ac,
-        row_names=ref['row_names'],variable_names=ref['variable_names'],whitelist={'capacity_interval_closures':closures},**kwargs)
+        row_names=ref['row_names'],variable_names=ref['variable_names'],
+        whitelist={'capacity_interval_closures':closures,'cancellation_rhs_closures':rhs_closures},**kwargs)
+    result['explicit_rhs_whitelist']=rhs_closures
     result['auxiliary_variables_eliminated']=projected
     result['explicit_capacity_interval_whitelist']=closures
     delta=ac-ar

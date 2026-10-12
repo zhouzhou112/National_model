@@ -1218,6 +1218,24 @@ def load_model_data(
     thermal_floor = thermal_floor_all_years.loc[
         thermal_floor_all_years.year.eq(config.planning_year)
     ].copy()
+    # Opt-in evidence for precomputed retirement-subtraction roundoff. Keep
+    # input floors untouched; only the accounting RHS may later be normalized.
+    if float(config.raw["numerics"].get("capacity_cancellation_rhs_zero", 0.0)) > 0:
+        existing = _read("thermal/existing_capacity_2025.csv").set_index(["province_code", "technology"])
+        retired = _read("thermal/retirement_schedule.csv")
+        totals = retired.loc[retired.retirement_year_bucket.le(config.planning_year)].groupby(
+            ["province_code", "technology"]).retired_capacity_gw.sum()
+        certificates = {}
+        for row in thermal_floor.itertuples(index=False):
+            key = (int(row.province_code), str(row.technology))
+            base = float(existing.loc[key, "existing_capacity_gw_2025"])
+            retirement = float(totals.get(key, 0.0))
+            residual = float(row.capacity_floor_gw)
+            bound = 4 * np.finfo(float).eps * (abs(base) + abs(retirement))
+            if (base > 0 and retirement > 0 and 0 < abs(residual) < 1e-12
+                    and abs(base-retirement) <= bound and abs(residual) <= bound):
+                certificates[key] = (base, -retirement)
+        thermal_floor.attrs["retirement_rhs_cancellation"] = certificates
     nuclear_floor = _read(
         "thermal/nuclear_capacity_floor_by_year.csv",
         usecols=["province_code", "year", "capacity_floor_gw"],

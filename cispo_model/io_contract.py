@@ -403,6 +403,9 @@ def write_run_provenance(
         if logical_path == "hydro/hydro_stations.csv":
             logical_path = str(config.raw["hydro"].get("station_parameters_file", logical_path))
         add_file("model_table", logical_path, data_root / logical_path, True)
+    if float(config.raw["numerics"].get("capacity_cancellation_rhs_zero", 0.0)) > 0:
+        for logical_path in ("thermal/existing_capacity_2025.csv", "thermal/retirement_schedule.csv"):
+            add_file("capacity_rhs_cancellation_evidence", logical_path, data_root / logical_path, True)
     if config.raw["hydro"].get("station_corrections_file"):
         correction_path = str(config.raw["hydro"]["station_corrections_file"])
         add_file("model_table", correction_path, data_root / correction_path, True)

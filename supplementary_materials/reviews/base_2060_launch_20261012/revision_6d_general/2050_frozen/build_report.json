@@ -1,0 +1,106 @@
+{
+  "year": 2050,
+  "optimization_hours": 1,
+  "optimize_called": false,
+  "build_seconds": 21.54699999999866,
+  "code_root": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\repo",
+  "state_root": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\planning_state_candidate",
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "statistics": {
+    "variables": 238529,
+    "constraints": 80104,
+    "nonzeros": 452584,
+    "coefficient_min_abs": 2.9176454125368068e-05,
+    "coefficient_max_abs": 6250.0,
+    "objective_coefficient_min_abs": 0.001,
+    "objective_coefficient_max_abs": 2282.1265455852517,
+    "rhs_min_abs": 3.586748565394586e-08,
+    "rhs_max_abs": 756.4059667194446,
+    "quadratic_constraints": 0,
+    "integer_variables": 0,
+    "binary_variables": 0
+  },
+  "tiny_nonzero_rhs_rows": [],
+  "mps_sections_sha256": {
+    "*": "395f7e309ff96a9985016d51e530d149d60bb053ad7e8348799097dff6da6853",
+    "NAME": "d5ef80a9d79acfb3c3505be15b2255a0b57f450c5842f2bfccb2cec2adb92787",
+    "ROWS": "6af7422139768b64901196f80d02abc9a564bfbdfdc8d010847e18d065cd8147",
+    "COLUMNS": "35b415152a5911eff72a58af3d5d15219361152e52fcadd73945d7bd92af4699",
+    "RHS": "74f5a68d73ec03847eccdbb5691ad82f9cbcac0a3db80caa6b4309332d20b780",
+    "BOUNDS": "e78f8b8a7cf1b143922eebb1628bf6f00afb632ca92885e56c72cee475d4f541",
+    "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+  },
+  "scientific_identity": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\repo\\config\\optimization_numeric_dac_by_year_v9.json",
+    "resolved_scientific_configuration_sha256": "74b062e41cb83cb4616ca1b6f651f1d7796a556d3f36b512ce2997d6e137086c",
+    "scenario_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "base",
+    "scenario_id": "base",
+    "scenario_family": "cispo_replication",
+    "analysis_role": "BASELINE",
+    "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+    "evidence_status": "MODEL_BASELINE",
+    "parent_baseline_case_id": null,
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "tiny_gw_capacity_intervals": 165,
+  "tiny_gw_capacity_by_family": {
+    "thermal_retrofit_to_ccs_gw": 1,
+    "hydro_new_gw": 82,
+    "hydro_capacity_gw": 82
+  },
+  "small_nonzero_bounds_by_family": {
+    "wave_capacity_gw": 752,
+    "thermal_retrofit_to_ccs_gw": 1,
+    "hydro_new_gw": 72,
+    "hydro_capacity_gw": 764,
+    "co2_ship_mt": 465
+  },
+  "coefficient_extremes": [
+    {
+      "kind": "minimum",
+      "row": "storage_cyclic_first_hour[0,0]",
+      "column": "storage_soc_gwh[0,0,0]",
+      "value": 2.9176454125368068e-05
+    },
+    {
+      "kind": "maximum",
+      "row": "strict_power_balance_p11[0]",
+      "column": "dac_capture_mt[0,0]",
+      "value": -6250.0
+    }
+  ],
+  "coefficient_span": 214213830.54789406,
+  "numerical_robustness_audit": {},
+  "annual_budget_note": "One-hour annual flow budgets scale by 1/8760 and are separately disclosed; not GW capacity stocks",
+  "status": "STOP_AUTHOR_REVIEW_REQUIRED"
+}

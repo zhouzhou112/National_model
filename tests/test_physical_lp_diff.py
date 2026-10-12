@@ -18,6 +18,30 @@ WHITELIST = json.loads(
 
 
 class PhysicalLPDiffTests(unittest.TestCase):
+    def test_rhs_changes_require_exact_row_and_cancellation_certificate(self):
+        eps = np.finfo(float).eps
+        kwargs = dict(reference_matrix=sparse.eye(1, format='csr'),
+            candidate_matrix=sparse.eye(1, format='csr'),
+            reference_rhs=np.array([eps]), candidate_rhs=np.zeros(1),
+            reference_lower=np.zeros(1), candidate_lower=np.zeros(1),
+            reference_upper=np.ones(1), candidate_upper=np.ones(1),
+            reference_objective=np.ones(1), candidate_objective=np.ones(1),
+            reference_senses=['='], candidate_senses=['='],
+            row_names=['account[0]'], variable_names=['capacity[0]'])
+        record = dict(original_rhs=eps, cleaned_rhs=0., cutoff=1e-12,
+            left_operand=1., right_operand=-1.)
+        self.assertEqual(compare_physical_lp_arrays(**kwargs, whitelist={})['status'], 'FAIL')
+        result = compare_physical_lp_arrays(**kwargs,
+            whitelist={'cancellation_rhs_closures': {'account[0]': record}})
+        self.assertEqual(result['status'], 'PASS')
+        self.assertFalse(result['checks']['rhs_identical'])
+        self.assertEqual(result['changed_rhs'], 1)
+        for name, item in [('different[0]', record),
+                           ('account[0]', dict(record, right_operand=0.)),
+                           ('account[0]', dict(record, original_rhs=eps*2))]:
+            self.assertEqual(compare_physical_lp_arrays(**kwargs,
+                whitelist={'cancellation_rhs_closures': {name: item}})['status'], 'FAIL')
+
     def compare(self, candidate_matrix, candidate_upper):
         reference = sparse.csr_matrix([[1.0, -2.0], [0.0, 3.6]])
         return compare_physical_lp_arrays(

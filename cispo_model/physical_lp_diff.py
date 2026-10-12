@@ -82,6 +82,22 @@ def compare_physical_lp_arrays(
         if len(examples) < maximum_examples:
             examples.append(entry)
 
+    changed_rhs = np.flatnonzero(reference_rhs != candidate_rhs)
+    rhs_failures = []
+    for row in changed_rhs:
+        name = str(row_names[int(row)])
+        record = whitelist.get("cancellation_rhs_closures", {}).get(name)
+        old, new = float(reference_rhs[row]), float(candidate_rhs[row])
+        permitted = bool(record and old == record["original_rhs"]
+            and new == record["cleaned_rhs"] == 0.
+            and 0 < abs(old) < record["cutoff"] <= 1e-12
+            and record["left_operand"] * record["right_operand"] < 0
+            and abs(old) <= 4 * np.finfo(float).eps *
+                (abs(record["left_operand"]) + abs(record["right_operand"])))
+        if not permitted:
+            rhs_failures.append(name)
+        else:
+            counts["cancellation_rhs_closure"] += 1
     exact_arrays = {
         "rhs": np.array_equal(reference_rhs, candidate_rhs),
         "lower_bounds": np.array_equal(reference_lower, candidate_lower),
@@ -89,7 +105,7 @@ def compare_physical_lp_arrays(
         "constraint_senses": list(reference_senses) == list(candidate_senses),
     }
     for kind, passed in exact_arrays.items():
-        if not passed:
+        if not passed and not (kind == "rhs" and not rhs_failures):
             failures.append({"kind": kind, "reason": "exact_identity_required"})
 
     allowed_bound_prefixes = tuple(
@@ -139,6 +155,7 @@ def compare_physical_lp_arrays(
                 failure["kind"] == "matrix_coefficient" for failure in failures
             ),
             "rhs_identical": exact_arrays["rhs"],
+            "rhs_changes_audit_verified": not rhs_failures,
             "lower_bounds_identical": exact_arrays["lower_bounds"],
             "objective_identical": exact_arrays["objective"],
             "constraint_senses_identical": exact_arrays["constraint_senses"],
@@ -152,6 +169,7 @@ def compare_physical_lp_arrays(
         "approved_change_counts": dict(sorted(counts.items())),
         "changed_matrix_coefficients": int(np.count_nonzero(delta.data)),
         "changed_upper_bounds": int(len(changed_upper)),
+        "changed_rhs": int(len(changed_rhs)),
         "failure_count": len(failures),
         "failures": failures[:maximum_examples],
         "change_examples": examples,

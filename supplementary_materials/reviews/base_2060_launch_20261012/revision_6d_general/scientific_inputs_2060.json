@@ -1,0 +1,219 @@
+{
+  "planning_year": 2060,
+  "carbon": {
+    "scenario": "Base_-550Mt",
+    "year": 2060,
+    "emissions_limit_mtco2_per_year": -550.0,
+    "constraint_active": true
+  },
+  "dac_enabled": true,
+  "dac_schedule": {
+    "2030": false,
+    "2040": true,
+    "2050": true,
+    "2060": true
+  },
+  "annual_system_load_gwh": 16817999.999994606,
+  "national_peak_load_gw": 2485.7097265534862,
+  "input_files": [
+    {
+      "kind": "model_table",
+      "logical_path": "load/hourly_load_2025_2060.csv.gz",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load\\hourly_load_2025_2060.csv.gz",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "45549980.0",
+      "sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+      "integrity_method": "sha256_file",
+      "role": "Chronological 31-province hourly demand and base-residual/heating/cooling/EV components for all modeled years"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load/flexible_load_envelope_v3.csv.gz",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load\\flexible_load_envelope_v3.csv.gz",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "6549964.0",
+      "sha256": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "flexibility/flex_enablement_cost_v4.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flex_enablement_cost_v4.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "19191.0",
+      "sha256": "b2d8a4f758bb4c128e8f4c4df476cecff56e2f95d1bd7d9c97aeaba56881884f",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "flexibility/flex_enablement_cost_v5.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flex_enablement_cost_v5.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "18327.0",
+      "sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+      "integrity_method": "sha256_file",
+      "role": "Integrated V5 2025-constant-CNY enablement, activation, infrastructure and degradation costs"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "biomass/fuel_potential_by_province_year.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\biomass\\fuel_potential_by_province_year.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "23514.0",
+      "sha256": "a886806b9dce30f0ce9f5f91203a6ea1791780b42554c5fb87a87363abea1180",
+      "integrity_method": "sha256_file",
+      "role": "Province-year biomass thermal resource potential"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "carbon/emissions_limits_by_scenario.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\carbon\\emissions_limits_by_scenario.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "1664.0",
+      "sha256": "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d",
+      "integrity_method": "sha256_file",
+      "role": "Scenario-year net carbon constraints"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "technology/technology_capex_by_year.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\technology\\technology_capex_by_year.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "24186.0",
+      "sha256": "09d66c89812ab7d2777b167375903776d65524b371c4810dc4498060a51091ce",
+      "integrity_method": "sha256_file",
+      "role": "Technology-year investment costs"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "technology/province_fuel_generation_cost_by_year.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\technology\\province_fuel_generation_cost_by_year.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "508789.0",
+      "sha256": "1b8a9ad4f117428ca906f8352dfe59edd4d070e38036f3644cb73e91113abbd4",
+      "integrity_method": "sha256_file",
+      "role": "Province-year fuel generation costs and availability flags"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "technology/dac_parameters_by_year.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\technology\\dac_parameters_by_year.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "9014.0",
+      "sha256": "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6",
+      "integrity_method": "sha256_file",
+      "role": "DAC capacity, cost, energy and lifetime parameters"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "technology/ccs_cost_parameters.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\technology\\ccs_cost_parameters.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "322.0",
+      "sha256": "23fe9546861fa2745c0a9bb2a6a5be6841bff537d735561685b7f38dee886b74",
+      "integrity_method": "sha256_file",
+      "role": "CO2 capture, transport and injection costs in 2025 constant CNY"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/load_centers.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\load_centers.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "228029.0",
+      "sha256": "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3",
+      "integrity_method": "sha256_file",
+      "role": "337 city load centers and province demand shares"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/vre_routes.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\vre_routes.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "8456982.0",
+      "sha256": "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27",
+      "integrity_method": "sha256_file",
+      "role": "Jointly optimized VRE-site to substation/city-center routing"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/hydro_routes.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\hydro_routes.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "804092.0",
+      "sha256": "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc",
+      "integrity_method": "sha256_file",
+      "role": "Jointly optimized hydropower-station to substation/city-center routing"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/intra_edges.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\intra_edges.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "247942.0",
+      "sha256": "5c925c74fdaf6fe525128cd641b7ce9feea781c6cf2b560a4044cc853eefeccf",
+      "integrity_method": "sha256_file",
+      "role": "Initialized candidate intraprovincial city-center network"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/initial_spur_capacity_2025.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\initial_spur_capacity_2025.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "6808149.0",
+      "sha256": "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc",
+      "integrity_method": "sha256_file",
+      "role": "2025 VRE spur interface floor on city-337 routes"
+    },
+    {
+      "kind": "model_table",
+      "logical_path": "load_center_network/city_337/substation_initial_capacity_2025.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load_center_network\\city_337\\substation_initial_capacity_2025.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "2833870.0",
+      "sha256": "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d",
+      "integrity_method": "sha256_file",
+      "role": "2025 substation/trunk interface floor on city-337 routes"
+    },
+    {
+      "kind": "capacity_rhs_cancellation_evidence",
+      "logical_path": "thermal/existing_capacity_2025.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\thermal\\existing_capacity_2025.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "9128.0",
+      "sha256": "60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "capacity_rhs_cancellation_evidence",
+      "logical_path": "thermal/retirement_schedule.csv",
+      "resolved_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\thermal\\retirement_schedule.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "83359.0",
+      "sha256": "2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def",
+      "integrity_method": "sha256_file",
+      "role": ""
+    }
+  ],
+  "raw_inputs_modified": false
+}

@@ -1005,10 +1005,13 @@ class ModelConfig:
             )
         numerics = self.raw.get("numerics", {})
         for key in ("hydro_capacity_headroom_zero_gw", "retrofit_upper_zero_gw",
-                    "inherited_floor_overrun_clip_gw"):
+                    "inherited_floor_overrun_clip_gw", "other_capacity_headroom_zero_gw_gwh"):
             value = float(numerics.get(key, 0.0))
             if not math.isfinite(value) or not 0.0 <= value <= 1e-4:
                 raise ValueError(f"{key} must be in [0, 1e-4] GW")
+        rhs_zero = float(numerics.get("capacity_cancellation_rhs_zero", 0.0))
+        if not math.isfinite(rhs_zero) or not 0.0 <= rhs_zero <= 1e-12:
+            raise ValueError("capacity_cancellation_rhs_zero must be in [0, 1e-12]")
         headroom_zero = float(numerics.get("capacity_headroom_zero_gw", 1e-12))
         if not math.isfinite(headroom_zero) or not 0.0 <= headroom_zero <= 1e-4:
             raise ValueError("capacity_headroom_zero_gw must be in [0, 1e-4] GW")

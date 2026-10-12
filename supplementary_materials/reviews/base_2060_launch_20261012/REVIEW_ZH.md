@@ -187,3 +187,35 @@ T550 已恢复连接，原自主备份已于 2026-10-12 15:50 UTC 完成，进�
 三个年份正式验收 JSON 均 PASS，已同步到 T550 各 release 旁的 `acceptance_relative_v1_20261012/`，远端 SHA 与本地完全一致，`acceptance_sync_status.json=VERIFIED`；原 output_8760 归档未改。当前仅需作者裁定 PHS 余量规则，备份和验收同步均不再阻塞。
 
 补充验证：`python -m unittest discover -s tests -p test_continuation_cleanup_6c.py -q` 的 2 项及 `-p test_relative_acceptance.py` 的 10 项均通过。初次按 tests 包导入因 tests 不是可导入包而失败，改用项目 discover 入口后通过；没有测试内容失败。暂存范围及凭据特征扫描通过，未包含模型大文件或 SI。
+
+
+## 2026-10-12 第6d节通用容量清理：D3/D4全部通过，准备冻结提交
+
+新增显式 `numerics.other_capacity_headroom_zero_gw_gwh=1e-5` 与 `capacity_cancellation_rhs_zero=1e-12`，旧V9默认关闭。容量注册表覆盖储能功率、独立PHS能量、火电/核电、波浪、省内/省际输电、接入/干线扩容。现行电池能量随功率固定时长，独立PHS能量也无有限UB，未人为添加上界；无穷潜力不变，运行功率/水/碳变量不参与。逐列记录名字/下标/原上界/继承下界/关闭量；A3仍0。实际新增清理只有广东PHS两列，关闭5.488784637kW余量，继承下界不变。
+
+RHS最小项为山西gchp `thermal_non_ccs_capacity_accounting_gchp[3]`，2.220446049250313e-16GW。不是本轮状态清理造成：原外生容量文件已有该值，来源是原数据构建脚本 `build_cispo_data_package.py` 的 `base-cumulative`，1.864-(1.720+0.144)。启用时读取 existing_capacity_2025/retirement_schedule，核对异号相消与4倍机器epsilon误差界，仅对有证据的容量记账RHS归零。原输入表与继承状态均不改。两张来源表纳入input_manifest SHA。关开关时不额外读这些表，保持旧合同。
+
+| D3/D4项目 | 结果 |
+|---|---|
+| 2060 1h行/列/非零元 | 80,104 / 238,529 / 452,584 |
+| 同条件2050 1h行/列/非零元 | 80,104 / 238,529 / 452,584，三项增幅0% |
+| 2050当前代码 vs 冻结代码 | MPS所有分段SHA完全一致 |
+| 2060容量极小区间 | 0 |
+| 非零RHS绝对值<1e-12 | 0，最小非零RHS 4.977284524433668e-8 |
+| 系数最小/最大/跨度 | 2.917645412536807e-5 / 6250 / 2.142138305e8，低于1e9 |
+| 开关白名单 | PASS：181个UB变化（178水电、1改造、2PHS）+1个RHS变化；矩阵、LB、目标、约束方向不变 |
+| 24h工程求解 | OPTIMAL，102轮，44.608s，目标3212495.75499684 million CNY |
+| 24h QC/保全 | relative_v1 PASS，preservation COMPLETE/errors=[] |
+| 完整回归 | 436项通过，1项Windows跳过，123.586s |
+
+2050旧V9对照保留165个微小容量区间，build_gate通用输出的STOP标签只针对将其用于2060清理验收；它作为未清理的身份参照完全符合本任务，不对此参照应用2060零区间目标。24h严格旧QC仍HARD_FAIL（双向流、水库两项），保留原判定，按作者relative_v1通过；不外推全年。最初用生产profile启动短窗被正常的full-year专用guard拒绝，未构建/求解；实际24h用单独工程profile ID，numerics与生产profile逐键相同，没有放松参数或约束。
+
+2060输入：碳上限−550 MtCO2/年，DAC开启（2030关闭、2040/2050/2060开启），系统年负荷16,817,999.999994606GWh、系统峰荷2485.7097265534862GW。DAC/资本/燃料/储能/火电运维参数取值逐表保存在 revision_6d_general/input_2060_*.csv，输入SHA及需求/碳值见 scientific_inputs_2060.json。原2050 overlay 50项使用表有49项SHA相同，唯一缺少retirement_schedule.csv；新release新overlay补入本地原件并核验，不改旧release。
+
+继承继续使用上海收口后 `upstream_2050_prepared_6d/`，cohort SHA3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af；6b删除量发电/储能0.630823710364GW、网络0.498170601184GW，比例/总量PASS。原改造配对和CCS不变。
+
+证据：revision_6d_general/final_gates.json、whitelist_comparison.json、2060_on_v2/build_report.json、2050_current_final/与2050_frozen/构建报告、gate24h/solution_qc.json/solve_report.json/preservation_report.json、full_tests_final.log。MPS/NPZ/大日志保留本地；脚本与小证据入Git。运行build_gate参数同前，分别选2060 --a12/不带--a12、2050当前和--code-root frozen_2050_identity/repo。24h由真实run_cispo_2030_full_year.py执行 --diagnostic-hours 24 --engineering-barrier-checkpoint-only --allow-candidate-state-in。
+
+E工具 deploy_2060.py 仅有prepare/preflight/submit/collect，没有release入口；源必须已提交且相关工程无dirty，上传后逐文件核验，submit使用--hold且防重复attempt。base_2060.sbatch运行前验证AllocTRES64CPU/750G/billing64、UNLIMITED、可用内存>=700GiB。提交前仍须新云端合同/preflight通过；当前本条不预宣称held成功，后续收据另记。
+
+备份与验收JSON同步均维持已核验完成（262文件、15.958GB、9层SHA VERIFIED；3份正式JSON远端SHA一致），未重复传输或建立监听。AGENTS.md作者第4条同步纳入本轮提交，SI目录/在线LaTeX及其他会话未提交内容不动。

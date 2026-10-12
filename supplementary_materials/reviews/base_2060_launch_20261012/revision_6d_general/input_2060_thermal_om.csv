@@ -1,0 +1,12 @@
+technology,fixed_om_fraction_capex_per_year,variable_om_yuan_per_mwh
+coal,0.02,31.124124
+coalccs,0.025,58.232232
+cchp,0.02,31.124124
+cchpccs,0.025,58.232232
+gas,0.02,23.092092
+gasccs,0.025,46.184184
+gchp,0.02,23.092092
+gchpccs,0.025,46.184184
+bio,0.02,35.140139999999995
+bioccs,0.025,60.24023999999999
+nuclear,0.015,14.056055999999998

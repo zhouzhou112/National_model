@@ -9,6 +9,58 @@ from __future__ import annotations
 import numpy as np
 
 
+def close_capacity_columns(capacity, new_build, inherited_floor, threshold, *, unit):
+    """Close strictly positive finite stock headroom; never change a lower bound.
+
+    Called only for explicitly registered GW/GWh capacity families. Dispatch,
+    water and carbon variables are excluded. Infinite potential stays infinite.
+    The caller has updated the model before reading MVar attributes.
+    """
+    floor = np.broadcast_to(np.asarray(inherited_floor, dtype=float), capacity.shape)
+    upper = np.asarray(capacity.UB, dtype=float)
+    width = upper - floor
+    mask = np.isfinite(upper) & (upper < 1e100) & (width > 0) & (width < threshold)
+    records = []
+    for pos in zip(*np.where(mask)):
+        cap = capacity[pos].item()
+        records.append(dict(variable=cap.VarName, family=cap.VarName.split('[')[0],
+            indices=list(map(int, pos)), unit=unit, original_upper=float(upper[pos]),
+            inherited_lower=float(floor[pos]), closed_upper=float(floor[pos]),
+            removed_headroom=float(width[pos]), cutoff=float(threshold)))
+        cap.UB = float(floor[pos])
+        if new_build is not None:
+            new = new_build[pos].item()
+            if new.LB != 0:
+                raise ValueError('Capacity closure requires zero new-build lower bound')
+            records.append(dict(variable=new.VarName, family=new.VarName.split('[')[0],
+                indices=list(map(int, pos)), unit=unit, original_upper=float(new.UB),
+                inherited_lower=0., closed_upper=0., removed_headroom=float(new.UB),
+                cutoff=float(threshold), paired_capacity=cap.VarName))
+            new.UB = 0.
+    return records
+
+
+def zero_cancellation_rhs(values, left, right, threshold, row_prefix):
+    """Zero only roundoff-sized residuals of opposite-sign capacity operands.
+
+    Small physical RHS values without a cancellation certificate are retained.
+    No generic matrix/RHS thresholding is performed.
+    """
+    result = np.asarray(values, dtype=float).copy()
+    left, right = np.broadcast_arrays(np.asarray(left, float), np.asarray(right, float))
+    bound = 4 * np.finfo(float).eps * (abs(left) + abs(right))
+    mask = ((abs(result) > 0) & (abs(result) < threshold)
+            & (left * right < 0) & (abs(result) <= bound))
+    rows = []
+    for i in np.flatnonzero(mask):
+        rows.append(dict(row=f'{row_prefix}[{i}]', original_rhs=float(result[i]),
+            cleaned_rhs=0., left_operand=float(left[i]), right_operand=float(right[i]),
+            roundoff_bound=float(bound[i]), cutoff=float(threshold),
+            reason='OPPOSITE_SIGN_CAPACITY_CANCELLATION_ROUNDOFF'))
+    result[mask] = 0.
+    return result, rows
+
+
 def zero_capacity_headroom(floor, upper, threshold, asset_ids):
     """Opt-in GW bound approximation, with the removed feasible range recorded."""
     floor = np.asarray(floor, dtype=float)

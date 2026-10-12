@@ -400,7 +400,9 @@
     "capacity_floor_zero_gw": 1e-05,
     "hydro_capacity_headroom_zero_gw": 1e-05,
     "retrofit_upper_zero_gw": 1e-05,
-    "inherited_floor_overrun_clip_gw": 0
+    "inherited_floor_overrun_clip_gw": 0,
+    "other_capacity_headroom_zero_gw_gwh": 1e-05,
+    "capacity_cancellation_rhs_zero": 1e-12
   },
   "construction": {
     "architecture": "full_year_monolithic_lp",

@@ -37,7 +37,8 @@ class RelativeAcceptanceTests(unittest.TestCase):
         new=json.loads((folder/'optimization_numeric_dac_by_year_v9_a12.json').read_text())
         expected=copy.deepcopy(base)
         expected['numerics'].update(hydro_capacity_headroom_zero_gw=1e-5,
-            retrofit_upper_zero_gw=1e-5,inherited_floor_overrun_clip_gw=0)
+            retrofit_upper_zero_gw=1e-5,inherited_floor_overrun_clip_gw=0,
+            other_capacity_headroom_zero_gw_gwh=1e-5,capacity_cancellation_rhs_zero=1e-12)
         self.assertEqual(new,expected)
         profiles=folder/'solver_profiles'
         old=json.loads((profiles/'barrier_checkpoint_full_year_cloud_2050_numeric_v1_threads48.json').read_text())

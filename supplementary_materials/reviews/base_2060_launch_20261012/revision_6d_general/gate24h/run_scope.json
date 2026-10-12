@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-10-12T17:59:25.922097+01:00",
+  "horizon": "diagnostic_24h",
+  "optimization_hours": 24,
+  "optimization_start_hour": 0,
+  "optimization_stop_hour_exclusive": 24,
+  "selected_time_start_bj": "2060-01-01 00:00:00",
+  "selected_time_end_bj": "2060-01-01 23:00:00",
+  "configured_full_year_hours": 8760,
+  "definition": "24 chronological hours starting at zero-based model hour 0; cyclic over the selected diagnostic horizon",
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "offline_recovery": null,
+  "scientific_acceptance_mode": "ENGINEERING_BARRIER_CHECKPOINT_ONLY",
+  "annual_cost_and_policy_scaling": "annualized planning costs unscaled; annual flow policy and resource accounts scaled by optimization_hours/configured_full_year_hours",
+  "annualized_planning_cost_scaling_factor": 1.0,
+  "annual_flow_policy_resource_scaling_factor": 0.0027397260273972603,
+  "time_boundary": "cyclic_over_selected_horizon",
+  "boundary_year": 2050,
+  "planning_year": 2060,
+  "scenario_id": "base",
+  "scenario_family": "cispo_replication",
+  "analysis_role": "BASELINE",
+  "publication_status": "TARGET_REQUIRES_FULL_YEAR_ACCEPTANCE",
+  "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+  "formulation_profile_id": null,
+  "annual_emissions_accounting": "national_dense_v1",
+  "annual_capacity_link_row_scaling": "physical_v1",
+  "state_in": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\planning_state_candidate",
+  "state_format": "capacity_cohorts_v2",
+  "available_memory_gb": 12.09,
+  "minimum_available_memory_gb": 8.0,
+  "memory_gate_pass": true,
+  "host_memory_soft_limit_policy": null,
+  "runtime_soft_mem_limit_policy": null,
+  "scale_estimate": {
+    "variables": 346023,
+    "constraints": 341530,
+    "nonzeros": 1926942,
+    "estimated_memory_gb": 0.19,
+    "dominant_blocks": {
+      "vre_site_capacity_and_new": 73372,
+      "vre_availability_and_dispatch": 5952,
+      "thermal_capacity_new_and_retrofit": 837,
+      "thermal_hourly_ruc": 40920,
+      "storage_capacity_and_hourly": 7564,
+      "hydro_site_capacity_and_hourly": 50188,
+      "transmission_capacity_and_flow": 11838,
+      "dac_capacity_and_capture": 372,
+      "annual_resource_accounts": 63,
+      "capacity_margin_credited_capacity": 31,
+      "co2_source_sink_flow": 100471,
+      "spur_and_trunk_capacity": 45010,
+      "annual_load_center_network": 5756,
+      "optional_flexible_load": 0,
+      "optional_wave_energy": 3649
+    },
+    "block_count": 1,
+    "maximum_block_hours": 24,
+    "maximum_block_variables": 111456,
+    "maximum_block_nonzeros": 1214832,
+    "estimated_peak_block_memory_gb": 0.09
+  },
+  "gurobi_required_for_build": true,
+  "solution_contract_requested": {
+    "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+    "basis_required": false,
+    "dual_attribute": "BarPi"
+  },
+  "basis_reuse_request": {
+    "basis_in": null,
+    "allow_basis_reuse": false,
+    "allow_cross_year_basis": false,
+    "export_warm_start_basis": false
+  },
+  "barrier_first_workflow": {
+    "author_authorized_thermal_1e4_execution": false,
+    "nonbasic_primal_dual_requested": true,
+    "primary_checkpoint_requested": false,
+    "engineering_checkpoint_requested": true,
+    "deferred_crossover_source": null,
+    "engineering_checkpoint_only": true,
+    "engineering_checkpoint_source_explicitly_allowed": false,
+    "compatible_implementation_bundle_explicitly_allowed": false,
+    "inline_crossover_explicitly_allowed": false,
+    "nonbasic_planning_state_explicitly_allowed": false,
+    "deferred_crossover_planning_state_explicitly_allowed": false,
+    "planning_state_policy": "UPSTREAM_UNACCEPTED_CANDIDATE_CANNOT_BECOME_ACCEPTED_STATE"
+  },
+  "analysis_mode": "BASE_MINIMUM_COST",
+  "mga": null,
+  "scientific_solver_artifacts_requested": false,
+  "solver_numerical_compatibility_prebuild": {
+    "schema_version": "cispo_solver_numerical_compatibility_v1",
+    "status": "PASS",
+    "author_authorized_thermal_route": false,
+    "scientific_acceptance_established": false,
+    "formulation": null,
+    "aggregate_parameter": 1,
+    "aggregate_parameter_source": "explicit_profile",
+    "aggregate_zero_required": false,
+    "stable_crossover_required": false,
+    "crossover_parameter": 0,
+    "crossover_basis_parameter": 1,
+    "solution_target_parameter": 1,
+    "barrier_convergence_tolerance": 0.0001,
+    "stable_basic_route": false,
+    "accepted_basic_crossover_orders": [
+      1,
+      2,
+      4
+    ],
+    "strict_nonbasic_primal_dual_route": false,
+    "engineering_relaxed_nonbasic_route": false,
+    "engineering_relaxed_nonbasic_authorized": false,
+    "required_long_horizon_settings": {
+      "aggregate": "automatic_allowed",
+      "accepted_solver_routes": [
+        {
+          "method": 2,
+          "crossover": [
+            1,
+            2,
+            4
+          ],
+          "crossover_basis": 1,
+          "solution_form": "basic"
+        },
+        {
+          "method": 2,
+          "crossover": 0,
+          "solution_target": 1,
+          "maximum_barrier_convergence_tolerance": 1e-09,
+          "solution_form": "primal_dual_nonbasic"
+        }
+      ]
+    },
+    "inverse_decay_amplification_log10_threshold": 3.0,
+    "component_risks": {
+      "heating": {},
+      "cooling": {}
+    },
+    "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+  }
+}

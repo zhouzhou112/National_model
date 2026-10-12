@@ -37,7 +37,7 @@ def main():
     families=np.array([n.split('[')[0] for n in names])
     # Capacity decisions include total/new/built/retrofit/connectivity stocks;
     # dispatch, reserve and storage charge/discharge are operational power.
-    capacity=np.array([n.endswith('_gw') and any(s in n for s in ['capacity','new','retrofit','expansion','spur','trunk']) for n in families])
+    capacity=np.array([n.endswith(('_gw','_gwh')) and any(s in n for s in ['capacity','new','retrofit','expansion','spur','trunk']) for n in families])
     tiny=(up-lo>0)&(up-lo<1e-5)
     smallbounds=((abs(lo)>0)&(abs(lo)<1e-6))|((abs(up)>0)&(abs(up)<1e-6))
     for label,mask in [('tiny_intervals',tiny),('small_bounds',smallbounds)]:
@@ -63,7 +63,7 @@ def main():
             hashes[section].update(line)
     report=dict(year=a.year,optimization_hours=1,optimize_called=False,build_seconds=time.monotonic()-started,
         code_root=str(root),state_root=str(state.root),gurobi_version=gp.gurobi.version(),
-        statistics=model_statistics(m),mps_sections_sha256={s:h.hexdigest() for s,h in hashes.items()},
+        statistics=model_statistics(m),tiny_nonzero_rhs_rows=[dict(row=str(r),rhs=float(v)) for r,v in zip(rows,m.getAttr('RHS')) if 0<abs(v)<1e-12],mps_sections_sha256={s:h.hexdigest() for s,h in hashes.items()},
         scientific_identity=analysis_case_identity(cfg),tiny_gw_capacity_intervals=int((tiny&capacity).sum()),
         tiny_gw_capacity_by_family=dict(Counter(families[tiny&capacity])),
         small_nonzero_bounds_by_family=dict(Counter(families[smallbounds])),
