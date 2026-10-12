@@ -1,0 +1,11 @@
+{
+  "baseline_commit": "01e99d4e89d3cc1b8e3248ec25e0c39e444c3a62",
+  "P0_M_gw_gwh": 7.220764389091675,
+  "P_series_pid": 44524,
+  "T550_initial_available_bytes": 54858166272,
+  "T550_logical_cpus": 96,
+  "T550_other_workloads": "Other user forecast training; no CISPO solver observed",
+  "cloud_readonly": "5124127|RUNNING|4:17:44|m4cm2108",
+  "production_source_diff": "",
+  "helper_sha256": "f7e790918a85fb505823cf36ce0c656b97ef880dfd7b2ca96c8df9b099a0edcc"
+}

@@ -97,6 +97,8 @@ def main() -> int:
     p.add_argument("--numeric-focus", type=int, default=1, choices=[0,1,2,3])
     p.add_argument("--scale-flag", type=int, default=2, choices=[-1,0,1,2,3])
     p.add_argument("--presolve", type=int, default=2, choices=[-1,0,1,2])
+    p.add_argument("--aggregate", type=int, default=1, choices=[0,1,2])
+    p.add_argument("--preserve-diagnostic", action="store_true", help="Archive original LP, all available vectors and hourly residuals regardless of QC")
     p.add_argument("--method", type=int, default=2, choices=[1,2], help="Single-stage local diagnostic solver; never launches production Stage B")
     p.add_argument("--basis-in", type=Path, help="Optional local simplex basis for the same service-block layout")
     args = p.parse_args()
@@ -134,7 +136,7 @@ def main() -> int:
     config.raw["security"]["capacity_margin_load_basis"] = "baseline_peak_v1"
     cost_changes = apply_cost_set(data.flexible_load_v4, COST_SETS[args.cost_set])
     config.raw["numerics"].update(method=args.method, crossover=0, solution_target=1,
-                                  barrier_convergence_tolerance=args.bar_tol, aggregate=1)
+                                  barrier_convergence_tolerance=args.bar_tol, aggregate=args.aggregate)
     baseline_cost = float((1e-3 * price * data.load_gw).sum())
     before = time.perf_counter()
     with gp.Model(args.case) as model:
@@ -152,6 +154,7 @@ def main() -> int:
         model.Params.NumericFocus = args.numeric_focus
         model.Params.ScaleFlag = args.scale_flag
         model.Params.Presolve = args.presolve
+        model.Params.Aggregate = args.aggregate
         block = attach_flexible_load(model, config, data, hours=8760, hour_start=0)
         energy_cost = (1e-3 * price * block.effective_load_gw).sum()
         model.setObjective(gp.quicksum(block.costs.values()) + energy_cost)
@@ -162,7 +165,14 @@ def main() -> int:
             model.read(str(args.basis_in))
         build_seconds = time.perf_counter() - before
         print(f"built {model.NumConstrs} rows x {model.NumVars} cols, {model.NumNZs} nnz in {build_seconds:.0f}s", flush=True)
-        model.optimize()
+        if args.preserve_diagnostic:
+            from flex_numerics_diagnostics import before_solve, after_solve, service_diagnostics
+            before_solve(model, args.output)
+        try:
+            model.optimize()
+        finally:
+            if args.preserve_diagnostic:
+                after_solve(model, args.output)
         if args.method == 1 and model.Status == gp.GRB.OPTIMAL:
             model.write(str(args.output / "solution.bas"))
         report = dict(generated_at=datetime.now().astimezone().isoformat(),
@@ -170,7 +180,7 @@ def main() -> int:
                       input_sha256=input_sha,
                       solver_settings=dict(method=args.method, crossover=0, seed=int(model.Params.Seed),
                           bar_tol=args.bar_tol, numeric_focus=args.numeric_focus,
-                          scale_flag=args.scale_flag, presolve=args.presolve, threads=args.threads),
+                          scale_flag=args.scale_flag, presolve=args.presolve, aggregate=args.aggregate, threads=args.threads),
                       scope="PRICE_TAKER_SERVICE_BLOCK_ONLY_NOT_SYSTEM_PLANNING",
                       case=args.case, year=args.year, cost_set=args.cost_set, cost_changes=cost_changes,
                       prices=str(args.prices.resolve()), normalize=args.normalize, single_factor=args.single_factor,
@@ -180,6 +190,8 @@ def main() -> int:
                       baseline_energy_cost_million_cny=baseline_cost)
         if model.SolCount:
             qc, values = physical_qc(config, data, block, 8760, 0)
+            if args.preserve_diagnostic:
+                report["overnight_diagnostics"] = service_diagnostics(config, data, block, 8760, 0, args.output)
             report["gurobi_quality"] = {key: float(getattr(model,key)) for key in ("ConstrVio","BoundVio","DualVio","ComplVio")}
             if max(qc.values()) > 1e-6:
                 debug = {k: np.asarray(values[k]) for k in ("heating_state", "heating_shift_up", "heating_shift_down",
