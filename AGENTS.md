@@ -41,4 +41,17 @@ If chat context conflicts with committed files or verified outputs, stop and res
 3. **已解年份正式验收。** Base 2030/2040/2050 按 relative_v1（含本节第 1、2 条）出具验收记录，冻结归档不改写，验收记录与归档并列存放并以 SHA 互相引用。
 4. **2060 起续接年的小数值清理。** A1/A2 阈值由 1e-6 改为 1e-5 GW，与 V9 已用的风光余量/下界清零阈值统一；A3 仍关闭。其余容量列族（储能功率/能量、火电新建、核电、波浪、接入与输电）采用同一个 10 kW（或 10 kWh）数值零：0 < 上界 − 继承下界 < 1e-5 时关闭余量。构建中 \|RHS\| < 1e-12 的浮点残差置零。所有调整逐列审计并披露。上一年状态中模型新建量（按站点或省 × 技术合计）<1 MW 的 cohort 在交接时删除，与第 7 条"新建量 <1 MW 按零计"的结果口径一致；删除量逐技术披露。
 5. **Base 2060 不做候选筛选**，求解参数与 2050 生产 profile 相同（48 线程、Barrier、Crossover=0、BarConvTol=1e-4、NumericFocus=2）。
+6. **验收结论只是参考标签。** 任何口径的自动验收（严格、relative_v1 或今后新增）都只用来记录解的质量；无论结论是 PASS、FAIL 还是 HARD_FAIL，都必须完整保全全部解数据（solution、BarX/BarPi、原始模型归档、状态、日志），不得因验收未通过而删除、覆盖、放弃或停止导出。是否采用某个解，由作者与决策层人工决定。
+
+## 作者决定：情景体系与 case3 前置规则（2026-10-12 晚）
+
+依据与理由见 `RESEARCH_DESIGN_CONSENSUS_20261012.md`；与旧文档冲突时以该文件为准。
+
+1. **情景体系：** Base / Flex-coopt（`case3_thermal_ev_v5`，框架 A）/ Base-frozen（框架 B）/ Late-entry（框架 C：Base 2040 状态 → case3 配置 2050→2060）。框架 C 自本日纳入主计划。
+2. **敏感性：** `case3_thermal_ev_v5_nocredit` 只跑 2030 一年，与 case3 2030 并行；`compensation_basis` 不排程。
+3. **交接规则：** case3 与 C 的全部续接年使用 R1（与 Base 2060 相同的交接与数值清理规则）；case3 2030 与 `_nocredit` 2030 使用 V9，与 Base 2030 完全一致。
+4. **relative_v1 扩展：** 除已实现的四项外，其余以 GW/GWh 计的物理残差检查一律采用 max(严格容差, 1e-3 GW 或 GWh)，在 case3 启动前实现。
+5. **定价证书的比较用途：** 2026-10-10 第 4 条的门槛继续用于判断方案是否近优；与 Base 比较成本差时，证书上界 B 计入节省区间，B > 1e-4 × 目标值即加回负价列重解一次，两次求解数据均保全。
+6. **报告口径：** 情景相对 Base 的节省按区间 [D_Base − P_X, P_Base − D_X + B_X] 报告；2040 年以后以物理量差为主。
+7. **case3 求解参数：** 待夜间数值实验（`claude_workspace/tasks/TASK_case3_flex_numerics_overnight_20261012.md`）给出结论后，由作者确认；在此之前不提交 case3 全年作业。
 

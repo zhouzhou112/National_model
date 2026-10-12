@@ -5279,3 +5279,31 @@ Git操作基准eb7d91202bb4b53ef551d210c4ee25b73001f161；生产冻结源680a5c4
 - 2026-10-12英国22:26（北京10月13日05:26）Base2060/5124127 RUNNING/m4cm2108，运行4:09:35。全年构建18:55英国完成（约37分48秒），19:03:55进入求解；50,907,233行/41,458,383列/485,386,301非零元，指纹0x0475f775。当前Presolve约12,185秒，已删14,753,636行/8,362,781列，尚无Barrier迭代；日志每约5秒更新，无求解器Warning/Error，stderr空。sstat RSS87.17GiB、峰103.28GiB；48求解线程，750G分配不变。证据revision_6d_general/progress_20261012T212638Z*.json；无可靠完成百分比/ETA，后续只读观察预处理结束与Barrier启动。
 
 Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show job -o 5124127、sstat -j 5124127.batch及stdout/stderr、gurobi.log、build_report/solver_telemetry。新增两份进度JSON并更新本交接、MODEL_SERVER_STATUS和SERVER_RUNBOOK；没有更改冻结源码/参数、作业或触发新求解。矩阵范围[3e-5,6250]，最小非零RHS4.9772845e-8。预处理计数在所读尾段保持不变，日志继续更新时间；这不能当作完成比例，也不足以判断卡死。尚无全年解及终态QC；按作者最新第6条，后续任何QC标签均不得阻止完整解数据保全。备份和三年验收JSON同步沿用此前完成记录，未重复传输。下一步用户查询时只读核对预处理/Barrier/终态及保全，禁止原地更新运行包或建立自动监听。保留作者AGENTS修改和另一SI会话全部未提交内容。
+
+
+## 2026-10-12 当前共识入口与历史口径更正
+
+权威依据：`RESEARCH_DESIGN_CONSENSUS_20261012.md` 全文与 `AGENTS.md` 2026-10-12 两节；冲突以共识为准。下列引用逐字摘录共识，不重新计算数值。历史条目保留，仅供追溯，不构成新的执行授权。
+
+
+当前研究与执行以 `RESEARCH_DESIGN_CONSENSUS_20261012.md` 和 `AGENTS.md` 2026-10-12 两节为准。旧条目中的 V4 主情景、case1/case2 后补、Late-entry 待定、Stage B/basic solution 强制要求、严格 QC 否决导出等均不再定义当前任务。
+
+> ## 3. 求解、验收与数据保全
+>
+> - 求解：Stage A，即 Barrier、Crossover=0、BarConvTol=1e-4、NumericFocus=2、48 线程，不执行 Stage B。case3 是否沿用 Base 的 Presolve=2/Aggregate=1，取决于夜间数值实验（第 6 节）。
+> - relative_v1：功率平衡、成本闭合、双向流（额外损耗 ≤ 全年负荷的 1e-4）、水库（暂缓）四项已实现。**扩展（2026-10-12 决定，case3 启动前实现）：** 其余所有以 GW/GWh 计的物理残差检查，包括冷热和 EV 库存、V2G、信用上界、波浪、储能，判据改为 max(严格容差, 1e-3 GW 或 GWh)。理由是 Base 中柔性检查恒为 0，从未被内点解检验过；严格的 1e-5 GWh 低于内点解的正常残差量级（2030 功率平衡最大残差 0.19 MW）。
+> - **验收只是参考标签：** 任何口径的结论都不导致数据被删除、覆盖或放弃；解是否采用，由作者与决策层人工决定（AGENTS.md 2026-10-12 第 6 条）。
+> ## 6. 执行顺序与当前状态
+>
+> 1. **已完成：** Base 2030/2040/2050 正式验收（`supplementary_materials/reviews/base_acceptance_relative_v1_20261012/`）；三年结果已备份到 T550（262 文件，15.96 GB，SHA 全部核验）。
+> 2. **运行中：** Base 2060，Job 5124127，release `20261012_base2060_v9a12_t48_m750_tol1e4_v1`，源码 680a5c4，不筛选。
+> 3. **今晚：** case3 柔性块解质量的夜间实验（`claude_workspace/tasks/TASK_case3_flex_numerics_overnight_20261012.md`），结论决定 case3 的生产求解参数。
+> 4. **下一步（Claude 写任务书，Codex 实现）：**
+>    - 筛选生产化：profile、margin 参数、`--state-in` 支持；
+>    - 定价证书脚本；
+>    - relative_v1 扩展；
+>    - R1 交接规则产品化，把 2060 的一次性脚本整理为可复用工具；
+>    - 与冻结 Base 2030 release 的身份门禁、24h 门禁；
+>    - held 提交。
+> 5. **随后：** case3 2030 与 `_nocredit` 2030 并行提交。C 2050 在 `--state-in` 筛选就绪后提交，可与 case3 2030 并行。case3 2040 在 case3 2030 完成后提交。框架 B 任务书在 case3 2030 提交后撰写。
+> 6. **云端占用：** 最多同时 4 个 64 CPU/750G 节点（Base 2060、case3 2030、`_nocredit` 2030、C 2050）。每个作业均先 held 提交，作者放行后才运行。

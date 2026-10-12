@@ -97,3 +97,31 @@ V4 的构建、来源计数和运行时输入分别由
 `flexible_load_v4_source_count_qa.csv` 与
 `data/flexibility/flexible_load_v4.manifest.json` 锁定。截断时域结果只用于工程验证：
 V4 年化启用成本与所选小时运行成本必须分列，不能直接解释成全年净收益。
+
+
+## 2026-10-12 当前共识入口与历史口径更正
+
+权威依据：`RESEARCH_DESIGN_CONSENSUS_20261012.md` 全文与 `AGENTS.md` 2026-10-12 两节；冲突以共识为准。下列引用逐字摘录共识，不重新计算数值。历史条目保留，仅供追溯，不构成新的执行授权。
+
+
+当前研究与执行以 `RESEARCH_DESIGN_CONSENSUS_20261012.md` 和 `AGENTS.md` 2026-10-12 两节为准。旧条目中的 V4 主情景、case1/case2 后补、Late-entry 待定、Stage B/basic solution 强制要求、严格 QC 否决导出等均不再定义当前任务。
+
+> ## 3. 求解、验收与数据保全
+>
+> - 求解：Stage A，即 Barrier、Crossover=0、BarConvTol=1e-4、NumericFocus=2、48 线程，不执行 Stage B。case3 是否沿用 Base 的 Presolve=2/Aggregate=1，取决于夜间数值实验（第 6 节）。
+> - relative_v1：功率平衡、成本闭合、双向流（额外损耗 ≤ 全年负荷的 1e-4）、水库（暂缓）四项已实现。**扩展（2026-10-12 决定，case3 启动前实现）：** 其余所有以 GW/GWh 计的物理残差检查，包括冷热和 EV 库存、V2G、信用上界、波浪、储能，判据改为 max(严格容差, 1e-3 GW 或 GWh)。理由是 Base 中柔性检查恒为 0，从未被内点解检验过；严格的 1e-5 GWh 低于内点解的正常残差量级（2030 功率平衡最大残差 0.19 MW）。
+> - **验收只是参考标签：** 任何口径的结论都不导致数据被删除、覆盖或放弃；解是否采用，由作者与决策层人工决定（AGENTS.md 2026-10-12 第 6 条）。
+> ## 6. 执行顺序与当前状态
+>
+> 1. **已完成：** Base 2030/2040/2050 正式验收（`supplementary_materials/reviews/base_acceptance_relative_v1_20261012/`）；三年结果已备份到 T550（262 文件，15.96 GB，SHA 全部核验）。
+> 2. **运行中：** Base 2060，Job 5124127，release `20261012_base2060_v9a12_t48_m750_tol1e4_v1`，源码 680a5c4，不筛选。
+> 3. **今晚：** case3 柔性块解质量的夜间实验（`claude_workspace/tasks/TASK_case3_flex_numerics_overnight_20261012.md`），结论决定 case3 的生产求解参数。
+> 4. **下一步（Claude 写任务书，Codex 实现）：**
+>    - 筛选生产化：profile、margin 参数、`--state-in` 支持；
+>    - 定价证书脚本；
+>    - relative_v1 扩展；
+>    - R1 交接规则产品化，把 2060 的一次性脚本整理为可复用工具；
+>    - 与冻结 Base 2030 release 的身份门禁、24h 门禁；
+>    - held 提交。
+> 5. **随后：** case3 2030 与 `_nocredit` 2030 并行提交。C 2050 在 `--state-in` 筛选就绪后提交，可与 case3 2030 并行。case3 2040 在 case3 2030 完成后提交。框架 B 任务书在 case3 2030 提交后撰写。
+> 6. **云端占用：** 最多同时 4 个 64 CPU/750G 节点（Base 2060、case3 2030、`_nocredit` 2030、C 2050）。每个作业均先 held 提交，作者放行后才运行。

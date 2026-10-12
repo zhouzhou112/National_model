@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12 晚：研究共识 `RESEARCH_DESIGN_CONSENSUS_20261012.md` 生效，文档已追加同步。Base2060只读确认RUNNING/m4cm2108；Base2030–2050已按修订relative_v1正式验收并完成T550备份（本轮未触碰备份）。case3待夜间数值结论、生产代码和作者确认。夜间诊断代码aef0cb7，本机P0–P5运行；P0复现7.220764GWh异常。T550实验包传输遇SSH中断，F尚未启动，精确下一步是恢复连接后核验新包并启动独立F队列。详见 `supplementary_materials/reviews/case3_flex_numerics_20261012/REVIEW_ZH.md`。
+
 - 2026-10-12英国22:26（北京10月13日05:26）Base2060/5124127 RUNNING/m4cm2108，运行4:09:35。全年构建18:55英国完成（约37分48秒），19:03:55进入求解；50,907,233行/41,458,383列/485,386,301非零元，指纹0x0475f775。当前Presolve约12,185秒，已删14,753,636行/8,362,781列，尚无Barrier迭代；日志每约5秒更新，无求解器Warning/Error，stderr空。sstat RSS87.17GiB、峰103.28GiB；48求解线程，750G分配不变。证据revision_6d_general/progress_20261012T212638Z*.json；无可靠完成百分比/ETA，后续只读观察预处理结束与Barrier启动。
 
 - 2026-10-12英国18:17:06（北京10月13日01:17:06）Base2060 Job5124127已按用户“放行，启动这个任务吧”释放并在m4cm2108运行；实际AllocTRES cpu64,mem750G,node1,billing64，UNLIMITED/Requeue0。启动可用内存724.571716GiB>=700，Gurobi13.0.2/节点smoke PASS，7项启动回归PASS。冻结清单SHA41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9再次全部核验，冻结源码680a5c4不变，未重复提交。17:17:45UTC时全年runner已创建output_8760身份/输入/preflight文件、stderr为空，尚未取得全年结果。备份262文件/9层SHA完成，三年验收JSON source_bytes逐字节同步已核验；未重启传输。证据revision_6d_general/release_job.json及startup_verified.json。后续只读查构建/Barrier进展与终态，禁止原地修改冻结包；无自动监听。
@@ -9775,3 +9777,12 @@ Git操作基准eb7d91202bb4b53ef551d210c4ee25b73001f161；生产冻结源680a5c4
 - 2026-10-12英国22:26（北京10月13日05:26）Base2060/5124127 RUNNING/m4cm2108，运行4:09:35。全年构建18:55英国完成（约37分48秒），19:03:55进入求解；50,907,233行/41,458,383列/485,386,301非零元，指纹0x0475f775。当前Presolve约12,185秒，已删14,753,636行/8,362,781列，尚无Barrier迭代；日志每约5秒更新，无求解器Warning/Error，stderr空。sstat RSS87.17GiB、峰103.28GiB；48求解线程，750G分配不变。证据revision_6d_general/progress_20261012T212638Z*.json；无可靠完成百分比/ETA，后续只读观察预处理结束与Barrier启动。
 
 Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show job -o 5124127、sstat -j 5124127.batch及stdout/stderr、gurobi.log、build_report/solver_telemetry。新增两份进度JSON并更新本交接、MODEL_SERVER_STATUS和SERVER_RUNBOOK；没有更改冻结源码/参数、作业或触发新求解。矩阵范围[3e-5,6250]，最小非零RHS4.9772845e-8。预处理计数在所读尾段保持不变，日志继续更新时间；这不能当作完成比例，也不足以判断卡死。尚无全年解及终态QC；按作者最新第6条，后续任何QC标签均不得阻止完整解数据保全。备份和三年验收JSON同步沿用此前完成记录，未重复传输。下一步用户查询时只读核对预处理/Barrier/终态及保全，禁止原地更新运行包或建立自动监听。保留作者AGENTS修改和另一SI会话全部未提交内容。
+
+
+## 2026-10-12 夜间 case3 柔性数值实验：P已启动，T550连接阻塞
+
+- 共识以 `RESEARCH_DESIGN_CONSENSUS_20261012.md` 全文及 `AGENTS.md` 本日两节为准；情景Base/A/B/C、R0/R1、relative_v1扩展、证书两用途和比较区间已同步为文档追加更正。所有QC只是标签，任何解/状态/日志一律保全。
+- 实现提交 `aef0cb7`，本机P0–P5串行PID44524，P0 OPTIMAL/94轮但M=7.220764389091675GWh；已复现历史失败，不据此改生产。1h smoke v3保全COMPLETE/errors=[]（严格QC HARD_FAIL），候选状态仍完整导出。入口/输出/SHA见 `supplementary_materials/reviews/case3_flex_numerics_20261012/REVIEW_ZH.md`。
+- T550资源初查96逻辑核/可用约51.09GiB，其他用户预测训练占主要内存、未见CISPO求解器。89.35MB实验包传输后连接失效，127.0.0.1:22握手/直接地址均超时；无部署和F启动回执，**F未启动**。部分传输保留、不覆盖；排程准备F1/F2/F3/F4、条件F6、最后F5，16线程串行/保留15GiB。制冷/供暖数据选窗8月5088/12月8016。
+- 只读squeue确认Base2060/5124127 RUNNING/m4cm2108（运行4:17:44），未控制作业。Base2030–2050正式验收与262文件/15.96GB/9层SHA备份沿用共识和既有核验证据，本轮不接触cloud_backup。
+- 待办：恢复T550连接，核验新包与输入SHA并启动F；P/F齐备后按任务书第4节形成三情形结论及H1/H2/H3机制报告。case3全年仍待夜间结论、生产代码和作者确认；本轮无云端提交、release/模型/生产profile修改。Git同步仅明确清单，SI既有未提交内容保留。

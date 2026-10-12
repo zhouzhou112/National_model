@@ -26,3 +26,31 @@
 仅列出本轮已查看的 5 个根目录 `.tmp_*portfolio*.py` 一次性生成脚本，以及 `supplementary_materials/Anycast_Win_b31.zip`。逐文件大小、SHA 和原因在 `supplementary_materials/reviews/dual_screening_20261002/deletion_candidates.csv`，共 6 文件、12,177,853 bytes。五个脚本会写当前代码/配置，不应再次运行；成熟实现已存在。压缩包与科研模型无直接关系，但用途须由作者确认。
 
 本轮不执行物理删除。项目 AGENTS.md 要求清理前先列出文件并请求确认；原始数据、历史成果和已有未提交改动不进入这份删除清单。代码版本整理采用入口标识和身份清单，不改写 Git 历史、不移动当前活跃文件。
+
+
+## 2026-10-12 继续工作只需先读这些入口（补充更正）
+
+权威依据：`RESEARCH_DESIGN_CONSENSUS_20261012.md` 全文与 `AGENTS.md` 2026-10-12 两节；冲突以共识为准。下列引用逐字摘录共识，不重新计算数值。历史条目保留，仅供追溯，不构成新的执行授权。
+
+
+在原入口清单前增加：
+
+1. `RESEARCH_DESIGN_CONSENSUS_20261012.md` 全文：情景体系、价值渠道、R0/R1、证书用途、报告区间和执行顺序。
+2. `AGENTS.md` 的“作者决定：relative_v1 修订、已解年份验收与 2060 数值清理（2026-10-12）”与“作者决定：情景体系与 case3 前置规则（2026-10-12 晚）”，并保留 2026-10-10 条目中未被取代的规定。
+3. `CODEX_HANDOFF.md` 的 `Current validated snapshot`：运行状态必须读最新已核验证据，历史“下一步”不能重复执行。
+
+`claude_workspace/tasks/TASK_case3_launch_contract_20261010.md` 已被部分取代，尤其涉及 relative_v1、情景范围、R1 续接、比较用证书门槛及 case3 参数待确认的内容。原第 2 项所称“后续消融顺序”不再适用；case1/case2 已移出主计划。生产代码与资格门禁仍有待实现，不把文档同步当作生产就绪。
+> ## 6. 执行顺序与当前状态
+>
+> 1. **已完成：** Base 2030/2040/2050 正式验收（`supplementary_materials/reviews/base_acceptance_relative_v1_20261012/`）；三年结果已备份到 T550（262 文件，15.96 GB，SHA 全部核验）。
+> 2. **运行中：** Base 2060，Job 5124127，release `20261012_base2060_v9a12_t48_m750_tol1e4_v1`，源码 680a5c4，不筛选。
+> 3. **今晚：** case3 柔性块解质量的夜间实验（`claude_workspace/tasks/TASK_case3_flex_numerics_overnight_20261012.md`），结论决定 case3 的生产求解参数。
+> 4. **下一步（Claude 写任务书，Codex 实现）：**
+>    - 筛选生产化：profile、margin 参数、`--state-in` 支持；
+>    - 定价证书脚本；
+>    - relative_v1 扩展；
+>    - R1 交接规则产品化，把 2060 的一次性脚本整理为可复用工具；
+>    - 与冻结 Base 2030 release 的身份门禁、24h 门禁；
+>    - held 提交。
+> 5. **随后：** case3 2030 与 `_nocredit` 2030 并行提交。C 2050 在 `--state-in` 筛选就绪后提交，可与 case3 2030 并行。case3 2040 在 case3 2030 完成后提交。框架 B 任务书在 case3 2030 提交后撰写。
+> 6. **云端占用：** 最多同时 4 个 64 CPU/750G 节点（Base 2060、case3 2030、`_nocredit` 2030、C 2050）。每个作业均先 held 提交，作者放行后才运行。
