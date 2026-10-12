@@ -1,0 +1,50 @@
+{
+  "collected_at": "2026-10-12T19:10:59.595109+08:00",
+  "source_sha256": {
+    "output_8760/gurobi.log": "b280dccf158eb1b9f4d2159cb13c3bf42155df7f26d4f93630f682d8e60d61d0",
+    "output_8760/solver_telemetry.jsonl": "f3b46865ee5211631b20d5f5f177780373979aba0f42eb50311fc97cdf57678a",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "slurm-4844528.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "output_8760/solve_report.json": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1",
+    "output_8760/solution_qc.json": "0f1fa6bf2f374f1956364a4a5a24b01e3ec3bc3cc5f1b4f95d9832ce7249cff2",
+    "output_8760/preservation_report.json": "00f6e3991f5ff35f8265ef542a89cec1c89b5d07a978eb88a5f6713460cb70af"
+  },
+  "commands": {
+    "queue": [
+      "squeue",
+      "-h",
+      "-j",
+      "4844528",
+      "-o",
+      "%i|%T|%M|%l|%C|%m|%N"
+    ],
+    "accounting": [
+      "sacct",
+      "-j",
+      "4844528",
+      "--format=JobID,State,Elapsed,Start,ExitCode,AllocTRES",
+      "--parsable2"
+    ],
+    "resources": [
+      "sstat",
+      "-j",
+      "4844528.batch",
+      "--format=JobID,MaxRSS,AveRSS,AveCPU",
+      "--parsable2"
+    ]
+  },
+  "queue": "",
+  "queue_returncode": 1,
+  "queue_stderr": "slurm_load_jobs error: Invalid job id specified\n",
+  "accounting": "JobID|State|Elapsed|Start|ExitCode|AllocTRES\n4844528|COMPLETED|11-13:44:50|2026-09-30T22:09:37|0:0|billing=64,cpu=64,mem=750G,node=1\n4844528.batch|COMPLETED|11-13:44:50|2026-09-30T22:09:37|0:0|cpu=64,mem=750G,node=1\n4844528.extern|COMPLETED|11-13:44:50|2026-09-30T22:09:37|0:0|billing=64,cpu=64,mem=750G,node=1\n",
+  "accounting_returncode": 0,
+  "accounting_stderr": "",
+  "resources": "JobID|MaxRSS|AveRSS|AveCPU\n",
+  "resources_returncode": 0,
+  "resources_stderr": "sstat: error: couldn't get steps for job 4844528\n",
+  "terminal_artifacts": [
+    "output_8760/solve_report.json",
+    "output_8760/solution_qc.json",
+    "output_8760/preservation_report.json"
+  ]
+}

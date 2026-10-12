@@ -1,0 +1,21 @@
+{
+  "collected_at": "2026-10-12T19:12:00.155820+08:00",
+  "commands": {
+    "accounting_terminal": [
+      "sacct",
+      "-j",
+      "4844528",
+      "--format=JobID,State,Start,End,Elapsed,ExitCode,MaxRSS",
+      "--parsable2"
+    ]
+  },
+  "accounting_terminal": "JobID|State|Start|End|Elapsed|ExitCode|MaxRSS\n4844528|COMPLETED|2026-09-30T22:09:37|2026-10-12T11:54:27|11-13:44:50|0:0|\n4844528.batch|COMPLETED|2026-09-30T22:09:37|2026-10-12T11:54:27|11-13:44:50|0:0|719304860K\n4844528.extern|COMPLETED|2026-09-30T22:09:37|2026-10-12T11:54:27|11-13:44:50|0:0|0\n",
+  "accounting_terminal_stderr": "",
+  "accounting_terminal_returncode": 0,
+  "source_sha256": {
+    "dual_export_status.json": "d89bb4cccea334deacf0152e148c544548d0db224a314216a5fb2f6312132ae8"
+  },
+  "missing_files": [
+    "output_catalog.json"
+  ]
+}

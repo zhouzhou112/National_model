@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-12英国12:10（北京19:10）取证：原2050/4844528已COMPLETED/0:0，结束英国04:54:27（北京11:54:27），总运行11天13小时44分50秒；Gurobi716轮OPTIMAL、runtime996416.02秒，目标5751972.5053 million CNY。终轮打印PInf2.25e-4/DInf1.45e-6/Compl6.01e-5、目标差4631.44，callback相对差0.08052%；717条连续/8源SHA PASS，stderr空。preservation COMPLETE/errors=[]，BarPi导出可用。原冻结包旧QC HARD_FAIL/PENDING不能自动当新口径结论；新口径功率平衡0.265kW和成本相对闭合1.68e-11可过，但双向流重叠0.12034%高于0.01%约12倍、额外损耗198.73GWh，水库29.27m³尚缺逐站分母复核，科学验收未全部通过。证据`base_2050_continuation_20260930/status_20261012T111059Z/`。Git基准a4d4727；仅取证/交接小文件同步，本次交接条目部分暂存，其他SI未提交内容/稿件留工作区。未改作业/归档/模型，无scontrol/scancel、Stage B、新求解、部署或监听。下一步按作者新口径验收，不据此自动启动2060/case3。
+
 - 2026-10-11 柔性参数落地验收：实现提交 `cad25a5`（GitHub工作分支已同步），419项回归通过/Windows跳过1，全年度输入与24h新情景/零签约/Base QC及manifest均PASS；Base数据/指纹不变，legacy服务fixture MPS字节与解向量一致。最终价格接受者用Presolve=0、Barrier/Cross0/1e-8：2030供暖2.6523/制冷2.8863/V1G21.7826GW、31省alpha≈1、V2G≈0，最大物理残差8.13e-9；成本单因素冷热5.5386/V1G16.3369GW，只改参与率仍零；2060配2030价格代理冷热19.0049/V1G191.1421GW、V2G≈0，QC1.78e-8。冷热5.54GW低于预期10–20GW，如实保留，不改定案。初试Presolve后原单位残差/加严超时/关闭缩放数值失败均保留，本机单纯形辅助诊断在取得合格Barrier解后停止。最终24h源码bundle及三个新成本价格试验源码/输入SHA与当前一致。报告 `supplementary_materials/reviews/flex_parameter_implementation_20261011/REVIEW_ZH.md`。没有服务器/4844528操作或生产Stage B；下一步仅在另行授权的Base-frozen中检验容量信用收益，不据此启动全年。
 
 - 2026-10-11 补充材料柔性参数整合完成（仅文档）：在线 USTC 项目 `6a26c6aedd9bc0323aea31d8` 的 S3.3/6.9/6.10/7.2 与实际 `02_sp.bib` 已定点同步；run6 在线 pdfLaTeX 编译 97 页，零未定义引用/重复标签/编译错误/溢出，表 S1–S26 连续，四新表正文均引用。原 S50–S54 式体逐字保留（自动顺延 S51–S55）。13 项 VERIFY 已闭合12项，NESO2025保留note、正文采用可核实2024官方口径。报告 `supplementary_materials/reviews/si_flexibility_revision_20261011/REVIEW_ZH.md`；最终 PDF SHA `d4f8a93198b4466f750ed3de573dfcf60e5612ac070fb46a2283c29cdfc96c17`。本地总稿/分章/bib及Module06说明已同步；Git基准 `3100bb325b691d8d398c680dcfd879b80f8f4026`，本轮不改模型/配置/数据、不求解、不commit/push，不核验或操作模型服务器；另一个参数任务的工作区改动保留。下一步由参数落地任务验收代码与稿件一致性并统一审查提交，NESO直接报告仍待补证。
@@ -3684,6 +3686,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-12 12:10 BST｜原2050终态：716轮OPTIMAL，科学验收未全部通过
+
+- Git：基准`a4d47278b0cb18422dc7b5726b334fa045bc2169`，本条所在提交保存终态只读取证/交接与明确清单GitHub同步；交接其他未提交SI条目使用索引patch排除，稿件保留，不部署运行包。
+- 文件：`base_2050_continuation_20260930/status_20261012T111059Z/`的REVIEW_ZH.md、summary.json、scheduler.json、terminal_scheduler.json、analyze.py、sha256.json及solve_report/solution_qc/preservation_report/dual_export_status小JSON；本文件/MODEL_SERVER_STATUS.md/SERVER_RUNBOOK.md追加。原日志/telemetry/采集脚本留本地/云端。
+- 命令/验证：SSH别名paracloud-bscc-a8只读squeue/sacct/sstat与指定文件，补sacct End/MaxRSS；`python analyze.py`复算，717条连续/8源SHA匹配，OPTIMAL716与COMPLETED0:0一致、保全阶段全部COMPLETE/errors=[]。JSON/AST/本地SHA/暂存diff检查，不运行求解测试。大MPS/BarPi SHA此次未重算；squeue invalid job ID和sstat无step符合终态。
+- 结果：结束英国04:54:27（北京11:54:27）、总运行11天13小时44分50秒，solver996416.02秒；716轮OPTIMAL，目标5751972.5053 million CNY，打印PInf2.25e-4/DInf1.45e-6/Compl6.01e-5，callback相对目标差0.08052%。结果/BarPi保全完成，stderr空。
+- 新旧口径：归档旧QC HARD_FAIL/PENDING保持；按作者新口径独立对照功率平衡0.265kW与成本相对1.68e-11可过，但gross交换定义重叠电量占0.12034%高于0.01%门槛、损耗198.73GWh；水库29.27m³仍需站点活动库容分母。正式relative_v1双口径未在冻结报告生成，科学验收未全部通过，不以旧严格门槛自动否决或改判。
+- 未决/下一步：按作者新规则完成水库/省际流复核及双口径验收记录，不自动接受candidate state或启动2060/case3；无scontrol/scancel、Stage B、新作业、原模型/配置/数据/归档修改、部署或监听。
+
 
 ### 2026-10-11 15:43 BST｜原2050第682轮：主指标改善，对偶再次上升
 
