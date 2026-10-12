@@ -3346,3 +3346,10 @@ Git基准0f58a6ce0219e67fa352560d2f485acf6c193cdb；模型/config/data证据读�
 Git操作基准eb7d91202bb4b53ef551d210c4ee25b73001f161；生产冻结源680a5c428ac5bd95378dd4eb0b20c8a4f44a01c0。本次仅新增release_job.json、startup_verified.json和CODEX_HANDOFF.md、MODEL_SERVER_STATUS.md、SERVER_RUNBOOK.md、base_2060_launch_20261012/REVIEW_ZH.md交接记录，不更改模型、数据、运行脚本或参数。释放前scontrol show job -o 5124127验证JobHeldUser/资源/WorkDir/Command，sha256sum --quiet -c release_files.sha256及合同、preflight_v2均通过，再执行一次scontrol release 5124127。远端release_job.json先以排他创建记录attempt，成功回执returncode=0；未再次sbatch。
 
 运行证据：18:17:45英国时间RUNNING/39秒、实际分配符合合同，compute_node_smoke.json记录724.5717163085938GiB；startup_regression.log记录7项/4.287s/OK，含小fixture一次numpy.ndarray size changed RuntimeWarning，测试通过，生产stderr当时为空。stdout当时187bytes，output_8760已生成run_identity/input_manifest/preflight等7文件，无batch_exit.json；这是启动通过，不表示全年构建或科学求解已经完成。后续可用ssh paracloud-bscc-a8只读scontrol和冻结目录日志，具体路径见启动收据。下一步等待云端自主运行，在后续用户查进度时读取构建/Barrier/终态及保全QC，不建立后台轮询。备份与验收JSON沿用已核验完成状态，保留原LF归档及source_bytes副本。另一个SI会话32行handoff及稿件改动保留且不纳入本次提交。
+
+
+## 2026-10-12英国22:26 Base2060全年构建完成、预处理中
+
+- 2026-10-12英国22:26（北京10月13日05:26）Base2060/5124127 RUNNING/m4cm2108，运行4:09:35。全年构建18:55英国完成（约37分48秒），19:03:55进入求解；50,907,233行/41,458,383列/485,386,301非零元，指纹0x0475f775。当前Presolve约12,185秒，已删14,753,636行/8,362,781列，尚无Barrier迭代；日志每约5秒更新，无求解器Warning/Error，stderr空。sstat RSS87.17GiB、峰103.28GiB；48求解线程，750G分配不变。证据revision_6d_general/progress_20261012T212638Z*.json；无可靠完成百分比/ETA，后续只读观察预处理结束与Barrier启动。
+
+Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show job -o 5124127、sstat -j 5124127.batch及stdout/stderr、gurobi.log、build_report/solver_telemetry。新增两份进度JSON并更新本交接、MODEL_SERVER_STATUS和SERVER_RUNBOOK；没有更改冻结源码/参数、作业或触发新求解。矩阵范围[3e-5,6250]，最小非零RHS4.9772845e-8。预处理计数在所读尾段保持不变，日志继续更新时间；这不能当作完成比例，也不足以判断卡死。尚无全年解及终态QC；按作者最新第6条，后续任何QC标签均不得阻止完整解数据保全。备份和三年验收JSON同步沿用此前完成记录，未重复传输。下一步用户查询时只读核对预处理/Barrier/终态及保全，禁止原地更新运行包或建立自动监听。保留作者AGENTS修改和另一SI会话全部未提交内容。
