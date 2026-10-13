@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-13T15:52:42.059813+00:00",
+  "authorization": "Author: directly start F5 after memory review",
+  "old_coordinator_pid": 491304,
+  "old_command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7/repo/scripts/run_flex_server_series.py",
+    "--root",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+    "--threads",
+    "16"
+  ],
+  "old_root": "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+  "new_root": "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe",
+  "controller_sha256": "6639a8ba05ff8be81c7f82324b9bc212f002dff2096266e7e216a47c9cacce20",
+  "controller_git_commit": "3e4a2fe",
+  "available_bytes": 90202337280,
+  "old_queue_state": "TERMINATED_WHILE_WAITING_NO_SOLVER_CHILD",
+  "launcher_pid": 2312130,
+  "command": [
+    "flock",
+    "--nonblock",
+    "/home/zz2/National_model_server/run_control/numerical_validation_solver.lock",
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/packages/run_flex_single_diagnostic_3e4a2fe.py",
+    "--source-root",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+    "--server-root",
+    "/home/zz2/National_model_server",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe"
+  ]
+}

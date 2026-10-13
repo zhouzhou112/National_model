@@ -3403,3 +3403,14 @@ Git基准c19190ff16b182bf6e40d74efb9419d5c100b044。只读scontrol、sstat、gur
 最新三次MemAvailable82.11–82.46GiB，较早63.625GiB改善；但相对64.603+15只有约2.51GiB缓冲。历史F3的MemAvailable+本实验RSS代理波动约24.43GiB；现有optimize回调保护不覆盖构建/归档/导出、SoftMemLimit=Infinity，不能据此证明原脚本降门槛后即可安全完成。结论是静态容量有可能，但尚未证明安全；建议作者决定后在新独立诊断目录做完整保护下的2016h规模/分解预检。本轮未改105GiB门槛、排程、冻结代码或参数，F5未启动。
 
 证据与可复算公式：`supplementary_materials/reviews/case3_flex_numerics_20261012/memory_review_20261013T1542Z/MEMORY_REVIEW_ZH.md`及同目录两份JSON。只读远端原实验目录的内存日志、系统资源统计与queue_gate；未查询或操作云端作业/备份、未读取凭据。Git基准c19190f；本次仅追加文档和小证据。
+
+
+## 2026-10-13 16:52 作者授权直接启动F5
+
+作者在内存复核后明确要求“直接启动”。已逐项核对原协调器491304的完整命令、用户身份、F5门禁和无子求解器状态，短暂挂起后二次确认无F5/子进程，再终止这个等待进程并释放原flock锁，避免稍后重复启动；没有停止任何在求解的模型或其他用户任务。旧运行记录全部保留，原冻结源码和105GiB常数未改写。
+
+新独立目录 `/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe`；一次性控制器源码提交3e4a2fe，SHA6639a8ba05ff8be81c7f82324b9bc212f002dff2096266e7e216a47c9cacce20。复用原aef0cb7求解源码与数据bundle，281文件逐项SHA PASS。F5命令参数hours2016/start5088/threads16/case3_thermal_ev_v5/Aggregate1/Presolve2/reserve15，V9及其余数值与F1相同。本次仅按作者授权绕过105GiB排程门槛，启动可用约83.94GiB，不宣称这是安全上界。
+
+flock2312130、控制器2312131、求解进程2312139，16:53只读核验求解进程CPU98.4%、RSS约0.77GiB，处于加载/构建；日志持续写入，没有终态。所有输出进入新根F5，F5_memory.jsonl逐2秒记录全流程RSS。保留原optimize回调的15GiB检查；它不是构建/归档/导出阶段的硬内存上限，未隐瞒此前已说明的局限。
+
+接管、启动回执与确切命令在本地 `F5_direct_launch_20261013/`；原F1–F4目录不变。应用内case3有限续办已恢复并改为仅跟进这一新F5，状态不变保持安静。下一步等F5终态后补齐运行表、残差剖面与全部时长增长比；已记录的第3情形不自行放宽，也不阻止作者授权的补充诊断。没有云端操作、生产配置修改、凭据读取或结果删除。
