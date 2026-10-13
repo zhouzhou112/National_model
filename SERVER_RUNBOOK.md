@@ -5307,3 +5307,10 @@ Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show jo
 >    - held 提交。
 > 5. **随后：** case3 2030 与 `_nocredit` 2030 并行提交。C 2050 在 `--state-in` 筛选就绪后提交，可与 case3 2030 并行。case3 2040 在 case3 2030 完成后提交。框架 B 任务书在 case3 2030 提交后撰写。
 > 6. **云端占用：** 最多同时 4 个 64 CPU/750G 节点（Base 2060、case3 2030、`_nocredit` 2030、C 2050）。每个作业均先 held 提交，作者放行后才运行。
+
+
+## 2026-10-13英国11:23 Base2060进入Barrier，第33轮
+
+- 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
+
+Git基准33fece1b2f324c7bf1b209ff53019223a677e2d7，冻结源码680a5c4和生产profile保持不变。只读命令scontrol show job -o 5124127、sstat -j 5124127.batch，以及gurobi.log/stdout/stderr/solver_telemetry尾段；两份JSON为原始取证和派生统计。打印残差与callback残差定义不同，不当作物理GW/GWh QC；Gurobi内部记录峰值805.854GB，与Slurm采样RSS峰值不是同一统计口径，不能据其中一项判定OOM。没有新警告/错误/退出文件，未宣布可行或最优。近10轮残差持续下降，但不据早期斜率推算结束时间。仅更新交接、SERVER_RUNBOOK、MODEL_SERVER_STATUS和小证据，保留并行SI的32行handoff等工作区内容；未改作业、冻结文件、case3实验或监听设置。后续无论QC标签如何均须保全全部解数据；本次未产生终态解。

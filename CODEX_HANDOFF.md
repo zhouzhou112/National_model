@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
+
 - 2026-10-12 夜间最新：P0/P1/P2已导出保全，P3运行；T550 F1已构建并归档。阶段报告summary_P0_P2；最终判定PENDING_F_SERIES。应用内有限续办case3负责本批结果收尾（每30分钟、最多48次，完成停止）。
 
 - 2026-10-12 夜间实验续报：T550连接已恢复，281文件SHA核验通过；新独立F队列已启动（flock491302/F1 PID491311，16线程串行），取代前述“F未启动/连接阻塞”的当前状态。源码aef0cb7、安装器2a940e6；P0复现7.220764GWh，P1完整M0.000802617GWh通过任务门槛，P2运行中。F结果尚待完成，case3生产参数不变。实验原件全保全，Base2060和cloud_backup未改动。
@@ -9806,3 +9808,10 @@ P0和P1的原模型归档、BarX/BarPi/X/Pi/RC/Slack快照全部COMPLETE，参�
 P0/P1/P2已完整保全，M分别7.2207643891/0.000802616945/0.000811915475GWh；P2为92轮OPTIMAL，收紧容差未降低残差。P3运行、P4/P5串行排队；T550 F1已构建并原模型归档，结果尚未齐备。阶段小证据见 `supplementary_materials/reviews/case3_flex_numerics_20261012/summary_P0_P2/` 与 REVIEW_ZH.md。9084be4已推送GitHub main/工作分支，冻结运行源码仍aef0cb7，未部署后续汇总代码。
 
 应用内有限续办case3每30分钟最多48次，仅完成本批夜间实验收尾，无变化保持安静；完成/需外部介入即停止。精确下一步是只读检查现有P/F队列、保全所有原件，结果齐备后按任务书第4节出具三情形结论、H1/H2/H3证据和报告提交。禁止重复启动、云端操作、生产修改、备份目录访问或凭据读取。当前报告结论仍PENDING_F_SERIES。
+
+
+## 2026-10-13英国11:23 Base2060进入Barrier，第33轮
+
+- 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
+
+Git基准33fece1b2f324c7bf1b209ff53019223a677e2d7，冻结源码680a5c4和生产profile保持不变。只读命令scontrol show job -o 5124127、sstat -j 5124127.batch，以及gurobi.log/stdout/stderr/solver_telemetry尾段；两份JSON为原始取证和派生统计。打印残差与callback残差定义不同，不当作物理GW/GWh QC；Gurobi内部记录峰值805.854GB，与Slurm采样RSS峰值不是同一统计口径，不能据其中一项判定OOM。没有新警告/错误/退出文件，未宣布可行或最优。近10轮残差持续下降，但不据早期斜率推算结束时间。仅更新交接、SERVER_RUNBOOK、MODEL_SERVER_STATUS和小证据，保留并行SI的32行handoff等工作区内容；未改作业、冻结文件、case3实验或监听设置。后续无论QC标签如何均须保全全部解数据；本次未产生终态解。

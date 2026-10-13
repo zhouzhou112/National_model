@@ -3371,3 +3371,10 @@ Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show jo
 flock启动器PID491302，F1求解进程PID491311（已只读实查CPU/RSS），启动可用约60.17GiB；16线程串行，现有 `run_control/numerical_validation_solver.lock` 控制本实验独占求解器。F1/F2/F3/F4，若F1/F2残差失败则插入F6，F5最后单独执行。每次资源门禁与2秒RSS日志保存；105GiB可用条件未满足时F5等待、不挤占其他用户训练。此时只确认F1开始加载/构建，未宣称求解完成。
 
 P0和P1的原模型归档、BarX/BarPi/X/Pi/RC/Slack快照全部COMPLETE，参数回读逐项匹配；P1的完整M=0.0008026169445524904GWh，低于本任务1MWh门槛，旧严格标签仍保留。本机P2继续运行。完整结论待F1/F2/F5及F4时长序列、必要F6齐备。未改变Base2060/备份/生产源码或profile，未提交云端作业。证据 `T550_install_launch.log`、远端 `install_validation.json`/`launch_receipt.json`/`queue_active.json`。
+
+
+## 2026-10-13英国11:23 Base2060进入Barrier，第33轮
+
+- 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
+
+Git基准33fece1b2f324c7bf1b209ff53019223a677e2d7，冻结源码680a5c4和生产profile保持不变。只读命令scontrol show job -o 5124127、sstat -j 5124127.batch，以及gurobi.log/stdout/stderr/solver_telemetry尾段；两份JSON为原始取证和派生统计。打印残差与callback残差定义不同，不当作物理GW/GWh QC；Gurobi内部记录峰值805.854GB，与Slurm采样RSS峰值不是同一统计口径，不能据其中一项判定OOM。没有新警告/错误/退出文件，未宣布可行或最优。近10轮残差持续下降，但不据早期斜率推算结束时间。仅更新交接、SERVER_RUNBOOK、MODEL_SERVER_STATUS和小证据，保留并行SI的32行handoff等工作区内容；未改作业、冻结文件、case3实验或监听设置。后续无论QC标签如何均须保全全部解数据；本次未产生终态解。

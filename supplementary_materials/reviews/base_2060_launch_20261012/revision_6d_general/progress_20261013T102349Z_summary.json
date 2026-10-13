@@ -1,0 +1,26 @@
+{
+  "observed_at_utc": "2026-10-13T10:23:51.518675+00:00",
+  "job_id": 5124127,
+  "phase": "BARRIER",
+  "last_iteration": 33,
+  "last_log_row": [
+    33,
+    6414112180000.0,
+    -92296938800000.0,
+    10300000000.0,
+    44.7,
+    1230000000.0,
+    58594.0
+  ],
+  "last_10_intervals_mean_minutes": 20.123333333333335,
+  "last_10_reduction_percent": {
+    "primal_residual": 74.75490196078431,
+    "dual_residual": 82.47058823529412,
+    "complementarity": 75.54671968190854
+  },
+  "rss_gib": 401.1792793273926,
+  "peak_rss_gib": 657.3362922668457,
+  "presolve_seconds": 16365.14,
+  "ordering_seconds": 4366.95,
+  "note": "Printed residuals and callback residuals differ; not physical GW/GWh QC. Gurobi tracked maximum 805.854252048 GB differs from sampled Slurm peak RSS."
+}
