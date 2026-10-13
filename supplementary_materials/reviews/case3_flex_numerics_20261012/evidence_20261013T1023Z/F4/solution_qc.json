@@ -1,0 +1,599 @@
+{
+  "optional_portfolio_qc": {
+    "enrollment_fraction_violation": 0.0,
+    "contract_charge_residual_gw": 0.0,
+    "contract_v2g_residual_gw": 0.0,
+    "discharge_pool_power_violation_gw": 0.0,
+    "v1g_transition_residual_gwh": 1.037579033802416e-08,
+    "v1g_inventory_violation_gwh": 0.0,
+    "v1g_connection_violation_gw": 0.0,
+    "v2g_transition_residual_gwh": 6.389416882244311e-09,
+    "v2g_inventory_violation_gwh": 0.0,
+    "v2g_connection_violation_gw": 0.0,
+    "baseline_reconstruction_residual_gw": 0.0,
+    "relocation_lower_bound_violation_gw": 0.0,
+    "heating_shared_contract_violation_gw": 0.0,
+    "cooling_shared_contract_violation_gw": 0.0,
+    "firm_credit_bound_violation_gw": 7.170158048297893e-10,
+    "firm_credit_zero_when_unenrolled": 0.0
+  },
+  "generated_at": "2026-10-13T12:17:20.250958+08:00",
+  "flexible_load_structural_audit": {
+    "schema_version": "cispo_flexible_load_structural_audit_v2",
+    "formulation": "integrated_service_constrained_v5",
+    "contract_version": "v5",
+    "portfolio_contract": "optional_service_pools_v1",
+    "province_count": 31,
+    "optimization_hours": 168,
+    "optimization_start_hour": 5088,
+    "optimization_stop_hour_exclusive": 5256,
+    "heating_sparse_hourly_control": {
+      "possible_up_variables": 5208,
+      "active_up_variables": 245,
+      "fixed_zero_up_variables_omitted": 4963,
+      "possible_down_variables": 5208,
+      "active_down_variables": 219,
+      "fixed_zero_down_variables_omitted": 4989
+    },
+    "heating_sparse_state": {
+      "representation": "active_control_hours_plus_decay_anchors_v1",
+      "possible_state_variables": 5208,
+      "control_support_state_variables": 245,
+      "decay_anchor_state_variables": 0,
+      "retained_state_variables": 245,
+      "redundant_inactive_state_variables_omitted": 4963,
+      "retained_transition_rows": 245,
+      "redundant_inactive_transition_rows_omitted": 4963,
+      "maximum_retained_transition_gap_hours": 20,
+      "minimum_retained_transition_coefficient": 0.2901062411314615,
+      "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+      "active_state_variables": 245,
+      "inactive_provinces_omitted": 29,
+      "fixed_zero_state_variables_omitted": 4872,
+      "redundant_state_variables_eliminated": 4963,
+      "redundant_state_bound_rows_omitted": 4963,
+      "redundant_state_transition_rows_omitted": 4963
+    },
+    "heating_state_chain_numerical_risk": {
+      "active_provinces": 2,
+      "inactive_provinces_with_state_chain_omitted": 29,
+      "worst_active_province": {
+        "province_position": 28,
+        "province_code": 63,
+        "maximum_cyclic_zero_control_run_hours": 19,
+        "retention_per_hour": 0.94,
+        "inverse_decay_amplification_log10": 0.5105707816057259
+      },
+      "automatic_presolve_aggregation_risk": false,
+      "zero_control_state_compression_enabled": true,
+      "zero_control_state_compression": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 5208,
+        "control_support_state_variables": 245,
+        "decay_anchor_state_variables": 0,
+        "retained_state_variables": 245,
+        "redundant_inactive_state_variables_omitted": 4963,
+        "retained_transition_rows": 245,
+        "redundant_inactive_transition_rows_omitted": 4963,
+        "maximum_retained_transition_gap_hours": 20,
+        "minimum_retained_transition_coefficient": 0.2901062411314615,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+      },
+      "zero_control_state_compression_well_scaled": true,
+      "automatic_presolve_aggregation_risk_mitigated": false,
+      "aggregate_zero_required_for_solve": false
+    },
+    "cooling_sparse_hourly_control": {
+      "possible_up_variables": 5208,
+      "active_up_variables": 4463,
+      "fixed_zero_up_variables_omitted": 745,
+      "possible_down_variables": 5208,
+      "active_down_variables": 4267,
+      "fixed_zero_down_variables_omitted": 941
+    },
+    "cooling_sparse_state": {
+      "representation": "active_control_hours_plus_decay_anchors_v1",
+      "possible_state_variables": 5208,
+      "control_support_state_variables": 4463,
+      "decay_anchor_state_variables": 4,
+      "retained_state_variables": 4467,
+      "redundant_inactive_state_variables_omitted": 741,
+      "retained_transition_rows": 4467,
+      "redundant_inactive_transition_rows_omitted": 741,
+      "maximum_retained_transition_gap_hours": 27,
+      "minimum_retained_transition_coefficient": 0.10526193234946256,
+      "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+      "active_state_variables": 4467,
+      "inactive_provinces_omitted": 2,
+      "fixed_zero_state_variables_omitted": 336,
+      "redundant_state_variables_eliminated": 741,
+      "redundant_state_bound_rows_omitted": 741,
+      "redundant_state_transition_rows_omitted": 741
+    },
+    "cooling_state_chain_numerical_risk": {
+      "active_provinces": 29,
+      "inactive_provinces_with_state_chain_omitted": 2,
+      "worst_active_province": {
+        "province_position": 28,
+        "province_code": 63,
+        "maximum_cyclic_zero_control_run_hours": 70,
+        "retention_per_hour": 0.92,
+        "inverse_decay_amplification_log10": 2.5348520858111296
+      },
+      "automatic_presolve_aggregation_risk": false,
+      "zero_control_state_compression_enabled": true,
+      "zero_control_state_compression": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 5208,
+        "control_support_state_variables": 4463,
+        "decay_anchor_state_variables": 4,
+        "retained_state_variables": 4467,
+        "redundant_inactive_state_variables_omitted": 741,
+        "retained_transition_rows": 4467,
+        "redundant_inactive_transition_rows_omitted": 741,
+        "maximum_retained_transition_gap_hours": 27,
+        "minimum_retained_transition_coefficient": 0.10526193234946256,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+      },
+      "zero_control_state_compression_well_scaled": true,
+      "automatic_presolve_aggregation_risk_mitigated": false,
+      "aggregate_zero_required_for_solve": false
+    },
+    "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+    "firm_capacity_credit_contract": "author_2026_10_11_derated_credit_v1",
+    "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+    "ev_charge_deviation_variables_omitted": 5208,
+    "ev_charge_deviation_constraints_omitted": 10416,
+    "minimum_departure_energy_min_gwh": 0.0,
+    "minimum_departure_energy_max_gwh": 0.0,
+    "minimum_departure_positive_cells": 0,
+    "departure_soc_constraint_rows_added": 0,
+    "departure_soc_constraint_rows_omitted_as_redundant": 5208,
+    "effective_load_static_lower_bound_min_gw": 0.6887832937195114,
+    "effective_load_redundancy_safety_margin_gw": 1e-06,
+    "effective_load_naturally_nonnegative": true,
+    "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+    "effective_load_nonnegative_constraint_rows_added": 0,
+    "effective_load_nonnegative_constraint_rows_omitted": 5208,
+    "redundant_raw_variables_omitted": 22550,
+    "net_raw_variables_removed": 22550,
+    "thermal_fixed_zero_raw_variables_omitted": 11638,
+    "thermal_fixed_zero_state_variables_omitted": 5208,
+    "thermal_redundant_state_variables_eliminated": 5704,
+    "thermal_tautological_contracted_power_rows_omitted": 11638,
+    "redundant_raw_constraint_rows_omitted": 43878,
+    "net_raw_constraint_rows_removed": 43878,
+    "legacy_bidirectional_activation": false
+  },
+  "optimization_hours": 168,
+  "optimization_start_hour": 5088,
+  "optimization_stop_hour_exclusive": 5256,
+  "maximum_power_balance_residual_gw": 2.4781580520993884e-07,
+  "maximum_load_component_input_closure_error_gw": 5.684341886080802e-14,
+  "maximum_effective_load_reconstruction_error_gw": 8.526512829121202e-14,
+  "minimum_effective_load_gw": 0.7049903339653568,
+  "maximum_heating_daily_energy_residual_gwh": 0.027489856158659176,
+  "maximum_cooling_daily_energy_residual_gwh": 0.38279602116617184,
+  "maximum_ev_v1g_daily_energy_residual_gwh": null,
+  "ev_v1g_daily_energy_residual_applicability": "NOT_APPLICABLE_SERVICE_CONSTRAINED_EV_SOC_ACCOUNTING",
+  "flexible_load_formulation": "integrated_service_constrained_v5",
+  "maximum_heating_state_transition_residual_gwh": 0.0,
+  "maximum_cooling_state_transition_residual_gwh": 0.0,
+  "maximum_heating_daily_terminal_state_gwh": 0.0,
+  "maximum_cooling_daily_terminal_state_gwh": 0.0,
+  "minimum_heating_daily_net_energy_change_gwh": 0.0,
+  "minimum_cooling_daily_net_energy_change_gwh": 0.0,
+  "maximum_ev_v1g_backlog_transition_residual_gwh": 0.0,
+  "maximum_ev_v1g_daily_terminal_backlog_gwh": 0.0,
+  "maximum_ev_v2g_transition_residual_gwh": 0.0,
+  "maximum_ev_v2g_daily_terminal_state_gwh": 0.0,
+  "maximum_v4_heating_state_transition_residual_gwh": 1.0957144755321252e-08,
+  "maximum_v4_cooling_state_transition_residual_gwh": 1.4707773296883538e-08,
+  "maximum_v4_heating_periodic_boundary_residual_gwh": 2.0830107083646965e-10,
+  "maximum_v4_cooling_periodic_boundary_residual_gwh": 1.110939046701856e-09,
+  "maximum_v4_heating_positive_state_bound_violation_gwh": 0.0,
+  "maximum_v4_cooling_positive_state_bound_violation_gwh": 0.0,
+  "maximum_v4_heating_negative_state_bound_violation_gwh": 0.0,
+  "maximum_v4_cooling_negative_state_bound_violation_gwh": 0.0,
+  "maximum_v4_heating_comfort_debt_violation_gwh": 0.0,
+  "maximum_v4_cooling_comfort_debt_violation_gwh": 0.0,
+  "maximum_v4_ev_soc_transition_residual_gwh": 1.223300150066109e-08,
+  "maximum_v4_ev_departure_soc_violation_gwh": 0.0,
+  "maximum_v4_ev_soc_upper_violation_gwh": 0.0,
+  "maximum_v4_ev_charge_power_violation_gw": 0.0,
+  "maximum_v4_ev_discharge_power_violation_gw": 0.0,
+  "maximum_v5_nested_v2g_contract_violation_gw": 0.0,
+  "maximum_v5_national_v2g_cap_violation_gw": 0.0,
+  "maximum_v5_shared_connection_power_violation_gw": 0.0,
+  "maximum_v5_firm_capacity_credit_bound_violation_gw": 0.0,
+  "total_v5_firm_capacity_credit_gw": 4.469139549190709,
+  "maximum_ev_combined_grid_charging_power_violation_gw": 0.0,
+  "flexible_load_enabled": true,
+  "heating_simultaneous_up_down_province_hours": 219,
+  "maximum_heating_up_down_overlap_gw": 0.0005800910726306286,
+  "total_heating_up_down_overlap_gwh": 0.06166506002305673,
+  "cooling_simultaneous_up_down_province_hours": 4267,
+  "maximum_cooling_up_down_overlap_gw": 0.0053570366044614764,
+  "total_cooling_up_down_overlap_gwh": 2.433757532661705,
+  "ev_v1g_simultaneous_up_down_province_hours": 0,
+  "ev_v2g_simultaneous_charge_discharge_province_hours": 5208,
+  "maximum_ev_v2g_charge_discharge_overlap_gw": 0.00025312915029728877,
+  "total_ev_v2g_charge_discharge_overlap_gwh": 0.16805359141081555,
+  "minimum_up_reserve_margin_gw": 0.00010273723622766795,
+  "minimum_down_reserve_margin_gw": 0.0001246765456315302,
+  "minimum_inertia_margin_gw_s": 0.0005285316979097843,
+  "minimum_system_inertia_seconds": 3.5,
+  "minimum_capacity_margin_gw": 8.788583457430832e-05,
+  "maximum_ruc_transition_residual_gw": 3.4716845201098194e-09,
+  "maximum_thermal_online_capacity_violation_gw": 0.0,
+  "maximum_thermal_minimum_generation_violation_gw": 0.0,
+  "maximum_thermal_maximum_generation_violation_gw": 0.0,
+  "storage_simultaneous_charge_discharge_asset_hours": 10080,
+  "maximum_storage_charge_discharge_overlap_gw": 0.002179381894116953,
+  "total_storage_charge_discharge_overlap_gwh": 3.1699734027490534,
+  "thermal_simultaneous_startup_shutdown_asset_hours": 47376,
+  "maximum_thermal_startup_shutdown_overlap_gw": 0.00028803115379794856,
+  "maximum_vre_availability_violation_gw": 0.0,
+  "maximum_wave_availability_violation_gw": 8.1158905395772e-06,
+  "maximum_hydro_aggregate_availability_violation_gw": 0.0,
+  "maximum_hydro_aggregate_monthly_energy_budget_violation_gwh": 0.0,
+  "maximum_line_capacity_violation_gw": 0.0,
+  "maximum_nuclear_capacity_floor_violation_gw": 0.0,
+  "maximum_nuclear_capacity_upper_violation_gw": 0.0,
+  "maximum_biomass_beccs_capacity_upper_violation_gw": 0.0,
+  "maximum_storage_capacity_floor_violation_gw": 0.0,
+  "maximum_storage_transition_residual_gwh": 4.94238052762587e-09,
+  "maximum_storage_soc_upper_violation_gwh": 0.0,
+  "maximum_reservoir_transition_residual_m3": 3.8743999244901204,
+  "maximum_reservoir_energy_upper_violation_gwh": 0.0,
+  "maximum_reservoir_active_storage_upper_violation_m3": 0.0,
+  "core_cascade_station_rows": 138,
+  "core_cascade_edges": 124,
+  "core_cascade_isolated_single_station_nodes_removed": 8,
+  "cascade_raw_negative_local_inflow_node_hours": 6981,
+  "cascade_raw_clip_equivalent_volume_million_m3": 10926.361149623262,
+  "cascade_adjusted_transfer_volume_million_m3": 10926.361149623262,
+  "cascade_actual_routed_release_adjustment_volume_million_m3": 10688.184882642397,
+  "maximum_cascade_reconciliation_residual_m3s": 2.2737367544323206e-13,
+  "annual_gross_emissions_mtco2": 76.71169146364598,
+  "annual_emissions_before_dac_mtco2": 76.71169146364598,
+  "annual_dac_removed_mtco2": 0.0,
+  "annual_net_emissions_mtco2": 76.71169146364598,
+  "annual_flow_scaling_factor": 0.019178082191780823,
+  "annual_carbon_limit_mtco2_per_year": 4000.0,
+  "selected_horizon_carbon_limit_mtco2": 76.7123287671233,
+  "carbon_limit_mtco2": 76.7123287671233,
+  "carbon_limit_margin_mtco2": 0.0006373034773190511,
+  "maximum_dac_selected_horizon_capacity_violation_mtco2": 0.0,
+  "maximum_biomass_limit_violation_pj": 0.0,
+  "maximum_co2_source_balance_residual_mt": 1.085503315863658e-08,
+  "maximum_co2_sink_capacity_violation_mt": 0.0,
+  "maximum_beccs_capture_balance_residual_mtco2": 1.1102230246251565e-16,
+  "maximum_beccs_storage_balance_residual_mtco2": 0.0,
+  "maximum_beccs_net_carbon_balance_residual_mtco2": 5.551115123125783e-17,
+  "maximum_captured_co2_reconstruction_residual_mtco2": 1.463672932855431e-16,
+  "objective_value_million_cny": 2211668.411783767,
+  "objective_component_residual_million_cny": -1.0710209608078003e-08,
+  "solver_objective_value": 2211668.411783767,
+  "mga": null,
+  "total_vre_curtailment_gwh": 5442.040277928437,
+  "wave_energy_enabled": true,
+  "total_wave_generation_gwh": 0.006736211453984729,
+  "total_wave_curtailment_gwh": 0.0018878508598240392,
+  "bidirectional_interprovincial_edge_hours": 8064,
+  "bidirectional_flow_tolerance_gw": 1e-06,
+  "maximum_bidirectional_minimum_flow_gw": 0.01340947553147016,
+  "total_bidirectional_minimum_flow_gwh": 10.20819806993121,
+  "interprovincial_directionality_assessment": {
+    "accepted": false,
+    "negative_capacity_count": 0,
+    "minimum_line_capacity_gw": 0.00011817932073494229,
+    "strict_pass": false,
+    "warning_applied": false,
+    "within_warning_budget": false,
+    "classification": "HARD_FAIL",
+    "acceptance_scope": "TEST_ONLY_TRUNCATED_HORIZON",
+    "tolerance_gw": 1e-06,
+    "reference_hours": 168,
+    "horizon_scale": 1.0,
+    "limits": {
+      "maximum_edge_hours": 8,
+      "maximum_opposing_flow_gw": 0.25,
+      "maximum_opposing_fraction_of_line_capacity": 0.15,
+      "maximum_opposing_energy_gwh": 1.25,
+      "maximum_excess_loss_gwh": 0.04,
+      "maximum_opposing_share_of_gross_flow": 5e-05,
+      "maximum_excess_loss_share_of_system_load": 1e-07
+    },
+    "observed": {
+      "edge_hours": 8064,
+      "maximum_opposing_flow_gw": 0.01340947553147016,
+      "maximum_opposing_fraction_of_line_capacity": 0.45015180192786114,
+      "opposing_energy_gwh": 10.20819806993121,
+      "excess_loss_gwh": 0.23879418527627155,
+      "opposing_share_of_gross_flow": 0.0005616498792867692,
+      "excess_loss_share_of_system_load": 1.0202618276817217e-06
+    }
+  },
+  "strict_unidirectional_interprovincial_flow": false,
+  "diagnostic_bidirectional_flow_warning_applied": false,
+  "dc_fixed_direction_edge_count": 363,
+  "maximum_dc_reverse_flow_gw": 0.0,
+  "hard_checks": {
+    "power_balance": true,
+    "load_component_input_closure": true,
+    "effective_load_reconstruction": true,
+    "effective_load_nonnegative": true,
+    "heating_service_accounting": true,
+    "cooling_service_accounting": true,
+    "heating_state_transition": true,
+    "cooling_state_transition": true,
+    "heating_daily_state_reset": true,
+    "cooling_daily_state_reset": true,
+    "heating_state_loss_accounting": true,
+    "cooling_state_loss_accounting": true,
+    "ev_v1g_daily_energy_conservation": true,
+    "ev_v1g_backlog_transition": true,
+    "ev_v1g_daily_backlog_reset": true,
+    "ev_v2g_transition": true,
+    "ev_v2g_daily_state_reset": true,
+    "ev_combined_grid_charging_power": true,
+    "v4_ev_mobility_service": true,
+    "optional_portfolio_physical_contract": true,
+    "v5_v2g_contract_nesting": true,
+    "v5_v2g_national_power_cap": true,
+    "v5_shared_bidirectional_connection_power": true,
+    "v5_firm_capacity_credit_physical_bound": true,
+    "up_reserve": true,
+    "down_reserve": true,
+    "inertia": true,
+    "capacity_margin": true,
+    "ruc_transition": true,
+    "thermal_online_capacity": true,
+    "thermal_minimum_generation": true,
+    "thermal_maximum_generation": true,
+    "vre_availability": true,
+    "wave_availability": true,
+    "hydro_aggregate_availability": true,
+    "hydro_aggregate_monthly_energy_budget": true,
+    "line_capacity": true,
+    "nuclear_capacity_floor": true,
+    "nuclear_capacity_upper": true,
+    "biomass_beccs_capacity_upper": true,
+    "storage_capacity_floor": true,
+    "unidirectional_interprovincial_flow": false,
+    "dc_fixed_direction": true,
+    "storage_transition": true,
+    "storage_soc": true,
+    "reservoir_transition": false,
+    "cascade_inflow_reconciliation": true,
+    "reservoir_energy": true,
+    "reservoir_active_storage": true,
+    "carbon": true,
+    "dac_selected_horizon_capacity": true,
+    "biomass": true,
+    "co2_source": true,
+    "co2_sink": true,
+    "beccs_capture_mass_balance": true,
+    "beccs_storage_mass_balance": true,
+    "beccs_net_carbon_balance": true,
+    "captured_co2_reconstruction": true,
+    "objective_components": true
+  },
+  "status": "HARD_FAIL",
+  "acceptance_profiles": {
+    "relative_v1": {
+      "version": "relative_v1_author_20261012",
+      "status": "ERROR",
+      "error_type": "KeyError",
+      "error": "'barrier_primal_dual_metrics'",
+      "strict_qc_unchanged": true,
+      "inputs": {
+        "power_by_province": [
+          {
+            "province_code": 11,
+            "annual_peak_load_gw": 35.46641248399546,
+            "maximum_residual_gw": 7.555851766483102e-08
+          },
+          {
+            "province_code": 12,
+            "annual_peak_load_gw": 22.402213517814435,
+            "maximum_residual_gw": 7.559813397506332e-08
+          },
+          {
+            "province_code": 13,
+            "annual_peak_load_gw": 90.16705542092367,
+            "maximum_residual_gw": 3.820086647010612e-08
+          },
+          {
+            "province_code": 14,
+            "annual_peak_load_gw": 44.26486597548952,
+            "maximum_residual_gw": 3.6576466300175525e-08
+          },
+          {
+            "province_code": 15,
+            "annual_peak_load_gw": 64.9608028565454,
+            "maximum_residual_gw": 3.514076496458074e-08
+          },
+          {
+            "province_code": 21,
+            "annual_peak_load_gw": 42.49521287145968,
+            "maximum_residual_gw": 3.2704306818232e-08
+          },
+          {
+            "province_code": 22,
+            "annual_peak_load_gw": 15.96197790292634,
+            "maximum_residual_gw": 2.8022173026442943e-08
+          },
+          {
+            "province_code": 23,
+            "annual_peak_load_gw": 18.416387440640957,
+            "maximum_residual_gw": 4.575095147174579e-08
+          },
+          {
+            "province_code": 31,
+            "annual_peak_load_gw": 47.79096719641718,
+            "maximum_residual_gw": 2.8083594116878885e-08
+          },
+          {
+            "province_code": 32,
+            "annual_peak_load_gw": 145.07593043230668,
+            "maximum_residual_gw": 2.1746430434177455e-08
+          },
+          {
+            "province_code": 33,
+            "annual_peak_load_gw": 147.38580240422664,
+            "maximum_residual_gw": 3.0505191261909204e-08
+          },
+          {
+            "province_code": 34,
+            "annual_peak_load_gw": 60.33533932936956,
+            "maximum_residual_gw": 1.0663576688330068e-08
+          },
+          {
+            "province_code": 35,
+            "annual_peak_load_gw": 68.94670989000016,
+            "maximum_residual_gw": 4.184406066087831e-08
+          },
+          {
+            "province_code": 36,
+            "annual_peak_load_gw": 41.192346906187055,
+            "maximum_residual_gw": 1.84494268751223e-08
+          },
+          {
+            "province_code": 37,
+            "annual_peak_load_gw": 175.87785057498945,
+            "maximum_residual_gw": 1.596438892192964e-08
+          },
+          {
+            "province_code": 41,
+            "annual_peak_load_gw": 95.2672170612509,
+            "maximum_residual_gw": 2.4970447043415334e-08
+          },
+          {
+            "province_code": 42,
+            "annual_peak_load_gw": 57.143468165109226,
+            "maximum_residual_gw": 4.9767756138408004e-08
+          },
+          {
+            "province_code": 43,
+            "annual_peak_load_gw": 51.136471056093455,
+            "maximum_residual_gw": 5.8614915587895666e-08
+          },
+          {
+            "province_code": 44,
+            "annual_peak_load_gw": 191.6701724865632,
+            "maximum_residual_gw": 5.001575686947035e-08
+          },
+          {
+            "province_code": 45,
+            "annual_peak_load_gw": 39.08277184023789,
+            "maximum_residual_gw": 6.744279801296216e-08
+          },
+          {
+            "province_code": 46,
+            "annual_peak_load_gw": 8.47934266615521,
+            "maximum_residual_gw": 1.2794540538152432e-08
+          },
+          {
+            "province_code": 50,
+            "annual_peak_load_gw": 38.29488987669581,
+            "maximum_residual_gw": 5.902229460730268e-08
+          },
+          {
+            "province_code": 51,
+            "annual_peak_load_gw": 74.91977090992947,
+            "maximum_residual_gw": 2.4781580520993884e-07
+          },
+          {
+            "province_code": 52,
+            "annual_peak_load_gw": 33.39538529429459,
+            "maximum_residual_gw": 6.889204762217105e-08
+          },
+          {
+            "province_code": 53,
+            "annual_peak_load_gw": 40.24506256357568,
+            "maximum_residual_gw": 9.575241577408633e-08
+          },
+          {
+            "province_code": 54,
+            "annual_peak_load_gw": 1.919255961885441,
+            "maximum_residual_gw": 5.087725385433117e-08
+          },
+          {
+            "province_code": 61,
+            "annual_peak_load_gw": 44.538449059679806,
+            "maximum_residual_gw": 6.02434155894116e-08
+          },
+          {
+            "province_code": 62,
+            "annual_peak_load_gw": 28.97853938581566,
+            "maximum_residual_gw": 5.920590950836413e-08
+          },
+          {
+            "province_code": 63,
+            "annual_peak_load_gw": 16.96383629127964,
+            "maximum_residual_gw": 5.669477154413016e-08
+          },
+          {
+            "province_code": 64,
+            "annual_peak_load_gw": 18.68767219041385,
+            "maximum_residual_gw": 5.6265530901100647e-08
+          },
+          {
+            "province_code": 65,
+            "annual_peak_load_gw": 62.824740770862,
+            "maximum_residual_gw": 8.065322987249601e-08
+          }
+        ],
+        "reservoir_worst": {
+          "hydrochn_row_id": "HydroCHN_01825",
+          "hour_index": 5089,
+          "residual_m3": 3.8743999244901204,
+          "active_storage_m3": 124803.51799999991
+        },
+        "barrier_convergence_tolerance": 0.0001,
+        "disclosures": {
+          "new_build_below_1mw": {
+            "vre_capacity.csv": {
+              "asset_rows": 34370,
+              "total_gw": 0.013464906132189022,
+              "negative_rows": 0
+            },
+            "hydro_capacity.csv": {
+              "asset_rows": 1226,
+              "total_gw": 0.0050557110015921084,
+              "negative_rows": 0
+            },
+            "thermal_nuclear_capacity.csv": {
+              "asset_rows": 157,
+              "total_gw": 0.019214827786955612,
+              "negative_rows": 1
+            },
+            "storage_capacity.csv": {
+              "asset_rows": 55,
+              "total_gw": 0.010773851898567232,
+              "negative_rows": 0
+            },
+            "wave_capacity.csv": {
+              "asset_rows": 1274,
+              "total_gw": 0.0001718393974461536,
+              "negative_rows": 0
+            },
+            "transmission_capacity.csv": {
+              "asset_rows": 398,
+              "total_gw": 0.11609853788930014,
+              "negative_rows": 0
+            }
+          },
+          "numerical_robustness_audit": {},
+          "continuation_cleanup": {},
+          "continuation_bound_closure": {}
+        }
+      }
+    }
+  },
+  "scientifically_accepted": false,
+  "solver_contract": null,
+  "solver_quality": null
+}

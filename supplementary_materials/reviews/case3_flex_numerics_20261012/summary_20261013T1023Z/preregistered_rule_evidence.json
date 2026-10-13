@@ -1,0 +1,10 @@
+{
+  "state": "STOP_RECOMMENDATION_AWAIT_AUTHOR",
+  "rule": 3,
+  "growth_ratios": {
+    "F4_to_F1": 2600.8272852094233
+  },
+  "missing_or_nonoptimal_runs": [
+    "F5"
+  ]
+}

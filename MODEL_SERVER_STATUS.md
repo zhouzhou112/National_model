@@ -3378,3 +3378,12 @@ P0和P1的原模型归档、BarX/BarPi/X/Pi/RC/Slack快照全部COMPLETE，参�
 - 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
 
 Git基准33fece1b2f324c7bf1b209ff53019223a677e2d7，冻结源码680a5c4和生产profile保持不变。只读命令scontrol show job -o 5124127、sstat -j 5124127.batch，以及gurobi.log/stdout/stderr/solver_telemetry尾段；两份JSON为原始取证和派生统计。打印残差与callback残差定义不同，不当作物理GW/GWh QC；Gurobi内部记录峰值805.854GB，与Slurm采样RSS峰值不是同一统计口径，不能据其中一项判定OOM。没有新警告/错误/退出文件，未宣布可行或最优。近10轮残差持续下降，但不据早期斜率推算结束时间。仅更新交接、SERVER_RUNBOOK、MODEL_SERVER_STATUS和小证据，保留并行SI的32行handoff等工作区内容；未改作业、冻结文件、case3实验或监听设置。后续无论QC标签如何均须保全全部解数据；本次未产生终态解。
+
+
+## 2026-10-13 11:23 英国时间：夜间P终态、F1–F4终态与第3情形触发
+
+P0–P5全部完成并保全；P5 Status13/SUBOPTIMAL，M=0.08561165888831365GWh，供暖库存下界省31/hour3533，制冷下界0.003340447357447994GWh。P3/P4关闭聚合/预求解的M为1.911544e-10/1.491750e-10，支持H1；收紧容差P2未改善，H3仍受8760/744h差异限制。
+
+T550原实验根case3_flex_numerics_20261012_aef0cb7的F1–F4均OPTIMAL/保全COMPLETE；F1/F2/F4的M为3.8252378095e-5/2.4034940833e-5/1.4707773297e-8GWh。F4→F1增长2600.827倍，按任务书第4节第3情形停止给出全年启动建议、交作者判断，虽绝对值均低于1MWh也不自行改门槛。F5尚未启动：当前资源门禁63.625GiB<105GiB；F6未触发。F5缺失不是数值失败，queue_active的F4 PID为历史遗留。原服务器有限队列仍等待，未发任何进程控制命令；应用内case3续办已暂停，需作者决定后续F5/资源/诊断安排。
+
+79份远端小证据SHA PASS，收集目录 `supplementary_materials/reviews/case3_flex_numerics_20261012/evidence_20261013T1023Z/`；完整10行运行表与残差剖面在同级summary_20261013T1023Z，详细局限见REVIEW_ZH.md。本轮源码基线80090ae，修改只读汇总脚本与追加文档/证据；不改模型/配置/冻结包，不碰云端作业或cloud_backup、不读凭据。下一步作者审阅增长门槛触发和F5资源安排；没有生产启动建议。后续一次SSH握手超时，最新服务器状态以已核验快照时间为准。

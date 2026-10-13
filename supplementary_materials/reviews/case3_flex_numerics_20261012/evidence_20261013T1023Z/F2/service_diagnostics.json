@@ -1,0 +1,56 @@
+{
+  "physical_qc": {
+    "enrollment_fraction_violation": 0.0,
+    "contract_charge_residual_gw": 0.0,
+    "contract_v2g_residual_gw": 0.0,
+    "discharge_pool_power_violation_gw": 0.0,
+    "v1g_transition_residual_gwh": 1.2935067239538967e-08,
+    "v1g_inventory_violation_gwh": 0.0,
+    "v1g_connection_violation_gw": 0.0,
+    "v2g_transition_residual_gwh": 8.137446322895384e-09,
+    "v2g_inventory_violation_gwh": 0.0,
+    "v2g_connection_violation_gw": 0.0,
+    "baseline_reconstruction_residual_gw": 0.0,
+    "relocation_lower_bound_violation_gw": 0.0,
+    "heating_transition_gwh": 5.9483887678563724e-08,
+    "heating_inventory_gwh": 0.0,
+    "heating_contract_power_gw": 0.0,
+    "cooling_transition_gwh": 2.4034940832860238e-05,
+    "cooling_inventory_gwh": 0.0,
+    "cooling_contract_power_gw": 0.0,
+    "load_reconstruction_gw": 8.526512829121202e-14,
+    "heating_cycle_gwh": 4.437180634638688e-09,
+    "heating_state_lower_gwh": 0.0,
+    "heating_up_envelope_gw": 0.0,
+    "heating_up_lower_gw": 0.0,
+    "heating_down_envelope_gw": 0.0,
+    "heating_down_lower_gw": 0.0,
+    "cooling_cycle_gwh": 8.077935669463161e-28,
+    "cooling_state_lower_gwh": 0.0,
+    "cooling_up_envelope_gw": 0.0,
+    "cooling_up_lower_gw": 0.0,
+    "cooling_down_envelope_gw": 0.0,
+    "cooling_down_lower_gw": 0.0,
+    "firm_credit_bound_violation_gw": 8.854334487828908e-10,
+    "firm_credit_zero_when_unenrolled": 0.0
+  },
+  "thermal_worst": {
+    "heating": {
+      "province_code": 46,
+      "hour_position": 6,
+      "hour_index": 8022,
+      "signed_residual_gwh": 5.9483887678563724e-08
+    },
+    "cooling": {
+      "province_code": 45,
+      "hour_position": 278,
+      "hour_index": 8294,
+      "signed_residual_gwh": 2.4034940832860238e-05
+    }
+  },
+  "maximum_service_residual_gw_gwh": 2.4034940832860238e-05,
+  "dimensionless_metrics": {
+    "enrollment_fraction_violation": 0.0
+  },
+  "capacity_credit": "AUDITED_FULL_YEAR_PEAK_LIMITS"
+}

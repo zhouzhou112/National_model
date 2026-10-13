@@ -1,0 +1,22 @@
+{
+  "schema_version": "cispo_preservation_v1",
+  "scientifically_accepted": false,
+  "generated_at": "2026-10-13T10:21:29.697693+08:00",
+  "author_decision": "PENDING",
+  "stages": {
+    "capacity_and_cost": "COMPLETE",
+    "operation_carbon_dual_qc": "COMPLETE",
+    "summary": "COMPLETE",
+    "read_dual_export_status.json": "COMPLETE",
+    "candidate_state": "COMPLETE",
+    "output_catalog": "COMPLETE",
+    "read_model_archive/archive_manifest.json": "COMPLETE"
+  },
+  "errors": [],
+  "solver_contract": null,
+  "solver_quality": null,
+  "qc_status": "HARD_FAIL",
+  "status": "COMPLETE",
+  "original_model_archived": true,
+  "elapsed_seconds_before_manifest": 65.63953595500789
+}

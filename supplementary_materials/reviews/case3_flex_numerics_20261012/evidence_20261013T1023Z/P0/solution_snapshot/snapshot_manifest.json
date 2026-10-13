@@ -1,0 +1,68 @@
+{
+  "schema_version": "cispo_solution_snapshot_v1",
+  "scientifically_accepted": false,
+  "gurobi_fingerprint": 898593897,
+  "variables": 2303225,
+  "constraints": 3310229,
+  "nonzeros": 10254983,
+  "attributes": {
+    "BarX": {
+      "path": "BarX.npy",
+      "bytes": 18425928,
+      "sha256": "f413a6ef6654e1285b992b8845efd46b1794ebd668a01a24a6b170b24eb2ff47",
+      "entries": 2303225,
+      "finite": true
+    },
+    "X": {
+      "path": "X.npy",
+      "bytes": 18425928,
+      "sha256": "f413a6ef6654e1285b992b8845efd46b1794ebd668a01a24a6b170b24eb2ff47",
+      "entries": 2303225,
+      "finite": true
+    },
+    "RC": {
+      "path": "RC.npy",
+      "bytes": 18425928,
+      "sha256": "c6b77f4ceff9b64bfba5455d537f7eccd99859e11bd1ce153c8a9cce4a42ed72",
+      "entries": 2303225,
+      "finite": true
+    },
+    "BarPi": {
+      "path": "BarPi.npy",
+      "bytes": 26481960,
+      "sha256": "0284234ab48fe96c4e2653aa6eff928a02f3e198fafa17ba4739b3596a883026",
+      "entries": 3310229,
+      "finite": true
+    },
+    "Pi": {
+      "path": "Pi.npy",
+      "bytes": 26481960,
+      "sha256": "0284234ab48fe96c4e2653aa6eff928a02f3e198fafa17ba4739b3596a883026",
+      "entries": 3310229,
+      "finite": true
+    },
+    "Slack": {
+      "path": "Slack.npy",
+      "bytes": 26481960,
+      "sha256": "00f931b1e5203180e1c7b5eb7c2dbb312db886cefc3fc586fd5985a1855598d1",
+      "entries": 3310229,
+      "finite": true
+    }
+  },
+  "unavailable": {
+    "VBasis": "GurobiError(10005, \"Unable to retrieve attribute 'VBasis'\")",
+    "CBasis": "GurobiError(10005, \"Unable to retrieve attribute 'CBasis'\")"
+  },
+  "annual_capacity_link_row_scaling": null,
+  "variable_order_digest": {
+    "entries": 2303225,
+    "sha256": "508c4a57c97d9e36942a04640bef82af2d0dec5b26c27c33500b79df3d7854ec"
+  },
+  "constraint_order_digest": {
+    "entries": 3310229,
+    "sha256": "869378c59d09ae134d972275be55635029ac89fba8fc571dd95ea6dc351b1557"
+  },
+  "primal_attribute": "BarX",
+  "dual_attribute": "BarPi",
+  "status": "COMPLETE"
+}

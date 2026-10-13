@@ -1,0 +1,152 @@
+[
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solver_result.json",
+    "path": "P0\\solver_result.json",
+    "sha256": "55b62b660f305755b117f747a4ba8844d727432971121a666e851fa1f702fb29"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solver_parameters.json",
+    "path": "P0\\solver_parameters.json",
+    "sha256": "307246985fb64583fe181e50f6544dfb1a0a2b8568f33c9e6530a5dd235fd83c"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\service_diagnostics.json",
+    "path": "P0\\service_diagnostics.json",
+    "sha256": "d407ee69ea199b4492b5ba477b2c6cb86818afab70fd88d47d1c1cc9a479d8c7"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\model_archive\\archive_manifest.json",
+    "path": "P0\\model_archive\\archive_manifest.json",
+    "sha256": "e98c3560d21751e9136eca4c3b6426d73187f64e8dd44a196fa0b6703b62fc92"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P0\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P0\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "d4aa23fad78215da9b661228e69b4e9c4cdc5de91730553196daa64f7d9e30f0"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solver_result.json",
+    "path": "P1\\solver_result.json",
+    "sha256": "fa3ba1b2f44701560a86aa25f7e61cbee57a19fa18d2ff7f751da9f0af663964"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solver_parameters.json",
+    "path": "P1\\solver_parameters.json",
+    "sha256": "2f3fffcfa5e6d3fd0e57dc5232a960021eef4e8dc7cf8b9e3a9d3ee609378771"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\service_diagnostics.json",
+    "path": "P1\\service_diagnostics.json",
+    "sha256": "77b6707df903b6ee917f18a971e978b16c6c845d1dc8cb0c0e7857b59a8c142f"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\model_archive\\archive_manifest.json",
+    "path": "P1\\model_archive\\archive_manifest.json",
+    "sha256": "4b0c9497245427ec95f0edd2b4a0595f9c23ea9752199dbb3f12124214877243"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P1\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P1\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "6d75ab429480951743a72e180f88c00fe5d662787601718410f37c846c87054a"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solver_result.json",
+    "path": "P2\\solver_result.json",
+    "sha256": "4b1a2d9ffe1e38cb8af67216208aafa6ead59bd4b041a14730a29abda094df1e"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solver_parameters.json",
+    "path": "P2\\solver_parameters.json",
+    "sha256": "5796703856af9ac08c035f36eca19fb4788ab912502b854cfce381f3383e0fcf"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\service_diagnostics.json",
+    "path": "P2\\service_diagnostics.json",
+    "sha256": "0e117efe4839c90c7a447fa9d0299f057e31f767bd00027219038be01c6c9235"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\model_archive\\archive_manifest.json",
+    "path": "P2\\model_archive\\archive_manifest.json",
+    "sha256": "e8b5bf9872a234eb200805c80b5803e5e711cadff70a38c403b65949a2efe45e"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P2\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P2\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "2f91e0873b8438846423962125e90b6ca9f1c17f5b9cb00ce535f8e1ff7b1182"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P3\\solver_result.json",
+    "path": "P3\\solver_result.json",
+    "sha256": "0c05544e9eab53157db9e2c53ddb7fb84f504dabb41ee52b0bfbc3336ecb0d06"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P3\\solver_parameters.json",
+    "path": "P3\\solver_parameters.json",
+    "sha256": "f1d4ccb68c218f2ccd4bc7102965a87849c2a65ae7fa2b91d4849eff9176fdbc"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P3\\service_diagnostics.json",
+    "path": "P3\\service_diagnostics.json",
+    "sha256": "9a0631e86022d8ed110b50d630dd22b6a98a7308970e9487c615beeae78f7d1a"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P3\\model_archive\\archive_manifest.json",
+    "path": "P3\\model_archive\\archive_manifest.json",
+    "sha256": "d0afdf7e55336597b4bb9ab17fb92ebd652fc75ea92de5a560e978a80b3324df"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P3\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P3\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "b57b5e69440ba9e4d2ead47a384242e3d67265b501b3ccc540bf28392ff93648"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P4\\solver_result.json",
+    "path": "P4\\solver_result.json",
+    "sha256": "fe7b1f20c78fb327c975e24ad74926eec4bf77141e3241bd2931c8315478c2b1"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P4\\solver_parameters.json",
+    "path": "P4\\solver_parameters.json",
+    "sha256": "2ccdc548b761a5b5a0312d9d937a77593079c68a483a0311def3e1e8c51c1459"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P4\\service_diagnostics.json",
+    "path": "P4\\service_diagnostics.json",
+    "sha256": "8675ffd0d13890e6ba095245d6551ea5eb8c86a561f4290240c8bf1668eefbee"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P4\\model_archive\\archive_manifest.json",
+    "path": "P4\\model_archive\\archive_manifest.json",
+    "sha256": "2eea0eddaf4557e53b569a92290f8d6a5e7c4df49d1f0af0d4579d4c50152060"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P4\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P4\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "4d0ff559ffd55eb317652dd183947f7cb9e0bca67f295e151585e3f5e9bcb661"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\solver_result.json",
+    "path": "P5\\solver_result.json",
+    "sha256": "c60d13f22d40706c2017c0480fdca9d300e43a899bcbb04ac79e2b79902ee4df"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\solver_parameters.json",
+    "path": "P5\\solver_parameters.json",
+    "sha256": "2f3fffcfa5e6d3fd0e57dc5232a960021eef4e8dc7cf8b9e3a9d3ee609378771"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\service_diagnostics.json",
+    "path": "P5\\service_diagnostics.json",
+    "sha256": "3f9ece53e33a730140490bf80d3acdd5ed7e1f41b428caf87c96456aa779fe6f"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\model_archive\\archive_manifest.json",
+    "path": "P5\\model_archive\\archive_manifest.json",
+    "sha256": "99bce7cba964143a1a37c05ae10505accecd9c3f022e73e41d6c871d75b9151c"
+  },
+  {
+    "source": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\solution_snapshot\\snapshot_manifest.json",
+    "path": "P5\\solution_snapshot\\snapshot_manifest.json",
+    "sha256": "bdbdd1a514b0bc1ffdf1b86529a0148bb14d8e43bd43d700c9507a8f20206b3b"
+  }
+]

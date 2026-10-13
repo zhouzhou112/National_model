@@ -1,0 +1,56 @@
+{
+  "physical_qc": {
+    "enrollment_fraction_violation": 0.0,
+    "contract_charge_residual_gw": 0.0,
+    "contract_v2g_residual_gw": 0.0,
+    "discharge_pool_power_violation_gw": 0.0,
+    "v1g_transition_residual_gwh": 8.980945899288162e-09,
+    "v1g_inventory_violation_gwh": 0.0,
+    "v1g_connection_violation_gw": 0.0,
+    "v2g_transition_residual_gwh": 5.519348882012526e-09,
+    "v2g_inventory_violation_gwh": 0.0,
+    "v2g_connection_violation_gw": 0.0,
+    "baseline_reconstruction_residual_gw": 0.0,
+    "relocation_lower_bound_violation_gw": 0.0,
+    "heating_transition_gwh": 3.825237809520926e-05,
+    "heating_inventory_gwh": 1.0164262250074294e-05,
+    "heating_contract_power_gw": 0.0,
+    "cooling_transition_gwh": 3.3088465736690796e-05,
+    "cooling_inventory_gwh": 0.0,
+    "cooling_contract_power_gw": 0.0,
+    "load_reconstruction_gw": 8.526512829121202e-14,
+    "heating_cycle_gwh": 1.590190713482431e-10,
+    "heating_state_lower_gwh": 8.972561205763369e-10,
+    "heating_up_envelope_gw": 0.0,
+    "heating_up_lower_gw": 0.0,
+    "heating_down_envelope_gw": 0.0,
+    "heating_down_lower_gw": 0.0,
+    "cooling_cycle_gwh": 1.4543329648745475e-09,
+    "cooling_state_lower_gwh": 0.0,
+    "cooling_up_envelope_gw": 0.0,
+    "cooling_up_lower_gw": 0.0,
+    "cooling_down_envelope_gw": 0.0,
+    "cooling_down_lower_gw": 0.0,
+    "firm_credit_bound_violation_gw": 6.593788987041549e-10,
+    "firm_credit_zero_when_unenrolled": 0.0
+  },
+  "thermal_worst": {
+    "heating": {
+      "province_code": 14,
+      "hour_position": 257,
+      "hour_index": 5345,
+      "signed_residual_gwh": 3.825237809520926e-05
+    },
+    "cooling": {
+      "province_code": 63,
+      "hour_position": 280,
+      "hour_index": 5368,
+      "signed_residual_gwh": 3.3088465736690796e-05
+    }
+  },
+  "maximum_service_residual_gw_gwh": 3.825237809520926e-05,
+  "dimensionless_metrics": {
+    "enrollment_fraction_violation": 0.0
+  },
+  "capacity_credit": "AUDITED_FULL_YEAR_PEAK_LIMITS"
+}

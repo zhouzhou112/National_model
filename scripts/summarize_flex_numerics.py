@@ -92,12 +92,17 @@ def main():
                 if relative>0.01: differences.append(dict(reference=base,run=name,province_code=key[0],technology=key[1],decision=col,reference_value=reference,value=value,absolute_change=abs(value-reference),relative_change=relative,denominator_floor=1e-12))
     pd.DataFrame(differences,columns=["reference","run","province_code","technology","decision","reference_value","value","absolute_change","relative_change","denominator_floor"]).to_csv(a.output/"decision_changes_above_1pct.csv",index=False)
     conclusion=dict(state="PENDING_F_SERIES",rule=None)
-    if not runs.empty and set(("F1","F2","F4","F5")).issubset(set(runs.run)):
+    if not runs.empty:
         r=runs.set_index("run"); m=r.M_gw_gwh
-        if all(pd.notna(m[n]) and r.loc[n,"status"] == 2 for n in ("F1","F2","F4","F5")):
-            ratios={f"{x}_to_{y}":float(m[y]/m[x]) if m[x]>0 else (1.0 if m[y]==0 else float("inf")) for x,y in (("F4","F1"),("F1","F5"),("F4","F5"))}
+        valid={n for n in ("F1","F2","F4","F5") if n in r.index and pd.notna(m[n]) and r.loc[n,"status"] == 2}
+        ratios={f"{x}_to_{y}":float(m[y]/m[x]) if m[x]>0 else (1.0 if m[y]==0 else float("inf")) for x,y in (("F4","F1"),("F1","F5"),("F4","F5")) if x in valid and y in valid}
+        if ratios and max(ratios.values())>=3:
+            # An observed growth violation is sufficient for the registered
+            # stop recommendation; a missing F5 is disclosed, not a failure.
+            conclusion=dict(state="STOP_RECOMMENDATION_AWAIT_AUTHOR",rule=3,growth_ratios=ratios,
+                            missing_or_nonoptimal_runs=sorted(set(("F1","F2","F4","F5"))-valid))
+        elif len(valid)==4:
             conclusion=dict(state="AWAIT_AUTHOR_REVIEW",growth_ratios=ratios,rule=1 if all(m[n]<=1e-3 for n in ("F1","F2","F5")) and max(ratios.values())<3 else None)
-            if max(ratios.values())>=3:conclusion["rule"]=3
             # Rule 2 requires human review of all failed windows, paired timing,
             # iteration overhead and missing/no-solution cases; never auto-promote.
     (a.output/"preregistered_rule_evidence.json").write_text(json.dumps(conclusion,indent=2),encoding="utf-8")

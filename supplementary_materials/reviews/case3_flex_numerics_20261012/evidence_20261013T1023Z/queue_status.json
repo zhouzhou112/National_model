@@ -1,0 +1,26 @@
+[
+  {
+    "name": "F1",
+    "returncode": 0,
+    "peak_rss_bytes": 21630406656,
+    "wall_seconds": 7587.528172443999
+  },
+  {
+    "name": "F2",
+    "returncode": 0,
+    "peak_rss_bytes": 20204384256,
+    "wall_seconds": 8714.399576561991
+  },
+  {
+    "name": "F3",
+    "returncode": 0,
+    "peak_rss_bytes": 21043617792,
+    "wall_seconds": 6179.212579621992
+  },
+  {
+    "name": "F4",
+    "returncode": 0,
+    "peak_rss_bytes": 4053598208,
+    "wall_seconds": 710.7426913969975
+  }
+]

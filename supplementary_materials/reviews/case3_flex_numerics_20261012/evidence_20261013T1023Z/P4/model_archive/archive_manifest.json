@@ -1,0 +1,47 @@
+{
+  "schema_version": "cispo_model_archive_v1",
+  "files": [
+    {
+      "path": "original.mps",
+      "bytes": 1339231082,
+      "sha256": "340bde43cb8f73088bd18a6f11f695a6e5aaf74ca5e7375cfdd0f0bb31cf158e"
+    },
+    {
+      "path": "parameters.prm",
+      "bytes": 174,
+      "sha256": "013f418825d0b6261711aae919af477e82d4141d58f6e9d12da8d2714535b99a"
+    },
+    {
+      "path": "variable_names.jsonl.gz",
+      "bytes": 11493709,
+      "sha256": "e5b761fdab90bfb80cf0471961069becd30a94c9786a398980d2b78d99e92751"
+    },
+    {
+      "path": "constraint_names.jsonl.gz",
+      "bytes": 16722919,
+      "sha256": "88789554e9b1658eb4bb1456023b56b74af76c2f15ff8e86157259a2a31163fb"
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "file": "original.mps.gz",
+      "fallback": "original.mps",
+      "reason": "GurobiError(10013, \"Unable to write to file 'D:\\\\codeenv\\\\pycharmproject\\\\National_RL\\\\National_model\\\\supplementary_materials\\\\reviews\\\\case3_flex_numerics_20261012\\\\P_series\\\\P4\\\\model_archive\\\\original.mps.gz'\")"
+    }
+  ],
+  "presolved_status": "NOT_REQUESTED",
+  "uncrush_mapping_saved": false,
+  "factorization_saved": false,
+  "gurobi_fingerprint": 898593897,
+  "full_name_catalog_requested": true,
+  "variable_order_digest": {
+    "entries": 2303225,
+    "sha256": "508c4a57c97d9e36942a04640bef82af2d0dec5b26c27c33500b79df3d7854ec"
+  },
+  "constraint_order_digest": {
+    "entries": 3310229,
+    "sha256": "869378c59d09ae134d972275be55635029ac89fba8fc571dd95ea6dc351b1557"
+  },
+  "status": "COMPLETE"
+}

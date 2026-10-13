@@ -1,0 +1,12 @@
+{
+  "heating": {
+    "province_code": 31,
+    "hour_index": 3533,
+    "state_gwh": -0.08561165888831365
+  },
+  "cooling": {
+    "province_code": 64,
+    "hour_index": 2441,
+    "state_gwh": -0.003340447357447994
+  }
+}
