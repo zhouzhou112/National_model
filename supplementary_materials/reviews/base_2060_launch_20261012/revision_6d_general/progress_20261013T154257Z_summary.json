@@ -1,0 +1,22 @@
+{
+  "latest_iteration": 49,
+  "printed_metrics": {
+    "primal_objective": 3871554080000.0,
+    "dual_objective": -43504329400000.0,
+    "primal_residual": 1290000000.0,
+    "dual_residual": 3.26,
+    "complementarity": 155000000.0,
+    "solver_seconds": 77771.0
+  },
+  "reduction_from_33_percent": {
+    "primal_residual": 87.47572815533981,
+    "dual_residual": 92.70693512304251,
+    "complementarity": 87.39837398373984
+  },
+  "objective_gap_reduction_from_33_percent": 52.00549177660068,
+  "recent_10_minutes_per_iteration": 20.033333333333335,
+  "rss_gib": 401.8917922973633,
+  "peak_rss_gib": 657.3362922668457,
+  "monotonic_33_49": true,
+  "note": "Printed solver residuals are not physical GW/GWh QC and differ from callback metrics."
+}

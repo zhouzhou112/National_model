@@ -5314,3 +5314,10 @@ Git基准a3cb6ed7172f9a31d52410ded9e8f90b5a8a9d98；本轮只读scontrol show jo
 - 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
 
 Git基准33fece1b2f324c7bf1b209ff53019223a677e2d7，冻结源码680a5c4和生产profile保持不变。只读命令scontrol show job -o 5124127、sstat -j 5124127.batch，以及gurobi.log/stdout/stderr/solver_telemetry尾段；两份JSON为原始取证和派生统计。打印残差与callback残差定义不同，不当作物理GW/GWh QC；Gurobi内部记录峰值805.854GB，与Slurm采样RSS峰值不是同一统计口径，不能据其中一项判定OOM。没有新警告/错误/退出文件，未宣布可行或最优。近10轮残差持续下降，但不据早期斜率推算结束时间。仅更新交接、SERVER_RUNBOOK、MODEL_SERVER_STATUS和小证据，保留并行SI的32行handoff等工作区内容；未改作业、冻结文件、case3实验或监听设置。后续无论QC标签如何均须保全全部解数据；本次未产生终态解。
+
+
+## 2026-10-13英国16:42 Base2060第49轮收敛取证
+
+- 2026-10-13英国16:42（北京23:42）Base2060/5124127 RUNNING/m4cm2108、累计22:25:53；最新iter49完成于英国16:40:07，较前次iter33推进16轮。打印PInf1.29e9/DInf3.26/Compl1.55e8，33至49三项逐轮下降，分别降87.48%/92.71%/87.40%；原始-对偶目标差4.737588348e13，降52.01%。近10轮20.03分钟/轮；RSS401.89GiB/峰657.34GiB，无求解器警告/错误、stderr空，无终态。仍远未收敛，无可靠ETA。证据revision_6d_general/progress_20261013T154257Z.json及_summary.json；只读观察后续收敛与终态完整保全。
+
+Git基准c19190ff16b182bf6e40d74efb9419d5c100b044。只读scontrol、sstat、gurobi.log/solver_telemetry及stderr；迭代0至49日志已提取，派生JSON核对33→49降幅及39→49耗时。打印指标与callback定义不同，不把求解器残差当物理GW/GWh验收；近16轮无反弹，最近数轮下降加快，但目标差和残差仍大，不预测完成时间。仅新增两份证据并更新交接/服务器状态/runbook，冻结源680a5c4和运行参数不动；不改并行case3实验或SI内容。下一步按用户查询只读取证；终态无论QC标签均完整保全解与归档。

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13英国16:42（北京23:42）Base2060/5124127 RUNNING/m4cm2108、累计22:25:53；最新iter49完成于英国16:40:07，较前次iter33推进16轮。打印PInf1.29e9/DInf3.26/Compl1.55e8，33至49三项逐轮下降，分别降87.48%/92.71%/87.40%；原始-对偶目标差4.737588348e13，降52.01%。近10轮20.03分钟/轮；RSS401.89GiB/峰657.34GiB，无求解器警告/错误、stderr空，无终态。仍远未收敛，无可靠ETA。证据revision_6d_general/progress_20261013T154257Z.json及_summary.json；只读观察后续收敛与终态完整保全。
+
 - 2026-10-13 夜间实验最新：P全部完成；F1–F4 OPTIMAL/完整保全，F5资源等待（63.625GiB<105GiB），F6未触发。P5 M=85.612MWh；F4→F1的M增长2600.827倍，按预登记第3情形暂不给全年启动建议。应用内case3续办暂停待作者判断，服务器原有限队列未取消。证据evidence_20261013T1023Z、summary_20261013T1023Z。
 
 - 2026-10-13英国11:23（北京18:23）Base2060/5124127 RUNNING/m4cm2108，累计17:06:45，已进入Barrier并完成iter33（最新日志英国11:20:29）。Presolve16365.14s、ordering4366.95s；预处理后36,153,597行/33,095,602列/387,670,134nnz。近10轮20.1233分钟/轮，打印PInf1.03e10/DInf44.7/Compl1.23e9，较iter23分别下降74.75%/82.47%/75.55%，仍为早期迭代，不能作完成百分比或外推ETA。Slurm RSS401.18GiB/峰657.34GiB，48线程；无求解器Warning/Error，stderr空，无终态。证据revision_6d_general/progress_20261013T102349Z.json及_summary.json；继续云端自主运行，下一步只读观察收敛/终态与完整保全。
@@ -9826,3 +9828,10 @@ P0–P5全部完成并保全；P5 Status13/SUBOPTIMAL，M=0.08561165888831365GWh
 T550原实验根case3_flex_numerics_20261012_aef0cb7的F1–F4均OPTIMAL/保全COMPLETE；F1/F2/F4的M为3.8252378095e-5/2.4034940833e-5/1.4707773297e-8GWh。F4→F1增长2600.827倍，按任务书第4节第3情形停止给出全年启动建议、交作者判断，虽绝对值均低于1MWh也不自行改门槛。F5尚未启动：当前资源门禁63.625GiB<105GiB；F6未触发。F5缺失不是数值失败，queue_active的F4 PID为历史遗留。原服务器有限队列仍等待，未发任何进程控制命令；应用内case3续办已暂停，需作者决定后续F5/资源/诊断安排。
 
 79份远端小证据SHA PASS，收集目录 `supplementary_materials/reviews/case3_flex_numerics_20261012/evidence_20261013T1023Z/`；完整10行运行表与残差剖面在同级summary_20261013T1023Z，详细局限见REVIEW_ZH.md。本轮源码基线80090ae，修改只读汇总脚本与追加文档/证据；不改模型/配置/冻结包，不碰云端作业或cloud_backup、不读凭据。下一步作者审阅增长门槛触发和F5资源安排；没有生产启动建议。后续一次SSH握手超时，最新服务器状态以已核验快照时间为准。
+
+
+## 2026-10-13英国16:42 Base2060第49轮收敛取证
+
+- 2026-10-13英国16:42（北京23:42）Base2060/5124127 RUNNING/m4cm2108、累计22:25:53；最新iter49完成于英国16:40:07，较前次iter33推进16轮。打印PInf1.29e9/DInf3.26/Compl1.55e8，33至49三项逐轮下降，分别降87.48%/92.71%/87.40%；原始-对偶目标差4.737588348e13，降52.01%。近10轮20.03分钟/轮；RSS401.89GiB/峰657.34GiB，无求解器警告/错误、stderr空，无终态。仍远未收敛，无可靠ETA。证据revision_6d_general/progress_20261013T154257Z.json及_summary.json；只读观察后续收敛与终态完整保全。
+
+Git基准c19190ff16b182bf6e40d74efb9419d5c100b044。只读scontrol、sstat、gurobi.log/solver_telemetry及stderr；迭代0至49日志已提取，派生JSON核对33→49降幅及39→49耗时。打印指标与callback定义不同，不把求解器残差当物理GW/GWh验收；近16轮无反弹，最近数轮下降加快，但目标差和残差仍大，不预测完成时间。仅新增两份证据并更新交接/服务器状态/runbook，冻结源680a5c4和运行参数不动；不改并行case3实验或SI内容。下一步按用户查询只读取证；终态无论QC标签均完整保全解与归档。
