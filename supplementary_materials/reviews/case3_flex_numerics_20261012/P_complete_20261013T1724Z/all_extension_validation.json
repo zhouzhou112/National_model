@@ -1,0 +1,62 @@
+[
+  {
+    "run": "P6",
+    "parameter_check": "PASS",
+    "year": 2040,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 2,
+    "peak_rss_gib": 5.384067535400391,
+    "wall_seconds": 614.2969999999987
+  },
+  {
+    "run": "P7",
+    "parameter_check": "PASS",
+    "year": 2050,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 2,
+    "peak_rss_gib": 5.383304595947266,
+    "wall_seconds": 608.2339999999967
+  },
+  {
+    "run": "P5a",
+    "parameter_check": "PASS",
+    "year": 2060,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 0,
+    "peak_rss_gib": 5.405757904052734,
+    "wall_seconds": 484.875
+  },
+  {
+    "run": "P5b",
+    "parameter_check": "PASS",
+    "year": 2060,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 0,
+    "peak_rss_gib": 5.385562896728516,
+    "wall_seconds": 529.3909999999996
+  },
+  {
+    "run": "P5c",
+    "parameter_check": "PASS",
+    "year": 2060,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 0,
+    "peak_rss_gib": 5.616569519042969,
+    "wall_seconds": 626.3119999999981
+  },
+  {
+    "run": "P8",
+    "parameter_check": "PASS",
+    "year": 2030,
+    "price_year": 2030,
+    "preservation": "COMPLETE",
+    "returncode": 0,
+    "peak_rss_gib": 5.386425018310547,
+    "wall_seconds": 695.0149999999994
+  }
+]

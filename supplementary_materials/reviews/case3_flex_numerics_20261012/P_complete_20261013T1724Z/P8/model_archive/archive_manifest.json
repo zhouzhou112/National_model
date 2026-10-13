@@ -1,0 +1,47 @@
+{
+  "schema_version": "cispo_model_archive_v1",
+  "files": [
+    {
+      "path": "original.mps",
+      "bytes": 1339231082,
+      "sha256": "340bde43cb8f73088bd18a6f11f695a6e5aaf74ca5e7375cfdd0f0bb31cf158e"
+    },
+    {
+      "path": "parameters.prm",
+      "bytes": 186,
+      "sha256": "58f792fef00c96287c33529fee56fa51de66b21c74973eae74b6cdb06ba46030"
+    },
+    {
+      "path": "variable_names.jsonl.gz",
+      "bytes": 11493709,
+      "sha256": "d45e5364e04d8931282727978f6077204bc5685ab59d621a97c5e2cd1f1f4b52"
+    },
+    {
+      "path": "constraint_names.jsonl.gz",
+      "bytes": 16722919,
+      "sha256": "40578e87eece47ea62ab5462dca1b7e637f11269b17ac3fe0497516160a4bef8"
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "file": "original.mps.gz",
+      "fallback": "original.mps",
+      "reason": "GurobiError(10013, \"Unable to write to file 'supplementary_materials\\\\reviews\\\\case3_flex_numerics_20261012\\\\P_extension_20261013\\\\P8\\\\model_archive\\\\original.mps.gz'\")"
+    }
+  ],
+  "presolved_status": "NOT_REQUESTED",
+  "uncrush_mapping_saved": false,
+  "factorization_saved": false,
+  "gurobi_fingerprint": 898593897,
+  "full_name_catalog_requested": true,
+  "variable_order_digest": {
+    "entries": 2303225,
+    "sha256": "508c4a57c97d9e36942a04640bef82af2d0dec5b26c27c33500b79df3d7854ec"
+  },
+  "constraint_order_digest": {
+    "entries": 3310229,
+    "sha256": "869378c59d09ae134d972275be55635029ac89fba8fc571dd95ea6dc351b1557"
+  },
+  "status": "COMPLETE"
+}

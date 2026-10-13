@@ -1,0 +1,92 @@
+[
+  {
+    "path": "P5c_terminal.json",
+    "bytes": 1414,
+    "sha256": "3cc3e758422f19d076df9dd438428f779fe046a6a7cab7f46513e75ee731e5de"
+  },
+  {
+    "path": "P5c_launch.json",
+    "bytes": 1323,
+    "sha256": "0536ce0e2837c991db57446526838ea89fca7372d790080c07d8eed89576c65e"
+  },
+  {
+    "path": "P5c/solver_result.json",
+    "bytes": 291,
+    "sha256": "66c30c37ac243d598e9e9052e29f6145fc4628df4508c9e1b25f8f28012605e2"
+  },
+  {
+    "path": "P5c/solver_parameters.json",
+    "bytes": 300,
+    "sha256": "5459ba4ca9737c48cd7fe2d716b8abf26e89e552b325843b55852fc1fbac7edb"
+  },
+  {
+    "path": "P5c/service_diagnostics.json",
+    "bytes": 1976,
+    "sha256": "615ff473e296fed39f3cb8ee46f66c57a468e56259e7e2422655cb7afb67d48c"
+  },
+  {
+    "path": "P5c/report.json",
+    "bytes": 34418,
+    "sha256": "554dcb7e57d34abffa381efeceb8a2bc2b9ab37d025b6d5f0fdc7f491393bc8c"
+  },
+  {
+    "path": "P5c/service_decisions.csv",
+    "bytes": 4031,
+    "sha256": "c50cb60c5288d8cf72797848794e56c1600a552413abd0f490ba61f73936e417"
+  },
+  {
+    "path": "P5c/model_archive/archive_manifest.json",
+    "bytes": 1540,
+    "sha256": "fb506d3c816fb94b1865adbc04b291cebfc2c7c37e1ffe71894229d0de13e0fc"
+  },
+  {
+    "path": "P5c/solution_snapshot/snapshot_manifest.json",
+    "bytes": 2083,
+    "sha256": "29497fea87fcfa99f85af6d85be61b0176bec09366075ed742e6da40012a9a87"
+  },
+  {
+    "path": "P8_terminal.json",
+    "bytes": 1442,
+    "sha256": "b1268cd1076b5125e29667ebcdfe4d36b4a4a241bb58e5453e4701692dec9a9d"
+  },
+  {
+    "path": "P8_launch.json",
+    "bytes": 1351,
+    "sha256": "bf77405016d2520491e5157e6ff005cbb8ed666bd75fb533d6b0a6e9a519715f"
+  },
+  {
+    "path": "P8/solver_result.json",
+    "bytes": 294,
+    "sha256": "6e755f0a7117bfadf1f32ed8c583d75f9cc5ae0d93f5c7b5364f480ea2182d8b"
+  },
+  {
+    "path": "P8/solver_parameters.json",
+    "bytes": 299,
+    "sha256": "516ec9ae25dd500b30f02cf3c1dc0413e0c106ba539531a1411848daf189ae9c"
+  },
+  {
+    "path": "P8/service_diagnostics.json",
+    "bytes": 1935,
+    "sha256": "da651b256200a36f7be3f748cf2a107050f3717ca8aeba40e7f440f40642985b"
+  },
+  {
+    "path": "P8/report.json",
+    "bytes": 34341,
+    "sha256": "8cde8f32264ec9de2962a6b35568b2203f9c480a930762566f7538522cf54677"
+  },
+  {
+    "path": "P8/service_decisions.csv",
+    "bytes": 4070,
+    "sha256": "4ad703dad543115fd964e04b9a786613ad246c93dd54d9b0d8bc643d2e9f4318"
+  },
+  {
+    "path": "P8/model_archive/archive_manifest.json",
+    "bytes": 1540,
+    "sha256": "e9a9e0677aaefe2a808ed004ceff046a222e21821e06223e92e03a3b45efb79e"
+  },
+  {
+    "path": "P8/solution_snapshot/snapshot_manifest.json",
+    "bytes": 2084,
+    "sha256": "409b94680097e7a2345d597bf7235ee337ad7cbeebfa993312b51e3d5824b239"
+  }
+]

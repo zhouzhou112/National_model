@@ -3435,3 +3435,8 @@ P6（2040隔离块）已保全：Status13、68轮、422.040秒，完整M=0.05617
 只读核验F5 PID2312139仍运行，16:54:18UTC已打印iter1；presolved9370703行/8612547列/97391084nnz、FactorNZ5.632e9。全流程RSS采样峰64.951183GiB、最低MemAvailable18.046539GiB；当前RSS约46.09GiB/可用36.24GiB，无F5_terminal。F7/F8控制器2340523仍等待原F5终态与锁，60GiB准入和15GiB回调不变，未干预任何求解。
 
 本机新增P7 Status13/M0.07102013187681203GWh；P5a Aggregate0和P5b AggFill0均Status2，M分别1.6950964778421167e-9/2.7500133394919857e-6GWh，均完整保全。P5c运行，P8排队。Aggregate0已通过隔离块条件(a)，全模型(b)(c)仍待F7；AggFill0待P8/F8。阶段证据progress_5b_20261013T1653Z及14行summary_5b_20261013T1653Z，报告只追加，不作生产配置建议。此条未操作或核验云端/备份，其他既有记录不变。
+
+
+## 2026-10-13 18:25 英国时间：本机P追加队列完成，T550继续F5
+
+本机追加六项全部结束、两类保全manifest及参数核验全通过。P5c/P8均OPTIMAL，M分别1.430724e-9/1.115778e-7GWh；AggFill0与Aggregate0均通过5b(a)，仍待全模型(b)(c)。16行汇总summary_P_complete_20261013T1724Z。17:25:03UTC只读确认F5仍运行、iter5、无终态，峰RSS64.951183GiB/最低可用16.080601GiB、当时可用16.676289GiB；15GiB回调和F7/F8的60GiB准入保持不变，追加协调器仍等待F5终态/锁。未干预任何求解，未触碰云端/备份/凭据。证据P_complete_20261013T1724Z/server_observation.json。
