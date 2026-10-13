@@ -1,0 +1,102 @@
+[
+  {
+    "path": "F7_terminal.json",
+    "sha256": "52d04f3b9a210f9c1ecc944e79fd3743d79a7a9caa6de2441fbfb92d7ef38360",
+    "bytes": 147
+  },
+  {
+    "path": "F7_launch.json",
+    "sha256": "4ce88928f4215cff72bbccc694c30fe066a4713c94176d28db0de5dde02b8a41",
+    "bytes": 1120
+  },
+  {
+    "path": "F8_launch.json",
+    "sha256": "da82c64d90928c78636faa702a740e90739251fe0865e8bc0b1d33cb8f3b7d3c",
+    "bytes": 1147
+  },
+  {
+    "path": "extension_gate.json",
+    "sha256": "ce46e1001b94fb88e7ec48165c9be192ecf6379c33019a41148ba6eda88016fc",
+    "bytes": 215
+  },
+  {
+    "path": "extension_active.json",
+    "sha256": "d3fa0978e3538be614259ea5f94c1305e43fcc5bf278ead81e64efd52007f26c",
+    "bytes": 66
+  },
+  {
+    "path": "F7/result.json",
+    "sha256": "d7bb34b9a68e9e7c62aeef0ad301c7f648e2f20d1799093e8b3ff10a6bdaf62d",
+    "bytes": 521
+  },
+  {
+    "path": "F7/solver_result.json",
+    "sha256": "d497034e9e395558af3cdd6a2f5f5ab76cce70bbf7693eea6ec0c7f7d4c67d94",
+    "bytes": 296
+  },
+  {
+    "path": "F7/solver_parameters.json",
+    "sha256": "f0f03f8a1a5a81b0c6198d5a793bb044e246bb396708391d2782d8a4de2694d5",
+    "bytes": 287
+  },
+  {
+    "path": "F7/scope.json",
+    "sha256": "f1eeccee7433fba7f27bf7a5eeb23ffa3addcb180d8a7970904242a5ea5586d1",
+    "bytes": 5079
+  },
+  {
+    "path": "F7/build_report.json",
+    "sha256": "81f1afe4c3b6ca99bb520ebf50858e3b5f520c54248f4c7fd91f053d908e6c9d",
+    "bytes": 497
+  },
+  {
+    "path": "F7/preservation_report.json",
+    "sha256": "6dcc424dc869387a80db1af47f97806a957e15190f14f88192956d6210cc6771",
+    "bytes": 685
+  },
+  {
+    "path": "F7/service_diagnostics.json",
+    "sha256": "686d17749384ded3e00762f2a7329a23261eaaffb5c885834f59c60b07338dc1",
+    "bytes": 1968
+  },
+  {
+    "path": "F7/service_decisions.csv",
+    "sha256": "564fa7d0d61db56742f4ff62b521a0dee798e05ce763d040e4cea0ba0364682d",
+    "bytes": 3608
+  },
+  {
+    "path": "F7/storage_capacity.csv",
+    "sha256": "2557d18b9c505d7e0f65fd86e5303b8f9038f247b7d39c16ffa007463d91bee3",
+    "bytes": 9630
+  },
+  {
+    "path": "F7/solution_qc.json",
+    "sha256": "ffcb7fd0bff6029e857e6dc603fdd74b96500c999a75afcfb87b5c9b24c6dc28",
+    "bytes": 25526
+  },
+  {
+    "path": "F7/gurobi.log",
+    "sha256": "027e2fb1becbc2cdad99d3d1ba96e2117332911c4d47689c070bd5a7e069731a",
+    "bytes": 16444
+  },
+  {
+    "path": "F7/barrier.jsonl",
+    "sha256": "26e0b39154e9884045fbdabd2247bf06dab6ecec0e6f6ecb1fa47b242a489d66",
+    "bytes": 32224
+  },
+  {
+    "path": "F7/thermal_residual_profile.csv.gz",
+    "sha256": "b15288d621160c0b24f24ad43b621124d1fe3cd54788db356da57ffd161a1404",
+    "bytes": 321566
+  },
+  {
+    "path": "F7/model_archive/archive_manifest.json",
+    "sha256": "f706ca20654be60d32a2a9b4a4f19a1ade92242c8373c37f318e23459d1ae7be",
+    "bytes": 1213
+  },
+  {
+    "path": "F7/solution_snapshot/snapshot_manifest.json",
+    "sha256": "feb6d314e2f1e0e6aebd390248937b403bc078ddd583a7362ba8b2f2f8933cd2",
+    "bytes": 65384
+  }
+]

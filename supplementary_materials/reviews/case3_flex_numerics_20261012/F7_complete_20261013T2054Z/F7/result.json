@@ -1,0 +1,20 @@
+{
+  "Status": 2,
+  "SolCount": 1,
+  "Runtime": 8946.85135602951,
+  "BarIterCount": 150,
+  "ObjVal": 2407923.403441117,
+  "ConstrVio": 2.7946044610871468e-05,
+  "BoundVio": 9.078774216756498e-09,
+  "DualVio": 7.360518124225857e-06,
+  "ComplVio": 1.0075164332645448,
+  "MaxMemUsed": 23.946550208,
+  "resource_stop": [],
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "planning_year": 2030,
+  "optimization_hours": 744,
+  "optimization_start_hour": 5088,
+  "status_code": 2,
+  "solution_count": 1,
+  "status": "OPTIMAL"
+}

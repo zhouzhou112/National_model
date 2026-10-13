@@ -1,0 +1,81 @@
+{
+  "utc": "2026-10-13T20:54:10Z",
+  "F7_archive_status": "COMPLETE",
+  "F7_snapshot_status": "COMPLETE",
+  "raw_existence_size_checks": [
+    {
+      "path": "F7/model_archive/original.mps.gz",
+      "exists": true,
+      "bytes": 373434280,
+      "expected_bytes": 373434280,
+      "manifest_sha256": "f6c924327f8dea6bf836e8c593a579b6342c328cef8b49b0fcf43ee424ebeda9"
+    },
+    {
+      "path": "F7/model_archive/parameters.prm",
+      "exists": true,
+      "bytes": 207,
+      "expected_bytes": 207,
+      "manifest_sha256": "97bd7a8d7c847cc236b4888ff1a7d9b8b7fbf646106dc7a98d1c52d40b6b5210"
+    },
+    {
+      "path": "F7/model_archive/variable_names.jsonl.gz",
+      "exists": true,
+      "bytes": 19669906,
+      "expected_bytes": 19669906,
+      "manifest_sha256": "f09ec28b8aea6d409610b17ac90b4c63011e115d600548256dfdc651f1b9bfad"
+    },
+    {
+      "path": "F7/model_archive/constraint_names.jsonl.gz",
+      "exists": true,
+      "bytes": 23058980,
+      "expected_bytes": 23058980,
+      "manifest_sha256": "983356e52910893f72293473b4b0bb1da13fd3cb4d8866595ae2256721f96acf"
+    },
+    {
+      "path": "F7/solution_snapshot/BarX.npy",
+      "exists": true,
+      "bytes": 31459664,
+      "expected_bytes": 31459664,
+      "manifest_sha256": "ab3be09a5d3005dbfc5474ede8a0d109c5780835e93dc2e5c39181c7720ff70a"
+    },
+    {
+      "path": "F7/solution_snapshot/X.npy",
+      "exists": true,
+      "bytes": 31459664,
+      "expected_bytes": 31459664,
+      "manifest_sha256": "ab3be09a5d3005dbfc5474ede8a0d109c5780835e93dc2e5c39181c7720ff70a"
+    },
+    {
+      "path": "F7/solution_snapshot/RC.npy",
+      "exists": true,
+      "bytes": 31459664,
+      "expected_bytes": 31459664,
+      "manifest_sha256": "a582732e98ca36f78b81eba6af6d0cffecadf62c495d1b198146d04a1d456561"
+    },
+    {
+      "path": "F7/solution_snapshot/BarPi.npy",
+      "exists": true,
+      "bytes": 37163640,
+      "expected_bytes": 37163640,
+      "manifest_sha256": "c06def059c9d5ff662e02d2b16dd2200a23cb2c7b3ad4e417674426891e9c819"
+    },
+    {
+      "path": "F7/solution_snapshot/Pi.npy",
+      "exists": true,
+      "bytes": 37163640,
+      "expected_bytes": 37163640,
+      "manifest_sha256": "c06def059c9d5ff662e02d2b16dd2200a23cb2c7b3ad4e417674426891e9c819"
+    },
+    {
+      "path": "F7/solution_snapshot/Slack.npy",
+      "exists": true,
+      "bytes": 37163640,
+      "expected_bytes": 37163640,
+      "manifest_sha256": "f010524c71a948d7940217cee14f47540ee3dbff7bdf1add5ca399972208e91b"
+    }
+  ],
+  "F8_pid": 2791611,
+  "F8_rss_bytes": 9959190528,
+  "available_bytes": 55771131904,
+  "F8_log_tail": " 1178509 rows and 666734 columns (presolve time = 120s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 125s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 130s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 135s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 140s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 145s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 150s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 155s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 160s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 165s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 170s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 175s)...\nPresolve removed 1178509 rows and 666734 columns (presolve time = 180s)...\nPresolve removed 1178509 rows and 666746 columns (presolve time = 185s)...\nPresolve removed 1178509 rows and 666746 columns (presolve time = 190s)...\nPresolve removed 1178509 rows and 666746 columns\nPresolve time: 200.01s\nPresolved: 3466930 rows, 3265696 columns, 36066789 nonzeros\n\nElapsed ordering time = 6s\nElapsed ordering time = 10s\nElapsed ordering time = 15s\nElapsed ordering time = 20s\nElapsed ordering time = 25s\nElapsed ordering time = 30s\nElapsed ordering time = 50s\nElapsed ordering time = 55s\nElapsed ordering time = 60s\nElapsed ordering time = 65s\nElapsed ordering time = 70s\nElapsed ordering time = 75s\nOrdering time: 162.91s\n"
+}

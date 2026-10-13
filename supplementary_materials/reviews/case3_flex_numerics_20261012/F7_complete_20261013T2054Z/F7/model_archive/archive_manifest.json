@@ -1,0 +1,41 @@
+{
+  "schema_version": "cispo_model_archive_v1",
+  "files": [
+    {
+      "path": "original.mps.gz",
+      "bytes": 373434280,
+      "sha256": "f6c924327f8dea6bf836e8c593a579b6342c328cef8b49b0fcf43ee424ebeda9"
+    },
+    {
+      "path": "parameters.prm",
+      "bytes": 207,
+      "sha256": "97bd7a8d7c847cc236b4888ff1a7d9b8b7fbf646106dc7a98d1c52d40b6b5210"
+    },
+    {
+      "path": "variable_names.jsonl.gz",
+      "bytes": 19669906,
+      "sha256": "f09ec28b8aea6d409610b17ac90b4c63011e115d600548256dfdc651f1b9bfad"
+    },
+    {
+      "path": "constraint_names.jsonl.gz",
+      "bytes": 23058980,
+      "sha256": "983356e52910893f72293473b4b0bb1da13fd3cb4d8866595ae2256721f96acf"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "presolved_status": "NOT_REQUESTED",
+  "uncrush_mapping_saved": false,
+  "factorization_saved": false,
+  "gurobi_fingerprint": -460052521,
+  "full_name_catalog_requested": true,
+  "variable_order_digest": {
+    "entries": 3932442,
+    "sha256": "2872cf891472dd0d913de4857363ce70350301cc9a45523783e20b867d4ba935"
+  },
+  "constraint_order_digest": {
+    "entries": 4645439,
+    "sha256": "2c0c9cc27725c4097248d6fb440553190040469382975e3f8989ea916f66b49f"
+  },
+  "status": "COMPLETE"
+}

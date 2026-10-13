@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 21:54：F7已OPTIMAL/完整保全，M1.092881e-8GWh、150轮、8946.851秒；对F1耗时+27.775654%、FactorNZ+3.804756%，Aggregate0满足5b(a)(b)(c)。目标差1.07677e-5单独披露，不宣称一般等价性验收通过。F8于20:39:40UTC自动接续PID2791611，准入62.464191GiB，等待温和候选AggFill0终态。18行summary_F7_complete_20261013T2054Z，F5仍资源中断、外推NA，生产未改。
+
 - 2026-10-13 19:25：F5因既有15GiB回调触发资源中断（可用14.806969GiB），Status11/SolCount0/10轮；archive/snapshot/preservation均COMPLETE、六种可用向量已保存。不是数值失败，M与F5/F1外推NA。F7于18:01:07UTC自动接续，PID2507652，准入76.273GiB，当前iter11、FactorNZ较F1+3.804756%；F8待续。17行summary_F5_interrupted_20261013T1825Z，未重跑F5或改参数；继续有限跟进F7/F8，生产建议待定。
 
 - 2026-10-13 18:25：本机追加六项全部完成、参数与归档/快照核验PASS，控制器16312退出。P5c/P8均OPTIMAL，M1.430724e-9/1.115778e-7GWh；AggFill0和Aggregate0均通过5b(a)，(b)(c)待F8/F7。F5仍运行iter5，F7/F8等待，未干预；16行summary_P_complete_20261013T1724Z仍PENDING。继续有限回查，生产不变。
@@ -9900,3 +9902,8 @@ Git基准03f65be，诊断脚本保持运行时字节不变。新增P5c/P8终态�
 ## 2026-10-13 19:25 — F5资源中断完整保全与F7接续
 
 Git基准952ba12；汇总脚本仅增加resource_stop/SolCount/preservation状态字段，实际17行回归确认F5 RESOURCE_INTERRUPTED、M空、外推未判定。F5 Status11/SolCount0、10轮、6250.024秒，原15GiB回调在14.806969GiB时触发；并非数值失败，控制器returncode0不表示OPTIMAL。三个保全报告COMPLETE/errors=[]，六种可用向量/原始模型/状态/运行/对偶/QC全留远端；17小文件SHA核验和10大文件存在/长度核对见F5_interrupted_20261013T1825Z，未重算全部大文件SHA。新17行summary_F5_interrupted_20261013T1825Z与解释验证落地。F7原队列自动接续PID2507652，准入76.273GiB；F8等待。只改诊断汇总/REVIEW/状态/交接与小证据，SI留工作区，未改运行源码/配置/生产。下一步继续已授权F7/F8，按5b(a)(b)(c)与F5外推分别报告；F5若需重跑须作者另定资源，不自动重跑、不改15/60GiB门槛，不访问云端/备份/凭据。
+
+
+## 2026-10-13 21:54 — F7完成全部筛选条件，F8继续
+
+Git基准b4c37e3；无代码修改。F7 Status2/M1.092881e-8GWh/150轮/8946.851秒/FactorNZ8.294e8；对F1耗时+27.775654%、FactorNZ+3.804756%，P3/P5a配合使Aggregate0的(a)(b)(c)全部通过。目标差1.07677e-5略超一般Cross0等价性1e-5，作为差异记录，不额外改5b门槛；202项>1%决策差异按绝对量并列披露。20源小文件SHA通过，三类保全报告COMPLETE，大文件仅核对存在/长度与manifest。输出F7_complete_20261013T2054Z、summary_F7_complete_20261013T2054Z（18行）。F8原队列自动接续PID2791611、启动62.464191GiB，继续现有15GiB回调。下一步等F8，按温和优先选择首个符合(a)(b)(c)设置，F5资源中断外推NA单独披露；仅追加报告/状态/交接和证据，不修改生产或冻结源，不访问云端/备份/凭据。

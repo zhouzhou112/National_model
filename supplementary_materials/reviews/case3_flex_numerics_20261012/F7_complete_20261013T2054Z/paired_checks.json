@@ -1,0 +1,11 @@
+{
+  "criterion_a": true,
+  "criterion_b": true,
+  "criterion_c": true,
+  "runtime_ratio": 1.277756539157479,
+  "iteration_ratio": 1.0,
+  "factor_nz_ratio": 1.0380475594493117,
+  "objective_relative_change": 1.0767700850955464e-05,
+  "selection": "WAIT_MORE_MODERATE_AGGFILL0_F8",
+  "F5_extrapolation": "UNAVAILABLE_RESOURCE_INTERRUPTION"
+}
