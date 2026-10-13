@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7/repo/scripts/run_flex_full_diagnostic.py",
+    "--hours",
+    "2016",
+    "--start",
+    "5088",
+    "--threads",
+    "16",
+    "--case",
+    "case3_thermal_ev_v5",
+    "--aggregate",
+    "1",
+    "--presolve",
+    "2",
+    "--reserve-gib",
+    "15",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/F5"
+  ],
+  "available_bytes": 90125340672,
+  "source_root": "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+  "source_commit": "aef0cb7ece951154d2c1bbc70f32d2ac5614b7ff",
+  "verified_files": 281,
+  "authorization": "Author directly requested F5 start after memory review on 2026-10-13",
+  "admission_override": "105 GiB queue gate bypassed for this single author-authorized run",
+  "reserve_gib": 15,
+  "parallel": false,
+  "monitoring": "RSS sampling throughout; stop callback only inside optimize"
+}

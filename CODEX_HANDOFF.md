@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 19:25：F5因既有15GiB回调触发资源中断（可用14.806969GiB），Status11/SolCount0/10轮；archive/snapshot/preservation均COMPLETE、六种可用向量已保存。不是数值失败，M与F5/F1外推NA。F7于18:01:07UTC自动接续，PID2507652，准入76.273GiB，当前iter11、FactorNZ较F1+3.804756%；F8待续。17行summary_F5_interrupted_20261013T1825Z，未重跑F5或改参数；继续有限跟进F7/F8，生产建议待定。
+
 - 2026-10-13 18:25：本机追加六项全部完成、参数与归档/快照核验PASS，控制器16312退出。P5c/P8均OPTIMAL，M1.430724e-9/1.115778e-7GWh；AggFill0和Aggregate0均通过5b(a)，(b)(c)待F8/F7。F5仍运行iter5，F7/F8等待，未干预；16行summary_P_complete_20261013T1724Z仍PENDING。继续有限回查，生产不变。
 
 - 2026-10-13 17:54：新增P7 Status13/M71.020132MWh；P5a Aggregate0、P5b AggFill0均OPTIMAL，M分别1.695096e-9/2.750013e-6GWh，归档/快照COMPLETE。P5c运行、P8待续。F5已进入Barrier iter1，采样峰RSS64.951GiB、最低可用18.046GiB，无终态；F7/F8仍等待，未干预。14行summary_5b_20261013T1653Z仍PENDING；Aggregate0通过(a)，全模型(b)(c)待F7，AggFill0待P8/F8，生产不变。
@@ -9893,3 +9895,8 @@ Git基准4ddfb4a，运行诊断源码保持原字节不变。三个本机新终�
 ## 2026-10-13 18:25 — 第5b节本机六项完成
 
 Git基准03f65be，诊断脚本保持运行时字节不变。新增P5c/P8终态、小证据18源SHA及全部六项参数/归档/快照核验，输出P_complete_20261013T1724Z；16行汇总summary_P_complete_20261013T1724Z涵盖12个P和4个已完成F。P5c/P8均OPTIMAL、M1.430724e-9/1.115778e-7GWh，AggFill0及Aggregate0的(a)均通过；全模型条件未齐，生产建议PENDING。只追加REVIEW/MODEL_SERVER_STATUS/交接和小证据。只读T550本轮日志/内存/队列：F5仍iter5、原进程未干预、F7/F8等待。下一步继续等待F5/F7/F8终态与保全，收SHA小证据及最终剖面后按5b给建议；未修改生产或运行代码，未访问云端/备份/凭据，SI留工作区。
+
+
+## 2026-10-13 19:25 — F5资源中断完整保全与F7接续
+
+Git基准952ba12；汇总脚本仅增加resource_stop/SolCount/preservation状态字段，实际17行回归确认F5 RESOURCE_INTERRUPTED、M空、外推未判定。F5 Status11/SolCount0、10轮、6250.024秒，原15GiB回调在14.806969GiB时触发；并非数值失败，控制器returncode0不表示OPTIMAL。三个保全报告COMPLETE/errors=[]，六种可用向量/原始模型/状态/运行/对偶/QC全留远端；17小文件SHA核验和10大文件存在/长度核对见F5_interrupted_20261013T1825Z，未重算全部大文件SHA。新17行summary_F5_interrupted_20261013T1825Z与解释验证落地。F7原队列自动接续PID2507652，准入76.273GiB；F8等待。只改诊断汇总/REVIEW/状态/交接与小证据，SI留工作区，未改运行源码/配置/生产。下一步继续已授权F7/F8，按5b(a)(b)(c)与F5外推分别报告；F5若需重跑须作者另定资源，不自动重跑、不改15/60GiB门槛，不访问云端/备份/凭据。

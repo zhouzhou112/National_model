@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-10-14T02:00:16.194258+08:00",
+  "available": true,
+  "model_class": "continuous_linear_program",
+  "dual_attribute": "BarPi",
+  "solution_form": "optimal_primal_dual_nonbasic",
+  "note": "Gurobi BarPi is the derivative of the objective with respect to the constraint RHS for the accepted solution form. Equality power-balance duals are reported as energy prices; inequality scarcity values use the documented tightening sign.",
+  "hourly_rows": 62496,
+  "annual_rows": 3366,
+  "scientifically_accepted": false,
+  "interpretation": "RAW_DUAL_PENDING_AUTHOR_REVIEW"
+}

@@ -1,0 +1,14 @@
+{
+  "state": "PASS",
+  "F5_status": 11,
+  "F5_solution_count": 0,
+  "F5_M": null,
+  "resource_stop_available_gib": 14.806968688964844,
+  "resource_interruption_not_numerical_failure": true,
+  "preservation_status": "COMPLETE",
+  "F5_extrapolation_evaluable": false,
+  "F7_factor_nz_ratio_to_F1": 1.0380475594493117,
+  "F7_factor_only_preliminary": true,
+  "full_run_rows": 17,
+  "recommendation": "PENDING_F7_F8_AND_UNRESOLVED_F5_EXTRAPOLATION"
+}

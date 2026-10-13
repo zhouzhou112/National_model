@@ -1,0 +1,37 @@
+{
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/extension_source_f053057/repo/scripts/run_flex_full_diagnostic.py",
+    "--hours",
+    "744",
+    "--start",
+    "5088",
+    "--threads",
+    "16",
+    "--case",
+    "case3_thermal_ev_v5",
+    "--presolve",
+    "2",
+    "--reserve-gib",
+    "15",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/F7",
+    "--aggregate",
+    "0"
+  ],
+  "gate": {
+    "name": "F7",
+    "f5_terminal": true,
+    "lock_acquired": true,
+    "available_bytes": 81898176512,
+    "required_bytes": 64424509440,
+    "reserve_gib": 15,
+    "other_solver_pids": [],
+    "utc": "2026-10-13T18:01:07Z"
+  },
+  "parallel": false,
+  "source_commit": "f053057368452c7d6cba7c186c24b56060f9bf4c",
+  "source_root": "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/extension_source_f053057",
+  "verified_files": 211,
+  "monitoring": "RSS throughout; reserve callback only during optimize"
+}

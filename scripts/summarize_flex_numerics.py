@@ -34,6 +34,7 @@ def main():
             if not d.is_dir() or not d.name.startswith(("P","F")): continue
             s=read(d/"solver_result.json"); diag=read(d/"service_diagnostics.json")
             scope=read(d/"scope.json"); report=read(d/"report.json")
+            result=read(d/"result.json"); preservation=read(d/"preservation_report.json")
             if not s: continue
             if any(row["run"] == d.name for row in rows):
                 raise ValueError("Duplicate run identity across roots: " + d.name)
@@ -44,10 +45,14 @@ def main():
             row=dict(run=d.name, state="COMPLETE" if (d/"service_diagnostics.json").exists() or scope.get("case")=="base" else "EXPORT_PENDING_OR_UNAVAILABLE",
                 year=report.get("year",2030), hours=scope.get("hours",8760), start=scope.get("start",0),
                 status=s.get("Status"), barrier_iterations=s.get("BarIterCount"), runtime_s=s.get("Runtime"),
+                solution_count=s.get("SolCount"), preservation_status=preservation.get("status"),
+                resource_stop=json.dumps(result.get("resource_stop", [])),
                 wall_s=mem.get("wall_seconds"), peak_rss_gib=mem.get("peak_rss_bytes",np.nan)/2**30,
                 gurobi_max_memory_gb=s.get("MaxMemUsed"), objective_million_cny=s.get("ObjVal"),
                 ConstrVio=s.get("ConstrVio"), BoundVio=s.get("BoundVio"),
                 M_gw_gwh=diag.get("maximum_service_residual_gw_gwh"), parallel=False, **params)
+            if result.get("resource_stop"):
+                row["state"] = "RESOURCE_INTERRUPTED"
             log = d/"gurobi.log"
             if log.exists(): row.update(solver_structure(log.read_text(encoding="utf-8", errors="replace")))
             for key,val in diag.get("physical_qc",{}).items():
