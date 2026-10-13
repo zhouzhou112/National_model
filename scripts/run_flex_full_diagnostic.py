@@ -8,6 +8,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 import time
@@ -29,12 +30,15 @@ def main():
     p.add_argument("--aggregate", type=int, default=1, choices=[0,1])
     p.add_argument("--agg-fill", type=int, default=None, help="Diagnostic AggFill override; omitted keeps solver default")
     p.add_argument("--presolve", type=int, default=2, choices=[0,2])
-    p.add_argument("--reserve-gib", type=float, default=15, help="Host reserve; use 2 only for local <=24h smoke tests")
+    p.add_argument("--reserve-gib", type=float, default=15, help="Available-memory stop threshold during optimize only")
+    p.add_argument("--author-authorized-low-reserve", action="store_true",
+                   help="Explicit diagnostic authorization for >=2 GiB reserve on a long window; default remains 15")
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     if not 1 <= a.hours <= 2016 or not 0 <= a.start <= 8760-a.hours:
         p.error("Requires contiguous diagnostic window within the non-leap year")
-    if a.reserve_gib < (2 if a.hours <= 24 else 15):
+    minimum_reserve = 2 if a.hours <= 24 or a.author_authorized_low_reserve else 15
+    if not math.isfinite(a.reserve_gib) or a.reserve_gib < minimum_reserve:
         p.error("Memory reserve below diagnostic contract")
     out = a.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     from cispo_model.config import load_model_config, ModelConfig
@@ -52,6 +56,8 @@ def main():
     cfg = ModelConfig(cfg.path, raw, scenario_path=cfg.scenario_path, solver_path=cfg.solver_path, formulation_path=cfg.formulation_path)
     cfg.validate()
     save(out / "scope.json", dict(case=a.case, hours=a.hours, start=a.start,
+        reserve_gib=a.reserve_gib, author_authorized_low_reserve=a.author_authorized_low_reserve,
+        memory_guard_scope="optimize callback only; not a whole-process memory cap",
         result_use="TEST_ONLY_TRUNCATED_HORIZON", annual_flows="hours/8760", annualized_costs="unscaled",
         boundary="cyclic selected window", state_in=None, screening=False, seed=0,
         started_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

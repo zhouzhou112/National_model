@@ -1,0 +1,55 @@
+{
+  "ast": "PASS",
+  "parser_cases": [
+    {
+      "hours": 2016,
+      "reserve": "15",
+      "author_flag": false,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "hours": 2016,
+      "reserve": "2",
+      "author_flag": false,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "hours": 2016,
+      "reserve": "2",
+      "author_flag": true,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "hours": 2016,
+      "reserve": "1.9",
+      "author_flag": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "hours": 24,
+      "reserve": "2",
+      "author_flag": false,
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "hours": 2016,
+      "reserve": "nan",
+      "author_flag": true,
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "hours": 2016,
+      "reserve": "inf",
+      "author_flag": true,
+      "accepted": false,
+      "expected": false
+    }
+  ],
+  "scope": "Parser validation without model build; frozen F8 source unchanged"
+}
