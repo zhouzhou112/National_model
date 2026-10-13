@@ -1,0 +1,138 @@
+{
+  "utc": "2026-10-13T15:43:46.529650+00:00",
+  "root": "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+  "memory": {
+    "total": 132145123328,
+    "available": 88547295232,
+    "percent": 33.0,
+    "used": 41941291008,
+    "free": 11663466496,
+    "active": 40800993280,
+    "inactive": 73804587008,
+    "buffers": 636547072,
+    "cached": 77903818752,
+    "shared": 636223488,
+    "slab": 3446411264
+  },
+  "swap": {
+    "total": 77309403136,
+    "used": 2733973504,
+    "free": 74575429632,
+    "percent": 3.5,
+    "sin": 837808128,
+    "sout": 8485306368
+  },
+  "gate": {
+    "name": "F5",
+    "available": 88399433728,
+    "required": 112742891520,
+    "other_solvers": [],
+    "utc": "2026-10-13T15:43:17Z"
+  },
+  "F5_exists": false,
+  "series": {
+    "F1": {
+      "samples": 3732,
+      "peak": {
+        "elapsed": 850.6846654270194,
+        "rss": 21630406656,
+        "available": 50875523072
+      },
+      "minimum_available_gib": 44.0540885925293,
+      "build_phase_sample_peak_gib": 5.380725860595703,
+      "available_plus_rss_min_gib": 59.780174255371094,
+      "available_plus_rss_max_gib": 79.90697479248047,
+      "memory_log_sha256": "0119675aacc6a0f71f18ec4add2a2ac9dc2d978baf3c9e02dc09277357ddf584",
+      "log_factor_lines": [
+        "Presolved: 3460247 rows, 3255707 columns, 36218755 nonzeros",
+        " Dense cols : 3866",
+        " AA' NZ     : 7.129e+07",
+        " Factor NZ  : 7.990e+08 (roughly 10.0 GB of memory)",
+        " Factor Ops : 4.383e+12 (roughly 20 seconds per iteration)"
+      ]
+    },
+    "F2": {
+      "samples": 4289,
+      "peak": {
+        "elapsed": 793.7496224569913,
+        "rss": 20204384256,
+        "available": 61110329344
+      },
+      "minimum_available_gib": 52.54402542114258,
+      "build_phase_sample_peak_gib": 5.350471496582031,
+      "available_plus_rss_min_gib": 70.18575286865234,
+      "available_plus_rss_max_gib": 81.74193954467773,
+      "memory_log_sha256": "d5ec28447c9b6cd1b100a562b6b8a842c0a9588b09beb1adfd21f372f110571c",
+      "log_factor_lines": [
+        "Presolved: 3201374 rows, 3034467 columns, 31887000 nonzeros",
+        " Dense cols : 7469",
+        " AA' NZ     : 6.254e+07",
+        " Factor NZ  : 7.962e+08 (roughly 9.0 GB of memory)",
+        " Factor Ops : 6.021e+12 (roughly 13 seconds per iteration)"
+      ]
+    },
+    "F3": {
+      "samples": 3041,
+      "peak": {
+        "elapsed": 700.2637007379963,
+        "rss": 21043617792,
+        "available": 44538290176
+      },
+      "minimum_available_gib": 30.789844512939453,
+      "build_phase_sample_peak_gib": 5.143001556396484,
+      "available_plus_rss_min_gib": 47.89284133911133,
+      "available_plus_rss_max_gib": 72.32766723632812,
+      "memory_log_sha256": "373f9e449fa28603f1a718b7e0cf5d357be8e2866a2d22e00bb91f7c8e6ea041",
+      "log_factor_lines": [
+        "Presolved: 3238827 rows, 3059812 columns, 34537776 nonzeros",
+        " Dense cols : 3477",
+        " AA' NZ     : 6.912e+07",
+        " Factor NZ  : 8.017e+08 (roughly 9.0 GB of memory)",
+        " Factor Ops : 4.601e+12 (roughly 10 seconds per iteration)"
+      ]
+    },
+    "F4": {
+      "samples": 350,
+      "peak": {
+        "elapsed": 649.8937790709897,
+        "rss": 4053598208,
+        "available": 57435021312
+      },
+      "minimum_available_gib": 53.28168869018555,
+      "build_phase_sample_peak_gib": 1.5135383605957031,
+      "available_plus_rss_min_gib": 56.97344207763672,
+      "available_plus_rss_max_gib": 58.28610610961914,
+      "memory_log_sha256": "c7e8bcb9caeb1be3084b516bbab8bdf615467033a532a09d9aaaa9d0ccc4b413",
+      "log_factor_lines": [
+        "Presolved: 805367 rows, 878235 columns, 8579934 nonzeros",
+        " Dense cols : 216",
+        " AA' NZ     : 3.136e+07",
+        " Factor NZ  : 1.403e+08 (roughly 2.0 GB of memory)",
+        " Factor Ops : 1.060e+11 (less than 1 second per iteration)"
+      ]
+    }
+  },
+  "samples": [
+    {
+      "utc": "2026-10-13T15:43:46.576416+00:00",
+      "available_gib": 82.46356201171875,
+      "swap_used_gib": 2.5462112426757812,
+      "swap_sin": 837808128,
+      "swap_sout": 8485306368
+    },
+    {
+      "utc": "2026-10-13T15:44:01.577077+00:00",
+      "available_gib": 82.3223876953125,
+      "swap_used_gib": 2.5462112426757812,
+      "swap_sin": 837808128,
+      "swap_sout": 8485306368
+    },
+    {
+      "utc": "2026-10-13T15:44:16.577849+00:00",
+      "available_gib": 82.11111068725586,
+      "swap_used_gib": 2.5462112426757812,
+      "swap_sin": 837808128,
+      "swap_sout": 8485306368
+    }
+  ]
+}

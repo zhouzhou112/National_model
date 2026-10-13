@@ -1,0 +1,51 @@
+{
+  "F4_peak_RSS_gib": 3.77520751953125,
+  "F1_peak_RSS_gib": 20.144886016845703,
+  "hour_ratio": 2.7096774193548385,
+  "methods": [
+    {
+      "name": "RSS_linear_hours",
+      "formula": "F1_peak_RSS * (2016/744)",
+      "peak_gib": 54.586142755323834,
+      "with_15_gib_reserve": 69.58614275532383
+    },
+    {
+      "name": "RSS_two_point_power",
+      "formula": "F1_peak_RSS * (2016/744)**alpha_RSS",
+      "alpha": 1.1252744615137273,
+      "peak_gib": 61.8466135989341,
+      "with_15_gib_reserve": 76.8466135989341
+    },
+    {
+      "name": "Factor_NZ_growth_proxy",
+      "formula": "F1_peak_RSS * (2016/744)**alpha_factor_NZ",
+      "alpha": 1.1690106720685778,
+      "peak_gib": 64.60261530260743,
+      "with_15_gib_reserve": 79.60261530260743
+    }
+  ],
+  "raw_model_size_projections": [
+    {
+      "metric": "variables",
+      "F4": 1069895,
+      "F1": 3932442,
+      "F5_affine_projection": 10253899.958333332
+    },
+    {
+      "metric": "constraints",
+      "F4": 1108392,
+      "F1": 4645439,
+      "F5_affine_projection": 12456417.791666668
+    },
+    {
+      "metric": "nonzeros",
+      "F4": 10387533,
+      "F1": 43266259,
+      "F5_affine_projection": 115873445.58333333
+    }
+  ],
+  "limitation": "Two measured horizons only; scenarios are extrapolations, not confidence intervals or upper bounds. Factor proxy assumes total RSS follows factor growth, not a calibrated decomposition.",
+  "prior_gate_gib": 105,
+  "prior_working_set_budget_gib": 90,
+  "reserve_gib": 15
+}
