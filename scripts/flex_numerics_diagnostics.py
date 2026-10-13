@@ -15,7 +15,7 @@ def save(path, value):
 
 def before_solve(model, output):
     from cispo_model.solution_preservation import archive_model
-    keys = ("Method", "Presolve", "Aggregate", "NumericFocus", "ScaleFlag", "BarConvTol",
+    keys = ("Method", "Presolve", "Aggregate", "AggFill", "NumericFocus", "ScaleFlag", "BarConvTol",
             "Crossover", "Threads", "Seed", "FeasibilityTol", "OptimalityTol", "TimeLimit", "SoftMemLimit")
     save(output / "solver_parameters.json", {k: getattr(model.Params, k) for k in keys})
     archive_model(model, output, include_name_catalog=True)

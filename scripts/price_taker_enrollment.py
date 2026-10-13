@@ -98,6 +98,7 @@ def main() -> int:
     p.add_argument("--scale-flag", type=int, default=2, choices=[-1,0,1,2,3])
     p.add_argument("--presolve", type=int, default=2, choices=[-1,0,1,2])
     p.add_argument("--aggregate", type=int, default=1, choices=[0,1,2])
+    p.add_argument("--agg-fill", type=int, default=None, help="Diagnostic AggFill override; omitted keeps solver default")
     p.add_argument("--preserve-diagnostic", action="store_true", help="Archive original LP, all available vectors and hourly residuals regardless of QC")
     p.add_argument("--method", type=int, default=2, choices=[1,2], help="Single-stage local diagnostic solver; never launches production Stage B")
     p.add_argument("--basis-in", type=Path, help="Optional local simplex basis for the same service-block layout")
@@ -155,6 +156,8 @@ def main() -> int:
         model.Params.ScaleFlag = args.scale_flag
         model.Params.Presolve = args.presolve
         model.Params.Aggregate = args.aggregate
+        if args.agg_fill is not None:
+            model.Params.AggFill = args.agg_fill
         block = attach_flexible_load(model, config, data, hours=8760, hour_start=0)
         energy_cost = (1e-3 * price * block.effective_load_gw).sum()
         model.setObjective(gp.quicksum(block.costs.values()) + energy_cost)

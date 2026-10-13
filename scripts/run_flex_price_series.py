@@ -17,19 +17,29 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--prices", required=True, type=Path)
     p.add_argument("--output", required=True, type=Path)
+    p.add_argument("--series", choices=["original", "5b"], default="original")
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     root = Path(__file__).resolve().parents[1]
     matrix = [("P0",2030,2,1,1,1e-8), ("P1",2030,2,1,2,1e-4),
               ("P2",2030,2,1,2,1e-8), ("P3",2030,2,0,2,1e-4),
               ("P4",2030,0,1,2,1e-4), ("P5",2060,2,1,2,1e-4)]
+    if a.series == "5b":
+        matrix = [("P6",2040,2,1,2,1e-4), ("P7",2050,2,1,2,1e-4),
+                  ("P5a",2060,2,0,2,1e-4), ("P5b",2060,2,1,2,1e-4),
+                  ("P5c",2060,0,1,2,1e-4), ("P8",2030,2,1,2,1e-4)]
     for name, year, presolve, aggregate, nf, tol in matrix:
         cmd = [sys.executable, str(root / "scripts/price_taker_enrollment.py"),
                "--prices", str(a.prices.resolve()), "--year", str(year), "--price-year", "2030",
                "--presolve", str(presolve), "--aggregate", str(aggregate), "--numeric-focus", str(nf),
                "--scale-flag", "2", "--bar-tol", str(tol), "--threads", "8",
                "--preserve-diagnostic", "--time-limit", "2400", "--output", str(a.output / name)]
+        if name in ("P5b", "P8"):
+            cmd += ["--agg-fill", "0"]
         meta = dict(command=cmd, started_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    series=a.series, source_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+                    diagnostic_sha256={str(f.relative_to(root)): hashlib.sha256(f.read_bytes()).hexdigest()
+                        for f in (Path(__file__).resolve(), root/"scripts/price_taker_enrollment.py", root/"scripts/flex_numerics_diagnostics.py")},
                     price_sha256=hashlib.sha256(a.prices.read_bytes()).hexdigest())
         (a.output / f"{name}_launch.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
         peak = 0

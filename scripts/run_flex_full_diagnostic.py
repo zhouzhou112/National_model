@@ -27,6 +27,7 @@ def main():
     p.add_argument("--threads", type=int, default=16)
     p.add_argument("--case", choices=["base", "case3_thermal_ev_v5"], default="case3_thermal_ev_v5")
     p.add_argument("--aggregate", type=int, default=1, choices=[0,1])
+    p.add_argument("--agg-fill", type=int, default=None, help="Diagnostic AggFill override; omitted keeps solver default")
     p.add_argument("--presolve", type=int, default=2, choices=[0,2])
     p.add_argument("--reserve-gib", type=float, default=15, help="Host reserve; use 2 only for local <=24h smoke tests")
     p.add_argument("--output", type=Path, required=True)
@@ -61,6 +62,8 @@ def main():
     write_run_provenance(out, cfg, data_root=DATA_ROOT, planning_state=data.planning_state)
     art = build_full_year_monolithic(cfg, data, compute_max_cf=True, optimization_hours=a.hours, optimization_start_hour=a.start)
     m = art.model; configure_gurobi(m, cfg, out / "gurobi.log"); m.update()
+    if a.agg_fill is not None:
+        m.Params.AggFill = a.agg_fill
     save(out / "build_report.json", dict(build_seconds=time.monotonic()-t0, statistics=model_statistics(m)))
     before_solve(m, out)
     resource_stop = []
