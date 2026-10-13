@@ -3423,3 +3423,8 @@ F5原PID2312139继续运行，16:16:24 UTC仍在预求解、RSS21.38GiB，未干
 F7 Aggregate0/F8 AggFill0，均F1同窗744h/start5088/16线程/V9/case3 2030。队列等待F5_terminal及原求解锁释放；逐项可用内存≥60GiB（45+15工程预算，并非内存上界）、无其他识别到的求解器才启动。全流程RSS采样、原15GiB仅optimize期间回调保护；准入最多24小时，资源中止后停队列，不停止其他用户。extension_gate/started/dispatch及源码清单四份证据SHA逐字核验保存在本地extension_5b_20261013/server_evidence/。F7/F8尚未运行，不能把排定误报为完成。
 
 判定更正于F5终态前17:09:42英国时间登记并提交d83be1e：F4→F1增长不再否决；外推仅F5 M≤1e-3且F5/F1<3。旧判断保留。追加本机P6/P7/P5a/P5b/P5c/P8串行PID16312，最终按5b(a)(b)(c)选择首个合格production/AggFill0/Aggregate0供作者确认。既有应用内有限回查更新继续。本条未核验或操作Base2060/云端/备份，不修改其既有记录。详见case3_flex_numerics_20261012/REVIEW_ZH.md本日追加节。
+
+
+## 2026-10-13 17:21 本机P6补充结果
+
+P6（2040隔离块）已保全：Status13、68轮、422.040秒，完整M=0.05617986345229854GWh（供暖库存下界），P7自动继续。两份保全manifest均COMPLETE，11行汇总summary_5b_P6_20261013。T550 F5及F7/F8排程未作任何变更；本条不代表新增服务器终态。

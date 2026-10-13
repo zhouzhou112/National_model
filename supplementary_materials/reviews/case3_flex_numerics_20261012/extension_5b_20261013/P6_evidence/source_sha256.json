@@ -1,0 +1,47 @@
+[
+  {
+    "path": "P6_terminal.json",
+    "bytes": 1413,
+    "sha256": "187a752b2b958f4809a4f7f2158a5256210d4c7e23bfd5706e1a354ce0b6667c"
+  },
+  {
+    "path": "P6_launch.json",
+    "bytes": 1322,
+    "sha256": "e2ea59d2f89109f88994eef375e386aec6ea66dcf79c1caf44e08b52a62ef304"
+  },
+  {
+    "path": "P6/solver_parameters.json",
+    "bytes": 300,
+    "sha256": "76391baaafd931e03e218c74369f934a989f8177dc24421a7bb8da9fc7f2cc8b"
+  },
+  {
+    "path": "P6/solver_result.json",
+    "bytes": 308,
+    "sha256": "41a0bba4b5f3c9ca8be984d46f1131ebed0de60f05c52c31b8be4c6fb8c4f3a6"
+  },
+  {
+    "path": "P6/service_diagnostics.json",
+    "bytes": 1971,
+    "sha256": "dd34cf19fe189b6d743d3fe4da4682a3390fdfda8bb94d0ff9add7f4bc07fa33"
+  },
+  {
+    "path": "P6/report.json",
+    "bytes": 34398,
+    "sha256": "d09bd035680a8904c1dd72395dbc9c5f2502b2883d188bd184074c45ca049f2e"
+  },
+  {
+    "path": "P6/gurobi.log",
+    "bytes": 7303,
+    "sha256": "2c3feb5738cfa2bd4df53688fc31ecd4418e23eda42ce1807e6381dd3ac4cc3b"
+  },
+  {
+    "path": "P6/model_archive/archive_manifest.json",
+    "bytes": 1542,
+    "sha256": "34b5f71b2d279358409008376b3d6c9c8dd418eadb22b3a12b8da35ad19ca2e8"
+  },
+  {
+    "path": "P6/solution_snapshot/snapshot_manifest.json",
+    "bytes": 2086,
+    "sha256": "a223c27e6963c43ec95f9af3812095697fff46071104ba5ffcdbc23d19e3af17"
+  }
+]

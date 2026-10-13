@@ -1,0 +1,41 @@
+{
+  "command": [
+    "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\price_taker_enrollment.py",
+    "--prices",
+    "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\base2030_prices\\hourly_marginal_prices.csv.gz",
+    "--year",
+    "2040",
+    "--price-year",
+    "2030",
+    "--presolve",
+    "2",
+    "--aggregate",
+    "1",
+    "--numeric-focus",
+    "2",
+    "--scale-flag",
+    "2",
+    "--bar-tol",
+    "0.0001",
+    "--threads",
+    "8",
+    "--preserve-diagnostic",
+    "--time-limit",
+    "2400",
+    "--output",
+    "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_extension_20261013\\P6"
+  ],
+  "started_utc": "2026-10-13T16:10:12Z",
+  "series": "5b",
+  "source_commit": "d83be1e93b4c8f8ea695f0495cc1ba06f7de4889",
+  "diagnostic_sha256": {
+    "scripts\\run_flex_price_series.py": "38f35964975ebf7341a26d259b5baa07fb9304f6d5740c1b7f2490b063ed5fa4",
+    "scripts\\price_taker_enrollment.py": "43c868fd3372cfc61956047580ea80dcc0083f9842d54edf9f2eac5dafea267a",
+    "scripts\\flex_numerics_diagnostics.py": "c01d090f239a4fa0df618caef0f77cd70b79f0149544fdc73131236175ace833"
+  },
+  "price_sha256": "5c8e2f69821e0c42c98fdb5752802d1810d51afc321673d87bf4c89c8242e41a",
+  "returncode": 2,
+  "peak_rss_bytes": 5781098496,
+  "wall_seconds": 614.2969999999987
+}
