@@ -1,0 +1,730 @@
+{
+  "generated_at": "2026-10-13T17:38:09.670667+01:00",
+  "code_sha256": {
+    "cispo_model\\__init__.py": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca",
+    "cispo_model\\annual_capacity_link_scaling.py": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64",
+    "cispo_model\\annual_dense_split.py": "0623b45eb962579e140b07239377ee2916293b43426003df09d42448662b66e4",
+    "cispo_model\\basis_reuse.py": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d",
+    "cispo_model\\carbon_accounting.py": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519",
+    "cispo_model\\config.py": "b0836b2271b713d83b041f0e6ec694b7e5e6fca580aa69ce8a8dd1b984c414a1",
+    "cispo_model\\data.py": "b56a18d87616fb93df781f5d65cb3ec8dc24c80d8990752e1e9b2c1c8cbf83a3",
+    "cispo_model\\diagnostics.py": "7c8e86b80e38f9801ea0f84dd298e952e94290640fd09bb644fb1765beefc00d",
+    "cispo_model\\factor_screen.py": "0eb26bd4cf353a47d51fec769b27dbabe69e6e28d8756addd10dae5b97ea2946",
+    "cispo_model\\flexible_credit.py": "246ff6d3174933bd432b182c93be5f436e4148f37ea7ba6b6bbd7ac85a6f122b",
+    "cispo_model\\flexible_load.py": "9a998a467544346cf8da1e6df44301059846d9ae06d5b7c511a64a24c781b108",
+    "cispo_model\\flexible_load_numerics.py": "a721bd60890b80fba1663adda6e7794505bd32c61394298b7d4c23d16ae7e606",
+    "cispo_model\\flexible_portfolio.py": "44dd572a2f9c70661cbdfb0d20dcb84cf6788aaedcc8cfecd30f3dabb4f7b096",
+    "cispo_model\\flexible_response.py": "b60e63a8149ac93378e552a5c183281b8680919e0fab7a27299da8f62b0e4c07",
+    "cispo_model\\hydro.py": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6",
+    "cispo_model\\io_contract.py": "6ddc232747cd5eb9a0c01ea54acc0cdfce56148fc90e5ddda5eda74dc8ac3312",
+    "cispo_model\\load_center.py": "8c96529eaa1905f758c52982748c230d67bc0b92559cb2c620b453b41672c3c7",
+    "cispo_model\\master.py": "bf3af53b60eced7218f2f24341de4e1f3bda34650abac472f628521508632537",
+    "cispo_model\\mga.py": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e",
+    "cispo_model\\model_structure_audit.py": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a",
+    "cispo_model\\monolithic.py": "b11c6adf3a77f715232491729edd097ea381416943c1e13f94c3b89c20288078",
+    "cispo_model\\numerical_cleanup.py": "c953562ccd0e3e9ebb930f528f3c43f0ea8ab9e25d0f36cf49a2940381d2e0c3",
+    "cispo_model\\offline_solution.py": "1645f6046e2ec86de3a2562ccfef060a1634ae625f2e5f9c2d42a8bebbbcd86e",
+    "cispo_model\\physical_lp_diff.py": "268b5fe935f1957e25c3f34830184b303d6e261ba427021408c9a929a022ca8c",
+    "cispo_model\\planning_state.py": "1adcc27c220342dec2a06b5578aa63c49c9b12156512bc8c33958c383c590bc1",
+    "cispo_model\\portfolio_release.py": "219f4094110154cb2298ed62692eadd62603dc0f6d78c016404e5d574856d75a",
+    "cispo_model\\preflight.py": "45264663e09bea40f3439f478ee5563d53d11a24073d5be69b96267ae60ada24",
+    "cispo_model\\price_basis.py": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a",
+    "cispo_model\\primal_dual_checkpoint.py": "8d7ffbbdecafd141cf6ab8b3dbeea574e0eecd6d65d278f632c1b96f5f3db40d",
+    "cispo_model\\relative_acceptance.py": "d9968a49f99e5e87942be9d7280ab8e3154380027450e2b49f4dfc3390108d52",
+    "cispo_model\\result_dashboard.py": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9",
+    "cispo_model\\result_summary.py": "09c2925f85659dc6177dca8e68ddd72144b49a417f037e9ade9c7449b2fcc9ec",
+    "cispo_model\\run_contract.py": "e8c549faf71be1366dde62d18d021285962dad0b8192019841b48631f460ddf3",
+    "cispo_model\\runtime_monitor.py": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488",
+    "cispo_model\\solution_export.py": "857ac684936a6022a3c58473eaf7eb5704cb04615a685c8e2d70cd8ce37be2be",
+    "cispo_model\\solution_preservation.py": "72055d61073b0db82698ca0012c2018b542213cd600c5ffca17251fcebca53c0",
+    "cispo_model\\solver_artifacts.py": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8",
+    "cispo_model\\solver_audit.py": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d",
+    "cispo_model\\subproblem.py": "6eb5fc907bd7036fb6675e16bf365920ccc5a355478500cc70f4ddac6586aaca",
+    "cispo_model\\technology_registry.py": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7",
+    "cispo_model\\timeblocks.py": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea",
+    "cispo_model\\wave_energy.py": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424",
+    "cispo_model\\zero_bound_certificate.py": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367",
+    "scripts\\price_taker_enrollment.py": "43c868fd3372cfc61956047580ea80dcc0083f9842d54edf9f2eac5dafea267a",
+    "scripts\\validate_flexible_portfolios.py": "4ffac0540c5d735f262b4c45d66597ad5767364e59d841a575350e8c26317840"
+  },
+  "input_sha256": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\load\\hourly_load_2025_2060.csv.gz": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\ev_availability_hourly_v5.csv.gz": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\ev_mobility_hourly_v5.csv.gz": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\flexible_load_v5.manifest.json": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\flex_enablement_cost_v5.csv": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\thermal_hourly_envelope_v5.csv.gz": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\participation_pathway_v2\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_availability_hourly_v5.csv.gz": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\ev_mobility_hourly_v5.csv.gz": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flexible_load_v5.manifest.json": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\flex_enablement_cost_v5.csv": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_hourly_envelope_v5.csv.gz": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\flexibility\\thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+  },
+  "solver_settings": {
+    "method": 2,
+    "crossover": 0,
+    "seed": 0,
+    "bar_tol": 0.0001,
+    "numeric_focus": 2,
+    "scale_flag": 2,
+    "presolve": 2,
+    "aggregate": 0,
+    "threads": 8
+  },
+  "scope": "PRICE_TAKER_SERVICE_BLOCK_ONLY_NOT_SYSTEM_PLANNING",
+  "case": "case3_thermal_ev_v5",
+  "year": 2060,
+  "cost_set": "current",
+  "cost_changes": {},
+  "prices": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\base2030_prices\\hourly_marginal_prices.csv.gz",
+  "normalize": "none",
+  "single_factor": "none",
+  "price_year": 2030,
+  "result_use": "TEST_ONLY_PRICE_TAKER",
+  "capacity_credit_value_included": false,
+  "status": 2,
+  "rows": 3310229,
+  "variables": 2303225,
+  "nonzeros": 10254983,
+  "build_seconds": 71.94927259999895,
+  "solve_seconds": 295.7310001850128,
+  "baseline_energy_cost_million_cny": 2560949.832924367,
+  "overnight_diagnostics": {
+    "physical_qc": {
+      "enrollment_fraction_violation": 0.0,
+      "contract_charge_residual_gw": 5.688178816853906e-10,
+      "contract_v2g_residual_gw": 5.931707892882152e-10,
+      "discharge_pool_power_violation_gw": 0.0,
+      "v1g_transition_residual_gwh": 1.5902976713277894e-09,
+      "v1g_inventory_violation_gwh": 0.0,
+      "v1g_connection_violation_gw": 0.0,
+      "v2g_transition_residual_gwh": 1.6950964778421167e-09,
+      "v2g_inventory_violation_gwh": 0.0,
+      "v2g_connection_violation_gw": 0.0,
+      "baseline_reconstruction_residual_gw": 0.0,
+      "relocation_lower_bound_violation_gw": 0.0,
+      "heating_transition_gwh": 2.994931074516184e-10,
+      "heating_inventory_gwh": 0.0,
+      "heating_contract_power_gw": 0.0,
+      "cooling_transition_gwh": 3.014687329042052e-10,
+      "cooling_inventory_gwh": 0.0,
+      "cooling_contract_power_gw": 0.0,
+      "load_reconstruction_gw": 1.1368683772161603e-13,
+      "heating_cycle_gwh": 2.3489663722285484e-11,
+      "heating_state_lower_gwh": 0.0,
+      "heating_up_envelope_gw": 0.0,
+      "heating_up_lower_gw": 0.0,
+      "heating_down_envelope_gw": 0.0,
+      "heating_down_lower_gw": 0.0,
+      "cooling_cycle_gwh": 1.2924697071141057e-26,
+      "cooling_state_lower_gwh": 0.0,
+      "cooling_up_envelope_gw": 0.0,
+      "cooling_up_lower_gw": 0.0,
+      "cooling_down_envelope_gw": 0.0,
+      "cooling_down_lower_gw": 0.0
+    },
+    "thermal_worst": {
+      "heating": {
+        "province_code": 32,
+        "hour_position": 3244,
+        "hour_index": 3244,
+        "signed_residual_gwh": 2.994931074516184e-10
+      },
+      "cooling": {
+        "province_code": 65,
+        "hour_position": 3545,
+        "hour_index": 3545,
+        "signed_residual_gwh": 3.014687329042052e-10
+      }
+    },
+    "maximum_service_residual_gw_gwh": 1.6950964778421167e-09,
+    "dimensionless_metrics": {
+      "enrollment_fraction_violation": 0.0
+    },
+    "capacity_credit": "NOT_PRESENT_IN_PRICE_TAKER; full-model credit rows audited separately"
+  },
+  "gurobi_quality": {
+    "ConstrVio": 1.6950964778641395e-09,
+    "BoundVio": 0.0,
+    "DualVio": 6.50372014762099e-09,
+    "ComplVio": 0.002892979640228967
+  },
+  "directional_cost_details_million_cny": {
+    "flexible_load_v5_thermal_release": 258.4655073999775,
+    "flexible_load_v5_thermal_precondition": 0.0
+  },
+  "v1g_relocated_gwh": 266243.6189108944,
+  "v1g_reference_pool_gwh": 647048.8210365567,
+  "v1g_relocation_fraction_of_reference_pool": 0.4114737717694601,
+  "source_sha256": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\base2030_prices\\hourly_marginal_prices.csv.gz": "5c8e2f69821e0c42c98fdb5752802d1810d51afc321673d87bf4c89c8242e41a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\price_taker_enrollment.py": "43c868fd3372cfc61956047580ea80dcc0083f9842d54edf9f2eac5dafea267a",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\scenarios\\case3_thermal_ev_v5.json": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+  },
+  "resolved_configuration": {
+    "boundary_year": 2050,
+    "planning_year": 2060,
+    "planning_interval_years": 10,
+    "planning_sequence": {
+      "years": [
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "initial_boundary_year": 2025,
+      "state_format": "capacity_cohorts_v2",
+      "retirement_rule": "active_when_planning_year_lt_retire_year",
+      "cohort_zero_tolerance": 1e-08,
+      "existing_vre_retirement": {
+        "mode": "cohort_survival_v1",
+        "cohort_file": "vre/existing_capacity_cohorts_2025.csv",
+        "baseline_year": 2025,
+        "unknown_start_year_policy": "boundary_censored_2025_v1",
+        "site_rebuild_policy": "retain_same_site_technical_upper_v1",
+        "connection_reuse_policy": "proxy_reused_independent_of_generator_cohort_v1"
+      },
+      "existing_hydro_retirement": "paper_assumption_operational_through_2060",
+      "model_build_retirement": "technology_lifetime_from_build_year"
+    },
+    "weather_year": 2024,
+    "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+    "hours": 8760,
+    "vre_scenario": "B",
+    "carbon_scenario": "Base_-550Mt",
+    "ccs_injection_field": "ccs_inj_rec_mtpa",
+    "ruc_formula_variant": "CISPO_original",
+    "capacity_bound_profile": "V0719_nuclear_biomass_battery_corrected",
+    "scenario": {
+      "id": "case3_thermal_ev_v5",
+      "family": "integrated_demand_flexibility",
+      "description": "Author-approved 2026-10-11 flexibility pathway",
+      "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+      "analysis_role": "CENTRAL_COUNTERFACTUAL",
+      "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+      "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "supersedes": null
+    },
+    "scientific_case": {
+      "contract_version": "scientific_case_v1",
+      "case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "label": "Numerical cleanup v8 with explicit DAC schedule: disabled in 2030, available in 2040/2050/2060",
+      "weather_bundle": {
+        "contract_version": "hybrid_weather_bundle_v1",
+        "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+        "wave": "2023 wave_grid.nc reference chronology",
+        "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+      },
+      "parameter_registry": {
+        "path": "config/critical_parameter_registry.csv",
+        "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+      }
+    },
+    "time_boundary": "cyclic_year",
+    "objective_unit": "million_CNY_per_year",
+    "monetary_price_basis": {
+      "contract_version": "technoeconomic_2025_cny_v2",
+      "target": "2025 constant CNY",
+      "source_config": "config/technoeconomic_price_basis_2025.json",
+      "planning_year_rule": "common source-to-2025 conversion applied to the full trajectory; no year-specific inflation escalation"
+    },
+    "strict_load_balance": true,
+    "allow_debug_slacks": false,
+    "features": {
+      "vre": true,
+      "thermal_ruc": true,
+      "hydro": true,
+      "storage": true,
+      "transmission": true,
+      "reserve": true,
+      "capacity_margin": true,
+      "inertia": true,
+      "carbon": true,
+      "dac": true,
+      "ccs_source_sink": true,
+      "intra_grid_spur_trunk": true,
+      "annual_load_center_transmission": true,
+      "flexible_load": true,
+      "wave_energy": true,
+      "csp": false,
+      "dac_by_planning_year": {
+        "2030": false,
+        "2040": true,
+        "2050": true,
+        "2060": true
+      }
+    },
+    "wave_energy": {
+      "contract_version": "wave_existing_grid_v2",
+      "sites_file": "wave/wave_sites.csv",
+      "cf_filename": "wave_grid.nc",
+      "time_reference_year": 2023,
+      "scenario_by_planning_year": {
+        "2030": "medium",
+        "2040": "medium",
+        "2050": "medium",
+        "2060": "medium"
+      },
+      "profile_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "cost_year_by_planning_year": {
+        "2030": 2030,
+        "2040": 2040,
+        "2050": 2050,
+        "2060": 2050
+      },
+      "potential_fraction": 1.0,
+      "maximum_distance_to_shore_km": null,
+      "maximum_water_depth_m": null,
+      "exclude_imputed_cf": false,
+      "eur_to_cny": 8.1185,
+      "currency_basis": "2024 EUR source values converted at the approved 2025 EUR/CNY rate",
+      "capex_eur_per_kw_by_year": {
+        "2030": 2777,
+        "2040": 2012,
+        "2050": 1731
+      },
+      "fixed_om_fraction_by_year": {
+        "2030": 0.027,
+        "2040": 0.024,
+        "2050": 0.024
+      },
+      "lifetime_years_by_year": {
+        "2030": 25,
+        "2040": 30,
+        "2050": 30
+      },
+      "depth_adder_eur_per_kw_m_by_year": {
+        "2030": 0.66,
+        "2040": 0.46,
+        "2050": 0.36
+      },
+      "distance_adder_eur_per_kw_km_by_year": {
+        "2030": 2.97,
+        "2040": 2.52,
+        "2050": 2.14
+      },
+      "capacity_credit": 0.0,
+      "reserve_requirement_fraction": 0.05,
+      "connection_treatment": "independent_cost_adders_no_shared_offwind_export",
+      "evidence_status": "ILLUSTRATIVE_ASSUMPTIONS_REQUIRE_SENSITIVITY",
+      "cost_source_doi": "10.1016/j.apenergy.2024.123119",
+      "potential_note": "Raw NetCDF capacity potential is identical across all ten CF scenarios; potential_fraction is therefore an explicit sensitivity scalar, not a source scenario."
+    },
+    "flexible_load": {
+      "contract_version": "v5",
+      "monetary_parameter_status": "illustrative scenario assumptions in 2025 CNY; excluded from CISPO 2022-CNY rebasing",
+      "energy_conservation_window_hours": 24,
+      "shift_throughput_cost_yuan_per_mwh": 300.0,
+      "degradation_cost_yuan_per_mwh": 400.0,
+      "heating": {
+        "enabled": true,
+        "maximum_reduction_fraction": 0.15,
+        "maximum_increase_fraction_of_daily_peak": 0.15
+      },
+      "cooling": {
+        "enabled": true,
+        "maximum_reduction_fraction": 0.15,
+        "maximum_increase_fraction_of_daily_peak": 0.15
+      },
+      "ev_v1g": {
+        "enabled": true,
+        "shiftable_energy_fraction": 0.5,
+        "maximum_power_to_daily_average_ratio": 2.0,
+        "shiftable_energy_fraction_by_planning_year": {
+          "2030": 0.2,
+          "2040": 0.3,
+          "2050": 0.4,
+          "2060": 0.5
+        }
+      },
+      "ev_v2g": {
+        "enabled": true,
+        "participation_fraction": 0.25,
+        "usable_energy_to_daily_ev_energy_ratio": 1.0,
+        "power_duration_hours": 4.0,
+        "charge_efficiency": 0.94,
+        "discharge_efficiency": 0.94,
+        "self_discharge_fraction_per_hour": 0.0,
+        "state_boundary": "periodic_selected_horizon_v1",
+        "national_contracted_power_cap_gw_by_planning_year": {
+          "2030": 10,
+          "2040": 60,
+          "2050": 120,
+          "2060": 200
+        },
+        "participation_fraction_by_planning_year": {
+          "2030": 0.1,
+          "2040": 0.15,
+          "2050": 0.2,
+          "2060": 0.25
+        }
+      },
+      "reliability_treatment": {
+        "hourly_reserve_and_inertia_use_effective_load": true,
+        "planning_capacity_margin_uses_baseline_peak": true,
+        "flexibility_provides_no_reserve_credit": true
+      },
+      "formulation": "integrated_service_constrained_v5",
+      "state_boundary": "periodic_selected_horizon_v1",
+      "v5_reference_energy_closure_tolerance_fraction": 1e-06,
+      "v5_input_files": {
+        "thermal_hourly_envelope_file": "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz",
+        "thermal_parameters_file": "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv",
+        "ev_availability_hourly_file": "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz",
+        "ev_mobility_hourly_file": "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz",
+        "enablement_cost_file": "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv",
+        "input_manifest_file": "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json"
+      },
+      "firm_capacity_credit": {
+        "contract_version": "derated_peak_service_v1",
+        "required_event_duration_hours": 4.0,
+        "derating_fraction": {
+          "heating": 0.45,
+          "cooling": 0.5,
+          "ev_v1g": 0.4,
+          "ev_v2g": 0.4
+        },
+        "peak_reference": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+        "thermal_bound": "minimum_of_derated_contract_and_minimum_derated_reduction_envelope_over_peak_window",
+        "ev_v1g_bound": "minimum_of_derated_smart_contract_and_minimum_derated_flexible_charging_baseline_over_peak_window",
+        "ev_v2g_bound": "minimum_of_derated_nested_v2g_contract_minimum_peak_window_discharge_envelope_and_four_hour_energy_capability",
+        "optional_portfolio_authorization": "author_2026_10_11_derated_credit_v1",
+        "derating_fraction_by_planning_year": {
+          "heating": {
+            "2030": 0.5,
+            "2040": 0.5,
+            "2050": 0.45,
+            "2060": 0.45
+          },
+          "cooling": {
+            "2030": 0.6,
+            "2040": 0.55,
+            "2050": 0.5,
+            "2060": 0.5
+          },
+          "ev_v1g": {
+            "2030": 0.5,
+            "2040": 0.45,
+            "2050": 0.4,
+            "2060": 0.4
+          },
+          "ev_v2g": {
+            "2030": 0.5,
+            "2040": 0.45,
+            "2050": 0.4,
+            "2060": 0.4
+          }
+        }
+      },
+      "parameter_status": {
+        "authority": "Author-approved TASK_flex_parameter_implementation_20261011 sections 1-6",
+        "price_basis": "2025 constant CNY; resource costs; no transfers",
+        "capacity_value": "Four-hour enrollment-bounded engineering credit; not ELCC"
+      },
+      "portfolio_contract": "optional_service_pools_v1",
+      "parameter_contract": "participation_pathway_v2",
+      "thermal_activation_contract": "directional_resource_cost_v1"
+    },
+    "explicit_data_gaps": {
+      "csp": "TODO_SOURCE_DATA_REQUIRED: no 0.25-degree CSP potential or hourly CSP solar-field profile is present; capacity is fixed to zero",
+      "phs_water_pairing": "MODEL_SCOPE: PHS is province-level 8-hour storage with GHT 2026 operating capacity floor and year-available project-pipeline upper; open-loop/closed-loop reservoir water pairing is not represented",
+      "thermal_online_fuel": "TODO_SOURCE_DATA_REQUIRED: f_on is not present in the extracted RUC table; first block implementation charges fuel on gross generation only",
+      "capacity_credit": "SOFT_ASSUMPTION: values are explicit configuration parameters, not extracted CISPO source data",
+      "inertia_threshold": "SOFT_ASSUMPTION: minimum system inertia seconds is explicit configuration, not extracted CISPO source data",
+      "spur_trunk_cost": "SOFT_ASSUMPTION: proxy costs use the 330-kV AC anchor and must be sensitivity-tested"
+    },
+    "finance": {
+      "real_wacc_fraction": 0.074,
+      "default_lifetime_years": {
+        "onwind": 25,
+        "offwind": 25,
+        "upv": 25,
+        "dpv": 25,
+        "csp": 25,
+        "hydro": 40,
+        "coal": 40,
+        "coalccs": 40,
+        "cchp": 40,
+        "cchpccs": 40,
+        "gas": 30,
+        "gasccs": 30,
+        "gchp": 30,
+        "gchpccs": 30,
+        "bio": 30,
+        "bioccs": 30,
+        "nuclear": 60,
+        "battery": 15,
+        "phs": 40,
+        "transmission": 50,
+        "spur": 40,
+        "trunk": 40
+      }
+    },
+    "security": {
+      "up_reserve_load_fraction": 0.05,
+      "down_reserve_load_fraction": 0.05,
+      "up_reserve_vre_fraction": 0.05,
+      "down_reserve_vre_fraction": 0.05,
+      "capacity_margin_fraction": 0.05,
+      "capacity_margin_load_basis": "baseline_peak_v1",
+      "inertia_reference_seconds": 3.5,
+      "inertia_tolerance_fraction": 1.0,
+      "capacity_credit": {
+        "coal": 1.0,
+        "coalccs": 1.0,
+        "cchp": 1.0,
+        "cchpccs": 1.0,
+        "gas": 1.0,
+        "gasccs": 1.0,
+        "gchp": 1.0,
+        "gchpccs": 1.0,
+        "bio": 0.9,
+        "bioccs": 0.9,
+        "nuclear": 1.0,
+        "onwind": 0.05,
+        "offwind": 0.1,
+        "upv": 0.05,
+        "dpv": 0.05,
+        "ror": 0.4,
+        "reservoir": 0.8,
+        "battery": 1.0,
+        "phs": 1.0
+      },
+      "non_synchronous_inertia_seconds": {
+        "ror": 3.0,
+        "reservoir": 3.0,
+        "battery": 0.0,
+        "phs": 3.0
+      }
+    },
+    "thermal": {
+      "biomass_minimum_online_fraction": 0.5,
+      "chp_winter_months": [
+        1,
+        2,
+        11,
+        12
+      ],
+      "nuclear_fuel_yuan_per_mwh": 69.276276,
+      "ramping_cost_yuan_per_mwh": 1.004004
+    },
+    "storage_design": {
+      "phs_energy_capacity_mode": "fixed_duration_v1",
+      "phs_existing_duration_h": 8.0,
+      "phs_new_duration_min_h": 4.0,
+      "phs_new_duration_max_h": 48.0,
+      "phs_reference_duration_h": 8.0,
+      "phs_power_capex_yuan_per_kw_by_planning_year": {},
+      "phs_energy_capex_yuan_per_kwh_by_planning_year": {},
+      "phs_reference_capex_closure_tolerance_fraction": 1e-06
+    },
+    "hydro": {
+      "reservoir_efficiency": 0.85,
+      "water_density_kg_per_m3": 1000.0,
+      "gravity_m_per_s2": 9.81,
+      "reservoir_flow_variable_scale_m3s": 1000.0,
+      "reservoir_volume_variable_scale_m3": 1000000.0,
+      "hydrology_flow_zero_tolerance_m3s": 0.0001,
+      "cascade_inflow_reconciliation": "target_bounded_proportional_transfer_v1",
+      "classification_column": "operation_type_model",
+      "installed_type_rule": "use_assigned_GHT_or_115MW_proxy_label_regardless_of_confidence",
+      "potential_reservoir_threshold_mw": 750.0,
+      "potential_type_rule": "paper_rule_design_capacity_above_750MW_is_reservoir_otherwise_run_of_river",
+      "reservoir_dispatch_resolution": "station",
+      "reservoir_inflow_rule": "core_cascade_local_GRFR_inflow_plus_upstream_release_other_reservoirs_independent",
+      "cascade_hydraulic_coupling": true,
+      "cascade_scope": "stage2_recommended_core_reservoir_groups_only",
+      "cascade_lag_method": "cross_correlation_2019_hourly_qout_multiples_of_3h",
+      "cascade_max_lag_h": 168,
+      "cascade_duplicate_comid_handling": "node_aggregate_and_capacity_share_split",
+      "duplicate_comid_flow_allocation": "static_capacity_potential_share_v1",
+      "environmental_flow_dataset": "monthly_environmental_flow_2019_p30",
+      "environmental_flow_variable": "monthly_p30_proxy_m3s",
+      "environmental_flow_treatment": "modeled_water_is_qout_minus_monthly_p30_2019_proxy; formal multi-year p30 requires 1980-2019 source data",
+      "provincial_aggregate_mode": "fixed_existing_monthly_profile_v1",
+      "provincial_aggregate_capacity_file": "hydro/provincial_aggregate_capacity_2025.csv",
+      "provincial_aggregate_monthly_profile_file": "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+      "provincial_aggregate_national_conventional_target_gw": 380.0,
+      "provincial_aggregate_up_reserve_credit": 0.0,
+      "provincial_aggregate_down_reserve_credit": 0.0,
+      "provincial_aggregate_capacity_credit": 0.0,
+      "provincial_aggregate_inertia_seconds": 0.0,
+      "provincial_aggregate_connection_treatment": "province_non_spatial_existing_no_spur_trunk",
+      "station_parameters_file": "hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "station_corrections_file": "hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "local_inflow_cleanup_m3s": 0.01,
+      "reduce_cyclic_inventory_range": true,
+      "limit_independent_spill_to_inflow": true,
+      "independent_spill_positive_bound_floor_m3s": 1.0,
+      "cascade_transfer_cleanup_fraction": 0.0001
+    },
+    "network": {
+      "flow_regularization_yuan_per_mwh": 1.004004,
+      "diagnostic_bidirectional_flow_warning": {
+        "enabled": true,
+        "reference_hours": 168,
+        "maximum_edge_hours_per_reference": 8,
+        "maximum_opposing_flow_gw": 0.25,
+        "maximum_opposing_fraction_of_line_capacity": 0.15,
+        "maximum_opposing_energy_gwh_per_reference": 1.25,
+        "maximum_excess_loss_gwh_per_reference": 0.04,
+        "maximum_opposing_share_of_gross_flow": 5e-05,
+        "maximum_excess_loss_share_of_system_load": 1e-07,
+        "scope": "TEST_ONLY_TRUNCATED_HORIZON_WARNING_ONLY",
+        "full_year_policy": "STRICT_ZERO_ABOVE_1E-6_GW"
+      },
+      "spur_capex_million_yuan_per_gw_km": 1.218860856,
+      "trunk_capex_million_yuan_per_gw_km": 1.218860856,
+      "substation_capex_million_yuan_per_gw": 241.964964,
+      "spur_fixed_om_fraction": 0.01,
+      "trunk_fixed_om_fraction": 0.01,
+      "intra_grid_vre_connection": {
+        "spur_rule": "site_full_weather_max_cf_v1",
+        "trunk_rule": "cispo_potential_weighted_equivalent_peak_cf_v1",
+        "initial_vre_interface_rule": "same_design_rule_observed_2025_v1",
+        "existing_interface_reuse": "proxy_reused_independent_of_generator_cohort_v1"
+      }
+    },
+    "load_center_network": {
+      "scenario": "city_337",
+      "input_subdirectory": "load_center_network/city_337",
+      "expected_load_center_count": 337,
+      "expected_intra_edge_count": 642,
+      "spatial_generation_technologies": [
+        "onwind",
+        "offwind",
+        "upv",
+        "dpv",
+        "ror",
+        "reservoir"
+      ],
+      "province_share_allocated_terms": [
+        "thermal_nuclear_biomass",
+        "storage_charge_discharge",
+        "dac",
+        "received_interprovincial_energy"
+      ],
+      "topology_method": "within_province_mst_plus_3_nearest_neighbours_geodesic",
+      "voltage_class": "AC_500kV",
+      "design_utilization_fraction": 0.5,
+      "flow_regularization_yuan_per_mwh": 1.0,
+      "flow_regularization_status": "Explicit numerical regularization, 1 CNY/MWh; increased with user authorization; quantify objective perturbation against v3",
+      "bidirectional_flow_tolerance_gwh": 0.0001,
+      "bidirectional_flow_tolerance_status": "numerical-dust threshold for the annual load-center proxy; maximum opposing flow above 0.1 MWh per edge remains a hard failure",
+      "intra_loss_fraction_per_km": 0.0,
+      "partial_horizon_interpretation": "test-period aggregate energy only; scientific interpretation requires full_year"
+    },
+    "numerics": {
+      "coefficient_zero_tolerance": 0.01,
+      "feasibility_tolerance": 1e-06,
+      "optimality_tolerance": 1e-06,
+      "markowitz_tolerance": 0.01,
+      "numeric_focus": 2,
+      "scale_flag": 2,
+      "presolve": 2,
+      "method": 2,
+      "barrier_convergence_tolerance": 0.0001,
+      "crossover": 0,
+      "crossover_basis": 1,
+      "solution_target": 1,
+      "dual_reductions": 1,
+      "inf_unbd_info": 0,
+      "threads": 8,
+      "time_limit_seconds": 900,
+      "soft_mem_limit_gb": 8,
+      "output_flag": 1,
+      "capacity_headroom_zero_gw": 1e-05,
+      "capacity_floor_zero_gw": 1e-05,
+      "aggregate": 0
+    },
+    "construction": {
+      "architecture": "full_year_monolithic_lp",
+      "build_hour_chunk_size": 168,
+      "hour_chunk_size": 168,
+      "horizons": {
+        "one_month": {
+          "hours": 744,
+          "minimum_available_memory_gb": 8,
+          "test_only": true,
+          "definition": "first 31 days (January), cyclic over the selected test horizon"
+        },
+        "six_months": {
+          "hours": 4344,
+          "minimum_available_memory_gb": 32,
+          "test_only": true,
+          "definition": "first six calendar months (January-June), cyclic over the selected test horizon"
+        },
+        "full_year": {
+          "hours": 8760,
+          "minimum_available_memory_gb": 96,
+          "test_only": false,
+          "definition": "full non-leap calendar year, production scientific horizon"
+        }
+      },
+      "write_lp": false,
+      "compute_iis_on_infeasible": true,
+      "stop_before_build_if_estimated_memory_gb_exceeds": 80
+    },
+    "formulation": {
+      "annual_emissions_accounting": "national_dense_v1"
+    }
+  },
+  "objective": 2539126.881324015,
+  "service_costs_million_cny": {
+    "flexible_load_v5_enablement": 6304.949316233795,
+    "flexible_load_v5_v2g_infrastructure": 0.1582720633545591,
+    "flexible_load_v5_thermal_activation": 258.4655073999775,
+    "flexible_load_v5_ev_v1g_relocation": 5324.872378218105,
+    "flexible_load_v5_ev_v2g_participation": 0.12561898741881977,
+    "flexible_load_v5_ev_v2g_degradation": 0.07537139245129167
+  },
+  "energy_cost_million_cny": 2527238.23485992,
+  "net_saving_million_cny": 21822.951600351837,
+  "physical_qc": {
+    "enrollment_fraction_violation": 0.0,
+    "contract_charge_residual_gw": 5.688178816853906e-10,
+    "contract_v2g_residual_gw": 5.931707892882152e-10,
+    "discharge_pool_power_violation_gw": 0.0,
+    "v1g_transition_residual_gwh": 1.5902976713277894e-09,
+    "v1g_inventory_violation_gwh": 0.0,
+    "v1g_connection_violation_gw": 0.0,
+    "v2g_transition_residual_gwh": 1.6950964778421167e-09,
+    "v2g_inventory_violation_gwh": 0.0,
+    "v2g_connection_violation_gw": 0.0,
+    "baseline_reconstruction_residual_gw": 0.0,
+    "relocation_lower_bound_violation_gw": 0.0,
+    "heating_transition_gwh": 2.994931074516184e-10,
+    "heating_inventory_gwh": 0.0,
+    "heating_contract_power_gw": 0.0,
+    "cooling_transition_gwh": 3.014687329042052e-10,
+    "cooling_inventory_gwh": 0.0,
+    "cooling_contract_power_gw": 0.0,
+    "load_reconstruction_gw": 1.1368683772161603e-13
+  },
+  "max_qc_residual": 1.6950964778421167e-09,
+  "national_contract_gw": {
+    "heating": 9.772687411052807,
+    "cooling": 9.239753203202653,
+    "ev_v1g": 191.1419851226475,
+    "ev_v2g": 0.01055147089030394
+  },
+  "provinces_enrolled": {
+    "heating": 30,
+    "cooling": 11,
+    "ev_v1g": 31,
+    "ev_v2g": 0
+  },
+  "alpha_min": 0.9999792797600494,
+  "alpha_max": 0.9999999594695479,
+  "alpha_upper_expansion_value_sum_million_cny": 14603.352428154205,
+  "enrollment_table": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_extension_20261013\\P5a\\province_enrollment.csv",
+  "local_diagnostic_qc_tolerance": 1e-05,
+  "local_diagnostic_passed": true
+}

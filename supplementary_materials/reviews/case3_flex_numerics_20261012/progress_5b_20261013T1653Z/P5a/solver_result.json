@@ -1,0 +1,12 @@
+{
+  "Status": 2,
+  "SolCount": 1,
+  "Runtime": 295.7310001850128,
+  "BarIterCount": 60,
+  "ObjVal": 2539126.881324015,
+  "ConstrVio": 1.6950964778641395e-09,
+  "BoundVio": 0.0,
+  "DualVio": 6.50372014762099e-09,
+  "ComplVio": 0.002892979640228967,
+  "MaxMemUsed": 3.99953091
+}

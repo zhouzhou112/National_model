@@ -1,0 +1,16 @@
+{
+  "Method": 2,
+  "Presolve": 2,
+  "Aggregate": 0,
+  "AggFill": -1,
+  "NumericFocus": 2,
+  "ScaleFlag": 2,
+  "BarConvTol": 0.0001,
+  "Crossover": 0,
+  "Threads": 8,
+  "Seed": 0,
+  "FeasibilityTol": 1e-06,
+  "OptimalityTol": 1e-06,
+  "TimeLimit": 2400.0,
+  "SoftMemLimit": Infinity
+}

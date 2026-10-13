@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 17:54：新增P7 Status13/M71.020132MWh；P5a Aggregate0、P5b AggFill0均OPTIMAL，M分别1.695096e-9/2.750013e-6GWh，归档/快照COMPLETE。P5c运行、P8待续。F5已进入Barrier iter1，采样峰RSS64.951GiB、最低可用18.046GiB，无终态；F7/F8仍等待，未干预。14行summary_5b_20261013T1653Z仍PENDING；Aggregate0通过(a)，全模型(b)(c)待F7，AggFill0待P8/F8，生产不变。
+
 - 2026-10-13 17:21：追加P6（2040隔离块）完成，Status13/SUBOPTIMAL、68轮、422.040秒、M=0.05617986345229854GWh（供暖库存下界），归档/快照均COMPLETE；P7已自动开始。11行汇总summary_5b_P6_20261013仍PENDING。F5继续、F7/F8等待，不改任何生产设置。
 
 - 2026-10-13 17:17：第5b节在F5终态前已登记（d83be1e），F4→F1增长不再否决；外推只看F5≤1e-3与F5/F1<3。F5 PID2312139继续预求解。本机六项追加P队列PID16312运行P6；T550 F7/F8有限队列PID2340523等待F5结束，独立源码f053057/extension_source_f053057，60GiB逐项准入、15GiB求解回调保留，未干预F5。汇总summary_5b_20261013T1616Z为PENDING；原设置因P5不满足全年份(a)，补救参数待结果，生产不变。应用内case3有限回查继续，最晚2026-10-14T16:09:42Z。
@@ -9879,3 +9881,8 @@ Git源码：d83be1e（AggFill诊断开关、本机扩展队列、F5终态前预�
 ## 2026-10-13 17:21 — 第5b节P6首项终态保全
 
 基准740d948（已推送github工作分支/main），诊断源码d83be1e不变。P6 Status13、68轮、422.040秒，M0.05617986345229854GWh（供暖库存下界），制冷下界0.0015417480812905465GWh；日志Optimal字样与API回读不同，两者保留，以回读报告。原模型/快照manifest COMPLETE；小证据9源SHA归档extension_5b_20261013/P6_evidence，11行summary_5b_P6_20261013新建，旧报告不改写。改动仅REVIEW/MODEL_SERVER_STATUS/Handoff和小证据。P7已启动；下一步等待本机其余5项和T550 F5/F7/F8，按5b完整判据提出建议，不改生产或其他在运行任务。
+
+
+## 2026-10-13 17:54 — 第5b节P7/P5a/P5b终态与F5早期迭代
+
+Git基准4ddfb4a，运行诊断源码保持原字节不变。三个本机新终态小证据24源SHA与保全manifest核验；P7 M71.020132MWh/Status13，P5a和P5b均OPTIMAL、M1.695096e-9与2.750013e-6GWh。阶段输出progress_5b_20261013T1653Z、summary_5b_20261013T1653Z（14行、全部残差族、候选判据），只追加REVIEW/MODEL_SERVER_STATUS/本交接和小证据。T550只读F5日志/本轮RSS采样/extension_gate，F5已打印iter1，F7/F8仍等待。没有新阻塞需作者操作；P5c/P8和F5/F7/F8继续。最终设置待5b(a)(b)(c)全证据，不能将单项隔离块通过晋级生产；未修改任何求解或生产配置，不访问云端/备份/凭据。
