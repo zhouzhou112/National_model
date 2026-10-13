@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-13T21:20:40Z",
+  "pid": 2858146,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc/source_ed90ebc/repo/scripts/run_flex_f5_retry_diagnostic.py",
+    "--source",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc/source_ed90ebc",
+    "--data-source",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+    "--server-root",
+    "/home/zz2/National_model_server",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc",
+    "--predecessor",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe",
+    "--admission-deadline-utc",
+    "2026-10-14T16:09:42Z"
+  ],
+  "source_manifest_sha256": "02ba21ea01fbdc14c25c792a6606347d0510e8d2d607054cb835430a11347a93",
+  "diagnostic_commit": "ed90ebc71030a68d1ff46f80fd53fc01170e74ee",
+  "verified_roots": {
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7": 281,
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/extension_source_f053057": 211
+  },
+  "overlay_files": [
+    "scripts/run_flex_full_diagnostic.py",
+    "scripts/run_flex_f5_retry_diagnostic.py"
+  ],
+  "admission_gib": 67,
+  "reserve_gib": 2,
+  "previous_runs_unchanged": true
+}

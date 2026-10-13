@@ -3454,3 +3454,12 @@ F7已由既有队列于18:01:07UTC自动接续，PID2507652/控制器2340523；�
 F7于20:39:40UTC完成并全保全，Status2/SolCount1、150轮、Runtime8946.851秒、全流程9512.473秒、峰RSS20.057224GiB；M1.0928808209537816e-8GWh，FactorNZ8.294e8。相较F1轮数不变、耗时+27.775654%、FactorNZ+3.804756%，结合P3/P5a满足5b(a)(b)(c)。目标相对差1.07677e-5超过一般Cross0等价性1e-5，单独披露但不改5b判据，不宣称目标等价验收通过。20小证据SHA通过、archive/snapshot/preservation均COMPLETE，证据F7_complete_20261013T2054Z及18行summary_F7_complete_20261013T2054Z。
 
 F8由原队列同刻接续，PID2791611/控制器2340523，同窗744h/start5088/16线程/Aggregate1/AggFill0；准入可用62.464191GiB>=60、无其他识别求解器，原15GiB回调不变。20:54:10UTC仍在运行，需等F8决定是否按温和优先选择AggFill0。F5保持资源中断/M未定，无重跑或降保护。未对云端/备份/凭据/生产或冻结源码作任何操作。
+
+
+## 2026-10-13 22:22 英国时间：F5_retry2g 独立串行等待
+
+作者最新授权将F5内存保护由15GiB改为2GiB。原F5已资源中断并完整归档，保留不动；在新根 `/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc` 安排从头重跑，源码ed90ebc、冻结source_ed90ebc/repo，协调器PID2858146于21:20:40UTC启动。新源清单212项，SHA256为02ba21ea01fbdc14c25c792a6606347d0510e8d2d607054cb835430a11347a93；原281项输入/源与F7/F8的211项冻结源已核验，旧源未修改。
+
+21:21:02UTC队列状态等待；F8 PID2791611/协调器2340523仍运行、iter48，可用约42.76GiB。F8完成并释放锁后，确认无其他识别求解器且可用≥67GiB（原F5采样峰64.951183+2向上取整）才启动2016h/start5088/16线程/Aggregate1/Presolve2，optimize回调阈值2GiB。67GiB不是峰值保证，回调不覆盖建模/归档/导出。F8原15GiB保护不变、不并跑、不终止其他用户进程。新队列读取retry_gate/active/terminal及F5_retry2g_terminal，截止2026-10-14T16:09:42Z停止等待；不重复启动，既有Base与备份记录不修改。
+
+证据：supplementary_materials/reviews/case3_flex_numerics_20261012/F5_retry2g_20261013。下一步等待F8完整终态及新F5准入/终态，保留两次F5结果并明确区分资源中断与数值判定。

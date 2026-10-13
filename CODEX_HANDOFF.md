@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 22:22：作者明确授权F5改用2GiB保护。旧F5已资源中断、完整保留；新F5_retry2g从头重跑排队，根case3_flex_F5_retry2g_20261013_ed90ebc，源码ed90ebc/冻结source_ed90ebc，协调器2858146。等待F8完整结束/锁释放/无其他识别求解器/可用≥67GiB（原峰64.951183+2向上取整），求解回调2GiB；F8原15GiB不变。21:21UTC仍F8 PID2791611/iter48，新F5尚未运行。新源212项SHA已核验；跟进期限仍2026-10-14T16:09:42Z，生产未改。
+
 - 2026-10-13 21:54：F7已OPTIMAL/完整保全，M1.092881e-8GWh、150轮、8946.851秒；对F1耗时+27.775654%、FactorNZ+3.804756%，Aggregate0满足5b(a)(b)(c)。目标差1.07677e-5单独披露，不宣称一般等价性验收通过。F8于20:39:40UTC自动接续PID2791611，准入62.464191GiB，等待温和候选AggFill0终态。18行summary_F7_complete_20261013T2054Z，F5仍资源中断、外推NA，生产未改。
 
 - 2026-10-13 19:25：F5因既有15GiB回调触发资源中断（可用14.806969GiB），Status11/SolCount0/10轮；archive/snapshot/preservation均COMPLETE、六种可用向量已保存。不是数值失败，M与F5/F1外推NA。F7于18:01:07UTC自动接续，PID2507652，准入76.273GiB，当前iter11、FactorNZ较F1+3.804756%；F8待续。17行summary_F5_interrupted_20261013T1825Z，未重跑F5或改参数；继续有限跟进F7/F8，生产建议待定。
@@ -9907,3 +9909,15 @@ Git基准952ba12；汇总脚本仅增加resource_stop/SolCount/preservation状�
 ## 2026-10-13 21:54 — F7完成全部筛选条件，F8继续
 
 Git基准b4c37e3；无代码修改。F7 Status2/M1.092881e-8GWh/150轮/8946.851秒/FactorNZ8.294e8；对F1耗时+27.775654%、FactorNZ+3.804756%，P3/P5a配合使Aggregate0的(a)(b)(c)全部通过。目标差1.07677e-5略超一般Cross0等价性1e-5，作为差异记录，不额外改5b门槛；202项>1%决策差异按绝对量并列披露。20源小文件SHA通过，三类保全报告COMPLETE，大文件仅核对存在/长度与manifest。输出F7_complete_20261013T2054Z、summary_F7_complete_20261013T2054Z（18行）。F8原队列自动接续PID2791611、启动62.464191GiB，继续现有15GiB回调。下一步等F8，按温和优先选择首个符合(a)(b)(c)设置，F5资源中断外推NA单独披露；仅追加报告/状态/交接和证据，不修改生产或冻结源，不访问云端/备份/凭据。
+
+
+## 2026-10-13 22:22 — 作者授权 F5_retry2g 新冻结副本与串行队列
+
+- 代码提交：ed90ebc71030a68d1ff46f80fd53fc01170e74ee；改动仅run_flex_full_diagnostic.py显式低余量开关、run_flex_f5_retry_diagnostic.py一次性队列及小证据/研究记录。
+- 作者要求F5保护15→2GiB。原F5已结束，不能续接原进程；原数据完整保留，新F5_retry2g从同窗同输入重新求解，不覆盖旧身份。默认长窗保护仍15GiB，F8不变。
+- 新根/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc；冻结source_ed90ebc，212项清单SHA256 02ba21ea01fbdc14c25c792a6606347d0510e8d2d607054cb835430a11347a93。先核验原281项及F7/F8冻结211项，仅改新副本中诊断脚本。
+- 命令：run_flex_f5_retry_diagnostic.py --source <new>/source_ed90ebc --data-source <original_aef0cb7> --server-root /home/zz2/National_model_server --output <new> --predecessor <F5_direct_3e4a2fe> --admission-deadline-utc 2026-10-14T16:09:42Z；完整命令和PID2858146见F5_retry2g_20261013/dispatch_receipt.json。
+- 门控：等待F8_terminal与extension_terminal、共享求解锁、无其他识别求解器、可用≥67GiB。预算来自原实测峰64.951183+2向上取整，不是峰值上界；optimize回调2GiB也不是全流程强制内存上限。F8原保护不改，不操作其他用户任务。
+- 验证：AST与7组CLI参数边界PASS；新源Linux CLI PASS，远端5份小证据逐字SHA与本地一致。21:21UTC队列等待、F8仍iter48，可用约42.76GiB。当前尚无新F5结果。
+- 应用内现有case3有限回查已更新，截止2026-10-14T16:09:42Z不变；队列到期只停止未获准入的等待，不终止已启动求解。没有新增Git监听/自动提交服务。
+- 精确下一步：继续现有队列，收集F8与F5_retry2g终态，按5b给出建议；旧F5资源中断另列，外推使用重跑时明示身份。生产设置须作者确认。报告/服务器状态已追加，SI未审改动不纳入提交。
