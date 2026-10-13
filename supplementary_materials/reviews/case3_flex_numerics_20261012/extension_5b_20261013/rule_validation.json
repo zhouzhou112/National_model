@@ -1,0 +1,19 @@
+{
+  "state": "PASS",
+  "checks": [
+    "candidate order",
+    "inclusive 30% and 5% thresholds",
+    "FactorNZ veto",
+    "runtime veto",
+    "strict extrapolation ratio <3",
+    "time limit remains pending",
+    "F4 ratio excluded",
+    "F1 real log structure"
+  ],
+  "F1": {
+    "presolved_rows": 3460247,
+    "presolved_columns": 3255707,
+    "presolved_nonzeros": 36218755,
+    "factor_nz": 799000000.0
+  }
+}

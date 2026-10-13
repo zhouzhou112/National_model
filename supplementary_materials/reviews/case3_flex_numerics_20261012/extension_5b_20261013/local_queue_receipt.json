@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-13T16:18:28.981145+00:00",
+  "controller_pid": 16312,
+  "children": [
+    {
+      "pid": 37528,
+      "rss_bytes": 10039296
+    },
+    {
+      "pid": 17152,
+      "rss_bytes": 5781098496
+    }
+  ],
+  "output": "P_extension_20261013",
+  "sequence": [
+    "P6",
+    "P7",
+    "P5a",
+    "P5b",
+    "P5c",
+    "P8"
+  ],
+  "hours": 8760,
+  "price_year": 2030,
+  "threads": 8,
+  "solver_time_limit_s": 2400,
+  "source_commit": "d83be1e",
+  "terminal_files": []
+}

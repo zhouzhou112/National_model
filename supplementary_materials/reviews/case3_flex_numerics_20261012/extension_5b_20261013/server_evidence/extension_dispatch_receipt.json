@@ -1,0 +1,27 @@
+{
+  "utc": "2026-10-13T16:12:23Z",
+  "pid": 2340523,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/extension_source_f053057/repo/scripts/run_flex_extension_series.py",
+    "--source",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/extension_source_f053057",
+    "--data-source",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_numerics_20261012_aef0cb7",
+    "--server-root",
+    "/home/zz2/National_model_server",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe"
+  ],
+  "source_manifest_sha256": "a3d1353a3b27466cdf92f3f83afa51380c10cbfe5117ca4c3a9043e15c909357",
+  "diagnostic_commit": "f053057368452c7d6cba7c186c24b56060f9bf4c",
+  "original_verified_files": 281,
+  "overlay_files": [
+    "scripts/run_flex_extension_series.py",
+    "scripts/run_flex_full_diagnostic.py",
+    "scripts/flex_numerics_diagnostics.py"
+  ],
+  "admission_gib": 60,
+  "reserve_gib": 15,
+  "f5_not_modified": true
+}

@@ -1,0 +1,12 @@
+{
+  "name": "F7",
+  "f5_terminal": false,
+  "lock_acquired": false,
+  "available_bytes": 66407501824,
+  "required_bytes": 64424509440,
+  "reserve_gib": 15,
+  "other_solver_pids": [
+    2312139
+  ],
+  "utc": "2026-10-13T16:16:24Z"
+}

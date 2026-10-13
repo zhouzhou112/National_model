@@ -1,0 +1,18 @@
+[
+  {
+    "path": "extension_started.json",
+    "sha256": "0f6b17ce856a173cd2861fec714f5141b954260fb6afe0ce20bbd0c33b6729ff"
+  },
+  {
+    "path": "extension_gate.json",
+    "sha256": "4c3e7cb9e09fb19e069b5b4b9b83ec97672171ffb4da8f3433e705de94d0b3c5"
+  },
+  {
+    "path": "extension_dispatch_receipt.json",
+    "sha256": "2d0f41c03174dedb5d0e476dca7c2921f3b7a41b4622d24e5210330851bcec42"
+  },
+  {
+    "path": "extension_source_f053057/extension_manifest.json",
+    "sha256": "a3d1353a3b27466cdf92f3f83afa51380c10cbfe5117ca4c3a9043e15c909357"
+  }
+]

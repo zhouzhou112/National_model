@@ -3414,3 +3414,12 @@ Git基准c19190ff16b182bf6e40d74efb9419d5c100b044。只读scontrol、sstat、gur
 flock2312130、控制器2312131、求解进程2312139，16:53只读核验求解进程CPU98.4%、RSS约0.77GiB，处于加载/构建；日志持续写入，没有终态。所有输出进入新根F5，F5_memory.jsonl逐2秒记录全流程RSS。保留原optimize回调的15GiB检查；它不是构建/归档/导出阶段的硬内存上限，未隐瞒此前已说明的局限。
 
 接管、启动回执与确切命令在本地 `F5_direct_launch_20261013/`；原F1–F4目录不变。应用内case3有限续办已恢复并改为仅跟进这一新F5，状态不变保持安静。下一步等F5终态后补齐运行表、残差剖面与全部时长增长比；已记录的第3情形不自行放宽，也不阻止作者授权的补充诊断。没有云端操作、生产配置修改、凭据读取或结果删除。
+
+
+## 2026-10-13 17:17 英国时间：第5b节追加F7/F8等待F5（独立诊断）
+
+F5原PID2312139继续运行，16:16:24 UTC仍在预求解、RSS21.38GiB，未干预。依据作者新授权，在同根 `/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe` 排好F7/F8有限串行队列；控制器PID2340523，16:12:23 UTC启动，诊断源码f053057放入新子目录extension_source_f053057，原281文件SHA通过、仅三个诊断脚本叠加，F5在用冻结源不变。
+
+F7 Aggregate0/F8 AggFill0，均F1同窗744h/start5088/16线程/V9/case3 2030。队列等待F5_terminal及原求解锁释放；逐项可用内存≥60GiB（45+15工程预算，并非内存上界）、无其他识别到的求解器才启动。全流程RSS采样、原15GiB仅optimize期间回调保护；准入最多24小时，资源中止后停队列，不停止其他用户。extension_gate/started/dispatch及源码清单四份证据SHA逐字核验保存在本地extension_5b_20261013/server_evidence/。F7/F8尚未运行，不能把排定误报为完成。
+
+判定更正于F5终态前17:09:42英国时间登记并提交d83be1e：F4→F1增长不再否决；外推仅F5 M≤1e-3且F5/F1<3。旧判断保留。追加本机P6/P7/P5a/P5b/P5c/P8串行PID16312，最终按5b(a)(b)(c)选择首个合格production/AggFill0/Aggregate0供作者确认。既有应用内有限回查更新继续。本条未核验或操作Base2060/云端/备份，不修改其既有记录。详见case3_flex_numerics_20261012/REVIEW_ZH.md本日追加节。

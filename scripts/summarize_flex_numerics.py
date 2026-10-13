@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import numpy as np
 import pandas as pd
+from flex_numerics_rule_5b import evaluate, solver_structure
 
 
 def read(path):
@@ -20,10 +21,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--p-root", required=True, type=Path)
     p.add_argument("--f-root", type=Path)
+    p.add_argument("--extra-root", action="append", type=Path, default=[], help="Additional nonoverlapping preserved P/F roots")
+    p.add_argument("--decision-rule", choices=["legacy", "5b"], default="5b")
+    p.add_argument("--skip-plots", action="store_true", help="Tables-only interim summary; final reports retain plots")
     p.add_argument("--output", required=True, type=Path)
     a=p.parse_args(); a.output.mkdir(parents=True,exist_ok=False)
     rows=[]; metrics=[]; frames=[]; decisions={}; storage_decisions={}; source=[]
-    roots=[a.p_root]+([a.f_root] if a.f_root else [])
+    roots=[a.p_root]+([a.f_root] if a.f_root else [])+a.extra_root
     for root in roots:
         if not root.exists(): continue
         for d in sorted(root.iterdir()):
@@ -31,10 +35,12 @@ def main():
             s=read(d/"solver_result.json"); diag=read(d/"service_diagnostics.json")
             scope=read(d/"scope.json"); report=read(d/"report.json")
             if not s: continue
+            if any(row["run"] == d.name for row in rows):
+                raise ValueError("Duplicate run identity across roots: " + d.name)
             params=read(d/"solver_parameters.json")
             mem=read(root/(d.name+"_terminal.json"))
             queue=read(root/"queue_status.json")
-            if isinstance(queue,list): mem=next((x for x in queue if x["name"]==d.name),{})
+            if isinstance(queue,list): mem=next((x for x in queue if x["name"]==d.name),mem)
             row=dict(run=d.name, state="COMPLETE" if (d/"service_diagnostics.json").exists() or scope.get("case")=="base" else "EXPORT_PENDING_OR_UNAVAILABLE",
                 year=report.get("year",2030), hours=scope.get("hours",8760), start=scope.get("start",0),
                 status=s.get("Status"), barrier_iterations=s.get("BarIterCount"), runtime_s=s.get("Runtime"),
@@ -42,6 +48,8 @@ def main():
                 gurobi_max_memory_gb=s.get("MaxMemUsed"), objective_million_cny=s.get("ObjVal"),
                 ConstrVio=s.get("ConstrVio"), BoundVio=s.get("BoundVio"),
                 M_gw_gwh=diag.get("maximum_service_residual_gw_gwh"), parallel=False, **params)
+            log = d/"gurobi.log"
+            if log.exists(): row.update(solver_structure(log.read_text(encoding="utf-8", errors="replace")))
             for key,val in diag.get("physical_qc",{}).items():
                 row[key]=val
                 metrics.append(dict(run=d.name,family=key,value=val,unit="GWh" if key.endswith("_gwh") else "GW" if key.endswith("_gw") else "dimensionless"))
@@ -64,7 +72,7 @@ def main():
             if profile.exists():
                 frame=pd.read_csv(profile); frame["run"]=d.name; frames.append(frame)
             rows.append(row)
-            for name in ("solver_result.json","solver_parameters.json","service_diagnostics.json","service_decisions.csv","storage_capacity.csv","scope.json","effective_config.json","thermal_residual_profile.csv.gz","report.json","solution_qc.json","model_archive/archive_manifest.json","solution_snapshot/snapshot_manifest.json"):
+            for name in ("gurobi.log","solver_result.json","solver_parameters.json","service_diagnostics.json","service_decisions.csv","storage_capacity.csv","scope.json","effective_config.json","thermal_residual_profile.csv.gz","report.json","solution_qc.json","model_archive/archive_manifest.json","solution_snapshot/snapshot_manifest.json"):
                 file=d/name
                 if file.exists(): source.append(dict(run=d.name,path=str(file),sha256=hashlib.sha256(file.read_bytes()).hexdigest(),bytes=file.stat().st_size))
     runs=pd.DataFrame(rows); runs.to_csv(a.output/"runs.csv",index=False)
@@ -72,7 +80,7 @@ def main():
     (a.output/"source_sha256.json").write_text(json.dumps(source,indent=2),encoding="utf-8")
     differences=[]
     for name,table in decisions.items():
-        base="P1" if name in ("P0","P2","P3","P4") else "F1" if name.startswith("F6_F1") else "F2" if name.startswith("F6_F2") else None
+        base="P1" if name in ("P0","P2","P3","P4","P8") else "P5" if name in ("P5a","P5b","P5c") else "F1" if name in ("F7","F8") or name.startswith("F6_F1") else "F2" if name.startswith("F6_F2") else None
         if base not in decisions: continue
         for col in table.columns:
             if col=="province_code":continue
@@ -81,7 +89,7 @@ def main():
                 relative=abs(right[province]-left[province])/max(abs(left[province]),1e-12)
                 if relative>0.01: differences.append(dict(reference=base,run=name,province_code=province,decision=col,reference_value=left[province],value=right[province],absolute_change=abs(right[province]-left[province]),relative_change=relative,denominator_floor=1e-12))
     for name,table in storage_decisions.items():
-        base="F1" if name.startswith("F6_F1") else "F2" if name.startswith("F6_F2") else None
+        base="F1" if name in ("F7","F8") or name.startswith("F6_F1") else "F2" if name.startswith("F6_F2") else None
         if base not in storage_decisions: continue
         left=storage_decisions[base].set_index(["province_code","technology"])
         right=table.set_index(["province_code","technology"])
@@ -92,7 +100,9 @@ def main():
                 if relative>0.01: differences.append(dict(reference=base,run=name,province_code=key[0],technology=key[1],decision=col,reference_value=reference,value=value,absolute_change=abs(value-reference),relative_change=relative,denominator_floor=1e-12))
     pd.DataFrame(differences,columns=["reference","run","province_code","technology","decision","reference_value","value","absolute_change","relative_change","denominator_floor"]).to_csv(a.output/"decision_changes_above_1pct.csv",index=False)
     conclusion=dict(state="PENDING_F_SERIES",rule=None)
-    if not runs.empty:
+    if a.decision_rule == "5b":
+        conclusion = evaluate(rows)
+    elif not runs.empty:
         r=runs.set_index("run"); m=r.M_gw_gwh
         valid={n for n in ("F1","F2","F4","F5") if n in r.index and pd.notna(m[n]) and r.loc[n,"status"] == 2}
         ratios={f"{x}_to_{y}":float(m[y]/m[x]) if m[x]>0 else (1.0 if m[y]==0 else float("inf")) for x,y in (("F4","F1"),("F1","F5"),("F4","F5")) if x in valid and y in valid}
@@ -106,7 +116,7 @@ def main():
             # Rule 2 requires human review of all failed windows, paired timing,
             # iteration overhead and missing/no-solution cases; never auto-promote.
     (a.output/"preregistered_rule_evidence.json").write_text(json.dumps(conclusion,indent=2),encoding="utf-8")
-    if frames:
+    if frames and not a.skip_plots:
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt

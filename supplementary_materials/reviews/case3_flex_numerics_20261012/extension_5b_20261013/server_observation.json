@@ -1,0 +1,20 @@
+{
+  "utc": "2026-10-13T16:16:24Z",
+  "processes": [
+    {
+      "pid": 2312139,
+      "running": true,
+      "rss_bytes": 22956343296,
+      "started_epoch": 1791906762.7
+    },
+    {
+      "pid": 2340523,
+      "running": true,
+      "rss_bytes": 23281664,
+      "started_epoch": 1791907943.26
+    }
+  ],
+  "available_bytes": 66378153984,
+  "F5_terminal_exists": false,
+  "F5_log_tail": " rows and 1626896 columns (presolve time = 115s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 120s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 125s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 130s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 135s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 140s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 145s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 150s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 155s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 160s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 165s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 170s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 175s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 180s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 185s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 190s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 195s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 200s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 205s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 210s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 215s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 220s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 225s)...\nPresolve removed 2914995 rows and 1626896 columns (presolve time = 230s)...\n"
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 17:17：第5b节在F5终态前已登记（d83be1e），F4→F1增长不再否决；外推只看F5≤1e-3与F5/F1<3。F5 PID2312139继续预求解。本机六项追加P队列PID16312运行P6；T550 F7/F8有限队列PID2340523等待F5结束，独立源码f053057/extension_source_f053057，60GiB逐项准入、15GiB求解回调保留，未干预F5。汇总summary_5b_20261013T1616Z为PENDING；原设置因P5不满足全年份(a)，补救参数待结果，生产不变。应用内case3有限回查继续，最晚2026-10-14T16:09:42Z。
+
 - 2026-10-13 16:52：作者明确授权直接启动F5；旧等待协调器491304已安全停止，新根case3_flex_F5_direct_20261013_3e4a2fe/F5运行，PID2312139（控制器2312131、flock2312130）。281文件SHA PASS，2016h/start5088/16线程，原数值参数与15GiB回调保护；仅本次绕过105GiB排程门槛。case3续办已恢复为跟进新F5，等待终态；无云端或生产变更。
 
 - 2026-10-13 16:44 F5内存只读复核：105GiB为原保守常数，未降门槛；F1/F4实测外推F5约54.6–64.6GiB（非上界），加15GiB为69.6–79.6GiB。当前可用82.1–82.5GiB但动态余量/全流程保护不足，尚不能确认安全运行。F5未启动，详情memory_review_20261013T1542Z/MEMORY_REVIEW_ZH.md。
@@ -9859,3 +9861,14 @@ Git基准c19190ff16b182bf6e40d74efb9419d5c100b044。只读scontrol、sstat、gur
 flock2312130、控制器2312131、求解进程2312139，16:53只读核验求解进程CPU98.4%、RSS约0.77GiB，处于加载/构建；日志持续写入，没有终态。所有输出进入新根F5，F5_memory.jsonl逐2秒记录全流程RSS。保留原optimize回调的15GiB检查；它不是构建/归档/导出阶段的硬内存上限，未隐瞒此前已说明的局限。
 
 接管、启动回执与确切命令在本地 `F5_direct_launch_20261013/`；原F1–F4目录不变。应用内case3有限续办已恢复并改为仅跟进这一新F5，状态不变保持安静。下一步等F5终态后补齐运行表、残差剖面与全部时长增长比；已记录的第3情形不自行放宽，也不阻止作者授权的补充诊断。没有云端操作、生产配置修改、凭据读取或结果删除。
+
+
+## 2026-10-13 17:17 — case3第5b节预登记、追加P与F队列
+
+Git源码：d83be1e（AggFill诊断开关、本机扩展队列、F5终态前预登记），f053057（F5后F7/F8有限资源队列）；本次汇总工具/报告记录另行明确清单提交。改动仅scripts诊断脚本、REVIEW、MODEL_SERVER_STATUS、本交接和小证据。
+
+命令：本机 `python scripts/run_flex_price_series.py --series 5b --prices ../claude_workspace/evidence/base2030_prices/hourly_marginal_prices.csv.gz --output supplementary_materials/reviews/case3_flex_numerics_20261012/P_extension_20261013`，PID16312，8760h/8线程/2030电价，P6运行。T550追加命令和源SHA见 `extension_5b_20261013/remote_dispatch_receipt.json`，PID2340523在F5同一根等待F5终态和锁；逐项60GiB内存准入，15GiB求解回调，F7/F8串行。源281文件核验后创建extension_source_f053057独立副本，只叠加诊断文件，F5原PID2312139和在用源码不变。
+
+验证：CLI/语法和AggFill默认-1/显式0回读通过；8项规则语义检查通过，F1日志解析3460247行/3255707列/36218755nnz/FactorNZ7.990e8；四份服务器证据SHA通过。非重叠输入汇总10行至summary_5b_20261013T1616Z；状态PENDING，不把旧F4比值或限时/缺失当数值失败。预登记写盘16:09:42UTC，F5终态前；17:08标题为前一只读核验时间。历史报告保留。完整原件不提交，不删除。
+
+未决/下一步：等待六项P与F5/F7/F8全部结果，采集SHA小证据、残差剖面、耗时/迭代/FactorNZ/RSS，按5b(a)(b)(c)候选顺序提出建议由作者确认。应用内既有有限回查每30分钟、最晚2026-10-14T16:09:42Z停止；未建立Git监听。不改生产配置/profile/模型，不提交或操作云端、不碰Job5124127/cloud_backup/凭据；其他SI改动继续留工作区，Handoff只暂存本条和快照。
