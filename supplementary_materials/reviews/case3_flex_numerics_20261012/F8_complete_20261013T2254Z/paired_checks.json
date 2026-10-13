@@ -1,0 +1,15 @@
+{
+  "criterion_a": true,
+  "criterion_b": true,
+  "criterion_c": true,
+  "runtime_ratio": 0.9830700635714643,
+  "iteration_ratio": 0.92,
+  "factor_nz_ratio": 0.9967459324155195,
+  "objective_relative_change": 5.02139165337026e-06,
+  "storage_new_gw_change": 0.0009767150883868009,
+  "storage_new_gwh_change": 0.006133266397051598,
+  "selection": "AggFill_0",
+  "F5_extrapolation": "PENDING_AUTHOR_AUTHORIZED_RETRY2G",
+  "run_count": 19,
+  "F8_decision_changes_above_1pct": 208
+}

@@ -1,0 +1,66 @@
+{
+  "rule_version": "2026-10-13_section_5b_pre_F5_terminal",
+  "state": "PENDING_5B_EXPERIMENTS",
+  "f4_to_f1_excluded": true,
+  "f1_to_f5_ratio": null,
+  "extrapolation_pass": null,
+  "candidates": [
+    {
+      "setting": "production",
+      "isolated_runs": [
+        "P1",
+        "P5"
+      ],
+      "full_run": "F1",
+      "criterion_a": false,
+      "criterion_b": true,
+      "criterion_c": true,
+      "ratios_to_F1": {
+        "barrier_iterations": 1.0,
+        "runtime_s": 1.0,
+        "factor_nz": 1.0
+      },
+      "eligible": false
+    },
+    {
+      "setting": "AggFill_0",
+      "isolated_runs": [
+        "P8",
+        "P5b"
+      ],
+      "full_run": "F8",
+      "criterion_a": true,
+      "criterion_b": true,
+      "criterion_c": true,
+      "ratios_to_F1": {
+        "barrier_iterations": 0.92,
+        "runtime_s": 0.9830700635714643,
+        "factor_nz": 0.9967459324155195
+      },
+      "eligible": true
+    },
+    {
+      "setting": "Aggregate_0",
+      "isolated_runs": [
+        "P3",
+        "P5a"
+      ],
+      "full_run": "F7",
+      "criterion_a": true,
+      "criterion_b": true,
+      "criterion_c": true,
+      "ratios_to_F1": {
+        "barrier_iterations": 1.0,
+        "runtime_s": 1.277756539157479,
+        "factor_nz": 1.0380475594493117
+      },
+      "eligible": true
+    }
+  ],
+  "provisional_candidate": "AggFill_0",
+  "recommendation": null,
+  "missing_limited_or_incomplete_runs": [
+    "F5"
+  ],
+  "caveat": "Diagnostic recommendation only; author confirmation required; no production changes"
+}

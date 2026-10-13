@@ -3463,3 +3463,12 @@ F8由原队列同刻接续，PID2791611/控制器2340523，同窗744h/start5088/
 21:21:02UTC队列状态等待；F8 PID2791611/协调器2340523仍运行、iter48，可用约42.76GiB。F8完成并释放锁后，确认无其他识别求解器且可用≥67GiB（原F5采样峰64.951183+2向上取整）才启动2016h/start5088/16线程/Aggregate1/Presolve2，optimize回调阈值2GiB。67GiB不是峰值保证，回调不覆盖建模/归档/导出。F8原15GiB保护不变、不并跑、不终止其他用户进程。新队列读取retry_gate/active/terminal及F5_retry2g_terminal，截止2026-10-14T16:09:42Z停止等待；不重复启动，既有Base与备份记录不修改。
 
 证据：supplementary_materials/reviews/case3_flex_numerics_20261012/F5_retry2g_20261013。下一步等待F8完整终态及新F5准入/终态，保留两次F5结果并明确区分资源中断与数值判定。
+
+
+## 2026-10-13 23:00 英国时间：F8终态与F5_retry2g自动接续
+
+原独立根case3_flex_F5_direct_20261013_3e4a2fe中的F8于22:43:52UTC完成，Status2/OPTIMAL、138轮、Runtime6883.456638秒、M1.2101824602468741e-4GWh、全流程峰RSS20.554878GiB；所有保全报告COMPLETE，原PID2791611和协调器2340523退出。FactorNZ7.964e8，较F1-0.325407%，耗时-1.692994%；AggFill0满足5b(a)(b)(c)，生产未改。
+
+新根case3_flex_F5_retry2g_20261013_ed90ebc的唯一协调器2858146于22:44:21UTC取得锁、通过71.379GiB可用≥67GiB与无其他识别求解器门禁，自动启动F5_retry2g PID2998218。源码ed90ebc冻结，2016h/start5088/16线程/Aggregate1/Presolve2、2GiB optimize回调；22:55UTC仍运行、RSS8.043877GiB、可用64.886593GiB。未干预原F5/F8，不操作其他用户任务。
+
+24份小证据逐字SHA核验于F8_complete_20261013T2254Z；新19行结果summary_F8_identity_corrected_20261013T2254Z，P5输入年份由旧缺失元数据的默认2030更正为原报告2060、电价2030，数值不变。下一步只读等待新F5终态与完整保全，历史结果不删除，Base和备份既有记录不改。

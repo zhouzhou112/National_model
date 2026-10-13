@@ -1,0 +1,42 @@
+{
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc/source_ed90ebc/repo/scripts/run_flex_full_diagnostic.py",
+    "--hours",
+    "2016",
+    "--start",
+    "5088",
+    "--threads",
+    "16",
+    "--case",
+    "case3_thermal_ev_v5",
+    "--aggregate",
+    "1",
+    "--presolve",
+    "2",
+    "--reserve-gib",
+    "2",
+    "--author-authorized-low-reserve",
+    "--output",
+    "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc/F5_retry2g"
+  ],
+  "gate": {
+    "utc": "2026-10-13T22:44:21.750183+00:00",
+    "predecessor_complete": true,
+    "lock_acquired": true,
+    "available_bytes": 76643409920,
+    "required_bytes": 71940702208,
+    "admission_basis": "prior sampled F5 peak 64.951183 GiB + 2 GiB rounded up; not an upper bound",
+    "reserve_gib": 2,
+    "other_solver_pids": [],
+    "deadline_utc": "2026-10-14T16:09:42+00:00"
+  },
+  "source_root": "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_retry2g_20261013_ed90ebc/source_ed90ebc",
+  "source_commit": "ed90ebc71030a68d1ff46f80fd53fc01170e74ee",
+  "verified_files": 212,
+  "authorization": "Author requested replacing F5 15 GiB protection with 2 GiB on 2026-10-13",
+  "original_run": "/home/zz2/National_model_server/probe_outputs/case3_flex_F5_direct_20261013_3e4a2fe/F5",
+  "restart_from_scratch": true,
+  "monitoring": "RSS throughout; reserve callback during optimize only",
+  "parallel": false
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-13 23:00：F8 OPTIMAL/完整保全，M1.21018246e-4GWh、138轮、6883.456638秒；对F1耗时-1.692994%、FactorNZ-0.325407%，AggFill0满足5b(a)(b)(c)，按温和优先为首选候选，待作者确认。F5_retry2g已22:44UTC自动启动PID2998218/协调器2858146，准入71.379GiB、2GiB保护，外推仍待终态。19行summary_F8_identity_corrected_20261013T2254Z更正P5输入年2060（旧证据缺report时默认为2030），残差/判定未变。生产未改，继续有限跟进。
+
 - 2026-10-13 22:22：作者明确授权F5改用2GiB保护。旧F5已资源中断、完整保留；新F5_retry2g从头重跑排队，根case3_flex_F5_retry2g_20261013_ed90ebc，源码ed90ebc/冻结source_ed90ebc，协调器2858146。等待F8完整结束/锁释放/无其他识别求解器/可用≥67GiB（原峰64.951183+2向上取整），求解回调2GiB；F8原15GiB不变。21:21UTC仍F8 PID2791611/iter48，新F5尚未运行。新源212项SHA已核验；跟进期限仍2026-10-14T16:09:42Z，生产未改。
 
 - 2026-10-13 21:54：F7已OPTIMAL/完整保全，M1.092881e-8GWh、150轮、8946.851秒；对F1耗时+27.775654%、FactorNZ+3.804756%，Aggregate0满足5b(a)(b)(c)。目标差1.07677e-5单独披露，不宣称一般等价性验收通过。F8于20:39:40UTC自动接续PID2791611，准入62.464191GiB，等待温和候选AggFill0终态。18行summary_F7_complete_20261013T2054Z，F5仍资源中断、外推NA，生产未改。
@@ -9921,3 +9923,14 @@ Git基准b4c37e3；无代码修改。F7 Status2/M1.092881e-8GWh/150轮/8946.851�
 - 验证：AST与7组CLI参数边界PASS；新源Linux CLI PASS，远端5份小证据逐字SHA与本地一致。21:21UTC队列等待、F8仍iter48，可用约42.76GiB。当前尚无新F5结果。
 - 应用内现有case3有限回查已更新，截止2026-10-14T16:09:42Z不变；队列到期只停止未获准入的等待，不终止已启动求解。没有新增Git监听/自动提交服务。
 - 精确下一步：继续现有队列，收集F8与F5_retry2g终态，按5b给出建议；旧F5资源中断另列，外推使用重跑时明示身份。生产设置须作者确认。报告/服务器状态已追加，SI未审改动不纳入提交。
+
+
+## 2026-10-13 23:00 — F8通过5b与F5_retry2g启动里程碑
+
+- 代码身份：F8仍冻结f053057，F5_retry2g冻结ed90ebc；本次仅追加REVIEW、MODEL_SERVER_STATUS、Handoff及小证据/19行汇总，不改代码或生产参数。
+- F8于22:43:52UTC完整结束：Status2、M1.2101824602468741e-4GWh、138轮、Runtime6883.456638秒、峰RSS20.554878GiB；AggFill0通过(a)(b)(c)，候选顺序优先于Aggregate0。F5时长外推独立等待新重跑，不能提前宣称整批结束。
+- F5_retry2g于22:44:21UTC自动准入（可用71.379GiB≥67GiB、无其他识别求解器、锁与前序终态通过），PID2998218/控制器2858146；22:55UTC运行，原F5已保全不覆盖，2GiB回调按作者授权生效。
+- 24项小证据SHA逐字匹配，F8三个保全报告COMPLETE；10项模型/向量文件存在和长度匹配，SHA引用运行清单未全量重算。证据F8_complete_20261013T2254Z及paired_checks.json。
+- 元数据更正：旧小证据集合缺P5/report.json，脚本默认输入年2030；实际2060、2030电价。新evidence_identity_20261013T2254Z完整复制旧集合并补入原report，旧数据/历史不动。报告SHA e97e87bfbb2a2e199f10777fdd28abc5b2a2251da084f54dacb8db63f82ecbe7，19行新表仅该元数据更正，数值一致。
+- 复现：scripts/summarize_flex_numerics.py --p-root <review>/evidence_identity_20261013T2254Z --extra-root <review>/P_extension_20261013 --extra-root <review>/F5_interrupted_20261013T1825Z --extra-root <review>/F7_complete_20261013T2054Z --extra-root <review>/F8_complete_20261013T2254Z --decision-rule 5b --skip-plots --output NEW_DIR；产物summary_F8_identity_corrected_20261013T2254Z。最终图与时长判据待重跑。
+- 下一步：只读观察已运行F5_retry2g，保全所有终态后汇总残差剖面/H1-H3与局限；设置建议由作者确认。有限跟进最晚2026-10-14T16:09:42Z，不改生产/冻结源，不触碰云端、备份和凭据；SI未审改动保持未暂存。

@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-13T22:44:21.750183+00:00",
+  "predecessor_complete": true,
+  "lock_acquired": true,
+  "available_bytes": 76643409920,
+  "required_bytes": 71940702208,
+  "admission_basis": "prior sampled F5 peak 64.951183 GiB + 2 GiB rounded up; not an upper bound",
+  "reserve_gib": 2,
+  "other_solver_pids": [],
+  "deadline_utc": "2026-10-14T16:09:42+00:00"
+}

@@ -1,0 +1,17 @@
+{
+  "build_seconds": 342.71944798599,
+  "statistics": {
+    "variables": 3932442,
+    "constraints": 4645439,
+    "nonzeros": 43266259,
+    "coefficient_min_abs": 3.699999999999999e-05,
+    "coefficient_max_abs": 861.0347775973648,
+    "objective_coefficient_min_abs": 0.001,
+    "objective_coefficient_max_abs": 3853.189875762917,
+    "rhs_min_abs": 1.0186e-05,
+    "rhs_max_abs": 112057.60825317315,
+    "quadratic_constraints": 0,
+    "integer_variables": 0,
+    "binary_variables": 0
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "utc": "2026-10-13T22:55:00Z",
+  "available_gib": 64.88659286499023,
+  "retry_pid": 2998218,
+  "retry_status": "running",
+  "retry_rss_gib": 8.043876647949219,
+  "large_file_checks": [
+    {
+      "path": "F8/model_archive/original.mps.gz",
+      "exists": true,
+      "actual_bytes": 373434280,
+      "manifest_bytes": 373434280,
+      "manifest_sha256": "f6c924327f8dea6bf836e8c593a579b6342c328cef8b49b0fcf43ee424ebeda9"
+    },
+    {
+      "path": "F8/model_archive/parameters.prm",
+      "exists": true,
+      "actual_bytes": 205,
+      "manifest_bytes": 205,
+      "manifest_sha256": "0fcd140b12ca82052c61027fd455be2129c38709592d28b34c4cf6fe37ff7727"
+    },
+    {
+      "path": "F8/model_archive/variable_names.jsonl.gz",
+      "exists": true,
+      "actual_bytes": 19669906,
+      "manifest_bytes": 19669906,
+      "manifest_sha256": "85a1a68b00e2faca6cf524eff48b45870b8d1a7ddb7af2708af0e125fc17ce43"
+    },
+    {
+      "path": "F8/model_archive/constraint_names.jsonl.gz",
+      "exists": true,
+      "actual_bytes": 23058980,
+      "manifest_bytes": 23058980,
+      "manifest_sha256": "409d8331c97a857c06d59627cdb3765f3502cb9db930a1f5ff4ee4fb553d7778"
+    },
+    {
+      "path": "F8/solution_snapshot/BarX.npy",
+      "exists": true,
+      "actual_bytes": 31459664,
+      "manifest_bytes": 31459664,
+      "manifest_sha256": "5de7c76cbfad945fcd1d3e32d79ae6943f53a1548e43b59f95e11b7800d2a89e"
+    },
+    {
+      "path": "F8/solution_snapshot/X.npy",
+      "exists": true,
+      "actual_bytes": 31459664,
+      "manifest_bytes": 31459664,
+      "manifest_sha256": "5de7c76cbfad945fcd1d3e32d79ae6943f53a1548e43b59f95e11b7800d2a89e"
+    },
+    {
+      "path": "F8/solution_snapshot/RC.npy",
+      "exists": true,
+      "actual_bytes": 31459664,
+      "manifest_bytes": 31459664,
+      "manifest_sha256": "66ab1811889e238b46e57e893d93096448e69385ba22b84f80420260eb3311e8"
+    },
+    {
+      "path": "F8/solution_snapshot/BarPi.npy",
+      "exists": true,
+      "actual_bytes": 37163640,
+      "manifest_bytes": 37163640,
+      "manifest_sha256": "396091ec18eb7c20db218d426bcc63d4bb2d534a37b5b212fb8a5957eb3d7183"
+    },
+    {
+      "path": "F8/solution_snapshot/Pi.npy",
+      "exists": true,
+      "actual_bytes": 37163640,
+      "manifest_bytes": 37163640,
+      "manifest_sha256": "396091ec18eb7c20db218d426bcc63d4bb2d534a37b5b212fb8a5957eb3d7183"
+    },
+    {
+      "path": "F8/solution_snapshot/Slack.npy",
+      "exists": true,
+      "actual_bytes": 37163640,
+      "manifest_bytes": 37163640,
+      "manifest_sha256": "cccf0656c9660d72501c70edcb26e42172e149090e8efed7da8d05257b471af7"
+    }
+  ],
+  "large_file_sha_rehashed": false
+}

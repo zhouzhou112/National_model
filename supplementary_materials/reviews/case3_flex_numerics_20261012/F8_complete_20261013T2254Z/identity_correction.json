@@ -1,0 +1,10 @@
+{
+  "reason": "Earlier small-evidence root omitted P5 report.json; summary defaulted missing year to 2030. Original input year is 2060, price year 2030. No solver data or decisions changed.",
+  "original_root": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\evidence_20261013T1023Z",
+  "new_input_root": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\evidence_identity_20261013T2254Z",
+  "added_file": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\evidence_identity_20261013T2254Z\\P5\\report.json",
+  "source_file": "supplementary_materials\\reviews\\case3_flex_numerics_20261012\\P_series\\P5\\report.json",
+  "sha256": "e97e87bfbb2a2e199f10777fdd28abc5b2a2251da084f54dacb8db63f82ecbe7",
+  "input_year": 2060,
+  "price_year": 2030
+}
