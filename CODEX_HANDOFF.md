@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-14英国13:37（北京20:37）Base2060/5124127 RUNNING/m4cm2108、累计1天19:20:40，最新iter114（英国13:35:36），较前次49推进65轮。打印PInf5090/DInf1.49e-5/Compl550，近10轮三项逐轮下降32.94%/37.66%/35.45%，目标差2.677767251e10下降32.25%；每轮19.65分钟。第101轮DInf曾回升13.28%，102至114已连续下降至更低值；不宣称全程单调。Slurm RSS403.20GiB/峰657.34GiB，48线程、750G不变；无求解器警告/错误、stderr空，无终态。仍未收敛，残差/目标差不能作为物理QC或完成比例。证据revision_6d_general/progress_20261014T123742Z.json及_summary.json；后续只读观察收敛与完整保全。
+
 - 2026-10-13 23:00：F8 OPTIMAL/完整保全，M1.21018246e-4GWh、138轮、6883.456638秒；对F1耗时-1.692994%、FactorNZ-0.325407%，AggFill0满足5b(a)(b)(c)，按温和优先为首选候选，待作者确认。F5_retry2g已22:44UTC自动启动PID2998218/协调器2858146，准入71.379GiB、2GiB保护，外推仍待终态。19行summary_F8_identity_corrected_20261013T2254Z更正P5输入年2060（旧证据缺report时默认为2030），残差/判定未变。生产未改，继续有限跟进。
 
 - 2026-10-13 22:22：作者明确授权F5改用2GiB保护。旧F5已资源中断、完整保留；新F5_retry2g从头重跑排队，根case3_flex_F5_retry2g_20261013_ed90ebc，源码ed90ebc/冻结source_ed90ebc，协调器2858146。等待F8完整结束/锁释放/无其他识别求解器/可用≥67GiB（原峰64.951183+2向上取整），求解回调2GiB；F8原15GiB不变。21:21UTC仍F8 PID2791611/iter48，新F5尚未运行。新源212项SHA已核验；跟进期限仍2026-10-14T16:09:42Z，生产未改。
@@ -9934,3 +9936,10 @@ Git基准b4c37e3；无代码修改。F7 Status2/M1.092881e-8GWh/150轮/8946.851�
 - 元数据更正：旧小证据集合缺P5/report.json，脚本默认输入年2030；实际2060、2030电价。新evidence_identity_20261013T2254Z完整复制旧集合并补入原report，旧数据/历史不动。报告SHA e97e87bfbb2a2e199f10777fdd28abc5b2a2251da084f54dacb8db63f82ecbe7，19行新表仅该元数据更正，数值一致。
 - 复现：scripts/summarize_flex_numerics.py --p-root <review>/evidence_identity_20261013T2254Z --extra-root <review>/P_extension_20261013 --extra-root <review>/F5_interrupted_20261013T1825Z --extra-root <review>/F7_complete_20261013T2054Z --extra-root <review>/F8_complete_20261013T2254Z --decision-rule 5b --skip-plots --output NEW_DIR；产物summary_F8_identity_corrected_20261013T2254Z。最终图与时长判据待重跑。
 - 下一步：只读观察已运行F5_retry2g，保全所有终态后汇总残差剖面/H1-H3与局限；设置建议由作者确认。有限跟进最晚2026-10-14T16:09:42Z，不改生产/冻结源，不触碰云端、备份和凭据；SI未审改动保持未暂存。
+
+
+## 2026-10-14英国13:37 Base2060第114轮进度
+
+- 2026-10-14英国13:37（北京20:37）Base2060/5124127 RUNNING/m4cm2108、累计1天19:20:40，最新iter114（英国13:35:36），较前次49推进65轮。打印PInf5090/DInf1.49e-5/Compl550，近10轮三项逐轮下降32.94%/37.66%/35.45%，目标差2.677767251e10下降32.25%；每轮19.65分钟。第101轮DInf曾回升13.28%，102至114已连续下降至更低值；不宣称全程单调。Slurm RSS403.20GiB/峰657.34GiB，48线程、750G不变；无求解器警告/错误、stderr空，无终态。仍未收敛，残差/目标差不能作为物理QC或完成比例。证据revision_6d_general/progress_20261014T123742Z.json及_summary.json；后续只读观察收敛与完整保全。
+
+Git基准a6cdc1714fd71f2c3413b3352718c1bd05a917ef，冻结源码680a5c4和运行profile未改。只读scontrol、sstat、gurobi.log/solver_telemetry和stderr，提取0至114轮；最新callback时间与打印日志一致。相比第49轮，三项打印指标分别降低约25.34万倍/21.88万倍/28.18万倍，但仍无OPTIMAL或科学QC结论；不把早期大幅下降外推为结束时间。保留打印与callback两种残差定义；本轮只更新交接、MODEL_SERVER_STATUS、SERVER_RUNBOOK和两份小证据。未触碰作业、case3、SI或后台设置。下一步用户查询时读取收敛/终态，任何QC标签均完整保全所有解数据。
