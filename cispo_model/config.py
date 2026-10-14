@@ -1353,6 +1353,8 @@ def load_model_config(
                 required_formulation_profile_id
             ),
         }
+        if "candidate_screen" in payload:
+            raw["candidate_screen"] = deepcopy(payload["candidate_screen"])
         resolved_solver = resolved_solver.resolve()
     resolved_formulation: Path | None = None
     if formulation_path is not None:

@@ -11,6 +11,58 @@ import pandas as pd
 
 PROFILE_ID = "barrier_factor_screen_8760_v1_threads48"
 RESULT_USE = "TEST_ONLY_FACTOR_SCREEN"
+PRODUCTION_PROFILE_ID = "barrier_stagea_screened_agg0_v1_threads48"
+
+
+def validate_production_screen_contract(config, args):
+    """Author 2026-10-14 authorization; fail closed outside reviewed scope."""
+    raw = config.raw
+    reference = json.loads((Path(__file__).resolve().parents[1] /
+        'config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json').read_text())
+    expected = dict(reference['numerics'], aggregate=0)
+    diagnostic = getattr(args, 'diagnostic_hours', None) is not None
+    if diagnostic:
+        threads = raw['numerics']['threads']
+        if not isinstance(threads, int) or not 1 <= threads <= 48:
+            raise ValueError('Screen diagnostic threads must be in [1, 48]')
+        expected['threads'] = threads
+    for key, value in expected.items():
+        if raw['numerics'].get(key) != value:
+            raise ValueError(f'Production screen parameter drift: {key}')
+    payload = json.loads(Path(config.solver_path).read_text(encoding='utf-8'))
+    if payload.get('numerics') != expected:
+        raise ValueError('Production screen profile must change only Aggregate (diagnostic threads excepted)')
+    for key in ('minimum_gurobi_major_version', 'direct_nonbasic_scientific_acceptance',
+                'stage_b_required', 'stage_a_acceptance'):
+        if payload.get(key) != reference[key]:
+            raise ValueError(f'Production screen acceptance drift: {key}')
+    if payload.get('result_use') != 'SCIENTIFIC_PRODUCTION':
+        raise ValueError('Production screen requires SCIENTIFIC_PRODUCTION profile')
+    if raw['scenario']['id'] not in {'case3_thermal_ev_v5', 'case3_thermal_ev_v5_nocredit'}:
+        raise ValueError('Production screen scenario is outside the author whitelist')
+    if raw['formulation'].get('annual_capacity_link_row_scaling', 'physical_v1') != 'physical_v1':
+        raise ValueError('Production screen requires physical_v1')
+    forbidden = ('mga_spec', 'mga_baseline', 'primal_dual_checkpoint_in',
+                 'recover_stage_a_from', 'basis_in', 'export_warm_start_basis',
+                 'formulation_config', 'archive_presolved_model')
+    if any(getattr(args, name, None) for name in forbidden):
+        raise ValueError('Production screen forbids MGA, Stage B/resume and alternate formulation')
+    if not getattr(args, 'archive_original_model', False) and not getattr(args, 'preflight_only', False):
+        raise ValueError('Production screen requires original model preservation')
+    screen = raw.get('candidate_screen', {})
+    if screen.get('enabled') is not True or not getattr(args, 'vre_screen_csv', None):
+        raise ValueError('Production screen requires enabled candidate_screen and --vre-screen-csv')
+    margin = screen.get('margin')
+    if isinstance(margin, bool) or not isinstance(margin, (float, int)) or not np.isfinite(margin) or margin < 0:
+        raise ValueError('Production screen margin must be finite and nonnegative')
+    import re
+    for key in ('source_dual_sha256', 'source_csv_sha256'):
+        if not re.fullmatch('[0-9a-f]{64}', str(screen.get(key, ''))):
+            raise ValueError(f'Production screen requires {key}')
+    if not screen.get('source_release'):
+        raise ValueError('Production screen requires source_release')
+    if hashlib.sha256(Path(args.vre_screen_csv).read_bytes()).hexdigest() != screen['source_csv_sha256']:
+        raise ValueError('Production screen source CSV SHA mismatch')
 
 
 def mps_section_sha256(path):
@@ -56,7 +108,7 @@ def validate_factor_screen_contract(config, args):
         raise ValueError("Factor screen starts at model hour zero")
 
 
-def apply_vre_screen(artifacts, sites, source, output_dir):
+def apply_vre_screen(artifacts, sites, source, output_dir, *, margin=0.2):
     """Join exact stable identities; change only positive vre_new upper bounds."""
     model = artifacts.model
     model.update()
@@ -74,14 +126,16 @@ def apply_vre_screen(artifacts, sites, source, output_dir):
         raise ValueError("Screen identity/finite-price mismatch; positional joins forbidden")
     if not np.isfinite(ub).all() or (ub < 0).any():
         raise ValueError("Nonfinite or negative VRE headroom")
-    excluded = (aligned.rc_ratio.to_numpy() >= 0.2) & (ub > 0)
+    if not np.isfinite(margin) or margin < 0:
+        raise ValueError('Screen margin must be finite and nonnegative')
+    excluded = (aligned.rc_ratio.to_numpy() >= margin) & (ub > 0)
     new.UB = np.where(excluded, 0.0, ub)
     model.update()
     aligned["original_new_ub_gw"] = ub
     aligned["screened_out"] = excluded
     aligned.to_csv(Path(output_dir) / "candidate_selection.csv", index=False)
     return dict(source_sha256=hashlib.sha256(Path(source).read_bytes()).hexdigest(),
-        source=str(Path(source).resolve()), margin=0.2, alignment="grid_uid × technology; exact one-to-one",
+        source=str(Path(source).resolve()), margin=margin, alignment="grid_uid × technology; exact one-to-one",
         sites=len(ub), expandable_sites=int((ub > 0).sum()),
         retained_expandable=int(((ub > 0) & ~excluded).sum()),
         fixed_columns=int(excluded.sum()), fixed_headroom_gw=float(ub[excluded].sum()),

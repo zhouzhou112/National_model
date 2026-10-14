@@ -241,6 +241,16 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
                 raise
         return stage("read_" + name, read)
 
+    if getattr(config, 'raw', {}).get('candidate_screen', {}).get('enabled'):
+        def preserve_selection():
+            path = root / 'candidate_selection.csv'
+            if not path.is_file():
+                raise FileNotFoundError('Missing candidate_selection.csv for pricing')
+            import hashlib
+            return {'path': path.name, 'bytes': path.stat().st_size,
+                    'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        result['candidate_selection'] = stage('candidate_selection', preserve_selection)
+
     if snapshot:
         row_scaling_registry = artifacts.index.get(
             "annual_capacity_link_row_scaling"

@@ -1,0 +1,22 @@
+======================================================================
+ERROR: test_corrupt_qc_does_not_skip_summary_state_or_catalog (test_final_preservation_no_solve.FinalPreservationNoSolveTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\codeenv\pycharmproject\National_RL\National_model\tests\test_final_preservation_no_solve.py", line 125, in test_corrupt_qc_does_not_skip_summary_state_or_catalog
+    result = preserve_stage_a(artifacts, None, None, root,
+  File "D:\codeenv\pycharmproject\National_RL\National_model\cispo_model\solution_preservation.py", line 244, in preserve_stage_a
+    if config.raw.get('candidate_screen', {}).get('enabled'):
+AttributeError: 'NoneType' object has no attribute 'raw'
+
+======================================================================
+FAIL: test_solver_exception_preserves_vectors_before_failing_semantics (test_final_preservation_no_solve.FinalPreservationNoSolveTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\codeenv\pycharmproject\National_RL\National_model\tests\test_final_preservation_no_solve.py", line 143, in test_solver_exception_preserves_vectors_before_failing_semantics
+    self.assertTrue(inspect_recovery_files(root)["finite_primal_dual_saved"])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 439 tests in 126.034s
+
+FAILED (failures=1, errors=1, skipped=1)

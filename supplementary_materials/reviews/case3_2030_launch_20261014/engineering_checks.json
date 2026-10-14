@@ -1,0 +1,47 @@
+{
+  "base_identity": {
+    "status": "PASS",
+    "path": "base_identity_final/base_identity.json",
+    "sha256": "49e44617adf61c93fa065ed8a50f8aaf36f5d878b7daf67cd7b5b426a9c1399c"
+  },
+  "screen_identity": {
+    "status": "PASS",
+    "path": "screen_identity_01.json",
+    "sha256": "acb5aa2d25a4066bc8ed8057e1266d697110392e635336f93bc424f34eae78d6"
+  },
+  "zero_identity": {
+    "status": "PASS",
+    "path": "zero_identity_01.json",
+    "sha256": "fe4f7e2d296237a32548c0c99f52bb3b327ef79b702a3a7dd8ee0adba435f487"
+  },
+  "parameters": {
+    "status": "PASS",
+    "path": "parameters_05/parameter_verification_2030.json",
+    "sha256": "7d2eb6a11197d1fbd5915b775067de8aabce166f655414a8b826a9681358afe5"
+  },
+  "case3": {
+    "status": "PASS",
+    "M": 1.1204230761761597e-08,
+    "solver_status": "OPTIMAL",
+    "preservation": "COMPLETE",
+    "relative_v1_present": true,
+    "credit": {
+      "firm_credit_bound_violation_gw": 8.206036961055929e-10,
+      "firm_credit_zero_when_unenrolled": 0.0
+    },
+    "path": "case3_24h_01/engineering_gate.json",
+    "sha256": "21cbd0b8839db58ac8fccd36f3d2f6c0e2a4a6c2af9d6c0137c8a418f99acbc3"
+  },
+  "nocredit": {
+    "status": "PASS",
+    "M": 1.1769423379675084e-08,
+    "solver_status": "OPTIMAL",
+    "preservation": "COMPLETE",
+    "relative_v1_present": true,
+    "credit": {
+      "credit_variables_absent": true
+    },
+    "path": "nocredit_24h_01/engineering_gate.json",
+    "sha256": "6c35196784b8a94a83a8212fa309a965dc843031c81746b70afbfb11a39a56cc"
+  }
+}

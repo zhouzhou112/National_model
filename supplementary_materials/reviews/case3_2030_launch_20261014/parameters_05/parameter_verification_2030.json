@@ -1,0 +1,687 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "parameter": "resolved_config_difference_scope",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "resolved configuration; identity labels reported separately"
+    },
+    {
+      "parameter": "base_case",
+      "actual": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "expected": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "v1g_fraction",
+      "actual": 0.2,
+      "expected": 0.2,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "v2g_fraction_total_fleet",
+      "actual": 0.1,
+      "expected": 0.1,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "v2g_cap_gw",
+      "actual": 10.0,
+      "expected": 10.0,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "legacy_bidirectional_activation",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "loaded service costs"
+    },
+    {
+      "parameter": "heating.retention_per_hour",
+      "actual": {
+        "min": 0.94,
+        "max": 0.94
+      },
+      "expected": 0.94,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "heating.positive_state_duration_hours",
+      "actual": {
+        "min": 4.0,
+        "max": 4.0
+      },
+      "expected": 4,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "heating.negative_state_duration_hours",
+      "actual": {
+        "min": 4.0,
+        "max": 4.0
+      },
+      "expected": 4,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "heating.comfort_band_delta_c",
+      "actual": 1.0,
+      "expected": 1.0,
+      "passed": true,
+      "source": "SHA-linked upstream envelope manifest"
+    },
+    {
+      "parameter": "cooling.retention_per_hour",
+      "actual": {
+        "min": 0.92,
+        "max": 0.92
+      },
+      "expected": 0.92,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "cooling.positive_state_duration_hours",
+      "actual": {
+        "min": 5.0,
+        "max": 5.0
+      },
+      "expected": 5,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "cooling.negative_state_duration_hours",
+      "actual": {
+        "min": 5.0,
+        "max": 5.0
+      },
+      "expected": 5,
+      "passed": true,
+      "source": "loaded thermal parameters"
+    },
+    {
+      "parameter": "cooling.comfort_band_delta_c",
+      "actual": 1.0,
+      "expected": 1.0,
+      "passed": true,
+      "source": "SHA-linked upstream envelope manifest"
+    },
+    {
+      "parameter": "heating.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "heating.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 300.0,
+        "max": 300.0
+      },
+      "expected": 300,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "heating.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "heating.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "cooling.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "cooling.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 300.0,
+        "max": 300.0
+      },
+      "expected": 300,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "cooling.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "cooling.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v1g.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v1g.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v1g.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v1g.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v2g.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 50.0,
+        "max": 50.0
+      },
+      "expected": 50,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v2g.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 150.0,
+        "max": 150.0
+      },
+      "expected": 150,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v2g.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "ev_v2g.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 150.0,
+        "max": 150.0
+      },
+      "expected": 150,
+      "passed": true,
+      "source": "loaded service costs; thermal legacy activation unused"
+    },
+    {
+      "parameter": "heating.activation_release",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded directional costs"
+    },
+    {
+      "parameter": "heating.activation_precondition",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded directional costs"
+    },
+    {
+      "parameter": "cooling.activation_release",
+      "actual": {
+        "min": 40.0,
+        "max": 40.0
+      },
+      "expected": 40,
+      "passed": true,
+      "source": "loaded directional costs"
+    },
+    {
+      "parameter": "cooling.activation_precondition",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "loaded directional costs"
+    },
+    {
+      "parameter": "v1g.power_ratio",
+      "actual": 2.0,
+      "expected": 2.0,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "ev.charge_efficiency",
+      "actual": 0.94,
+      "expected": 0.94,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "ev.discharge_efficiency",
+      "actual": 0.94,
+      "expected": 0.94,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "v2g.duration_h",
+      "actual": 4.0,
+      "expected": 4.0,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "ev.actual_charge_envelope_error_gw",
+      "actual": {
+        "min": -8.881784197001252e-16,
+        "max": 8.881784197001252e-16
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h inputs"
+    },
+    {
+      "parameter": "ev.actual_24h_inventory_error_gwh",
+      "actual": {
+        "min": -7.105427357601002e-15,
+        "max": 1.4210854715202004e-14
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h inputs"
+    },
+    {
+      "parameter": "heating.participation_up_error_gw",
+      "actual": {
+        "min": -1.1102230246251565e-16,
+        "max": 0.0
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h envelopes versus upstream envelope"
+    },
+    {
+      "parameter": "heating.participation_down_error_gw",
+      "actual": {
+        "min": -1.1102230246251565e-16,
+        "max": 1.3552527156068805e-20
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h envelopes versus upstream envelope"
+    },
+    {
+      "parameter": "cooling.participation_up_error_gw",
+      "actual": {
+        "min": -2.220446049250313e-16,
+        "max": 2.220446049250313e-16
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h envelopes versus upstream envelope"
+    },
+    {
+      "parameter": "cooling.participation_down_error_gw",
+      "actual": {
+        "min": -2.220446049250313e-16,
+        "max": 2.220446049250313e-16
+      },
+      "expected": 0.0,
+      "passed": true,
+      "source": "loaded 8760h envelopes versus upstream envelope"
+    },
+    {
+      "parameter": "credit.duration_h",
+      "actual": 4.0,
+      "expected": 4.0,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "credit.heating",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "credit.cooling",
+      "actual": 0.6,
+      "expected": 0.6,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "credit.ev_v1g",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "credit.ev_v2g",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "credit.peak_reference",
+      "actual": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+      "expected": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+      "passed": true,
+      "source": "resolved configuration"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.build_resolved_config_identity",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "retained build configuration"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.legacy_branch",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual build_report"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.heating_shift_up_gw_active[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective.heating_shift_up_gw_active[",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.heating_shift_down_gw_active[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective.heating_shift_down_gw_active[",
+      "actual": {
+        "min": 0.04,
+        "max": 0.04
+      },
+      "expected": 0.04,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.cooling_shift_up_gw_active[",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.cooling_shift_down_gw_active[",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.ev_mobility_v1g_relocated_gw[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective.ev_mobility_v1g_relocated_gw[",
+      "actual": {
+        "min": 0.03,
+        "max": 0.03
+      },
+      "expected": 0.03,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective_present.ev_mobility_discharge_gw[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.objective.ev_mobility_discharge_gw[",
+      "actual": {
+        "min": 0.3,
+        "max": 0.3
+      },
+      "expected": 0.3,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5.credit_variables",
+      "actual": 124.0,
+      "expected": 124,
+      "passed": true,
+      "source": "actual original MPS"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.build_resolved_config_identity",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "retained build configuration"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.legacy_branch",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual build_report"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.heating_shift_up_gw_active[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective.heating_shift_up_gw_active[",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.heating_shift_down_gw_active[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective.heating_shift_down_gw_active[",
+      "actual": {
+        "min": 0.04,
+        "max": 0.04
+      },
+      "expected": 0.04,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.cooling_shift_up_gw_active[",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.cooling_shift_down_gw_active[",
+      "actual": false,
+      "expected": false,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.ev_mobility_v1g_relocated_gw[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective.ev_mobility_v1g_relocated_gw[",
+      "actual": {
+        "min": 0.03,
+        "max": 0.03
+      },
+      "expected": 0.03,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective_present.ev_mobility_discharge_gw[",
+      "actual": true,
+      "expected": true,
+      "passed": true,
+      "source": "actual original MPS versus nonzero control support in selected hour"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.objective.ev_mobility_discharge_gw[",
+      "actual": {
+        "min": 0.3,
+        "max": 0.3
+      },
+      "expected": 0.3,
+      "passed": true,
+      "source": "actual original MPS objective, million CNY/GWh"
+    },
+    {
+      "parameter": "case3_thermal_ev_v5_nocredit.credit_variables",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true,
+      "source": "actual original MPS"
+    }
+  ],
+  "build_root": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\parameters_03",
+  "resolved_differences": [
+    {
+      "key": "scenario.analysis_role",
+      "case3": "CENTRAL_COUNTERFACTUAL",
+      "nocredit": "SENSITIVITY"
+    },
+    {
+      "key": "scenario.description",
+      "case3": "Author-approved 2026-10-11 flexibility pathway",
+      "nocredit": "Author-approved 2026-10-11 flexibility pathway_nocredit"
+    },
+    {
+      "key": "scenario.id",
+      "case3": "case3_thermal_ev_v5",
+      "nocredit": "case3_thermal_ev_v5_nocredit"
+    },
+    {
+      "key": "security.capacity_margin_load_basis",
+      "case3": "firm_flexibility_derated_v1",
+      "nocredit": "baseline_peak_v1"
+    }
+  ],
+  "input_manifest_sha256": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492",
+  "scientific_fingerprints": {
+    "case3_thermal_ev_v5": "324d98cc7f4154e21fdcfcdb48768016c53ad59ffd9a7d513286e04c8a9739a1",
+    "case3_thermal_ev_v5_nocredit": "0ae7f2cf5a910cd287572ddd9c3570a55d41be17fef7953319021775345548da"
+  },
+  "scope": "1h build-only; production screening adds its own scientific identity; no planning conclusions",
+  "legacy_cost_note": "Config 300/400 legacy scalars and thermal legacy activation 300 are unused by V5 directional/EV objective; actual MPS coefficients checked."
+}

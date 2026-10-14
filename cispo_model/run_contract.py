@@ -281,6 +281,8 @@ def configuration_identity(
     }
     if lp_model is not None:
         identity["lp_model"] = lp_model
+    if config.raw.get('candidate_screen', {}).get('enabled'):
+        identity['candidate_screen'] = dict(config.raw['candidate_screen'])
     if lp_topology is not None:
         identity["lp_topology"] = lp_topology
     return identity

@@ -1,0 +1,5 @@
+{
+  "returncode": 2,
+  "stderr": "bash: line 77: syntax error near unexpected token `newline'\nbash: line 77: `case \"$CISPO_SCENARIO\" in case3_thermal_ev_v5|case3_thermal_ev_v5_nocredit) ;; *) exit 64 ;; esac\n'\n",
+  "method": "bash -n via stdin; no remote file created"
+}

@@ -1,0 +1,14 @@
+======================================================================
+ERROR: test_real_runner_two_row_solve_never_exports_qc_or_state (test_factor_screen.FactorScreenTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\codeenv\pycharmproject\National_RL\National_model\tests\test_factor_screen.py", line 80, in test_real_runner_two_row_solve_never_exports_qc_or_state
+    runner.main()
+  File "D:\codeenv\pycharmproject\National_RL\National_model\scripts\run_cispo_2030_full_year.py", line 1540, in main
+    raise SystemExit(
+SystemExit: HARD_FAIL: available memory 7.9 GiB < 8.0 GiB required for diagnostic_1h
+
+----------------------------------------------------------------------
+Ran 439 tests in 198.557s
+
+FAILED (errors=1, skipped=1)

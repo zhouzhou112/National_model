@@ -1,0 +1,28 @@
+{
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+  "batch_sha256": "feb473a7521b7bc4d3c6bee355ddbd84b4495859bf451e5c1635f27275caf9ff",
+  "batch_text": "#!/bin/bash\n# Author-authorized full 2030 v9 Base; no wall-time budget or successor job.\n#SBATCH --account=bscc-a8\n#SBATCH --partition=amd_a8_768\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --cpus-per-task=64\n#SBATCH --mem=750G\n#SBATCH --time=0\n#SBATCH --no-requeue\n#SBATCH --job-name=cispo2030_base_v9_t48\n#SBATCH --output=slurm-%j.out\n#SBATCH --error=slurm-%j.err\nset -euo pipefail\numask 027\n: \"${SLURM_SUBMIT_DIR:?Fresh immutable release required}\"\n: \"${SOURCE_RELEASE:?Immutable data/environment source required}\"\nRELEASE_ROOT=\"$SLURM_SUBMIT_DIR\"\ntrap 'rc=$?; printf \"{\\\"exit_code\\\":%s,\\\"job_id\\\":\\\"%s\\\"}\\n\" \"$rc\" \"$SLURM_JOB_ID\" > \"$RELEASE_ROOT/batch_exit.json\"' EXIT\ncd \"$RELEASE_ROOT\"\ntest ! -e output_8760\nsha256sum -c release_files.sha256 > runtime_hash_check.log\nset -a\nsource \"$SOURCE_RELEASE/manifests/cloud_environment_paths.env\"\nset +a\nexport PATH=\"$GUROBI_HOME/bin:$PATH\"\nexport LD_LIBRARY_PATH=\"$GUROBI_HOME/lib:${LD_LIBRARY_PATH:-}\"\nexport GRB_LICENSE_FILE=\"${CISPO_CLOUD_LICENSE:-$HOME/gurobipy-test-gcs/gurobi.lic}\"\nexport http_proxy=\"${CISPO_CLOUD_PROXY:-http://172.16.110.3:8888}\"\nexport https_proxy=\"$http_proxy\" HTTP_PROXY=\"$http_proxy\" HTTPS_PROXY=\"$http_proxy\"\nexport PYTHONUNBUFFERED=1 PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1\nexport OMP_NUM_THREADS=48 OPENBLAS_NUM_THREADS=48 MKL_NUM_THREADS=48\nexport CISPO_DATA_ROOT=\"$RELEASE_ROOT/data_overlay\"\nexport PYTHONPATH=\"$RELEASE_ROOT/repo${PYTHONPATH:+:$PYTHONPATH}\"\ntest -d \"$CISPO_DATA_ROOT\"\ntest -r \"$GRB_LICENSE_FILE\"\n\"$PYTHON\" - \"$RELEASE_ROOT\" <<'PY'\nimport json, os, re, subprocess, sys\nfrom pathlib import Path\nimport gurobipy as gp\nimport psutil\nroot = Path(sys.argv[1])\nrecord = subprocess.check_output(['scontrol', 'show', 'job', '-o', os.environ['SLURM_JOB_ID']], text=True)\n(root/'runtime_slurm_job.txt').write_text(record)\ndef field(name):\n    match = re.search(r'\\b' + name + r'=(\\S+)', record)\n    if not match:\n        raise RuntimeError('Missing Slurm field ' + name)\n    return match.group(1)\ntres = dict(item.split('=', 1) for item in field('AllocTRES').split(','))\nif tres.get('cpu') != '64' or tres.get('billing') != '64' or tres.get('mem') not in {'750G','768000M'}:\n    raise RuntimeError('Allocation must be cpu64/mem750G/billing64: ' + str(tres))\nif field('TimeLimit') != 'UNLIMITED':\n    raise RuntimeError('Job time limit must be UNLIMITED')\nif int(os.environ.get('SLURM_CPUS_PER_TASK', '0')) != 64 or len(os.sched_getaffinity(0)) < 48:\n    raise RuntimeError('Insufficient assigned/available CPU affinity')\nif psutil.virtual_memory().available < 500 * 2**30:\n    raise RuntimeError('Available memory is below the reviewed build threshold')\nif gp.gurobi.version()[0] < 13:\n    raise RuntimeError('Production requires Gurobi 13 or later')\nwith gp.Env(empty=True) as env:\n    env.setParam('OutputFlag', 0)\n    env.start()\n    with gp.Model(env=env) as model:\n        x = model.addVar(lb=0)\n        model.addConstr(x >= 1)\n        model.setObjective(x)\n        model.optimize()\n        if model.Status != gp.GRB.OPTIMAL or abs(x.X - 1) > 1e-8:\n            raise RuntimeError('Compute-node license/solver smoke failed')\n(root/'compute_node_smoke.json').write_text(json.dumps(dict(status='PASS',\n    job_id=os.environ['SLURM_JOB_ID'], gurobi_version=list(gp.gurobi.version()),\n    allocation=tres, time_limit=field('TimeLimit'),\n    available_memory_gib=psutil.virtual_memory().available/2**30), indent=2))\nPY\ncd \"$RELEASE_ROOT/repo\"\n# Exercise the real runner's postbuild/archive branch on a two-row fixture\n# under the actual compute-node Gurobi before spending time on the annual LP.\n\"$PYTHON\" -m unittest discover -s tests -p test_numeric_repaired_formal_launch.py -v \\\n  > \"$RELEASE_ROOT/startup_regression.log\" 2>&1\n/usr/bin/time -v -o \"$RELEASE_ROOT/resource_usage.txt\" \\\n  \"$PYTHON\" scripts/run_cispo_2030_full_year.py \\\n    --config config/optimization_numeric_dac_by_year_v9.json \\\n    --solver-config config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json \\\n    --horizon full_year --archive-original-model --allow-nonbasic-planning-state \\\n    --output-dir \"$RELEASE_ROOT/output_8760\" \\\n    > \"$RELEASE_ROOT/stdout.log\" 2> \"$RELEASE_ROOT/stderr.log\"\n",
+  "overlay_directories": [
+    "smoke_test_report.json",
+    "source_manifest.csv",
+    "output_manifest.csv",
+    "storage",
+    "carbon",
+    "biomass",
+    "hydro",
+    "load_center_network",
+    "model_defaults.json",
+    "qc_summary.csv",
+    "load",
+    "flexibility",
+    "model_input_files.json",
+    "README.md",
+    "thermal",
+    "grid",
+    "wave",
+    "technology",
+    "vre",
+    "sets",
+    "transmission"
+  ]
+}

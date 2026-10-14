@@ -34,6 +34,7 @@ from cispo_model.run_contract import (
 )
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 from cispo_model.factor_screen import PROFILE_ID as FACTOR_SCREEN_PROFILE_ID, RESULT_USE as FACTOR_SCREEN_RESULT_USE
+from cispo_model.factor_screen import PRODUCTION_PROFILE_ID as SCREENED_STAGE_A_PROFILE_ID
 
 
 PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
@@ -69,6 +70,7 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
 )
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     {
+        SCREENED_STAGE_A_PROFILE_ID,
         NUMERIC_REPAIRED_STAGE_A_PROFILE_ID,
         PORTFOLIO_STAGE_A_PROFILE_ID,
         "barrier_checkpoint_full_year_cloud_v4",
@@ -274,7 +276,7 @@ def direct_nonbasic_row_scaling_contract(config) -> tuple[str, int]:
     from cispo_model.annual_capacity_link_scaling import (
         PHYSICAL_V1, BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT,
     )
-    if config.raw.get("solver_profile", {}).get("id") == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
+    if config.raw.get("solver_profile", {}).get("id") in {NUMERIC_REPAIRED_STAGE_A_PROFILE_ID, SCREENED_STAGE_A_PROFILE_ID}:
         return PHYSICAL_V1, 0
     return BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT
 
@@ -880,8 +882,12 @@ def main() -> None:
     )
     profile_id = config.raw.get("solver_profile", {}).get("id")
     factor_screen = profile_id == FACTOR_SCREEN_PROFILE_ID
-    if args.vre_screen_csv and not factor_screen:
+    production_screen = profile_id == SCREENED_STAGE_A_PROFILE_ID
+    if args.vre_screen_csv and not (factor_screen or production_screen):
         raise SystemExit("--vre-screen-csv is restricted to TEST_ONLY factor screen")
+    if production_screen:
+        from cispo_model.factor_screen import validate_production_screen_contract
+        validate_production_screen_contract(config, args)
     if factor_screen:
         from cispo_model.factor_screen import validate_factor_screen_contract
         validate_factor_screen_contract(config, args)
@@ -1001,7 +1007,7 @@ def main() -> None:
             "direct_nonbasic_scientific_acceptance is reserved for the "
             "reviewed full-year Stage A profile"
         )
-    if direct_nonbasic_scientific_acceptance:
+    if direct_nonbasic_scientific_acceptance and not production_screen:
         require_canonical_direct_nonbasic_profiles(config)
     if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
         if not archive_original_model and not args.preflight_only:
@@ -1035,6 +1041,7 @@ def main() -> None:
         is_optional_portfolio(config.raw["flexible_load"])
         and requested_optimization_hours == 8760
         and not factor_screen
+        and not production_screen
         and not (args.preflight_only or args.build_only or args.recover_stage_a_from)
     ):
         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
@@ -1268,6 +1275,8 @@ def main() -> None:
         cloud_full_year_role,
         profile_id,
     )
+    if production_screen and optimization_hours == 8760 and not args.build_only:
+        required_gb = max(required_gb, 700.0)
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
     )
@@ -1315,6 +1324,7 @@ def main() -> None:
             hours=optimization_hours,
             hour_start=optimization_start_hour,
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
+            allow_authorized_case3_nonbasic=production_screen,
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis or factor_screen
             ),
@@ -1554,7 +1564,13 @@ def main() -> None:
     screen_report = None
     if args.vre_screen_csv:
         from cispo_model.factor_screen import apply_vre_screen
-        screen_report = apply_vre_screen(artifacts, data.vre_sites, args.vre_screen_csv, output_dir)
+        screen_report = apply_vre_screen(artifacts, data.vre_sites, args.vre_screen_csv, output_dir,
+            margin=config.raw['candidate_screen']['margin'] if production_screen else 0.2)
+        if production_screen:
+            # Resolved screening changes physical bounds and the scientific identity.
+            config.raw['candidate_screen'].update({key: value for key, value in screen_report.items()
+                if key != 'source'})
+            screen_report.update(config.raw['candidate_screen'])
     row_scaling_registry = artifacts.index.get(
         "annual_capacity_link_row_scaling"
     )
@@ -1692,6 +1708,7 @@ def main() -> None:
             compatibility_structural_audit,
             config.raw["numerics"],
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
+            allow_authorized_case3_nonbasic=production_screen,
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis or factor_screen
             ),
@@ -1756,8 +1773,9 @@ def main() -> None:
     for audit_key in ("numerical_robustness_audit", "annual_dense_row_split"):
         if artifacts.index.get(audit_key):
             build_report[audit_key] = artifacts.index[audit_key]
-    if factor_screen:
+    if factor_screen or production_screen:
         build_report["vre_screen"] = screen_report
+    if factor_screen:
         build_report["scientific_acceptance_mode"] = "NONE"
     (output_dir / "build_report.json").write_text(
         json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
@@ -1774,7 +1792,7 @@ def main() -> None:
     ):
         from cispo_model.diagnostics import configure_gurobi
         configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
-        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen:
+        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen or production_screen:
             # Read back the actual model before the multi-day optimize call.
             from cispo_model.diagnostics import validate_unlimited_stage_a_parameters
             write_strict_json_atomic(
@@ -2268,6 +2286,7 @@ def main() -> None:
         args.engineering_barrier_checkpoint_only
         or (nonbasic_primal_dual_requested and not solver_solution_accepted)
         or planning_state.metadata.get("candidate_unaccepted")
+        or production_screen
     ):
         if direct_nonbasic_scientific_acceptance:
             report["stage_a_completion_status"] = (
@@ -2290,6 +2309,10 @@ def main() -> None:
         # Success here means complete preservation, never scientific acceptance.
         if preserved["status"] != "COMPLETE":
             raise SystemExit(2)
+        if production_screen and report.get('status') == 'OPTIMAL':
+            # Author 2026-10-12: QC is a reference label; preserve every solve.
+            # Adoption and continuation remain explicit author decisions.
+            return
         if (
             args.engineering_barrier_checkpoint_only
             and engineering_checkpoint_completed

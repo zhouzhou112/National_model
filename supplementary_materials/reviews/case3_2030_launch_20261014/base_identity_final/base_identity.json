@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "different_segments": [],
+  "segments": {
+    "reference": {
+      "NAME": "ff0d5ab3af4a4ab76df76947abf0c58ad948918af198bdc2b1d306ac38c03594",
+      "ROWS": "6af7422139768b64901196f80d02abc9a564bfbdfdc8d010847e18d065cd8147",
+      "COLUMNS": "931d7b922758cad88763815bfa751809bb0f0ea5adac974be98e32c2983935dc",
+      "RHS": "38688d253ba87c177afddcf58b5bf9fa5c09e978bca163c7a062309449d86235",
+      "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+      "BOUNDS_VRE_NEW": "faba07e3af4743236fe8c363de00818669b2ac02846a700f51d493d4f94d1562",
+      "BOUNDS_OTHER": "f61410afea9a889a6352075691dc7f428b772ad56551e20c0a2a4746c61261af",
+      "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+    },
+    "current": {
+      "NAME": "ff0d5ab3af4a4ab76df76947abf0c58ad948918af198bdc2b1d306ac38c03594",
+      "ROWS": "6af7422139768b64901196f80d02abc9a564bfbdfdc8d010847e18d065cd8147",
+      "COLUMNS": "931d7b922758cad88763815bfa751809bb0f0ea5adac974be98e32c2983935dc",
+      "RHS": "38688d253ba87c177afddcf58b5bf9fa5c09e978bca163c7a062309449d86235",
+      "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+      "BOUNDS_VRE_NEW": "faba07e3af4743236fe8c363de00818669b2ac02846a700f51d493d4f94d1562",
+      "BOUNDS_OTHER": "f61410afea9a889a6352075691dc7f428b772ad56551e20c0a2a4746c61261af",
+      "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+    }
+  },
+  "current_head": "2aa17ef35eb3009a21d57000087639ce7c5f0b37",
+  "source_manifest": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\formal_launch_failure_20260914\\20260914_base_v9_t48_m750_tol1e4_v3_manifest.json"
+}

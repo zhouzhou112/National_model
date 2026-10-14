@@ -53,5 +53,5 @@ If chat context conflicts with committed files or verified outputs, stop and res
 4. **relative_v1 扩展：** 除已实现的四项外，其余以 GW/GWh 计的物理残差检查一律采用 max(严格容差, 1e-3 GW 或 GWh)，在 case3 启动前实现。
 5. **定价证书的比较用途：** 2026-10-10 第 4 条的门槛继续用于判断方案是否近优；与 Base 比较成本差时，证书上界 B 计入节省区间，B > 1e-4 × 目标值即加回负价列重解一次，两次求解数据均保全。
 6. **报告口径：** 情景相对 Base 的节省按区间 [D_Base − P_X, P_Base − D_X + B_X] 报告；2040 年以后以物理量差为主。
-7. **case3 求解参数：** 待夜间数值实验（`claude_workspace/tasks/TASK_case3_flex_numerics_overnight_20261012.md`）给出结论后，由作者确认；在此之前不提交 case3 全年作业。
+7. **case3 求解参数（2026-10-14 作者确认）：** case3、`_nocredit` 与 C 的全部年份，在 Base 生产数值设置上只改 `Aggregate=0`，其余不变。依据为夜间数值实验第 5b、5c 节：冷热库存是每小时衰减 6–8% 的长链，预求解聚合沿链代入后，还原出的库存出现下界违反，规模越大越严重；关闭聚合后，隔离块与全模型中该机制均消失，744h 耗时 +28%，内存不变。LP 与 Base 相同，只是求解路径不同，结果可直接比较。F9 不做；F5 运行完后作为参考记录。
 

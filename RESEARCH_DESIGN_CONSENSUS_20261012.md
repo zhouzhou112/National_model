@@ -63,7 +63,7 @@ case3 2030 和 `_nocredit` 2030 没有继承状态，配置与 Base 2030 完全�
 
 ## 3. 求解、验收与数据保全
 
-- 求解：Stage A，即 Barrier、Crossover=0、BarConvTol=1e-4、NumericFocus=2、48 线程，不执行 Stage B。case3 是否沿用 Base 的 Presolve=2/Aggregate=1，取决于夜间数值实验（第 6 节）。
+- 求解：Stage A，即 Barrier、Crossover=0、BarConvTol=1e-4、NumericFocus=2、48 线程，不执行 Stage B。**2026-10-14 更新：** 含柔性的情景（case3、`_nocredit`、C）在此基础上设 `Aggregate=0`。原因是冷热库存每小时保留 0.92/0.94，预求解聚合沿这条长链代入，系数随链长衰减到 1e-8 至 1e-13，还原时会产生库存下界违反；隔离块中这一违反随参与池规模放大，2040–2060 年达到 56–86 MWh，且终态不再是 OPTIMAL。电池自放电约 3e-5/h，抽蓄与水库无衰减项，链上系数始终接近 1，所以 Base 不受影响。关闭聚合后机制消失，744h 耗时 +28%，内存不变。证据见 `supplementary_materials/reviews/case3_flex_numerics_20261012/`。
 - relative_v1：功率平衡、成本闭合、双向流（额外损耗 ≤ 全年负荷的 1e-4）、水库（暂缓）四项已实现。**扩展（2026-10-12 决定，case3 启动前实现）：** 其余所有以 GW/GWh 计的物理残差检查，包括冷热和 EV 库存、V2G、信用上界、波浪、储能，判据改为 max(严格容差, 1e-3 GW 或 GWh)。理由是 Base 中柔性检查恒为 0，从未被内点解检验过；严格的 1e-5 GWh 低于内点解的正常残差量级（2030 功率平衡最大残差 0.19 MW）。
 - **验收只是参考标签：** 任何口径的结论都不导致数据被删除、覆盖或放弃；解是否采用，由作者与决策层人工决定（AGENTS.md 2026-10-12 第 6 条）。
 

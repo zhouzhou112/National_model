@@ -1,0 +1,36 @@
+[
+  {
+    "name": "reference",
+    "command": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "-B",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\formal_launch_failure_20260914\\20260914_base_v9_t48_m750_tol1e4_v3\\repo\\scripts\\run_cispo_2030_full_year.py",
+      "--config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\formal_launch_failure_20260914\\20260914_base_v9_t48_m750_tol1e4_v3\\repo\\config\\optimization_numeric_dac_by_year_v9.json",
+      "--diagnostic-hours",
+      "1",
+      "--build-only",
+      "--archive-original-model",
+      "--output-dir",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\base_identity_final\\reference"
+    ],
+    "returncode": 0
+  },
+  {
+    "name": "current",
+    "command": [
+      "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+      "-B",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\run_cispo_2030_full_year.py",
+      "--config",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9.json",
+      "--diagnostic-hours",
+      "1",
+      "--build-only",
+      "--archive-original-model",
+      "--output-dir",
+      "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\base_identity_final\\current"
+    ],
+    "returncode": 0
+  }
+]

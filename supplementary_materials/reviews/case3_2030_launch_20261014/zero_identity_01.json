@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "relative_objective_difference": 1.1409671441444699e-14,
+  "maximum_flex_decision_abs": 0.0,
+  "decision_keys": [
+    "flexible_service_capacity",
+    "heating_shift_up",
+    "heating_shift_down",
+    "heating_state",
+    "cooling_shift_up",
+    "cooling_shift_down",
+    "cooling_state",
+    "ev_enrolled_service_fraction",
+    "ev_bidirectional_service_fraction",
+    "ev_v1g_pool_charge",
+    "ev_v2g_pool_charge",
+    "ev_v1g_pool_inventory",
+    "ev_v2g_pool_inventory",
+    "firm_flexible_capacity_credit",
+    "ev_mobility_charge",
+    "ev_mobility_discharge",
+    "ev_mobility_soc",
+    "ev_mobility_v1g_relocated",
+    "ev_v2g_discharge",
+    "ev_v2g_soc",
+    "ev_v2g_charge"
+  ],
+  "excluded_constants": [
+    "firm_flexible_capacity_credit_upper",
+    "ev_grid_charge_power_ub"
+  ],
+  "note": "The original zero24_01 engineering_gate maximum included fixed upper-bound arrays; this report distinguishes decisions from constants without altering old records.",
+  "base_objective": 2122268.5564849535,
+  "zero_objective": 2122268.5564849293,
+  "both_status_OPTIMAL": true
+}

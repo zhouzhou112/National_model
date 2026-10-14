@@ -448,9 +448,11 @@ def write_run_provenance(
                 "formulation", "daily_energy_shift_v1"
             )
         )
-        == "service_constrained_v4"
+        in {"service_constrained_v4", "integrated_service_constrained_v5"}
     ):
-        v4_files = config.raw["flexible_load"].get("v4_input_files", {})
+        file_key = ('v5_input_files' if config.raw['flexible_load']['formulation']
+                    == 'integrated_service_constrained_v5' else 'v4_input_files')
+        v4_files = config.raw["flexible_load"].get(file_key, {})
         for key in (
             "thermal_hourly_envelope_file",
             "thermal_parameters_file",

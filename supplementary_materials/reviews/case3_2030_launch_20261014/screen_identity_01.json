@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "differences": [
+    "BOUNDS_VRE_NEW"
+  ],
+  "screen": {
+    "source_sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368",
+    "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\factor_pair_8760_20261005\\cloud_payload\\source_screen.csv",
+    "margin": 0.2,
+    "alignment": "grid_uid × technology; exact one-to-one",
+    "sites": 36686,
+    "expandable_sites": 34439,
+    "retained_expandable": 14167,
+    "fixed_columns": 20272,
+    "fixed_headroom_gw": 39341.39949215136,
+    "original_headroom_gw": 55674.70315219389,
+    "enabled": true,
+    "source_release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "source_dual_sha256": "f2aa7651125202126e3c20ae8b60e03ac721d7e3d82c295b6cbcee1f80800b5e",
+    "source_csv_sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368"
+  },
+  "unscreened": {
+    "NAME": "ff0d5ab3af4a4ab76df76947abf0c58ad948918af198bdc2b1d306ac38c03594",
+    "ROWS": "5a0b2f785fc89b19352554d3f359024b00f651f86c6622c789701512a2e01a26",
+    "COLUMNS": "5076e930578c6b4d1f6193f1a723c39a02d059a2b32e6725373835fb4bb545e9",
+    "RHS": "a88a05fbb19448ca5b87c70a7fc0465d4cc7fbf36fdc0e31b2356cac8475edc2",
+    "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+    "BOUNDS_VRE_NEW": "faba07e3af4743236fe8c363de00818669b2ac02846a700f51d493d4f94d1562",
+    "BOUNDS_OTHER": "db314cb52017e3e41b93c5a938cd1a852649c36c8443111f1cfd76e416c82cf4",
+    "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+  },
+  "screened": {
+    "NAME": "ff0d5ab3af4a4ab76df76947abf0c58ad948918af198bdc2b1d306ac38c03594",
+    "ROWS": "5a0b2f785fc89b19352554d3f359024b00f651f86c6622c789701512a2e01a26",
+    "COLUMNS": "5076e930578c6b4d1f6193f1a723c39a02d059a2b32e6725373835fb4bb545e9",
+    "RHS": "a88a05fbb19448ca5b87c70a7fc0465d4cc7fbf36fdc0e31b2356cac8475edc2",
+    "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+    "BOUNDS_VRE_NEW": "9c5fce1fcc188ca3f5a34e17692ca91bedb70550fc1abbb2308a2874fc830fde",
+    "BOUNDS_OTHER": "db314cb52017e3e41b93c5a938cd1a852649c36c8443111f1cfd76e416c82cf4",
+    "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+  }
+}

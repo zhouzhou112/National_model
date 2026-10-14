@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "checks": {
+    "base_identity": {
+      "status": "PASS",
+      "path": "base_identity_final/base_identity.json",
+      "sha256": "49e44617adf61c93fa065ed8a50f8aaf36f5d878b7daf67cd7b5b426a9c1399c"
+    },
+    "screen_identity": {
+      "status": "PASS",
+      "path": "screen_identity_01.json",
+      "sha256": "acb5aa2d25a4066bc8ed8057e1266d697110392e635336f93bc424f34eae78d6"
+    },
+    "zero_identity": {
+      "status": "PASS",
+      "path": "zero_identity_01.json",
+      "sha256": "fe4f7e2d296237a32548c0c99f52bb3b327ef79b702a3a7dd8ee0adba435f487"
+    },
+    "parameters": {
+      "status": "PASS",
+      "path": "parameters_05/parameter_verification_2030.json",
+      "sha256": "7d2eb6a11197d1fbd5915b775067de8aabce166f655414a8b826a9681358afe5"
+    },
+    "case3": {
+      "status": "PASS",
+      "M": 1.1204230761761597e-08,
+      "solver_status": "OPTIMAL",
+      "preservation": "COMPLETE",
+      "relative_v1_present": true,
+      "credit": {
+        "firm_credit_bound_violation_gw": 8.206036961055929e-10,
+        "firm_credit_zero_when_unenrolled": 0.0
+      },
+      "path": "case3_24h_01/engineering_gate.json",
+      "sha256": "21cbd0b8839db58ac8fccd36f3d2f6c0e2a4a6c2af9d6c0137c8a418f99acbc3"
+    },
+    "nocredit": {
+      "status": "PASS",
+      "M": 1.1769423379675084e-08,
+      "solver_status": "OPTIMAL",
+      "preservation": "COMPLETE",
+      "relative_v1_present": true,
+      "credit": {
+        "credit_variables_absent": true
+      },
+      "path": "nocredit_24h_01/engineering_gate.json",
+      "sha256": "6c35196784b8a94a83a8212fa309a965dc843031c81746b70afbfb11a39a56cc"
+    }
+  },
+  "unit_tests": {
+    "count": 440,
+    "skipped": 1,
+    "seconds": 163.342,
+    "log": "unit_tests_final.stderr.log",
+    "sha256": "7abdb2724d1741f91616f239b7a63ab499cb2505bbf3fec03a9a9c1839a96710"
+  },
+  "tested_source_lf_sha256": {
+    "cispo_model/config.py": "c5f3fe4bde79b121b9597aadca0e889b50ff031f714735051522099673b79f86",
+    "cispo_model/factor_screen.py": "cb14684a7d4f718c0dc9a36d82e20a0a88ca7e69c5ccdadae114157024872b4b",
+    "cispo_model/flexible_load_numerics.py": "472bc255de55eb61b8125874141d83e88a252ed99c6c35fe6a464e3e9cca9522",
+    "cispo_model/io_contract.py": "2d40ebb694f7e9725853c856a10ab9274ac15b4b4416b1596b8c3c3b1ce63e38",
+    "cispo_model/run_contract.py": "45508481b5523ff3c801568989deb80fb69b96927141cc46e143e30f1bee7d44",
+    "cispo_model/solution_preservation.py": "0b8162c33d60d27bbdacddbf051fe6d8d621e9ecb1adde3dfa59ca8d58c58a67",
+    "scripts/run_cispo_2030_full_year.py": "212f33495c6710ac88ca92b0e9243abd9f80f3885456aa03d0b11db722d4c448",
+    "scripts/verify_case3_parameters.py": "c9beac724aa84e1d180d4273e3aeee6580f6d99420fc8b94031f86ba13c68d6a",
+    "tests/test_production_screen.py": "0caeeacf2414460b25b291ba13c083dde3fb041d3e9be0ab5526f6fcc47e15bd",
+    "config/solver_profiles/barrier_stagea_screened_agg0_v1_threads48.json": "85081d8c7161f7de35925e7a78e150d8f4f7a0304fc6758d492bdc482d8d69e2"
+  },
+  "source_head_before_commit": "2aa17ef35eb3009a21d57000087639ce7c5f0b37",
+  "interpretation": "24h engineering gates only; no planning conclusions; all raw runs retained."
+}
