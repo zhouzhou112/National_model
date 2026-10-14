@@ -1,0 +1,13 @@
+{
+  "capacity_factor_store": {
+    "matches": true,
+    "local_count": 9,
+    "cloud_count": 9
+  },
+  "hydrology_timeseries": {
+    "matches": true,
+    "local_count": 3,
+    "cloud_count": 3
+  },
+  "actual_v5_paths_recorded": true
+}

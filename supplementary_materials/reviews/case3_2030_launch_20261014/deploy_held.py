@@ -123,19 +123,19 @@ print(json.dumps(dict(status='FROZEN',release=str(root),source_commit=identity['
 '''
         result=remote(code,root,evidence,'freeze');save(evidence/'frozen_release.json',result);print(result)
     elif a.mode=='preflight':
-        script=environment(root)+f'''"$PYTHON" scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9.json --scenario-config config/scenarios/{scenario}.json --solver-config {PROFILE} --vre-screen-csv "{root}/source_screen.csv" --horizon full_year --archive-original-model --allow-nonbasic-planning-state --preflight-only --output-dir "{root}/preflight" > "{root}/preflight.log" 2>&1
+        script=environment(root)+f'''"$PYTHON" scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9.json --scenario-config config/scenarios/{scenario}.json --solver-config {PROFILE} --vre-screen-csv "{root}/source_screen.csv" --horizon full_year --allow-nonbasic-planning-state --preflight-only --output-dir "{root}/preflight_v2" > "{root}/preflight_v2.log" 2>&1
 '''
         result=remote('script='+repr(script)+'\n'+r'''
 assert not (root/'submission_attempt.json').exists()
 p=subprocess.run(['bash'],input=script,universal_newlines=True)
-if p.returncode:print((root/'preflight.log').read_text()[-4500:]);raise SystemExit(p.returncode)
-report=json.loads((root/'preflight/preflight_report.json').read_text());assert report['status']=='PASS'
+if p.returncode:print((root/'preflight_v2.log').read_text()[-4500:]);raise SystemExit(p.returncode)
+report=json.loads((root/'preflight_v2/preflight_report.json').read_text());assert report['status']=='PASS'
 print(json.dumps(dict(status='PASS',report=report)))
-''',root,evidence,'preflight');save(evidence/'cloud_preflight.json',result);print('Cloud preflight PASS')
+''',root,evidence,'preflight_v2');save(evidence/'cloud_preflight.json',result);print('Cloud preflight PASS')
     else:
         exports='ALL,SOURCE_RELEASE='+ENV_SOURCE
         result=remote('exports='+repr(exports)+'\n'+r'''
-assert json.loads((root/'preflight/preflight_report.json').read_text())['status']=='PASS'
+assert json.loads((root/'preflight_v2/preflight_report.json').read_text())['status']=='PASS'
 assert not (root/'submission_attempt.json').exists(),'No blind repeat submission'
 subprocess.check_call(['sha256sum','--quiet','-c','release_files.sha256'],cwd=str(root))
 test=subprocess.run(['sbatch','--test-only','--export='+exports,'case3_2030.sbatch'],cwd=str(root),stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)

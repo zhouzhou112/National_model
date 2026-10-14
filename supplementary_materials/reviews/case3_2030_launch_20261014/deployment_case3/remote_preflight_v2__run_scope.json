@@ -1,0 +1,201 @@
+{
+  "generated_at": "2026-10-15T04:45:24.161510+08:00",
+  "horizon": "full_year",
+  "optimization_hours": 8760,
+  "optimization_start_hour": 0,
+  "optimization_stop_hour_exclusive": 8760,
+  "selected_time_start_bj": "2030-01-01 00:00:00",
+  "selected_time_end_bj": "2030-12-31 23:00:00",
+  "configured_full_year_hours": 8760,
+  "definition": "full non-leap calendar year, production scientific horizon",
+  "result_use": "SCIENTIFIC_PRODUCTION",
+  "offline_recovery": null,
+  "scientific_acceptance_mode": "STRICT_NONBASIC_STAGE_A_DIRECT_ACCEPTANCE",
+  "annual_cost_and_policy_scaling": "full annual accounting",
+  "annualized_planning_cost_scaling_factor": 1.0,
+  "annual_flow_policy_resource_scaling_factor": 1.0,
+  "time_boundary": "cyclic_over_selected_horizon",
+  "boundary_year": 2025,
+  "planning_year": 2030,
+  "scenario_id": "case3_thermal_ev_v5",
+  "scenario_family": "integrated_demand_flexibility",
+  "analysis_role": "CENTRAL_COUNTERFACTUAL",
+  "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+  "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+  "formulation_profile_id": null,
+  "annual_emissions_accounting": "national_dense_v1",
+  "annual_capacity_link_row_scaling": "physical_v1",
+  "state_in": null,
+  "state_format": "capacity_cohorts_v2",
+  "available_memory_gb": 277.03,
+  "minimum_available_memory_gb": 700.0,
+  "memory_gate_pass": false,
+  "host_memory_soft_limit_policy": null,
+  "runtime_soft_mem_limit_policy": null,
+  "scale_estimate": {
+    "variables": 43490048,
+    "constraints": 59238927,
+    "nonzeros": 507075261,
+    "estimated_memory_gb": 34.76,
+    "dominant_blocks": {
+      "vre_site_capacity_and_new": 73372,
+      "vre_availability_and_dispatch": 2172480,
+      "thermal_capacity_new_and_retrofit": 837,
+      "thermal_hourly_ruc": 14935800,
+      "storage_capacity_and_hourly": 2715724,
+      "hydro_site_capacity_and_hourly": 16840780,
+      "transmission_capacity_and_flow": 4021662,
+      "dac_capacity_and_capture": 372,
+      "annual_resource_accounts": 63,
+      "capacity_margin_credited_capacity": 31,
+      "co2_source_sink_flow": 100471,
+      "spur_and_trunk_capacity": 45010,
+      "annual_load_center_network": 5756,
+      "optional_flexible_load": 2303225,
+      "optional_wave_energy": 274465
+    },
+    "block_count": 1,
+    "maximum_block_hours": 8760,
+    "maximum_block_variables": 42984665,
+    "maximum_block_nonzeros": 450323355,
+    "estimated_peak_block_memory_gb": 33.84
+  },
+  "gurobi_required_for_build": true,
+  "solution_contract_requested": {
+    "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+    "basis_required": false,
+    "dual_attribute": "BarPi"
+  },
+  "basis_reuse_request": {
+    "basis_in": null,
+    "allow_basis_reuse": false,
+    "allow_cross_year_basis": false,
+    "export_warm_start_basis": false
+  },
+  "barrier_first_workflow": {
+    "author_authorized_thermal_1e4_execution": false,
+    "nonbasic_primal_dual_requested": true,
+    "primary_checkpoint_requested": true,
+    "engineering_checkpoint_requested": false,
+    "deferred_crossover_source": null,
+    "engineering_checkpoint_only": false,
+    "engineering_checkpoint_source_explicitly_allowed": false,
+    "compatible_implementation_bundle_explicitly_allowed": false,
+    "inline_crossover_explicitly_allowed": false,
+    "nonbasic_planning_state_explicitly_allowed": true,
+    "deferred_crossover_planning_state_explicitly_allowed": false,
+    "planning_state_policy": "ACCEPTED_OPTIMAL_NONBASIC_BARRIER_CAPACITY_STATE"
+  },
+  "analysis_mode": "BASE_MINIMUM_COST",
+  "mga": null,
+  "scientific_solver_artifacts_requested": false,
+  "solver_numerical_compatibility_prebuild": {
+    "schema_version": "cispo_solver_numerical_compatibility_v1",
+    "status": "PASS",
+    "author_authorized_thermal_route": false,
+    "author_authorized_case3_route": true,
+    "scientific_acceptance_established": false,
+    "formulation": "integrated_service_constrained_v5",
+    "aggregate_parameter": 0,
+    "aggregate_parameter_source": "explicit_profile",
+    "aggregate_zero_required": false,
+    "stable_crossover_required": true,
+    "crossover_parameter": 0,
+    "crossover_basis_parameter": 1,
+    "solution_target_parameter": 1,
+    "barrier_convergence_tolerance": 0.0001,
+    "stable_basic_route": false,
+    "accepted_basic_crossover_orders": [
+      1,
+      2,
+      4
+    ],
+    "strict_nonbasic_primal_dual_route": false,
+    "engineering_relaxed_nonbasic_route": false,
+    "engineering_relaxed_nonbasic_authorized": false,
+    "required_long_horizon_settings": {
+      "aggregate": "automatic_allowed",
+      "accepted_solver_routes": [
+        {
+          "method": 2,
+          "crossover": [
+            1,
+            2,
+            4
+          ],
+          "crossover_basis": 1,
+          "solution_form": "basic"
+        },
+        {
+          "method": 2,
+          "crossover": 0,
+          "solution_target": 1,
+          "maximum_barrier_convergence_tolerance": 1e-09,
+          "solution_form": "primal_dual_nonbasic"
+        }
+      ]
+    },
+    "inverse_decay_amplification_log10_threshold": 3.0,
+    "component_risks": {
+      "heating": {
+        "active_provinces": 31,
+        "inactive_provinces_with_state_chain_omitted": 0,
+        "worst_active_province": {
+          "province_position": 20,
+          "province_code": 46,
+          "maximum_cyclic_zero_control_run_hours": 6378,
+          "retention_per_hour": 0.94,
+          "inverse_decay_amplification_log10": 171.3905497411221
+        },
+        "automatic_presolve_aggregation_risk": true,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 271560,
+          "control_support_state_variables": 140380,
+          "decay_anchor_state_variables": 2943,
+          "retained_state_variables": 143323,
+          "redundant_inactive_state_variables_omitted": 128237,
+          "retained_transition_rows": 143323,
+          "redundant_inactive_transition_rows_omitted": 128237,
+          "maximum_retained_transition_gap_hours": 37,
+          "minimum_retained_transition_coefficient": 0.10132825956607122,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": true,
+        "aggregate_zero_required_for_solve": false
+      },
+      "cooling": {
+        "active_provinces": 29,
+        "inactive_provinces_with_state_chain_omitted": 2,
+        "worst_active_province": {
+          "province_position": 28,
+          "province_code": 63,
+          "maximum_cyclic_zero_control_run_hours": 6332,
+          "retention_per_hour": 0.92,
+          "inverse_decay_amplification_log10": 229.2954772479439
+        },
+        "automatic_presolve_aggregation_risk": true,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 271560,
+          "control_support_state_variables": 87488,
+          "decay_anchor_state_variables": 5266,
+          "retained_state_variables": 92754,
+          "redundant_inactive_state_variables_omitted": 178806,
+          "retained_transition_rows": 92754,
+          "redundant_inactive_transition_rows_omitted": 178806,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": true,
+        "aggregate_zero_required_for_solve": false
+      }
+    },
+    "reason": "Author 2026-10-14 case3 Aggregate=0 execution; all QC labels and solution data retained."
+  }
+}

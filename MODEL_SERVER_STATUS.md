@@ -3501,3 +3501,11 @@ Git基准8641609c47972f373fca484bec56324eddd7a593。经现有SSH只读2030 20260
 Git 基准 2aa17ef，源码与证据随本条明确清单提交；部署后的源提交、release SHA 和 held 作业号另追加。命令/输入/输出/历史失败及修复见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md` 与 `final_gates.json`。全部原始门禁模型/向量/日志保留本地，不提交大数据；其他 SI 改动不纳入。
 
 下一步仅冻结两个独立 2030 release，64CPU/750G/48线程、启动可用内存≥700GiB，完成云端 preflight 后 --hold 提交，汇报并等待作者“放行”。P1–P5 待运行期间继续；C2050 同样 held 后汇报。F5 不干预、不追加 F9；本轮未操作 Job5124127、旧冻结源码、T550 cloud_backup 或凭据，无后台监听/自动提交。
+
+## 2026-10-14 英国21:52：case3 与 nocredit 2030 已 held，等待作者放行
+
+L1–L4 PASS，冻结源码 `62bba5928f9db3c6d947e33350d5e08bd9bec01d`，两个新 release 分别为 `20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1`、`20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1`，均在 `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/` 下。385 源码/55 输入 SHA、两份云端 preflight_v2、9 项 CF/3 项水文身份核对均通过。共享源码清单 SHA `ec8fa5906eff941c60cee0b9cb905adb18500641a24e493d39e00c2003d09e7c`；release 清单 SHA 分别 `90e4f9f89cc798d1c4eebc576ea24de97dc70481eb9ed838f503e49ceae0166c`、`d7bfbe0db90fc48de9086a029cff24ee0b991711ab3d2334c5d22669c4dade1c`。
+
+Job5153878 / Job5153901 均 PENDING/JobHeldUser；ReqTRES cpu64/mem750G/node1/billing64，UNLIMITED/Requeue0，AllocTRES=null，未 release。求解 48 线程，Base 数值仅 Aggregate=0，margin0.2；启动可用内存至少700GiB。历史峰680.804GiB，余量有限。证据 `supplementary_materials/reviews/case3_2030_launch_20261014/both_held_verified.json` 及两个 `deployment_*/`；完整核准见同目录 REVIEW_ZH.md。部署工具 preflight 参数修复与回执单独提交，冻结源保持62bba59。
+
+下一动作：等待作者“放行”后 release 并核对实际分配与内存；运行期间完成P1–P5，C2050另经门禁后held。此轮未操作Base2060、旧冻结源码或T550诊断/备份，不恢复定时回查、不追加F9。所有运行数据完整保全。

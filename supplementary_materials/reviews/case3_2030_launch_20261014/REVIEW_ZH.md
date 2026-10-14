@@ -64,3 +64,29 @@ M 沿用夜间实验完整服务残差定义，覆盖冷热/EV 库存界、转�
 每个作业申请 64 CPU / 750G / UNLIMITED / no-requeue，求解 48 线程，启动可用内存须 ≥700 GiB。历史筛选后 Aggregate=1 峰值 RSS 680.804 GiB；744h Aggregate=0 的 Factor NZ +3.8%、RSS 近似不变，余量有限，不能视为全年峰值上界或 OOM 保证。
 
 P1–P5 尚未执行，待作者放行、作业运行期间继续；C2050 完成其前置门禁后也仅 held 提交并汇报。
+
+## 2026-10-14 英国21:46：case3 held 提交
+
+源码提交 `62bba5928f9db3c6d947e33350d5e08bd9bec01d` 已推送 GitHub 工作分支和 main。case3 release 为 `20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1`，385 个源码文件、55 个数据文件 SHA 核验通过，云端 preflight_v2 PASS。作业 `5153878` 为 PENDING / JobHeldUser，ReqTRES cpu64/mem750G/node1/billing64，TimeLimit=UNLIMITED、Requeue=0、AllocTRES=null、released=false。nocredit 包尚在传输，此条不代表两作业已齐备。
+
+首次 preflight 误把 --archive-original-model 与 --preflight-only 同用，被入口在构建前拒绝；仅修正本地部署工具的调用参数，改用独立 preflight_v2 目录和日志，冻结源码及原失败日志均保留。生产 batch 的归档选项保留。工具修复将随最终部署记录提交，不改变 release 的源码提交。
+
+## 2026-10-14 英国21:52（20:52 UTC）：L5 两作业 held 完成，等待作者放行
+
+L1–L4 PASS，两个 release 都冻结自已推送源码 `62bba5928f9db3c6d947e33350d5e08bd9bec01d`。每份 385 个源码文件、55 个必需数据文件 SHA 通过，云端 preflight_v2 均 PASS。远端小证据按原字节 SHA 下载核验；与本地核准输入比较，9 项 capacity_factor_store 身份、3 项 hydrology_timeseries 身份完全一致，并登记实际 V5 六个覆盖路径。
+
+|情景|release（云端 National_model_cloud 下）|Job ID|状态|
+|---|---|---|---|
+|case3_thermal_ev_v5|20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1|5153878|PENDING / JobHeldUser|
+|case3_thermal_ev_v5_nocredit|20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1|5153901|PENDING / JobHeldUser|
+
+共享 source manifest SHA256：`ec8fa5906eff941c60cee0b9cb905adb18500641a24e493d39e00c2003d09e7c`。
+
+- case3 release manifest SHA256：`90e4f9f89cc798d1c4eebc576ea24de97dc70481eb9ed838f503e49ceae0166c`。
+- nocredit release manifest SHA256：`d7bfbe0db90fc48de9086a029cff24ee0b991711ab3d2334c5d22669c4dade1c`。
+
+两个作业均已再次只读核验：`ReqTRES=cpu=64,mem=750G,node=1,billing=64`，`TimeLimit=UNLIMITED`，`Requeue=0`，`AllocTRES=(null)`；没有执行 release。生产 48 线程、Aggregate=0、筛选 margin=0.2，共同 V9/2025 边界；其余数值设置逐键等于 Base。每作业启动可用内存门槛为 700 GiB；实际分配待作者放行并启动后核对，不能用 ReqTRES 冒充 AllocTRES。历史筛选 Aggregate=1 峰值 680.804 GiB，744h Aggregate=0 Factor NZ +3.8%，全年内存余量有限，短窗证据不构成峰值上界。
+
+操作证据为 `deployment_case3/`、`deployment_nocredit/` 中 `launch_config.json`、`frozen_release.json`、`cloud_preflight.json`、`held_submission.json`、`remote_evidence_sha256.json`、`local_cloud_input_check.json`，以及 `both_held_verified.json`。命令为 `deploy_held.py prepare|preflight|submit --case case3|nocredit`，其中 submit 使用 `sbatch --hold`；仅修复本地 preflight 调用参数，未修改已冻结源码。此轮不重新求解，引用源码 SHA 不变的 440 项回归与既有门禁证据。原模型、解、BarX/BarPi、大包及全部运行日志保留在原目录，小证据随 Git 提交。
+
+下一动作仅在作者回复“放行”后 release 这两个确切 Job ID，再核验 AllocTRES 与启动内存。作业运行期间继续 P1–P5；C2050 通过独立门禁后同样 held 汇报。F5 自然结束后只留参考记录，不追加 F9；取消的定时回查不恢复。本轮未操作 Job5124127、旧冻结源码、T550 cloud_backup 或凭据。

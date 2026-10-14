@@ -1,0 +1,27 @@
+{
+  "cloud_source_repo_sha256.json": {
+    "sha256": "ec8fa5906eff941c60cee0b9cb905adb18500641a24e493d39e00c2003d09e7c",
+    "bytes": 47236,
+    "verified": true
+  },
+  "data_overlay_sha256.json": {
+    "sha256": "412b86d7bf7ecf997137e10675d449b4ee283b5eb447f32327710acb92ab162d",
+    "bytes": 6480,
+    "verified": true
+  },
+  "preflight_v2/input_manifest.csv": {
+    "sha256": "f79d3a8d7df25626d18df5421a48e7801cd45a2c8fc686874909fec12beb052b",
+    "bytes": 31468,
+    "verified": true
+  },
+  "preflight_v2/run_identity.json": {
+    "sha256": "9cffbd38151d113ac059961fd1f9c805d91d9ea0eaf4d11c320444eddd3f141e",
+    "bytes": 6979,
+    "verified": true
+  },
+  "preflight_v2/run_scope.json": {
+    "sha256": "29d4f4cacf053ffea5776b66cdfaae644dff97a7b6c057337ca44f743aa8adce",
+    "bytes": 8066,
+    "verified": true
+  }
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-14 英国21:52 case3 L5 held 完成：** Job5153878（case3）与 Job5153901（nocredit）均 PENDING/JobHeldUser，未放行；两份新 release 源码62bba59、385源码/55输入SHA及云端preflight PASS。ReqTRES cpu64/mem750G/node1/billing64，48求解线程、Aggregate=0、margin0.2、UNLIMITED/Requeue0；AllocTRES待启动后核验。只在作者回复“放行”后release。核准表、完整SHA、证据见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md`；P1–P5留运行期间，F5仅参考、无F9、无定时回查。
+
 - **2026-10-14 case3 生产前核准：** 作者已确认 case3/_nocredit/C 仅将 Base 数值设置改为 Aggregate=0。L1–L4 已通过（440 测试；两份24h OPTIMAL且完整保全），下一步仅提交两个2030 held 作业并汇报，未获“放行”不得 release。详见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md`。P1–P5 留运行期间；F5自然结束、无F9。
 
 - 2026-10-14 Base2060跨年收敛比较完成：云端四份原始gurobi.log逐字节SHA与连续迭代行核验，2030/2040/2050终轮348/605/716，solver耗时约5.224/9.765/11.532天。2060最新137轮；原始/互补水平约对应2030第85–87轮、2040第130–131轮，当前对偶明显差于这两年对应阶段。2050第116→117轮原始3720→4.40e11、互补416→5.15e11发生同步大跳，2060未见同类事件；因此同137轮2060显著优于2050当时，但不能据此保证更早结束。比较证据revision_6d_general/historical_comparison_20261014{,_summary}.json；2040为44线程、其余48，2060有v9_a12清理，不做严格同LP性能归因。
@@ -9971,3 +9973,11 @@ Git基准8641609c47972f373fca484bec56324eddd7a593。经现有SSH只读2030 20260
 Git 基准 2aa17ef，源码与证据随本条明确清单提交；部署后的源提交、release SHA 和 held 作业号另追加。命令/输入/输出/历史失败及修复见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md` 与 `final_gates.json`。全部原始门禁模型/向量/日志保留本地，不提交大数据；其他 SI 改动不纳入。
 
 下一步仅冻结两个独立 2030 release，64CPU/750G/48线程、启动可用内存≥700GiB，完成云端 preflight 后 --hold 提交，汇报并等待作者“放行”。P1–P5 待运行期间继续；C2050 同样 held 后汇报。F5 不干预、不追加 F9；本轮未操作 Job5124127、旧冻结源码、T550 cloud_backup 或凭据，无后台监听/自动提交。
+
+## 2026-10-14 英国21:52：case3 与 nocredit 2030 已 held，等待作者放行
+
+L1–L4 PASS，冻结源码 `62bba5928f9db3c6d947e33350d5e08bd9bec01d`，两个新 release 分别为 `20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1`、`20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1`，均在 `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/` 下。385 源码/55 输入 SHA、两份云端 preflight_v2、9 项 CF/3 项水文身份核对均通过。共享源码清单 SHA `ec8fa5906eff941c60cee0b9cb905adb18500641a24e493d39e00c2003d09e7c`；release 清单 SHA 分别 `90e4f9f89cc798d1c4eebc576ea24de97dc70481eb9ed838f503e49ceae0166c`、`d7bfbe0db90fc48de9086a029cff24ee0b991711ab3d2334c5d22669c4dade1c`。
+
+Job5153878 / Job5153901 均 PENDING/JobHeldUser；ReqTRES cpu64/mem750G/node1/billing64，UNLIMITED/Requeue0，AllocTRES=null，未 release。求解 48 线程，Base 数值仅 Aggregate=0，margin0.2；启动可用内存至少700GiB。历史峰680.804GiB，余量有限。证据 `supplementary_materials/reviews/case3_2030_launch_20261014/both_held_verified.json` 及两个 `deployment_*/`；完整核准见同目录 REVIEW_ZH.md。部署工具 preflight 参数修复与回执单独提交，冻结源保持62bba59。
+
+下一动作：等待作者“放行”后 release 并核对实际分配与内存；运行期间完成P1–P5，C2050另经门禁后held。此轮未操作Base2060、旧冻结源码或T550诊断/备份，不恢复定时回查、不追加F9。所有运行数据完整保全。

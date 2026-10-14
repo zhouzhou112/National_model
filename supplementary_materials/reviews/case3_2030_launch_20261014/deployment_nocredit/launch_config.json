@@ -1,0 +1,23 @@
+{
+  "release": "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+  "source_commit": "62bba5928f9db3c6d947e33350d5e08bd9bec01d",
+  "scenario": "case3_thermal_ev_v5_nocredit",
+  "planning_year": 2030,
+  "boundary_year": 2025,
+  "source_release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_v1_threads48.json",
+  "screen_margin": 0.2,
+  "automatic_release": false,
+  "automatic_successor": false,
+  "stage_b": false,
+  "authorization": "Author 2026-10-14: held only; release requires 放行",
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "solver_threads": 48,
+    "minimum_available_memory_gib": 700
+  },
+  "gates_sha256": "821c77a99088b601a403f50eea44ffec571c1931308c66b1a496b0b2fffa332c"
+}
