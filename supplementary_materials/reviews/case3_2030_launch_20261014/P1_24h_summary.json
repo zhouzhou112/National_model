@@ -1,0 +1,22 @@
+{
+  "case3": {
+    "B_million_cny": 11674.14647061075,
+    "B_over_objective": 0.005503098555427332,
+    "near_optimality_decision": "ACCEPT_DISCLOSE",
+    "base_comparison_decision": "RESOLVE_NEGATIVE_COLUMNS_ONCE",
+    "excluded_columns": 20272,
+    "scope": "ENGINEERING_WINDOW_ONLY",
+    "negative_excluded_columns_count": 47,
+    "certificate_sha256": "5b25c05c7d81f8ad852850335084653d667d0c4aad8965d61a39ad4a4e104892"
+  },
+  "nocredit": {
+    "B_million_cny": 11186.743943091931,
+    "B_over_objective": 0.005270950866770986,
+    "near_optimality_decision": "ACCEPT_DISCLOSE",
+    "base_comparison_decision": "RESOLVE_NEGATIVE_COLUMNS_ONCE",
+    "excluded_columns": 20272,
+    "scope": "ENGINEERING_WINDOW_ONLY",
+    "negative_excluded_columns_count": 45,
+    "certificate_sha256": "ca395659257d046b67b922ee73ec67b4647bbc05513162259f9cdf91b3d8825d"
+  }
+}

@@ -1,0 +1,1232 @@
+{
+  "rule": "OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER",
+  "threshold_gw": 1e-05,
+  "affected_rows": [
+    {
+      "asset_class": "vre",
+      "asset_id": "G000031958::onwind",
+      "build_year": 2030,
+      "before_gw": 3.108853055742857e-06,
+      "after_gw": 1.4083308052843873e-06,
+      "reduction_gw": 1.7005222504584696e-06,
+      "original_excess_gw": 1.700522250347447e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000032516::onwind",
+      "build_year": 2030,
+      "before_gw": 4.058269642166819e-06,
+      "after_gw": 9.130465167775899e-07,
+      "reduction_gw": 3.1452231253892293e-06,
+      "original_excess_gw": 3.1452231253753515e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000033644::onwind",
+      "build_year": 2030,
+      "before_gw": 6.729625028536776e-06,
+      "after_gw": 3.196339037972204e-06,
+      "reduction_gw": 3.5332859905645724e-06,
+      "original_excess_gw": 3.5332859905090608e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000045685::onwind",
+      "build_year": 2030,
+      "before_gw": 3.3243061081832893e-06,
+      "after_gw": 1.777626861505449e-06,
+      "reduction_gw": 1.5466792466778403e-06,
+      "original_excess_gw": 1.5466792464557955e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012269::onwind",
+      "build_year": 2030,
+      "before_gw": 1.4902130674389526e-06,
+      "after_gw": 1.2709171533444219e-06,
+      "reduction_gw": 2.1929591409453074e-07,
+      "original_excess_gw": 2.1929591387248593e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012553::onwind",
+      "build_year": 2030,
+      "before_gw": 1.3123674930621367e-06,
+      "after_gw": 4.6208761339739737e-07,
+      "reduction_gw": 8.502798796647393e-07,
+      "original_excess_gw": 8.502798796630046e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000014300::onwind",
+      "build_year": 2030,
+      "before_gw": 8.391299284363607e-06,
+      "after_gw": 2.926495123059924e-06,
+      "reduction_gw": 5.464804161303682e-06,
+      "original_excess_gw": 5.46480416119266e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000014303::onwind",
+      "build_year": 2030,
+      "before_gw": 7.399300984931325e-06,
+      "after_gw": 3.144777885663887e-06,
+      "reduction_gw": 4.254523099267438e-06,
+      "original_excess_gw": 4.2545230992119265e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000014860::onwind",
+      "build_year": 2030,
+      "before_gw": 6.72281532738414e-06,
+      "after_gw": 4.11356093638912e-06,
+      "reduction_gw": 2.6092543909950203e-06,
+      "original_excess_gw": 2.609254390883997e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000015424::onwind",
+      "build_year": 2030,
+      "before_gw": 8.4388002000426e-06,
+      "after_gw": 2.658798603919692e-06,
+      "reduction_gw": 5.780001596122908e-06,
+      "original_excess_gw": 5.7800015960118856e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000015948::onwind",
+      "build_year": 2030,
+      "before_gw": 6.653966281938706e-06,
+      "after_gw": 4.062427925694e-06,
+      "reduction_gw": 2.5915383562447056e-06,
+      "original_excess_gw": 2.5915383561336824e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000016829::onwind",
+      "build_year": 2030,
+      "before_gw": 8.900780875356225e-07,
+      "after_gw": 6.503705592973997e-07,
+      "reduction_gw": 2.3970752823822283e-07,
+      "original_excess_gw": 2.39707528236488e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000017070::onwind",
+      "build_year": 2030,
+      "before_gw": 7.067701884285527e-06,
+      "after_gw": 5.707745736701419e-06,
+      "reduction_gw": 1.359956147584108e-06,
+      "original_excess_gw": 1.3599561475563515e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000017912::onwind",
+      "build_year": 2030,
+      "before_gw": 1.835385712058699e-06,
+      "after_gw": 1.2260470077870985e-06,
+      "reduction_gw": 6.093387042716005e-07,
+      "original_excess_gw": 6.09338704160578e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000018193::onwind",
+      "build_year": 2030,
+      "before_gw": 2.8075733140961382e-06,
+      "after_gw": 1.3004346162534465e-06,
+      "reduction_gw": 1.5071386978426917e-06,
+      "original_excess_gw": 1.5071386977316692e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000020152::onwind",
+      "build_year": 2030,
+      "before_gw": 7.257326099103301e-06,
+      "after_gw": 3.924190644572566e-06,
+      "reduction_gw": 3.3331354545307343e-06,
+      "original_excess_gw": 3.333135454419711e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000023517::onwind",
+      "build_year": 2030,
+      "before_gw": 2.6373382443203296e-06,
+      "after_gw": 1.8101923334448141e-06,
+      "reduction_gw": 8.271459108755155e-07,
+      "original_excess_gw": 8.271459106534707e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000023763::onwind",
+      "build_year": 2030,
+      "before_gw": 4.425662284518642e-07,
+      "after_gw": 2.2077485629492104e-07,
+      "reduction_gw": 2.2179137215694314e-07,
+      "original_excess_gw": 2.217913720459208e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000025204::onwind",
+      "build_year": 2030,
+      "before_gw": 4.8986379951757575e-06,
+      "after_gw": 1.0658129785837676e-06,
+      "reduction_gw": 3.83282501659199e-06,
+      "original_excess_gw": 3.832825016480967e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000022101::upv",
+      "build_year": 2030,
+      "before_gw": 9.792022793562668e-06,
+      "after_gw": 5.527575431994388e-06,
+      "reduction_gw": 4.264447361568281e-06,
+      "original_excess_gw": 4.2644473614572576e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000022106::upv",
+      "build_year": 2030,
+      "before_gw": 5.842107700522576e-06,
+      "after_gw": 4.764084659021733e-06,
+      "reduction_gw": 1.0780230415008427e-06,
+      "original_excess_gw": 1.0780230412787972e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000034959::dpv",
+      "build_year": 2030,
+      "before_gw": 3.5298285479054303e-06,
+      "after_gw": 1.8778519890975696e-06,
+      "reduction_gw": 1.6519765588078608e-06,
+      "original_excess_gw": 1.651976558804391e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000010906::dpv",
+      "build_year": 2030,
+      "before_gw": 6.30281516715296e-06,
+      "after_gw": 4.0423440687986e-06,
+      "reduction_gw": 2.2604710983543602e-06,
+      "original_excess_gw": 2.260471098353492e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000011187::dpv",
+      "build_year": 2030,
+      "before_gw": 6.13764343728418e-06,
+      "after_gw": 4.252347755898472e-06,
+      "reduction_gw": 1.8852956813857078e-06,
+      "original_excess_gw": 1.8852956813848396e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000011468::dpv",
+      "build_year": 2030,
+      "before_gw": 4.603371907371782e-06,
+      "after_gw": 4.589047271599087e-06,
+      "reduction_gw": 1.4324635772695341e-08,
+      "original_excess_gw": 1.4324635771827132e-08
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012029::dpv",
+      "build_year": 2030,
+      "before_gw": 8.301556935223663e-06,
+      "after_gw": 4.753670595998979e-06,
+      "reduction_gw": 3.547886339224684e-06,
+      "original_excess_gw": 3.547886339223816e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012309::dpv",
+      "build_year": 2030,
+      "before_gw": 7.80867218138728e-06,
+      "after_gw": 5.073276561599244e-06,
+      "reduction_gw": 2.735395619788036e-06,
+      "original_excess_gw": 2.7353956197871676e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012588::dpv",
+      "build_year": 2030,
+      "before_gw": 8.04521747177233e-06,
+      "after_gw": 5.228418296198418e-06,
+      "reduction_gw": 2.816799175573912e-06,
+      "original_excess_gw": 2.816799175573044e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000012868::dpv",
+      "build_year": 2030,
+      "before_gw": 5.105463897591452e-06,
+      "after_gw": 4.993517243299915e-06,
+      "reduction_gw": 1.1194665429153665e-07,
+      "original_excess_gw": 1.1194665429110212e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000018991::dpv",
+      "build_year": 2030,
+      "before_gw": 4.370824223824471e-06,
+      "after_gw": 3.6863802055987105e-06,
+      "reduction_gw": 6.844440182257609e-07,
+      "original_excess_gw": 6.844440182248931e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000023798::dpv",
+      "build_year": 2030,
+      "before_gw": 3.574235796622753e-06,
+      "after_gw": 0.0,
+      "reduction_gw": 3.574235796622753e-06,
+      "original_excess_gw": 3.5742357966245253e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000023798::dpv",
+      "build_year": 2040,
+      "before_gw": 0.0572605346920451,
+      "after_gw": 0.05726053469204508,
+      "reduction_gw": 1.3877787807814457e-17,
+      "original_excess_gw": 3.5742357966245253e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007794::dpv",
+      "build_year": 2030,
+      "before_gw": 7.109592588966261e-06,
+      "after_gw": 1.755777564099829e-06,
+      "reduction_gw": 5.3538150248664314e-06,
+      "original_excess_gw": 5.353815024866215e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007795::dpv",
+      "build_year": 2030,
+      "before_gw": 3.997447320636343e-06,
+      "after_gw": 1.6545369801998342e-06,
+      "reduction_gw": 2.342910340436509e-06,
+      "original_excess_gw": 2.3429103404360753e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007796::dpv",
+      "build_year": 2030,
+      "before_gw": 5.106247006474551e-06,
+      "after_gw": 1.6234386018986672e-06,
+      "reduction_gw": 3.4828084045758836e-06,
+      "original_excess_gw": 3.4828084045750163e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007797::dpv",
+      "build_year": 2030,
+      "before_gw": 3.744944465970807e-06,
+      "after_gw": 1.5886179165998102e-06,
+      "reduction_gw": 2.1563265493709967e-06,
+      "original_excess_gw": 2.156326549370563e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007798::dpv",
+      "build_year": 2030,
+      "before_gw": 3.850846086421823e-06,
+      "after_gw": 1.5752804314996821e-06,
+      "reduction_gw": 2.275565654922141e-06,
+      "original_excess_gw": 2.2755656549217074e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007799::dpv",
+      "build_year": 2030,
+      "before_gw": 3.85095499012296e-06,
+      "after_gw": 1.5638646520997511e-06,
+      "reduction_gw": 2.2870903380232087e-06,
+      "original_excess_gw": 2.287090338022775e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007800::dpv",
+      "build_year": 2030,
+      "before_gw": 4.0930814854416535e-06,
+      "after_gw": 1.5549034746998098e-06,
+      "reduction_gw": 2.5381780107418435e-06,
+      "original_excess_gw": 2.53817801074141e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007801::dpv",
+      "build_year": 2030,
+      "before_gw": 3.2769005939197053e-06,
+      "after_gw": 1.5751114348996696e-06,
+      "reduction_gw": 1.7017891590200356e-06,
+      "original_excess_gw": 1.7017891590196017e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000007802::dpv",
+      "build_year": 2030,
+      "before_gw": 2.839947028984245e-06,
+      "after_gw": 1.6184320732993457e-06,
+      "reduction_gw": 1.2215149556848994e-06,
+      "original_excess_gw": 1.2215149556840318e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008075::dpv",
+      "build_year": 2030,
+      "before_gw": 4.229026730620281e-06,
+      "after_gw": 1.6905411774997212e-06,
+      "reduction_gw": 2.53848555312056e-06,
+      "original_excess_gw": 2.538485553120126e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008076::dpv",
+      "build_year": 2030,
+      "before_gw": 3.9822770720816114e-06,
+      "after_gw": 1.6286936365000029e-06,
+      "reduction_gw": 2.3535834355816083e-06,
+      "original_excess_gw": 2.3535834355811747e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008077::dpv",
+      "build_year": 2030,
+      "before_gw": 4.440510856058608e-06,
+      "after_gw": 1.5938276329998258e-06,
+      "reduction_gw": 2.8466832230587824e-06,
+      "original_excess_gw": 2.8466832230583487e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008078::dpv",
+      "build_year": 2030,
+      "before_gw": 4.789815673404631e-06,
+      "after_gw": 1.573145146699828e-06,
+      "reduction_gw": 3.2166705267048026e-06,
+      "original_excess_gw": 3.216670526704369e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008079::dpv",
+      "build_year": 2030,
+      "before_gw": 4.922515512386327e-06,
+      "after_gw": 1.550314137099905e-06,
+      "reduction_gw": 3.3722013752864217e-06,
+      "original_excess_gw": 3.372201375285988e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008080::dpv",
+      "build_year": 2030,
+      "before_gw": 6.37695087400974e-06,
+      "after_gw": 1.5290258663996364e-06,
+      "reduction_gw": 4.847925007610103e-06,
+      "original_excess_gw": 4.847925007609669e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008081::dpv",
+      "build_year": 2030,
+      "before_gw": 8.310203768707576e-06,
+      "after_gw": 1.513968411099721e-06,
+      "reduction_gw": 6.796235357607854e-06,
+      "original_excess_gw": 6.7962353576074205e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008082::dpv",
+      "build_year": 2030,
+      "before_gw": 6.0599728431492e-06,
+      "after_gw": 1.526419523699772e-06,
+      "reduction_gw": 4.533553319449428e-06,
+      "original_excess_gw": 4.533553319448994e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008083::dpv",
+      "build_year": 2030,
+      "before_gw": 4.330184781610151e-06,
+      "after_gw": 1.5485907725998913e-06,
+      "reduction_gw": 2.7815940090102596e-06,
+      "original_excess_gw": 2.781594009009826e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008084::dpv",
+      "build_year": 2030,
+      "before_gw": 4.179030420877305e-06,
+      "after_gw": 1.5517010754996744e-06,
+      "reduction_gw": 2.6273293453776304e-06,
+      "original_excess_gw": 2.6273293453771968e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008085::dpv",
+      "build_year": 2030,
+      "before_gw": 3.5562725385236136e-06,
+      "after_gw": 1.5704016302996826e-06,
+      "reduction_gw": 1.9858709082239308e-06,
+      "original_excess_gw": 1.985870908223497e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008086::dpv",
+      "build_year": 2030,
+      "before_gw": 2.539788679313224e-06,
+      "after_gw": 1.6101174607999537e-06,
+      "reduction_gw": 9.296712185132702e-07,
+      "original_excess_gw": 9.296712185128363e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008356::dpv",
+      "build_year": 2030,
+      "before_gw": 4.41072278570647e-06,
+      "after_gw": 1.6400220112996215e-06,
+      "reduction_gw": 2.7707007744068486e-06,
+      "original_excess_gw": 2.770700774406415e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008357::dpv",
+      "build_year": 2030,
+      "before_gw": 3.760941696913093e-06,
+      "after_gw": 1.6297479797997276e-06,
+      "reduction_gw": 2.131193717113365e-06,
+      "original_excess_gw": 2.1311937171129315e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008358::dpv",
+      "build_year": 2030,
+      "before_gw": 3.574458318708433e-06,
+      "after_gw": 1.6340650908989893e-06,
+      "reduction_gw": 1.9403932278094435e-06,
+      "original_excess_gw": 1.940393227808576e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008359::dpv",
+      "build_year": 2030,
+      "before_gw": 3.7967079838605984e-06,
+      "after_gw": 1.6509770203969576e-06,
+      "reduction_gw": 2.1457309634636407e-06,
+      "original_excess_gw": 2.145730963461906e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008360::dpv",
+      "build_year": 2030,
+      "before_gw": 4.700315387565768e-06,
+      "after_gw": 1.5912940709989288e-06,
+      "reduction_gw": 3.1090213165668387e-06,
+      "original_excess_gw": 3.1090213165659714e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008361::dpv",
+      "build_year": 2030,
+      "before_gw": 5.265048072069421e-06,
+      "after_gw": 1.5677721641986628e-06,
+      "reduction_gw": 3.6972759078707576e-06,
+      "original_excess_gw": 3.6972759078698902e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008362::dpv",
+      "build_year": 2030,
+      "before_gw": 5.181367921809756e-06,
+      "after_gw": 1.5312732088994906e-06,
+      "reduction_gw": 3.650094712910265e-06,
+      "original_excess_gw": 3.6500947129098314e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008363::dpv",
+      "build_year": 2030,
+      "before_gw": 5.305471375673952e-06,
+      "after_gw": 1.5301930655996143e-06,
+      "reduction_gw": 3.7752783100743377e-06,
+      "original_excess_gw": 3.775278310073904e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008364::dpv",
+      "build_year": 2030,
+      "before_gw": 4.709132760302622e-06,
+      "after_gw": 1.540144406699661e-06,
+      "reduction_gw": 3.1689883536029605e-06,
+      "original_excess_gw": 3.1689883536025268e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008365::dpv",
+      "build_year": 2030,
+      "before_gw": 4.622659280453449e-06,
+      "after_gw": 1.5446992585995681e-06,
+      "reduction_gw": 3.077960021853881e-06,
+      "original_excess_gw": 3.0779600218534472e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008366::dpv",
+      "build_year": 2030,
+      "before_gw": 4.461167577649408e-06,
+      "after_gw": 1.5504080388997387e-06,
+      "reduction_gw": 2.9107595387496688e-06,
+      "original_excess_gw": 2.910759538749235e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008367::dpv",
+      "build_year": 2030,
+      "before_gw": 4.025354225772603e-06,
+      "after_gw": 1.5598963938993896e-06,
+      "reduction_gw": 2.4654578318732134e-06,
+      "original_excess_gw": 2.4654578318727798e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008368::dpv",
+      "build_year": 2030,
+      "before_gw": 2.7668707670984384e-06,
+      "after_gw": 1.6008400133994442e-06,
+      "reduction_gw": 1.1660307536989942e-06,
+      "original_excess_gw": 1.1660307536985604e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008369::dpv",
+      "build_year": 2030,
+      "before_gw": 2.0277272057556347e-06,
+      "after_gw": 1.6554044307997802e-06,
+      "reduction_gw": 3.723227749558545e-07,
+      "original_excess_gw": 3.723227749554206e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008637::dpv",
+      "build_year": 2030,
+      "before_gw": 7.578106166507771e-06,
+      "after_gw": 1.6217903788993649e-06,
+      "reduction_gw": 5.956315787608406e-06,
+      "original_excess_gw": 5.956315787607972e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008638::dpv",
+      "build_year": 2030,
+      "before_gw": 4.359513243013454e-06,
+      "after_gw": 1.6283965849997348e-06,
+      "reduction_gw": 2.7311166580137186e-06,
+      "original_excess_gw": 2.731116658013285e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008639::dpv",
+      "build_year": 2030,
+      "before_gw": 3.3805407203573323e-06,
+      "after_gw": 1.6378070274996721e-06,
+      "reduction_gw": 1.7427336928576601e-06,
+      "original_excess_gw": 1.7427336928572262e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008640::dpv",
+      "build_year": 2030,
+      "before_gw": 3.166649916256948e-06,
+      "after_gw": 1.6132488745995417e-06,
+      "reduction_gw": 1.5534010416574063e-06,
+      "original_excess_gw": 1.5534010416569724e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008641::dpv",
+      "build_year": 2030,
+      "before_gw": 3.3011712721142264e-06,
+      "after_gw": 1.5855467329991345e-06,
+      "reduction_gw": 1.715624539115092e-06,
+      "original_excess_gw": 1.715624539114658e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008642::dpv",
+      "build_year": 2030,
+      "before_gw": 3.318392928138111e-06,
+      "after_gw": 1.5694820141998807e-06,
+      "reduction_gw": 1.7489109139382302e-06,
+      "original_excess_gw": 1.7489109139377963e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008643::dpv",
+      "build_year": 2030,
+      "before_gw": 3.610517394407879e-06,
+      "after_gw": 1.5590059268994661e-06,
+      "reduction_gw": 2.051511467508413e-06,
+      "original_excess_gw": 2.051511467507979e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008644::dpv",
+      "build_year": 2030,
+      "before_gw": 3.495769987389174e-06,
+      "after_gw": 1.5631912977998083e-06,
+      "reduction_gw": 1.9325786895893655e-06,
+      "original_excess_gw": 1.932578689588932e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008645::dpv",
+      "build_year": 2030,
+      "before_gw": 3.375108304747536e-06,
+      "after_gw": 1.5739991146998477e-06,
+      "reduction_gw": 1.8011091900476883e-06,
+      "original_excess_gw": 1.8011091900472544e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008646::dpv",
+      "build_year": 2030,
+      "before_gw": 3.215351452652052e-06,
+      "after_gw": 1.5843896165995467e-06,
+      "reduction_gw": 1.6309618360525054e-06,
+      "original_excess_gw": 1.6309618360520715e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008647::dpv",
+      "build_year": 2030,
+      "before_gw": 2.9824809853644365e-06,
+      "after_gw": 1.5919049902998728e-06,
+      "reduction_gw": 1.3905759950645637e-06,
+      "original_excess_gw": 1.3905759950641298e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008648::dpv",
+      "build_year": 2030,
+      "before_gw": 2.739238253502756e-06,
+      "after_gw": 1.607336051599591e-06,
+      "reduction_gw": 1.1319022019031651e-06,
+      "original_excess_gw": 1.1319022019027312e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008649::dpv",
+      "build_year": 2030,
+      "before_gw": 2.3739075938790954e-06,
+      "after_gw": 1.630488746099621e-06,
+      "reduction_gw": 7.434188477794745e-07,
+      "original_excess_gw": 7.434188477790406e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008650::dpv",
+      "build_year": 2030,
+      "before_gw": 1.991527924990729e-06,
+      "after_gw": 1.6757456518995086e-06,
+      "reduction_gw": 3.1578227309122055e-07,
+      "original_excess_gw": 3.1578227309078666e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008651::dpv",
+      "build_year": 2030,
+      "before_gw": 1.948227825126672e-06,
+      "after_gw": 1.6914216156996352e-06,
+      "reduction_gw": 2.5680620942703674e-07,
+      "original_excess_gw": 2.5680620942660284e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008652::dpv",
+      "build_year": 2030,
+      "before_gw": 1.8575037622054064e-06,
+      "after_gw": 1.7200622993999783e-06,
+      "reduction_gw": 1.3744146280542817e-07,
+      "original_excess_gw": 1.3744146280499428e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008653::dpv",
+      "build_year": 2030,
+      "before_gw": 1.937956302398144e-06,
+      "after_gw": 1.7208864031998964e-06,
+      "reduction_gw": 2.170698991982476e-07,
+      "original_excess_gw": 2.1706989919781372e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008923::dpv",
+      "build_year": 2030,
+      "before_gw": 2.673244269582636e-06,
+      "after_gw": 1.6026267022991487e-06,
+      "reduction_gw": 1.0706175672834872e-06,
+      "original_excess_gw": 1.0706175672830533e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008924::dpv",
+      "build_year": 2030,
+      "before_gw": 2.652872257715383e-06,
+      "after_gw": 1.6015110358988586e-06,
+      "reduction_gw": 1.0513612218165244e-06,
+      "original_excess_gw": 1.0513612218156568e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008925::dpv",
+      "build_year": 2030,
+      "before_gw": 2.381744210018816e-06,
+      "after_gw": 1.615375314099661e-06,
+      "reduction_gw": 7.66368895919155e-07,
+      "original_excess_gw": 7.663688959187211e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008926::dpv",
+      "build_year": 2030,
+      "before_gw": 2.6442867148878694e-06,
+      "after_gw": 1.6052807084993524e-06,
+      "reduction_gw": 1.039006006388517e-06,
+      "original_excess_gw": 1.039006006388083e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008927::dpv",
+      "build_year": 2030,
+      "before_gw": 2.726513396121729e-06,
+      "after_gw": 1.6108453355987116e-06,
+      "reduction_gw": 1.1156680605230176e-06,
+      "original_excess_gw": 1.11566806052215e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008928::dpv",
+      "build_year": 2030,
+      "before_gw": 2.483142104578744e-06,
+      "after_gw": 1.6229788062992345e-06,
+      "reduction_gw": 8.601632982795095e-07,
+      "original_excess_gw": 8.601632982790756e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008929::dpv",
+      "build_year": 2030,
+      "before_gw": 2.8607915630301715e-06,
+      "after_gw": 1.7281260601975991e-06,
+      "reduction_gw": 1.1326655028325724e-06,
+      "original_excess_gw": 1.1326655028308374e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008930::dpv",
+      "build_year": 2030,
+      "before_gw": 2.4533413693836385e-06,
+      "after_gw": 1.6386294244994924e-06,
+      "reduction_gw": 8.14711944884146e-07,
+      "original_excess_gw": 8.147119448837122e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008931::dpv",
+      "build_year": 2030,
+      "before_gw": 2.2690119168716e-06,
+      "after_gw": 1.6662558045992597e-06,
+      "reduction_gw": 6.027561122723404e-07,
+      "original_excess_gw": 6.027561122714728e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008932::dpv",
+      "build_year": 2030,
+      "before_gw": 2.509543038206425e-06,
+      "after_gw": 1.7351778727987033e-06,
+      "reduction_gw": 7.743651654077215e-07,
+      "original_excess_gw": 7.74365165406854e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008933::dpv",
+      "build_year": 2030,
+      "before_gw": 2.526094765437528e-06,
+      "after_gw": 1.6727764662984335e-06,
+      "reduction_gw": 8.533182991390944e-07,
+      "original_excess_gw": 8.533182991382268e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008934::dpv",
+      "build_year": 2030,
+      "before_gw": 2.7967797891408018e-06,
+      "after_gw": 1.6694928480999227e-06,
+      "reduction_gw": 1.127286941040879e-06,
+      "original_excess_gw": 1.1272869410404451e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000008935::dpv",
+      "build_year": 2030,
+      "before_gw": 3.590150750445558e-06,
+      "after_gw": 1.655628589098968e-06,
+      "reduction_gw": 1.93452216134659e-06,
+      "original_excess_gw": 1.9345221613457225e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009203::dpv",
+      "build_year": 2030,
+      "before_gw": 3.600749152176933e-06,
+      "after_gw": 1.612149336799368e-06,
+      "reduction_gw": 1.9885998153775647e-06,
+      "original_excess_gw": 1.9885998153766973e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009204::dpv",
+      "build_year": 2030,
+      "before_gw": 3.020940054756707e-06,
+      "after_gw": 1.608694300899224e-06,
+      "reduction_gw": 1.412245753857483e-06,
+      "original_excess_gw": 1.4122457538566155e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009205::dpv",
+      "build_year": 2030,
+      "before_gw": 2.416339211760555e-06,
+      "after_gw": 1.6298097714980742e-06,
+      "reduction_gw": 7.865294402624806e-07,
+      "original_excess_gw": 7.86529440261613e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009206::dpv",
+      "build_year": 2030,
+      "before_gw": 2.6120200654790657e-06,
+      "after_gw": 1.6771597539997136e-06,
+      "reduction_gw": 9.348603114793521e-07,
+      "original_excess_gw": 9.348603114784845e-07
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009207::dpv",
+      "build_year": 2030,
+      "before_gw": 2.9759550508334014e-06,
+      "after_gw": 1.6022392135994687e-06,
+      "reduction_gw": 1.3737158372339327e-06,
+      "original_excess_gw": 1.3737158372330652e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009208::dpv",
+      "build_year": 2030,
+      "before_gw": 3.4761715351320936e-06,
+      "after_gw": 1.5930979621993584e-06,
+      "reduction_gw": 1.8830735729327352e-06,
+      "original_excess_gw": 1.8830735729318676e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009209::dpv",
+      "build_year": 2030,
+      "before_gw": 3.3695894326683667e-06,
+      "after_gw": 1.5991797870992677e-06,
+      "reduction_gw": 1.770409645569099e-06,
+      "original_excess_gw": 1.7704096455682314e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009210::dpv",
+      "build_year": 2030,
+      "before_gw": 3.2205380329010963e-06,
+      "after_gw": 1.6329715870985637e-06,
+      "reduction_gw": 1.5875664458025326e-06,
+      "original_excess_gw": 1.587566445801665e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009211::dpv",
+      "build_year": 2030,
+      "before_gw": 3.2124365391071908e-06,
+      "after_gw": 1.6163240338993738e-06,
+      "reduction_gw": 1.596112505207817e-06,
+      "original_excess_gw": 1.5961125052069494e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009212::dpv",
+      "build_year": 2030,
+      "before_gw": 3.3180995784775224e-06,
+      "after_gw": 1.6258889019993367e-06,
+      "reduction_gw": 1.6922106764781857e-06,
+      "original_excess_gw": 1.6922106764773182e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009213::dpv",
+      "build_year": 2030,
+      "before_gw": 3.5553329816789945e-06,
+      "after_gw": 1.6295259834990646e-06,
+      "reduction_gw": 1.9258069981799297e-06,
+      "original_excess_gw": 1.9258069981790624e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009214::dpv",
+      "build_year": 2030,
+      "before_gw": 4.684518914011565e-06,
+      "after_gw": 1.6602127044001696e-06,
+      "reduction_gw": 3.024306209611395e-06,
+      "original_excess_gw": 3.0243062096105278e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009215::dpv",
+      "build_year": 2030,
+      "before_gw": 4.591779256314182e-06,
+      "after_gw": 1.6320100621992347e-06,
+      "reduction_gw": 2.9597691941149473e-06,
+      "original_excess_gw": 2.95976919411408e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009216::dpv",
+      "build_year": 2030,
+      "before_gw": 6.294823929835609e-06,
+      "after_gw": 1.625264972399169e-06,
+      "reduction_gw": 4.66955895743644e-06,
+      "original_excess_gw": 4.6695589574355725e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009484::dpv",
+      "build_year": 2030,
+      "before_gw": 4.323749688962571e-06,
+      "after_gw": 1.6277095856990307e-06,
+      "reduction_gw": 2.6960401032635403e-06,
+      "original_excess_gw": 2.696040103262673e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009485::dpv",
+      "build_year": 2030,
+      "before_gw": 3.603761845889498e-06,
+      "after_gw": 1.6229168776990788e-06,
+      "reduction_gw": 1.980844968190419e-06,
+      "original_excess_gw": 1.980844968189552e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009486::dpv",
+      "build_year": 2030,
+      "before_gw": 2.908817149467133e-06,
+      "after_gw": 1.6356579192985999e-06,
+      "reduction_gw": 1.2731592301685332e-06,
+      "original_excess_gw": 1.2731592301676656e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009487::dpv",
+      "build_year": 2030,
+      "before_gw": 3.927892480777064e-06,
+      "after_gw": 1.5953976341994317e-06,
+      "reduction_gw": 2.332494846577632e-06,
+      "original_excess_gw": 2.3324948465767645e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009488::dpv",
+      "build_year": 2030,
+      "before_gw": 6.618520981979936e-06,
+      "after_gw": 1.555673821799266e-06,
+      "reduction_gw": 5.06284716018067e-06,
+      "original_excess_gw": 5.062847160179802e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009489::dpv",
+      "build_year": 2030,
+      "before_gw": 8.689720109181789e-06,
+      "after_gw": 1.5488017310000285e-06,
+      "reduction_gw": 7.14091837818176e-06,
+      "original_excess_gw": 7.140918378180892e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009490::dpv",
+      "build_year": 2030,
+      "before_gw": 5.858282440564972e-06,
+      "after_gw": 1.5703071898987692e-06,
+      "reduction_gw": 4.2879752506662025e-06,
+      "original_excess_gw": 4.287975250665335e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009491::dpv",
+      "build_year": 2030,
+      "before_gw": 4.799812314533457e-06,
+      "after_gw": 1.5906838279001203e-06,
+      "reduction_gw": 3.2091284866333364e-06,
+      "original_excess_gw": 3.209128486632469e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009492::dpv",
+      "build_year": 2030,
+      "before_gw": 4.52516793693096e-06,
+      "after_gw": 1.6021626309997569e-06,
+      "reduction_gw": 2.9230053059312033e-06,
+      "original_excess_gw": 2.923005305930336e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009493::dpv",
+      "build_year": 2030,
+      "before_gw": 4.963772607210857e-06,
+      "after_gw": 1.6054607060989676e-06,
+      "reduction_gw": 3.358311901111889e-06,
+      "original_excess_gw": 3.358311901111022e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009494::dpv",
+      "build_year": 2030,
+      "before_gw": 6.399468363121627e-06,
+      "after_gw": 1.5996348743993665e-06,
+      "reduction_gw": 4.7998334887222605e-06,
+      "original_excess_gw": 4.799833488721393e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009495::dpv",
+      "build_year": 2030,
+      "before_gw": 7.744644651205573e-06,
+      "after_gw": 1.603875938999739e-06,
+      "reduction_gw": 6.140768712205834e-06,
+      "original_excess_gw": 6.1407687122049665e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009496::dpv",
+      "build_year": 2030,
+      "before_gw": 8.475028640344297e-06,
+      "after_gw": 1.6117205259993131e-06,
+      "reduction_gw": 6.863308114344983e-06,
+      "original_excess_gw": 6.863308114344116e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009766::dpv",
+      "build_year": 2030,
+      "before_gw": 4.948093479706953e-06,
+      "after_gw": 1.6308022169993472e-06,
+      "reduction_gw": 3.3172912627076057e-06,
+      "original_excess_gw": 3.3172912627067383e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009767::dpv",
+      "build_year": 2030,
+      "before_gw": 5.003290389474691e-06,
+      "after_gw": 1.6164349257000317e-06,
+      "reduction_gw": 3.3868554637746587e-06,
+      "original_excess_gw": 3.3868554637737913e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009768::dpv",
+      "build_year": 2030,
+      "before_gw": 8.866142059250872e-06,
+      "after_gw": 1.5717544678989262e-06,
+      "reduction_gw": 7.294387591351946e-06,
+      "original_excess_gw": 7.294387591351079e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009772::dpv",
+      "build_year": 2030,
+      "before_gw": 5.296707280161831e-06,
+      "after_gw": 1.6043238517994018e-06,
+      "reduction_gw": 3.6923834283624293e-06,
+      "original_excess_gw": 3.692383428361562e-06
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000009773::dpv",
+      "build_year": 2030,
+      "before_gw": 5.19565827587546e-06,
+      "after_gw": 1.6143084298995894e-06,
+      "reduction_gw": 3.5813498459758702e-06,
+      "original_excess_gw": 3.581349845975003e-06
+    },
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2030,
+      "before_gw": 3.716872797499167e-11,
+      "after_gw": 0.0,
+      "reduction_gw": 3.716872797499167e-11,
+      "original_excess_gw": 9.426202485229851e-09,
+      "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+    },
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2040,
+      "before_gw": 9.38903373581476e-09,
+      "after_gw": 0.0,
+      "reduction_gw": 9.38903373581476e-09,
+      "original_excess_gw": 9.426202485229851e-09,
+      "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+    }
+  ],
+  "total_reduction_gw": 0.00030797786973329154,
+  "shared_biomass_upper": [
+    {
+      "province_code": 31,
+      "shared_upper_gw": 0.586,
+      "before_floor_gw": [
+        0.5825785985580395,
+        0.0034214108681629002
+      ],
+      "after_floor_gw": [
+        0.582578589131837,
+        0.0034214108681629002
+      ],
+      "initial_excess_gw": 9.426202485229851e-09,
+      "total_reduction_gw": 9.426202463789751e-09,
+      "retrofit_pairs_unchanged": true,
+      "ccs_capacity_unchanged": true,
+      "affected_rows": [
+        {
+          "asset_class": "thermal",
+          "asset_id": "31::bio",
+          "technology": "bio",
+          "build_year": 2030,
+          "before_gw": 3.716872797499167e-11,
+          "after_gw": 0.0,
+          "reduction_gw": 3.716872797499167e-11,
+          "original_excess_gw": 9.426202485229851e-09,
+          "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+        },
+        {
+          "asset_class": "thermal",
+          "asset_id": "31::bio",
+          "technology": "bio",
+          "build_year": 2040,
+          "before_gw": 9.38903373581476e-09,
+          "after_gw": 0.0,
+          "reduction_gw": 9.38903373581476e-09,
+          "original_excess_gw": 9.426202485229851e-09,
+          "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+        }
+      ]
+    }
+  ]
+}

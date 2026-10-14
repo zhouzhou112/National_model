@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "job_id": "5153878",
+  "node": "m4cg1604",
+  "start_time_utc": "2026-10-14T21:12:07Z",
+  "checked_at_utc": "2026-10-14T21:16:23.558649Z",
+  "compute_node_smoke": {
+    "status": "PASS",
+    "job_id": "5153878",
+    "gurobi_version": [
+      13,
+      0,
+      2
+    ],
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 723.2404518127441
+  },
+  "startup_regression": {
+    "tests": 7,
+    "status": "PASS",
+    "source_sha256": "9e6b19f647ad30918c42b58a39c7770bd44b431bf3fe1541f7ad4e1c3c392d38"
+  },
+  "runtime_source_sha_check": {
+    "passed": true,
+    "sha256": "e655a1b16e30cb18b0ad9993584165c0a111e1896f480ce9583b6578cf8adcac"
+  },
+  "stderr_bytes": 0,
+  "nocredit_job": "5153901",
+  "nocredit_state": "PENDING/JobHeldUser",
+  "nocredit_release_authorized": false,
+  "source_commit": "62bba5928f9db3c6d947e33350d5e08bd9bec01d",
+  "evidence_dir": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\startup_20261014T211644Z",
+  "jobs": {
+    "5153878": "JobId=5153878 JobName=cispo2030_case3_agg0 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1001123 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:04:36 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-15T04:46:44 EligibleTime=2026-10-15T05:10:20 AccrueTime=2026-10-15T05:10:20 StartTime=2026-10-15T05:12:07 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-15T05:12:07 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:1875410 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cg1604 BatchHost=m4cg1604 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/case3_2030.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/slurm-5153878.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/slurm-5153878.out Power= TresPerTask=cpu:64 \n",
+    "5153901": "JobId=5153901 JobName=cispo2030_case3_agg0 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=0 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-15T04:51:20 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-15T04:51:20 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:1925403 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/case3_2030.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/slurm-5153901.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/slurm-5153901.out Power= TresPerTask=cpu:64 \n"
+  }
+}

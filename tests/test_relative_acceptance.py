@@ -26,6 +26,53 @@ def fixture():
 
 
 class RelativeAcceptanceTests(unittest.TestCase):
+    def test_extended_gw_gwh_boundary_and_untouched_units(self):
+        q=fixture()
+        q['hard_checks'].update(storage_transition=False, up_reserve=False, inertia=False)
+        q['maximum_storage_transition_residual_gwh']=.001
+        q['minimum_up_reserve_margin_gw']=-.001
+        q['minimum_inertia_margin_gw_s']=-.0001
+        before=copy.deepcopy(q)
+        result=assess_relative_v1(q)
+        self.assertTrue(result['checks']['extended_gw_gwh_physical_checks']['passed'])
+        self.assertEqual(result['status'],'HARD_FAIL')
+        self.assertEqual(q,before)
+        q['hard_checks']['inertia']=True
+        self.assertEqual(assess_relative_v1(q)['status'],'PASS')
+        q['maximum_storage_transition_residual_gwh']=math.nextafter(.001,math.inf)
+        self.assertEqual(assess_relative_v1(q)['status'],'HARD_FAIL')
+        q['maximum_storage_transition_residual_gwh']=float('nan')
+        self.assertEqual(add_relative_profile(q)['status'],'ERROR')
+
+    def test_v5_all_stock_bounds_and_credit_reassessed(self):
+        q=fixture();q['flexible_load_formulation']='integrated_service_constrained_v5'
+        q['hard_checks'].update(heating_service_accounting=False,
+            v5_firm_capacity_credit_physical_bound=False,ev_v1g_daily_energy_conservation=True)
+        for suffix in ('state_transition_residual','periodic_boundary_residual',
+                       'positive_state_bound_violation','negative_state_bound_violation',
+                       'comfort_debt_violation'):
+            q['maximum_v4_heating_'+suffix+'_gwh']=.0009
+        q['maximum_v5_firm_capacity_credit_bound_violation_gw']=.001
+        # This unused daily-energy diagnostic must not reject V5.
+        q['maximum_ev_v1g_daily_energy_residual_gwh']=100
+        self.assertEqual(assess_relative_v1(q)['status'],'PASS')
+        q['maximum_v4_heating_negative_state_bound_violation_gwh']=.0011
+        self.assertEqual(assess_relative_v1(q)['status'],'HARD_FAIL')
+        del q['maximum_v4_heating_negative_state_bound_violation_gwh']
+        self.assertEqual(add_relative_profile(q)['status'],'ERROR')
+
+    def test_optional_dimensionless_limits_stay_strict(self):
+        q=fixture();q['hard_checks']['optional_portfolio_physical_contract']=False
+        q['optional_portfolio_qc']={'inventory_violation_gwh':.0008,
+                                    'enrollment_fraction_violation':.0001}
+        self.assertEqual(assess_relative_v1(q)['status'],'HARD_FAIL')
+        q['optional_portfolio_qc']['enrollment_fraction_violation']=0
+        self.assertEqual(assess_relative_v1(q)['status'],'PASS')
+
+    def test_missing_formulation_cannot_promote_service_check(self):
+        q=fixture();q['hard_checks']['v4_ev_mobility_service']=False
+        self.assertEqual(add_relative_profile(q)['status'],'ERROR')
+
     def test_recorded_barrier_tolerance(self):
         result=assess_relative_v1(fixture(),{'solver_parameters':{'barrier_convergence_tolerance':1e-4}})
         self.assertEqual(result['dual']['BarConvTol'],1e-4)

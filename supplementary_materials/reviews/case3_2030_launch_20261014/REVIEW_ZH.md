@@ -90,3 +90,35 @@ L1–L4 PASS，两个 release 都冻结自已推送源码 `62bba5928f9db3c6d947e
 操作证据为 `deployment_case3/`、`deployment_nocredit/` 中 `launch_config.json`、`frozen_release.json`、`cloud_preflight.json`、`held_submission.json`、`remote_evidence_sha256.json`、`local_cloud_input_check.json`，以及 `both_held_verified.json`。命令为 `deploy_held.py prepare|preflight|submit --case case3|nocredit`，其中 submit 使用 `sbatch --hold`；仅修复本地 preflight 调用参数，未修改已冻结源码。此轮不重新求解，引用源码 SHA 不变的 440 项回归与既有门禁证据。原模型、解、BarX/BarPi、大包及全部运行日志保留在原目录，小证据随 Git 提交。
 
 下一动作仅在作者回复“放行”后 release 这两个确切 Job ID，再核验 AllocTRES 与启动内存。作业运行期间继续 P1–P5；C2050 通过独立门禁后同样 held 汇报。F5 自然结束后只留参考记录，不追加 F9；取消的定时回查不恢复。本轮未操作 Job5124127、旧冻结源码、T550 cloud_backup 或凭据。
+
+## 2026-10-14 英国22:27：仅 case3 放行并通过启动核验，P 工具阶段进展
+
+作者本轮仅授权 release Job5153878，nocredit Job5153901 必须继续 held，不能沿用此前“两个都放行”的概括。2026-10-14T21:10:20Z 执行 `scontrol release 5153878` 前再次核验该 release 文件清单 SHA；21:12:07Z 在 `m4cg1604` 启动。实际 `AllocTRES=cpu=64,mem=750G,node=1,billing=64`，UNLIMITED、Requeue0；计算节点启动可用内存 **723.2404518127441 GiB ≥700 GiB**，Gurobi13.0.2 smoke PASS、7 项启动回归 PASS，生产 stderr 为空。21:16:43Z 取证时进入全年 runner 的构建阶段，尚无全年求解终态或科学验收结论。nocredit 仍 PENDING/JobHeldUser。
+
+冻结运行源仍为 `62bba59`，未将下列本地 P 工具改动回写云端。启动原件及逐字节 SHA 见 `startup_20261014T211644Z/`（本地保全）；小摘要见 `startup_verified.json`，放行回执为 `release_case3_5153878.json`。
+
+|项目|已完成与验证|剩余项|
+|---|---|---|
+|P1 定价证书|新增 `scripts/price_screened_candidates.py` 与无 Gurobi 依赖的流式解析；两份 L4 档案完成重新定价，分别抽查24站，和 Gurobi 只读列点积差为0|Base2030 全年归档自检等待一次性下载完成|
+|P2 relative_v1 扩展|GW/GWh 判据 max(严格容差,1e-3)，库存界/转移/信用等覆盖；非GW/GWh及无量纲项保持严格；两份L4离线PASS|全年结果出来后离线评估，冻结源不更新|
+|P3 R1产品化|新增 `scripts/prepare_continuation_state.py`；2050→2060 原派生 cohort 和汇总表逐字节复现|后续续接按新目录执行，门禁不放宽|
+|P4 续接年筛选|新增 `scripts/build_vre_screen_list.py`，参数化源release/margin、精确稳定键对齐、输入SHA及原始MPS/BarPi身份验证，CLI测试通过|Base2040/2050 全年原件尚未获取，未生成可用生产清单|
+|P5 C2050|Base2040经R1生成上游状态，清理数量/比例检查PASS，16,446 cohort；发电储能删除0.30537354949242773GW，网络删除0.2706922453084057GW，131条界收口共0.00030797786973329154GW|待P4清单、1h/24h门禁，再held汇报；尚未提交|
+
+P1 的两种用途已分开输出：24h case3 的 B/obj=0.005503098555427332，nocredit=0.005270950866770986，均为近优性 `ACCEPT_DISCLOSE`，比较用途 `RESOLVE_NEGATIVE_COLUMNS_ONCE`。这些只是截断工程档案的脚本验证，不是全年成本结论，也不触发生产重解。公式沿用原脚本的成对方向 `rc_build=rc_cap+rc_new`，消去容量记账等式；BarPi 是原始约束顺序，证书不替代原对偶误差与完整可行性披露。负价列和符号翻转表均完整保留，详见 `P1_24h_summary.json` 与 `P1_gurobi_column_crosscheck.json`。
+
+P2 保留旧 hard_checks、原始QC标签和全部源文件；未知约束保持严格，缺失/非有限残差报ERROR而不猜PASS。仅改本地离线标签逻辑。P3 的历史 gzip 写入头/flush 差异曾导致压缩字节不同、解压内容相同，初版保留；显式复用历史 gzip 时间头并匹配旧写入flush后，cohort SHA 恢复为 `3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af`，汇总SHA `f455533f11387a1293fbbf57c7f77ace0a21a0db33d3125967f5341b84056d64`；没有从参考文件复制 cohort 内容。新状态默认gzip时间为0，使重复生成确定。核验见 `P3_reproduction_check_v2.json`。
+
+C2050 当前派生状态为 `P5_C2050_state_02/prepared_state/planning_state_candidate/`，cohort SHA `1b7b068d6ed00653e2ffb23f853e98b8bfdf8c2426b8d44b2a838d396b47b246`。源验收SHA、原result_manifest及所用依赖逐项核验，原状态不改。不能将“状态准备完成”当作C2050已通过求解门禁。
+
+完整回归450项PASS、跳过1项（198.059秒）；随后补充并复核的21项针对性测试PASS（5.991秒），覆盖原始行序/BarPi长度和SHA、稳定键错配、两种阈值/二次重解、各单位残差与历史R1审计一致性。最终代码与证据SHA见 `P_progress_20261014T2127Z.json`；不因文档更新重复求解。
+
+获取全年原件采用 `fetch_pricing_archive.py --year 2030 --output P1_Base2030_archive`，仅从已完成的Base2030原release读取指定MPS/BarPi及小清单，一次性有限传输，不建立后台监听/自动提交。21:27UTC已收到660,471,808/4,048,048,342字节MPS，仍未完成、未宣称SHA通过；partial文件完整保留。2030完成后先核验SHA并做全档自检，2040/2050仍需依次获取；本轮没有为后处理新增云端计算作业。所有已解/失败/诊断原件继续保全，未操作Job5124127、旧冻结源码、F5或T550 cloud_backup。F5自然结束只记参考，无F9。
+
+下一步：完成全尺寸输入取证及P1/P4，C2050门禁全部通过后只held并汇报；nocredit等待作者新的明确放行，不自动释放。无定时回查。
+
+### 2026-10-14 英国22:31 补充：有限取证队列
+
+Base2030一次性下载PID33028继续；另启动Base2040→Base2050顺序下载（当前2040 PID45068），输出分别为 `P4_Base2040_archive`、`P4_Base2050_archive`，失败即保留现场停止，不循环重试。每份约4.05GB MPS+0.407GB BarPi，其他输入是小清单；不在登录节点解析全年LP、不新增云端计算作业。须以各目录 `download_identity.json` 为完成且SHA通过的证据，不把文件存在当完成。后续启动全档解析前还需核对本机可用内存，原始行名索引约需8GiB。
+
+最终21项针对性复核日志为 `P_tools_tests_final3.stderr.log`；提交前源SHA及有限传输状态见 `P_progress_final_before_commit.json`。R1工具增加显式 `--author-decision-label`，默认匹配本次既有验收标签；未来年份须匹配作者另行记录的采用决定，不将QC标签自动转换成授权。

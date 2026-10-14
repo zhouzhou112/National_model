@@ -2,6 +2,8 @@
 
 Input: output directory, or solution_qc.json with optional --solve/--inputs JSON.
 Output: standalone solution_qc_relative_v1.json (source SHA provenance included).
+Includes the 2026-10-14 GW/GWh extension; strict labels and all source data
+remain immutable. A FAIL/ERROR exit is a reference label, never a deletion rule.
 """
 from pathlib import Path
 import argparse

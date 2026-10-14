@@ -1,0 +1,10 @@
+{
+  "capacity_cohorts.csv.gz": {
+    "sha256": "3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af",
+    "bytes_identical": true
+  },
+  "state_transition_summary.csv": {
+    "sha256": "f455533f11387a1293fbbf57c7f77ace0a21a0db33d3125967f5341b84056d64",
+    "bytes_identical": true
+  }
+}

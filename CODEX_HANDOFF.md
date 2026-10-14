@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-14 英国22:27 case3单独运行：** Job5153878已按本轮授权release并在m4cg1604启动；AllocTRES cpu64/mem750G/billing64、启动可用723.240GiB、smoke/7项回归PASS。Job5153901继续held，必须另获作者放行。冻结源62bba59不变。本地P2/P3实现并验证，P1全档自检及P4清单待归档输入；C2050 R1上游已准备，待筛选及1h/24h门禁后才held。详情case3_2030_launch_20261014/REVIEW_ZH.md。无定时回查/自动提交。
+
 - **2026-10-14 英国21:52 case3 L5 held 完成：** Job5153878（case3）与 Job5153901（nocredit）均 PENDING/JobHeldUser，未放行；两份新 release 源码62bba59、385源码/55输入SHA及云端preflight PASS。ReqTRES cpu64/mem750G/node1/billing64，48求解线程、Aggregate=0、margin0.2、UNLIMITED/Requeue0；AllocTRES待启动后核验。只在作者回复“放行”后release。核准表、完整SHA、证据见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md`；P1–P5留运行期间，F5仅参考、无F9、无定时回查。
 
 - **2026-10-14 case3 生产前核准：** 作者已确认 case3/_nocredit/C 仅将 Base 数值设置改为 Aggregate=0。L1–L4 已通过（440 测试；两份24h OPTIMAL且完整保全），下一步仅提交两个2030 held 作业并汇报，未获“放行”不得 release。详见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md`。P1–P5 留运行期间；F5自然结束、无F9。
@@ -9981,3 +9983,13 @@ L1–L4 PASS，冻结源码 `62bba5928f9db3c6d947e33350d5e08bd9bec01d`，两个�
 Job5153878 / Job5153901 均 PENDING/JobHeldUser；ReqTRES cpu64/mem750G/node1/billing64，UNLIMITED/Requeue0，AllocTRES=null，未 release。求解 48 线程，Base 数值仅 Aggregate=0，margin0.2；启动可用内存至少700GiB。历史峰680.804GiB，余量有限。证据 `supplementary_materials/reviews/case3_2030_launch_20261014/both_held_verified.json` 及两个 `deployment_*/`；完整核准见同目录 REVIEW_ZH.md。部署工具 preflight 参数修复与回执单独提交，冻结源保持62bba59。
 
 下一动作：等待作者“放行”后 release 并核对实际分配与内存；运行期间完成P1–P5，C2050另经门禁后held。此轮未操作Base2060、旧冻结源码或T550诊断/备份，不恢复定时回查、不追加F9。所有运行数据完整保全。
+
+## 2026-10-14 英国22:27：case3单独放行，nocredit继续held
+
+用户只授权5153878。21:10:20UTC执行release，21:12:07UTC在m4cg1604启动；实际AllocTRES cpu64/mem750G/node1/billing64、UNLIMITED/Requeue0，启动可用723.2404518127441GiB>=700，Gurobi13.0.2 smoke及7项启动回归PASS，取证时生产stderr空、全年构建中。5153901仍PENDING/JobHeldUser，未获放行。冻结源62bba59保持不变，回执和核验见case3_2030_launch_20261014/release_case3_5153878.json与startup_verified.json。
+
+本地P工具：relative_v1离线GW/GWh扩展通过；R1复现既有2050→2060 cohort SHA3c088ed7与汇总SHAf455533f；C2050的R1上游state已准备，16,446cohort，SHA1b7b068d6ed00653e2ffb23f853e98b8bfdf8c2426b8d44b2a838d396b47b246。P1两份24h定价与独立点积核验通过，但Base2030全尺寸自检仍待下载；P4脚本通过小测试，Base2040/2050清单尚未生成，C2050还未做完整门禁/held提交。450项回归PASS跳过1、补充21项针对性PASS；详见REVIEW_ZH.md与P_progress_20261014T2127Z.json。一次性Base2030归档下载正在进行，不是后台监听，不做自动提交。
+
+本次Git基准4bcce51；仅本地离线工具/测试/报告和启动小证据提交，运行源码不变。下一步全档SHA/定价自检→2040/2050筛选→C2050门禁→held汇报；nocredit需新的作者授权。无定时回查、不触碰Base2060/F5/备份；任何QC标签均完整保全。
+
+2026-10-14英国22:31补充：Base2030有限取证PID33028；Base2040→2050有限顺序取证当前PID45068。下载后以download_identity.json和SHA为准，禁止重复启动/覆盖partial。未建立监听、无自动提交；后续全档解析先核验本机可用内存。最终源SHA与分项状态见case3_2030_launch_20261014/P_progress_final_before_commit.json。

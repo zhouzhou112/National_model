@@ -10,10 +10,119 @@ import json
 import math
 from pathlib import Path
 
-VERSION = 'relative_v1_author_20261012'
+VERSION = 'relative_v1_author_20261014_extended'
 DEFERRED = 'DEFERRED_BY_AUTHOR_20261012'
 REPLACED = {'power_balance', 'objective_components',
             'unidirectional_interprovincial_flow', 'reservoir_transition'}
+
+# Only physical GW/GWh residuals are relaxed. Inertia (GW*s), water (m3),
+# emissions, fuel, costs and dimensionless fractions retain their old checks.
+PHYSICAL_METRICS = {
+    'load_component_input_closure': 'maximum_load_component_input_closure_error_gw',
+    'effective_load_reconstruction': 'maximum_effective_load_reconstruction_error_gw',
+    'effective_load_nonnegative': 'minimum_effective_load_gw',
+    'ev_v2g_transition': 'maximum_ev_v2g_transition_residual_gwh',
+    'up_reserve': 'minimum_up_reserve_margin_gw',
+    'down_reserve': 'minimum_down_reserve_margin_gw',
+    'capacity_margin': 'minimum_capacity_margin_gw',
+    'ruc_transition': 'maximum_ruc_transition_residual_gw',
+    'thermal_online_capacity': 'maximum_thermal_online_capacity_violation_gw',
+    'thermal_minimum_generation': 'maximum_thermal_minimum_generation_violation_gw',
+    'thermal_maximum_generation': 'maximum_thermal_maximum_generation_violation_gw',
+    'vre_availability': 'maximum_vre_availability_violation_gw',
+    'wave_availability': 'maximum_wave_availability_violation_gw',
+    'hydro_aggregate_availability': 'maximum_hydro_aggregate_availability_violation_gw',
+    'hydro_aggregate_monthly_energy_budget': 'maximum_hydro_aggregate_monthly_energy_budget_violation_gwh',
+    'line_capacity': 'maximum_line_capacity_violation_gw',
+    'nuclear_capacity_floor': 'maximum_nuclear_capacity_floor_violation_gw',
+    'nuclear_capacity_upper': 'maximum_nuclear_capacity_upper_violation_gw',
+    'biomass_beccs_capacity_upper': 'maximum_biomass_beccs_capacity_upper_violation_gw',
+    'storage_capacity_floor': 'maximum_storage_capacity_floor_violation_gw',
+    'dc_fixed_direction': 'maximum_dc_reverse_flow_gw',
+    'storage_transition': 'maximum_storage_transition_residual_gwh',
+    'storage_soc': 'maximum_storage_soc_upper_violation_gwh',
+    'reservoir_energy': 'maximum_reservoir_energy_upper_violation_gwh',
+}
+
+
+def extended_physical_checks(qc):
+    """Re-evaluate archived semantic residuals, preserving formulation branches.
+
+    Strict tolerances mirror solution_export.py (1e-5; DC direction 1e-6).
+    Missing/nonfinite evidence raises rather than promoting a strict failure.
+    Unknown hard checks remain strict in assess_relative_v1.
+    """
+    hard = qc['hard_checks']
+    definitions = {k: [v] for k, v in PHYSICAL_METRICS.items()}
+    formulation = qc.get('flexible_load_formulation')
+    service = formulation in {'service_constrained_v4', 'integrated_service_constrained_v5'}
+    thermal = formulation in {'state_envelope_v2', 'comfort_envelope_v3'}
+    for component in ('heating', 'cooling'):
+        key = component + '_service_accounting'
+        if key in hard and formulation is None:
+            raise ValueError('Missing flexible_load_formulation for service assessment')
+        if service:
+            definitions[key] = ['maximum_v4_' + component + '_' + suffix + '_gwh'
+                for suffix in ('state_transition_residual', 'periodic_boundary_residual',
+                               'positive_state_bound_violation', 'negative_state_bound_violation',
+                               'comfort_debt_violation')]
+        elif thermal:
+            definitions[key] = ['maximum_' + component + '_state_transition_residual_gwh',
+                'maximum_' + component + '_daily_terminal_state_gwh',
+                'minimum_' + component + '_daily_net_energy_change_gwh']
+        else:
+            definitions[key] = ['maximum_' + component + '_daily_energy_residual_gwh']
+        for check, metric in [('state_transition', 'maximum_' + component + '_state_transition_residual_gwh'),
+                              ('daily_state_reset', 'maximum_' + component + '_daily_terminal_state_gwh'),
+                              ('state_loss_accounting', 'minimum_' + component + '_daily_net_energy_change_gwh')]:
+            definitions[component + '_' + check] = [metric] if thermal else []
+    definitions.update({
+        'ev_v1g_daily_energy_conservation': [] if service else ['maximum_ev_v1g_daily_energy_residual_gwh'],
+        'ev_v1g_backlog_transition': ['maximum_ev_v1g_backlog_transition_residual_gwh'] if thermal else [],
+        'ev_v1g_daily_backlog_reset': ['maximum_ev_v1g_daily_terminal_backlog_gwh'] if thermal else [],
+        'ev_v2g_daily_state_reset': ['maximum_ev_v2g_daily_terminal_state_gwh'] if formulation == 'comfort_envelope_v3' else [],
+        'ev_combined_grid_charging_power': ['maximum_ev_combined_grid_charging_power_violation_gw'] if service or formulation == 'comfort_envelope_v3' else [],
+        'v4_ev_mobility_service': ['maximum_v4_ev_' + suffix for suffix in (
+            'soc_transition_residual_gwh', 'departure_soc_violation_gwh', 'soc_upper_violation_gwh',
+            'charge_power_violation_gw', 'discharge_power_violation_gw')] if service else [],
+    })
+    for check, metric in {
+        'v5_v2g_contract_nesting': 'nested_v2g_contract_violation_gw',
+        'v5_v2g_national_power_cap': 'national_v2g_cap_violation_gw',
+        'v5_shared_bidirectional_connection_power': 'shared_connection_power_violation_gw',
+        'v5_firm_capacity_credit_physical_bound': 'firm_capacity_credit_bound_violation_gw',
+    }.items():
+        definitions[check] = ['maximum_v5_' + metric] if formulation == 'integrated_service_constrained_v5' else []
+    checks = {}
+    if (set(definitions) - set(PHYSICAL_METRICS)) & set(hard):
+        if formulation not in {'daily_energy_shift_v1', 'state_envelope_v2',
+                               'comfort_envelope_v3', 'service_constrained_v4',
+                               'integrated_service_constrained_v5'}:
+            raise ValueError('Missing or unknown flexible_load_formulation')
+    for key, metrics in definitions.items():
+        if key not in hard:
+            continue
+        strict = number(qc.get('bidirectional_flow_tolerance_gw', 1e-6), nonnegative=True) if key == 'dc_fixed_direction' else 1e-5
+        limit = max(strict, 1e-3)
+        observations = []
+        for metric in metrics:
+            value = number(qc[metric], nonnegative=not metric.startswith('minimum_'))
+            violation = max(0., -value) if metric.startswith('minimum_') else value
+            observations.append(dict(metric=metric, value=value, violation=violation,
+                                     limit=limit, passed=violation <= limit))
+        checks[key] = dict(passed=all(v['passed'] for v in observations),
+            strict_passed=hard[key], strict_tolerance=strict, relative_tolerance=limit,
+            observations=observations, applicable=bool(metrics))
+    if 'optional_portfolio_physical_contract' in hard:
+        observations = []
+        for metric, raw in qc['optional_portfolio_qc'].items():
+            limit = max(1e-5, 1e-3) if metric.endswith(('_gw', '_gwh')) else 1e-5
+            value = number(raw, nonnegative=True)
+            observations.append(dict(metric=metric, value=value, limit=limit, passed=value <= limit))
+        checks['optional_portfolio_physical_contract'] = dict(
+            passed=all(v['passed'] for v in observations),
+            strict_passed=hard['optional_portfolio_physical_contract'], observations=observations)
+    return checks
 
 
 def number(value, *, nonnegative=False):
@@ -64,7 +173,12 @@ def assess_relative_v1(qc, solve=None, inputs=None):
     hard = qc['hard_checks']
     if not hard or not all(isinstance(v, bool) for v in hard.values()):
         raise ValueError('Strict hard_checks must be a nonempty boolean mapping')
-    remaining = {k:v for k,v in hard.items() if k not in REPLACED}
+    extended = extended_physical_checks(qc)
+    checks['extended_gw_gwh_physical_checks'] = dict(
+        passed=all(v['passed'] for v in extended.values()), checks=extended,
+        failed=[k for k,v in extended.items() if not v['passed']],
+        rule='max(strict_tolerance, 1e-3 GW or GWh); reference label only')
+    remaining = {k:v for k,v in hard.items() if k not in REPLACED and k not in extended}
     checks['remaining_physical_hard_checks'] = dict(passed=all(remaining.values()),
         checks=remaining, failed=[k for k,v in remaining.items() if not v])
     contract = solve.get('solution_contract') or qc.get('solver_contract') or {}

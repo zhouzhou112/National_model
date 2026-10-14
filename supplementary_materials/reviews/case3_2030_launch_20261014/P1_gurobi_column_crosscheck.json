@@ -1,0 +1,306 @@
+{
+  "case3_24h_01": {
+    "status": "PASS",
+    "optimization_called": false,
+    "rows": 226051,
+    "columns": 353638,
+    "samples": [
+      {
+        "site_index": 0,
+        "streaming": 599.6999097584214,
+        "gurobi_column_dot": 599.6999097584214,
+        "error": 0.0
+      },
+      {
+        "site_index": 1595,
+        "streaming": 595.3442711453058,
+        "gurobi_column_dot": 595.3442711453058,
+        "error": 0.0
+      },
+      {
+        "site_index": 3190,
+        "streaming": 607.6053543913538,
+        "gurobi_column_dot": 607.6053543913538,
+        "error": 0.0
+      },
+      {
+        "site_index": 4785,
+        "streaming": 594.1912699826804,
+        "gurobi_column_dot": 594.1912699826804,
+        "error": 0.0
+      },
+      {
+        "site_index": 6380,
+        "streaming": 613.858726107453,
+        "gurobi_column_dot": 613.858726107453,
+        "error": 0.0
+      },
+      {
+        "site_index": 7975,
+        "streaming": 589.1628714036024,
+        "gurobi_column_dot": 589.1628714036024,
+        "error": 0.0
+      },
+      {
+        "site_index": 9570,
+        "streaming": 1037.833399850969,
+        "gurobi_column_dot": 1037.833399850969,
+        "error": 0.0
+      },
+      {
+        "site_index": 11165,
+        "streaming": 292.29459235154457,
+        "gurobi_column_dot": 292.29459235154457,
+        "error": 0.0
+      },
+      {
+        "site_index": 12760,
+        "streaming": 243.69673602224483,
+        "gurobi_column_dot": 243.69673602224483,
+        "error": 0.0
+      },
+      {
+        "site_index": 14355,
+        "streaming": 256.93574066109954,
+        "gurobi_column_dot": 256.93574066109954,
+        "error": 0.0
+      },
+      {
+        "site_index": 15950,
+        "streaming": 263.9417632433174,
+        "gurobi_column_dot": 263.9417632433174,
+        "error": 0.0
+      },
+      {
+        "site_index": 17545,
+        "streaming": 242.82858329185973,
+        "gurobi_column_dot": 242.82858329185973,
+        "error": 0.0
+      },
+      {
+        "site_index": 19140,
+        "streaming": 255.50734240401673,
+        "gurobi_column_dot": 255.50734240401673,
+        "error": 0.0
+      },
+      {
+        "site_index": 20735,
+        "streaming": 272.8626800445212,
+        "gurobi_column_dot": 272.8626800445212,
+        "error": 0.0
+      },
+      {
+        "site_index": 22330,
+        "streaming": 249.2521466292957,
+        "gurobi_column_dot": 249.2521466292957,
+        "error": 0.0
+      },
+      {
+        "site_index": 23925,
+        "streaming": 149.512365861114,
+        "gurobi_column_dot": 149.512365861114,
+        "error": 0.0
+      },
+      {
+        "site_index": 25520,
+        "streaming": 215.37982717456154,
+        "gurobi_column_dot": 215.37982717456154,
+        "error": 0.0
+      },
+      {
+        "site_index": 27115,
+        "streaming": 236.7960677099795,
+        "gurobi_column_dot": 236.7960677099795,
+        "error": 0.0
+      },
+      {
+        "site_index": 28710,
+        "streaming": 249.89708881298998,
+        "gurobi_column_dot": 249.89708881298998,
+        "error": 0.0
+      },
+      {
+        "site_index": 30305,
+        "streaming": 242.13367670978815,
+        "gurobi_column_dot": 242.13367670978815,
+        "error": 0.0
+      },
+      {
+        "site_index": 31900,
+        "streaming": 249.82617866472188,
+        "gurobi_column_dot": 249.82617866472188,
+        "error": 0.0
+      },
+      {
+        "site_index": 33495,
+        "streaming": 221.7050247121874,
+        "gurobi_column_dot": 221.7050247121874,
+        "error": 0.0
+      },
+      {
+        "site_index": 35090,
+        "streaming": 243.6857196008745,
+        "gurobi_column_dot": 243.6857196008745,
+        "error": 0.0
+      },
+      {
+        "site_index": 36685,
+        "streaming": 249.77423727242046,
+        "gurobi_column_dot": 249.77423727242046,
+        "error": 0.0
+      }
+    ]
+  },
+  "nocredit_24h_01": {
+    "status": "PASS",
+    "optimization_called": false,
+    "rows": 225772,
+    "columns": 353514,
+    "samples": [
+      {
+        "site_index": 0,
+        "streaming": 599.6999097584214,
+        "gurobi_column_dot": 599.6999097584214,
+        "error": 0.0
+      },
+      {
+        "site_index": 1595,
+        "streaming": 595.2632380386243,
+        "gurobi_column_dot": 595.2632380386243,
+        "error": 0.0
+      },
+      {
+        "site_index": 3190,
+        "streaming": 607.4629193854649,
+        "gurobi_column_dot": 607.4629193854649,
+        "error": 0.0
+      },
+      {
+        "site_index": 4785,
+        "streaming": 593.5231577642151,
+        "gurobi_column_dot": 593.5231577642151,
+        "error": 0.0
+      },
+      {
+        "site_index": 6380,
+        "streaming": 613.754960946825,
+        "gurobi_column_dot": 613.754960946825,
+        "error": 0.0
+      },
+      {
+        "site_index": 7975,
+        "streaming": 589.0643241910398,
+        "gurobi_column_dot": 589.0643241910398,
+        "error": 0.0
+      },
+      {
+        "site_index": 9570,
+        "streaming": 1037.2144623175184,
+        "gurobi_column_dot": 1037.2144623175184,
+        "error": 0.0
+      },
+      {
+        "site_index": 11165,
+        "streaming": 292.292411159077,
+        "gurobi_column_dot": 292.292411159077,
+        "error": 0.0
+      },
+      {
+        "site_index": 12760,
+        "streaming": 243.50590907596813,
+        "gurobi_column_dot": 243.50590907596813,
+        "error": 0.0
+      },
+      {
+        "site_index": 14355,
+        "streaming": 256.9355448634215,
+        "gurobi_column_dot": 256.9355448634215,
+        "error": 0.0
+      },
+      {
+        "site_index": 15950,
+        "streaming": 263.9418348012553,
+        "gurobi_column_dot": 263.9418348012553,
+        "error": 0.0
+      },
+      {
+        "site_index": 17545,
+        "streaming": 242.6156065973776,
+        "gurobi_column_dot": 242.6156065973776,
+        "error": 0.0
+      },
+      {
+        "site_index": 19140,
+        "streaming": 255.50554542111493,
+        "gurobi_column_dot": 255.50554542111493,
+        "error": 0.0
+      },
+      {
+        "site_index": 20735,
+        "streaming": 272.8907998420181,
+        "gurobi_column_dot": 272.8907998420181,
+        "error": 0.0
+      },
+      {
+        "site_index": 22330,
+        "streaming": 249.24790847343567,
+        "gurobi_column_dot": 249.24790847343567,
+        "error": 0.0
+      },
+      {
+        "site_index": 23925,
+        "streaming": 155.68126557206898,
+        "gurobi_column_dot": 155.68126557206898,
+        "error": 0.0
+      },
+      {
+        "site_index": 25520,
+        "streaming": 215.24963072755088,
+        "gurobi_column_dot": 215.24963072755088,
+        "error": 0.0
+      },
+      {
+        "site_index": 27115,
+        "streaming": 236.6225832689828,
+        "gurobi_column_dot": 236.6225832689828,
+        "error": 0.0
+      },
+      {
+        "site_index": 28710,
+        "streaming": 249.89593463632139,
+        "gurobi_column_dot": 249.89593463632139,
+        "error": 0.0
+      },
+      {
+        "site_index": 30305,
+        "streaming": 241.7864593039074,
+        "gurobi_column_dot": 241.7864593039074,
+        "error": 0.0
+      },
+      {
+        "site_index": 31900,
+        "streaming": 249.82356179708103,
+        "gurobi_column_dot": 249.82356179708103,
+        "error": 0.0
+      },
+      {
+        "site_index": 33495,
+        "streaming": 221.58287128173995,
+        "gurobi_column_dot": 221.58287128173995,
+        "error": 0.0
+      },
+      {
+        "site_index": 35090,
+        "streaming": 243.64372289600027,
+        "gurobi_column_dot": 243.64372289600027,
+        "error": 0.0
+      },
+      {
+        "site_index": 36685,
+        "streaming": 249.76414266771516,
+        "gurobi_column_dot": 249.76414266771516,
+        "error": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "at_utc": "2026-10-14T21:27:27Z",
+  "source_lf_sha256": {
+    "cispo_model/relative_acceptance.py": "62aefb506b2b4803c254d69f8eada0c858446f96be9bba910dc29efc1dd60243",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/continuation_cleanup.py": "4f457b5faab1a7964083be98e4aac07c9acfd1865a3da56f3f71ed8175659ca9",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/build_vre_screen_list.py": "55e0a1a28cb41137e0bc5b8463020e18e1116cd785953b4c64954f50d97041c3",
+    "scripts/prepare_continuation_state.py": "05b3d531262ce1abc04bc8824723aec2c4c878f95aad604ed1507c0ec571deb0",
+    "tests/test_relative_acceptance.py": "2665da78a2fdad6e9aa5aba5aa99fd38e5e30750454cf59aa30aff396f4fcdf6",
+    "tests/test_vre_pricing.py": "2ca4992b83f5c1f70357781b6e19c013813fc8e84949ea7f693951785b8c616f",
+    "tests/test_continuation_cleanup.py": "8357c6645fec45854c6679210ba03afedcc526c4d61a9e07a6ae600dad0c3425"
+  },
+  "full_suite": {
+    "tests": 450,
+    "skipped": 1,
+    "seconds": 198.059,
+    "status": "PASS",
+    "log": "P_tools_tests_01.stderr.log"
+  },
+  "final_targeted_suite": {
+    "tests": 21,
+    "seconds": 5.991,
+    "status": "PASS",
+    "log": "P_tools_tests_final2.stderr.log"
+  },
+  "P1": "24h certificates and independent column-dot crosschecks PASS; full Base archive self-check PENDING_DOWNLOAD",
+  "P2": "COMPLETE_OFFLINE_EXTENSION; both L4 source archives unchanged and assessments PASS",
+  "P3": "COMPLETE_REPRODUCED_COHORT_AND_SUMMARY_BYTES; regression gzip header replayed explicitly",
+  "P4": "CLI and identity/threshold tests PASS; Base2040/Base2050 full-year screen artifacts PENDING_SOURCE_ARCHIVES",
+  "P5": "R1 Base2040->C2050 state prepared and source SHA verified; screened 1h/24h gates and held submission PENDING_P4",
+  "pricing": {
+    "case3": {
+      "B_million_cny": 11674.14647061075,
+      "B_over_objective": 0.005503098555427332,
+      "near_optimality_decision": "ACCEPT_DISCLOSE",
+      "base_comparison_decision": "RESOLVE_NEGATIVE_COLUMNS_ONCE",
+      "excluded_columns": 20272,
+      "scope": "ENGINEERING_WINDOW_ONLY",
+      "negative_excluded_columns_count": 47,
+      "certificate_sha256": "5b25c05c7d81f8ad852850335084653d667d0c4aad8965d61a39ad4a4e104892"
+    },
+    "nocredit": {
+      "B_million_cny": 11186.743943091931,
+      "B_over_objective": 0.005270950866770986,
+      "near_optimality_decision": "ACCEPT_DISCLOSE",
+      "base_comparison_decision": "RESOLVE_NEGATIVE_COLUMNS_ONCE",
+      "excluded_columns": 20272,
+      "scope": "ENGINEERING_WINDOW_ONLY",
+      "negative_excluded_columns_count": 45,
+      "certificate_sha256": "ca395659257d046b67b922ee73ec67b4647bbc05513162259f9cdf91b3d8825d"
+    }
+  }
+}
