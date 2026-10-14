@@ -1,0 +1,123 @@
+{
+  "observed_at_utc": "2026-10-14T20:18:44.321786+00:00",
+  "iteration": 137,
+  "metrics": {
+    "114": {
+      "primal_objective": 5798592410.0,
+      "dual_objective": -20979080100.0,
+      "primal_residual": 5090.0,
+      "dual_residual": 1.49e-05,
+      "complementarity": 550.0,
+      "seconds": 153100.0
+    },
+    "117": {
+      "primal_objective": 5352112500.0,
+      "dual_objective": -19080633900.0,
+      "primal_residual": 4590.0,
+      "dual_residual": 1.34e-05,
+      "complementarity": 495.0,
+      "seconds": 156623.0
+    },
+    "124": {
+      "primal_objective": 3393498150.0,
+      "dual_objective": -10055925000.0,
+      "primal_residual": 2490.0,
+      "dual_residual": 6.61e-06,
+      "complementarity": 254.0,
+      "seconds": 165239.0
+    },
+    "127": {
+      "primal_objective": 3251022060.0,
+      "dual_objective": -9170192400.0,
+      "primal_residual": 2350.0,
+      "dual_residual": 8.87e-06,
+      "complementarity": 234.0,
+      "seconds": 168666.0
+    },
+    "132": {
+      "primal_objective": 2380753650.0,
+      "dual_objective": -6537482770.0,
+      "primal_residual": 1510.0,
+      "dual_residual": 5.11e-06,
+      "complementarity": 158.0,
+      "seconds": 174710.0
+    },
+    "136": {
+      "primal_objective": 2160873720.0,
+      "dual_objective": -5600677780.0,
+      "primal_residual": 1350.0,
+      "dual_residual": 9.74e-05,
+      "complementarity": 137.0,
+      "seconds": 179493.0
+    },
+    "137": {
+      "primal_objective": 2119485010.0,
+      "dual_objective": -5426234710.0,
+      "primal_residual": 1320.0,
+      "dual_residual": 9.35e-05,
+      "complementarity": 133.0,
+      "seconds": 180670.0
+    }
+  },
+  "windows": {
+    "104-114": {
+      "decrease_percent": {
+        "primal": 32.93807641633728,
+        "dual": 37.65690376569039,
+        "compl": 35.44600938967136
+      },
+      "gap_decrease_percent": 32.25299921927521,
+      "minutes_per_iteration": 19.65
+    },
+    "114-137": {
+      "decrease_percent": {
+        "primal": 74.06679764243616,
+        "dual": -527.5167785234898,
+        "compl": 75.81818181818181
+      },
+      "gap_decrease_percent": 71.82085292445754,
+      "minutes_per_iteration": 19.978260869565215
+    },
+    "117-127": {
+      "decrease_percent": {
+        "primal": 48.80174291938998,
+        "dual": 33.80597014925374,
+        "compl": 52.727272727272734
+      },
+      "gap_decrease_percent": 49.161611811269815,
+      "minutes_per_iteration": 20.071666666666665
+    },
+    "127-137": {
+      "decrease_percent": {
+        "primal": 43.82978723404255,
+        "dual": -954.1149943630214,
+        "compl": 43.162393162393165
+      },
+      "gap_decrease_percent": 39.2513530436218,
+      "minutes_per_iteration": 20.006666666666668
+    },
+    "132-137": {
+      "decrease_percent": {
+        "primal": 12.58278145695364,
+        "dual": -1729.7455968688844,
+        "compl": 15.822784810126578
+      },
+      "gap_decrease_percent": 15.390001289066523,
+      "minutes_per_iteration": 19.866666666666667
+    },
+    "117-137": {
+      "decrease_percent": {
+        "primal": 71.24183006535948,
+        "dual": -597.7611940298507,
+        "compl": 73.13131313131314
+      },
+      "gap_decrease_percent": 69.11636704091522,
+      "minutes_per_iteration": 20.039166666666667
+    }
+  },
+  "dual_ratio_to_132": 18.297455968688844,
+  "dual_drop_from_136_percent": 4.004106776180693,
+  "rss_gib": 403.340576171875,
+  "peak_rss_gib": 657.3362922668457,
+  "note": "Printed residuals differ from callback; no physical QC or ETA inference. Negative decrease means deterioration."
+}
