@@ -1,0 +1,212 @@
+{
+  "2030": {
+    "at137": [
+      137,
+      91318231.6,
+      -330604995.0,
+      48.7,
+      1.14e-08,
+      5.53,
+      174323.0
+    ],
+    "at137_window": {
+      "primal_drop_pct": 36.33986928104574,
+      "dual_drop_pct": 49.557522123893804,
+      "compl_drop_pct": 37.230419977298524,
+      "gap_drop_pct": 37.04112210508811,
+      "minutes_per_iter": 18.531666666666666
+    },
+    "first_threshold_crossings": {
+      "primal": 85,
+      "dual": 72,
+      "compl": 87
+    },
+    "nearest_primal_compl": [
+      86,
+      750924063.0,
+      -9761224550.0,
+      1230.0,
+      1.58e-07,
+      145.0,
+      117146.0
+    ],
+    "matched_window": {
+      "primal_drop_pct": 83.79446640316206,
+      "dual_drop_pct": 63.84439359267735,
+      "compl_drop_pct": 78.58197932053176,
+      "gap_drop_pct": 76.16025703144935,
+      "minutes_per_iter": 18.401666666666667
+    },
+    "end_iteration": 348,
+    "solver_days": 5.224328703703704,
+    "end": [
+      348,
+      4192778.84,
+      4192472.47,
+      5.83e-05,
+      1.93e-07,
+      3.98e-06,
+      451382.0
+    ]
+  },
+  "2040": {
+    "at137": [
+      137,
+      1596256650.0,
+      -4096157870.0,
+      594.0,
+      1.9e-06,
+      86.2,
+      199104.0
+    ],
+    "at137_window": {
+      "primal_drop_pct": 64.21686746987952,
+      "dual_drop_pct": 33.33333333333333,
+      "compl_drop_pct": 58.5576923076923,
+      "gap_drop_pct": 54.33866975199702,
+      "minutes_per_iter": 20.791666666666668
+    },
+    "first_threshold_crossings": {
+      "primal": 130,
+      "dual": 82,
+      "compl": 131
+    },
+    "nearest_primal_compl": [
+      130,
+      2354787060.0,
+      -6790202180.0,
+      1170.0,
+      2.02e-06,
+      148.0,
+      190419.0
+    ],
+    "matched_window": {
+      "primal_drop_pct": 53.012048192771076,
+      "dual_drop_pct": 48.469387755102034,
+      "compl_drop_pct": 51.15511551155115,
+      "gap_drop_pct": 47.177870102844466,
+      "minutes_per_iter": 20.418333333333333
+    },
+    "end_iteration": 605,
+    "solver_days": 9.76505787037037,
+    "end": [
+      605,
+      5088076.37,
+      5084224.88,
+      0.00176,
+      2.95e-08,
+      4.99e-05,
+      843701.0
+    ]
+  },
+  "2050": {
+    "at137": [
+      137,
+      16182913100000.0,
+      -1.49329354e+16,
+      73200000000.0,
+      3890.0,
+      72400000000.0,
+      197685.0
+    ],
+    "at137_window": {
+      "primal_drop_pct": 70.95238095238095,
+      "dual_drop_pct": 83.79166666666666,
+      "compl_drop_pct": 74.05017921146954,
+      "gap_drop_pct": -10.229262537557982,
+      "minutes_per_iter": 21.928333333333335
+    },
+    "first_threshold_crossings": {
+      "primal": 219,
+      "dual": 80,
+      "compl": 265
+    },
+    "nearest_primal_compl": [
+      116,
+      4986627380.0,
+      -18597816600.0,
+      3720.0,
+      7.53e-05,
+      416.0,
+      168458.0
+    ],
+    "matched_window": {
+      "primal_drop_pct": 25.89641434262948,
+      "dual_drop_pct": 15.771812080536918,
+      "compl_drop_pct": 22.242990654205606,
+      "gap_drop_pct": 19.06577845245242,
+      "minutes_per_iter": 21.798333333333332
+    },
+    "end_iteration": 716,
+    "solver_days": 11.532430555555555,
+    "end": [
+      716,
+      5751972.51,
+      5747341.07,
+      0.000225,
+      1.45e-06,
+      6.01e-05,
+      996402.0
+    ]
+  },
+  "2060": {
+    "at137": [
+      137,
+      2119485010.0,
+      -5426234710.0,
+      1320.0,
+      9.35e-05,
+      133.0,
+      180670.0
+    ],
+    "at137_window": {
+      "primal_drop_pct": 43.82978723404255,
+      "dual_drop_pct": -954.1149943630214,
+      "compl_drop_pct": 43.162393162393165,
+      "gap_drop_pct": 39.2513530436218,
+      "minutes_per_iter": 20.006666666666668
+    },
+    "first_threshold_crossings": {
+      "primal": 137,
+      "dual": 74,
+      "compl": 137
+    },
+    "nearest_primal_compl": [
+      137,
+      2119485010.0,
+      -5426234710.0,
+      1320.0,
+      9.35e-05,
+      133.0,
+      180670.0
+    ],
+    "matched_window": {
+      "primal_drop_pct": 43.82978723404255,
+      "dual_drop_pct": -954.1149943630214,
+      "compl_drop_pct": 43.162393162393165,
+      "gap_drop_pct": 39.2513530436218,
+      "minutes_per_iter": 20.006666666666668
+    },
+    "end_iteration": 137,
+    "solver_days": 2.091087962962963,
+    "end": [
+      137,
+      2119485010.0,
+      -5426234710.0,
+      1320.0,
+      9.35e-05,
+      133.0,
+      180670.0
+    ]
+  },
+  "_method": {
+    "matched_stage": "nearest_primal_compl minimizes squared log10 distances of printed primal residual and complementarity; excludes dual and objective. Not a progress percentage. 2050 nearest result is pre-jump and not representative of post-jump recovery.",
+    "limitations": [
+      "Different planning years have different feasible sets/objectives/scaling; printed residuals only engineering trajectory comparison, not physical QC.",
+      "2040 uses 44 threads; other three 48. 2060 uses v9_a12 numerical cleanup, earlier years V9.",
+      "solver_days excludes pre-solver model building/export and post-solver preservation; 2060 is elapsed, not total."
+    ],
+    "contiguous_iteration_validation": "PASS: 2030 0-348; 2040 0-605; 2050 0-716; 2060 0-137",
+    "data_timestamp": "2026-10-14T20:22:06.137044+00:00"
+  }
+}
