@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 2026-10-15英国10:53（北京17:53）Base2060/5124127 RUNNING/m4cm2108，累计2天16:36:47，最新iter178（英国10:44:57），较137推进41轮。PInf359/DInf6.20e-6/Compl25.2；较137三项降72.80%/93.37%/81.05%，目标差降79.12%。对偶较136峰回落93.63%，163曾小反弹、164至178连续15轮下降，仍为132反弹前1.213倍，不能称完全恢复旧低点。近10轮约19.82分钟/轮，原始/对偶/互补降28.06%/40.38%/35.22%。RSS403.47GiB/峰657.34GiB，stderr空、无显式警告/错误/终态；仍未收敛。证据revision_6d_general/progress_20261015T095350Z.json及_summary.json。
+
 - **2026-10-14 英国22:27 case3单独运行：** Job5153878已按本轮授权release并在m4cg1604启动；AllocTRES cpu64/mem750G/billing64、启动可用723.240GiB、smoke/7项回归PASS。Job5153901继续held，必须另获作者放行。冻结源62bba59不变。本地P2/P3实现并验证，P1全档自检及P4清单待归档输入；C2050 R1上游已准备，待筛选及1h/24h门禁后才held。详情case3_2030_launch_20261014/REVIEW_ZH.md。无定时回查/自动提交。
 
 - **2026-10-14 英国21:52 case3 L5 held 完成：** Job5153878（case3）与 Job5153901（nocredit）均 PENDING/JobHeldUser，未放行；两份新 release 源码62bba59、385源码/55输入SHA及云端preflight PASS。ReqTRES cpu64/mem750G/node1/billing64，48求解线程、Aggregate=0、margin0.2、UNLIMITED/Requeue0；AllocTRES待启动后核验。只在作者回复“放行”后release。核准表、完整SHA、证据见 `supplementary_materials/reviews/case3_2030_launch_20261014/REVIEW_ZH.md`；P1–P5留运行期间，F5仅参考、无F9、无定时回查。
@@ -9993,3 +9995,10 @@ Job5153878 / Job5153901 均 PENDING/JobHeldUser；ReqTRES cpu64/mem750G/node1/bi
 本次Git基准4bcce51；仅本地离线工具/测试/报告和启动小证据提交，运行源码不变。下一步全档SHA/定价自检→2040/2050筛选→C2050门禁→held汇报；nocredit需新的作者授权。无定时回查、不触碰Base2060/F5/备份；任何QC标签均完整保全。
 
 2026-10-14英国22:31补充：Base2030有限取证PID33028；Base2040→2050有限顺序取证当前PID45068。下载后以download_identity.json和SHA为准，禁止重复启动/覆盖partial。未建立监听、无自动提交；后续全档解析先核验本机可用内存。最终源SHA与分项状态见case3_2030_launch_20261014/P_progress_final_before_commit.json。
+
+
+## 2026-10-15英国10:53 Base2060第178轮及对偶恢复
+
+- 2026-10-15英国10:53（北京17:53）Base2060/5124127 RUNNING/m4cm2108，累计2天16:36:47，最新iter178（英国10:44:57），较137推进41轮。PInf359/DInf6.20e-6/Compl25.2；较137三项降72.80%/93.37%/81.05%，目标差降79.12%。对偶较136峰回落93.63%，163曾小反弹、164至178连续15轮下降，仍为132反弹前1.213倍，不能称完全恢复旧低点。近10轮约19.82分钟/轮，原始/对偶/互补降28.06%/40.38%/35.22%。RSS403.47GiB/峰657.34GiB，stderr空、无显式警告/错误/终态；仍未收敛。证据revision_6d_general/progress_20261015T095350Z.json及_summary.json。
+
+Git基准ea07c31aa09498aab23af7a7f1eae4e3ac796966。只读scontrol、sstat、gurobi.log/solver_telemetry及stderr，日志0–178连续、源字节SHA已保存，打印行与最新callback轮次一致。对偶反弹大部分已消退但尚高于132旧低点；最近10轮三项持续下降，不据此预测结束时间。原始残差与互补性仍大，没有可行/最优或物理QC结论，打印与callback口径分开。仅更新交接、服务器状态、runbook及两份小证据；冻结源680a5c4、48线程生产profile和作业不改，其他case3/SI会话内容保留。下一步用户查进度时只读核对收敛与终态；任何QC标签均完整保全全部解数据。

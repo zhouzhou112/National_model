@@ -1,0 +1,46 @@
+{
+  "latest_iteration": 178,
+  "windows": {
+    "137-178": {
+      "drop_percent": {
+        "primal": 72.8030303030303,
+        "dual": 93.36898395721926,
+        "compl": 81.05263157894737
+      },
+      "gap_drop_percent": 79.11896279656673,
+      "minutes_per_iteration": 19.752845528455286
+    },
+    "158-168": {
+      "drop_percent": {
+        "primal": 30.694444444444446,
+        "dual": 41.24293785310734,
+        "compl": 40.42879019908116
+      },
+      "gap_drop_percent": 38.97820086023589,
+      "minutes_per_iteration": 19.78166666666667
+    },
+    "168-178": {
+      "drop_percent": {
+        "primal": 28.056112224448892,
+        "dual": 40.38461538461539,
+        "compl": 35.21850899742931
+      },
+      "gap_drop_percent": 33.61983534005304,
+      "minutes_per_iteration": 19.815
+    }
+  },
+  "latest_printed_row": [
+    605920207.0,
+    -969704335.0,
+    359.0,
+    6.2e-06,
+    25.2,
+    229262.0
+  ],
+  "dual_drop_from_peak_136_percent": 93.63449691991786,
+  "dual_ratio_to_pre_rebound_132": 1.213307240704501,
+  "dual_decreasing_164_178": true,
+  "rss_gib": 403.47286224365234,
+  "peak_rss_gib": 657.3362922668457,
+  "note": "Printed residuals are solver diagnostics, not physical QC; no ETA inferred."
+}
