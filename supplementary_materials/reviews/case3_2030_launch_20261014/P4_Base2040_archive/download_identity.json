@@ -1,0 +1,41 @@
+{
+  "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760",
+  "files": {
+    "model_archive/archive_manifest.json": {
+      "sha256": "c5c0d55440183064722a90600e4b0a2654b68e04cc6daef8c6876693827bcc96",
+      "bytes": 608,
+      "verified": true
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "sha256": "b5ea8b8f9e13af8c501dfaf8306600e9e369234336fa9c6f594b306ec8b67190",
+      "bytes": 76898,
+      "verified": true
+    },
+    "vre_capacity.csv": {
+      "sha256": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+      "bytes": 3804184,
+      "verified": true
+    },
+    "solve_report.json": {
+      "sha256": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230",
+      "bytes": 80184,
+      "verified": true
+    },
+    "model_config_snapshot.json": {
+      "sha256": "a03384f8834a02a35e54d43626043dd0770023bad45d36cd370defc3461cb373",
+      "bytes": 19316,
+      "verified": true
+    },
+    "model_archive/original.mps.gz": {
+      "sha256": "62267732e960d713a7800b7879d50e7f35865fe8333370dc635c2dbc418723cc",
+      "bytes": 4051693374,
+      "verified": true
+    },
+    "barrier_checkpoint/dual_barpi.npy": {
+      "sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+      "bytes": 407257992,
+      "verified": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "candidate_screen": {
+    "enabled": true,
+    "margin": 0.2,
+    "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "source_dual_sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+    "source_csv_sha256": "e113054c00aa3ac390287e3061c5228a59e26311845b3a18081b8e67147a41c8"
+  }
+}

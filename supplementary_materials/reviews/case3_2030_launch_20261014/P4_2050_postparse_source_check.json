@@ -1,0 +1,37 @@
+{
+  "model_archive/archive_manifest.json": {
+    "bytes": 610,
+    "sha256": "3047f78993269d15c67e6372306e09e85f5f6384cc38fa8b6d50a61a2f984b45",
+    "passed": true
+  },
+  "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+    "bytes": 76911,
+    "sha256": "4099b2af780d02f3ae3ccf9577234c410e5fee24ad9359222122917f271186f5",
+    "passed": true
+  },
+  "vre_capacity.csv": {
+    "bytes": 3794637,
+    "sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+    "passed": true
+  },
+  "solve_report.json": {
+    "bytes": 165192,
+    "sha256": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1",
+    "passed": true
+  },
+  "model_config_snapshot.json": {
+    "bytes": 19313,
+    "sha256": "7c27e3afaebe34dd5a895e282185b996016e1492c16add105d2ac52fedafcccf",
+    "passed": true
+  },
+  "model_archive/original.mps.gz": {
+    "bytes": 4051434705,
+    "sha256": "4c04977cfe0b462993fb8e6c63958b7b3725a60cd5f82301315993def912e082",
+    "passed": true
+  },
+  "barrier_checkpoint/dual_barpi.npy": {
+    "bytes": 407257992,
+    "sha256": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911",
+    "passed": true
+  }
+}

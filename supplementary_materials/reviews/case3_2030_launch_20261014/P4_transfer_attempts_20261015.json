@@ -1,0 +1,132 @@
+{
+  "recorded_utc": "2026-10-15T20:46:44.936921+00:00",
+  "attempts": [
+    {
+      "directory": "P4_Base2050_archive",
+      "reason": "Previous transfer exited before completion; cause not established in this turn",
+      "complete": false,
+      "files": [
+        {
+          "path": "model_config_snapshot.json",
+          "bytes": 19313
+        },
+        {
+          "path": "solve_report.json",
+          "bytes": 165192
+        },
+        {
+          "path": "vre_capacity.csv",
+          "bytes": 3794637
+        },
+        {
+          "path": "barrier_checkpoint\\barrier_checkpoint_manifest.json",
+          "bytes": 76911
+        },
+        {
+          "path": "model_archive\\archive_manifest.json",
+          "bytes": 610
+        },
+        {
+          "path": "model_archive\\original.mps.gz",
+          "bytes": 134840320
+        }
+      ]
+    },
+    {
+      "directory": "P4_Base2050_archive_retry_20261015",
+      "reason": "Explicitly stopped this turn to change to bounded parallel transfer",
+      "complete": false,
+      "files": [
+        {
+          "path": "model_config_snapshot.json",
+          "bytes": 19313
+        },
+        {
+          "path": "solve_report.json",
+          "bytes": 165192
+        },
+        {
+          "path": "vre_capacity.csv",
+          "bytes": 3794637
+        },
+        {
+          "path": "barrier_checkpoint\\barrier_checkpoint_manifest.json",
+          "bytes": 76911
+        },
+        {
+          "path": "model_archive\\archive_manifest.json",
+          "bytes": 610
+        },
+        {
+          "path": "model_archive\\original.mps.gz",
+          "bytes": 161480704
+        }
+      ]
+    },
+    {
+      "directory": "P4_Base2050_archive_ranges_20261015",
+      "reason": "Explicitly stopped after delayed Windows directory size was mistaken for no transfer; actual partial bytes preserved",
+      "complete": false,
+      "files": [
+        {
+          "path": "model_config_snapshot.json",
+          "bytes": 19313
+        },
+        {
+          "path": "solve_report.json",
+          "bytes": 165192
+        },
+        {
+          "path": "transfer_source_v1.py",
+          "bytes": 4622
+        },
+        {
+          "path": "vre_capacity.csv",
+          "bytes": 3794637
+        },
+        {
+          "path": "barrier_checkpoint\\barrier_checkpoint_manifest.json",
+          "bytes": 76911
+        },
+        {
+          "path": "model_archive\\archive_manifest.json",
+          "bytes": 610
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_0",
+          "bytes": 86818816
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_0.stderr",
+          "bytes": 0
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_1",
+          "bytes": 95715328
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_1.stderr",
+          "bytes": 0
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_2",
+          "bytes": 84361216
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_2.stderr",
+          "bytes": 0
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_3",
+          "bytes": 115343360
+        },
+        {
+          "path": "original.mps.gz_chunks\\part_3.stderr",
+          "bytes": 0
+        }
+      ]
+    }
+  ],
+  "deletion_performed": false,
+  "current_attempt": "P4_Base2050_archive_ranges2_20261015"
+}

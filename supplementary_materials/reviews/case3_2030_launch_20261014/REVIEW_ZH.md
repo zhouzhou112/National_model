@@ -122,3 +122,45 @@ C2050 当前派生状态为 `P5_C2050_state_02/prepared_state/planning_state_can
 Base2030一次性下载PID33028继续；另启动Base2040→Base2050顺序下载（当前2040 PID45068），输出分别为 `P4_Base2040_archive`、`P4_Base2050_archive`，失败即保留现场停止，不循环重试。每份约4.05GB MPS+0.407GB BarPi，其他输入是小清单；不在登录节点解析全年LP、不新增云端计算作业。须以各目录 `download_identity.json` 为完成且SHA通过的证据，不把文件存在当完成。后续启动全档解析前还需核对本机可用内存，原始行名索引约需8GiB。
 
 最终21项针对性复核日志为 `P_tools_tests_final3.stderr.log`；提交前源SHA及有限传输状态见 `P_progress_final_before_commit.json`。R1工具增加显式 `--author-decision-label`，默认匹配本次既有验收标签；未来年份须匹配作者另行记录的采用决定，不将QC标签自动转换成授权。
+
+
+## 2026-10-15 作者执行顺序调整：继续 P4，暂停 P5
+
+作者本轮明确要求：继续生成 Base2040/Base2050 的 P4 筛选清单；P5 暂不执行。C2050 和 `_nocredit` 2030 均先等待 case3 2030 这一系列成功收敛，再由作者确认后续安排。此前允许 C2050 在准备完成后 held 提交、与 case32030 并行的排程在本阶段暂停；不改写历史共识或已完成记录。
+
+Job5153901 保持 held，不自动 release；C2050 本轮不做新增状态准备、1h/24h 门禁、release 打包或 held 提交。既有 C2050 派生状态与全部运行数据保留。P4 只读已完成 Base2040/2050 原归档，在本机离线生成 margin=0.2 清单并核验 SHA；不会更换正在运行 case32030 的冻结源码或清单，不创建后台监听或自动提交服务。
+
+
+## 2026-10-15 P4 完成：Base2040/2050 同年对偶筛选清单
+
+本轮只执行 P4，没有执行 P5、新增科学求解、云端提交或 release；没有改写运行中的源码、配置或清单。Git 基准 `91345ed7e9508e2b7831661cd55d5130cd7f0012`，解析器沿用 `ea07c31` 中的 `scripts/build_vre_screen_list.py` / `cispo_model/vre_pricing.py`，本轮源码 SHA 一致性核对通过。新增任务辅助脚本仅为有限四路只读取证和离线清单审计。新排程按上节及 AGENTS 本日追加条目执行。
+
+|来源年份|全部站点|Base 当年可扩建|margin=0.2 筛除|保留可扩建|无余量|
+|---|---:|---:|---:|---:|---:|
+|2040|36,686|33,978|12,505|21,473|2,708|
+|2050|36,686|35,366|6,195|29,171|1,320|
+
+计数使用原 Base 的上界和继承下界。后续 case3 或 C 状态不同，实际固定列数由构建时的 `rc_ratio >= margin && vre_new.UB > 0` 再核验，不能直接把本表当成未来模型的构建门禁。此处没有新规划结果或内存/耗时保证。
+
+### 输出与身份
+
+- `P4_ready2040_20261015/source_screen.csv`：供以后 case32040 使用；SHA `e113054c00aa3ac390287e3061c5228a59e26311845b3a18081b8e67147a41c8`。
+- `P4_ready2050_20261015/source_screen.csv`：供以后 case32050/C2050 使用；SHA `a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528`，不代表现在执行 P5。
+- 两目录中的 `candidate_screen_fragment.json` 是可审查的配置片段，含 margin、source release、BarPi SHA 和精简 CSV SHA；本轮没有把片段写入生产 profile。`audit.json` 保存技术分类计数、原顺序/逆序接口测试及完整表 SHA。
+- 完整定价表及身份在 `P4_screen2040_20261015/`、`P4_screen2050_20261015/`。完整表各约7.7MB保留本地，Git只收精简三列 CSV（grid_uid、technology、rc_ratio，原始字符值不变、LF换行，约1.31MB/份）、身份 JSON 和必要小证据。P4 JSON通过定点 `.gitattributes` 保留原字节，避免换行归一化破坏引用的SHA。
+- 输入分别为已完成 release `20260919_base2040_v9_t44_m750_tol1e4_v1` 和 `20260930_base2050_v9_t48_m750_tol1e4_v1` 的原 MPS、raw BarPi、容量表和元数据。两份均为8760h，原约束50,907,233行、变量41,458,383列；BarPi长度、MPS/检查点指纹、顺序及源SHA核验通过。完整输入与分块均保留本地，不提交大文件。
+
+### 验证与复现
+
+1. 既有解析/定价回归5项PASS，新增三站点阈值边界/逆序 smoke PASS；两年均完成全部36,686站点的有限值、缩减成本算术、键唯一及对应性核验。
+2. 两份完整表与精简表的三列逐项相同；调用实际 `apply_vre_screen` 在内存上界替身上进行原顺序与逆序核验，固定/保留结果一致。此测试不构建或求解 LP，不算 P5 门禁。
+3. 两年的稳定键集合完全相同；每年7份输入在解析后再核对字节数/SHA，14/14 PASS。`P4_2040_postparse_source_check.json`、`P4_2050_postparse_source_check.json` 为证据。
+4. 解析在本机串行执行，人工采样记录的进程历史峰RSS约9.27GiB，见 `P4_runtime_checks_20261015.jsonl`；未在云端登录节点解析LP。运行命令与源SHA见 `P4_execution_sources_20261015.json`（其中2050审计在记录时尚待执行，已由本条及终态JSON更新为完成）。终态汇总为 `P4_completion_20261015.json`。
+
+复现使用 `scripts/build_vre_screen_list.py --run-dir ARCHIVE --source-release RELEASE --margin 0.2 --output NEW_DIR`，再用本目录 `audit_p4_screens.py --screen NEW_DIR --archive ARCHIVE --year YEAR --output NEW_READY_DIR`。输出必须是新目录。原始矩阵与对偶的物理量、单位、筛选阈值及求解设置均未修改。
+
+### 传输差异和保全
+
+此前2050单连接下载未完成，原因本轮未确认，134,840,320字节部分文件保留。本轮一次单连接重取在161,480,704字节时主动切换到四路只读分块；第一组分块因Windows目录元数据延迟显示零长度被误判未推进并主动停止，关闭后实际已有部分数据，全部保留。随后采用显式stdin传脚本的新目录 `P4_Base2050_archive_ranges2_20261015` 完成取证；各块保留，合并的MPS/BarPi字节数与原manifest SHA完全一致。没有将这些传输中断计作数值失败。详细记录 `P4_transfer_attempts_20261015.json`、成功目录的 `download_identity.json`。
+
+本轮结束前只读核验 Job5153878 RUNNING、Job5153901 PENDING/JobHeldUser，见 `P4_job_state_20261015.json`；没有执行作业控制命令、创建监听或自动提交服务。P5保持暂停，既有C2050状态保留，待case32030这一系列成功收敛及作者后续确认再安排。P1全年自检不属于本轮已完成项。

@@ -1,0 +1,49 @@
+{
+  "identity": {
+    "archive_manifest_sha256": "c5c0d55440183064722a90600e4b0a2654b68e04cc6daef8c6876693827bcc96",
+    "checkpoint_manifest_sha256": "b5ea8b8f9e13af8c501dfaf8306600e9e369234336fa9c6f594b306ec8b67190",
+    "mps_sha256": "62267732e960d713a7800b7879d50e7f35865fe8333370dc635c2dbc418723cc",
+    "barpi_sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+    "gurobi_fingerprint": 849493464,
+    "source": {
+      "planning_year": 2040,
+      "boundary_year": 2030,
+      "optimization_hours": 8760,
+      "optimization_start_hour": 0,
+      "result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_id": "base",
+      "solver_profile_id": "barrier_checkpoint_full_year_cloud_2040_numeric_v1_threads44",
+      "input_manifest_sha256": "a592763946e95833efdbf7ed0599e945c843b53bc04ebbe71a3a9ce4d7b43b34",
+      "run_scope_result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_config_sha256": null,
+      "solver_config_sha256": "1ef786c941b3dc8b75db90b0dd01a67f66f33b06ede6e6002b5aa88432454129",
+      "planning_state_in": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+      "gurobipy_version": "13.0.2"
+    },
+    "semantic_manifest": {
+      "manifest": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\download_identity.json",
+      "sha256": "73de1eb3f12fdcf0fc9bfefe283c26ca039293f74512681ee9f7290379e16102"
+    }
+  },
+  "input_sha256": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\vre_capacity.csv": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+    "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\model_config_snapshot.json": "a03384f8834a02a35e54d43626043dd0770023bad45d36cd370defc3461cb373"
+  },
+  "parse": {
+    "constraint_rows": 50907233,
+    "columns": 41458383,
+    "constraint_name_order_sha256": "53367c1f40a295bbd52598cb4a9e7d0d9e23991320c8b81d252430c365ca3755",
+    "method": "c-A_transpose_BarPi; original MPS row order; raw solver-unit BarPi"
+  },
+  "sites": 36686,
+  "candidate_screen": {
+    "enabled": true,
+    "margin": 0.2,
+    "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "source_dual_sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+    "source_csv_sha256": "385693a4caac1d182e2257d7b0806afcb4affc6309046552aedd7e1d474dba14"
+  },
+  "excluded_sites": 12505,
+  "scope": "FULL_YEAR",
+  "alignment": "grid_uid x technology; application must perform an exact one-to-one join"
+}

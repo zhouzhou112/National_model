@@ -3533,3 +3533,10 @@ Git基准ea07c31aa09498aab23af7a7f1eae4e3ac796966。只读scontrol、sstat、gur
 - 2026-10-15英国21:40（北京10月16日04:40）Base2060/5124127 RUNNING/m4cm2108，累计3天3:23:15，最新iter210（英国21:28:19），较178推进32轮。PInf137/DInf5.42e-6/Compl6.86；较178降61.84%/12.58%/72.78%，目标差4.60943322e8降70.75%。对偶先至194轮3.40e-6，195–210连续16轮回升59.41%，不能沿用三项连续下降；原始/互补/目标差继续下降。近10轮原始/互补/目标差降27.89%/36.48%/34.69%，约20.34分钟/轮。RSS403.53GiB/峰657.34GiB，stderr空，无显式警告/错误/终态；仍未收敛。证据revision_6d_general/progress_20261015T204018Z.json及_summary.json。
 
 Git基准e58925f8ceb48d036f72d723e13f5abb04f82cd0，只读scontrol、sstat、gurobi.log/solver_telemetry及stderr；0–210连续迭代行与原始日志SHA保存，最新callback轮次和打印一致。原始/互补/目标差近10轮下降速度较190–200轮略快，但对偶仍回升；没有多项同步恶化或求解器错误，不推断整体发散，也不保证完成时间。打印与callback残差定义不同，不当作物理GW/GWh验收。仅更新交接、MODEL_SERVER_STATUS、SERVER_RUNBOOK与两份小证据；冻结源680a5c4和运行配置不变，未改其他会话/作业/监听。下一步只读关注对偶是否止升、原始与互补改善是否持续，终态完整保全不受QC标签影响。
+
+
+## 2026-10-15 P4本机完成、P5暂停（Git基准 91345ed）
+
+仅从已完成Base2040/2050原release只读取证，未访问T550 cloud_backup或操作Job5124127。2050采用四路有限字节段传输，全部部分文件/分块保留，最终MPS/BarPi的字节数和原manifest SHA核验通过；本机串行解析，两年筛选清单margin0.2通过，按Base余量固定新建列12,505/6,195，保留可扩建21,473/29,171。证据case3_2030_launch_20261014/P4_completion_20261015.json及REVIEW；原件/完整表本地保全，小清单随Git，不更新任何冻结release。
+
+本轮作者暂停P5；C2050与nocredit2030等待case32030系列成功收敛及后续确认。2026-10-15T21:19:26Z左右只读squeue确认5153878 RUNNING/m4cg1604、5153901 PENDING/JobHeldUser，精确取证时刻见P4_job_state_20261015.json。无提交/release/cancel，无新增C2050门禁或打包，无后台监听/自动提交服务。既有C2050派生状态保留。

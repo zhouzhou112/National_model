@@ -1,0 +1,104 @@
+{
+  "source_release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760",
+  "files": {
+    "model_archive/archive_manifest.json": {
+      "sha256": "3047f78993269d15c67e6372306e09e85f5f6384cc38fa8b6d50a61a2f984b45",
+      "bytes": 610,
+      "verified": true
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "sha256": "4099b2af780d02f3ae3ccf9577234c410e5fee24ad9359222122917f271186f5",
+      "bytes": 76911,
+      "verified": true
+    },
+    "vre_capacity.csv": {
+      "sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+      "bytes": 3794637,
+      "verified": true
+    },
+    "solve_report.json": {
+      "sha256": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1",
+      "bytes": 165192,
+      "verified": true
+    },
+    "model_config_snapshot.json": {
+      "sha256": "7c27e3afaebe34dd5a895e282185b996016e1492c16add105d2ac52fedafcccf",
+      "bytes": 19313,
+      "verified": true
+    },
+    "model_archive/original.mps.gz": {
+      "sha256": "4c04977cfe0b462993fb8e6c63958b7b3725a60cd5f82301315993def912e082",
+      "bytes": 4051434705,
+      "verified": true
+    },
+    "barrier_checkpoint/dual_barpi.npy": {
+      "sha256": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911",
+      "bytes": 407257992,
+      "verified": true
+    }
+  },
+  "started_utc": "2026-10-15T20:44:12.838244+00:00",
+  "completed_utc": "2026-10-15T21:01:33.843435+00:00",
+  "transfer": "four bounded read-only byte ranges; source manifest SHA verification",
+  "chunks_preserved": [
+    {
+      "path": "model_archive/original.mps.gz",
+      "parts": [
+        {
+          "index": 0,
+          "offset": 0,
+          "bytes": 1012858676,
+          "sha256": "d777e4b36ad619630051745691f873178c05ae516a336f579c25344b7deecf5f"
+        },
+        {
+          "index": 1,
+          "offset": 1012858676,
+          "bytes": 1012858676,
+          "sha256": "1197f8584937623e9896fa2b415c2921da53f7af978f3468ea5d5f7f6db4da30"
+        },
+        {
+          "index": 2,
+          "offset": 2025717352,
+          "bytes": 1012858676,
+          "sha256": "d082e5131c2defae2ce041dc21f12936cd9a1cdf1ac43d3dbbd312a0d8539604"
+        },
+        {
+          "index": 3,
+          "offset": 3038576028,
+          "bytes": 1012858677,
+          "sha256": "5356defd695b119e7c62d988739be131b6bb716285b5f4cf36944d8946f7a714"
+        }
+      ]
+    },
+    {
+      "path": "barrier_checkpoint/dual_barpi.npy",
+      "parts": [
+        {
+          "index": 0,
+          "offset": 0,
+          "bytes": 101814498,
+          "sha256": "7bd9ca4d6aa0e8fffc46c646cf613031a22e81e515266f36f15173fe8af3ab7b"
+        },
+        {
+          "index": 1,
+          "offset": 101814498,
+          "bytes": 101814498,
+          "sha256": "ab09180db4379b5a9884286c99752d4c9bb5dc6e65427bf55c1465eb757a4618"
+        },
+        {
+          "index": 2,
+          "offset": 203628996,
+          "bytes": 101814498,
+          "sha256": "7115250e79909db7f9108bac96014331e1f4b7a694e28c2b906051598da4871a"
+        },
+        {
+          "index": 3,
+          "offset": 305443494,
+          "bytes": 101814498,
+          "sha256": "0d6d041707d126eee43e931f978abb3e7f967ab88fa3a617972daf8e31c3a9d3"
+        }
+      ]
+    }
+  ]
+}

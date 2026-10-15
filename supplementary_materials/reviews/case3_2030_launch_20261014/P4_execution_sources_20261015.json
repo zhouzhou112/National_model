@@ -1,0 +1,25 @@
+{
+  "recorded_utc": "2026-10-15T21:02:37.152179+00:00",
+  "source_sha256": {
+    "scripts/build_vre_screen_list.py": "55e0a1a28cb41137e0bc5b8463020e18e1116cd785953b4c64954f50d97041c3",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/factor_screen.py": "cb14684a7d4f718c0dc9a36d82e20a0a88ca7e69c5ccdadae114157024872b4b",
+    "supplementary_materials\\reviews\\case3_2030_launch_20261014\\audit_p4_screens.py": "4d8cfca35c7bea123b898950218fa67f2beb32a8533c2b2448b8533668ce308f",
+    "supplementary_materials\\reviews\\case3_2030_launch_20261014\\fetch_pricing_archive_ranges.py": "4599b213404f69479f50840acbd72b8fc7f1b09a6325021bde00c961a2ca7651"
+  },
+  "commands": [
+    "python fetch_pricing_archive_ranges.py --year 2050 --output P4_Base2050_archive_ranges2_20261015",
+    "python scripts/build_vre_screen_list.py --run-dir P4_Base2040_archive --source-release 20260919_base2040_v9_t44_m750_tol1e4_v1 --margin 0.2 --output P4_screen2040_20261015",
+    "python scripts/build_vre_screen_list.py --run-dir P4_Base2050_archive_ranges2_20261015 --source-release 20260930_base2050_v9_t48_m750_tol1e4_v1 --margin 0.2 --output P4_screen2050_20261015",
+    "python audit_p4_screens.py --screen P4_screen2040_20261015 --archive P4_Base2040_archive --year 2040 --output P4_ready2040_20261015",
+    "python audit_p4_screens.py --screen P4_screen2050_20261015 --archive P4_Base2050_archive_ranges2_20261015 --year 2050 --output P4_ready2050_20261015 (pending)"
+  ],
+  "path_base": "supplementary_materials\\reviews\\case3_2030_launch_20261014",
+  "python": "C:/Users/ZZ/.conda/envs/RL/python.exe",
+  "tests": {
+    "test_vre_pricing": "5 tests PASS, 0.510 seconds",
+    "audit_smoke": "three-site boundary/reversed-order fixture PASS; P4_audit_smoke_20261015"
+  },
+  "p5": "PAUSED_BY_AUTHOR",
+  "nocredit": "KEEP_HELD_PENDING_CASE3_2030_SERIES_CONVERGENCE_AND_AUTHOR_CONFIRMATION"
+}

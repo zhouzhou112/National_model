@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "completed_utc": "2026-10-15T21:22:58.761602+00:00",
+  "git_basis": "91345ed7e9508e2b7831661cd55d5130cd7f0012",
+  "parser_commit": "ea07c31aa09498aab23af7a7f1eae4e3ac796966",
+  "years": [
+    {
+      "year": 2040,
+      "sites": 36686,
+      "expandable": 33978,
+      "excluded": 12505,
+      "retained_expandable": 21473,
+      "no_headroom": 2708,
+      "candidate_screen": {
+        "enabled": true,
+        "margin": 0.2,
+        "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+        "source_dual_sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+        "source_csv_sha256": "e113054c00aa3ac390287e3061c5228a59e26311845b3a18081b8e67147a41c8"
+      },
+      "publication_dir": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_ready2040_20261015",
+      "full_table_dir": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_screen2040_20261015",
+      "full_csv_sha256": "385693a4caac1d182e2257d7b0806afcb4affc6309046552aedd7e1d474dba14",
+      "audit_sha256": "1b33f722bd5f3d5b45d4a5aebc3eae98ebef34a1813446bc0e62ec176b59ead9",
+      "screen_identity_sha256": "25aef287a036f320186fca44b5ff659256f6e679996d85b83d9acda8b9b5e31c",
+      "parse": {
+        "constraint_rows": 50907233,
+        "columns": 41458383,
+        "constraint_name_order_sha256": "53367c1f40a295bbd52598cb4a9e7d0d9e23991320c8b81d252430c365ca3755",
+        "method": "c-A_transpose_BarPi; original MPS row order; raw solver-unit BarPi"
+      },
+      "by_technology": [
+        {
+          "technology": "dpv",
+          "sites": 15378,
+          "expandable": 14051,
+          "excluded": 3417,
+          "retained_expandable": 10634
+        },
+        {
+          "technology": "offwind",
+          "sites": 963,
+          "expandable": 880,
+          "excluded": 26,
+          "retained_expandable": 854
+        },
+        {
+          "technology": "onwind",
+          "sites": 9420,
+          "expandable": 9027,
+          "excluded": 6074,
+          "retained_expandable": 2953
+        },
+        {
+          "technology": "upv",
+          "sites": 10925,
+          "expandable": 10020,
+          "excluded": 2988,
+          "retained_expandable": 7032
+        }
+      ]
+    },
+    {
+      "year": 2050,
+      "sites": 36686,
+      "expandable": 35366,
+      "excluded": 6195,
+      "retained_expandable": 29171,
+      "no_headroom": 1320,
+      "candidate_screen": {
+        "enabled": true,
+        "margin": 0.2,
+        "source_release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+        "source_dual_sha256": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911",
+        "source_csv_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528"
+      },
+      "publication_dir": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_ready2050_20261015",
+      "full_table_dir": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_screen2050_20261015",
+      "full_csv_sha256": "3db7a3d9d1d9aa7ce53b4c67a54c44eda44a0be43fd3cccb0bd9cea6a720dd17",
+      "audit_sha256": "2bcdc8501558fbf26ad50f021027d00ef1e09a30938cc5ea7cad0cd15ba564fc",
+      "screen_identity_sha256": "4ee3ae2953edd2770d40bd736e0261097bd6fabe34b0e1610bea9cfb8f6e872a",
+      "parse": {
+        "constraint_rows": 50907233,
+        "columns": 41458383,
+        "constraint_name_order_sha256": "53367c1f40a295bbd52598cb4a9e7d0d9e23991320c8b81d252430c365ca3755",
+        "method": "c-A_transpose_BarPi; original MPS row order; raw solver-unit BarPi"
+      },
+      "by_technology": [
+        {
+          "technology": "dpv",
+          "sites": 15378,
+          "expandable": 14677,
+          "excluded": 598,
+          "retained_expandable": 14079
+        },
+        {
+          "technology": "offwind",
+          "sites": 963,
+          "expandable": 919,
+          "excluded": 18,
+          "retained_expandable": 901
+        },
+        {
+          "technology": "onwind",
+          "sites": 9420,
+          "expandable": 8944,
+          "excluded": 5226,
+          "retained_expandable": 3718
+        },
+        {
+          "technology": "upv",
+          "sites": 10925,
+          "expandable": 10826,
+          "excluded": 353,
+          "retained_expandable": 10473
+        }
+      ]
+    }
+  ],
+  "stable_keys_equal_across_years": true,
+  "postparse_source_sha_checks": "14/14 PASS",
+  "p5": "PAUSED_BY_AUTHOR_20261015",
+  "nocredit": "KEEP_HELD_UNTIL_CASE3_2030_SERIES_CONVERGENCE_AND_AUTHOR_CONFIRMATION",
+  "p1_full_year_selfcheck": "NOT_EXECUTED_IN_THIS_P4_TASK",
+  "no_optimization_or_job_control": true,
+  "all_partials_and_full_outputs_preserved": true
+}
