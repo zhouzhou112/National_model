@@ -1,0 +1,135 @@
+{
+  "observed_at_utc": "2026-10-16T12:18:18.028048+00:00",
+  "iteration": 256,
+  "windows": {
+    "210-256": {
+      "drop_percent": {
+        "primal": 81.97080291970804,
+        "dual": 46.86346863468634,
+        "compl": 87.09912536443149
+      },
+      "gap_drop_percent": 86.10685864324117,
+      "minutes_per_iteration": 20.439855072463768
+    },
+    "236-246": {
+      "drop_percent": {
+        "primal": 31.428571428571427,
+        "dual": 41.99683042789223,
+        "compl": 35.09615384615385
+      },
+      "gap_drop_percent": 34.44832876460154,
+      "minutes_per_iteration": 20.445
+    },
+    "246-256": {
+      "drop_percent": {
+        "primal": 31.38888888888889,
+        "dual": 21.311475409836067,
+        "compl": 34.44444444444444
+      },
+      "gap_drop_percent": 33.52623230081447,
+      "minutes_per_iteration": 20.491666666666667
+    }
+  },
+  "latest_row": [
+    45889803.1,
+    -18149704.2,
+    24.7,
+    2.88e-06,
+    0.885,
+    324277.0
+  ],
+  "dual_peak_since210": {
+    "iteration": 227,
+    "value": 1.08e-05
+  },
+  "dual_rebounds_since210": [
+    {
+      "iteration": 211,
+      "before": 5.42e-06,
+      "after": 5.57e-06
+    },
+    {
+      "iteration": 212,
+      "before": 5.57e-06,
+      "after": 5.76e-06
+    },
+    {
+      "iteration": 213,
+      "before": 5.76e-06,
+      "after": 5.91e-06
+    },
+    {
+      "iteration": 214,
+      "before": 5.91e-06,
+      "after": 6.05e-06
+    },
+    {
+      "iteration": 215,
+      "before": 6.05e-06,
+      "after": 6.26e-06
+    },
+    {
+      "iteration": 216,
+      "before": 6.26e-06,
+      "after": 6.5e-06
+    },
+    {
+      "iteration": 217,
+      "before": 6.5e-06,
+      "after": 6.73e-06
+    },
+    {
+      "iteration": 218,
+      "before": 6.73e-06,
+      "after": 6.96e-06
+    },
+    {
+      "iteration": 219,
+      "before": 6.96e-06,
+      "after": 7.23e-06
+    },
+    {
+      "iteration": 221,
+      "before": 6.95e-06,
+      "after": 7.34e-06
+    },
+    {
+      "iteration": 222,
+      "before": 7.34e-06,
+      "after": 7.75e-06
+    },
+    {
+      "iteration": 223,
+      "before": 7.75e-06,
+      "after": 8.33e-06
+    },
+    {
+      "iteration": 224,
+      "before": 8.33e-06,
+      "after": 8.86e-06
+    },
+    {
+      "iteration": 225,
+      "before": 8.86e-06,
+      "after": 9.39e-06
+    },
+    {
+      "iteration": 226,
+      "before": 9.39e-06,
+      "after": 9.9e-06
+    },
+    {
+      "iteration": 227,
+      "before": 9.9e-06,
+      "after": 1.08e-05
+    },
+    {
+      "iteration": 250,
+      "before": 3.08e-06,
+      "after": 3.76e-06
+    }
+  ],
+  "rss_gib": 403.56579208374023,
+  "peak_rss_gib": 657.3362922668457,
+  "note": "Printed residuals differ from callback and physical QC; no completion time inferred."
+}
