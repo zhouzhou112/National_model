@@ -1,0 +1,50 @@
+{
+  "reporting_preference": "On user progress queries, read cloud queue and all project running jobs; report RUNNING count first, then each job. Held jobs listed separately. No periodic checks or automatic submission.",
+  "running_count": 2,
+  "jobs": {
+    "5124127": {
+      "iteration": 286,
+      "printed_row": [
+        16435085.8,
+        -1097193.57,
+        7.08,
+        6.86e-07,
+        0.237,
+        360757.0
+      ],
+      "recent_10_drop_percent": {
+        "primal": 32.57142857142858,
+        "dual": 36.48148148148148,
+        "compl": 33.798882681564244
+      },
+      "gap_drop_percent": 33.587361705403794,
+      "minutes_per_iteration": 20.516666666666666,
+      "rss_gib": 403.5696601867676,
+      "peak_rss_gib": 657.3362922668457,
+      "recent_dual_increases": []
+    },
+    "5153878": {
+      "iteration": 193,
+      "printed_row": [
+        24425389.5,
+        -63308165.8,
+        31.8,
+        7.54e-07,
+        1.01,
+        174066.0
+      ],
+      "recent_10_drop_percent": {
+        "primal": 47.088186356073216,
+        "dual": 32.67857142857144,
+        "compl": 45.108695652173914
+      },
+      "gap_drop_percent": 44.837867123133,
+      "minutes_per_iteration": 20.176666666666666,
+      "rss_gib": 363.4886360168457,
+      "peak_rss_gib": 703.7366752624512,
+      "recent_dual_increases": [
+        191
+      ]
+    }
+  }
+}

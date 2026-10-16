@@ -3547,3 +3547,10 @@ Git基准e58925f8ceb48d036f72d723e13f5abb04f82cd0，只读scontrol、sstat、gur
 - 2026-10-16英国13:18（北京20:18）Base2060/5124127 RUNNING/m4cm2108，累计3天19:01:12，最新iter256（英国13:08:32），较210推进46轮。PInf24.7/DInf2.88e-6/Compl0.885，较210降81.97%/46.86%/87.10%，目标差6.40395073e7下降86.11%。对偶227轮峰1.08e-5后回落，250有22.08%小反弹，251–256连续下降；当前低于194回升前3.40e-6。近10轮原始/对偶/互补降31.39%/21.31%/34.44%，目标差降33.53%，约20.49分钟/轮；原始与互补速度和前10轮接近。RSS403.57GiB/峰657.34GiB，stderr空，无显式警告/错误/终态，仍未收敛。证据revision_6d_general/progress_20261016T121812Z.json及_summary.json。
 
 Git基准b1b5565ee56376524b3914bf3bdbdcaf09bafaff；只读scontrol、sstat、gurobi.log/solver_telemetry及stderr。0–256连续迭代核验，原始日志字节SHA和打印/callback两种口径保留。对偶已低于此前194低点但250存在新小反弹，不称227后全程单调；目标差和原始残差仍明显，互补性低于1不等于最优。没有可靠完成百分比或ETA。仅两份证据和交接、MODEL_SERVER_STATUS、SERVER_RUNBOOK更新；冻结源码680a5c4/生产参数/运行作业及其他会话不改。下一步用户查询时只读观察是否持续收敛及终态，任何QC标签均完整保全解与归档。
+
+
+## 2026-10-16英国23:30 新增Case3联合进度汇报约定
+
+- 2026-10-16英国23:30联合查进度：云端2个RUNNING（Base2060/5124127、Case3 2030/5153878），nocredit5153901另为PENDING/JobHeldUser，不计运行数。用户明确后续询问进度时同时检查所有运行项目，先报RUNNING项目数，再逐项报轮次/收敛/资源，保持无定时检查。Base2060 iter286、累计4天5:13，PInf7.08/DInf6.86e-7/Compl0.237；Case3 iter193、累计2天1:18，PInf31.8/DInf7.54e-7/Compl1.01。两者stderr空、无显式警告/错误/终态。联合证据cloud_joint_progress_20261016/status_20261016T223008Z{,_summary}.json。
+
+Git基准4d98a1e27bf5244df1e0ab084336b06cf5cb3a52。作者本轮要求同步关注Case3，并在澄清中明确“询问时一并检查（保持现有方式）”；此为后续汇报范围和顺序约定，不建立自动化。只读squeue -u当前账户取得完整队列，scontrol/sstat核对三项身份与状态，再读取两RUNNING作业output_8760/gurobi.log和solver_telemetry、stderr。Base2060源码680a5c4和Case3源码62bba59冻结不变；nocredit继续held，不操作C2050或新求解。两份证据记录日志SHA、完整连续迭代行和派生最近10轮指标。Case3第191轮对偶小反弹，192–193回落至此前190水平以下；两项仍未收敛。Slurm RSS/峰值与Gurobi内部内存统计不同，不混用。仅更新交接、MODEL_SERVER_STATUS、SERVER_RUNBOOK及本次证据；其他会话未提交内容保留。下一步用户查询时重新枚举实际队列后逐项取证，区分RUNNING、held、终态；所有解数据保全与QC标签独立。
