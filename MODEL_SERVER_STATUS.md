@@ -3579,3 +3579,13 @@ Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、compariso
 - case3 2040：没有Job ID、未提交。20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1（源码681627f）本机门禁通过，但云端preflight缺thermal/retirement_schedule.csv。按任务书第6节停止该作业放行；冻结包与失败输出原样保留，不原地补文件。C2050在冻结前补齐并核对3项续接输入，不受影响。
 - 最新只读核验时间2026-10-20T06:46:02.396615+08:00；小文件传输SHA校验通过，final_job_status.json含状态、计算节点smoke及回归尾部。未查询/操作Job5124127，未访问cloud_backup、未修改既有冻结源码、未读复制凭据，无后台监听/自动提交。
 - 后续：等待作者审查2040打包阻塞；任何修复须新release并通过完整输入与云端preflight，当前失败包不得放行。两个已运行作业仅在作者要求时再做只读查询。所有原始/失败/部分输出继续完整保全。
+
+## 2026-10-20：case3 2040 v2 打包修复并放行
+
+- 作者明确授权补齐v1遗漏、原源码681627f不变、preflight通过即release；文档起点a66cd15。未修改生产代码、profile、batch、筛选清单或R1状态；原本机门禁继续有效。
+- 对照C2050已核验58项数据：v1漏列thermal/existing_capacity_2025.csv、thermal/retirement_schedule.csv、hydro/grfr_monthly_p30_single_year_proxy_2019.nc；其中existing_capacity实体存在且SHA正确，后两项实体缺失，无其他SHA不一致。三项均从C2050已核验目录复制到v2自有additional_data并显式纳入清单。
+- 395源码文件与681627f git archive逐字节一致；源码/状态/batch/门禁共409项保持原字节。58项数据与本地核验通过，云端实际74项必需逻辑输入与原24h门禁manifest SHA一致。水文逻辑别名核对仅只读已有manifest，无重复preflight。
+- 新release：20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2；release manifest SHA b1a07cb8bb062943dfc543e788eef830667a157e093a2016d1c3605508829283；source manifest SHA c8ea0394405ed8492ab58ca300da9de0e179b600aa6f293f31fce3f5b3b27b37。
+- 云端preflight一次PASS，sbatch --test-only/held请求核验/冻结文件核验后release Job5201318。2026-10-20T07:01:20.005150+08:00 核验RUNNING/m4cm1803，AllocTRES cpu64/mem750G/billing64，UNLIMITED/no-requeue，启动725.0457878112793GiB，smoke及7项回归PASS，stderr空。
+- 新增报告与小证据：case3_2040_C2050_launch_20261019/REVIEW_ZH.md追加修复节，deployment_case3_2040_v2下input_comparison/local_manifest_check/source_identity_check/frozen_release/cloud_preflight/cloud_manifest_check/released/startup_status.json；原始操作命令与日志本地保留。
+- v1及失败输出424个文件SHA/mtime在建立前后、启动后均不变；不读复制凭据、不操作其他三个Job、不访问cloud_backup、不建监听。后续只按作者请求查询；所有运行与失败包完整保全。

@@ -1,0 +1,683 @@
+{
+  "status": "PASS",
+  "preflight_executions": 1,
+  "required_logical_inputs": [
+    {
+      "logical_path": "sets/provinces.csv",
+      "kind": "model_table",
+      "local_sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b",
+      "cloud_sha256": [
+        "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "sets/model_years.csv",
+      "kind": "model_table",
+      "local_sha256": "533b208d7e026f0b8860370cd808e0bc55004813f57a4facc4acc90ae0412eab",
+      "cloud_sha256": [
+        "533b208d7e026f0b8860370cd808e0bc55004813f57a4facc4acc90ae0412eab"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "vre/optimization_points.csv",
+      "kind": "model_table",
+      "local_sha256": "0042fe90a23930ab06df524fde3fe4b7ec252ba55a7e7745e49054140c9e8878",
+      "cloud_sha256": [
+        "0042fe90a23930ab06df524fde3fe4b7ec252ba55a7e7745e49054140c9e8878"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "vre/existing_capacity_cohorts_2025.csv",
+      "kind": "model_table",
+      "local_sha256": "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0",
+      "cloud_sha256": [
+        "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "vre/hourly_cf_index.csv",
+      "kind": "model_table",
+      "local_sha256": "fcdd4be53b4ccc3eb72ed2c1dc502e3b431e3b2a775b651f7401a8d229b5b2d6",
+      "cloud_sha256": [
+        "fcdd4be53b4ccc3eb72ed2c1dc502e3b431e3b2a775b651f7401a8d229b5b2d6"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "wave/wave_sites.csv",
+      "kind": "model_table",
+      "local_sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3",
+      "cloud_sha256": [
+        "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3",
+        "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load/hourly_load_2025_2060.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+      "cloud_sha256": [
+        "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load/flexible_load_envelope_v3.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df",
+      "cloud_sha256": [
+        "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/thermal_hourly_envelope_v4.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "d76870555566bf7db21f46c3cc1780423cac874a27d8ca617d82a2bdf51266c4",
+      "cloud_sha256": [
+        "d76870555566bf7db21f46c3cc1780423cac874a27d8ca617d82a2bdf51266c4"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/thermal_parameters_by_province_v4.csv",
+      "kind": "model_table",
+      "local_sha256": "1e0660cf67c19fbdba95123ad412d9a81f7b6e4548c92e8a95c14abf0f398ee3",
+      "cloud_sha256": [
+        "1e0660cf67c19fbdba95123ad412d9a81f7b6e4548c92e8a95c14abf0f398ee3"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/ev_availability_hourly_v4.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "58c5680b9113ea6f61b0630e020d31c2c84de927d44da95f38f0d4fa69cb354b",
+      "cloud_sha256": [
+        "58c5680b9113ea6f61b0630e020d31c2c84de927d44da95f38f0d4fa69cb354b"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/ev_mobility_hourly_v4.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "f28123d9f8be53ecd23a2e859601452493e780c8407da049d61c26197d6ae456",
+      "cloud_sha256": [
+        "f28123d9f8be53ecd23a2e859601452493e780c8407da049d61c26197d6ae456"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/flex_enablement_cost_v4.csv",
+      "kind": "model_table",
+      "local_sha256": "b2d8a4f758bb4c128e8f4c4df476cecff56e2f95d1bd7d9c97aeaba56881884f",
+      "cloud_sha256": [
+        "b2d8a4f758bb4c128e8f4c4df476cecff56e2f95d1bd7d9c97aeaba56881884f"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/thermal_hourly_envelope_v5.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd",
+      "cloud_sha256": [
+        "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/thermal_parameters_by_province_v5.csv",
+      "kind": "model_table",
+      "local_sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+      "cloud_sha256": [
+        "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/ev_availability_hourly_v5.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422",
+      "cloud_sha256": [
+        "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/ev_mobility_hourly_v5.csv.gz",
+      "kind": "model_table",
+      "local_sha256": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6",
+      "cloud_sha256": [
+        "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/flex_enablement_cost_v5.csv",
+      "kind": "model_table",
+      "local_sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a",
+      "cloud_sha256": [
+        "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "thermal/capacity_floor_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "50b62750d1b44141847c9b18f94d131a22eaf329a25eaea42c4e9635428944bb",
+      "cloud_sha256": [
+        "50b62750d1b44141847c9b18f94d131a22eaf329a25eaea42c4e9635428944bb"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "thermal/nuclear_capacity_floor_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "90ade3212ea5be9704e5177879593a64cbabff3be3327022b3ae8ef3c9130f01",
+      "cloud_sha256": [
+        "90ade3212ea5be9704e5177879593a64cbabff3be3327022b3ae8ef3c9130f01"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "thermal/nuclear_capacity_upper_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "dac3ff4e422b51d076c32c61549389e7d0b10daf0bca6ce327865b17f18afb01",
+      "cloud_sha256": [
+        "dac3ff4e422b51d076c32c61549389e7d0b10daf0bca6ce327865b17f18afb01"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+      "kind": "model_table",
+      "local_sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94",
+      "cloud_sha256": [
+        "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/provincial_aggregate_capacity_2025.csv",
+      "kind": "model_table",
+      "local_sha256": "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199",
+      "cloud_sha256": [
+        "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+      "kind": "model_table",
+      "local_sha256": "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d",
+      "cloud_sha256": [
+        "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/cascade_topology_nodes.csv",
+      "kind": "model_table",
+      "local_sha256": "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7",
+      "cloud_sha256": [
+        "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/cascade_topology_edges.csv",
+      "kind": "model_table",
+      "local_sha256": "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de",
+      "cloud_sha256": [
+        "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/timeseries_index.csv",
+      "kind": "model_table",
+      "local_sha256": "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5",
+      "cloud_sha256": [
+        "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "biomass/fuel_potential_by_province_year.csv",
+      "kind": "model_table",
+      "local_sha256": "a886806b9dce30f0ce9f5f91203a6ea1791780b42554c5fb87a87363abea1180",
+      "cloud_sha256": [
+        "a886806b9dce30f0ce9f5f91203a6ea1791780b42554c5fb87a87363abea1180"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "biomass/capacity_upper_by_province_year.csv",
+      "kind": "model_table",
+      "local_sha256": "5321fe2cb6d561a3d38c8acdaaaaba06c56ffa9fbd3bf6afdde7dd4c24e96770",
+      "cloud_sha256": [
+        "5321fe2cb6d561a3d38c8acdaaaaba06c56ffa9fbd3bf6afdde7dd4c24e96770"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "transmission/candidate_corridors.csv",
+      "kind": "model_table",
+      "local_sha256": "aac273c1e576eb13b58f1e9296a862102cafefbaafdedab77e91c8e8387311cb",
+      "cloud_sha256": [
+        "aac273c1e576eb13b58f1e9296a862102cafefbaafdedab77e91c8e8387311cb"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "carbon/emissions_limits_by_scenario.csv",
+      "kind": "model_table",
+      "local_sha256": "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d",
+      "cloud_sha256": [
+        "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/technology_capex_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "09d66c89812ab7d2777b167375903776d65524b371c4810dc4498060a51091ce",
+      "cloud_sha256": [
+        "09d66c89812ab7d2777b167375903776d65524b371c4810dc4498060a51091ce"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/thermal_nuclear_ruc_parameters.csv",
+      "kind": "model_table",
+      "local_sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f",
+      "cloud_sha256": [
+        "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/thermal_nuclear_om_parameters.csv",
+      "kind": "model_table",
+      "local_sha256": "3df7296fe416ee485b0fbc2f470f19c9cd4dbc930f330ccf60c0b65bab97f908",
+      "cloud_sha256": [
+        "3df7296fe416ee485b0fbc2f470f19c9cd4dbc930f330ccf60c0b65bab97f908"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/storage_technical_parameters.csv",
+      "kind": "model_table",
+      "local_sha256": "4a36c0a329e3d5932551dad73f09f02a59aa5f098ed5ccd9981f220ffd5ec374",
+      "cloud_sha256": [
+        "4a36c0a329e3d5932551dad73f09f02a59aa5f098ed5ccd9981f220ffd5ec374"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "storage/phs_capacity_bounds_by_province_year.csv",
+      "kind": "model_table",
+      "local_sha256": "21e3d51dbde54e7a651ba11d9a998d5b4ec6302dc9a0ee11383f7c5b99abe319",
+      "cloud_sha256": [
+        "21e3d51dbde54e7a651ba11d9a998d5b4ec6302dc9a0ee11383f7c5b99abe319"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "storage/battery_capacity_floor_by_province_year.csv",
+      "kind": "model_table",
+      "local_sha256": "8e6039bcd179dbc4dd732e2dde9a12ea537e48f36db63cdf317c7081a9ff3d0d",
+      "cloud_sha256": [
+        "8e6039bcd179dbc4dd732e2dde9a12ea537e48f36db63cdf317c7081a9ff3d0d"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/province_fuel_generation_cost_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "1b8a9ad4f117428ca906f8352dfe59edd4d070e38036f3644cb73e91113abbd4",
+      "cloud_sha256": [
+        "1b8a9ad4f117428ca906f8352dfe59edd4d070e38036f3644cb73e91113abbd4"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/emission_factors_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "6c1002b18c623901483397e2ef405eb51cb61577c6e92b62d206ed7fa943dec9",
+      "cloud_sha256": [
+        "6c1002b18c623901483397e2ef405eb51cb61577c6e92b62d206ed7fa943dec9"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/dac_parameters_by_year.csv",
+      "kind": "model_table",
+      "local_sha256": "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6",
+      "cloud_sha256": [
+        "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "technology/ccs_cost_parameters.csv",
+      "kind": "model_table",
+      "local_sha256": "23fe9546861fa2745c0a9bb2a6a5be6841bff537d735561685b7f38dee886b74",
+      "cloud_sha256": [
+        "23fe9546861fa2745c0a9bb2a6a5be6841bff537d735561685b7f38dee886b74"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/load_centers.csv",
+      "kind": "model_table",
+      "local_sha256": "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3",
+      "cloud_sha256": [
+        "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/vre_routes.csv",
+      "kind": "model_table",
+      "local_sha256": "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27",
+      "cloud_sha256": [
+        "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/hydro_routes.csv",
+      "kind": "model_table",
+      "local_sha256": "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc",
+      "cloud_sha256": [
+        "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/intra_edges.csv",
+      "kind": "model_table",
+      "local_sha256": "5c925c74fdaf6fe525128cd641b7ce9feea781c6cf2b560a4044cc853eefeccf",
+      "cloud_sha256": [
+        "5c925c74fdaf6fe525128cd641b7ce9feea781c6cf2b560a4044cc853eefeccf"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/initial_spur_capacity_2025.csv",
+      "kind": "model_table",
+      "local_sha256": "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc",
+      "cloud_sha256": [
+        "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "load_center_network/city_337/substation_initial_capacity_2025.csv",
+      "kind": "model_table",
+      "local_sha256": "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d",
+      "cloud_sha256": [
+        "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "thermal/existing_capacity_2025.csv",
+      "kind": "capacity_rhs_cancellation_evidence",
+      "local_sha256": "60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374",
+      "cloud_sha256": [
+        "60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "thermal/retirement_schedule.csv",
+      "kind": "capacity_rhs_cancellation_evidence",
+      "local_sha256": "2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def",
+      "cloud_sha256": [
+        "2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+      "kind": "model_table",
+      "local_sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341",
+      "cloud_sha256": [
+        "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz",
+      "kind": "scenario_model_table",
+      "local_sha256": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c",
+      "cloud_sha256": [
+        "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv",
+      "kind": "scenario_model_table",
+      "local_sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+      "cloud_sha256": [
+        "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz",
+      "kind": "scenario_model_table",
+      "local_sha256": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a",
+      "cloud_sha256": [
+        "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz",
+      "kind": "scenario_model_table",
+      "local_sha256": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669",
+      "cloud_sha256": [
+        "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv",
+      "kind": "scenario_model_table",
+      "local_sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+      "cloud_sha256": [
+        "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json",
+      "kind": "scenario_validation_sidecar",
+      "local_sha256": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492",
+      "cloud_sha256": [
+        "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "wave/wave_sites.csv",
+      "kind": "scenario_model_table",
+      "local_sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3",
+      "cloud_sha256": [
+        "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3",
+        "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "wave/wave_input_manifest.json",
+      "kind": "scenario_validation_sidecar",
+      "local_sha256": "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9",
+      "cloud_sha256": [
+        "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9",
+        "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "wave:2040",
+      "kind": "capacity_factor_store",
+      "local_sha256": "b2e259862c8bad9a34addf24534a8d1e1c8f66c4e351bdfe13fe9cfca1eb4831",
+      "cloud_sha256": [
+        "b2e259862c8bad9a34addf24534a8d1e1c8f66c4e351bdfe13fe9cfca1eb4831"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "state_metadata.json",
+      "kind": "planning_state",
+      "local_sha256": "f5aa8e98fffc0a722d11ac85002bb11558cbb49a59912ffc6ecd3c603827facc",
+      "cloud_sha256": [
+        "f5aa8e98fffc0a722d11ac85002bb11558cbb49a59912ffc6ecd3c603827facc"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "capacity_cohorts.csv.gz",
+      "kind": "planning_state",
+      "local_sha256": "1e4ca0a5d1c2b00848448a8c112474f141f434c89b2987c9951d1368a190db86",
+      "cloud_sha256": [
+        "1e4ca0a5d1c2b00848448a8c112474f141f434c89b2987c9951d1368a190db86"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "state_transition_summary.csv",
+      "kind": "planning_state",
+      "local_sha256": "a508aa39f5e2b3ce4816ae948709d33914f263b691f5dfc44352e1c2613f9445",
+      "cloud_sha256": [
+        "a508aa39f5e2b3ce4816ae948709d33914f263b691f5dfc44352e1c2613f9445"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "../result_manifest.json",
+      "kind": "planning_state",
+      "local_sha256": "2106626c6adc8317d4d6286faf68b0a188f7e717456679d850bcc22c58548e55",
+      "cloud_sha256": [
+        "2106626c6adc8317d4d6286faf68b0a188f7e717456679d850bcc22c58548e55"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "mixed_wind:2023",
+      "kind": "capacity_factor_store",
+      "local_sha256": "afd68696436fdd1a8b15dd39084e212cd9a263477755bbd9fa7a9efb6cd87a90",
+      "cloud_sha256": [
+        "afd68696436fdd1a8b15dd39084e212cd9a263477755bbd9fa7a9efb6cd87a90"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "offshore_wind:2023",
+      "kind": "capacity_factor_store",
+      "local_sha256": "b1409cd229149c97f1550456757235e76d5a1e7c88d72013fc10186b60cc3d5c",
+      "cloud_sha256": [
+        "b1409cd229149c97f1550456757235e76d5a1e7c88d72013fc10186b60cc3d5c"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "onshore_wind:2023",
+      "kind": "capacity_factor_store",
+      "local_sha256": "d766ca91d2fbd6f4f207283d8a4b664413bddca94e461de4bf0c981de2317d0a",
+      "cloud_sha256": [
+        "d766ca91d2fbd6f4f207283d8a4b664413bddca94e461de4bf0c981de2317d0a"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "pv:2023",
+      "kind": "capacity_factor_store",
+      "local_sha256": "928dc90eb7277de0b8fca3df5223d55a7fb53ba6f170312c1c34565f12cfce82",
+      "cloud_sha256": [
+        "928dc90eb7277de0b8fca3df5223d55a7fb53ba6f170312c1c34565f12cfce82"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "mixed_wind:2024",
+      "kind": "capacity_factor_store",
+      "local_sha256": "7ad7678588d5548596d2160dc62d1628a900cb978c11948bc3cf02255a105275",
+      "cloud_sha256": [
+        "7ad7678588d5548596d2160dc62d1628a900cb978c11948bc3cf02255a105275"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "offshore_wind:2024",
+      "kind": "capacity_factor_store",
+      "local_sha256": "b4b73c60da7215c06472024a078f5c22fcc04c514d2daa0fa2328c62f281a63d",
+      "cloud_sha256": [
+        "b4b73c60da7215c06472024a078f5c22fcc04c514d2daa0fa2328c62f281a63d"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "onshore_wind:2024",
+      "kind": "capacity_factor_store",
+      "local_sha256": "80732b83abaca4efb437766dfbafd929d3e6149225360a6a09c1b27293e8341b",
+      "cloud_sha256": [
+        "80732b83abaca4efb437766dfbafd929d3e6149225360a6a09c1b27293e8341b"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "pv:2024",
+      "kind": "capacity_factor_store",
+      "local_sha256": "41f435716142879c9b697100e50d88bd10df9d4d9310462baa58552a4b83c9ba",
+      "cloud_sha256": [
+        "41f435716142879c9b697100e50d88bd10df9d4d9310462baa58552a4b83c9ba"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "hourly_discharge_2019",
+      "kind": "hydrology_timeseries",
+      "local_sha256": "d70fe0a05a98a43cea2a616a972d2678f5cae71210c5a5022c277abfcc6e4804",
+      "cloud_sha256": [
+        "d70fe0a05a98a43cea2a616a972d2678f5cae71210c5a5022c277abfcc6e4804"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "monthly_environmental_flow_2019_p30",
+      "kind": "hydrology_timeseries",
+      "local_sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767",
+      "cloud_sha256": [
+        "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767"
+      ],
+      "passed": true
+    },
+    {
+      "logical_path": "explicit_ror_profiles_2019",
+      "kind": "hydrology_timeseries",
+      "local_sha256": "5256ab6c40646ad0b20db7351bb3d3616fe6391638cfe317b10528de7d4c8fff",
+      "cloud_sha256": [
+        "5256ab6c40646ad0b20db7351bb3d3616fe6391638cfe317b10528de7d4c8fff"
+      ],
+      "passed": true
+    }
+  ],
+  "source_kinds_verified_separately_by_original_git_archive": [
+    "configuration",
+    "technology_parameter_registry",
+    "scenario_configuration",
+    "solver_configuration",
+    "input_contract"
+  ],
+  "comparison_note": "First additional checker incorrectly matched a physical hydro filename against a logical alias; read-only existing manifest resolves it. No missing input or SHA mismatch; no preflight rerun."
+}

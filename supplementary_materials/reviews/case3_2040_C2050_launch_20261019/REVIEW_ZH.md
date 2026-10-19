@@ -62,3 +62,35 @@ Base2040 → R1_C2050_01 → v9_a12 → Base2050 清单 margin0.2 → Aggregate0
 两个运行作业 AllocTRES 均为 cpu64/mem750G/billing64，UNLIMITED/no-requeue，计算节点smoke及7项启动回归均PASS，stderr为空。final_job_status.json的smoke/runtime小文件已按远端SHA核验。之后仅按作者请求只读查询，无后台监听。
 
 2040的停止来自任务书第6节明确要求，属于输入打包问题；本机数值门禁并未失败。建议后续以包含58项已核对输入的新release修复并重新preflight，不能修改当前冻结失败包。
+
+## 2026-10-20：case3 2040 v2 打包修复与放行
+
+依据作者本轮明确授权，只修复输入打包；生产代码、profile、batch、筛选清单、R1 状态不改。保留此前 v1 失败记录，不覆盖旧结论。
+
+|输入|v1 情况|补齐 SHA256|
+|---|---|---|
+|hydro/grfr_monthly_p30_single_year_proxy_2019.nc|实体缺失且清单遗漏|c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767|
+|thermal/existing_capacity_2025.csv|实体存在且 SHA 正确，清单遗漏|60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374|
+|thermal/retirement_schedule.csv|实体缺失且清单遗漏|2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def|
+
+补齐来源均为已核验 C2050 release `20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1/data_overlay/` 下的同名文件；复制至 v2 自有 additional_data，并写入其 data_overlay 与 58 项 SHA 清单。逐项核对 v1：3 项清单遗漏、2 项实体缺失、其余无 SHA 差异。58 项均与本地文件核验相符，云端实际使用的 74 项必需逻辑输入与本机 24h 门禁 manifest 逐 SHA 一致。
+
+水文月流量在 manifest 中的逻辑标识为 monthly_environmental_flow_2019_p30。云端通过既有环境路径读取的同名水文数据与补齐副本、本地门禁文件 SHA 完全一致。首轮附加检查误将物理文件路径作为逻辑标识，读取已生成 manifest 后核验消除；没有重新运行 preflight、替换数据或放宽 SHA 要求。
+
+源码严格沿用 `681627fbee627ab1703d72367e4c0e7cf1286848`。395 个源码文件与该提交 git archive 字节逐项相同（不是将受换行属性影响的 git show blob 代替归档字节）。源码、状态、batch、旧门禁共 409 项与 v1 字节一致。本机 1h/24h/参数核准继续引用原 PASS 证据，未重算。v1 的 424 个原有文件 SHA、大小、mtime 在新包建立前后均一致。
+
+**新 release**：`20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2`；根 `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/`。
+
+- source manifest SHA256：`c8ea0394405ed8492ab58ca300da9de0e179b600aa6f293f31fce3f5b3b27b37`。
+- release manifest SHA256：`b1a07cb8bb062943dfc543e788eef830667a157e093a2016d1c3605508829283`。
+- data manifest SHA256：`18dd2be1d90f669dd0547567c28c73ad2d0d6ebade1f3560ae720deced5110aa`。
+
+云端 preflight 一次执行 PASS，完整 manifest 核验 PASS；随后 sbatch --test-only、held 资源核验、冻结文件校验均通过，已按授权 release **Job5201318**。请求 cpu64/mem750G/billing64、UNLIMITED/no-requeue；节点与启动内存见本节后续追加的启动回执。
+
+证据目录 deployment_case3_2040_v2/：input_comparison.json、local_manifest_check.json、source_identity_check.json、frozen_release.json、cloud_preflight.json、cloud_manifest_check.json、released.json。所有操作命令和原始输出本地保留。没有修改或控制 Job5124127/5153901/5201262，没有后台监听。
+
+### v2 启动核验（2026-10-20T07:01:20.005150+08:00）
+
+Job **5201318**：**RUNNING / m4cm1803**。AllocTRES=`cpu=64,mem=750G,node=1,billing=64`，TimeLimit=UNLIMITED，Requeue=0；启动可用内存 **725.0457878112793 GiB ≥ 700 GiB**，Gurobi13.0.2 smoke PASS，7项正式启动回归PASS，stderr为空。启动小证据已按远端SHA核验，见 deployment_case3_2040_v2/startup_status.json。
+
+作业启动后再核验v1的424个文件SHA与mtime全部不变；v1及其失败输出继续保留。源码未修改，无本机重复构建或求解。后续仅按作者要求查询，不建立后台监听。

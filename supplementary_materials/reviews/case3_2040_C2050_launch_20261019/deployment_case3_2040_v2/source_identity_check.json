@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "source_commit": "681627fbee627ab1703d72367e4c0e7cf1286848",
+  "method": "git archive bytes, identical to original deployment; not git show blob bytes",
+  "files": 395,
+  "differences": []
+}
