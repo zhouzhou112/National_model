@@ -164,3 +164,11 @@ Job5153901 保持 held，不自动 release；C2050 本轮不做新增状态准�
 此前2050单连接下载未完成，原因本轮未确认，134,840,320字节部分文件保留。本轮一次单连接重取在161,480,704字节时主动切换到四路只读分块；第一组分块因Windows目录元数据延迟显示零长度被误判未推进并主动停止，关闭后实际已有部分数据，全部保留。随后采用显式stdin传脚本的新目录 `P4_Base2050_archive_ranges2_20261015` 完成取证；各块保留，合并的MPS/BarPi字节数与原manifest SHA完全一致。没有将这些传输中断计作数值失败。详细记录 `P4_transfer_attempts_20261015.json`、成功目录的 `download_identity.json`。
 
 本轮结束前只读核验 Job5153878 RUNNING、Job5153901 PENDING/JobHeldUser，见 `P4_job_state_20261015.json`；没有执行作业控制命令、创建监听或自动提交服务。P5保持暂停，既有C2050状态保留，待case32030这一系列成功收敛及作者后续确认再安排。P1全年自检不属于本轮已完成项。
+
+### 2026-10-19：case3 2030比较与2040续接预检（证书前版本）
+
+2026-10-19 case3 2030与Base初步比较及2040预检：54份小证据远端/本地SHA核验，现有解目标点差47.520584亿元/年（0.113339%）；证书B待定，成本节省区间为[44.456953,60.836946+B/100]亿元（B单位million CNY）。扩展relative_v1两侧PASS；case3冷热库存M4.01009e-8GWh；R1只读清理预检PASS（发电/储能0.110375GW、网络0.100047GW），没有改状态或代作者采纳。2040尚无正式R1状态、1h/24h门禁、release或held作业，不能直接放行。nocredit5153901仍held，C2050/P5暂停。详情case3_2030_launch_20261014/comparison_20261019/REVIEW_ZH.md。
+
+Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、comparison_20261019报告/CSV/JSON，四路下载助手增加显式release参数（旧year入口保留）。运行collect_comparison_20261019.py（含--r1-supplement）、assess_relative_v1.py两侧、analyze_comparison_20261019.py；所有已采集文件SHA及manifest已列项复核通过。原严格QC、candidate状态和全部远端结果不变。R1通用审计的固定文案“storage is zero”对本次不适用，实际storage小量0.004324262GW已计入总量，报告披露，未改算法。没有操作Base2060、提交/放行任何作业或建立监听。
+
+唯一有限传输会话：本机fetch_pricing_archive_ranges.py --release 20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1 --output supplementary_materials/reviews/case3_2030_launch_20261014/P1_case3_archive_20261019，原MPS4142788418字节和raw BarPi等待完整SHA；保留每块及部分文件，不重启重复传输。下一步先核验download_identity.json，再补candidate_selection/result_manifest小文件并离线price_screened_candidates.py（新输出目录）；B>418.802677776 million CNY触发一次2030重解。P1 Base2030全年自检仍未执行。作者采纳与完整R1/2040门禁后才能held汇报；无自动release。保留其他会话SI未提交条目及稿件。

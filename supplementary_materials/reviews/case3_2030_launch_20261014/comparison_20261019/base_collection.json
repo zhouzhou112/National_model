@@ -1,0 +1,128 @@
+{
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3/output_8760",
+  "files": {
+    "annual_summary.json": {
+      "sha256": "994106b1e705ad72e725a345b31d2f65c4af0d331906678f9421ac3a67911f08",
+      "bytes": 2006,
+      "verified": true
+    },
+    "annual_capacity_by_technology.csv": {
+      "sha256": "3828f392b6a642705ef23ac0b69075a11aeac55cdeb5069c2947223f0a1a2d2c",
+      "bytes": 1215,
+      "verified": true
+    },
+    "annual_generation_by_technology.csv": {
+      "sha256": "63c95272a518382b5b30132e3d26c1cf529da17164e3dac6f49dee5f13df6ca1",
+      "bytes": 506,
+      "verified": true
+    },
+    "annual_storage_operation_by_technology.csv": {
+      "sha256": "13931fab825951af0024c3ff1190be210c67febd363ab62543b2952faf7512ec",
+      "bytes": 383,
+      "verified": true
+    },
+    "annual_flexible_load_by_province.csv": {
+      "sha256": "bbe0ff1fdf8af825f234abee456b6e68e3817552ca06971e3e2bbec7ad452c45",
+      "bytes": 8026,
+      "verified": true
+    },
+    "annual_adequacy_by_province.csv": {
+      "sha256": "6e84cfca8e05fa4418955802ea7cac28a1c8e9e9da6cf01b93be9696610db368",
+      "bytes": 5757,
+      "verified": true
+    },
+    "annual_carbon_ccs.json": {
+      "sha256": "c67a4b49cf32521d15c73b2062f114fd28fb32966564a80b525d7b22d986ac0e",
+      "bytes": 621,
+      "verified": true
+    },
+    "cost_components.csv": {
+      "sha256": "8ac645d577324109f9760b6e866c8c197c443d951d97d5ba220688b1a612ee29",
+      "bytes": 3520,
+      "verified": true
+    },
+    "solve_report.json": {
+      "sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+      "bytes": 71557,
+      "verified": true
+    },
+    "solution_qc.json": {
+      "sha256": "3eaaac5161fc6405be9e1461cd211885f4c2218f5aaffaab05fbfbf1aab43a1a",
+      "bytes": 13743,
+      "verified": true
+    },
+    "result_manifest.json": {
+      "sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+      "bytes": 13615,
+      "verified": true
+    },
+    "preservation_report.json": {
+      "sha256": "e50d6aaac2742b6ccf4cdb771bf8ef83fc8fbaf345c7a49a0c5e1105e4da9363",
+      "bytes": 4188,
+      "verified": true
+    },
+    "model_config_snapshot.json": {
+      "sha256": "1fe080a3a27db357a67a8074ff56062f2e091b247b44bf4dacdfe01c73c33f68",
+      "bytes": 19372,
+      "verified": true
+    },
+    "run_identity.json": {
+      "sha256": "4dd32bb011407720b7f6b30cbef4cec2be230a50d109d68189ee7b30680b3bce",
+      "bytes": 6273,
+      "verified": true
+    },
+    "gurobi.log": {
+      "sha256": "3318241e34dfcd6a0afb764850cebb66a98fb567aebe3b79940edf9f1b322b4a",
+      "bytes": 306291,
+      "verified": true
+    },
+    "candidate_selection.csv": {
+      "exists": false
+    },
+    "vre_capacity.csv": {
+      "sha256": "30602e73d73238de087ef2422818c0ff29337ff8140dd38a599f797c63177aee",
+      "bytes": 3632003,
+      "verified": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "sha256": "318b31a812db9cc5d83667b3ae7cea251a74e54d7a91d28db230347de18485b2",
+      "bytes": 28951,
+      "verified": true
+    },
+    "storage_capacity.csv": {
+      "sha256": "187b7a0ff2ac0048e5f3d78317dbca7c66274746206e17561b634ca48d927627",
+      "bytes": 9415,
+      "verified": true
+    },
+    "transmission_capacity.csv": {
+      "sha256": "e162145b239e1e8d7047fccc445deaf87a31ddcb230c3d37fcdbf75439f7d272",
+      "bytes": 32254,
+      "verified": true
+    },
+    "model_archive/archive_manifest.json": {
+      "sha256": "1763ba52b553ab92bd2fe76ac71128f56f0f6bcd112fe7033e42e9600e24aec4",
+      "bytes": 609,
+      "verified": true
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "sha256": "e9111c9834ea7c4cbe409c64bb2d963d648dca6c5ef9d0cd37268b0ef04ee583",
+      "bytes": 76749,
+      "verified": true
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "sha256": "11b3e17c07d03234a4b3668dcf35ef3f83fad308ea063a8e9571fa66219bf46e",
+      "bytes": 7073,
+      "verified": true
+    },
+    "planning_state_candidate/capacity_cohorts.csv.gz": {
+      "sha256": "9d3a155efd5c73a74da5869732b0e0cb245d02d636bd3c9d601e2e6f34d409d0",
+      "bytes": 961111,
+      "verified": true
+    },
+    "planning_state_candidate/state_transition_summary.csv": {
+      "sha256": "dac26fce0f9860e89d4acba7021ec9deb3160a851f65f651cb5a5d7be7797274",
+      "bytes": 2382,
+      "verified": true
+    }
+  }
+}

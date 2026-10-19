@@ -1,0 +1,30 @@
+{
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/output_8760",
+  "files": {
+    "intra_grid_vre_site_design.csv": {
+      "sha256": "f320a49ea8c2045d188dbf34affd918e257211c57d78c2c394555c777a3dea99",
+      "bytes": 5253650,
+      "verified": true
+    },
+    "load_center_intra_transmission.csv": {
+      "sha256": "be747853bd7095c0f6bde671d442bda684059db07db763f92b87788274ca8470",
+      "bytes": 129402,
+      "verified": true
+    },
+    "intra_grid_substation_design.csv": {
+      "sha256": "d628155b74b97406a897cb84792d0eadf631347d0f4fe58880390829bbcdcf0b",
+      "bytes": 1024314,
+      "verified": true
+    },
+    "hydro_capacity.csv": {
+      "sha256": "5e7835c33f89e3dc7a505863457467008aac2bfc761d64598da993dc578c0281",
+      "bytes": 311052,
+      "verified": true
+    },
+    "wave_capacity.csv": {
+      "sha256": "ef113feac852ef6ff40de5243df6e18d3956563b0533714147a7cb4207ddd637",
+      "bytes": 243957,
+      "verified": true
+    }
+  }
+}

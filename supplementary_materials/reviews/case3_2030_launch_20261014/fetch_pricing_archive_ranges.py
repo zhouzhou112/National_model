@@ -1,6 +1,7 @@
-"""Finite four-connection read-only transfer of completed Base pricing archives.
+"""Finite four-connection read-only transfer of completed pricing archives.
 
-Usage: --year 2040|2050 --output NEW_DIRECTORY. Remote work is bounded file I/O,
+Usage: (--year 2040|2050 | --release RELEASE_NAME) --output NEW_DIRECTORY.
+Remote work is bounded file I/O,
 not LP parsing or optimization. Every chunk, partial file and error is retained.
 No retries, scheduler, watcher, credentials or remote writes.
 """
@@ -19,13 +20,19 @@ from fetch_pricing_archive import RELEASES, SMALL, HOST, sha
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--year', type=int, choices=(2040, 2050), required=True)
+    source = p.add_mutually_exclusive_group(required=True)
+    source.add_argument('--year', type=int, choices=(2040, 2050))
+    source.add_argument('--release', help='Explicit completed release directory name')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     out = a.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     started = datetime.now(timezone.utc).isoformat()
-    root = '/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/' + RELEASES[a.year] + '/output_8760'
+    release = a.release or RELEASES[a.year]
+    import re
+    if not re.fullmatch(r'[A-Za-z0-9_]+', release):
+        p.error('Release must be a directory name, not a path')
+    root = '/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/' + release + '/output_8760'
     ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=12', HOST]
     code = 'root=' + repr(root) + '\nnames=' + repr(SMALL) + '\n' + '''import pathlib,json,hashlib,base64
 root=pathlib.Path(root);out={}
@@ -83,12 +90,12 @@ print(json.dumps(out))
         evidence[name] = dict(sha256=meta['sha256'], bytes=size, verified=True)
         transfers.append(dict(path=name, parts=parts))
         print('SHA VERIFIED:', name, flush=True)
-    result = dict(source_release=RELEASES[a.year], source=root, files=evidence,
+    result = dict(source_release=release, source=root, files=evidence,
                   started_utc=started, completed_utc=datetime.now(timezone.utc).isoformat(),
                   transfer='four bounded read-only byte ranges; source manifest SHA verification',
                   chunks_preserved=transfers)
     (out / 'download_identity.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
-    print('VERIFIED', a.year, flush=True)
+    print('VERIFIED', release, flush=True)
 
 
 if __name__ == '__main__':
