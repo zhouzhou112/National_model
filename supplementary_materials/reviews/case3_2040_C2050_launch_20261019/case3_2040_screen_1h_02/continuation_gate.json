@@ -1,0 +1,29 @@
+{
+  "runner_exit_code": 0,
+  "year": 2040,
+  "hours": 1,
+  "unscreened": false,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "parameters": "PASS",
+  "capacity_columns_inspected": {
+    "vre_capacity": 36686,
+    "vre_new": 36686,
+    "hydro_capacity": 2030,
+    "hydro_new": 2030,
+    "storage_capacity": 62,
+    "storage_new": 62,
+    "thermal_capacity": 341,
+    "thermal_new": 341,
+    "thermal_retrofit_to_ccs": 155,
+    "line_capacity": 411,
+    "line_new": 411,
+    "wave_capacity": 1284,
+    "wave_new": 1284,
+    "intra_load_center_capacity": 642,
+    "intra_load_center_new": 642,
+    "spur_augmentation": 36686,
+    "hydro_spur_augmentation": 2030,
+    "trunk_augmentation": 6294
+  },
+  "tiny_capacity_columns": []
+}

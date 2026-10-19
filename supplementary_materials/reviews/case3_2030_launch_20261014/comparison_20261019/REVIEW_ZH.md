@@ -70,3 +70,10 @@ R1预检拟清理发电/储能0.110375272 GW、网络0.100047035 GW，逐技术�
 已启动唯一一次性四路只读传输：`P1_case3_archive_20261019`，原MPS压缩包4,142,788,418字节及raw BarPi将按源manifest逐字节SHA核验。未完成传输不能视为证书完成；没有在登录节点解析全年LP，没有创建云端求解、后台监听或自动放行。传输结束后需补齐candidate_selection和result_manifest等小文件，并执行`scripts/price_screened_candidates.py`，输出新目录；本报告保留为证书前版本，不覆盖历史。
 
 写作按中文技术审查归档（methods / supplement,method / zh / generic）；使用项目原件而非外部文献推断。nature-writing引用的四份`../_shared/core/`文件在本机缺失，已采用现有核心、方法、补充材料、中文及generic片段；这不影响数值来源和判据。
+
+
+## 2026-10-19 晚：Claude 证书与作者采纳（追加）
+
+Claude 证书 B=347.782 million CNY，B/obj=8.30e-5；近优性 ACCEPT，比较用途 INTERVAL_WITH_B；3 个负价列，无需重解。节省区间更新为 [44.46,64.32] 亿元/年。作者已采纳 case3 2030 筛选解的 planning_state_candidate 作为 case3 2040 上游。
+
+本轮未重复计算证书。原 MPS/BarPi 及两份 manifest SHA 与 P1_case3_archive_20261019/download_identity.json 全部一致，核验结果和证书副本位于 ../../case3_2040_C2050_launch_20261019/certificate_identity_check.json 与 screen_pricing_certificate_claude.json。上文“证书待定/未采纳”作为当时记录保留，自本节起被本轮结果取代。

@@ -88,6 +88,8 @@ def assess(source, *, planning_year, source_year, protect_active_retrofit=True):
         signed_deleted_gw=math.fsum(cohorts.loc[delete,'capacity_delta']),
         by_technology=rows,failures=failures,source_sha256=inputs,
         denominator_hydro_spur='existing_capacity_gw + active hydro_spur cohorts in source year',
-        disclosure='Storage included in generation total conservatively; current deleted storage is zero. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.',
+        disclosure=('Storage included in generation total conservatively; positive deleted storage GW by technology: '
+            + ', '.join(f"{r['technology']}={r['positive_deleted_gw']:.17g}" for r in rows if r['asset_class']=='storage')
+            + '. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.'),
         state_changed=False)
     return report,cohorts,delete,negative

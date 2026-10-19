@@ -1,0 +1,42 @@
+[
+  {
+    "province_code": 31,
+    "shared_upper_gw": 0.586,
+    "before_floor_gw": [
+      0.5825785985580395,
+      0.0034214108681629002
+    ],
+    "after_floor_gw": [
+      0.582578589131837,
+      0.0034214108681629002
+    ],
+    "initial_excess_gw": 9.426202485229851e-09,
+    "total_reduction_gw": 9.426202463789751e-09,
+    "retrofit_pairs_unchanged": true,
+    "ccs_capacity_unchanged": true,
+    "affected_rows": [
+      {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "technology": "bio",
+        "build_year": 2030,
+        "before_gw": 3.716872797499167e-11,
+        "after_gw": 0.0,
+        "reduction_gw": 3.716872797499167e-11,
+        "original_excess_gw": 9.426202485229851e-09,
+        "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+      },
+      {
+        "asset_class": "thermal",
+        "asset_id": "31::bio",
+        "technology": "bio",
+        "build_year": 2040,
+        "before_gw": 9.38903373581476e-09,
+        "after_gw": 0.0,
+        "reduction_gw": 9.38903373581476e-09,
+        "original_excess_gw": 9.426202485229851e-09,
+        "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+      }
+    ]
+  }
+]

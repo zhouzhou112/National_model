@@ -35,6 +35,7 @@ from cispo_model.run_contract import (
 from cispo_model.runtime_monitor import PeakMemoryMonitor
 from cispo_model.factor_screen import PROFILE_ID as FACTOR_SCREEN_PROFILE_ID, RESULT_USE as FACTOR_SCREEN_RESULT_USE
 from cispo_model.factor_screen import PRODUCTION_PROFILE_ID as SCREENED_STAGE_A_PROFILE_ID
+from cispo_model.factor_screen import PRODUCTION_PROFILE_IDS as SCREENED_STAGE_A_PROFILE_IDS
 
 
 PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
@@ -70,7 +71,7 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
 )
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     {
-        SCREENED_STAGE_A_PROFILE_ID,
+        *SCREENED_STAGE_A_PROFILE_IDS,
         NUMERIC_REPAIRED_STAGE_A_PROFILE_ID,
         PORTFOLIO_STAGE_A_PROFILE_ID,
         "barrier_checkpoint_full_year_cloud_v4",
@@ -276,9 +277,42 @@ def direct_nonbasic_row_scaling_contract(config) -> tuple[str, int]:
     from cispo_model.annual_capacity_link_scaling import (
         PHYSICAL_V1, BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT,
     )
-    if config.raw.get("solver_profile", {}).get("id") in {NUMERIC_REPAIRED_STAGE_A_PROFILE_ID, SCREENED_STAGE_A_PROFILE_ID}:
+    if config.raw.get("solver_profile", {}).get("id") in {NUMERIC_REPAIRED_STAGE_A_PROFILE_ID, *SCREENED_STAGE_A_PROFILE_IDS}:
         return PHYSICAL_V1, 0
     return BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT
+
+
+def validate_late_entry_base_state(config, state_path, *, allow_candidate):
+    """Explicit author-scoped Base2040 -> C2050 identity bridge; no state edits.
+
+    The ordinary PlanningState loader still verifies every state dependency.
+    This bridge additionally binds original Base provenance to its separate
+    author acceptance and to a successful R1 derivative.
+    """
+    if (config.planning_year != 2050 or config.boundary_year != 2040
+            or config.raw['scenario']['id'] != 'case3_thermal_ev_v5'
+            or not allow_candidate):
+        raise ValueError('Late-entry requires case3 2050, Base2040 boundary and explicit candidate input')
+    root = Path(state_path)
+    metadata = json.loads((root / 'state_metadata.json').read_text(encoding='utf-8'))
+    acceptance_path = root.parent / 'acceptance_relative_v1.json'
+    acceptance_bytes = acceptance_path.read_bytes()
+    if hashlib.sha256(acceptance_bytes).hexdigest() != metadata.get('acceptance_relative_v1_sha256'):
+        raise ValueError('Late-entry acceptance SHA mismatch')
+    acceptance = json.loads(acceptance_bytes)
+    if (acceptance.get('author_decision') != 'ACCEPTED_RELATIVE_V1_20261012'
+            or acceptance.get('planning_year') != 2040 or acceptance.get('scenario_id') != 'base'):
+        raise ValueError('Late-entry requires formally accepted Base2040')
+    cleanup = metadata.get('continuation_cleanup', {})
+    if (metadata.get('source_capacity_state_policy') != 'AUTHOR_R1_CLEANED_BOUND_CLOSED_DERIVATIVE'
+            or cleanup.get('status') != 'PASS' or cleanup.get('applied') is not True
+            or cleanup.get('source_year') != 2040 or cleanup.get('planning_year') != 2050):
+        raise ValueError('Late-entry requires completed R1 Base2040 -> 2050')
+    hashes = acceptance['source_evidence']['source_sha256']
+    for name in ('solve_report.json', 'solution_qc.json', 'run_identity.json'):
+        if hashlib.sha256((root.parent / name).read_bytes()).hexdigest() != hashes[name]:
+            raise ValueError('Late-entry original Base provenance mismatch: ' + name)
+    return 'base'
 
 
 def require_direct_nonbasic_runtime_row_scaling(config, registry, model) -> dict:
@@ -762,6 +796,8 @@ def main() -> None:
                         help="Read-only exact-LP recovery from a result root; never optimize or presolve.")
     parser.add_argument("--allow-candidate-state-in", action="store_true",
                         help="Explicitly use an unaccepted candidate capacity state; retain all upstream QC failures.")
+    parser.add_argument("--late-entry-base-state", action="store_true",
+                        help="Author-authorized C2050 only: load formally accepted Base2040 through R1, preserving source identities.")
     parser.add_argument(
         "--constraint-family-audit",
         action="store_true",
@@ -882,7 +918,7 @@ def main() -> None:
     )
     profile_id = config.raw.get("solver_profile", {}).get("id")
     factor_screen = profile_id == FACTOR_SCREEN_PROFILE_ID
-    production_screen = profile_id == SCREENED_STAGE_A_PROFILE_ID
+    production_screen = profile_id in SCREENED_STAGE_A_PROFILE_IDS
     if args.vre_screen_csv and not (factor_screen or production_screen):
         raise SystemExit("--vre-screen-csv is restricted to TEST_ONLY factor screen")
     if production_screen:
@@ -1220,6 +1256,8 @@ def main() -> None:
         raise SystemExit("MGA cannot be combined with diagnostic state or basis reuse")
     from cispo_model.planning_state import PlanningState
 
+    if args.late_entry_base_state and (not args.state_in or config.planning_year != 2050):
+        raise SystemExit('--late-entry-base-state requires explicit C2050 state input')
     if config.boundary_year == 2025:
         if args.state_in:
             raise SystemExit("2030 uses the 2025 data boundary and must not receive --state-in")
@@ -1230,14 +1268,18 @@ def main() -> None:
                 f"{config.planning_year} requires --state-in from accepted "
                 f"{config.boundary_year} full-year results"
             )
+        source_scenario_id = config.raw["scenario"]["id"]
+        source_scenario_sha = (hashlib.sha256(config.scenario_path.read_bytes()).hexdigest()
+                               if config.scenario_path else None)
+        if args.late_entry_base_state:
+            source_scenario_id = validate_late_entry_base_state(
+                config, args.state_in, allow_candidate=args.allow_candidate_state_in)
+            source_scenario_sha = None  # Base has no scenario override; original identity checked above.
         planning_state = PlanningState.load(
             args.state_in,
             expected_boundary_year=config.boundary_year,
-            expected_scenario_id=config.raw["scenario"]["id"],
-            expected_scenario_sha256=(
-                hashlib.sha256(config.scenario_path.read_bytes()).hexdigest()
-                if config.scenario_path else None
-            ),
+            expected_scenario_id=source_scenario_id,
+            expected_scenario_sha256=source_scenario_sha,
             allow_test_only=args.allow_diagnostic_state_in,
             allow_unaccepted_candidate=args.allow_candidate_state_in,
         )

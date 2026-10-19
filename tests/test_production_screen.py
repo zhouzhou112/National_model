@@ -40,6 +40,25 @@ class ProductionScreenTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'whitelist'):
             validate_production_screen_contract(cfg, self.args())
 
+    def test_continuation_profile_identity_year_and_numerics(self):
+        from scripts.run_cispo_2030_full_year import direct_nonbasic_row_scaling_contract, DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS
+        baseline=json.loads((ROOT/'config/solver_profiles/barrier_stagea_screened_agg0_v1_threads48.json').read_text())
+        for year in (2040,2050):
+            profile_id=f'barrier_stagea_screened_agg0_{year}_v1_threads48'
+            profile=json.loads((ROOT/f'config/solver_profiles/{profile_id}.json').read_text())
+            self.assertEqual(profile['numerics'],baseline['numerics'])
+            self.assertEqual({k:v for k,v in profile.items() if k not in ('profile_id','candidate_screen')},
+                             {k:v for k,v in baseline.items() if k not in ('profile_id','candidate_screen')})
+            cfg=load_model_config('config/optimization_numeric_dac_by_year_v9_a12.json',
+                scenario_path='config/scenarios/case3_thermal_ev_v5.json',
+                solver_path=f'config/solver_profiles/{profile_id}.json').for_planning_year(year)
+            args=self.args();args.vre_screen_csv=ROOT/f'supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready{year}_20261015/source_screen.csv'
+            validate_production_screen_contract(cfg,args)
+            self.assertIn(profile_id,DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS)
+            self.assertEqual(direct_nonbasic_row_scaling_contract(cfg),('physical_v1',0))
+            with self.assertRaisesRegex(ValueError,'year/scenario'):
+                validate_production_screen_contract(cfg.for_planning_year(2030),args)
+
     def test_identity_changes_with_screen_but_base_retains_historical_hash(self):
         base = load_model_config('config/optimization_numeric_dac_by_year_v9.json')
         self.assertEqual(analysis_case_identity(base)['resolved_scientific_configuration_sha256'],

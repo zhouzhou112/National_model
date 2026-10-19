@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "certificate_sha256": "3c9aa72413785a128e9e0eb4c340d0f9f71f640d5930d098180f61886e86bdd2",
+  "download_identity_sha256": "078e98fe22eefb454c201db621e4fc6bc3c0ddd4c1b5295307f42cb5979c949b",
+  "identity": {
+    "archive_manifest_sha256": "dd64f83162c3ee15e9cef5d6898f5d7f8b66b61570c1e3625522eb21909b0b39",
+    "checkpoint_manifest_sha256": "8e0f89e4930c25b299a26fbf086f433c398621dfbfc8f801f33680c497348980",
+    "mps_sha256": "fe9a28b1be6865507d7e1b4249a84fd0e807c3ccb4112518676ea0642fc3d23d",
+    "barpi_sha256": "ff94e370bdaddc8399060025c54f1b85d394d5054b9c0a38ea7c7397b7b838ab",
+    "gurobi_fingerprint": 194041768,
+    "source": {
+      "planning_year": 2030,
+      "boundary_year": 2025,
+      "optimization_hours": 8760,
+      "optimization_start_hour": 0,
+      "result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_id": "case3_thermal_ev_v5",
+      "solver_profile_id": "barrier_stagea_screened_agg0_v1_threads48",
+      "input_manifest_sha256": "08cecc9d92db50f7dc2ae70d8f6ff9f4c8bbdc3bd0fa5e821405ae0230ac3d17",
+      "run_scope_result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_config_sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9",
+      "solver_config_sha256": "85081d8c7161f7de35925e7a78e150d8f4f7a0304fc6758d492bdc482d8d69e2",
+      "planning_state_in": null,
+      "gurobipy_version": "13.0.2"
+    }
+  },
+  "B_million_cny": 347.7820678689325,
+  "B_over_objective": 8.304198762899926e-05,
+  "near_optimality": "ACCEPT",
+  "comparison": "INTERVAL_WITH_B",
+  "recomputed": false
+}

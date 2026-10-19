@@ -12,11 +12,19 @@ import pandas as pd
 PROFILE_ID = "barrier_factor_screen_8760_v1_threads48"
 RESULT_USE = "TEST_ONLY_FACTOR_SCREEN"
 PRODUCTION_PROFILE_ID = "barrier_stagea_screened_agg0_v1_threads48"
+PRODUCTION_PROFILE_IDS = frozenset({PRODUCTION_PROFILE_ID,
+    "barrier_stagea_screened_agg0_2040_v1_threads48",
+    "barrier_stagea_screened_agg0_2050_v1_threads48"})
 
 
 def validate_production_screen_contract(config, args):
     """Author 2026-10-14 authorization; fail closed outside reviewed scope."""
     raw = config.raw
+    profile_id = raw.get('solver_profile', {}).get('id')
+    for year in (2040, 2050):
+        if profile_id == f'barrier_stagea_screened_agg0_{year}_v1_threads48':
+            if config.planning_year != year or raw['scenario']['id'] != 'case3_thermal_ev_v5':
+                raise ValueError('Continuation screening profile year/scenario mismatch')
     reference = json.loads((Path(__file__).resolve().parents[1] /
         'config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json').read_text())
     expected = dict(reference['numerics'], aggregate=0)
