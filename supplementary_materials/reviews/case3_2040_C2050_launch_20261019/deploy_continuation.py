@@ -1,6 +1,6 @@
 """Freeze gated continuation sources; submit HELD for resource validation.
 
-Usage: python deploy_held.py prepare|preflight|submit --case case3|nocredit
+Usage: python deploy_continuation.py prepare|preflight|submit --case case3_2040|C2050
 Never releases jobs, overwrites releases, or inspects other jobs/credentials.
 """
 import argparse
@@ -18,7 +18,8 @@ HOST='paracloud-bscc-a8'
 BASE='/publicfs01/fs1-a8/home/a8s001819/National_model_cloud'
 SOURCE=BASE+'/20260914_base_v9_t48_m750_tol1e4_v3'
 ENV_SOURCE=BASE+'/20260903_8760_stagea_final_2820fc3_v3'
-PROFILE='config/solver_profiles/barrier_stagea_screened_agg0_v1_threads48.json'
+CONTINUATION_INPUTS=('thermal/existing_capacity_2025.csv', 'thermal/retirement_schedule.csv',
+                     'hydro/grfr_monthly_p30_single_year_proxy_2019.nc')
 
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -74,6 +75,17 @@ def main():
         assert not subprocess.check_output(['git','diff','HEAD','--',*paths],cwd=REPO).strip(),'Commit reviewed source first'
         archive=subprocess.check_output(['git','archive',commit,'cispo_model','config','scripts','tests','AGENTS.md'],cwd=REPO)
         expected={k.replace('\\','/'):v for k,v in json.loads((REPO/'supplementary_materials/reviews/case3_2030_launch_20261014/expected_data_files.json').read_text()).items()}
+        # These continuation-only files are absent from the 2030 manifest.
+        for key in CONTINUATION_INPUTS:
+            local=REPO/'data'/key
+            expected[key]=dict(local_path=str(local),sha256=sha(local))
+        manifest=list(csv.DictReader((HERE/gates['gate_paths'][-1]/'input_manifest.csv').open(encoding='utf-8-sig')))
+        for row in manifest:
+            local=Path(row['resolved_path'])
+            if row['required']=='True' and local.is_relative_to(REPO/'data'):
+                key=local.relative_to(REPO/'data').as_posix()
+                assert expected[key]['sha256']==row['sha256'],key
+        save(evidence/'expected_data_files.json',expected)
         payload=evidence/'release_payload.tar.gz';hashes={}
         launch=dict(release=name,source_commit=commit,scenario=scenario,planning_year=year,boundary_year=year-10,framework='A' if year==2040 else 'C_Late-entry',state_input='upstream_state/planning_state_candidate',
             source_release=SOURCE,solver_profile=profile,screen_margin=.2,automatic_release=True,
@@ -96,7 +108,7 @@ def main():
             for item in sorted(state_dir.rglob('*')):
                 if item.is_file():add('upstream_state/'+item.relative_to(state_dir).as_posix(),item.read_bytes())
             for path,v in expected.items():
-                if path.startswith('flexibility/participation_pathway_v2/'):
+                if path.startswith('flexibility/participation_pathway_v2/') or path in CONTINUATION_INPUTS:
                     assert sha(v['local_path'])==v['sha256'];add('additional_data/'+path,Path(v['local_path']).read_bytes())
         remote("assert not root.exists(), 'Refuse existing release'\nroot.mkdir()\nprint(json.dumps({'created':str(root)}))",root,evidence,'create')
         subprocess.run(['scp','-o','BatchMode=yes',str(payload),HOST+':'+root+'/release_payload.tar.gz'],check=True)
@@ -113,11 +125,18 @@ for path,h in identity['files'].items():assert hashlib.sha256((root/'repo'/path)
 (root/'cloud_source_repo_sha256.json').write_text(json.dumps(identity,indent=2)+'\n')
 overlay=root/'data_overlay';overlay.mkdir()
 for child in (source/'data_overlay').iterdir():
-    if child.name!='flexibility':(overlay/child.name).symlink_to(child.resolve(),target_is_directory=child.is_dir())
+    if child.name not in {'flexibility','thermal','hydro'}:(overlay/child.name).symlink_to(child.resolve(),target_is_directory=child.is_dir())
 flex=overlay/'flexibility';flex.mkdir()
 for child in (source/'data_overlay/flexibility').iterdir():
     if child.name!='participation_pathway_v2':(flex/child.name).symlink_to(child.resolve(),target_is_directory=child.is_dir())
 (flex/'participation_pathway_v2').symlink_to(root/'additional_data/flexibility/participation_pathway_v2',target_is_directory=True)
+for family in ('thermal','hydro'):
+    target=overlay/family;target.mkdir()
+    extra=root/'additional_data'/family
+    overrides={p.name:p for p in extra.iterdir()}
+    for child in (source/'data_overlay'/family).iterdir():
+        if child.name not in overrides:(target/child.name).symlink_to(child.resolve(),target_is_directory=child.is_dir())
+    for name,path in overrides.items():(target/name).symlink_to(path)
 for path,h in expected.items():assert hashlib.sha256((overlay/path).read_bytes()).hexdigest()==h,path
 (root/'data_overlay_sha256.json').write_text(json.dumps(expected,indent=2)+'\n')
 profile=json.loads((root/'repo'/profile_path).read_text())

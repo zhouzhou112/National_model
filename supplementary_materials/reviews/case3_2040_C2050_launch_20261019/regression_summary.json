@@ -1,0 +1,13 @@
+{
+  "tests": 17,
+  "status": "PASS",
+  "log": "regression.stderr.log",
+  "scope": [
+    "production screening",
+    "continuation profiles",
+    "Late-entry identity guard",
+    "R1",
+    "R1 6c",
+    "formal launch preservation"
+  ]
+}

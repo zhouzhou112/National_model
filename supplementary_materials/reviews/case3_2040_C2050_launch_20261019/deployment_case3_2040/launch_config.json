@@ -1,0 +1,25 @@
+{
+  "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1",
+  "source_commit": "681627fbee627ab1703d72367e4c0e7cf1286848",
+  "scenario": "case3_thermal_ev_v5",
+  "planning_year": 2040,
+  "boundary_year": 2030,
+  "framework": "A",
+  "state_input": "upstream_state/planning_state_candidate",
+  "source_release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_2040_v1_threads48.json",
+  "screen_margin": 0.2,
+  "automatic_release": true,
+  "automatic_successor": false,
+  "stage_b": false,
+  "authorization": "Author 2026-10-19: gated submit and release",
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "solver_threads": 48,
+    "minimum_available_memory_gib": 700
+  },
+  "gates_sha256": "ede17d93e65ea7b258ff4c8832890079450247c25bb8d7648900c78aaf5e6a5a"
+}

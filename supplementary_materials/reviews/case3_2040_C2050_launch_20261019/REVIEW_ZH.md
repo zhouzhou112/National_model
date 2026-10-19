@@ -25,3 +25,15 @@ C2050 新增显式 --late-entry-base-state，仅允许 case3 2050 / Base2040 边
 保留构建前失败：R1_case3_2040_01 缺 CISPO_WAVE_ROOT；case3_2040_screen_1h_01 为本机 CRLF 与冻结 LF 的字节 SHA 差异，已证实 LF 字节相同后使用独立 LF 副本；unscreen_1h_01 缺诊断工程标识。未放宽完整性验证或覆盖任何失败目录。实际通过门禁见 case3_2040_final_gates.json。
 
 C2050 的 R1 与筛选版 1h 已通过，后续门禁、冻结与提交回执在完成后追加。未建立后台监听，不触碰 Job5124127、既有冻结源码或 cloud_backup。
+
+
+## 2026-10-19 23:43：case3 2040 云端 preflight 阻塞
+
+case3 2040 本机门禁全部 PASS；冻结 release `20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1`，源码 `681627fbee627ab1703d72367e4c0e7cf1286848`。随后云端 preflight 报 `Required provenance inputs are missing: thermal/retirement_schedule.csv`。原打包清单沿用 2030，未列入续接所需证据输入，这是本轮打包遗漏，不是数值不收敛。
+
+按任务书第 6 节停止该作业放行：没有 sbatch，Job ID 为空，冻结包及失败输出完整保全，未补写任何冻结文件。修复后必须建立新 release 并通过云端 preflight，不能直接启动当前包。C2050 尚未冻结，不受该作业阻塞；为其新包补全了与本机门禁 manifest 一致的 thermal/existing_capacity_2025.csv、thermal/retirement_schedule.csv、hydro/grfr_monthly_p30_single_year_proxy_2019.nc，并逐 SHA 校验其全部必需 data 输入。
+
+
+## 2026-10-19 23:45：C2050 门禁完成
+
+Base2040 → R1_C2050_01 → v9_a12 → Base2050 清单 margin0.2 → Aggregate0；框架 C，scenario 仍为 case3_thermal_ev_v5。两版 1h 仅 BOUNDS_VRE_NEW 段不同，容量列微小余量 0，2050 参数核准全部 PASS。24h：OPTIMAL，96 轮、43.75 秒，M=1.969660003986462e-7 GWh，容量信用越界 0，relative_v1 PASS，保全 COMPLETE，错误为空。完整门禁为 C2050_final_gates.json。短窗仅作工程验证。

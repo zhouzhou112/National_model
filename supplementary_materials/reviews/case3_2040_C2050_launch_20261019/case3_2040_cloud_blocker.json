@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED_NOT_SUBMITTED",
+  "job_id": null,
+  "reason": "CLOUD_PREFLIGHT_REQUIRED_INPUT_MISSING",
+  "missing": "thermal/retirement_schedule.csv",
+  "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1",
+  "source_commit": "681627fbee627ab1703d72367e4c0e7cf1286848",
+  "frozen_release_unchanged": true,
+  "local_gates": "PASS",
+  "author_rule": "Stop release for this job when any gate fails; other jobs unaffected",
+  "next_action": "Author reviews blocker; any repair requires a new release, full input identity and cloud preflight"
+}
