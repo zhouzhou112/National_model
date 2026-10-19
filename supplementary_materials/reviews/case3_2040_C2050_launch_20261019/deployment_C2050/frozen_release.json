@@ -1,0 +1,9 @@
+{
+  "status": "FROZEN",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1",
+  "source_commit": "f6372ff43e043cd91e43f8f998020b508226e7b0",
+  "repo_files": 395,
+  "data_files": 58,
+  "source_manifest_sha256": "5fd0370caf9dd89e78fb8ac216b59aca6df6dcea1fe0c30b5b95856d71333fca",
+  "release_manifest_sha256": "c3b534aa6555aca3c2012956b7bff38bce203e775f3f4c3334def19a44431a84"
+}

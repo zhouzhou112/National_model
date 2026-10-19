@@ -37,3 +37,28 @@ case3 2040 本机门禁全部 PASS；冻结 release `20261020_case3_2040_v9a12_s
 ## 2026-10-19 23:45：C2050 门禁完成
 
 Base2040 → R1_C2050_01 → v9_a12 → Base2050 清单 margin0.2 → Aggregate0；框架 C，scenario 仍为 case3_thermal_ev_v5。两版 1h 仅 BOUNDS_VRE_NEW 段不同，容量列微小余量 0，2050 参数核准全部 PASS。24h：OPTIMAL，96 轮、43.75 秒，M=1.969660003986462e-7 GWh，容量信用越界 0，relative_v1 PASS，保全 COMPLETE，错误为空。完整门禁为 C2050_final_gates.json。短窗仅作工程验证。
+
+
+## 2026-10-19 23:45：C2050 已提交并 release
+
+云端 preflight PASS，提交后先核验 held 的资源请求与冻结文件 SHA，再按本轮授权 release Job5201262。释放时 PENDING，尚无节点分配；AllocTRES 与启动内存须以计算节点回执为准。资源请求 cpu64/mem750G/billing64、UNLIMITED、no-requeue。
+
+|作业|release|源码 commit|源码 manifest SHA256|release manifest SHA256|
+|---|---|---|---|---|
+|case3 2040（未提交）|20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1|681627fbee627ab1703d72367e4c0e7cf1286848|c8ea0394405ed8492ab58ca300da9de0e179b600aa6f293f31fce3f5b3b27b37|b9f65e7f0bc9e8b5d26033f3afe6e29640cb9e33dfd1194fd61579dbb8e38d07|
+|C2050 / 5201262|20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1|f6372ff43e043cd91e43f8f998020b508226e7b0|5fd0370caf9dd89e78fb8ac216b59aca6df6dcea1fe0c30b5b95856d71333fca|c3b534aa6555aca3c2012956b7bff38bce203e775f3f4c3334def19a44431a84|
+
+两包均在 `/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/` 下。病例身份均为 case3_thermal_ev_v5；C 包 launch_config.json 明确 `framework=C_Late-entry`。本地完整原始门禁输出、两次 R1 源与派生状态、失败包、MPS/解/checkpoint/日志保留；Git 只收小证据。PARAMETERS_ZH.md 给出实际逐项参数核准表。
+
+
+## 最终启动核验：2026-10-20T06:46:02.396615+08:00
+
+|作业|Job ID|节点|状态|启动可用内存 GiB|
+|---|---|---|---|---|
+|_nocredit 2030|5153901|m4cg1604|RUNNING|722.572140|
+|case3 2040|未提交|—|云端preflight阻塞|—|
+|C2050|5201262|m4cg1606|RUNNING|723.370480|
+
+两个运行作业 AllocTRES 均为 cpu64/mem750G/billing64，UNLIMITED/no-requeue，计算节点smoke及7项启动回归均PASS，stderr为空。final_job_status.json的smoke/runtime小文件已按远端SHA核验。之后仅按作者请求只读查询，无后台监听。
+
+2040的停止来自任务书第6节明确要求，属于输入打包问题；本机数值门禁并未失败。建议后续以包含58项已核对输入的新release修复并重新preflight，不能修改当前冻结失败包。

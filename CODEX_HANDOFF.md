@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-19 晚放行更新（取代下列旧 held/暂停/未采纳记录）：** 作者已采纳case3 2030筛选状态；Claude证书B347.7820678689 million CNY、B/obj8.3042e-5，ACCEPT/INTERVAL_WITH_B，无需重解，节省区间[44.46,64.32]亿元/年。nocredit5153901 RUNNING/m4cg1604，启动722.572GiB；C2050 5201262 RUNNING/m4cg1606，启动723.370GiB；两者AllocTRES cpu64/mem750G/billing64、UNLIMITED/no-requeue、smoke及7项节点回归PASS。case3 2040本机R1/1h/24h/参数门禁PASS，但云端preflight缺thermal/retirement_schedule.csv，按停止条件未提交，无Job ID；冻结失败包保全，禁止原地补写或直接启动。C2050采用补全58项输入的新包，云端preflight PASS。源码681627f/C包f6372ff，17项本机回归PASS；两24h M分别1.043e-7/1.970e-7GWh。详情case3_2040_C2050_launch_20261019/REVIEW_ZH.md。下一步由作者审查2040阻塞；无后台回查。
+
 - 2026-10-19 case3 2030与Base初步比较及2040预检：54份小证据远端/本地SHA核验，现有解目标点差47.520584亿元/年（0.113339%）；证书B待定，成本节省区间为[44.456953,60.836946+B/100]亿元（B单位million CNY）。扩展relative_v1两侧PASS；case3冷热库存M4.01009e-8GWh；R1只读清理预检PASS（发电/储能0.110375GW、网络0.100047GW），没有改状态或代作者采纳。2040尚无正式R1状态、1h/24h门禁、release或held作业，不能直接放行。nocredit5153901仍held，C2050/P5暂停。详情case3_2030_launch_20261014/comparison_20261019/REVIEW_ZH.md。
 
 - 2026-10-19英国22:19（北京10月20日05:19）联合查进度：云端仅1个RUNNING，Base2060/5124127到iter480、累计7天4:02，打印PInf0.0155/DInf1.01e-8/Compl3.75e-4；尚无终态。Case3 2030/5153878已于10月18日英国14:38:11完成（COMPLETED/0:0，3天16:26:04），Barrier353轮OPTIMAL，保全COMPLETE/errors=[]，relative_v1=PASS，严格口径HARD_FAIL仍记录；scientifically_accepted=false，作者采纳和筛选定价证书后续另行处理。nocredit5153901仍JobHeldUser，不自动释放。证据cloud_joint_progress_20261016/status_20261019T211913Z{,_summary}.json及case3_completion_details_20261019.json。
@@ -10060,3 +10062,14 @@ Git基准bbb0222d47750f68584d6da8044c724a18bce73b。只读squeue/scontrol/sstat/
 Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、comparison_20261019报告/CSV/JSON，四路下载助手增加显式release参数（旧year入口保留）。运行collect_comparison_20261019.py（含--r1-supplement）、assess_relative_v1.py两侧、analyze_comparison_20261019.py；所有已采集文件SHA及manifest已列项复核通过。原严格QC、candidate状态和全部远端结果不变。R1通用审计的固定文案“storage is zero”对本次不适用，实际storage小量0.004324262GW已计入总量，报告披露，未改算法。没有操作Base2060、提交/放行任何作业或建立监听。
 
 唯一有限传输会话：本机fetch_pricing_archive_ranges.py --release 20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1 --output supplementary_materials/reviews/case3_2030_launch_20261014/P1_case3_archive_20261019，原MPS4142788418字节和raw BarPi等待完整SHA；保留每块及部分文件，不重启重复传输。下一步先核验download_identity.json，再补candidate_selection/result_manifest小文件并离线price_screened_candidates.py（新输出目录）；B>418.802677776 million CNY触发一次2030重解。P1 Base2030全年自检仍未执行。作者采纳与完整R1/2040门禁后才能held汇报；无自动release。保留其他会话SI未提交条目及稿件。
+
+## 2026-10-19 晚：nocredit 与 C2050 放行，case3 2040 云端门禁阻塞
+
+- 授权依据：AGENTS.md 2026-10-19 晚及 PROMPT_release_nocredit_case3_2040_C2050_20261019.md；源码提交 681627f，C2050 打包工具及门禁提交 f6372ff。报告：supplementary_materials/reviews/case3_2040_C2050_launch_20261019/REVIEW_ZH.md。
+- Claude 证书原件 SHA 交叉核验通过；B=347.7820678689325 million CNY、B/obj=8.304198762899926e-5，ACCEPT/INTERVAL_WITH_B，3 个负价列，无需重解。本轮未重复计算；节省区间[44.46,64.32]亿元/年。作者已采纳 case3 2030 筛选解候选状态作为2040上游。
+- 两个续接年 R1、参数核准、筛选/不筛选1h MPS仅BOUNDS_VRE_NEW不同、容量微小余量0列、24h门禁均PASS；M分别1.0428117347416332e-7与1.969660003986462e-7 GWh，信用越界0，relative_v1 PASS，保全COMPLETE。17项本机回归PASS。短窗不作规划结论。
+- Job5153901 nocredit：RUNNING/m4cg1604，AllocTRES cpu64/mem750G/billing64，UNLIMITED/no-requeue，启动可用722.5721397399902GiB，smoke及7项计算节点回归PASS。
+- C2050 Job5201262：RUNNING/m4cg1606，同资源分配，启动可用723.3704795837402GiB，smoke及7项回归PASS。新release为20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1，源码f6372ff，58项数据SHA核验，云端preflight PASS后提交release。
+- case3 2040：没有Job ID、未提交。20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1（源码681627f）本机门禁通过，但云端preflight缺thermal/retirement_schedule.csv。按任务书第6节停止该作业放行；冻结包与失败输出原样保留，不原地补文件。C2050在冻结前补齐并核对3项续接输入，不受影响。
+- 最新只读核验时间2026-10-20T06:46:02.396615+08:00；小文件传输SHA校验通过，final_job_status.json含状态、计算节点smoke及回归尾部。未查询/操作Job5124127，未访问cloud_backup、未修改既有冻结源码、未读复制凭据，无后台监听/自动提交。
+- 后续：等待作者审查2040打包阻塞；任何修复须新release并通过完整输入与云端preflight，当前失败包不得放行。两个已运行作业仅在作者要求时再做只读查询。所有原始/失败/部分输出继续完整保全。

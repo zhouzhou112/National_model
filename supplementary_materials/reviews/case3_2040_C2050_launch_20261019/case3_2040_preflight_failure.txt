@@ -1,0 +1,3 @@
+Cloud preflight failed before build/solve:
+FileNotFoundError: Required provenance inputs are missing: thermal/retirement_schedule.csv
+No sbatch executed. Frozen release unchanged.
