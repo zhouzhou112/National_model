@@ -1,0 +1,46 @@
+{
+  "observed_at_utc": "2026-10-19T21:19:13.482112+00:00",
+  "running_count": 1,
+  "running": {
+    "5124127": {
+      "project": "Base2060",
+      "iteration": 480,
+      "printed_primal_infeasibility": 0.0155,
+      "printed_dual_infeasibility": 1.01e-08,
+      "printed_complementarity": 0.000375,
+      "last_10_iterations": {
+        "from": 470,
+        "to": 480,
+        "primal_reduction_percent": 41.72932330827067,
+        "dual_reduction_percent": 70.38123167155426,
+        "complementarity_reduction_percent": 43.609022556390975,
+        "minutes_per_iteration": 22.413333333333334
+      },
+      "solver_terminal_status": null
+    }
+  },
+  "completed": {
+    "5153878": {
+      "project": "Case3 2030",
+      "slurm_state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_london": "2026-10-18T14:38:11+01:00",
+      "iterations": 353,
+      "solver_status": "OPTIMAL",
+      "preservation_status": "COMPLETE",
+      "preservation_errors": [],
+      "strict_qc": "HARD_FAIL",
+      "relative_v1": "PASS",
+      "scientifically_accepted": false,
+      "author_decision": "PENDING",
+      "screened_pricing_certificate": "NOT_VERIFIED_IN_THIS_STATUS_CHECK"
+    }
+  },
+  "held": {
+    "5153901": "JobHeldUser"
+  },
+  "evidence_sha256": {
+    "case3_completion_details_20261019.json": "95669d654ee4493c265c055cf570c58c1ae9692af01dc01058e02d1e9551e63b",
+    "status_20261019T211913Z.json": "15e3afc333d4397e6b77aa94e68a04544d355729c74375d0e793a0689f873b7e"
+  }
+}
