@@ -3589,3 +3589,9 @@ Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、compariso
 - 云端preflight一次PASS，sbatch --test-only/held请求核验/冻结文件核验后release Job5201318。2026-10-20T07:01:20.005150+08:00 核验RUNNING/m4cm1803，AllocTRES cpu64/mem750G/billing64，UNLIMITED/no-requeue，启动725.0457878112793GiB，smoke及7项回归PASS，stderr空。
 - 新增报告与小证据：case3_2040_C2050_launch_20261019/REVIEW_ZH.md追加修复节，deployment_case3_2040_v2下input_comparison/local_manifest_check/source_identity_check/frozen_release/cloud_preflight/cloud_manifest_check/released/startup_status.json；原始操作命令与日志本地保留。
 - v1及失败输出424个文件SHA/mtime在建立前后、启动后均不变；不读复制凭据、不操作其他三个Job、不访问cloud_backup、不建监听。后续只按作者请求查询；所有运行与失败包完整保全。
+
+## 2026-10-20 四项目进度：Base2060完成、C2050内存终止
+
+- **2026-10-20英国12:12（北京19:12）四项目核验：实际2个RUNNING。** Base2060/5124127已于英国09:23:29正常结束，511轮OPTIMAL，Slurm COMPLETED/0:0，总7天15:06:23，保全COMPLETE/errors=[]，relative_v1 PASS、严格HARD_FAIL并存。C2050/5201262于英国04:08:53因OUT_OF_MEMORY终止（4:23:41，batch exit137），日志停在ordering2005s，无Barrier迭代；原模型归档COMPLETE，未生成完整解/保全报告，失败现场保留，未重启。nocredit5153901第43轮、12:42:17；case3 2040/5201318第23轮、12:12:04；两者日志无显式警告、stderr空。证据cloud_joint_progress_20261016/status_20261020T111242Z{,_summary}.json；完整终态报告terminal_details_20261020.json本地留存、SHA记入summary。
+
+Git基准e7d5d4ac4eb253b56458df88f7c8230f6e7c8d71。按作者本次查询，只读squeue/scontrol/sstat/sacct、gurobi.log、batch_exit及终态solve/QC/preservation/archive报告；不修改冻结包或作业。Base最终打印PInf2.81e-3/DInf1.29e-8/Compl6.25e-5，目标5789097.634735345 million CNY，求解655761.754s，全部保全阶段完成；完整归档未重新全量SHA校验，科学采纳待作者决定。C2050 Slurm明确1次oom_kill，MaxRSS719.855GiB；该采样值不能代替瞬时cgroup峰值或据此确定重跑内存。无迭代解，不能解释成数学不可行或收敛失败。nocredit第33至43轮PInf/DInf/Compl分别降66.24%/67.05%/65.94%，14.49分钟/轮，RSS372.11GiB/峰704.59GiB；2040第13至23轮分别降73.65%/76.67%/74.01%，17.67分钟/轮，RSS396.30GiB/峰712.44GiB。两者均为早期迭代，残差绝对量大，不能预估完成率/ETA。变更仅3份交接文档及2份小证据JSON，JSON解析和暂存diff检查；没有源码变更，无需求解测试。下一步：作者查询时继续观察两RUNNING；C2050须先独立诊断排序阶段内存和提出新release资源方案再安排重跑，现包与部分输出保全；本轮不自动重启、无后台监听，不动SI其他会话。

@@ -1,0 +1,156 @@
+{
+  "observed_at_utc": "2026-10-20T11:12:39.255017Z",
+  "running_count": 2,
+  "jobs": {
+    "5153901": {
+      "state": "RUNNING",
+      "elapsed": "12:42:17",
+      "node": "m4cg1604",
+      "iteration": 43,
+      "printed_primal_residual": 18500000000.0,
+      "printed_dual_residual": 71.5,
+      "printed_complementarity": 453000000.0,
+      "last_10_reduction_pct": {
+        "primal": 66.24087591240875,
+        "dual": 67.05069124423963,
+        "complementarity": 65.93984962406014
+      },
+      "minutes_per_iteration_last10": 14.485,
+      "sstat": "5153901.batch|390183388K|738815964K|15-22:41:26",
+      "warnings": [],
+      "stderr": {
+        "size": 0,
+        "tail": []
+      }
+    },
+    "5201318": {
+      "state": "RUNNING",
+      "elapsed": "12:12:04",
+      "node": "m4cm1803",
+      "iteration": 23,
+      "printed_primal_residual": 75100000000.0,
+      "printed_dual_residual": 287.0,
+      "printed_complementarity": 1710000000.0,
+      "last_10_reduction_pct": {
+        "primal": 73.64912280701755,
+        "dual": 76.66666666666666,
+        "complementarity": 74.01215805471124
+      },
+      "minutes_per_iteration_last10": 17.665,
+      "sstat": "5201318.batch|415553312K|747047828K|14-13:19:54",
+      "warnings": [],
+      "stderr": {
+        "size": 0,
+        "tail": []
+      }
+    },
+    "5124127": {
+      "sacct": "5124127|COMPLETED|0:0|7-15:06:23|2026-10-13T01:17:06|2026-10-20T16:23:29|\n5124127.batch|COMPLETED|0:0|7-15:06:23|2026-10-13T01:17:06|2026-10-20T16:23:29|689267060K\n5124127.extern|COMPLETED|0:0|7-15:06:23|2026-10-13T01:17:06|2026-10-20T16:23:29|0",
+      "root": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "last_iteration": [
+        " 511   5.78909763e+06  5.78436813e+06  2.81e-03 1.29e-08  6.25e-05  655750s"
+      ],
+      "tail": [
+        " 510   5.78929672e+06  5.78427428e+06  2.98e-03 1.35e-08  6.64e-05  654424s",
+        " 511   5.78909763e+06  5.78436813e+06  2.81e-03 1.29e-08  6.25e-05  655750s",
+        "",
+        "Barrier solved model in 511 iterations and 655750.08 seconds (1610090.16 work units)",
+        "Optimal objective 5.78909763e+06",
+        "",
+        "",
+        "User-callback calls 8471083, time in user-callback 23.75 sec"
+      ],
+      "stderr": {
+        "slurm-5124127.err": {
+          "size": 0,
+          "tail": []
+        },
+        "stderr.log": {
+          "size": 0,
+          "tail": []
+        }
+      },
+      "report_sha256": {
+        "batch_exit.json": "651e4acd88c3d5721abd30c1971329ea02ba6a9d6a8770d7543ddb600ecfbaf6",
+        "output_8760/solve_report.json": "8b12e7066e1e60a13d37e3372a3ef170d16fcce07777dfb42b8c163a070844a8",
+        "output_8760/preservation_report.json": "0016be9cafe6bfe6f367c70cc508291194c8b129e351696db7611886f3ca79a9",
+        "output_8760/solution_qc.json": "e68bc7640cb01bd26d6a950e51f0d156dcbe46fb35cc09433785b7d8ceeb52d2",
+        "output_8760/model_archive/archive_manifest.json": "329c6cd5b9f43d31fae329a980ec8db50431c0162a99c6947c35fc0e9cde572e"
+      },
+      "batch_exit.json": {
+        "exit_code": 0
+      },
+      "output_8760/solve_report.json": {
+        "status": "OPTIMAL",
+        "runtime_seconds": 655761.7539680004,
+        "objective_value_million_cny": 5789097.634735345,
+        "scientifically_accepted": false
+      },
+      "output_8760/preservation_report.json": {
+        "status": "COMPLETE",
+        "scientifically_accepted": false,
+        "stages": {
+          "raw_checkpoint": "COMPLETE",
+          "capacity_and_cost": "COMPLETE",
+          "operation_carbon_dual_qc": "COMPLETE",
+          "summary": "COMPLETE",
+          "read_dual_export_status.json": "COMPLETE",
+          "candidate_state": "COMPLETE",
+          "output_catalog": "COMPLETE",
+          "read_model_archive/archive_manifest.json": "COMPLETE"
+        },
+        "errors": []
+      },
+      "qc": {
+        "strict": "HARD_FAIL",
+        "relative_v1": "PASS",
+        "max_power_balance_residual_gw": 3.6830155903798495e-06
+      },
+      "output_8760/model_archive/archive_manifest.json": {
+        "status": "COMPLETE",
+        "errors": []
+      }
+    },
+    "5201262": {
+      "sacct": "5201262|OUT_OF_MEMORY|0:125|04:23:41|2026-10-20T06:45:12|2026-10-20T11:08:53|\n5201262.batch|OUT_OF_MEMORY|0:125|04:23:41|2026-10-20T06:45:12|2026-10-20T11:08:53|754822880K\n5201262.extern|COMPLETED|0:0|04:23:41|2026-10-20T06:45:12|2026-10-20T11:08:53|72K",
+      "root": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "last_iteration": null,
+      "tail": [
+        "Elapsed ordering time = 1966s",
+        "Elapsed ordering time = 1980s",
+        "Elapsed ordering time = 1980s",
+        "Elapsed ordering time = 1985s",
+        "Elapsed ordering time = 1990s",
+        "Elapsed ordering time = 1995s",
+        "Elapsed ordering time = 2000s",
+        "Elapsed ordering time = 2005s"
+      ],
+      "stderr": {
+        "slurm-5201262.err": {
+          "size": 115,
+          "tail": [
+            "slurmstepd: error: Detected 1 oom_kill event in StepId=5201262.batch. Some of the step tasks have been OOM Killed."
+          ]
+        },
+        "stderr.log": {
+          "size": 0,
+          "tail": []
+        }
+      },
+      "report_sha256": {
+        "batch_exit.json": "85a8cec76cb54e6fc93ea3c0a3af4910825b56e5822ef018bc3c627d16c7c0b5",
+        "output_8760/model_archive/archive_manifest.json": "8c5b3e45953bda7d804268fd090bc46182e32225fef70d066e9e94c935a2d66f"
+      },
+      "batch_exit.json": {
+        "exit_code": 137
+      },
+      "output_8760/model_archive/archive_manifest.json": {
+        "status": "COMPLETE",
+        "errors": []
+      }
+    }
+  },
+  "terminal_details_local_file": "terminal_details_20261020.json",
+  "terminal_details_sha256": "e61e4df197fc157649270ecf7a278ac17213cc12db26f22a6582982c3bf634e8",
+  "scope": "read-only status; no restarts, release mutations, or full archive SHA reread"
+}
