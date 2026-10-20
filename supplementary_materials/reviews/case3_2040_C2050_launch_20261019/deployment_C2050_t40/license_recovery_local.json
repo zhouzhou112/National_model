@@ -1,0 +1,13 @@
+{
+  "license_path": "D:/gurobi1/gurobi.lic",
+  "file_sha256": "f5e565f53eda9ed785c92b262e0efc9366ae2773e733de1521ef79c500150e5c",
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "status": "PASS",
+  "model_status": 2,
+  "variables": 2501,
+  "objective": 1.0
+}

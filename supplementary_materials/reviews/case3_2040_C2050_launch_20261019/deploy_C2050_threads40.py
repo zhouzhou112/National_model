@@ -17,6 +17,8 @@ OLD = BASE + "/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1"
 ROOT = BASE + "/" + NAME
 EVIDENCE = HERE / "deployment_C2050_t40"
 PROFILE = "config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads40.json"
+BATCH_FILE = "C2050_threads40.sbatch"
+EXTRA_LAUNCH = {}
 
 
 def main():
@@ -32,9 +34,9 @@ def main():
             blob = subprocess.check_output(["git", "show", commit + ":" + path], cwd=REPO)
             assert hashlib.sha256(blob).hexdigest() == expected, path
         archive = subprocess.check_output(["git", "archive", commit, "cispo_model", "config", "scripts", "tests", "AGENTS.md"], cwd=REPO)
-        batch_path = (HERE.relative_to(REPO) / "C2050_threads40.sbatch").as_posix()
+        batch_path = (HERE.relative_to(REPO) / BATCH_FILE).as_posix()
         batch = subprocess.check_output(["git", "show", commit + ":" + batch_path], cwd=REPO)
-        assert batch == (HERE / "C2050_threads40.sbatch").read_bytes().replace(b"\r\n", b"\n")
+        assert batch == (HERE / BATCH_FILE).read_bytes().replace(b"\r\n", b"\n")
         launch = dict(release=NAME, source_commit=commit, scenario="case3_thermal_ev_v5",
                       planning_year=2050, boundary_year=2040, framework="C_Late-entry",
                       state_input="upstream_state/planning_state_candidate", solver_profile=PROFILE,
@@ -44,6 +46,7 @@ def main():
                       resources=dict(cpus=64, memory="750G", billing=64, time_limit="UNLIMITED",
                                      requeue=False, solver_threads=40, minimum_available_memory_gib=700),
                       gates_sha256=sha(EVIDENCE / "gates.json"))
+        launch.update(EXTRA_LAUNCH)
         save(EVIDENCE / "launch_config.json", launch)
         payload = EVIDENCE / "release_payload.tar.gz"
         hashes = {}

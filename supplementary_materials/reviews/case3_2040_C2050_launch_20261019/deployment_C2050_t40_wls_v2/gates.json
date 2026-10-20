@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "checks": {
+    "C2050_t40_1h_01.unchanged_mps_all_sections": true,
+    "C2050_t40_1h_01.runner": true,
+    "C2050_t40_1h_01.parameters": true,
+    "C2050_t40_1h_01.tiny_capacity": true,
+    "C2050_t40_24h_02.unchanged_mps_all_sections": true,
+    "C2050_t40_24h_02.runner": true,
+    "C2050_t40_24h_02.parameters": true,
+    "C2050_t40_24h_02.tiny_capacity": true,
+    "OPTIMAL": true,
+    "M": true,
+    "preservation": true,
+    "credit": true,
+    "test_production_screen_retry.log": true,
+    "formal_launch_tests.log": true,
+    "previous_full_gates": true,
+    "unchanged.cispo_model/continuation_cleanup.py": true,
+    "unchanged.scripts/run_cispo_2030_full_year.py": true,
+    "unchanged.config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads48.json": true,
+    "unchanged.config/optimization_numeric_dac_by_year_v9_a12.json": true,
+    "unchanged.config/scenarios/case3_thermal_ev_v5.json": true,
+    "unchanged.supplementary_materials/reviews/case3_2040_C2050_launch_20261019/continuation.sbatch": true,
+    "new_batch_bash_syntax": true,
+    "new_smoke_python_compile": true,
+    "local_license_2501": true,
+    "cloud_license_2501": true
+  },
+  "maximum_service_residual_gw_gwh": 2.198072843739851e-07,
+  "mps_section_sha256": {
+    "C2050_t40_1h_01": {
+      "NAME": "d5ef80a9d79acfb3c3505be15b2255a0b57f450c5842f2bfccb2cec2adb92787",
+      "ROWS": "5a0b2f785fc89b19352554d3f359024b00f651f86c6622c789701512a2e01a26",
+      "COLUMNS": "f225c954da495658c6d3d32145500076a97013088ced7a4e5439ee9c7975e07e",
+      "RHS": "302f6fd610ce12bbab2b6a8f589619c2bb646f88090774e84f2df8ae6d0955a6",
+      "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+      "BOUNDS_VRE_NEW": "8ecf1958a44bcfe30b978ea1b06ae94c417cd5288ad57e9b29adf1564e578e23",
+      "BOUNDS_OTHER": "44f77c291c659ff353742d3ded3a5744781a50159842cc2245383c04c32eb591",
+      "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+    },
+    "C2050_t40_24h_02": {
+      "NAME": "d5ef80a9d79acfb3c3505be15b2255a0b57f450c5842f2bfccb2cec2adb92787",
+      "ROWS": "66c393a4e2d896b55eb9efa801faa238c5f6ef863c0d204e8f4a45892686de15",
+      "COLUMNS": "2d591951cbb2c022180594a323df3910f4229d1194f6dadbb6f196de1bc3677a",
+      "RHS": "4cbcf7ff50b4677498cd782a828232c7f88464d5d9b3b747d4e81fde85777bdb",
+      "BOUNDS": "8c831eb72a174b86e957dfc389dd361d82af39c75a4856ee1bdbe1b7b84b893c",
+      "BOUNDS_VRE_NEW": "8ecf1958a44bcfe30b978ea1b06ae94c417cd5288ad57e9b29adf1564e578e23",
+      "BOUNDS_OTHER": "27acc9dcb25f84edf219f3ff20aa1c49d098354f16b5fa510a0ca959ac4a6d7f",
+      "ENDATA": "3329e2f48545b9047f2d19bd9a19408e26e5046bbb6965e74521c813fae4c33d"
+    }
+  },
+  "tested_source_lf_sha256": {
+    "cispo_model/continuation_cleanup.py": "82fa742dce79c0178161568772e29c155983b6c38100a03e21baa136abacb391",
+    "cispo_model/factor_screen.py": "c57abdc4c7281c6cfb9d624ac8c1304c5b829852ea9da2efd9a25019b06a035b",
+    "scripts/run_cispo_2030_full_year.py": "163889a650f62def32ae2b15dfe721cccc09b33e44c37dd2460ac11720a0bf4e",
+    "config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads48.json": "d43cc4c51567b93b49a3933e22312b742940637dba7aa78cbe5fc40bbc388843",
+    "config/optimization_numeric_dac_by_year_v9_a12.json": "cd460b176c30b04d810924a2e41ad2a3e0f10281fe04272f04c2827bf8a2ca63",
+    "config/scenarios/case3_thermal_ev_v5.json": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/continuation.sbatch": "fa64961a54cd5094b8ddf5ebc342bb77f8e03841e4928a0285ce9bed4e61c0dc",
+    "config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads40.json": "db712568b23b0b2af0a1e47177ff4ed4d7b92ac8e07885bd53d38937b26f8a37",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/C2050_threads40.sbatch": "b89e48bb71a15a6cd81c38b7cea34cbbcba0ed35241882323ead4a9253f2b9f2",
+    "tests/test_production_screen.py": "6f3663731a1d56a3c3ae7ca4f8287aca594b47b1e9b51d804aed0a0c31072912",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py": "9a4992254bd3488195695ab89317e12c17801998788fd36ad99f78f416d202ac",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/C2050_threads40_wls.sbatch": "d1adeca59183e40055961cdf6877d63df61440be4d143cd5e39947f62adb81b8",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/deploy_C2050_threads40.py": "cc18248f7d907d4b37cc985c9eb90c682c776bc40fd37feb6bcd37e97d81b190",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/deploy_C2050_license_retry.py": "ee362b20ab8125b2d5392c60ef7973749b50e27ef85b1d8280c45320e800779b"
+  },
+  "previous_gate_sha256": "0da155f1703103665486ca93a9aca87ef3c15f0575ce3a069a190055f4c8ee8f",
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "retained_failed_attempt": "C2050_t40_24h_01: Gurobi12 version guard, before solve",
+  "reused_scientific_gates": "unchanged source/profile/data: 1h/24h gates of f75a330; only new license path and 2501-variable startup smoke"
+}

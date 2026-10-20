@@ -1,0 +1,11 @@
+{
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "status": "PASS",
+  "model_status": 2,
+  "variables": 2501,
+  "objective": 1.0
+}
