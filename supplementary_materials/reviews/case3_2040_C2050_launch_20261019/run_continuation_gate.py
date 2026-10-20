@@ -58,10 +58,14 @@ def parameters(config,data,model,year):
     return dict(status='PASS' if all(x['passed'] for x in rows) else 'FAIL',year=year,checks=rows)
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--year',type=int,choices=[2040,2050],required=True);p.add_argument('--state',required=True,type=Path);p.add_argument('--hours',type=int,choices=[1,24],required=True);p.add_argument('--unscreened',action='store_true');p.add_argument('--output',required=True,type=Path);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--year',type=int,choices=[2040,2050],required=True);p.add_argument('--state',required=True,type=Path);p.add_argument('--hours',type=int,choices=[1,24],required=True);p.add_argument('--unscreened',action='store_true');p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--solver-profile', type=Path, help='Reviewed production profile; default is the original 48-thread profile')
+    p.add_argument('--threads', type=int, choices=range(1,49), default=8, help='Diagnostic solver threads (default: 8)')
+    a=p.parse_args()
     out=a.output.resolve()
     if out.exists():raise FileExistsError(out)
-    profile=json.loads((ROOT/f'config/solver_profiles/barrier_stagea_screened_agg0_{a.year}_v1_threads48.json').read_text());profile['numerics']['threads']=8
+    profile_path=a.solver_profile or ROOT/f'config/solver_profiles/barrier_stagea_screened_agg0_{a.year}_v1_threads48.json'
+    profile=json.loads(profile_path.read_text());profile['numerics']['threads']=a.threads
     if a.unscreened:
         if a.hours!=1:raise ValueError('Unscreened diagnostic is build-only')
         profile['profile_id']='continuation_unscreened_build_only';profile['direct_nonbasic_scientific_acceptance']=False;profile.pop('candidate_screen')

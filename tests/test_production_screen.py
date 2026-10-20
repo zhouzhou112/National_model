@@ -73,6 +73,35 @@ class ProductionScreenTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'aggregate'):
             validate_production_screen_contract(cfg, self.args())
 
+    def test_authorized_c2050_40_thread_retry_is_narrowly_scoped(self):
+        from cispo_model.factor_screen import LATE_ENTRY_40_PROFILE_ID
+        from scripts.run_cispo_2030_full_year import DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS
+        path=ROOT/f'config/solver_profiles/{LATE_ENTRY_40_PROFILE_ID}.json'
+        profile=json.loads(path.read_text())
+        previous=json.loads((ROOT/'config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads48.json').read_text())
+        expected=copy.deepcopy(previous)
+        expected['profile_id']=LATE_ENTRY_40_PROFILE_ID
+        expected['description']=profile['description']
+        expected['numerics']['threads']=40
+        self.assertEqual(profile,expected)
+        cfg=load_model_config('config/optimization_numeric_dac_by_year_v9_a12.json',
+            scenario_path='config/scenarios/case3_thermal_ev_v5.json',
+            solver_path=path).for_planning_year(2050)
+        args=self.args()
+        args.vre_screen_csv=ROOT/'supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2050_20261015/source_screen.csv'
+        args.late_entry_base_state=True
+        validate_production_screen_contract(cfg,args)
+        self.assertIn(LATE_ENTRY_40_PROFILE_ID,DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS)
+        with self.assertRaisesRegex(ValueError,'year/scenario'):
+            validate_production_screen_contract(cfg.for_planning_year(2040),args)
+        args.late_entry_base_state=False
+        with self.assertRaisesRegex(ValueError,'late-entry'):
+            validate_production_screen_contract(cfg,args)
+        args.late_entry_base_state=True
+        cfg.raw['numerics']['threads']=48
+        with self.assertRaisesRegex(ValueError,'threads'):
+            validate_production_screen_contract(cfg,args)
+
     def test_margin_and_original_headroom_are_preserved(self):
         with tempfile.TemporaryDirectory() as folder, gp.Model() as m:
             m.Params.OutputFlag = 0

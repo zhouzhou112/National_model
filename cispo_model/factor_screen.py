@@ -12,9 +12,11 @@ import pandas as pd
 PROFILE_ID = "barrier_factor_screen_8760_v1_threads48"
 RESULT_USE = "TEST_ONLY_FACTOR_SCREEN"
 PRODUCTION_PROFILE_ID = "barrier_stagea_screened_agg0_v1_threads48"
+LATE_ENTRY_40_PROFILE_ID = "barrier_stagea_screened_agg0_2050_v1_threads40"
 PRODUCTION_PROFILE_IDS = frozenset({PRODUCTION_PROFILE_ID,
     "barrier_stagea_screened_agg0_2040_v1_threads48",
-    "barrier_stagea_screened_agg0_2050_v1_threads48"})
+    "barrier_stagea_screened_agg0_2050_v1_threads48",
+    LATE_ENTRY_40_PROFILE_ID})
 
 
 def validate_production_screen_contract(config, args):
@@ -28,6 +30,13 @@ def validate_production_screen_contract(config, args):
     reference = json.loads((Path(__file__).resolve().parents[1] /
         'config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json').read_text())
     expected = dict(reference['numerics'], aggregate=0)
+    if profile_id == LATE_ENTRY_40_PROFILE_ID:
+        # Author 2026-10-20: only the C2050 OOM retry may use this profile.
+        if (config.planning_year != 2050
+                or raw['scenario']['id'] != 'case3_thermal_ev_v5'
+                or not getattr(args, 'late_entry_base_state', False)):
+            raise ValueError('40-thread profile requires C2050 late-entry year/scenario')
+        expected['threads'] = 40
     diagnostic = getattr(args, 'diagnostic_hours', None) is not None
     if diagnostic:
         threads = raw['numerics']['threads']
