@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20新WLS恢复C2050运行（取代上一条许可阻塞）：** 作者提供D:/gurobi1许可，独立受限路径迁移，未覆盖旧许可/未公开内容；本机、云端及计算节点2501变量测试通过。新t40_v2 release源码d385fa7，396项repo文件与40线程v1相同，R1/筛选/Aggregate0不变，preflight PASS。Job5207165 RUNNING/m4cm1607，北京20:24:47启动，实配cpu64/mem750G/billing64、UNLIMITED，启动可用722.968513GiB，7项节点回归通过，全年流程已开始。证据deployment_C2050_t40_wls_v2/startup_verified.json，详细报告REVIEW本日新WLS节。两次失败包保留，无后台监听；下一步按作者要求核验排序峰值，尚无全年40线程峰值/收敛结论。
+
 - **2026-10-20 C2050 40线程已提交放行但许可阻塞：** 作者授权40线程新release，源码f75a330；1h/24h门禁及13项回归PASS，MPS分段与原模型一致、58项数据/79项必需输入核验通过。Job5206992在m4cm1607获cpu64/mem750G/billing64、UNLIMITED，启动≥700GiB检查通过后gp.Env.start报License expired，4秒FAILED/1:0，尚未构建全年模型。没有40线程峰值结果；两次失败包均完整保留。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md本日40线程节与deployment_C2050_t40/。下一步等待作者恢复云端许可；不重复提交、不建监听、不影响其他作业。
 
 - **2026-10-20 C2050资源/R1复核：** 当前节点上限750GiB，原作业已获64CPU/750G/billing64；可见队列无更大内存节点。R1源为Base2040，云端三项状态SHA与本机门禁一致；发电/储能清理0.305374GW、网络0.270692GW，全年v9_a12清理键实际生效。48线程完整峰值未知，历史跨模型行列缩放仅作约800GiB量级预算；建议32线程受保护工程验证、24备选，均未执行/未核准生产变更。详见REVIEW本日资源/R1节及C2050_resources_R1_20261020/summary.json。
@@ -3780,6 +3782,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：指定WLS许可验证并恢复40线程C2050
+
+- 作者本轮明确提供D:/gurobi1/gurobi.lic；限定使用该许可，未打印许可内容或纳入Git。云端独立目录700/文件600，SHA相同；旧许可/其他作业不改。
+- 本机、云端登录节点、计算节点Gurobi13.0.2的2501变量LP均OPTIMAL。新batch读取launch_config的许可路径/SHA并验证，保存startup_memory；源码d385fa7及许可摘要已推送，最终报告另提交。
+- 新release为20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2；396项repo文件与v1完全相同，复用1h/24h与13项相关回归，新shell/Python语法通过，58项数据/79项必需身份及云端preflight PASS。使用deploy_C2050_license_retry.py prepare/preflight/submit/release/status。
+- Job5207165 RUNNING/m4cm1607，2026-10-20北京20:24:47（英国13:24:47）启动，cpu64/mem750G/billing64/UNLIMITED，Threads40/Aggregate0；启动可用722.968513GiB、compute smoke PASS、7项启动回归PASS，output_8760创建且stderr空。保留numpy.ndarray size changed警告，未掩盖；无全年峰值/收敛结论。
+- 更新REVIEW、MODEL_SERVER_STATUS、当前快照；证据deployment_C2050_t40_wls_v2/startup_verified.json及manifest/提交回执。旧失败包全部保留、未碰其他作业/冻结源码/T550 cloud_backup，无后台监听。下一步作者需要时只读核验进展；既有SI未提交改动保留，不整文件暂存handoff。
 
 ### 2026-10-20：C2050以40线程提交，启动许可过期阻塞
 

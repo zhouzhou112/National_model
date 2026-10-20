@@ -3603,3 +3603,9 @@ Git基准e7d5d4ac4eb253b56458df88f7c8230f6e7c8d71。按作者本次查询，只�
 **2026-10-20 C2050 40线程已提交放行但许可阻塞：** 作者授权40线程新release，源码f75a330；1h/24h门禁及13项回归PASS，MPS分段与原模型一致、58项数据/79项必需输入核验通过。Job5206992在m4cm1607获cpu64/mem750G/billing64、UNLIMITED，启动≥700GiB检查通过后gp.Env.start报License expired，4秒FAILED/1:0，尚未构建全年模型。没有40线程峰值结果；两次失败包均完整保留。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md本日40线程节与deployment_C2050_t40/。下一步等待作者恢复云端许可；不重复提交、不建监听、不影响其他作业。
 
 实际运行2026-10-20北京时间19:47:31–19:47:35；新release为20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1。Slurm FAILED/ExitCode1:0；尚无output_8760及有效解，完整保留已有日志和包。未修改原冻结release；原case3 2040与nocredit未受本轮操作影响。完整smoke未通过，需恢复许可后另行核验；不自动重启。
+
+## 2026-10-20：新WLS通过，C2050 40线程v2运行
+
+**2026-10-20新WLS恢复C2050运行（取代上一条许可阻塞）：** 作者提供D:/gurobi1许可，独立受限路径迁移，未覆盖旧许可/未公开内容；本机、云端及计算节点2501变量测试通过。新t40_v2 release源码d385fa7，396项repo文件与40线程v1相同，R1/筛选/Aggregate0不变，preflight PASS。Job5207165 RUNNING/m4cm1607，北京20:24:47启动，实配cpu64/mem750G/billing64、UNLIMITED，启动可用722.968513GiB，7项节点回归通过，全年流程已开始。证据deployment_C2050_t40_wls_v2/startup_verified.json，详细报告REVIEW本日新WLS节。两次失败包保留，无后台监听；下一步按作者要求核验排序峰值，尚无全年40线程峰值/收敛结论。
+
+旧5206992因旧许可过期4秒失败、新5207165使用独立WLS路径；原许可证文件未覆盖，其他作业未干预。门禁与启动证据见本轮REVIEW与deployment_C2050_t40_wls_v2/。

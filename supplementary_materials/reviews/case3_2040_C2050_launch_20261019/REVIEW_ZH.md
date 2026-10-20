@@ -169,3 +169,15 @@ C2050比Base2050行多15.99%、列多13.65%，虽然非零元少1.13%；比Base2
 证据在deployment_C2050_t40/：gates.json、local_evidence_sha256.json、frozen_release.json、cloud_preflight.json、held_submission.json、release_receipt.json、startup_status.json、terminal_evidence.json及terminal_files/。终态4份小文件远端SHA与本地逐字节核验；全部大模型/本机门禁完整输出留在原目录。release manifest SHA256为 `1ce60bf0c9e771df428bf4b968e18efc68973ce8261f26d1627d29b16c861bd6`，源码manifest SHA256为 `8f9f2ccdef0e3b77b77e3a64ed7ee21ea1c5ac5281e607bd002afa8c741f301b`。
 
 下一步需要作者恢复已配置云端Gurobi许可后通知；不读取、复制或上传凭据。之后先核验许可，再以新运行身份继续40线程方案，保留此次失败现场。40线程能否跨过排序峰值，以及后续是否约400GiB，都仍待实测；不更改物理参数，不把短窗通过外推为全年内存保证。
+
+## 2026-10-20：作者提供新WLS；40线程C2050恢复运行
+
+作者明确提供`D:/gurobi1/gurobi.lic`并要求使用，授权本次指定许可的安全迁移与验证；不扩展为读取其他凭据的授权。新许可在本机Gurobi13.0.2、云端登录节点、实际计算节点均通过2501变量LP（OPTIMAL/objective=1），证明不落入小规模受限许可。许可内容未打印、未入Git、未放进release或证据包；仅记录路径及SHA256。云端独立目录权限700、文件600，逐字节SHA一致：`f5e565f53eda9ed785c92b262e0efc9366ae2773e733de1521ef79c500150e5c`。原许可文件、全局环境和其他运行作业不修改。
+
+新release：`20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2`，源码提交`d385fa781c3f1f4922e40d91e1a1fad046c9a260`。新batch从launch_config读取专用许可路径并在启动前验证SHA，完整smoke使用2501变量；运行前精确可用内存单独保存startup_memory.json。新包的396项repo文件SHA与40线程v1完全相同；物理模型、R1、margin0.2、Aggregate0、Threads40及其他求解参数未改。复用已通过1h/24h门禁，不重复求解；新batch的bash语法和内嵌Python编译检查通过。
+
+云端preflight一次PASS；58项数据SHA、79项必需输入身份通过。新作业 **5207165** 已按既有40线程启动授权提交并release，北京时间 **20:24:47**（英国13:24:47）在 **m4cm1607** 启动，核验为 **RUNNING**。实际AllocTRES `cpu64/mem750G/billing64`、UNLIMITED、no-requeue；启动可用内存 **722.968513 GiB**，超过700GiB门槛。计算节点Gurobi13.0.2新WLS测试PASS，7项启动回归PASS，output_8760已创建、stderr为空，全年流程已开始；尚无排序峰值或收敛结论。
+
+启动回归保留一条`numpy.ndarray size changed` RuntimeWarning，7项测试均通过；不隐去警告，不将其写成求解失败。原始启动日志本地/云端保留，Git仅收录必要摘要与SHA。许可元数据及两侧测试见deployment_C2050_t40/license_*.json；新freeze/preflight/提交/启动证据见deployment_C2050_t40_wls_v2/，startup_verified.json列出精确资源和日志SHA。
+
+release manifest SHA256：`0925676b1538b7cbc11d72e4e6aab7e83fb5b343d8349af2e631510f72906acf`；源码manifest SHA256：`971fc67b9ff234514aa5515118130b395dbf5aaf95bce1419e32ca9e171d78ce`。5201262的OOM包与5206992的许可失败包完整保留，新作业使用独立输出。没有建立后台监听或自动提交，没有操作其他作业/T550 cloud_backup。下一步按作者要求只读核验40线程排序峰值与Barrier进展；不承诺峰后固定400GiB，不自动换线程或追加作业。
