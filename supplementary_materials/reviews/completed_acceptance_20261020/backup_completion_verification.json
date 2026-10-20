@@ -1,0 +1,182 @@
+{
+  "status": {
+    "started_at_utc": "2026-10-20T16:06:17.799903+00:00",
+    "status": "COMPLETE",
+    "stages": [
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 524751443,
+        "file_count": 87,
+        "started_at_utc": "2026-10-20T16:06:17.801323+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:07:11.932470+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 587465747,
+        "file_count": 89,
+        "started_at_utc": "2026-10-20T16:07:11.935307+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:08:28.901093+00:00"
+      },
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 739002104,
+        "file_count": 3,
+        "started_at_utc": "2026-10-20T16:08:28.910412+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:09:50.103392+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 783913626,
+        "file_count": 3,
+        "started_at_utc": "2026-10-20T16:09:50.105809+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:11:14.437145+00:00"
+      },
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4050813859,
+        "file_count": 1,
+        "started_at_utc": "2026-10-20T16:11:14.439606+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:18:52.986718+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4142788418,
+        "file_count": 1,
+        "started_at_utc": "2026-10-20T16:18:52.989807+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:26:46.292012+00:00"
+      }
+    ],
+    "completed_bytes": 10828735197,
+    "finished_at_utc": "2026-10-20T16:26:47.750542+00:00",
+    "source_unchanged": true,
+    "disk_free_bytes": 1377949155328
+  },
+  "releases": {
+    "base2060": {
+      "files": {
+        "backup_manifest.json": {
+          "sha256": "abf3c21e018c9889d5093dc07ab7d54be0e63fd11fcd2a89732749dd389940df",
+          "bytes": 25907
+        },
+        "root_metadata/base_2060.sbatch": {
+          "sha256": "cdf9b63617a36f47bf5a0c5f04b0583c367d7b5d2e9b4ae6302e6610fb7dcda9",
+          "bytes": 4487
+        },
+        "root_metadata/batch_exit.json": {
+          "sha256": "651e4acd88c3d5721abd30c1971329ea02ba6a9d6a8770d7543ddb600ecfbaf6",
+          "bytes": 35
+        },
+        "root_metadata/cloud_source_repo_sha256.json": {
+          "sha256": "22e59e2fff3defa164fb6c82595d72a0b60beddcfbceb98e96a5552142059efd",
+          "bytes": 45648
+        },
+        "root_metadata/held_submission.json": {
+          "sha256": "fe01ebd002e9c21797180bcbc565477201adcd1e2a0a87bea946730bfb69504a",
+          "bytes": 1618
+        },
+        "root_metadata/launch_config.json": {
+          "sha256": "af2c005357f1305b8d7c8669eb013619afd81e202917f1d045e50de0a942eab6",
+          "bytes": 69233
+        },
+        "root_metadata/release_files.sha256": {
+          "sha256": "41a77a156b85afc2fb8dfa167baebb5127ef7fee2098f86960d378c2827331e9",
+          "bytes": 46270
+        },
+        "root_metadata/release_job.json": {
+          "sha256": "a554103fb0438aa8de679761552515ff5c39704cdc9579c32ed21d03ff0711ed",
+          "bytes": 3385
+        },
+        "root_metadata/resource_usage.txt": {
+          "sha256": "dedd4e8131e43cb734b5f503727d95087a99e3083f2e3142ebc1964a5a40a5f2",
+          "bytes": 1439
+        },
+        "root_metadata/slurm-5124127.err": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/slurm-5124127.out": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/stdout.log": {
+          "sha256": "142f662f7157cad2991442d15d7ff4b3a656ac1d21f49636d1823e21ae9a6c00",
+          "bytes": 310652
+        }
+      },
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1"
+    },
+    "case3_2030": {
+      "files": {
+        "backup_manifest.json": {
+          "sha256": "5d7005b1278d88f798ce511ea72110d14a6221eb23b7aace2d26cc88f84d3c6e",
+          "bytes": 26462
+        },
+        "root_metadata/batch_exit.json": {
+          "sha256": "49b64b7bd539787942ead4be54ca6cd3655ea9bad01758078d533c6456175c70",
+          "bytes": 35
+        },
+        "root_metadata/case3_2030.sbatch": {
+          "sha256": "240a3c479464e1bb0da03caee1cdd8fd4a4e51a4f8a6e928d3d0138e82033107",
+          "bytes": 4497
+        },
+        "root_metadata/cloud_source_repo_sha256.json": {
+          "sha256": "ec8fa5906eff941c60cee0b9cb905adb18500641a24e493d39e00c2003d09e7c",
+          "bytes": 47236
+        },
+        "root_metadata/held_submission.json": {
+          "sha256": "d5bf1bd193a5f1b170f6bba4510957b6cb1aee204d6a34900078383668f81734",
+          "bytes": 1671
+        },
+        "root_metadata/launch_config.json": {
+          "sha256": "71c5b67642a58497f7914c52d1282b707a1f2c58762065512a894632360859f8",
+          "bytes": 903
+        },
+        "root_metadata/release_files.sha256": {
+          "sha256": "90e4f9f89cc798d1c4eebc576ea24de97dc70481eb9ed838f503e49ceae0166c",
+          "bytes": 47078
+        },
+        "root_metadata/resource_usage.txt": {
+          "sha256": "d610d07138c27503f9b365753fd6ef855bd682cd15ca9680557adcf7fe825d83",
+          "bytes": 1424
+        },
+        "root_metadata/slurm-5153878.err": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/slurm-5153878.out": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/source_screen.csv": {
+          "sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368",
+          "bytes": 7470093
+        },
+        "root_metadata/stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "root_metadata/stdout.log": {
+          "sha256": "6b1dab56ce7cc247d035a041c3c90ee6e0f536c3b6a9fc72dca69e58c52eeb7b",
+          "bytes": 164223
+        }
+      },
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1"
+    }
+  }
+}

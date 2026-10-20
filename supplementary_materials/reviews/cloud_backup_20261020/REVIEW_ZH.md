@@ -32,3 +32,8 @@ UTC16:08快照：Base2060 T1已VERIFIED，Case3 T1传输中，进程存活；尚
 授权固化于AGENTS，台账为根目录`CLOUD_BACKUP_REGISTER_ZH.md`；交接/服务器记录同步。下一次状态检查先读本操作status/manifest，若完成则核对六层和184项记录并追加完成证据；若ERROR则保留部分文件、诊断后在原操作续传，绝不盲目重复启动。其余三项RUNNING在确认终态后按相同规则执行。
 
 后续同轮核验：两套T1均VERIFIED，共176文件/1,112,217,190 bytes；Base2060 T2传输中。当前仍RUNNING，不能称完整。只读查询入口为本目录collect_status.py，最新派生摘要progress_summary.json。
+
+
+## 2026-10-20 本轮验收期间完成
+
+最终状态COMPLETE，六层VERIFIED，184文件/10,828,735,197bytes，源身份不变。最终manifest已取回并逐项匹配原plan，无需重启传输。证据backup_completion_verification.json及completed_acceptance_20261020同名完整记录。两套现行扩展relative_v1均PASS，本机小文件验收包已完成。

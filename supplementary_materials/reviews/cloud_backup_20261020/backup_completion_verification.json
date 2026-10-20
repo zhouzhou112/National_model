@@ -1,0 +1,79 @@
+{
+  "status": "COMPLETE",
+  "transfer_status": {
+    "started_at_utc": "2026-10-20T16:06:17.799903+00:00",
+    "status": "COMPLETE",
+    "stages": [
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 524751443,
+        "file_count": 87,
+        "started_at_utc": "2026-10-20T16:06:17.801323+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:07:11.932470+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 587465747,
+        "file_count": 89,
+        "started_at_utc": "2026-10-20T16:07:11.935307+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:08:28.901093+00:00"
+      },
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 739002104,
+        "file_count": 3,
+        "started_at_utc": "2026-10-20T16:08:28.910412+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:09:50.103392+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 783913626,
+        "file_count": 3,
+        "started_at_utc": "2026-10-20T16:09:50.105809+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:11:14.437145+00:00"
+      },
+      {
+        "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4050813859,
+        "file_count": 1,
+        "started_at_utc": "2026-10-20T16:11:14.439606+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:18:52.986718+00:00"
+      },
+      {
+        "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4142788418,
+        "file_count": 1,
+        "started_at_utc": "2026-10-20T16:18:52.989807+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-20T16:26:46.292012+00:00"
+      }
+    ],
+    "completed_bytes": 10828735197,
+    "finished_at_utc": "2026-10-20T16:26:47.750542+00:00",
+    "source_unchanged": true,
+    "disk_free_bytes": 1377949155328
+  },
+  "releases": {
+    "base2060": {
+      "directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "backup_manifest_sha256": "abf3c21e018c9889d5093dc07ab7d54be0e63fd11fcd2a89732749dd389940df",
+      "file_count": 91
+    },
+    "case3_2030": {
+      "directory": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "backup_manifest_sha256": "5d7005b1278d88f798ce511ea72110d14a6221eb23b7aace2d26cc88f84d3c6e",
+      "file_count": 93
+    }
+  }
+}

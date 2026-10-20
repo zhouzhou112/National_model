@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "evaluator_regression_tests": 14,
+  "evaluator_source_unchanged": true,
+  "source_evidence_files": 61,
+  "source_evidence_bytes": 26736488,
+  "assessment_exact_bytes_verified": true,
+  "t550_source_hashes_before_after_equal": true,
+  "backup_verified_stages": 6,
+  "backup_files": 184,
+  "backup_bytes": 10828735197,
+  "backup_finished_at_utc": "2026-10-20T16:26:47.750542+00:00",
+  "final_acceptance_t550_exact_bytes_verified": true,
+  "zip_members_sha_verified": {
+    "base2060": 49,
+    "case3_2030": 58
+  },
+  "model_changes": false,
+  "stage_b_executed": false
+}

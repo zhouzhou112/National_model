@@ -5404,3 +5404,9 @@ Git基准559f633f4481d4ea9a5d589fd9bc6ece5b69631b。先读取既有backup_on_t55
 4. 本次只读采集：本机 `python supplementary_materials/reviews/cloud_backup_20261020/collect_status.py`。命令不启动或轮询传输。T550自主传输不依赖Windows持续联网；重连后读status再决定是否续传。RUNNING不是COMPLETE；ERROR时保留所有部分文件，诊断并确认没有旧进程后才在原操作run续传。
 5. 六层完成、184项目标bytes/SHA验证及源不变核验后，两套最终backup_manifest才生成。采集并核对计划/manifest对应关系，追加完成证据、更新台账和交接。任何单独证书/验收原字节旁置并独立SHA核验，本次已完成九项。
 6. 后续每次查询确认nocredit2030、case32040、C2050等生产作业结束，即检查并补齐T550备份。无需再次提醒，但无定时监听时不会在无人查询的瞬间自动发现终态。原release、历史备份和未完成传输均不删除。
+
+## 2026-10-20 两套已解结果技术验收与本地取回
+
+- **2026-10-20 Base2060与Case32030验收/本地包已完成：** 两套T550离线复评均relative_v1_author_20261014_extended PASS，严格HARD_FAIL保留，水库按作者规则暂缓并完整披露。云端61原始小文件/26,736,488bytes已取回，59项与原manifest一致、两份manifest自身另核源SHA；T550按原调度重算、省级与水库残差核验。两正式验收JSON旁置同步原字节SHA一致。本地packages/base2060_acceptance_20261020.zip为4,279,063bytes/49成员，case3_2030包7,449,859bytes/58成员，均逐项SHA校验。新增两套T550备份亦已COMPLETE：184文件/10,828,735,197bytes，六层VERIFIED、源未变。证据与报告completed_acceptance_20261020/，台账已更新；不改变原候选状态，不新增求解。
+
+Git基准f04bf22a05b40b3ce8dbe8fae4237a1ada266960。本轮复用旧collect_evidence和独立relative_acceptance/assess_relative_v1 CLI，仅新增本轮collect/assess/finalize编排；评估器源码未改，14项回归PASS。新目录supplementary_materials/reviews/completed_acceptance_20261020/：collection_manifest、assessment_byte_verification、两套assessments、backup_completion_verification、acceptance_sync_verification、package_summary、validation_summary及REVIEW。原始小文件和ZIP仅本地保留，Git只同步编排/报告/小JSON；全部ZIP CRC/成员bytes/SHA验证通过。Base2060最大功率残差3.683015590e-6GW、成本闭合1.988788200e-11、双向额外损耗占比1.199859818e-5；Case3相应2.703891084e-7/3.087821615e-12/3.574347760e-6。水库最大713.857706641m³（HydroCHN_00136）及0.282365064m³（HydroCHN_00473）与原NPZ重算一致，活动库容/小时均披露；扩展GW/GWh及其余保留检查无失败。Case3证书身份与本次MPS/BarPi清单一致，B/obj8.3042e-5，沿用作者10月19日采纳，无重算/重解。Base本次仅技术质量验收，不自动晋级源candidate。T550原备份完成于2026-10-20T16:26:47.750542+00:00，最终manifest与计划完全一致，旁置正式JSON精确字节同步（不重复旧CRLF误判）。截图中的未备份/仍求解旧状态以本条更正；其他会话SI模块、稿件不动。下一步可用本地验收包开展结果分析；水库逐站复核仍按作者暂缓，无新增求解/监听/运行包变更。
