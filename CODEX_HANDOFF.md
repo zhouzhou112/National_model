@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20 C2050资源/R1复核：** 当前节点上限750GiB，原作业已获64CPU/750G/billing64；可见队列无更大内存节点。R1源为Base2040，云端三项状态SHA与本机门禁一致；发电/储能清理0.305374GW、网络0.270692GW，全年v9_a12清理键实际生效。48线程完整峰值未知，历史跨模型行列缩放仅作约800GiB量级预算；建议32线程受保护工程验证、24备选，均未执行/未核准生产变更。详见REVIEW本日资源/R1节及C2050_resources_R1_20261020/summary.json。
+
 - **2026-10-20 C2050筛选/规模补充核验：** 冻结build_report确认筛选生效，固定6,195/35,383个可扩建vre_new上界；不直接删除站点运行变量。C2050预处理43,055,074行/38,303,957列，分别比Base2050多15.99%/13.65%、比Base2060多19.09%/15.74%。不能因筛选而认定总LP更小，也不能仅靠nnz解释OOM；C2050无FactorNZ，具体填充峰值未测定。详见REVIEW本日筛选补充节及screening_comparison.json，保留Aggregate0，不重启。
 
 - **2026-10-20 C2050 OOM 原因核验：** 5201262 在 ordering2005s 硬杀（signal9/batch137/Slurm OUT_OF_MEMORY），无Barrier迭代；750G实际分配、启动723.370GiB，进程峰723.333GiB，Slurm峰719.855GiB。C2050预处理nnz较case32030增加21.16%，FactorNZ尚未输出，不能给出最终内存需求或单独归因Aggregate0。启动门禁不是峰值保证。原MPS归档存在、现存输出保留，尚无解/终态保全报告；不重启。证据case3_2040_C2050_launch_20261019/C2050_oom_20261020/，报告已追加。下一步先查大内存资源，任何改线程方案需作者核准。
@@ -3776,6 +3778,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：C2050内存额度、线程预算与R1部署核验
+
+- Git基准b08d0b3；只读节点/分区/normal QoS及失败包配置、状态、全年build_report，三项状态SHA逐一与本机PASS门禁匹配。新增资源/R1摘要并追加REVIEW与当前快照，原件本地保留。
+- 750GiB节点上限已证实；800GiB量级仅跨模型预算，32/24线程敏感性为未拟合假设，不是可行性验收。R1/v9_a12已实际应用，不保证全年收敛。下一步由作者核准是否开展独立受保护32线程验证；未改冻结源、未重启、无监听。
 
 ### 2026-10-20：C2050筛选与Base规模解释补充
 

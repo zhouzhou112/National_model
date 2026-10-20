@@ -1,0 +1,103 @@
+{
+  "memory_request_ceiling_gib": 750,
+  "observed_prior_billing": 64,
+  "source_year": 2040,
+  "target_year": 2050,
+  "scenario": "base",
+  "local_remote_sha_match": {
+    "state_metadata.json": {
+      "sha256": "2fe97c255aaed7329d5617ae858c0b97b31937b95c1ae41852750c36c2e48c63",
+      "match": true
+    },
+    "capacity_cohorts.csv.gz": {
+      "sha256": "1b7b068d6ed00653e2ffb23f853e98b8bfdf8c2426b8d44b2a838d396b47b246",
+      "match": true
+    },
+    "bound_closure_audit.json": {
+      "sha256": "5445563eb976bf99fec995d5dc82545be1f56effe8e784bee42000784da87462",
+      "match": true
+    }
+  },
+  "R1": {
+    "rule_version": "AUTHOR_R1_20261014",
+    "source_year": 2040,
+    "planning_year": 2050,
+    "retrofit_protected_new_build_gw": 0.004407468759178578,
+    "status": "PASS",
+    "threshold_gw": 0.001,
+    "generation_and_storage_deleted_gw": 0.30537354949242773,
+    "network_deleted_gw": 0.2706922453084057,
+    "separate_total_limit_gw": 1,
+    "ratio_limit": 0.001,
+    "ratio_gate_minimum_installed_gw": 1,
+    "deleted_assets": 78677,
+    "positive_deleted_assets": 54657,
+    "deleted_cohort_rows": 157354,
+    "nonpositive_deleted_assets": 24020,
+    "retained_negative_rows": 28,
+    "retained_negative_zeroing_increase_gw": 5.93275428784068e-15,
+    "removed_negative_cohort_rows": 117,
+    "signed_deleted_gw": 0.5760657798545752,
+    "denominator_hydro_spur": "existing_capacity_gw + active hydro_spur cohorts in source year",
+    "disclosure": "Storage included in generation total conservatively; positive deleted storage GW by technology: phs=0. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.",
+    "state_changed": true,
+    "applied": true
+  },
+  "bound_close_gw": 0.00030797786973329154,
+  "effective_cleanup_config": {
+    "hydro_capacity_headroom_zero_gw": 1e-05,
+    "retrofit_upper_zero_gw": 1e-05,
+    "other_capacity_headroom_zero_gw_gwh": 1e-05,
+    "capacity_cancellation_rhs_zero": 1e-12,
+    "inherited_floor_overrun_clip_gw": 0
+  },
+  "hydro_cleanup_count": 82,
+  "hydro_cleanup_gw": 5.5076302441963224e-05,
+  "retrofit_cleanup_gw": 2.220446049250313e-16,
+  "other_cleanup_count": 0,
+  "capacity_rhs_cleanup_record_count": 0,
+  "memory_estimate": {
+    "type": "UNCALIBRATED_PLANNING_HEURISTIC_NOT_CONFIDENCE_INTERVAL",
+    "base2050_slurm_peak_gib": 685.98,
+    "base2060_slurm_peak_gib": 657.34,
+    "dimension_scaled_gib": [
+      779.6364817483916,
+      795.6357733719284,
+      760.7875842349083,
+      782.8217574909628
+    ],
+    "planning_budget_gib": [
+      800,
+      850
+    ],
+    "no_finite_upper_bound_established": true
+  },
+  "thread_sensitivity": {
+    "type": "ILLUSTRATION_ONLY_NOT_FITTED",
+    "assumed_M48_gib": 800,
+    "assumed_thread_independent_fraction": [
+      0.6,
+      0.8
+    ],
+    "formula": "M(T)=800*(f+(1-f)*T/48)",
+    "gib_by_threads": {
+      "48": [
+        800.0,
+        800.0
+      ],
+      "40": [
+        746.6666666666666,
+        773.3333333333334
+      ],
+      "32": [
+        693.3333333333334,
+        746.6666666666666
+      ],
+      "24": [
+        640.0,
+        720.0
+      ]
+    },
+    "recommendation": "32 first protected engineering validation; 24 fallback; no production parameter changes authorized or made"
+  }
+}
