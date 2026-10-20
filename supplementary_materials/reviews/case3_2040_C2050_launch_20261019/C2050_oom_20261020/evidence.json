@@ -1,0 +1,83 @@
+{
+  "files": {
+    "output_8760/gurobi.log": {
+      "sha256": "68078daf096ed9b59cf5af0c9e8ea0eca83eb6edbc2703cdf453d5e92dbdf315",
+      "bytes": 172189
+    },
+    "output_8760/solver_telemetry.jsonl": {
+      "sha256": "95ababead661f89395ed48eef506eba6acd272bb60f786516e0c51620e5204e9",
+      "bytes": 489
+    },
+    "output_8760/solver_parameters_before_optimize.json": {
+      "sha256": "43359e84b9f374c5a6c06118f09842bebd0850d0cbd5bdcffa5564cfc39d8a1c",
+      "bytes": 589
+    },
+    "output_8760/model_archive/archive_manifest.json": {
+      "sha256": "8c5b3e45953bda7d804268fd090bc46182e32225fef70d066e9e94c935a2d66f",
+      "bytes": 609
+    },
+    "slurm-5201262.err": {
+      "sha256": "73225621c0ac654c198d5d520745e39bcb1b0fd1ff2112f349c1c3d71dc2dfda",
+      "bytes": 115
+    },
+    "resource_usage.txt": {
+      "sha256": "c54b4d2fe98e7ef2d39c3009271e8238ecfa051d0b040a2bef343405b69ada38",
+      "bytes": 1709
+    },
+    "batch_exit.json": {
+      "sha256": "85a8cec76cb54e6fc93ea3c0a3af4910825b56e5822ef018bc3c627d16c7c0b5",
+      "bytes": 37
+    },
+    "compute_node_smoke.json": {
+      "sha256": "81a08ece33dacb76a99388fa85c81090f5f6751ee20e3eb0e07592a1d870d20b",
+      "bytes": 263
+    },
+    "runtime_slurm_job.txt": {
+      "sha256": "679d23cfaae30e7c60169c730faecc0c92a103c9514e3b7fe090f8ed538a4cc0",
+      "bytes": 1629
+    }
+  },
+  "comparison": {
+    "20260930_base2050_v9_t48_m750_tol1e4_v1": {
+      "sha256": "b280dccf158eb1b9f4d2159cb13c3bf42155df7f26d4f93630f682d8e60d61d0",
+      "lines": [
+        "Optimize a model with 50907233 rows, 41458383 columns and 485386301 nonzeros (Min)",
+        "Presolve time: 17448.75s",
+        "Presolved: 37121156 rows, 33702564 columns, 401075371 nonzeros",
+        "Ordering time: 4729.31s",
+        " Factor NZ  : 3.519e+10 (roughly 300.0 GB of memory)"
+      ]
+    },
+    "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1": {
+      "sha256": "fce799f809db4cf4ea8a418229578c1e46dc977bda2a7eef6f010bf6403efb52",
+      "lines": [
+        "Optimize a model with 54217741 rows, 43761732 columns and 501903221 nonzeros (Min)",
+        "Presolve time: 7607.96s",
+        "Presolved: 43068079 rows, 38292964 columns, 327279521 nonzeros",
+        "Ordering time: 5271.35s",
+        " Factor NZ  : 2.657e+10 (roughly 250.0 GB of memory)"
+      ]
+    }
+  },
+  "output_files": [
+    "output_8760/candidate_selection.csv",
+    "output_8760/run_scope.json",
+    "output_8760/run_environment.json",
+    "output_8760/gurobi.log",
+    "output_8760/solver_telemetry.jsonl",
+    "output_8760/build_report.json",
+    "output_8760/input_manifest.csv",
+    "output_8760/preflight_report.json",
+    "output_8760/solver_parameters_before_optimize.json",
+    "output_8760/run_identity.json",
+    "output_8760/run_claim.json",
+    "output_8760/model_config_snapshot.json",
+    "output_8760/annual_capacity_link_row_scaling.json",
+    "output_8760/model_archive/original.mps.gz",
+    "output_8760/model_archive/archive_manifest.json",
+    "output_8760/model_archive/parameters.prm"
+  ],
+  "sacct": "JobID|State|Start|End|Elapsed|MaxRSS|MaxVMSize|ReqMem|ExitCode|AllocTRES\n5201262|OUT_OF_MEMORY|2026-10-20T06:45:12|2026-10-20T11:08:53|04:23:41|||750G|0:125|billing=64,cpu=64,mem=750G,node=1\n5201262.batch|OUT_OF_MEMORY|2026-10-20T06:45:12|2026-10-20T11:08:53|04:23:41|754822880K|754852040K||0:125|cpu=64,mem=750G,node=1\n5201262.extern|COMPLETED|2026-10-20T06:45:12|2026-10-20T11:08:53|04:23:41|72K|72K||0:0|billing=64,cpu=64,mem=750G,node=1\n",
+  "collected_at_utc": "2026-10-20T11:16:13.833946+00:00",
+  "remote_root": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1"
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20 C2050 OOM 原因核验：** 5201262 在 ordering2005s 硬杀（signal9/batch137/Slurm OUT_OF_MEMORY），无Barrier迭代；750G实际分配、启动723.370GiB，进程峰723.333GiB，Slurm峰719.855GiB。C2050预处理nnz较case32030增加21.16%，FactorNZ尚未输出，不能给出最终内存需求或单独归因Aggregate0。启动门禁不是峰值保证。原MPS归档存在、现存输出保留，尚无解/终态保全报告；不重启。证据case3_2040_C2050_launch_20261019/C2050_oom_20261020/，报告已追加。下一步先查大内存资源，任何改线程方案需作者核准。
+
 - **2026-10-20英国12:12（北京19:12）四项目核验：实际2个RUNNING。** Base2060/5124127已于英国09:23:29正常结束，511轮OPTIMAL，Slurm COMPLETED/0:0，总7天15:06:23，保全COMPLETE/errors=[]，relative_v1 PASS、严格HARD_FAIL并存。C2050/5201262于英国04:08:53因OUT_OF_MEMORY终止（4:23:41，batch exit137），日志停在ordering2005s，无Barrier迭代；原模型归档COMPLETE，未生成完整解/保全报告，失败现场保留，未重启。nocredit5153901第43轮、12:42:17；case3 2040/5201318第23轮、12:12:04；两者日志无显式警告、stderr空。证据cloud_joint_progress_20261016/status_20261020T111242Z{,_summary}.json；完整终态报告terminal_details_20261020.json本地留存、SHA记入summary。
 
 - **2026-10-20 case3 2040 v2 修复并启动（取代此前2040未提交状态）：** Job5201318 RUNNING/m4cm1803，AllocTRES cpu64/mem750G/billing64、UNLIMITED/no-requeue；启动可用725.045788GiB，smoke及7项节点回归PASS。新release 20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2，源码严格沿用681627fbee627ab1703d72367e4c0e7cf1286848，395源码文件与原git archive一致；未改代码，复用原1h/24h/参数核准。v1有3项清单遗漏、其中2项实体缺失；从已核验C2050数据复制补齐，58项清单及74项必需逻辑输入SHA全部通过，云端preflight仅执行一次PASS。v1及失败输出424文件SHA/mtime未变。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md与deployment_case3_2040_v2/。本轮未查询/控制5124127、5153901、5201262，无后台监听；只在作者要求时继续查询。
@@ -3772,6 +3774,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：C2050 排序阶段 OOM 取证
+
+- Git基准908bdfb。仅追加REVIEW、MODEL_SERVER_STATUS、当前快照和本条，保存9份小原件及SHA/sacct证据；未改生产代码、冻结包或作业。
+- 验证：Slurm OOM、signal9、exit137一致；9文件传输SHA一致；Base2050与case32030日志只读比较。原MPS存在且大小与manifest一致，本轮未重算其4.15GB SHA。详细规模与内存口径见REVIEW本日OOM节。
+- 未决：无终止时cgroup/kernel记录，无法区分瞬时峰值、额外记账或节点压力；无FactorNZ，不能给峰值需求上界。下一步核实大内存资源再形成新部署方案；无自动重试或监听。
 
 ### 2026-10-12 12:10 BST｜原2050终态：716轮OPTIMAL，科学验收未全部通过
 

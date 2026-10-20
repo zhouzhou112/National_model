@@ -94,3 +94,23 @@ Base2040 → R1_C2050_01 → v9_a12 → Base2050 清单 margin0.2 → Aggregate0
 Job **5201318**：**RUNNING / m4cm1803**。AllocTRES=`cpu=64,mem=750G,node=1,billing=64`，TimeLimit=UNLIMITED，Requeue=0；启动可用内存 **725.0457878112793 GiB ≥ 700 GiB**，Gurobi13.0.2 smoke PASS，7项正式启动回归PASS，stderr为空。启动小证据已按远端SHA核验，见 deployment_case3_2040_v2/startup_status.json。
 
 作业启动后再核验v1的424个文件SHA与mtime全部不变；v1及其失败输出继续保留。源码未修改，无本机重复构建或求解。后续仅按作者要求查询，不建立后台监听。
+
+## 2026-10-20：C2050 OOM 原因只读核验
+
+Job5201262 在英国 04:08:53（北京 11:08:53）结束，总时长 4:23:41，Slurm 为 OUT_OF_MEMORY，slurmstepd 明确记录 1 次 oom_kill；进程收到 signal 9，batch_exit=137。不是输入遗漏、时限结束或已确认的数值不收敛。实际分配 cpu64/mem750G/billing64，48 求解线程、Aggregate=0，TimeLimit/SoftMemLimit/MemLimit 均无限制，启动可用内存 723.370480 GiB。
+
+Presolve 完成于 10759.10 秒；日志停在 ordering 2005 秒，尚无 Barrier 迭代、Factor NZ 或有限解导出。Slurm MaxRSS=754822880 KiB（719.855194 GiB），/usr/bin/time 进程峰 RSS=758469272 KiB（723.332664 GiB）。二者不是同一采集口径，也不是节点总占用；低于申请 750G 不能否定明确的 OOM 事件。当前没有终止时的 cgroup memory peak 或内核日志，不能断言具体由瞬时峰值、cgroup 额外记账还是节点全局内存压力触发，也没有证据归因其他用户抢占。
+
+|模型|预处理后行|预处理后列|预处理后非零元|Factor NZ|
+|---|---:|---:|---:|---:|
+|Base2050|37,121,156|33,702,564|401,075,371|3.519e10|
+|case3 2030|43,068,079|38,292,964|327,279,521|2.657e10|
+|C2050|43,055,074|38,303,957|396,546,740|未输出|
+
+C2050 相对 case3 2030 行列规模近似，但非零元增加 21.16%；相对 Base2050 行数增加 15.99%、列数增加 13.65%。排序/分解内存依赖矩阵结构和填充，不能按非零元或时间窗口线性预测。数据支持“在排序阶段耗尽可用资源”；更具体的填充规模与 Aggregate=0 的独立贡献未被测定，不能单独归因关闭聚合。2030 成功及 744h 内存近似不变均不构成 C2050 全年峰值上界。启动 ≥700 GiB 是启动门禁，不是峰值容量保证；原资源估计没有覆盖此次全年排序需求。
+
+原 MPS 4,145,869,333 字节，归档 manifest 标记 COMPLETE，SHA256=92deb32f13289e2f77ed6d0f4a93133f8e6ee701be7d039a81738dbce2bc2e38；本轮只核对 manifest 与文件存在/大小，没有重新散列 4.15GB 原件。没有 solve_report、solution_qc 或 preservation_report，不将“已有文件全部保留”误写为“完整解已导出”；硬杀前尚无解可保全。
+
+证据在 C2050_oom_20261020/；9 份原始小文件逐字节 SHA 验证，evidence.json 含 sacct、文件目录和历史模型日志摘要/SHA。失败 release 与全部现存输出未修改；没有重启、改参数或新作业。建议下一步先核实可用大内存队列及资源上限，优先维持已核准数值设置；若资源不足，再把降低 Threads 作为需作者核准的独立工程方案，不能保证降线程即可解决。
+
+解释依据：[Gurobi Barrier 日志说明](https://docs.gurobi.com/projects/optimizer/en/current/concepts/logging/barrier.html)、[Gurobi 线程与内存说明](https://support.gurobi.com/hc/en-us/articles/42058344459409-Managing-Threads-and-Memory-Usage-in-Gurobi)、[Slurm sacct 口径](https://slurm.schedmd.com/sacct.html)。Git 基准 908bdfb；本轮仅报告、交接与小证据，生产源码不改。
