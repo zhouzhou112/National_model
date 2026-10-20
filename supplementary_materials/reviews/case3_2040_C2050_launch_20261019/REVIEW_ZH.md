@@ -181,3 +181,15 @@ C2050比Base2050行多15.99%、列多13.65%，虽然非零元少1.13%；比Base2
 启动回归保留一条`numpy.ndarray size changed` RuntimeWarning，7项测试均通过；不隐去警告，不将其写成求解失败。原始启动日志本地/云端保留，Git仅收录必要摘要与SHA。许可元数据及两侧测试见deployment_C2050_t40/license_*.json；新freeze/preflight/提交/启动证据见deployment_C2050_t40_wls_v2/，startup_verified.json列出精确资源和日志SHA。
 
 release manifest SHA256：`0925676b1538b7cbc11d72e4e6aab7e83fb5b343d8349af2e631510f72906acf`；源码manifest SHA256：`971fc67b9ff234514aa5515118130b395dbf5aaf95bce1419e32ca9e171d78ce`。5201262的OOM包与5206992的许可失败包完整保留，新作业使用独立输出。没有建立后台监听或自动提交，没有操作其他作业/T550 cloud_backup。下一步按作者要求只读核验40线程排序峰值与Barrier进展；不承诺峰后固定400GiB，不自动换线程或追加作业。
+
+## 2026-10-20 21:01北京：其他运行作业的许可影响核验
+
+作者询问旧许可过期是否影响既有求解。UTC13:01:56只读查询三个已知作业并检查stdout、Gurobi日志、stderr和Slurm stderr，均RUNNING；没有重新创建Gurobi环境、换许可、控制进程或改冻结包。证据cloud_joint_progress_20261016/license_impact_20261020T130159Z.json记录状态、日志SHA与最近三轮。
+
+|作业|Job ID / 节点|最新迭代与日志时间（北京）|许可错误|
+|---|---|---|---|
+|nocredit2030|5153901 / m4cg1604|51轮，20:54:14；此前核验43轮|未发现；两份stderr均空|
+|case3 2040|5201318 / m4cm1803|30轮，20:57:07；此前核验23轮|未发现；两份stderr均空|
+|C2050 40线程v2|5207165 / m4cm1607|已运行37分09秒，尚无Barrier行|未发现；两份stderr均空|
+
+结论：此前两项在旧许可新建环境失败之后仍继续推进，当前未观察到许可过期导致中断。明确受影响的是5206992在gp.Env.start时退出；其替代作业5207165已使用作者新WLS通过节点许可测试。此结论依据实际状态和迭代，不推断WLS内部续期机制，也不改动既有运行任务。已完成Base2060/case32030的终态仍引用既有归档，本轮未重新操作5124127。

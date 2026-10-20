@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20北京21:01许可影响核验：** 3项RUNNING。nocredit5153901/m4cg1604到51轮（20:54），case3 2040/5201318/m4cm1803到30轮（20:57），均较此前43/23轮继续推进；stdout/Gurobi日志未见许可错误，stderr/Slurm stderr空。新C2050 5207165/m4cm1607运行37分09秒、尚无Barrier行，无许可错误。旧许可明确阻断的是5206992的新Env，当前未观察到其他既有求解受影响。证据cloud_joint_progress_20261016/license_impact_20261020T130159Z.json；本轮只读，不换运行任务许可/不重启/不建立监听。
+
 - **2026-10-20新WLS恢复C2050运行（取代上一条许可阻塞）：** 作者提供D:/gurobi1许可，独立受限路径迁移，未覆盖旧许可/未公开内容；本机、云端及计算节点2501变量测试通过。新t40_v2 release源码d385fa7，396项repo文件与40线程v1相同，R1/筛选/Aggregate0不变，preflight PASS。Job5207165 RUNNING/m4cm1607，北京20:24:47启动，实配cpu64/mem750G/billing64、UNLIMITED，启动可用722.968513GiB，7项节点回归通过，全年流程已开始。证据deployment_C2050_t40_wls_v2/startup_verified.json，详细报告REVIEW本日新WLS节。两次失败包保留，无后台监听；下一步按作者要求核验排序峰值，尚无全年40线程峰值/收敛结论。
 
 - **2026-10-20 C2050 40线程已提交放行但许可阻塞：** 作者授权40线程新release，源码f75a330；1h/24h门禁及13项回归PASS，MPS分段与原模型一致、58项数据/79项必需输入核验通过。Job5206992在m4cm1607获cpu64/mem750G/billing64、UNLIMITED，启动≥700GiB检查通过后gp.Env.start报License expired，4秒FAILED/1:0，尚未构建全年模型。没有40线程峰值结果；两次失败包均完整保留。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md本日40线程节与deployment_C2050_t40/。下一步等待作者恢复云端许可；不重复提交、不建监听、不影响其他作业。
@@ -3782,6 +3784,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：其他作业许可影响只读核验
+
+- Git基准02cbb5f；按作者询问读取已知5153901/5201318/5207165的scontrol与stdout、gurobi.log、stderr及Slurm stderr，无凭据读取或环境变更。
+- 北京21:01核验三项RUNNING；nocredit第51轮/20:54、case3 2040第30轮/20:57，较此前43/23轮继续推进，两项均未发现许可错误且stderr空。C2050新WLS作业运行37分09秒、尚无Barrier行、无许可错误。
+- 结论：未观察到旧许可过期影响既有两项求解；5206992的新Env失败与已启动作业的实际进展分开记录，不推断WLS内部续期机制。证据cloud_joint_progress_20261016/license_impact_20261020T130159Z.json含日志SHA/最后三轮；REVIEW与当前快照同步追加。
+- 未操作5124127、其他作业、冻结release/T550 cloud_backup；无新求解或后台监听。下一步按作者请求只读检查终态与残差，既有SI改动保留。
 
 ### 2026-10-20：指定WLS许可验证并恢复40线程C2050
 
