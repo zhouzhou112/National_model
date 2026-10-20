@@ -1,0 +1,27 @@
+{
+  "build_report_sha256": "96c8924a974d098f654b0566234cba31a009ccf3ec327408caf4e624e4e97304",
+  "vre_screen": {
+    "source_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528",
+    "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1/source_screen.csv",
+    "margin": 0.2,
+    "alignment": "grid_uid × technology; exact one-to-one",
+    "sites": 36686,
+    "expandable_sites": 35383,
+    "retained_expandable": 29188,
+    "fixed_columns": 6195,
+    "fixed_headroom_gw": 8637.929682740869,
+    "original_headroom_gw": 54904.65831892921,
+    "enabled": true,
+    "source_release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "source_dual_sha256": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911",
+    "source_csv_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528"
+  },
+  "frozen_screen_function": "def apply_vre_screen(artifacts, sites, source, output_dir, *, margin=0.2):\n    \"\"\"Join exact stable identities; change only positive vre_new upper bounds.\"\"\"\n    model = artifacts.model\n    model.update()\n    new = artifacts.variables[\"vre_new\"]\n    ub = np.asarray(new.UB, dtype=float).copy()\n    keys = [\"grid_uid\", \"technology\"]\n    if len(ub) != len(sites) or sites.duplicated(keys).any():\n        raise ValueError(\"Invalid model site identities/variable dimensions\")\n    table = pd.read_csv(source)\n    if table.duplicated(keys).any() or table[keys].isna().any().any():\n        raise ValueError(\"Duplicate or missing screen identities\")\n    aligned = sites[keys].merge(table[keys + [\"rc_ratio\"]], on=keys,\n        how=\"left\", validate=\"one_to_one\", sort=False)\n    if len(aligned) != len(table) or not np.isfinite(aligned.rc_ratio).all():\n        raise ValueError(\"Screen identity/finite-price mismatch; positional joins forbidden\")\n    if not np.isfinite(ub).all() or (ub < 0).any():\n        raise ValueError(\"Nonfinite or negative VRE headroom\")\n    if not np.isfinite(margin) or margin < 0:\n        raise ValueError('Screen margin must be finite and nonnegative')\n    excluded = (aligned.rc_ratio.to_numpy() >= margin) & (ub > 0)\n    new.UB = np.where(excluded, 0.0, ub)\n    model.update()\n    aligned[\"original_new_ub_gw\"] = ub\n    aligned[\"screened_out\"] = excluded\n    aligned.to_csv(Path(output_dir) / \"candidate_selection.csv\", index=False)\n    return dict(source_sha256=hashlib.sha256(Path(source).read_bytes()).hexdigest(),\n        source=str(Path(source).resolve()), margin=margin, alignment=\"grid_uid × technology; exact one-to-one\",\n        sites=len(ub), expandable_sites=int((ub > 0).sum()),\n        retained_expandable=int(((ub > 0) & ~excluded).sum()),\n        fixed_columns=int(excluded.sum()), fixed_headroom_gw=float(ub[excluded].sum()),\n        original_headroom_gw=float(ub.sum()))\n\n",
+  "frozen_screen_sha256": "d0e0df12ba209d2871bd4ec82cf805ad44bd745ded211970f633c77c7bc426a9",
+  "base2060_record_path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\revision_6d_general\\progress_20261013T102349Z.json",
+  "base2060_record_sha256": "a10e8a813dcdff7d0d421b51098d2de5d95b4b384e39dfb288defb7053bdde21",
+  "base2060_lines": [
+    " Factor NZ  : 3.376e+10 (roughly 300.0 GB of memory)",
+    "Presolved: 36153597 rows, 33095602 columns, 387670134 nonzeros"
+  ]
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20 C2050筛选/规模补充核验：** 冻结build_report确认筛选生效，固定6,195/35,383个可扩建vre_new上界；不直接删除站点运行变量。C2050预处理43,055,074行/38,303,957列，分别比Base2050多15.99%/13.65%、比Base2060多19.09%/15.74%。不能因筛选而认定总LP更小，也不能仅靠nnz解释OOM；C2050无FactorNZ，具体填充峰值未测定。详见REVIEW本日筛选补充节及screening_comparison.json，保留Aggregate0，不重启。
+
 - **2026-10-20 C2050 OOM 原因核验：** 5201262 在 ordering2005s 硬杀（signal9/batch137/Slurm OUT_OF_MEMORY），无Barrier迭代；750G实际分配、启动723.370GiB，进程峰723.333GiB，Slurm峰719.855GiB。C2050预处理nnz较case32030增加21.16%，FactorNZ尚未输出，不能给出最终内存需求或单独归因Aggregate0。启动门禁不是峰值保证。原MPS归档存在、现存输出保留，尚无解/终态保全报告；不重启。证据case3_2040_C2050_launch_20261019/C2050_oom_20261020/，报告已追加。下一步先查大内存资源，任何改线程方案需作者核准。
 
 - **2026-10-20英国12:12（北京19:12）四项目核验：实际2个RUNNING。** Base2060/5124127已于英国09:23:29正常结束，511轮OPTIMAL，Slurm COMPLETED/0:0，总7天15:06:23，保全COMPLETE/errors=[]，relative_v1 PASS、严格HARD_FAIL并存。C2050/5201262于英国04:08:53因OUT_OF_MEMORY终止（4:23:41，batch exit137），日志停在ordering2005s，无Barrier迭代；原模型归档COMPLETE，未生成完整解/保全报告，失败现场保留，未重启。nocredit5153901第43轮、12:42:17；case3 2040/5201318第23轮、12:12:04；两者日志无显式警告、stderr空。证据cloud_joint_progress_20261016/status_20261020T111242Z{,_summary}.json；完整终态报告terminal_details_20261020.json本地留存、SHA记入summary。
@@ -3774,6 +3776,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：C2050筛选与Base规模解释补充
+
+- Git基准8c137a3；冻结筛选函数/云端build_report只读核对，复用既有Base2060日志证据；追加REVIEW与快照，保存screening_comparison.json。筛选生效与计数确认，尚无C2050 FactorNZ或同LP内存对照；不改生产设置、冻结包或作业。下一步仍为核实内存资源后准备可审查方案。
 
 ### 2026-10-20：C2050 排序阶段 OOM 取证
 
