@@ -144,3 +144,28 @@ C2050比Base2050行多15.99%、列多13.65%，虽然非零元少1.13%；比Base2
 云端全年model_config_snapshot实际值：A1/A2=1e-5GW，other_capacity_headroom_zero_gw_gwh=1e-5，capacity_cancellation_rhs_zero=1e-12，A3=0。全年build_report记录82处水电余量清理，总5.507630244196e-5GW（55.0763kW）；改造余量清理总2.220446049250e-16GW；other容量清理列表为空，RHS清理无命中记录，不代表开关漏启。1h/24h门禁均PASS，24h OPTIMAL、冷热M=1.969660003986462e-7GWh。Base2050使用旧R0，C2050已使用与Base2060同类R1；不能将Base2050长耗时全部因果归于旧交接，也不能将R1当全年收敛保证。当前C2050在排序时OOM，尚未出现Barrier数值迭代，未发现“漏做R1导致数值不稳”的证据。
 
 证据C2050_resources_R1_20261020/evidence.json、additional_partitions.json及summary.json；完整只读原件本地保留，Git收摘要与SHA。第一次合并两个partition参数的只读命令被scontrol拒绝，后续分开查询成功；未提交任何测试/生产作业。推荐仅供作者核准，不改变Aggregate0、48线程冻结配置或既有release。Git基准b08d0b3。
+
+## 2026-10-20：作者授权40线程重跑；启动许可过期阻塞
+
+本节取代此前“32线程建议、未授权重跑”的当前状态，不改写历史诊断。作者明确要求以40线程启动C2050；本轮已完成新release冻结、提交并release。Job **5206992** 于北京时间19:47:31（英国12:47:31）在 **m4cm1607** 启动，4秒后 **FAILED / ExitCode 1:0**。报错为 `gurobipy.GurobiError: License 2847107 has expired`，发生在计算节点 `gp.Env.start()`；尚未构建全年模型、未进入排序或Barrier，也无有限解。这不是40线程内存试验失败，不能据此评价40线程峰值可行性。
+
+|项目|核验结果|
+|---|---|
+|源码|f75a330fa5977562c14979dcdcbba861d2dbe1e7；396个repo文件逐SHA一致|
+|新release|20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1|
+|资源|实际 AllocTRES cpu=64, mem=750G, billing=64；UNLIMITED、no-requeue|
+|求解设置|Threads=40、Aggregate=0、Presolve=2、NumericFocus=2、Crossover=0、BarConvTol=1e-4；TimeLimit/SoftMemLimit保持原设置|
+|输入与续接|Base2040→R1及v9_a12不变；margin0.2清单SHA不变；58项数据SHA通过|
+|云端preflight|一次PASS；79项必需记录=74项非配置输入+5项配置，78项SHA不变，仅40线程profile改变|
+|本机门禁|1h/24h参数PASS；两个窗口的MPS全部分段SHA与原48线程profile门禁模型一致；24h OPTIMAL，M=2.198072843739851e-7 GW/GWh，保全COMPLETE/errors=[]|
+|回归|production_screen 6/6、numeric_repaired_formal_launch 7/7 PASS|
+|启动可用内存|≥700GiB检查已通过后才进入许可测试；未保存精确GiB值，不能用分配量代替实测值|
+|计算节点完整smoke|FAIL：许可过期；startup_regression及全年runner尚未执行|
+
+源码改动仅注册并校验C2050专用40线程profile；原runner与物理构建模块保持原版本。新batch同步设置OMP/OPENBLAS/MKL为40，Slurm仍申请64CPU。原48线程OOM包5201262及其输出只读保留；新40线程失败包也完整保留，未原地修补、重复提交、自动降线程或建立后台监听。没有操作5124127、5153901、5201318或T550 cloud_backup。
+
+本机初次24h门禁调用旧Gurobi12被版本检查拦截（求解前），原输出C2050_t40_24h_01保留；切换现有output/portfolio_runtime_gurobi13后新目录C2050_t40_24h_02通过。云端数据preflight不申请Gurobi环境，因此不能发现计算节点许可证过期；这次许可错误由启动smoke正确阻断，不绕过门禁。
+
+证据在deployment_C2050_t40/：gates.json、local_evidence_sha256.json、frozen_release.json、cloud_preflight.json、held_submission.json、release_receipt.json、startup_status.json、terminal_evidence.json及terminal_files/。终态4份小文件远端SHA与本地逐字节核验；全部大模型/本机门禁完整输出留在原目录。release manifest SHA256为 `1ce60bf0c9e771df428bf4b968e18efc68973ce8261f26d1627d29b16c861bd6`，源码manifest SHA256为 `8f9f2ccdef0e3b77b77e3a64ed7ee21ea1c5ac5281e607bd002afa8c741f301b`。
+
+下一步需要作者恢复已配置云端Gurobi许可后通知；不读取、复制或上传凭据。之后先核验许可，再以新运行身份继续40线程方案，保留此次失败现场。40线程能否跨过排序峰值，以及后续是否约400GiB，都仍待实测；不更改物理参数，不把短窗通过外推为全年内存保证。

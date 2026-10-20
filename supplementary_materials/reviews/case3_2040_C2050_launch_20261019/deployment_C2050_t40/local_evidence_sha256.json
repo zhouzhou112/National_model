@@ -1,0 +1,46 @@
+{
+  "test_production_screen_retry.log": {
+    "sha256": "c28472278a6d270e051de485eda9a55085318f476d18a9584cc6661dfb88787d",
+    "bytes": 778
+  },
+  "formal_launch_tests.log": {
+    "sha256": "479ca37c2c7e2f507ff80185f58650f3f00c4de1b1432adbba4f8c1ad5275259",
+    "bytes": 2319
+  },
+  "gate24.stderr.log": {
+    "sha256": "4a7938ae0b65ce2fa1647bce453f63436fcf2fcb903dcc2f87daa5f2732672bb",
+    "bytes": 864
+  },
+  "C2050_t40_1h_01/continuation_gate.json": {
+    "sha256": "c1a85d537fa9b20cf700063c01738bd7dd1650e0feb4223acb38e2c5383585c5",
+    "bytes": 760
+  },
+  "C2050_t40_1h_01/parameter_verification.json": {
+    "sha256": "5fade9168b3a5a5d56fa3ff9336ac339e3f3abdb947a1c3517b8b4996b0daea3",
+    "bytes": 8707
+  },
+  "C2050_t40_1h_01/model_archive/archive_manifest.json": {
+    "sha256": "2b0fd24cc26362a919e3add0c8e081bc7c0ff6c86928fefb81e390c9c365d699",
+    "bytes": 978
+  },
+  "C2050_t40_1h_01/input_manifest.csv": {
+    "sha256": "76ca02c34ad25cc478271e348e20b08bc65ebd935a1ef92e2cd6732e438149b4",
+    "bytes": 26935
+  },
+  "C2050_t40_24h_02/continuation_gate.json": {
+    "sha256": "c839e18f9af72e4ba202b4431e6ba7934aecc118c4b81e38b5349f80564e5ff0",
+    "bytes": 282394
+  },
+  "C2050_t40_24h_02/parameter_verification.json": {
+    "sha256": "42cecacf15492563c0fd1ad8e7d3e19974b510a501bb6a861f01f47cba64ef99",
+    "bytes": 8742
+  },
+  "C2050_t40_24h_02/model_archive/archive_manifest.json": {
+    "sha256": "11b3871399a8739975d9dd74d35fa49a5f1e57e266174b29333295e2114ccba2",
+    "bytes": 979
+  },
+  "C2050_t40_24h_02/input_manifest.csv": {
+    "sha256": "ee6289a185458016c33c39b5d0e18474244c9cbb0db0928d3e821b27c7a4543d",
+    "bytes": 26939
+  }
+}

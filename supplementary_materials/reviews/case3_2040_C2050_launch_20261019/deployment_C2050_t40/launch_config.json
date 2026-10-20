@@ -1,0 +1,26 @@
+{
+  "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+  "source_commit": "f75a330fa5977562c14979dcdcbba861d2dbe1e7",
+  "scenario": "case3_thermal_ev_v5",
+  "planning_year": 2050,
+  "boundary_year": 2040,
+  "framework": "C_Late-entry",
+  "state_input": "upstream_state/planning_state_candidate",
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads40.json",
+  "screening_margin": 0.2,
+  "upstream_release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t48_m750_tol1e4_v1",
+  "previous_failed_job": "5201262",
+  "authorization": "Author 2026-10-20: start C2050 with 40 solver threads",
+  "automatic_successor": false,
+  "stage_b": false,
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "billing": 64,
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "solver_threads": 40,
+    "minimum_available_memory_gib": 700
+  },
+  "gates_sha256": "93d768b1fb2aba9117616a658ea362923dc3bb3954921c0a9c278ede1345bf5b"
+}

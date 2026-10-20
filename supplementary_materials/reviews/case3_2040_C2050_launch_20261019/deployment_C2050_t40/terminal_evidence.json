@@ -1,0 +1,22 @@
+{
+  "captured_utc": "2026-10-20T11:48:20.534510Z",
+  "files": {
+    "slurm-5206992.err": {
+      "sha256": "a67ba1092f5d8aa1ad35fa6b943f2a3beb4eafdd3d022f5c8e59e2c49071fce0",
+      "size": 204
+    },
+    "slurm-5206992.out": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "runtime_slurm_job.txt": {
+      "sha256": "15858a9c3098f5098e1fd46140b077d92a230b2c17db1273cd3ed074cd3778f5",
+      "size": 1629
+    },
+    "batch_exit.json": {
+      "sha256": "2a40f2abb59ccbca281262220b58639380ff3bb16f929e603217fb5e5445d5ce",
+      "size": 35
+    }
+  },
+  "sacct": "5206992|FAILED|1:0|00:00:04|m4cm1607|billing=64,cpu=64,mem=750G,node=1|\n5206992.batch|FAILED|1:0|00:00:04|m4cm1607|cpu=64,mem=750G,node=1|0\n5206992.extern|COMPLETED|0:0|00:00:04|m4cm1607|billing=64,cpu=64,mem=750G,node=1|12K\n"
+}

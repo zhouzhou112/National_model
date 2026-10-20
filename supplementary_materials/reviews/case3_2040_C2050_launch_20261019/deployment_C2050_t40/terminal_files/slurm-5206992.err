@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "<stdin>", line 26, in <module>
+  File "src/gurobipy/env.pxi", line 533, in gurobipy._core.Env.start
+gurobipy._exception.GurobiError: License 2847107 has expired

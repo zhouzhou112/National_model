@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20 C2050 40线程已提交放行但许可阻塞：** 作者授权40线程新release，源码f75a330；1h/24h门禁及13项回归PASS，MPS分段与原模型一致、58项数据/79项必需输入核验通过。Job5206992在m4cm1607获cpu64/mem750G/billing64、UNLIMITED，启动≥700GiB检查通过后gp.Env.start报License expired，4秒FAILED/1:0，尚未构建全年模型。没有40线程峰值结果；两次失败包均完整保留。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md本日40线程节与deployment_C2050_t40/。下一步等待作者恢复云端许可；不重复提交、不建监听、不影响其他作业。
+
 - **2026-10-20 C2050资源/R1复核：** 当前节点上限750GiB，原作业已获64CPU/750G/billing64；可见队列无更大内存节点。R1源为Base2040，云端三项状态SHA与本机门禁一致；发电/储能清理0.305374GW、网络0.270692GW，全年v9_a12清理键实际生效。48线程完整峰值未知，历史跨模型行列缩放仅作约800GiB量级预算；建议32线程受保护工程验证、24备选，均未执行/未核准生产变更。详见REVIEW本日资源/R1节及C2050_resources_R1_20261020/summary.json。
 
 - **2026-10-20 C2050筛选/规模补充核验：** 冻结build_report确认筛选生效，固定6,195/35,383个可扩建vre_new上界；不直接删除站点运行变量。C2050预处理43,055,074行/38,303,957列，分别比Base2050多15.99%/13.65%、比Base2060多19.09%/15.74%。不能因筛选而认定总LP更小，也不能仅靠nnz解释OOM；C2050无FactorNZ，具体填充峰值未测定。详见REVIEW本日筛选补充节及screening_comparison.json，保留Aggregate0，不重启。
@@ -3778,6 +3780,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-10-20：C2050以40线程提交，启动许可过期阻塞
+
+- 作者授权在64CPU/750G/billing64内以40线程重跑；源码f75a330（已推送GitHub），profile与狭窄白名单、batch、门禁/部署脚本及测试已审查。原48线程失败release只读保留。
+- 命令：run_continuation_gate.py --year 2050 --hours 1|24 --threads 40 --solver-profile ...threads40.json；finalize_C2050_threads40.py；deploy_C2050_threads40.py prepare/preflight/submit/release/status。新release 20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1；R1、v9_a12、margin0.2、Aggregate0不变。
+- 验证：1h/24h完整MPS分段SHA与旧门禁相同；24h OPTIMAL/M=2.198072843739851e-7，13项回归通过；58项数据、78项未变必需记录SHA及新profile均通过。云端preflight PASS。
+- Job5206992已release，节点m4cm1607实际cpu64/mem750G/billing64，UNLIMITED；启动可用内存≥700GiB检查通过，无精确值记录。北京时间19:47:35在gp.Env.start因License2847107 expired失败（4秒、1:0），未构建模型/未有解，不是OOM。所有现存文件完整保留，终态4文件SHA核验，证据deployment_C2050_t40/。
+- 文档：REVIEW、MODEL_SERVER_STATUS及当前快照追加；既有SI未提交改动保留。未查询/控制其他作业、未读凭据或碰cloud_backup，无后台监听。下一步作者恢复云端许可后再核验启动；本轮不盲目重试，40线程峰值仍未知。
 
 ### 2026-10-20：C2050内存额度、线程预算与R1部署核验
 

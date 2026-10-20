@@ -1,0 +1,21 @@
+{
+  "status": "FROZEN",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+  "source_commit": "f75a330fa5977562c14979dcdcbba861d2dbe1e7",
+  "repo_files": 396,
+  "data_files": 58,
+  "state_files": {
+    "acceptance_relative_v1.json": "1f099891fd86aea37e894e93416f76a7492cb2d6bb78b20ca4a8954581864943",
+    "bound_closure_audit.json": "5445563eb976bf99fec995d5dc82545be1f56effe8e784bee42000784da87462",
+    "original_result_manifest.json": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+    "planning_state_candidate/capacity_cohorts.csv.gz": "1b7b068d6ed00653e2ffb23f853e98b8bfdf8c2426b8d44b2a838d396b47b246",
+    "planning_state_candidate/state_metadata.json": "2fe97c255aaed7329d5617ae858c0b97b31937b95c1ae41852750c36c2e48c63",
+    "planning_state_candidate/state_transition_summary.csv": "d4f9bd7c388dc97c3bcbd6a460c634b3689d2562addd17c4073e96243583c1a4",
+    "result_manifest.json": "cb24288c0e8c55ec252b1b6c631abfe8ae4459b5bcaac5728a2f5cf6ce456f7b",
+    "run_identity.json": "102ec202659adb05cc4b4403702d2e5ff2805b2c079dad4bd3200f5c3ed6e651",
+    "solution_qc.json": "09f86dc2d2eaf9f6b5b502c7d16519c019346260f6103429022b5e76b12c3d5c",
+    "solve_report.json": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230"
+  },
+  "source_manifest_sha256": "8f9f2ccdef0e3b77b77e3a64ed7ee21ea1c5ac5281e607bd002afa8c741f301b",
+  "release_manifest_sha256": "1ce60bf0c9e771df428bf4b968e18efc68973ce8261f26d1627d29b16c861bd6"
+}

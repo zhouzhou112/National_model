@@ -3597,3 +3597,9 @@ Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、compariso
 - **2026-10-20英国12:12（北京19:12）四项目核验：实际2个RUNNING。** Base2060/5124127已于英国09:23:29正常结束，511轮OPTIMAL，Slurm COMPLETED/0:0，总7天15:06:23，保全COMPLETE/errors=[]，relative_v1 PASS、严格HARD_FAIL并存。C2050/5201262于英国04:08:53因OUT_OF_MEMORY终止（4:23:41，batch exit137），日志停在ordering2005s，无Barrier迭代；原模型归档COMPLETE，未生成完整解/保全报告，失败现场保留，未重启。nocredit5153901第43轮、12:42:17；case3 2040/5201318第23轮、12:12:04；两者日志无显式警告、stderr空。证据cloud_joint_progress_20261016/status_20261020T111242Z{,_summary}.json；完整终态报告terminal_details_20261020.json本地留存、SHA记入summary。
 
 Git基准e7d5d4ac4eb253b56458df88f7c8230f6e7c8d71。按作者本次查询，只读squeue/scontrol/sstat/sacct、gurobi.log、batch_exit及终态solve/QC/preservation/archive报告；不修改冻结包或作业。Base最终打印PInf2.81e-3/DInf1.29e-8/Compl6.25e-5，目标5789097.634735345 million CNY，求解655761.754s，全部保全阶段完成；完整归档未重新全量SHA校验，科学采纳待作者决定。C2050 Slurm明确1次oom_kill，MaxRSS719.855GiB；该采样值不能代替瞬时cgroup峰值或据此确定重跑内存。无迭代解，不能解释成数学不可行或收敛失败。nocredit第33至43轮PInf/DInf/Compl分别降66.24%/67.05%/65.94%，14.49分钟/轮，RSS372.11GiB/峰704.59GiB；2040第13至23轮分别降73.65%/76.67%/74.01%，17.67分钟/轮，RSS396.30GiB/峰712.44GiB。两者均为早期迭代，残差绝对量大，不能预估完成率/ETA。变更仅3份交接文档及2份小证据JSON，JSON解析和暂存diff检查；没有源码变更，无需求解测试。下一步：作者查询时继续观察两RUNNING；C2050须先独立诊断排序阶段内存和提出新release资源方案再安排重跑，现包与部分输出保全；本轮不自动重启、无后台监听，不动SI其他会话。
+
+## 2026-10-20：C2050 40线程新作业启动许可失败
+
+**2026-10-20 C2050 40线程已提交放行但许可阻塞：** 作者授权40线程新release，源码f75a330；1h/24h门禁及13项回归PASS，MPS分段与原模型一致、58项数据/79项必需输入核验通过。Job5206992在m4cm1607获cpu64/mem750G/billing64、UNLIMITED，启动≥700GiB检查通过后gp.Env.start报License expired，4秒FAILED/1:0，尚未构建全年模型。没有40线程峰值结果；两次失败包均完整保留。详见case3_2040_C2050_launch_20261019/REVIEW_ZH.md本日40线程节与deployment_C2050_t40/。下一步等待作者恢复云端许可；不重复提交、不建监听、不影响其他作业。
+
+实际运行2026-10-20北京时间19:47:31–19:47:35；新release为20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1。Slurm FAILED/ExitCode1:0；尚无output_8760及有效解，完整保留已有日志和包。未修改原冻结release；原case3 2040与nocredit未受本轮操作影响。完整smoke未通过，需恢复许可后另行核验；不自动重启。
