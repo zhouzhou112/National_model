@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-20英国16:49／北京23:49联合进度：3项RUNNING。** nocredit5153901第66轮、17:18:56，PInf1.92e7/DInf0.0278/Compl4.51e5；case3 2040/5201318第39轮、16:48:43，PInf9.70e9/DInf34.4/Compl2.23e8。C2050 t40新WLS/5207165运行3:24:31，仍在presolve（日志9315s），无Barrier行，尚未实测排序峰值。三者未见显式警告、许可错误，stderr与Slurm stderr均0字节。证据cloud_joint_progress_20261016/status_20261020T154922Z{,_summary}.json。
+
 - **2026-10-20北京21:01许可影响核验：** 3项RUNNING。nocredit5153901/m4cg1604到51轮（20:54），case3 2040/5201318/m4cm1803到30轮（20:57），均较此前43/23轮继续推进；stdout/Gurobi日志未见许可错误，stderr/Slurm stderr空。新C2050 5207165/m4cm1607运行37分09秒、尚无Barrier行，无许可错误。旧许可明确阻断的是5206992的新Env，当前未观察到其他既有求解受影响。证据cloud_joint_progress_20261016/license_impact_20261020T130159Z.json；本轮只读，不换运行任务许可/不重启/不建立监听。
 
 - **2026-10-20新WLS恢复C2050运行（取代上一条许可阻塞）：** 作者提供D:/gurobi1许可，独立受限路径迁移，未覆盖旧许可/未公开内容；本机、云端及计算节点2501变量测试通过。新t40_v2 release源码d385fa7，396项repo文件与40线程v1相同，R1/筛选/Aggregate0不变，preflight PASS。Job5207165 RUNNING/m4cm1607，北京20:24:47启动，实配cpu64/mem750G/billing64、UNLIMITED，启动可用722.968513GiB，7项节点回归通过，全年流程已开始。证据deployment_C2050_t40_wls_v2/startup_verified.json，详细报告REVIEW本日新WLS节。两次失败包保留，无后台监听；下一步按作者要求核验排序峰值，尚无全年40线程峰值/收敛结论。
@@ -10143,3 +10145,9 @@ Git基准2a0f6c3；新增明确清单的小证据采集/比较脚本、compariso
 - **2026-10-20英国12:12（北京19:12）四项目核验：实际2个RUNNING。** Base2060/5124127已于英国09:23:29正常结束，511轮OPTIMAL，Slurm COMPLETED/0:0，总7天15:06:23，保全COMPLETE/errors=[]，relative_v1 PASS、严格HARD_FAIL并存。C2050/5201262于英国04:08:53因OUT_OF_MEMORY终止（4:23:41，batch exit137），日志停在ordering2005s，无Barrier迭代；原模型归档COMPLETE，未生成完整解/保全报告，失败现场保留，未重启。nocredit5153901第43轮、12:42:17；case3 2040/5201318第23轮、12:12:04；两者日志无显式警告、stderr空。证据cloud_joint_progress_20261016/status_20261020T111242Z{,_summary}.json；完整终态报告terminal_details_20261020.json本地留存、SHA记入summary。
 
 Git基准e7d5d4ac4eb253b56458df88f7c8230f6e7c8d71。按作者本次查询，只读squeue/scontrol/sstat/sacct、gurobi.log、batch_exit及终态solve/QC/preservation/archive报告；不修改冻结包或作业。Base最终打印PInf2.81e-3/DInf1.29e-8/Compl6.25e-5，目标5789097.634735345 million CNY，求解655761.754s，全部保全阶段完成；完整归档未重新全量SHA校验，科学采纳待作者决定。C2050 Slurm明确1次oom_kill，MaxRSS719.855GiB；该采样值不能代替瞬时cgroup峰值或据此确定重跑内存。无迭代解，不能解释成数学不可行或收敛失败。nocredit第33至43轮PInf/DInf/Compl分别降66.24%/67.05%/65.94%，14.49分钟/轮，RSS372.11GiB/峰704.59GiB；2040第13至23轮分别降73.65%/76.67%/74.01%，17.67分钟/轮，RSS396.30GiB/峰712.44GiB。两者均为早期迭代，残差绝对量大，不能预估完成率/ETA。变更仅3份交接文档及2份小证据JSON，JSON解析和暂存diff检查；没有源码变更，无需求解测试。下一步：作者查询时继续观察两RUNNING；C2050须先独立诊断排序阶段内存和提出新release资源方案再安排重跑，现包与部分输出保全；本轮不自动重启、无后台监听，不动SI其他会话。
+
+## 2026-10-20英国16:49 三项运行联合进度
+
+- **2026-10-20英国16:49／北京23:49联合进度：3项RUNNING。** nocredit5153901第66轮、17:18:56，PInf1.92e7/DInf0.0278/Compl4.51e5；case3 2040/5201318第39轮、16:48:43，PInf9.70e9/DInf34.4/Compl2.23e8。C2050 t40新WLS/5207165运行3:24:31，仍在presolve（日志9315s），无Barrier行，尚未实测排序峰值。三者未见显式警告、许可错误，stderr与Slurm stderr均0字节。证据cloud_joint_progress_20261016/status_20261020T154922Z{,_summary}.json。
+
+Git基准bb93d25dfd1a368d2d3af50226442fb6ad58dd3a。按作者查询，只读squeue完整队列、scontrol/sstat及各release的gurobi.log和stderr；记录原始日志SHA，未修改作业/源码/许可或启动后台监听。nocredit较本会话上次43轮前进23轮，最近56–66轮PInf/DInf/Compl降72.01%/75.83%/73.31%，11.30分钟/轮；对偶63/65轮有小反弹，不称全程单调。2040较上次23轮前进16轮，最近29–39轮三项降71.55%/71.57%/70.96%，17.38分钟/轮。当前RSS/Slurm峰分别369.48/704.59、396.63/712.44、84.66/93.24GiB；C2050处预求解，低内存不能外推排序/因子分解峰值，40线程能否避免OOM仍待实测。此前Base2060完成511轮OPTIMAL/保全COMPLETE/relative_v1 PASS的终态沿用已核验证据；本轮没有重读其大归档。仅3份交接文档和2份小JSON更新，JSON解析、敏感字面量与diff检查；无代码变化，不重复运行求解测试。下一步仅按作者请求继续核对三项进度，重点确认C2050是否通过排序并进入Barrier；旧失败包和所有输出保留，不动SI会话内容。

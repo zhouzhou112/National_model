@@ -1,0 +1,65 @@
+{
+  "observed_at_utc": "2026-10-20T15:49:18.458021Z",
+  "running_count": 3,
+  "jobs": {
+    "5153901": {
+      "state": "RUNNING",
+      "elapsed": "17:18:56",
+      "node": "m4cg1604",
+      "rss_gib": 369.4839324951172,
+      "peak_rss_gib": 704.5898094177246,
+      "warning_lines": [],
+      "stderr_bytes": {
+        "stderr.log": 0,
+        "slurm-5153901.err": 0
+      },
+      "iteration": 66,
+      "primal_residual": 19200000.0,
+      "dual_residual": 0.0278,
+      "complementarity": 451000.0,
+      "last10_reduction_pct": {
+        "primal": 72.01166180758017,
+        "dual": 75.82608695652175,
+        "complementarity": 73.31360946745562
+      },
+      "last10_minutes_per_iteration": 11.303333333333333
+    },
+    "5201318": {
+      "state": "RUNNING",
+      "elapsed": "16:48:43",
+      "node": "m4cm1803",
+      "rss_gib": 396.6251640319824,
+      "peak_rss_gib": 712.4403266906738,
+      "warning_lines": [],
+      "stderr_bytes": {
+        "stderr.log": 0,
+        "slurm-5201318.err": 0
+      },
+      "iteration": 39,
+      "primal_residual": 9700000000.0,
+      "dual_residual": 34.4,
+      "complementarity": 223000000.0,
+      "last10_reduction_pct": {
+        "primal": 71.5542521994135,
+        "dual": 71.5702479338843,
+        "complementarity": 70.96354166666667
+      },
+      "last10_minutes_per_iteration": 17.381666666666668
+    },
+    "5207165": {
+      "state": "RUNNING",
+      "elapsed": "03:24:31",
+      "node": "m4cm1607",
+      "rss_gib": 84.66133117675781,
+      "peak_rss_gib": 93.23811721801758,
+      "warning_lines": [],
+      "stderr_bytes": {
+        "stderr.log": 0,
+        "slurm-5207165.err": 0
+      },
+      "phase": "PRESOLVE",
+      "last_reported_presolve_seconds": 9315,
+      "ordering_peak_tested": false
+    }
+  }
+}
