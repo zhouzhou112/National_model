@@ -1,0 +1,59 @@
+{
+  "scope": "Exact-byte supplementary certificate and extended QC sidecars; original frozen outputs unchanged",
+  "files": [
+    {
+      "path": "certificate_claude_20261019/certificate_run.log",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\certificate_run.log",
+      "bytes": 3981,
+      "sha256": "df690bf9c6f713f049b8339da24d0ad64f2e5884679b31129935d38924b484f2"
+    },
+    {
+      "path": "certificate_claude_20261019/negative_screened_columns.csv",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\negative_screened_columns.csv",
+      "bytes": 925,
+      "sha256": "3f99dbec3f175b37bef267517b8725ac30da160a6089998a723a14dceb6ba6e0"
+    },
+    {
+      "path": "certificate_claude_20261019/REVIEW_ZH.md",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\REVIEW_ZH.md",
+      "bytes": 3292,
+      "sha256": "d28348b7876f94acff391e1a426b6e0279a7728894be415e1f43639b8e4d9d71"
+    },
+    {
+      "path": "certificate_claude_20261019/run_case3_2030_certificate.py",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\run_case3_2030_certificate.py",
+      "bytes": 4262,
+      "sha256": "03fc04caab1e707b561f96fa7e3c9b960dd7a0e55d723373730406307ac72a30"
+    },
+    {
+      "path": "certificate_claude_20261019/screen_pricing_certificate.json",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\screen_pricing_certificate.json",
+      "bytes": 4556,
+      "sha256": "3c9aa72413785a128e9e0eb4c340d0f9f71f640d5930d098180f61886e86bdd2"
+    },
+    {
+      "path": "certificate_claude_20261019/screen_sign_flip_sites.csv",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\screen_sign_flip_sites.csv",
+      "bytes": 925,
+      "sha256": "3f99dbec3f175b37bef267517b8725ac30da160a6089998a723a14dceb6ba6e0"
+    },
+    {
+      "path": "certificate_claude_20261019/vre_site_reduced_costs.csv",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\evidence\\case3_2030_certificate_claude_20261019\\vre_site_reduced_costs.csv",
+      "bytes": 6154789,
+      "sha256": "79f71428bf95e14e50b40159ff76dcab63f6ea721a9a3050a592f9d1994c9890"
+    },
+    {
+      "path": "case3_relative_extended.json",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3_relative_extended.json",
+      "bytes": 49177,
+      "sha256": "ddad57d271e8f8b46bbeea1be4e63fc9e7e356fc03f180cd323e151b56018b89"
+    },
+    {
+      "path": "certificate_identity_check.json",
+      "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\certificate_identity_check.json",
+      "bytes": 1581,
+      "sha256": "04bb850445fbda0dca5f4c676b7c2980df7ba797ea745a0ffd520d7ec6ff79cc"
+    }
+  ]
+}

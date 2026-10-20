@@ -1,0 +1,12 @@
+{
+  "operation": "20261020_base2060_case3_2030",
+  "releases": [
+    "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.3,
+  "authorization": "User 2026-10-20: back up all completed cloud solves to T550; repeat upon each confirmed completion; one-shot transfer, no periodic monitoring"
+}

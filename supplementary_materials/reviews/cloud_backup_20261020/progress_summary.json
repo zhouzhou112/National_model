@@ -1,0 +1,27 @@
+{
+  "observed_at_utc": "2026-10-20T16:09:43.248508+00:00",
+  "status": "RUNNING",
+  "verified_stages": 2,
+  "verified_bytes": 1112217190,
+  "total_bytes": 10828735197,
+  "files": 184,
+  "current_stage": {
+    "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "tier": "T2",
+    "bytes": 739002104,
+    "file_count": 3,
+    "started_at_utc": "2026-10-20T16:08:28.910412+00:00",
+    "status": "TRANSFERRING"
+  },
+  "runner_proc_exists": true,
+  "tool_sha256": "cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658",
+  "target": "/home/zz2/National_model_server/cloud_backup",
+  "sidecars": {
+    "status": "VERIFIED",
+    "count": 9,
+    "bytes": 6223488,
+    "destination": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/assessments_20261020",
+    "verified_at_utc": "2026-10-20T16:07:32.441677+00:00",
+    "manifest_sha256": "bfa609353beceb057d3c430a97477378794377227b97ec204ecad860a5c3f596"
+  }
+}

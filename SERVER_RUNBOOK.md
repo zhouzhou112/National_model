@@ -5388,3 +5388,19 @@ Git基准e7d5d4ac4eb253b56458df88f7c8230f6e7c8d71。按作者本次查询，只�
 - **2026-10-20英国16:49／北京23:49联合进度：3项RUNNING。** nocredit5153901第66轮、17:18:56，PInf1.92e7/DInf0.0278/Compl4.51e5；case3 2040/5201318第39轮、16:48:43，PInf9.70e9/DInf34.4/Compl2.23e8。C2050 t40新WLS/5207165运行3:24:31，仍在presolve（日志9315s），无Barrier行，尚未实测排序峰值。三者未见显式警告、许可错误，stderr与Slurm stderr均0字节。证据cloud_joint_progress_20261016/status_20261020T154922Z{,_summary}.json。
 
 Git基准bb93d25dfd1a368d2d3af50226442fb6ad58dd3a。按作者查询，只读squeue完整队列、scontrol/sstat及各release的gurobi.log和stderr；记录原始日志SHA，未修改作业/源码/许可或启动后台监听。nocredit较本会话上次43轮前进23轮，最近56–66轮PInf/DInf/Compl降72.01%/75.83%/73.31%，11.30分钟/轮；对偶63/65轮有小反弹，不称全程单调。2040较上次23轮前进16轮，最近29–39轮三项降71.55%/71.57%/70.96%，17.38分钟/轮。当前RSS/Slurm峰分别369.48/704.59、396.63/712.44、84.66/93.24GiB；C2050处预求解，低内存不能外推排序/因子分解峰值，40线程能否避免OOM仍待实测。此前Base2060完成511轮OPTIMAL/保全COMPLETE/relative_v1 PASS的终态沿用已核验证据；本轮没有重读其大归档。仅3份交接文档和2份小JSON更新，JSON解析、敏感字面量与diff检查；无代码变化，不重复运行求解测试。下一步仅按作者请求继续核对三项进度，重点确认C2050是否通过排序并进入Barrier；旧失败包和所有输出保留，不动SI会话内容。
+
+## 2026-10-20 已解结果补备份与结束后必做流程
+
+- **2026-10-20 T550补备份已启动及长期规则：** 作者要求每次确认云端生产求解结束均执行备份，无需重复授权；保持无定时监听。旧Base2030/2040/2050三套manifest与原262项path/bytes/SHA一致，不重复传输。新增Base2060和Case3 2030共184文件/10,828,735,197bytes，T550 PID2833275单次自主拉取，完成后预计余量34.4127%；当前两套T1均VERIFIED（176文件/1,112,217,190bytes），Base2060 T2传输中，完整备份尚未完成。Case3证书与扩展验收九文件/6,223,488bytes旁置同步SHA VERIFIED。规则见AGENTS、台账CLOUD_BACKUP_REGISTER_ZH.md，证据cloud_backup_20261020/。
+
+Git基准559f633f4481d4ea9a5d589fd9bc6ece5b69631b。先读取既有backup_on_t550/collect_status与历史完成manifest，核对T550空间、无旧活跃备份和云端五套已解生产输出；前三套历史备份已完，新补两套。scripts/backup_completed_cloud.py复用原分层rsync/SHA实现，新增显式配置、活跃作业/终态门禁、全局flock与不静默省略MPS的空间检查；7项针对性单测PASS（tests/test_completed_cloud_backup.py）。远端实际plan、启动、T1验证通过；部署工具原字节SHA cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658。操作目录/home/zz2/National_model_server/cloud_backup/_operations/20261020_base2060_case3_2030，工具目录backup_tools/completed_20261020；只读查询python supplementary_materials/reviews/cloud_backup_20261020/collect_status.py。新状态/manifest本地留证，不触碰云端源码、运行三作业、凭据、旧备份或SI会话。完整结果传输未结束，不能将启动或T1通过写为最终COMPLETE；下次检查status六层VERIFIED与两最终manifest，异常则原操作核对后续传。C2050两旧失败release不是完整解备份，现存输出云端保留并在台账单列。任何新生产终态均按新规则核对和补备份，仍不建立后台监听。
+
+
+## 2026-10-20 完成求解后 T550 必做备份流程
+
+1. 查询云端终态与导出状态，并读取 CLOUD_BACKUP_REGISTER_ZH.md；对照 T550 backup_manifest 与现有 transfer_status/进程。无须为已授权的结果备份再次询问作者，不建立自动监控。
+2. 完整保全结果：使用 scripts/backup_completed_cloud.py 和一个新的显式 JSON 配置（样例 supplementary_materials/reviews/cloud_backup_20261020/backup_config.json）。仅列尚无相同身份完整备份的 release。QC失败不能阻断备份；异常退出的部分输出另立清单，不能套用完整COMPLETE判据。
+3. 将审查过的工具和配置放在 T550 新 backup_tools 子目录，校验源字节SHA后，在 T550 运行 `python3 <tool> plan --config <config>`。plan只读云端盘点，在T550建立清单和新目标；空间不足或既有路径冲突则停止，不省略T3。核实计划后用独立会话启动一次 `python3 -u <tool> run --config <config>`，记录启动PID及操作目录。既有操作先查状态，不再次plan、不盲目重复launch。
+4. 本次只读采集：本机 `python supplementary_materials/reviews/cloud_backup_20261020/collect_status.py`。命令不启动或轮询传输。T550自主传输不依赖Windows持续联网；重连后读status再决定是否续传。RUNNING不是COMPLETE；ERROR时保留所有部分文件，诊断并确认没有旧进程后才在原操作run续传。
+5. 六层完成、184项目标bytes/SHA验证及源不变核验后，两套最终backup_manifest才生成。采集并核对计划/manifest对应关系，追加完成证据、更新台账和交接。任何单独证书/验收原字节旁置并独立SHA核验，本次已完成九项。
+6. 后续每次查询确认nocredit2030、case32040、C2050等生产作业结束，即检查并补齐T550备份。无需再次提醒，但无定时监听时不会在无人查询的瞬间自动发现终态。原release、历史备份和未完成传输均不删除。
