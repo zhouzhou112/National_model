@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-21英国11:19／北京18:19联合进度：3项RUNNING。** nocredit5153901到144轮（1天11:49:06），PInf246/DInf1.99e-6/Compl13.9；case3 2040/5201318到109轮（1天11:18:53），PInf4.26e7/DInf6.47e-7/Compl1.05e6；C2050 t40/5207165到41轮（21:54:41），PInf5.04e9/DInf19.9/Compl1.14e8。三项未见显式警告或许可错误，stderr空。C2050当前RSS415.33GiB，采样峰621.18GiB未增加。证据cloud_joint_progress_20261016/status_20261021T101930Z{,_summary}.json。
+
 - **2026-10-20英国23:22／10月21日北京06:22联合进度：3项RUNNING。** nocredit5153901到98轮（23:52:04），PInf1.22e4/DInf3.93e-5/Compl478；case3 2040/5201318到62轮（23:21:51），PInf1.86e9/DInf0.394/Compl4.04e7。C2050 t40/5207165已通过此前OOM的排序阶段并到11轮（9:57:39），PInf1.82e11/DInf1340/Compl4.52e9，当前RSS413.41GiB、采样峰621.18GiB，未再出现OOM；不能据此保证后续峰值。三项stderr空、未见显式警告或许可错误。证据cloud_joint_progress_20261016/status_20261020T222226Z{,_summary}.json。
 
 - **2026-10-20 Base2060与Case32030验收/本地包已完成：** 两套T550离线复评均relative_v1_author_20261014_extended PASS，严格HARD_FAIL保留，水库按作者规则暂缓并完整披露。云端61原始小文件/26,736,488bytes已取回，59项与原manifest一致、两份manifest自身另核源SHA；T550按原调度重算、省级与水库残差核验。两正式验收JSON旁置同步原字节SHA一致。本地packages/base2060_acceptance_20261020.zip为4,279,063bytes/49成员，case3_2030包7,449,859bytes/58成员，均逐项SHA校验。新增两套T550备份亦已COMPLETE：184文件/10,828,735,197bytes，六层VERIFIED、源未变。证据与报告completed_acceptance_20261020/，台账已更新；不改变原候选状态，不新增求解。
@@ -10175,3 +10177,9 @@ Git基准f04bf22a05b40b3ce8dbe8fae4237a1ada266960。本轮复用旧collect_evide
 - **2026-10-20英国23:22／10月21日北京06:22联合进度：3项RUNNING。** nocredit5153901到98轮（23:52:04），PInf1.22e4/DInf3.93e-5/Compl478；case3 2040/5201318到62轮（23:21:51），PInf1.86e9/DInf0.394/Compl4.04e7。C2050 t40/5207165已通过此前OOM的排序阶段并到11轮（9:57:39），PInf1.82e11/DInf1340/Compl4.52e9，当前RSS413.41GiB、采样峰621.18GiB，未再出现OOM；不能据此保证后续峰值。三项stderr空、未见显式警告或许可错误。证据cloud_joint_progress_20261016/status_20261020T222226Z{,_summary}.json。
 
 Git基准70a7756888c3cb0f1953e57dcc63d7a70c4134ca。只读squeue完整队列、scontrol/sstat、gurobi.log与stderr，日志SHA已留证。相较上次66/39轮，nocredit和case3 2040分别前进32/23轮；最近10轮PInf/DInf/Compl分别下降96.64%/94.30%/94.98%与63.10%/95.53%/62.24%，13.68与18.07分钟/轮。当前RSS/Slurm采样峰分别370.38/704.59、394.50/712.44GiB。C2050实测40线程，已进入Barrier并完成11轮，最近1–11轮三项下降56.56%/46.40%/54.80%，24.26分钟/轮；初始对偶残差有上升，不能描述为全程单调，旧48线程排序OOM原包仍保留。三者均未收敛，不估算完成率/ETA；本轮没有新终态，无须启动新备份。此前Base2060和Case3 2030技术验收relative_v1 PASS、本地验收ZIP及T550完整备份已完成，沿用completed_acceptance_20261020已核验证据，不重复传输。修改仅3份交接文档与2份小JSON；JSON解析、暂存差异和敏感字面量检查，无源码变更、不重复求解测试。不修改冻结包/许可/作业，不建监听、不动SI。下一步仅在作者查询时继续核对收敛和内存；发现生产终态按AGENTS执行T550备份收尾。
+
+## 2026-10-21英国11:19 三项运行联合进度
+
+- **2026-10-21英国11:19／北京18:19联合进度：3项RUNNING。** nocredit5153901到144轮（1天11:49:06），PInf246/DInf1.99e-6/Compl13.9；case3 2040/5201318到109轮（1天11:18:53），PInf4.26e7/DInf6.47e-7/Compl1.05e6；C2050 t40/5207165到41轮（21:54:41），PInf5.04e9/DInf19.9/Compl1.14e8。三项未见显式警告或许可错误，stderr空。C2050当前RSS415.33GiB，采样峰621.18GiB未增加。证据cloud_joint_progress_20261016/status_20261021T101930Z{,_summary}.json。
+
+Git基准2fcacc5c0151e8add79e6feada41dbba2f815d5a。只读squeue完整队列、scontrol/sstat、gurobi.log与stderr，日志SHA留证；无新终态。相较上次98/62/11轮分别前进46/47/30轮。nocredit最近134–144轮原始残差降34.05%、互补性降43.03%，对偶残差从1.88e-6升至1.99e-6（137轮反弹后回落），不能称三项单调改善；17.25分钟/轮，比上次13.68分钟/轮慢。Case3 2040最近99–109轮三项下降82.82%/99.42%/82.90%，15.36分钟/轮；C2050最近31–41轮下降71.03%/78.23%/71.92%，24.38分钟/轮。当前RSS/Slurm采样峰依次374.62/704.59、399.18/712.44、415.33/621.18GiB；C2050未再OOM，不承诺后续峰值。三者尚未收敛，对偶残差小不代表原始可行或接近结束，不估算完成率/ETA。Base2060与Case3 2030已完成验收、本地包与T550全备份，沿用completed_acceptance_20261020证据，不重复传输。仅3份交接文档及2份小JSON变化，解析/敏感字面量/暂存差异检查；无代码修改，无需求解测试。保持运行release、参数、许可、其他会话SI不变，无监听。下一步仅在作者询问时核对三项收敛，遇新生产终态按AGENTS完成T550备份收尾。
