@@ -1,0 +1,21 @@
+{
+  "observed_at_utc": "2026-10-24T09:46:32.936029+00:00",
+  "status": "BLOCKED_T550_CONNECTION",
+  "transfer_started": false,
+  "remote_plan_created": false,
+  "job_id": "5153901",
+  "source_status": "COMPLETED/0:0; OPTIMAL; preservation COMPLETE/errors=[]",
+  "output_8760_files": 81,
+  "output_8760_bytes": 5502966799,
+  "attempts": [
+    {
+      "route": "national-model-server via 127.0.0.1:22",
+      "error": "banner exchange: Connection to UNKNOWN port -1: Connection refused"
+    },
+    {
+      "route": "national-model-server 192.168.9.27:22 without obsolete bind",
+      "error": "Connection timed out"
+    }
+  ],
+  "next_action": "Restore established T550 forwarding, inspect manifests, active transfers and disk >=30% reserve; run new explicit plan and one-shot backup. No transfer started this turn."
+}
