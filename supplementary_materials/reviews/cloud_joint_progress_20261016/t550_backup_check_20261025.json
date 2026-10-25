@@ -1,0 +1,9 @@
+{
+  "observed_at_utc": "2026-10-25T13:23:37Z",
+  "status": "BLOCKED_T550_CONNECTION",
+  "route": "national-model-server via 127.0.0.1:22",
+  "error": "banner exchange: Connection to UNKNOWN port -1: Connection refused",
+  "transfer_started": false,
+  "remote_state_verified": false,
+  "pending_release": "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1"
+}

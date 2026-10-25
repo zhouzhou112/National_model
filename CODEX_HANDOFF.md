@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-25英国13:23 GMT／北京21:23：云端2项RUNNING。** Case3 2040/5201318到388轮（5天14:23:02），PInf0.568/DInf4.77e-6/Compl0.006；较昨日302推进86轮，近378–388轮三项下降27.18%/28.49%/28.14%，19.73分钟/轮。C2050 t40/5207165到279轮（5天00:58:50），PInf104/DInf2.71e-6/Compl0.965；较昨日221推进58轮，互补性首次低于1。近269–279轮原始/互补下降26.76%/31.56%，对偶反增122.13%，31.21分钟/轮；268和273轮对偶反弹，273峰3.71e-6后连续回落至2.71e-6，仍高于反弹前267轮2.71e-8，不能称三项持续单调改善。两项stderr空、无显式警告/错误/终态，RSS396.04/416.91GiB、Slurm峰712.44/621.18GiB未增；不承诺ETA。nocredit5153901再次sacct确认COMPLETED/0:0；T550 127.0.0.1:22转发仍Connection refused，无法核验manifest/空间/旧进程，备份本轮未启动。
+
 - **2026-10-24英国10:45／北京17:45：当前2项RUNNING，nocredit2030刚完成。** Job5153901于北京17:43:45 COMPLETED/0:0，总4天11:13:23，Barrier404轮OPTIMAL，目标4189002.976254521 million CNY；保全COMPLETE/errors=[]，81个output_8760文件共5,502,966,799bytes。冻结报告relative_v1_author_20261012=PASS，严格HARD_FAIL仍保留；这不是最新扩展口径的独立正式验收。其T550备份未启动：127.0.0.1:22转发拒绝连接、192.168.9.27:22超时，旧manifest/空间/活跃传输尚不可核验。已准备新配置，恢复连接后先防重复核验再自主拉取。Case3 2040/5201318到302轮，PInf7.68/DInf6.76e-5/Compl0.0837；C2050 t40/5207165到221轮，PInf734/DInf5.16e-8/Compl11.2；两项仍求解中。
 
 - **2026-10-23英国13:57／北京20:57联合进度：3项RUNNING。** nocredit5153901到321轮（3天14:27:36），PInf0.0745/DInf2.03e-6/Compl0.00369；case3 2040/5201318到250轮（3天13:57:23），PInf56.1/DInf0.000321/Compl0.613；C2050 t40/5207165到172轮（3天0:33:11），PInf19000/DInf1.36e-6/Compl358。三项stderr空、未见显式警告或许可错误，采样内存峰不变。证据cloud_joint_progress_20261016/status_20261023T125757Z{,_summary}.json，观测时间以JSON内云端UTC为准。
@@ -10234,3 +10236,10 @@ Git基准0e9701f0e3b164e3ae5204c5d78779ae60c13e6f。只读squeue、scontrol/ssta
 Git基准8ed5beb6ebd2ddc2e5f038f36ce27e1ee2ebdcf3。09:43UTC第一快照三项RUNNING；09:45UTC再次squeue/sacct确认nocredit正常退出，不把两时点混作同时观测。其求解382362秒、终轮打印PInf8.46e-5/DInf1.98e-7/Compl3.14e-6；最终保全与result_manifest、batch_exit已生成。Case3近292–302轮三项残差降20.91%/20.84%/21.04%，约20.08分钟/轮；C2050近211–221轮降34.46%/45.11%/41.67%，约25.05分钟/轮。当前RSS分别396.02/416.91GiB，Slurm峰712.44/621.18GiB未变，stderr均空，无新警告/OOM。不能据此给可靠ETA。
 
 证据：supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261024T094319Z{,_summary}.json、nocredit_completion_20261024.json；备份配置与阻塞记录cloud_backup_20261024/。现有五套已完成备份的历史结论保留，本轮不能实时复核T550。下一步恢复既有转发后核对manifest/活跃进程/锁/磁盘余量，使用scripts/backup_completed_cloud.py对新release plan/run，全量bytes/SHA和源身份校验完成才称备份完成。无后台监听、不改变活跃作业/冻结包/科学参数；其他SI会话改动保留。仅记录和JSON更新，JSON解析及暂存diff检查，无需重复模型测试。
+
+
+## 2026-10-25 两项目继续收敛与T550连接阻塞
+
+**2026-10-25英国13:23 GMT／北京21:23：云端2项RUNNING。** Case3 2040/5201318到388轮（5天14:23:02），PInf0.568/DInf4.77e-6/Compl0.006；较昨日302推进86轮，近378–388轮三项下降27.18%/28.49%/28.14%，19.73分钟/轮。C2050 t40/5207165到279轮（5天00:58:50），PInf104/DInf2.71e-6/Compl0.965；较昨日221推进58轮，互补性首次低于1。近269–279轮原始/互补下降26.76%/31.56%，对偶反增122.13%，31.21分钟/轮；268和273轮对偶反弹，273峰3.71e-6后连续回落至2.71e-6，仍高于反弹前267轮2.71e-8，不能称三项持续单调改善。两项stderr空、无显式警告/错误/终态，RSS396.04/416.91GiB、Slurm峰712.44/621.18GiB未增；不承诺ETA。nocredit5153901再次sacct确认COMPLETED/0:0；T550 127.0.0.1:22转发仍Connection refused，无法核验manifest/空间/旧进程，备份本轮未启动。
+
+Git基准45dc64751cc555768f277c47a6b0daadbba209ae；仅只读squeue/scontrol/sstat/sacct和日志、保存小证据与更新交接。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261025T132337Z{,_summary}.json、t550_backup_check_20261025.json。未改科学代码、冻结包、运行作业、其他SI会话或建立监听。验证为JSON解析、暂存范围/凭据模式/diff检查；无模型改动不重跑求解。下一步用户询问时检查收敛/终态；恢复T550既有转发后先核对旧备份、活跃传输与30%磁盘余量，再按cloud_backup_20261024/backup_config.json执行单次自主拉取和全量SHA校验，未完成前不标COMPLETE。
