@@ -55,3 +55,10 @@ Git基准8ed5beb6ebd2ddc2e5f038f36ce27e1ee2ebdcf3。09:43UTC第一快照三项RU
 **2026-10-25英国13:23 GMT／北京21:23：云端2项RUNNING。** Case3 2040/5201318到388轮（5天14:23:02），PInf0.568/DInf4.77e-6/Compl0.006；较昨日302推进86轮，近378–388轮三项下降27.18%/28.49%/28.14%，19.73分钟/轮。C2050 t40/5207165到279轮（5天00:58:50），PInf104/DInf2.71e-6/Compl0.965；较昨日221推进58轮，互补性首次低于1。近269–279轮原始/互补下降26.76%/31.56%，对偶反增122.13%，31.21分钟/轮；268和273轮对偶反弹，273峰3.71e-6后连续回落至2.71e-6，仍高于反弹前267轮2.71e-8，不能称三项持续单调改善。两项stderr空、无显式警告/错误/终态，RSS396.04/416.91GiB、Slurm峰712.44/621.18GiB未增；不承诺ETA。nocredit5153901再次sacct确认COMPLETED/0:0；T550 127.0.0.1:22转发仍Connection refused，无法核验manifest/空间/旧进程，备份本轮未启动。
 
 Git基准45dc64751cc555768f277c47a6b0daadbba209ae；仅只读squeue/scontrol/sstat/sacct和日志、保存小证据与更新交接。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261025T132337Z{,_summary}.json、t550_backup_check_20261025.json。未改科学代码、冻结包、运行作业、其他SI会话或建立监听。验证为JSON解析、暂存范围/凭据模式/diff检查；无模型改动不重跑求解。下一步用户询问时检查收敛/终态；恢复T550既有转发后先核对旧备份、活跃传输与30%磁盘余量，再按cloud_backup_20261024/backup_config.json执行单次自主拉取和全量SHA校验，未完成前不标COMPLETE。
+
+
+## 2026-10-25 T550恢复并启动nocredit2030完整备份
+
+**2026-10-25英国13:25 GMT／北京21:25，T550连接恢复，取代本日上一条备份阻塞状态。** 作者开启转发后已核验hostname=t550；既有五套备份manifest均COMPLETE，两旧操作COMPLETE且未发现活跃备份进程。nocredit2030新计划93文件/5,510,708,567bytes（全部output_8760及启动身份元数据，T1/T2/T3全部包含），预计余量36.2871%满足30%门槛。单次自主传输PID700378于13:25:24UTC启动，13:25:38核验进程存在、状态RUNNING/T1 TRANSFERRING（89文件/584,009,478bytes），尚无完整目标SHA验证和最终manifest，不称备份完成。
+
+Git基准6ee7f8a4241ed9a572aa2e0d6b9b8aa540ef18f9。复用已测试scripts/backup_completed_cloud.py，工具原字节SHA cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658，新配置和操作目录20261025_nocredit2030；工具部署backup_tools/completed_20261025。T550直连云端盘点正常，plan终态/保全/空间/目标不重复门禁通过，独立会话运行，具有全局与操作锁。证据supplementary_materials/reviews/cloud_backup_20261025/{backup_config,plan_execution,transfer_launch,startup_status}.json。目标/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1。旧备份只核manifest状态，不重复传输/全量哈希，不改源结果；未启动定时监听。新JSON解析、暂存diff/凭据检查通过；无源码变更，复用既有7项单测证据。下一步读取操作transfer_status，全部三层VERIFIED、目标逐文件bytes/SHA匹配和源身份不变后生成backup_manifest才可报告COMPLETE。异常时先核旧进程/锁再原操作续传。
