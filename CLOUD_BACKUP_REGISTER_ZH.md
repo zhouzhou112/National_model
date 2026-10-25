@@ -62,3 +62,12 @@ Git基准45dc64751cc555768f277c47a6b0daadbba209ae；仅只读squeue/scontrol/sst
 **2026-10-25英国13:25 GMT／北京21:25，T550连接恢复，取代本日上一条备份阻塞状态。** 作者开启转发后已核验hostname=t550；既有五套备份manifest均COMPLETE，两旧操作COMPLETE且未发现活跃备份进程。nocredit2030新计划93文件/5,510,708,567bytes（全部output_8760及启动身份元数据，T1/T2/T3全部包含），预计余量36.2871%满足30%门槛。单次自主传输PID700378于13:25:24UTC启动，13:25:38核验进程存在、状态RUNNING/T1 TRANSFERRING（89文件/584,009,478bytes），尚无完整目标SHA验证和最终manifest，不称备份完成。
 
 Git基准6ee7f8a4241ed9a572aa2e0d6b9b8aa540ef18f9。复用已测试scripts/backup_completed_cloud.py，工具原字节SHA cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658，新配置和操作目录20261025_nocredit2030；工具部署backup_tools/completed_20261025。T550直连云端盘点正常，plan终态/保全/空间/目标不重复门禁通过，独立会话运行，具有全局与操作锁。证据supplementary_materials/reviews/cloud_backup_20261025/{backup_config,plan_execution,transfer_launch,startup_status}.json。目标/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1。旧备份只核manifest状态，不重复传输/全量哈希，不改源结果；未启动定时监听。新JSON解析、暂存diff/凭据检查通过；无源码变更，复用既有7项单测证据。下一步读取操作transfer_status，全部三层VERIFIED、目标逐文件bytes/SHA匹配和源身份不变后生成backup_manifest才可报告COMPLETE。异常时先核旧进程/锁再原操作续传。
+
+
+## 2026-10-25深夜 两项目进度与nocredit备份完成
+
+**2026-10-25英国23:40 GMT／10月26日北京07:40：云端2项RUNNING，nocredit备份已COMPLETE。** Case3 2040/5201318到417轮（6天00:40:06），PInf0.226/DInf3.09e-6/Compl0.00234，较上次388推进29轮；近407–417原始/互补降30.89%/31.58%，对偶升1.64%，22.85分钟/轮。C2050 t40/5207165到298轮（5天11:15:54），PInf50.9/DInf1.07e-4/Compl0.426，较279推进19轮；近288–298原始/互补降29.79%/31.62%，对偶增至原值8.70倍（增加769.92%），30.86分钟/轮。298轮对偶从8.40e-6跃至1.07e-4（12.74倍），尚无后续回落证据；其他两项仍降，无显式警告或错误，不能将互补改善等同于全指标稳定收敛。
+
+Git基准b9ab0698a34f84fc12697486f296e138769ee2b8。只读squeue/scontrol/sstat/sacct及日志，stderr均0，Slurm峰712.44/621.18GiB未变；当前RSS约396.04/420.62GiB。仍无OPTIMAL，不给ETA、不改参数/作业。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261025T234041Z{,_summary}.json。
+
+nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3全部VERIFIED，93文件/5,510,708,567bytes，无延期文件，source_unchanged=true。最终backup_manifest文件清单与原plan逐项相等，源result_manifest SHA一致；本次取回完成证据cloud_backup_20261025/check_20261025T2340Z.json。目标/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1，磁盘仍约36.29%可用。完整逐文件bytes/SHA核验由单次备份进程完成，本次复核最终报告及清单，不重复传输。备份完成不代表最新扩展科学验收完成；原QC/作者待定标签不改。台账、交接、服务器记录同步追加；JSON解析/暂存diff与凭据检查，无源码变更不重跑求解。下一步询问时重点观察C2050对偶反弹是否恢复及两项终态，任何新终态按既定流程完整备份，无后台监听。
