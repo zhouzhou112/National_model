@@ -45,11 +45,18 @@ elif STAGE in {'zero','base-control','frozen'}:
  gate(STAGE,24,STAGE.replace('-','_')+'_24h')
 elif STAGE=='frozen-build':
  gate('frozen',1,'frozen_1h')
+elif STAGE=='costs':
+ for mode,source in [('base-control','base_control_24h'),('zero','zero_24h')]:
+  name=source+'_Xcost'
+  run(name,[py,str(here/'run_gate.py'),'--mode',mode,'--hours','24',
+            '--output',str(here/(name+SUFFIX)),'--saved-source',str(here/source)])
+elif STAGE=='parameters':
+ run('parameters_2030',[py,'scripts/verify_case3_parameters.py','--output',str(here/('parameters_2030'+SUFFIX))])
 '''
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('stage',choices=['regression','build','zero','base-control','frozen','frozen-build'])
+    parser.add_argument('stage',choices=['regression','build','zero','base-control','frozen','frozen-build','costs','parameters'])
     parser.add_argument('--suffix',default='')
     args=parser.parse_args()
     code='REMOTE='+repr(REMOTE)+'\nSTAGE='+repr(args.stage)+'\nSUFFIX='+repr(args.suffix)+'\n'+CODE

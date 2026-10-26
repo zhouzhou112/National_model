@@ -1,0 +1,295 @@
+{
+  "status": "PASS",
+  "tolerance": 1e-09,
+  "checks": [
+    {
+      "variable_family": "vre_new",
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "thermal_new",
+      "entries": 341,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "thermal_retrofit_to_ccs",
+      "entries": 155,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "storage_new",
+      "entries": 62,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "line_new",
+      "entries": 411,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "intra_load_center_new",
+      "entries": 642,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "spur_augmentation",
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "hydro_spur_augmentation",
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "trunk_augmentation",
+      "entries": 6294,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "hydro_new",
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "wave_new",
+      "entries": 1284,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "dac_new",
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "vre_capacity",
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "hydro_capacity",
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "storage_capacity",
+      "entries": 62,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "line_capacity",
+      "entries": 411,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "intra_load_center_capacity",
+      "entries": 642,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "wave_capacity",
+      "entries": 1284,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "dac_capacity",
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "variable_family": "thermal_capacity",
+      "entries": 341,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "vre_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 36686,
+      "max_abs_difference": 4.440892098500626e-16,
+      "passed": true
+    },
+    {
+      "table": "vre_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 36686,
+      "max_abs_difference": 8.881784197001252e-16,
+      "passed": true
+    },
+    {
+      "table": "thermal_nuclear_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 341,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "thermal_nuclear_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 341,
+      "max_abs_difference": 2.842170943040401e-14,
+      "passed": true
+    },
+    {
+      "table": "thermal_nuclear_capacity.csv",
+      "column": "retrofit_out_gw",
+      "entries": 155,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "storage_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 62,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "storage_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 62,
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "table": "transmission_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 411,
+      "max_abs_difference": 8.881784197001252e-16,
+      "passed": true
+    },
+    {
+      "table": "transmission_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 411,
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "table": "load_center_intra_transmission.csv",
+      "column": "new_capacity_gw",
+      "entries": 642,
+      "max_abs_difference": 4.440892098500626e-16,
+      "passed": true
+    },
+    {
+      "table": "load_center_intra_transmission.csv",
+      "column": "capacity_gw",
+      "entries": 642,
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "table": "intra_grid_vre_site_design.csv",
+      "column": "spur_augmentation_gw",
+      "entries": 36686,
+      "max_abs_difference": 4.440892098500626e-16,
+      "passed": true
+    },
+    {
+      "table": "hydro_spur_capacity.csv",
+      "column": "hydro_spur_augmentation_gw",
+      "entries": 2030,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "intra_grid_substation_design.csv",
+      "column": "trunk_augmentation_gw",
+      "entries": 6294,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "hydro_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 2030,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "hydro_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 2030,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "wave_capacity.csv",
+      "column": "new_capacity_gw",
+      "entries": 1284,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "wave_capacity.csv",
+      "column": "capacity_gw",
+      "entries": 1284,
+      "max_abs_difference": 3.3881317890172014e-21,
+      "passed": true
+    },
+    {
+      "table": "dac_capacity_capture.csv",
+      "column": "new_capacity_mtpa",
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "dac_capacity_capture.csv",
+      "column": "capacity_mtpa",
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "storage_capacity.csv",
+      "column": "energy_capacity_gwh",
+      "entries": 62,
+      "max_abs_difference": 1.4210854715202004e-14,
+      "passed": true
+    },
+    {
+      "table": "thermal_nuclear_capacity.csv",
+      "column": "retrofit_in_gw",
+      "entries": 155,
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "table": "intra_grid_vre_site_design.csv",
+      "column": "spur_capacity_gw",
+      "entries": 36686,
+      "max_abs_difference": 4.440892098500626e-16,
+      "passed": true
+    },
+    {
+      "table": "intra_grid_substation_design.csv",
+      "column": "trunk_capacity_gw",
+      "entries": 6294,
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    }
+  ],
+  "interpretation": "quality label; preserve every result"
+}

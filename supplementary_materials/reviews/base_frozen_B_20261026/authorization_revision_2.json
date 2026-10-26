@@ -1,0 +1,8 @@
+{
+  "task_sha256": "4d3145f77df69ef2c032a78c1bcb25bc4db853ab41f835ee0611fe33d54fe6b9",
+  "author_decisions": [
+    "Gate1: objective <=1e-7, bidirectional row/bound feasibility <=1e-8, equal cross objectives, cost components <=1e-7; disclose zero reduced-cost dispatch differences",
+    "Basic Cross2 relative_v1 uses OPTIMAL and original primal quality, tagged BASIC_CROSSOVER; production Cross0 unchanged"
+  ],
+  "approved_launch": "2030 only, 48 threads, after all gates PASS"
+}

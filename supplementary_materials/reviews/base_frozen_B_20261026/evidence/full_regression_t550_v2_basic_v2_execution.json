@@ -1,0 +1,15 @@
+{
+  "name": "full_regression_t550_v2_basic_v2",
+  "exit_code": 0,
+  "runtime_seconds": 162.73119071382098,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-q"
+  ],
+  "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/full_regression_t550_v2_basic_v2.log"
+}

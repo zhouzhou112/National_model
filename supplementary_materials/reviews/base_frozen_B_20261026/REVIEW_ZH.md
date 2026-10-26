@@ -2,7 +2,7 @@
 
 日期：2026-10-26（英国 GMT）。候选实现提交：`ba7a23fdfe76a367ca72eb393daeddc334a9dc13`。源码起点：`db1a7b4498b7ed2d7b52672d379ca0e74a6cbbbb`。
 
-**结论：身份门禁 1 的逐时运行量一致性未通过，停止 B 2030 后续门禁、冻结、提交和 release。** 当前为 opt-in 候选实现，未取得生产资格。没有 B 作业号，也没有全年峰值 RSS、每轮耗时或总轮数。两套已执行的 24h 结果均完整保全，不能将短窗性能外推到全年。
+**前轮停止记录（已由下方第 7 节作者修订和复核结论更新）：身份门禁 1 原逐时一致性要求未通过。** 当前为 opt-in 候选实现，未取得生产资格。没有 B 作业号，也没有全年峰值 RSS、每轮耗时或总轮数。两套已执行的 24h 结果均完整保全，不能将短窗性能外推到全年。
 
 ## 1. 授权和实现边界
 
@@ -79,3 +79,17 @@
 本次使用 `run_gate.py --mode old-default|default|frozen --hours 1` 和 `--mode base-control|zero --hours 24`；每次输出新目录，完整 argv/profile 与运行产物旁置。`run_t550_checks.py` 为前台有限命令，无定时器或后台监听。比较用 `compare_identity_gate.py`，交叉检查用 `crosscheck_saved_solutions.py`（不调用 optimize）。再次执行须使用新输出名，禁止覆盖本轮证据。
 
 提交范围：本次源码/profile/tests、本文、少量门禁 JSON/来源 SHA/执行回执、交接与服务器记录。源表缓存、MPS、解向量、tar 包、原始大日志及其他作者稿件留原位置，不进入 Git。
+
+## 7. 作者修订后的通过记录（2026-10-26 GMT）
+
+作者明确修订门禁 1：目标相对差 ≤1e-7、双向交叉可行（约束/界 ≤1e-8）、交叉目标相等、成本分项相对差 ≤1e-7；逐时差异按退化披露。授权 SHA 见 `authorization_revision_2.json`。
+
+旧成本 CSV 来自 BarX，而门禁保存基解为 X。此次在原模型同指纹/同列序检查通过后，仅重新构建表达式，按已保存 X 离线评价成本，不重新求解、不改原件；旁置于 `evidence/*_24h_Xcost/cost_from_X/`。全部成本项通过，最大相对差 **1.6352960585e-13**。Base 无柔性成本项，在 B 侧逐项核实为零并明确记录结构性缺项。变化列的 reduced cost 最大 **2.2898349883e-15**（Base）/ **1.4571677198e-15**（零签约 B）。这说明变化在零边际成本替代调度方向上；不把潮流正则化等直接目标系数误写为零。风光弃电分配、潮流路径、水电/储能与备用分配均逐族记录，见 `evidence/revised_identity_20261026/assessment.json`。身份门禁 1 **PASS**。
+
+`relative_v1` 新增明确 basic contract 分支：无 Barrier 指标且合同要求基解，按 OPTIMAL 和原始约束违反、约束残差、界违反 ≤1e-8 评价，标注 `solver.mode=BASIC_CROSSOVER`。缺失/非有限指标失败，不允许缺指标的 Cross0 冒充基解；其余物理检查不变，原 Cross0 分支和输出保持原口径。基解 dual 元数据标为 BASIC_CROSSOVER_DUAL。另修复保全时基解的语义向量选择：basic 合同选 X/Pi，但仍保全 BarX/BarPi；默认及 Cross0 顺序不变。新增阈值、缺值、非最优、Cross0 防误判和向量选择测试。
+
+开放柔性 **24h 门禁 2 PASS**：容量最大差 **2.8421709430e-14**，relative_v1 PASS/BASIC_CROSSOVER，原始约束违反 3.7169e-11、界违反 4.8946e-12；保全 COMPLETE，语义向量 X。短窗因年度签约成本权衡，目标与零签约解相等，不据此推断全年柔性价值。
+
+2030 中央参数已复用 `scripts/verify_case3_parameters.py` 对真实加载数据核准 PASS；另比较 B 与已核准 case3 的 1h 原 MPS：变量/约束名、矩阵、RHS、目标、全部非投资列界完全相同，只改变投资界。证据 `evidence/parameters_2030/`。
+
+最终全套回归 **480 tests / 161.365 秒 / OK / 无跳过**，368 个模型、配置、脚本与测试文件的本机/T550 LF SHA 对齐。门禁清单见 `FINAL_GATES_PASSED.json`。本节为本地门禁通过，云端冻结/preflight/提交与资源状态另行记录；后续三个年份仍等待作者线程确认。

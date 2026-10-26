@@ -37,6 +37,24 @@ def tiny_model():
 
 
 class PreservationTests(unittest.TestCase):
+    def test_explicit_basic_snapshot_selects_x_pi_and_keeps_barrier_vectors(self):
+        source=tiny_model()
+        try:
+            source.model.Params.Crossover=2
+            source.model.optimize()
+            with tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);basic=root/'basic';default=root/'default'
+                basic.mkdir();default.mkdir()
+                b=save_numeric_snapshot(source.model,basic,prefer_basic=True)
+                d=save_numeric_snapshot(source.model,default)
+                self.assertEqual((b['primal_attribute'],b['dual_attribute']),('X','Pi'))
+                self.assertEqual((d['primal_attribute'],d['dual_attribute']),('BarX','BarPi'))
+                self.assertEqual(b['attributes'],d['attributes'])
+                arrays=read_snapshot(source.model,basic/'solution_snapshot')
+                np.testing.assert_array_equal(arrays[0],source.model.X)
+                for array in arrays:array._mmap.close()
+        finally:source.model.dispose()
+
     def test_authorized_fingerprint_difference_still_checks_order_and_vectors(self):
         from cispo_model.solution_preservation import model_order
         source, target = tiny_model(), tiny_model()

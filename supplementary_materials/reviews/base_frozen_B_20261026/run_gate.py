@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--hours',type=int,choices=[1,24],required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--baseline-runner',type=Path,help='Read-only db1a7b4 runner reference for a non-Git validation copy')
+    parser.add_argument('--saved-source',type=Path,help='Build only; evaluate preserved X costs without optimizing or modifying source')
     args=parser.parse_args()
     out=args.output.resolve()
     if out.exists():raise FileExistsError(out)
@@ -40,7 +41,7 @@ def main():
           '--solver-config',str(profilepath),'--planning-year','2030','--diagnostic-hours',str(args.hours),
           '--archive-original-model','--output-dir',str(out)]
     if args.mode!='base-control':argv+=['--scenario-config',str(ROOT/'config/scenarios/case3_thermal_ev_v5.json')]
-    if args.hours==1:argv+=['--build-only']
+    if args.hours==1 or args.saved_source:argv+=['--build-only']
     frozen=args.mode in {'frozen','zero','base-control'}
     if frozen:
         source=HERE/'source_base/20260914_base_v9_t48_m750_tol1e4_v3'
@@ -84,6 +85,18 @@ def main():
                 block=variables[start:start+50000]
                 for name,value in zip(model.getAttr('VarName',block),model.getAttr('X',block)):
                     f.write(json.dumps([name,value])+'\n')
+    if args.saved_source:
+        from cispo_model.offline_solution import read_snapshot,offline_artifacts
+        from cispo_model.master import export_cost_components
+        from cispo_model.frozen_capacity import digest
+        source=args.saved_source/'solution_snapshot'
+        read_snapshot(model,source,expected_row_scaling_registry=art.index.get('annual_capacity_link_row_scaling'))
+        manifest=json.loads((source/'snapshot_manifest.json').read_text())
+        record=manifest['attributes']['X'];vector=source/record['path']
+        assert digest(vector)==record['sha256'] and vector.stat().st_size==record['bytes']
+        x=np.load(vector,allow_pickle=False)
+        export_cost_components(offline_artifacts(art,x,None),out/'cost_from_X')
+        result.update(evaluated_attribute='X',vector_sha256=digest(vector),optimized=False)
     save(out/'identity_gate_probe.json',result)
     print(json.dumps(result,indent=2))
     if code:raise SystemExit(code)

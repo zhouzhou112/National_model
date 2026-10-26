@@ -26,6 +26,29 @@ def fixture():
 
 
 class RelativeAcceptanceTests(unittest.TestCase):
+    def test_basic_crossover_uses_optimal_and_original_primal_quality(self):
+        q=fixture()
+        q['solver_contract']={'mode':'OPTIMAL_BASIC_OR_DEFAULT','basis_required':True,'barrier_status_code':2}
+        q['solver_quality']={k:1e-8 for k in ('maximum_constraint_violation','maximum_constraint_residual','maximum_bound_violation')}
+        before=copy.deepcopy(q)
+        result=assess_relative_v1(q)
+        self.assertEqual(result['status'],'PASS')
+        self.assertEqual(result['checks']['solver']['mode'],'BASIC_CROSSOVER')
+        self.assertEqual(q,before)
+        self.assertEqual(assess_relative_v1(q,{'status':'TIME_LIMIT'})['status'],'HARD_FAIL')
+        for key in q['solver_quality']:
+            bad=copy.deepcopy(q);bad['solver_quality'][key]=math.nextafter(1e-8,math.inf)
+            self.assertEqual(assess_relative_v1(bad)['status'],'HARD_FAIL')
+            bad['solver_quality'][key]=float('nan')
+            self.assertEqual(add_relative_profile(bad)['status'],'ERROR')
+        q['solver_quality'].pop('maximum_bound_violation')
+        self.assertEqual(add_relative_profile(q)['status'],'ERROR')
+
+    def test_missing_barrier_metrics_cannot_promote_cross0(self):
+        q=fixture();q['solver_contract'].pop('barrier_primal_dual_metrics')
+        q['solver_contract'].update(mode='OPTIMAL_PRIMAL_DUAL_NONBASIC',basis_required=False)
+        self.assertEqual(add_relative_profile(q)['status'],'ERROR')
+
     def test_extended_gw_gwh_boundary_and_untouched_units(self):
         q=fixture()
         q['hard_checks'].update(storage_transition=False, up_reserve=False, inertia=False)

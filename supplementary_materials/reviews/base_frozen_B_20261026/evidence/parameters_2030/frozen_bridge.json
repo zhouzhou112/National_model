@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checks": {
+    "variable_names": true,
+    "row_names": true,
+    "objective": true,
+    "rhs": true,
+    "sense": true,
+    "matrix": true,
+    "unfrozen_lb": true,
+    "unfrozen_ub": true
+  },
+  "definition": "Actual B 1h and centrally approved case3 1h differ only in investment bounds; same objective and physical matrix."
+}

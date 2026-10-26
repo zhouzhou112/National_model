@@ -1,0 +1,11 @@
+{"name": "parameters_2030", "exit_code": 0, "runtime_seconds": 70.42507163411938, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "scripts/verify_case3_parameters.py", "--output", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/parameters_2030"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/parameters_2030.log"}
+Set parameter LicenseID to value 2840423
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/parameters_2030/case3_thermal_ev_v5/model_archive/original.mps.gz
+Reading time = 0.32 seconds
+CISPO_2030_master: 80896 rows, 239109 columns, 455184 nonzeros
+case3_thermal_ev_v5 parameter build complete
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/parameters_2030/case3_thermal_ev_v5_nocredit/model_archive/original.mps.gz
+Reading time = 0.32 seconds
+CISPO_2030_master: 80617 rows, 238985 columns, 454564 nonzeros
+case3_thermal_ev_v5_nocredit parameter build complete
+PASS

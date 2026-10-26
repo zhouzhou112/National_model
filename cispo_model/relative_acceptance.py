@@ -182,14 +182,27 @@ def assess_relative_v1(qc, solve=None, inputs=None):
     checks['remaining_physical_hard_checks'] = dict(passed=all(remaining.values()),
         checks=remaining, failed=[k for k,v in remaining.items() if not v])
     contract = solve.get('solution_contract') or qc.get('solver_contract') or {}
-    metrics = contract['barrier_primal_dual_metrics']
-    pinf = number(metrics['primal_infeasibility'],nonnegative=True)
-    gap = number(metrics['relative_primal_dual_objective_gap'],nonnegative=True)
     optimal = solve.get('status') == 'OPTIMAL' if solve.get('status') else contract.get('barrier_status_code') == 2
-    checks['solver'] = dict(passed=optimal and pinf <= 1e-2 and gap <= 1e-2,
-        optimal=optimal, barrier_primal_infeasibility=pinf, primal_limit=1e-2,
-        relative_primal_dual_gap=gap, relative_gap_limit=1e-2,
-        mixed_unit_quality_record_only=copy.deepcopy(solve.get('solution_quality') or qc.get('solver_quality')))
+    metrics = contract.get('barrier_primal_dual_metrics')
+    basic = metrics is None and contract.get('mode') == 'OPTIMAL_BASIC_OR_DEFAULT' and contract.get('basis_required') is True
+    if basic:
+        quality = solve.get('solution_quality') or qc.get('solver_quality') or {}
+        # Author 2026-10-26 engineering gate: original row/bound violations <=1e-8.
+        primal = {key:number(quality[key],nonnegative=True) for key in (
+            'maximum_constraint_violation','maximum_constraint_residual','maximum_bound_violation')}
+        checks['solver'] = dict(mode='BASIC_CROSSOVER', optimal=optimal,
+            passed=optimal and all(v <= 1e-8 for v in primal.values()),
+            primal_limit=1e-8, original_primal_quality=primal)
+    else:
+        # The existing production Cross0 branch remains unchanged and fails
+        # closed if its Barrier evidence is absent (never infer a basic solve).
+        metrics = contract['barrier_primal_dual_metrics']
+        pinf = number(metrics['primal_infeasibility'],nonnegative=True)
+        gap = number(metrics['relative_primal_dual_objective_gap'],nonnegative=True)
+        checks['solver'] = dict(passed=optimal and pinf <= 1e-2 and gap <= 1e-2,
+            optimal=optimal, barrier_primal_infeasibility=pinf, primal_limit=1e-2,
+            relative_primal_dual_gap=gap, relative_gap_limit=1e-2,
+            mixed_unit_quality_record_only=copy.deepcopy(solve.get('solution_quality') or qc.get('solver_quality')))
     parameters = solve.get('solver_parameters') or {}
     tolerance = parameters.get('BarConvTol', parameters.get('barrier_convergence_tolerance',
                                                           inputs.get('barrier_convergence_tolerance')))
@@ -201,7 +214,7 @@ def assess_relative_v1(qc, solve=None, inputs=None):
     passed = all(row.get('passed') is not False for row in checks.values())
     return dict(version=VERSION,status='PASS' if passed else 'HARD_FAIL',checks=checks,
         strict_status_unchanged=qc['status'],
-        dual=dict(grade='BARRIER_DUAL_ENGINEERING_GRADE',BarConvTol=tolerance),
+        dual=dict(grade='BASIC_CROSSOVER_DUAL' if basic else 'BARRIER_DUAL_ENGINEERING_GRADE',BarConvTol=tolerance),
         disclosures=disclosures,inputs=copy.deepcopy(inputs),
         scope='FULL_YEAR' if qc.get('optimization_hours')==8760 else 'ENGINEERING_WINDOW_ONLY',
         author_decision_reference='AGENTS.md 2026-10-12; no automatic legacy-state promotion')

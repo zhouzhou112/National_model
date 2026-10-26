@@ -139,7 +139,7 @@ def archive_model(
     return report
 
 
-def save_numeric_snapshot(model, output_dir, *, row_scaling_registry=None):
+def save_numeric_snapshot(model, output_dir, *, row_scaling_registry=None, prefer_basic=False):
     """Persist available raw solution attributes, including nonfinite evidence."""
     from .annual_capacity_link_scaling import validate_row_scaling_registry
 
@@ -183,8 +183,10 @@ def save_numeric_snapshot(model, output_dir, *, row_scaling_registry=None):
                 payload["unavailable"][name] = repr(error)
         del objects
         payload[f"{kind}_order_digest"] = model_order(model, kind)
-    payload["primal_attribute"] = next((n for n in ("BarX", "X") if n in payload["attributes"]), None)
-    payload["dual_attribute"] = next((n for n in ("BarPi", "Pi") if n in payload["attributes"]), None)
+    primal_order = ("X",) if prefer_basic else ("BarX", "X")
+    dual_order = ("Pi",) if prefer_basic else ("BarPi", "Pi")
+    payload["primal_attribute"] = next((n for n in primal_order if n in payload["attributes"]), None)
+    payload["dual_attribute"] = next((n for n in dual_order if n in payload["attributes"]), None)
     payload["status"] = "COMPLETE" if all(
         payload.get(k) and payload["attributes"][payload[k]]["finite"]
         for k in ("primal_attribute", "dual_attribute")
@@ -261,6 +263,8 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
                 artifacts.model,
                 root,
                 row_scaling_registry=row_scaling_registry,
+                prefer_basic=(report.get('solution_contract', {}).get('mode') == 'OPTIMAL_BASIC_OR_DEFAULT'
+                              and report.get('solution_contract', {}).get('basis_required') is True),
             ),
         )
         if raw is not None and raw["status"] != "COMPLETE":

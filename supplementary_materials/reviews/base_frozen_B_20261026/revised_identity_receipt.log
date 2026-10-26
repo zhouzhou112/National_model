@@ -1,0 +1,22 @@
+Set parameter LicenseID to value 2840423
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/model_archive/original.mps.gz
+Reading time = 0.92 seconds
+CISPO_2030_master: 216188 rows, 346767 columns, 1715782 nonzeros
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/model_archive/original.mps.gz
+Reading time = 0.92 seconds
+CISPO_2030_master: 226051 rows, 353638 columns, 1766989 nonzeros
+{
+  "status": "PASS",
+  "primal_attribute": "X",
+  "objective_relative_difference": 8.671675085119263e-16,
+  "cross_feasibility_pass": true,
+  "cross_objective_equal": true,
+  "cost_component_tolerance": 1e-07,
+  "cost_source_sha256": {
+    "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h_Xcost/cost_from_X/cost_components.csv": "6265a1276daffa02e1f2b27bf2c2a1ebe502e4574bf2a269822e65ffa4febf56",
+    "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h_Xcost/cost_from_X/cost_components.csv": "d182bb69e0f0e9f4890690a625d5e36872cab16c73a0657a0441370a8c0c5461"
+  },
+  "note": "Zero marginal cost means zero reduced cost along feasible alternative dispatch; direct flow regularization coefficients can be nonzero. Original BarX-derived tables are retained."
+}
+Failed cost components: []
+Maximum changed-column reduced costs: {'base_control_24h': 2.2898349882893854e-15, 'zero_24h': 1.457167719820518e-15}

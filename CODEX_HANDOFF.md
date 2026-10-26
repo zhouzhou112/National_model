@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
+
 - **2026-10-26 GMT：框架 B 候选实现已验证，身份门禁失败，停止放行。** 源码 `ba7a23f`；X 未保全，按授权回退 BarX，36686 个 VRE 新建值同次解析零差，hydro spur 独立补表 SHA 已核。默认关闭 MPS 字节一致；1h 固定 86745 列、clip 合计 2.64e-10 GW；最终回归 477 tests OK。24h 固定 Base/零签约 B 目标相对差 8.67e-16，但风光出力最大差 8.57 GW、正向潮流 2.81 GW，逐时一致门禁未通过；保存解双向交叉可行且等成本，支持退化多解，未自行豁免。Cross2 的 relative_v1 缺 barrier_primal_dual_metrics，须修复兼容性。未做开放柔性 B24h、参数核准或任何 B 生产提交/release；保护作业与 case3 2050 未触碰。详见 `supplementary_materials/reviews/base_frozen_B_20261026/REVIEW_ZH.md`。下一步等待作者处理逐时一致判据，再修复 QC/续做门禁；后续年份线程仍待作者确认。
 
 - **2026-10-26英国16:29 GMT：T550恢复，前轮遗漏同步已补齐。** Base2060 ready三文件先确认缺失后补传、逐文件SHA一致；全量CSV与nocredit证书SHA复核一致，旧连接失败证据保留。原任务1–3已完成；5201318/5207165仍RUNNING，467/332轮、stderr空、Restarts0，未干预。4–5待终态，case3 2050仍未R1/门禁/最终冻结/提交；恢复证据见base_2060_screen_20261026/ready_t550_recovery_20261026.json。
@@ -10322,3 +10324,9 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - 结果：默认关闭 MPS 字节一致；86745 个投资列的 MPS FX 值等于审计；GW clip 合计 2.6415681231e-10，单列最大 2.6414467271e-10。两个对照都 OPTIMAL/保全 COMPLETE，容量误差 ≤2.84e-14，目标相对差 8.67e-16；逐时 VRE 差 8.57 GW、正向潮流差 2.81 GW，任务书身份门禁 1 未通过。双向交叉约束最大违反 3.7169e-11、界违反 4.8743e-12、等成本，支持退化解释；没有替代原门禁。
 - 未解决：Cross2/basic 的 relative_v1 为 ERROR（缺 barrier_primal_dual_metrics）。开放柔性 B24h 门禁 2、参数核准、生产冻结/preflight/提交/release 全部未做；无全年性能或验收结论。后续 2040–2060 上游恢复尚须实际包核验，线程等待作者。
 - 下一动作：作者决定是否改用目标相等+双向交叉可行性、逐时差异披露的门禁；未明确修订前不推进放行。之后修复 Cross2 QC 兼容性、重新门禁、通过才按原授权提交 2030。保护作业 5201318/5207165 和 case3 2050 未触碰，无凭据读取或后台监听。
+
+## 2026-10-26 框架 B 作者修订后本地门禁全部通过
+
+- **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
+
+源码起点88bd36f；本次变更 relative_acceptance.py、solution_preservation.py、两测试及 B 验证/部署工具。原CSV来自BarX，已按保存X重算旁置，不改原件；成本和边际成本、参数桥接、完整回归证据均在 B review 第7节。最终480 tests/161.365s/OK；368源码LF SHA对齐。命令 run_t550_checks.py costs / frozen --suffix _basic_v2 / regression --suffix _basic_v2 / parameters。生产包预计 `20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v1`，本条时尚未提交；实际source_commit及资源/Job在部署回执另记。未碰5201318/5207165或case3 2050，无后台监听。

@@ -1,0 +1,27 @@
+[
+  {
+    "path": "cispo_model/relative_acceptance.py",
+    "before_sha256": "62aefb506b2b4803c254d69f8eada0c858446f96be9bba910dc29efc1dd60243",
+    "after_sha256": "fadcc17f271092bf99896d23c36214e0485c40227aaa7d085d401667d6a2f5db"
+  },
+  {
+    "path": "cispo_model/solution_preservation.py",
+    "before_sha256": "4530c4fca8bc8da5803dccab480952ca8741baecab95259c96e33395d8f9369a",
+    "after_sha256": "1df1013fc8e257630f2afef5012b9f67e7f99218e06b5715e8722eff2d490ee2"
+  },
+  {
+    "path": "tests/test_relative_acceptance.py",
+    "before_sha256": "f6f479d79b856c888156bb9242f58e7d5a5d487aba17711b0ad15511807553f5",
+    "after_sha256": "31ee1542f49974ecb3395f4d00dcdb5c6fd6e02af175119a86b14de8a96359b2"
+  },
+  {
+    "path": "tests/test_solution_preservation.py",
+    "before_sha256": "5af35655c4d56334e7ba9d76e7d4cf5eb83179070038a6825322d06710139276",
+    "after_sha256": "152fed2ef7af75081c75667449508789466eb1a156a1375d7cbddefa8bc70709"
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py",
+    "before_sha256": "97d3397185f302a2edee6c00b35b641ccf214fa3dac1e0f50d695e83d33ca093",
+    "after_sha256": "ecdc6b20e8c07f974d63e40d2c0fd0e184cc245d07d70141ed130a04b0561bba"
+  }
+]
