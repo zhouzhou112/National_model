@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26英国21:44 GMT／10月27日北京05:44：云端3项RUNNING。** Case3 2040/5201318到484轮（6天22:43:20），PInf0.00543/DInf6.62e-8/Compl4.74e-5，较456推进28轮，近474–484三项下降56.56%/55.87%/56.51%，19.43分钟/轮。C2050 t40/5207165到344轮（6天09:19:08），PInf9.72/DInf7.01e-5/Compl0.0826，较324推进20轮，近334–344三项下降28.53%/25.74%/27.54%，26.73分钟/轮；对偶已低于298轮1.07e-4，仍高于297反弹前8.40e-6。新增Base-frozen2030/5276703运行1:42:27，48线程，ordering1343.89s已完成、Barrier第4轮，PInf7.09e11/DInf664/Compl4.07e9，属早期迭代。
+
 - **2026-10-26 20:01 GMT：B2030 v3 已启动，Job5276703 RUNNING。** 源码仍9f0a042，479项源码/输入/冻结来源与v2逐字节一致、原门禁复用；新WLS路径字符串preflight PASS，未读取许可内容。m4cg1603实配64CPU/750G/billing64、48线程、UNLIMITED/no-requeue，Gurobi13.0.2启动smoke PASS，可用731.251629GiB。尚无Barrier轮次/最终RSS；既有日志持续记录，无后台监听。保留v1/v2及5276670失败备份，不碰5201318/5207165/case3 2050；后续年份仍等作者线程确认。
 
 - **2026-10-26 19:43 GMT：B2030 Job5276670已提交/release但启动许可失败，停止重提。** 最终源码9f0a042、v2冻结/preflight和481回归/两道身份/参数门禁PASS；m4cg1603实配64CPU/750G/billing64、UNLIMITED。19:39:55–19:39:59 gp.Env.start报旧License2847107过期，尚未构建模型/无output_8760，无全年RSS/轮数指标。部署误沿用旧默认许可；记录已有10-20独立WLS路径，未读凭据，未自动重试。23文件/92,477,291bytes启动失败记录已T550逐项SHA备份COMPLETE，余36.2379%；不是完整解备份。下一步引用已登记WLS路径验证许可并新建v3；保留v1/v2、不重启旧Job、不碰保护作业。详见B review第9节。
@@ -10358,3 +10360,12 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - 启动英国2026-10-26 20:01:42 GMT／北京10月27日04:01:42，20:01:50回读RUNNING、Restarts0。计算节点smoke PASS、启动可用731.251629GiB；资源记录在许可Env之前写入。sstat首次MaxRSS379216KiB（约0.362GiB）仅启动阶段快照，绝非全年峰值；当时无迭代记录、resource_usage未完成，最终RSS/每轮耗时/总轮数尚不可得。
 - 后续性能由原 `output_8760/solver_telemetry.jsonl` 逐轮保存runtime，原 `gurobi.log`交叉核对；单次采集工具导出相邻轮runtime差CSV，首轮不把预处理时间算作迭代耗时，缺失不填零。进程峰值用终态 `/usr/bin/time -v` 的resource_usage，Slurm峰值另记。无后台监听/定时服务。新终态按10-20规则完整T550备份及扩展relative_v1验收；2040/2050/2060仍等待作者线程确认。
 - 证据：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v3/{frozen_release,cloud_preflight,released_submission,startup_01}.json`，明确提交清单COMMIT_PATHS_v3_receipt.txt。保留未审核SI稿件及32行既有handoff，不将其纳入本轮Git。
+
+
+## 2026-10-26晚 三项目联合进度
+
+**2026-10-26英国21:44 GMT／10月27日北京05:44：云端3项RUNNING。** Case3 2040/5201318到484轮（6天22:43:20），PInf0.00543/DInf6.62e-8/Compl4.74e-5，较456推进28轮，近474–484三项下降56.56%/55.87%/56.51%，19.43分钟/轮。C2050 t40/5207165到344轮（6天09:19:08），PInf9.72/DInf7.01e-5/Compl0.0826，较324推进20轮，近334–344三项下降28.53%/25.74%/27.54%，26.73分钟/轮；对偶已低于298轮1.07e-4，仍高于297反弹前8.40e-6。新增Base-frozen2030/5276703运行1:42:27，48线程，ordering1343.89s已完成、Barrier第4轮，PInf7.09e11/DInf664/Compl4.07e9，属早期迭代。
+
+Git基准04687e8afa5e070bd46a922bda22647ddc6b8ac3；先枚举完整squeue发现新B2030，再补scontrol/sstat/日志核验，没有遗漏新增项目。Case3/C2050仍未OPTIMAL，三项stderr空、无显式警告/许可错误。前两项Slurm峰712.44/621.18GiB未增加；B2030采样RSS约239.84GiB、峰557.64GiB，不把排序通过当后续峰值保证。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T214355Z{,_summary}.json及B2030_status_20261026T2144Z.json。nocredit完整备份沿用10-25最终校验，本次未重复传输/全量校验。
+
+仅更新小证据和三份交接记录，保留其他会话32行handoff及SI改动；未改冻结作业/参数、未建监听或给ETA。JSON解析、明确暂存清单/凭据/diff核验。下一步用户询问时核验三项；Case3 2040终态后按作者10-26新授权进行完整备份、优先T550证书、扩展验收，B/obj≤1e-2时采纳为2050上游，并按R1/v9_a12/Base2050 margin0.2/Aggregate0/40线程/1h与24h及参数门禁全部通过后提交release，同时准备Base2060 margin0.2清单；本轮2040未终态，未启动这些依赖步骤。

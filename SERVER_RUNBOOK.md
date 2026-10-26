@@ -5560,3 +5560,12 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - 证据：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v3/{frozen_release,cloud_preflight,released_submission,startup_01}.json`，明确提交清单COMMIT_PATHS_v3_receipt.txt。保留未审核SI稿件及32行既有handoff，不将其纳入本轮Git。
 
 后续 B 作业可从本次成功启动的 `base_frozen_2030_v3.sbatch` 派生，成功依据为deployment_v3/startup_01.json；仍须按目标年份核准其专属参数、路径和适用门禁。
+
+
+## 2026-10-26晚 三项目联合进度
+
+**2026-10-26英国21:44 GMT／10月27日北京05:44：云端3项RUNNING。** Case3 2040/5201318到484轮（6天22:43:20），PInf0.00543/DInf6.62e-8/Compl4.74e-5，较456推进28轮，近474–484三项下降56.56%/55.87%/56.51%，19.43分钟/轮。C2050 t40/5207165到344轮（6天09:19:08），PInf9.72/DInf7.01e-5/Compl0.0826，较324推进20轮，近334–344三项下降28.53%/25.74%/27.54%，26.73分钟/轮；对偶已低于298轮1.07e-4，仍高于297反弹前8.40e-6。新增Base-frozen2030/5276703运行1:42:27，48线程，ordering1343.89s已完成、Barrier第4轮，PInf7.09e11/DInf664/Compl4.07e9，属早期迭代。
+
+Git基准04687e8afa5e070bd46a922bda22647ddc6b8ac3；先枚举完整squeue发现新B2030，再补scontrol/sstat/日志核验，没有遗漏新增项目。Case3/C2050仍未OPTIMAL，三项stderr空、无显式警告/许可错误。前两项Slurm峰712.44/621.18GiB未增加；B2030采样RSS约239.84GiB、峰557.64GiB，不把排序通过当后续峰值保证。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T214355Z{,_summary}.json及B2030_status_20261026T2144Z.json。nocredit完整备份沿用10-25最终校验，本次未重复传输/全量校验。
+
+仅更新小证据和三份交接记录，保留其他会话32行handoff及SI改动；未改冻结作业/参数、未建监听或给ETA。JSON解析、明确暂存清单/凭据/diff核验。下一步用户询问时核验三项；Case3 2040终态后按作者10-26新授权进行完整备份、优先T550证书、扩展验收，B/obj≤1e-2时采纳为2050上游，并按R1/v9_a12/Base2050 margin0.2/Aggregate0/40线程/1h与24h及参数门禁全部通过后提交release，同时准备Base2060 margin0.2清单；本轮2040未终态，未启动这些依赖步骤。
