@@ -71,3 +71,8 @@ Git基准6ee7f8a4241ed9a572aa2e0d6b9b8aa540ef18f9。复用已测试scripts/backu
 Git基准b9ab0698a34f84fc12697486f296e138769ee2b8。只读squeue/scontrol/sstat/sacct及日志，stderr均0，Slurm峰712.44/621.18GiB未变；当前RSS约396.04/420.62GiB。仍无OPTIMAL，不给ETA、不改参数/作业。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261025T234041Z{,_summary}.json。
 
 nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3全部VERIFIED，93文件/5,510,708,567bytes，无延期文件，source_unchanged=true。最终backup_manifest文件清单与原plan逐项相等，源result_manifest SHA一致；本次取回完成证据cloud_backup_20261025/check_20261025T2340Z.json。目标/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1，磁盘仍约36.29%可用。完整逐文件bytes/SHA核验由单次备份进程完成，本次复核最终报告及清单，不重复传输。备份完成不代表最新扩展科学验收完成；原QC/作者待定标签不改。台账、交接、服务器记录同步追加；JSON解析/暂存diff与凭据检查，无源码变更不重跑求解。下一步询问时重点观察C2050对偶反弹是否恢复及两项终态，任何新终态按既定流程完整备份，无后台监听。
+
+
+## 2026-10-26 nocredit后处理旁置完成
+
+nocredit完整备份仍为2026-10-25已验证的93文件/5,510,708,567bytes，原output_8760未改变。当前result_manifest SHA c5566edafeae0cae5e4bd6b259a34a51f10ba4ec9e43745954ad8acb7a5c05a9与backup_manifest绑定值一致。新增旁置postprocess_20261026/pricing/screen_pricing_certificate.json（SHA4dfc8dce13c73cc72461be146c69990c0d81f26b4e73387a0dac6b022f9da2fa）及扩展评估/输入/evidence；证书未传回本机。B/obj=8.1423511193e-5、扩展PASS，严格标签不改。回执与报告见case3_2050_preparation_20261026及case3_2030_launch_20261014/nocredit_results_20261026。5201318/5207165仍RUNNING，其未来备份不标完成。

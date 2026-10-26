@@ -1,0 +1,10 @@
+{
+  "status": "PREPARED_NOT_FROZEN_NOT_SUBMITTED",
+  "directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/_preparations/20261026_case3_2050_t40_v1",
+  "input_files_verified": 58,
+  "payload_sha256": "b1d8f8b15f31efd72a4e34bd7afc95b66d9499a0e61cb95f0364e97bd6be0fd9",
+  "batch_syntax": "PASS",
+  "framework": "A",
+  "state": "WAIT_CASE3_2040",
+  "credentials_read": false
+}

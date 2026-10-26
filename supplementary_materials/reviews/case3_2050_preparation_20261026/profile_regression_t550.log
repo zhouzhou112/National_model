@@ -1,0 +1,12 @@
+test_only_authorized_profile_changes (tests.test_case3_2050_preparation.Case32050PreparationTests.test_only_authorized_profile_changes) ... ok
+test_reject_numerical_drift (tests.test_case3_2050_preparation.Case32050PreparationTests.test_reject_numerical_drift) ... ok
+test_reject_wrong_year_scenario_and_upstream_mode (tests.test_case3_2050_preparation.Case32050PreparationTests.test_reject_wrong_year_scenario_and_upstream_mode) ... ok
+test_profile_and_author_scope (tests.test_production_screen.ProductionScreenTests.test_profile_and_author_scope) ... ok
+test_continuation_profile_identity_year_and_numerics (tests.test_production_screen.ProductionScreenTests.test_continuation_profile_identity_year_and_numerics) ... ok
+test_identity_changes_with_screen_but_base_retains_historical_hash (tests.test_production_screen.ProductionScreenTests.test_identity_changes_with_screen_but_base_retains_historical_hash) ... ok
+test_authorized_c2050_40_thread_retry_is_narrowly_scoped (tests.test_production_screen.ProductionScreenTests.test_authorized_c2050_40_thread_retry_is_narrowly_scoped) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.987s
+
+OK

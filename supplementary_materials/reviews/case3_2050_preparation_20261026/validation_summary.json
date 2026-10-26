@@ -1,0 +1,19 @@
+{
+  "local_pricing_tests": {
+    "total": 5,
+    "passed": 5
+  },
+  "relative_acceptance": {
+    "local_passed": 13,
+    "local_dependency_error": "gurobipy missing for preservation test",
+    "t550_preservation_passed": 1,
+    "resolved": true
+  },
+  "production_profiles": {
+    "t550_passed": 7,
+    "local_new_profile_passed": 3
+  },
+  "syntax": "PASS",
+  "full_year_solve": false,
+  "case3_2050_state_gate": "WAITING_CASE3_2040"
+}

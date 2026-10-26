@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "source": "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/output_8760",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/postprocess_tools_20261026/scripts/assess_relative_v1.py",
+    "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/output_8760",
+    "--inputs",
+    "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/postprocess_20261026/assessment_inputs.json",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/postprocess_20261026/solution_qc_relative_v1.json"
+  ],
+  "source_verification": {
+    "solution_qc.json": {
+      "bytes": 44005,
+      "sha256": "8b1b6e98d4660364bc394c17e94ffeb18576062c15417ebf309a431e183a95f4",
+      "manifest_match": true
+    },
+    "solve_report.json": {
+      "bytes": 71605,
+      "sha256": "45972e05ef1d76ab261f984c69e41444932f8e56e5abd16ebb2ea7b75dfdebcf",
+      "manifest_match": true
+    },
+    "hourly_province_balance.csv.gz": {
+      "bytes": 48954803,
+      "sha256": "80cf28b69d5be045db810a211a0a00b0ea619471ff0cd530271838b69f61af5b",
+      "manifest_match": true
+    },
+    "reservoir_dispatch.npz": {
+      "bytes": 237618706,
+      "sha256": "8c4c093e1c73193721bf28460f2504bb9a85cdc1eaf401472661bf19675c2ca8",
+      "manifest_match": true
+    },
+    "build_report.json": {
+      "bytes": 82021,
+      "sha256": "822992808b2278b2f45b5cdb406e207f06efc1edd296b030b3516c816a9014a7",
+      "manifest_match": true
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "bytes": 7089,
+      "sha256": "70389eeb1a34be183940a1557c3ccd3b99840ce89458ec87031666e46149ee66",
+      "manifest_match": true
+    },
+    "vre_capacity.csv": {
+      "bytes": 2913124,
+      "sha256": "7bc8def6582047f250b0b56427ae773d65dd9f9cf0ec4984694a86a09634739e",
+      "manifest_match": true
+    },
+    "storage_capacity.csv": {
+      "bytes": 9403,
+      "sha256": "24e2a74524cd3b716972a77025ebf1ecd293201091569198e38769eaf010c666",
+      "manifest_match": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "bytes": 28976,
+      "sha256": "2da443c99a9abc27dd0c916429ab91baa30f0758a8b7aa809a2b4fa7129e21bb",
+      "manifest_match": true
+    },
+    "hydro_capacity.csv": {
+      "bytes": 310746,
+      "sha256": "c746b7ba8aa157be83169d958aaa8d424ecdf712cc4481b1e7cd8ed65acf231f",
+      "manifest_match": true
+    },
+    "wave_capacity.csv": {
+      "bytes": 243917,
+      "sha256": "f47c76a379418943f994f8a438df4d5275a72eadb04fec857e467081554e98e4",
+      "manifest_match": true
+    },
+    "transmission_capacity.csv": {
+      "bytes": 32364,
+      "sha256": "3057a5b6413ae6cc797aab8bd81de1d75ed26f27d879246bb59d9826c4bb7bf8",
+      "manifest_match": true
+    },
+    "result_manifest.json": {
+      "bytes": 13806,
+      "sha256": "c5566edafeae0cae5e4bd6b259a34a51f10ba4ec9e43745954ad8acb7a5c05a9",
+      "manifest_match": false
+    }
+  },
+  "source_unchanged": true,
+  "tool_sha256": {
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/build_vre_screen_list.py": "55e0a1a28cb41137e0bc5b8463020e18e1116cd785953b4c64954f50d97041c3",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "62aefb506b2b4803c254d69f8eada0c858446f96be9bba910dc29efc1dd60243",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "files": {
+    "assessment_inputs.json": {
+      "bytes": 5716,
+      "sha256": "2433f3aa46ede5663190d47b722f2263bb3ed2f46fc8dbec636ae454a1897745"
+    },
+    "solution_qc_relative_v1.json": {
+      "bytes": 48083,
+      "sha256": "c9bedd4ebb251482621125e7fa5dce46225245d2c56d3a9ecc920917873451a0"
+    },
+    "assessment_evidence.json": {
+      "bytes": 3827,
+      "sha256": "d0373f1b4d74136ae21368e34f3622b514f06d5612ed1540aff5b46f5c55687c"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 """Audit completed P4 tables without building or solving any planning model.
 
-Usage: --screen DIR --archive DIR --year 2040|2050 --output NEW_DIR.
+Usage: --screen DIR --archive DIR --year 2040|2050|2060 --output NEW_DIR.
+For 2060, provide the verified --source-release explicitly.
 Verifies identities, arithmetic and real apply_vre_screen stable-key behavior
 using an in-memory bounds stub, including deliberately reversed site order.
 Counts apply to the source Base headroom, not an unbuilt future case3 state.
@@ -25,9 +26,14 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--screen', type=Path, required=True)
     p.add_argument('--archive', type=Path, required=True)
-    p.add_argument('--year', type=int, choices=(2040, 2050), required=True)
+    p.add_argument('--year', type=int, choices=(2040, 2050, 2060), required=True)
+    p.add_argument('--source-release', help='Explicit verified Base release; required for 2060')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
+    source_release = RELEASES.get(a.year) or a.source_release
+    if a.source_release and a.source_release != source_release:
+        p.error('--source-release conflicts with the established P4 source')
+    if not source_release: p.error('--source-release is required for this year')
     a.output.mkdir(parents=True, exist_ok=False)
     identity = json.loads((a.screen/'screen_identity.json').read_text())
     download = json.loads((a.archive/'download_identity.json').read_text())
@@ -38,7 +44,7 @@ def main():
     assert source['planning_year'] == a.year == config['planning_year']
     assert source['scenario_id'] == 'base' and source['optimization_hours'] == 8760
     assert identity['scope'] == 'FULL_YEAR'
-    assert contract['source_release'] == download['source_release'] == RELEASES[a.year]
+    assert contract['source_release'] == download['source_release'] == source_release
     assert contract['margin'] == .2
     assert contract['source_csv_sha256'] == sha256(a.screen/'source_screen.csv')
     assert contract['source_dual_sha256'] == download['files']['barrier_checkpoint/dual_barpi.npy']['sha256']
@@ -93,7 +99,7 @@ def main():
             expandable=int(expandable.sum()),excluded=int(excluded.sum()),
             retained_expandable=int((expandable & ~excluded).sum())))
     result = dict(status='PASS',year=a.year,checked_utc=datetime.now(timezone.utc).isoformat(),
-                  source_release=RELEASES[a.year],scope='BASE_SOURCE_HEADROOM_ONLY_NOT_FUTURE_MODEL_GATE',
+                  source_release=source_release,scope='BASE_SOURCE_HEADROOM_ONLY_NOT_FUTURE_MODEL_GATE',
                   source_csv_sha256=sha256(a.screen/'source_screen.csv'),
                   published_csv_sha256=sha256(compact),
                   published_csv_columns=fields,

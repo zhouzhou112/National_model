@@ -1,0 +1,208 @@
+{
+  "disclosures": {
+    "new_build_below_1mw": {
+      "vre_capacity.csv": {
+        "asset_rows": 13108,
+        "total_gw": 0.022785267147954983,
+        "negative_rows": 0
+      },
+      "hydro_capacity.csv": {
+        "asset_rows": 1091,
+        "total_gw": 0.013339700571119077,
+        "negative_rows": 0
+      },
+      "thermal_nuclear_capacity.csv": {
+        "asset_rows": 175,
+        "total_gw": 0.005544149962063216,
+        "negative_rows": 1
+      },
+      "storage_capacity.csv": {
+        "asset_rows": 28,
+        "total_gw": 0.0016040259537065229,
+        "negative_rows": 0
+      },
+      "wave_capacity.csv": {
+        "asset_rows": 1284,
+        "total_gw": 0.00028208592466888715,
+        "negative_rows": 0
+      },
+      "transmission_capacity.csv": {
+        "asset_rows": 282,
+        "total_gw": 0.1286262721510589,
+        "negative_rows": 0
+      }
+    },
+    "numerical_robustness_audit": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    },
+    "continuation_cleanup": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    },
+    "continuation_bound_closure": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    }
+  },
+  "power_by_province": [
+    {
+      "province_code": "11",
+      "annual_peak_load_gw": 35.46641248399546,
+      "maximum_residual_gw": 9.040981296948304e-09
+    },
+    {
+      "province_code": "12",
+      "annual_peak_load_gw": 22.402213517814435,
+      "maximum_residual_gw": 7.933842027796345e-09
+    },
+    {
+      "province_code": "13",
+      "annual_peak_load_gw": 90.16705542092367,
+      "maximum_residual_gw": 7.018876146958064e-09
+    },
+    {
+      "province_code": "14",
+      "annual_peak_load_gw": 44.26486597548952,
+      "maximum_residual_gw": 7.379618693903467e-09
+    },
+    {
+      "province_code": "15",
+      "annual_peak_load_gw": 64.9608028565454,
+      "maximum_residual_gw": 1.1199198013400746e-08
+    },
+    {
+      "province_code": "21",
+      "annual_peak_load_gw": 42.49521287145968,
+      "maximum_residual_gw": 5.363624211440765e-09
+    },
+    {
+      "province_code": "22",
+      "annual_peak_load_gw": 15.96197790292634,
+      "maximum_residual_gw": 6.437646860035784e-09
+    },
+    {
+      "province_code": "23",
+      "annual_peak_load_gw": 18.41638744064096,
+      "maximum_residual_gw": 4.373415407599168e-09
+    },
+    {
+      "province_code": "31",
+      "annual_peak_load_gw": 47.79096719641718,
+      "maximum_residual_gw": 3.955001659505797e-09
+    },
+    {
+      "province_code": "32",
+      "annual_peak_load_gw": 145.07593043230668,
+      "maximum_residual_gw": 7.386077527371526e-09
+    },
+    {
+      "province_code": "33",
+      "annual_peak_load_gw": 147.38580240422664,
+      "maximum_residual_gw": 6.666354579465405e-09
+    },
+    {
+      "province_code": "34",
+      "annual_peak_load_gw": 60.33533932936956,
+      "maximum_residual_gw": 3.416033678149688e-09
+    },
+    {
+      "province_code": "35",
+      "annual_peak_load_gw": 68.94670989000016,
+      "maximum_residual_gw": 6.806196495290351e-09
+    },
+    {
+      "province_code": "36",
+      "annual_peak_load_gw": 41.192346906187055,
+      "maximum_residual_gw": 1.3720331537570019e-09
+    },
+    {
+      "province_code": "37",
+      "annual_peak_load_gw": 175.87785057498945,
+      "maximum_residual_gw": 2.250118313895655e-09
+    },
+    {
+      "province_code": "41",
+      "annual_peak_load_gw": 95.2672170612509,
+      "maximum_residual_gw": 1.2884484590358623e-09
+    },
+    {
+      "province_code": "42",
+      "annual_peak_load_gw": 57.143468165109226,
+      "maximum_residual_gw": 3.741039478200037e-09
+    },
+    {
+      "province_code": "43",
+      "annual_peak_load_gw": 51.136471056093455,
+      "maximum_residual_gw": 4.687500165800884e-09
+    },
+    {
+      "province_code": "44",
+      "annual_peak_load_gw": 191.6701724865632,
+      "maximum_residual_gw": 4.038497536384966e-09
+    },
+    {
+      "province_code": "45",
+      "annual_peak_load_gw": 39.08277184023789,
+      "maximum_residual_gw": 5.38297939556287e-09
+    },
+    {
+      "province_code": "46",
+      "annual_peak_load_gw": 8.47934266615521,
+      "maximum_residual_gw": 1.8779955368586343e-09
+    },
+    {
+      "province_code": "50",
+      "annual_peak_load_gw": 38.29488987669581,
+      "maximum_residual_gw": 4.447480606017962e-09
+    },
+    {
+      "province_code": "51",
+      "annual_peak_load_gw": 74.91977090992947,
+      "maximum_residual_gw": 2.734226001166462e-08
+    },
+    {
+      "province_code": "52",
+      "annual_peak_load_gw": 33.39538529429459,
+      "maximum_residual_gw": 5.654293033785507e-09
+    },
+    {
+      "province_code": "53",
+      "annual_peak_load_gw": 40.24506256357568,
+      "maximum_residual_gw": 8.571628740128291e-09
+    },
+    {
+      "province_code": "54",
+      "annual_peak_load_gw": 1.919255961885441,
+      "maximum_residual_gw": 1.633209123497181e-09
+    },
+    {
+      "province_code": "61",
+      "annual_peak_load_gw": 44.538449059679806,
+      "maximum_residual_gw": 4.934666009148714e-09
+    },
+    {
+      "province_code": "62",
+      "annual_peak_load_gw": 28.97853938581566,
+      "maximum_residual_gw": 6.618385839374241e-09
+    },
+    {
+      "province_code": "63",
+      "annual_peak_load_gw": 16.96383629127964,
+      "maximum_residual_gw": 6.550868292265477e-09
+    },
+    {
+      "province_code": "64",
+      "annual_peak_load_gw": 18.68767219041385,
+      "maximum_residual_gw": 6.403258367981834e-09
+    },
+    {
+      "province_code": "65",
+      "annual_peak_load_gw": 62.824740770862,
+      "maximum_residual_gw": 7.495778220345528e-09
+    }
+  ],
+  "reservoir_worst": {
+    "hydrochn_row_id": "HydroCHN_00001",
+    "hour_index": 2519,
+    "residual_m3": -0.04546593129634857,
+    "active_storage_m3": 18482416540.0
+  }
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26 nocredit2030收尾与case3 2050预置：** nocredit73个小文件/105,175,467bytes取回，72项result_manifest一致、manifest自身与T550完整备份身份一致。T550证书B=341.083330725 million CNY、B/obj=8.1423511193e-5，ACCEPT/INTERVAL_WITH_B；完整证书只留T550。扩展relative_v1 PASS，严格HARD_FAIL/水库暂缓保留；Base对比区间[34.694968,43.914172]亿元。新case3 2050 40线程profile仅5键变更，58输入SHA与sbatch在云端独立_preparations目录核验通过，未R1/1h/24h/最终冻结/提交。Base2060 margin0.2正在T550单次离线计算。13:24GMT两保护作业仍RUNNING/458与326轮，无干预或监听。
+
 - **2026-10-26英国12:48 GMT／北京20:48：云端2项RUNNING。** Case3 2040/5201318到456轮（6天13:47:25），PInf0.0402/DInf5.57e-7/Compl3.75e-4，较417推进39轮；近446–456三项下降40.88%/50.27%/41.77%，19.07分钟/轮，448对偶有小幅波动，不能称全程单调。C2050 t40/5207165到324轮（6天00:23:13），PInf18.6/DInf1.27e-4/Compl0.155，较298推进26轮；近314–324三项下降31.62%/30.60%/32.02%，30.275分钟/轮。对偶305轮峰2.51e-4，当前较峰回落49.40%，仍高于上次298的1.07e-4及297反弹前8.40e-6；不能称已完全恢复。
 
 - **2026-10-25英国23:40 GMT／10月26日北京07:40：云端2项RUNNING，nocredit备份已COMPLETE。** Case3 2040/5201318到417轮（6天00:40:06），PInf0.226/DInf3.09e-6/Compl0.00234，较上次388推进29轮；近407–417原始/互补降30.89%/31.58%，对偶升1.64%，22.85分钟/轮。C2050 t40/5207165到298轮（5天11:15:54），PInf50.9/DInf1.07e-4/Compl0.426，较279推进19轮；近288–298原始/互补降29.79%/31.62%，对偶增至原值8.70倍（增加769.92%），30.86分钟/轮。298轮对偶从8.40e-6跃至1.07e-4（12.74倍），尚无后续回落证据；其他两项仍降，无显式警告或错误，不能将互补改善等同于全指标稳定收敛。
@@ -10274,3 +10276,14 @@ nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3�
 Git基准fa2ccce7d8fb6f5a8443cebc20671c575bcc4852。只读squeue/scontrol/sstat/sacct、Gurobi日志及stderr，当前RSS396.05/420.62GiB、Slurm峰712.44/621.18GiB未增加；stderr空，无显式警告/错误/终态。nocredit5153901仍COMPLETED/0:0；其93文件/5,510,708,567bytes完整T550备份的上次最终验证结论保留，本轮不重复传输/全量SHA复核。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T124800Z{,_summary}.json，备份证据沿用cloud_backup_20261025/check_20261025T2340Z.json。
 
 仅两小JSON和CODEX_HANDOFF/MODEL_SERVER_STATUS/SERVER_RUNBOOK更新，其他SI会话工作保留。JSON解析、暂存范围/凭据/diff检查通过，无源码变更无需模型测试；不改冻结包、作业或求解参数，不建监听，不给ETA。下一步用户询问时继续核验对偶恢复/终态，确认新生产终态后按已授权流程完整保全备份；nocredit最新扩展正式验收仍待执行。
+
+
+## 2026-10-26 nocredit2030收尾、T550定价与case3 2050预置
+
+Git起点0cbad432fb61cb555e92db42923339cffe79d63d。按作者新增授权，仅增加case3 2050 40线程profile及限定入口、同情景门禁选项，P4审计允许显式2060来源；不改物理模型/输入/约束。nocredit73小文件逐项SHA取回，备份93文件COMPLETE身份复核；定价B/obj8.1423511193e-5、扩展PASS，证书只在T550，原严格标签/输出不改。三方目标与原对偶差见case3_2030_launch_20261014/nocredit_results_20261026/REVIEW_ZH.md；旧case3上界64.32与高精度重算64.314766差异已明确披露。
+
+准备入口case3_2050_preparation_20261026/{remote_work,prepare_package,collect_live}.py；云端独立目录/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/_preparations/20261026_case3_2050_t40_v1，11,220,392bytes包SHA b1d8f8b15f31efd72a4e34bd7afc95b66d9499a0e61cb95f0364e97bd6be0fd9，58数据SHA及bash语法PASS。未来最终源码须从本轮审查提交冻结，不能仅将新profile套到旧源码。
+
+验证：定价5测试PASS；relative13项本地PASS、1项因缺gurobipy在T550补验PASS；新旧profile7项T550 PASS（含新增3项），新profile本地3项PASS。语法、逐键diff及数据清单核验通过；不以此代替未来真实R1/1h/24h/参数/preflight。2050中央值任务书位于../claude_workspace/tasks/PROMPT_release_nocredit_case3_2040_C2050_20261019.md。
+
+下一步：等待正在进行的T550 Base2060离线清单计算后做P4同口径审计；case3 2040终态后按NEXT_ACTIONS_ZH.md备份/证书/扩展评估，B/obj≤1e-2才采纳并R1、门禁、最终preflight、提交release。C2050终态只收尾，C2060/C′等作者决定。不建后台监听，不读凭据，不干预5201318/5207165。保留既有其他会话32行handoff和稿件改动，Git仅明确审查清单。

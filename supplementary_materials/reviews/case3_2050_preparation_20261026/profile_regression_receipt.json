@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "tests": [
+    "tests.test_case3_2050_preparation",
+    "tests.test_production_screen.ProductionScreenTests.test_profile_and_author_scope",
+    "tests.test_production_screen.ProductionScreenTests.test_continuation_profile_identity_year_and_numerics",
+    "tests.test_production_screen.ProductionScreenTests.test_identity_changes_with_screen_but_base_retains_historical_hash",
+    "tests.test_production_screen.ProductionScreenTests.test_authorized_c2050_40_thread_retry_is_narrowly_scoped"
+  ],
+  "source_package_sha256": "9c5ac58edff178999b5416d7985d8e76b261c2f6b8a615be4a053d67736999ea",
+  "remote": "/home/zz2/National_model_server/preparation_validation_20261026",
+  "command": "cd /home/zz2/National_model_server/preparation_validation_20261026 && tar -xzf sources.tar.gz && /home/zz2/National_model_server/envs/cispo-2030-v1/bin/python -m unittest tests.test_case3_2050_preparation tests.test_production_screen.ProductionScreenTests.test_profile_and_author_scope tests.test_production_screen.ProductionScreenTests.test_continuation_profile_identity_year_and_numerics tests.test_production_screen.ProductionScreenTests.test_identity_changes_with_screen_but_base_retains_historical_hash tests.test_production_screen.ProductionScreenTests.test_authorized_c2050_40_thread_retry_is_narrowly_scoped -v"
+}

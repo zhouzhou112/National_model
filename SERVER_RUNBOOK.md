@@ -5493,3 +5493,14 @@ nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3�
 Git基准fa2ccce7d8fb6f5a8443cebc20671c575bcc4852。只读squeue/scontrol/sstat/sacct、Gurobi日志及stderr，当前RSS396.05/420.62GiB、Slurm峰712.44/621.18GiB未增加；stderr空，无显式警告/错误/终态。nocredit5153901仍COMPLETED/0:0；其93文件/5,510,708,567bytes完整T550备份的上次最终验证结论保留，本轮不重复传输/全量SHA复核。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T124800Z{,_summary}.json，备份证据沿用cloud_backup_20261025/check_20261025T2340Z.json。
 
 仅两小JSON和CODEX_HANDOFF/MODEL_SERVER_STATUS/SERVER_RUNBOOK更新，其他SI会话工作保留。JSON解析、暂存范围/凭据/diff检查通过，无源码变更无需模型测试；不改冻结包、作业或求解参数，不建监听，不给ETA。下一步用户询问时继续核验对偶恢复/终态，确认新生产终态后按已授权流程完整保全备份；nocredit最新扩展正式验收仍待执行。
+
+
+## 2026-10-26 nocredit2030收尾、T550定价与case3 2050预置
+
+Git起点0cbad432fb61cb555e92db42923339cffe79d63d。按作者新增授权，仅增加case3 2050 40线程profile及限定入口、同情景门禁选项，P4审计允许显式2060来源；不改物理模型/输入/约束。nocredit73小文件逐项SHA取回，备份93文件COMPLETE身份复核；定价B/obj8.1423511193e-5、扩展PASS，证书只在T550，原严格标签/输出不改。三方目标与原对偶差见case3_2030_launch_20261014/nocredit_results_20261026/REVIEW_ZH.md；旧case3上界64.32与高精度重算64.314766差异已明确披露。
+
+准备入口case3_2050_preparation_20261026/{remote_work,prepare_package,collect_live}.py；云端独立目录/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/_preparations/20261026_case3_2050_t40_v1，11,220,392bytes包SHA b1d8f8b15f31efd72a4e34bd7afc95b66d9499a0e61cb95f0364e97bd6be0fd9，58数据SHA及bash语法PASS。未来最终源码须从本轮审查提交冻结，不能仅将新profile套到旧源码。
+
+验证：定价5测试PASS；relative13项本地PASS、1项因缺gurobipy在T550补验PASS；新旧profile7项T550 PASS（含新增3项），新profile本地3项PASS。语法、逐键diff及数据清单核验通过；不以此代替未来真实R1/1h/24h/参数/preflight。2050中央值任务书位于../claude_workspace/tasks/PROMPT_release_nocredit_case3_2040_C2050_20261019.md。
+
+下一步：等待正在进行的T550 Base2060离线清单计算后做P4同口径审计；case3 2040终态后按NEXT_ACTIONS_ZH.md备份/证书/扩展评估，B/obj≤1e-2才采纳并R1、门禁、最终preflight、提交release。C2050终态只收尾，C2060/C′等作者决定。不建后台监听，不读凭据，不干预5201318/5207165。保留既有其他会话32行handoff和稿件改动，Git仅明确审查清单。

@@ -1,0 +1,35 @@
+{
+  "status": "PREPARED_NOT_FROZEN",
+  "sha256": "b1d8f8b15f31efd72a4e34bd7afc95b66d9499a0e61cb95f0364e97bd6be0fd9",
+  "bytes": 11220392,
+  "files": {
+    "case3_2050.sbatch": "f4182ea3579b8be528023324e86ff997d465260a5e15f5044956d16af0865696",
+    "launch_config.draft.json": "8bd035ac72314220f2ef602666a6e45732ae32fd23abdb6377a627d99ea6605a",
+    "expected_data_files.json": "46fc7ffdfcefd507e69a7453244d41de80cf8ce52b5e8057645bf89f7a8abff9",
+    "source_screen.csv": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528",
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json": "22c7e49f14f1eb7bcfbf19dc76bab61c935b4d9716f052f86785f3225b740f45",
+    "additional_data/flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c",
+    "additional_data/flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+    "additional_data/flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a",
+    "additional_data/flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669",
+    "additional_data/flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+    "additional_data/flexibility/participation_pathway_v2/flexible_load_v5.manifest.json": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492",
+    "additional_data/thermal/existing_capacity_2025.csv": "60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374",
+    "additional_data/thermal/retirement_schedule.csv": "2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def",
+    "additional_data/hydro/grfr_monthly_p30_single_year_proxy_2019.nc": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767"
+  },
+  "input_files": 58,
+  "additional_files": [
+    "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz",
+    "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv",
+    "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz",
+    "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz",
+    "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv",
+    "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json",
+    "thermal/existing_capacity_2025.csv",
+    "thermal/retirement_schedule.csv",
+    "hydro/grfr_monthly_p30_single_year_proxy_2019.nc"
+  ],
+  "upstream_state_included": false,
+  "source_commit": "0cbad432fb61cb555e92db42923339cffe79d63d"
+}

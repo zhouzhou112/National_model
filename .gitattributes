@@ -24,3 +24,9 @@ supplementary_materials/reviews/git_sync_20261006/production_to_local.patch -whi
 supplementary_materials/reviews/case3_2030_launch_20261014/P4_*_20261015/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 supplementary_materials/reviews/case3_2030_launch_20261014/P4_*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 supplementary_materials/reviews/case3_2030_launch_20261014/P4_Base2040_archive/download_identity.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve Linux batch execution and the exact SHA-linked 2060 screen evidence.
+supplementary_materials/reviews/case3_2050_preparation_20261026/case3_2050.sbatch text eol=lf
+supplementary_materials/reviews/base_2060_screen_20261026/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+supplementary_materials/reviews/base_2060_screen_20261026/source_evidence/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+supplementary_materials/reviews/base_2060_screen_20261026/ready/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

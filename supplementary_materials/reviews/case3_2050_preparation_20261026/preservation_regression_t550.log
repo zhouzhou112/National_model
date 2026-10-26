@@ -1,0 +1,6 @@
+test_profile_failure_does_not_stop_candidate_preservation (tests.test_relative_acceptance.RelativeAcceptanceTests.test_profile_failure_does_not_stop_candidate_preservation) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 4.011s
+
+OK

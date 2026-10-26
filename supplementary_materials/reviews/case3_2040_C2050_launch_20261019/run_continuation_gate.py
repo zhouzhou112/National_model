@@ -60,6 +60,8 @@ def parameters(config,data,model,year):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--year',type=int,choices=[2040,2050],required=True);p.add_argument('--state',required=True,type=Path);p.add_argument('--hours',type=int,choices=[1,24],required=True);p.add_argument('--unscreened',action='store_true');p.add_argument('--output',required=True,type=Path)
     p.add_argument('--solver-profile', type=Path, help='Reviewed production profile; default is the original 48-thread profile')
+    p.add_argument('--same-scenario-continuation', action='store_true',
+                   help='Framework A: require case3 upstream; omit the legacy 2050 Base late-entry flag')
     p.add_argument('--threads', type=int, choices=range(1,49), default=8, help='Diagnostic solver threads (default: 8)')
     a=p.parse_args()
     out=a.output.resolve()
@@ -73,7 +75,7 @@ def main():
     scenario_path=out.parent/(out.name+'_scenario.json');scenario_path.write_bytes((ROOT/'config/scenarios/case3_thermal_ev_v5.json').read_bytes().replace(b'\r\n',b'\n'))
     argv=['runner','--config',str(ROOT/'config/optimization_numeric_dac_by_year_v9_a12.json'),'--scenario-config',str(scenario_path),'--solver-config',str(profilepath),'--planning-year',str(a.year),'--state-in',str(a.state.resolve()),'--allow-candidate-state-in','--diagnostic-hours',str(a.hours),'--archive-original-model','--output-dir',str(out)]
     if not a.unscreened:argv+=['--vre-screen-csv',str(ROOT/f'supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready{a.year}_20261015/source_screen.csv')]
-    if a.year==2050:argv+=['--late-entry-base-state']
+    if a.year==2050 and not a.same_scenario_continuation:argv+=['--late-entry-base-state']
     if a.unscreened:argv+=['--engineering-barrier-checkpoint-only']
     argv+=['--build-only'] if a.hours==1 else ['--export-barrier-checkpoint']
     save(out.parent/(out.name+'_command.json'),argv)

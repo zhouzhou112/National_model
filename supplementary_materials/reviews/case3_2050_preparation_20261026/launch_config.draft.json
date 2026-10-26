@@ -1,0 +1,36 @@
+{
+  "status": "PREPARED_WAITING_CASE3_2040",
+  "framework": "A",
+  "scenario": "case3_thermal_ev_v5",
+  "planning_year": 2050,
+  "boundary_year": 2040,
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json",
+  "upstream_job": "5201318",
+  "upstream_state": null,
+  "screen_margin": 0.2,
+  "source_release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260914_base_v9_t48_m750_tol1e4_v3",
+  "required_gates": [
+    "2040_terminal_backup_SHA",
+    "2040_certificate_B_over_obj_le_1e-2",
+    "2040_extended_assessment",
+    "R1_state_audit",
+    "1h_screen_unscreen_MPS_segments",
+    "24h_OPTIMAL_service_M_le_1e-3_credit_preservation",
+    "2050_parameter_approval",
+    "cloud_preflight"
+  ],
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "billing": 64,
+    "solver_threads": 40,
+    "time_limit": "UNLIMITED",
+    "minimum_available_memory_gib": 700,
+    "no_requeue": true
+  },
+  "authorization": "Author 2026-10-26: submit and release only after all required gates pass",
+  "stage_b": false,
+  "background_monitor": false,
+  "submitted": false,
+  "release_name_template": "YYYYMMDD_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1"
+}

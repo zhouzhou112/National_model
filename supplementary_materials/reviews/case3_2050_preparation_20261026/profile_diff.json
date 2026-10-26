@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "differences": [
+    {
+      "key": "candidate_screen.source_csv_sha256",
+      "before": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368",
+      "after": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528"
+    },
+    {
+      "key": "candidate_screen.source_dual_sha256",
+      "before": "f2aa7651125202126e3c20ae8b60e03ac721d7e3d82c295b6cbcee1f80800b5e",
+      "after": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911"
+    },
+    {
+      "key": "candidate_screen.source_release",
+      "before": "20260914_base_v9_t48_m750_tol1e4_v3",
+      "after": "20260930_base2050_v9_t48_m750_tol1e4_v1"
+    },
+    {
+      "key": "numerics.threads",
+      "before": 48,
+      "after": 40
+    },
+    {
+      "key": "profile_id",
+      "before": "barrier_stagea_screened_agg0_v1_threads48",
+      "after": "barrier_stagea_screened_agg0_case3_2050_v1_threads40"
+    }
+  ],
+  "parent_sha256": "70187ec42fdb1984dba22296be046095ad961fb412719721ea086b6446bffa22",
+  "profile_sha256": "22c7e49f14f1eb7bcfbf19dc76bab61c935b4d9716f052f86785f3225b740f45"
+}
