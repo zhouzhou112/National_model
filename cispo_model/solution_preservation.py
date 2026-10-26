@@ -320,6 +320,9 @@ def preserve_stage_a(artifacts, data, config, output_dir, report, *, snapshot=Tr
             )
         write_json(root / "preservation_report.json", result)
     stage("capacity_and_cost", lambda: export_master_solution(artifacts, data, root, enforce_qc=False))
+    if getattr(config, "raw", {}).get("frozen_capacity"):
+        from .frozen_capacity import export_frozen_capacity_check
+        stage("frozen_capacity_identity", lambda: export_frozen_capacity_check(artifacts, data, root))
     qc = stage("operation_carbon_dual_qc", lambda: export_operational_solution(
         artifacts, data, config, root, enforce_qc=False))
     if qc is None:

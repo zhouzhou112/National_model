@@ -1,0 +1,108 @@
+[
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/identity_gate_probe.json",
+    "sha256": "d4656d6c06ec263411dabe0bd5d949e9031bbec93c86972aec0f6c1fed64cbdf",
+    "bytes": 683,
+    "result_manifest_verified": false
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/frozen_capacity_output_check.json",
+    "sha256": "2b00d7b182c65c572a5082e296c3b735ba3b44f4ac4300d4555e0a4b901850df",
+    "bytes": 7179,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/frozen_capacity_source_alignment.json",
+    "sha256": "8da3b9f47e2fdba632b5ed736f0ad201bd348bfb48ee4bb374f7b886b851b6bb",
+    "bytes": 1258,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/frozen_capacity_report.json",
+    "sha256": "91044e718ffb0b59346bf00c2b49ae29b9376a108cb594de3654c49fbb9a52ae",
+    "bytes": 4834,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/preservation_report.json",
+    "sha256": "e372e2f8345873dd2004e85e6493fca967332ccf89561ed2e801d5cc9c471344",
+    "bytes": 1631,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/solution_qc.json",
+    "sha256": "f01a7ef9657cdab94c9d252e509ff846ce8f53bbe318c88e944f6fb518a4785d",
+    "bytes": 18947,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/result_manifest.json",
+    "sha256": "497e6800c5166f98d9ae2fbc78c4ba5644d49fbdb3d606bdf0400bbf1cea9d55",
+    "bytes": 15647,
+    "result_manifest_verified": false
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/run_identity.json",
+    "sha256": "e32dec0d348589b4417e63aba674f174439bd120e9459aa5925c44246479dd42",
+    "bytes": 10849,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/identity_gate_probe.json",
+    "sha256": "0eb601d1587145f906e44038592e1d2fbfb97491b80abd558ed4a84388a79c83",
+    "bytes": 674,
+    "result_manifest_verified": false
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/frozen_capacity_output_check.json",
+    "sha256": "2b00d7b182c65c572a5082e296c3b735ba3b44f4ac4300d4555e0a4b901850df",
+    "bytes": 7179,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/frozen_capacity_source_alignment.json",
+    "sha256": "8da3b9f47e2fdba632b5ed736f0ad201bd348bfb48ee4bb374f7b886b851b6bb",
+    "bytes": 1258,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/frozen_capacity_report.json",
+    "sha256": "91044e718ffb0b59346bf00c2b49ae29b9376a108cb594de3654c49fbb9a52ae",
+    "bytes": 4834,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/preservation_report.json",
+    "sha256": "7d16a0df050c9ea93b977e8dd11fcb6ed67ea87c0d89e9d08d177c4da6c63b31",
+    "bytes": 1628,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/solution_qc.json",
+    "sha256": "7d85f0f3dd38c6a76ee377c10b4d148081c1f8aef444fa9845250cd612021258",
+    "bytes": 26529,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/result_manifest.json",
+    "sha256": "9ce921af15155766839f0e70631de034b4fd134d822a304c3c41739bd070c5d6",
+    "bytes": 15647,
+    "result_manifest_verified": false
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/run_identity.json",
+    "sha256": "470f47b3832aed14d1e85ccdc05b78fa17116a4c8f25fddf15a10b4da8087d8d",
+    "bytes": 11892,
+    "result_manifest_verified": true
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/identity_gate_comparison.json",
+    "sha256": "e1417b20f3a86c79ea36ddd64d77d5474e15b53aa0462c62d553ddd548d2402c",
+    "bytes": 16598
+  },
+  {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/saved_solution_crosscheck.json",
+    "sha256": "7a3448cb18ec6fa62e62f5c264da8ac4b8326d3e24fed794e2e68c726334c5ef",
+    "bytes": 1181
+  }
+]

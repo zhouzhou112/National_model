@@ -1,0 +1,1791 @@
+{
+  "source_base_commit": "db1a7b4",
+  "files": {
+    "repo/cispo_model/__init__.py": {
+      "bytes": 159,
+      "sha256": "76a57f978a8e7838d09f155b9e92ad15f22ac9f89a53853e773174e6e74644ca"
+    },
+    "repo/cispo_model/annual_capacity_link_scaling.py": {
+      "bytes": 20285,
+      "sha256": "faaabb23cdfd31245623e6918c083f0b0311566dda9f561edadb8955345a3f64"
+    },
+    "repo/cispo_model/annual_dense_split.py": {
+      "bytes": 2095,
+      "sha256": "0623b45eb962579e140b07239377ee2916293b43426003df09d42448662b66e4"
+    },
+    "repo/cispo_model/basis_reuse.py": {
+      "bytes": 15177,
+      "sha256": "982d5d1ac3db9b05b1fa1386d96be2b4d8bc96453d830c8d0ec1758bd456218d"
+    },
+    "repo/cispo_model/carbon_accounting.py": {
+      "bytes": 5759,
+      "sha256": "22a0b12ead9d8436adb4d34cc1a66d9c1d63b1bb0465a6cdf0815ae229e81519"
+    },
+    "repo/cispo_model/config.py": {
+      "bytes": 70150,
+      "sha256": "7ade8f390484b4dd403086025af08f10290699b5a3f8281856a711e6c97c9896"
+    },
+    "repo/cispo_model/continuation_cleanup.py": {
+      "bytes": 6120,
+      "sha256": "9d091caccec68ff59eb244e5d6494a4e4f7894dbd06705fe663535f8305f62aa"
+    },
+    "repo/cispo_model/data.py": {
+      "bytes": 77195,
+      "sha256": "b56a18d87616fb93df781f5d65cb3ec8dc24c80d8990752e1e9b2c1c8cbf83a3"
+    },
+    "repo/cispo_model/diagnostics.py": {
+      "bytes": 42159,
+      "sha256": "7c8e86b80e38f9801ea0f84dd298e952e94290640fd09bb644fb1765beefc00d"
+    },
+    "repo/cispo_model/factor_screen.py": {
+      "bytes": 10895,
+      "sha256": "15fc996c245af07cc3abb4fcb7a081ac120820b58c89705154fbff39a6bc92aa"
+    },
+    "repo/cispo_model/flexible_credit.py": {
+      "bytes": 4529,
+      "sha256": "246ff6d3174933bd432b182c93be5f436e4148f37ea7ba6b6bbd7ac85a6f122b"
+    },
+    "repo/cispo_model/flexible_load.py": {
+      "bytes": 71405,
+      "sha256": "9a998a467544346cf8da1e6df44301059846d9ae06d5b7c511a64a24c781b108"
+    },
+    "repo/cispo_model/flexible_load_numerics.py": {
+      "bytes": 23655,
+      "sha256": "472bc255de55eb61b8125874141d83e88a252ed99c6c35fe6a464e3e9cca9522"
+    },
+    "repo/cispo_model/flexible_portfolio.py": {
+      "bytes": 11481,
+      "sha256": "44dd572a2f9c70661cbdfb0d20dcb84cf6788aaedcc8cfecd30f3dabb4f7b096"
+    },
+    "repo/cispo_model/flexible_response.py": {
+      "bytes": 6500,
+      "sha256": "b60e63a8149ac93378e552a5c183281b8680919e0fab7a27299da8f62b0e4c07"
+    },
+    "repo/cispo_model/frozen_capacity.py": {
+      "bytes": 22285,
+      "sha256": "a4ae24f7b8be98c18f38856dbe6e6a247b6cbf2a6b28300ad5b759cb2c6ff971"
+    },
+    "repo/cispo_model/hydro.py": {
+      "bytes": 33049,
+      "sha256": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6"
+    },
+    "repo/cispo_model/io_contract.py": {
+      "bytes": 40849,
+      "sha256": "5683e7f017ba60729e0f9412018cbd02f5c28f014a6f09802267a6e0e71b4612"
+    },
+    "repo/cispo_model/load_center.py": {
+      "bytes": 25487,
+      "sha256": "8c96529eaa1905f758c52982748c230d67bc0b92559cb2c620b453b41672c3c7"
+    },
+    "repo/cispo_model/master.py": {
+      "bytes": 88279,
+      "sha256": "bf3af53b60eced7218f2f24341de4e1f3bda34650abac472f628521508632537"
+    },
+    "repo/cispo_model/mga.py": {
+      "bytes": 15789,
+      "sha256": "2de7276a0ce51ea2d0e4c279a641756af8076b211c20ee2fc0720a39b700d01e"
+    },
+    "repo/cispo_model/model_structure_audit.py": {
+      "bytes": 11287,
+      "sha256": "9b107630bdb04439945489fcee241c0d9dd4b5c087a2e291344683ab2e5a541a"
+    },
+    "repo/cispo_model/monolithic.py": {
+      "bytes": 62289,
+      "sha256": "b11c6adf3a77f715232491729edd097ea381416943c1e13f94c3b89c20288078"
+    },
+    "repo/cispo_model/numerical_cleanup.py": {
+      "bytes": 11122,
+      "sha256": "c953562ccd0e3e9ebb930f528f3c43f0ea8ab9e25d0f36cf49a2940381d2e0c3"
+    },
+    "repo/cispo_model/offline_solution.py": {
+      "bytes": 18203,
+      "sha256": "1645f6046e2ec86de3a2562ccfef060a1634ae625f2e5f9c2d42a8bebbbcd86e"
+    },
+    "repo/cispo_model/physical_lp_diff.py": {
+      "bytes": 7080,
+      "sha256": "268b5fe935f1957e25c3f34830184b303d6e261ba427021408c9a929a022ca8c"
+    },
+    "repo/cispo_model/planning_state.py": {
+      "bytes": 30878,
+      "sha256": "1adcc27c220342dec2a06b5578aa63c49c9b12156512bc8c33958c383c590bc1"
+    },
+    "repo/cispo_model/portfolio_release.py": {
+      "bytes": 4706,
+      "sha256": "219f4094110154cb2298ed62692eadd62603dc0f6d78c016404e5d574856d75a"
+    },
+    "repo/cispo_model/preflight.py": {
+      "bytes": 32753,
+      "sha256": "45264663e09bea40f3439f478ee5563d53d11a24073d5be69b96267ae60ada24"
+    },
+    "repo/cispo_model/price_basis.py": {
+      "bytes": 1618,
+      "sha256": "17c32bd3367b12cf36162e5e9c04c6c07861639b15a363584d6c8c8e8835b66a"
+    },
+    "repo/cispo_model/primal_dual_checkpoint.py": {
+      "bytes": 61280,
+      "sha256": "8d7ffbbdecafd141cf6ab8b3dbeea574e0eecd6d65d278f632c1b96f5f3db40d"
+    },
+    "repo/cispo_model/relative_acceptance.py": {
+      "bytes": 17189,
+      "sha256": "62aefb506b2b4803c254d69f8eada0c858446f96be9bba910dc29efc1dd60243"
+    },
+    "repo/cispo_model/result_dashboard.py": {
+      "bytes": 40219,
+      "sha256": "1ba0efc8212416042273de1eb8e7806b8a8332904d120722a489b3bf37ecddd9"
+    },
+    "repo/cispo_model/result_summary.py": {
+      "bytes": 27510,
+      "sha256": "09c2925f85659dc6177dca8e68ddd72144b49a417f037e9ade9c7449b2fcc9ec"
+    },
+    "repo/cispo_model/run_contract.py": {
+      "bytes": 20883,
+      "sha256": "fa0e1f51f5f567f2fcd5f3aef5534cc2b32a5398d37d705fe985955e5d1e8974"
+    },
+    "repo/cispo_model/runtime_monitor.py": {
+      "bytes": 1898,
+      "sha256": "fb9b8348cb6fac086fa17924737bbbc185bd1ed43a5ae4a1172b137b16c4f488"
+    },
+    "repo/cispo_model/solution_export.py": {
+      "bytes": 111778,
+      "sha256": "857ac684936a6022a3c58473eaf7eb5704cb04615a685c8e2d70cd8ce37be2be"
+    },
+    "repo/cispo_model/solution_preservation.py": {
+      "bytes": 22211,
+      "sha256": "c0a3ee3c7f7f6177212b86a0dcba10e7db0d57d33b783922a9a1b3fa43965272"
+    },
+    "repo/cispo_model/solver_artifacts.py": {
+      "bytes": 5862,
+      "sha256": "032c063f2ffe82af78e8ee469c91907dd4d3821deca2ac3423cef8f36af9dde8"
+    },
+    "repo/cispo_model/solver_audit.py": {
+      "bytes": 19498,
+      "sha256": "ed0fea9f13649c7059db94619f7453f29e18126457ecb462d618d496f7cd129d"
+    },
+    "repo/cispo_model/technology_registry.py": {
+      "bytes": 3069,
+      "sha256": "8d343f1f6e3e77876a0e4dcaba6dfa82c01d44f08d8757409ec9e339073adba7"
+    },
+    "repo/cispo_model/timeblocks.py": {
+      "bytes": 960,
+      "sha256": "45713377cff1ba55b438352276355fa13457f7fe1a0011e21c34a408b954ffea"
+    },
+    "repo/cispo_model/vre_pricing.py": {
+      "bytes": 13224,
+      "sha256": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258"
+    },
+    "repo/cispo_model/wave_energy.py": {
+      "bytes": 11497,
+      "sha256": "8194ef1d5d6c3f6feb9971176020ece1a5b653c8e6d100f230b786612a684424"
+    },
+    "repo/cispo_model/zero_bound_certificate.py": {
+      "bytes": 3970,
+      "sha256": "510fd096bb97e548e6fdde01c80ba73cdef3c783bfb0ad763d98ed95a4d34367"
+    },
+    "repo/cloud_runs/scripts/cloud_cispo_8760_2030_base.sbatch": {
+      "bytes": 2492,
+      "sha256": "9ae8797cd73c8cf849bc119d52cc9c28fa7c8ba2d6f47e118e4214d09f9e567d"
+    },
+    "repo/cloud_runs/scripts/cloud_cispo_8760_build_only.sbatch": {
+      "bytes": 2208,
+      "sha256": "65b9be5c2986450883cc696255c933744712bca0682e268bbca80430387f1b5d"
+    },
+    "repo/cloud_runs/scripts/cloud_cispo_8760_preflight.sbatch": {
+      "bytes": 1290,
+      "sha256": "1dbe8a9f6f5bde4392d249684c1dec87799bd0e3ae9608b9717629f64ffc9e27"
+    },
+    "repo/cloud_runs/scripts/cloud_cispo_8760_stage_a_barrier_checkpoint_v2.sbatch": {
+      "bytes": 3362,
+      "sha256": "5120ccebc2eb6405f30dfbac4a8320f7af6e4dc41c31f3e46e0ca8aec4ed8334"
+    },
+    "repo/cloud_runs/scripts/cloud_cispo_diagnostic_gate.sbatch": {
+      "bytes": 2542,
+      "sha256": "ee3f13dec6ce057a647242f446a60a246f74260ec66e59407f624f1155b1f7c3"
+    },
+    "repo/cloud_runs/scripts/cloud_proxy_export_probe.sbatch": {
+      "bytes": 959,
+      "sha256": "5b6e5de0310c9a1ab4e1fd4a35048a9d8883aca75752372a60defbb07744a265"
+    },
+    "repo/cloud_runs/scripts/cloud_wls_network_probe.sbatch": {
+      "bytes": 1278,
+      "sha256": "919772b83773452fdab1c8ee91e59e64e44413059de18ac6d0add44a82b70d2c"
+    },
+    "repo/config/FLEXIBLE_LOAD_V4_CALIBRATION_CONTRACT.md": {
+      "bytes": 6404,
+      "sha256": "be4ff6f4baf292f54fc943819b4ebf6f9130355e328d94b0d59f123847b61d04"
+    },
+    "repo/config/FLEXIBLE_LOAD_V5_CONTRACT.md": {
+      "bytes": 9271,
+      "sha256": "9a9d9e73e00f275c5f4ed718dcc092e0f744ba436a347d8eb34f62b0e8d3e4b4"
+    },
+    "repo/config/FLEXIBLE_PORTFOLIOS_V5_CONTRACT.md": {
+      "bytes": 16898,
+      "sha256": "0562dcb9babd20f0105d78afb00e2454892e6415699586fd42f0bb173aafc5cd"
+    },
+    "repo/config/FLEXIBLE_RESPONSE_V1_CONTRACT.md": {
+      "bytes": 6197,
+      "sha256": "411835a54beaceda319edd90e828878df60ff8795ebb7977aa0d1a0d8946a203"
+    },
+    "repo/config/README.md": {
+      "bytes": 8905,
+      "sha256": "9649d8e074db04c4004ffa35983b726650134fda5846ffacdf1b72b62d03618b"
+    },
+    "repo/config/THERMAL_STAGE_A_LAUNCH_20260907.md": {
+      "bytes": 1720,
+      "sha256": "3f5eb33384b6d77d17f9fa0d32527138f026a09ef6b5d66756598a94c0faed94"
+    },
+    "repo/config/beccs_lifecycle_sensitivity_v1.json": {
+      "bytes": 1212,
+      "sha256": "28605f1b22d191351296a3b29f6ffb68f79b6e87e019597709b89e02ec5d7026"
+    },
+    "repo/config/capacity_bounds_v0719.json": {
+      "bytes": 2352,
+      "sha256": "0d557055463e5913338eb0c37787db163415a784561f99055d24bd3f784c1b1b"
+    },
+    "repo/config/cloud_resource_profiles/a8_8760_numeric_repaired_t48_m750_v1.json": {
+      "bytes": 1466,
+      "sha256": "e296c6511a40f54c4272794b971197bb575bb42567873813cc53fb6cb166d4bc"
+    },
+    "repo/config/cloud_resource_profiles/a8_8760_stagea_default_v1.json": {
+      "bytes": 2887,
+      "sha256": "0d555bcae34125073dd86994b2258e65fc59305ff93e690b017c1b5eabaf4bf1"
+    },
+    "repo/config/critical_parameter_registry.csv": {
+      "bytes": 11230,
+      "sha256": "b44d0bccc06211dbbf1e365ac4cbb7ee13ae0b8a2837b7b780e3c020245b71a1"
+    },
+    "repo/config/flexible_load_v4_central_parameters.csv": {
+      "bytes": 3451,
+      "sha256": "be2f5e7ba79604b5ea66e495a00404b60625764d0abec6f6185928037477c5a3"
+    },
+    "repo/config/flexible_load_v4_parameter_registry.csv": {
+      "bytes": 3141,
+      "sha256": "4e6757c3904eb57b9ab2dbdb6d2f6e8f66720031762a004e0ee8ee8b201cbd07"
+    },
+    "repo/config/flexible_load_v4_source_count_qa.csv": {
+      "bytes": 169,
+      "sha256": "deabb1830ee5c7599c0bd6eeb6982c8d885f62c0a0ea5cf0cf463d4a406c18f5"
+    },
+    "repo/config/flexible_load_v4_source_registry.csv": {
+      "bytes": 3355,
+      "sha256": "4d3c8afab23d6d43c8e43a7ce5de16644a55432175084677f7f7ff9375152aea"
+    },
+    "repo/config/flexible_load_v5_central_parameters.csv": {
+      "bytes": 8723,
+      "sha256": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536"
+    },
+    "repo/config/flexible_load_v5_parameter_registry.csv": {
+      "bytes": 4020,
+      "sha256": "753d248624e7b89043ed29925c3d3fae4acea5e320baccf2f32edc69a659b375"
+    },
+    "repo/config/flexible_load_v5_source_count_qa.csv": {
+      "bytes": 221,
+      "sha256": "3f1a9bef649c1d59875b9bb09ff596dbe9ed57368e7b2f0183514865aa83184e"
+    },
+    "repo/config/flexible_load_v5_source_registry.csv": {
+      "bytes": 12776,
+      "sha256": "e9f0d339f462be9f599aed79e9b8b6b6386950149d572be06bd7170122b892c5"
+    },
+    "repo/config/formulation_profiles/annual_capacity_link_rows_8192_v1.json": {
+      "bytes": 505,
+      "sha256": "62a0215f6c8ab5d92e87c3f350edfa7c27d6f1e1fd35b9f595ceb2686f9ca0d2"
+    },
+    "repo/config/formulation_profiles/annual_dense_row_split_v1.json": {
+      "bytes": 316,
+      "sha256": "b3be9b493eccdab5c20f82d3804a4fc65ee0f69707d3c4681fb25dce7b393049"
+    },
+    "repo/config/formulation_profiles/annual_emissions_province_hierarchy_v1.json": {
+      "bytes": 391,
+      "sha256": "b168e27294efcbdb476d961c6b731ace8fea18f0df357cd7d0d665b1d31de528"
+    },
+    "repo/config/fuel_prices_supplementary_table2.json": {
+      "bytes": 5879,
+      "sha256": "376c52da6bd019ba5e500cea98836622fc55bbc10f75c6ebe0f730963663b8a1"
+    },
+    "repo/config/gridded_load_center_config.json": {
+      "bytes": 2710,
+      "sha256": "7d0954402922db50aabd1efaf1141c259430eb2da0dedc9b3b5a6f26d6b7b12c"
+    },
+    "repo/config/hydro_storage_corrections_20260913.csv": {
+      "bytes": 405,
+      "sha256": "5c49e04e38734e8a0708d941c9765eb32f8d841102d59b7823170d001dbf962f"
+    },
+    "repo/config/hydro_storage_corrections_20260913_v2.csv": {
+      "bytes": 994,
+      "sha256": "cca0145c63e88854f18034b4b70bf8049888f89baa4c483b59e5687301bf5198"
+    },
+    "repo/config/land_point_province_corrections.csv": {
+      "bytes": 7550,
+      "sha256": "a3c6af922e797d0342e856e6e08a01219cbf77eae2be6f32d57df9b8eb67ce33"
+    },
+    "repo/config/legacy/flexible_load_v5_central_parameters.csv": {
+      "bytes": 5834,
+      "sha256": "1c54429817e105ed8c2621973d363945cc16080de391e32e111cc529697b120f"
+    },
+    "repo/config/m2_model_boundary_audit_v1.json": {
+      "bytes": 8726,
+      "sha256": "3589296f61f53a36c7471280fa9df64a3e27d2c91cb526259c1a4ffb8813e6c0"
+    },
+    "repo/config/mga/base_min_onwind_new_national_epsilon_1pct.json": {
+      "bytes": 252,
+      "sha256": "876ec9343b3c2ae81aafdde569fe10ff086315761f5ab1047e016e761b8f7961"
+    },
+    "repo/config/model_data_config.json": {
+      "bytes": 6923,
+      "sha256": "e6ea1d7729430da9629590f51e3e438617e7a3a2c54086fe99f2425b8c66bc7c"
+    },
+    "repo/config/model_input_files.json": {
+      "bytes": 7677,
+      "sha256": "3be2f1b269a5c5c4bce1946ee60b443177410cfbafc533362fe7faf8ad5d650e"
+    },
+    "repo/config/optimization_2030.json": {
+      "bytes": 14978,
+      "sha256": "e66d706909c06d1a779a23f78592b2f933494c76968a62ff65117ed5b8aaaf65"
+    },
+    "repo/config/optimization_2030_numeric_final_v8.json": {
+      "bytes": 16543,
+      "sha256": "dae7693dd45f9fad8bc48afe804df904d9aeedfa8bd6a68790ea7cb7d4000144"
+    },
+    "repo/config/optimization_2030_numeric_repaired.json": {
+      "bytes": 15934,
+      "sha256": "616799d41d493ea1f7662f0323f840ee91dc318e14b0253444eb4c31772338d3"
+    },
+    "repo/config/optimization_2030_numeric_simplified_no_dac_v6.json": {
+      "bytes": 16398,
+      "sha256": "bdedf7c57617fc03131b763bebedd7db2fd35e588970c3c3683af9cf9c0058b1"
+    },
+    "repo/config/optimization_2030_numeric_simplified_v5.json": {
+      "bytes": 16259,
+      "sha256": "28a9628e1d74b7dd4645da50cf9df1a2d61467dcbb16dd7fac1c85ed96ca887f"
+    },
+    "repo/config/optimization_2030_spill_floor_v4.json": {
+      "bytes": 16076,
+      "sha256": "0d2359f8899ca7122ee2b53bb8b0cce75ed48c58adbaf6602ba4c15c6bc1170c"
+    },
+    "repo/config/optimization_2030_spill_tightened_v3.json": {
+      "bytes": 16017,
+      "sha256": "eaa138315a7e429262385120479ff88e7ae569cf816e91a25aa51dcc37bdceb2"
+    },
+    "repo/config/optimization_2030_storage_audited_v2.json": {
+      "bytes": 15989,
+      "sha256": "f4105ea39a15d3dfa5547329adab8c43a7ed8fc59f2ec4c3c6de0258eaf684c4"
+    },
+    "repo/config/optimization_numeric_dac_by_year_v9.json": {
+      "bytes": 16774,
+      "sha256": "86b754e61d51283020953934b45ecb56e9d4454b8a0d33b643b4c61d87edf984"
+    },
+    "repo/config/optimization_numeric_dac_by_year_v9_a12.json": {
+      "bytes": 16999,
+      "sha256": "ad66a60377636ae899c8689ca1eb5a3cc909e76da7d225d8bf7e57aaa8981e08"
+    },
+    "repo/config/physical_lp_diff_whitelist_v1.json": {
+      "bytes": 1207,
+      "sha256": "fd2ab41dd66d5b5c8acc450b65a3c050000f1a295394a47050ef9859300db353"
+    },
+    "repo/config/release_contract_v0729.json": {
+      "bytes": 5237,
+      "sha256": "88eb771e657e8f1db668ef21a11e479ecee4cf130d0fe58d3773bac230bd2a0f"
+    },
+    "repo/config/release_contract_v0730_v5.json": {
+      "bytes": 2738,
+      "sha256": "8398689e97cad71d719b25c22de48cac913304b651391efb10d51b65bdcfe0be"
+    },
+    "repo/config/release_contract_v0805_power_curve_v3_qc.json": {
+      "bytes": 2618,
+      "sha256": "e2e5504fb2aeeb0db725ff442a8c780b5336ee101729c6297b3dbaa600e1c45b"
+    },
+    "repo/config/release_contract_v1005_catalog_audit.json": {
+      "bytes": 1188,
+      "sha256": "40f0a053cfa675b869028820f28967dcb865a727d861203cf0679e3acc8fa578"
+    },
+    "repo/config/scenario_parameter_registry.csv": {
+      "bytes": 5939,
+      "sha256": "d02f4867970f35b5426227c0fbb99e0161fc636533c3a253476b4427c4dc7d9a"
+    },
+    "repo/config/scenarios/base.json": {
+      "bytes": 537,
+      "sha256": "aa5a3fc6410c103e15271dcdc8b4b4ce489e938ddc429a7c5ee827c0e32da6f7"
+    },
+    "repo/config/scenarios/case1_thermal_v5.json": {
+      "bytes": 4708,
+      "sha256": "9ffbcdb9d5f29ff32bc887fdb5de5fdf8c8da5c310fd73118149f224e62fecba"
+    },
+    "repo/config/scenarios/case2_ev_v5.json": {
+      "bytes": 4698,
+      "sha256": "90b46fa800eb72e2e4792b9a660dd290a0af207b6b9160134ca45a5ea884fcbd"
+    },
+    "repo/config/scenarios/case3_thermal_ev_v5.json": {
+      "bytes": 4754,
+      "sha256": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+    },
+    "repo/config/scenarios/case3_thermal_ev_v5_compensation_basis.json": {
+      "bytes": 4764,
+      "sha256": "2bfa6ed373939b28b187d75da707ae2884b9aff08604652acddc991318c2b1c4"
+    },
+    "repo/config/scenarios/case3_thermal_ev_v5_nocredit.json": {
+      "bytes": 4750,
+      "sha256": "322098ec7138c66bc6a83033bfc51437c40b9f80a6e5c3a28142051a5778b815"
+    },
+    "repo/config/scenarios/flex_integrated_v5_central.json": {
+      "bytes": 4994,
+      "sha256": "ea284b4c493b3357d19f2f5b12fd58b04efd24171b490ccc67259431f59358df"
+    },
+    "repo/config/scenarios/flexible_load_comfort_v3_v2g_5pct.json": {
+      "bytes": 2918,
+      "sha256": "9c657abc3f037bd5d5ad4ee0bf71900c52f8868a6bc6c368ab2e315f26370b19"
+    },
+    "repo/config/scenarios/flexible_load_comfort_v4_v1g.json": {
+      "bytes": 2923,
+      "sha256": "24ef759c9becd69cfca98926b2b3a5823c1f3e5a4ead25517c7da0dc75435781"
+    },
+    "repo/config/scenarios/flexible_load_comfort_v4_v1g_effective_peak_sensitivity.json": {
+      "bytes": 2622,
+      "sha256": "2738e7bbe915d169f822009f920285d0c4e8854a65e791b475ffb02a5ebc96f5"
+    },
+    "repo/config/scenarios/flexible_load_comfort_v4_v2g_sensitivity.json": {
+      "bytes": 2193,
+      "sha256": "99180c02acf7203443e1c583b686817b29a788967f5dbc5fa5e0c4b34b2c53a6"
+    },
+    "repo/config/scenarios/hydro_aggregate_flex_v1.json": {
+      "bytes": 1029,
+      "sha256": "d95de356fa2558ca261bf8cf05dbd29344c3da0b0c92f7d1cbdab0d8ed22450f"
+    },
+    "repo/config/scenarios/legacy/case3_thermal_ev_v5.json": {
+      "bytes": 4712,
+      "sha256": "0aca6e5bec6bec4ae78f199d1960d3e8264f1bd350330dba071f6a54ce198920"
+    },
+    "repo/config/scenarios/phs_power_energy_separated_central_v1.json": {
+      "bytes": 1378,
+      "sha256": "a681a5bfab2e6e1fd4e112c4d1c2515a15c80da86f335c176afca96c93a07bba"
+    },
+    "repo/config/scenarios/phs_power_energy_separated_high_energy_cost_v1.json": {
+      "bytes": 1338,
+      "sha256": "201cd12bd611696d8bc6fef5161ab7f97872ba40d22af7fdb8f746f577b0966b"
+    },
+    "repo/config/scenarios/phs_power_energy_separated_low_energy_cost_v1.json": {
+      "bytes": 1334,
+      "sha256": "7790e0fb44c1bed355d2f43dcf4c10c81879cbe6449973acbfa6a1ee87684923"
+    },
+    "repo/config/scenarios/phs_power_energy_separated_template_v1.json": {
+      "bytes": 1219,
+      "sha256": "b834266abf2eb660f6840b7ca445afc175148d538def91cd5e9e301f74abaf20"
+    },
+    "repo/config/scenarios/response_candidates_v1/case1_thermal_v5_response_v1.json": {
+      "bytes": 5515,
+      "sha256": "83bad50c37f7d9a7aabbd7c3b0c3d6d6f365dd56feb7778b3d883b6619f82f62"
+    },
+    "repo/config/scenarios/response_candidates_v1/case2_ev_v5_response_v1.json": {
+      "bytes": 5505,
+      "sha256": "3a1d7d8085eeb81a588ca8887670fab5e4eff0865047eb819c394f997ac3fe71"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_high_v1.json": {
+      "bytes": 6445,
+      "sha256": "770873acc26b8bc37b78c5d135f39701097a2383e1e2fad0282972b00e01939f"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_cost_low_v1.json": {
+      "bytes": 6491,
+      "sha256": "1f01dd260f88d115ee8c358a61aba2c4c3067ede13b89ac164fc04e9f22cf00b"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra25_v1.json": {
+      "bytes": 5520,
+      "sha256": "c1751af09cf5704226ef7f6ffff0d0d7d1cc1e1e77c0bca14432da6f8358930d"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_infra50_v1.json": {
+      "bytes": 5519,
+      "sha256": "183cf36dd5965bb6ba68359d7a8435d343dece3524627ca7710b3e9a5f6869c3"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub1_v1.json": {
+      "bytes": 6085,
+      "sha256": "af932920d8549cf4c1ba46e7ae9aaf52c1e59651a21931baa0fd71ab980e2cc1"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub2_v1.json": {
+      "bytes": 6036,
+      "sha256": "4d2ffdeae3115b457422611f519a26514848db86e31123115fe29ca9e6b27ba6"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub3_v1.json": {
+      "bytes": 6096,
+      "sha256": "2911ee7034a54569cf79e19ed5a8ac096ed4f8a1d670dd051b326e84dc26cfa0"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_sub4_v1.json": {
+      "bytes": 6080,
+      "sha256": "f8a3abbea0892835a20fbdc6252219c1b73535c626929860b17aa6fac4c42bb0"
+    },
+    "repo/config/scenarios/response_candidates_v1/case3_thermal_ev_v5_response_v1.json": {
+      "bytes": 5519,
+      "sha256": "b775db38307c1f04f702e850bd9fcae9ed5b477bb3e2cd51a00e333fe3ac75d3"
+    },
+    "repo/config/scenarios/response_candidates_v1/flexible_response_candidates_v1.manifest.json": {
+      "bytes": 3692,
+      "sha256": "d0170adcada69011c4e82ac524c8ef90ce94446eff52f09a3055d82eca7c9257"
+    },
+    "repo/config/scenarios/scenario_catalog.json": {
+      "bytes": 4381,
+      "sha256": "d2e31320ebb9474d9b0b682c4be1efd7a0b69d7b954e0a0dda9ea407a7cfd0be"
+    },
+    "repo/config/solver_profiles/barrier_16_auto_order_stable_basis_v3.json": {
+      "bytes": 522,
+      "sha256": "7b6d698d47dfd509f781fcf4ae5118f6a5e5c2a4a528de2c0c5153ec26ddea70"
+    },
+    "repo/config/solver_profiles/barrier_16_auto_order_v1.json": {
+      "bytes": 376,
+      "sha256": "92f24bc364a19260f549c966f3a31e50a558aff6aa8d0ba198489b7ec73c0a3b"
+    },
+    "repo/config/solver_profiles/barrier_16_auto_order_v2.json": {
+      "bytes": 483,
+      "sha256": "a76ee3b7ae692edaab9d9f50dc29c482c028789a5b08b9d629e3295946cb1b97"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover2_stable_basis_long_v1.json": {
+      "bytes": 582,
+      "sha256": "b348d8ef422d1a7cc34a5cedaa064d99493a75ded658aa745095da3b6cff8ee8"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover_2_v1.json": {
+      "bytes": 412,
+      "sha256": "0afcb91f987fe37e189aedefa7169fc2f4b5c32690217659d6f36cfc29dad731"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover_3_v1.json": {
+      "bytes": 414,
+      "sha256": "04ddbcb8c861bb66312f7c005ba8fe4eaf69be8d14904288d3b3bcc80926882a"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover_4_v1.json": {
+      "bytes": 412,
+      "sha256": "0d25855681b03b675998338aa3f5b0ba61d1f445e07cae7af69e7574576ee49d"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover_fast_basis_v1.json": {
+      "bytes": 451,
+      "sha256": "7e5714818d9149fc3eef1fca5cc555499233cf72edcda1cd7db38532c5613251"
+    },
+    "repo/config/solver_profiles/barrier_16_crossover_stable_basis_v1.json": {
+      "bytes": 463,
+      "sha256": "2d8de3ef9a22af6747052700d35f0637543d2a62e2953f7b7a01f91bb657186c"
+    },
+    "repo/config/solver_profiles/barrier_16_deferred_crossover2_744_validation_v1.json": {
+      "bytes": 952,
+      "sha256": "eb8af2127bfb143763c139b8d73a71df772ff3dcbade64554cc8a0b0c4ea86aa"
+    },
+    "repo/config/solver_profiles/barrier_16_deferred_crossover_v1.json": {
+      "bytes": 632,
+      "sha256": "f07fb8f99d726b539cb520669ef2fc76030326b8c832c9e940663f5c2cb330d2"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_factor_barorder1_5iter_v1.json": {
+      "bytes": 818,
+      "sha256": "25c8502a9e43ef8f971b8a8d20542ed1b79a646d213886e4a9a0b4a57fa9c6b0"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scale2_5iter_v1.json": {
+      "bytes": 809,
+      "sha256": "258d566e4de0895cbd84235e7eca7e5669b20f74901edde942abadfc91e3aa51"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_factor_nf0_scaleauto_5iter_v1.json": {
+      "bytes": 815,
+      "sha256": "8d3b355de64783f84ee1e32cd8d3a03615c2313fdff31382c1bc66f8364d075b"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_factor_nf1_scaleauto_5iter_v1.json": {
+      "bytes": 815,
+      "sha256": "741a441025d8acada112560bf0e0df06603d1005b7d6ca53336d4eefcf210bcb"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_factor_presparsify2_5iter_v1.json": {
+      "bytes": 816,
+      "sha256": "d0bd17ac0db805132c68aeb5836a36fd80a894f8d70d0b66230f2f6fa81d3222"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_long_v1.json": {
+      "bytes": 860,
+      "sha256": "547b1e9aa35eb3599251124845261258d17d18e648819d83f28354020a2575a3"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_long_v1.json": {
+      "bytes": 793,
+      "sha256": "7bf00c92951431d19a21a807a5f34cb03986167b0dc4c98e25b29c5b9e101cec"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_numeric1_v1.json": {
+      "bytes": 865,
+      "sha256": "7a0af4ef74df4cafe17219a28fdf3b8cf0ce5ae09729d6f70714bbf4004d1ab9"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol1e2_v1.json": {
+      "bytes": 894,
+      "sha256": "bedbe1edeaafee1de8ff24e442f78c9b9ca280fd596070005f1c678564e52549"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_long_v1.json": {
+      "bytes": 844,
+      "sha256": "92e08221a0befd61f47abaa35b0e2c700998769c74f69e96caa884ca650aca98"
+    },
+    "repo/config/solver_profiles/barrier_16_engineering_relaxed_bctol5e2_v1.json": {
+      "bytes": 878,
+      "sha256": "0165a7c67d34e8d876e8c7f4444e1fe8d6805ea8c7d7d38bb04c9ea9b78cce8e"
+    },
+    "repo/config/solver_profiles/barrier_16_infeasibility_diagnostic_v1.json": {
+      "bytes": 484,
+      "sha256": "7f7ad08f8b84ed0b4c2ffabbf2a2c572f758655811347d11dd6e33022b13b359"
+    },
+    "repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_long_v1.json": {
+      "bytes": 870,
+      "sha256": "5aed440492f54d81961faf60f7a7675c1dfae8db587c1526233c8369f17f9753"
+    },
+    "repo/config/solver_profiles/barrier_16_nonbasic_primal_dual_v1.json": {
+      "bytes": 830,
+      "sha256": "87d6ea8b214b30b8fcb955bccb01307e69fb53f8728d9ce6f382ed1cb4643ec3"
+    },
+    "repo/config/solver_profiles/barrier_16_predual1_v1.json": {
+      "bytes": 406,
+      "sha256": "b0a19c83a4b8240be4b031de203f284c9b0c762adff3c611f1f7a5dbe2416680"
+    },
+    "repo/config/solver_profiles/barrier_16_predual2_v1.json": {
+      "bytes": 438,
+      "sha256": "21ca93e77740e96e75b7ce61c1cc910b045710b879ca65e9d3b3da11db1b542d"
+    },
+    "repo/config/solver_profiles/barrier_16_presparsify_lp_v1.json": {
+      "bytes": 447,
+      "sha256": "0234de4717df170099134014f2f5f2c3944984b92d270aa0ccedca9a5f249747"
+    },
+    "repo/config/solver_profiles/barrier_16_sparse_amd_v1.json": {
+      "bytes": 418,
+      "sha256": "b6d55ac9607997794c470e91b2b1e789a2419e83ce0832deab91e9894704c834"
+    },
+    "repo/config/solver_profiles/barrier_32_engineering_factor_threads32_5iter_v1.json": {
+      "bytes": 783,
+      "sha256": "3186e7b0506442be21307512e790b90bc790bd63fdee783eabe6d95ad9dfbc58"
+    },
+    "repo/config/solver_profiles/barrier_32_force_dual_v1.json": {
+      "bytes": 371,
+      "sha256": "28a3471f143e6433d5e4ba4cc4a00e31b18661267851b497f409d5ed90cda28c"
+    },
+    "repo/config/solver_profiles/barrier_32_limited_presolve_fast_basis_v1.json": {
+      "bytes": 483,
+      "sha256": "d902b1cda21c97ffbee299c4938f429d1bc364da4515c76864c646adadab335e"
+    },
+    "repo/config/solver_profiles/barrier_32_reference_v1.json": {
+      "bytes": 364,
+      "sha256": "6b1464ec81ae4d4b4a73da29e1ac9efbf68d9e0833d81a6f76381f00505006fc"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v1.json": {
+      "bytes": 951,
+      "sha256": "ed984d6a05f8571d2b50ba405073c952b5f0231a7bf5c953d3046509cddb3fe3"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_fixed_server_host_memory_95_v2.json": {
+      "bytes": 923,
+      "sha256": "7a05a7c2a39928f434a8c9d6f82130df94fd744add4ebd85a6469ff33e6e033f"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_2040_numeric_v1_threads44.json": {
+      "bytes": 1632,
+      "sha256": "8ae49ace4391ef095be67826c19808a7845b46b2bdf6597bc3f4f1c6259c9c40"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_2050_numeric_v1_threads48.json": {
+      "bytes": 1590,
+      "sha256": "d65451e94ff9e7504fc10705b9fa6e6ad5afaf265dc9a23c502c418fd7cf3e31"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_2060_numeric_v1_threads48.json": {
+      "bytes": 1509,
+      "sha256": "cb1224f674010694b2a20aa9a9e8a4f143ad349b8ade6c9ec7db1adaf49acdbf"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v1.json": {
+      "bytes": 844,
+      "sha256": "723ae81e3b4939267eff864e37ee65747b5d2a3e15639e7ce8d1870e1afb9599"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v2.json": {
+      "bytes": 886,
+      "sha256": "7c876383811227fafca3adf8bbc8b9f8b599c5060b3f0fafd55f024af72b3655"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v3.json": {
+      "bytes": 879,
+      "sha256": "023adef7ad2fbb09d521b16b7ea8edf8ac5985435ea1d74405d2b919dfc2600d"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v4.json": {
+      "bytes": 935,
+      "sha256": "a5fb74272b222a212cbfac206c0753369ee091a83272009fab4447e02e42b91b"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads32.json": {
+      "bytes": 967,
+      "sha256": "de0f90dfc44fa7786c7e58461c292c7582d651b7fe9ec7e822a83558753bdabb"
+    },
+    "repo/config/solver_profiles/barrier_checkpoint_full_year_cloud_v5_threads64.json": {
+      "bytes": 967,
+      "sha256": "74c0166802a2c18dcdd86345811fd2cb4de178a4d441ecf9b3e6dbf1aeddc3e5"
+    },
+    "repo/config/solver_profiles/barrier_factor_screen_8760_v1_threads48.json": {
+      "bytes": 1471,
+      "sha256": "6a6d7a7732d759e4bdafef59a978bbae52136a9c72267c1fd1795fac9d9de590"
+    },
+    "repo/config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json": {
+      "bytes": 1488,
+      "sha256": "9ab853e9cf99579e9c14c2a5e3461a4037e6b42f8b006a26e5d48374e6a25062"
+    },
+    "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v10_threads44_no_softmem.json": {
+      "bytes": 1657,
+      "sha256": "4ab12c9bf066dd88a9a9b2cd06af6a450a43b73fd1a09df1f6248d9373581843"
+    },
+    "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v6_threads32.json": {
+      "bytes": 1517,
+      "sha256": "c887ecc42da316c14679c91ebd61977f0e977b72473fd93fb6c9f5079975c390"
+    },
+    "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v7_threads32_no_softmem.json": {
+      "bytes": 1581,
+      "sha256": "b62e9e981b03e801e631f3d3ad9bd349f2e3e554819604eb49f5109217c9d935"
+    },
+    "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v8_threads64_no_softmem.json": {
+      "bytes": 1581,
+      "sha256": "d32b219d93437e44915c66e8d776713da5a3ecc87148aee46200f5393a4d7e6a"
+    },
+    "repo/config/solver_profiles/barrier_stagea_final_full_year_cloud_v9_threads54_no_softmem.json": {
+      "bytes": 1653,
+      "sha256": "d54012d754be37a778aa7c1c5b8a080eb36c3d501e8535b8d07577481bf5b8e5"
+    },
+    "repo/config/solver_profiles/barrier_stagea_homogeneous_v1_threads48.json": {
+      "bytes": 1508,
+      "sha256": "a474c1a4ab940cfe8ae10caa8bff0c1704cf845166954deea548c97e5eaf7944"
+    },
+    "repo/config/solver_profiles/barrier_stagea_numeric_repaired_v1_threads48.json": {
+      "bytes": 1712,
+      "sha256": "b00a7ef898d5c0fb7c4538b5ed75f958232117246afbf1115b6c0c340e34ce23"
+    },
+    "repo/config/solver_profiles/barrier_stagea_portfolio_v1_threads44.json": {
+      "bytes": 1676,
+      "sha256": "e54d9c7f2b7aa611b7fdb1997d46dc073e8057502552f6a15d9c0958b38bb415"
+    },
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_2040_v1_threads48.json": {
+      "bytes": 1873,
+      "sha256": "888e414cccfb6c887fe5a0ff395985806c3571ba75ea3c93665643567b910028"
+    },
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads40.json": {
+      "bytes": 1811,
+      "sha256": "15208fcb4dc87545af9959a398621057ea35ac0f2fb6c02a08202644dbc02c84"
+    },
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads48.json": {
+      "bytes": 1873,
+      "sha256": "e27c6ee8edde9cdd996ae74f6efba5554e47b935fb7843c563e92f1bfe027b76"
+    },
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json": {
+      "bytes": 1832,
+      "sha256": "22c7e49f14f1eb7bcfbf19dc76bab61c935b4d9716f052f86785f3225b740f45"
+    },
+    "repo/config/solver_profiles/barrier_stagea_screened_agg0_v1_threads48.json": {
+      "bytes": 1864,
+      "sha256": "70187ec42fdb1984dba22296be046095ad961fb412719721ea086b6446bffa22"
+    },
+    "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v1.json": {
+      "bytes": 947,
+      "sha256": "007c8820e7e1bce829b9aa54a035bd8cbaaafa6751b9c8d01aa5a4f4c3602743"
+    },
+    "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v2.json": {
+      "bytes": 896,
+      "sha256": "fea46465bc0d0208e5bab126157852a31492f6d2db3c0d65bf13fdafa949a6d9"
+    },
+    "repo/config/solver_profiles/deferred_crossover2_full_year_cloud_v3.json": {
+      "bytes": 967,
+      "sha256": "89fd5b04113ddf6ef98fa2816760d2ed14e4fda2e416a0321fefe00079a3238f"
+    },
+    "repo/config/solver_profiles/dual_simplex_16_v1.json": {
+      "bytes": 332,
+      "sha256": "029e82c98bfbeb49a20067db736223eb6f2b00d9dfc0a9ad6c9867b1f749ce40"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case1_v3_barrier16_stage_a_v1.json": {
+      "bytes": 719,
+      "sha256": "506b69e815839e5f696bce6e758e3cce193a7e662c89b790c30f3e4bebcb484d"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case1_v3_stage_b_v1.json": {
+      "bytes": 744,
+      "sha256": "51a268542a0188ff24ef7230355caa78140a83d7eb20b966cbb494b26c0e843d"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case2_v3_barrier32_screen_v1.json": {
+      "bytes": 691,
+      "sha256": "735ad5bbaee042a0c60ed234d21ebc5fab18c5d7cc2dc6394b83baccdecc19e2"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case3_dual_simplex_screen_v1.json": {
+      "bytes": 646,
+      "sha256": "a52285fa9ecd84da4adc7a0d050ee2fa078eae9f2a4700b3d7ed446d84462b0d"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_screen_v1.json": {
+      "bytes": 785,
+      "sha256": "b2ae01b9f0ebdf63f9527c95edfc112e2030b678eeaeeab7f2bc9311ae357a3d"
+    },
+    "repo/config/solver_profiles/large_lp_2160_case4_gpu_pdhg_unlimited_v2.json": {
+      "bytes": 799,
+      "sha256": "9c5c5ea38572dc26454c8a735e91e161e240a887dc98f5897cdff74d02c87122"
+    },
+    "repo/config/solver_profiles/pdhg_cpu_32_v1.json": {
+      "bytes": 368,
+      "sha256": "a1ebf0cd298550c975baff7751e296e06a37d075189119a265623c2020f3f552"
+    },
+    "repo/config/solver_profiles/portfolio_local_gate_v1.json": {
+      "bytes": 624,
+      "sha256": "a0fc8b7d41f0de14663a887746ae8a0d6da5ee81e3c97a6746dc889d703b54f8"
+    },
+    "repo/config/solver_profiles/portfolio_local_nonbasic_gate_v1.json": {
+      "bytes": 672,
+      "sha256": "47dcbe228a3a5fcaeb6c6c72c02cbba41cf217116120e742aadcec9d11756239"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_aggfill0_v1.json": {
+      "bytes": 468,
+      "sha256": "01c922bd93e831ce8109dc9fcabb7adab305da253a4794b7a5f68e1df00dde7a"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_barorder1_v1.json": {
+      "bytes": 461,
+      "sha256": "4dedf4a8e0ec26b6438078626afbe73729b201e4e16967c584d264196e79d7c9"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_numeric3_v1.json": {
+      "bytes": 457,
+      "sha256": "d90c04fa74404ec16d0d9ee3dbb4026f2d466e513989a1082808ae4266d12cef"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale0_v1.json": {
+      "bytes": 469,
+      "sha256": "cf17e5e266e944ad184f353b49d4d22fdc302a00c0e339c6c20e8ab4a421f8d6"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale1_v1.json": {
+      "bytes": 469,
+      "sha256": "23874a1231fc70018222ee8e8e53c5ef4045d5ad1f1d6256de55c1bbf8300e0e"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_predual1_scale3_v1.json": {
+      "bytes": 469,
+      "sha256": "b85b1df487369e5a31c86565584e554224ffd6e09250290e375c62e43aefc087"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve0_v1.json": {
+      "bytes": 467,
+      "sha256": "eced58ec47c0a0a992a07ffd9c4766769e44c546b0555f85521aa28b1d169d07"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_presolve1_v1.json": {
+      "bytes": 432,
+      "sha256": "8845201d7d7eca8a0a5bdaf15971faa38ce02a31daa6281b5d812419eadde92e"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale0_v1.json": {
+      "bytes": 461,
+      "sha256": "e3bb9906029552ea5ea22ad6a59750d529a1789f49f61910fa40e71cf092f708"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale1_v1.json": {
+      "bytes": 431,
+      "sha256": "8abc566aab1806a133e7e0946ef5635963b5eb448a63ea8b344032b164004506"
+    },
+    "repo/config/solver_profiles/tuning2_barrier_nonbasic_scale3_v1.json": {
+      "bytes": 431,
+      "sha256": "8b92083d9c02a74afef50e62728c43516c2cd5b159ac9ebd5323a4ff3dad13c5"
+    },
+    "repo/config/solver_profiles/tuning2_dual_simplex16_v1.json": {
+      "bytes": 469,
+      "sha256": "ae951232fb3e9827f420844299b4bef5c9a026525d35b3888555e9b8317e9a60"
+    },
+    "repo/config/solver_profiles/tuning3_barrier_crossover1_stablebasis_v1.json": {
+      "bytes": 486,
+      "sha256": "92daf537293e5bb2bef0207151c6b3aadfb38b14bcfca913639b9d0d1d169ec5"
+    },
+    "repo/config/solver_profiles/tuning3_barrier_crossover2_stablebasis_v1.json": {
+      "bytes": 507,
+      "sha256": "2a0fb43f2b0baee92095580f315207e7077d3abc15df0e0738b12bcda14cf2d0"
+    },
+    "repo/config/solver_profiles/tuning3_barrier_crossover4_stablebasis_v1.json": {
+      "bytes": 507,
+      "sha256": "04e2204dca3a7754f55473f39f514908009b65a79d18f8cbb666875f69a6f00a"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_aggregate0_v1.json": {
+      "bytes": 566,
+      "sha256": "300d4e72ccf8e13f1e5c2fcd85669f215c8c973ab45466ed6242519b6314b43d"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_amd_sparse_v1.json": {
+      "bytes": 595,
+      "sha256": "bbd8f47d321beceed71b7bf4feca3eb840e8d6314b0af6476b41e08218f4ca6d"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_numeric_auto_v1.json": {
+      "bytes": 637,
+      "sha256": "4fc18a42cc5d4bfdf018732355df3169cd8452972701cbff47ddd253fb3214f0"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_predual1_v1.json": {
+      "bytes": 569,
+      "sha256": "2e1dbd285bc84650d09579fd1b2906ed0476d23ba6503fd520ccd75293dbfb8f"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_predual2_v1.json": {
+      "bytes": 582,
+      "sha256": "ff10e7c769dc30361384d92e5e417fe9902337bfdd7d3bfb90e9af3b8442a41f"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_presparsify2_v1.json": {
+      "bytes": 575,
+      "sha256": "572f81185d13287fa3c2c5eb04336337566b56ac43488ec15e2f49bea7810b67"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_threads32_v1.json": {
+      "bytes": 547,
+      "sha256": "b7ecdb86e65fcc1e6cd18f02c79a909e6db266bee7e570f7105116a6b705ef96"
+    },
+    "repo/config/solver_profiles/tuning_barrier_nonbasic_threads8_v1.json": {
+      "bytes": 544,
+      "sha256": "b2a53d3530c3d0f087096444263280a323ae5a718d5038f504f2ca22e51c56fe"
+    },
+    "repo/config/technoeconomic_price_basis_2025.json": {
+      "bytes": 1921,
+      "sha256": "537e2a82121c654484639dd6e5cb84d5a19396c4f82ee18d132bb53d0d57dccb"
+    },
+    "repo/config/technology_parameters.json": {
+      "bytes": 13171,
+      "sha256": "f6ff7b0270fd15b125565b4517c042c4c82da6cee3c7ff309eb6d74e9bb916e5"
+    },
+    "repo/scripts/analyze_portfolio_water_residuals.py": {
+      "bytes": 4399,
+      "sha256": "89409be96b12c43883205485c8d7122b0112d7177f53ff4ff53505c9c40cf3d6"
+    },
+    "repo/scripts/apply_technoeconomic_price_basis_v2.py": {
+      "bytes": 12079,
+      "sha256": "29be071dab07f16d2653ffc526d9b9a397719ad1a020279c46967599545ba2c6"
+    },
+    "repo/scripts/archive_final_baseline_data.ps1": {
+      "bytes": 23073,
+      "sha256": "2bf51808c4ea6893eabebdc9c659ee4aab0382c300100f3693f30c898c85baea"
+    },
+    "repo/scripts/assess_relative_v1.py": {
+      "bytes": 2327,
+      "sha256": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b"
+    },
+    "repo/scripts/audit_accepted_deferred_crossover_pair.py": {
+      "bytes": 9883,
+      "sha256": "110ca5b56fe54b4e4ffd42de0c68bf4427d6233a1f4ffe391aceb39b86834fdd"
+    },
+    "repo/scripts/audit_beccs_lifecycle_sensitivity.py": {
+      "bytes": 5288,
+      "sha256": "bed0af890404d0349f140742fe814ced6db7d47173a412d8242e2fd681f0531a"
+    },
+    "repo/scripts/audit_final_portfolio_no_solve.py": {
+      "bytes": 5588,
+      "sha256": "f76a5f365c819f9b96677059b553ea67c7649f7e564bac6fcfe78b9155b4e1d9"
+    },
+    "repo/scripts/audit_gridded_electricity.py": {
+      "bytes": 29246,
+      "sha256": "b507d947b640bae5b08ff83c2781232a459f7de37c747712f6e1a4364077f8e3"
+    },
+    "repo/scripts/audit_land_point_provinces.py": {
+      "bytes": 13137,
+      "sha256": "1af9d2889f751a00df04957478ef0232da97305fbe5fe4875bc561cbb086e4c7"
+    },
+    "repo/scripts/audit_m2_model_boundary.py": {
+      "bytes": 11875,
+      "sha256": "1cfc3215bba727e0ee8c48f70874ebab0e57ae760a64e385cf7cfd470c4018b7"
+    },
+    "repo/scripts/audit_model_numerics.py": {
+      "bytes": 19453,
+      "sha256": "2fd2b4602a3224998043056bab6b0be0ad7564d5399f3f87f0dc47836ed114d4"
+    },
+    "repo/scripts/audit_model_parameters.py": {
+      "bytes": 18478,
+      "sha256": "60bb6143f782c88e88ea072d99b34acd049f787a44e3c906d704c6e877e8b3f9"
+    },
+    "repo/scripts/audit_planning_sequence_ab.py": {
+      "bytes": 12512,
+      "sha256": "287119889a0aad90c2b3299a621fff244cccff52a8d3ef6b1ac2e3ebb98198c3"
+    },
+    "repo/scripts/audit_portfolio_base_readonly.py": {
+      "bytes": 8131,
+      "sha256": "a0d0c3ae6247e176f53c0e82b0b0e123f594c68a419d6507323dacbbd5d73bdf"
+    },
+    "repo/scripts/audit_portfolio_saved_result.py": {
+      "bytes": 4580,
+      "sha256": "1de720e289b7d5ec706a52d8602e8f07000b2dc4eec15c9ef22b83e8254648eb"
+    },
+    "repo/scripts/audit_relaxed_barrier_macro.py": {
+      "bytes": 20132,
+      "sha256": "dbcf0a6c119d6727e20ec09176fe561dcd00d7cdd13cdfd15156e4371e9665df"
+    },
+    "repo/scripts/audit_release_contract.py": {
+      "bytes": 7460,
+      "sha256": "2cb3fb5272fafa91f0c7e759d6886109454d894218d3e42105a5492ffed33244"
+    },
+    "repo/scripts/audit_reservoir_storage.py": {
+      "bytes": 15852,
+      "sha256": "799e22bef14d47232e8ce5cdb197ff858b0800b8df803ac70a34f52cf4fe8377"
+    },
+    "repo/scripts/backup_completed_cloud.py": {
+      "bytes": 12221,
+      "sha256": "cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658"
+    },
+    "repo/scripts/backup_recovered_release.py": {
+      "bytes": 3262,
+      "sha256": "6c65c952f4015c6aee2b756c567a86fc54691b2d920dcba7b27ccec3f45b439e"
+    },
+    "repo/scripts/build_cispo_data_package.py": {
+      "bytes": 155371,
+      "sha256": "d5cf5f1fb69d0892ca99227647b6f7e3e01ceb3fae468d0cfe07538545597d0e"
+    },
+    "repo/scripts/build_city_337_network.py": {
+      "bytes": 29538,
+      "sha256": "918e07dc06cc56329b936acc5e1f546e44330ab58944ee72ff124c6231c7ab2c"
+    },
+    "repo/scripts/build_existing_vre_cohorts.py": {
+      "bytes": 12382,
+      "sha256": "6ec5c4a8b13fa5bde531a9a797f1ab5d99d6cc45b01eedc6e950f11bba4ba8d1"
+    },
+    "repo/scripts/build_flexible_load_envelope_v3.py": {
+      "bytes": 12548,
+      "sha256": "85a0895d9c14d26d66d7654d9c7a3ebeab679d0cfdd56eda99e102b679ff8e4f"
+    },
+    "repo/scripts/build_flexible_load_v4_inputs.py": {
+      "bytes": 12199,
+      "sha256": "be8301a9e278ebf4144cbbf9a9cd06cb0a31e35fbc762b9d33c1217e8156a7c5"
+    },
+    "repo/scripts/build_flexible_load_v5_inputs.py": {
+      "bytes": 16997,
+      "sha256": "98d63d6354ccc7f3a6ed0d16f66c9ea358a7ccdc75abc51325d7a16fc931d51e"
+    },
+    "repo/scripts/build_flexible_response_scenarios.py": {
+      "bytes": 7448,
+      "sha256": "50318ee7b44a5d9765c1999633780e3956bc76cd74393344abea391ed261f5cf"
+    },
+    "repo/scripts/build_gridded_load_centers.py": {
+      "bytes": 32730,
+      "sha256": "19c7ada5363ad31b44df1f09bcb328ebad816f02c4c7a5a867eee48eeb289137"
+    },
+    "repo/scripts/build_natural_earth_278_network.py": {
+      "bytes": 21418,
+      "sha256": "fd4eecc59851878a4f38e0055d58dc379e0d8338a6847da1920331fa9871be53"
+    },
+    "repo/scripts/build_paper_initial_capacity_2025.py": {
+      "bytes": 21248,
+      "sha256": "c2363564181e252cb6378e7bba68de5f0536953736542ee2253f79703ff148d7"
+    },
+    "repo/scripts/build_paper_load_centers.py": {
+      "bytes": 37973,
+      "sha256": "da55ba89e7b14997b4965560a74cc04be279473011454a77deac1aeb72c0c9d2"
+    },
+    "repo/scripts/build_result_dashboard.py": {
+      "bytes": 2276,
+      "sha256": "582a045c773924f4fb0dd07fb6f343d2428cc70b16bb6af9c287b3edafb12cd7"
+    },
+    "repo/scripts/build_v0719_capacity_bounds.py": {
+      "bytes": 8602,
+      "sha256": "9fe1902ca50b8694c9921089428a6fc1ff0e97b1417865e712f85e632c8a413f"
+    },
+    "repo/scripts/build_vre_screen_list.py": {
+      "bytes": 4225,
+      "sha256": "55e0a1a28cb41137e0bc5b8463020e18e1116cd785953b4c64954f50d97041c3"
+    },
+    "repo/scripts/build_wave_energy_inputs.py": {
+      "bytes": 11745,
+      "sha256": "594aa1caaf3a1785408277401e7e0604d5a6eec5e13d0744c8a876885958c0db"
+    },
+    "repo/scripts/check_barrier_checkpoint_eligibility.py": {
+      "bytes": 5860,
+      "sha256": "908c62a2ac6f7cc441ba8e1f2b7595aec306d5aa36f7c019d2cc4584b0c0e84f"
+    },
+    "repo/scripts/check_gurobi_full_license.py": {
+      "bytes": 2062,
+      "sha256": "e1747e0034b27e4e528faae78c776fc2686d3aa52b461016ea1a863a0204507a"
+    },
+    "repo/scripts/check_server_readiness.py": {
+      "bytes": 10929,
+      "sha256": "2e5256fc1f104896cd1c9327c9bc88dc43c9f14792a38f6a527fbeb02cd0035f"
+    },
+    "repo/scripts/cloud_recover_stage_a_24core.sbatch": {
+      "bytes": 2237,
+      "sha256": "9eb4a162b1385f2c33581c8031b492ad41295c87cabcca482e2d438fb691c26f"
+    },
+    "repo/scripts/compare_physical_lp_releases.py": {
+      "bytes": 6917,
+      "sha256": "8af32876edbd9432f7116740ec9a7aeaa76d8e1bfa63b5c708aee3b85effbf76"
+    },
+    "repo/scripts/compare_solver_runs.py": {
+      "bytes": 1337,
+      "sha256": "a4083ea8e142e417828ec91c46722bf12ce330db8e3ee6977a14ba070ea0c4b8"
+    },
+    "repo/scripts/data_package_common.py": {
+      "bytes": 4207,
+      "sha256": "730fe60fe025c136b2b190084aeda4a0eb7478cd28279d23aeedc79a1fdc9dfe"
+    },
+    "repo/scripts/download_electricity_consumption_1km.ps1": {
+      "bytes": 4848,
+      "sha256": "69cba87f4d7a323df2ad3c1bf79d224ba4c1f1b4bb4095594d4d4ea2b7ac2cc3"
+    },
+    "repo/scripts/extract_base_residual_load.py": {
+      "bytes": 5374,
+      "sha256": "942b73c9e09283b550f132cda43747e9a141f3ba5de850fd6dcdd43ee263bb59"
+    },
+    "repo/scripts/extract_frozen_hydro_spur.py": {
+      "bytes": 9102,
+      "sha256": "b5cb2837637359f4c218b661bd98c2ff70a23c57a266486048b3cb54efa92681"
+    },
+    "repo/scripts/flex_numerics_diagnostics.py": {
+      "bytes": 4301,
+      "sha256": "c01d090f239a4fa0df618caef0f77cd70b79f0149544fdc73131236175ace833"
+    },
+    "repo/scripts/flex_numerics_rule_5b.py": {
+      "bytes": 3921,
+      "sha256": "3f4b7f2a10b5226450681b1701a8814d6cd31ee906920e6ecd65c335f79cc507"
+    },
+    "repo/scripts/guard_stagea_row_scaling_2160.py": {
+      "bytes": 12672,
+      "sha256": "fc8a609fa808fed90b1d5735cc43c1255b66a235e1760af290719716acf7aab8"
+    },
+    "repo/scripts/inspect_historical_water_qc.py": {
+      "bytes": 5221,
+      "sha256": "fdf5cd48aa14cb132eae3b814e0746a367b94b4d9d069b298e2a0621ae3cd682"
+    },
+    "repo/scripts/install_flex_diagnostic_bundle.py": {
+      "bytes": 3312,
+      "sha256": "ca1fc7b00b6bc68eb406cc9456bc9f6cf9cc472d1bc27f68a48dd583bc067ab5"
+    },
+    "repo/scripts/monitor_case_resources.py": {
+      "bytes": 8395,
+      "sha256": "10f8724fe2ac366db26d74d2eb74d41c2eca108070263ea8c6fc18323c9adf72"
+    },
+    "repo/scripts/parallel_backup_release.py": {
+      "bytes": 11194,
+      "sha256": "bccb8cc8eab5ba46fb6b54d38c0dd19966e6d013eba0febfc20cb8539210341f"
+    },
+    "repo/scripts/preflight_cispo_2030.py": {
+      "bytes": 1109,
+      "sha256": "3dd5ac4c907d33805701e08ea71c82c17e64bdac3e29bf5f4a15c6136dfa8467"
+    },
+    "repo/scripts/prepare_continuation_state.py": {
+      "bytes": 16830,
+      "sha256": "1086022e430b903c39b56b6e7d9bec47e8cedc1cb315bc713bd275c7136ec677"
+    },
+    "repo/scripts/prepare_flex_diagnostic_bundle.py": {
+      "bytes": 3488,
+      "sha256": "5c7e1bab70864503620efb7e70439e0f800fd354ddee0191cbb46bcd0e2085e8"
+    },
+    "repo/scripts/prepare_hydro_storage_corrections.py": {
+      "bytes": 3261,
+      "sha256": "1ba0648c2e470f30661dba6b9a08b41d6ae290fcf48899c83c95e7031a59af5e"
+    },
+    "repo/scripts/prepare_server_bundle.py": {
+      "bytes": 6846,
+      "sha256": "4741dd096d47b6a60f283a4ede59ad4791f00702c737c045998bca8c051ca1cd"
+    },
+    "repo/scripts/price_screened_candidates.py": {
+      "bytes": 2978,
+      "sha256": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15"
+    },
+    "repo/scripts/price_taker_enrollment.py": {
+      "bytes": 16641,
+      "sha256": "43c868fd3372cfc61956047580ea80dcc0083f9842d54edf9f2eac5dafea267a"
+    },
+    "repo/scripts/probe_full_year_numerics.py": {
+      "bytes": 12978,
+      "sha256": "2c078061bf1412280c973431139ef0785017e09ef38d47661abc5649f9211738"
+    },
+    "repo/scripts/rebuild_fuel_price_tables.py": {
+      "bytes": 797,
+      "sha256": "e215ac7a0256945f51b136be68ccc701ea8b8b6ae950d6b2cadbed236214f3ec"
+    },
+    "repo/scripts/recompute_saved_reservoir_balance.py": {
+      "bytes": 3922,
+      "sha256": "e95258af04e4f6d719e8c47c933aecf479addc44df233298d9af046710ae0fcf"
+    },
+    "repo/scripts/recover_historical_stage_a.py": {
+      "bytes": 16700,
+      "sha256": "c68f820f09dfd317763d5f1a84867d254e347790f8ccfa682442d2824430ddfc"
+    },
+    "repo/scripts/render_8760_convergence_note.py": {
+      "bytes": 15614,
+      "sha256": "f77d79c30e74675aa8fc103dd5c8ed089344dd23516910629ad9e5e07944e3d9"
+    },
+    "repo/scripts/report_8760_convergence.py": {
+      "bytes": 19906,
+      "sha256": "6ab258c144530984ab03e9ff0f9ce425188addf7e3bf1a98ae4f7e8babce154a"
+    },
+    "repo/scripts/run_8760_gpu_pdhg_instrumented.py": {
+      "bytes": 3584,
+      "sha256": "11c592fdce011c31dc7fa041e80bb91ef75e38b7a6fa75feb749511e15a97de3"
+    },
+    "repo/scripts/run_8760_gpu_pdhg_supervised.py": {
+      "bytes": 13947,
+      "sha256": "50b56e386cfab6b3e9a885f2addcea4c6f2e52488723e38d84f5d35ca11ae514"
+    },
+    "repo/scripts/run_cispo_2030_full_year.py": {
+      "bytes": 123888,
+      "sha256": "a24770512eada7f1c4144f80fb6491c957596c45beecb5fff7f7820c43d25a4b"
+    },
+    "repo/scripts/run_cispo_planning_sequence.py": {
+      "bytes": 23613,
+      "sha256": "b4bfdf0681399fb742f17300ddb45d0ec2f12d38e0790ddbf1048dd7db3249f2"
+    },
+    "repo/scripts/run_cispo_sensitivity_suite.py": {
+      "bytes": 19098,
+      "sha256": "389b6e74c143e9d3a79f37d366d21eb81c3104d9af2eb618962b4eefd44cb7a1"
+    },
+    "repo/scripts/run_cloud_8760_scientific_job.sh": {
+      "bytes": 9017,
+      "sha256": "9ac39f5f3ca045ae645fde59013b9eaa8221ac53c531564d1b503d18aed07397"
+    },
+    "repo/scripts/run_cloud_portfolio_job.sh": {
+      "bytes": 11290,
+      "sha256": "02b0ea78613cbc5c6970977bf0952d193f358bb27e0bafc9da4ec821c7b22e32"
+    },
+    "repo/scripts/run_fixed_server_2160_campaign_case.sh": {
+      "bytes": 8220,
+      "sha256": "43217a950d3fee447d877497af0a145abb49d66e46a541e01b24c2aa9ec2ac2a"
+    },
+    "repo/scripts/run_fixed_server_2160_stage_b.sh": {
+      "bytes": 9940,
+      "sha256": "4834535b1b5ba0a8936a6a7942994ab3f37cd15c3ccb9903b25be248980841e9"
+    },
+    "repo/scripts/run_fixed_server_deferred_crossover2_744_validation.sh": {
+      "bytes": 8519,
+      "sha256": "7b181cdc442ac8eafbc0c53203e3900ac3b6b4c270a31d503093e29b29900104"
+    },
+    "repo/scripts/run_fixed_server_host95_long_horizon.sh": {
+      "bytes": 5178,
+      "sha256": "3595a69010a230b444ddde644440ba6284476b77549fab30ac97fefc40834e0c"
+    },
+    "repo/scripts/run_fixed_server_relaxed_barrier_campaign.sh": {
+      "bytes": 8648,
+      "sha256": "3110c7625e06f0b22f4661d6ec5c9520bce1723aafc62e9d8f14e8487229512a"
+    },
+    "repo/scripts/run_fixed_server_relaxed_continuation_supervisor.sh": {
+      "bytes": 7057,
+      "sha256": "6a3a70e04c51d77d436b56d14c3be2b602d54fc16742285cf7aa4a7b6862b9dd"
+    },
+    "repo/scripts/run_fixed_server_relaxed_factor_screens.sh": {
+      "bytes": 9438,
+      "sha256": "bd16209ee7085c945e07bf53799526193f2f865d8469601e1c91202eb9e318c6"
+    },
+    "repo/scripts/run_fixed_server_relaxed_factor_screens_round2.sh": {
+      "bytes": 925,
+      "sha256": "8aa1caa8de6b4495fcccd8aef308fe08b31ab7ba09f394304ef72a6ef4b415db"
+    },
+    "repo/scripts/run_fixed_server_stagea_row_scaling_2160.sh": {
+      "bytes": 13590,
+      "sha256": "f2424cd4d6d1263b9fa1c66610afaafa642264b9f0f7ab9d26a37a597734c176"
+    },
+    "repo/scripts/run_flex_extension_series.py": {
+      "bytes": 7056,
+      "sha256": "95250d32fd986154bf3fbace1ab47cbc3671b0bf89ea36ee50816cb5c4c41369"
+    },
+    "repo/scripts/run_flex_f5_retry_diagnostic.py": {
+      "bytes": 6647,
+      "sha256": "cc065125d9af0c5f79d9e23ffe916d5f94b69acf766b199dfa83bc93f48af451"
+    },
+    "repo/scripts/run_flex_full_diagnostic.py": {
+      "bytes": 7171,
+      "sha256": "cd3c7e7faf7daf85566ba80dd2bf689efa4f4eb5a2be0cba6a333c131dca70f1"
+    },
+    "repo/scripts/run_flex_price_series.py": {
+      "bytes": 3568,
+      "sha256": "38f35964975ebf7341a26d259b5baa07fb9304f6d5740c1b7f2490b063ed5fa4"
+    },
+    "repo/scripts/run_flex_server_series.py": {
+      "bytes": 4589,
+      "sha256": "1ae5acea022d535f3d933b7a3fa7da975a493aca27784c474a171d6cde467252"
+    },
+    "repo/scripts/run_flex_single_diagnostic.py": {
+      "bytes": 4638,
+      "sha256": "6639a8ba05ff8be81c7f82324b9bc212f002dff2096266e7e216a47c9cacce20"
+    },
+    "repo/scripts/run_historical_stage_a_recovery.sh": {
+      "bytes": 2432,
+      "sha256": "f72e7b1623d03786a56a5be9bee82ba8a3ba72c1cd6946ac654fcd7285dc108d"
+    },
+    "repo/scripts/setup_server_env.sh": {
+      "bytes": 1480,
+      "sha256": "26604f9a85289f63a75c8e8263a94831f7428d59d43a65a4210c5ded87d1e0a6"
+    },
+    "repo/scripts/smoke_test_data_package.py": {
+      "bytes": 37106,
+      "sha256": "3788ee7efd907a137c6fd44f86ba83eda6062290466af087e14803919e68f2c8"
+    },
+    "repo/scripts/smoke_test_paper_load_center_pipeline.py": {
+      "bytes": 7958,
+      "sha256": "9accb9d04307ceece0d6d9e823a3e27111bf8e243011820715060c0eeba97c91"
+    },
+    "repo/scripts/start_case4_after_recovery.py": {
+      "bytes": 9354,
+      "sha256": "a80ef9f0e708b9963b0a952512d857766f8f6b487614e406e44a6d7216b24f64"
+    },
+    "repo/scripts/summarize_flex_numerics.py": {
+      "bytes": 11229,
+      "sha256": "3efd0bc4d1cdd73a3f8934fa69d02bfd0fc6d0d07158e03a58562ef2ad58d96f"
+    },
+    "repo/scripts/summarize_relaxed_barrier_campaign.py": {
+      "bytes": 18923,
+      "sha256": "f8b656ea60682d36c57c96de7b371fed8c0e4a7a7ecaf7155ed60f9c9a8393b4"
+    },
+    "repo/scripts/summarize_relaxed_factor_screens.py": {
+      "bytes": 12451,
+      "sha256": "86ae4e6210fa910cf19b090f7eb910cfcc41384a93a5fc667cc3903c3988e89e"
+    },
+    "repo/scripts/validate_annual_capacity_link_scaling.py": {
+      "bytes": 15311,
+      "sha256": "5905ffd081dbf9b20f53ec4276bfd55749eb9d6f1fc117e6ad042cedcb22cdd7"
+    },
+    "repo/scripts/validate_flexible_load_v4_inputs.py": {
+      "bytes": 7825,
+      "sha256": "8b40074a7a3a8fa4e5ea036a9dbe1bd6df9358bbee68218668b2b72c7e49eeea"
+    },
+    "repo/scripts/validate_flexible_load_v5_inputs.py": {
+      "bytes": 20359,
+      "sha256": "96617da08a1cfc0dbf8cb612918a70857671dd70f5d7ebcad57db72e8b13e3c5"
+    },
+    "repo/scripts/validate_flexible_portfolios.py": {
+      "bytes": 11239,
+      "sha256": "4ffac0540c5d735f262b4c45d66597ad5767364e59d841a575350e8c26317840"
+    },
+    "repo/scripts/validate_provincial_aggregate_hydro_inputs.py": {
+      "bytes": 6299,
+      "sha256": "cfd7abcad9cdc0751c2b036eb82c7284b73046f4bfbcef15ee0198bdef4bb6a9"
+    },
+    "repo/scripts/validate_stage_a_recovery.py": {
+      "bytes": 7444,
+      "sha256": "0f1b93dbd498c56a31b98d5694b8d5bee0643768b80966a6dd14786370dde77a"
+    },
+    "repo/scripts/verify_case3_parameters.py": {
+      "bytes": 10547,
+      "sha256": "c9beac724aa84e1d180d4273e3aeee6580f6d99420fc8b94031f86ba13c68d6a"
+    },
+    "repo/scripts/verify_preserved_backup.py": {
+      "bytes": 2974,
+      "sha256": "55c207386990952622ff1b340c1ea7be3c0b6bf27e922230540bc39f502f7c33"
+    },
+    "repo/scripts/visualize_preserved_2030.py": {
+      "bytes": 13463,
+      "sha256": "38a7e3a747136dbe2d8e75596faa6761837357dceb85a0bfa8b61e33cef90ee4"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/REVIEW_ZH.md": {
+      "bytes": 5051,
+      "sha256": "98c0f4e03e2f33ac6514afd4dc71202e4111aee2121eadd8f18f3a284054ff50"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/analyze.py": {
+      "bytes": 5453,
+      "sha256": "2c876a70da1ab273f50c783dfad3bfa0d5b7d47179c19336644271e3bef53816"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/dual_export_status.json": {
+      "bytes": 593,
+      "sha256": "d89bb4cccea334deacf0152e148c544548d0db224a314216a5fb2f6312132ae8"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/output_8760__gurobi.log": {
+      "bytes": 338465,
+      "sha256": "b280dccf158eb1b9f4d2159cb13c3bf42155df7f26d4f93630f682d8e60d61d0"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/output_8760__preservation_report.json": {
+      "bytes": 4184,
+      "sha256": "00f6e3991f5ff35f8265ef542a89cec1c89b5d07a978eb88a5f6713460cb70af"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/output_8760__solution_qc.json": {
+      "bytes": 13740,
+      "sha256": "0f1fa6bf2f374f1956364a4a5a24b01e3ec3bc3cc5f1b4f95d9832ce7249cff2"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/output_8760__solve_report.json": {
+      "bytes": 165192,
+      "sha256": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/output_8760__solver_telemetry.jsonl": {
+      "bytes": 315415,
+      "sha256": "f3b46865ee5211631b20d5f5f177780373979aba0f42eb50311fc97cdf57678a"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/remote_read.py": {
+      "bytes": 2313,
+      "sha256": "38ab9d319239df2bd086f78ee6560e9dc241708a6c3d80671fddeb966a98dc09"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/scheduler.json": {
+      "bytes": 2027,
+      "sha256": "13485d2dcbadc6fede921cba4fa2d3a2db2b8558650ab5563cb416a6a98c5a55"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/sha256.json": {
+      "bytes": 1425,
+      "sha256": "26a15604de7d893b9df920060ff92ffd263863e2a14700a96ee2fdfba2a0ff57"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/slurm-4844528.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/summary.json": {
+      "bytes": 4435,
+      "sha256": "d1c683dd4b4727a076e06b236fe086da898d2d00e941274803368f43c9ca1346"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/terminal_remote_read.py": {
+      "bytes": 1005,
+      "sha256": "da0b57d6c4054e7aa8c2efdbf9ea190b67b02b111f72342f4b5e08ca5502a6ca"
+    },
+    "repo/supplementary_materials/reviews/base_2050_continuation_20260930/status_20261012T111059Z/terminal_scheduler.json": {
+      "bytes": 820,
+      "sha256": "fbca19cc63a526eb16d4c1f1d225a15e30e4be222a968795fa874ddaac6800b2"
+    },
+    "repo/supplementary_materials/reviews/base_2060_launch_20261012/audit_cleanup_6b.py": {
+      "bytes": 6681,
+      "sha256": "32d4e88593ebe8d2800dcf3153c2e7dc567f4315ff45e8001d2d4a7c736b4c81"
+    },
+    "repo/supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py": {
+      "bytes": 5099,
+      "sha256": "97d3397185f302a2edee6c00b35b641ccf214fa3dac1e0f50d695e83d33ca093"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2040_20261015/audit.json": {
+      "bytes": 2949,
+      "sha256": "1b33f722bd5f3d5b45d4a5aebc3eae98ebef34a1813446bc0e62ec176b59ead9"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2040_20261015/candidate_screen_fragment.json": {
+      "bytes": 332,
+      "sha256": "ba5cc3e0c670d296273ab142f21f92f6277038705fc33dac268d8fc788ecaaf8"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2040_20261015/source_screen.csv": {
+      "bytes": 1313680,
+      "sha256": "e113054c00aa3ac390287e3061c5228a59e26311845b3a18081b8e67147a41c8"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2050_20261015/audit.json": {
+      "bytes": 2942,
+      "sha256": "2bcdc8501558fbf26ad50f021027d00ef1e09a30938cc5ea7cad0cd15ba564fc"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2050_20261015/candidate_screen_fragment.json": {
+      "bytes": 332,
+      "sha256": "5e9f36e43964e7881a18c0c83ef8dbba290a627f8a715d1fc24db35fb43837ae"
+    },
+    "repo/supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2050_20261015/source_screen.csv": {
+      "bytes": 1328981,
+      "sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528"
+    },
+    "repo/supplementary_materials/reviews/factor_pair_8760_20261005/cloud_payload/source_screen.csv": {
+      "bytes": 7470093,
+      "sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368"
+    },
+    "repo/supplementary_materials/reviews/numerical_robustness_20261005/compare_probes.py": {
+      "bytes": 6823,
+      "sha256": "0c114bde06280b6e72baf73cf3641db8cbd7419d9b9968ea4889dedb2f7ee9e5"
+    },
+    "repo/tests/test_8760_gpu_pdhg_supervised.py": {
+      "bytes": 4218,
+      "sha256": "2cdcd466ca55e7917c85b498a3c01018303edbabd1b7c32c896606cc7c4a886d"
+    },
+    "repo/tests/test_annual_capacity_link_scaling.py": {
+      "bytes": 16003,
+      "sha256": "058f5b8af552496f862b2e88133a250bd7e0d1791536f42e1f6b63754acbca5a"
+    },
+    "repo/tests/test_annual_flow_scaling.py": {
+      "bytes": 1683,
+      "sha256": "54c925308c8beef92aea6db98a49d88cdccb8ba8c24f36158e56075a15d5ff39"
+    },
+    "repo/tests/test_authorized_thermal_launch.py": {
+      "bytes": 3509,
+      "sha256": "c52622055c8043257c6a1b9d09bbd738c5ac006feddf68818a34256860da28cf"
+    },
+    "repo/tests/test_basis_reuse.py": {
+      "bytes": 8308,
+      "sha256": "2189b0a276200243c74095fb1f45238e89ff0105dedab6f890c4bc67d70a7b9c"
+    },
+    "repo/tests/test_beccs_lifecycle_sensitivity.py": {
+      "bytes": 1632,
+      "sha256": "82d4914ba01d080aad70fa317a929b70fcff0164131377d02eafadef64941e82"
+    },
+    "repo/tests/test_bound_tightening.py": {
+      "bytes": 11030,
+      "sha256": "6a7d0a502b298dabc7e3cd3ec4b7c257bcf96c5f4f2eb31afa3262fde5ad727b"
+    },
+    "repo/tests/test_campaign_launcher.py": {
+      "bytes": 7425,
+      "sha256": "915ed7b082ac2374368e8e325a213f0e590ed8f424786a9c760302eb4f5b9fb9"
+    },
+    "repo/tests/test_capacity_headroom_cleanup.py": {
+      "bytes": 3288,
+      "sha256": "4b266941c74dce5359a58f5386773718046ad1393cec5222a7bb98f44d7268b3"
+    },
+    "repo/tests/test_carbon_accounting.py": {
+      "bytes": 1584,
+      "sha256": "b142e1dc4a4f594ca829e348ad008b00eb912692e0ff458dfcf3d0d6bac55120"
+    },
+    "repo/tests/test_case3_2050_preparation.py": {
+      "bytes": 2899,
+      "sha256": "616e5ba8b5758492e504e6a3251389764e0edc2b8d4da74066695110f3231cb3"
+    },
+    "repo/tests/test_case4_resources.py": {
+      "bytes": 5705,
+      "sha256": "692d6934592b3ee58a779e64fbedc8b0b4ceb718330288bc62886693ea5fa7bb"
+    },
+    "repo/tests/test_ccs_model_structure.py": {
+      "bytes": 5057,
+      "sha256": "4666958fdada9fba24bcad7b26bfc1436bbd9dc35d2bde5962c6125f1b1d1bc1"
+    },
+    "repo/tests/test_checkpoint_campaign_gate.py": {
+      "bytes": 3022,
+      "sha256": "c28b4aa48bbeafddce3be6220dc28b296ca665ebb2b3a2203e8e2d6ca9b646c0"
+    },
+    "repo/tests/test_cloud_full_year_profile_guard.py": {
+      "bytes": 30920,
+      "sha256": "2b15f15373f397b11c1b568c51018850660826c6b32e60081eaf8fcca309c990"
+    },
+    "repo/tests/test_completed_cloud_backup.py": {
+      "bytes": 3884,
+      "sha256": "e6fc5097c161724ad9618b37ee9ae8c160fb35d3021d6c629e1a2e15a5f4cda8"
+    },
+    "repo/tests/test_continuation_cleanup.py": {
+      "bytes": 2336,
+      "sha256": "922162d7027a29b8df148b002888c52e4dd1402a51a62f1902950c5d0c4cf952"
+    },
+    "repo/tests/test_continuation_cleanup_6c.py": {
+      "bytes": 1732,
+      "sha256": "b0b6c11482075e2fafe985f00854535e3320a5218897b705ca81a25955c910ee"
+    },
+    "repo/tests/test_convergence_note.py": {
+      "bytes": 1792,
+      "sha256": "2c1d4d462dda319e4b078b354549d1e0e1dd4a9700dc8e458240f3640199805d"
+    },
+    "repo/tests/test_cost_accounting_metadata.py": {
+      "bytes": 1267,
+      "sha256": "81a31fb664a683ae76c7f4f242992521e1caf9662fbfac825de6ef1f37663b10"
+    },
+    "repo/tests/test_dac_year_schedule.py": {
+      "bytes": 4585,
+      "sha256": "9ea78f60a0063e1dc21b0b380375a092c91b3db7c4d29d377eeab2b48613e128"
+    },
+    "repo/tests/test_deferred_crossover2_validation_contract.py": {
+      "bytes": 7403,
+      "sha256": "f9375d27347f20db37c91198ccfdbc69a8e308690cfa10cd1c30debe668cf3ca"
+    },
+    "repo/tests/test_directionality_qc.py": {
+      "bytes": 6024,
+      "sha256": "2981391f3b46c9e6954f934617b359337349b007942f5439c65537dfd60d7f41"
+    },
+    "repo/tests/test_exact_zero_reservoir_bounds.py": {
+      "bytes": 4794,
+      "sha256": "fb493c52f80b3c7f192d1c32ac89a236f8e5ce0bd78079895e6db2607b45fbd4"
+    },
+    "repo/tests/test_factor_screen.py": {
+      "bytes": 5043,
+      "sha256": "3933fe41170040dcccd404644edb7bcd3b866bd0011ce1ebd1419c2636e27775"
+    },
+    "repo/tests/test_final_preservation_no_solve.py": {
+      "bytes": 16565,
+      "sha256": "b73a55033191c47aff00968beae3f80ebec2fd64513c327f3f1674d1180a800b"
+    },
+    "repo/tests/test_firm_credit_optional_portfolio.py": {
+      "bytes": 5826,
+      "sha256": "82aebf2ee74e32ba4e5c36b61ddbded02398db65b97d6900f18a2b566b28fe0a"
+    },
+    "repo/tests/test_flexible_load.py": {
+      "bytes": 29894,
+      "sha256": "121f7ef94371f1c0022661c5bbddf4d03e10caa7ca30f56600936362fc3afe2d"
+    },
+    "repo/tests/test_flexible_load_v5_builder.py": {
+      "bytes": 2229,
+      "sha256": "dbec3a47ce8c3ca633e75322bde8b291a0cf7b48899df1295b90cbf1b71d4473"
+    },
+    "repo/tests/test_flexible_portfolio.py": {
+      "bytes": 11011,
+      "sha256": "898f63c404465a61219096ebe3f4e51a555c40eb5561a79ed8850e37d70e044f"
+    },
+    "repo/tests/test_flexible_response_no_solve.py": {
+      "bytes": 11525,
+      "sha256": "4b8e662d583c313a4e61d6f36033ea6a02d54b00a17011cd7c944ed3027b8be3"
+    },
+    "repo/tests/test_frozen_capacity.py": {
+      "bytes": 4093,
+      "sha256": "d1ddd9a307073b9e80c7fcbf1e7608ae17d56973534d2eb7fec3005a7e4353e6"
+    },
+    "repo/tests/test_frozen_hydro_spur_extraction.py": {
+      "bytes": 5414,
+      "sha256": "cb9c64f6b76615807a0e8f83a6ef8ab90e12797489fefcc8120ce26a72fc87cb"
+    },
+    "repo/tests/test_full_year_numeric_probe.py": {
+      "bytes": 7342,
+      "sha256": "32f4ed54243ccf9e6401765b3d731a605af7178e59943d24b5c8138d3958a2d6"
+    },
+    "repo/tests/test_hydro_aggregate_inputs.py": {
+      "bytes": 956,
+      "sha256": "e0234e3f8d5ef8d5fc5792ecb3e254280e5ef26bf6d089dde5ad859ca4bb6e87"
+    },
+    "repo/tests/test_hydro_station_model.py": {
+      "bytes": 13322,
+      "sha256": "6e8bd66e10069eb2a4e86d585790082bac7dc932456c91fb43a72d20771460e5"
+    },
+    "repo/tests/test_input_manifest_resume_identity.py": {
+      "bytes": 3938,
+      "sha256": "9b68f9122b78848fd35d6788b2b09ca82777095f1b507815fa572e076c4f9c17"
+    },
+    "repo/tests/test_intra_grid_vre_design.py": {
+      "bytes": 2936,
+      "sha256": "d6dc34f7dfa1e3458f6a7d309d0017c1ce238dfc4203d2fc7710c1babeb55630"
+    },
+    "repo/tests/test_io_contract.py": {
+      "bytes": 1869,
+      "sha256": "3709b0065d557856468f693e489bc2de91d337930dab11fc546ec05cbf7d02d2"
+    },
+    "repo/tests/test_late_entry_state_bridge.py": {
+      "bytes": 2263,
+      "sha256": "5bd869c37723560dfde84b6f667b274256d20aa4c1858e073da1b99e39610b69"
+    },
+    "repo/tests/test_m2_model_boundary_audit.py": {
+      "bytes": 1228,
+      "sha256": "84437dae07a17641eb1a9855b622c1c521db0973c8a27b833cbf6735c9039d70"
+    },
+    "repo/tests/test_mga.py": {
+      "bytes": 6235,
+      "sha256": "194a8effb6e6578964bdbc5ae3f0ab0a79479e62a29ecde10e8aeafb21d5e0cb"
+    },
+    "repo/tests/test_model_foundation.py": {
+      "bytes": 20412,
+      "sha256": "044d7bc9b7e883b1bf645155d60ef23349b5baa727b4708882fd6b064eec5208"
+    },
+    "repo/tests/test_model_structure_audit.py": {
+      "bytes": 4459,
+      "sha256": "e94cecef13714c3884b42decb6f35781bdb8bc698a066d67b082fbefdf22408a"
+    },
+    "repo/tests/test_numeric_repaired_formal_launch.py": {
+      "bytes": 8797,
+      "sha256": "722f987ad20b82382da9438116817a610a286fcea02b8c97c0bb988e25491b69"
+    },
+    "repo/tests/test_numeric_simplification.py": {
+      "bytes": 2985,
+      "sha256": "f1ae7c5d512c568063ed6866d95f8f91c88eef902413f81c554a32a5325d8c84"
+    },
+    "repo/tests/test_numerical_cleanup.py": {
+      "bytes": 5608,
+      "sha256": "5581101a5a0d1982b6b92dbcb74b0de8079d8e1962063e970b4e29dd9512cffa"
+    },
+    "repo/tests/test_numerical_robustness_optin.py": {
+      "bytes": 7748,
+      "sha256": "d328f82ceb3a03d6a43b9efb1ffc313a9ee6b9e3ec5522f5389ae9ba608ee940"
+    },
+    "repo/tests/test_physical_lp_diff.py": {
+      "bytes": 4073,
+      "sha256": "93ec438f87bbc3f1b834f8390cf0492c00a6d99546e2ecb2bcd3ae5c20948905"
+    },
+    "repo/tests/test_planning_sequence.py": {
+      "bytes": 19012,
+      "sha256": "bb25cbe68a1ef867b111c0480790dbb680b34159f92ecc8a8e03df9f8bc50d0a"
+    },
+    "repo/tests/test_portfolio_no_solve.py": {
+      "bytes": 9335,
+      "sha256": "ddc0131e7933cbea2ec07887d0582799169517ea3cf32ed6987061f6022a4054"
+    },
+    "repo/tests/test_preserved_backup_verifier.py": {
+      "bytes": 2182,
+      "sha256": "4f93b069478eb12042ccd8d52042244422c7f1410b467157507b3f1bebf19721"
+    },
+    "repo/tests/test_primal_dual_checkpoint.py": {
+      "bytes": 33635,
+      "sha256": "acc3b48bd1a05f75f6a8b5c634a67097c2e926ade4c31181f168aad572d639f2"
+    },
+    "repo/tests/test_primal_dual_data_root_compatibility.py": {
+      "bytes": 4884,
+      "sha256": "d0285453d8c5dbf8707ba7b2eeeb41227536cbaf567744f6e97267095ba9fd66"
+    },
+    "repo/tests/test_production_screen.py": {
+      "bytes": 7890,
+      "sha256": "b73c48cae71d04f393f50a307a64ee664cba711bc1065d2cc6f27ddfa1540af8"
+    },
+    "repo/tests/test_relative_acceptance.py": {
+      "bytes": 11275,
+      "sha256": "f6f479d79b856c888156bb9242f58e7d5a5d487aba17711b0ad15511807553f5"
+    },
+    "repo/tests/test_relaxed_barrier_macro.py": {
+      "bytes": 19103,
+      "sha256": "b0ea09ba634301056330ddeb733a965a8e6ef59b3bb5cfcb47a4b044e64aa9b3"
+    },
+    "repo/tests/test_relaxed_factor_screen_profiles.py": {
+      "bytes": 4880,
+      "sha256": "ea08624cf92218964965d073a65764b93c8b3c75cf2f56e170c4f98dd92ef172"
+    },
+    "repo/tests/test_release_contract.py": {
+      "bytes": 2373,
+      "sha256": "fd432f31366fe22e8a397b8ebfd024f5640ac7c11f3efa66fb6fd501799d0019"
+    },
+    "repo/tests/test_reservoir_spill_reduction.py": {
+      "bytes": 5272,
+      "sha256": "1944a7f84e756843dd51463a49250da66fcb9dd6ed65c2ce73a256706365abce"
+    },
+    "repo/tests/test_result_dashboard.py": {
+      "bytes": 9121,
+      "sha256": "65f1c73c6b70f6b3b27e34eb041dee1ac4e72b657b520cf0c11fabbd069cb5d7"
+    },
+    "repo/tests/test_result_manifest.py": {
+      "bytes": 3607,
+      "sha256": "54e30c0e6cc068380ffc31505dc39a9a1370db6942f4545c582923e16a0340d8"
+    },
+    "repo/tests/test_ruc_redundancy.py": {
+      "bytes": 2743,
+      "sha256": "3a61034e100bf17b0bc2be6df27b1a7c2796d3931ecb0a497e27a8f09843585d"
+    },
+    "repo/tests/test_run_contract.py": {
+      "bytes": 9150,
+      "sha256": "da9b1e0fa685a8c96af661642795aa15e656d5dd16f25a45c17ffe88d79585cb"
+    },
+    "repo/tests/test_sensitivity_suite.py": {
+      "bytes": 11644,
+      "sha256": "9a64c15e830007c16815d06519947eb483a22527f0b3157c60732c5180ae8735"
+    },
+    "repo/tests/test_solution_preservation.py": {
+      "bytes": 19531,
+      "sha256": "5af35655c4d56334e7ba9d76e7d4cf5eb83179070038a6825322d06710139276"
+    },
+    "repo/tests/test_solution_qc_semantics.py": {
+      "bytes": 1088,
+      "sha256": "a8f400de931bddf0b8212f52094fa4fbf385ee041c3eedd56f7f6827aae6abc8"
+    },
+    "repo/tests/test_solver_artifacts.py": {
+      "bytes": 2609,
+      "sha256": "5233b5042b3692a22d88053570718429eb20c03cf3508104ede1a026a22fe142"
+    },
+    "repo/tests/test_solver_audit.py": {
+      "bytes": 11893,
+      "sha256": "c608a6abc13ac78367622b3d39b9858cae790f65181d9c4e58ebdca75c1e5713"
+    },
+    "repo/tests/test_solver_profiles.py": {
+      "bytes": 37227,
+      "sha256": "8babdf6ddf6252964dbc565581c45957d572f5dbfc368309517a33058ac4cdef"
+    },
+    "repo/tests/test_solver_telemetry.py": {
+      "bytes": 1759,
+      "sha256": "ddf4fbb781098e74fc7668af9951c3ea723f5727792c8728b073b26f3c3859fa"
+    },
+    "repo/tests/test_stagea_row_scaling_qualification.py": {
+      "bytes": 9740,
+      "sha256": "6e9e02559cb621bbae1c0f133b31c491edce9961fc2a671de943cd8d0d4db7ae"
+    },
+    "repo/tests/test_summarize_relaxed_barrier_campaign.py": {
+      "bytes": 5987,
+      "sha256": "fc20b836ef0bce7d3cc0f4b70c25ac2d22ec89e493def8e7708847627df3335b"
+    },
+    "repo/tests/test_summarize_relaxed_factor_screens.py": {
+      "bytes": 5702,
+      "sha256": "77c22608cf6f9db5bd0dd09ba64647f0a25319f5970d54c3d23e0f198e8fe34d"
+    },
+    "repo/tests/test_technoeconomic_price_basis.py": {
+      "bytes": 2318,
+      "sha256": "5ca330ed3fdc2da5ba1751f9577be377abcd3268726264aea13513ea9729d075"
+    },
+    "repo/tests/test_technology_registry.py": {
+      "bytes": 833,
+      "sha256": "22e73b37fe338b0e1ace0ffbf978b028ba9fd4c254d345412ad695906908293b"
+    },
+    "repo/tests/test_vre_cf_fallback.py": {
+      "bytes": 3793,
+      "sha256": "c89ad909f29043ac853ceb4f6348c020ee23efba55f65c8aea3feee5ed440829"
+    },
+    "repo/tests/test_vre_pricing.py": {
+      "bytes": 6895,
+      "sha256": "2ca4992b83f5c1f70357781b6e19c013813fc8e84949ea7f693951785b8c616f"
+    },
+    "repo/tests/test_wave_energy.py": {
+      "bytes": 4262,
+      "sha256": "91f3683e36cf1dab774f9c00aeacbb6566fa19e823696f6d14960f93b71a0d75"
+    },
+    "repo/tests/test_weather_time_alignment.py": {
+      "bytes": 2501,
+      "sha256": "cf82b58419b0b72dc876f3a27117eb46b723be19510545d678ab0c595ec32149"
+    },
+    "data/hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv": {
+      "bytes": 861090,
+      "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+    },
+    "data/hydro/repaired_storage_audit_20260913_v2/corrections.csv": {
+      "bytes": 733,
+      "sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+    },
+    "data/flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz": {
+      "bytes": 7066220,
+      "sha256": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c"
+    },
+    "data/flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv": {
+      "bytes": 13787,
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+    },
+    "data/flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz": {
+      "bytes": 3787326,
+      "sha256": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a"
+    },
+    "data/flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz": {
+      "bytes": 5192557,
+      "sha256": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669"
+    },
+    "data/flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv": {
+      "bytes": 20979,
+      "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550"
+    },
+    "data/flexibility/participation_pathway_v2/flexible_load_v5.manifest.json": {
+      "bytes": 3206,
+      "sha256": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492"
+    },
+    "repo/supplementary_materials/reviews/base_frozen_B_20261026/baseline_runner_reference.py": {
+      "bytes": 117743,
+      "sha256": "163889a650f62def32ae2b15dfe721cccc09b33e44c37dd2460ac11720a0bf4e"
+    }
+  },
+  "payload_sha256": "b33461507606d11507f3d579fe868c8959bb6bff1c1acef0927ccbba91ae96a7",
+  "payload_bytes": 14756939
+}

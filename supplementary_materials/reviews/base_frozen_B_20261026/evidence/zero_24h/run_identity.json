@@ -1,0 +1,261 @@
+{
+  "schema_version": "cispo_run_identity_v3",
+  "baseline_contract": {
+    "schema_version": "cispo_baseline_contract_v1",
+    "case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "label": "Numerical cleanup v8 with explicit DAC schedule: disabled in 2030, available in 2040/2050/2060",
+    "contract_sha256": "84530dc46caa975a70aead3591d9b6ba8106c5b979107ef7a7233fe34693aca7",
+    "weather_bundle": {
+      "contract_version": "hybrid_weather_bundle_v1",
+      "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+      "wave": "2023 wave_grid.nc reference chronology",
+      "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+    },
+    "parameter_registry": {
+      "path": "config/critical_parameter_registry.csv",
+      "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+    }
+  },
+  "analysis_case": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/config/optimization_numeric_dac_by_year_v9.json",
+    "resolved_scientific_configuration_sha256": "6d67081ed98dec3e6edcb9c64c23178a77b31914f07343726279e8ba6d6144a6",
+    "scenario_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/config/scenarios/case3_thermal_ev_v5.json",
+      "sha256": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "case3_thermal_ev_v5",
+    "scenario_id": "case3_thermal_ev_v5",
+    "scenario_family": "integrated_demand_flexibility",
+    "analysis_role": "CENTRAL_COUNTERFACTUAL",
+    "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+    "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+    "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "scientific_case": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/config/optimization_numeric_dac_by_year_v9.json",
+    "resolved_scientific_configuration_sha256": "6d67081ed98dec3e6edcb9c64c23178a77b31914f07343726279e8ba6d6144a6",
+    "scenario_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/config/scenarios/case3_thermal_ev_v5.json",
+      "sha256": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "case3_thermal_ev_v5",
+    "scenario_id": "case3_thermal_ev_v5",
+    "scenario_family": "integrated_demand_flexibility",
+    "analysis_role": "CENTRAL_COUNTERFACTUAL",
+    "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+    "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+    "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "solver_runtime": {
+    "schema_version": "cispo_solver_runtime_v1",
+    "solver_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h_profile.json",
+      "sha256": "c85c923acc101ecd457f7691677b7e3b16d798d668ae6072af549a0637638156"
+    },
+    "solver_profile": {
+      "id": "base_frozen_identity_cross2_1e8",
+      "description": "Author 2026-10-26 framework B pilot: all Base same-year investments fixed, unscreened, Aggregate=0, 48 threads; preserve every result.",
+      "minimum_gurobi_major_version": 13,
+      "host_memory_soft_limit_fraction": null,
+      "direct_nonbasic_scientific_acceptance": false,
+      "stage_b_required": false,
+      "stage_a_acceptance": {
+        "maximum_relative_primal_dual_objective_gap": 0.01,
+        "maximum_barrier_primal_infeasibility": 0.01,
+        "maximum_constraint_violation": 1e-05,
+        "maximum_constraint_residual": 1e-05,
+        "maximum_bound_violation": 1e-05,
+        "maximum_dual_violation_for_publication": 1e-05,
+        "maximum_dual_residual_for_publication": 1e-05,
+        "maximum_complementarity_violation_for_publication": 1e-05,
+        "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+        "maximum_barrier_complementarity_for_publication": 0.01
+      },
+      "required_formulation_profile_id": null
+    },
+    "resolved_numerics_sha256": "c026d76433c1764f4fb280159f7e1e2c53d3f15039c3b435bda67aedbeb3451d"
+  },
+  "implementation_bundle": {
+    "git_commit": "5b93b75cde19ed397563b9cb7fd0b3724163e1da",
+    "source_bundle_sha256": "76858066f35d3d708ed96e98b266fb00cb11a4a463ba7664363286da060189b6",
+    "source_file_count": 47
+  },
+  "data_roots": {
+    "CISPO_DATA_ROOT": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/data",
+    "CISPO_CF_ROOT": "/home/zz2/National_model_server/data/hourly_cf",
+    "CISPO_HYDRO_ROOT": "/home/zz2/National_model_server/data/hydro_timeseries_20260719_sequential_sparse",
+    "CISPO_RAW_GRFR_ROOT": "/home/zz2/National_model_server/data/grfr_raw_2019",
+    "CISPO_WAVE_ROOT": "/home/zz2/National_model_server/data/wave_energy_20260727"
+  },
+  "lp_model": {
+    "schema_version": "cispo_lp_lightweight_identity_v1",
+    "variables": 353638,
+    "constraints": 226051,
+    "nonzeros": 1766989,
+    "gurobi_fingerprint": -1059251217,
+    "basis_compatible": false,
+    "matrix_materialized": false
+  },
+  "frozen_capacity": {
+    "source_directory": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760",
+    "source_release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+    "tables": {
+      "vre_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/vre_capacity.csv",
+        "sha256": "30602e73d73238de087ef2422818c0ff29337ff8140dd38a599f797c63177aee",
+        "bytes": 3632003,
+        "rows": 36686
+      },
+      "thermal_nuclear_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/thermal_nuclear_capacity.csv",
+        "sha256": "318b31a812db9cc5d83667b3ae7cea251a74e54d7a91d28db230347de18485b2",
+        "bytes": 28951,
+        "rows": 341
+      },
+      "storage_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/storage_capacity.csv",
+        "sha256": "187b7a0ff2ac0048e5f3d78317dbca7c66274746206e17561b634ca48d927627",
+        "bytes": 9415,
+        "rows": 62
+      },
+      "transmission_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/transmission_capacity.csv",
+        "sha256": "e162145b239e1e8d7047fccc445deaf87a31ddcb230c3d37fcdbf75439f7d272",
+        "bytes": 32254,
+        "rows": 411
+      },
+      "load_center_intra_transmission.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/load_center_intra_transmission.csv",
+        "sha256": "ed4c3e748d4b6acf29b40e41e3d56ee0ee1501b56ca63cf2eddf3ea18808c449",
+        "bytes": 130057,
+        "rows": 642
+      },
+      "intra_grid_vre_site_design.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/intra_grid_vre_site_design.csv",
+        "sha256": "adaf3de80d7528d697f09f1924ee7459d8cf15d9fe7aaf3fb5ab6bb66ff88953",
+        "bytes": 5674391,
+        "rows": 36686
+      },
+      "intra_grid_substation_design.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/intra_grid_substation_design.csv",
+        "sha256": "33e764603b2c2927dfe90fba9be81fe9ccd9382eff7e4afe8d082096957e63d7",
+        "bytes": 1037652,
+        "rows": 6294
+      },
+      "hydro_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/hydro_capacity.csv",
+        "sha256": "d14207c03c7bfdc768fc6a03f939058a5a8eb1920870f22e3acf5a1a98ec049d",
+        "bytes": 310766,
+        "rows": 2030
+      },
+      "wave_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/wave_capacity.csv",
+        "sha256": "880e016b509bf70a39d9da11843bf655fc068de44acde2d6874c1cc46c630eb1",
+        "bytes": 243933,
+        "rows": 1284
+      },
+      "dac_capacity_capture.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/dac_capacity_capture.csv",
+        "sha256": "3d5840f5526ab3f58e3315b86c13d7199fd3e68f167934770fe5e3b538bdb661",
+        "bytes": 5333,
+        "rows": 124
+      },
+      "hydro_spur_capacity.csv": {
+        "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026/hydro_spur_capacity.csv",
+        "sha256": "df2a242cf2f54934d3dea76acbeaa9ceaca09536d4a9a1ff47229decdc47d1be",
+        "bytes": 78015,
+        "rows": 2030
+      }
+    },
+    "supplement": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026/supplement_manifest.json",
+      "sha256": "6ac8588e1b22cff1a25955427e1da6f484b8a0f8c1a9e415dc1ef3e7259a6f09",
+      "vector_attribute": "BarX"
+    },
+    "upstream": {
+      "original_path": null,
+      "environment_sha256": "b77cf3982a44765c8cb149e47067e814cc523fff0574455364e231dedb4eed37",
+      "input_manifest_sha256": "f173cee0cca3676f0adfbf8c4af6e8a8d395c300df3dab5c6e08b62709673944",
+      "restored_path": null,
+      "allow_candidate": false,
+      "files": []
+    },
+    "frozen_columns": 86745,
+    "clip_statistics": {
+      "GW": {
+        "columns": 86621,
+        "clipped_columns": 110,
+        "sum_absolute_clip": 2.6415681230948507e-10,
+        "maximum_absolute_clip": 2.641446727146002e-10
+      },
+      "MtCO2_per_year": {
+        "columns": 124,
+        "clipped_columns": 0,
+        "sum_absolute_clip": 0.0,
+        "maximum_absolute_clip": 0.0
+      }
+    },
+    "audit_sha256": "4cd979fe124fb408ab50aa9bcacc843ae9c906517bce2111f9d98682178ae35e",
+    "clip_reporting_threshold_exceeded": false,
+    "expected_capacity_sha256": "8abfe36f00a018648efb7d68fd9c9cca58ea9cc913c72532f505a10933b312b7"
+  },
+  "frozen_parameter_override": {
+    "path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h_override.json",
+    "sha256": "297d44eacbc83de5f54d41adafdddb6adef38a3dead683f74f019e01db16024f",
+    "resolved": {
+      "contract_upper_fraction": {
+        "heating": 0,
+        "cooling": 0,
+        "ev_v1g": 0,
+        "ev_v2g": 0
+      }
+    }
+  }
+}

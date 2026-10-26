@@ -1,0 +1,23 @@
+{"name": "zero_24h", "exit_code": 0, "runtime_seconds": 78.05683884606697, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py", "--mode", "zero", "--hours", "24", "--output", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h", "--baseline-runner", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/baseline_runner_reference.py"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h.log"}
+  "constraints": 226051,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "investment_fixed": {
+    "vre_new": true,
+    "thermal_new": true,
+    "thermal_retrofit_to_ccs": true,
+    "storage_new": true,
+    "line_new": true,
+    "intra_load_center_new": true,
+    "spur_augmentation": true,
+    "hydro_spur_augmentation": true,
+    "trunk_augmentation": true,
+    "hydro_new": true,
+    "wave_new": true,
+    "dac_new": true
+  },
+  "all_investment_families_fixed": true,
+  "status": 2,
+  "objective": 2684955.805752121,
+  "barrier_iterations": 62,
+  "runtime_seconds": 15.075855016708374
+}

@@ -36,6 +36,7 @@ from cispo_model.runtime_monitor import PeakMemoryMonitor
 from cispo_model.factor_screen import PROFILE_ID as FACTOR_SCREEN_PROFILE_ID, RESULT_USE as FACTOR_SCREEN_RESULT_USE
 from cispo_model.factor_screen import PRODUCTION_PROFILE_ID as SCREENED_STAGE_A_PROFILE_ID
 from cispo_model.factor_screen import PRODUCTION_PROFILE_IDS as SCREENED_STAGE_A_PROFILE_IDS
+from cispo_model.frozen_capacity import PROFILE_ID as FROZEN_STAGE_A_PROFILE_ID
 
 
 PORTFOLIO_STAGE_A_PROFILE_ID = "barrier_stagea_portfolio_v1_threads44"
@@ -72,6 +73,7 @@ FIXED_SERVER_HOST_MEMORY_PROFILE_PREFIX = (
 DIRECT_NONBASIC_SCIENTIFIC_PROFILE_IDS = frozenset(
     {
         *SCREENED_STAGE_A_PROFILE_IDS,
+        FROZEN_STAGE_A_PROFILE_ID,
         NUMERIC_REPAIRED_STAGE_A_PROFILE_ID,
         PORTFOLIO_STAGE_A_PROFILE_ID,
         "barrier_checkpoint_full_year_cloud_v4",
@@ -277,7 +279,7 @@ def direct_nonbasic_row_scaling_contract(config) -> tuple[str, int]:
     from cispo_model.annual_capacity_link_scaling import (
         PHYSICAL_V1, BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT,
     )
-    if config.raw.get("solver_profile", {}).get("id") in {NUMERIC_REPAIRED_STAGE_A_PROFILE_ID, *SCREENED_STAGE_A_PROFILE_IDS}:
+    if config.raw.get("solver_profile", {}).get("id") in {NUMERIC_REPAIRED_STAGE_A_PROFILE_ID, *SCREENED_STAGE_A_PROFILE_IDS, FROZEN_STAGE_A_PROFILE_ID}:
         return PHYSICAL_V1, 0
     return BINARY_POWER2_SAFE_8192_V1, MAX_BINARY_EXPONENT
 
@@ -558,6 +560,9 @@ def main() -> None:
     )
     parser.add_argument("--config", default="config/optimization_2030.json")
     parser.add_argument("--vre-screen-csv", type=Path, help="Exact VRE candidate CSV; restricted to TEST_ONLY factor profile")
+    parser.add_argument("--frozen-capacity-from", type=Path, help="Opt-in Base-frozen: immutable same-year Base output_8760")
+    parser.add_argument("--frozen-capacity-supplement", type=Path, help="Verified independent hydro-spur supplement directory")
+    parser.add_argument("--frozen-parameters", type=Path, help="B-only reviewed flexibility/weather override JSON; no investment/load/carbon overrides")
     parser.add_argument(
         "--scenario-config",
         help="Optional v1 partial override under config/scenarios; recorded in provenance.",
@@ -916,9 +921,34 @@ def main() -> None:
         args.diagnostic_hours is not None
         or config.horizon(args.horizon)["test_only"]
     )
+    frozen_mode = args.frozen_capacity_from is not None
+    frozen_tables = frozen_evidence = frozen_state = None
+    frozen_override = {}
+    if not frozen_mode and (args.frozen_capacity_supplement or args.frozen_parameters):
+        raise SystemExit("Frozen supplement/parameters require --frozen-capacity-from")
+    if frozen_mode:
+        from cispo_model.frozen_capacity import (validate_mode, read_source, recover_upstream,
+                                                apply_parameter_override)
+        validate_mode(config, args, test_only=requested_test_only)
+        if args.frozen_capacity_supplement is None:
+            raise SystemExit("Base-frozen requires the verified hydro-spur supplement")
+        frozen_tables, frozen_evidence = read_source(args.frozen_capacity_from,
+            args.frozen_capacity_supplement, config.planning_year)
+        frozen_state, upstream = recover_upstream(args.frozen_capacity_from, config.planning_year)
+        frozen_evidence['upstream'] = upstream
+        config.raw['frozen_capacity'] = frozen_evidence
+        if args.frozen_parameters:
+            frozen_override = apply_parameter_override(config, args.frozen_parameters)
+        # Restored values are source-bound, not user-controlled state inputs.
+        if frozen_state is not None:
+            args.state_in = frozen_state.root
+            args.allow_candidate_state_in = upstream['allow_candidate']
+
     profile_id = config.raw.get("solver_profile", {}).get("id")
     factor_screen = profile_id == FACTOR_SCREEN_PROFILE_ID
     production_screen = profile_id in SCREENED_STAGE_A_PROFILE_IDS
+    if profile_id == FROZEN_STAGE_A_PROFILE_ID and not frozen_mode:
+        raise SystemExit("Base-frozen production profile requires --frozen-capacity-from")
     if args.vre_screen_csv and not (factor_screen or production_screen):
         raise SystemExit("--vre-screen-csv is restricted to TEST_ONLY factor screen")
     if production_screen:
@@ -1043,7 +1073,7 @@ def main() -> None:
             "direct_nonbasic_scientific_acceptance is reserved for the "
             "reviewed full-year Stage A profile"
         )
-    if direct_nonbasic_scientific_acceptance and not production_screen:
+    if direct_nonbasic_scientific_acceptance and not (production_screen or frozen_mode):
         require_canonical_direct_nonbasic_profiles(config)
     if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID:
         if not archive_original_model and not args.preflight_only:
@@ -1078,6 +1108,7 @@ def main() -> None:
         and requested_optimization_hours == 8760
         and not factor_screen
         and not production_screen
+        and not frozen_mode
         and not (args.preflight_only or args.build_only or args.recover_stage_a_from)
     ):
         from cispo_model.portfolio_release import require_qualified_portfolio_stage_a
@@ -1258,7 +1289,9 @@ def main() -> None:
 
     if args.late_entry_base_state and (not args.state_in or config.planning_year != 2050):
         raise SystemExit('--late-entry-base-state requires explicit C2050 state input')
-    if config.boundary_year == 2025:
+    if frozen_mode and frozen_state is not None:
+        planning_state = frozen_state
+    elif config.boundary_year == 2025:
         if args.state_in:
             raise SystemExit("2030 uses the 2025 data boundary and must not receive --state-in")
         planning_state = PlanningState.empty(config.boundary_year)
@@ -1317,7 +1350,7 @@ def main() -> None:
         cloud_full_year_role,
         profile_id,
     )
-    if production_screen and optimization_hours == 8760 and not args.build_only:
+    if (production_screen or frozen_mode) and optimization_hours == 8760 and not args.build_only:
         required_gb = max(required_gb, 700.0)
     output_dir = Path(
         args.output_dir or f"outputs/{config.planning_year}_{horizon_name}"
@@ -1346,6 +1379,9 @@ def main() -> None:
         encoding="utf-8",
     )
     data = load_model_data(config, planning_state=planning_state)
+    if frozen_override:
+        from cispo_model.frozen_capacity import override_service_costs
+        override_service_costs(data, frozen_override)
     time_rows = (
         data.load[["hour_index", "datetime_bj"]]
         .drop_duplicates("hour_index")
@@ -1366,7 +1402,7 @@ def main() -> None:
             hours=optimization_hours,
             hour_start=optimization_start_hour,
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
-            allow_authorized_case3_nonbasic=production_screen,
+            allow_authorized_case3_nonbasic=(production_screen or frozen_mode),
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis or factor_screen
             ),
@@ -1603,6 +1639,15 @@ def main() -> None:
         optimization_hours=optimization_hours,
         optimization_start_hour=optimization_start_hour,
     )
+    frozen_report = None
+    if frozen_mode:
+        from cispo_model.frozen_capacity import apply_frozen_capacity, apply_contract_upper_fractions
+        frozen_report = apply_frozen_capacity(artifacts, data, frozen_tables, frozen_evidence, output_dir)
+        apply_contract_upper_fractions(artifacts, frozen_override)
+        from cispo_model.frozen_capacity import save_capacity_expectations
+        frozen_report['expected_capacity_sha256'] = save_capacity_expectations(artifacts, data, output_dir, frozen_tables)
+        (output_dir / 'frozen_capacity_report.json').write_text(json.dumps(frozen_report, indent=2)+'\n', encoding='utf-8')
+        config.raw['frozen_capacity'] = frozen_report
     screen_report = None
     if args.vre_screen_csv:
         from cispo_model.factor_screen import apply_vre_screen
@@ -1750,7 +1795,7 @@ def main() -> None:
             compatibility_structural_audit,
             config.raw["numerics"],
             allow_authorized_thermal_nonbasic=args.authorize_thermal_stage_a_1e4,
-            allow_authorized_case3_nonbasic=production_screen,
+            allow_authorized_case3_nonbasic=(production_screen or frozen_mode),
             allow_engineering_relaxed_nonbasic=bool(
                 args.engineering_relaxed_barrier_analysis or factor_screen
             ),
@@ -1815,6 +1860,8 @@ def main() -> None:
     for audit_key in ("numerical_robustness_audit", "annual_dense_row_split"):
         if artifacts.index.get(audit_key):
             build_report[audit_key] = artifacts.index[audit_key]
+    if frozen_mode:
+        build_report["frozen_capacity"] = frozen_report
     if factor_screen or production_screen:
         build_report["vre_screen"] = screen_report
     if factor_screen:
@@ -1834,7 +1881,7 @@ def main() -> None:
     ):
         from cispo_model.diagnostics import configure_gurobi
         configure_gurobi(artifacts.model, config, output_dir / "gurobi.log")
-        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen or production_screen:
+        if profile_id == NUMERIC_REPAIRED_STAGE_A_PROFILE_ID or factor_screen or production_screen or (frozen_mode and not requested_test_only):
             # Read back the actual model before the multi-day optimize call.
             from cispo_model.diagnostics import validate_unlimited_stage_a_parameters
             write_strict_json_atomic(
@@ -2329,6 +2376,7 @@ def main() -> None:
         or (nonbasic_primal_dual_requested and not solver_solution_accepted)
         or planning_state.metadata.get("candidate_unaccepted")
         or production_screen
+        or frozen_mode
     ):
         if direct_nonbasic_scientific_acceptance:
             report["stage_a_completion_status"] = (
@@ -2351,7 +2399,7 @@ def main() -> None:
         # Success here means complete preservation, never scientific acceptance.
         if preserved["status"] != "COMPLETE":
             raise SystemExit(2)
-        if production_screen and report.get('status') == 'OPTIMAL':
+        if (production_screen or frozen_mode) and report.get('status') == 'OPTIMAL':
             # Author 2026-10-12: QC is a reference label; preserve every solve.
             # Adoption and continuation remain explicit author decisions.
             return

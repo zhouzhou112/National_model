@@ -1,0 +1,104 @@
+{
+  "source_directory": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760",
+  "source_release": "20260914_base_v9_t48_m750_tol1e4_v3",
+  "result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+  "tables": {
+    "vre_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/vre_capacity.csv",
+      "sha256": "30602e73d73238de087ef2422818c0ff29337ff8140dd38a599f797c63177aee",
+      "bytes": 3632003,
+      "rows": 36686
+    },
+    "thermal_nuclear_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/thermal_nuclear_capacity.csv",
+      "sha256": "318b31a812db9cc5d83667b3ae7cea251a74e54d7a91d28db230347de18485b2",
+      "bytes": 28951,
+      "rows": 341
+    },
+    "storage_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/storage_capacity.csv",
+      "sha256": "187b7a0ff2ac0048e5f3d78317dbca7c66274746206e17561b634ca48d927627",
+      "bytes": 9415,
+      "rows": 62
+    },
+    "transmission_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/transmission_capacity.csv",
+      "sha256": "e162145b239e1e8d7047fccc445deaf87a31ddcb230c3d37fcdbf75439f7d272",
+      "bytes": 32254,
+      "rows": 411
+    },
+    "load_center_intra_transmission.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/load_center_intra_transmission.csv",
+      "sha256": "ed4c3e748d4b6acf29b40e41e3d56ee0ee1501b56ca63cf2eddf3ea18808c449",
+      "bytes": 130057,
+      "rows": 642
+    },
+    "intra_grid_vre_site_design.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/intra_grid_vre_site_design.csv",
+      "sha256": "adaf3de80d7528d697f09f1924ee7459d8cf15d9fe7aaf3fb5ab6bb66ff88953",
+      "bytes": 5674391,
+      "rows": 36686
+    },
+    "intra_grid_substation_design.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/intra_grid_substation_design.csv",
+      "sha256": "33e764603b2c2927dfe90fba9be81fe9ccd9382eff7e4afe8d082096957e63d7",
+      "bytes": 1037652,
+      "rows": 6294
+    },
+    "hydro_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/hydro_capacity.csv",
+      "sha256": "d14207c03c7bfdc768fc6a03f939058a5a8eb1920870f22e3acf5a1a98ec049d",
+      "bytes": 310766,
+      "rows": 2030
+    },
+    "wave_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/wave_capacity.csv",
+      "sha256": "880e016b509bf70a39d9da11843bf655fc068de44acde2d6874c1cc46c630eb1",
+      "bytes": 243933,
+      "rows": 1284
+    },
+    "dac_capacity_capture.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/dac_capacity_capture.csv",
+      "sha256": "3d5840f5526ab3f58e3315b86c13d7199fd3e68f167934770fe5e3b538bdb661",
+      "bytes": 5333,
+      "rows": 124
+    },
+    "hydro_spur_capacity.csv": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026/hydro_spur_capacity.csv",
+      "sha256": "df2a242cf2f54934d3dea76acbeaa9ceaca09536d4a9a1ff47229decdc47d1be",
+      "bytes": 78015,
+      "rows": 2030
+    }
+  },
+  "supplement": {
+    "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026/supplement_manifest.json",
+    "sha256": "6ac8588e1b22cff1a25955427e1da6f484b8a0f8c1a9e415dc1ef3e7259a6f09",
+    "vector_attribute": "BarX"
+  },
+  "upstream": {
+    "original_path": null,
+    "environment_sha256": "b77cf3982a44765c8cb149e47067e814cc523fff0574455364e231dedb4eed37",
+    "input_manifest_sha256": "f173cee0cca3676f0adfbf8c4af6e8a8d395c300df3dab5c6e08b62709673944",
+    "restored_path": null,
+    "allow_candidate": false,
+    "files": []
+  },
+  "frozen_columns": 86745,
+  "clip_statistics": {
+    "GW": {
+      "columns": 86621,
+      "clipped_columns": 110,
+      "sum_absolute_clip": 2.6415681230948507e-10,
+      "maximum_absolute_clip": 2.641446727146002e-10
+    },
+    "MtCO2_per_year": {
+      "columns": 124,
+      "clipped_columns": 0,
+      "sum_absolute_clip": 0.0,
+      "maximum_absolute_clip": 0.0
+    }
+  },
+  "audit_sha256": "4cd979fe124fb408ab50aa9bcacc843ae9c906517bce2111f9d98682178ae35e",
+  "clip_reporting_threshold_exceeded": false,
+  "expected_capacity_sha256": "8abfe36f00a018648efb7d68fd9c9cca58ea9cc913c72532f505a10933b312b7"
+}

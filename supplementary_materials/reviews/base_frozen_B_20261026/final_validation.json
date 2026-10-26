@@ -1,0 +1,32 @@
+{
+  "files": {
+    "cispo_model/frozen_capacity.py": "0e85708658d6520770016b16677a9477e999a8f6916d348bc9b7a5f23e7cc252",
+    "cispo_model/run_contract.py": "fa0e1f51f5f567f2fcd5f3aef5534cc2b32a5398d37d705fe985955e5d1e8974",
+    "cispo_model/solution_preservation.py": "4530c4fca8bc8da5803dccab480952ca8741baecab95259c96e33395d8f9369a",
+    "scripts/run_cispo_2030_full_year.py": "ef7aa14b7783ebb726e537d1646f3b307b3e348b7fb857a51df267aef3a5e449",
+    "scripts/extract_frozen_hydro_spur.py": "b5cb2837637359f4c218b661bd98c2ff70a23c57a266486048b3cb54efa92681",
+    "config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json": "9ab853e9cf99579e9c14c2a5e3461a4037e6b42f8b006a26e5d48374e6a25062",
+    "tests/test_frozen_capacity.py": "1a734d6a6487ba5db7045a94c978cb773663bd0cf47babcc13b06b8f1c135c75",
+    "tests/test_frozen_hydro_spur_extraction.py": "cb9c64f6b76615807a0e8f83a6ef8ab90e12797489fefcc8120ce26a72fc87cb"
+  },
+  "regression": {
+    "name": "full_regression_t550_v2_final",
+    "exit_code": 0,
+    "runtime_seconds": 160.90090822591446,
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-q"
+    ],
+    "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/full_regression_t550_v2_final.log"
+  },
+  "regression_log_sha256": "13086fb2f35430831d455ac6aaa92fecd018d20db3f34403db0311cd91ead45f",
+  "tests": 477,
+  "result": "OK",
+  "skipped": 0,
+  "local_remote_source_sha_match": true
+}

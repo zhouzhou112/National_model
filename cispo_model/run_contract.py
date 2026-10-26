@@ -281,6 +281,9 @@ def configuration_identity(
     }
     if lp_model is not None:
         identity["lp_model"] = lp_model
+    for key in ('frozen_capacity', 'frozen_parameter_override'):
+        if key in config.raw:
+            identity[key] = config.raw[key]
     if config.raw.get('candidate_screen', {}).get('enabled'):
         identity['candidate_screen'] = dict(config.raw['candidate_screen'])
     if lp_topology is not None:

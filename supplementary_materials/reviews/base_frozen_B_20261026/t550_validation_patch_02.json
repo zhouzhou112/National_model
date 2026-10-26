@@ -1,0 +1,12 @@
+[
+  {
+    "path": "cispo_model/frozen_capacity.py",
+    "before_sha256": "a4ae24f7b8be98c18f38856dbe6e6a247b6cbf2a6b28300ad5b759cb2c6ff971",
+    "after_sha256": "0e85708658d6520770016b16677a9477e999a8f6916d348bc9b7a5f23e7cc252"
+  },
+  {
+    "path": "scripts/run_cispo_2030_full_year.py",
+    "before_sha256": "a24770512eada7f1c4144f80fb6491c957596c45beecb5fff7f7820c43d25a4b",
+    "after_sha256": "ef7aa14b7783ebb726e537d1646f3b307b3e348b7fb857a51df267aef3a5e449"
+  }
+]

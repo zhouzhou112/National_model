@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "capacity": "vre_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "capacity": "thermal_capacity",
+      "unit": "GW",
+      "max_abs_difference": 2.842170943040401e-14,
+      "passed": true
+    },
+    {
+      "capacity": "storage_capacity",
+      "unit": "GW",
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "capacity": "line_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "capacity": "intra_load_center_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "capacity": "hydro_capacity",
+      "unit": "GW",
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "capacity": "wave_capacity",
+      "unit": "GW",
+      "max_abs_difference": 0.0,
+      "passed": true
+    },
+    {
+      "capacity": "dac_capacity",
+      "unit": "MtCO2_per_year",
+      "max_abs_difference": 0.0,
+      "passed": true
+    }
+  ],
+  "definition": "Original Base total capacity plus only audited investment clips versus accounting-derived capacity"
+}

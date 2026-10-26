@@ -1,0 +1,476 @@
+{
+  "generated_at": "2026-10-27T03:01:23.023643+08:00",
+  "boundary_year": 2025,
+  "planning_year": 2030,
+  "git_commit": "5b93b75cde19ed397563b9cb7fd0b3724163e1da",
+  "configuration": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/config/optimization_numeric_dac_by_year_v9.json",
+  "excluded_runtime_files": [],
+  "files": [
+    {
+      "path": "annual_adequacy_by_province.csv",
+      "bytes": 5757,
+      "sha256": "3ae5709461222570c098c22780e7b22868e38608490225d578bc48d00756eb10"
+    },
+    {
+      "path": "annual_capacity_by_province_technology.csv",
+      "bytes": 35581,
+      "sha256": "4a0d4548803a415b1d935a835c3e2c9656e6f1a58ce4381fa87ba52d7074e7e3"
+    },
+    {
+      "path": "annual_capacity_by_technology.csv",
+      "bytes": 1217,
+      "sha256": "6c89f880381039cba6a9a31559e44e497df0426fa660429ca12b237d5a42513f"
+    },
+    {
+      "path": "annual_capacity_link_row_scaling.json",
+      "bytes": 58411,
+      "sha256": "70616c3903a3bdab17e706112ac68370815bcb594188f89fa56b823849f8ae7e"
+    },
+    {
+      "path": "annual_carbon_ccs.json",
+      "bytes": 689,
+      "sha256": "c228f278f81d3a024ed6a8371fb3b4641a79740bc72f4e48ed83a809b6ecab43"
+    },
+    {
+      "path": "annual_constraint_shadow_prices.csv",
+      "bytes": 381235,
+      "sha256": "b7c586176f5185fe94df94d5298568a472a60b67adc78a24ce546709ae0ff88f"
+    },
+    {
+      "path": "annual_flexible_load_by_province.csv",
+      "bytes": 8140,
+      "sha256": "5e676d2da7bcd76f6b4722b3c5d4c8250cbba8038a8d6698b2cf8689d522acea"
+    },
+    {
+      "path": "annual_generation_by_province_technology.csv",
+      "bytes": 15732,
+      "sha256": "2ccd257f9755d9559abed7493dbe20c6abeda3892a9d0860629ce8714f9e478e"
+    },
+    {
+      "path": "annual_generation_by_technology.csv",
+      "bytes": 512,
+      "sha256": "be9e0228675978066108aad8f7d77f0d65d44a8e3117b29a3633d3337ae84d58"
+    },
+    {
+      "path": "annual_resource_accounting_by_province.csv",
+      "bytes": 9413,
+      "sha256": "ffc5ab8322c2a4ab974af4dd5cd287fc757662c6d8cdb4796c0774fb6cb290b8"
+    },
+    {
+      "path": "annual_storage_operation_by_technology.csv",
+      "bytes": 395,
+      "sha256": "cbe081cce3c66b22176247b98fe940b04f419f98391d726150b99a6a25d8e2f6"
+    },
+    {
+      "path": "annual_summary.json",
+      "bytes": 2094,
+      "sha256": "22a83914e70745b6654b9a934e772f80806d557bc191e88526aaa467479bdf53"
+    },
+    {
+      "path": "build_report.json",
+      "bytes": 71007,
+      "sha256": "c8aa7786e712fdbf6776d01313c99ac77eda072c7102d8795ebe50df9b76f891"
+    },
+    {
+      "path": "co2_source_sink_flows.csv",
+      "bytes": 1892,
+      "sha256": "c36dc10787076928585f36b584b81ed0dc68491cb17735a9a0ee541d6f3bceaa"
+    },
+    {
+      "path": "cost_components.csv",
+      "bytes": 3618,
+      "sha256": "d14ca5af70cbe1a15e51cfad740bb86036e9e56ac0e4d3599e174d47d60d328f"
+    },
+    {
+      "path": "dac_capacity_capture.csv",
+      "bytes": 7565,
+      "sha256": "995b7dfdfe1eb3b7ccebd3d9ddcbe70367d34569e4f7bac2339418ef9ad31cc4"
+    },
+    {
+      "path": "dual_export_status.json",
+      "bytes": 590,
+      "sha256": "897d977373ae0b34e5668926cb753779a521ffb990325bf33f44e1ce5fdb3a62"
+    },
+    {
+      "path": "flexible_load_dispatch.npz",
+      "bytes": 53205,
+      "sha256": "00dc56f3dab46a535b27f37fa4ff9d5100e5e3e32f5bf80aa86b70bf09479174"
+    },
+    {
+      "path": "frozen_capacity_audit.csv",
+      "bytes": 14160561,
+      "sha256": "4cd979fe124fb408ab50aa9bcacc843ae9c906517bce2111f9d98682178ae35e"
+    },
+    {
+      "path": "frozen_capacity_expected.json",
+      "bytes": 2993771,
+      "sha256": "8abfe36f00a018648efb7d68fd9c9cca58ea9cc913c72532f505a10933b312b7"
+    },
+    {
+      "path": "frozen_capacity_output_check.json",
+      "bytes": 7179,
+      "sha256": "2b00d7b182c65c572a5082e296c3b735ba3b44f4ac4300d4555e0a4b901850df"
+    },
+    {
+      "path": "frozen_capacity_report.json",
+      "bytes": 4834,
+      "sha256": "91044e718ffb0b59346bf00c2b49ae29b9376a108cb594de3654c49fbb9a52ae"
+    },
+    {
+      "path": "frozen_capacity_source_alignment.json",
+      "bytes": 1258,
+      "sha256": "8da3b9f47e2fdba632b5ed736f0ad201bd348bfb48ee4bb374f7b886b851b6bb"
+    },
+    {
+      "path": "gurobi.log",
+      "bytes": 8769,
+      "sha256": "3ad080f61a252348eae984c0979bdd2f5c79a79a864eb1435806a3678f5a99e9"
+    },
+    {
+      "path": "hourly_marginal_prices.csv.gz",
+      "bytes": 33722,
+      "sha256": "87b215cdab07e99023cc254cbeb721ea379f0cd9dcd71193f54a6c50c90ea47c"
+    },
+    {
+      "path": "hourly_national_balance.csv.gz",
+      "bytes": 2511,
+      "sha256": "b3461c93ae969e4be4056097414306cd041a969bf257f8dab0fcf700e21df2ab"
+    },
+    {
+      "path": "hourly_province_balance.csv.gz",
+      "bytes": 101475,
+      "sha256": "1046f0b8c473d17a2ae660cadb7c4263f004945fd7949055f40bbffd4bbfd0b0"
+    },
+    {
+      "path": "hourly_province_security.csv.gz",
+      "bytes": 82274,
+      "sha256": "efd6a340c30f79f9799f7120a6e5d22c00feecb13002c57a61c79fbeed27209f"
+    },
+    {
+      "path": "hydro_aggregate_capacity.csv",
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571"
+    },
+    {
+      "path": "hydro_capacity.csv",
+      "bytes": 310066,
+      "sha256": "448626fe1fc765b3efe25fe6dcb75633052e8673774215224aa527263b9cc740"
+    },
+    {
+      "path": "hydro_cascade_reconciliation_audit.json",
+      "bytes": 8419,
+      "sha256": "af7650841ead4fb5cc92fbcbfee353c5be8bd7d378475cd6a939057b0a62dafb"
+    },
+    {
+      "path": "hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 8031,
+      "sha256": "289a5dfd0c872e01d6c9d9444ce02204b265fbac7fedaeb92503ea02405e2ce6"
+    },
+    {
+      "path": "hydro_dispatch.npz",
+      "bytes": 17980,
+      "sha256": "e32cc9a735e0efd3f13d27242110d408d07d0b9e2e51b780c49b1324de33e0fc"
+    },
+    {
+      "path": "hydro_spur_capacity.csv",
+      "bytes": 60609,
+      "sha256": "f652355d83be1ceed138dfe27299373f894c101f6cc9404013a26a660a5d6338"
+    },
+    {
+      "path": "input_manifest.csv",
+      "bytes": 23725,
+      "sha256": "4537b252723edfe4c04ec5a42e13baa3111dcdcd027ec83f266a756c0e4343eb"
+    },
+    {
+      "path": "intra_grid_substation_design.csv",
+      "bytes": 1036920,
+      "sha256": "add40b80d778265e648f0b8383fa42b7aae6087c53d82a96f493127769a21aed"
+    },
+    {
+      "path": "intra_grid_vre_site_design.csv",
+      "bytes": 5670786,
+      "sha256": "88ed26cc565c588aa4db062c45dfc21414823413ea3fd7ecc649656bd44e8a94"
+    },
+    {
+      "path": "load_center_annual_balance.csv",
+      "bytes": 45360,
+      "sha256": "1840300298da2048bf60ab33a0e2298b53dcd05070439107fef5e25ee14f4452"
+    },
+    {
+      "path": "load_center_annual_generation.csv",
+      "bytes": 99449,
+      "sha256": "2daf5e5389e3885743b3de7f4ade7c04aa84459d04af68c88b20231df0d41ee7"
+    },
+    {
+      "path": "load_center_intra_transmission.csv",
+      "bytes": 130358,
+      "sha256": "5d30c0e7dfadf4b8025e5aef87c48e6a7931cb893175772499583f3b0713e686"
+    },
+    {
+      "path": "load_center_network_qc.csv",
+      "bytes": 515,
+      "sha256": "340ce01d7b1a41c9bf832099501b626164db51e60638389ba7eff89cc7208c63"
+    },
+    {
+      "path": "model_archive/archive_manifest.json",
+      "bytes": 607,
+      "sha256": "2c7893f851eaf9b62c038aa98c2af7627ced3b83248419be957bb3c0af398114"
+    },
+    {
+      "path": "model_archive/original.mps.gz",
+      "bytes": 18986235,
+      "sha256": "d5c1142e73027241ab870b91f9d84589e843c5e39109b0b449dcca42a3097ab4"
+    },
+    {
+      "path": "model_archive/parameters.prm",
+      "bytes": 263,
+      "sha256": "ce1eb075b5e4019e1a969cf15a996a87351144f98049e414de66cecc742f3167"
+    },
+    {
+      "path": "model_config_snapshot.json",
+      "bytes": 23641,
+      "sha256": "5319bb374356d9f3a48006c0010a5105672ebb8e42ec14723477f7d79d3b8070"
+    },
+    {
+      "path": "monthly_energy_by_technology.csv",
+      "bytes": 885,
+      "sha256": "33230fa051540b00d36ffb51728e31a98cf4ca44e5ca90b02ecf0bc084e215b5"
+    },
+    {
+      "path": "output_catalog.csv",
+      "bytes": 8227,
+      "sha256": "d9995b425e7243d76c79220ebe4b1c57df4289e654d7afe3ec3a6c1a20c4448f"
+    },
+    {
+      "path": "output_data_dictionary.csv",
+      "bytes": 143059,
+      "sha256": "2abc8334443cfb13be503af62ebacfc25fb83fd7a7dd30239de5e7082211894d"
+    },
+    {
+      "path": "planning_state_candidate/capacity_cohorts.csv.gz",
+      "bytes": 955990,
+      "sha256": "f9467766bf29cd0cc50867aef2a5f1cbec113a1ab0a713b108b2aa4a92abb953"
+    },
+    {
+      "path": "planning_state_candidate/raw_new_cohorts.csv.gz",
+      "bytes": 934473,
+      "sha256": "04833532002bbe8016c0383b48b5b1b1a4ecda779ddd0bfd7958cce8c16dee52"
+    },
+    {
+      "path": "planning_state_candidate/state_metadata.json",
+      "bytes": 4352,
+      "sha256": "54e77e763155bfc38f29c38ff931a019558e8325ed853c54843bcbd0fd56488d"
+    },
+    {
+      "path": "planning_state_candidate/state_transition_summary.csv",
+      "bytes": 2383,
+      "sha256": "ead0c157351b3fbbf4501c7a156dece4ef208cde4f19715f54a8a868520a00d5"
+    },
+    {
+      "path": "preflight_report.json",
+      "bytes": 13321,
+      "sha256": "ac9b6638069a84834cca6aa87f416d15d4f3ec666f00e5f1cb9e896853a9332f"
+    },
+    {
+      "path": "preservation_report.json",
+      "bytes": 1631,
+      "sha256": "e372e2f8345873dd2004e85e6493fca967332ccf89561ed2e801d5cc9c471344"
+    },
+    {
+      "path": "preservation_runtime_memory.json",
+      "bytes": 150,
+      "sha256": "523edc93f195012b30f406bca120638b11b179976b8580c61da1eba2c10fea45"
+    },
+    {
+      "path": "province_annual_load_center_accounts.csv",
+      "bytes": 3359,
+      "sha256": "1b87e6fd1321e3a0f3eba79804ece1a761829dbac8be44e0adf23f6e81b53c5f"
+    },
+    {
+      "path": "raw_lp_qc.json",
+      "bytes": 819,
+      "sha256": "6b2e41eb6cdbf5fac0f19b80d980cd3d7e82756addae4393d093d8ef00d35567"
+    },
+    {
+      "path": "raw_lp_violations.csv.gz",
+      "bytes": 92,
+      "sha256": "b899f19d686723060fb9b8b94a601004fc552885c87f0a662dfe2ac0db8f1d56"
+    },
+    {
+      "path": "reservoir_dispatch.npz",
+      "bytes": 586990,
+      "sha256": "7ac911cced7059c35f188cb6842f678676eb40bb093ee4a22f277ec3da0e3fb1"
+    },
+    {
+      "path": "reservoir_station_index.csv",
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104"
+    },
+    {
+      "path": "run_claim.json",
+      "bytes": 287,
+      "sha256": "89cb3c7cb84044cfd8ad9e825593cedf93d2e7e2c0014f9184476848cc13778e"
+    },
+    {
+      "path": "run_environment.json",
+      "bytes": 5427,
+      "sha256": "50e3333818c17187e1edfa16e0d32fa1ab5790545afb23fcfefc93053c259614"
+    },
+    {
+      "path": "run_identity.json",
+      "bytes": 10849,
+      "sha256": "e32dec0d348589b4417e63aba674f174439bd120e9459aa5925c44246479dd42"
+    },
+    {
+      "path": "run_scope.json",
+      "bytes": 5297,
+      "sha256": "8e9195daa47ee457429c9d1e1c635d226d5633685f6f9841e03c08e4eb33b9a8"
+    },
+    {
+      "path": "run_summary.json",
+      "bytes": 2094,
+      "sha256": "22a83914e70745b6654b9a934e772f80806d557bc191e88526aaa467479bdf53"
+    },
+    {
+      "path": "scenario_manifest.json",
+      "bytes": 6551,
+      "sha256": "6e725a072f51d049644d227c8de4de2309a0c95a26a8e6aec91a8dae39dd3372"
+    },
+    {
+      "path": "solution_qc.json",
+      "bytes": 18947,
+      "sha256": "f01a7ef9657cdab94c9d252e509ff846ce8f53bbe318c88e944f6fb518a4785d"
+    },
+    {
+      "path": "solution_snapshot/BarPi.npy",
+      "bytes": 1729632,
+      "sha256": "8416804d71b69721692b3dd06fc009b2c85dab143fd6db4e97cc95855c3fb2b7"
+    },
+    {
+      "path": "solution_snapshot/BarX.npy",
+      "bytes": 2774264,
+      "sha256": "29c22ddbffaa0daf43deb35f87e53c88168958a3d792def13d5b0da5c64458f9"
+    },
+    {
+      "path": "solution_snapshot/CBasis.npy",
+      "bytes": 1729632,
+      "sha256": "fc2e1a255605c5c7d3a9fcb560f11188b67ce80b05f17d81d3276cd3387f769a"
+    },
+    {
+      "path": "solution_snapshot/Pi.npy",
+      "bytes": 1729632,
+      "sha256": "3e3197b7b3d8e298b36e8fc11bd84b4c163e4add340fe6eafc91a46d9920cc9b"
+    },
+    {
+      "path": "solution_snapshot/RC.npy",
+      "bytes": 2774264,
+      "sha256": "18803c211c1386886ecf9c0d251c00c48b5b25f1f194fdc1a56b938e42882c33"
+    },
+    {
+      "path": "solution_snapshot/Slack.npy",
+      "bytes": 1729632,
+      "sha256": "21c384535f676879a964929afb09cee907c34cc1ce775c6729890fd4cad43813"
+    },
+    {
+      "path": "solution_snapshot/VBasis.npy",
+      "bytes": 2774264,
+      "sha256": "b8222722340420652dba34aed64c2f7c31180250459f07c34bd376c2073c8652"
+    },
+    {
+      "path": "solution_snapshot/X.npy",
+      "bytes": 2774264,
+      "sha256": "977651911dca233fbbdbc0d21502dbb99e9fad72d35c24b5dfa5b4c6847bef87"
+    },
+    {
+      "path": "solution_snapshot/snapshot_manifest.json",
+      "bytes": 63098,
+      "sha256": "8d374036e4ab0e37112d09b2f2754a20e181f3fbcc932f782f3479ee6fdb7480"
+    },
+    {
+      "path": "solve_report.json",
+      "bytes": 66166,
+      "sha256": "d560086cfe7af21164ece1e4f96ed26acfb4a97b24902b99071ac68cb23acd8d"
+    },
+    {
+      "path": "solver_telemetry.jsonl",
+      "bytes": 29274,
+      "sha256": "baed3d9a00a6d90f3b547b7904ce0567c03f220072678e5cf62471981e3e8c1c"
+    },
+    {
+      "path": "storage_capacity.csv",
+      "bytes": 9322,
+      "sha256": "e8e7af1be9643164575d1f47ee49e72e5b4e61497ecd50d2e433c13a49a6c2d3"
+    },
+    {
+      "path": "storage_dispatch.npz",
+      "bytes": 43187,
+      "sha256": "415e062cc02c2e9eae8ab4d09a10832ee58560dcfddbb1ebe3908bbc69e5e183"
+    },
+    {
+      "path": "thermal_dispatch.npz",
+      "bytes": 218313,
+      "sha256": "4b18f3b3e6a8f107c47671a8b22443a32f13280d20b245fe9fc2cbcc17369922"
+    },
+    {
+      "path": "thermal_nuclear_capacity.csv",
+      "bytes": 27813,
+      "sha256": "2c44207662f547ede4bd4a9954f49e54e13f43ba45d2d591ae4a202bab3b8f2a"
+    },
+    {
+      "path": "time_index.csv",
+      "bytes": 835,
+      "sha256": "4cf1dc795cb27c868f03e38fad82fe06b8ef7cfd8313480e010abe786f4949f0"
+    },
+    {
+      "path": "transmission_capacity.csv",
+      "bytes": 30360,
+      "sha256": "2b34f9ee57925655bc96f7f4d9eb19ecfb464a7a228daa3579b37ae030c4b05b"
+    },
+    {
+      "path": "transmission_flows.npz",
+      "bytes": 81829,
+      "sha256": "6ad64b45e4e122ebbafcf962f966318b6cbd8725c558140342c196fbc42b1a35"
+    },
+    {
+      "path": "visualizations/capacity_by_technology.svg",
+      "bytes": 5996,
+      "sha256": "4c848b441c8328771abd85caba608a7456567d6bb33f00684cc6733626e1ef82"
+    },
+    {
+      "path": "visualizations/generation_by_technology.svg",
+      "bytes": 5336,
+      "sha256": "a7bd478088ae83798148cfe5ac9ce806bca5b5c9a3053d37f3c510ba536e5448"
+    },
+    {
+      "path": "visualizations/national_dispatch_first_week.svg",
+      "bytes": 4762,
+      "sha256": "bad20e783489a564bb3a9d1a028ea1b402ee65b58f7345bd536521f384a7591c"
+    },
+    {
+      "path": "vre_capacity.csv",
+      "bytes": 3627741,
+      "sha256": "9b628354ed6b2a066e1b54d446eb55ae6af96988f6a14d7ae5b3279ab3b165f7"
+    },
+    {
+      "path": "vre_dispatch.npz",
+      "bytes": 30805,
+      "sha256": "06401982d9be29b25a178131d097074b952f0e420b89993d660f900252cca95a"
+    },
+    {
+      "path": "wave_capacity.csv",
+      "bytes": 243799,
+      "sha256": "4e73042e19b2fc0728d97efeb14a5a4b06b44b22376b10eb7c1c5f26d25633b9"
+    },
+    {
+      "path": "wave_dispatch.npz",
+      "bytes": 22443,
+      "sha256": "d256dfd220bf8ee2a9ab327e661c2c7c8c8eb5461ad19cc8e86adebd1d7ede91"
+    }
+  ],
+  "schema_version": "cispo_preserved_result_manifest_v1",
+  "manifest_purpose": "ARTIFACT_INTEGRITY_NOT_SCIENTIFIC_ACCEPTANCE",
+  "export_status": "COMPLETE",
+  "qc_status": "PASS",
+  "scientifically_accepted": false,
+  "author_decision": "PENDING"
+}

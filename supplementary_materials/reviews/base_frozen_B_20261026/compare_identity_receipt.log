@@ -1,0 +1,171 @@
+{
+  "base_objective": 2684955.8057521186,
+  "zero_contract_objective": 2684955.805752121,
+  "objective_relative_difference": 8.671675085119263e-16,
+  "objective_tolerance": 1e-07,
+  "objective_pass": true,
+  "both_optimal": true,
+  "shared_variables": 346767,
+  "base_only_variables": 0,
+  "zero_only_variables": 6871,
+  "operation_gate": "REQUIRES_REVIEW_OF_NATIVE_UNIT_DIFFERENCES",
+  "note": "No unapproved aggregate or degeneracy exception is applied."
+}
+[
+  [
+    "reservoir_active_storage_million_m3",
+    {
+      "entries": 14880,
+      "max_abs_difference": 8.7303916877729,
+      "worst_variable": "reservoir_active_storage_million_m3[5,4]",
+      "above_1e_9": 2397,
+      "above_1e_6": 2397,
+      "above_1e_3": 2275,
+      "base_value": 29.571923182981116,
+      "zero_value": 38.30231487075402
+    }
+  ],
+  [
+    "load_center_annual_injection_gwh",
+    {
+      "entries": 337,
+      "max_abs_difference": 8.570226479339993,
+      "worst_variable": "load_center_annual_injection_gwh[200]",
+      "above_1e_9": 11,
+      "above_1e_6": 9,
+      "above_1e_3": 6,
+      "base_value": 158.4710405156015,
+      "zero_value": 149.9008140362615
+    }
+  ],
+  [
+    "load_center_vre_generation_gwh",
+    {
+      "entries": 1348,
+      "max_abs_difference": 8.570226479339993,
+      "worst_variable": "load_center_vre_generation_gwh[200,2]",
+      "above_1e_9": 20,
+      "above_1e_6": 14,
+      "above_1e_3": 10,
+      "base_value": 29.835270277190688,
+      "zero_value": 21.265043797850694
+    }
+  ],
+  [
+    "intra_load_center_flow_forward_gwh",
+    {
+      "entries": 642,
+      "max_abs_difference": 8.570226479339937,
+      "worst_variable": "intra_load_center_flow_forward_gwh[389]",
+      "above_1e_9": 14,
+      "above_1e_6": 12,
+      "above_1e_3": 9,
+      "base_value": 75.25435782035758,
+      "zero_value": 66.68413134101765
+    }
+  ],
+  [
+    "intra_load_center_flow_reverse_gwh",
+    {
+      "entries": 642,
+      "max_abs_difference": 8.570226479339908,
+      "worst_variable": "intra_load_center_flow_reverse_gwh[385]",
+      "above_1e_9": 12,
+      "above_1e_6": 12,
+      "above_1e_3": 11,
+      "base_value": 178.3754745499913,
+      "zero_value": 169.8052480706514
+    }
+  ],
+  [
+    "vre_generation_gw",
+    {
+      "entries": 2976,
+      "max_abs_difference": 8.57021328813211,
+      "worst_variable": "vre_generation_gw[18,2,15]",
+      "above_1e_9": 51,
+      "above_1e_6": 46,
+      "above_1e_3": 41,
+      "base_value": 14.631665975987655,
+      "zero_value": 6.061452687855546
+    }
+  ],
+  [
+    "flow_forward_gw",
+    {
+      "entries": 9864,
+      "max_abs_difference": 2.8086927514285662,
+      "worst_variable": "flow_forward_gw[110,5]",
+      "above_1e_9": 77,
+      "above_1e_6": 77,
+      "above_1e_3": 75,
+      "base_value": 48.131937732702326,
+      "zero_value": 45.32324498127376
+    }
+  ],
+  [
+    "reservoir_turbine_flow_1000m3s",
+    {
+      "entries": 14880,
+      "max_abs_difference": 2.425108802159503,
+      "worst_variable": "reservoir_turbine_flow_1000m3s[5,5]",
+      "above_1e_9": 586,
+      "above_1e_6": 586,
+      "above_1e_3": 523,
+      "base_value": 5.713452995305403,
+      "zero_value": 8.138561797464906
+    }
+  ],
+  [
+    "reservoir_spill_flow_1000m3s",
+    {
+      "entries": 14880,
+      "max_abs_difference": 1.5905027731044465,
+      "worst_variable": "reservoir_spill_flow_1000m3s[2,11]",
+      "above_1e_9": 166,
+      "above_1e_6": 166,
+      "above_1e_3": 161,
+      "base_value": 0.8465926190799733,
+      "zero_value": 2.43709539218442
+    }
+  ],
+  [
+    "load_center_reservoir_generation_gwh",
+    {
+      "entries": 337,
+      "max_abs_difference": 0.12640803686370816,
+      "worst_variable": "load_center_reservoir_generation_gwh[281]",
+      "above_1e_9": 2,
+      "above_1e_6": 1,
+      "above_1e_3": 1,
+      "base_value": 50.83049686975666,
+      "zero_value": 50.956904906620366
+    }
+  ],
+  [
+    "flow_reverse_ac_gw",
+    {
+      "entries": 1152,
+      "max_abs_difference": 0.105647768173597,
+      "worst_variable": "flow_reverse_ac_gw[45,14]",
+      "above_1e_9": 2,
+      "above_1e_6": 2,
+      "above_1e_3": 2,
+      "base_value": 3.37712847455024,
+      "zero_value": 3.482776242723837
+    }
+  ],
+  [
+    "storage_reserve_down_gw",
+    {
+      "entries": 1488,
+      "max_abs_difference": 0.10515277480338114,
+      "worst_variable": "storage_reserve_down_gw[24,0,16]",
+      "above_1e_9": 30,
+      "above_1e_6": 28,
+      "above_1e_3": 22,
+      "base_value": 1.6908102349257443,
+      "zero_value": 1.7959630097291255
+    }
+  ]
+]

@@ -1,0 +1,70 @@
+{"name": "old_default_1h", "exit_code": 0, "runtime_seconds": 32.074318127008155, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py", "--mode", "old-default", "--hours", "1", "--output", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/old_default_1h", "--baseline-runner", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/baseline_runner_reference.py"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/old_default_1h.log"}
+      }
+    }
+  },
+  "annual_capacity_link_row_scaling_path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/old_default_1h/annual_capacity_link_row_scaling.json",
+  "warm_start": null,
+  "primal_dual_start": null,
+  "mga": null,
+  "memory_at_exit": {
+    "peak_process_tree_rss_bytes": 470581248,
+    "peak_process_tree_rss_gib": 0.438,
+    "elapsed_seconds": 22.61,
+    "sampling_interval_seconds": 0.5
+  }
+}
+{
+  "mode": "old-default",
+  "hours": 1,
+  "runner_exit_code": 0,
+  "variables": 239109,
+  "constraints": 80896,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON"
+}
+{"name": "default_1h", "exit_code": 0, "runtime_seconds": 26.80501425010152, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py", "--mode", "default", "--hours", "1", "--output", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/default_1h", "--baseline-runner", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/baseline_runner_reference.py"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/default_1h.log"}
+      }
+    }
+  },
+  "annual_capacity_link_row_scaling_path": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/default_1h/annual_capacity_link_row_scaling.json",
+  "warm_start": null,
+  "primal_dual_start": null,
+  "mga": null,
+  "memory_at_exit": {
+    "peak_process_tree_rss_bytes": 503132160,
+    "peak_process_tree_rss_gib": 0.469,
+    "elapsed_seconds": 17.342,
+    "sampling_interval_seconds": 0.5
+  }
+}
+{
+  "mode": "default",
+  "hours": 1,
+  "runner_exit_code": 0,
+  "variables": 239109,
+  "constraints": 80896,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON"
+}
+{"status": "PASS", "old_uncompressed_mps_sha256": "1cee854614792bb6bbe1c94192508cc578b60adacb5e40795e64ac598cd32f92", "new_uncompressed_mps_sha256": "1cee854614792bb6bbe1c94192508cc578b60adacb5e40795e64ac598cd32f92"}
+{"name": "frozen_1h", "exit_code": 0, "runtime_seconds": 28.566880540922284, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/run_gate.py", "--mode", "frozen", "--hours", "1", "--output", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/frozen_1h", "--baseline-runner", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/baseline_runner_reference.py"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/frozen_1h.log"}
+  "mode": "frozen",
+  "hours": 1,
+  "runner_exit_code": 0,
+  "variables": 239109,
+  "constraints": 80896,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "investment_fixed": {
+    "vre_new": true,
+    "thermal_new": true,
+    "thermal_retrofit_to_ccs": true,
+    "storage_new": true,
+    "line_new": true,
+    "intra_load_center_new": true,
+    "spur_augmentation": true,
+    "hydro_spur_augmentation": true,
+    "trunk_augmentation": true,
+    "hydro_new": true,
+    "wave_new": true,
+    "dac_new": true
+  },
+  "all_investment_families_fixed": true
+}

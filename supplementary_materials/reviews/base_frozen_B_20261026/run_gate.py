@@ -1,0 +1,92 @@
+"""Single bounded Base-frozen engineering gate; always uses a fresh output.
+
+Run with the existing Gurobi 13 Python overlay and CISPO_WAVE_ROOT. No scheduler.
+"""
+import argparse
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+from unittest.mock import patch
+
+import numpy as np
+
+ROOT=Path(__file__).resolve().parents[3]
+HERE=Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT))
+
+
+def save(path,value):
+    path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--mode',choices=['old-default','default','frozen','zero','base-control'],required=True)
+    parser.add_argument('--hours',type=int,choices=[1,24],required=True)
+    parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--baseline-runner',type=Path,help='Read-only db1a7b4 runner reference for a non-Git validation copy')
+    args=parser.parse_args()
+    out=args.output.resolve()
+    if out.exists():raise FileExistsError(out)
+    profile=json.loads((ROOT/'config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json').read_text())
+    profile.update(profile_id='base_frozen_identity_cross2_1e8',direct_nonbasic_scientific_acceptance=False)
+    profile['numerics'].update(threads=8,crossover=2,solution_target=0,barrier_convergence_tolerance=1e-8,
+                               feasibility_tolerance=1e-9,optimality_tolerance=1e-9,time_limit_seconds=3600,
+                               soft_mem_limit_gb=24)
+    profilepath=out.parent/(out.name+'_profile.json');save(profilepath,profile)
+    argv=['runner','--config',str(ROOT/'config/optimization_numeric_dac_by_year_v9.json'),
+          '--solver-config',str(profilepath),'--planning-year','2030','--diagnostic-hours',str(args.hours),
+          '--archive-original-model','--output-dir',str(out)]
+    if args.mode!='base-control':argv+=['--scenario-config',str(ROOT/'config/scenarios/case3_thermal_ev_v5.json')]
+    if args.hours==1:argv+=['--build-only']
+    frozen=args.mode in {'frozen','zero','base-control'}
+    if frozen:
+        source=HERE/'source_base/20260914_base_v9_t48_m750_tol1e4_v3'
+        argv+=['--frozen-capacity-from',str(source/'output_8760'),'--frozen-capacity-supplement',str(source/'frozen_capacity_B_20261026')]
+    if args.mode=='zero':
+        override=out.parent/(out.name+'_override.json')
+        save(override,dict(contract_upper_fraction={key:0 for key in ['heating','cooling','ev_v1g','ev_v2g']}))
+        argv+=['--frozen-parameters',str(override)]
+    save(out.parent/(out.name+'_command.json'),argv)
+    if args.mode=='old-default':
+        baseline=out.parent/(out.name+'_baseline_runner.py')
+        baseline.write_bytes(args.baseline_runner.read_bytes() if args.baseline_runner else subprocess.check_output(['git','show','db1a7b4:scripts/run_cispo_2030_full_year.py'],cwd=ROOT))
+        spec=importlib.util.spec_from_file_location('base_frozen_old_runner',baseline)
+        runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
+    else:
+        from scripts import run_cispo_2030_full_year as runner
+    import cispo_model.monolithic as monolithic
+    original=monolithic.build_full_year_monolithic
+    captured={}
+    def capture(config,data,**kw):
+        art=original(config,data,**kw);captured.update(art=art,data=data,config=config);return art
+    code=0
+    with patch.object(sys,'argv',argv),patch.object(monolithic,'build_full_year_monolithic',capture):
+        try:runner.main()
+        except SystemExit as exc:code=exc.code
+    if not captured:raise RuntimeError('Gate stopped before build; retained evidence')
+    art=captured['art'];model=art.model
+    result=dict(mode=args.mode,hours=args.hours,runner_exit_code=code,variables=model.NumVars,constraints=model.NumConstrs,
+                result_use='TEST_ONLY_TRUNCATED_HORIZON')
+    if frozen:
+        from cispo_model.frozen_capacity import investment_registry
+        result['investment_fixed']={key:bool(np.array_equal(art.variables[key].LB,art.variables[key].UB))
+                                    for key,*_ in investment_registry(art,captured['data'])}
+        result['all_investment_families_fixed']=all(result['investment_fixed'].values())
+    if args.hours==24 and model.SolCount:
+        result.update(status=int(model.Status),objective=float(model.ObjVal),barrier_iterations=int(model.BarIterCount),runtime_seconds=float(model.Runtime))
+        # Preserve named values for independent shared operational-variable comparison.
+        variables=model.getVars()
+        with (out/'gate_values.jsonl').open('x',encoding='utf-8') as f:
+            for start in range(0,len(variables),50000):
+                block=variables[start:start+50000]
+                for name,value in zip(model.getAttr('VarName',block),model.getAttr('X',block)):
+                    f.write(json.dumps([name,value])+'\n')
+    save(out/'identity_gate_probe.json',result)
+    print(json.dumps(result,indent=2))
+    if code:raise SystemExit(code)
+
+
+if __name__=='__main__':main()

@@ -1,0 +1,83 @@
+{
+  "observed_at_utc": "2026-10-26T18:20:26.378707+00:00",
+  "result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+  "tables": {
+    "vre_capacity.csv": {
+      "manifest_match": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "manifest_match": true
+    },
+    "storage_capacity.csv": {
+      "manifest_match": true
+    },
+    "transmission_capacity.csv": {
+      "manifest_match": true
+    },
+    "load_center_intra_transmission.csv": {
+      "manifest_match": true
+    },
+    "intra_grid_vre_site_design.csv": {
+      "manifest_match": true
+    },
+    "intra_grid_substation_design.csv": {
+      "manifest_match": true
+    },
+    "hydro_capacity.csv": {
+      "manifest_match": true
+    },
+    "wave_capacity.csv": {
+      "manifest_match": true
+    },
+    "dac_capacity_capture.csv": {
+      "manifest_match": true
+    }
+  },
+  "capacity_accounting": {
+    "vre_capacity.csv": {
+      "max_abs_capacity_minus_floor_minus_new_gw": 0.0,
+      "count_over_1e_9_gw": 0,
+      "negative_new_count": 0,
+      "max_negative_new_gw": 0,
+      "sum_negative_new_gw": 0
+    },
+    "storage_capacity.csv": {
+      "max_abs_capacity_minus_floor_minus_new_gw": 0.0,
+      "count_over_1e_9_gw": 0,
+      "negative_new_count": 0,
+      "max_negative_new_gw": 0,
+      "sum_negative_new_gw": 0
+    },
+    "transmission_capacity.csv": {
+      "max_abs_capacity_minus_floor_minus_new_gw": 0.0,
+      "count_over_1e_9_gw": 0,
+      "negative_new_count": 0,
+      "max_negative_new_gw": 0,
+      "sum_negative_new_gw": 0
+    },
+    "hydro_capacity.csv": {
+      "max_abs_capacity_minus_floor_minus_new_gw": 0.0,
+      "count_over_1e_9_gw": 0,
+      "negative_new_count": 0,
+      "max_negative_new_gw": 0,
+      "sum_negative_new_gw": 0
+    },
+    "wave_capacity.csv": {
+      "max_abs_capacity_minus_floor_minus_new_gw": 0.0,
+      "count_over_1e_9_gw": 0,
+      "negative_new_count": 0,
+      "max_negative_new_gw": 0,
+      "sum_negative_new_gw": 0
+    }
+  },
+  "checkpoint_manifest": {
+    "exists": true,
+    "bytes": 76749,
+    "sha256": "e9111c9834ea7c4cbe409c64bb2d963d648dca6c5ef9d0cd37268b0ef04ee583"
+  },
+  "barx": {
+    "exists": true,
+    "bytes": 331667192,
+    "note": "presence only; no full vector read or extraction in this audit"
+  }
+}

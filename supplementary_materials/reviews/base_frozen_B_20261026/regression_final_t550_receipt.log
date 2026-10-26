@@ -1,0 +1,23 @@
+{"name": "full_regression_t550_v2_final", "exit_code": 0, "runtime_seconds": 160.90090822591446, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "-m", "unittest", "discover", "-s", "tests", "-q"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/full_regression_t550_v2_final.log"}
+
+Optimize a model with 0 rows, 1 columns and 0 nonzeros (Min)
+Model fingerprint: 0x0027da90
+Model has 1 linear objective coefficients
+Coefficient statistics:
+  Matrix range     [0e+00, 0e+00]
+  Objective range  [2e+00, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [0e+00, 0e+00]
+
+Presolve removed 0 rows and 1 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  2.000000000e+00
+----------------------------------------------------------------------
+Ran 477 tests in 159.655s
+
+OK

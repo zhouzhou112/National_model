@@ -1,0 +1,46 @@
+Set parameter LicenseID to value 2840423
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/base_control_24h/model_archive/original.mps.gz
+Reading time = 0.93 seconds
+CISPO_2030_master: 216188 rows, 346767 columns, 1715782 nonzeros
+Read MPS format model from file /home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/zero_24h/model_archive/original.mps.gz
+Reading time = 0.92 seconds
+CISPO_2030_master: 226051 rows, 353638 columns, 1766989 nonzeros
+{
+  "optimized": false,
+  "gate_waived": false,
+  "checks": [
+    {
+      "model": "base",
+      "solution": "own",
+      "max_constraint_violation": 3.7168712552215766e-11,
+      "max_bound_violation": 4.874323167314287e-12,
+      "objective": 2684955.80575214,
+      "missing_other_variables": 0
+    },
+    {
+      "model": "base",
+      "solution": "cross",
+      "max_constraint_violation": 3.7168712552215766e-11,
+      "max_bound_violation": 4.874323167314287e-12,
+      "objective": 2684955.80575214,
+      "missing_other_variables": 0
+    },
+    {
+      "model": "zero",
+      "solution": "own",
+      "max_constraint_violation": 3.7168712552215766e-11,
+      "max_bound_violation": 4.874323167314287e-12,
+      "objective": 2684955.805752141,
+      "missing_other_variables": 6871
+    },
+    {
+      "model": "zero",
+      "solution": "cross",
+      "max_constraint_violation": 3.7168712552215766e-11,
+      "max_bound_violation": 4.874323167314287e-12,
+      "objective": 2684955.805752141,
+      "missing_other_variables": 6871
+    }
+  ],
+  "interpretation": "Cross feasibility and equal cost support multiple optima; the authored hourly-identity gate remains unmet."
+}

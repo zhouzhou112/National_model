@@ -1,0 +1,13 @@
+{
+  "task_path": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\tasks\\TASK_base_frozen_B_20261026.md",
+  "sha256": "4ca48248b0c099dafbd978ca0791044d6b979a97b4eb114f406c3b5098a248a2",
+  "author_clarifications": [
+    "Base control fixes identical clipped capacities; output identity compares clipped values",
+    "Hydro spur: prefer preserved X, fallback BarX; same-pass VRE crosscheck <=1e-9 GW",
+    "Upstream: cross-check run_environment path, input_manifest SHA and actual packaged upstream plus metadata"
+  ],
+  "pilot_authorized": true,
+  "pilot_year": 2030,
+  "pilot_threads": 48,
+  "later_years_require_author_thread_confirmation": true
+}
