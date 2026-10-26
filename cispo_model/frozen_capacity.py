@@ -339,7 +339,7 @@ def validate_mode(config, args, *, test_only):
         expected=json.loads((Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{PROFILE_ID}.json').read_text())
         if any(config.raw['numerics'].get(k)!=v for k,v in expected['numerics'].items()):
             raise ValueError('Base-frozen production numeric settings differ from reviewed profile')
-        if not args.archive_original_model or not args.export_barrier_checkpoint:
+        if not getattr(args, 'preflight_only', False) and (not args.archive_original_model or not args.export_barrier_checkpoint):
             raise ValueError('Base-frozen production requires complete original-model/checkpoint preservation')
 
 

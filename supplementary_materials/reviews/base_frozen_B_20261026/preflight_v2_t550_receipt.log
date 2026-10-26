@@ -1,0 +1,23 @@
+{"name": "production_preflight_v2", "exit_code": 0, "runtime_seconds": 9.94239107100293, "command": ["/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python", "scripts/run_cispo_2030_full_year.py", "--config", "config/optimization_numeric_dac_by_year_v9.json", "--scenario-config", "config/scenarios/case3_thermal_ev_v5.json", "--solver-config", "config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json", "--planning-year", "2030", "--horizon", "full_year", "--allow-nonbasic-planning-state", "--preflight-only", "--frozen-capacity-from", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/source_base/20260914_base_v9_t48_m750_tol1e4_v3/output_8760", "--frozen-capacity-supplement", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/source_base/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026", "--output-dir", "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/production_preflight_v2"], "log": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026/production_preflight_v2.log"}
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 271560,
+          "control_support_state_variables": 87488,
+          "decay_anchor_state_variables": 5266,
+          "retained_state_variables": 92754,
+          "redundant_inactive_state_variables_omitted": 178806,
+          "retained_transition_rows": 92754,
+          "redundant_inactive_transition_rows_omitted": 178806,
+          "maximum_retained_transition_gap_hours": 27,
+          "minimum_retained_transition_coefficient": 0.10526193234946256,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": true,
+        "aggregate_zero_required_for_solve": false
+      }
+    },
+    "reason": "Author 2026-10-14 case3 Aggregate=0 execution; all QC labels and solution data retained."
+  }
+}

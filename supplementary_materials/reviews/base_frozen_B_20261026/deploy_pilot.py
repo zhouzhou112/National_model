@@ -15,13 +15,13 @@ HERE=Path(__file__).resolve().parent
 REPO=HERE.parents[2]
 HOST='paracloud-bscc-a8'
 BASE='/publicfs01/fs1-a8/home/a8s001819/National_model_cloud'
-NAME='20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v1'
+NAME='20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2'
 ROOT=BASE+'/'+NAME
 SOURCE_NAME='20260914_base_v9_t48_m750_tol1e4_v3'
 SOURCE=BASE+'/'+SOURCE_NAME
 ENV_SOURCE=BASE+'/20260903_8760_stagea_final_2820fc3_v3'
 PROFILE='config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json'
-EVIDENCE=HERE/'deployment'
+EVIDENCE=HERE/'deployment_v2'
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -135,7 +135,7 @@ print(json.dumps(dict(status='FROZEN',release=str(root),repo_files=len(source_ha
 '''
         result=remote(code,'freeze');save(EVIDENCE/'frozen_release.json',result);print(result)
     elif args.mode=='preflight':
-        command=f'''"$PYTHON" scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9.json --scenario-config config/scenarios/case3_thermal_ev_v5.json --solver-config {PROFILE} --planning-year 2030 --horizon full_year --archive-original-model --export-barrier-checkpoint --allow-nonbasic-planning-state --frozen-capacity-from "{ROOT}/frozen_source/{SOURCE_NAME}/output_8760" --frozen-capacity-supplement "{ROOT}/frozen_source/{SOURCE_NAME}/frozen_capacity_B_20261026" --preflight-only --output-dir "{ROOT}/preflight" > "{ROOT}/preflight.log" 2>&1
+        command=f'''"$PYTHON" scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9.json --scenario-config config/scenarios/case3_thermal_ev_v5.json --solver-config {PROFILE} --planning-year 2030 --horizon full_year --allow-nonbasic-planning-state --frozen-capacity-from "{ROOT}/frozen_source/{SOURCE_NAME}/output_8760" --frozen-capacity-supplement "{ROOT}/frozen_source/{SOURCE_NAME}/frozen_capacity_B_20261026" --preflight-only --output-dir "{ROOT}/preflight" > "{ROOT}/preflight.log" 2>&1
 '''
         result=remote('script='+repr(environment()+command)+'\n'+r'''
 assert not (root/'submission_attempt.json').exists() and not (root/'preflight').exists()

@@ -93,3 +93,9 @@
 2030 中央参数已复用 `scripts/verify_case3_parameters.py` 对真实加载数据核准 PASS；另比较 B 与已核准 case3 的 1h 原 MPS：变量/约束名、矩阵、RHS、目标、全部非投资列界完全相同，只改变投资界。证据 `evidence/parameters_2030/`。
 
 最终全套回归 **480 tests / 161.365 秒 / OK / 无跳过**，368 个模型、配置、脚本与测试文件的本机/T550 LF SHA 对齐。门禁清单见 `FINAL_GATES_PASSED.json`。本节为本地门禁通过，云端冻结/preflight/提交与资源状态另行记录；后续三个年份仍等待作者线程确认。
+
+## 8. 云端 preflight 参数冲突修复与 v2（2026-10-26 GMT）
+
+v1 源码 `e2bb4fd` 已冻结，405源码/58输入与源容量 SHA 校验完成，但首次云端 preflight 被 CLI 拒绝：preflight-only 不允许 archive/export 写出参数，而冻结模式原验证器又要求二者。未提交任何 v1 作业；v1目录、包与失败日志完整保留，见 `deployment/`。
+
+最小修复：仅 preflight-only 豁免写出参数；生产 solve 仍强制原MPS归档和 Barrier 检查点。补充单元测试确认只读 preflight 可以通过、缺保全参数的生产 solve 仍拒绝。T550真实全年配置 preflight PASS；最终全回归 **481 tests / 159.093秒 / OK / 无跳过**，368源码 LF SHA 对齐。模型构建/目标/约束/数值求解参数未改，不复用失败v1目录；新release后缀 **v2**，实际冻结/preflight/提交记录在 `deployment_v2/`。

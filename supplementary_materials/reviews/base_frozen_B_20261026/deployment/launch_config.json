@@ -1,0 +1,23 @@
+{
+  "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v1",
+  "source_commit": "e2bb4fd3be4ddf119e8b6c1d3bfdfc50c870b4d2",
+  "framework": "B",
+  "description": "框架 B（Base-frozen）",
+  "scenario": "case3_thermal_ev_v5",
+  "planning_year": 2030,
+  "boundary_year": 2025,
+  "solver_profile": "config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json",
+  "frozen_capacity_from": "20260914_base_v9_t48_m750_tol1e4_v3",
+  "upstream": null,
+  "candidate_screen": false,
+  "automatic_successor": false,
+  "author_authorization": "2026-10-26: all gates passed => submit and release B2030 only",
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "solver_threads": 48,
+    "minimum_available_memory_gib": 700
+  }
+}

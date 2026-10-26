@@ -61,6 +61,18 @@ class FrozenCapacityTests(unittest.TestCase):
         validate_mode(cfg,SimpleNamespace(),test_only=True)
         with self.assertRaises(ValueError):validate_mode(cfg,SimpleNamespace(),test_only=False)
 
+    def test_production_preflight_needs_no_write_flags_but_solve_requires_them(self):
+        from cispo_model.frozen_capacity import PROFILE_ID
+        profile=json.loads((Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{PROFILE_ID}.json').read_text())
+        cfg=SimpleNamespace(raw={'scenario':{'id':'case3_thermal_ev_v5'},
+            'solver_profile':{'id':PROFILE_ID},'numerics':profile['numerics']})
+        args=SimpleNamespace(preflight_only=True,archive_original_model=False,export_barrier_checkpoint=False)
+        validate_mode(cfg,args,test_only=False)
+        args.preflight_only=False
+        with self.assertRaisesRegex(ValueError,'preservation'):validate_mode(cfg,args,test_only=False)
+        args.archive_original_model=True;args.export_barrier_checkpoint=True
+        validate_mode(cfg,args,test_only=False)
+
     def test_accounting_total_must_match_source_plus_only_clips(self):
         art=self.artifacts()
         registry=[('vre_new','vre_capacity.csv','new_capacity_gw',[['a','wind'],['b','pv']],'GW',False)]

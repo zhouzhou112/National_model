@@ -52,11 +52,18 @@ elif STAGE=='costs':
             '--output',str(here/(name+SUFFIX)),'--saved-source',str(here/source)])
 elif STAGE=='parameters':
  run('parameters_2030',[py,'scripts/verify_case3_parameters.py','--output',str(here/('parameters_2030'+SUFFIX))])
+elif STAGE=='preflight':
+ source=here/'source_base/20260914_base_v9_t48_m750_tol1e4_v3'
+ run('production_preflight',[py,'scripts/run_cispo_2030_full_year.py','--config','config/optimization_numeric_dac_by_year_v9.json',
+  '--scenario-config','config/scenarios/case3_thermal_ev_v5.json','--solver-config','config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json',
+  '--planning-year','2030','--horizon','full_year','--allow-nonbasic-planning-state','--preflight-only',
+  '--frozen-capacity-from',str(source/'output_8760'),'--frozen-capacity-supplement',str(source/'frozen_capacity_B_20261026'),
+  '--output-dir',str(here/('production_preflight'+SUFFIX))])
 '''
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('stage',choices=['regression','build','zero','base-control','frozen','frozen-build','costs','parameters'])
+    parser.add_argument('stage',choices=['regression','build','zero','base-control','frozen','frozen-build','costs','parameters','preflight'])
     parser.add_argument('--suffix',default='')
     args=parser.parse_args()
     code='REMOTE='+repr(REMOTE)+'\nSTAGE='+repr(args.stage)+'\nSUFFIX='+repr(args.suffix)+'\n'+CODE
