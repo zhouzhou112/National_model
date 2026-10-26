@@ -1,0 +1,11 @@
+{
+  "template_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/continuation.sbatch",
+  "template_sha256": "fa64961a54cd5094b8ddf5ebc342bb77f8e03841e4928a0285ce9bed4e61c0dc",
+  "registered_license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+  "license_registry": "deployment_C2050_t40_wls_v2/launch_config.json",
+  "template_discrepancy": "case3 2040 v2 uses the historical fallback; the registered replacement WLS was used by successful C2050 v2",
+  "source_commit": "9f0a042cbad241b13351b36dd68f3680666d42fb",
+  "scientific_gates_reused": true,
+  "credential_contents_read": false,
+  "batch_sha256": "da389b96d61c6c54e94c7cb2f00d7bff18774e204eb4a747dfaaa546e0751ba5"
+}

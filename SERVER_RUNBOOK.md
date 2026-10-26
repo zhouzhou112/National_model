@@ -1,5 +1,15 @@
 # CISPO 2030/8760 server runbook
 
+## 作者决定：新作业 sbatch 派生规则（2026-10-26）
+
+今后所有新作业的 sbatch 必须从最近一次成功启动且有计算节点 smoke 证据的脚本派生，记录源 release、脚本 SHA 与逐行差异；只改本作业参数和路径，不从早期默认许可模板重新拼装。作者指定某个成功脚本时以该指定为准，原冻结脚本不得修改。
+
+新 release 的云端 preflight 必须核对 sbatch 中 `GRB_LICENSE_FILE` 与登记的 WLS 路径字符串完全一致，并核对 launch_config 的同一字段。仅比较路径字符串，不打开、读取、复制或散列许可内容；不得保留旧许可 fallback。计算节点仍执行许可 smoke、AllocTRES 和启动可用内存核验，资源记录须先于许可启动落盘。任一步失败即停止回报，不自动重提。
+
+本次 B2030 v3 按作者指定从 case3 2040 v2 的 `continuation.sbatch` 派生。实查该模板仍含历史许可 fallback，不能误记为新 WLS 模板；显式路径取自已成功启动的 C2050 t40 WLS v2 的登记 `launch_config.json`。两套运行包均只读。B2030 源码固定 `9f0a042`，405 项源码、58 项输入、Base 冻结来源及 FINAL_GATES_PASSED 与 B v2 逐字节核验；按作者要求不重跑科学门禁和回归。新 release 的启动清单因 sbatch/launch 路径变化另出 SHA，不能声称整个 release SHA 不变。
+
+复现入口：`python supplementary_materials/reviews/base_frozen_B_20261026/deploy_pilot_v3.py prepare`、`preflight`、`submit-release`、`status --label <unique-label>`。prepare/submit 只能执行一次；不对已有 release 重复执行。`/usr/bin/time -v` 保留进程峰值 RSS，原 Gurobi 日志保留每轮累计时间及总轮数；后续只读采集 Slurm 峰值和相邻迭代时间差，未终态时不能报告最终峰值/总轮数。无后台监听。
+
 > 2026-10-12英国12:10（北京19:10）取证：原2050/4844528已COMPLETED/0:0，结束英国04:54:27（北京11:54:27），总运行11天13小时44分50秒；Gurobi716轮OPTIMAL、runtime996416.02秒，目标5751972.5053 million CNY。终轮打印PInf2.25e-4/DInf1.45e-6/Compl6.01e-5、目标差4631.44，callback相对差0.08052%；717条连续/8源SHA PASS，stderr空。preservation COMPLETE/errors=[]，BarPi导出可用。原冻结包旧QC HARD_FAIL/PENDING不能自动当新口径结论；新口径功率平衡0.265kW和成本相对闭合1.68e-11可过，但双向流重叠0.12034%高于0.01%约12倍、额外损耗198.73GWh，水库29.27m³尚缺逐站分母复核，科学验收未全部通过。证据`base_2050_continuation_20260930/status_20261012T111059Z/`。Git基准a4d4727；仅取证/交接小文件同步，本次交接条目部分暂存，其他SI未提交内容/稿件留工作区。未改作业/归档/模型，无scontrol/scancel、Stage B、新求解、部署或监听。下一步按作者新口径验收，不据此自动启动2060/case3。
 
 > 2026-10-11英国15:43（北京22:43）原2050/4844528 RUNNING/m4cm1802、11天0小时33分42秒，iter682/48线程沿用。PInf0.00118/Compl0.000338/目标差26080.73，较670下降36.56%/37.52%/37.44%；DInf4.39e-6较670上升78.46%，679–682连续4轮上升，为678的1.969倍，低于642峰值但反弹尚未恢复，不能沿用上次连续下降描述。其他三项逐轮下降，近期拟合每轮3.56%/3.65%/3.65%，较前窗放缓；暂无同步大跃升/显式警告/终态，stderr空。22.3867分钟每轮，RSS420.09GiB/峰685.98GiB；683条连续/4源SHA PASS。证据`base_2050_continuation_20260930/status_20261011T144319Z/`。历史主指标约9–15小时类比未覆盖新对偶反弹，不将此前半天至一天作倒计时；2040 PInf匹配终轮不等于整体结束。Git基准e577e13；仅取证/交接与小文件GitHub同步，未改运行包、无scontrol/scancel、新作业、Stage B、部署或监听。下一步只读关注对偶恢复/终态，按作者最新规则验收。
