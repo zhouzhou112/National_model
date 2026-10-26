@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26 GMT：框架 B 候选实现已验证，身份门禁失败，停止放行。** 源码 `ba7a23f`；X 未保全，按授权回退 BarX，36686 个 VRE 新建值同次解析零差，hydro spur 独立补表 SHA 已核。默认关闭 MPS 字节一致；1h 固定 86745 列、clip 合计 2.64e-10 GW；最终回归 477 tests OK。24h 固定 Base/零签约 B 目标相对差 8.67e-16，但风光出力最大差 8.57 GW、正向潮流 2.81 GW，逐时一致门禁未通过；保存解双向交叉可行且等成本，支持退化多解，未自行豁免。Cross2 的 relative_v1 缺 barrier_primal_dual_metrics，须修复兼容性。未做开放柔性 B24h、参数核准或任何 B 生产提交/release；保护作业与 case3 2050 未触碰。详见 `supplementary_materials/reviews/base_frozen_B_20261026/REVIEW_ZH.md`。下一步等待作者处理逐时一致判据，再修复 QC/续做门禁；后续年份线程仍待作者确认。
+
 - **2026-10-26英国16:29 GMT：T550恢复，前轮遗漏同步已补齐。** Base2060 ready三文件先确认缺失后补传、逐文件SHA一致；全量CSV与nocredit证书SHA复核一致，旧连接失败证据保留。原任务1–3已完成；5201318/5207165仍RUNNING，467/332轮、stderr空、Restarts0，未干预。4–5待终态，case3 2050仍未R1/门禁/最终冻结/提交；恢复证据见base_2060_screen_20261026/ready_t550_recovery_20261026.json。
 
 - **2026-10-26英国14:05 GMT，可执行的1–3项完成。** nocredit2030小文件/证书/扩展PASS已完成，证书留T550；Base2060 margin0.2清单36686项、正余量33773、筛除8025、保留可扩展25748，P4原/反序审计PASS，生产CSV SHA `831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3`。case3 2050 40线程数据/sbatch已预置核验，R1/1h/24h/最终冻结/提交仍等待2040终态。5201318/5207165只读复查仍RUNNING，460/327轮，stderr空；无干预或监听。后续入口见case3_2050_preparation_20261026/NEXT_ACTIONS_ZH.md。
@@ -10311,3 +10313,12 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 16:29:05 UTC只读collect_live.py：5201318仍RUNNING，第467轮PInf0.0197/DInf2.43e-7/Compl1.74e-4；5207165仍RUNNING，第332轮PInf14.1/DInf1.00e-4/Compl0.120。两者AllocTRES=cpu64/mem750G/node1/billing64，UNLIMITED、Restarts0，stderr均0bytes，尚无solve_report。证据case3_2050_preparation_20261026/live_20261026T162906Z.json。未干预运行作业、未启动终态备份或监听。
 
 原任务1–3及本次恢复补项已完成；4–5仍等待上游终态。下一步按NEXT_ACTIONS_ZH.md：2040终态后完整备份、T550证书及扩展评估，B/obj≤1e-2才采纳，再R1/1h/24h/2050参数/冻结/preflight，门禁全通过直接提交release；C2050终态只收尾，C2060/C′等待作者。验证为SSH身份、远端读回SHA、JSON解析、Git明确清单与diff检查；无源码变更，不重复模型测试。仅更新两份报告、恢复/作业JSON及四份交接台账；其他作者稿件和32行SI交接保留未暂存。
+
+## 2026-10-26 框架 B Base-frozen 候选实现与门禁停止
+
+- 源码/证据提交：`ba7a23fdfe76a367ca72eb393daeddc334a9dc13`；明确 56 文件清单见 `supplementary_materials/reviews/base_frozen_B_20261026/ba7a23fdfe76a367ca72eb393daeddc334a9dc13_PATHS.txt`。新增冻结与补表模块、生产候选 profile、runner opt-in、身份/保全分支和 13 个定向测试。原始 Base 表/模型/向量未改。
+- 运行位置：T550 `/home/zz2/National_model_server/base_frozen_B_validation_20261026/repo/supplementary_materials/reviews/base_frozen_B_20261026`。独立验证包与私有输入覆盖；没有云端生产部署。
+- 命令：`run_gate.py` 的 old-default/default/frozen 1h 与 base-control/zero 24h；`compare_identity_gate.py`；`crosscheck_saved_solutions.py`（只评估保存解、不 optimize）；`python -m unittest discover -s tests -q` 最终 477 tests/159.655s/OK，无跳过。源码 SHA 对齐见 `final_validation.json`，历史失败日志保留。
+- 结果：默认关闭 MPS 字节一致；86745 个投资列的 MPS FX 值等于审计；GW clip 合计 2.6415681231e-10，单列最大 2.6414467271e-10。两个对照都 OPTIMAL/保全 COMPLETE，容量误差 ≤2.84e-14，目标相对差 8.67e-16；逐时 VRE 差 8.57 GW、正向潮流差 2.81 GW，任务书身份门禁 1 未通过。双向交叉约束最大违反 3.7169e-11、界违反 4.8743e-12、等成本，支持退化解释；没有替代原门禁。
+- 未解决：Cross2/basic 的 relative_v1 为 ERROR（缺 barrier_primal_dual_metrics）。开放柔性 B24h 门禁 2、参数核准、生产冻结/preflight/提交/release 全部未做；无全年性能或验收结论。后续 2040–2060 上游恢复尚须实际包核验，线程等待作者。
+- 下一动作：作者决定是否改用目标相等+双向交叉可行性、逐时差异披露的门禁；未明确修订前不推进放行。之后修复 Cross2 QC 兼容性、重新门禁、通过才按原授权提交 2030。保护作业 5201318/5207165 和 case3 2050 未触碰，无凭据读取或后台监听。
