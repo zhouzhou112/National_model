@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26英国12:48 GMT／北京20:48：云端2项RUNNING。** Case3 2040/5201318到456轮（6天13:47:25），PInf0.0402/DInf5.57e-7/Compl3.75e-4，较417推进39轮；近446–456三项下降40.88%/50.27%/41.77%，19.07分钟/轮，448对偶有小幅波动，不能称全程单调。C2050 t40/5207165到324轮（6天00:23:13），PInf18.6/DInf1.27e-4/Compl0.155，较298推进26轮；近314–324三项下降31.62%/30.60%/32.02%，30.275分钟/轮。对偶305轮峰2.51e-4，当前较峰回落49.40%，仍高于上次298的1.07e-4及297反弹前8.40e-6；不能称已完全恢复。
+
 - **2026-10-25英国23:40 GMT／10月26日北京07:40：云端2项RUNNING，nocredit备份已COMPLETE。** Case3 2040/5201318到417轮（6天00:40:06），PInf0.226/DInf3.09e-6/Compl0.00234，较上次388推进29轮；近407–417原始/互补降30.89%/31.58%，对偶升1.64%，22.85分钟/轮。C2050 t40/5207165到298轮（5天11:15:54），PInf50.9/DInf1.07e-4/Compl0.426，较279推进19轮；近288–298原始/互补降29.79%/31.62%，对偶增至原值8.70倍（增加769.92%），30.86分钟/轮。298轮对偶从8.40e-6跃至1.07e-4（12.74倍），尚无后续回落证据；其他两项仍降，无显式警告或错误，不能将互补改善等同于全指标稳定收敛。
 
 - **2026-10-25英国13:25 GMT／北京21:25，T550连接恢复，取代本日上一条备份阻塞状态。** 作者开启转发后已核验hostname=t550；既有五套备份manifest均COMPLETE，两旧操作COMPLETE且未发现活跃备份进程。nocredit2030新计划93文件/5,510,708,567bytes（全部output_8760及启动身份元数据，T1/T2/T3全部包含），预计余量36.2871%满足30%门槛。单次自主传输PID700378于13:25:24UTC启动，13:25:38核验进程存在、状态RUNNING/T1 TRANSFERRING（89文件/584,009,478bytes），尚无完整目标SHA验证和最终manifest，不称备份完成。
@@ -10263,3 +10265,12 @@ Git基准6ee7f8a4241ed9a572aa2e0d6b9b8aa540ef18f9。复用已测试scripts/backu
 Git基准b9ab0698a34f84fc12697486f296e138769ee2b8。只读squeue/scontrol/sstat/sacct及日志，stderr均0，Slurm峰712.44/621.18GiB未变；当前RSS约396.04/420.62GiB。仍无OPTIMAL，不给ETA、不改参数/作业。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261025T234041Z{,_summary}.json。
 
 nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3全部VERIFIED，93文件/5,510,708,567bytes，无延期文件，source_unchanged=true。最终backup_manifest文件清单与原plan逐项相等，源result_manifest SHA一致；本次取回完成证据cloud_backup_20261025/check_20261025T2340Z.json。目标/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1，磁盘仍约36.29%可用。完整逐文件bytes/SHA核验由单次备份进程完成，本次复核最终报告及清单，不重复传输。备份完成不代表最新扩展科学验收完成；原QC/作者待定标签不改。台账、交接、服务器记录同步追加；JSON解析/暂存diff与凭据检查，无源码变更不重跑求解。下一步询问时重点观察C2050对偶反弹是否恢复及两项终态，任何新终态按既定流程完整备份，无后台监听。
+
+
+## 2026-10-26 两项目收敛及C2050对偶回落
+
+**2026-10-26英国12:48 GMT／北京20:48：云端2项RUNNING。** Case3 2040/5201318到456轮（6天13:47:25），PInf0.0402/DInf5.57e-7/Compl3.75e-4，较417推进39轮；近446–456三项下降40.88%/50.27%/41.77%，19.07分钟/轮，448对偶有小幅波动，不能称全程单调。C2050 t40/5207165到324轮（6天00:23:13），PInf18.6/DInf1.27e-4/Compl0.155，较298推进26轮；近314–324三项下降31.62%/30.60%/32.02%，30.275分钟/轮。对偶305轮峰2.51e-4，当前较峰回落49.40%，仍高于上次298的1.07e-4及297反弹前8.40e-6；不能称已完全恢复。
+
+Git基准fa2ccce7d8fb6f5a8443cebc20671c575bcc4852。只读squeue/scontrol/sstat/sacct、Gurobi日志及stderr，当前RSS396.05/420.62GiB、Slurm峰712.44/621.18GiB未增加；stderr空，无显式警告/错误/终态。nocredit5153901仍COMPLETED/0:0；其93文件/5,510,708,567bytes完整T550备份的上次最终验证结论保留，本轮不重复传输/全量SHA复核。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T124800Z{,_summary}.json，备份证据沿用cloud_backup_20261025/check_20261025T2340Z.json。
+
+仅两小JSON和CODEX_HANDOFF/MODEL_SERVER_STATUS/SERVER_RUNBOOK更新，其他SI会话工作保留。JSON解析、暂存范围/凭据/diff检查通过，无源码变更无需模型测试；不改冻结包、作业或求解参数，不建监听，不给ETA。下一步用户询问时继续核验对偶恢复/终态，确认新生产终态后按已授权流程完整保全备份；nocredit最新扩展正式验收仍待执行。
