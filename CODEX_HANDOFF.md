@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26 20:01 GMT：B2030 v3 已启动，Job5276703 RUNNING。** 源码仍9f0a042，479项源码/输入/冻结来源与v2逐字节一致、原门禁复用；新WLS路径字符串preflight PASS，未读取许可内容。m4cg1603实配64CPU/750G/billing64、48线程、UNLIMITED/no-requeue，Gurobi13.0.2启动smoke PASS，可用731.251629GiB。尚无Barrier轮次/最终RSS；既有日志持续记录，无后台监听。保留v1/v2及5276670失败备份，不碰5201318/5207165/case3 2050；后续年份仍等作者线程确认。
+
 - **2026-10-26 19:43 GMT：B2030 Job5276670已提交/release但启动许可失败，停止重提。** 最终源码9f0a042、v2冻结/preflight和481回归/两道身份/参数门禁PASS；m4cg1603实配64CPU/750G/billing64、UNLIMITED。19:39:55–19:39:59 gp.Env.start报旧License2847107过期，尚未构建模型/无output_8760，无全年RSS/轮数指标。部署误沿用旧默认许可；记录已有10-20独立WLS路径，未读凭据，未自动重试。23文件/92,477,291bytes启动失败记录已T550逐项SHA备份COMPLETE，余36.2379%；不是完整解备份。下一步引用已登记WLS路径验证许可并新建v3；保留v1/v2、不重启旧Job、不碰保护作业。详见B review第9节。
 
 - **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
@@ -10343,3 +10345,16 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - T550：`/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2`，backup_scope=STARTUP_FAILURE_NO_MODEL_OR_SOLUTION；23文件/92,477,291bytes，全部目标bytes/SHA与源前后身份一致。独立operation、全局/本地flock、rsync partial、空间门禁≥30%，完成后余36.2378568%。无output_8760，无有效解/扩展验收，不称完整环境镜像。
 - 精确证据/提交清单：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v2/`、`startup_failure_backup.json`、`COMMIT_PATHS_launch_receipt.txt`；v1 preflight失败及v2许可失败均保留。其他作者未审稿件、32行SI交接仍不暂存。
 - 下一动作：按任务失败停止规则回报；新v3应显式绑定现有WLS路径并先过许可门禁，启动资源元数据先于许可检查落盘。不得修改v1/v2/重启5276670。后续年份仍待作者线程决定，5201318/5207165与case3 2050未干预，无后台监听。
+
+
+### 2026-10-26 20:01 GMT：B2030 v3 新 WLS 启动通过
+
+**2026-10-26 20:01 GMT：B2030 v3 已启动，Job5276703 RUNNING。** 源码仍9f0a042，479项源码/输入/冻结来源与v2逐字节一致、原门禁复用；新WLS路径字符串preflight PASS，未读取许可内容。m4cg1603实配64CPU/750G/billing64、48线程、UNLIMITED/no-requeue，Gurobi13.0.2启动smoke PASS，可用731.251629GiB。尚无Barrier轮次/最终RSS；既有日志持续记录，无后台监听。保留v1/v2及5276670失败备份，不碰5201318/5207165/case3 2050；后续年份仍等作者线程确认。
+
+- 模型源码 `9f0a042cbad241b13351b36dd68f3680666d42fb` 不变；部署工具提交 `ffc008b`。作者要求源码/冻结来源不变、不重跑门禁；本次复用481测试、身份门禁1/2和2030参数核准，未重新建模测试。479文件包括405源码、58输入、16个Base来源及补表，逐文件SHA与v2一致；FINAL_GATES_PASSED字节一致。
+- release：`20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3`。payload SHA `689388ec11a8ca3e6ee7c64da96f9dcb9e99c2522ae4eadc6e589ed8ac61ce1c`；release清单 SHA `fc48114045304e4cbbb1f860e2378f2b4c4cec6a1d1b63914e0ff1938428a808`。启动脚本和launch元数据有变，新release总体SHA不冒称与v2相同。
+- 按作者指定只读取得case3 2040 v2/continuation.sbatch，模板SHA `fa64961a54cd5094b8ddf5ebc342bb77f8e03841e4928a0285ce9bed4e61c0dc`。实查模板仍有旧许可fallback，已在执行中明确更正：新WLS登记与成功启动证据来自C2050 t40 WLS v2，B脚本显式使用该路径；只比较字符串，不读取/复制/散列许可。模板与逐行差异见deployment_v3/。
+- 命令：`deploy_pilot_v3.py prepare`、`preflight`、`submit-release`；`collect_v3_performance.py --label startup_01`。新WLS路径字符串检查、全年输入preflight、bash语法、全部release SHA、held资源检查均通过，随即授权release。仅操作新作业5276703；原运行包不改写。
+- 启动英国2026-10-26 20:01:42 GMT／北京10月27日04:01:42，20:01:50回读RUNNING、Restarts0。计算节点smoke PASS、启动可用731.251629GiB；资源记录在许可Env之前写入。sstat首次MaxRSS379216KiB（约0.362GiB）仅启动阶段快照，绝非全年峰值；当时无迭代记录、resource_usage未完成，最终RSS/每轮耗时/总轮数尚不可得。
+- 后续性能由原 `output_8760/solver_telemetry.jsonl` 逐轮保存runtime，原 `gurobi.log`交叉核对；单次采集工具导出相邻轮runtime差CSV，首轮不把预处理时间算作迭代耗时，缺失不填零。进程峰值用终态 `/usr/bin/time -v` 的resource_usage，Slurm峰值另记。无后台监听/定时服务。新终态按10-20规则完整T550备份及扩展relative_v1验收；2040/2050/2060仍等待作者线程确认。
+- 证据：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v3/{frozen_release,cloud_preflight,released_submission,startup_01}.json`，明确提交清单COMMIT_PATHS_v3_receipt.txt。保留未审核SI稿件及32行既有handoff，不将其纳入本轮Git。

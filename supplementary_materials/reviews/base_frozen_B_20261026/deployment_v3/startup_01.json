@@ -1,0 +1,80 @@
+{
+  "observed_at": "2026-10-26T20:01:50.034133+00:00",
+  "job_id": "5276703",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+  "iterations": [],
+  "scontrol": {
+    "returncode": 0,
+    "stdout": "JobId=5276703 JobName=cispo2030_B_frozen UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1000998 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:08 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-27T04:01:41 EligibleTime=2026-10-27T04:01:41 AccrueTime=2026-10-27T04:01:41 StartTime=2026-10-27T04:01:42 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-27T04:01:42 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:1211937 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cg1603 BatchHost=m4cg1603 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/base_frozen_2030.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/slurm-5276703.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/slurm-5276703.out Power= TresPerTask=cpu:64 \n",
+    "stderr": ""
+  },
+  "sacct": {
+    "returncode": 0,
+    "stdout": "5276703|cispo2030_B_frozen|RUNNING|0:0|00:00:08|billing=64,cpu=64,mem=750G,node=1||2026-10-27T04:01:42|Unknown\n5276703.batch|batch|RUNNING|0:0|00:00:08|cpu=64,mem=750G,node=1||2026-10-27T04:01:42|Unknown\n5276703.extern|extern|RUNNING|0:0|00:00:08|billing=64,cpu=64,mem=750G,node=1||2026-10-27T04:01:42|Unknown\n",
+    "stderr": ""
+  },
+  "sstat": {
+    "returncode": 0,
+    "stdout": "5276703.batch|379216K|379216K|411888K\n",
+    "stderr": ""
+  },
+  "compute_node_smoke.json": {
+    "status": "PASS",
+    "job_id": "5276703",
+    "gurobi_version": [
+      13,
+      0,
+      2
+    ],
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 731.2516288757324
+  },
+  "startup_resources.json": {
+    "job_id": "5276703",
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 731.2516288757324
+  },
+  "v2_identity_reuse.json": {
+    "status": "PASS",
+    "unchanged_file_count": 479,
+    "source_commit": "9f0a042cbad241b13351b36dd68f3680666d42fb",
+    "gates_identical": true
+  },
+  "license_path_preflight.json": {
+    "status": "PASS",
+    "mode": "STRING_ONLY",
+    "sbatch_license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+    "registered_license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+    "credential_contents_read": false
+  },
+  "resource_usage.txt": {
+    "bytes": 0,
+    "tail": ""
+  },
+  "stdout.log": {
+    "bytes": 0,
+    "tail": ""
+  },
+  "stderr.log": {
+    "bytes": 0,
+    "tail": ""
+  },
+  "slurm-5276703.err": {
+    "bytes": 0,
+    "tail": ""
+  },
+  "completed_barrier_iterations_observed": null,
+  "final_metrics_available": false
+}

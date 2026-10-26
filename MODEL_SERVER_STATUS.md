@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-10-26 20:01 GMT：B2030 v3 已启动，Job5276703 RUNNING。** 源码仍9f0a042，479项源码/输入/冻结来源与v2逐字节一致、原门禁复用；新WLS路径字符串preflight PASS，未读取许可内容。m4cg1603实配64CPU/750G/billing64、48线程、UNLIMITED/no-requeue，Gurobi13.0.2启动smoke PASS，可用731.251629GiB。尚无Barrier轮次/最终RSS；既有日志持续记录，无后台监听。保留v1/v2及5276670失败备份，不碰5201318/5207165/case3 2050；后续年份仍等作者线程确认。
+
 - **2026-10-26 19:43 GMT：B2030 Job5276670已提交/release但启动许可失败，停止重提。** 最终源码9f0a042、v2冻结/preflight和481回归/两道身份/参数门禁PASS；m4cg1603实配64CPU/750G/billing64、UNLIMITED。19:39:55–19:39:59 gp.Env.start报旧License2847107过期，尚未构建模型/无output_8760，无全年RSS/轮数指标。部署误沿用旧默认许可；记录已有10-20独立WLS路径，未读凭据，未自动重试。23文件/92,477,291bytes启动失败记录已T550逐项SHA备份COMPLETE，余36.2379%；不是完整解备份。下一步引用已登记WLS路径验证许可并新建v3；保留v1/v2、不重启旧Job、不碰保护作业。详见B review第9节。
 
 - **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
