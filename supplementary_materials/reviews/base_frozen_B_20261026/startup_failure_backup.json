@@ -1,0 +1,128 @@
+{
+  "status": "COMPLETE",
+  "backup_scope": "STARTUP_FAILURE_NO_MODEL_OR_SOLUTION",
+  "not_a_full_environment_mirror": true,
+  "job_id": "5276670",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+  "destination": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+  "files": [
+    {
+      "path": "FINAL_GATES_PASSED.json",
+      "bytes": 46871,
+      "sha256": "d9b2f7268852c8852f82d39911624da6e91ab448b9999a531b2e9af010485d2e"
+    },
+    {
+      "path": "base_frozen_2030.sbatch",
+      "bytes": 4891,
+      "sha256": "baf7e00350d248f29f6222d9e75884a17b436bd1f09eb80623da67c6523ddfb4"
+    },
+    {
+      "path": "batch_exit.json",
+      "bytes": 35,
+      "sha256": "c4a7a536f55f2915774bafb65e2941b1b4e1515a9c2ae5ac9763c12fdbce783a"
+    },
+    {
+      "path": "cloud_source_repo_sha256.json",
+      "bytes": 48678,
+      "sha256": "93408fe913de8a9cc451045c3bf16b0a858feb34fb38e01a607974de37cb1f35"
+    },
+    {
+      "path": "data_overlay_sha256.json",
+      "bytes": 6815,
+      "sha256": "18dd2be1d90f669dd0547567c28c73ad2d0d6ebade1f3560ae720deced5110aa"
+    },
+    {
+      "path": "held_submission.json",
+      "bytes": 1626,
+      "sha256": "41ddfed55f14f285a5e9aba55540961bad986e367ed4b0094c18381744955735"
+    },
+    {
+      "path": "launch_config.json",
+      "bytes": 822,
+      "sha256": "21a65a001222ee2a2e2f34f4f920716962701f51732c9cb6129df08819350661"
+    },
+    {
+      "path": "preflight.log",
+      "bytes": 8068,
+      "sha256": "821c91c8c155f28dad7867c8d576160f02539d05f008bcfba933b2c79fa0c887"
+    },
+    {
+      "path": "preflight/input_manifest.csv",
+      "bytes": 30455,
+      "sha256": "0d8826c22bf46369b0348fe70985031494ea7479fdad8e8b54553fb149b2e8f9"
+    },
+    {
+      "path": "preflight/model_config_snapshot.json",
+      "bytes": 27865,
+      "sha256": "e856987056e6d32f868fd7784f01db7193bee2e4e997121ac751f6347f57b51f"
+    },
+    {
+      "path": "preflight/preflight_report.json",
+      "bytes": 15295,
+      "sha256": "a51b354da5a234ed14cbf881535f2fad2ccbff004c946100ef250373a277f2ab"
+    },
+    {
+      "path": "preflight/run_claim.json",
+      "bytes": 260,
+      "sha256": "d30c59e5a7e8d87df1141a713de0e316ef668f28482b2afcb1d11e75fe5b39db"
+    },
+    {
+      "path": "preflight/run_environment.json",
+      "bytes": 2481,
+      "sha256": "f7d18952ff32ca0543acaa18eda8b67dd5151002aff7192b5132e14cf97e7bb8"
+    },
+    {
+      "path": "preflight/run_identity.json",
+      "bytes": 11908,
+      "sha256": "481aab52dd79a97d356351b5547e6dc69c986be9b5d17ab072616ba58816e6eb"
+    },
+    {
+      "path": "preflight/run_scope.json",
+      "bytes": 8068,
+      "sha256": "821c91c8c155f28dad7867c8d576160f02539d05f008bcfba933b2c79fa0c887"
+    },
+    {
+      "path": "release_files.sha256",
+      "bytes": 58200,
+      "sha256": "153d78c95caff43b72ea2a164e7068ca81565c8c4be12d54e4c2420640b7e1b0"
+    },
+    {
+      "path": "release_payload.tar.gz",
+      "bytes": 92173159,
+      "sha256": "29a1e8dc2697a311eaf07c0af27d7eeccdf336088676fccedb24f667cadba0e0"
+    },
+    {
+      "path": "released_submission.json",
+      "bytes": 1720,
+      "sha256": "7522f0092475dd8ad1c010a7898763018e07670e72fc8f23e0685cba84470a17"
+    },
+    {
+      "path": "runtime_hash_check.log",
+      "bytes": 28130,
+      "sha256": "aad41f8081ced4cd4b8e39e418867fd2489c9445223dac4d6df3414999946f85"
+    },
+    {
+      "path": "runtime_slurm_job.txt",
+      "bytes": 1587,
+      "sha256": "ee173d382387523cf1e87b7fd955b85921d5a3ac3377b25381386bf4b0775171"
+    },
+    {
+      "path": "slurm-5276670.err",
+      "bytes": 204,
+      "sha256": "f838c5e04eb4e962ea9af92aa01f6339dfcef93b06e2df441f0fcf2e7cbbd455"
+    },
+    {
+      "path": "slurm-5276670.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "submission_attempt.json",
+      "bytes": 153,
+      "sha256": "da1af2f2e704cd36e20f39ee00b93e7a7cc6c27ea3300ae1560ad0768016cb30"
+    }
+  ],
+  "bytes": 92477291,
+  "free_fraction": 0.36237856767593835,
+  "completed_at": "2026-10-26T19:43:19.074841+00:00"
+}

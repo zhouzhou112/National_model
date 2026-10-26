@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26 19:43 GMT：B2030 Job5276670已提交/release但启动许可失败，停止重提。** 最终源码9f0a042、v2冻结/preflight和481回归/两道身份/参数门禁PASS；m4cg1603实配64CPU/750G/billing64、UNLIMITED。19:39:55–19:39:59 gp.Env.start报旧License2847107过期，尚未构建模型/无output_8760，无全年RSS/轮数指标。部署误沿用旧默认许可；记录已有10-20独立WLS路径，未读凭据，未自动重试。23文件/92,477,291bytes启动失败记录已T550逐项SHA备份COMPLETE，余36.2379%；不是完整解备份。下一步引用已登记WLS路径验证许可并新建v3；保留v1/v2、不重启旧Job、不碰保护作业。详见B review第9节。
+
 - **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
 
 - **2026-10-26 GMT：框架 B 候选实现已验证，身份门禁失败，停止放行。** 源码 `ba7a23f`；X 未保全，按授权回退 BarX，36686 个 VRE 新建值同次解析零差，hydro spur 独立补表 SHA 已核。默认关闭 MPS 字节一致；1h 固定 86745 列、clip 合计 2.64e-10 GW；最终回归 477 tests OK。24h 固定 Base/零签约 B 目标相对差 8.67e-16，但风光出力最大差 8.57 GW、正向潮流 2.81 GW，逐时一致门禁未通过；保存解双向交叉可行且等成本，支持退化多解，未自行豁免。Cross2 的 relative_v1 缺 barrier_primal_dual_metrics，须修复兼容性。未做开放柔性 B24h、参数核准或任何 B 生产提交/release；保护作业与 case3 2050 未触碰。详见 `supplementary_materials/reviews/base_frozen_B_20261026/REVIEW_ZH.md`。下一步等待作者处理逐时一致判据，再修复 QC/续做门禁；后续年份线程仍待作者确认。
@@ -10330,3 +10332,14 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - **2026-10-26 GMT：作者修订后 B2030 本地全部门禁 PASS，准备生产冻结。** 门禁1按保存 X 补成本分项，最大相对差1.64e-13；变化列 reduced cost≤2.29e-15，原目标差/双向交叉可行通过。Cross2 relative_v1 已修复，basic 语义导出选 X/Pi、Cross0不变；开放柔性24h门禁2容量差≤2.84e-14、relative_v1 PASS、保全 COMPLETE。2030中央参数及“仅投资界变化”原MPS对比 PASS；全套480 tests OK。以 `base_frozen_B_20261026/FINAL_GATES_PASSED.json` 为本地放行依据，下一步独立 B2030 48线程冻结/preflight/held资源核验后直接release；后续年份仍等作者线程确认。
 
 源码起点88bd36f；本次变更 relative_acceptance.py、solution_preservation.py、两测试及 B 验证/部署工具。原CSV来自BarX，已按保存X重算旁置，不改原件；成本和边际成本、参数桥接、完整回归证据均在 B review 第7节。最终480 tests/161.365s/OK；368源码LF SHA对齐。命令 run_t550_checks.py costs / frozen --suffix _basic_v2 / regression --suffix _basic_v2 / parameters。生产包预计 `20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v1`，本条时尚未提交；实际source_commit及资源/Job在部署回执另记。未碰5201318/5207165或case3 2050，无后台监听。
+
+## 2026-10-26 19:43 GMT B2030提交与许可启动失败收尾
+
+- **2026-10-26 19:43 GMT：B2030 Job5276670已提交/release但启动许可失败，停止重提。** 最终源码9f0a042、v2冻结/preflight和481回归/两道身份/参数门禁PASS；m4cg1603实配64CPU/750G/billing64、UNLIMITED。19:39:55–19:39:59 gp.Env.start报旧License2847107过期，尚未构建模型/无output_8760，无全年RSS/轮数指标。部署误沿用旧默认许可；记录已有10-20独立WLS路径，未读凭据，未自动重试。23文件/92,477,291bytes启动失败记录已T550逐项SHA备份COMPLETE，余36.2379%；不是完整解备份。下一步引用已登记WLS路径验证许可并新建v3；保留v1/v2、不重启旧Job、不碰保护作业。详见B review第9节。
+
+- 执行源码：`9f0a042`（修复只读preflight与保全参数互斥），此前实现e2bb4fd、ba7a23f。最终测试481/159.093s/OK；Cross0路径不变，保存X成本项最大相对差1.64e-13、两方向交叉可行≤1e-8、开放柔性24h容量误差2.84e-14、relative_v1 BASIC_CROSSOVER PASS、2030参数与仅投资界改变核验PASS。
+- 命令：`deploy_pilot.py prepare`、`preflight`、`submit-release`；405源码与58输入SHA校验，v2 release manifest SHA153d78c95caff43b72ea2a164e7068ca81565c8c4be12d54e4c2420640b7e1b0。held ReqTRES及实际AllocTRES均通过；作业5276670 FAILED/1:0，runtime4秒，no-requeue。≥700GiB检查分支通过但精确内存值未落盘；不将sacct batch MaxRSS=0解释为模型峰值。
+- 失败原因：旧默认许可2847107已过期；本轮执行未引用2026-10-20登记的独立WLS，是部署疏漏。已有路径 `/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic`，本轮未读取内容/未再次验证。停止新增提交，不要求作者重新提供凭据，也不把旧许可失败推广为所有许可失效。
+- T550：`/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2`，backup_scope=STARTUP_FAILURE_NO_MODEL_OR_SOLUTION；23文件/92,477,291bytes，全部目标bytes/SHA与源前后身份一致。独立operation、全局/本地flock、rsync partial、空间门禁≥30%，完成后余36.2378568%。无output_8760，无有效解/扩展验收，不称完整环境镜像。
+- 精确证据/提交清单：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v2/`、`startup_failure_backup.json`、`COMMIT_PATHS_launch_receipt.txt`；v1 preflight失败及v2许可失败均保留。其他作者未审稿件、32行SI交接仍不暂存。
+- 下一动作：按任务失败停止规则回报；新v3应显式绑定现有WLS路径并先过许可门禁，启动资源元数据先于许可检查落盘。不得修改v1/v2/重启5276670。后续年份仍待作者线程决定，5201318/5207165与case3 2050未干预，无后台监听。

@@ -1,0 +1,27 @@
+{
+  "job_id": "5276670",
+  "status": "FAILED",
+  "failure_phase": "COMPUTE_NODE_LICENSE_SMOKE",
+  "error": "License 2847107 has expired",
+  "root_cause": "Deployment inherited legacy default license path instead of the separately registered 2026-10-20 WLS path",
+  "source_commit": "9f0a042cbad241b13351b36dd68f3680666d42fb",
+  "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+  "allocation": {
+    "cpu": 64,
+    "memory": "750G",
+    "billing": 64,
+    "node": "m4cg1603",
+    "time_limit": "UNLIMITED",
+    "requeue": 0
+  },
+  "available_memory_gate": ">=700 GiB branch passed before Env.start; exact value not persisted because smoke failed",
+  "model_built": false,
+  "output_8760_exists": false,
+  "barrier_started": false,
+  "performance_metrics_available": false,
+  "existing_registered_wls_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+  "wls_last_verified": "2026-10-20; not revalidated in this failed attempt",
+  "credential_contents_read": false,
+  "automatic_retry": false,
+  "sacct": "5276670|FAILED|1:0|00:00:04||m4cg1603\n5276670.batch|FAILED|1:0|00:00:04|0|m4cg1603\n5276670.extern|COMPLETED|0:0|00:00:04|76K|m4cg1603\n"
+}

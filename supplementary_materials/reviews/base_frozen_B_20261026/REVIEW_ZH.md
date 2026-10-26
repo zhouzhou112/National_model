@@ -1,5 +1,7 @@
 # 框架 B（Base-frozen）实现与门禁记录
 
+**当前状态：本地全部门禁和云端preflight通过；B2030作业5276670在旧许可检查失败，主模型未启动。失败记录已T550校验备份，下一步见第9节。**
+
 日期：2026-10-26（英国 GMT）。候选实现提交：`ba7a23fdfe76a367ca72eb393daeddc334a9dc13`。源码起点：`db1a7b4498b7ed2d7b52672d379ca0e74a6cbbbb`。
 
 **前轮停止记录（已由下方第 7 节作者修订和复核结论更新）：身份门禁 1 原逐时一致性要求未通过。** 当前为 opt-in 候选实现，未取得生产资格。没有 B 作业号，也没有全年峰值 RSS、每轮耗时或总轮数。两套已执行的 24h 结果均完整保全，不能将短窗性能外推到全年。
@@ -99,3 +101,15 @@
 v1 源码 `e2bb4fd` 已冻结，405源码/58输入与源容量 SHA 校验完成，但首次云端 preflight 被 CLI 拒绝：preflight-only 不允许 archive/export 写出参数，而冻结模式原验证器又要求二者。未提交任何 v1 作业；v1目录、包与失败日志完整保留，见 `deployment/`。
 
 最小修复：仅 preflight-only 豁免写出参数；生产 solve 仍强制原MPS归档和 Barrier 检查点。补充单元测试确认只读 preflight 可以通过、缺保全参数的生产 solve 仍拒绝。T550真实全年配置 preflight PASS；最终全回归 **481 tests / 159.093秒 / OK / 无跳过**，368源码 LF SHA 对齐。模型构建/目标/约束/数值求解参数未改，不复用失败v1目录；新release后缀 **v2**，实际冻结/preflight/提交记录在 `deployment_v2/`。
+
+## 9. B2030 实际提交、启动失败与保全（2026-10-26 19:39 GMT）
+
+最终源码 `9f0a042`；release `20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2`。405源码/58输入冻结校验 PASS；release manifest SHA `153d78c95caff43b72ea2a164e7068ca81565c8c4be12d54e4c2420640b7e1b0`。云端真实 preflight PASS，sbatch test-only PASS。Job **5276670** held 后核验资源并按作者授权 release。
+
+实际节点 **m4cg1603**，AllocTRES=cpu64/mem750G/node1/billing64、UNLIMITED、Requeue0/Restarts0，符合要求。英国时间19:39:55启动，19:39:59以FAILED/ExitCode1:0结束。runtime hash 全部通过；执行已越过 ≥700GiB 可用内存检查，但未到写出 smoke JSON 的位置，故没有精确启动内存数值。
+
+计算节点 `gp.Env.start()` 报 **License 2847107 has expired**。部署沿用旧默认许可路径，是本次执行疏漏；既有记录明确已有10-20独立WLS路径，不应推断所有许可失效或要求作者重新提供凭据。已登记路径为 `/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic`，本轮没有读取其内容或重新验证有效性。
+
+遵循失败停止规则，本轮没有再次提交。主模型未构建、output_8760不存在、没有Barrier迭代；因此**不能提供全年峰值RSS、每轮耗时或总轮数**。sacct 的 batch MaxRSS=0 不能当作真实模型峰值。启动失败日志、冻结包和全部身份元数据留存，见 `deployment_v2/startup_failure_summary.json`；T550启动失败备份另见 `startup_failure_backup.json`（不称完整解备份）。
+
+下一动作：复用已登记WLS路径（仅引用路径，不读凭据），先做许可门禁；新建v3，不修改v1/v2，不重启5276670。新发布包须明确绑定该路径，并让启动资源检查在许可检查前先落盘。生产内核和科学门禁保持已验证版本；后续2040/2050/2060继续等待作者线程决定。5201318/5207165及case3 2050未干预，无后台监听。

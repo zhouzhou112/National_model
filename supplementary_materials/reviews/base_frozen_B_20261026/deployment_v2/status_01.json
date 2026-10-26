@@ -1,0 +1,8 @@
+{
+  "job_id": "5276670",
+  "scontrol": "JobId=5276670 JobName=cispo2030_B_frozen UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1000998 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=FAILED Reason=NonZeroExitCode Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=1:0 RunTime=00:00:04 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-27T03:39:54 EligibleTime=2026-10-27T03:39:54 AccrueTime=2026-10-27T03:39:54 StartTime=2026-10-27T03:39:55 EndTime=2026-10-27T03:39:59 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-27T03:39:55 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:975224 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cg1603 BatchHost=m4cg1603 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2/base_frozen_2030.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2/slurm-5276670.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2/slurm-5276670.out Power= TresPerTask=cpu:64 \n",
+  "batch_exit.json": {
+    "exit_code": 1,
+    "job_id": "5276670"
+  }
+}
