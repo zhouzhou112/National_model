@@ -1,0 +1,34 @@
+{
+  "status": "VERIFIED_COMPLETE",
+  "observed_at_utc": "2026-10-26T16:29:39.508781+00:00",
+  "hostname": "t550",
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026/ready",
+  "files": {
+    "source_screen.csv": {
+      "bytes": 1315109,
+      "sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+      "action": "CREATED_MISSING"
+    },
+    "candidate_screen_fragment.json": {
+      "bytes": 335,
+      "sha256": "98640f5f77ae9c7ab61c9c552325c223397325e0b2b7b965d8d1196ba5de11b8",
+      "action": "CREATED_MISSING"
+    },
+    "audit.json": {
+      "bytes": 2912,
+      "sha256": "415a4c2820a68d14528916abeeee7c6de294831c3ddeaec7ef61babce6484dd8",
+      "action": "CREATED_MISSING"
+    }
+  },
+  "full_source_csv": {
+    "bytes": 7673415,
+    "sha256": "53f9bfc05c1a986cff0f4151f557df21f2a9c9beae607fc1b027ecf64a1d3dfb"
+  },
+  "nocredit_certificate": {
+    "path": "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/postprocess_20261026/pricing/screen_pricing_certificate.json",
+    "bytes": 4707,
+    "sha256": "4dfc8dce13c73cc72461be146c69990c0d81f26b4e73387a0dac6b022f9da2fa"
+  },
+  "previous_failure_record": "ready_t550_sync_status.json",
+  "original_output_modified": false
+}

@@ -5515,3 +5515,12 @@ Git起点0cbad432fb61cb555e92db42923339cffe79d63d。按作者新增授权，仅�
 14:05:46GMT：5201318 RUNNING/m4cm1803，第460轮PInf0.0314/DInf4.21e-7/Compl2.85e-4；5207165 RUNNING/m4cm1607，第327轮PInf16.9/DInf1.16e-4/Compl0.141。均cpu64/mem750G/billing64、UNLIMITED、Restarts0、stderr空，无终态报告。未干预运行任务。精确下一步：2040终态后完整T550备份、T550证书、扩展评估，B/obj≤1e-2才采纳，完成R1/1h/24h/2050实际参数/最终preflight后直接提交release；门禁失败停止报告。C2050终态只收尾，C2060/C′待作者。两份备份配置预置但未执行，无后台监听。其他32行SI交接与作者稿件保留未发布。
 
 补充：Base2060三列生产清单向T550 ready/的额外旁置同步遇SSH255，随后只读核对在127.0.0.1:22 banner阶段超时，目标状态未确认。核心T550全量清单/identity与本地生产清单已经核验，不受影响；下一次连接恢复先核ready/已有文件与SHA，再按缺项续补。详见ready_t550_sync_status.json，不把这次额外同步标为完成。
+
+
+## 2026-10-26 16:29 GMT T550恢复核验与遗漏同步补齐
+
+Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先只读检查发现Base2060 screen_margin0p2_20261026/ready不存在，随后仅新建旁置目录并用exclusive-create写入缺失三文件，读回bytes/SHA与本地逐项一致。生产CSV 1,315,109bytes，SHA 831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3；另外两文件身份见base_2060_screen_20261026/ready_t550_recovery_20261026.json。此前ready_t550_sync_status.json连接失败证据原样保留；本条取代其中待恢复状态，不修改原输出。T550原全量CSV及nocredit完整证书SHA亦复核一致，未取回完整证书、未重新定价或求解。
+
+16:29:05 UTC只读collect_live.py：5201318仍RUNNING，第467轮PInf0.0197/DInf2.43e-7/Compl1.74e-4；5207165仍RUNNING，第332轮PInf14.1/DInf1.00e-4/Compl0.120。两者AllocTRES=cpu64/mem750G/node1/billing64，UNLIMITED、Restarts0，stderr均0bytes，尚无solve_report。证据case3_2050_preparation_20261026/live_20261026T162906Z.json。未干预运行作业、未启动终态备份或监听。
+
+原任务1–3及本次恢复补项已完成；4–5仍等待上游终态。下一步按NEXT_ACTIONS_ZH.md：2040终态后完整备份、T550证书及扩展评估，B/obj≤1e-2才采纳，再R1/1h/24h/2050参数/冻结/preflight，门禁全通过直接提交release；C2050终态只收尾，C2060/C′等待作者。验证为SSH身份、远端读回SHA、JSON解析、Git明确清单与diff检查；无源码变更，不重复模型测试。仅更新两份报告、恢复/作业JSON及四份交接台账；其他作者稿件和32行SI交接保留未暂存。

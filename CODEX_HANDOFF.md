@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-26英国16:29 GMT：T550恢复，前轮遗漏同步已补齐。** Base2060 ready三文件先确认缺失后补传、逐文件SHA一致；全量CSV与nocredit证书SHA复核一致，旧连接失败证据保留。原任务1–3已完成；5201318/5207165仍RUNNING，467/332轮、stderr空、Restarts0，未干预。4–5待终态，case3 2050仍未R1/门禁/最终冻结/提交；恢复证据见base_2060_screen_20261026/ready_t550_recovery_20261026.json。
+
 - **2026-10-26英国14:05 GMT，可执行的1–3项完成。** nocredit2030小文件/证书/扩展PASS已完成，证书留T550；Base2060 margin0.2清单36686项、正余量33773、筛除8025、保留可扩展25748，P4原/反序审计PASS，生产CSV SHA `831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3`。case3 2050 40线程数据/sbatch已预置核验，R1/1h/24h/最终冻结/提交仍等待2040终态。5201318/5207165只读复查仍RUNNING，460/327轮，stderr空；无干预或监听。后续入口见case3_2050_preparation_20261026/NEXT_ACTIONS_ZH.md。
 
 - **2026-10-26 nocredit2030收尾与case3 2050预置：** nocredit73个小文件/105,175,467bytes取回，72项result_manifest一致、manifest自身与T550完整备份身份一致。T550证书B=341.083330725 million CNY、B/obj=8.1423511193e-5，ACCEPT/INTERVAL_WITH_B；完整证书只留T550。扩展relative_v1 PASS，严格HARD_FAIL/水库暂缓保留；Base对比区间[34.694968,43.914172]亿元。新case3 2050 40线程profile仅5键变更，58输入SHA与sbatch在云端独立_preparations目录核验通过，未R1/1h/24h/最终冻结/提交。Base2060 margin0.2正在T550单次离线计算。13:24GMT两保护作业仍RUNNING/458与326轮，无干预或监听。
@@ -10300,3 +10302,12 @@ Git起点0cbad432fb61cb555e92db42923339cffe79d63d。按作者新增授权，仅�
 14:05:46GMT：5201318 RUNNING/m4cm1803，第460轮PInf0.0314/DInf4.21e-7/Compl2.85e-4；5207165 RUNNING/m4cm1607，第327轮PInf16.9/DInf1.16e-4/Compl0.141。均cpu64/mem750G/billing64、UNLIMITED、Restarts0、stderr空，无终态报告。未干预运行任务。精确下一步：2040终态后完整T550备份、T550证书、扩展评估，B/obj≤1e-2才采纳，完成R1/1h/24h/2050实际参数/最终preflight后直接提交release；门禁失败停止报告。C2050终态只收尾，C2060/C′待作者。两份备份配置预置但未执行，无后台监听。其他32行SI交接与作者稿件保留未发布。
 
 补充：Base2060三列生产清单向T550 ready/的额外旁置同步遇SSH255，随后只读核对在127.0.0.1:22 banner阶段超时，目标状态未确认。核心T550全量清单/identity与本地生产清单已经核验，不受影响；下一次连接恢复先核ready/已有文件与SHA，再按缺项续补。详见ready_t550_sync_status.json，不把这次额外同步标为完成。
+
+
+## 2026-10-26 16:29 GMT T550恢复核验与遗漏同步补齐
+
+Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先只读检查发现Base2060 screen_margin0p2_20261026/ready不存在，随后仅新建旁置目录并用exclusive-create写入缺失三文件，读回bytes/SHA与本地逐项一致。生产CSV 1,315,109bytes，SHA 831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3；另外两文件身份见base_2060_screen_20261026/ready_t550_recovery_20261026.json。此前ready_t550_sync_status.json连接失败证据原样保留；本条取代其中待恢复状态，不修改原输出。T550原全量CSV及nocredit完整证书SHA亦复核一致，未取回完整证书、未重新定价或求解。
+
+16:29:05 UTC只读collect_live.py：5201318仍RUNNING，第467轮PInf0.0197/DInf2.43e-7/Compl1.74e-4；5207165仍RUNNING，第332轮PInf14.1/DInf1.00e-4/Compl0.120。两者AllocTRES=cpu64/mem750G/node1/billing64，UNLIMITED、Restarts0，stderr均0bytes，尚无solve_report。证据case3_2050_preparation_20261026/live_20261026T162906Z.json。未干预运行作业、未启动终态备份或监听。
+
+原任务1–3及本次恢复补项已完成；4–5仍等待上游终态。下一步按NEXT_ACTIONS_ZH.md：2040终态后完整备份、T550证书及扩展评估，B/obj≤1e-2才采纳，再R1/1h/24h/2050参数/冻结/preflight，门禁全通过直接提交release；C2050终态只收尾，C2060/C′等待作者。验证为SSH身份、远端读回SHA、JSON解析、Git明确清单与diff检查；无源码变更，不重复模型测试。仅更新两份报告、恢复/作业JSON及四份交接台账；其他作者稿件和32行SI交接保留未暂存。

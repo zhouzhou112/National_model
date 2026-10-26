@@ -14,3 +14,6 @@
 全量CSV与来源小证据留本机/T550，Git发布生产清单、身份与审查。`source_evidence/download_identity.json` 是远端核验描述文件，明确大型原件仅在T550，不能解读为已下载本机。复现命令与返回SHA见 `screen_receipt.json`，原manifest/工具身份见 `screen_identity.json`。
 
 生产三列清单已在本地核验并随Git交付；额外复制到T550的ready/旁置目录时连接中断，后续只读检查也在SSH banner阶段超时，目标状态未确认。原始全量清单/identity已在T550完成并核验，不受影响；恢复连接后先检查ready/，逐字节相同则复用，不盲目覆盖。
+
+
+2026-10-26 16:29 GMT恢复核验更新：上述连接中断的待办已完成。T550 ready目录原不存在，本轮补齐三文件并逐项读回bytes/SHA一致；原全量CSV及nocredit证书SHA也一致。旧失败记录保留，当前以`ready_t550_recovery_20261026.json`为准。两云端作业仍RUNNING（467/332轮），尚未触发终态收尾或case3 2050后续门禁。
