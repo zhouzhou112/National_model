@@ -1,0 +1,13 @@
+{
+  "operation": "20261026_authorized_case3_2040_after5201318",
+  "releases": [
+    "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.3,
+  "authorization": "Author 2026-10-26: complete backup only after confirmed terminal state; inspect existing operations and locks first; no background monitoring",
+  "expected_job_id": "5201318",
+  "prepared_only": true
+}

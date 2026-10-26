@@ -76,3 +76,10 @@ nocredit备份在2026-10-25T13:34:16.290807Z（北京21:34）完成，T1/T2/T3�
 ## 2026-10-26 nocredit后处理旁置完成
 
 nocredit完整备份仍为2026-10-25已验证的93文件/5,510,708,567bytes，原output_8760未改变。当前result_manifest SHA c5566edafeae0cae5e4bd6b259a34a51f10ba4ec9e43745954ad8acb7a5c05a9与backup_manifest绑定值一致。新增旁置postprocess_20261026/pricing/screen_pricing_certificate.json（SHA4dfc8dce13c73cc72461be146c69990c0d81f26b4e73387a0dac6b022f9da2fa）及扩展评估/输入/evidence；证书未传回本机。B/obj=8.1423511193e-5、扩展PASS，严格标签不改。回执与报告见case3_2050_preparation_20261026及case3_2030_launch_20261014/nocredit_results_20261026。5201318/5207165仍RUNNING，其未来备份不标完成。
+
+
+## 2026-10-26 Base2060筛选旁置
+
+原完整备份未改，旁置screen_margin0p2_20261026已生成全量表/identity，P4同口径审核PASS。生产三列清单36686项，SHA 831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3；详情base_2060_screen_20261026/。14:05GMT另外两项仍RUNNING，终态备份尚未触发，无监听。
+
+补充：Base2060三列生产清单向T550 ready/的额外旁置同步遇SSH255，随后只读核对在127.0.0.1:22 banner阶段超时，目标状态未确认。核心T550全量清单/identity与本地生产清单已经核验，不受影响；下一次连接恢复先核ready/已有文件与SHA，再按缺项续补。详见ready_t550_sync_status.json，不把这次额外同步标为完成。

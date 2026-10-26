@@ -1,0 +1,52 @@
+{
+  "observed_at_utc": "2026-10-26T14:05:46.150109+00:00",
+  "jobs": {
+    "5201318": {
+      "slurm": {
+        "JobState": "RUNNING",
+        "RunTime": "6-15:05:11",
+        "NodeList": "m4cm1803",
+        "AllocTRES": "cpu=64,mem=750G,node=1,billing=64",
+        "TimeLimit": "UNLIMITED",
+        "WorkDir": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+        "ExitCode": "0:0",
+        "Restarts": "0"
+      },
+      "last_barrier_rows": [
+        "458   5.07377601e+06  5.04467742e+06  3.58e-02 5.19e-07  3.32e-04  567018s",
+        "459   5.07262011e+06  5.04588230e+06  3.34e-02 4.37e-07  3.06e-04  568242s",
+        "460   5.07162229e+06  5.04668505e+06  3.14e-02 4.21e-07  2.85e-04  569450s"
+      ],
+      "gurobi_log_sha256": "cc17e7a4d71e4382ed9fdf4734967d0fcdfaea0a09a9250752d807345f68b387",
+      "stderr_bytes": {
+        "stderr.log": 0,
+        "slurm-5201318.err": 0
+      },
+      "terminal_output_present": false
+    },
+    "5207165": {
+      "slurm": {
+        "JobState": "RUNNING",
+        "RunTime": "6-01:40:59",
+        "NodeList": "m4cm1607",
+        "AllocTRES": "cpu=64,mem=750G,node=1,billing=64",
+        "TimeLimit": "UNLIMITED",
+        "WorkDir": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+        "ExitCode": "0:0",
+        "Restarts": "0"
+      },
+      "last_barrier_rows": [
+        "325   1.21739192e+07 -6.90504217e+05  1.80e+01 1.23e-04  1.50e-01  517464s",
+        "326   1.20258765e+07 -5.15689267e+05  1.76e+01 1.19e-04  1.46e-01  518774s",
+        "327   1.17612551e+07 -3.47855443e+05  1.69e+01 1.16e-04  1.41e-01  520287s"
+      ],
+      "gurobi_log_sha256": "86583972f1fa72409678dbb8733a714670ac381c2dfa196705bc9d4c8ecb4c88",
+      "stderr_bytes": {
+        "stderr.log": 0,
+        "slurm-5207165.err": 0
+      },
+      "terminal_output_present": false
+    }
+  },
+  "accounting": "JobID|State|ExitCode|Elapsed\n5201318|RUNNING|0:0|6-15:05:11\n5207165|RUNNING|0:0|6-01:40:59\n"
+}

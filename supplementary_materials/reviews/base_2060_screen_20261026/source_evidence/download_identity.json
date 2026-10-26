@@ -1,0 +1,32 @@
+{
+  "source_release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+  "files": {
+    "vre_capacity.csv": {
+      "sha256": "1309717c54d35060948bd5a342848d392dcedf7fd73c0c0f115f19c9e9749c29",
+      "bytes": 3760926,
+      "verified": true,
+      "local_copy": true
+    },
+    "model_config_snapshot.json": {
+      "sha256": "ca8481c19e6a4ea10e05460e8e578dc8a53fecbbfe607d8cd7bdfaeb707ed03a",
+      "bytes": 19433,
+      "verified": true,
+      "local_copy": true
+    },
+    "model_archive/original.mps.gz": {
+      "sha256": "c37a99082d8a9ab29ddb9c6580b25c399320546571aa2386738e42966fb8f29e",
+      "verified": true,
+      "local_copy": false,
+      "verification_location": "T550 full backup; build_vre_screen_list.archive_paths"
+    },
+    "barrier_checkpoint/dual_barpi.npy": {
+      "sha256": "052b8623a580a53acd54dbbcded9e44f7369985898d68ef5d75a3d3b828d077d",
+      "verified": true,
+      "local_copy": false,
+      "verification_location": "T550 full backup; build_vre_screen_list.archive_paths"
+    }
+  },
+  "description": "REMOTE_VERIFICATION_DESCRIPTOR_NOT_FULL_LOCAL_DOWNLOAD",
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026",
+  "remote_receipt_sha256": "4a8a37039739fdedc800113c90afbd5f017027d1fa76578c38d18a4f91df96b5"
+}

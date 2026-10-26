@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "year": 2060,
+  "checked_utc": "2026-10-26T14:05:43.725180+00:00",
+  "source_release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+  "scope": "BASE_SOURCE_HEADROOM_ONLY_NOT_FUTURE_MODEL_GATE",
+  "source_csv_sha256": "53f9bfc05c1a986cff0f4151f557df21f2a9c9beae607fc1b027ecf64a1d3dfb",
+  "published_csv_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+  "published_csv_columns": [
+    "grid_uid",
+    "technology",
+    "rc_ratio"
+  ],
+  "screen_identity_sha256": "9c70c72e5131471ffb3a83d39d53b4d6a7d06d568db8c7b6f48f243ba5bbc1dc",
+  "download_identity_sha256": "fa151157e630737c442e96b3b6a224254123c08ddd6b5c55eaf3f3a7d8d7702d",
+  "sites": 36686,
+  "expandable": 33773,
+  "excluded": 8025,
+  "retained_expandable": 25748,
+  "no_headroom": 2913,
+  "by_technology": [
+    {
+      "technology": "dpv",
+      "sites": 15378,
+      "expandable": 14436,
+      "excluded": 2080,
+      "retained_expandable": 12356
+    },
+    {
+      "technology": "offwind",
+      "sites": 963,
+      "expandable": 893,
+      "excluded": 16,
+      "retained_expandable": 877
+    },
+    {
+      "technology": "onwind",
+      "sites": 9420,
+      "expandable": 8808,
+      "excluded": 5309,
+      "retained_expandable": 3499
+    },
+    {
+      "technology": "upv",
+      "sites": 10925,
+      "expandable": 9636,
+      "excluded": 620,
+      "retained_expandable": 9016
+    }
+  ],
+  "apply_screen_stub_tests": [
+    {
+      "reversed_site_order": false,
+      "passed": true,
+      "counts": {
+        "source_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+        "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_screen_20261026\\ready\\source_screen.csv",
+        "margin": 0.2,
+        "alignment": "grid_uid \u00d7 technology; exact one-to-one",
+        "sites": 36686,
+        "expandable_sites": 33773,
+        "retained_expandable": 25748,
+        "fixed_columns": 8025,
+        "fixed_headroom_gw": 9885.613519905894,
+        "original_headroom_gw": 53531.269342262676
+      }
+    },
+    {
+      "reversed_site_order": true,
+      "passed": true,
+      "counts": {
+        "source_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+        "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_2060_screen_20261026\\ready\\source_screen.csv",
+        "margin": 0.2,
+        "alignment": "grid_uid \u00d7 technology; exact one-to-one",
+        "sites": 36686,
+        "expandable_sites": 33773,
+        "retained_expandable": 25748,
+        "fixed_columns": 8025,
+        "fixed_headroom_gw": 9885.613519905894,
+        "original_headroom_gw": 53531.26934226269
+      }
+    }
+  ],
+  "no_optimization_performed": true
+}

@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "year": 2050,
+  "checked_utc": "2026-10-26T13:41:53.805007+00:00",
+  "source_release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+  "scope": "BASE_SOURCE_HEADROOM_ONLY_NOT_FUTURE_MODEL_GATE",
+  "source_csv_sha256": "3db7a3d9d1d9aa7ce53b4c67a54c44eda44a0be43fd3cccb0bd9cea6a720dd17",
+  "published_csv_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528",
+  "published_csv_columns": [
+    "grid_uid",
+    "technology",
+    "rc_ratio"
+  ],
+  "screen_identity_sha256": "4ee3ae2953edd2770d40bd736e0261097bd6fabe34b0e1610bea9cfb8f6e872a",
+  "download_identity_sha256": "04fab97218791280bdd7a8e4afe618f43ba19cc5a326a4f02ae227a9b7aa7cee",
+  "sites": 36686,
+  "expandable": 35366,
+  "excluded": 6195,
+  "retained_expandable": 29171,
+  "no_headroom": 1320,
+  "by_technology": [
+    {
+      "technology": "dpv",
+      "sites": 15378,
+      "expandable": 14677,
+      "excluded": 598,
+      "retained_expandable": 14079
+    },
+    {
+      "technology": "offwind",
+      "sites": 963,
+      "expandable": 919,
+      "excluded": 18,
+      "retained_expandable": 901
+    },
+    {
+      "technology": "onwind",
+      "sites": 9420,
+      "expandable": 8944,
+      "excluded": 5226,
+      "retained_expandable": 3718
+    },
+    {
+      "technology": "upv",
+      "sites": 10925,
+      "expandable": 10826,
+      "excluded": 353,
+      "retained_expandable": 10473
+    }
+  ],
+  "apply_screen_stub_tests": [
+    {
+      "reversed_site_order": false,
+      "passed": true,
+      "counts": {
+        "source_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528",
+        "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2050_preparation_20261026\\p4_2050_regression\\source_screen.csv",
+        "margin": 0.2,
+        "alignment": "grid_uid \u00d7 technology; exact one-to-one",
+        "sites": 36686,
+        "expandable_sites": 35366,
+        "retained_expandable": 29171,
+        "fixed_columns": 6195,
+        "fixed_headroom_gw": 8637.92963021649,
+        "original_headroom_gw": 54904.44391955983
+      }
+    },
+    {
+      "reversed_site_order": true,
+      "passed": true,
+      "counts": {
+        "source_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528",
+        "source": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\case3_2050_preparation_20261026\\p4_2050_regression\\source_screen.csv",
+        "margin": 0.2,
+        "alignment": "grid_uid \u00d7 technology; exact one-to-one",
+        "sites": 36686,
+        "expandable_sites": 35366,
+        "retained_expandable": 29171,
+        "fixed_columns": 6195,
+        "fixed_headroom_gw": 8637.92963021649,
+        "original_headroom_gw": 54904.443919559846
+      }
+    }
+  ],
+  "no_optimization_performed": true
+}

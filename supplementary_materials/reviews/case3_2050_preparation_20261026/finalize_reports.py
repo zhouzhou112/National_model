@@ -104,6 +104,8 @@ nocredit 与 case3 的目标点差为 {(rows[1]['primal_million_cny']-rows[2]['p
 这些计数只描述 Base2060 的原余量，不代表尚未构建的 case3/C2060 最终候选数；应用时仍须逐一按 grid_uid×technology 对齐并使用未来模型实际新增上界。清单生成不授权case3/C2060求解，也不改已完成Base2060的全候选模型。
 
 全量CSV与来源小证据留本机/T550，Git发布生产清单、身份与审查。`source_evidence/download_identity.json` 是远端核验描述文件，明确大型原件仅在T550，不能解读为已下载本机。复现命令与返回SHA见 `screen_receipt.json`，原manifest/工具身份见 `screen_identity.json`。
+
+生产三列清单已在本地核验并随Git交付；额外复制到T550的ready/旁置目录时连接中断，后续只读检查也在SSH banner阶段超时，目标状态未确认。原始全量清单/identity已在T550完成并核验，不受影响；恢复连接后先检查ready/，逐字节相同则复用，不盲目覆盖。
 ''')
     cloud=load(HERE/'cloud_preparation_receipt.json');diff=load(HERE/'profile_diff.json')
     write(HERE/'REVIEW_ZH.md',f'''# case3 2050 预置与2030收尾（2026-10-26）
@@ -116,7 +118,7 @@ nocredit 与 case3 的目标点差为 {(rows[1]['primal_million_cny']-rows[2]['p
 
 ## 预置包状态
 
-云端独立目录：`{cloud['directory']}`，状态 **{cloud['status']}**。58项数据本地与云端bytes/SHA匹配，批处理bash语法PASS；新增数据包括参与率v2与三份续接输入，其余只读链接已验证来源。11MB准备包SHA `{cloud['payload_sha256']}`，精确大小/成员见 `package_identity.json`。
+云端独立目录：`{cloud['directory']}`，状态 **{cloud['status']}**。58项数据本地与云端bytes/SHA匹配，批处理bash语法PASS；新增数据包括参与率v2与三份续接输入，其余只读链接已验证来源。11MB准备包SHA `{cloud['payload_sha256']}`，精确大小/成员见 `package_identity.json`。其中source_commit仅为准备时Git基准0cbad43，成员身份另由SHA绑定；本轮功能已提交3c11ed7，最终生产源码须从门禁通过后的已审查commit重新冻结。
 
 正式求解资源预设40线程，OMP/OPENBLAS/MKL均40；Slurm64CPU/750G/billing64/UNLIMITED/no-requeue，启动可用内存≥700GiB。框架A `case3_thermal_ev_v5`，规划2050/边界2040。sbatch没有Late-entry标志，要求最终门禁标记和真实R1状态；当前两者均不存在，不能用于生产提交。**未生成R1、未执行1h/24h门禁、未冻结最终release、未提交或release新作业。**
 
@@ -131,6 +133,8 @@ nocredit 与 case3 的目标点差为 {(rows[1]['primal_million_cny']-rows[2]['p
 两个运行作业仅只读，最新快照见本目录 `live_*.json`。case3 2040终态后先全备份、T550证书、扩展评估；B/obj≤1e-2时按既定授权采纳，再R1、1h/24h、2050实际参数核准、最终冻结与云端preflight，全部通过即提交并release。C2050终态只做备份/证书/扩展评估并回报，C2060/C′等作者决定。准确入口、命令、参数与停止条件见 `NEXT_ACTIONS_ZH.md`。
 
 没有创建后台监听或自动轮询；本轮长时任务均为有界离线处理。未读取/复制凭据，未更改运行冻结包。最终profile生效须使用本轮已审查提交的新源码，不能仅把新JSON套到旧源码。用户原有SI交接/稿件和其他改动不进入本次明确提交清单。
+
+Base2060生产三列清单的额外T550旁置同步因连接中断未验证；本地/Git生产清单及T550原全量清单均已核验。详见base_2060_screen_20261026/ready_t550_sync_status.json。
 ''')
     print('Three reports and objective_comparison.csv written.')
 

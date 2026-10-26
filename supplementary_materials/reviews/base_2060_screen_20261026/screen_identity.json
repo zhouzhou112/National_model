@@ -1,0 +1,49 @@
+{
+  "identity": {
+    "archive_manifest_sha256": "329c6cd5b9f43d31fae329a980ec8db50431c0162a99c6947c35fc0e9cde572e",
+    "checkpoint_manifest_sha256": "a49db2e592fd984b416422fa41a5139aec00df543140b09ed8dbe1bbe1bd04d0",
+    "mps_sha256": "c37a99082d8a9ab29ddb9c6580b25c399320546571aa2386738e42966fb8f29e",
+    "barpi_sha256": "052b8623a580a53acd54dbbcded9e44f7369985898d68ef5d75a3d3b828d077d",
+    "gurobi_fingerprint": 74839925,
+    "source": {
+      "planning_year": 2060,
+      "boundary_year": 2050,
+      "optimization_hours": 8760,
+      "optimization_start_hour": 0,
+      "result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_id": "base",
+      "solver_profile_id": "barrier_checkpoint_full_year_cloud_2060_numeric_v1_threads48",
+      "input_manifest_sha256": "6d8741012c54a3d6e7ffcb1574efbcdd9261489e3e34a6bbd3787d93a45e3ab0",
+      "run_scope_result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_config_sha256": null,
+      "solver_config_sha256": "f225bbbe3de50f205525de46a11313773e0d3337182b2c6e6d12edc07fcf02c0",
+      "planning_state_in": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261012_base2060_v9a12_t48_m750_tol1e4_v1/upstream_2050_prepared/planning_state_candidate",
+      "gurobipy_version": "13.0.2"
+    },
+    "semantic_manifest": {
+      "manifest": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/result_manifest.json",
+      "sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea"
+    }
+  },
+  "input_sha256": {
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/vre_capacity.csv": "1309717c54d35060948bd5a342848d392dcedf7fd73c0c0f115f19c9e9749c29",
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/model_config_snapshot.json": "ca8481c19e6a4ea10e05460e8e578dc8a53fecbbfe607d8cd7bdfaeb707ed03a"
+  },
+  "parse": {
+    "constraint_rows": 50907233,
+    "columns": 41458383,
+    "constraint_name_order_sha256": "53367c1f40a295bbd52598cb4a9e7d0d9e23991320c8b81d252430c365ca3755",
+    "method": "c-A_transpose_BarPi; original MPS row order; raw solver-unit BarPi"
+  },
+  "sites": 36686,
+  "candidate_screen": {
+    "enabled": true,
+    "margin": 0.2,
+    "source_release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "source_dual_sha256": "052b8623a580a53acd54dbbcded9e44f7369985898d68ef5d75a3d3b828d077d",
+    "source_csv_sha256": "53f9bfc05c1a986cff0f4151f557df21f2a9c9beae607fc1b027ecf64a1d3dfb"
+  },
+  "excluded_sites": 8025,
+  "scope": "FULL_YEAR",
+  "alignment": "grid_uid x technology; application must perform an exact one-to-one join"
+}

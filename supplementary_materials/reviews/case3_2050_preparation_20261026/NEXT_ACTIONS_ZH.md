@@ -2,6 +2,10 @@
 
 授权来自 AGENTS.md「预先授权 case3 2050（2026-10-26）」与本次用户指令。本文不表示任何尚未完成的门禁通过；不创建后台监听或定时任务。5201318、5207165 在运行时只读。下一次执行先查询终态，尚在运行则保留准备状态。
 
+两份备份配置已预置为 `backup_case3_2040_config.json` 和 `backup_C2050_config.json`，精确绑定当前两个 v2 release。它们尚未执行；终态后先核对源身份及旧操作，再在 T550 用 `backup_completed_cloud.py plan|run --config <对应配置>`，不得在当前 RUNNING 状态启动备份。
+
+`package_identity.json` 的 `source_commit` 是准备时的 Git 基准 `0cbad43`，不是最终求解源码身份；该包仅含数据、profile和批处理，各成员由单独SHA绑定。本轮功能提交为 `3c11ed7`。最终冻结必须重新从当时已审查的完整commit导出源码，并重新生成release清单，不能把旧准备基准写成生产源码commit。
+
 ## case3 2040 / 5201318 终态后
 
 1. 核对 Slurm 终态、`solve_report.json`、`preservation_report.json`、`result_manifest.json`，保留所有失败/部分导出。先查 T550 既有 manifest、操作锁和活跃传输；使用 `scripts/backup_completed_cloud.py` 的新显式配置执行单次可续传备份。全部 `output_8760` 和启动身份元数据均包含，预计空闲比例至少 30%，完成后逐文件 bytes/SHA、源身份和三层状态复核。

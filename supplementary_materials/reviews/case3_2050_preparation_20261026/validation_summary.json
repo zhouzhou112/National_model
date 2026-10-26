@@ -15,5 +15,29 @@
   },
   "syntax": "PASS",
   "full_year_solve": false,
-  "case3_2050_state_gate": "WAITING_CASE3_2040"
+  "case3_2050_state_gate": "WAITING_CASE3_2040",
+  "p4_2040_regression": {
+    "status": "PASS",
+    "production_csv_byte_identical": true,
+    "source_csv_sha256": "e113054c00aa3ac390287e3061c5228a59e26311845b3a18081b8e67147a41c8"
+  },
+  "p4_2050_regression": {
+    "status": "PASS",
+    "production_csv_byte_identical": true,
+    "source_csv_sha256": "a55a93738a37c0cf51ef84b73f1e34177cfd7f26a040df146e0c83462190d528"
+  },
+  "base2060_screen_audit": {
+    "status": "PASS",
+    "sites": 36686,
+    "excluded": 8025,
+    "published_csv_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+    "original_and_reversed_application": "PASS"
+  },
+  "cloud_final_data_check": {
+    "status": "PASS",
+    "files": 58,
+    "bytes_sha_verified": true,
+    "no_state": true,
+    "no_final_gate_marker": true
+  }
 }

@@ -3725,3 +3725,14 @@ Git起点0cbad432fb61cb555e92db42923339cffe79d63d。按作者新增授权，仅�
 验证：定价5测试PASS；relative13项本地PASS、1项因缺gurobipy在T550补验PASS；新旧profile7项T550 PASS（含新增3项），新profile本地3项PASS。语法、逐键diff及数据清单核验通过；不以此代替未来真实R1/1h/24h/参数/preflight。2050中央值任务书位于../claude_workspace/tasks/PROMPT_release_nocredit_case3_2040_C2050_20261019.md。
 
 下一步：等待正在进行的T550 Base2060离线清单计算后做P4同口径审计；case3 2040终态后按NEXT_ACTIONS_ZH.md备份/证书/扩展评估，B/obj≤1e-2才采纳并R1、门禁、最终preflight、提交release。C2050终态只收尾，C2060/C′等作者决定。不建后台监听，不读凭据，不干预5201318/5207165。保留既有其他会话32行handoff和稿件改动，Git仅明确审查清单。
+
+
+## 2026-10-26 Base2060清单完成与最终交付
+
+功能源码提交3c11ed7已推送github工作分支；本次只补清单/证据和交接。T550原scripts/build_vre_screen_list.py读取完整MPS/BarPi并核身份；audit_screen_2060.py复用P4：36686项、正余量33773、筛除8025、保留25748、无余量2913，原/反序apply_vre_screen均PASS。旧P4 2040/2050复放CSV逐字节一致，筛除仍12505/6195。新生产CSV SHA 831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3；MPS SHA c37a99082d8a9ab29ddb9c6580b25c399320546571aa2386738e42966fb8f29e；BarPi SHA 052b8623a580a53acd54dbbcded9e44f7369985898d68ef5d75a3d3b828d077d。
+
+输出：supplementary_materials/reviews/base_2060_screen_20261026/ready/；总报告case3_2050_preparation_20261026/REVIEW_ZH.md；三方P/D与区间见case3_2030_launch_20261014/nocredit_results_20261026/REVIEW_ZH.md。命令remote_work.py screen、audit_screen_2060.py、finalize_reports.py、collect_live.py。大原件与nocredit完整证书留T550；Base2060全量CSV本地/T550保留，Git发生产清单和小证据。准备包source_commit只是当时基准，正式release须重新从已审查commit冻结。
+
+14:05:46GMT：5201318 RUNNING/m4cm1803，第460轮PInf0.0314/DInf4.21e-7/Compl2.85e-4；5207165 RUNNING/m4cm1607，第327轮PInf16.9/DInf1.16e-4/Compl0.141。均cpu64/mem750G/billing64、UNLIMITED、Restarts0、stderr空，无终态报告。未干预运行任务。精确下一步：2040终态后完整T550备份、T550证书、扩展评估，B/obj≤1e-2才采纳，完成R1/1h/24h/2050实际参数/最终preflight后直接提交release；门禁失败停止报告。C2050终态只收尾，C2060/C′待作者。两份备份配置预置但未执行，无后台监听。其他32行SI交接与作者稿件保留未发布。
+
+补充：Base2060三列生产清单向T550 ready/的额外旁置同步遇SSH255，随后只读核对在127.0.0.1:22 banner阶段超时，目标状态未确认。核心T550全量清单/identity与本地生产清单已经核验，不受影响；下一次连接恢复先核ready/已有文件与SHA，再按缺项续补。详见ready_t550_sync_status.json，不把这次额外同步标为完成。

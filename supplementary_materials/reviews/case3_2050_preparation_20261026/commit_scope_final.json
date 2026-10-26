@@ -1,0 +1,36 @@
+{
+  "paths": [
+    "CODEX_HANDOFF.md",
+    "MODEL_SERVER_STATUS.md",
+    "SERVER_RUNBOOK.md",
+    "CLOUD_BACKUP_REGISTER_ZH.md",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/NEXT_ACTIONS_ZH.md",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/REVIEW_ZH.md",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/finalize_reports.py",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/validation_summary.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/backup_case3_2040_config.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/backup_C2050_config.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/cloud_final_data_check.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/p4_2040_regression/audit.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/p4_2050_regression/audit.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/live_20261026T140547Z.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/REVIEW_ZH.md",
+    "supplementary_materials/reviews/base_2060_screen_20261026/screen_identity.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/screen_receipt.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/source_evidence/download_identity.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/ready/source_screen.csv",
+    "supplementary_materials/reviews/base_2060_screen_20261026/ready/candidate_screen_fragment.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/ready/audit.json",
+    "supplementary_materials/reviews/base_2060_screen_20261026/readiness_audit.log",
+    "supplementary_materials/reviews/base_2060_screen_20261026/ready_t550_sync_status.json",
+    "supplementary_materials/reviews/case3_2050_preparation_20261026/commit_scope_final.json"
+  ],
+  "excluded": [
+    "unreviewed author changes",
+    "raw 105MB output_8760",
+    "full pricing CSV and original evidence copies",
+    "local handoff backup",
+    "tar archives"
+  ],
+  "optional_t550_ready_sync": "UNVERIFIED_CONNECTION"
+}

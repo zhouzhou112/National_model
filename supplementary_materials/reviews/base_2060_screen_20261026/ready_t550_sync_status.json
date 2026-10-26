@@ -1,0 +1,9 @@
+{
+  "status": "UNVERIFIED_CONNECTION",
+  "operation": "Optional copy of audited ready/ files to T550",
+  "error": "SSH exit 255; subsequent read-only check timed out during banner exchange to 127.0.0.1:22",
+  "remote_ready_files_state": "UNKNOWN; inspect before any retry",
+  "original_full_screen_on_t550": "VERIFIED_COMPLETE",
+  "local_ready_screen": "VERIFIED_COMPLETE",
+  "core_screen_generation_and_audit": "PASS"
+}

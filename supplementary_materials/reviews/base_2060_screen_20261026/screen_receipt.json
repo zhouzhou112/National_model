@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/postprocess_tools_20261026/scripts/build_vre_screen_list.py",
+    "--run-dir",
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760",
+    "--source-release",
+    "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "--margin",
+    "0.2",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026"
+  ],
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026",
+  "sites": 36686,
+  "excluded_sites": 8025,
+  "tool_sha256": {
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/build_vre_screen_list.py": "55e0a1a28cb41137e0bc5b8463020e18e1116cd785953b4c64954f50d97041c3",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "62aefb506b2b4803c254d69f8eada0c858446f96be9bba910dc29efc1dd60243",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "files": {
+    "screen_identity.json": {
+      "bytes": 2673,
+      "sha256": "9c70c72e5131471ffb3a83d39d53b4d6a7d06d568db8c7b6f48f243ba5bbc1dc"
+    },
+    "source_screen.csv": {
+      "bytes": 7673415,
+      "sha256": "53f9bfc05c1a986cff0f4151f557df21f2a9c9beae607fc1b027ecf64a1d3dfb"
+    }
+  }
+}
