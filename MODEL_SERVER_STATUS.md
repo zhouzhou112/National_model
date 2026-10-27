@@ -3788,3 +3788,10 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 Git基准04687e8afa5e070bd46a922bda22647ddc6b8ac3；先枚举完整squeue发现新B2030，再补scontrol/sstat/日志核验，没有遗漏新增项目。Case3/C2050仍未OPTIMAL，三项stderr空、无显式警告/许可错误。前两项Slurm峰712.44/621.18GiB未增加；B2030采样RSS约239.84GiB、峰557.64GiB，不把排序通过当后续峰值保证。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261026T214355Z{,_summary}.json及B2030_status_20261026T2144Z.json。nocredit完整备份沿用10-25最终校验，本次未重复传输/全量校验。
 
 仅更新小证据和三份交接记录，保留其他会话32行handoff及SI改动；未改冻结作业/参数、未建监听或给ETA。JSON解析、明确暂存清单/凭据/diff核验。下一步用户询问时核验三项；Case3 2040终态后按作者10-26新授权进行完整备份、优先T550证书、扩展验收，B/obj≤1e-2时采纳为2050上游，并按R1/v9_a12/Base2050 margin0.2/Aggregate0/40线程/1h与24h及参数门禁全部通过后提交release，同时准备Base2060 margin0.2清单；本轮2040未终态，未启动这些依赖步骤。
+
+
+## 2026-10-27 三项目联合进度
+
+**2026-10-27英国00:45 GMT／北京08:45：云端3项RUNNING。** Case3 2040/5201318到494轮（7天01:44:30），PInf0.00235/DInf2.47e-8/Compl1.98e-5，较484推进10轮，近10轮三项下降56.72%/62.69%/58.23%，18.68分钟/轮。C2050 t40/5207165到351轮（6天12:20:18），PInf7.93/DInf5.71e-5/Compl0.0672，较344推进7轮，近341–351三项下降27.91%/26.61%/27.51%，26.73分钟/轮；对偶继续回落，仍高于297轮反弹前8.40e-6。Base-frozen2030/5276703到50轮（4:43:23），PInf1150/DInf1.30e-6/Compl116，较4推进46轮；近40–50三项下降92.18%/99.69%/87.90%，3.375分钟/轮，属早期迭代，不据此推全年耗时。
+
+Git基准92432f7fbfb0064074f4453eeaf04c284fe9ca1c；枚举完整squeue并逐项scontrol/sstat/sacct/日志取证。三项均无OPTIMAL/终态、stderr空、无显式警告/错误；Slurm峰依次712.44/621.18/557.64GiB未增加。nocredit完整备份沿用10-25最终校验，本次未重复传输。证据supplementary_materials/reviews/cloud_joint_progress_20261016/status_20261027T004505Z{,_summary}.json。仅两小JSON及CODEX_HANDOFF/MODEL_SERVER_STATUS/SERVER_RUNBOOK追加，其他SI会话内容保留，JSON解析/暂存范围/凭据/diff检查通过，无源码改动不重跑模型测试。未干预在跑作业/冻结包，无后台监听/ETA。下一步询问时检查三项终态；Case3 2040完成后按10-26授权先备份、T550证书及扩展验收，再按门禁推进40线程2050与Base2060筛选清单；本轮未触发终态依赖步骤。
