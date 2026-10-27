@@ -1,0 +1,22 @@
+{
+  "observed_at_utc": "2026-10-27T09:49:00Z",
+  "status": "BLOCKED_T550_CONNECTION",
+  "transfer_started": false,
+  "remote_plan_created": false,
+  "releases": [
+    "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+    "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3"
+  ],
+  "source_terminal": "Both COMPLETED/0:0, OPTIMAL, preservation COMPLETE/errors=[]",
+  "routes": [
+    {
+      "route": "127.0.0.1:22 forwarding",
+      "error": "Connection refused"
+    },
+    {
+      "route": "192.168.9.27:22 without obsolete bind",
+      "error": "Connection timed out"
+    }
+  ],
+  "next_action": "Restore forwarding; inspect existing manifests, active transfers, locks and disk reserve before plan/run; compute Case3 2040 certificate preferably on verified T550 backup; complete extended assessment before 2050 gates."
+}

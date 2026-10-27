@@ -103,3 +103,14 @@ Git起点1921b62efed0a71d3da18ee3b24cece86574fe36。T550 hostname已确认；先
 - T550：`/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2`，backup_scope=STARTUP_FAILURE_NO_MODEL_OR_SOLUTION；23文件/92,477,291bytes，全部目标bytes/SHA与源前后身份一致。独立operation、全局/本地flock、rsync partial、空间门禁≥30%，完成后余36.2378568%。无output_8760，无有效解/扩展验收，不称完整环境镜像。
 - 精确证据/提交清单：`supplementary_materials/reviews/base_frozen_B_20261026/deployment_v2/`、`startup_failure_backup.json`、`COMMIT_PATHS_launch_receipt.txt`；v1 preflight失败及v2许可失败均保留。其他作者未审稿件、32行SI交接仍不暂存。
 - 下一动作：按任务失败停止规则回报；新v3应显式绑定现有WLS路径并先过许可门禁，启动资源元数据先于许可检查落盘。不得修改v1/v2/重启5276670。后续年份仍待作者线程决定，5201318/5207165与case3 2050未干预，无后台监听。
+
+
+## 2026-10-27上午 Case3 2040及B2030完成，备份连接阻塞
+
+**2026-10-27英国09:48 GMT／北京17:48：仅1项RUNNING，两项新完成。** C2050/5207165到370轮（6天21:23:58），PInf4.24/DInf3.27e-5/Compl0.0369，近360–370三项下降28.86%/27.65%/28.76%，28.24分钟/轮，无新警告/错误。Case3 2040/5201318已于英国02:22:05（北京10:22:05）COMPLETED/0:0，总7天03:21:30，499轮OPTIMAL，目标5057005.849455288 million CNY；Base-frozen2030/5276703于英国06:54:59（北京14:54:59）COMPLETED/0:0，总10:53:17，116轮OPTIMAL，目标4189733.4068938484 million CNY。两者保全COMPLETE/errors=[]。
+
+Git基准e9241075ee896980e35b41236786f173045c27ed（前次GitHub推送网络中断，本轮重试同步）。只读squeue/scontrol/sstat/sacct与终态报告，scontrol/sstat不再返回已退出作业信息属正常，终态以sacct与报告交叉确认。Case3最终打印PInf0.00171/DInf7.58e-8/Compl1.34e-5；B2030为9.65e-5/1.57e-6/1.77e-5。冻结扩展relative_v1：Case3 HARD_FAIL，唯一剩余失败co2_source，最大残差1.0819820274173217e-5 Mt（约10.82t，现行1e-5 Mt约10t阈值）；B2030 PASS，两者原严格HARD_FAIL保留。未修改判据/原报告，不因标签弃用或停止保全，独立验收和筛选证书未完成，未自动晋级2040状态。
+
+证据cloud_joint_progress_20261016/status_20261027T094845Z{,_summary}.json及completed_details_20261027.json（包含每份终态报告bytes/SHA和内容）。T550当前127.0.0.1:22转发拒绝连接、192.168.9.27:22超时；既有备份/活跃传输/磁盘无法核验，因此未创建远端plan或重复启动。新本地配置cloud_backup_20261027/backup_config.json覆盖两新完成release，blocked记录并列；原nocredit等已完成备份不重复操作。
+
+下一步恢复转发后先核manifest/进程/锁/至少30%空间，执行两release单次完整备份、全量bytes/SHA与源身份校验。Case3按10-26预授权优先T550备份上算证书、独立扩展验收并披露CO2项；B/obj≤1e-2时按作者规则采纳后完成2050 R1/v9_a12/Base2050 margin0.2/Aggregate0/40线程及1h/24h/参数门禁，全部通过才提交release，并生成Base2060筛选清单。连接阻塞前不跳过备份身份核验，不改运行C2050，不启后台监听。仅记录/小JSON更新，JSON解析和暂存diff/凭据检查；其他会话内容保留。
