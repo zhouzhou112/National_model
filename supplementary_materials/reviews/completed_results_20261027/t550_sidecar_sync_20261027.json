@@ -1,0 +1,12 @@
+{
+  "status": "VERIFIED",
+  "files_sha256": {
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026/ready/audit.json": "415a4c2820a68d14528916abeeee7c6de294831c3ddeaec7ef61babce6484dd8",
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026/ready/candidate_screen_fragment.json": "98640f5f77ae9c7ab61c9c552325c223397325e0b2b7b965d8d1196ba5de11b8",
+    "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/screen_margin0p2_20261026/ready/source_screen.csv": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/postprocess_20261027_mt/author_adoption/author_acceptance_20261027.json": "d5673daa3eb26f71d339371ef23d605eb4cd5fd338a82084a55eed17aaf376f7",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/postprocess_20261027_mt/author_adoption/author_acceptance_certificate_addendum.json": "cec05745de8b2cf570cdd7218ebee9635229cc87c9719395c5fbc6211b368f21"
+  },
+  "existing_ready_reused": true,
+  "original_output_changed": false
+}

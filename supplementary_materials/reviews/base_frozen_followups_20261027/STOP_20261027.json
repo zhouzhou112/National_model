@@ -1,0 +1,57 @@
+{
+  "generated_at_utc": "2026-10-27T13:40:20.081822+00:00",
+  "status": "STOP_ALL_THREE_B_SUBMISSIONS",
+  "years": [
+    {
+      "year": 2040,
+      "status": "STOP_NO_SUBMISSION",
+      "static_conflict_count": 12,
+      "maximum_static_residual_gw": 0.002489823815498171,
+      "worst_row": "trunk_capacity_4734",
+      "static_audit_sha256": "61e98a76020f61883cbac8d0c388f3a4497c836034cdf32bd0f690444f5c7832",
+      "source_alignment": "PASS",
+      "parameters": "PASS",
+      "production_threads": 48,
+      "full_year_job_id": null,
+      "base_control_24h": "INFEASIBLE",
+      "solution_count": 0,
+      "solve_report_sha256": "e9cf8cb5effc771e980475bd8f087c8305f7c32d063ada1c17d1134da06edfcb",
+      "iis_sha256": "4c7792b23bbe02e3ee143d3b74e98b1720add3fdd5d5c5ce757d6ffeb3e6bb1a"
+    },
+    {
+      "year": 2050,
+      "status": "STOP_NO_SUBMISSION",
+      "static_conflict_count": 13,
+      "maximum_static_residual_gw": 0.00017961942022282074,
+      "worst_row": "trunk_capacity_2349",
+      "static_audit_sha256": "7b5ee0f094ec8f3587d1acc8761b802762f9a61fd28ba48eb0cf93f0d890f550",
+      "source_alignment": "PASS",
+      "parameters": "PASS",
+      "production_threads": 48,
+      "full_year_job_id": null,
+      "base_control_24h": "INFEASIBLE",
+      "solution_count": 0,
+      "solve_report_sha256": "04724959f8d2319a77f703a02ab89e6506507f577104ae9471b091c4fca87658",
+      "iis_sha256": "9349602536b4d1e445f1803cd00192300f986f721f827259cad058d32fe01cf0"
+    },
+    {
+      "year": 2060,
+      "status": "STOP_NO_SUBMISSION",
+      "static_conflict_count": 43,
+      "maximum_static_residual_gw": 8.743143463796343e-05,
+      "worst_row": "trunk_capacity_4326",
+      "static_audit_sha256": "530db81a57d3f264bffa1037e00f3e04c26b4159e93047c3feb6ad3fdc76e9f6",
+      "source_alignment": "PASS",
+      "parameters": "PASS",
+      "production_threads": 48,
+      "full_year_job_id": null,
+      "base_control_24h": "NOT_RUN_AFTER_STATIC_FAILURE"
+    }
+  ],
+  "source_unchanged": true,
+  "relaxation_applied": false,
+  "release_authorization": "Conditional on all gates; no failed gate bypass",
+  "failure_interpretation": "Fixed accepted interior-point capacities can contradict strict static rows; source capacity alignment alone is not feasibility",
+  "scope": "This algebraic audit detects necessary contradictions only, not every possible IIS",
+  "next_action": "Author/decision-layer rule required before changing frozen capacities or tolerances; retain original Base releases and regenerate in new directories"
+}

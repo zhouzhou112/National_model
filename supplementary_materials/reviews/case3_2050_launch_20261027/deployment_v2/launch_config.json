@@ -1,0 +1,25 @@
+{
+  "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "source_commit": "3244f4f78df1669b4897ab58811f769a6d02dd6f",
+  "framework": "A",
+  "planning_year": 2050,
+  "boundary_year": 2040,
+  "scenario": "case3_thermal_ev_v5",
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json",
+  "license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+  "author_authorization": "AGENTS.md 2026-10-27; all gates passed then release",
+  "template_release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+  "frozen_capacity_from": null,
+  "state_input": "upstream_state/planning_state_candidate",
+  "candidate_screen": true,
+  "automatic_successor": false,
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "billing": 64,
+    "solver_threads": 40,
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "minimum_available_memory_gib": 700
+  }
+}

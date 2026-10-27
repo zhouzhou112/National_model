@@ -1,0 +1,25 @@
+{
+  "mode": "frozen",
+  "planning_year": 2040,
+  "hours": 1,
+  "runner_exit_code": 0,
+  "variables": 239109,
+  "constraints": 80896,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "investment_fixed": {
+    "vre_new": true,
+    "thermal_new": true,
+    "thermal_retrofit_to_ccs": true,
+    "storage_new": true,
+    "line_new": true,
+    "intra_load_center_new": true,
+    "spur_augmentation": true,
+    "hydro_spur_augmentation": true,
+    "trunk_augmentation": true,
+    "hydro_new": true,
+    "wave_new": true,
+    "dac_new": true
+  },
+  "all_investment_families_fixed": true,
+  "parameters": "PASS"
+}

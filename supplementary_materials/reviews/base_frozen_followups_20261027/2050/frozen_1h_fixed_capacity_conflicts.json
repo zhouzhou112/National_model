@@ -1,0 +1,128 @@
+{
+  "source": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\2050\\frozen_1h\\model_archive\\original.mps",
+  "source_sha256": "b5cc654512c6c6bb242e0360738fee99453cd7782db1a77e54e9710f2f43c28d",
+  "tolerance": 1e-09,
+  "derived_capacity_count": 39361,
+  "conflicts": [
+    {
+      "kind": "after_capacity_substitution",
+      "row": "biomass_beccs_shared_capacity_upper_s4_34[8]",
+      "sense": "<",
+      "rhs": 0.586,
+      "minimum_lhs": 0.5860000022935256,
+      "maximum_lhs": 0.5860000022935256,
+      "violation": 2.2935255916678443e-09
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[1879]",
+      "sense": ">",
+      "rhs": -0.4428449695041182,
+      "minimum_lhs": -0.442844992372579,
+      "maximum_lhs": -0.442844992372579,
+      "violation": 2.2868460791691803e-08
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[4161]",
+      "sense": ">",
+      "rhs": -0.8745958302108011,
+      "minimum_lhs": -0.8745961932882536,
+      "maximum_lhs": -0.8745961932882536,
+      "violation": 3.6307745243657763e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[4501]",
+      "sense": ">",
+      "rhs": -1.2561000197633383,
+      "minimum_lhs": -1.2561002815172424,
+      "maximum_lhs": -1.2561002815172424,
+      "violation": 2.617539041072092e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[4966]",
+      "sense": ">",
+      "rhs": -0.6379605966833686,
+      "minimum_lhs": -0.6379607504899933,
+      "maximum_lhs": -0.6379607504899933,
+      "violation": 1.5380662476971452e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[5288]",
+      "sense": ">",
+      "rhs": -0.7517512055651355,
+      "minimum_lhs": -0.751751331592747,
+      "maximum_lhs": -0.751751331592747,
+      "violation": 1.2602761145785735e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[5422]",
+      "sense": ">",
+      "rhs": -0.6555798006138635,
+      "minimum_lhs": -0.6555799282554122,
+      "maximum_lhs": -0.6555799282554122,
+      "violation": 1.2764154877498157e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[5423]",
+      "sense": ">",
+      "rhs": -0.8178231956291125,
+      "minimum_lhs": -0.8178232992124733,
+      "maximum_lhs": -0.8178232992124733,
+      "violation": 1.0358336077764818e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[5714]",
+      "sense": ">",
+      "rhs": -0.9607345126644502,
+      "minimum_lhs": -0.9607345393527706,
+      "maximum_lhs": -0.9607345393527706,
+      "violation": 2.66883204425028e-08
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[5871]",
+      "sense": ">",
+      "rhs": -1.3052869535479208,
+      "minimum_lhs": -1.3052871431292286,
+      "maximum_lhs": -1.3052871431292286,
+      "violation": 1.895813077634756e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[8046]",
+      "sense": ">",
+      "rhs": -1.0179965019440171,
+      "minimum_lhs": -1.0179965291292556,
+      "maximum_lhs": -1.0179965291292556,
+      "violation": 2.7185238504756626e-08
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "spur_capacity_non_dpv[8153]",
+      "sense": ">",
+      "rhs": -1.386041637771503,
+      "minimum_lhs": -1.3860417601268031,
+      "maximum_lhs": -1.3860417601268031,
+      "violation": 1.2235530011395213e-07
+    },
+    {
+      "kind": "after_capacity_substitution",
+      "row": "trunk_capacity_2349",
+      "sense": ">",
+      "rhs": -46.3558017046909,
+      "minimum_lhs": -46.35598132411112,
+      "maximum_lhs": -46.35598132411112,
+      "violation": 0.00017961942022282074
+    }
+  ],
+  "model_unchanged": true,
+  "optimized": false,
+  "limitation": "Necessary conditions only; not a complete IIS"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "frozen_hydro_spur_supplement_v1",
+  "status": "PASS",
+  "source_directory": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760",
+  "generated_at_utc": "2026-10-27T13:00:51.774238+00:00",
+  "result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+  "vector_attribute": "BarX",
+  "vector_sha256": "0d64be754b6c786e827dc21797f85a3fa7e4bfdb962f5a109a814466ea2f2045",
+  "vector_path": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/barrier_checkpoint/primal_barx.npy",
+  "mps_sha256": "62267732e960d713a7800b7879d50e7f35865fe8333370dc635c2dbc418723cc",
+  "variable_order_sha256": "52300254fd9b5568ff3fc3ede263faee2961a7547308cc16a3e248af3d645dd2",
+  "fallback_reason": "X not preserved",
+  "vre_crosscheck": {
+    "entries": 36686,
+    "max_abs_difference_gw": 0.0,
+    "tolerance_gw": 1e-09,
+    "passed": true
+  },
+  "table": {
+    "path": "hydro_spur_capacity.csv",
+    "bytes": 78040,
+    "sha256": "deea3fc8b18a0c233e0f1f028ffddcff4bea15279f9f5a125db5ddd49c3d0af7"
+  },
+  "source_table_sha256": {
+    "vre_capacity.csv": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+    "hydro_capacity.csv": "8ee576b58faa6ec9c42e8b205b4526cf9c572add409ea62b2e4571008130c489"
+  }
+}

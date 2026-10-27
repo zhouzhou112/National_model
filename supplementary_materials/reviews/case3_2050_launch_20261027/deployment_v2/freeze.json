@@ -1,0 +1,7 @@
+{
+  "status": "FROZEN",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "files": 484,
+  "source_commit": "3244f4f78df1669b4897ab58811f769a6d02dd6f",
+  "release_manifest_sha256": "914f06273382c654e286ef452576d1dad584a4b95826f40952f5f184a3b4e620"
+}

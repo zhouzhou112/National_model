@@ -23,10 +23,16 @@ def main():
         with (work/(name+'.log')).open('x',encoding='utf-8') as log:
             proc=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
         if proc.returncode:raise RuntimeError(name+' failed; retained '+str(work/(name+'.log')))
-        print(name+' PASS',flush=True)
+        print(name+' completed (exit 0; inspect result checks)',flush=True)
     for mode,hours,name in [('frozen',1,'frozen_1h'),('base-control',24,'base_control_24h'),('zero',24,'zero_24h'),('frozen',24,'frozen_24h')]:
         run(name,[sys.executable,str(OLD/'run_gate.py'),'--year',str(a.year),'--mode',mode,'--hours',str(hours),
                   '--source-release',str(source),'--supplement',str(supplement),'--output',str(work/name)])
+        if name=='frozen_1h':
+            diagnostic=work/'frozen_1h_fixed_capacity_conflicts.json'
+            run('fixed_capacity_static_audit',[sys.executable,str(HERE/'diagnose_fixed_capacity_conflicts.py'),
+                str(work/name),'--output',str(diagnostic)])
+            if json.loads(diagnostic.read_text())['conflicts']:
+                raise RuntimeError('Fixed-capacity static contradictions; stop before 24h. See '+str(diagnostic))
     for name,script in [('compare','compare_identity_gate.py'),('crosscheck','crosscheck_saved_solutions.py'),('assess','assess_revised_identity.py')]:
         run(name,[sys.executable,str(OLD/script),str(work)])
     import gurobipy as gp

@@ -3824,3 +3824,17 @@ Git基准a71a3fcd010eb9383894a211d635ecd932288aae。复用未修改的scripts/ba
 **2026-10-27作者新增验收/排程阶段1：** Mt采用化石未减排分母，Case3 2040本地/T550重评PASS，验收JSON同步；两项全备份190文件/11.03GB已COMPLETE。Case3/B2030小文件73/78个已取回。B2030最终峰559.893GiB、116轮、相邻轮均288.655s，B三年选48线程。Case3 2050 R1与1h/24h门禁PASS，T550证书计算中；B三年上游三方核验PASS，补表/年度门禁进行中。新生产尚未提交。
 
 Git基准c48630750d3a4e2b36c45513818df9a3fc80b608；修改relative_acceptance/solution_export/frozen_capacity、相关测试与门禁/部署助手，作者AGENTS新增条款同步。全套489 tests OK（Windows跳过Linux /proc一项），Mt相关22项与冻结源10项通过；新模型数值或物理设置未改。详细命令、环境失败保留、身份及精确指标见supplementary_materials/reviews/completed_results_20261027/REVIEW_ZH.md。后续Case3证书合格后冻结40线程release；B2040/50/60各年1h/24h与参数/身份门禁全通过后48线程同时提交放行。最新成功B2030v3为sbatch源，WLS路径字符串核对。5207165只读，不建监听。
+
+## 2026-10-27 阶段2：Case3 2050 已放行；B组门禁停止
+
+源码提交7253a4b（Mt验收与旧状态恢复）、3244f4f（SHA验证云端输入独立复制）已推送GitHub。Case3 2040全年证书B=0、B/obj=0、ACCEPT；作者采纳证书补充记录及原采纳JSON已旁置同步T550，原R1引用不变。B2030新Mt口径复核PASS。Base2060 ready三文件T550 SHA与本地相同，复用旧文件未重复传输。
+
+Case3 2050最终release `20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2`：源码3244f4f，484个冻结文件，release manifest SHA 914f06273382c654e286ef452576d1dad584a4b95826f40952f5f184a3b4e620。58项输入从既有准备目录验证bytes/SHA后复制成独立文件，再次验证；没有指向可变准备层的symlink。原v1上传低速且未完成，主动停止单一scp进程，完整本地payload与云端部分文件保留，v1没有提交。v2云端preflight PASS，held资源核验PASS后按预授权release Job5294579；2026-10-27T13:31:06Z开始RUNNING，Gurobi13.0.2计算节点smoke PASS，cpu64/mem750G/billing64、40线程、UNLIMITED/no-requeue，启动可用内存721.5803GiB。证据在case3_2050_launch_20261027/deployment_v2，入口deploy_authorized.py A2050 prepare|preflight|submit|release|status --version 2。启动通过不等于全年求解通过。
+
+B2040和B2050的1h容量冻结/原Base容量一致性/年度参数均PASS，但24h Base对照均在预求解判INFEASIBLE，原MPS、IIS、所有导出保留。对原MPS只读代入容量会计等式，分别识别12/13项静态矛盾；最大为trunk_capacity_4734的0.002489823815498171GW与trunk_capacity_2349的0.00017961942022282074GW。诊断见base_frozen_followups_20261027/<year>/fixed_capacity_conflicts.json，脚本diagnose_fixed_capacity_conflicts.py；并非修改模型后的求解。B三年按同时提交要求均未提交，不能擅自增加网络容量、扣减冻结发电容量或放松容差。B2060补表正在T550提取，随后核验门禁并补充停止报告。5207165未修改；无后台监听。
+
+## 2026-10-27 阶段3：B三年停止报告及本轮交付
+
+T550三年hydro spur提取COMPLETE，全部补表bytes/SHA和36686个VRE交叉值通过。B2060在1h中发现43项固定容量静态矛盾，最大trunk_capacity_4326为0.00008743143463796343GW，停止在24h之前。B2040/2050为12/13项，最大2.489823815498171/0.17961942022282074MW；两年24h Base对照INFEASIBLE。三年未提交或release。停止报告base_frozen_followups_20261027/STOP_REPORT_ZH.md、STOP_20261027.json、fixed_capacity_conflicts_all_years.csv；各年原模型、IIS及导出保留，INFEASIBLE/IIS工作向量不作为解。下一步由作者决定是否允许固定网络/共享容量的最小闭合；不得自行改冻结定义或门禁，批准后必须新目录重跑全部门禁。
+
+Case3 2050 Job5294579已放行，冻结源码3244f4f、40线程启动检查PASS。Case3 2040已按化石未减排Mt分母重评PASS，全年证书B=0；B2030亦在T550重评PASS。两项完整备份190文件11,025,800,982bytes已逐文件校验且source_unchanged；本地取回Case3 73小文件106,961,807bytes与B2030 78小文件121,288,714bytes。新增验收JSON已从T550回传，作者采纳+证书引用已旁置T550；Base2060 ready三文件同步已核验。B2030峰RSS559.893GiB，116轮，相邻轮均4.8109分钟/中位4.58325分钟，因此B后续48线程选择仍有效，只是科学门禁阻塞。主报告completed_results_20261027/REVIEW_ZH.md；489回归测试OK（1项平台跳过），运行模型源码无后续变更。5207165未修改，无后台监听；其他SI改动未混入提交。

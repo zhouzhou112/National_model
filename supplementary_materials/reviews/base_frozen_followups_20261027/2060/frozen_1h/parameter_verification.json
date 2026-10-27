@@ -1,0 +1,390 @@
+{
+  "status": "PASS",
+  "year": 2060,
+  "checks": [
+    {
+      "parameter": "v1g_fraction",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "parameter": "v2g_fraction",
+      "actual": 0.25,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "parameter": "v2g_cap_gw",
+      "actual": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "parameter": "legacy_bidirectional_activation",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "parameter": "heating.retention_per_hour",
+      "actual": {
+        "min": 0.94,
+        "max": 0.94
+      },
+      "expected": 0.94,
+      "passed": true
+    },
+    {
+      "parameter": "heating.positive_state_duration_hours",
+      "actual": {
+        "min": 4.0,
+        "max": 4.0
+      },
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "parameter": "heating.negative_state_duration_hours",
+      "actual": {
+        "min": 4.0,
+        "max": 4.0
+      },
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "parameter": "heating.comfort_band",
+      "actual": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "parameter": "heating.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "heating.activation_cost_release_yuan_per_mwh",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "heating.activation_cost_precondition_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.retention_per_hour",
+      "actual": {
+        "min": 0.92,
+        "max": 0.92
+      },
+      "expected": 0.92,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.positive_state_duration_hours",
+      "actual": {
+        "min": 5.0,
+        "max": 5.0
+      },
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.negative_state_duration_hours",
+      "actual": {
+        "min": 5.0,
+        "max": 5.0
+      },
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.comfort_band",
+      "actual": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.activation_cost_release_yuan_per_mwh",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.activation_cost_precondition_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v1g.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v1g.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 20.0,
+        "max": 20.0
+      },
+      "expected": 20,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v1g.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v1g.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v2g.enablement_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 30.0,
+        "max": 30.0
+      },
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v2g.activation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 100.0,
+        "max": 100.0
+      },
+      "expected": 100,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v2g.infrastructure_cost_yuan_per_kw_year",
+      "actual": {
+        "min": 15.0,
+        "max": 15.0
+      },
+      "expected": 15,
+      "passed": true
+    },
+    {
+      "parameter": "ev_v2g.degradation_cost_yuan_per_mwh",
+      "actual": {
+        "min": 60.0,
+        "max": 60.0
+      },
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "parameter": "charge_efficiency",
+      "actual": 0.94,
+      "expected": 0.94,
+      "passed": true
+    },
+    {
+      "parameter": "discharge_efficiency",
+      "actual": 0.94,
+      "expected": 0.94,
+      "passed": true
+    },
+    {
+      "parameter": "power_duration_hours",
+      "actual": 4.0,
+      "expected": 4.0,
+      "passed": true
+    },
+    {
+      "parameter": "maximum_power_to_daily_average_ratio",
+      "actual": 2.0,
+      "expected": 2.0,
+      "passed": true
+    },
+    {
+      "parameter": "actual_ev_charge_envelope_error",
+      "actual": {
+        "min": -5.329070518200751e-15,
+        "max": 3.552713678800501e-15
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "actual_ev_inventory_error",
+      "actual": {
+        "min": -5.684341886080802e-14,
+        "max": 5.684341886080802e-14
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "heating.participation_up_error",
+      "actual": {
+        "min": -1.1102230246251565e-16,
+        "max": 0.0
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "heating.participation_down_error",
+      "actual": {
+        "min": -1.1102230246251565e-16,
+        "max": 0.0
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.participation_up_error",
+      "actual": {
+        "min": -4.440892098500626e-16,
+        "max": 4.440892098500626e-16
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "cooling.participation_down_error",
+      "actual": {
+        "min": -4.440892098500626e-16,
+        "max": 4.440892098500626e-16
+      },
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "parameter": "credit.heating",
+      "actual": 0.45,
+      "expected": 0.45,
+      "passed": true
+    },
+    {
+      "parameter": "credit.cooling",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "parameter": "credit.ev_v1g",
+      "actual": 0.4,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "parameter": "credit.ev_v2g",
+      "actual": 0.4,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "parameter": "credit.duration",
+      "actual": 4.0,
+      "expected": 4.0,
+      "passed": true
+    },
+    {
+      "parameter": "credit.peak_reference",
+      "actual": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+      "expected": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.heating_shift_up_gw_active[",
+      "actual": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.cooling_shift_up_gw_active[",
+      "actual": "ABSENT_IN_WINDOW",
+      "expected": "support-dependent",
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.heating_shift_down_gw_active[",
+      "actual": {
+        "min": 0.03,
+        "max": 0.03
+      },
+      "expected": 0.03,
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.cooling_shift_down_gw_active[",
+      "actual": "ABSENT_IN_WINDOW",
+      "expected": "support-dependent",
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.ev_mobility_v1g_relocated_gw[",
+      "actual": {
+        "min": 0.02,
+        "max": 0.02
+      },
+      "expected": 0.02,
+      "passed": true
+    },
+    {
+      "parameter": "actual_objective.ev_mobility_discharge_gw[",
+      "actual": {
+        "min": 0.16,
+        "max": 0.16
+      },
+      "expected": 0.16,
+      "passed": true
+    },
+    {
+      "parameter": "credit.variable_count",
+      "actual": 124,
+      "expected": 124,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "state": "COMPLETE",
+  "stages": [
+    {
+      "year": 2040,
+      "returncode": 0,
+      "target": "/home/zz2/National_model_server/base_frozen_followups_20261027/supplement_2040"
+    },
+    {
+      "year": 2050,
+      "returncode": 0,
+      "target": "/home/zz2/National_model_server/base_frozen_followups_20261027/supplement_2050"
+    },
+    {
+      "year": 2060,
+      "returncode": 0,
+      "target": "/home/zz2/National_model_server/base_frozen_followups_20261027/supplement_2060"
+    }
+  ],
+  "finished_at_utc": "2026-10-27T13:36:03.065596+00:00"
+}

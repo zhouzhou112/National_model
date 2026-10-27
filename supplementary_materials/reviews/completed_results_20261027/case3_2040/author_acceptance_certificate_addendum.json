@@ -1,0 +1,14 @@
+{
+  "author_decision": "ACCEPTED_RELATIVE_V1_20261027",
+  "upstream_adoption": "Case3 2050",
+  "original_adoption_sha256": "d5673daa3eb26f71d339371ef23d605eb4cd5fd338a82084a55eed17aaf376f7",
+  "certificate_sha256": "c92b616585ec68994b27c2547d5b2eb16da7291b95a5974970f91d36f63cd890",
+  "certificate_path": "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/postprocess_20261027_mt/pricing/screen_pricing_certificate.json",
+  "pricing_receipt_sha256": "35c6cb9a4e82429af7978652b69dd6ab11697e0f603ba073c532ac09bfcbdbef",
+  "B_million_cny": 0.0,
+  "B_over_objective": 0.0,
+  "scope": "FULL_YEAR",
+  "near_optimality": "ACCEPT",
+  "adoption_gate": "PASS",
+  "R1_original_adoption_preserved": true
+}

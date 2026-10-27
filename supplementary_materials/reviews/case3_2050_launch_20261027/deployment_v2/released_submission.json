@@ -1,0 +1,9 @@
+{
+  "returncode": 0,
+  "stdout": "5294579\n",
+  "stderr": "",
+  "released": true,
+  "job_id": "5294579",
+  "scontrol": "JobId=5294579 JobName=cispo2050_case3 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=0 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-27T21:30:45 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-27T21:30:45 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:2902102 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/slurm-5294579.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/slurm-5294579.out Power= TresPerTask=cpu:64 \n",
+  "resource_check": "PASS"
+}
