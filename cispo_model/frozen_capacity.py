@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 import numpy as np
@@ -34,6 +35,32 @@ def digest(path):
         for block in iter(lambda: f.read(8*1024*1024), b''):
             h.update(block)
     return h.hexdigest()
+
+
+def manifest_size_bytes(value):
+    """Read integer byte counts, including legacy CSV strings such as 8354.0."""
+    try:
+        size = Decimal(str(value))
+    except InvalidOperation as error:
+        raise ValueError('Invalid upstream byte count') from error
+    if not size.is_finite() or size < 0 or size != size.to_integral_value():
+        raise ValueError('Upstream byte count must be a nonnegative integer')
+    return int(size)
+
+
+def archived_candidate_flag(environment, scope, metadata):
+    """Restore the actual recorded CLI flag, not a newer scope-label spelling."""
+    command = environment.get('command', [])
+    if not isinstance(command, list) or command.count('--state-in') != 1:
+        raise ValueError('Missing/ambiguous archived state-in command')
+    position = command.index('--state-in') + 1
+    original = environment.get('planning_state_in')
+    if position >= len(command) or command[position] != original or scope.get('state_in') != original:
+        raise ValueError('Archived command/environment/scope upstream mismatch')
+    flag = '--allow-candidate-state-in' in command
+    if bool(metadata.get('candidate_unaccepted')) != flag:
+        raise ValueError('Archived candidate CLI flag disagrees with state metadata')
+    return flag
 
 
 def checked_file(root, record):
@@ -143,19 +170,21 @@ def recover_upstream(source, year):
             if posixpath.normpath(row.resolved_path) != posixpath.normpath(expected_original):
                 raise ValueError('Base environment/input-manifest upstream mismatch')
         p=(root/row.logical_path).resolve()
-        if not p.is_relative_to(source.parent) or p.stat().st_size != int(row.size_bytes) or digest(p) != row.sha256:
+        size_bytes = manifest_size_bytes(row.size_bytes)
+        if not p.is_relative_to(source.parent) or p.stat().st_size != size_bytes or digest(p) != row.sha256:
             raise ValueError('Packaged Base upstream SHA mismatch')
-        evidence['files'].append(dict(path=row.logical_path,sha256=row.sha256,bytes=int(row.size_bytes)))
+        evidence['files'].append(dict(path=row.logical_path,sha256=row.sha256,bytes=size_bytes))
     metadata=json.loads((root/'state_metadata.json').read_text(encoding='utf-8'))
     from .planning_state import PlanningState
     # Candidate inference is verified by the original run's recorded state policy.
     scope_path=checked_file(source,records['run_scope.json'])
     scope=json.loads(scope_path.read_text(encoding='utf-8'))
-    allow_candidate=scope.get('scientific_acceptance_mode') == 'UPSTREAM_CANDIDATE_REMAINS_UNACCEPTED'
+    allow_candidate=archived_candidate_flag(env,scope,metadata)
     expected_boundary={2040:2030,2050:2040,2060:2050}[year]
     state=PlanningState.load(root,expected_boundary_year=expected_boundary,expected_scenario_id='base',
                              allow_unaccepted_candidate=allow_candidate)
     evidence.update(restored_path=str(root),allow_candidate=allow_candidate,
+                    candidate_flag_source='VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA',
                     scope_sha256=digest(scope_path),metadata_sha256=digest(root/'state_metadata.json'))
     return state,evidence
 

@@ -173,7 +173,11 @@ class RelativeAcceptanceTests(unittest.TestCase):
         if not src.exists(): self.skipTest('Local archived review fixture unavailable')
         q=json.loads((src/'output_8760__solution_qc.json').read_text())
         old=json.loads((src/'summary.json').read_text())['relative_v1_review']
-        result=assess_relative_v1(q)
+        # The old local QC fixture predates the fossil denominator export.
+        # Explicit synthetic denominator tests this evaluator/CLI integration;
+        # it is not a new scientific acceptance of the archived 2050 run.
+        inputs={'annual_fossil_unabated_emissions_mtco2':1000.0}
+        result=assess_relative_v1(q, inputs=inputs)
         self.assertEqual(result['status'],'PASS')
         self.assertEqual(result['checks']['power_balance']['maximum_residual_gw'],old['maximum_power_balance_residual_gw'])
         self.assertEqual(result['checks']['objective_components']['relative_residual'],old['objective_closure_relative'])
@@ -183,7 +187,8 @@ class RelativeAcceptanceTests(unittest.TestCase):
             qcpath=source/'solution_qc.json';qcpath.write_text(json.dumps(q))
             solvepath=source/'solve_report.json';solvepath.write_text(json.dumps({'status':'OPTIMAL','solution_contract':q['solver_contract']}))
             before={p.name:p.read_bytes() for p in source.iterdir()}
-            p=subprocess.run([sys.executable,str(ROOT/'scripts/assess_relative_v1.py'),str(source),'--output',str(root/'solution_qc_relative_v1.json')],capture_output=True,text=True)
+            inputpath=root/'inputs.json';inputpath.write_text(json.dumps(inputs))
+            p=subprocess.run([sys.executable,str(ROOT/'scripts/assess_relative_v1.py'),str(source),'--inputs',str(inputpath),'--output',str(root/'solution_qc_relative_v1.json')],capture_output=True,text=True)
             self.assertEqual(p.returncode,0,p.stderr)
             self.assertEqual(before,{p.name:p.read_bytes() for p in source.iterdir()})
 

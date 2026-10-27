@@ -1,0 +1,22 @@
+{
+  "author_decision": "ACCEPTED_RELATIVE_V1_20261027",
+  "author_reference": "AGENTS.md 2026-10-27 and user message: adopt screened case3 2040 as 2050 upstream",
+  "generated_at_utc": "2026-10-27T12:56:44.916462+00:00",
+  "source_evidence": {
+    "source_sha256": {
+      "result_manifest.json": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a",
+      "solution_qc.json": "be924c875a1ad41d25f4858474f30fb34dac5ea4e3acc32dcb83ca9a49593d5c",
+      "solve_report.json": "c7839ded89e326129ba890ffdea634d664ed0225f307266815427288d8a74004",
+      "run_identity.json": "4165e0800e801e9027421ec4586a67d683d55a1a835c49277221de8a8301aa6d",
+      "planning_state_candidate/state_metadata.json": "9ddd1d6d13d54932c4e46eb24ca68fac0a79060862dcdf6892c4e3471f50e231",
+      "planning_state_candidate/capacity_cohorts.csv.gz": "3c2923386010080c3123f5ace00f2e6e03a969db10a62e312110fcd6526f951d",
+      "planning_state_candidate/state_transition_summary.csv": "e826ec9a61223c992f069094d2ce4681312d16c2fffdfedf0bb326d82d088c24"
+    }
+  },
+  "assessment": {
+    "status": "PASS",
+    "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\local_assessment_20261027\\solution_qc_relative_v1.json",
+    "sha256": "4873df74ac6f17a20a8dcb3330441ef40ad39a887c5d1ec4ccdba1fd9f669026"
+  },
+  "certificate_status": "PENDING_T550; do not treat adoption as production gate completion"
+}

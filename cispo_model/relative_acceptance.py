@@ -10,13 +10,13 @@ import json
 import math
 from pathlib import Path
 
-VERSION = 'relative_v1_author_20261014_extended'
+VERSION = 'relative_v1_author_20261027_mt'
 DEFERRED = 'DEFERRED_BY_AUTHOR_20261012'
 REPLACED = {'power_balance', 'objective_components',
             'unidirectional_interprovincial_flow', 'reservoir_transition'}
 
 # Only physical GW/GWh residuals are relaxed. Inertia (GW*s), water (m3),
-# emissions, fuel, costs and dimensionless fractions retain their old checks.
+# unlisted emissions, fuel, costs and dimensionless fractions stay strict.
 PHYSICAL_METRICS = {
     'load_component_input_closure': 'maximum_load_component_input_closure_error_gw',
     'effective_load_reconstruction': 'maximum_effective_load_reconstruction_error_gw',
@@ -43,6 +43,43 @@ PHYSICAL_METRICS = {
     'storage_soc': 'maximum_storage_soc_upper_violation_gwh',
     'reservoir_energy': 'maximum_reservoir_energy_upper_violation_gwh',
 }
+
+# Author 2026-10-27: mass-balance residuals only, not carbon/capacity limits.
+MT_METRICS = {
+    'co2_source': 'maximum_co2_source_balance_residual_mt',
+    'beccs_capture_mass_balance': 'maximum_beccs_capture_balance_residual_mtco2',
+    'beccs_storage_mass_balance': 'maximum_beccs_storage_balance_residual_mtco2',
+    'beccs_net_carbon_balance': 'maximum_beccs_net_carbon_balance_residual_mtco2',
+    'captured_co2_reconstruction': 'maximum_captured_co2_reconstruction_residual_mtco2',
+}
+
+
+def extended_mt_checks(qc, inputs=None):
+    """Author-specified unabated fossil denominator; no net/gross fallback."""
+    inputs = inputs or {}
+    present = {k:v for k,v in MT_METRICS.items() if k in qc['hard_checks']}
+    if not present:
+        return {}
+    full_year = qc.get('optimization_hours') == 8760
+    annual = None
+    field = None
+    if full_year:
+        field = 'annual_fossil_unabated_emissions_mtco2'
+        annual = number(qc[field] if field in qc else inputs[field], nonnegative=True)
+        if annual <= 0:
+            raise ValueError('Full-year unabated fossil emissions must be positive')
+        if field in qc and field in inputs and number(inputs[field]) != annual:
+            raise ValueError('QC and archived fossil emissions disagree')
+    limit = max(1e-5, 1e-6*annual) if full_year else 1e-5
+    result = {}
+    for key, metric in present.items():
+        residual = number(qc[metric], nonnegative=True)
+        result[key] = dict(passed=residual <= limit, strict_passed=qc['hard_checks'][key],
+            metric=metric, residual_mt=residual, strict_tolerance_mt=1e-5,
+            relative_tolerance_mt=limit, annual_total_emissions_mt=annual,
+            denominator_field=field,
+            denominator_scope='FULL_YEAR' if full_year else 'SHORT_WINDOW_STRICT_FLOOR')
+    return result
 
 
 def extended_physical_checks(qc):
@@ -178,7 +215,12 @@ def assess_relative_v1(qc, solve=None, inputs=None):
         passed=all(v['passed'] for v in extended.values()), checks=extended,
         failed=[k for k,v in extended.items() if not v['passed']],
         rule='max(strict_tolerance, 1e-3 GW or GWh); reference label only')
-    remaining = {k:v for k,v in hard.items() if k not in REPLACED and k not in extended}
+    mt = extended_mt_checks(qc, inputs)
+    checks['extended_mt_mass_balance_checks'] = dict(
+        passed=all(v['passed'] for v in mt.values()), checks=mt,
+        failed=[k for k,v in mt.items() if not v['passed']],
+        rule='max(1e-5 Mt, 1e-6 * full-year unabated fossil emissions); short windows retain 1e-5 Mt')
+    remaining = {k:v for k,v in hard.items() if k not in REPLACED and k not in extended and k not in mt}
     checks['remaining_physical_hard_checks'] = dict(passed=all(remaining.values()),
         checks=remaining, failed=[k for k,v in remaining.items() if not v])
     contract = solve.get('solution_contract') or qc.get('solver_contract') or {}
@@ -217,7 +259,7 @@ def assess_relative_v1(qc, solve=None, inputs=None):
         dual=dict(grade='BASIC_CROSSOVER_DUAL' if basic else 'BARRIER_DUAL_ENGINEERING_GRADE',BarConvTol=tolerance),
         disclosures=disclosures,inputs=copy.deepcopy(inputs),
         scope='FULL_YEAR' if qc.get('optimization_hours')==8760 else 'ENGINEERING_WINDOW_ONLY',
-        author_decision_reference='AGENTS.md 2026-10-12; no automatic legacy-state promotion')
+        author_decision_reference='AGENTS.md 2026-10-12/2026-10-27; no automatic legacy-state promotion')
 
 
 def add_relative_profile(qc, solve=None, *, inputs=None, inputs_factory=None):
@@ -265,6 +307,20 @@ def archived_inputs(root):
     import pandas as pd
     root = Path(root)
     result = {'disclosures': {'new_build_below_1mw':capacity_disclosures(root)}}
+    carbon_path = root/'annual_carbon_ccs.json'
+    if carbon_path.exists():
+        import hashlib
+        raw = carbon_path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        manifest = json.loads((root/'result_manifest.json').read_text(encoding='utf-8'))
+        record = next(row for row in manifest['files'] if row['path'] == carbon_path.name)
+        if record['sha256'] != digest or record['bytes'] != len(raw):
+            raise ValueError('Archived annual carbon evidence SHA/bytes mismatch')
+        carbon = json.loads(raw)
+        field = 'annual_fossil_unabated_emissions_mtco2'
+        result[field] = carbon[field]
+        result['annual_carbon_source'] = dict(path=str(carbon_path), sha256=digest,
+                                             bytes=len(raw), field=field)
     path = root/'hourly_province_balance.csv.gz'
     if path.exists():
         maxima = {}; peaks = {}

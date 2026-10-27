@@ -3817,3 +3817,10 @@ Git基准a71a3fcd010eb9383894a211d635ecd932288aae。复用未修改的scripts/ba
 证据：`supplementary_materials/reviews/cloud_backup_20261027/transfer_launch.json`、`progress_latest.json`、`progress_initial.json`、`plan_remote.log`；原blocked记录保留，由本次成功恢复记录纠正。目标为cloud_backup下上述两个release目录，包含全output_8760、BarX/BarPi、原MPS与显式启动身份元数据，无凭据/输入环境镜像。未更改科学阈值、运行C2050或SI模块；Case3 2040原CO2 QC标签保留。
 
 下一步核对transfer_status和两个backup_manifest，全部T1/T2/T3 VERIFIED且source_unchanged才记COMPLETE；连接恢复后先查旧PID/状态，不重用此前未执行的单独2040备份config以免重复传输。之后在完整T550备份上算2040证书、独立扩展验收并同步小JSON；满足10-26预授权条件后执行Case3 2050门禁。Base2060 margin0.2清单实际上已于10-26完成且ready旁置同步已核验（见base_2060_screen_20261026/ready_t550_recovery_20261026.json），此前“生成清单”待办纠正为复核复用。当前未启动证书/验收或2050新求解。无模型源码改动，不重复运行模型测试；本次检查JSON解析、明确暂存范围和diff。
+
+
+## 2026-10-27 Mt验收修订、结果取回与后续门禁（阶段1）
+
+**2026-10-27作者新增验收/排程阶段1：** Mt采用化石未减排分母，Case3 2040本地/T550重评PASS，验收JSON同步；两项全备份190文件/11.03GB已COMPLETE。Case3/B2030小文件73/78个已取回。B2030最终峰559.893GiB、116轮、相邻轮均288.655s，B三年选48线程。Case3 2050 R1与1h/24h门禁PASS，T550证书计算中；B三年上游三方核验PASS，补表/年度门禁进行中。新生产尚未提交。
+
+Git基准c48630750d3a4e2b36c45513818df9a3fc80b608；修改relative_acceptance/solution_export/frozen_capacity、相关测试与门禁/部署助手，作者AGENTS新增条款同步。全套489 tests OK（Windows跳过Linux /proc一项），Mt相关22项与冻结源10项通过；新模型数值或物理设置未改。详细命令、环境失败保留、身份及精确指标见supplementary_materials/reviews/completed_results_20261027/REVIEW_ZH.md。后续Case3证书合格后冻结40线程release；B2040/50/60各年1h/24h与参数/身份门禁全通过后48线程同时提交放行。最新成功B2030v3为sbatch源，WLS路径字符串核对。5207165只读，不建监听。

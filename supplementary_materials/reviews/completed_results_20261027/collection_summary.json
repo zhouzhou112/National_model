@@ -1,0 +1,12 @@
+{
+  "case3_2040": {
+    "files": 73,
+    "bytes": 106961807,
+    "result_manifest_sha256": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a"
+  },
+  "B2030": {
+    "files": 78,
+    "bytes": 121288714,
+    "result_manifest_sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135"
+  }
+}

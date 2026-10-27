@@ -1,0 +1,10 @@
+{
+  "template": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/base_frozen_2030.sbatch",
+  "template_sha256": "da389b96d61c6c54e94c7cb2f00d7bff18774e204eb4a747dfaaa546e0751ba5",
+  "outputs": {
+    "supplementary_materials\\reviews\\base_frozen_followups_20261027\\B2040.sbatch": "6b4e345b8518f1e69e041f01a02b06f66d74ba0659cd56a9926f24c34b14b7cc",
+    "supplementary_materials\\reviews\\base_frozen_followups_20261027\\B2050.sbatch": "b765cf981b16bbcfb25447da56a2567680d605a6d959d1a635e197bca25e3209",
+    "supplementary_materials\\reviews\\base_frozen_followups_20261027\\B2060.sbatch": "aa0a6a65a9a806a48b191de56ab896e2f7bd7ad15bb18fe24b1d231c0b27fa25",
+    "supplementary_materials\\reviews\\case3_2050_launch_20261027\\continuation.sbatch": "a29a3635a69ce27fc1f31fe7e4ad4213c4f4c4c88107c381f059fa246e393559"
+  }
+}

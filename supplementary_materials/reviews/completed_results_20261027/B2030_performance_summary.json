@@ -1,0 +1,12 @@
+{
+  "peak_rss_kib": 587090392,
+  "peak_rss_gib": 559.8930282592773,
+  "threads": 48,
+  "observed_adjacent_intervals": 116,
+  "mean_iteration_seconds": 288.6554299140799,
+  "median_iteration_seconds": 274.99492704868317,
+  "min_iteration_seconds": 162.76150107383728,
+  "max_iteration_seconds": 444.464546918869,
+  "final_iterations": 116.0,
+  "source": "deployment_v3/final_20261027.json"
+}

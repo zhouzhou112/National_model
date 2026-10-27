@@ -1,0 +1,110 @@
+{
+  "2040": {
+    "status": "PASS",
+    "cohort_rows": 86900,
+    "evidence": {
+      "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+      "environment_sha256": "7f8accf536030925c1e2f819366f672b22f40aa9b4110673b08b6d9f3a2d7d79",
+      "input_manifest_sha256": "a592763946e95833efdbf7ed0599e945c843b53bc04ebbe71a3a9ce4d7b43b34",
+      "restored_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\planning_state_candidate",
+      "allow_candidate": true,
+      "files": [
+        {
+          "path": "state_metadata.json",
+          "sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+          "bytes": 8354
+        },
+        {
+          "path": "capacity_cohorts.csv.gz",
+          "sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+          "bytes": 961111
+        },
+        {
+          "path": "state_transition_summary.csv",
+          "sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+          "bytes": 2381
+        },
+        {
+          "path": "../result_manifest.json",
+          "sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+          "bytes": 1880
+        }
+      ],
+      "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+      "scope_sha256": "4611c24ea534107efff4eaf23a497ac5aae53857a9d0f1899de2e5dc2f43c911",
+      "metadata_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd"
+    }
+  },
+  "2050": {
+    "status": "PASS",
+    "cohort_rows": 173800,
+    "evidence": {
+      "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260930_base2050_v9_t48_m750_tol1e4_v1/upstream_2040_bound_closed/planning_state_candidate",
+      "environment_sha256": "3f1ef7bd8c4435064885ad0c5482c7ec7fa251033a20d9afdd34f45c0b70af5a",
+      "input_manifest_sha256": "5bd684f16d4edd6108cea7dab03749c1aaf4bc1596020829f0de5a73bf41b06a",
+      "restored_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\planning_state_candidate",
+      "allow_candidate": true,
+      "files": [
+        {
+          "path": "state_metadata.json",
+          "sha256": "1260ae66b0ccd790215bac0259cf10f1071a6d998394fd73ed41f3b871608715",
+          "bytes": 88834
+        },
+        {
+          "path": "capacity_cohorts.csv.gz",
+          "sha256": "cac010f0d943dceb166bb8afadcccfd6e9a48eba4a595e04adecb2c16e6fab0b",
+          "bytes": 1963905
+        },
+        {
+          "path": "state_transition_summary.csv",
+          "sha256": "9a4060c27ce455c7bf57795ee50a7bb0210ead17d807411f9367d8090e351cf7",
+          "bytes": 2436
+        },
+        {
+          "path": "../result_manifest.json",
+          "sha256": "6fb2824578646443243ae45231a27f800484b5c2721dea6e3acede099a40e70f",
+          "bytes": 1887
+        }
+      ],
+      "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+      "scope_sha256": "db47f2d8e2443a8e89a20b4f0eea514c7475f443ccfe1e3d94b2f5e2c963c704",
+      "metadata_sha256": "1260ae66b0ccd790215bac0259cf10f1071a6d998394fd73ed41f3b871608715"
+    }
+  },
+  "2060": {
+    "status": "PASS",
+    "cohort_rows": 43286,
+    "evidence": {
+      "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261012_base2060_v9a12_t48_m750_tol1e4_v1/upstream_2050_prepared/planning_state_candidate",
+      "environment_sha256": "2b2340c8461a5cfbfd6f0001e107f780c2026170f1cf74abb2149038cbb0e876",
+      "input_manifest_sha256": "6d8741012c54a3d6e7ffcb1574efbcdd9261489e3e34a6bbd3787d93a45e3ab0",
+      "restored_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\planning_state_candidate",
+      "allow_candidate": true,
+      "files": [
+        {
+          "path": "state_metadata.json",
+          "sha256": "c3511cc629ae0b1b50ba17a9ccfdb639947a0804783ab096c7fbfe3759b05237",
+          "bytes": 162784
+        },
+        {
+          "path": "capacity_cohorts.csv.gz",
+          "sha256": "3c088ed70c463c0b6f03a9ae2f386a495fe810a9731ec2c6ce4982be8510a3af",
+          "bytes": 558201
+        },
+        {
+          "path": "state_transition_summary.csv",
+          "sha256": "f455533f11387a1293fbbf57c7f77ace0a21a0db33d3125967f5341b84056d64",
+          "bytes": 2281
+        },
+        {
+          "path": "../result_manifest.json",
+          "sha256": "fa044ad8e1197ea8e8da97e7d4b0395700c3830082206b8fe66bf4ea346fb5d0",
+          "bytes": 1726
+        }
+      ],
+      "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+      "scope_sha256": "8905a73d1489881c9dac54077827ac939d7cf45c1a912f93f4b7d09d0533acec",
+      "metadata_sha256": "c3511cc629ae0b1b50ba17a9ccfdb639947a0804783ab096c7fbfe3759b05237"
+    }
+  }
+}

@@ -1469,6 +1469,7 @@ def export_operational_solution(
                 "maximum_reconciliation_residual_m3s", 0.0
             )
         ),
+        "annual_fossil_unabated_emissions_mtco2": float(fossil_unabated.sum()),
         "annual_gross_emissions_mtco2": annual_emissions,
         "annual_emissions_before_dac_mtco2": annual_emissions,
         "annual_dac_removed_mtco2": dac_removed,

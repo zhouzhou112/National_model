@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "source": "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/output_8760",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/postprocess_tools_20261027_mt/scripts/assess_relative_v1.py",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/output_8760",
+    "--inputs",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/postprocess_20261027_mt/assessment_inputs.json",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/postprocess_20261027_mt/solution_qc_relative_v1.json"
+  ],
+  "source_verification": {
+    "solution_qc.json": {
+      "bytes": 165678,
+      "sha256": "be924c875a1ad41d25f4858474f30fb34dac5ea4e3acc32dcb83ca9a49593d5c",
+      "manifest_match": true
+    },
+    "solve_report.json": {
+      "bytes": 116602,
+      "sha256": "c7839ded89e326129ba890ffdea634d664ed0225f307266815427288d8a74004",
+      "manifest_match": true
+    },
+    "hourly_province_balance.csv.gz": {
+      "bytes": 49230956,
+      "sha256": "2fc28554bad79a0c0dfb9321a20323a9bb76f897d6d4a7abe23f9486183e4ffc",
+      "manifest_match": true
+    },
+    "reservoir_dispatch.npz": {
+      "bytes": 237502103,
+      "sha256": "158d8008f1bb371c1c5b627e8b842c73aae84aef6d304f759b284776e2ca9dcd",
+      "manifest_match": true
+    },
+    "build_report.json": {
+      "bytes": 85651,
+      "sha256": "c51cd0a436eb5d46d7535b7f28d1d37694481ba354f9f1dd26a7e73fa10b0e69",
+      "manifest_match": true
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "bytes": 52239,
+      "sha256": "9ddd1d6d13d54932c4e46eb24ca68fac0a79060862dcdf6892c4e3471f50e231",
+      "manifest_match": true
+    },
+    "vre_capacity.csv": {
+      "bytes": 3198671,
+      "sha256": "050112c5269a659ed94e481ff9d47e9a9dc0373c90ef055a30af9dca05cc117f",
+      "manifest_match": true
+    },
+    "storage_capacity.csv": {
+      "bytes": 10451,
+      "sha256": "6c2fe6ee45e6beadfc646ed01f1ceb67d423b73543788fe16cabe1b33b30f94d",
+      "manifest_match": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "bytes": 38144,
+      "sha256": "2782e1a744bf358b77d393347018c4558ffb155a760dc9187f3e93f7124e0a5c",
+      "manifest_match": true
+    },
+    "hydro_capacity.csv": {
+      "bytes": 315174,
+      "sha256": "85f112fee375583e1d233a2aa4f091a5b98bccdde8f3ed0c59215e96a635c977",
+      "manifest_match": true
+    },
+    "wave_capacity.csv": {
+      "bytes": 244043,
+      "sha256": "a1c1b5abf5de68d07be497112be8fc58186d166ea6fe97dff598a7c9956f69da",
+      "manifest_match": true
+    },
+    "transmission_capacity.csv": {
+      "bytes": 37249,
+      "sha256": "5b71f99bf69e9f08ae60460ff18cb523182baaeb8c02dd6b742436aa96ffae59",
+      "manifest_match": true
+    },
+    "result_manifest.json": {
+      "bytes": 13810,
+      "sha256": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a",
+      "manifest_match": false
+    }
+  },
+  "source_unchanged": true,
+  "tool_sha256": {
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

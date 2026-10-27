@@ -13,6 +13,26 @@ from cispo_model.frozen_capacity import align, apply_frozen_capacity, validate_m
 
 
 class FrozenCapacityTests(unittest.TestCase):
+    def test_archived_candidate_flag_uses_original_command_not_scope_label(self):
+        from cispo_model.frozen_capacity import archived_candidate_flag
+        env={'planning_state_in':'/old/upstream/planning_state_candidate',
+             'command':['runner','--allow-candidate-state-in','--state-in','/old/upstream/planning_state_candidate']}
+        scope={'state_in':env['planning_state_in'],'scientific_acceptance_mode':'ENGINEERING_BARRIER_CHECKPOINT_ONLY'}
+        metadata={'candidate_unaccepted':True}
+        self.assertTrue(archived_candidate_flag(env,scope,metadata))
+        with self.assertRaises(ValueError):archived_candidate_flag(env,dict(scope,state_in='/wrong'),metadata)
+        with self.assertRaises(ValueError):archived_candidate_flag(env,scope,{'candidate_unaccepted':False})
+        env['command'].remove('--allow-candidate-state-in')
+        with self.assertRaises(ValueError):archived_candidate_flag(env,scope,metadata)
+
+    def test_legacy_csv_byte_counts_are_exact_integers(self):
+        from cispo_model.frozen_capacity import manifest_size_bytes
+        for value in ['8354.0', '8354', 8354, '8.354E3']:
+            self.assertEqual(manifest_size_bytes(value), 8354)
+        self.assertEqual(manifest_size_bytes('9007199254740993.0'), 9007199254740993)
+        for value in ['8354.1', '-1', 'NaN', 'Infinity', '', 'bad']:
+            with self.assertRaises(ValueError):manifest_size_bytes(value)
+
     def test_permuted_stable_keys_and_extra_or_duplicate_rejected(self):
         table=pd.DataFrame({'grid_uid':['b','a'],'technology':['pv','wind'],'new':[2.,1.]})
         target=[['a','wind'],['b','pv']]

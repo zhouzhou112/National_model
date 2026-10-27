@@ -22,7 +22,13 @@ def parameters(config,data,model,year):
         value=actual if ar.ndim==0 else dict(min=float(ar.min()),max=float(ar.max()))
         rows.append(dict(parameter=name,actual=value,expected=expected,passed=ok))
     settings=config.raw['flexible_load'];service=data.flexible_load_v4
-    h,c,v,b,cap,thermal,release,evcost,v2cost,infra,owner,deg,credits = ((.4,.3,.3,.15,60,35,40,35,40,30,120,110,(.5,.55,.45,.45)) if year==2040 else (.5,.4,.4,.2,120,30,30,30,30,20,100,80,(.45,.5,.4,.4)))
+    # Author-approved central pathway (TASK_flex_parameter_implementation_20261011).
+    expected_by_year={
+        2040:(.4,.3,.3,.15,60,35,40,35,40,30,120,110,(.5,.55,.45,.45)),
+        2050:(.5,.4,.4,.2,120,30,30,30,30,20,100,80,(.45,.5,.4,.4)),
+        2060:(.6,.5,.5,.25,200,30,30,30,30,15,100,60,(.45,.5,.4,.4)),
+    }
+    h,c,v,b,cap,thermal,release,evcost,v2cost,infra,owner,deg,credits = expected_by_year[year]
     check('v1g_fraction',settings['ev_v1g']['shiftable_energy_fraction'],v)
     check('v2g_fraction',settings['ev_v2g']['participation_fraction'],b)
     check('v2g_cap_gw',settings['ev_v2g']['national_contracted_power_cap_gw_by_planning_year'][str(year)],cap)
