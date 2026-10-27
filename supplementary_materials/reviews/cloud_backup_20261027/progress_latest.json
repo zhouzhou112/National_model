@@ -1,0 +1,44 @@
+{
+  "observed_at_utc": "2026-10-27T09:56:03.928443+00:00",
+  "process_alive": true,
+  "operation": "/home/zz2/National_model_server/cloud_backup/_operations/20261027_case3_2040_B2030",
+  "status": {
+    "started_at_utc": "2026-10-27T09:54:54.720943+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+        "tier": "T1",
+        "bytes": 578199570,
+        "file_count": 89,
+        "started_at_utc": "2026-10-27T09:54:54.721506+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-27T09:55:52.752861+00:00"
+      },
+      {
+        "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+        "tier": "T1",
+        "bytes": 590296957,
+        "file_count": 93,
+        "started_at_utc": "2026-10-27T09:55:52.753602+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 578199570
+  },
+  "releases": {
+    "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2": {
+      "files": 93,
+      "bytes": 5508208350,
+      "result_manifest_sha256": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a"
+    },
+    "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3": {
+      "files": 97,
+      "bytes": 5517592632,
+      "result_manifest_sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135"
+    }
+  },
+  "total_bytes": 11025800982,
+  "projected_free_fraction": 0.3594666829276026,
+  "current_transfer_log_tail": "%    9.81MB/s    0:00:06 (xfr#30, to-chk=66/97)\n     65,829,448  11%    9.84MB/s    0:00:06 (xfr#31, to-chk=65/97)\n     65,836,627  11%    9.84MB/s    0:00:06 (xfr#32, to-chk=64/97)\n     65,842,449  11%    9.84MB/s    0:00:06 (xfr#33, to-chk=63/97)\n     65,843,707  11%    9.84MB/s    0:00:06 (xfr#34, to-chk=62/97)\n     65,864,620  11%    9.84MB/s    0:00:06 (xfr#35, to-chk=61/97)\n     72,713,132  12%   10.22MB/s    0:00:49  \n     80,257,849  13%    9.86MB/s    0:00:07 (xfr#36, to-chk=60/97)\n     81,110,672  13%    9.87MB/s    0:00:07 (xfr#37, to-chk=59/97)\n     82,519,696  13%    9.76MB/s    0:00:50  \n     94,316,176  15%   10.08MB/s    0:00:48  \n    104,310,416  17%    9.94MB/s    0:00:47  "
+}
