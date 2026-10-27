@@ -1,0 +1,11 @@
+{
+  "operation": "20261027_B2060_v2_completed",
+  "releases": [
+    "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.3,
+  "authorization": "Author 2026-10-20 and 2026-10-27: full terminal backup, acceptance and nocredit-equivalent small files; no monitoring"
+}

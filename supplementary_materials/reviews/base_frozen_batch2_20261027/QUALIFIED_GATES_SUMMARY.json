@@ -1,0 +1,35 @@
+[
+  {
+    "year": 2040,
+    "rows": 8,
+    "network_add_mw": 0.0008670098134988535,
+    "bio_reduction_w": 9.162057779121824,
+    "cost_cny": 20.57630826706195,
+    "identity": "PASS",
+    "objective_difference": 6.494326989549304e-16,
+    "max_cross_violation": 2.1827872842550278e-11,
+    "budgets": 6.7881672726823945
+  },
+  {
+    "year": 2050,
+    "rows": 12,
+    "network_add_mw": 0.0015245691299403674,
+    "bio_reduction_w": 2.2935255916678443,
+    "cost_cny": 47.018784071768394,
+    "identity": "PASS",
+    "objective_difference": 4.976796146325559e-16,
+    "max_cross_violation": 1.2278178473934531e-11,
+    "budgets": 2.2311342481497016
+  },
+  {
+    "year": 2060,
+    "rows": 40,
+    "network_add_mw": 0.0070081988479200885,
+    "bio_reduction_w": 5.957563886660466,
+    "cost_cny": 243.78877445355664,
+    "identity": "PASS",
+    "objective_difference": 7.538622358608864e-16,
+    "max_cross_violation": 4.18367562815547e-11,
+    "budgets": -0.8458373123716485
+  }
+]

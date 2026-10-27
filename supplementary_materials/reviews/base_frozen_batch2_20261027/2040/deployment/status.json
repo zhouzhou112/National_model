@@ -1,0 +1,40 @@
+{
+  "returncode": 0,
+  "stdout": "5297384\n",
+  "stderr": "",
+  "released": false,
+  "job_id": "5297384",
+  "scontrol": "JobId=5297384 JobName=cispo2040_B_frozen UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=0 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-28T05:15:00 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-28T05:15:00 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:1515666 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/slurm-5297384.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/slurm-5297384.out Power= TresPerTask=cpu:64 \n",
+  "resource_check": "PASS",
+  "scontrol_current": "JobId=5297384 JobName=cispo2040_B_frozen UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1000998 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:58 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-10-28T05:15:00 EligibleTime=2026-10-28T05:15:13 AccrueTime=2026-10-28T05:15:13 StartTime=2026-10-28T05:15:14 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-28T05:15:14 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:1515666 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cm1704 BatchHost=m4cm1704 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/slurm-5297384.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/slurm-5297384.out Power= TresPerTask=cpu:64 \n",
+  "compute_node_smoke.json": {
+    "status": "PASS",
+    "job_id": "5297384",
+    "gurobi_version": [
+      13,
+      0,
+      2
+    ],
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 722.8969497680664
+  },
+  "startup_resources.json": {
+    "job_id": "5297384",
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 722.8969497680664
+  },
+  "stdout.log": "Set parameter WLSAccessID\nSet parameter WLSSecret\nSet parameter LicenseID to value 2868774\nAcademic license 2868774 - for non-commercial use only - registered to zx___@student.bham.ac.uk\n",
+  "stderr.log": ""
+}

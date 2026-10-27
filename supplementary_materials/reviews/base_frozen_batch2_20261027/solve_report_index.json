@@ -1,0 +1,65 @@
+[
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2_t550/base_control_24h/solve_report.json",
+    "bytes": 74959,
+    "sha256": "f61c75ce05fd1f3c6be05c7cc65d53b4b3bcec255f73060d786dd565071ee52e",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3585138.907057523
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2_t550/frozen_24h/solve_report.json",
+    "bytes": 74742,
+    "sha256": "ffc97351acedcb21de78e7bdf5a83de33e5b31bdddd2f06544576eb40d05614b",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3585138.9070575233
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2_t550/zero_24h/solve_report.json",
+    "bytes": 75003,
+    "sha256": "65e265a3eb02721512c17765c0f4281bda300b867720e401a96ec5d4b5bed824",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3585138.9070575205
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2_t550/base_control_24h/solve_report.json",
+    "bytes": 159957,
+    "sha256": "40590c1561e6ddb57f00d1493f789807c0bb54cb52181d0ff54af7bb2d4f13fe",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3742659.121383091
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2_t550/frozen_24h/solve_report.json",
+    "bytes": 159996,
+    "sha256": "0ba8572a6bb86066e1ca153e4fcd4cce2d1f733f9a57241010b8e1b79f33b0b5",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3742659.1213830924
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2_t550/zero_24h/solve_report.json",
+    "bytes": 159995,
+    "sha256": "f8c5c263bc560900c81a2a45997e291b50893412fe6a0858ab8884e1cb6f6c70",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3742659.121383093
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2060/cloud_identity_v2_t550/base_control_24h/solve_report.json",
+    "bytes": 233456,
+    "sha256": "ce12a1d98cef5d5018703e0bf4d1380e1eb70a7d96a4ccc4982d0dbfab7b6608",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3706204.649786992
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2060/cloud_identity_v2_t550/frozen_24h/solve_report.json",
+    "bytes": 233515,
+    "sha256": "aa0158958941be143d0820fb710a4744652b41db3969df31f83c5219ae2530da",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3706204.6497869925
+  },
+  {
+    "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2060/cloud_identity_v2_t550/zero_24h/solve_report.json",
+    "bytes": 233516,
+    "sha256": "f5eb6d261d8617abb6699a23bbe52b457b7a0d31d103857706d6c48902b7a2c1",
+    "status": "OPTIMAL",
+    "objective_value_million_cny": 3706204.649786995
+  }
+]

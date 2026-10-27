@@ -1,0 +1,571 @@
+{
+  "base_objective": 3742659.121383091,
+  "zero_contract_objective": 3742659.121383093,
+  "objective_relative_difference": 4.976796146325559e-16,
+  "objective_tolerance": 1e-07,
+  "objective_pass": true,
+  "both_optimal": true,
+  "shared_variables": 346767,
+  "base_only_variables": 0,
+  "zero_only_variables": 6871,
+  "families": {
+    "annual_biomass_fuel_pj": {
+      "entries": 31,
+      "max_abs_difference": 1.554312234475219e-14,
+      "worst_variable": "annual_biomass_fuel_pj[0,15]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 2.6661362775032837,
+      "zero_value": 2.666136277503268
+    },
+    "annual_captured_co2_mt": {
+      "entries": 31,
+      "max_abs_difference": 1.5543122344752192e-15,
+      "worst_variable": "annual_captured_co2_mt[0,15]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 0.28902095613307094,
+      "zero_value": 0.2890209561330694
+    },
+    "annual_net_emissions_mt": {
+      "entries": 1,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "capacity_margin_credited_capacity_gw": {
+      "entries": 31,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "co2_ship_mt": {
+      "entries": 100471,
+      "max_abs_difference": 1.5543122344752192e-15,
+      "worst_variable": "co2_ship_mt[15,2]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 0.010965660580778025,
+      "zero_value": 0.01096566058077647
+    },
+    "dac_capacity_mtpa": {
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "dac_capture_mt": {
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "dac_new_capacity_mtpa": {
+      "entries": 124,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "flow_forward_gw": {
+      "entries": 9864,
+      "max_abs_difference": 2.4120611668575034,
+      "worst_variable": "flow_forward_gw[130,13]",
+      "above_1e_9": 8,
+      "above_1e_6": 8,
+      "above_1e_3": 8,
+      "base_value": 6.667514560549044,
+      "zero_value": 9.079575727406548
+    },
+    "flow_reverse_ac_gw": {
+      "entries": 1152,
+      "max_abs_difference": 3.358473077458836,
+      "worst_variable": "flow_reverse_ac_gw[26,0]",
+      "above_1e_9": 7,
+      "above_1e_6": 7,
+      "above_1e_3": 7,
+      "base_value": 14.015630752221345,
+      "zero_value": 17.37410382968018
+    },
+    "gross_generation_gw": {
+      "entries": 8184,
+      "max_abs_difference": 5.032334611676477e-13,
+      "worst_variable": "gross_generation_gw[14,0,2]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 0.0,
+      "zero_value": 5.032334611676477e-13
+    },
+    "hydro_aggregate_generation_gw": {
+      "entries": 744,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "hydro_capacity_gw": {
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "hydro_new_gw": {
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "hydro_spur_augmentation_gw": {
+      "entries": 2030,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "intra_load_center_capacity_gw": {
+      "entries": 642,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "intra_load_center_flow_forward_gwh": {
+      "entries": 642,
+      "max_abs_difference": 0.0005874780085690645,
+      "worst_variable": "intra_load_center_flow_forward_gwh[456]",
+      "above_1e_9": 8,
+      "above_1e_6": 8,
+      "above_1e_3": 0,
+      "base_value": 39.842100916401904,
+      "zero_value": 39.841513438393335
+    },
+    "intra_load_center_flow_reverse_gwh": {
+      "entries": 642,
+      "max_abs_difference": 0.0005874780085568011,
+      "worst_variable": "intra_load_center_flow_reverse_gwh[475]",
+      "above_1e_9": 6,
+      "above_1e_6": 6,
+      "above_1e_3": 0,
+      "base_value": 0.0005874780085568011,
+      "zero_value": 0.0
+    },
+    "intra_load_center_new_gw": {
+      "entries": 642,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "line_capacity_gw": {
+      "entries": 411,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "line_new_gw": {
+      "entries": 411,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "load_center_annual_effective_demand_gwh": {
+      "entries": 337,
+      "max_abs_difference": 8.640199666842818e-12,
+      "worst_variable": "load_center_annual_effective_demand_gwh[310]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 204.61367426672598,
+      "zero_value": 204.61367426673462
+    },
+    "load_center_annual_injection_gwh": {
+      "entries": 337,
+      "max_abs_difference": 6.640021865678136e-12,
+      "worst_variable": "load_center_annual_injection_gwh[310]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 30.56331129350809,
+      "zero_value": 30.56331129351473
+    },
+    "load_center_external_net_import_gwh": {
+      "entries": 337,
+      "max_abs_difference": 1.9610979506978765e-12,
+      "worst_variable": "load_center_external_net_import_gwh[310]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 82.21374451253085,
+      "zero_value": 82.21374451253281
+    },
+    "load_center_reservoir_generation_gwh": {
+      "entries": 337,
+      "max_abs_difference": 2.3447910280083306e-13,
+      "worst_variable": "load_center_reservoir_generation_gwh[235]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 30.5066083516378,
+      "zero_value": 30.506608351637567
+    },
+    "load_center_ror_generation_gwh": {
+      "entries": 337,
+      "max_abs_difference": 1.125776064935663e-06,
+      "worst_variable": "load_center_ror_generation_gwh[123]",
+      "above_1e_9": 1,
+      "above_1e_6": 1,
+      "above_1e_3": 0,
+      "base_value": 1.125776064935663e-06,
+      "zero_value": 0.0
+    },
+    "load_center_vre_generation_gwh": {
+      "entries": 1348,
+      "max_abs_difference": 1.1257761300953462e-06,
+      "worst_variable": "load_center_vre_generation_gwh[123,2]",
+      "above_1e_9": 3,
+      "above_1e_6": 1,
+      "above_1e_3": 0,
+      "base_value": 24.603721953578106,
+      "zero_value": 24.603723079354236
+    },
+    "load_center_wave_generation_gwh": {
+      "entries": 337,
+      "max_abs_difference": 1.734723475976807e-18,
+      "worst_variable": "load_center_wave_generation_gwh[88]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 0.013948327681726283,
+      "zero_value": 0.013948327681726285
+    },
+    "online_capacity_gw": {
+      "entries": 8184,
+      "max_abs_difference": 1.758593271006248e-13,
+      "worst_variable": "online_capacity_gw[30,0,0]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 8.650567257865792,
+      "zero_value": 8.650567257865616
+    },
+    "province_annual_effective_demand_gwh": {
+      "entries": 31,
+      "max_abs_difference": 2.1827872842550278e-11,
+      "worst_variable": "province_annual_effective_demand_gwh[28]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 519.50827861838,
+      "zero_value": 519.5082786184018
+    },
+    "province_annual_external_net_import_gwh": {
+      "entries": 31,
+      "max_abs_difference": 5.229594535194337e-12,
+      "worst_variable": "province_annual_external_net_import_gwh[30]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 1062.286527778499,
+      "zero_value": 1062.2865277785043
+    },
+    "province_annual_external_received_gwh": {
+      "entries": 31,
+      "max_abs_difference": 2.751221472863108e-11,
+      "worst_variable": "province_annual_external_received_gwh[9]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 1078.6717492162513,
+      "zero_value": 1078.6717492162238
+    },
+    "province_annual_external_sent_gwh": {
+      "entries": 31,
+      "max_abs_difference": 2.729905190790305e-11,
+      "worst_variable": "province_annual_external_sent_gwh[9]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 125.52019025929698,
+      "zero_value": 125.52019025926968
+    },
+    "province_annual_non_spatial_injection_gwh": {
+      "entries": 31,
+      "max_abs_difference": 1.6861179119587177e-11,
+      "worst_variable": "province_annual_non_spatial_injection_gwh[28]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 39.94419018315397,
+      "zero_value": 39.94419018317083
+    },
+    "ramp_magnitude_gw": {
+      "entries": 8184,
+      "max_abs_difference": 5.027089855502709e-13,
+      "worst_variable": "ramp_magnitude_gw[14,8,2]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 3.81372208108767,
+      "zero_value": 3.813722081088173
+    },
+    "reservoir_active_storage_million_m3": {
+      "entries": 14880,
+      "max_abs_difference": 0.2033491025519627,
+      "worst_variable": "reservoir_active_storage_million_m3[67,16]",
+      "above_1e_9": 96,
+      "above_1e_6": 96,
+      "above_1e_3": 72,
+      "base_value": 5.382087707813147,
+      "zero_value": 5.178738605261184
+    },
+    "reservoir_spill_flow_1000m3s": {
+      "entries": 14880,
+      "max_abs_difference": 0.05648586181998964,
+      "worst_variable": "reservoir_spill_flow_1000m3s[67,19]",
+      "above_1e_9": 4,
+      "above_1e_6": 4,
+      "above_1e_3": 4,
+      "base_value": 0.05648586181998964,
+      "zero_value": 0.0
+    },
+    "reservoir_turbine_flow_1000m3s": {
+      "entries": 14880,
+      "max_abs_difference": 0.03613151198870303,
+      "worst_variable": "reservoir_turbine_flow_1000m3s[395,20]",
+      "above_1e_9": 31,
+      "above_1e_6": 29,
+      "above_1e_3": 23,
+      "base_value": 0.03613151198870303,
+      "zero_value": 0.0
+    },
+    "ror_available_gw": {
+      "entries": 744,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "ror_generation_gw": {
+      "entries": 744,
+      "max_abs_difference": 1.1257760649200504e-06,
+      "worst_variable": "ror_generation_gw[13,13]",
+      "above_1e_9": 1,
+      "above_1e_6": 1,
+      "above_1e_3": 0,
+      "base_value": 0.013919820742437543,
+      "zero_value": 0.013918694966372623
+    },
+    "shutdown_capacity_gw": {
+      "entries": 8184,
+      "max_abs_difference": 2.1316282072803006e-14,
+      "worst_variable": "shutdown_capacity_gw[10,4,18]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 0.6910048350571216,
+      "zero_value": 0.6910048350571003
+    },
+    "spur_augmentation_gw": {
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "startup_capacity_gw": {
+      "entries": 8184,
+      "max_abs_difference": 4.973799150320701e-14,
+      "worst_variable": "startup_capacity_gw[10,4,17]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 4.246599913590636,
+      "zero_value": 4.246599913590586
+    },
+    "storage_capacity_gw": {
+      "entries": 62,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "storage_charge_gw": {
+      "entries": 1488,
+      "max_abs_difference": 2.1535662142468937e-11,
+      "worst_variable": "storage_charge_gw[28,1,15]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 6.611580583757146,
+      "zero_value": 6.611580583778681
+    },
+    "storage_discharge_gw": {
+      "entries": 1488,
+      "max_abs_difference": 0.010108153084986471,
+      "worst_variable": "storage_discharge_gw[28,1,20]",
+      "above_1e_9": 2,
+      "above_1e_6": 2,
+      "above_1e_3": 2,
+      "base_value": 0.8255394288590127,
+      "zero_value": 0.8356475819439991
+    },
+    "storage_new_gw": {
+      "entries": 62,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "storage_reserve_down_gw": {
+      "entries": 1488,
+      "max_abs_difference": 8.149698048881,
+      "worst_variable": "storage_reserve_down_gw[4,1,9]",
+      "above_1e_9": 43,
+      "above_1e_6": 43,
+      "above_1e_3": 32,
+      "base_value": 10.656179953897897,
+      "zero_value": 2.506481905016898
+    },
+    "storage_reserve_up_gw": {
+      "entries": 1488,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "storage_soc_gwh": {
+      "entries": 1488,
+      "max_abs_difference": 0.011486537596575475,
+      "worst_variable": "storage_soc_gwh[28,1,19]",
+      "above_1e_9": 1,
+      "above_1e_6": 1,
+      "above_1e_3": 1,
+      "base_value": 0.9381129873397872,
+      "zero_value": 0.9495995249363627
+    },
+    "thermal_capacity_gw": {
+      "entries": 341,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "thermal_new_gw": {
+      "entries": 341,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "thermal_retrofit_to_ccs_gw": {
+      "entries": 155,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "trunk_augmentation_gw": {
+      "entries": 6294,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "vre_available_gw": {
+      "entries": 2976,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "vre_capacity_gw": {
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "vre_generation_gw": {
+      "entries": 2976,
+      "max_abs_difference": 3.358473077458882,
+      "worst_variable": "vre_generation_gw[12,1,0]",
+      "above_1e_9": 25,
+      "above_1e_6": 23,
+      "above_1e_3": 18,
+      "base_value": 133.05497268151586,
+      "zero_value": 136.41344575897475
+    },
+    "vre_new_gw": {
+      "entries": 36686,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "wave_capacity_gw": {
+      "entries": 1284,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    },
+    "wave_generation_gw": {
+      "entries": 744,
+      "max_abs_difference": 4.1335207826009857e-19,
+      "worst_variable": "wave_generation_gw[9,16]",
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0,
+      "base_value": 1.0563099787590897e-05,
+      "zero_value": 1.0563099787590484e-05
+    },
+    "wave_new_gw": {
+      "entries": 1284,
+      "max_abs_difference": 0.0,
+      "worst_variable": null,
+      "above_1e_9": 0,
+      "above_1e_6": 0,
+      "above_1e_3": 0
+    }
+  },
+  "operation_gate": "REQUIRES_REVIEW_OF_NATIVE_UNIT_DIFFERENCES",
+  "note": "No unapproved aggregate or degeneracy exception is applied."
+}

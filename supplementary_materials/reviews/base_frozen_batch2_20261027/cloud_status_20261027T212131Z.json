@@ -1,0 +1,481 @@
+{
+  "utc": "2026-10-27T21:21:33.430034+00:00",
+  "active_jobs": [
+    {
+      "job_id": "5297410",
+      "name": "cispo2060_B_frozen",
+      "state": "RUNNING",
+      "elapsed": "3:22",
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "barrier_last_11": [],
+      "compute_node_smoke.json": {
+        "status": "PASS",
+        "job_id": "5297410",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 720.8155250549316
+      },
+      "startup_resources.json": {
+        "job_id": "5297410",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 720.8155250549316
+      },
+      "stderr.log": "",
+      "slurm-5297410.err": ""
+    },
+    {
+      "job_id": "5297390",
+      "name": "cispo2050_B_frozen",
+      "state": "RUNNING",
+      "elapsed": "6:16",
+      "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+      "barrier_last_11": [],
+      "compute_node_smoke.json": {
+        "status": "PASS",
+        "job_id": "5297390",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 724.0076866149902
+      },
+      "startup_resources.json": {
+        "job_id": "5297390",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 724.0076866149902
+      },
+      "stderr.log": "",
+      "slurm-5297390.err": ""
+    },
+    {
+      "job_id": "5297384",
+      "name": "cispo2040_B_frozen",
+      "state": "RUNNING",
+      "elapsed": "6:19",
+      "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+      "barrier_last_11": [],
+      "compute_node_smoke.json": {
+        "status": "PASS",
+        "job_id": "5297384",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 722.8969497680664
+      },
+      "startup_resources.json": {
+        "job_id": "5297384",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 722.8969497680664
+      },
+      "stderr.log": "",
+      "slurm-5297384.err": ""
+    },
+    {
+      "job_id": "5294579",
+      "name": "cispo2050_case3",
+      "state": "RUNNING",
+      "elapsed": "7:50:27",
+      "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "barrier_last_11": [
+        {
+          "timestamp": "2026-10-28T02:36:52.779142+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 0.0,
+          "primal_objective": 86387385063380.88,
+          "dual_objective": -9536320298379.428,
+          "primal_infeasibility": 2057127934155.1885,
+          "dual_infeasibility": 21291185.26091513,
+          "complementarity": 10195063656.667093,
+          "runtime_seconds": 15418.815838813782,
+          "work_units": 62235.47195344431,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T03:05:21.998047+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 1.0,
+          "primal_objective": 84762512804800.22,
+          "dual_objective": -9470185223818.623,
+          "primal_infeasibility": 2018486295356.8035,
+          "dual_infeasibility": 20873578.84129199,
+          "complementarity": 10001560202.612354,
+          "runtime_seconds": 17128.03476190567,
+          "work_units": 65058.03798398295,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T03:25:45.226876+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 2.0,
+          "primal_objective": 82933480315175.86,
+          "dual_objective": -9496412365111.617,
+          "primal_infeasibility": 1974017537387.3496,
+          "dual_infeasibility": 20029907.01733078,
+          "complementarity": 9729642351.807812,
+          "runtime_seconds": 18351.263637781143,
+          "work_units": 67239.88108680927,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T03:47:10.642772+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 3.0,
+          "primal_objective": 81130770158608.28,
+          "dual_objective": -10101237987147.219,
+          "primal_infeasibility": 1929680370821.1487,
+          "dual_infeasibility": 18759706.39430274,
+          "complementarity": 9417042213.536959,
+          "runtime_seconds": 19636.67953801155,
+          "work_units": 69808.52884726209,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T04:08:35.584703+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 4.0,
+          "primal_objective": 76038532448803.47,
+          "dual_objective": -10848811142713.027,
+          "primal_infeasibility": 1805380801715.9832,
+          "dual_infeasibility": 17404483.651242558,
+          "complementarity": 8812079195.168447,
+          "runtime_seconds": 20921.621469974518,
+          "work_units": 72378.9723733769,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T04:32:06.610306+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 5.0,
+          "primal_objective": 69200457081763.74,
+          "dual_objective": -19183453319238.992,
+          "primal_infeasibility": 1640268722077.9368,
+          "dual_infeasibility": 15769239.423339523,
+          "complementarity": 8017241370.408337,
+          "runtime_seconds": 22332.64706683159,
+          "work_units": 75779.99900535423,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T04:55:55.932576+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 6.0,
+          "primal_objective": 61409219450473.195,
+          "dual_objective": -37514859959671.6,
+          "primal_infeasibility": 1451195295801.4187,
+          "dual_infeasibility": 14599933.667421248,
+          "complementarity": 7182700763.367154,
+          "runtime_seconds": 23761.969341993332,
+          "work_units": 79291.38168722656,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        },
+        {
+          "timestamp": "2026-10-28T05:16:39.018822+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 7.0,
+          "primal_objective": 56617046986093.52,
+          "dual_objective": -39115449829821.88,
+          "primal_infeasibility": 1334805527309.3826,
+          "dual_infeasibility": 14367208.828252524,
+          "complementarity": 6733419351.807086,
+          "runtime_seconds": 25005.055585861206,
+          "work_units": 81587.1723712719,
+          "memory_used_gb": 377.5562516,
+          "max_memory_used_gb": 736.663073424
+        }
+      ],
+      "compute_node_smoke.json": {
+        "status": "PASS",
+        "job_id": "5294579",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 721.5802955627441
+      },
+      "startup_resources.json": {
+        "job_id": "5294579",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 721.5802955627441
+      },
+      "stderr.log": "",
+      "slurm-5294579.err": ""
+    },
+    {
+      "job_id": "5207165",
+      "name": "cispo_cont_agg0",
+      "state": "RUNNING",
+      "elapsed": "7-08:56:46",
+      "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "barrier_last_11": [
+        {
+          "timestamp": "2026-10-28T00:59:31.113120+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 386.0,
+          "primal_objective": 6470323.54785535,
+          "dual_objective": 4800728.94271674,
+          "primal_infeasibility": 10.876224324244493,
+          "dual_infeasibility": 4.521282603467452e-05,
+          "complementarity": 0.01917241328296672,
+          "runtime_seconds": 618330.8966088295,
+          "work_units": 1607909.3873575449,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T01:21:45.425691+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 387.0,
+          "primal_objective": 6441190.03513177,
+          "dual_objective": 4828720.468198827,
+          "primal_infeasibility": 10.455224783925331,
+          "dual_infeasibility": 4.880593319034542e-05,
+          "complementarity": 0.018513023406662013,
+          "runtime_seconds": 619665.2091748714,
+          "work_units": 1610523.6110848694,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T01:53:15.769254+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 388.0,
+          "primal_objective": 6412686.284945983,
+          "dual_objective": 4873047.734331321,
+          "primal_infeasibility": 10.05239124849257,
+          "dual_infeasibility": 5.281052036376662e-05,
+          "complementarity": 0.017675619396755986,
+          "runtime_seconds": 621555.552738905,
+          "work_units": 1616662.1155933233,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T02:22:58.872645+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 389.0,
+          "primal_objective": 6383131.941645552,
+          "dual_objective": 4904712.917163326,
+          "primal_infeasibility": 9.631745087711138,
+          "dual_infeasibility": 5.740248836685273e-05,
+          "complementarity": 0.01696987032628971,
+          "runtime_seconds": 623338.656129837,
+          "work_units": 1622118.7136650733,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T02:45:14.369948+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 390.0,
+          "primal_objective": 6359262.338409181,
+          "dual_objective": 4935763.756243517,
+          "primal_infeasibility": 9.288558436633313,
+          "dual_infeasibility": 6.531618735108497e-05,
+          "complementarity": 0.016337783904970482,
+          "runtime_seconds": 624674.1534290314,
+          "work_units": 1624732.9373923978,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T03:10:16.909324+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 391.0,
+          "primal_objective": 6332899.371895163,
+          "dual_objective": 4969711.279270306,
+          "primal_infeasibility": 8.913898851546195,
+          "dual_infeasibility": 6.979902824206511e-05,
+          "complementarity": 0.01564375280294798,
+          "runtime_seconds": 626176.6928110123,
+          "work_units": 1628427.9438359959,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T03:35:30.449014+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 392.0,
+          "primal_objective": 6309006.791560923,
+          "dual_objective": 4997758.921384684,
+          "primal_infeasibility": 8.571546273759186,
+          "dual_infeasibility": 7.121660232265489e-05,
+          "complementarity": 0.015045768536232696,
+          "runtime_seconds": 627690.2324988842,
+          "work_units": 1632179.227053573,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T03:59:29.808057+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 393.0,
+          "primal_objective": 6286590.290649185,
+          "dual_objective": 5025881.764779806,
+          "primal_infeasibility": 8.252681676524041,
+          "dual_infeasibility": 7.292554164146602e-05,
+          "complementarity": 0.01446428842176745,
+          "runtime_seconds": 629129.5915338993,
+          "work_units": 1635476.454742427,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T04:28:48.740528+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 394.0,
+          "primal_objective": 6271531.632476389,
+          "dual_objective": 5049120.591003772,
+          "primal_infeasibility": 8.044596192489488,
+          "dual_infeasibility": 7.137731730427472e-05,
+          "complementarity": 0.014024623025035847,
+          "runtime_seconds": 630888.5240139961,
+          "work_units": 1640762.0274425882,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T04:50:22.485263+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 395.0,
+          "primal_objective": 6262379.769264206,
+          "dual_objective": 5064705.31391306,
+          "primal_infeasibility": 7.910599433385736,
+          "dual_infeasibility": 6.919526045810225e-05,
+          "complementarity": 0.013740711617796272,
+          "runtime_seconds": 632182.2687458992,
+          "work_units": 1643091.57472554,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        },
+        {
+          "timestamp": "2026-10-28T05:18:04.990195+08:00",
+          "event": "solver_progress",
+          "phase": "barrier",
+          "iteration": 396.0,
+          "primal_objective": 6250552.22165424,
+          "dual_objective": 5100438.085964456,
+          "primal_infeasibility": 7.7386411710438,
+          "dual_infeasibility": 6.947779473772737e-05,
+          "complementarity": 0.013196502231152764,
+          "runtime_seconds": 633844.7736778259,
+          "work_units": 1647809.440824194,
+          "memory_used_gb": 386.491257912,
+          "max_memory_used_gb": 756.077856008
+        }
+      ],
+      "compute_node_smoke.json": {
+        "status": "PASS",
+        "job_id": "5207165",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 722.9685134887695,
+        "license_sha256": "f5e565f53eda9ed785c92b262e0efc9366ae2773e733de1521ef79c500150e5c",
+        "smoke_variables": 2501
+      },
+      "stderr.log": "",
+      "slurm-5207165.err": ""
+    }
+  ],
+  "failed_b2060": {
+    "sacct": "5295127|FAILED|1:0|00:44:07\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/repo/scripts/run_cispo_2030_full_year.py\", line 2859, in <module>\n    main()\n  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/repo/scripts/run_cispo_2030_full_year.py\", line 1659, in main\n    frozen_report['closure'] = apply_static_closure(artifacts, output_dir,\n  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/repo/cispo_model/frozen_closure.py\", line 121, in apply_static_closure\n    expected = build_payload(artifacts.model, audit, payload['rows'], source_manifest, year)\n  File \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/repo/cispo_model/frozen_closure.py\", line 73, in build_payload\n    raise ValueError('Diagnosed row is not a positive finite gap')\nValueError: Diagnosed row is not a positive finite gap\n",
+    "batch_exit": {
+      "exit_code": 1,
+      "job_id": "5295127"
+    }
+  }
+}

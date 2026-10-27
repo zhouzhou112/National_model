@@ -1,0 +1,7 @@
+{
+  "status": "FROZEN",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+  "files": 509,
+  "source_commit": "cdd833381b81acbb726bcc8aa9551013c2569344",
+  "release_manifest_sha256": "89f68f9433f23d935feaf438028e88204cce0570fadb68f8946df288295f73ee"
+}

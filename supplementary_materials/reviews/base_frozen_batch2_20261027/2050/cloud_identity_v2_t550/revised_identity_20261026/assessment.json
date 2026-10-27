@@ -1,0 +1,501 @@
+{
+  "status": "PASS",
+  "primal_attribute": "X",
+  "objective_relative_difference": 4.976796146325559e-16,
+  "cross_feasibility_pass": true,
+  "cross_objective_equal": true,
+  "cost_component_tolerance": 1e-07,
+  "cost_components": [
+    {
+      "component": "annual_operation",
+      "base": 4697.538064048675,
+      "zero": 4697.5380640486765,
+      "absolute_difference": 1.8189894035458565e-12,
+      "relative_difference": 3.8722185509618213e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "ccs_capture",
+      "base": 422.42727708490156,
+      "zero": 422.42727708490116,
+      "absolute_difference": 3.979039320256561e-13,
+      "relative_difference": 9.419465872836696e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "co2_transport_injection",
+      "base": 91.16646762106078,
+      "zero": 91.16646762106069,
+      "absolute_difference": 8.526512829121202e-14,
+      "relative_difference": 9.352685314695086e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "dac",
+      "base": 22.21862124596742,
+      "zero": 22.21862124596742,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "hydro_fixed_om",
+      "base": 106091.70012345412,
+      "zero": 106091.70012345412,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "hydro_investment",
+      "base": 416496.72652354656,
+      "zero": 416496.72652354656,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "hydro_spur",
+      "base": 19.495369534652387,
+      "zero": 19.495369534652387,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "load_center_intra_transmission_investment",
+      "base": 48902.921150241316,
+      "zero": 48902.921150241316,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_detail_flexible_load_v5_thermal_precondition",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_detail_flexible_load_v5_thermal_release",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_enablement",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_ev_v1g_relocation",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_ev_v2g_degradation",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_ev_v2g_participation",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_thermal_activation",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_flexible_load_v5_v2g_infrastructure",
+      "base": 0.0,
+      "zero": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": true
+    },
+    {
+      "component": "operating_fuel",
+      "base": 4164.552333991881,
+      "zero": 4164.552333991881,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_load_center_intra_flow_regularization",
+      "base": 14.053430935779323,
+      "zero": 14.053430935779318,
+      "absolute_difference": 5.329070518200751e-15,
+      "relative_difference": 3.7920067651474404e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_ramping",
+      "base": 0.42657346849923883,
+      "zero": 0.42657346849923844,
+      "absolute_difference": 3.885780586188048e-16,
+      "relative_difference": 9.109288019854854e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_startup_shutdown",
+      "base": 25.820867323992964,
+      "zero": 25.820867323992942,
+      "absolute_difference": 2.1316282072803006e-14,
+      "relative_difference": 8.255447737418076e-16,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_storage_variable_om",
+      "base": 0.9866915340448346,
+      "zero": 0.986691534045091,
+      "absolute_difference": 2.5646151868841116e-13,
+      "relative_difference": 2.5992066399618166e-13,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_thermal_variable_om",
+      "base": 475.84965394104984,
+      "zero": 475.84965394104984,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "operating_transmission_flow_regularization",
+      "base": 15.848512853450435,
+      "zero": 15.848512853450314,
+      "absolute_difference": 1.2079226507921703e-13,
+      "relative_difference": 7.621678210199952e-15,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "spur",
+      "base": 25993.307943680276,
+      "zero": 25993.307943680276,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "storage_fixed_om",
+      "base": 37820.59947863238,
+      "zero": 37820.59947863238,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "storage_investment",
+      "base": 232321.33752279228,
+      "zero": 232321.33752279228,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "thermal_nuclear_fixed_om",
+      "base": 226734.13800071352,
+      "zero": 226734.13800071352,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "thermal_nuclear_investment",
+      "base": 971131.6338314763,
+      "zero": 971131.6338314763,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "transmission_investment",
+      "base": 141506.15864499056,
+      "zero": 141506.15864499056,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "trunk",
+      "base": 16874.68989633273,
+      "zero": 16874.68989633273,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "vre_fixed_om",
+      "base": 173856.76727273187,
+      "zero": 173856.76727273187,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "vre_investment",
+      "base": 1339656.0727386551,
+      "zero": 1339656.0727386551,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "wave_fixed_om",
+      "base": 4.500195408787708,
+      "zero": 4.500195408787708,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    },
+    {
+      "component": "wave_investment",
+      "base": 15.722260873457884,
+      "zero": 15.722260873457884,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "passed": true,
+      "base_structurally_disabled": false
+    }
+  ],
+  "cost_source_sha256": {
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/base_control_24h_Xcost/cost_from_X/cost_components.csv": "e8767a17a6caf028a89f9de0dd59d0f88b14029ec73d81b53365a66e58594dbb",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/zero_24h_Xcost/cost_from_X/cost_components.csv": "1c18ac260b21499fa68a320038984a3c11d15f657a7c08041b23dde2aeb5de1d"
+  },
+  "reduced_cost_disclosure": {
+    "base_control_24h": {
+      "rc_sha256": "254d9652c04e15b186a3fc564fa68201a5c24afab8cea27f766b680abeec3386",
+      "families": {
+        "vre_generation_gw": {
+          "changed_entries": 23,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "storage_discharge_gw": {
+          "changed_entries": 2,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0015060059999999996,
+          "direct_cost_difference": 2.5385347036249728e-14
+        },
+        "storage_soc_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "storage_reserve_down_gw": {
+          "changed_entries": 43,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "ror_generation_gw": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_turbine_flow_1000m3s": {
+          "changed_entries": 29,
+          "max_abs_reduced_cost": 1.1102230246251565e-16,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_spill_flow_1000m3s": {
+          "changed_entries": 4,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_active_storage_million_m3": {
+          "changed_entries": 96,
+          "max_abs_reduced_cost": 2.7755575615628914e-17,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "flow_forward_gw": {
+          "changed_entries": 8,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001004004,
+          "direct_cost_difference": -1.5111682724936425e-14
+        },
+        "flow_reverse_ac_gw": {
+          "changed_entries": 7,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001004004,
+          "direct_cost_difference": -1.3322111112767823e-14
+        },
+        "load_center_vre_generation_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "load_center_ror_generation_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "intra_load_center_flow_forward_gwh": {
+          "changed_entries": 8,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001,
+          "direct_cost_difference": 8.588186055426169e-07
+        },
+        "intra_load_center_flow_reverse_gwh": {
+          "changed_entries": 6,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001,
+          "direct_cost_difference": -8.588186056927615e-07
+        }
+      }
+    },
+    "zero_24h": {
+      "rc_sha256": "3dcc95ce05108583adcc441b75f60c951da64ce4cbd38d249a1f393d4c669c9b",
+      "families": {
+        "vre_generation_gw": {
+          "changed_entries": 23,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "storage_discharge_gw": {
+          "changed_entries": 2,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0015060059999999996,
+          "direct_cost_difference": 2.5385347036249728e-14
+        },
+        "storage_soc_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "storage_reserve_down_gw": {
+          "changed_entries": 43,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "ror_generation_gw": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_turbine_flow_1000m3s": {
+          "changed_entries": 29,
+          "max_abs_reduced_cost": 8.881784197001252e-16,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_spill_flow_1000m3s": {
+          "changed_entries": 4,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "reservoir_active_storage_million_m3": {
+          "changed_entries": 96,
+          "max_abs_reduced_cost": 3.729655473350135e-17,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "flow_forward_gw": {
+          "changed_entries": 8,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001004004,
+          "direct_cost_difference": -1.5111682724936425e-14
+        },
+        "flow_reverse_ac_gw": {
+          "changed_entries": 7,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001004004,
+          "direct_cost_difference": -1.3322111112767823e-14
+        },
+        "load_center_vre_generation_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "load_center_ror_generation_gwh": {
+          "changed_entries": 1,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.0,
+          "direct_cost_difference": 0.0
+        },
+        "intra_load_center_flow_forward_gwh": {
+          "changed_entries": 8,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001,
+          "direct_cost_difference": 8.588186055426169e-07
+        },
+        "intra_load_center_flow_reverse_gwh": {
+          "changed_entries": 6,
+          "max_abs_reduced_cost": 0.0,
+          "max_abs_direct_objective_coefficient": 0.001,
+          "direct_cost_difference": -8.588186056927615e-07
+        }
+      }
+    }
+  },
+  "note": "Zero marginal cost means zero reduced cost along feasible alternative dispatch; direct flow regularization coefficients can be nonzero. Original BarX-derived tables are retained."
+}

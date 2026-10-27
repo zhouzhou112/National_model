@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "archive": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/B2060_cloud_identity_v2_small.tar.gz",
+  "sha256": "35ef62ce4a37df8c0dc9da5b8ffae6c975b128236cda5e7045e9de16fbcb6685",
+  "files": 253,
+  "audit": {
+    "status": "PASS",
+    "changed_sections": [
+      "BOUNDS_OTHER"
+    ],
+    "changed_columns": 40,
+    "exact_authorized_bounds": true,
+    "original_frozen_audit_identical": true,
+    "all_24h_budgets_identical": true,
+    "annual_budget_unchanged": true,
+    "before_mps_sha256": "bd001a03144e13187ba97f73e375f432ce72639c67748e95fa96af39fc6edf6b",
+    "after_mps_sha256": "d07f94b953e60110bff13fef78b37293d107463e2e7081c74fd897e74f1b1316",
+    "cf_environment": "T550 mapping verified against cloud, no nearest-neighbor rule change"
+  }
+}

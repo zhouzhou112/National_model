@@ -1,0 +1,39 @@
+{
+  "optimized": false,
+  "gate_waived": false,
+  "checks": [
+    {
+      "model": "base",
+      "solution": "own",
+      "max_constraint_violation": 1.2278178473934531e-11,
+      "max_bound_violation": 4.92783591710122e-12,
+      "objective": 3742659.121383074,
+      "missing_other_variables": 0
+    },
+    {
+      "model": "base",
+      "solution": "cross",
+      "max_constraint_violation": 8.913758620110457e-12,
+      "max_bound_violation": 4.92783591710122e-12,
+      "objective": 3742659.1213830747,
+      "missing_other_variables": 0
+    },
+    {
+      "model": "zero",
+      "solution": "own",
+      "max_constraint_violation": 8.913758620110457e-12,
+      "max_bound_violation": 4.92783591710122e-12,
+      "objective": 3742659.1213830737,
+      "missing_other_variables": 6871
+    },
+    {
+      "model": "zero",
+      "solution": "cross",
+      "max_constraint_violation": 1.2278178473934531e-11,
+      "max_bound_violation": 4.92783591710122e-12,
+      "objective": 3742659.1213830737,
+      "missing_other_variables": 6871
+    }
+  ],
+  "interpretation": "Cross feasibility and equal cost support multiple optima; the authored hourly-identity gate remains unmet."
+}

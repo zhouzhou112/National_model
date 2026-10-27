@@ -1,0 +1,536 @@
+{
+  "schema_version": "cispo_run_identity_v3",
+  "baseline_contract": {
+    "schema_version": "cispo_baseline_contract_v1",
+    "case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "label": "Numerical cleanup v8 with explicit DAC schedule: disabled in 2030, available in 2040/2050/2060",
+    "contract_sha256": "84530dc46caa975a70aead3591d9b6ba8106c5b979107ef7a7233fe34693aca7",
+    "weather_bundle": {
+      "contract_version": "hybrid_weather_bundle_v1",
+      "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+      "wave": "2023 wave_grid.nc reference chronology",
+      "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+    },
+    "parameter_registry": {
+      "path": "config/critical_parameter_registry.csv",
+      "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+    }
+  },
+  "analysis_case": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+    "resolved_scientific_configuration_sha256": "546085ec9e2c856e04c9cc13505dae3122c34ca3d7ba7659dcc7d227ec7ee7cc",
+    "scenario_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/config/scenarios/case3_thermal_ev_v5.json",
+      "sha256": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "case3_thermal_ev_v5",
+    "scenario_id": "case3_thermal_ev_v5",
+    "scenario_family": "integrated_demand_flexibility",
+    "analysis_role": "CENTRAL_COUNTERFACTUAL",
+    "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+    "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+    "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "scientific_case": {
+    "schema_version": "cispo_analysis_case_v1",
+    "configuration_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+    "resolved_scientific_configuration_sha256": "546085ec9e2c856e04c9cc13505dae3122c34ca3d7ba7659dcc7d227ec7ee7cc",
+    "scenario_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/config/scenarios/case3_thermal_ev_v5.json",
+      "sha256": "669dd96a87fe96127d05e873b9924a230b77890846108c16694651f6e913acbb"
+    },
+    "formulation_configuration": {
+      "path": null,
+      "sha256": null
+    },
+    "case_id": "case3_thermal_ev_v5",
+    "scenario_id": "case3_thermal_ev_v5",
+    "scenario_family": "integrated_demand_flexibility",
+    "analysis_role": "CENTRAL_COUNTERFACTUAL",
+    "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+    "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+    "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "supersedes": null,
+    "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+    "planning_years": [
+      2030,
+      2040,
+      2050,
+      2060
+    ],
+    "weather_bundle": {
+      "weather_year": 2024,
+      "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+      "weather_source_years": [
+        2023,
+        2024
+      ],
+      "wave_enabled": true,
+      "wave_time_reference_year": 2023
+    }
+  },
+  "solver_runtime": {
+    "schema_version": "cispo_solver_runtime_v1",
+    "solver_configuration": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/zero_24h_profile.json",
+      "sha256": "c85c923acc101ecd457f7691677b7e3b16d798d668ae6072af549a0637638156"
+    },
+    "solver_profile": {
+      "id": "base_frozen_identity_cross2_1e8",
+      "description": "Author 2026-10-26 framework B pilot: all Base same-year investments fixed, unscreened, Aggregate=0, 48 threads; preserve every result.",
+      "minimum_gurobi_major_version": 13,
+      "host_memory_soft_limit_fraction": null,
+      "direct_nonbasic_scientific_acceptance": false,
+      "stage_b_required": false,
+      "stage_a_acceptance": {
+        "maximum_relative_primal_dual_objective_gap": 0.01,
+        "maximum_barrier_primal_infeasibility": 0.01,
+        "maximum_constraint_violation": 1e-05,
+        "maximum_constraint_residual": 1e-05,
+        "maximum_bound_violation": 1e-05,
+        "maximum_dual_violation_for_publication": 1e-05,
+        "maximum_dual_residual_for_publication": 1e-05,
+        "maximum_complementarity_violation_for_publication": 1e-05,
+        "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+        "maximum_barrier_complementarity_for_publication": 0.01
+      },
+      "required_formulation_profile_id": null
+    },
+    "resolved_numerics_sha256": "3181ff32e803142f26b630bb643f2885fce13c003fff6c9eec0bcaa4ebfb1b9a"
+  },
+  "implementation_bundle": {
+    "git_commit": "UNAVAILABLE",
+    "source_bundle_sha256": "3a2ab264a29ca898785ce177876c8b40842e81e01331ce0cc7e1f735a8ca8914",
+    "source_file_count": 48
+  },
+  "data_roots": {
+    "CISPO_DATA_ROOT": "/home/zz2/National_model_server/base_frozen_B_validation_20261026/data",
+    "CISPO_CF_ROOT": "/home/zz2/National_model_server/data/hourly_cf",
+    "CISPO_HYDRO_ROOT": "/home/zz2/National_model_server/data/hydro_timeseries_20260719_sequential_sparse",
+    "CISPO_RAW_GRFR_ROOT": "/home/zz2/National_model_server/data/grfr_raw_2019",
+    "CISPO_WAVE_ROOT": "/home/zz2/National_model_server/data/wave_energy_20260727"
+  },
+  "lp_model": {
+    "schema_version": "cispo_lp_lightweight_identity_v1",
+    "variables": 353638,
+    "constraints": 226051,
+    "nonzeros": 1770089,
+    "gurobi_fingerprint": -1205489543,
+    "basis_compatible": false,
+    "matrix_materialized": false
+  },
+  "frozen_capacity": {
+    "source_directory": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760",
+    "source_release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "result_manifest_sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+    "tables": {
+      "vre_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/vre_capacity.csv",
+        "sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+        "bytes": 3794637,
+        "rows": 36686
+      },
+      "thermal_nuclear_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv",
+        "sha256": "72274368520f7a0b5f09fded9bf6b90291c7487a94faca1b5a934c76f3b46883",
+        "bytes": 39848,
+        "rows": 341
+      },
+      "storage_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/storage_capacity.csv",
+        "sha256": "e514a31f90d76a5cd1d0c39724839376167f99cc5ca2f94e1b15ddc5648b7612",
+        "bytes": 11523,
+        "rows": 62
+      },
+      "transmission_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/transmission_capacity.csv",
+        "sha256": "5ec4f0cb75eed4fc9bc4f39dc81e068ee54a367621260a8fa4360c7329c4874b",
+        "bytes": 37734,
+        "rows": 411
+      },
+      "load_center_intra_transmission.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/load_center_intra_transmission.csv",
+        "sha256": "69a04695b21f8741f4c4800ffbfb5c86c6b9b72bb9341e7cd9e1a3d162ac7ee0",
+        "bytes": 128426,
+        "rows": 642
+      },
+      "intra_grid_vre_site_design.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/intra_grid_vre_site_design.csv",
+        "sha256": "7b895dbfd5e03b5e9064754d13a783eca6abbb68896ccc48d71a9e3dca6f8057",
+        "bytes": 5864456,
+        "rows": 36686
+      },
+      "intra_grid_substation_design.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/intra_grid_substation_design.csv",
+        "sha256": "0a391ce610a565e4d79f3f23956f5cd80a59383620d5a8c9bacb9bd116a4a75b",
+        "bytes": 1047103,
+        "rows": 6294
+      },
+      "hydro_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/hydro_capacity.csv",
+        "sha256": "1fc630f218e81ab75d6c0c39977739b04847bce7fd13e139b9d28c0f0ce956d5",
+        "bytes": 355283,
+        "rows": 2030
+      },
+      "wave_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/wave_capacity.csv",
+        "sha256": "95b2326a3707beabf5ad9c2cf77c5f9ce1c262728aa2e6dedbc91249153a44d0",
+        "bytes": 267482,
+        "rows": 1284
+      },
+      "dac_capacity_capture.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/dac_capacity_capture.csv",
+        "sha256": "6b2d2ff26750603d9845b8c0bd766a9dd1ffc1e1abf9e4d4eba73a734ba496be",
+        "bytes": 21208,
+        "rows": 124
+      },
+      "hydro_spur_capacity.csv": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/frozen_capacity_B_20261027/hydro_spur_capacity.csv",
+        "sha256": "67c5b78490c1d90fa02d9374a682a847fa8785fc0e5be65cf4e719df8e58034b",
+        "bytes": 78319,
+        "rows": 2030
+      }
+    },
+    "supplement": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/frozen_capacity_B_20261027/supplement_manifest.json",
+      "sha256": "8d48b707e3742c9d20ac82abb2f15473eb86359c78533f50ed0af3746fe421b4",
+      "vector_attribute": "BarX"
+    },
+    "upstream": {
+      "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260930_base2050_v9_t48_m750_tol1e4_v1/upstream_2040_bound_closed/planning_state_candidate",
+      "environment_sha256": "3f1ef7bd8c4435064885ad0c5482c7ec7fa251033a20d9afdd34f45c0b70af5a",
+      "input_manifest_sha256": "5bd684f16d4edd6108cea7dab03749c1aaf4bc1596020829f0de5a73bf41b06a",
+      "restored_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/upstream_2040_bound_closed/planning_state_candidate",
+      "allow_candidate": true,
+      "files": [
+        {
+          "path": "state_metadata.json",
+          "sha256": "1260ae66b0ccd790215bac0259cf10f1071a6d998394fd73ed41f3b871608715",
+          "bytes": 88834
+        },
+        {
+          "path": "capacity_cohorts.csv.gz",
+          "sha256": "cac010f0d943dceb166bb8afadcccfd6e9a48eba4a595e04adecb2c16e6fab0b",
+          "bytes": 1963905
+        },
+        {
+          "path": "state_transition_summary.csv",
+          "sha256": "9a4060c27ce455c7bf57795ee50a7bb0210ead17d807411f9367d8090e351cf7",
+          "bytes": 2436
+        },
+        {
+          "path": "../result_manifest.json",
+          "sha256": "6fb2824578646443243ae45231a27f800484b5c2721dea6e3acede099a40e70f",
+          "bytes": 1887
+        }
+      ],
+      "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+      "scope_sha256": "db47f2d8e2443a8e89a20b4f0eea514c7475f443ccfe1e3d94b2f5e2c963c704",
+      "metadata_sha256": "1260ae66b0ccd790215bac0259cf10f1071a6d998394fd73ed41f3b871608715"
+    },
+    "static_closure": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/derived_static/closure.json",
+      "sha256": "ec2b4195fb82b2d39add75c6a0c043b1669150eb3f5a8123d661cbf92c6fac9a",
+      "definition": "Base clipped values plus author-approved minimal static closure"
+    },
+    "frozen_columns": 86745,
+    "clip_statistics": {
+      "GW": {
+        "columns": 86621,
+        "clipped_columns": 458,
+        "sum_absolute_clip": 0.00010564200329348464,
+        "maximum_absolute_clip": 9.010152696602158e-06
+      },
+      "MtCO2_per_year": {
+        "columns": 124,
+        "clipped_columns": 11,
+        "sum_absolute_clip": 2.726066140045449e-06,
+        "maximum_absolute_clip": 6.4820149491591e-07
+      }
+    },
+    "audit_sha256": "7d1612f2a947e2d4f69d415266e709a51aa2f89a9309b7cca17e166c1ec008a3",
+    "clip_reporting_threshold_exceeded": false,
+    "closure": {
+      "schema_version": "base_frozen_static_closure_20261027_v1",
+      "planning_year": 2050,
+      "source_result_manifest_sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+      "mode": "STATIC_EXACT",
+      "rows": [
+        {
+          "row": "biomass_beccs_shared_capacity_upper_s4_34[8]",
+          "variable": "thermal_new_gw[8,8]",
+          "family": "thermal_new",
+          "stable_key": "[\"31\", \"bio\"]",
+          "base_value": 7.813569123747005e-09,
+          "before_gw": 7.813569123747005e-09,
+          "after_gw": 5.520043532079161e-09,
+          "delta_gw": -2.2935255916678443e-09,
+          "objective_coefficient": 0.0,
+          "row_sha256": "a6e2a0670ba7e03f7fcc179baaab5aaab23f9574b988c3a35401e6524b9ad40f",
+          "lhs": 0.5860000022935256,
+          "rhs": 0.586,
+          "gap_gw": 2.2935255916678443e-09,
+          "direct_annual_cost_delta_million_cny": -0.0,
+          "derived_annual_cost_delta_million_cny": -9.087041484230216e-07,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[1879]",
+          "variable": "spur_augmentation_gw[1879]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000038976\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 2.2868460791691803e-08,
+          "delta_gw": 2.2868460791691803e-08,
+          "objective_coefficient": 24.742619591849483,
+          "row_sha256": "631a831b774e803afbd09cb4a6232ae8dafbe7f2b9f93c7f7ec13e7836a779d5",
+          "lhs": -0.442844992372579,
+          "rhs": -0.4428449695041182,
+          "gap_gw": 2.2868460791691803e-08,
+          "direct_annual_cost_delta_million_cny": 5.658256260199553e-07,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[4161]",
+          "variable": "spur_augmentation_gw[4161]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000016777\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 3.6307745243657763e-07,
+          "delta_gw": 3.6307745243657763e-07,
+          "objective_coefficient": 31.155919541453724,
+          "row_sha256": "8b7df41fe2d452c6e931713a2aadfc08c839c3a2c4ba0e096ebe86f19a421e4c",
+          "lhs": -0.8745961932882536,
+          "rhs": -0.8745958302108011,
+          "gap_gw": 3.6307745243657763e-07,
+          "direct_annual_cost_delta_million_cny": 1.1312011895430004e-05,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[4501]",
+          "variable": "spur_augmentation_gw[4501]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000017611\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 2.617539041072092e-07,
+          "delta_gw": 2.617539041072092e-07,
+          "objective_coefficient": 33.533272555928136,
+          "row_sha256": "92a37c411d01081a9bba1bb9dd167f58255901c788eb664e2e327411aee1ed00",
+          "lhs": -1.2561002815172424,
+          "rhs": -1.2561000197633383,
+          "gap_gw": 2.617539041072092e-07,
+          "direct_annual_cost_delta_million_cny": 8.777465009005323e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[4966]",
+          "variable": "spur_augmentation_gw[4966]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000018756\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.5380662476971452e-07,
+          "delta_gw": 1.5380662476971452e-07,
+          "objective_coefficient": 25.44297946631643,
+          "row_sha256": "f5f2e896cdfffa7b1058bdc8f5ff658fafa9c911592030db59d50636d27b66b1",
+          "lhs": -0.6379607504899933,
+          "rhs": -0.6379605966833686,
+          "gap_gw": 1.5380662476971452e-07,
+          "direct_annual_cost_delta_million_cny": 3.9132987957992826e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[5288]",
+          "variable": "spur_augmentation_gw[5288]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000019597\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.2602761145785735e-07,
+          "delta_gw": 1.2602761145785735e-07,
+          "objective_coefficient": 33.92510419705886,
+          "row_sha256": "80128edd6d511aee91c005168539432c2cc5cd1f6391bc1f45662f1112db0580",
+          "lhs": -0.751751331592747,
+          "rhs": -0.7517512055651355,
+          "gap_gw": 1.2602761145785735e-07,
+          "direct_annual_cost_delta_million_cny": 4.275499850414259e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[5422]",
+          "variable": "spur_augmentation_gw[5422]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000019875\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.2764154877498157e-07,
+          "delta_gw": 1.2764154877498157e-07,
+          "objective_coefficient": 36.94095581701892,
+          "row_sha256": "f1605d5fac80dbe88e256ef23ab547e9975362e4588e0625d73cb3144dd9027c",
+          "lhs": -0.6555799282554122,
+          "rhs": -0.6555798006138635,
+          "gap_gw": 1.2764154877498157e-07,
+          "direct_annual_cost_delta_million_cny": 4.715200813712459e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[5423]",
+          "variable": "spur_augmentation_gw[5423]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000019876\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.0358336077764818e-07,
+          "delta_gw": 1.0358336077764818e-07,
+          "objective_coefficient": 36.59888415870472,
+          "row_sha256": "619b4ffa54beb524b54221eb2111265f08c198e9c467324f103d096214bb3c37",
+          "lhs": -0.8178232992124733,
+          "rhs": -0.8178231956291125,
+          "gap_gw": 1.0358336077764818e-07,
+          "direct_annual_cost_delta_million_cny": 3.791035421870464e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[5714]",
+          "variable": "spur_augmentation_gw[5714]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000020410\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 2.66883204425028e-08,
+          "delta_gw": 2.66883204425028e-08,
+          "objective_coefficient": 28.3495389873279,
+          "row_sha256": "c573949ede35343650d27a73109df3b4c3ffb0e28b5c39fda4f8923fb6c0a094",
+          "lhs": -0.9607345393527706,
+          "rhs": -0.9607345126644502,
+          "gap_gw": 2.66883204425028e-08,
+          "direct_annual_cost_delta_million_cny": 7.566015808910333e-07,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[5871]",
+          "variable": "spur_augmentation_gw[5871]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000020675\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.895813077634756e-07,
+          "delta_gw": 1.895813077634756e-07,
+          "objective_coefficient": 31.607652482387028,
+          "row_sha256": "02e23b8894f5400e44449c9f1a53f6f3a8f2b3a3cecc8e2c0cef9fda22b10dcd",
+          "lhs": -1.3052871431292286,
+          "rhs": -1.3052869535479208,
+          "gap_gw": 1.895813077634756e-07,
+          "direct_annual_cost_delta_million_cny": 5.992220092944398e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[8046]",
+          "variable": "spur_augmentation_gw[8046]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000025157\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 2.7185238504756626e-08,
+          "delta_gw": 2.7185238504756626e-08,
+          "objective_coefficient": 25.89266251753728,
+          "row_sha256": "32a9fbf5905e5a3c0c4f78123f8ad6f1c0e7016526e735bb54d6e28fa3ba6492",
+          "lhs": -1.0179965291292556,
+          "rhs": -1.0179965019440171,
+          "gap_gw": 2.7185238504756626e-08,
+          "direct_annual_cost_delta_million_cny": 7.03898206062423e-07,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        },
+        {
+          "row": "spur_capacity_non_dpv[8153]",
+          "variable": "spur_augmentation_gw[8153]",
+          "family": "spur_augmentation",
+          "stable_key": "[\"G000025438\", \"onwind\"]",
+          "base_value": 0.0,
+          "before_gw": 0.0,
+          "after_gw": 1.2235530011395213e-07,
+          "delta_gw": 1.2235530011395213e-07,
+          "objective_coefficient": 25.53572199268819,
+          "row_sha256": "36f1f63c1399a9431dcc4f45d09350ab3e4f8d8128f492dc38e0a6c12918eef2",
+          "lhs": -1.3860417601268031,
+          "rhs": -1.386041637771503,
+          "gap_gw": 1.2235530011395213e-07,
+          "direct_annual_cost_delta_million_cny": 3.1244309280418113e-06,
+          "derived_annual_cost_delta_million_cny": 0.0,
+          "post_closure_gap_gw": 0.0
+        }
+      ],
+      "annual_cost_delta_million_cny": 4.701878407176839e-05,
+      "annual_cost_terms_million_cny": {
+        "thermal_new_gw[8,8]": -0.0,
+        "spur_augmentation_gw[1879]": 5.658256260199553e-07,
+        "spur_augmentation_gw[4161]": 1.1312011895430004e-05,
+        "spur_augmentation_gw[4501]": 8.777465009005323e-06,
+        "spur_augmentation_gw[4966]": 3.9132987957992826e-06,
+        "spur_augmentation_gw[5288]": 4.275499850414259e-06,
+        "spur_augmentation_gw[5422]": 4.715200813712459e-06,
+        "spur_augmentation_gw[5423]": 3.791035421870464e-06,
+        "spur_augmentation_gw[5714]": 7.566015808910333e-07,
+        "spur_augmentation_gw[5871]": 5.992220092944398e-06,
+        "spur_augmentation_gw[8046]": 7.03898206062423e-07,
+        "spur_augmentation_gw[8153]": 3.1244309280418113e-06,
+        "thermal_capacity_gw[8,8]": -9.087041484230216e-07
+      },
+      "definition": "Base clipped values plus author-approved minimal static closure",
+      "status": "PASS",
+      "payload_sha256": "ec2b4195fb82b2d39add75c6a0c043b1669150eb3f5a8123d661cbf92c6fac9a",
+      "original_frozen_audit_sha256": "7d1612f2a947e2d4f69d415266e709a51aa2f89a9309b7cca17e166c1ec008a3",
+      "original_audit_unchanged": true,
+      "constraint_rhs_unchanged": true
+    },
+    "expected_capacity_sha256": "6114e8d8d79168d22c78748ea4c5b6fdb6539086d3be6bb75c7735c7dd7fb643"
+  },
+  "frozen_parameter_override": {
+    "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/zero_24h_override.json",
+    "sha256": "297d44eacbc83de5f54d41adafdddb6adef38a3dead683f74f019e01db16024f",
+    "resolved": {
+      "contract_upper_fraction": {
+        "heating": 0,
+        "cooling": 0,
+        "ev_v1g": 0,
+        "ev_v2g": 0
+      }
+    }
+  }
+}

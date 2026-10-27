@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "changed_sections": [
+    "BOUNDS_OTHER"
+  ],
+  "changed_columns": 8,
+  "exact_authorized_bounds": true,
+  "original_frozen_audit_identical": true,
+  "all_24h_budgets_identical": true,
+  "annual_budget_unchanged": true,
+  "before_mps_sha256": "d1b7342eb82227b905bd4360ecfd020a6fd561000966dc2b81378b2e55384666",
+  "after_mps_sha256": "dbd0f2d2cc0ea7c6229894df81771f72e8d33905d34c2b0580f686af767eacc9",
+  "cf_environment": "T550 mapping verified against cloud, no nearest-neighbor rule change"
+}

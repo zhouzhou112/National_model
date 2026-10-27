@@ -1,0 +1,303 @@
+{
+  "source_directory": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760",
+  "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+  "result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+  "tables": {
+    "vre_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv",
+      "sha256": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+      "bytes": 3804184,
+      "rows": 36686
+    },
+    "thermal_nuclear_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv",
+      "sha256": "6a55ca5625ff34c6808d3d3d9162d6d94ddbf7ecf38cee6b1bbd78fa440c47d0",
+      "bytes": 38818,
+      "rows": 341
+    },
+    "storage_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/storage_capacity.csv",
+      "sha256": "03ac0cbcdd6e127173ec4b4a21bb193400706213ab4fead8b6a7fcb14a9198d9",
+      "bytes": 11560,
+      "rows": 62
+    },
+    "transmission_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/transmission_capacity.csv",
+      "sha256": "80ba8adc10712431e22d6ecb8c5e71faca5cf08439067362856e0d8154d1a4a7",
+      "bytes": 37416,
+      "rows": 411
+    },
+    "load_center_intra_transmission.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/load_center_intra_transmission.csv",
+      "sha256": "c44ea47755ead6a512683442981f883e37a0acc20b765b98e3928fa4316be284",
+      "bytes": 128411,
+      "rows": 642
+    },
+    "intra_grid_vre_site_design.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_vre_site_design.csv",
+      "sha256": "28f0716b5045b8c2a2a516758fb49b2f551cb23ab2973361ce5b08c25fd62d3a",
+      "bytes": 5932371,
+      "rows": 36686
+    },
+    "intra_grid_substation_design.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_substation_design.csv",
+      "sha256": "5a740f76a0ef11ced47b47580387da7cfd6940ec120184970187923b31c5b7e5",
+      "bytes": 1047888,
+      "rows": 6294
+    },
+    "hydro_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/hydro_capacity.csv",
+      "sha256": "8ee576b58faa6ec9c42e8b205b4526cf9c572add409ea62b2e4571008130c489",
+      "bytes": 354711,
+      "rows": 2030
+    },
+    "wave_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/wave_capacity.csv",
+      "sha256": "95201cff62afa2731ad83e514d0c7dbf1966e7d49204d4568c2e7f10883543ba",
+      "bytes": 267280,
+      "rows": 1284
+    },
+    "dac_capacity_capture.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/dac_capacity_capture.csv",
+      "sha256": "a1f82eae2a295f32b827f3cc6ac5ab26ebaf6846ea74387998fe29af79edde4f",
+      "bytes": 19007,
+      "rows": 124
+    },
+    "hydro_spur_capacity.csv": {
+      "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/hydro_spur_capacity.csv",
+      "sha256": "deea3fc8b18a0c233e0f1f028ffddcff4bea15279f9f5a125db5ddd49c3d0af7",
+      "bytes": 78040,
+      "rows": 2030
+    }
+  },
+  "supplement": {
+    "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/supplement_manifest.json",
+    "sha256": "7c0877583e6fce78989704abb2af460c25f1c8694b0cec743fb814624e996a31",
+    "vector_attribute": "BarX"
+  },
+  "upstream": {
+    "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+    "environment_sha256": "7f8accf536030925c1e2f819366f672b22f40aa9b4110673b08b6d9f3a2d7d79",
+    "input_manifest_sha256": "a592763946e95833efdbf7ed0599e945c843b53bc04ebbe71a3a9ce4d7b43b34",
+    "restored_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+    "allow_candidate": true,
+    "files": [
+      {
+        "path": "state_metadata.json",
+        "sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+        "bytes": 8354
+      },
+      {
+        "path": "capacity_cohorts.csv.gz",
+        "sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+        "bytes": 961111
+      },
+      {
+        "path": "state_transition_summary.csv",
+        "sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+        "bytes": 2381
+      },
+      {
+        "path": "../result_manifest.json",
+        "sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+        "bytes": 1880
+      }
+    ],
+    "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+    "scope_sha256": "4611c24ea534107efff4eaf23a497ac5aae53857a9d0f1899de2e5dc2f43c911",
+    "metadata_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd"
+  },
+  "static_closure": {
+    "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2/derived_static/closure.json",
+    "sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+    "definition": "Base clipped values plus author-approved minimal static closure"
+  },
+  "frozen_columns": 86745,
+  "clip_statistics": {
+    "GW": {
+      "columns": 86621,
+      "clipped_columns": 69,
+      "sum_absolute_clip": 4.752220324486314e-06,
+      "maximum_absolute_clip": 1.5149738036065311e-06
+    },
+    "MtCO2_per_year": {
+      "columns": 124,
+      "clipped_columns": 0,
+      "sum_absolute_clip": 0.0,
+      "maximum_absolute_clip": 0.0
+    }
+  },
+  "audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+  "clip_reporting_threshold_exceeded": false,
+  "closure": {
+    "schema_version": "base_frozen_static_closure_20261027_v1",
+    "planning_year": 2040,
+    "source_result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+    "mode": "STATIC_EXACT",
+    "rows": [
+      {
+        "row": "biomass_beccs_shared_capacity_upper_s4_34[8]",
+        "variable": "thermal_new_gw[8,8]",
+        "family": "thermal_new",
+        "stable_key": "[\"31\", \"bio\"]",
+        "base_value": 9.389033735814761e-09,
+        "before_gw": 9.38903373581476e-09,
+        "after_gw": 2.269759566929358e-10,
+        "delta_gw": -9.162057779121824e-09,
+        "objective_coefficient": 0.0,
+        "row_sha256": "d0c1d6ab6b7bd9b72b79891168e37ce88612c625adcdc15d42073eff38c1da2a",
+        "lhs": 0.6270000091620578,
+        "rhs": 0.627,
+        "gap_gw": 9.162057779121824e-09,
+        "direct_annual_cost_delta_million_cny": -0.0,
+        "derived_annual_cost_delta_million_cny": -3.630044479218158e-06,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "spur_capacity_non_dpv[1879]",
+        "variable": "spur_augmentation_gw[1879]",
+        "family": "spur_augmentation",
+        "stable_key": "[\"G000038976\", \"onwind\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 5.648090428689301e-08,
+        "delta_gw": 5.648090428689301e-08,
+        "objective_coefficient": 24.742619591849483,
+        "row_sha256": "631a831b774e803afbd09cb4a6232ae8dafbe7f2b9f93c7f7ec13e7836a779d5",
+        "lhs": -0.4428450259850225,
+        "rhs": -0.4428449695041182,
+        "gap_gw": 5.648090428689301e-08,
+        "direct_annual_cost_delta_million_cny": 1.3974855289742543e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "spur_capacity_non_dpv[4161]",
+        "variable": "spur_augmentation_gw[4161]",
+        "family": "spur_augmentation",
+        "stable_key": "[\"G000016777\", \"onwind\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 3.9648828675797887e-07,
+        "delta_gw": 3.9648828675797887e-07,
+        "objective_coefficient": 31.155919541453724,
+        "row_sha256": "8b7df41fe2d452c6e931713a2aadfc08c839c3a2c4ba0e096ebe86f19a421e4c",
+        "lhs": -0.8745962266990879,
+        "rhs": -0.8745958302108011,
+        "gap_gw": 3.9648828675797887e-07,
+        "direct_annual_cost_delta_million_cny": 1.2352957161360421e-05,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "spur_capacity_non_dpv[5168]",
+        "variable": "spur_augmentation_gw[5168]",
+        "family": "spur_augmentation",
+        "stable_key": "[\"G000019314\", \"onwind\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 6.140025787804149e-08,
+        "delta_gw": 6.140025787804149e-08,
+        "objective_coefficient": 30.636408187828874,
+        "row_sha256": "10e01d402fb9a5705b35bb531e66c72d29a15041d103001e4b63289a5ae453fd",
+        "lhs": -0.6440785222676356,
+        "rhs": -0.6440784608673777,
+        "gap_gw": 6.140025787804149e-08,
+        "direct_annual_cost_delta_million_cny": 1.8810833631896346e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "spur_capacity_non_dpv[5714]",
+        "variable": "spur_augmentation_gw[5714]",
+        "family": "spur_augmentation",
+        "stable_key": "[\"G000020410\", \"onwind\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 4.697547340004604e-08,
+        "delta_gw": 4.697547340004604e-08,
+        "objective_coefficient": 28.3495389873279,
+        "row_sha256": "c573949ede35343650d27a73109df3b4c3ffb0e28b5c39fda4f8923fb6c0a094",
+        "lhs": -0.9607345596399236,
+        "rhs": -0.9607345126644502,
+        "gap_gw": 4.697547340004604e-08,
+        "direct_annual_cost_delta_million_cny": 1.33173301460279e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "spur_capacity_non_dpv[11773]",
+        "variable": "spur_augmentation_gw[11773]",
+        "family": "spur_augmentation",
+        "stable_key": "[\"G000032802\", \"upv\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 1.2738179089311075e-07,
+        "delta_gw": 1.2738179089311075e-07,
+        "objective_coefficient": 22.518099455034776,
+        "row_sha256": "407d56c177c3264054061bcdee6bfba0ca56fbc9ee3384927e674d23536bdd4b",
+        "lhs": -0.4240320609010536,
+        "rhs": -0.4240319335192627,
+        "gap_gw": 1.2738179089311075e-07,
+        "direct_annual_cost_delta_million_cny": 2.868395836091511e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "trunk_capacity_458",
+        "variable": "trunk_augmentation_gw[458]",
+        "family": "trunk_augmentation",
+        "stable_key": "[\"way/798613043/p13\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 4.10037674924979e-08,
+        "delta_gw": 4.10037674924979e-08,
+        "objective_coefficient": 31.107725450482285,
+        "row_sha256": "41bc3128c89d40e641a9bb812e40968df606a35d2f409c11533a2e8099f34898",
+        "lhs": -4.269749429200419,
+        "rhs": -4.269749388196652,
+        "gap_gw": 4.10037674924979e-08,
+        "direct_annual_cost_delta_million_cny": 1.275533941592035e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      },
+      {
+        "row": "trunk_capacity_1876",
+        "variable": "trunk_augmentation_gw[1876]",
+        "family": "trunk_augmentation",
+        "stable_key": "[\"way/128731546/p31\"]",
+        "base_value": 0.0,
+        "before_gw": 0.0,
+        "after_gw": 1.3727933279028548e-07,
+        "delta_gw": 1.3727933279028548e-07,
+        "objective_coefficient": 22.5756043351689,
+        "row_sha256": "953d5d51056a042d599fdee362bc4fb9ae03c71836f3ec2760905cb5955fcee9",
+        "lhs": -0.9069692325785284,
+        "rhs": -0.9069690952991956,
+        "gap_gw": 1.3727933279028548e-07,
+        "direct_annual_cost_delta_million_cny": 3.099163900469463e-06,
+        "derived_annual_cost_delta_million_cny": 0.0,
+        "post_closure_gap_gw": 0.0
+      }
+    ],
+    "annual_cost_delta_million_cny": 2.057630826706195e-05,
+    "annual_cost_terms_million_cny": {
+      "thermal_new_gw[8,8]": -0.0,
+      "spur_augmentation_gw[1879]": 1.3974855289742543e-06,
+      "spur_augmentation_gw[4161]": 1.2352957161360421e-05,
+      "spur_augmentation_gw[5168]": 1.8810833631896346e-06,
+      "spur_augmentation_gw[5714]": 1.33173301460279e-06,
+      "spur_augmentation_gw[11773]": 2.868395836091511e-06,
+      "trunk_augmentation_gw[458]": 1.275533941592035e-06,
+      "trunk_augmentation_gw[1876]": 3.099163900469463e-06,
+      "thermal_capacity_gw[8,8]": -3.630044479218158e-06
+    },
+    "definition": "Base clipped values plus author-approved minimal static closure",
+    "status": "PASS",
+    "payload_sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+    "original_frozen_audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+    "original_audit_unchanged": true,
+    "constraint_rhs_unchanged": true
+  },
+  "expected_capacity_sha256": "20358b401c9074f0680d6caeb4bdfe16a40fc9f2ca8f32e488587b369389287a"
+}

@@ -5633,3 +5633,12 @@ B2060 attempt_2 的 1h、3 组 24h、目标/双向交叉可行/成本分项、�
 详细 STOP_REPORT_ZH.md、EXECUTION_STATUS.json、closure_summary.csv、derived_integrity.json、各年 derived_static 及 iis_diagnosis_v2、2060/attempt_2/FINAL_GATES_PASSED.json。完整 MPS/IIS/向量本地保留，Git 只同步源码与小证据。只读 squeue 确认 5207165、5294579 仍 RUNNING；未修改二者，不建监听，未重复启动备份。上一阶段 Case3 2040/B2030 的完整备份和验收/证书同步结论沿用，本轮未复核 T550。
 
 下一步：作者与决策层决定短窗年度碳预算门禁处理规则；在新目录按新授权重做受影响门禁，三年全过后才按 48 线程同时提交/release。不得自行放松碳约束或容差。其他会话 SI 修改保留且不混入本轮提交。
+
+
+## 2026-10-27 第二批 B 独立放行、生产映射修正与失败保全
+
+**2026-10-27 第二批 B 放行：** 云端快照 2026-10-27T21:21:33.430034+00:00 为 5 RUNNING、0 PENDING。B2040/5297384、B2050/5297390 已 release 且启动 smoke PASS；B2060 v2/5297410 已 release 且启动 smoke PASS。三年云端一致映射 1h/3×24h、目标/双向交叉可行/成本门禁 PASS，年度碳上限不变。首次 B2060/5295127 构建闭合核验 FAILED，已完整保全现存文件并 T550 SHA 备份；不是解。
+
+源码80b5c3c→3019462→d14206c→cdd8333；核心模型源码沿用已测版本，本轮修改review助手、作者AGENTS、审计/部署/交接。Windows与生产25个PV最近邻平局选择不同；T550与云端一致，按云端重生成8/12/40行最小闭合，净增成本20.5763/47.0188/243.7888 CNY/yr。三年窗口碳门禁与年度身份通过，生产仅用年度上限。完整命令、环境版本、SHA、测试及未解决项见 supplementary_materials/reviews/base_frozen_batch2_20261027/REVIEW_ZH.md、QUALIFIED_GATES_SUMMARY.json、各年cloud_identity_v2_t550及deployment。
+
+首次5295127失败包T550已备份14,503,317bytes，source unchanged、SHA全过；不是完整解备份。后续新B终态按备份→扩展验收→小文件取回执行，入口backup_B_completed.py/postprocess_B.py，各年config已准备，当前没有新B全年验收。无后台监听、无保护作业/SI修改。
