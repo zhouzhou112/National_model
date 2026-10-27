@@ -27,11 +27,14 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('case',choices=['A2050','B2040','B2050','B2060'])
     parser.add_argument('phase',choices=['prepare','preflight','submit','release','status'])
+    parser.add_argument('--version',type=int,default=1)
     args=parser.parse_args();year=int(args.case[1:]);is_a=args.case[0]=='A';threads=40 if is_a else 48
+    assert args.version>=1
     work=HERE.parent/'case3_2050_launch_20261027' if is_a else HERE/str(year)
-    evidence=work/'deployment';evidence.mkdir(parents=True,exist_ok=True)
+    evidence=work/('deployment' if args.version==1 else f'deployment_v{args.version}');evidence.mkdir(parents=True,exist_ok=True)
     name=('20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1' if is_a else
           f'20261027_basefrozen_{year}_v9a12_agg0_t48_m750_tol1e4_v1')
+    name=name[:-1]+str(args.version)
     root=BASE+'/'+name
     profile=('config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json' if is_a else
              'config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json')
@@ -85,7 +88,7 @@ def main():
             add('launch_config.json',(evidence/'launch_config.json').read_bytes());add('FINAL_GATES_PASSED.json',gates_path.read_bytes())
             for name,row in expected.items():
                 path=REPO/'data'/name;assert sha(path)==row['sha256'] and path.stat().st_size==row['bytes'],name
-                add('data_overlay/'+name,path.read_bytes())
+            add('expected_data_files.json',json.dumps(expected,indent=2).encode())
             if is_a:
                 for path in sorted((work/'R1_v2/prepared_state').rglob('*')):
                     if path.is_file():add('upstream_state/'+path.relative_to(work/'R1_v2/prepared_state').as_posix(),path.read_bytes())
@@ -104,6 +107,16 @@ with tarfile.open(str(root/'release_payload.tar.gz')) as archive:
   path=Path(item.name);assert item.isfile() and not path.is_absolute() and '..' not in path.parts and not (root/path).exists()
  archive.extractall(str(root))
 for name,h in expected.items():assert hashlib.sha256((root/name).read_bytes()).hexdigest()==h,name
+import shutil
+data_source=root.parent/'_preparations/20261026_case3_2050_t40_v1/data_overlay'
+data_expected=json.loads((root/'expected_data_files.json').read_text())
+for name,row in data_expected.items():
+ source=data_source/name;target=root/'data_overlay'/name
+ assert source.stat().st_size==row['bytes'] and hashlib.sha256(source.read_bytes()).hexdigest()==row['sha256'],name
+ assert not target.exists();target.parent.mkdir(parents=True,exist_ok=True)
+ shutil.copyfile(str(source),str(target))
+ assert not target.is_symlink() and target.stat().st_size==row['bytes'] and hashlib.sha256(target.read_bytes()).hexdigest()==row['sha256'],name
+(root/'data_copy_verification.json').write_text(json.dumps({'status':'PASS','source':str(data_source),'files':len(data_expected),'method':'SHA_VERIFIED_INDEPENDENT_COPIES'},indent=2))
 launch=json.loads((root/'launch_config.json').read_text());batch=(root/'continuation.sbatch').read_text()
 registered=json.loads((root.parent/'20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/launch_config.json').read_text())['license_path']
 assert re.findall(r'^export GRB_LICENSE_FILE="([^"\n]+)"$',batch,re.M)==[registered] and launch['license_path']==registered
