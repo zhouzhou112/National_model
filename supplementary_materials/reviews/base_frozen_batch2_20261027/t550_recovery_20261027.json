@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "synced": [
+    {
+      "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/backup_B_completed.py",
+      "sha256": "3c13c9119d147632c7fd74e7ba600cd2a6b2f822494847a039d76360920ab319"
+    },
+    {
+      "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/postprocess_B.py",
+      "sha256": "cff25ff9962deb697473f822f55593ece7600164a5a20b3b0f5c785235503502"
+    },
+    {
+      "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2040_backup_config.json",
+      "sha256": "3a2bcd612516973c12bdc768530512995de86a8088a975b1b5a4831c181bebf0"
+    },
+    {
+      "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2050_backup_config.json",
+      "sha256": "7852d05b0464ae9873d13270ae2d8402f5003966a60471675169fc8095938132"
+    },
+    {
+      "path": "supplementary_materials/reviews/base_frozen_batch2_20261027/2060_backup_config.json",
+      "sha256": "fd722ea8eab1af9be7faa820dfae4bb1bf5b89d1fc5a571cfb022e57075a844e"
+    }
+  ],
+  "failed_b2060_backup_status": "COMPLETE",
+  "backup_manifest_sha256": "3f0a496193bce60085cf4923266bba6e92c3da6fd959e84e057a5c03f687644f",
+  "transfers_started": 0
+}

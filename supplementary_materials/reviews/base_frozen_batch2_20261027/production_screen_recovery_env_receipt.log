@@ -1,0 +1,1 @@
+{"status": "PASS", "exit_code": 0, "fixture_bytes": 7470093, "fixture_sha256": "fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368", "tail": "Set parameter LicenseID to value 2840423\n----------------------------------------------------------------------\nRan 6 tests in 1.352s\n\nOK\n"}

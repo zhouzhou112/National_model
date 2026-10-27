@@ -48,3 +48,12 @@ Windows scipy1.13.1 与原 Base 生产云端 scipy1.15.3 的等距离最近邻 P
 - 完整备份后 postprocess_B.py B2040|B2050|B2060 collect，取回与 nocredit 同口径全部≤32MiB小文件；assess 做扩展relative_v1，全年Mt分母 annual_fossil_unabated_emissions_mtco2，验收JSON旁置T550并回传本地。原QC保留，不因FAIL丢解。
 
 没有建立后台监听；上述收尾在人工查询发现终态时执行。新B尚未求解结束，当前没有新B全年验收JSON；不能把24h门禁PASS当作全年验收。其他会话 SI 修改保留、不提交、不修改 modules 或在线LaTeX。
+
+
+## 2026-10-27 T550恢复、补充回归确认
+
+**2026-10-27 21:25 GMT T550恢复核验：** 云端5项RUNNING；C2050/5207165第396轮，Case3 2050/5294579第7轮，B2040/5297384、B2050/5297390、B2060 v2/5297410仍构建且启动检查PASS。T550遗留筛选CSV已完整到达（7,470,093bytes，SHA fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368），未重复传输；设置与全套回归相同数据环境后，tests.test_production_screen 6项全部PASS，解决上一轮唯一缺夹具报错。
+
+Git基准dd5f382，本轮仅补充证据/交接，无模型源码修改。完整全套第二轮492项中的唯一错误为缺CSV，定向模块6项已通过；保留2项原跳过和全部失败日志，不冒称重新执行整套全绿。首次定向命令遗漏数据环境报provenance输入缺失，补齐既有路径后通过，证据production_screen_recovery_receipt.log与production_screen_recovery_env_receipt.log。失败B2060备份manifest仍COMPLETE，新增备份/后处理入口及三年config已同步T550并SHA核验（t550_recovery_20261027.json），没有启动传输或后台监听。
+
+v2指B2060运行包第二版，模型配置仍v9_a12。首版5295127因Windows与云端25个PV等距离nearest fallback选择不同导致静态闭合来源核验失败，未进入Barrier；按云端一致T550映射重审后在新包5297410运行，不修改最近邻规则、科学容差或年度碳上限。原包完整保全。下一步在用户查询时检查现有作业；遇终态按完整备份→扩展验收→小文件取回执行，无自动监听。

@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-10-27 21:25 GMT T550恢复核验：** 云端5项RUNNING；C2050/5207165第396轮，Case3 2050/5294579第7轮，B2040/5297384、B2050/5297390、B2060 v2/5297410仍构建且启动检查PASS。T550遗留筛选CSV已完整到达（7,470,093bytes，SHA fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368），未重复传输；设置与全套回归相同数据环境后，tests.test_production_screen 6项全部PASS，解决上一轮唯一缺夹具报错。
+
 **2026-10-27 第二批 B 放行：** 云端快照 2026-10-27T21:21:33.430034+00:00 为 5 RUNNING、0 PENDING。B2040/5297384、B2050/5297390 已 release 且启动 smoke PASS；B2060 v2/5297410 已 release 且启动 smoke PASS。三年云端一致映射 1h/3×24h、目标/双向交叉可行/成本门禁 PASS，年度碳上限不变。首次 B2060/5295127 构建闭合核验 FAILED，已完整保全现存文件并 T550 SHA 备份；不是解。
 
 - **2026-10-27 B 静态闭合后最新状态：** 三年 1h 闭合通过，B2060 全部门禁 PASS；B2040/2050 24h 仍受碳预算 IIS 阻塞，非网络残差，三年均未提交。等待作者决定短窗年度碳预算门禁规则。492 项回归通过（1 跳过），见 base_frozen_closure_20261027/STOP_REPORT_ZH.md。5207165/5294579 仅只读确认运行。
@@ -3866,3 +3868,12 @@ B2060 attempt_2 的 1h、3 组 24h、目标/双向交叉可行/成本分项、�
 源码80b5c3c→3019462→d14206c→cdd8333；核心模型源码沿用已测版本，本轮修改review助手、作者AGENTS、审计/部署/交接。Windows与生产25个PV最近邻平局选择不同；T550与云端一致，按云端重生成8/12/40行最小闭合，净增成本20.5763/47.0188/243.7888 CNY/yr。三年窗口碳门禁与年度身份通过，生产仅用年度上限。完整命令、环境版本、SHA、测试及未解决项见 supplementary_materials/reviews/base_frozen_batch2_20261027/REVIEW_ZH.md、QUALIFIED_GATES_SUMMARY.json、各年cloud_identity_v2_t550及deployment。
 
 首次5295127失败包T550已备份14,503,317bytes，source unchanged、SHA全过；不是完整解备份。后续新B终态按备份→扩展验收→小文件取回执行，入口backup_B_completed.py/postprocess_B.py，各年config已准备，当前没有新B全年验收。无后台监听、无保护作业/SI修改。
+
+
+## 2026-10-27 T550恢复、补充回归确认
+
+**2026-10-27 21:25 GMT T550恢复核验：** 云端5项RUNNING；C2050/5207165第396轮，Case3 2050/5294579第7轮，B2040/5297384、B2050/5297390、B2060 v2/5297410仍构建且启动检查PASS。T550遗留筛选CSV已完整到达（7,470,093bytes，SHA fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368），未重复传输；设置与全套回归相同数据环境后，tests.test_production_screen 6项全部PASS，解决上一轮唯一缺夹具报错。
+
+Git基准dd5f382，本轮仅补充证据/交接，无模型源码修改。完整全套第二轮492项中的唯一错误为缺CSV，定向模块6项已通过；保留2项原跳过和全部失败日志，不冒称重新执行整套全绿。首次定向命令遗漏数据环境报provenance输入缺失，补齐既有路径后通过，证据production_screen_recovery_receipt.log与production_screen_recovery_env_receipt.log。失败B2060备份manifest仍COMPLETE，新增备份/后处理入口及三年config已同步T550并SHA核验（t550_recovery_20261027.json），没有启动传输或后台监听。
+
+v2指B2060运行包第二版，模型配置仍v9_a12。首版5295127因Windows与云端25个PV等距离nearest fallback选择不同导致静态闭合来源核验失败，未进入Barrier；按云端一致T550映射重审后在新包5297410运行，不修改最近邻规则、科学容差或年度碳上限。原包完整保全。下一步在用户查询时检查现有作业；遇终态按完整备份→扩展验收→小文件取回执行，无自动监听。
