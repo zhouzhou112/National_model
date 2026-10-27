@@ -400,6 +400,12 @@ def save_capacity_expectations(artifacts, data, output, tables):
     registry=investment_registry(artifacts,data)
     corrections={key: audit.loc[audit.family==key,'clip_amount'].to_numpy().reshape(artifacts.variables[key].shape)
                  for key,*_ in registry}
+    closure = artifacts.index.get('frozen_capacity_closure')
+    if closure:
+        deltas = {r['variable']:r['delta_gw'] for r in closure['rows']}
+        for key,*_ in registry:
+            names=np.asarray(artifacts.variables[key].VarName)
+            corrections[key] += np.array([deltas.get(str(n),0.) for n in names.flat]).reshape(names.shape)
     checks=[]
     for new,table,_,rows,unit,subset in registry:
         cap={'vre_new':'vre_capacity','thermal_new':'thermal_capacity','storage_new':'storage_capacity',
@@ -419,6 +425,9 @@ def save_capacity_expectations(artifacts, data, output, tables):
                            passed=bool((delta<=1e-9).all())))
     alignment=dict(status='PASS' if all(r['passed'] for r in checks) else 'FAIL',checks=checks,
                    definition='Original Base total capacity plus only audited investment clips versus accounting-derived capacity')
+    if closure:
+        alignment['definition']='Original Base total capacity plus original clips and separately audited author static closure'
+        alignment['closure_payload_sha256']=closure['payload_sha256']
     (Path(output)/'frozen_capacity_source_alignment.json').write_text(json.dumps(alignment,indent=2)+'\n',encoding='utf-8')
     if alignment['status']!='PASS':
         raise ValueError('Frozen source/current floor or capacity-accounting mismatch; stop before solve')

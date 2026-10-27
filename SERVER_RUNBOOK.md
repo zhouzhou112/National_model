@@ -5619,3 +5619,17 @@ B2040和B2050的1h容量冻结/原Base容量一致性/年度参数均PASS，但2
 T550三年hydro spur提取COMPLETE，全部补表bytes/SHA和36686个VRE交叉值通过。B2060在1h中发现43项固定容量静态矛盾，最大trunk_capacity_4326为0.00008743143463796343GW，停止在24h之前。B2040/2050为12/13项，最大2.489823815498171/0.17961942022282074MW；两年24h Base对照INFEASIBLE。三年未提交或release。停止报告base_frozen_followups_20261027/STOP_REPORT_ZH.md、STOP_20261027.json、fixed_capacity_conflicts_all_years.csv；各年原模型、IIS及导出保留，INFEASIBLE/IIS工作向量不作为解。下一步由作者决定是否允许固定网络/共享容量的最小闭合；不得自行改冻结定义或门禁，批准后必须新目录重跑全部门禁。
 
 Case3 2050 Job5294579已放行，冻结源码3244f4f、40线程启动检查PASS。Case3 2040已按化石未减排Mt分母重评PASS，全年证书B=0；B2030亦在T550重评PASS。两项完整备份190文件11,025,800,982bytes已逐文件校验且source_unchanged；本地取回Case3 73小文件106,961,807bytes与B2030 78小文件121,288,714bytes。新增验收JSON已从T550回传，作者采纳+证书引用已旁置T550；Base2060 ready三文件同步已核验。B2030峰RSS559.893GiB，116轮，相邻轮均4.8109分钟/中位4.58325分钟，因此B后续48线程选择仍有效，只是科学门禁阻塞。主报告completed_results_20261027/REVIEW_ZH.md；489回归测试OK（1项平台跳过），运行模型源码无后续变更。5207165未修改，无后台监听；其他SI改动未混入提交。
+
+## 2026-10-27 B 最小静态闭合完成；2040/2050 短窗碳门禁停止
+
+Git 基准 eb161d8cb3dd558796884683f79af1365261ed79。按作者本次明确授权追加 AGENTS，新增 cispo_model/frozen_closure.py 与 tests/test_frozen_closure.py，runner 增加显式 --frozen-capacity-closure，容量来源核验分别计入原 clipping 和新闭合；门禁助手增加闭合参数与未压缩 MPS 读取，默认科学配置不变。
+
+新目录 supplementary_materials/reviews/base_frozen_closure_20261027：三年 1h 静态冲突 12/13/43 项全部精确闭合。网络增量 2.799987596/0.181143989/0.154655181 MW，非 CCS bio 减少 9.162058/2.293526/5.957564 W，年度固定成本增加 61596.505660/3954.901821/3543.065116 CNY。逐列仅授权投资界改变，原 Base/冻结审计 SHA 均不变，目标/系数/RHS 分段未变。
+
+B2060 attempt_2 的 1h、3 组 24h、目标/双向交叉可行/成本分项、年度参数和冻结来源全部 PASS。B2040/2050 的 24h Base 对照 INFEASIBLE；IIS 碳排放下界 6.234302872/0.353699641 Mt，高于短窗上限 3.561643836/-0.273972603 Mt。对偶界证明每条 spur/trunk 上界增加 1 MW 后仍不可能闭合碳缺口，不属获授权的逐时网络残差回退。三年均未提交或 release，不单独放行 2060。
+
+命令：prepare_closures.py；run_year_gates.py 2040、2050、2060 --attempt 2；diagnose_iis.py <run> --output <newdir>；audit_derived_models.py；python -m unittest discover -s tests -q。使用 RL Python + Gurobi13 overlay，波浪数据原路径，BLAS 1 线程。19 项冻结测试及 492 项全套串行回归 PASS（1 项平台跳过）；初次并发遇 8 GiB 内存保护失败保留，不降低保护，新目录串行完成。模型测试 SHA 与最终源码一致。
+
+详细 STOP_REPORT_ZH.md、EXECUTION_STATUS.json、closure_summary.csv、derived_integrity.json、各年 derived_static 及 iis_diagnosis_v2、2060/attempt_2/FINAL_GATES_PASSED.json。完整 MPS/IIS/向量本地保留，Git 只同步源码与小证据。只读 squeue 确认 5207165、5294579 仍 RUNNING；未修改二者，不建监听，未重复启动备份。上一阶段 Case3 2040/B2030 的完整备份和验收/证书同步结论沿用，本轮未复核 T550。
+
+下一步：作者与决策层决定短窗年度碳预算门禁处理规则；在新目录按新授权重做受影响门禁，三年全过后才按 48 线程同时提交/release。不得自行放松碳约束或容差。其他会话 SI 修改保留且不混入本轮提交。

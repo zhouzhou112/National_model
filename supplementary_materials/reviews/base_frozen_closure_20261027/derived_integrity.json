@@ -1,0 +1,47 @@
+[
+  {
+    "year": 2040,
+    "status": "PASS",
+    "changed_sections": [
+      "BOUNDS_OTHER"
+    ],
+    "changed_columns": 12,
+    "approved_columns": 12,
+    "exact_authorized_bounds": true,
+    "original_audit_identical": true,
+    "original_sources_unchanged": true,
+    "before_mps_sha256": "a40ee898162d7e312bd1a6276d332b8571303756974dc36d5c5352db81c679fc",
+    "after_mps_sha256": "65c6b7767bde1b0a5495967ea933bbe71c3cfe103b7531a1335d7483c9bf7537",
+    "scope": "Static closure integrity; not 24h feasibility"
+  },
+  {
+    "year": 2050,
+    "status": "PASS",
+    "changed_sections": [
+      "BOUNDS_OTHER"
+    ],
+    "changed_columns": 13,
+    "approved_columns": 13,
+    "exact_authorized_bounds": true,
+    "original_audit_identical": true,
+    "original_sources_unchanged": true,
+    "before_mps_sha256": "b5cc654512c6c6bb242e0360738fee99453cd7782db1a77e54e9710f2f43c28d",
+    "after_mps_sha256": "8ead3431ca34bf5bbac0cb6646d06ef5706d3126bd13be8f1911c0e9d13a5d96",
+    "scope": "Static closure integrity; not 24h feasibility"
+  },
+  {
+    "year": 2060,
+    "status": "PASS",
+    "changed_sections": [
+      "BOUNDS_OTHER"
+    ],
+    "changed_columns": 43,
+    "approved_columns": 43,
+    "exact_authorized_bounds": true,
+    "original_audit_identical": true,
+    "original_sources_unchanged": true,
+    "before_mps_sha256": "a26e9f08c0c8438c1a72556748d57d6bc88aba563241fa22cf86853572babec0",
+    "after_mps_sha256": "95fd0b40d67210577a4893ad13646748394ec3d843623af2a1892ee644bae4bf",
+    "scope": "Static closure integrity; not 24h feasibility"
+  }
+]

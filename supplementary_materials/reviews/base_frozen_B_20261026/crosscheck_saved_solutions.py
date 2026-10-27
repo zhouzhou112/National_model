@@ -19,7 +19,9 @@ def main(root):
             values[key] = dict(json.loads(line) for line in f)
     checks = []
     for key,path in folders.items():
-        model = gp.read(str(path/'model_archive/original.mps.gz'))
+        archive = path/'model_archive/original.mps.gz'
+        if not archive.exists():archive = archive.with_suffix('')
+        model = gp.read(str(archive))
         names = model.getAttr('VarName')
         other = 'zero' if key=='base' else 'base'
         # B-only flexible auxiliaries retain their zero-contract solved values.

@@ -1,0 +1,20 @@
+[
+  "runner",
+  "--config",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\config\\optimization_numeric_dac_by_year_v9_a12.json",
+  "--solver-config",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_closure_20261027\\2060\\attempt_2\\base_control_24h_profile.json",
+  "--planning-year",
+  "2060",
+  "--diagnostic-hours",
+  "24",
+  "--archive-original-model",
+  "--output-dir",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_closure_20261027\\2060\\attempt_2\\base_control_24h",
+  "--frozen-capacity-from",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760",
+  "--frozen-capacity-supplement",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\frozen_capacity_B_20261027",
+  "--frozen-capacity-closure",
+  "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\base_frozen_closure_20261027\\2060\\derived_static\\closure.json"
+]

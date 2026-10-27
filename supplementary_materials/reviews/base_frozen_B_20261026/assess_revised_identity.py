@@ -37,7 +37,9 @@ def main(root):
     cross=json.loads((root/'saved_solution_crosscheck.json').read_text())
     xcheck={}
     for p in source_folders:
-        model=gp.read(str(p/'model_archive/original.mps.gz'))
+        archive=p/'model_archive/original.mps.gz'
+        if not archive.exists():archive=archive.with_suffix('')
+        model=gp.read(str(archive))
         metadata=json.loads((p/'solution_snapshot/snapshot_manifest.json').read_text())
         rc_record=metadata['attributes']['RC'];rc_path=p/'solution_snapshot'/rc_record['path']
         assert sha(rc_path)==rc_record['sha256']

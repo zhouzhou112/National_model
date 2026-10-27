@@ -1,0 +1,79 @@
+{
+  "source": "supplementary_materials\\reviews\\base_frozen_closure_20261027\\2040\\base_control_24h\\iis.ilp",
+  "source_sha256": "4c7792b23bbe02e3ee143d3b74e98b1720add3fdd5d5c5ce757d6ffeb3e6bb1a",
+  "rows": 3983,
+  "columns": 11461,
+  "network_variables": [
+    "trunk_augmentation_gw[2288]",
+    "trunk_augmentation_gw[2298]",
+    "trunk_augmentation_gw[2344]"
+  ],
+  "network_rows": [
+    "trunk_capacity_2288",
+    "trunk_capacity_2298",
+    "trunk_capacity_2344"
+  ],
+  "row_families": {
+    "vre_capacity": 1,
+    "thermal_ccs_capacity_accounting": 36,
+    "thermal_non_ccs_capacity_accounting": 41,
+    "nuclear_capacity": 1,
+    "biomass_beccs_shared_capacity_upper_s4": 3,
+    "dac_capacity": 124,
+    "dac_selected_horizon": 124,
+    "annual_net_carbon": 1,
+    "annual_biomass_fuel": 3,
+    "trunk_capacity": 3,
+    "ruc_cyclic_first": 27,
+    "ruc_hourly": 482,
+    "thermal_minimum": 1042,
+    "ruc_s4_25_coal": 1,
+    "ruc_s4_24_coalccs": 13,
+    "ruc_s4_25_coalccs": 2,
+    "ruc_s4_24_cchp": 5,
+    "ruc_s4_27_gas": 1,
+    "ruc_s4_24_gasccs": 31,
+    "ruc_s4_24_gchp": 5,
+    "ruc_s4_24_gchpccs": 25,
+    "ruc_s4_24_bio": 11,
+    "ruc_s4_24_bioccs": 332,
+    "ruc_s4_29_bioccs": 506,
+    "ruc_s4_27_bioccs": 44,
+    "ruc_s4_28_bioccs": 124,
+    "ruc_s4_25_bioccs": 7,
+    "ruc_s4_24_nuclear": 24,
+    "chp_winter": 909,
+    "inertia": 51,
+    "annual_biomass": 3,
+    "annual_emissions": 1
+  },
+  "diagnostic_only": true,
+  "gate_unchanged": true,
+  "tolerances_relaxed": false,
+  "iis_replay_status": 3,
+  "original_carbon_limit_mt": 3.561643835616438,
+  "carbon_lower_bound_status": 2,
+  "minimum_iis_net_emissions_mt": 6.234302871629842,
+  "carbon_excess_lower_bound_mt": 2.6726590360134037,
+  "network_upper_bound_duals": [
+    {
+      "variable": "trunk_augmentation_gw[2288]",
+      "upper": 0.0677170174969191,
+      "reduced_cost_mt_per_gw": -0.0001088624312393888
+    },
+    {
+      "variable": "trunk_augmentation_gw[2298]",
+      "upper": 1.640235025152234,
+      "reduced_cost_mt_per_gw": -0.0001088624312393888
+    },
+    {
+      "variable": "trunk_augmentation_gw[2344]",
+      "upper": 2.34382e-05,
+      "reduced_cost_mt_per_gw": -0.0001088624312393888
+    }
+  ],
+  "carbon_lower_bound_with_1mw_network_headroom_mt": 6.2343025450425475,
+  "network_bound_diagnostic": "Dual certificate for up to +1e-3 GW per spur/trunk upper bound; no bounds changed",
+  "carbon_diagnostic_scope": "IIS subset without carbon cap; lower bound, not accepted dispatch",
+  "source_unchanged": true
+}

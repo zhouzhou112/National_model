@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "capacity": "vre_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "capacity": "thermal_capacity",
+      "unit": "GW",
+      "max_abs_difference": 4.3298697960381105e-15,
+      "passed": true
+    },
+    {
+      "capacity": "storage_capacity",
+      "unit": "GW",
+      "max_abs_difference": 7.105427357601002e-15,
+      "passed": true
+    },
+    {
+      "capacity": "line_capacity",
+      "unit": "GW",
+      "max_abs_difference": 7.105427357601002e-15,
+      "passed": true
+    },
+    {
+      "capacity": "intra_load_center_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.4210854715202004e-14,
+      "passed": true
+    },
+    {
+      "capacity": "hydro_capacity",
+      "unit": "GW",
+      "max_abs_difference": 1.1102230246251565e-16,
+      "passed": true
+    },
+    {
+      "capacity": "wave_capacity",
+      "unit": "GW",
+      "max_abs_difference": 9.348533232256262e-17,
+      "passed": true
+    },
+    {
+      "capacity": "dac_capacity",
+      "unit": "MtCO2_per_year",
+      "max_abs_difference": 9.437979911486316e-17,
+      "passed": true
+    }
+  ],
+  "definition": "Original Base total capacity plus original clips and separately audited author static closure",
+  "closure_payload_sha256": "cc44ca8f4cf470361153fabca2adc46b78c8786e01e2c014017f7cc5c0bc70f0"
+}

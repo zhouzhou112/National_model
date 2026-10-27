@@ -562,6 +562,7 @@ def main() -> None:
     parser.add_argument("--vre-screen-csv", type=Path, help="Exact VRE candidate CSV; restricted to TEST_ONLY factor profile")
     parser.add_argument("--frozen-capacity-from", type=Path, help="Opt-in Base-frozen: immutable same-year Base output_8760")
     parser.add_argument("--frozen-capacity-supplement", type=Path, help="Verified independent hydro-spur supplement directory")
+    parser.add_argument("--frozen-capacity-closure", type=Path, help="Author-approved source-bound minimal static closure JSON")
     parser.add_argument("--frozen-parameters", type=Path, help="B-only reviewed flexibility/weather override JSON; no investment/load/carbon overrides")
     parser.add_argument(
         "--scenario-config",
@@ -924,7 +925,7 @@ def main() -> None:
     frozen_mode = args.frozen_capacity_from is not None
     frozen_tables = frozen_evidence = frozen_state = None
     frozen_override = {}
-    if not frozen_mode and (args.frozen_capacity_supplement or args.frozen_parameters):
+    if not frozen_mode and (args.frozen_capacity_supplement or args.frozen_parameters or args.frozen_capacity_closure):
         raise SystemExit("Frozen supplement/parameters require --frozen-capacity-from")
     if frozen_mode:
         from cispo_model.frozen_capacity import (validate_mode, read_source, recover_upstream,
@@ -936,6 +937,16 @@ def main() -> None:
             args.frozen_capacity_supplement, config.planning_year)
         frozen_state, upstream = recover_upstream(args.frozen_capacity_from, config.planning_year)
         frozen_evidence['upstream'] = upstream
+        if args.frozen_capacity_closure:
+            from cispo_model.frozen_closure import SCHEMA
+            from cispo_model.frozen_capacity import digest
+            closure = json.loads(args.frozen_capacity_closure.read_text(encoding='utf-8'))
+            if (closure.get('schema_version') != SCHEMA or closure.get('mode') != 'STATIC_EXACT'
+                    or closure.get('planning_year') != config.planning_year
+                    or closure.get('source_result_manifest_sha256') != frozen_evidence['result_manifest_sha256']):
+                raise SystemExit('Frozen closure source/year/policy mismatch')
+            frozen_evidence['static_closure'] = dict(path=str(args.frozen_capacity_closure.resolve()),
+                sha256=digest(args.frozen_capacity_closure), definition=closure['definition'])
         config.raw['frozen_capacity'] = frozen_evidence
         if args.frozen_parameters:
             frozen_override = apply_parameter_override(config, args.frozen_parameters)
@@ -1643,6 +1654,10 @@ def main() -> None:
     if frozen_mode:
         from cispo_model.frozen_capacity import apply_frozen_capacity, apply_contract_upper_fractions
         frozen_report = apply_frozen_capacity(artifacts, data, frozen_tables, frozen_evidence, output_dir)
+        if args.frozen_capacity_closure:
+            from cispo_model.frozen_closure import apply_static_closure
+            frozen_report['closure'] = apply_static_closure(artifacts, output_dir,
+                args.frozen_capacity_closure, frozen_evidence['result_manifest_sha256'], config.planning_year)
         apply_contract_upper_fractions(artifacts, frozen_override)
         from cispo_model.frozen_capacity import save_capacity_expectations
         frozen_report['expected_capacity_sha256'] = save_capacity_expectations(artifacts, data, output_dir, frozen_tables)

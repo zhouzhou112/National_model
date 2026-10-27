@@ -1,0 +1,7 @@
+{
+  "observed_utc": "2026-10-27T14:29:04.616513+00:00",
+  "command": "squeue --me -h -o \"%i|%j|%T|%M|%N\"",
+  "stdout": "5294579|cispo2050_case3|RUNNING|58:00|m4cm1608\n5207165|cispo_cont_agg0|RUNNING|7-02:04:19|m4cm1607\n",
+  "job_count": 2,
+  "mutations": false
+}

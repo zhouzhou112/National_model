@@ -1,0 +1,8 @@
+{
+  "contract_upper_fraction": {
+    "heating": 0,
+    "cooling": 0,
+    "ev_v1g": 0,
+    "ev_v2g": 0
+  }
+}

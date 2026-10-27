@@ -31,6 +31,7 @@ def main():
     parser.add_argument('--year',type=int,choices=[2030,2040,2050,2060],default=2030)
     parser.add_argument('--source-release',type=Path,help='Verified Base release with original packaged upstream')
     parser.add_argument('--supplement',type=Path,help='Verified hydro-spur sidecar outside source output')
+    parser.add_argument('--closure',type=Path,help='Explicit source-bound static closure payload')
     args=parser.parse_args()
     out=args.output.resolve()
     if out.exists():raise FileExistsError(out)
@@ -53,6 +54,7 @@ def main():
         source=args.source_release or HERE/'source_base/20260914_base_v9_t48_m750_tol1e4_v3'
         supplement=args.supplement or source/'frozen_capacity_B_20261026'
         argv+=['--frozen-capacity-from',str(source/'output_8760'),'--frozen-capacity-supplement',str(supplement)]
+        if args.closure:argv+=['--frozen-capacity-closure',str(args.closure)]
     if args.mode=='zero':
         override=out.parent/(out.name+'_override.json')
         save(override,dict(contract_upper_fraction={key:0 for key in ['heating','cooling','ev_v1g','ev_v2g']}))

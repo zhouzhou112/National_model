@@ -1,0 +1,47 @@
+{
+  "schema_version": "cispo_preservation_v1",
+  "scientifically_accepted": false,
+  "generated_at": "2026-10-27T14:16:24.338508+00:00",
+  "author_decision": "PENDING",
+  "stages": {
+    "raw_snapshot": "COMPLETE",
+    "snapshot_integrity": "COMPLETE",
+    "raw_lp_qc": "COMPLETE",
+    "saved_value_mapping": "COMPLETE",
+    "capacity_and_cost": "COMPLETE",
+    "frozen_capacity_identity": "COMPLETE",
+    "operation_carbon_dual_qc": "COMPLETE",
+    "read_raw_lp_qc.json": "COMPLETE",
+    "summary": "COMPLETE",
+    "read_dual_export_status.json": "COMPLETE",
+    "candidate_state": "COMPLETE",
+    "output_catalog": "COMPLETE",
+    "read_model_archive/archive_manifest.json": "COMPLETE"
+  },
+  "errors": [],
+  "solver_contract": {
+    "contract_version": "cispo_lp_solution_contract_v1",
+    "mode": "OPTIMAL_BASIC_OR_DEFAULT",
+    "basis_required": true,
+    "barrier_status_code": 2,
+    "strict_quality_pass": true,
+    "acceptance_status": "PASS",
+    "dual_attribute": "Pi"
+  },
+  "solver_quality": {
+    "maximum_constraint_violation": 7.275957614183426e-12,
+    "maximum_constraint_residual": 4.001776687800884e-11,
+    "maximum_bound_violation": 7.275957614183426e-12,
+    "maximum_dual_violation": 1.5057399771478686e-15,
+    "maximum_dual_residual": 4.092726157978177e-12,
+    "maximum_complementarity_violation": 0.0,
+    "maximum_violation": 4.001776687800884e-11,
+    "kappa": 5565321.360024236,
+    "kappa_exact_computed": false
+  },
+  "qc_status": "PASS",
+  "status": "COMPLETE",
+  "semantic_primal_attribute": "X",
+  "original_model_archived": true,
+  "elapsed_seconds_before_manifest": 27.381603099998756
+}
