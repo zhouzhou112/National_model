@@ -14,13 +14,16 @@ SOURCES={2040:'20260919_base2040_v9_t44_m750_tol1e4_v1',2050:'20260930_base2050_
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('year',type=int,choices=[2040,2050])
-    p.add_argument('--attempt',type=int,default=1);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('year',type=int,choices=SOURCES)
+    p.add_argument('--attempt',type=int,default=1);p.add_argument('--work-tag');p.add_argument('--closure',type=Path);a=p.parse_args()
     work=HERE/str(a.year)
+    if a.work_tag:
+        if a.work_tag!='cloud_identity_v2':p.error('Unrecognized isolated work tag')
+        work=work/a.work_tag
     if a.attempt!=1:work=work/('attempt_'+str(a.attempt))
     work.mkdir(exist_ok=True)
     source=HERE.parent/'base_frozen_followups_20261027/source_base'/SOURCES[a.year]
-    closure=HERE.parent/'base_frozen_closure_20261027'/str(a.year)/'derived_static/closure.json'
+    closure=a.closure or HERE.parent/'base_frozen_closure_20261027'/str(a.year)/'derived_static/closure.json'
     budget=HERE/str(a.year)/'window_carbon_budget.json'
     supplement=source/'frozen_capacity_B_20261027'
     assert json.loads((supplement/'supplement_manifest.json').read_text())['status']=='PASS'

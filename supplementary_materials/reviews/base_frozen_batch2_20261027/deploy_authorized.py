@@ -39,8 +39,8 @@ def main():
     profile=('config/solver_profiles/barrier_stagea_screened_agg0_case3_2050_v1_threads40.json' if is_a else
              'config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads48.json')
     batch=work/'continuation.sbatch' if is_a else HERE/f'B{year}.sbatch'
-    gates_path=(HERE.parent/'base_frozen_closure_20261027/2060/attempt_2/FINAL_GATES_PASSED.json') if year==2060 else work/'t550_v1/FINAL_GATES_PASSED.json'
-    closure_path=HERE.parent/'base_frozen_closure_20261027'/str(year)/'derived_static/closure.json'
+    gates_path=work/'cloud_identity_v2_t550/FINAL_GATES_PASSED.json'
+    closure_path=work/'cloud_identity_v2_t550/derived_static/closure.json'
     license_path=json.loads((HERE.parent/'base_frozen_B_20261026/deployment_v3/launch_config.json').read_text())['license_path']
     def remote(code,label):
         header='from pathlib import Path\nimport json,hashlib,subprocess,os,re,tarfile\nroot=Path('+repr(root)+')\n'
@@ -55,11 +55,10 @@ def main():
         scientific_args=f'--frozen-capacity-from "{root}/frozen_source/{source}/output_8760" --frozen-capacity-supplement "{root}/frozen_source/{source}/frozen_capacity_B_20261027" --frozen-capacity-closure "{root}/frozen_closure.json"'
     if args.phase=='prepare':
         gates=json.loads(gates_path.read_text());assert gates['status']=='PASS' and gates['planning_year']==year and gates['framework']==args.case[0]
-        if year in {2040,2050}:
-            assert json.loads((work/'t550_v1/window_model_audit.json').read_text())['status']=='PASS'
-            budgets=[json.loads((work/'t550_v1'/mode/'window_carbon_override.json').read_text()) for mode in ['base_control_24h','zero_24h','frozen_24h']]
-            assert len({r['budget_payload_sha256'] for r in budgets})==1
-            assert all(r['production_annual_carbon_limit_unchanged'] for r in budgets)
+        assert json.loads((work/'cloud_identity_v2_t550/production_identity_audit.json').read_text())['status']=='PASS'
+        budgets=[json.loads((work/'cloud_identity_v2_t550'/mode/'window_carbon_override.json').read_text()) for mode in ['base_control_24h','zero_24h','frozen_24h']]
+        assert len({r['budget_payload_sha256'] for r in budgets})==1
+        assert all(r['production_annual_carbon_limit_unchanged'] for r in budgets)
         assert '--window-carbon-budget' not in batch.read_text()
         commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
         assert not subprocess.check_output(['git','diff','HEAD','--','cispo_model','scripts','config','tests'],cwd=REPO).strip()
@@ -94,9 +93,10 @@ def main():
                     raw=src.extractfile(item).read();add('repo/'+item.name,raw);source_hashes[item.name]=hashlib.sha256(raw).hexdigest()
             add('continuation.sbatch',batch.read_bytes().replace(b'\r\n',b'\n'))
             add('launch_config.json',(evidence/'launch_config.json').read_bytes());add('FINAL_GATES_PASSED.json',gates_path.read_bytes())
-            if year in {2040,2050}:
-                add('engineering_gate_window_carbon_budget.json',(work/'window_carbon_budget.json').read_bytes())
-                add('engineering_gate_window_model_audit.json',(work/'t550_v1/window_model_audit.json').read_bytes())
+            add('engineering_gate_window_carbon_budget.json',(work/'window_carbon_budget.json').read_bytes())
+            add('engineering_gate_window_model_audit.json',(work/'cloud_identity_v2_t550/production_identity_audit.json').read_bytes())
+            add('cf_mapping_preflight.py',(HERE/'cf_mapping_preflight.py').read_bytes())
+            add('cf_fallback_cloud.json',(HERE/'cf_fallback_cloud.json').read_bytes())
             for name,row in expected.items():
                 path=REPO/'data'/name;assert sha(path)==row['sha256'] and path.stat().st_size==row['bytes'],name
             add('expected_data_files.json',json.dumps(expected,indent=2).encode())
@@ -151,6 +151,7 @@ export https_proxy="$http_proxy" HTTP_PROXY="$http_proxy" HTTPS_PROXY="$http_pro
 export PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS={threads} OPENBLAS_NUM_THREADS={threads} MKL_NUM_THREADS={threads}
 export CISPO_DATA_ROOT="{root}/data_overlay" PYTHONPATH="{root}/repo${{PYTHONPATH:+:$PYTHONPATH}}"
 cd "{root}/repo"
+"$PYTHON" "{root}/cf_mapping_preflight.py" > "{root}/cf_mapping_preflight.log" 2>&1
 "$PYTHON" scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9_a12.json --scenario-config config/scenarios/case3_thermal_ev_v5.json --solver-config {profile} --planning-year {year} {scientific_args} --horizon full_year --allow-nonbasic-planning-state --preflight-only --output-dir "{root}/preflight" > "{root}/preflight.log" 2>&1
 '''
         remote('script='+repr(script)+'\n'+r'''
@@ -164,6 +165,7 @@ print(json.dumps({'status':'PASS','report':r}))
     elif args.phase=='submit':
         remote('exports='+repr('ALL,SOURCE_RELEASE='+ENV_SOURCE)+'\n'+r'''
 assert json.loads((root/'preflight/preflight_report.json').read_text())['status']=='PASS'
+assert json.loads((root/'cf_mapping_preflight.json').read_text())['status']=='PASS'
 assert not (root/'submission_attempt.json').exists(),'Never repeat uncertain submission'
 subprocess.check_call(['sha256sum','--quiet','-c','release_files.sha256'],cwd=str(root))
 queue=subprocess.check_output(['squeue','--me','--noheader','-o','%i'],universal_newlines=True).splitlines();assert len(queue)<10
