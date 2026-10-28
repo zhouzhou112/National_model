@@ -1,0 +1,79 @@
+{
+  "snapshot": "cloud_status_20261028T111453Z.json",
+  "utc": "2026-10-28T11:14:52.152662+00:00",
+  "active": 5,
+  "all_running": true,
+  "new_terminal": false,
+  "metrics": [
+    {
+      "job_id": "5297410",
+      "iteration": 159.0,
+      "primal_infeasibility": 0.0009333566372112316,
+      "dual_infeasibility": 7.170188966797702e-06,
+      "complementarity": 6.737720120450813e-05,
+      "last_10_minutes_per_iteration": 4.822784808476766,
+      "last_10_change_pct": {
+        "primal_infeasibility": -37.6204837717426,
+        "dual_infeasibility": -33.11636699922118,
+        "complementarity": -34.88335625130182
+      },
+      "slurm_batch_max_rss_gib": 547.7147216796875
+    },
+    {
+      "job_id": "5297390",
+      "iteration": 145.0,
+      "primal_infeasibility": 0.00027177890296653366,
+      "dual_infeasibility": 4.9088901754648e-06,
+      "complementarity": 5.8862417719686965e-05,
+      "last_10_minutes_per_iteration": 6.857912160158157,
+      "last_10_change_pct": {
+        "primal_infeasibility": -26.502442235412094,
+        "dual_infeasibility": -36.21135252238946,
+        "complementarity": -38.845585769774345
+      },
+      "slurm_batch_max_rss_gib": 557.4917411804199
+    },
+    {
+      "job_id": "5297384",
+      "iteration": 132.0,
+      "primal_infeasibility": 0.005322059506993651,
+      "dual_infeasibility": 6.013962766156665e-06,
+      "complementarity": 0.00010836859116971977,
+      "last_10_minutes_per_iteration": 6.889321161905925,
+      "last_10_change_pct": {
+        "primal_infeasibility": -58.86003864797977,
+        "dual_infeasibility": -63.05380945502526,
+        "complementarity": -61.617883199472786
+      },
+      "slurm_batch_max_rss_gib": 562.798469543457
+    },
+    {
+      "job_id": "5294579",
+      "iteration": 43.0,
+      "primal_infeasibility": 25822704767.28117,
+      "dual_infeasibility": 147759.61395160112,
+      "complementarity": 118411972.82662773,
+      "last_10_minutes_per_iteration": 23.120556438366574,
+      "last_10_change_pct": {
+        "primal_infeasibility": -54.71388804650993,
+        "dual_infeasibility": -58.08045576691549,
+        "complementarity": -55.02768926986015
+      },
+      "slurm_batch_max_rss_gib": 617.8211822509766
+    },
+    {
+      "job_id": "5207165",
+      "iteration": 427.0,
+      "primal_infeasibility": 2.3738404349798246,
+      "dual_infeasibility": 2.861993326444838e-05,
+      "complementarity": 0.0036740682151628666,
+      "last_10_minutes_per_iteration": 26.895171099901198,
+      "last_10_change_pct": {
+        "primal_infeasibility": -33.95272869647633,
+        "dual_infeasibility": -10.076355836942808,
+        "complementarity": -36.303003462237925
+      },
+      "slurm_batch_max_rss_gib": 621.1832046508789
+    }
+  ]
+}
