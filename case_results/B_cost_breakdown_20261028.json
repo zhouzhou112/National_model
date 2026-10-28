@@ -1,0 +1,478 @@
+{
+  "host": "t550",
+  "utc": "2026-10-28T21:49:44.903694+00:00",
+  "source_sha256": {
+    "cost_components.csv": "ab85e1b8afca4618c8bfdbb4c1f3ad417128efc679de186bc371708cf8dbbe4d",
+    "run_summaries.json": "7de0d730f339406f75b5eb0bebef438eb233db1223c4fb52e3920eaa42b3d0cb",
+    "flexible_contracts.csv": "8cf78eab04a71da60dd695da6dd3b9a36a5bf6e54ea83df098fe5a726775b834",
+    "national_generation.csv": "edf80b7fdd636617fc48b70034d0da7de4075e6802ba5938b4ac37502f0fc21f"
+  },
+  "script_sha256": "52a410cbfc88e925613be92afafe1e5984c115fcfe932f0caed37f746c0fa502",
+  "cost_unit": "100 million CNY/year; positive means Base minus B saving",
+  "years": {
+    "2030": {
+      "net_saving_yi_cny": 30.454292989056558,
+      "saving_percent": 0.07263510473333368,
+      "saving_by_component_yi_cny": {
+        "annual_operation": 30.531336171217262,
+        "ccs_capture": -0.05362225343067166,
+        "co2_transport_injection": -0.023420723507965705,
+        "dac": 0.0,
+        "hydro_fixed_om": 0.0,
+        "hydro_investment": 0.0,
+        "hydro_spur": 1.7053025658242404e-15,
+        "load_center_intra_transmission_investment": 0.0,
+        "operating_detail_flexible_load_v5_thermal_precondition": 0.0,
+        "operating_detail_flexible_load_v5_thermal_release": -1.396792673461714,
+        "operating_flexible_load_v5_enablement": -13.598365866889555,
+        "operating_flexible_load_v5_ev_v1g_relocation": -8.056441711632571,
+        "operating_flexible_load_v5_ev_v2g_degradation": -0.5701688055102575,
+        "operating_flexible_load_v5_ev_v2g_participation": -0.5701688055102575,
+        "operating_flexible_load_v5_thermal_activation": -1.396792673461714,
+        "operating_flexible_load_v5_v2g_infrastructure": -0.6338637816662888,
+        "operating_fuel": 34.797817866501866,
+        "operating_load_center_intra_flow_regularization": 0.0017693557156189853,
+        "operating_ramping": -2.258450444054974,
+        "operating_startup_shutdown": 19.841638208272453,
+        "operating_storage_variable_om": 2.1544969473844504,
+        "operating_thermal_variable_om": 0.971238598220225,
+        "operating_transmission_flow_regularization": -0.15137283911096347,
+        "spur": -3.637978807091713e-14,
+        "storage_fixed_om": 0.0,
+        "storage_investment": 0.0,
+        "thermal_nuclear_fixed_om": -7.890048436820507e-10,
+        "thermal_nuclear_investment": -2.6461202651262284e-09,
+        "transmission_investment": 1.4551915228366852e-13,
+        "trunk": 0.0,
+        "vre_fixed_om": 0.0,
+        "vre_investment": 0.0,
+        "wave_fixed_om": 0.0,
+        "wave_investment": 0.0
+      },
+      "flex_service_cost_yi_cny": 24.82580164467064,
+      "other_fixed_cost_saving_yi_cny": -3.4350142641415007e-09,
+      "operation_detail_minus_total_million_cny": {
+        "Base": -6.574532017111778e-05,
+        "B": -5.3449301049113274e-05
+      },
+      "flex": {
+        "heating_shift_up_gwh": 1753.116848133275,
+        "heating_shift_down_gwh": 1317.5074712147868,
+        "cooling_shift_up_gwh": 2769.724398956746,
+        "cooling_shift_down_gwh": 2174.4742124394834,
+        "ev_v2g_discharge_gwh": 380.1125370068261,
+        "ev_mobility_v1g_relocated_gwh": 26854.805705441035,
+        "contracted_heating_flexibility_gw": 2.8710800845986255,
+        "contracted_cooling_flexibility_gw": 7.361433801907993,
+        "contracted_ev_v1g_flexibility_gw": 21.782576463010106,
+        "contracted_ev_v2g_flexibility_gw": 1.584659454165721,
+        "firm_heating_flexibility_credit_gw": 0.0,
+        "firm_cooling_flexibility_credit_gw": 0.0,
+        "firm_ev_v1g_flexibility_credit_gw": 0.0,
+        "firm_ev_v2g_flexibility_credit_gw": 0.0,
+        "net_load_energy_change_gwh": 1080.933463338184
+      },
+      "physical": {
+        "vre_curtailment_gwh": {
+          "Base": 304113.8822869142,
+          "B": 304108.0158524954,
+          "B_minus_Base": -5.866434418829158
+        },
+        "storage_charge_gwh": {
+          "Base": 395131.7312379376,
+          "B": 381607.2427124338,
+          "B_minus_Base": -13524.48852550378
+        },
+        "storage_discharge_gwh": {
+          "Base": 325300.457604916,
+          "B": 314175.8589587332,
+          "B_minus_Base": -11124.5986461828
+        },
+        "interprovincial_transmission_losses_gwh": {
+          "Base": 161874.1849617036,
+          "B": 162187.4935959018,
+          "B_minus_Base": 313.3086341981834
+        },
+        "period_effective_peak_load_gw": {
+          "Base": 1651.9249861858696,
+          "B": 1644.796301092644,
+          "B_minus_Base": -7.128685093225613
+        },
+        "annual_load_gwh": {
+          "Base": 10607999.999996535,
+          "B": 10609080.933459874,
+          "B_minus_Base": 1080.9334633387625
+        }
+      },
+      "generation_change_twh": {
+        "bio": 0.1154556073826534,
+        "coalccs": 0.013604175857186401,
+        "gchpccs": 0.00463248699497899,
+        "offwind": -0.00834863469353877,
+        "gasccs": 0.004001033877312342,
+        "bioccs": 0.0017051902683174695,
+        "upv": 6.994542127617169,
+        "wave": -8.387332584373518e-06,
+        "ror": -0.023638055496208836,
+        "cchpccs": 0.004853130546578995,
+        "hydro_aggregate": -0.010388701368181501,
+        "coal": -6.123637651599478,
+        "gchp": 1.4998671253891371,
+        "cchp": 0.7640346005463508,
+        "nuclear": 4.302581166009302,
+        "reservoir": -0.21967183397739426,
+        "dpv": -7.333724463439197,
+        "onwind": 0.35339837029064075,
+        "gas": -1.3449059034312305
+      }
+    },
+    "2040": {
+      "net_saving_yi_cny": 256.03690526589753,
+      "saving_percent": 0.503209634834324,
+      "saving_by_component_yi_cny": {
+        "annual_operation": 209.60060263989027,
+        "ccs_capture": 38.65831695713285,
+        "co2_transport_injection": 7.766012626507872,
+        "dac": 0.011909651532489357,
+        "hydro_fixed_om": 1.267038460355252e-05,
+        "hydro_investment": 4.974162497092038e-05,
+        "hydro_spur": 2.5579538487363606e-15,
+        "load_center_intra_transmission_investment": 0.0,
+        "operating_detail_flexible_load_v5_thermal_precondition": 0.0,
+        "operating_detail_flexible_load_v5_thermal_release": -3.0243984228747616,
+        "operating_flexible_load_v5_enablement": -37.78431669980655,
+        "operating_flexible_load_v5_ev_v1g_relocation": -18.29165928881231,
+        "operating_flexible_load_v5_ev_v2g_degradation": -4.210561751915694,
+        "operating_flexible_load_v5_ev_v2g_participation": -4.593340092999162,
+        "operating_flexible_load_v5_thermal_activation": -3.0243984228747616,
+        "operating_flexible_load_v5_v2g_infrastructure": -4.236590670683377,
+        "operating_fuel": 140.60828641501953,
+        "operating_load_center_intra_flow_regularization": 0.0003321169237369759,
+        "operating_ramping": 4.969387622132778,
+        "operating_startup_shutdown": 120.94418625502215,
+        "operating_storage_variable_om": 4.015024803716724,
+        "operating_thermal_variable_om": 10.858060167046496,
+        "operating_transmission_flow_regularization": 0.34619366997320866,
+        "spur": -1.9831662939395756e-07,
+        "storage_fixed_om": 0.0,
+        "storage_investment": 0.0,
+        "thermal_nuclear_fixed_om": -2.8571521397680045e-08,
+        "thermal_nuclear_investment": -8.996576070785522e-08,
+        "transmission_investment": 0.0,
+        "trunk": -4.3746986193582415e-08,
+        "vre_fixed_om": 0.0,
+        "vre_investment": 0.0,
+        "wave_fixed_om": 3.2596148002994595e-15,
+        "wave_investment": 1.1404210908949608e-14
+      },
+      "flex_service_cost_yi_cny": 72.14086692709185,
+      "other_fixed_cost_saving_yi_cny": 6.205140869400161e-05,
+      "operation_detail_minus_total_million_cny": {
+        "Base": 0.00012775301001966,
+        "B": -2.0532170310616493e-05
+      },
+      "flex": {
+        "heating_shift_up_gwh": 2898.7182866175704,
+        "heating_shift_down_gwh": 2209.640829498254,
+        "cooling_shift_up_gwh": 6874.282360765214,
+        "cooling_shift_down_gwh": 5351.355227688734,
+        "ev_v2g_discharge_gwh": 3827.7834108325214,
+        "ev_mobility_v1g_relocated_gwh": 91458.29644406273,
+        "contracted_heating_flexibility_gw": 5.181271641776798,
+        "contracted_cooling_flexibility_gw": 15.415851354897594,
+        "contracted_ev_v1g_flexibility_gw": 71.21867454302672,
+        "contracted_ev_v2g_flexibility_gw": 14.12196890227792,
+        "firm_heating_flexibility_credit_gw": 0.0,
+        "firm_cooling_flexibility_credit_gw": 0.0,
+        "firm_ev_v1g_flexibility_credit_gw": 0.0,
+        "firm_ev_v2g_flexibility_credit_gw": 0.0,
+        "net_load_energy_change_gwh": 2716.253631364889
+      },
+      "physical": {
+        "vre_curtailment_gwh": {
+          "Base": 688642.3843887863,
+          "B": 688685.5486814739,
+          "B_minus_Base": 43.1642926876666
+        },
+        "storage_charge_gwh": {
+          "Base": 891246.8106375776,
+          "B": 838700.2347932222,
+          "B_minus_Base": -52546.57584435539
+        },
+        "storage_discharge_gwh": {
+          "Base": 704894.8409490597,
+          "B": 663264.0312650892,
+          "B_minus_Base": -41630.809683970525
+        },
+        "interprovincial_transmission_losses_gwh": {
+          "Base": 181777.38861627845,
+          "B": 180799.98252180632,
+          "B_minus_Base": -977.4060944721277
+        },
+        "period_effective_peak_load_gw": {
+          "Base": 2066.7983970689293,
+          "B": 2036.6596277589456,
+          "B_minus_Base": -30.138769309983672
+        },
+        "annual_load_gwh": {
+          "Base": 13672999.999995576,
+          "B": 13675716.253626939,
+          "B_minus_Base": 2716.2536313626915
+        }
+      },
+      "generation_change_twh": {
+        "bio": -7.067083347245585,
+        "coalccs": -1.0887698156153538,
+        "gchpccs": -0.014640334200744292,
+        "offwind": 0.3264165327951778,
+        "gasccs": -0.2730533478875937,
+        "bioccs": -9.41723678157192,
+        "upv": 0.8001323207132518,
+        "wave": 0.0030557858723424315,
+        "ror": -0.0415220244081429,
+        "cchpccs": -0.06825417360606753,
+        "hydro_aggregate": 0.07860332712886156,
+        "coal": -13.564507365523488,
+        "gchp": 8.436657912837575,
+        "cchp": -5.599023079650011,
+        "nuclear": 24.9118348251353,
+        "reservoir": 0.5423608489765902,
+        "dpv": -0.7926374138760147,
+        "onwind": -0.3769138702759519,
+        "gas": -5.97790167866979
+      }
+    },
+    "2050": {
+      "net_saving_yi_cny": 427.6881813091133,
+      "saving_percent": 0.7435504618880727,
+      "saving_by_component_yi_cny": {
+        "annual_operation": 315.4637683001207,
+        "ccs_capture": 88.62165186789585,
+        "co2_transport_injection": 23.593712278006205,
+        "dac": 0.008524847841219447,
+        "hydro_fixed_om": 0.00011028180713765323,
+        "hydro_investment": 0.00043294632341712714,
+        "hydro_spur": 1.5987211554602255e-15,
+        "load_center_intra_transmission_investment": 0.0,
+        "operating_detail_flexible_load_v5_thermal_precondition": 0.0,
+        "operating_detail_flexible_load_v5_thermal_release": -3.131863974074243,
+        "operating_flexible_load_v5_enablement": -54.45590143181705,
+        "operating_flexible_load_v5_ev_v1g_relocation": -35.153613796734696,
+        "operating_flexible_load_v5_ev_v2g_degradation": -3.8681756732228934,
+        "operating_flexible_load_v5_ev_v2g_participation": -4.835219591528608,
+        "operating_flexible_load_v5_thermal_activation": -3.131863974074243,
+        "operating_flexible_load_v5_v2g_infrastructure": -3.8250011874539624,
+        "operating_fuel": 208.5551567862672,
+        "operating_load_center_intra_flow_regularization": -0.0011982904939486616,
+        "operating_ramping": 4.794483531757829,
+        "operating_startup_shutdown": 179.20575092708873,
+        "operating_storage_variable_om": 5.010715671519684,
+        "operating_thermal_variable_om": 22.641465694842335,
+        "operating_transmission_flow_regularization": 0.5271683817850226,
+        "spur": -1.699081218248466e-05,
+        "storage_fixed_om": 0.0,
+        "storage_investment": 0.0,
+        "thermal_nuclear_fixed_om": -2.779706846922636e-09,
+        "thermal_nuclear_investment": -7.855705916881562e-09,
+        "transmission_investment": 0.0,
+        "trunk": -8.698591045686043e-07,
+        "vre_fixed_om": 0.0,
+        "vre_investment": 0.0,
+        "wave_fixed_om": 8.437694987151189e-16,
+        "wave_investment": 2.9487523534044156e-15
+      },
+      "flex_service_cost_yi_cny": 105.26977565483146,
+      "other_fixed_cost_saving_yi_cny": 0.0005253568238603545,
+      "operation_detail_minus_total_million_cny": {
+        "Base": -8.945330046117306e-05,
+        "B": 3.5765115171670914e-05
+      },
+      "flex": {
+        "heating_shift_up_gwh": 4468.959357250217,
+        "heating_shift_down_gwh": 3497.0132770809214,
+        "cooling_shift_up_gwh": 8803.786951389076,
+        "cooling_shift_down_gwh": 6942.533303166562,
+        "ev_v2g_discharge_gwh": 4835.219591528589,
+        "ev_mobility_v1g_relocated_gwh": 175768.06898367382,
+        "contracted_heating_flexibility_gw": 7.439002995860404,
+        "contracted_cooling_flexibility_gw": 20.818074272941892,
+        "contracted_ev_v1g_flexibility_gw": 134.1375882333181,
+        "contracted_ev_v2g_flexibility_gw": 19.125005937269812,
+        "firm_heating_flexibility_credit_gw": 0.0,
+        "firm_cooling_flexibility_credit_gw": 0.0,
+        "firm_ev_v1g_flexibility_credit_gw": 0.0,
+        "firm_ev_v2g_flexibility_credit_gw": 0.0,
+        "net_load_energy_change_gwh": 3470.161710340002
+      },
+      "physical": {
+        "vre_curtailment_gwh": {
+          "Base": 627688.377791902,
+          "B": 627807.9489338241,
+          "B_minus_Base": 119.57114192203153
+        },
+        "storage_charge_gwh": {
+          "Base": 1133961.4293487,
+          "B": 1039476.8268753546,
+          "B_minus_Base": -94484.60247334535
+        },
+        "storage_discharge_gwh": {
+          "Base": 909664.8824450196,
+          "B": 835604.128808408,
+          "B_minus_Base": -74060.75363661151
+        },
+        "interprovincial_transmission_losses_gwh": {
+          "Base": 193793.26934975496,
+          "B": 191724.07983924777,
+          "B_minus_Base": -2069.189510507189
+        },
+        "period_effective_peak_load_gw": {
+          "Base": 2357.3646532975745,
+          "B": 2300.0384991667515,
+          "B_minus_Base": -57.32615413082294
+        },
+        "annual_load_gwh": {
+          "Base": 15859999.999994893,
+          "B": 15863470.161705233,
+          "B_minus_Base": 3470.1617103405297
+        }
+      },
+      "generation_change_twh": {
+        "bio": 2.58020655993768,
+        "coalccs": -0.6256597814470041,
+        "gchpccs": -0.023140275542992528,
+        "offwind": 0.17617699267412537,
+        "gasccs": -0.3930963032129201,
+        "bioccs": -26.175591063925065,
+        "upv": -1.016475868910551,
+        "wave": 0.0060918935162433884,
+        "ror": 0.047401153402861385,
+        "cchpccs": -0.09486590062339363,
+        "hydro_aggregate": 0.07357267131726257,
+        "coal": -46.766770668735205,
+        "gchp": 12.658882262546744,
+        "cchp": -6.957320102439728,
+        "nuclear": 44.12219483185513,
+        "reservoir": 0.7870462899957201,
+        "dpv": 0.9527521078493446,
+        "onwind": -0.23200276886066423,
+        "gas": 1.8534921718458646
+      }
+    },
+    "2060": {
+      "net_saving_yi_cny": 482.6907379137818,
+      "saving_percent": 0.8337927054772303,
+      "saving_by_component_yi_cny": {
+        "annual_operation": 376.93290581826585,
+        "ccs_capture": 83.25129564275092,
+        "co2_transport_injection": 22.50293776090286,
+        "dac": 0.003600558988144158,
+        "hydro_fixed_om": 0.0,
+        "hydro_investment": 0.0,
+        "hydro_spur": 8.526512829121202e-16,
+        "load_center_intra_transmission_investment": 0.0,
+        "operating_detail_flexible_load_v5_thermal_precondition": 0.0,
+        "operating_detail_flexible_load_v5_thermal_release": -2.6409528331325434,
+        "operating_flexible_load_v5_enablement": -68.1902594630598,
+        "operating_flexible_load_v5_ev_v1g_relocation": -49.40720351670491,
+        "operating_flexible_load_v5_ev_v2g_degradation": -1.6300347256512793,
+        "operating_flexible_load_v5_ev_v2g_participation": -2.7167245427521673,
+        "operating_flexible_load_v5_thermal_activation": -2.6409528331325434,
+        "operating_flexible_load_v5_v2g_infrastructure": -1.7022479084894784,
+        "operating_fuel": 260.56914456326047,
+        "operating_load_center_intra_flow_regularization": -0.0008034533790851128,
+        "operating_ramping": 4.817094521761654,
+        "operating_startup_shutdown": 205.75878233014245,
+        "operating_storage_variable_om": 6.654815792492082,
+        "operating_thermal_variable_om": 24.680411295872762,
+        "operating_transmission_flow_regularization": 0.740884892878239,
+        "spur": -2.461491840222152e-06,
+        "storage_fixed_om": 0.0,
+        "storage_investment": 2.9103830456733704e-13,
+        "thermal_nuclear_fixed_om": -8.424161933362484e-08,
+        "thermal_nuclear_investment": -2.78728548437357e-07,
+        "transmission_investment": 0.0,
+        "trunk": -2.60939632426016e-07,
+        "vre_fixed_om": 0.0,
+        "vre_investment": 0.0,
+        "wave_fixed_om": 3.9257486150745535e-15,
+        "wave_investment": 1.3677947663381929e-14
+      },
+      "flex_service_cost_yi_cny": 126.28742298979017,
+      "other_fixed_cost_saving_yi_cny": -3.085401330924497e-06,
+      "operation_detail_minus_total_million_cny": {
+        "Base": 0.00010696472600102425,
+        "B": -6.532995030283928e-06
+      },
+      "flex": {
+        "heating_shift_up_gwh": 4550.602999888968,
+        "heating_shift_down_gwh": 3677.803616771571,
+        "cooling_shift_up_gwh": 6275.443030813467,
+        "cooling_shift_down_gwh": 5125.3724936701465,
+        "ev_v2g_discharge_gwh": 2716.724542752133,
+        "ev_mobility_v1g_relocated_gwh": 247036.01758352938,
+        "contracted_heating_flexibility_gw": 8.059652281400668,
+        "contracted_cooling_flexibility_gw": 16.75081037324269,
+        "contracted_ev_v1g_flexibility_gw": 191.1420828322928,
+        "contracted_ev_v2g_flexibility_gw": 11.348319389929854,
+        "firm_heating_flexibility_credit_gw": 0.0,
+        "firm_cooling_flexibility_credit_gw": 0.0,
+        "firm_ev_v1g_flexibility_credit_gw": 0.0,
+        "firm_ev_v2g_flexibility_credit_gw": 0.0,
+        "net_load_energy_change_gwh": 2380.7546838415237
+      },
+      "physical": {
+        "vre_curtailment_gwh": {
+          "Base": 717858.5011629345,
+          "B": 717891.1402363564,
+          "B_minus_Base": 32.639073421945795
+        },
+        "storage_charge_gwh": {
+          "Base": 1401227.95508622,
+          "B": 1289341.3235750173,
+          "B_minus_Base": -111886.63151120278
+        },
+        "storage_discharge_gwh": {
+          "Base": 1138725.1874224597,
+          "B": 1050766.7092684177,
+          "B_minus_Base": -87958.47815404204
+        },
+        "interprovincial_transmission_losses_gwh": {
+          "Base": 205816.30913492493,
+          "B": 202768.71284857657,
+          "B_minus_Base": -3047.5962863483583
+        },
+        "period_effective_peak_load_gw": {
+          "Base": 2485.7097265534862,
+          "B": 2434.3746478058956,
+          "B_minus_Base": -51.335078747590615
+        },
+        "annual_load_gwh": {
+          "Base": 16817999.99999461,
+          "B": 16820380.75467845,
+          "B_minus_Base": 2380.75468384102
+        }
+      },
+      "generation_change_twh": {
+        "bio": 0.9368266835142859,
+        "coalccs": -0.5731885997614634,
+        "gchpccs": -0.03221602357753497,
+        "offwind": 0.37529855452012273,
+        "gasccs": -0.41795098102466105,
+        "bioccs": -27.071423763584928,
+        "upv": 0.005710376486647874,
+        "wave": 0.004852881565244179,
+        "ror": 0.09974566249363125,
+        "cchpccs": -0.10591385318165965,
+        "hydro_aggregate": 0.13062423800169198,
+        "coal": -40.8844102154542,
+        "gchp": 3.4335704527505877,
+        "cchp": -3.2444177843554645,
+        "nuclear": 54.34852750163292,
+        "reservoir": 0.9174646458865608,
+        "dpv": -0.32617427809763466,
+        "onwind": -0.0869821433168836,
+        "gas": -12.107140167289181
+      }
+    }
+  }
+}
