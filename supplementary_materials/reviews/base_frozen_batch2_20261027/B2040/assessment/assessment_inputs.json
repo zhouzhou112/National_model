@@ -1,0 +1,370 @@
+{
+  "disclosures": {
+    "new_build_below_1mw": {
+      "vre_capacity.csv": {
+        "asset_rows": 31245,
+        "total_gw": 0.28413098587572777,
+        "negative_rows": 0
+      },
+      "hydro_capacity.csv": {
+        "asset_rows": 1021,
+        "total_gw": 0.010432674513189855,
+        "negative_rows": 0
+      },
+      "thermal_nuclear_capacity.csv": {
+        "asset_rows": 106,
+        "total_gw": 0.00856790999826134,
+        "negative_rows": 0
+      },
+      "storage_capacity.csv": {
+        "asset_rows": 8,
+        "total_gw": 0.0019427600136330534,
+        "negative_rows": 0
+      },
+      "wave_capacity.csv": {
+        "asset_rows": 1284,
+        "total_gw": 0.0068317139874584125,
+        "negative_rows": 0
+      },
+      "transmission_capacity.csv": {
+        "asset_rows": 55,
+        "total_gw": 0.011795130714579211,
+        "negative_rows": 0
+      }
+    },
+    "numerical_robustness_audit": {
+      "retrofit_upper_cleanup": [
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [
+            3
+          ],
+          "asset_ids": [
+            "14::gchp::gchpccs"
+          ],
+          "removed_gw": [
+            2.220446049250313e-16
+          ],
+          "total_removed_gw": 2.220446049250313e-16
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        }
+      ],
+      "hydro_capacity_headroom_cleanup": {
+        "cutoff_gw": 1e-05,
+        "site_rows": [
+          595,
+          723,
+          757,
+          854,
+          895,
+          1013,
+          1071,
+          1078,
+          1134,
+          1136,
+          1148,
+          1152,
+          1236,
+          1246,
+          1288,
+          1320,
+          1337,
+          1349,
+          1361,
+          1388,
+          1416,
+          1458,
+          1459,
+          1466,
+          1496,
+          1518,
+          1538,
+          1563,
+          1572,
+          1634,
+          1638,
+          1715,
+          1740,
+          1755
+        ],
+        "asset_ids": [
+          "HydroCHN_00595",
+          "HydroCHN_00723",
+          "HydroCHN_00757",
+          "HydroCHN_00854",
+          "HydroCHN_00895",
+          "HydroCHN_01013",
+          "HydroCHN_01071",
+          "HydroCHN_01078",
+          "HydroCHN_01134",
+          "HydroCHN_01136",
+          "HydroCHN_01148",
+          "HydroCHN_01152",
+          "HydroCHN_01236",
+          "HydroCHN_01246",
+          "HydroCHN_01288",
+          "HydroCHN_01320",
+          "HydroCHN_01337",
+          "HydroCHN_01349",
+          "HydroCHN_01361",
+          "HydroCHN_01388",
+          "HydroCHN_01416",
+          "HydroCHN_01458",
+          "HydroCHN_01459",
+          "HydroCHN_01466",
+          "HydroCHN_01496",
+          "HydroCHN_01518",
+          "HydroCHN_01538",
+          "HydroCHN_01563",
+          "HydroCHN_01572",
+          "HydroCHN_01634",
+          "HydroCHN_01638",
+          "HydroCHN_01715",
+          "HydroCHN_01740",
+          "HydroCHN_01755"
+        ],
+        "removed_gw": [
+          7.201115369281919e-08,
+          1.1247016579868374e-07,
+          1.2039282810266672e-07,
+          2.9270416659898935e-07,
+          1.3098042930120846e-07,
+          1.3183327170207537e-07,
+          4.067316919723063e-08,
+          7.802661616020112e-07,
+          1.1724010619967862e-07,
+          7.706064190232675e-08,
+          5.457263030014814e-08,
+          2.837046850015512e-07,
+          7.495057200226918e-08,
+          3.0174110002278987e-08,
+          5.244521984991424e-07,
+          3.38004264993641e-08,
+          6.016195740199404e-08,
+          2.1744639699949886e-08,
+          6.40875786987738e-08,
+          5.398565229922103e-08,
+          2.868360689939342e-08,
+          5.8558262398811234e-08,
+          2.898102057988239e-07,
+          1.4817349999751706e-08,
+          1.4917591099894434e-08,
+          8.432155799986685e-08,
+          2.1220355800669055e-08,
+          2.0980921859939383e-07,
+          6.725079910140097e-08,
+          1.666173063998022e-07,
+          7.418254430006932e-08,
+          4.5083748439860016e-07,
+          1.7270692850013258e-06,
+          1.3423953730030969e-07
+        ],
+        "total_removed_gw": 6.419601649600495e-06
+      },
+      "other_capacity_headroom_cleanup": []
+    },
+    "continuation_cleanup": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    },
+    "continuation_bound_closure": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    }
+  },
+  "annual_fossil_unabated_emissions_mtco2": 1432.884534722429,
+  "annual_carbon_source": {
+    "path": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/annual_carbon_ccs.json",
+    "sha256": "433633bc940e2526200bd2a8e6ebb69f38be489ac703f482dc6968fbc2ee22f0",
+    "bytes": 637,
+    "field": "annual_fossil_unabated_emissions_mtco2"
+  },
+  "power_by_province": [
+    {
+      "province_code": "11",
+      "annual_peak_load_gw": 47.15348004896538,
+      "maximum_residual_gw": 4.1049343040718415e-08
+    },
+    {
+      "province_code": "12",
+      "annual_peak_load_gw": 26.41569526168834,
+      "maximum_residual_gw": 3.6876709721554886e-08
+    },
+    {
+      "province_code": "13",
+      "annual_peak_load_gw": 114.84666229245428,
+      "maximum_residual_gw": 3.424681505261654e-08
+    },
+    {
+      "province_code": "14",
+      "annual_peak_load_gw": 58.85971903540065,
+      "maximum_residual_gw": 3.329837999832464e-08
+    },
+    {
+      "province_code": "15",
+      "annual_peak_load_gw": 72.35179921593722,
+      "maximum_residual_gw": 3.0588395779764475e-08
+    },
+    {
+      "province_code": "21",
+      "annual_peak_load_gw": 51.353145718436345,
+      "maximum_residual_gw": 3.0783520183551595e-08
+    },
+    {
+      "province_code": "22",
+      "annual_peak_load_gw": 17.83236176350186,
+      "maximum_residual_gw": 2.3923888738951094e-08
+    },
+    {
+      "province_code": "23",
+      "annual_peak_load_gw": 20.62592121418448,
+      "maximum_residual_gw": 2.3447600074659133e-08
+    },
+    {
+      "province_code": "31",
+      "annual_peak_load_gw": 60.38472031782144,
+      "maximum_residual_gw": 1.8266952285177546e-08
+    },
+    {
+      "province_code": "32",
+      "annual_peak_load_gw": 163.74384478301096,
+      "maximum_residual_gw": 1.6682032426383072e-08
+    },
+    {
+      "province_code": "33",
+      "annual_peak_load_gw": 196.9169580513364,
+      "maximum_residual_gw": 1.3560089792424444e-08
+    },
+    {
+      "province_code": "34",
+      "annual_peak_load_gw": 76.60841048733066,
+      "maximum_residual_gw": 1.7039847524483383e-08
+    },
+    {
+      "province_code": "35",
+      "annual_peak_load_gw": 91.95214285313226,
+      "maximum_residual_gw": 7.635203887162798e-09
+    },
+    {
+      "province_code": "36",
+      "annual_peak_load_gw": 47.90695866341963,
+      "maximum_residual_gw": 6.67227680706091e-09
+    },
+    {
+      "province_code": "37",
+      "annual_peak_load_gw": 223.94874307660976,
+      "maximum_residual_gw": 9.572944155874376e-09
+    },
+    {
+      "province_code": "41",
+      "annual_peak_load_gw": 117.57071480613222,
+      "maximum_residual_gw": 7.489399027946734e-09
+    },
+    {
+      "province_code": "42",
+      "annual_peak_load_gw": 67.7196578957816,
+      "maximum_residual_gw": 2.286509912042845e-08
+    },
+    {
+      "province_code": "43",
+      "annual_peak_load_gw": 64.31706403626083,
+      "maximum_residual_gw": 3.191486856673424e-08
+    },
+    {
+      "province_code": "44",
+      "annual_peak_load_gw": 246.80659063105128,
+      "maximum_residual_gw": 2.6670891630767293e-08
+    },
+    {
+      "province_code": "45",
+      "annual_peak_load_gw": 46.51050815425279,
+      "maximum_residual_gw": 2.9945050327271075e-08
+    },
+    {
+      "province_code": "46",
+      "annual_peak_load_gw": 11.360342636287449,
+      "maximum_residual_gw": 7.486513118300036e-09
+    },
+    {
+      "province_code": "50",
+      "annual_peak_load_gw": 42.74185689783603,
+      "maximum_residual_gw": 3.1611093799600106e-08
+    },
+    {
+      "province_code": "51",
+      "annual_peak_load_gw": 79.32186466436178,
+      "maximum_residual_gw": 1.407243791474674e-07
+    },
+    {
+      "province_code": "52",
+      "annual_peak_load_gw": 38.92065191091786,
+      "maximum_residual_gw": 4.131249724598752e-08
+    },
+    {
+      "province_code": "53",
+      "annual_peak_load_gw": 47.42418929351202,
+      "maximum_residual_gw": 4.911310563619312e-08
+    },
+    {
+      "province_code": "54",
+      "annual_peak_load_gw": 2.4139362947974523,
+      "maximum_residual_gw": 3.0078477640926144e-08
+    },
+    {
+      "province_code": "61",
+      "annual_peak_load_gw": 59.893901721194574,
+      "maximum_residual_gw": 3.352355297076738e-08
+    },
+    {
+      "province_code": "62",
+      "annual_peak_load_gw": 41.24662852154695,
+      "maximum_residual_gw": 4.1144845140135946e-08
+    },
+    {
+      "province_code": "63",
+      "annual_peak_load_gw": 22.82781772967497,
+      "maximum_residual_gw": 4.783601374131275e-08
+    },
+    {
+      "province_code": "64",
+      "annual_peak_load_gw": 25.64427932260833,
+      "maximum_residual_gw": 3.68835097502855e-08
+    },
+    {
+      "province_code": "65",
+      "annual_peak_load_gw": 89.23168553555323,
+      "maximum_residual_gw": 5.1793389415841224e-08
+    }
+  ],
+  "reservoir_worst": {
+    "hydrochn_row_id": "HydroCHN_00002",
+    "hour_index": 5590,
+    "residual_m3": 0.4171791262924671,
+    "active_storage_m3": 12238529519.999998
+  }
+}

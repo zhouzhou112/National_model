@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "payload_files_sha_verified": 101,
+  "catalog_entries": 15,
+  "local_markdown_links_checked": 109,
+  "B_acceptance_synced": [
+    2040,
+    2050,
+    2060
+  ],
+  "case_results_total_bytes": 3765419,
+  "moved_files": 0,
+  "deleted_files": 0,
+  "model_code_changed": false
+}

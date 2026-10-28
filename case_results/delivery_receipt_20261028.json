@@ -1,0 +1,9 @@
+{
+  "status": "VERIFIED",
+  "bundle_sha256": "ebfc296ee5ed6eba70c6fc6b824d3c803134290de51eef78bbb6f1dbf829ed79",
+  "bundle_bytes": 606996,
+  "files": 101,
+  "payload_bytes": 2991005,
+  "source": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
+  "includes_hourly_arrays": false
+}

@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-10-28 收尾：B2040/2050/2060 完整备份及扩展验收完成，初步分析在 T550。** 三年330文件16,566,391,148bytes备份于17:26:52 UTC完成，九层VERIFIED且source_unchanged；独立relative_v1（10-27 Mt口径）均PASS，三套验收JSON已同步本机/T550，原QC保留。18:48GMT只读云端2项RUNNING：C2050/5207165第444轮（PInf1.1663/DInf1.53e-5/Compl0.001693），Case3 2050/5294579第63轮（1.65e10/4.02e4/7.12e7）。T550汇总11个已解案例；仅取回606,996bytes压缩包，101载荷文件2,991,005bytes，包和逐文件SHA通过。本机case_results统一索引15个案例版本，原件未移动/删除。
+
 **2026-10-28 16:46 GMT（北京10月29日00:46）：云端2项RUNNING，B三年完成。** C2050/5207165第439轮（PInf1.4375/DInf1.91e-5/Compl0.002149），Case3 2050/5294579第58轮（1.8736e10/5.49e4/8.2191e7）。B2040/5297384、B2050/5297390、B2060 v2/5297410均COMPLETED/0:0、OPTIMAL，162/160/178轮，作业耗时17:43:38/15:48:52/15:49:52，保全COMPLETE且errors=[]。T550恢复后16:49UTC已启动三年完整自主备份，PID2538534/PPID1/SID2538534，330文件16,566,391,148bytes，预计余35.4185%；当前RUNNING/T1 TRANSFERRING，不称备份完成。本机可关机，不影响T550直连云端。
 
 **2026-10-28 11:14 GMT（北京19:14）：云端5项RUNNING，无新终态。** B2040/5297384第132轮（PInf0.00532/DInf6.01e-6/Compl1.08e-4），B2050/5297390第145轮（2.72e-4/4.91e-6/5.89e-5），B2060 v2/5297410第159轮（9.33e-4/7.17e-6/6.74e-5）；三者近10轮全部指标改善，均已通过构建/排序进入Barrier，仍未结束。Case3 2050/5294579第43轮（2.58e10/1.48e5/1.18e8），近10轮三项下降54.71%/58.08%/55.03%，23.12分钟/轮。C2050/5207165第427轮（2.37/2.86e-5/0.00367），近10轮三项下降33.95%/10.08%/36.30%，26.90分钟/轮。五项stderr无错误；不据此预估结束时间。
@@ -3899,3 +3901,17 @@ Git基准7499490；未修改模型或运行中的5207165/5294579。只读sacct�
 备份复用backup_B_completed.py与backup_completed_cloud.py，全output_8760含原MPS/BarX/BarPi/调度/状态/QC及显式闭合、映射、启动身份元数据。启动前核对无活跃rsync/同类进程、无同名目标或operation；30%空间门禁PASS。独立session、stdin DEVNULL、stdout/stderr写操作日志，持全局锁，逐层rsync/SHA及最终源身份复核；不删源、不复制凭据、不建监听。operation=/home/zz2/National_model_server/cloud_backup/_operations/20261028_B2040_B2050_B2060_completed。
 
 证据：本review目录B_completed_20261028.json、B_all_completed_backup_config_20261028.json、B_backup_launch_20261028.json、B_backup_running_20261028.json、cloud_status_20261028T164644Z.json。最初转发拒绝连接，作者恢复后成功启动；未重复备份旧失败v1。下一次连接先看旧PID、transfer_status、三份backup_manifest；全部COMPLETE且source unchanged才报告完成。随后对三年执行postprocess_B.py B2040|B2050|B2060 assess及collect，回传nocredit同清单≤32MiB文件，验收JSON按来源SHA旁置同步。不要重复plan/start，也不因自动QC标签放弃任何保全。
+
+## 2026-10-28 B三年验收、T550初步分析与本机归档入口
+
+**2026-10-28 收尾：B2040/2050/2060 完整备份及扩展验收完成，初步分析在 T550。** 三年330文件16,566,391,148bytes备份于17:26:52 UTC完成，九层VERIFIED且source_unchanged；独立relative_v1（10-27 Mt口径）均PASS，三套验收JSON已同步本机/T550，原QC保留。18:48GMT只读云端2项RUNNING：C2050/5207165第444轮（PInf1.1663/DInf1.53e-5/Compl0.001693），Case3 2050/5294579第63轮（1.65e10/4.02e4/7.12e7）。T550汇总11个已解案例；仅取回606,996bytes压缩包，101载荷文件2,991,005bytes，包和逐文件SHA通过。本机case_results统一索引15个案例版本，原件未移动/删除。
+
+- Git基准099e5ae；本记录所在提交新增两项整理工具、case_results索引/解读/验证、B三套验收证据与T550清单，未改模型或生产release。最终提交号由包含本条的Git提交追溯。
+- 执行：`postprocess_B.py B2040 assess`、B2050/B2060同式，在T550完成；`build_t550_compact_analysis.py --backup-root /home/zz2/National_model_server/cloud_backup --output /home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1`；本机`organize_local_case_results.py`只建索引。上述工具在supplementary_materials/reviews/base_frozen_batch2_20261027/。
+- 备份复核先查既有operation/manifest/传输，确认COMPLETE且无活跃任务，未重复启动。T550剩余1,427,141,468,160bytes（约35.4%）。完整output_8760与显式启动元数据保全，不宣称含全部输入环境镜像。
+- 本轮用户要求取回文件小、初步分析在T550，替代此前本轮收尾默认nocredit全清单收集：采用显式≤1MiB文件白名单，不取逐时数组/BarX/BarPi/MPS。原大文件仍在T550，未省略完整备份。压缩包SHA ebfc296ee5ed6eba70c6fc6b824d3c803134290de51eef78bbb6f1dbf829ed79。
+- 证据：本review下T550_inventory_20261028.json、compact_analysis_execution_v1.log、B2040/B2050/B2060/assessment及assess_receipt.json；case_results/delivery_receipt_20261028.json、organization_validation_20261028.json；云端cloud_status_20261028T184833Z.json。
+- 初步B成本区间与柔性物理量见case_results/PRELIMINARY_FINDINGS_ZH.md。B未筛选，使用作者Barrier工程区间，不作为统计区间或严格嵌套可行域证明；各年科学采纳仍由作者决定。其他历史PASS按各自验收日期/口径保留，不称全部新口径重评。
+- Git仅保存工具/索引/小审计；压缩包与完整小交付载荷保存在本机/T550，不随Git上传。原reviews路径不动，15卡包括11已解、2运行、2已备份失败；未列旧诊断仍在原目录。其他会话SI修改不纳入本提交。
+- 验证：101载荷SHA、15卡、全部显式本地Markdown链接、三年验收JSON双份一致、两工具AST及Git差异检查。无模型修改，未重跑大型模型测试。
+- 下一步：作者查看统一索引和初步分析；下次询问只读查看两在跑任务，新终态按10-20规则备份/扩展验收，并优先T550分析后取回小结果。不新建监听、不干预5207165/5294579、不动SI/在线LaTeX。

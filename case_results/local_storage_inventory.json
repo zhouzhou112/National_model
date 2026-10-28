@@ -1,0 +1,1800 @@
+[
+  {
+    "case": "B",
+    "year": 2030,
+    "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\base_frozen_B_20261026",
+    "files": 176,
+    "bytes": 303861383,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_B_20261026\\deployment_v2\\release_payload.tar.gz",
+        "bytes": 92173159
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_B_20261026\\deployment_v3\\release_payload.tar.gz",
+        "bytes": 92173138
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_B_20261026\\deployment\\release_payload.tar.gz",
+        "bytes": 92172986
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_B_20261026\\t550_validation_payload.tar.gz",
+        "bytes": 14756939
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_B_20261026\\source_base\\20260914_base_v9_t48_m750_tol1e4_v3\\output_8760\\intra_grid_vre_site_design.csv",
+        "bytes": 5674391
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "B",
+    "year": 2030,
+    "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760",
+    "files": 78,
+    "bytes": 121288714,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\transmission_flows.npz",
+        "bytes": 30129460
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\storage_dispatch.npz",
+        "bytes": 19630214
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\hourly_marginal_prices.csv.gz",
+        "bytes": 14393229
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\frozen_capacity_audit.csv",
+        "bytes": 14160561
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\vre_dispatch.npz",
+        "bytes": 11558042
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "B",
+    "year": 2040,
+    "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+    "directory": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results",
+    "files": 26,
+    "bytes": 599248,
+    "largest_files": [
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\output_data_dictionary.csv",
+        "bytes": 151805
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solution_qc.json",
+        "bytes": 83948
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solve_report.json",
+        "bytes": 80365
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\thermal_nuclear_capacity.csv",
+        "bytes": 37975
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\transmission_capacity.csv",
+        "bytes": 36417
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "B",
+    "year": 2050,
+    "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+    "directory": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results",
+    "files": 26,
+    "bytes": 873974,
+    "largest_files": [
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solution_qc.json",
+        "bytes": 264833
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solve_report.json",
+        "bytes": 165366
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\output_data_dictionary.csv",
+        "bytes": 151805
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\thermal_nuclear_capacity.csv",
+        "bytes": 38871
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\transmission_capacity.csv",
+        "bytes": 36549
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "B",
+    "year": 2060,
+    "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_batch2_20261027",
+    "files": 994,
+    "bytes": 146717178,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\model_archive\\original.mps",
+        "bytes": 60834156
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\t550_validation_payload.tar.gz",
+        "bytes": 14945155
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\frozen_capacity_audit.csv",
+        "bytes": 14195602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2050\\deployment\\release_payload.tar.gz",
+        "bytes": 6718249
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\deployment\\release_payload.tar.gz",
+        "bytes": 5746085
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "B",
+    "year": 2060,
+    "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+    "directory": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results",
+    "files": 26,
+    "bytes": 971645,
+    "largest_files": [
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\solve_report.json",
+        "bytes": 238883
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\solution_qc.json",
+        "bytes": 234427
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\output_data_dictionary.csv",
+        "bytes": 151805
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\run_identity.json",
+        "bytes": 49890
+      },
+      {
+        "path": "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\thermal_nuclear_capacity.csv",
+        "bytes": 38628
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed",
+    "files": 10,
+    "bytes": 2019617,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 961111
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\planning_state_candidate\\raw_new_cohorts.csv.gz",
+        "bytes": 939502
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\solve_report.json",
+        "bytes": 71557
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\solution_qc.json",
+        "bytes": 13743
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\original_result_manifest.json",
+        "bytes": 13615
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence",
+    "files": 22,
+    "bytes": 2142262,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__gurobi.log",
+        "bytes": 556417
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\thermal2030_t44__gurobi.log",
+        "bytes": 333819
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2030_t48__output_8760__gurobi.log",
+        "bytes": 306291
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\oldbase2030_t44__gurobi.log",
+        "bytes": 288314
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__solver_telemetry.jsonl",
+        "bytes": 266471
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive",
+    "files": 8,
+    "bytes": 4459108100,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\model_archive\\original.mps.gz",
+        "bytes": 4048048342
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\barrier_checkpoint\\dual_barpi.npy",
+        "bytes": 407257992
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\vre_capacity.csv",
+        "bytes": 3632003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76749
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\solve_report.json",
+        "bytes": 71557
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base",
+    "files": 24,
+    "bytes": 5207620,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\vre_capacity.csv",
+        "bytes": 3632003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 961111
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\gurobi.log",
+        "bytes": 306291
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76749
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\solve_report.json",
+        "bytes": 71557
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030",
+    "files": 21,
+    "bytes": 12408839,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\intra_grid_vre_site_design.csv",
+        "bytes": 5674391
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\vre_capacity.csv",
+        "bytes": 3632003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\intra_grid_substation_design.csv",
+        "bytes": 1037652
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 961111
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\hydro_capacity.csv",
+        "bytes": 310766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2030,
+    "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+    "directory": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed",
+    "files": 10,
+    "bytes": 2019617,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 961111
+      },
+      {
+        "path": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\planning_state_candidate\\raw_new_cohorts.csv.gz",
+        "bytes": 939502
+      },
+      {
+        "path": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\solve_report.json",
+        "bytes": 71557
+      },
+      {
+        "path": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\solution_qc.json",
+        "bytes": 13743
+      },
+      {
+        "path": "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\original_result_manifest.json",
+        "bytes": 13615
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed",
+    "files": 10,
+    "bytes": 3183855,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963905
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\planning_state_candidate\\raw_new_cohorts.csv.gz",
+        "bytes": 944542
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\planning_state_candidate\\state_metadata.json",
+        "bytes": 88834
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\bound_closure_audit.json",
+        "bytes": 68613
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760",
+    "files": 18,
+    "bytes": 11791491,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\intra_grid_vre_site_design.csv",
+        "bytes": 5932371
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\vre_capacity.csv",
+        "bytes": 3804184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\intra_grid_substation_design.csv",
+        "bytes": 1047888
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\hydro_capacity.csv",
+        "bytes": 354711
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\wave_capacity.csv",
+        "bytes": 267280
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule",
+    "files": 8,
+    "bytes": 2097455,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963977
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 16003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\solution_qc.json",
+        "bytes": 13784
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\original_result_manifest.json",
+        "bytes": 13450
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state",
+    "files": 10,
+    "bytes": 493398,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 223252
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 87728
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\bound_closure_audit.json",
+        "bytes": 40022
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 24752
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule",
+    "files": 8,
+    "bytes": 2097455,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963977
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 16003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\solution_qc.json",
+        "bytes": 13784
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\original_result_manifest.json",
+        "bytes": 13450
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state",
+    "files": 10,
+    "bytes": 493398,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 223252
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 87728
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\bound_closure_audit.json",
+        "bytes": 40022
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 24752
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence",
+    "files": 22,
+    "bytes": 2142262,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__gurobi.log",
+        "bytes": 556417
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\thermal2030_t44__gurobi.log",
+        "bytes": 333819
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2030_t48__output_8760__gurobi.log",
+        "bytes": 306291
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\oldbase2030_t44__gurobi.log",
+        "bytes": 288314
+      },
+      {
+        "path": "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__solver_telemetry.jsonl",
+        "bytes": 266471
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed",
+    "files": 10,
+    "bytes": 3183855,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963905
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\planning_state_candidate\\raw_new_cohorts.csv.gz",
+        "bytes": 944542
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\planning_state_candidate\\state_metadata.json",
+        "bytes": 88834
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\bound_closure_audit.json",
+        "bytes": 68613
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule",
+    "files": 8,
+    "bytes": 2097455,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963977
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 16003
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\solution_qc.json",
+        "bytes": 13784
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\original_result_manifest.json",
+        "bytes": 13450
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state",
+    "files": 10,
+    "bytes": 493415,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 223252
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 87745
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\bound_closure_audit.json",
+        "bytes": 40022
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 24752
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive",
+    "files": 8,
+    "bytes": 4462934040,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\model_archive\\original.mps.gz",
+        "bytes": 4051693374
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\barrier_checkpoint\\dual_barpi.npy",
+        "bytes": 407257992
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\vre_capacity.csv",
+        "bytes": 3804184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\solve_report.json",
+        "bytes": 80184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76898
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2040,
+    "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040",
+    "files": 21,
+    "bytes": 13952352,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\intra_grid_vre_site_design.csv",
+        "bytes": 5932371
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\vre_capacity.csv",
+        "bytes": 3804184
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1963977
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\intra_grid_substation_design.csv",
+        "bytes": 1047888
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\hydro_capacity.csv",
+        "bytes": 354711
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared",
+    "files": 10,
+    "bytes": 978156,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 558201
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\planning_state_candidate\\state_metadata.json",
+        "bytes": 162784
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\bound_closure_audit.json",
+        "bytes": 29795
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z",
+    "files": 16,
+    "bytes": 860118,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__gurobi.log",
+        "bytes": 338465
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__solver_telemetry.jsonl",
+        "bytes": 315415
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__solution_qc.json",
+        "bytes": 13740
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\analyze.py",
+        "bytes": 5453
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760",
+    "files": 18,
+    "bytes": 11802511,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\intra_grid_vre_site_design.csv",
+        "bytes": 5864456
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\intra_grid_substation_design.csv",
+        "bytes": 1047103
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\hydro_capacity.csv",
+        "bytes": 355283
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\wave_capacity.csv",
+        "bytes": 267482
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule",
+    "files": 8,
+    "bytes": 3244764,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 2941319
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 101009
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\solution_qc.json",
+        "bytes": 13740
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\original_result_manifest.json",
+        "bytes": 13452
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d",
+    "files": 10,
+    "bytes": 978156,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 558201
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\planning_state_candidate\\state_metadata.json",
+        "bytes": 162784
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\bound_closure_audit.json",
+        "bytes": 29795
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2",
+    "files": 10,
+    "bytes": 973787,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 558221
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\planning_state_candidate\\state_metadata.json",
+        "bytes": 160527
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\bound_closure_audit.json",
+        "bytes": 27664
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c",
+    "files": 10,
+    "bytes": 965566,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 550000
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\planning_state_candidate\\state_metadata.json",
+        "bytes": 160527
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\bound_closure_audit.json",
+        "bytes": 27664
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared",
+    "files": 10,
+    "bytes": 948558,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 547319
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\planning_state_candidate\\state_metadata.json",
+        "bytes": 146280
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\bound_closure_audit.json",
+        "bytes": 27664
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015",
+    "files": 5,
+    "bytes": 4056663,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76911
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\model_config_snapshot.json",
+        "bytes": 19313
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\model_archive\\archive_manifest.json",
+        "bytes": 610
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015",
+    "files": 10,
+    "bytes": 4061285,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76911
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\model_config_snapshot.json",
+        "bytes": 19313
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\transfer_source_v1.py",
+        "bytes": 4622
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015",
+    "files": 16,
+    "bytes": 4462752821,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\model_archive\\original.mps.gz",
+        "bytes": 4051434705
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\barrier_checkpoint\\dual_barpi.npy",
+        "bytes": 407257992
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76911
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive",
+    "files": 5,
+    "bytes": 4056663,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 76911
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\model_config_snapshot.json",
+        "bytes": 19313
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\model_archive\\archive_manifest.json",
+        "bytes": 610
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule",
+    "files": 8,
+    "bytes": 3244764,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 2941319
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 101009
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\solution_qc.json",
+        "bytes": 13740
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\original_result_manifest.json",
+        "bytes": 13452
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state",
+    "files": 10,
+    "bytes": 978256,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 558201
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 162940
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\bound_closure_audit.json",
+        "bytes": 29739
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state",
+    "files": 10,
+    "bytes": 978250,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 558195
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 162940
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\bound_closure_audit.json",
+        "bytes": 29739
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 24766
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050",
+    "files": 21,
+    "bytes": 15023509,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\intra_grid_vre_site_design.csv",
+        "bytes": 5864456
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\vre_capacity.csv",
+        "bytes": 3794637
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 2941319
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\intra_grid_substation_design.csv",
+        "bytes": 1047103
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\hydro_capacity.csv",
+        "bytes": 355283
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2050,
+    "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule",
+    "files": 8,
+    "bytes": 3244764,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 2941319
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\solve_report.json",
+        "bytes": 165192
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 101009
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\solution_qc.json",
+        "bytes": 13740
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\original_result_manifest.json",
+        "bytes": 13452
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2060,
+    "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760",
+    "files": 18,
+    "bytes": 11695082,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\intra_grid_vre_site_design.csv",
+        "bytes": 5604050
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\vre_capacity.csv",
+        "bytes": 3760926
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\intra_grid_substation_design.csv",
+        "bytes": 1037088
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\hydro_capacity.csv",
+        "bytes": 316795
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\wave_capacity.csv",
+        "bytes": 243855
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2060,
+    "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence",
+    "files": 30,
+    "bytes": 13579632,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\intra_grid_vre_site_design.csv",
+        "bytes": 5604050
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\vre_capacity.csv",
+        "bytes": 3760926
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1415391
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\intra_grid_substation_design.csv",
+        "bytes": 1037088
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\hydro_capacity.csv",
+        "bytes": 316795
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Base",
+    "year": 2060,
+    "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060",
+    "files": 30,
+    "bytes": 13579632,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\intra_grid_vre_site_design.csv",
+        "bytes": 5604050
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\vre_capacity.csv",
+        "bytes": 3760926
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 1415391
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\intra_grid_substation_design.csv",
+        "bytes": 1037088
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\hydro_capacity.csv",
+        "bytes": 316795
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "C",
+    "year": 2050,
+    "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\base_frozen_batch2_20261027",
+    "files": 994,
+    "bytes": 146717178,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\model_archive\\original.mps",
+        "bytes": 60834156
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\t550_validation_payload.tar.gz",
+        "bytes": 14945155
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\frozen_capacity_audit.csv",
+        "bytes": 14195602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2050\\deployment\\release_payload.tar.gz",
+        "bytes": 6718249
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\deployment\\release_payload.tar.gz",
+        "bytes": 5746085
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence",
+    "files": 31,
+    "bytes": 13156856,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\intra_grid_vre_site_design.csv",
+        "bytes": 5253650
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\vre_capacity.csv",
+        "bytes": 2911073
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\candidate_selection.csv",
+        "bytes": 2080425
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\intra_grid_substation_design.csv",
+        "bytes": 1024314
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 611468
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030",
+    "files": 31,
+    "bytes": 13156856,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\intra_grid_vre_site_design.csv",
+        "bytes": 5253650
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\vre_capacity.csv",
+        "bytes": 2911073
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\candidate_selection.csv",
+        "bytes": 2080425
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\intra_grid_substation_design.csv",
+        "bytes": 1024314
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 611468
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule",
+    "files": 8,
+    "bytes": 759310,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 611468
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\solve_report.json",
+        "bytes": 71576
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\solution_qc.json",
+        "bytes": 44097
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\original_result_manifest.json",
+        "bytes": 13798
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\run_identity.json",
+        "bytes": 7516
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state",
+    "files": 10,
+    "bytes": 281990,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\solve_report.json",
+        "bytes": 71576
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\acceptance_relative_v1.json",
+        "bytes": 51043
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 44801
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\solution_qc.json",
+        "bytes": 44097
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 43555
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule",
+    "files": 8,
+    "bytes": 759310,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 611468
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\solve_report.json",
+        "bytes": 71576
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\solution_qc.json",
+        "bytes": 44097
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\original_result_manifest.json",
+        "bytes": 13798
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\run_identity.json",
+        "bytes": 7516
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3",
+    "files": 30,
+    "bytes": 13082416,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\intra_grid_vre_site_design.csv",
+        "bytes": 5253650
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\vre_capacity.csv",
+        "bytes": 2911073
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\candidate_selection.csv",
+        "bytes": 2080425
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\intra_grid_substation_design.csv",
+        "bytes": 1024314
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 611468
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2030,
+    "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019",
+    "files": 16,
+    "bytes": 4579617494,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\model_archive\\original.mps.gz",
+        "bytes": 4142788418
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\barrier_checkpoint\\dual_barpi.npy",
+        "bytes": 433742056
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\vre_capacity.csv",
+        "bytes": 2911073
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\barrier_checkpoint\\barrier_checkpoint_manifest.json",
+        "bytes": 77586
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\solve_report.json",
+        "bytes": 71576
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2040,
+    "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760",
+    "files": 73,
+    "bytes": 106961807,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\transmission_flows.npz",
+        "bytes": 30106526
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\storage_dispatch.npz",
+        "bytes": 20172256
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\hourly_marginal_prices.csv.gz",
+        "bytes": 14961923
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\vre_dispatch.npz",
+        "bytes": 11550323
+      },
+      {
+        "path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\hydro_dispatch.npz",
+        "bytes": 7045889
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2040,
+    "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule",
+    "files": 8,
+    "bytes": 1151237,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 791525
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\solution_qc.json",
+        "bytes": 165678
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\solve_report.json",
+        "bytes": 116602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 52239
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\original_result_manifest.json",
+        "bytes": 13810
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2040,
+    "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state",
+    "files": 10,
+    "bytes": 546632,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\solution_qc.json",
+        "bytes": 165678
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 151495
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\solve_report.json",
+        "bytes": 116602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\planning_state_candidate\\state_metadata.json",
+        "bytes": 84599
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\original_result_manifest.json",
+        "bytes": 13810
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2040,
+    "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule",
+    "files": 8,
+    "bytes": 1151237,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\planning_state_candidate\\capacity_cohorts.csv.gz",
+        "bytes": 791525
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\solution_qc.json",
+        "bytes": 165678
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\solve_report.json",
+        "bytes": 116602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\planning_state_candidate\\state_metadata.json",
+        "bytes": 52239
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\original_result_manifest.json",
+        "bytes": 13810
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "Case3",
+    "year": 2050,
+    "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+    "directory": "supplementary_materials\\reviews\\base_frozen_batch2_20261027",
+    "files": 994,
+    "bytes": 146717178,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\model_archive\\original.mps",
+        "bytes": 60834156
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\t550_validation_payload.tar.gz",
+        "bytes": 14945155
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\frozen_1h\\frozen_capacity_audit.csv",
+        "bytes": 14195602
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2050\\deployment\\release_payload.tar.gz",
+        "bytes": 6718249
+      },
+      {
+        "path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\2040\\deployment\\release_payload.tar.gz",
+        "bytes": 5746085
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  },
+  {
+    "case": "nocredit",
+    "year": 2030,
+    "release": "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+    "directory": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760",
+    "files": 73,
+    "bytes": 105175467,
+    "largest_files": [
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\transmission_flows.npz",
+        "bytes": 30035428
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\storage_dispatch.npz",
+        "bytes": 19730702
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\hourly_marginal_prices.csv.gz",
+        "bytes": 14812288
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\vre_dispatch.npz",
+        "bytes": 11461024
+      },
+      {
+        "path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\hydro_dispatch.npz",
+        "bytes": 7102603
+      }
+    ],
+    "basis": "Matching original solve-report SHA, or explicit launch/failure receipt; directory may contain additional historical evidence"
+  }
+]

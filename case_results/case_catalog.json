@@ -1,0 +1,310 @@
+{
+  "as_of_utc": "2026-10-28T18:48:33.894666+00:00",
+  "cases": [
+    {
+      "case": "B",
+      "year": 2030,
+      "version": "v2",
+      "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+      "kind": "FAILED_ATTEMPT",
+      "solver_status": "FAILED",
+      "acceptance_status": "NO_SOLUTION",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_B_20261026\\startup_failure_backup.json"
+      ],
+      "case_card": "case_results\\by_case\\B\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2\\README.md"
+    },
+    {
+      "case": "B",
+      "year": 2030,
+      "version": "v3",
+      "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+      "source_result_manifest_sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\completed_results_20261027\\B2030\\output_8760\\solve_report.json"
+      ],
+      "iterations": 116,
+      "case_card": "case_results\\by_case\\B\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3\\README.md"
+    },
+    {
+      "case": "B",
+      "year": 2040,
+      "version": "v1",
+      "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\B2040\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "7941224437da19c66a68b51340cf0239474088d631049a55304e3d5562e910d1",
+      "local_evidence": [
+        "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solve_report.json"
+      ],
+      "iterations": 162,
+      "case_card": "case_results\\by_case\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "B",
+      "year": 2050,
+      "version": "v1",
+      "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\B2050\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "5fdf40797da5d3a4f1eb66cbff557eb2490b53e181bcb6a702a5921fcef48c7c",
+      "local_evidence": [
+        "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\small_results\\solve_report.json"
+      ],
+      "iterations": 160,
+      "case_card": "case_results\\by_case\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "B",
+      "year": 2060,
+      "version": "v1",
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1",
+      "kind": "FAILED_ATTEMPT",
+      "solver_status": "FAILED",
+      "acceptance_status": "NO_SOLUTION",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\B2060_v1_failure_backup.json"
+      ],
+      "case_card": "case_results\\by_case\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "B",
+      "year": 2060,
+      "version": "v2",
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\B2060\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "source_result_manifest_sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+      "local_evidence": [
+        "case_results\\deliveries\\20261028_t550_v1\\cases\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\small_results\\solve_report.json"
+      ],
+      "iterations": 178,
+      "case_card": "case_results\\by_case\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\README.md"
+    },
+    {
+      "case": "Base",
+      "year": 2030,
+      "version": "v3",
+      "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\assessments\\2030\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3",
+      "source_result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\upstream_2030_bound_closed\\solve_report.json",
+        "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2030_t48__output_8760__solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_Base2030_archive\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\base\\solve_report.json",
+        "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2030\\solve_report.json",
+        "supplementary_materials\\reviews\\numerical_robustness_20261005\\upstream_2030_bound_closed\\solve_report.json"
+      ],
+      "iterations": 348,
+      "case_card": "case_results\\by_case\\Base\\2030\\20260914_base_v9_t48_m750_tol1e4_v3\\README.md"
+    },
+    {
+      "case": "Base",
+      "year": 2040,
+      "version": "v1",
+      "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\assessments\\2040\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\upstream_2040_bound_closed\\solve_report.json",
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260919_base2040_v9_t44_m750_tol1e4_v1\\output_8760\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_02\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P5_C2050_state_01\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\thread_comparison_20260930\\evidence\\base2040_t44__output_8760__solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\frozen_2050_identity\\upstream_2040_bound_closed\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2040_archive\\solve_report.json",
+        "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2040\\solve_report.json"
+      ],
+      "iterations": 605,
+      "case_card": "case_results\\by_case\\Base\\2040\\20260919_base2040_v9_t44_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "Base",
+      "year": 2050,
+      "version": "v1",
+      "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\assessments\\2050\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\upstream_2050_prepared\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__solve_report.json",
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20260930_base2050_v9_t48_m750_tol1e4_v1\\output_8760\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6d\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c_v2\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared_6c\\solve_report.json",
+        "supplementary_materials\\reviews\\base_2060_launch_20261012\\upstream_2050_prepared\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_retry_20261015\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges_20261015\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive_ranges2_20261015\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P4_Base2050_archive\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_02\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P3_reproduce_2050_2060_01\\source_capsule\\solve_report.json"
+      ],
+      "iterations": 716,
+      "case_card": "case_results\\by_case\\Base\\2050\\20260930_base2050_v9_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "Base",
+      "year": 2060,
+      "version": "v1",
+      "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\assessments\\base2060\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_followups_20261027\\source_base\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\output_8760\\solve_report.json",
+        "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\base2060\\source_evidence\\solve_report.json",
+        "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\solve_report.json"
+      ],
+      "iterations": 511,
+      "case_card": "case_results\\by_case\\Base\\2060\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "C",
+      "year": 2050,
+      "version": "v2",
+      "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
+      "acceptance_status": "NOT_FINISHED",
+      "backup_status": "NOT_TERMINAL",
+      "job_id": "5207165",
+      "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\cloud_status_20261028T184833Z.json"
+      ],
+      "case_card": "case_results\\by_case\\C\\2050\\20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\README.md"
+    },
+    {
+      "case": "Case3",
+      "year": 2030,
+      "version": "v1",
+      "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\completed_acceptance_20261020\\assessments\\case3_2030\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "8a5379b9d73d9c3a245f5153342fea14c08672ad5b907974084a5984da2a436f",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\completed_acceptance_20261020\\packages\\case3_2030\\source_evidence\\solve_report.json",
+        "supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\case3_2030\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_02\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_case3_2040_01\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\comparison_20261019\\case3\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\P1_case3_archive_20261019\\solve_report.json"
+      ],
+      "iterations": 353,
+      "case_card": "case_results\\by_case\\Case3\\2030\\20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "Case3",
+      "year": 2040,
+      "version": "v2",
+      "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+      "source_result_manifest_sha256": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\completed_results_20261027\\case3_2040\\output_8760\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\source_capsule\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v2\\prepared_state\\solve_report.json",
+        "supplementary_materials\\reviews\\case3_2050_launch_20261027\\R1_v1\\source_capsule\\solve_report.json"
+      ],
+      "iterations": 499,
+      "case_card": "case_results\\by_case\\Case3\\2040\\20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2\\README.md"
+    },
+    {
+      "case": "Case3",
+      "year": 2050,
+      "version": "v2",
+      "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
+      "acceptance_status": "NOT_FINISHED",
+      "backup_status": "NOT_TERMINAL",
+      "job_id": "5294579",
+      "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\base_frozen_batch2_20261027\\cloud_status_20261028T184833Z.json"
+      ],
+      "case_card": "case_results\\by_case\\Case3\\2050\\20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\README.md"
+    },
+    {
+      "case": "nocredit",
+      "year": 2030,
+      "version": "v1",
+      "release": "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PASS",
+      "acceptance_path": "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\assessment\\solution_qc_relative_v1.json",
+      "backup_status": "COMPLETE",
+      "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "source_result_manifest_sha256": "c5566edafeae0cae5e4bd6b259a34a51f10ba4ec9e43745954ad8acb7a5c05a9",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\case3_2030_launch_20261014\\nocredit_results_20261026\\output_8760\\solve_report.json"
+      ],
+      "iterations": 404,
+      "case_card": "case_results\\by_case\\nocredit\\2030\\20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1\\README.md"
+    }
+  ],
+  "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
+  "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1"
+}

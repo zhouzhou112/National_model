@@ -1,0 +1,1442 @@
+{
+  "backups": {
+    "20260914_base_v9_t48_m750_tol1e4_v3": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 87,
+      "bytes": 5314976517,
+      "manifest_sha256": "bc7e1ab207e215d0f37c035fecc3ac09e587aad441e44851d7b8083dd9e90846",
+      "result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+      "source_unchanged": true
+    },
+    "20260919_base2040_v9_t44_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 87,
+      "bytes": 5320516058,
+      "manifest_sha256": "9408d58c76f81c8910729f59dbd56a5940fefdbf0de96f4986768cdc4e3e3b0e",
+      "result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+      "source_unchanged": true
+    },
+    "20260930_base2050_v9_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 88,
+      "bytes": 5322218103,
+      "manifest_sha256": "969f23dc55d6487e2ed7d33176af94d3478274eb6dca7a53b1c4b25d7c4b1bc4",
+      "result_manifest_sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+      "source_unchanged": true
+    },
+    "20261012_base2060_v9a12_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 91,
+      "bytes": 5314567406,
+      "manifest_sha256": "abf3c21e018c9889d5093dc07ab7d54be0e63fd11fcd2a89732749dd389940df",
+      "result_manifest_sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+      "source_unchanged": true
+    },
+    "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 93,
+      "bytes": 5514167791,
+      "manifest_sha256": "5d7005b1278d88f798ce511ea72110d14a6221eb23b7aace2d26cc88f84d3c6e",
+      "result_manifest_sha256": "8a5379b9d73d9c3a245f5153342fea14c08672ad5b907974084a5984da2a436f",
+      "source_unchanged": true
+    },
+    "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 93,
+      "bytes": 5510708567,
+      "manifest_sha256": "3b59c9b0d4768268fa2ff30d104b16d7d4cd08f75e4d9ea77fa02651a95ecf8c",
+      "result_manifest_sha256": "c5566edafeae0cae5e4bd6b259a34a51f10ba4ec9e43745954ad8acb7a5c05a9",
+      "source_unchanged": true
+    },
+    "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 93,
+      "bytes": 5508208350,
+      "manifest_sha256": "37a36decb08640d09bed85ff11b81f77f42716a58109087c5ebe0bec04caa378",
+      "result_manifest_sha256": "add339004945f6022400e19ca0c342ef19bd97d570ea8e914426a6813c8e7e5a",
+      "source_unchanged": true
+    },
+    "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2": {
+      "status": "COMPLETE",
+      "scope": "STARTUP_FAILURE_NO_MODEL_OR_SOLUTION",
+      "files": 23,
+      "bytes": 92477291,
+      "manifest_sha256": "08548ade3933309d56d85a3b3b1fbcdc85cdf4976fff9d5c5980079e933b1a91",
+      "result_manifest_sha256": null,
+      "source_unchanged": null
+    },
+    "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 97,
+      "bytes": 5517592632,
+      "manifest_sha256": "60622eeca146f974fdc2cb306f754e26a922fd2607c4465f46cf7ae3c8a3711c",
+      "result_manifest_sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135",
+      "source_unchanged": true
+    },
+    "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 110,
+      "bytes": 5524750397,
+      "manifest_sha256": "0251cb4b20aaaa8e3b049a69058a9e7c865c96e1d44d2c9380681b3deab1e0c7",
+      "result_manifest_sha256": "7941224437da19c66a68b51340cf0239474088d631049a55304e3d5562e910d1",
+      "source_unchanged": true
+    },
+    "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 110,
+      "bytes": 5522891211,
+      "manifest_sha256": "6bd42e3db41e2890e8c365b14bcaa2acdebe0f7f4e45bbb8693c7b812f5c51fd",
+      "result_manifest_sha256": "5fdf40797da5d3a4f1eb66cbff557eb2490b53e181bcb6a702a5921fcef48c7c",
+      "source_unchanged": true
+    },
+    "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1": {
+      "status": "COMPLETE",
+      "scope": "PARTIAL_BUILD_FAILURE_NO_SOLUTION",
+      "files": 40,
+      "bytes": 14503317,
+      "manifest_sha256": "3f0a496193bce60085cf4923266bba6e92c3da6fd959e84e057a5c03f687644f",
+      "result_manifest_sha256": null,
+      "source_unchanged": true
+    },
+    "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2": {
+      "status": "COMPLETE",
+      "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+      "files": 110,
+      "bytes": 5518749540,
+      "manifest_sha256": "2443a46d845836c1a154dfc62e05626827cdb4210ce99bad3fada7806dc6c512",
+      "result_manifest_sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+      "source_unchanged": true
+    }
+  },
+  "B2040_files": [
+    {
+      "name": "annual_adequacy_by_province.csv",
+      "bytes": 6108,
+      "header": [
+        "province_code",
+        "capacity_margin_load_basis",
+        "baseline_peak_load_gw",
+        "effective_peak_load_gw",
+        "selected_peak_load_gw",
+        "peak_load_gw",
+        "capacity_margin_fraction",
+        "credited_capacity_required_gw",
+        "credited_capacity_available_gw",
+        "firm_flexible_capacity_credit_gw",
+        "adequacy_available_capacity_including_flex_gw",
+        "capacity_margin_gw"
+      ],
+      "sample": [
+        "11",
+        "firm_flexibility_derated_v1",
+        "47.15348004896538",
+        "45.61625315658196",
+        "47.15348004896538",
+        "47.15348004896538",
+        "0.05",
+        "49.51115405141365",
+        "49.51126494086233",
+        "0.0",
+        "49.51126494086233",
+        "0.00011088944868475892"
+      ]
+    },
+    {
+      "name": "annual_capacity_by_province_technology.csv",
+      "bytes": 35119,
+      "header": [
+        "province_code",
+        "asset_group",
+        "technology",
+        "unit",
+        "capacity",
+        "new_capacity"
+      ],
+      "sample": [
+        "11",
+        "generation",
+        "onwind",
+        "GW",
+        "0.12921065251465633",
+        "0.0004362459620111341"
+      ]
+    },
+    {
+      "name": "annual_capacity_by_technology.csv",
+      "bytes": 1210,
+      "header": [
+        "asset_group",
+        "technology",
+        "unit",
+        "capacity",
+        "new_capacity"
+      ],
+      "sample": [
+        "generation",
+        "onwind",
+        "GW",
+        "1530.3865533083135",
+        "717.7663667225212"
+      ]
+    },
+    {
+      "name": "annual_capacity_link_row_scaling.json",
+      "bytes": 60857
+    },
+    {
+      "name": "annual_carbon_ccs.json",
+      "bytes": 637
+    },
+    {
+      "name": "annual_constraint_shadow_prices.csv",
+      "bytes": 381581,
+      "header": [
+        "constraint",
+        "index_type",
+        "index_value",
+        "sense",
+        "gurobi_pi",
+        "tightening_scarcity_value",
+        "interpreted_unit"
+      ],
+      "sample": [
+        "annual_net_carbon_limit",
+        "national",
+        "China",
+        "<=",
+        "-407.8443172687754",
+        "407.8443172687754",
+        "CNY_per_tCO2"
+      ]
+    },
+    {
+      "name": "annual_flexible_load_by_province.csv",
+      "bytes": 18896,
+      "header": [
+        "province_code",
+        "optimization_hours",
+        "result_use",
+        "baseline_load_gwh",
+        "effective_load_gwh",
+        "baseline_peak_load_gw",
+        "effective_peak_load_gw",
+        "heating_shift_up_gwh",
+        "heating_shift_down_gwh",
+        "cooling_shift_up_gwh",
+        "cooling_shift_down_gwh",
+        "ev_v1g_shift_up_gwh",
+        "ev_v1g_shift_down_gwh",
+        "heating_state_peak_gwh",
+        "cooling_state_peak_gwh",
+        "heating_state_minimum_gwh",
+        "cooling_state_minimum_gwh",
+        "heating_comfort_debt_gwh_hours",
+        "cooling_comfort_debt_gwh_hours",
+        "heating_net_energy_change_gwh",
+        "cooling_net_energy_change_gwh",
+        "ev_v1g_backlog_peak_gwh",
+        "ev_v2g_charge_gwh",
+        "ev_v2g_discharge_gwh",
+        "ev_enrolled_service_fraction",
+        "ev_bidirectional_service_fraction",
+        "ev_mobility_charge_gwh",
+        "ev_mobility_discharge_gwh",
+        "ev_mobility_soc_peak_gwh",
+        "ev_mobility_charge_deviation_gwh",
+        "ev_mobility_v1g_relocated_gwh",
+        "contracted_heating_flexibility_gw",
+        "contracted_cooling_flexibility_gw",
+        "contracted_ev_v1g_flexibility_gw",
+        "contracted_ev_v2g_flexibility_gw",
+        "firm_heating_flexibility_credit_gw",
+        "firm_cooling_flexibility_credit_gw",
+        "firm_ev_v1g_flexibility_credit_gw",
+        "firm_ev_v2g_flexibility_credit_gw",
+        "net_load_energy_change_gwh"
+      ],
+      "sample": [
+        "11",
+        "8760",
+        "SCIENTIFIC_PRODUCTION",
+        "237999.99999994633",
+        "238034.08828665648",
+        "47.15348004896538",
+        "45.61625315658196",
+        "150.44606665293594",
+        "117.0730793452162",
+        "3.4838606992639063",
+        "3.061163240122215",
+        "0.0",
+        "0.0",
+        "0.63764220695958",
+        "0.031324992201591344",
+        "3.831089703152099e-11",
+        "4.066461174543366e-11",
+        "0.0",
+        "0.0",
+        "33.372987307720905",
+        "0.4226974591401813",
+        "0.0",
+        "0.0",
+        "2.221008528806319",
+        "0.9999997940824802",
+        "0.007512893751694539",
+        "6118.014283070907",
+        "2.221008528806319",
+        "17.753705640852235",
+        "4325.068799118951",
+        "2167.2071576440558",
+        "0.15945343321909927",
+        "0.008708850450115059",
+        "1.5739215282734713",
+        "0.011824706837600864",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "34.08828671014635"
+      ]
+    },
+    {
+      "name": "annual_generation_by_province_technology.csv",
+      "bytes": 14972,
+      "header": [
+        "province_code",
+        "technology",
+        "generation_gwh"
+      ],
+      "sample": [
+        "11",
+        "onwind",
+        "112.84358654197916"
+      ]
+    },
+    {
+      "name": "annual_generation_by_technology.csv",
+      "bytes": 504,
+      "header": [
+        "technology",
+        "generation_gwh"
+      ],
+      "sample": [
+        "onwind",
+        "3826914.0259991284"
+      ]
+    },
+    {
+      "name": "annual_resource_accounting_by_province.csv",
+      "bytes": 9327,
+      "header": [
+        "province_code",
+        "fossil_unabated_emissions_mtco2",
+        "emissions_before_dac_mtco2",
+        "co2_captured_for_storage_mtco2",
+        "beccs_gross_biogenic_co2_mtco2",
+        "beccs_captured_biogenic_co2_mtco2",
+        "beccs_stored_co2_mtco2",
+        "beccs_uncaptured_biogenic_co2_mtco2",
+        "beccs_lifecycle_emissions_mtco2",
+        "beccs_net_removal_mtco2",
+        "dac_removed_mtco2",
+        "net_emissions_after_dac_mtco2",
+        "biomass_fuel_pj",
+        "annual_biomass_limit_pj_per_year",
+        "selected_horizon_biomass_limit_pj",
+        "annual_flow_scaling_factor",
+        "dac_electricity_gwh"
+      ],
+      "sample": [
+        "11",
+        "17.768134154548953",
+        "17.54109059999892",
+        "0.22704354989936232",
+        "0.03676712238391691",
+        "0.033090410145525224",
+        "0.033090410145525224",
+        "0.00367671223839169",
+        "0.0",
+        "0.033090410145525224",
+        "4.2694472048925836e-07",
+        "17.5410901730542",
+        "33.97120139842496",
+        "58.49450085959379",
+        "58.49450085959379",
+        "1.0",
+        "0.000445715026263243"
+      ]
+    },
+    {
+      "name": "annual_storage_operation_by_technology.csv",
+      "bytes": 382,
+      "header": [
+        "technology",
+        "power_capacity_gw",
+        "energy_capacity_gwh",
+        "charge_gwh",
+        "discharge_gwh",
+        "conversion_and_self_discharge_loss_gwh",
+        "equivalent_full_discharge_cycles"
+      ],
+      "sample": [
+        "battery",
+        "108.48591042465777",
+        "433.9436416986311",
+        "107824.02915239845",
+        "97273.4977445899",
+        "10550.53140780855",
+        "224.16159242205288"
+      ]
+    },
+    {
+      "name": "annual_summary.json",
+      "bytes": 2285
+    },
+    {
+      "name": "build_report.json",
+      "bytes": 100332
+    },
+    {
+      "name": "co2_source_sink_flows.csv",
+      "bytes": 4825326,
+      "header": [
+        "province_code",
+        "sink_grid_uid",
+        "sink_lon",
+        "sink_lat",
+        "shipped_mtco2"
+      ],
+      "sample": [
+        "11",
+        "G000029397",
+        "113.25",
+        "34.0",
+        "2.0117247881811263e-08"
+      ]
+    },
+    {
+      "name": "cost_components.csv",
+      "bytes": 4786,
+      "header": [
+        "cost_component",
+        "value_million_cny_per_year",
+        "value_million_cny_model_accounting_period",
+        "accounting_scope",
+        "optimization_hours",
+        "result_use",
+        "included_directly_in_objective",
+        "included_in_primary_cost",
+        "included_directly_in_solver_objective"
+      ],
+      "sample": [
+        "vre_investment",
+        "1304980.2326705272",
+        "1304980.2326705272",
+        "ANNUALIZED_PLANNING_COST",
+        "8760",
+        "SCIENTIFIC_PRODUCTION",
+        "True",
+        "True",
+        "True"
+      ]
+    },
+    {
+      "name": "dac_capacity_capture.csv",
+      "bytes": 18863,
+      "header": [
+        "province_code",
+        "technology",
+        "capacity_floor_mtpa",
+        "capacity_mtpa",
+        "new_capacity_mtpa",
+        "capture_mtco2",
+        "selected_horizon_capture_mtco2",
+        "annualized_capture_rate_mtpa",
+        "selected_horizon_capture_upper_mtco2",
+        "annual_flow_scaling_factor"
+      ],
+      "sample": [
+        "11",
+        "koh_b",
+        "0.0",
+        "1.8632916936323918e-05",
+        "1.8632916936323918e-05",
+        "1.0372045432909852e-08",
+        "1.0372045432909852e-08",
+        "1.0372045432909852e-08",
+        "1.8632916936323918e-05",
+        "1.0"
+      ]
+    },
+    {
+      "name": "dual_export_status.json",
+      "bytes": 593
+    },
+    {
+      "name": "flexible_load_dispatch.npz",
+      "bytes": 43034847
+    },
+    {
+      "name": "frozen_capacity_audit.csv",
+      "bytes": 14108856,
+      "header": [
+        "variable",
+        "family",
+        "stable_key",
+        "source_table",
+        "source_column",
+        "unit",
+        "base_value",
+        "original_lb",
+        "original_ub",
+        "frozen_value",
+        "clip_amount"
+      ],
+      "sample": [
+        "vre_new_gw[0]",
+        "vre_new",
+        "[\"G000029362\", \"onwind\"]",
+        "vre_capacity.csv",
+        "new_capacity_gw",
+        "GW",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ]
+    },
+    {
+      "name": "frozen_capacity_closure_audit.csv",
+      "bytes": 2849,
+      "header": [
+        "row",
+        "variable",
+        "family",
+        "stable_key",
+        "base_value",
+        "before_gw",
+        "after_gw",
+        "delta_gw",
+        "objective_coefficient",
+        "row_sha256",
+        "lhs",
+        "rhs",
+        "gap_gw",
+        "direct_annual_cost_delta_million_cny",
+        "derived_annual_cost_delta_million_cny",
+        "post_closure_gap_gw"
+      ],
+      "sample": [
+        "biomass_beccs_shared_capacity_upper_s4_34[8]",
+        "thermal_new_gw[8,8]",
+        "thermal_new",
+        "[\"31\", \"bio\"]",
+        "9.389033735814761e-09",
+        "9.38903373581476e-09",
+        "2.269759566929358e-10",
+        "-9.162057779121824e-09",
+        "0.0",
+        "d0c1d6ab6b7bd9b72b79891168e37ce88612c625adcdc15d42073eff38c1da2a",
+        "0.6270000091620578",
+        "0.627",
+        "9.162057779121824e-09",
+        "-0.0",
+        "-3.630044479218158e-06",
+        "0.0"
+      ]
+    },
+    {
+      "name": "frozen_capacity_closure_report.json",
+      "bytes": 6969
+    },
+    {
+      "name": "frozen_capacity_expected.json",
+      "bytes": 2951929
+    },
+    {
+      "name": "frozen_capacity_output_check.json",
+      "bytes": 7232
+    },
+    {
+      "name": "frozen_capacity_report.json",
+      "bytes": 14875
+    },
+    {
+      "name": "frozen_capacity_source_alignment.json",
+      "bytes": 1385
+    },
+    {
+      "name": "gurobi.log",
+      "bytes": 25364
+    },
+    {
+      "name": "hourly_marginal_prices.csv.gz",
+      "bytes": 14333511
+    },
+    {
+      "name": "hourly_national_balance.csv.gz",
+      "bytes": 861247
+    },
+    {
+      "name": "hourly_province_balance.csv.gz",
+      "bytes": 49211824
+    },
+    {
+      "name": "hourly_province_security.csv.gz",
+      "bytes": 36403974
+    },
+    {
+      "name": "hydro_aggregate_capacity.csv",
+      "bytes": 9698,
+      "header": [
+        "province_code",
+        "province_name_en",
+        "province_name_zh",
+        "identified_station_capacity_gw",
+        "non_additive_union_floor_gw",
+        "harmonized_conventional_capacity_gw",
+        "provincial_aggregate_capacity_gw",
+        "station_technical_upper_gw",
+        "harmonized_future_technical_upper_gw",
+        "allocation_method",
+        "aggregate_physical_scope",
+        "capacity_floor_gw",
+        "capacity_gw",
+        "new_capacity_gw",
+        "dispatch_mode",
+        "up_reserve_credit",
+        "down_reserve_credit",
+        "capacity_margin_credit",
+        "inertia_seconds"
+      ],
+      "sample": [
+        "11",
+        "Beijing",
+        "北京",
+        "0.03",
+        "0.03",
+        "0.2254109364386804",
+        "0.1954109364386804",
+        "0.06",
+        "0.2554109364386804",
+        "national_380gw_raking_on_chd_prior_above_station_ght_union_floor",
+        "province_fixed_existing_monthly_profile_no_head_storage_comid",
+        "0.1954109364386804",
+        "0.1954109364386804",
+        "0.0",
+        "fixed_existing_monthly_profile_v1",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ]
+    },
+    {
+      "name": "hydro_capacity.csv",
+      "bytes": 353347,
+      "header": [
+        "hydrochn_row_id",
+        "plant_name_model",
+        "province_code",
+        "lon",
+        "lat",
+        "comid",
+        "operation_type_model",
+        "status_model",
+        "river_group_stage2",
+        "existing_capacity_gw",
+        "capacity_potential_gw",
+        "capacity_floor_gw",
+        "inherited_capacity_adjustment_gw",
+        "capacity_gw",
+        "new_capacity_gw"
+      ],
+      "sample": [
+        "HydroCHN_00000",
+        "",
+        "54",
+        "95.0066",
+        "29.1784",
+        "45022575",
+        "reservoir_storage",
+        "pre-construction",
+        "Unspecified GHT river",
+        "0.0",
+        "60.0",
+        "4.478277996651469",
+        "4.478277996651469",
+        "5.550496160259987",
+        "1.0722181636085182"
+      ]
+    },
+    {
+      "name": "hydro_cascade_reconciliation_audit.json",
+      "bytes": 16559
+    },
+    {
+      "name": "hydro_cascade_reconciliation_by_node.csv",
+      "bytes": 12141,
+      "header": [
+        "target_node_id",
+        "incoming_edge_count",
+        "raw_negative_node_hours",
+        "raw_min_local_inflow_m3s",
+        "raw_clip_equivalent_volume_million_m3",
+        "adjusted_transfer_volume_million_m3",
+        "minimum_transfer_fraction",
+        "adjusted_hours",
+        "maximum_reconciliation_residual_m3s"
+      ],
+      "sample": [
+        "yangtze_jinsha_system__43052321",
+        "1",
+        "3690",
+        "-5701.462890625",
+        "3828.338616796875",
+        "3828.338616796875",
+        "0.0",
+        "3690",
+        "4.547473508864641e-13"
+      ]
+    },
+    {
+      "name": "hydro_dispatch.npz",
+      "bytes": 6758376
+    },
+    {
+      "name": "hydro_spur_capacity.csv",
+      "bytes": 60464,
+      "header": [
+        "hydrochn_row_id",
+        "hydro_spur_augmentation_gw"
+      ],
+      "sample": [
+        "HydroCHN_00000",
+        "1.0722181636085182"
+      ]
+    },
+    {
+      "name": "input_manifest.csv",
+      "bytes": 31959,
+      "header": [
+        "kind",
+        "logical_path",
+        "resolved_path",
+        "required",
+        "exists",
+        "size_bytes",
+        "sha256",
+        "integrity_method",
+        "role"
+      ],
+      "sample": [
+        "configuration",
+        "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+        "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+        "True",
+        "True",
+        "16561.0",
+        "cd460b176c30b04d810924a2e41ad2a3e0f10281fe04272f04c2827bf8a2ca63",
+        "sha256_file",
+        ""
+      ]
+    },
+    {
+      "name": "intra_grid_substation_design.csv",
+      "bytes": 1046666,
+      "header": [
+        "substation_id",
+        "province_code",
+        "trunk_distance_km",
+        "potential_weighted_vre_capacity_gw",
+        "equivalent_peak_output_gw",
+        "equivalent_peak_cf",
+        "observed_vre_capacity_2025_gw",
+        "legacy_nameplate_proxy_gw",
+        "initial_vre_trunk_capacity_gw",
+        "initial_hydro_trunk_capacity_gw",
+        "trunk_augmentation_gw",
+        "trunk_capacity_gw",
+        "trunk_rule"
+      ],
+      "sample": [
+        "way/1062620481/p11",
+        "11",
+        "24.7716884334243",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "cispo_potential_weighted_equivalent_peak_cf_v1"
+      ]
+    },
+    {
+      "name": "intra_grid_vre_site_design.csv",
+      "bytes": 5926311,
+      "header": [
+        "grid_uid",
+        "grid_id",
+        "province_code",
+        "technology",
+        "substation_id",
+        "design_max_cf",
+        "observed_capacity_2025_gw",
+        "existing_vre_floor_mode",
+        "active_observed_capacity_floor_gw",
+        "initial_spur_capacity_gw",
+        "spur_augmentation_gw",
+        "spur_capacity_gw",
+        "spur_rule"
+      ],
+      "sample": [
+        "G000029362",
+        "29362",
+        "62",
+        "onwind",
+        "way/336616586/p62",
+        "0.35345208644866943",
+        "0.4",
+        "cohort_survival_v1",
+        "0.4",
+        "0.1413808345794678",
+        "0.0",
+        "0.1413808345794678",
+        "site_full_weather_max_cf_v1"
+      ]
+    },
+    {
+      "name": "load_center_annual_balance.csv",
+      "bytes": 45417,
+      "header": [
+        "load_center_id",
+        "province_code",
+        "province_name_zh",
+        "lon",
+        "lat",
+        "annual_demand_share_in_province",
+        "annual_injection_gwh",
+        "annual_effective_demand_gwh",
+        "annual_external_net_import_gwh"
+      ],
+      "sample": [
+        "LC_156110000",
+        "11",
+        "北京",
+        "116.36795220903856",
+        "39.9654826614786",
+        "1.0",
+        "109329.46647697657",
+        "255119.16420048356",
+        "145789.6977235042"
+      ]
+    },
+    {
+      "name": "load_center_annual_generation.csv",
+      "bytes": 98867,
+      "header": [
+        "load_center_id",
+        "province_code",
+        "technology",
+        "annual_generation_gwh"
+      ],
+      "sample": [
+        "LC_156110000",
+        "11",
+        "onwind",
+        "112.8435847801397"
+      ]
+    },
+    {
+      "name": "load_center_intra_transmission.csv",
+      "bytes": 128672,
+      "header": [
+        "intra_edge_id",
+        "province_code",
+        "from_load_center_id",
+        "to_load_center_id",
+        "distance_km",
+        "technology",
+        "initial_capacity_gw",
+        "unit_cost_yuan_per_kw",
+        "capacity_gw",
+        "new_capacity_gw",
+        "annual_flow_forward_gwh",
+        "annual_flow_reverse_gwh"
+      ],
+      "sample": [
+        "INTRA_13_LC_156130100_LC_156130400",
+        "13",
+        "LC_156130100",
+        "LC_156130400",
+        "168.5720990125229",
+        "AC_500kV",
+        "4.154344164797831",
+        "329.2343793375072",
+        "4.154347798054152",
+        "3.5068168697804936e-06",
+        "3881.7825786917733",
+        "0.008631219612477835"
+      ]
+    },
+    {
+      "name": "load_center_network_qc.csv",
+      "bytes": 492,
+      "header": [
+        "maximum_center_balance_residual_gwh",
+        "maximum_province_net_exchange_residual_gwh",
+        "maximum_intra_capacity_violation_gwh",
+        "maximum_vre_annual_availability_violation_gwh",
+        "maximum_ror_annual_availability_violation_gwh",
+        "bidirectional_flow_tolerance_gwh",
+        "maximum_bidirectional_minimum_flow_gwh",
+        "total_bidirectional_minimum_flow_gwh",
+        "bidirectional_active_edge_count",
+        "dpv_spur_augmentation_max_gw"
+      ],
+      "sample": [
+        "4.9964000936597586e-06",
+        "1.5067780623212457e-06",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0001",
+        "0.7509882234524796",
+        "6.0549154618194985",
+        "619",
+        "0.0"
+      ]
+    },
+    {
+      "name": "model_config_snapshot.json",
+      "bytes": 29961
+    },
+    {
+      "name": "monthly_energy_by_technology.csv",
+      "bytes": 5351,
+      "header": [
+        "month",
+        "load_gwh",
+        "storage_charge_gwh",
+        "storage_discharge_gwh",
+        "onwind_generation_gwh",
+        "offwind_generation_gwh",
+        "upv_generation_gwh",
+        "dpv_generation_gwh",
+        "wave_generation_gwh",
+        "coal_generation_gwh",
+        "coalccs_generation_gwh",
+        "cchp_generation_gwh",
+        "cchpccs_generation_gwh",
+        "gas_generation_gwh",
+        "gasccs_generation_gwh",
+        "gchp_generation_gwh",
+        "gchpccs_generation_gwh",
+        "bio_generation_gwh",
+        "bioccs_generation_gwh",
+        "nuclear_generation_gwh",
+        "ror_generation_gwh",
+        "reservoir_generation_gwh",
+        "hydro_aggregate_generation_gwh"
+      ],
+      "sample": [
+        "1",
+        "1105799.5661986247",
+        "59785.3026675609",
+        "45960.126054513385",
+        "336340.41625073255",
+        "124914.91770652319",
+        "141143.54958394635",
+        "43412.72568911752",
+        "1.738253440960721",
+        "94.9834393342203",
+        "5.245580229252096",
+        "265133.38109095616",
+        "1044.646244629267",
+        "8163.066863412274",
+        "7.630043334527259",
+        "23982.48664742282",
+        "158.72678742173895",
+        "42601.83694369744",
+        "3574.7244350528795",
+        "128353.81604450915",
+        "1406.2833443097095",
+        "12639.951331311753",
+        "3028.009634159274"
+      ]
+    },
+    {
+      "name": "output_catalog.csv",
+      "bytes": 8147,
+      "header": [
+        "file_path",
+        "format",
+        "size_bytes",
+        "field_or_array_count",
+        "row_count",
+        "role"
+      ],
+      "sample": [
+        "annual_adequacy_by_province.csv",
+        "csv",
+        "6108",
+        "12",
+        "31.0",
+        "Province peak-load capacity-credit and planning-reserve-margin accounting"
+      ]
+    },
+    {
+      "name": "output_data_dictionary.csv",
+      "bytes": 151805,
+      "header": [
+        "file_path",
+        "field",
+        "storage",
+        "dtype",
+        "shape",
+        "dimensions",
+        "unit",
+        "description"
+      ],
+      "sample": [
+        "annual_adequacy_by_province.csv",
+        "province_code",
+        "column",
+        "see CSV values",
+        "rows",
+        "record",
+        "dimensionless_or_identifier",
+        "province code"
+      ]
+    },
+    {
+      "name": "preflight_report.json",
+      "bytes": 15732
+    },
+    {
+      "name": "preservation_report.json",
+      "bytes": 4233
+    },
+    {
+      "name": "preservation_runtime_memory.json",
+      "bytes": 158
+    },
+    {
+      "name": "province_annual_load_center_accounts.csv",
+      "bytes": 3337,
+      "header": [
+        "province_code",
+        "province_name_zh",
+        "annual_non_spatial_injection_gwh",
+        "annual_effective_demand_gwh",
+        "annual_external_sent_gwh",
+        "annual_external_received_gwh",
+        "annual_external_net_import_gwh"
+      ],
+      "sample": [
+        "11",
+        "北京",
+        "70500.50942423439",
+        "255119.16420050312",
+        "1225.5390804834906",
+        "147015.23680398913",
+        "145789.6977235042"
+      ]
+    },
+    {
+      "name": "reservoir_dispatch.npz",
+      "bytes": 238921265
+    },
+    {
+      "name": "reservoir_station_index.csv",
+      "bytes": 157869,
+      "header": [
+        "reservoir_local_index",
+        "hydrochn_row_id",
+        "plant_name_model",
+        "lon",
+        "lat",
+        "comid",
+        "province_code",
+        "existing_capacity_gw",
+        "capacity_potential_gw",
+        "head_m",
+        "q_rated_m3s",
+        "active_storage_gl",
+        "operation_type_model",
+        "installed_operation_type_assigned",
+        "potential_operation_type_paper",
+        "operation_type_scope",
+        "status_model",
+        "river_group_stage2",
+        "stage2_issue_flags",
+        "is_core_cascade_station"
+      ],
+      "sample": [
+        "0",
+        "HydroCHN_00000",
+        "",
+        "95.0066",
+        "29.1784",
+        "45022575",
+        "54",
+        "0.0",
+        "60.0",
+        "1095.723829",
+        "6202.098040071348",
+        "44779.94924",
+        "reservoir_storage",
+        "reservoir_storage",
+        "reservoir_storage",
+        "potential_or_nonoperating",
+        "pre-construction",
+        "Unspecified GHT river",
+        "operation_type_requires_review;river_group_not_normalized",
+        "False"
+      ]
+    },
+    {
+      "name": "result_manifest.json",
+      "bytes": 14974
+    },
+    {
+      "name": "run_claim.json",
+      "bytes": 264
+    },
+    {
+      "name": "run_environment.json",
+      "bytes": 2936
+    },
+    {
+      "name": "run_identity.json",
+      "bytes": 22295
+    },
+    {
+      "name": "run_scope.json",
+      "bytes": 8286
+    },
+    {
+      "name": "run_summary.json",
+      "bytes": 2285
+    },
+    {
+      "name": "scenario_manifest.json",
+      "bytes": 9890
+    },
+    {
+      "name": "solution_qc.json",
+      "bytes": 83948
+    },
+    {
+      "name": "solve_report.json",
+      "bytes": 80365
+    },
+    {
+      "name": "solver_parameters_before_optimize.json",
+      "bytes": 589
+    },
+    {
+      "name": "solver_telemetry.jsonl",
+      "bytes": 72352
+    },
+    {
+      "name": "storage_capacity.csv",
+      "bytes": 11498,
+      "header": [
+        "province_code",
+        "technology",
+        "exogenous_capacity_floor_gw",
+        "inherited_capacity_adjustment_gw",
+        "capacity_floor_gw",
+        "capacity_upper_gw",
+        "capacity_gw",
+        "new_capacity_gw",
+        "energy_capacity_floor_gwh",
+        "energy_capacity_gwh",
+        "new_energy_capacity_gwh",
+        "effective_duration_h",
+        "energy_capacity_mode"
+      ],
+      "sample": [
+        "11",
+        "battery",
+        "0.0",
+        "10.500184197471295",
+        "10.500184197471295",
+        "inf",
+        "14.14062167453212",
+        "3.640437477060825",
+        "42.00073678988518",
+        "56.56248669812848",
+        "14.5617499082433",
+        "4.0",
+        "fixed_duration_v1"
+      ]
+    },
+    {
+      "name": "storage_dispatch.npz",
+      "bytes": 20088944
+    },
+    {
+      "name": "thermal_dispatch.npz",
+      "bytes": 102812132
+    },
+    {
+      "name": "thermal_nuclear_capacity.csv",
+      "bytes": 37975,
+      "header": [
+        "province_code",
+        "technology",
+        "exogenous_capacity_floor_gw",
+        "inherited_capacity_adjustment_gw",
+        "capacity_floor_gw",
+        "capacity_gw",
+        "new_capacity_gw",
+        "retrofit_out_gw",
+        "retrofit_in_gw",
+        "retrofit_survivor_upper_gw"
+      ],
+      "sample": [
+        "11",
+        "coal",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ]
+    },
+    {
+      "name": "time_index.csv",
+      "bytes": 335483,
+      "header": [
+        "hour_index",
+        "model_hour_index",
+        "datetime_bj",
+        "month",
+        "day_of_year",
+        "hour_of_day"
+      ],
+      "sample": [
+        "0",
+        "0",
+        "2040-01-01 00:00:00",
+        "1",
+        "1",
+        "0"
+      ]
+    },
+    {
+      "name": "transmission_capacity.csv",
+      "bytes": 36417,
+      "header": [
+        "line_id",
+        "from_province_code",
+        "to_province_code",
+        "preset_technology",
+        "distance_km",
+        "capacity_gw",
+        "capacity_floor_gw",
+        "new_capacity_gw"
+      ],
+      "sample": [
+        "CORRIDOR_0000",
+        "11",
+        "12",
+        "AC",
+        "126.734",
+        "1.216432096679718",
+        "1.2133384513351648",
+        "0.0030936453445531"
+      ]
+    },
+    {
+      "name": "transmission_flows.npz",
+      "bytes": 30201460
+    },
+    {
+      "name": "vre_capacity.csv",
+      "bytes": 3791649,
+      "header": [
+        "grid_uid",
+        "grid_id",
+        "province_code",
+        "technology",
+        "exogenous_capacity_floor_gw",
+        "capacity_upper_gw",
+        "capacity_floor_gw",
+        "inherited_capacity_adjustment_gw",
+        "capacity_gw",
+        "new_capacity_gw"
+      ],
+      "sample": [
+        "G000029362",
+        "29362",
+        "62",
+        "onwind",
+        "0.4",
+        "0.4",
+        "0.4",
+        "0.0",
+        "0.4",
+        "0.0"
+      ]
+    },
+    {
+      "name": "vre_dispatch.npz",
+      "bytes": 11569763
+    },
+    {
+      "name": "wave_capacity.csv",
+      "bytes": 267095,
+      "header": [
+        "grid_uid",
+        "grid_id",
+        "wave_source_grid_id",
+        "lon",
+        "lat",
+        "province_code",
+        "load_center_id",
+        "substation_id",
+        "capacity_upper_gw_raw",
+        "capacity_upper_gw",
+        "distance_to_shore_km",
+        "water_depth_m",
+        "wave_nc_imputed",
+        "capacity_floor_gw",
+        "capacity_gw",
+        "new_capacity_gw"
+      ],
+      "sample": [
+        "G000021841",
+        "21841",
+        "6",
+        "121.0",
+        "40.75",
+        "21",
+        "LC_156211400",
+        "way/152961896/p21",
+        "5.0301787109375",
+        "5.0301787109375",
+        "0.6562954187393188",
+        "9.99826431274414",
+        "False",
+        "6.741722061072898e-08",
+        "1.4295709796294472e-06",
+        "1.3621537590187183e-06"
+      ]
+    },
+    {
+      "name": "wave_dispatch.npz",
+      "bytes": 971203
+    }
+  ],
+  "transfer": {
+    "started_at_utc": "2026-10-28T16:49:27.839972+00:00",
+    "status": "COMPLETE",
+    "stages": [
+      {
+        "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 593829506,
+        "file_count": 106,
+        "started_at_utc": "2026-10-28T16:49:27.840609+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:50:36.634296+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 592243180,
+        "file_count": 106,
+        "started_at_utc": "2026-10-28T16:50:36.635097+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:52:31.786801+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+        "tier": "T1",
+        "bytes": 588719979,
+        "file_count": 106,
+        "started_at_utc": "2026-10-28T16:52:31.787618+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:53:41.931396+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 783913847,
+        "file_count": 3,
+        "started_at_utc": "2026-10-28T16:53:41.931888+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:55:14.732000+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 783913841,
+        "file_count": 3,
+        "started_at_utc": "2026-10-28T16:55:14.732554+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:57:33.845989+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+        "tier": "T2",
+        "bytes": 783913841,
+        "file_count": 3,
+        "started_at_utc": "2026-10-28T16:57:33.846588+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T16:58:51.810461+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4147007044,
+        "file_count": 1,
+        "started_at_utc": "2026-10-28T16:58:51.816756+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T17:09:05.971912+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4146734190,
+        "file_count": 1,
+        "started_at_utc": "2026-10-28T17:09:05.972485+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T17:18:37.656216+00:00"
+      },
+      {
+        "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+        "tier": "T3",
+        "bytes": 4146115720,
+        "file_count": 1,
+        "started_at_utc": "2026-10-28T17:18:37.656791+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-10-28T17:26:47.815062+00:00"
+      }
+    ],
+    "completed_bytes": 16566391148,
+    "finished_at_utc": "2026-10-28T17:26:52.512429+00:00",
+    "source_unchanged": true,
+    "disk_free_bytes": 1427211862016
+  }
+}

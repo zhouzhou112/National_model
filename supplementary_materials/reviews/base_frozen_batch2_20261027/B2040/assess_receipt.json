@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/postprocess_tools_20261027_mt/scripts/assess_relative_v1.py",
+    "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760",
+    "--inputs",
+    "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/postprocess_20261027_mt/assessment_inputs.json",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/postprocess_20261027_mt/solution_qc_relative_v1.json"
+  ],
+  "source_verification": {
+    "solution_qc.json": {
+      "bytes": 83948,
+      "sha256": "e19d86f819886d621cd5e562c9bce17603b2cd97cb16e0b7681c1209c40b5f29",
+      "manifest_match": true
+    },
+    "solve_report.json": {
+      "bytes": 80365,
+      "sha256": "6002aebe2f67098c0fc02f5ec425a0bc4a6b07d0a4bf149c87e3475bf8049eb9",
+      "manifest_match": true
+    },
+    "hourly_province_balance.csv.gz": {
+      "bytes": 49211824,
+      "sha256": "c6d57760925da0e63f88bf49963f7e36375239168ce3dd5ef3b2a21d8abab29f",
+      "manifest_match": true
+    },
+    "reservoir_dispatch.npz": {
+      "bytes": 238921265,
+      "sha256": "5b6ac259f64f20ecc4ae5d212aabd5467a246b02327357bda9d4d57c5d5b734b",
+      "manifest_match": true
+    },
+    "build_report.json": {
+      "bytes": 100332,
+      "sha256": "92f3667a16c680f63f91a520b0dec88e13eb32018bab55330fa74602edb5d5b4",
+      "manifest_match": true
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "bytes": 16075,
+      "sha256": "822b91f4de345854b158de4fcc1dc628573e665785f2e4a7bf5bafbc579e0bdb",
+      "manifest_match": true
+    },
+    "vre_capacity.csv": {
+      "bytes": 3791649,
+      "sha256": "aa95e88d4145a4d470611fc2b61e9627b5a8eaf3a281dcaa0c71bb1565ff913e",
+      "manifest_match": true
+    },
+    "storage_capacity.csv": {
+      "bytes": 11498,
+      "sha256": "af90fff0ade0417dd61e17610da8e0318ea65853b4be2bbffaa14f6dedd4d0b0",
+      "manifest_match": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "bytes": 37975,
+      "sha256": "3ee156211499e27d2072982814d2c2e9074ca8f312626453d33040a21921b762",
+      "manifest_match": true
+    },
+    "hydro_capacity.csv": {
+      "bytes": 353347,
+      "sha256": "2ff572e2062fc1f83e92910e66c77a9822a3b0d27b0697715253a88ea7faafe9",
+      "manifest_match": true
+    },
+    "wave_capacity.csv": {
+      "bytes": 267095,
+      "sha256": "d1ccc8324ebb91255546c4de3dc71182c987a4808a976f7cb25f0d0fb65e22df",
+      "manifest_match": true
+    },
+    "transmission_capacity.csv": {
+      "bytes": 36417,
+      "sha256": "3d856c963924ba28f6e73045f5eaa83f8022019fe616d5629a6f776fa44dbd58",
+      "manifest_match": true
+    },
+    "result_manifest.json": {
+      "bytes": 14974,
+      "sha256": "7941224437da19c66a68b51340cf0239474088d631049a55304e3d5562e910d1",
+      "manifest_match": false
+    }
+  },
+  "source_unchanged": true,
+  "tool_sha256": {
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "files": {
+    "assessment_inputs.json": {
+      "bytes": 10000,
+      "sha256": "84d518eb6fe3bfb5bc8aa8b06469ccfdbcb2677c8d24c7fe5010b0cd01b7e283"
+    },
+    "solution_qc_relative_v1.json": {
+      "bytes": 60685,
+      "sha256": "b4e601cedbfd65b7ad4d3dcf45b22db146e2202c184257ea5f84365a4f55e0ed"
+    },
+    "assessment_evidence.json": {
+      "bytes": 3691,
+      "sha256": "82ab29d44e9785e2f00bf1b6d8dd7604ecd9fa64983fc96f8bb05ade31bd104a"
+    }
+  }
+}
