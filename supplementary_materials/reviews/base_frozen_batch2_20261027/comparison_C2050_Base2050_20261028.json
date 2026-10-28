@@ -1,0 +1,78 @@
+{
+  "base_telemetry_source": "supplementary_materials\\reviews\\base_2050_continuation_20260930\\status_20261012T111059Z\\output_8760__solver_telemetry.jsonl",
+  "current_snapshot": "cloud_status_20261028T111951Z.json",
+  "current_c2050": {
+    "timestamp": "2026-10-28T19:13:25.117183+08:00",
+    "event": "solver_progress",
+    "phase": "barrier",
+    "iteration": 427.0,
+    "primal_objective": 5872097.834659969,
+    "dual_objective": 5551274.05861211,
+    "primal_infeasibility": 2.3738404349798246,
+    "dual_infeasibility": 2.861993326444838e-05,
+    "complementarity": 0.0036740682151628666,
+    "runtime_seconds": 683964.9006688595,
+    "work_units": 1783994.194692829,
+    "memory_used_gb": 386.491264312,
+    "max_memory_used_gb": 756.077856008
+  },
+  "base_same_iteration": {
+    "timestamp": "2026-10-07T16:26:26.583677+08:00",
+    "event": "solver_progress",
+    "phase": "barrier",
+    "iteration": 427.0,
+    "primal_objective": 36103504.77866562,
+    "dual_objective": -5798299.70152213,
+    "primal_infeasibility": 3.2156565195816484,
+    "dual_infeasibility": 4.247304718634913e-05,
+    "complementarity": 0.5461150256729143,
+    "runtime_seconds": 581359.9716701508,
+    "work_units": 1314565.4293398154,
+    "memory_used_gb": 379.628708824,
+    "max_memory_used_gb": 837.512022944
+  },
+  "base_closest_solver_runtime": {
+    "timestamp": "2026-10-08T21:07:13.173352+08:00",
+    "event": "solver_progress",
+    "phase": "barrier",
+    "iteration": 496.0,
+    "primal_objective": 9508424.46818982,
+    "dual_objective": 3927657.0633344604,
+    "primal_infeasibility": 0.490325208274792,
+    "dual_infeasibility": 7.931423821562202e-06,
+    "complementarity": 0.07246489566520961,
+    "runtime_seconds": 684606.5613529682,
+    "work_units": 1603861.2516266322,
+    "memory_used_gb": 379.628708824,
+    "max_memory_used_gb": 837.512022944
+  },
+  "base_final": {
+    "timestamp": "2026-10-12T11:43:49.041397+08:00",
+    "event": "solver_progress",
+    "phase": "barrier",
+    "iteration": 716.0,
+    "primal_objective": 5751972.505310521,
+    "dual_objective": 5747341.065335428,
+    "primal_infeasibility": 0.0006742307074262706,
+    "dual_infeasibility": 1.958688467377352e-06,
+    "complementarity": 6.00537603890085e-05,
+    "runtime_seconds": 996402.4293980598,
+    "work_units": 2400697.710008707,
+    "memory_used_gb": 379.628728008,
+    "max_memory_used_gb": 837.512022944
+  },
+  "base_solver_runtime_seconds": 996416.0187590122,
+  "interpretation": "Matched iteration and runtime are descriptive only; scenarios, numerics and thread counts differ.",
+  "state_interpretation": {
+    "case3_2050_source": "Case3 2040 candidate via R1",
+    "C2050_source": "Base 2040 candidate via R1",
+    "flexibility_contracts_inherited": false,
+    "evidence": [
+      "cispo_model/flexible_load.py:671-676 capacity newly defined with lb=0",
+      "cispo_model/flexible_load.py:1336 annual enablement cost on current capacity",
+      "cispo_model/planning_state.py:513-754 cohort export excludes flexible_service_capacity",
+      "RESEARCH_DESIGN_CONSENSUS_20261012.md:10-12 framework identities"
+    ],
+    "not_inferred": "No controlled attribution that year 2050 or early flexibility itself causes harder numerical convergence."
+  }
+}
