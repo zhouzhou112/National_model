@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-10-28 16:46 GMT（北京10月29日00:46）：云端2项RUNNING，B三年完成。** C2050/5207165第439轮（PInf1.4375/DInf1.91e-5/Compl0.002149），Case3 2050/5294579第58轮（1.8736e10/5.49e4/8.2191e7）。B2040/5297384、B2050/5297390、B2060 v2/5297410均COMPLETED/0:0、OPTIMAL，162/160/178轮，作业耗时17:43:38/15:48:52/15:49:52，保全COMPLETE且errors=[]。T550恢复后16:49UTC已启动三年完整自主备份，PID2538534/PPID1/SID2538534，330文件16,566,391,148bytes，预计余35.4185%；当前RUNNING/T1 TRANSFERRING，不称备份完成。本机可关机，不影响T550直连云端。
+
 **2026-10-28 11:14 GMT（北京19:14）：云端5项RUNNING，无新终态。** B2040/5297384第132轮（PInf0.00532/DInf6.01e-6/Compl1.08e-4），B2050/5297390第145轮（2.72e-4/4.91e-6/5.89e-5），B2060 v2/5297410第159轮（9.33e-4/7.17e-6/6.74e-5）；三者近10轮全部指标改善，均已通过构建/排序进入Barrier，仍未结束。Case3 2050/5294579第43轮（2.58e10/1.48e5/1.18e8），近10轮三项下降54.71%/58.08%/55.03%，23.12分钟/轮。C2050/5207165第427轮（2.37/2.86e-5/0.00367），近10轮三项下降33.95%/10.08%/36.30%，26.90分钟/轮。五项stderr无错误；不据此预估结束时间。
 
 **2026-10-27 21:25 GMT T550恢复核验：** 云端5项RUNNING；C2050/5207165第396轮，Case3 2050/5294579第7轮，B2040/5297384、B2050/5297390、B2060 v2/5297410仍构建且启动检查PASS。T550遗留筛选CSV已完整到达（7,470,093bytes，SHA fe5d87a2adc6f5d6b8ad21606c571979312c1f632780fcdc9ea7500b7f0f2368），未重复传输；设置与全套回归相同数据环境后，tests.test_production_screen 6项全部PASS，解决上一轮唯一缺夹具报错。
@@ -3886,3 +3888,14 @@ v2指B2060运行包第二版，模型配置仍v9_a12。首版5295127因Windows�
 **2026-10-28 11:14 GMT（北京19:14）：云端5项RUNNING，无新终态。** B2040/5297384第132轮（PInf0.00532/DInf6.01e-6/Compl1.08e-4），B2050/5297390第145轮（2.72e-4/4.91e-6/5.89e-5），B2060 v2/5297410第159轮（9.33e-4/7.17e-6/6.74e-5）；三者近10轮全部指标改善，均已通过构建/排序进入Barrier，仍未结束。Case3 2050/5294579第43轮（2.58e10/1.48e5/1.18e8），近10轮三项下降54.71%/58.08%/55.03%，23.12分钟/轮。C2050/5207165第427轮（2.37/2.86e-5/0.00367），近10轮三项下降33.95%/10.08%/36.30%，26.90分钟/轮。五项stderr无错误；不据此预估结束时间。
 
 基准提交dbcf010；执行collect_cloud_status.py、sacct与sstat只读查询，无模型/配置/作业修改。证据：supplementary_materials/reviews/base_frozen_batch2_20261027/cloud_status_20261028T111453Z.json、progress_summary_20261028T1114Z.json。B2040/2050/2060近期每轮6.89/6.86/4.82分钟；Slurm batch峰值分别562.80/557.49/547.71GiB（运行中累计值），Case3/C峰值617.82/621.18GiB。无新终态，未启动备份；下一次查询继续核对，终态后按已有授权执行完整保全、T550备份、验收及小文件回传，不建监听。
+
+
+## 2026-10-28 B三年终态与T550自主备份
+
+**2026-10-28 16:46 GMT（北京10月29日00:46）：云端2项RUNNING，B三年完成。** C2050/5207165第439轮（PInf1.4375/DInf1.91e-5/Compl0.002149），Case3 2050/5294579第58轮（1.8736e10/5.49e4/8.2191e7）。B2040/5297384、B2050/5297390、B2060 v2/5297410均COMPLETED/0:0、OPTIMAL，162/160/178轮，作业耗时17:43:38/15:48:52/15:49:52，保全COMPLETE且errors=[]。T550恢复后16:49UTC已启动三年完整自主备份，PID2538534/PPID1/SID2538534，330文件16,566,391,148bytes，预计余35.4185%；当前RUNNING/T1 TRANSFERRING，不称备份完成。本机可关机，不影响T550直连云端。
+
+Git基准7499490；未修改模型或运行中的5207165/5294579。只读sacct、solve_report、preservation_report、resource_usage与telemetry核对；B三年模型内部峰RSS562.859/562.848/551.809GiB。原始solution_qc仍HARD_FAIL标签，原结果完整保留；尚未完成独立扩展relative_v1验收及小文件回传，不能把OPTIMAL称为验收PASS。
+
+备份复用backup_B_completed.py与backup_completed_cloud.py，全output_8760含原MPS/BarX/BarPi/调度/状态/QC及显式闭合、映射、启动身份元数据。启动前核对无活跃rsync/同类进程、无同名目标或operation；30%空间门禁PASS。独立session、stdin DEVNULL、stdout/stderr写操作日志，持全局锁，逐层rsync/SHA及最终源身份复核；不删源、不复制凭据、不建监听。operation=/home/zz2/National_model_server/cloud_backup/_operations/20261028_B2040_B2050_B2060_completed。
+
+证据：本review目录B_completed_20261028.json、B_all_completed_backup_config_20261028.json、B_backup_launch_20261028.json、B_backup_running_20261028.json、cloud_status_20261028T164644Z.json。最初转发拒绝连接，作者恢复后成功启动；未重复备份旧失败v1。下一次连接先看旧PID、transfer_status、三份backup_manifest；全部COMPLETE且source unchanged才报告完成。随后对三年执行postprocess_B.py B2040|B2050|B2060 assess及collect，回传nocredit同清单≤32MiB文件，验收JSON按来源SHA旁置同步。不要重复plan/start，也不因自动QC标签放弃任何保全。
