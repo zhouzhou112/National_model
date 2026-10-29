@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-29T19:17:59.673101+00:00",
+  "local_forward_listener": {
+    "address": "127.0.0.1",
+    "port": 22,
+    "process": "GameViewer",
+    "pid": 4392
+  },
+  "forward_attempts": 3,
+  "forward_error": "kex_exchange_identification: read: Connection reset",
+  "direct_route_error": "192.168.9.27:22 Connection timed out",
+  "remote_login_success": false,
+  "backup_plan_executed": false,
+  "backup_started": false,
+  "postprocess_executed": false,
+  "next_action": "Reconnect the T550 GameViewer session/port mapping; inspect existing operation and backup manifests before planning or resuming"
+}
