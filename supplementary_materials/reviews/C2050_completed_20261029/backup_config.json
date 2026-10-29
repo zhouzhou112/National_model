@@ -7,5 +7,7 @@
   "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
   "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
   "minimum_free_fraction": 0.3,
-  "authorization": "Author 2026-10-20 completed-run full backup standing rule; T550 direct one-shot resumable transfer only; no watcher; inspect existing transfer and manifests before planning"
+  "authorization": "Author 2026-10-20 completed-run full backup standing rule; T550 direct one-shot resumable transfer only; no watcher; inspect existing transfer and manifests before planning",
+  "execution_gate": "WAIT_FOR_AUTHOR_CONFIRMATION_20261029",
+  "execution_gate_reason": "Author explicitly deferred backup until their next confirmation; restored connectivity alone is not permission to start."
 }

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-29 作者暂缓C2050备份：** 本次明确要求后续确认后再备份；不再因T550连接恢复自动plan/run。此暂停仅针对本次C2050待执行备份，长期终态保全规则不变。框架C的2050→2060总体路线已有共识，R1/40线程/Base2060 margin0.2清单规则已有；当前未发现C2060独立启动任务书或直接release预授权。
+
 - **2026-10-29 作者恢复T550后复核：** 本机127.0.0.1:22已由GameViewer监听，但三次SSH握手前均Connection reset；内网192.168.9.27:22超时，尚未登录T550。C2050备份plan/run及验收/证书均未执行，不宣称传输启动。已请作者重连T550会话或端口映射。
 
 - **2026-10-29 19:09 GMT（北京10月30日03:09）：云端1项RUNNING，C2050已完成。** C2050/5207165于16:28:53GMT（北京10月30日00:28:53）COMPLETED/0:0，总9天04:04:06，496轮OPTIMAL，目标5700892.181056213 million CNY，峰值RSS623.282GiB；保全COMPLETE/errors=[]，原模型已归档。最终PInf0.02918/DInf2.17e-6/Compl3.34e-5，旧10-14 relative_v1 HARD_FAIL（co2_source及solver原始残差>0.01）；10-27独立复评/筛选证书尚未执行，不自动采纳或放行2060。Case3 2050/5294579第129轮，运行2天05:38:15，PInf3.319e8/DInf4.760/Compl1.410e6，近10轮下降67.99%/89.88%/68.21%，22.12分钟/轮，stderr空。T550转发连接拒绝，备份配置已准备，尚未计划或启动传输，已请作者恢复。
@@ -10541,3 +10543,13 @@ Git基准bf72d8e；只读squeue/sacct及solve/preservation/QC/result_manifest核
 **2026-10-29 作者恢复T550后复核：** 本机127.0.0.1:22已由GameViewer监听，但三次SSH握手前均Connection reset；内网192.168.9.27:22超时，尚未登录T550。C2050备份plan/run及验收/证书均未执行，不宣称传输启动。已请作者重连T550会话或端口映射。
 
 基准a370afe；证据C2050_completed_20261029/t550_reconnect_check_20261029.json。新增postprocess_C.py复用已有T550独立评估器，仅允许C2050 assess|price并要求完整备份manifest；已过AST语法检查，远端尚未执行。连接恢复后先查旧manifest/operation/活动传输与锁，复用backup_config.json安排一次自主全备份，校验后运行postprocess_C.py C2050 assess及price；本机只收小JSON，禁止旧collect全清单。未改变模型、源归档或在跑Case3；无后台监听。
+
+## 2026-10-29 C2050收尾暂停与后续排程核对
+
+**2026-10-29 作者暂缓C2050备份：** 本次明确要求后续确认后再备份；不再因T550连接恢复自动plan/run。此暂停仅针对本次C2050待执行备份，长期终态保全规则不变。框架C的2050→2060总体路线已有共识，R1/40线程/Base2060 margin0.2清单规则已有；当前未发现C2060独立启动任务书或直接release预授权。
+
+核对依据：AGENTS.md 2026-10-12晚/10-19/10-26节，RESEARCH_DESIGN_CONSENSUS_20261012.md第1节，claude_workspace/tasks/TASK_case3_launch_contract_20261010.md第4–5节及PROMPT_release_nocredit_case3_2040_C2050_20261019.md第4节（该release授权仅C2050）。Base2060筛选就绪记录base_2060_screen_20261026/ready_t550_recovery_20261026.json为VERIFIED_COMPLETE。
+
+下一步顺序：等待作者确认备份→T550完整备份及SHA→最新Mt口径独立验收与C2050自身对偶筛选证书→作者采纳2050上游→明确C2060启动合同/授权→C2050状态经R1续接2060、v9_a12/Aggregate0/40线程、1h/24h/参数与身份门禁→冻结、preflight和held检查点；未获C2060明确直接release授权前不自动放行。C2050的旧QC HARD_FAIL并不自动要求重跑，也不自动允许采纳；PInf0.02918>0.01仍需如实披露。待A2050完成后比较A/C2050，C′是否追加按作者10-19分步设计决定，不自动新增。
+
+本轮仅查文档并记录最新用户暂停，备份配置增加execution_gate说明字段（既有备份脚本不自动执行该字段，操作者必须遵守），无SSH重试、无传输、无构建或提交。基准fab9811；变更为交接/状态与备份配置。
