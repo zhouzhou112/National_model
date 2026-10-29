@@ -1,6 +1,6 @@
 # C 2050 · v2
 
-类型：COMPLETED_PENDING_ACCEPTANCE；求解：OPTIMAL；验收：旧口径HARD_FAIL，独立复评待执行；备份：T550连接阻塞。
+类型：COMPLETED_PENDING_ACCEPTANCE；求解：OPTIMAL；验收：旧口径HARD_FAIL，独立复评待执行；备份：T550自主传输中（未完成校验）。
 
 完整运行身份：`20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2`。
 

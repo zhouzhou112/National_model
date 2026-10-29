@@ -1,0 +1,19 @@
+{
+  "status": {
+    "started_at_utc": "2026-10-29T19:26:25.729868+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+        "tier": "T1",
+        "bytes": 581230108,
+        "file_count": 101,
+        "started_at_utc": "2026-10-29T19:26:25.730470+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 0
+  },
+  "process": " 351788       1  351788 Ss         00:52 python3 /home/zz2/National_model_server/C2050_completed_20261029_tools/backup_C_completed.py run --config /home/zz2/National_model_server/C2050_completed_20261029_tools/config.json --engine /home/zz2/National_model_server/C2050_completed_20261029_tools/backup_completed_cloud.py\n",
+  "transfer_log_tail": ",768,783  26%    3.22MB/s    0:00:45 (xfr#51, to-chk=53/105)\n    154,780,924  26%    3.22MB/s    0:00:45 (xfr#52, to-chk=52/105)\n    161,945,660  27%    3.31MB/s    0:00:46 (xfr#53, to-chk=51/105)\n    161,978,983  27%    3.31MB/s    0:00:46 (xfr#54, to-chk=50/105)\n    161,978,983  27%    6.54MB/s    0:01:02  \n    163,008,724  28%    3.32MB/s    0:00:46 (xfr#55, to-chk=49/105)\n    168,442,175  28%    3.39MB/s    0:00:47 (xfr#56, to-chk=48/105)\n    168,487,564  28%    3.39MB/s    0:00:47 (xfr#57, to-chk=47/105)\n    168,586,344  29%    3.39MB/s    0:00:47 (xfr#58, to-chk=46/105)\n    168,715,152  29%    3.39MB/s    0:00:47 (xfr#59, to-chk=45/105)\n    168,715,662  29%    3.39MB/s    0:00:47 (xfr#60, to-chk=44/105)\n    168,738,553  29%    3.39MB/s    0:00:47 (xfr#61, to-chk=43/105)\n    168,743,905  29%    3.39MB/s    0:00:47 (xfr#62, to-chk=42/105)\n    168,751,516  29%    3.39MB/s    0:00:47 (xfr#63, to-chk=41/105)\n    168,893,276  29%    3.40MB/s    0:00:47 (xfr#64, to-chk=40/105)\n    168,908,903  29%    3.40MB/s    0:00:47 (xfr#65, to-chk=39/105)\n    168,913,299  29%    3.40MB/s    0:00:47 (xfr#66, to-chk=38/105)\n    168,913,458  29%    3.40MB/s    0:00:47 (xfr#67, to-chk=37/105)\n    168,916,795  29%    3.40MB/s    0:00:47 (xfr#68, to-chk=36/105)\n    171,964,219  29%    7.46MB/s    0:00:53  \n    181,434,171  31%    8.20MB/s    0:00:47  \n    188,839,739  32%    8.38MB/s    0:00:45  "
+}

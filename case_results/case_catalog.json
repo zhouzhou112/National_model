@@ -217,7 +217,7 @@
       "kind": "COMPLETED_PENDING_ACCEPTANCE",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_REASSESSMENT_ORIGINAL_HARD_FAIL",
-      "backup_status": "BLOCKED_T550_CONNECTION",
+      "backup_status": "TRANSFERRING",
       "job_id": "5207165",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
       "local_evidence": [
@@ -227,7 +227,8 @@
       ],
       "case_card": "case_results\\by_case\\C\\2050\\20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\README.md",
       "iterations": 496,
-      "source_result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+      "source_result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+      "backup_operation": "20261029_C2050_completed"
     },
     {
       "case": "Case3",
@@ -310,5 +311,6 @@
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
-  "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1"
+  "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
+  "last_backup_update_utc": "2026-10-29T19:26:25.729868+00:00"
 }

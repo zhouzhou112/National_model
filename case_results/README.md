@@ -16,7 +16,7 @@
 |Base|2040|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Base/2040/20260919_base2040_v9_t44_m750_tol1e4_v1/README.md>)|
 |Base|2050|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Base/2050/20260930_base2050_v9_t48_m750_tol1e4_v1/README.md>)|
 |Base|2060|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Base/2060/20261012_base2060_v9a12_t48_m750_tol1e4_v1/README.md>)|
-|C|2050|v2|COMPLETED_PENDING_ACCEPTANCE|待复评（旧HARD_FAIL）|T550连接阻塞|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/C/2050/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
+|C|2050|v2|COMPLETED_PENDING_ACCEPTANCE|待复评（旧HARD_FAIL）|自主传输中|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/C/2050/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
 |Case3|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2030/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 |Case3|2040|v2|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/README.md>)|
 |Case3|2050|v2|RUNNING_PRODUCTION|NOT_FINISHED|NOT_TERMINAL|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2050/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|

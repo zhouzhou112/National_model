@@ -1,0 +1,33 @@
+{
+  "pid": 351788,
+  "session_id": 351788,
+  "cmd": [
+    "python3",
+    "/home/zz2/National_model_server/C2050_completed_20261029_tools/backup_C_completed.py",
+    "run",
+    "--config",
+    "/home/zz2/National_model_server/C2050_completed_20261029_tools/config.json",
+    "--engine",
+    "/home/zz2/National_model_server/C2050_completed_20261029_tools/backup_completed_cloud.py"
+  ],
+  "files": 105,
+  "bytes": 5511013265,
+  "operation": "/home/zz2/National_model_server/cloud_backup/_operations/20261029_C2050_completed",
+  "independent_of_local_ssh": true,
+  "process_poll": null,
+  "transfer_status": {
+    "started_at_utc": "2026-10-29T19:26:25.729868+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+        "tier": "T1",
+        "bytes": 581230108,
+        "file_count": 101,
+        "started_at_utc": "2026-10-29T19:26:25.730470+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 0
+  }
+}

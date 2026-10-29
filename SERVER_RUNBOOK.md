@@ -5713,3 +5713,11 @@ Git基准bf72d8e；只读squeue/sacct及solve/preservation/QC/result_manifest核
 下一步顺序：等待作者确认备份→T550完整备份及SHA→最新Mt口径独立验收与C2050自身对偶筛选证书→作者采纳2050上游→明确C2060启动合同/授权→C2050状态经R1续接2060、v9_a12/Aggregate0/40线程、1h/24h/参数与身份门禁→冻结、preflight和held检查点；未获C2060明确直接release授权前不自动放行。C2050的旧QC HARD_FAIL并不自动要求重跑，也不自动允许采纳；PInf0.02918>0.01仍需如实披露。待A2050完成后比较A/C2050，C′是否追加按作者10-19分步设计决定，不自动新增。
 
 本轮仅查文档并记录最新用户暂停，备份配置增加execution_gate说明字段（既有备份脚本不自动执行该字段，操作者必须遵守），无SSH重试、无传输、无构建或提交。基准fab9811；变更为交接/状态与备份配置。
+
+## 2026-10-29 C2050自主备份启动
+
+**2026-10-29 19:26 GMT C2050备份已自主启动。** 作者“再次尝试t550备份”解除本次等待确认；连接恢复后已确认无同名目标/operation、无活跃传输、全局锁可用。新计划105文件5,511,013,265bytes，完整T1/T2/T3含原MPS及显式启动元数据，30%余量门禁PASS，预计余35.2781%。PID351788/SID351788独立session、stdin DEVNULL，当前RUNNING/T1 TRANSFERRING，尚未完成校验；本机断线不影响T550直连云端任务。
+
+基准037faa2；新增backup_C_completed.py复用既有全局锁/可续传/逐文件SHA/最终源身份核验引擎，仅扩展明确启动文件清单并检查用户授权标记。旧待确认backup_config.json保留为历史，新执行配置backup_config_authorized_20261029.json。工具部署独立/home/zz2/National_model_server/C2050_completed_20261029_tools，未覆盖旧工具或原输出；新操作cloud_backup/_operations/20261029_C2050_completed。
+
+证据：本review目录backup_plan_execution_20261029.log、backup_launch_20261029.json；已核result_manifest SHA46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c。脚本AST通过，执行工具逐文件SHA留档。完整源不含输入环境镜像，不复制凭据。无模型/在跑作业变更、无后台监听。下一次查询先核现有PID/transfer_status/backup_manifest，禁止重复plan/start；三层全部VERIFIED且源身份未变才称完成，再在T550做assess/price，仅回传小JSON。本轮没有启动C2060。

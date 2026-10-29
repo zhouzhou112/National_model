@@ -1,0 +1,14 @@
+{"backup_completed_cloud.py": "cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658", "backup_C_completed.py": "c572a01efd012638d0af3ea398834396fde265fc8eb2a76867e29179c606351f", "config.json": "e8667f2eaaec4bab866134b21e8d3299b3736af5b813bdae24e8182d77d7fb7f"}
+{
+  "hostname": "ln301.para.bscc",
+  "created_at_utc": "2026-10-29T19:26:08.201898+00:00",
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "all_tiers_bytes": 5511013265,
+  "disk_total_bytes": 4029616283648,
+  "disk_free_bytes": 1427082457088,
+  "projected_free_fraction_all_tiers": 0.3527808465514874,
+  "t3_included": true,
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "authorization": "Author 2026-10-20 standing full backup rule plus explicit 2026-10-29 retry request. One autonomous T550 direct pull, no watcher."
+}
