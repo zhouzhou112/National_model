@@ -1,0 +1,73 @@
+{
+  "utc": "2026-10-29T19:10:30.848430+00:00",
+  "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "sacct": "5207165|COMPLETED|0:0|9-04:04:06|2026-10-20T20:24:47|2026-10-30T00:28:53\n",
+  "solve": {
+    "generated_at": "2026-10-30T00:17:44.985950+08:00",
+    "status": "OPTIMAL",
+    "status_code": 2,
+    "runtime_seconds": 788624.7680401802,
+    "iteration_counts": {
+      "simplex": 0.0,
+      "barrier": 496,
+      "pdhg": 0
+    },
+    "objective_value_million_cny": 5700892.181056213,
+    "runtime_memory": {
+      "peak_process_tree_rss_bytes": 669244456960,
+      "peak_process_tree_rss_gib": 623.282,
+      "elapsed_seconds": 791699.732,
+      "sampling_interval_seconds": 0.5
+    },
+    "solution_qc_status": "HARD_FAIL"
+  },
+  "metrics": {
+    "iteration": 496.0,
+    "primal_objective": 5700892.181056213,
+    "dual_objective": 5697973.029815089,
+    "absolute_primal_dual_objective_gap": 2919.1512411236763,
+    "relative_primal_dual_objective_gap": 0.0005120516488320677,
+    "primal_infeasibility": 0.02918166220684557,
+    "dual_infeasibility": 2.1682540360747157e-06,
+    "complementarity": 3.3385481730520064e-05,
+    "runtime_seconds": 788615.7003059387,
+    "work_units": 2043934.92115603,
+    "memory_used_gb": 386.491264312,
+    "max_memory_used_gb": 756.077856008
+  },
+  "preservation": {
+    "status": "COMPLETE",
+    "errors": [],
+    "original_model_archived": true,
+    "qc_status": "HARD_FAIL"
+  },
+  "qc_profile_statuses": {
+    "relative_v1": "HARD_FAIL"
+  },
+  "batch_exit": {
+    "exit_code": 0,
+    "job_id": "5207165"
+  },
+  "result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+  "manifest_files": 80,
+  "manifest_bytes": 5509265018,
+  "source_evidence": {
+    "solve_report.json": {
+      "bytes": 161981,
+      "sha256": "ea273141bfa19eb723395943de1288288d204d290b836aadeb353caf9fbe1853"
+    },
+    "preservation_report.json": {
+      "bytes": 4396,
+      "sha256": "d89ef038415724ab6d6ef3ee143a5b048837009f69927ae90618bcf96b80f569"
+    },
+    "solution_qc.json": {
+      "bytes": 256380,
+      "sha256": "d58d57185b74854b6e134dee75619ceba7b88b779d680d0b056159e706d3bb86"
+    },
+    "result_manifest.json": {
+      "bytes": 13815,
+      "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+    }
+  },
+  "resource_usage": "\tCommand being timed: \"/publicfs01/fs1-a8/home/a8s001819/.conda/envs/gurobipy310/bin/python scripts/run_cispo_2030_full_year.py --config config/optimization_numeric_dac_by_year_v9_a12.json --solver-config config/solver_profiles/barrier_stagea_screened_agg0_2050_v1_threads40.json --scenario-config config/scenarios/case3_thermal_ev_v5.json --vre-screen-csv /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/source_screen.csv --planning-year 2050 --state-in /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate --allow-candidate-state-in --late-entry-base-state --horizon full_year --archive-original-model --allow-nonbasic-planning-state --output-dir /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760\"\n\tUser time (seconds): 25639520.26\n\tSystem time (seconds): 728167.79\n\tPercent of CPU this job got: 3328%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 220:03:59\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 653658088\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 0\n\tMinor (reclaiming a frame) page faults: 28582841998\n\tVoluntary context switches: 6218798891\n\tInvoluntary context switches: 24518225\n\tSwaps: 0\n\tFile system inputs: 0\n\tFile system outputs: 0\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n"
+}

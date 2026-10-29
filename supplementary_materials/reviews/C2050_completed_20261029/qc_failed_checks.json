@@ -1,0 +1,45 @@
+{
+  "version": "relative_v1_author_20261014_extended",
+  "status": "HARD_FAIL",
+  "failed_checks": {
+    "remaining_physical_hard_checks": {
+      "passed": false,
+      "checks": {
+        "inertia": true,
+        "cascade_inflow_reconciliation": true,
+        "reservoir_active_storage": true,
+        "carbon": true,
+        "dac_selected_horizon_capacity": true,
+        "biomass": true,
+        "co2_source": false,
+        "co2_sink": true,
+        "beccs_capture_mass_balance": true,
+        "beccs_storage_mass_balance": true,
+        "beccs_net_carbon_balance": true,
+        "captured_co2_reconstruction": true
+      },
+      "failed": [
+        "co2_source"
+      ]
+    },
+    "solver": {
+      "passed": false,
+      "optimal": true,
+      "barrier_primal_infeasibility": 0.02918166220684557,
+      "primal_limit": 0.01,
+      "relative_primal_dual_gap": 0.0005120516488320677,
+      "relative_gap_limit": 0.01,
+      "mixed_unit_quality_record_only": {
+        "maximum_constraint_violation": 0.012132954492699355,
+        "maximum_constraint_residual": 0.0,
+        "maximum_bound_violation": 6.155891298931238e-07,
+        "maximum_dual_violation": 0.0009577892269524218,
+        "maximum_dual_residual": 3.3330545647913823e-06,
+        "maximum_complementarity_violation": 55.48394281725613,
+        "maximum_violation": 55.48394281725613,
+        "kappa": null,
+        "kappa_exact_computed": false
+      }
+    }
+  }
+}
