@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "seconds": 10.271796854911372,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "scripts/prepare_continuation_state.py",
+    "--source",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760",
+    "--acceptance",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/C2060_launch_20261030/acceptance_author_20261030.json",
+    "--planning-year",
+    "2060",
+    "--source-scenario",
+    "case3_thermal_ev_v5",
+    "--author-decision-label",
+    "ACCEPTED_RELATIVE_V1_20261030",
+    "--output",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1"
+  ],
+  "tail": "{\"status\": \"PREPARED\", \"cohort_rows\": 30837, \"bound_closed_rows\": 1, \"bound_closed_gw\": 2.3446515907618596e-08, \"source_unchanged\": true}"
+}

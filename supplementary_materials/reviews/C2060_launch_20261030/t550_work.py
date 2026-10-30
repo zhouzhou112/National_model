@@ -30,10 +30,17 @@ def remote(code,label,timeout=14400):
 
 
 def main():
+    global HERE, REMOTE
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('phase',choices=['prepare','r1','gate','collect'])
     p.add_argument('--name',choices=['screen_1h','unscreen_1h','gate_24h'])
+    p.add_argument('--attempt',type=int,default=1)
     a=p.parse_args()
+    assert a.attempt>=1
+    original_here=HERE
+    if a.attempt>1:
+        HERE=HERE/f'attempt_{a.attempt}';HERE.mkdir(exist_ok=True)
+        REMOTE=REMOTE.removesuffix('_v1')+f'_v{a.attempt}'
     if a.phase=='prepare':
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
         paths=subprocess.check_output(['git','ls-files','cispo_model','config','scripts','tests','AGENTS.md',REL,'supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py'],text=True).splitlines()
@@ -43,8 +50,14 @@ def main():
             def add(name,raw):
                 ti=tarfile.TarInfo('repo/'+name);ti.size=len(raw);tf.addfile(ti,io.BytesIO(raw));hashes[name]=hashlib.sha256(raw).hexdigest()
             for name in paths:add(name,subprocess.check_output(['git','show',commit+':'+name]))
-            for target,source in [('acceptance_author_20261030.json',HERE.parent/'C2050_completed_20261029/acceptance_author_20261030.json'),('source_screen.csv',HERE.parent/'base_2060_screen_20261026/ready/source_screen.csv')]:add(REL+'/'+target,source.read_bytes())
-        expected=json.loads((HERE.parent/'case3_2050_preparation_20261026/expected_data_files.json').read_text())
+            for target,source in [('acceptance_author_20261030.json',original_here.parent/'C2050_completed_20261029/acceptance_author_20261030.json'),('source_screen.csv',original_here.parent/'base_2060_screen_20261026/ready/source_screen.csv')]:add(REL+'/'+target,source.read_bytes())
+            # Read-only fixtures needed by the existing production-contract tests.
+            for name in ['supplementary_materials/reviews/base_2060_screen_20261026/ready/source_screen.csv',
+                         'supplementary_materials/reviews/factor_pair_8760_20261005/cloud_payload/source_screen.csv',
+                         'supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2040_20261015/source_screen.csv',
+                         'supplementary_materials/reviews/case3_2030_launch_20261014/P4_ready2050_20261015/source_screen.csv']:
+                add(name,(ROOT/name).read_bytes())
+        expected=json.loads((original_here.parent/'case3_2050_preparation_20261026/expected_data_files.json').read_text())
         remote("assert not remote.exists()\nremote.mkdir()\nprint(json.dumps({'created':str(remote)}))",'create')
         subprocess.run(SCP+[str(archive),'national-model-server:'+REMOTE+'/payload.tar.gz'],check=True)
         result=remote('hashes='+repr(hashes)+'\nexpected='+repr(expected)+'\npayload_sha='+repr(sha(archive))+'\ncommit='+repr(commit)+'\n'+'''

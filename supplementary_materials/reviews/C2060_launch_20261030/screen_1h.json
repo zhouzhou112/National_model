@@ -1,0 +1,25 @@
+{
+  "status": "FAIL",
+  "exit_code": 1,
+  "seconds": 0.686837294138968,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py",
+    "--year",
+    "2060",
+    "--state",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1/prepared_state/planning_state_candidate",
+    "--hours",
+    "1",
+    "--output",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/C2060_launch_20261030/screen_1h",
+    "--solver-profile",
+    "config/solver_profiles/barrier_stagea_screened_agg0_lateentry_2060_v1_threads40.json",
+    "--screen-csv",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/C2060_launch_20261030/source_screen.csv",
+    "--same-scenario-continuation",
+    "--threads",
+    "8"
+  ],
+  "tail": "RUNNER_EXIT '--vre-screen-csv is restricted to TEST_ONLY factor screen'\nTraceback (most recent call last):\n  File \"/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py\", line 126, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/home/zz2/National_model_server/C2060_launch_20261030_v1/repo/supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py\", line 100, in main\n    if not captured:raise RuntimeError('Stopped before construction; retained logs')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Stopped before construction; retained logs"
+}

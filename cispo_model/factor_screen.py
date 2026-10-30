@@ -14,10 +14,11 @@ RESULT_USE = "TEST_ONLY_FACTOR_SCREEN"
 PRODUCTION_PROFILE_ID = "barrier_stagea_screened_agg0_v1_threads48"
 LATE_ENTRY_40_PROFILE_ID = "barrier_stagea_screened_agg0_2050_v1_threads40"
 CASE3_2050_40_PROFILE_ID = "barrier_stagea_screened_agg0_case3_2050_v1_threads40"
+LATE_ENTRY_2060_40_PROFILE_ID = "barrier_stagea_screened_agg0_lateentry_2060_v1_threads40"
 PRODUCTION_PROFILE_IDS = frozenset({PRODUCTION_PROFILE_ID,
     "barrier_stagea_screened_agg0_2040_v1_threads48",
     "barrier_stagea_screened_agg0_2050_v1_threads48",
-    LATE_ENTRY_40_PROFILE_ID, CASE3_2050_40_PROFILE_ID})
+    LATE_ENTRY_40_PROFILE_ID, CASE3_2050_40_PROFILE_ID, LATE_ENTRY_2060_40_PROFILE_ID})
 
 
 def validate_production_screen_contract(config, args):
@@ -45,6 +46,18 @@ def validate_production_screen_contract(config, args):
                 or getattr(args, 'late_entry_base_state', False)
                 or not getattr(args, 'state_in', None)):
             raise ValueError('40-thread case3 2050 requires same-scenario continuation state')
+        expected['threads'] = 40
+    if profile_id == LATE_ENTRY_2060_40_PROFILE_ID:
+        # Author 2026-10-29: C2060 inherits C2050, already a case3 state.
+        if (config.planning_year != 2060
+                or raw['scenario']['id'] != 'case3_thermal_ev_v5'
+                or getattr(args, 'late_entry_base_state', False)
+                or not getattr(args, 'state_in', None)):
+            raise ValueError('C2060 profile requires 2060 same-scenario continuation state')
+        screen = raw.get('candidate_screen', {})
+        if (screen.get('source_release') != '20261012_base2060_v9a12_t48_m750_tol1e4_v1'
+                or screen.get('margin') != 0.2):
+            raise ValueError('C2060 requires the reviewed Base2060 margin0.2 screen')
         expected['threads'] = 40
     diagnostic = getattr(args, 'diagnostic_hours', None) is not None
     if diagnostic:
