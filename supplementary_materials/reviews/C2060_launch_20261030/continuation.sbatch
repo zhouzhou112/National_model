@@ -1,0 +1,95 @@
+#!/bin/bash
+# Author 2026-10-29/30: framework-C 2060; derived from successful Case3 2050 v2, 40 threads.
+#SBATCH --account=bscc-a8
+#SBATCH --partition=amd_a8_768
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --mem=750G
+#SBATCH --time=0
+#SBATCH --no-requeue
+#SBATCH --job-name=cispo2060_lateentry
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
+set -euo pipefail
+umask 027
+: "${SLURM_SUBMIT_DIR:?Fresh immutable release required}"
+: "${SOURCE_RELEASE:?Immutable data/environment source required}"
+RELEASE_ROOT="$SLURM_SUBMIT_DIR"
+trap 'rc=$?; printf "{\"exit_code\":%s,\"job_id\":\"%s\"}\n" "$rc" "$SLURM_JOB_ID" > "$RELEASE_ROOT/batch_exit.json"' EXIT
+cd "$RELEASE_ROOT"
+test ! -e output_8760
+sha256sum -c release_files.sha256 > runtime_hash_check.log
+set -a
+source "$SOURCE_RELEASE/manifests/cloud_environment_paths.env"
+set +a
+export PATH="$GUROBI_HOME/bin:$PATH"
+export LD_LIBRARY_PATH="$GUROBI_HOME/lib:${LD_LIBRARY_PATH:-}"
+export GRB_LICENSE_FILE="/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic"
+export http_proxy="${CISPO_CLOUD_PROXY:-http://172.16.110.3:8888}"
+export https_proxy="$http_proxy" HTTP_PROXY="$http_proxy" HTTPS_PROXY="$http_proxy"
+export PYTHONUNBUFFERED=1 PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1
+export OMP_NUM_THREADS=40 OPENBLAS_NUM_THREADS=40 MKL_NUM_THREADS=40
+export CISPO_DATA_ROOT="$RELEASE_ROOT/data_overlay"
+export PYTHONPATH="$RELEASE_ROOT/repo${PYTHONPATH:+:$PYTHONPATH}"
+test -d "$CISPO_DATA_ROOT"
+test -r "$GRB_LICENSE_FILE"
+"$PYTHON" - "$RELEASE_ROOT" <<'PY'
+import json, os, re, subprocess, sys
+from pathlib import Path
+import gurobipy as gp
+import psutil
+root = Path(sys.argv[1])
+launch = json.loads((root/'launch_config.json').read_text())
+assert os.environ['GRB_LICENSE_FILE'] == launch['license_path']
+gates = json.loads((root/'FINAL_GATES_PASSED.json').read_text())
+assert gates['status'] == 'PASS' and gates['framework'] == launch['framework'] and gates['planning_year'] == launch['planning_year']
+record = subprocess.check_output(['scontrol', 'show', 'job', '-o', os.environ['SLURM_JOB_ID']], text=True)
+(root/'runtime_slurm_job.txt').write_text(record)
+def field(name):
+    match = re.search(r'\b' + name + r'=(\S+)', record)
+    if not match:
+        raise RuntimeError('Missing Slurm field ' + name)
+    return match.group(1)
+tres = dict(item.split('=', 1) for item in field('AllocTRES').split(','))
+if tres.get('cpu') != '64' or tres.get('billing') != '64' or tres.get('mem') not in {'750G','768000M'}:
+    raise RuntimeError('Allocation must be cpu64/mem750G/billing64: ' + str(tres))
+if field('TimeLimit') != 'UNLIMITED':
+    raise RuntimeError('Job time limit must be UNLIMITED')
+if int(os.environ.get('SLURM_CPUS_PER_TASK', '0')) != 64 or len(os.sched_getaffinity(0)) < 40:
+    raise RuntimeError('Insufficient assigned/available CPU affinity')
+available_memory_gib = psutil.virtual_memory().available / 2**30
+(root/'startup_resources.json').write_text(json.dumps(dict(job_id=os.environ['SLURM_JOB_ID'], allocation=tres, time_limit=field('TimeLimit'), available_memory_gib=available_memory_gib), indent=2))
+if available_memory_gib < 700:
+    raise RuntimeError('Available memory is below the reviewed build threshold')
+if gp.gurobi.version()[0] < 13:
+    raise RuntimeError('Production requires Gurobi 13 or later')
+with gp.Env(empty=True) as env:
+    env.setParam('OutputFlag', 0)
+    env.start()
+    with gp.Model(env=env) as model:
+        x = model.addVar(lb=0)
+        model.addConstr(x >= 1)
+        model.setObjective(x)
+        model.optimize()
+        if model.Status != gp.GRB.OPTIMAL or abs(x.X - 1) > 1e-8:
+            raise RuntimeError('Compute-node license/solver smoke failed')
+(root/'compute_node_smoke.json').write_text(json.dumps(dict(status='PASS',
+    job_id=os.environ['SLURM_JOB_ID'], gurobi_version=list(gp.gurobi.version()),
+    allocation=tres, time_limit=field('TimeLimit'),
+    available_memory_gib=available_memory_gib), indent=2))
+PY
+CISPO_SCENARIO=$("$PYTHON" -c 'import json; print(json.load(open("launch_config.json"))["scenario"])')
+case "$CISPO_SCENARIO" in case3_thermal_ev_v5) ;; *) exit 64 ;; esac
+cd "$RELEASE_ROOT/repo"
+# Scientific and regression gates reused unchanged from FINAL_GATES_PASSED.json.
+/usr/bin/time -v -o "$RELEASE_ROOT/resource_usage.txt" \
+  "$PYTHON" scripts/run_cispo_2030_full_year.py \
+    --config config/optimization_numeric_dac_by_year_v9_a12.json \
+    --solver-config config/solver_profiles/barrier_stagea_screened_agg0_lateentry_2060_v1_threads40.json \
+    --scenario-config "config/scenarios/$CISPO_SCENARIO.json" \
+    --vre-screen-csv "$RELEASE_ROOT/source_screen.csv" \
+    --state-in "$RELEASE_ROOT/upstream_state/planning_state_candidate" --allow-candidate-state-in \
+    --planning-year 2060 --horizon full_year --archive-original-model --export-barrier-checkpoint --allow-nonbasic-planning-state \
+    --output-dir "$RELEASE_ROOT/output_8760" \
+    > "$RELEASE_ROOT/stdout.log" 2> "$RELEASE_ROOT/stderr.log"

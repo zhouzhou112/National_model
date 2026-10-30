@@ -1,0 +1,13 @@
+{
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/continuation.sbatch",
+  "source_sha256": "a29a3635a69ce27fc1f31fe7e4ad4213c4f4c4c88107c381f059fa246e393559",
+  "matches_local_successful_template": true,
+  "derived_sha256": "141c1b06f77cfe2b546e321f3b981ff8f7245c46da663bb35d7248e6f5c3d530",
+  "changed_only": [
+    "comment",
+    "job_name",
+    "solver_profile_path",
+    "planning_year"
+  ],
+  "resources_unchanged": true
+}

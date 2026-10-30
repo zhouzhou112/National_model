@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"status\": \"PASS\", \"failed\": {}}\n",
+  "stderr": "",
+  "tool_sha256": "2ffea5ad3980b1c4ff482463c25f9770f96e68aa7c2c912db2ff3578aa338ec8"
+}

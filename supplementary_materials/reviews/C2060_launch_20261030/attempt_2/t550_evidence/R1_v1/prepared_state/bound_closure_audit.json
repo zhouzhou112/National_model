@@ -1,0 +1,49 @@
+{
+  "rule": "OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER",
+  "threshold_gw": 1e-05,
+  "affected_rows": [
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2050,
+      "before_gw": 2.3446515907618596e-08,
+      "after_gw": 0.0,
+      "reduction_gw": 2.3446515907618596e-08,
+      "original_excess_gw": 2.3446515895475528e-08,
+      "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+    }
+  ],
+  "total_reduction_gw": 2.3446515907618596e-08,
+  "shared_biomass_upper": [
+    {
+      "province_code": 31,
+      "shared_upper_gw": 0.3399999999999999,
+      "before_floor_gw": [
+        0.3320119957713245,
+        0.0079880276751913
+      ],
+      "after_floor_gw": [
+        0.3320119723248086,
+        0.0079880276751913
+      ],
+      "initial_excess_gw": 2.3446515895475528e-08,
+      "total_reduction_gw": 2.3446515907618596e-08,
+      "retrofit_pairs_unchanged": true,
+      "ccs_capacity_unchanged": true,
+      "affected_rows": [
+        {
+          "asset_class": "thermal",
+          "asset_id": "31::bio",
+          "technology": "bio",
+          "build_year": 2050,
+          "before_gw": 2.3446515907618596e-08,
+          "after_gw": 0.0,
+          "reduction_gw": 2.3446515907618596e-08,
+          "original_excess_gw": 2.3446515895475528e-08,
+          "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+        }
+      ]
+    }
+  ]
+}

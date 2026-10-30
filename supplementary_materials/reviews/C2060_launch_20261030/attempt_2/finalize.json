@@ -1,0 +1,6 @@
+{
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/zz2/National_model_server/C2060_launch_20261030_v2/finalize_gates.py\", line 53, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/home/zz2/National_model_server/C2060_launch_20261030_v2/finalize_gates.py\", line 26, in main\n    sections[name]=mps_section_sha256(out/'model_archive/original.mps')\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/cispo_model/factor_screen.py\", line 112, in mps_section_sha256\n    with opener(path, 'rb') as stream:\n         ^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/screen_1h/model_archive/original.mps'\n",
+  "tool_sha256": "96a9274a78c3ad061548149c498705a5bb18594f1bb64d7e1df8641679a8abe2"
+}

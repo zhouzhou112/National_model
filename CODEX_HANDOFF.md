@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
+
 - **2026-10-30 作者新增年度汇总行口径后，C2050条件验收PASS。** 已读取AGENTS 10-29节新增第5条：年度电量汇总行阈值max(0.001GWh,1e-6×年度电量)。河北行阈值0.272271993GWh、残差0.012132951GWh，三个采纳条件全部满足；独立记录acceptance_author_20261030.json，旧停止证据保留。C2050筛选状态已按作者预授权采纳；准备C2060 R1/1h/24h，尚未提交。备份COMPLETE、小文件73项取回完成、证书B/obj=9.935122e-5。
 
 - **2026-10-30 C2050备份、复评、证书与行定位完成；C2060停在作者条件门禁。** T550完整备份105文件5,511,013,265bytes，全部SHA/bytes通过且源身份未变；73个结果小文件108,454,785bytes已取回。10-27 Mt复评已有物理项全过（水库仍按作者暂缓），自身BarPi证书B=566.390580 million CNY、B/obj=9.935122e-5，近优性接受且不触发比较重解。最大违反定位河北年度外送行，0.012132951 GWh/272271.993460 GWh=4.456188e-8；当前一般GWh门槛0.001，超12.133倍，无已授权年度比例阈值，因此未采纳上游、未做R1/1h/24h、未提交C2060。已向作者请求明确该行容差。
@@ -10581,3 +10583,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 **2026-10-30 作者新增年度汇总行口径后，C2050条件验收PASS。** 已读取AGENTS 10-29节新增第5条：年度电量汇总行阈值max(0.001GWh,1e-6×年度电量)。河北行阈值0.272271993GWh、残差0.012132951GWh，三个采纳条件全部满足；独立记录acceptance_author_20261030.json，旧停止证据保留。C2050筛选状态已按作者预授权采纳；准备C2060 R1/1h/24h，尚未提交。备份COMPLETE、小文件73项取回完成、证书B/obj=9.935122e-5。
 
 依据：AGENTS新增第5条（mtime 00:04:19 UTC，提交审查时发现）；保留此前停止记录，新增接受记录，不覆盖原档案。下一步C2060按任务书第3节执行，5294579仍只读，无后台监听。
+
+
+## 2026-10-30 C2060 R1与1h/24h门禁全通过
+
+**2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
+
+源码7317181→54ce73e；入口遗漏和finalizer压缩文件名适配记录均保留，新v2隔离门禁全部完成。证据见supplementary_materials/reviews/C2060_launch_20261030/REVIEW_ZH.md、GATES_SUMMARY.json与attempt_2/t550_evidence；命令t550_work.py prepare/r1/gate/collect --attempt 2，finalize_gates.py。未提交，下一步deploy_authorized.py C2060 prepare/preflight/submit/release/status。

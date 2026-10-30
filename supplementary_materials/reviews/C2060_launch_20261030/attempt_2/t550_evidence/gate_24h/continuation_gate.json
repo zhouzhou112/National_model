@@ -1,0 +1,4705 @@
+{
+  "runner_exit_code": 0,
+  "year": 2060,
+  "hours": 24,
+  "unscreened": false,
+  "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+  "parameters": "PASS",
+  "capacity_columns_inspected": {
+    "vre_capacity": 36686,
+    "vre_new": 36686,
+    "hydro_capacity": 2030,
+    "hydro_new": 2030,
+    "storage_capacity": 62,
+    "storage_new": 62,
+    "thermal_capacity": 341,
+    "thermal_new": 341,
+    "thermal_retrofit_to_ccs": 155,
+    "line_capacity": 411,
+    "line_new": 411,
+    "wave_capacity": 1284,
+    "wave_new": 1284,
+    "intra_load_center_capacity": 642,
+    "intra_load_center_new": 642,
+    "spur_augmentation": 36686,
+    "hydro_spur_augmentation": 2030,
+    "trunk_augmentation": 6294
+  },
+  "tiny_capacity_columns": [],
+  "status_code": 2,
+  "M": 2.4968198264474495e-07,
+  "credit": {
+    "firm_credit_bound_violation_gw": 0.0,
+    "firm_credit_zero_when_unenrolled": 0.0
+  },
+  "solution_qc.json": {
+    "optional_portfolio_qc": {
+      "enrollment_fraction_violation": 0.0,
+      "contract_charge_residual_gw": 1.4893879995980797e-07,
+      "contract_v2g_residual_gw": 8.477493032522584e-08,
+      "discharge_pool_power_violation_gw": 0.0,
+      "v1g_transition_residual_gwh": 1.9030455922219858e-07,
+      "v1g_inventory_violation_gwh": 0.0,
+      "v1g_connection_violation_gw": 0.0,
+      "v2g_transition_residual_gwh": 2.4968198264474495e-07,
+      "v2g_inventory_violation_gwh": 0.0,
+      "v2g_connection_violation_gw": 0.0,
+      "baseline_reconstruction_residual_gw": 1.7763568394002505e-15,
+      "relocation_lower_bound_violation_gw": 0.0,
+      "heating_shared_contract_violation_gw": 0.0,
+      "cooling_shared_contract_violation_gw": 0.0,
+      "firm_credit_bound_violation_gw": 0.0,
+      "firm_credit_zero_when_unenrolled": 0.0
+    },
+    "generated_at": "2026-10-30T08:23:18.528451+08:00",
+    "flexible_load_structural_audit": {
+      "schema_version": "cispo_flexible_load_structural_audit_v2",
+      "formulation": "integrated_service_constrained_v5",
+      "contract_version": "v5",
+      "portfolio_contract": "optional_service_pools_v1",
+      "province_count": 31,
+      "optimization_hours": 24,
+      "optimization_start_hour": 0,
+      "optimization_stop_hour_exclusive": 24,
+      "heating_sparse_hourly_control": {
+        "possible_up_variables": 744,
+        "active_up_variables": 688,
+        "fixed_zero_up_variables_omitted": 56,
+        "possible_down_variables": 744,
+        "active_down_variables": 676,
+        "fixed_zero_down_variables_omitted": 68
+      },
+      "heating_sparse_state": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 744,
+        "control_support_state_variables": 688,
+        "decay_anchor_state_variables": 0,
+        "retained_state_variables": 688,
+        "redundant_inactive_state_variables_omitted": 56,
+        "retained_transition_rows": 688,
+        "redundant_inactive_transition_rows_omitted": 56,
+        "maximum_retained_transition_gap_hours": 20,
+        "minimum_retained_transition_coefficient": 0.2901062411314615,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+        "active_state_variables": 688,
+        "inactive_provinces_omitted": 1,
+        "fixed_zero_state_variables_omitted": 24,
+        "redundant_state_variables_eliminated": 56,
+        "redundant_state_bound_rows_omitted": 56,
+        "redundant_state_transition_rows_omitted": 56
+      },
+      "heating_state_chain_numerical_risk": {
+        "active_provinces": 30,
+        "inactive_provinces_with_state_chain_omitted": 1,
+        "worst_active_province": {
+          "province_position": 18,
+          "province_code": 44,
+          "maximum_cyclic_zero_control_run_hours": 19,
+          "retention_per_hour": 0.94,
+          "inverse_decay_amplification_log10": 0.5105707816057259
+        },
+        "automatic_presolve_aggregation_risk": false,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 744,
+          "control_support_state_variables": 688,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 688,
+          "redundant_inactive_state_variables_omitted": 56,
+          "retained_transition_rows": 688,
+          "redundant_inactive_transition_rows_omitted": 56,
+          "maximum_retained_transition_gap_hours": 20,
+          "minimum_retained_transition_coefficient": 0.2901062411314615,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": false,
+        "aggregate_zero_required_for_solve": false
+      },
+      "cooling_sparse_hourly_control": {
+        "possible_up_variables": 744,
+        "active_up_variables": 17,
+        "fixed_zero_up_variables_omitted": 727,
+        "possible_down_variables": 744,
+        "active_down_variables": 11,
+        "fixed_zero_down_variables_omitted": 733
+      },
+      "cooling_sparse_state": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 744,
+        "control_support_state_variables": 17,
+        "decay_anchor_state_variables": 0,
+        "retained_state_variables": 17,
+        "redundant_inactive_state_variables_omitted": 727,
+        "retained_transition_rows": 17,
+        "redundant_inactive_transition_rows_omitted": 727,
+        "maximum_retained_transition_gap_hours": 22,
+        "minimum_retained_transition_coefficient": 0.15971003380339116,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+        "active_state_variables": 17,
+        "inactive_provinces_omitted": 29,
+        "fixed_zero_state_variables_omitted": 696,
+        "redundant_state_variables_eliminated": 727,
+        "redundant_state_bound_rows_omitted": 727,
+        "redundant_state_transition_rows_omitted": 727
+      },
+      "cooling_state_chain_numerical_risk": {
+        "active_provinces": 2,
+        "inactive_provinces_with_state_chain_omitted": 29,
+        "worst_active_province": {
+          "province_position": 18,
+          "province_code": 44,
+          "maximum_cyclic_zero_control_run_hours": 21,
+          "retention_per_hour": 0.92,
+          "inverse_decay_amplification_log10": 0.7604556257433388
+        },
+        "automatic_presolve_aggregation_risk": false,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 744,
+          "control_support_state_variables": 17,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 17,
+          "redundant_inactive_state_variables_omitted": 727,
+          "retained_transition_rows": 17,
+          "redundant_inactive_transition_rows_omitted": 727,
+          "maximum_retained_transition_gap_hours": 22,
+          "minimum_retained_transition_coefficient": 0.15971003380339116,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": false,
+        "aggregate_zero_required_for_solve": false
+      },
+      "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+      "firm_capacity_credit_contract": "author_2026_10_11_derated_credit_v1",
+      "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+      "ev_charge_deviation_variables_omitted": 744,
+      "ev_charge_deviation_constraints_omitted": 1488,
+      "minimum_departure_energy_min_gwh": 0.0,
+      "minimum_departure_energy_max_gwh": 0.0,
+      "minimum_departure_positive_cells": 0,
+      "departure_soc_constraint_rows_added": 0,
+      "departure_soc_constraint_rows_omitted_as_redundant": 744,
+      "effective_load_static_lower_bound_min_gw": 1.82029090020258,
+      "effective_load_redundancy_safety_margin_gw": 1e-06,
+      "effective_load_naturally_nonnegative": true,
+      "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+      "effective_load_nonnegative_constraint_rows_added": 0,
+      "effective_load_nonnegative_constraint_rows_omitted": 744,
+      "redundant_raw_variables_omitted": 3111,
+      "net_raw_variables_removed": 3111,
+      "thermal_fixed_zero_raw_variables_omitted": 1584,
+      "thermal_fixed_zero_state_variables_omitted": 720,
+      "thermal_redundant_state_variables_eliminated": 783,
+      "thermal_tautological_contracted_power_rows_omitted": 1584,
+      "redundant_raw_constraint_rows_omitted": 6126,
+      "net_raw_constraint_rows_removed": 6126,
+      "legacy_bidirectional_activation": false
+    },
+    "optimization_hours": 24,
+    "optimization_start_hour": 0,
+    "optimization_stop_hour_exclusive": 24,
+    "maximum_power_balance_residual_gw": 3.0912000456978224e-06,
+    "maximum_load_component_input_closure_error_gw": 5.684341886080802e-14,
+    "maximum_effective_load_reconstruction_error_gw": 2.842170943040401e-14,
+    "minimum_effective_load_gw": 2.0219650270404395,
+    "maximum_heating_daily_energy_residual_gwh": 0.10101380863449094,
+    "maximum_cooling_daily_energy_residual_gwh": 0.0009240821931957299,
+    "maximum_ev_v1g_daily_energy_residual_gwh": null,
+    "ev_v1g_daily_energy_residual_applicability": "NOT_APPLICABLE_SERVICE_CONSTRAINED_EV_SOC_ACCOUNTING",
+    "flexible_load_formulation": "integrated_service_constrained_v5",
+    "maximum_heating_state_transition_residual_gwh": 0.0,
+    "maximum_cooling_state_transition_residual_gwh": 0.0,
+    "maximum_heating_daily_terminal_state_gwh": 0.0,
+    "maximum_cooling_daily_terminal_state_gwh": 0.0,
+    "minimum_heating_daily_net_energy_change_gwh": 0.0,
+    "minimum_cooling_daily_net_energy_change_gwh": 0.0,
+    "maximum_ev_v1g_backlog_transition_residual_gwh": 0.0,
+    "maximum_ev_v1g_daily_terminal_backlog_gwh": 0.0,
+    "maximum_ev_v2g_transition_residual_gwh": 0.0,
+    "maximum_ev_v2g_daily_terminal_state_gwh": 0.0,
+    "maximum_v4_heating_state_transition_residual_gwh": 1.3722641470126666e-07,
+    "maximum_v4_cooling_state_transition_residual_gwh": 1.0745087188784343e-07,
+    "maximum_v4_heating_periodic_boundary_residual_gwh": 1.3722641470034509e-07,
+    "maximum_v4_cooling_periodic_boundary_residual_gwh": 0.0,
+    "maximum_v4_heating_positive_state_bound_violation_gwh": 0.0,
+    "maximum_v4_cooling_positive_state_bound_violation_gwh": 0.0,
+    "maximum_v4_heating_negative_state_bound_violation_gwh": 0.0,
+    "maximum_v4_cooling_negative_state_bound_violation_gwh": 0.0,
+    "maximum_v4_heating_comfort_debt_violation_gwh": 0.0,
+    "maximum_v4_cooling_comfort_debt_violation_gwh": 0.0,
+    "maximum_v4_ev_soc_transition_residual_gwh": 3.1829520530379796e-07,
+    "maximum_v4_ev_departure_soc_violation_gwh": 0.0,
+    "maximum_v4_ev_soc_upper_violation_gwh": 0.0,
+    "maximum_v4_ev_charge_power_violation_gw": 0.0,
+    "maximum_v4_ev_discharge_power_violation_gw": 0.0,
+    "maximum_v5_nested_v2g_contract_violation_gw": 0.0,
+    "maximum_v5_national_v2g_cap_violation_gw": 0.0,
+    "maximum_v5_shared_connection_power_violation_gw": 0.0,
+    "maximum_v5_firm_capacity_credit_bound_violation_gw": 0.0,
+    "total_v5_firm_capacity_credit_gw": 52.66153492224443,
+    "maximum_ev_combined_grid_charging_power_violation_gw": 0.0,
+    "flexible_load_enabled": true,
+    "heating_simultaneous_up_down_province_hours": 676,
+    "maximum_heating_up_down_overlap_gw": 0.020585310238545346,
+    "total_heating_up_down_overlap_gwh": 2.145441742559189,
+    "cooling_simultaneous_up_down_province_hours": 11,
+    "maximum_cooling_up_down_overlap_gw": 0.0002714640431430422,
+    "total_cooling_up_down_overlap_gwh": 0.0025902213870969853,
+    "ev_v1g_simultaneous_up_down_province_hours": 0,
+    "ev_v2g_simultaneous_charge_discharge_province_hours": 744,
+    "maximum_ev_v2g_charge_discharge_overlap_gw": 0.0018241601282211342,
+    "total_ev_v2g_charge_discharge_overlap_gwh": 0.24605595081953532,
+    "minimum_up_reserve_margin_gw": 0.9610258630759851,
+    "minimum_down_reserve_margin_gw": 0.0008243414024327045,
+    "minimum_inertia_margin_gw_s": 0.00015163320182409734,
+    "minimum_system_inertia_seconds": 3.5,
+    "minimum_capacity_margin_gw": 6.021999607952466e-05,
+    "maximum_ruc_transition_residual_gw": 4.8547080671905646e-08,
+    "maximum_thermal_online_capacity_violation_gw": 2.9063015993813224e-08,
+    "maximum_thermal_minimum_generation_violation_gw": 0.0,
+    "maximum_thermal_maximum_generation_violation_gw": 0.0,
+    "storage_simultaneous_charge_discharge_asset_hours": 1464,
+    "maximum_storage_charge_discharge_overlap_gw": 0.0016531659952204374,
+    "total_storage_charge_discharge_overlap_gwh": 0.8521963807511265,
+    "thermal_simultaneous_startup_shutdown_asset_hours": 4584,
+    "maximum_thermal_startup_shutdown_overlap_gw": 0.0024302644668160994,
+    "maximum_vre_availability_violation_gw": 0.0,
+    "maximum_wave_availability_violation_gw": 0.0,
+    "maximum_hydro_aggregate_availability_violation_gw": 0.0,
+    "maximum_hydro_aggregate_monthly_energy_budget_violation_gwh": 0.0,
+    "maximum_line_capacity_violation_gw": 0.0,
+    "maximum_nuclear_capacity_floor_violation_gw": 0.0,
+    "maximum_nuclear_capacity_upper_violation_gw": 0.0,
+    "maximum_biomass_beccs_capacity_upper_violation_gw": 1.0462769817198847e-08,
+    "maximum_storage_capacity_floor_violation_gw": 0.0,
+    "maximum_storage_transition_residual_gwh": 7.13746142425465e-08,
+    "maximum_storage_soc_upper_violation_gwh": 0.0,
+    "maximum_reservoir_transition_residual_m3": 3.831982901188894,
+    "maximum_reservoir_energy_upper_violation_gwh": 0.0,
+    "maximum_reservoir_active_storage_upper_violation_m3": 0.0,
+    "core_cascade_station_rows": 138,
+    "core_cascade_edges": 124,
+    "core_cascade_isolated_single_station_nodes_removed": 8,
+    "cascade_raw_negative_local_inflow_node_hours": 627,
+    "cascade_raw_clip_equivalent_volume_million_m3": 86.7572834070408,
+    "cascade_adjusted_transfer_volume_million_m3": 86.7572834070408,
+    "cascade_actual_routed_release_adjustment_volume_million_m3": 79.76294302861933,
+    "maximum_cascade_reconciliation_residual_m3s": 2.2737367544323206e-13,
+    "annual_fossil_unabated_emissions_mtco2": 2.499829833825725,
+    "annual_gross_emissions_mtco2": -1.5067324572737562,
+    "annual_emissions_before_dac_mtco2": -1.5067324572737562,
+    "annual_dac_removed_mtco2": 0.00013303012138220528,
+    "annual_net_emissions_mtco2": -1.5068654873951384,
+    "annual_flow_scaling_factor": 0.0027397260273972603,
+    "annual_carbon_limit_mtco2_per_year": -550.0,
+    "selected_horizon_carbon_limit_mtco2": -1.5068493150684932,
+    "carbon_limit_mtco2": -1.5068493150684932,
+    "carbon_limit_margin_mtco2": 1.617232664519186e-05,
+    "maximum_dac_selected_horizon_capacity_violation_mtco2": 0.0,
+    "maximum_biomass_limit_violation_pj": 0.0,
+    "maximum_co2_source_balance_residual_mt": 8.190423493590008e-07,
+    "maximum_co2_sink_capacity_violation_mt": 0.0,
+    "maximum_beccs_capture_balance_residual_mtco2": 5.551115123125783e-17,
+    "maximum_beccs_storage_balance_residual_mtco2": 0.0,
+    "maximum_beccs_net_carbon_balance_residual_mtco2": 5.551115123125783e-17,
+    "maximum_captured_co2_reconstruction_residual_mtco2": 7.393216039375261e-10,
+    "objective_value_million_cny": 3207858.4523175675,
+    "objective_component_residual_million_cny": -3.725290298461914e-09,
+    "solver_objective_value": 3207858.4523175675,
+    "mga": null,
+    "total_vre_curtailment_gwh": 1126.3278142142797,
+    "wave_energy_enabled": true,
+    "total_wave_generation_gwh": 0.003871246689023223,
+    "total_wave_curtailment_gwh": 0.0034793063915219778,
+    "bidirectional_interprovincial_edge_hours": 1152,
+    "bidirectional_flow_tolerance_gw": 1e-06,
+    "maximum_bidirectional_minimum_flow_gw": 0.026089855639714242,
+    "total_bidirectional_minimum_flow_gwh": 5.116763843826808,
+    "interprovincial_directionality_assessment": {
+      "accepted": false,
+      "negative_capacity_count": 0,
+      "minimum_line_capacity_gw": 0.008225824450253086,
+      "strict_pass": false,
+      "warning_applied": false,
+      "within_warning_budget": false,
+      "classification": "HARD_FAIL",
+      "acceptance_scope": "TEST_ONLY_TRUNCATED_HORIZON",
+      "tolerance_gw": 1e-06,
+      "reference_hours": 168,
+      "horizon_scale": 0.14285714285714285,
+      "limits": {
+        "maximum_edge_hours": 2,
+        "maximum_opposing_flow_gw": 0.25,
+        "maximum_opposing_fraction_of_line_capacity": 0.15,
+        "maximum_opposing_energy_gwh": 0.17857142857142855,
+        "maximum_excess_loss_gwh": 0.005714285714285714,
+        "maximum_opposing_share_of_gross_flow": 5e-05,
+        "maximum_excess_loss_share_of_system_load": 1e-07
+      },
+      "observed": {
+        "edge_hours": 1152,
+        "maximum_opposing_flow_gw": 0.026089855639714242,
+        "maximum_opposing_fraction_of_line_capacity": 0.07282045410986324,
+        "opposing_energy_gwh": 5.116763843826808,
+        "excess_loss_gwh": 0.11936042189042713,
+        "opposing_share_of_gross_flow": 0.00042075023578960297,
+        "excess_loss_share_of_system_load": 2.832143755959219e-06
+      }
+    },
+    "strict_unidirectional_interprovincial_flow": false,
+    "diagnostic_bidirectional_flow_warning_applied": false,
+    "dc_fixed_direction_edge_count": 363,
+    "maximum_dc_reverse_flow_gw": 0.0,
+    "hard_checks": {
+      "power_balance": true,
+      "load_component_input_closure": true,
+      "effective_load_reconstruction": true,
+      "effective_load_nonnegative": true,
+      "heating_service_accounting": true,
+      "cooling_service_accounting": true,
+      "heating_state_transition": true,
+      "cooling_state_transition": true,
+      "heating_daily_state_reset": true,
+      "cooling_daily_state_reset": true,
+      "heating_state_loss_accounting": true,
+      "cooling_state_loss_accounting": true,
+      "ev_v1g_daily_energy_conservation": true,
+      "ev_v1g_backlog_transition": true,
+      "ev_v1g_daily_backlog_reset": true,
+      "ev_v2g_transition": true,
+      "ev_v2g_daily_state_reset": true,
+      "ev_combined_grid_charging_power": true,
+      "v4_ev_mobility_service": true,
+      "optional_portfolio_physical_contract": true,
+      "v5_v2g_contract_nesting": true,
+      "v5_v2g_national_power_cap": true,
+      "v5_shared_bidirectional_connection_power": true,
+      "v5_firm_capacity_credit_physical_bound": true,
+      "up_reserve": true,
+      "down_reserve": true,
+      "inertia": true,
+      "capacity_margin": true,
+      "ruc_transition": true,
+      "thermal_online_capacity": true,
+      "thermal_minimum_generation": true,
+      "thermal_maximum_generation": true,
+      "vre_availability": true,
+      "wave_availability": true,
+      "hydro_aggregate_availability": true,
+      "hydro_aggregate_monthly_energy_budget": true,
+      "line_capacity": true,
+      "nuclear_capacity_floor": true,
+      "nuclear_capacity_upper": true,
+      "biomass_beccs_capacity_upper": true,
+      "storage_capacity_floor": true,
+      "unidirectional_interprovincial_flow": false,
+      "dc_fixed_direction": true,
+      "storage_transition": true,
+      "storage_soc": true,
+      "reservoir_transition": false,
+      "cascade_inflow_reconciliation": true,
+      "reservoir_energy": true,
+      "reservoir_active_storage": true,
+      "carbon": true,
+      "dac_selected_horizon_capacity": true,
+      "biomass": true,
+      "co2_source": true,
+      "co2_sink": true,
+      "beccs_capture_mass_balance": true,
+      "beccs_storage_mass_balance": true,
+      "beccs_net_carbon_balance": true,
+      "captured_co2_reconstruction": true,
+      "objective_components": true
+    },
+    "status": "HARD_FAIL",
+    "acceptance_profiles": {
+      "relative_v1": {
+        "version": "relative_v1_author_20261027_mt",
+        "status": "PASS",
+        "checks": {
+          "power_balance": {
+            "passed": true,
+            "by_province": [
+              {
+                "province_code": 11,
+                "annual_peak_load_gw": 58.989490865598974,
+                "maximum_residual_gw": 9.106491479599034e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 12,
+                "annual_peak_load_gw": 29.142653952905867,
+                "maximum_residual_gw": 7.443601471416607e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 13,
+                "annual_peak_load_gw": 134.77240600217058,
+                "maximum_residual_gw": 6.215723733107143e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 14,
+                "annual_peak_load_gw": 76.88032796004991,
+                "maximum_residual_gw": 6.357334511875577e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 15,
+                "annual_peak_load_gw": 76.87975996189408,
+                "maximum_residual_gw": 6.608040946900671e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 21,
+                "annual_peak_load_gw": 57.35563683980788,
+                "maximum_residual_gw": 5.155390735339443e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 22,
+                "annual_peak_load_gw": 17.9102935745604,
+                "maximum_residual_gw": 4.518210039327253e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 23,
+                "annual_peak_load_gw": 20.93842515262549,
+                "maximum_residual_gw": 4.927898758434919e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 31,
+                "annual_peak_load_gw": 76.64708256358608,
+                "maximum_residual_gw": 3.9393456992617556e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 32,
+                "annual_peak_load_gw": 172.83303505173726,
+                "maximum_residual_gw": 2.4910702203383064e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 33,
+                "annual_peak_load_gw": 277.8898134228852,
+                "maximum_residual_gw": 1.6989860981785456e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 34,
+                "annual_peak_load_gw": 94.13755442838672,
+                "maximum_residual_gw": 2.7407489191881573e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 35,
+                "annual_peak_load_gw": 111.5619886719832,
+                "maximum_residual_gw": 5.081105171903997e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 36,
+                "annual_peak_load_gw": 52.15608300103271,
+                "maximum_residual_gw": 1.4524845925859876e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 37,
+                "annual_peak_load_gw": 253.4547025900344,
+                "maximum_residual_gw": 1.0165138612653387e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 41,
+                "annual_peak_load_gw": 134.68355261759092,
+                "maximum_residual_gw": 1.3533960880837172e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 42,
+                "annual_peak_load_gw": 74.99357596448424,
+                "maximum_residual_gw": 5.288486606054598e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 43,
+                "annual_peak_load_gw": 78.12858059328309,
+                "maximum_residual_gw": 5.206994442128908e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 44,
+                "annual_peak_load_gw": 309.1209802854789,
+                "maximum_residual_gw": 5.652407058320623e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 45,
+                "annual_peak_load_gw": 52.74261142028915,
+                "maximum_residual_gw": 6.396762613743515e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 46,
+                "annual_peak_load_gw": 13.916766541093091,
+                "maximum_residual_gw": 1.6181581185078673e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 50,
+                "annual_peak_load_gw": 44.34657093292347,
+                "maximum_residual_gw": 7.591216764692718e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 51,
+                "annual_peak_load_gw": 81.08929918795386,
+                "maximum_residual_gw": 3.0912000456978224e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 52,
+                "annual_peak_load_gw": 45.50787378337886,
+                "maximum_residual_gw": 7.142165086198096e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 53,
+                "annual_peak_load_gw": 49.25249349080854,
+                "maximum_residual_gw": 1.3938263570828372e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 54,
+                "annual_peak_load_gw": 2.9250152868616843,
+                "maximum_residual_gw": 1.3967429143371159e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 61,
+                "annual_peak_load_gw": 79.1768779935835,
+                "maximum_residual_gw": 7.549153835676651e-07,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 62,
+                "annual_peak_load_gw": 60.159855390045095,
+                "maximum_residual_gw": 1.0319691531729402e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 63,
+                "annual_peak_load_gw": 29.795978214432395,
+                "maximum_residual_gw": 1.2436069755548344e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 64,
+                "annual_peak_load_gw": 32.13874652064629,
+                "maximum_residual_gw": 1.0062059570571918e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              },
+              {
+                "province_code": 65,
+                "annual_peak_load_gw": 139.38731728612487,
+                "maximum_residual_gw": 1.2331546300837007e-06,
+                "limit_gw": 0.001,
+                "passed": true
+              }
+            ],
+            "maximum_residual_gw": 3.0912000456978224e-06
+          },
+          "objective_components": {
+            "passed": true,
+            "residual_million_cny": 3.725290298461914e-09,
+            "limit_million_cny": 0.32078584523175674,
+            "relative_residual": 1.16130133353313e-15
+          },
+          "unidirectional_interprovincial_flow": {
+            "passed": true,
+            "extra_loss_share_of_load": 2.832143755959219e-06,
+            "limit": 0.0001,
+            "observed": {
+              "edge_hours": 1152,
+              "maximum_opposing_flow_gw": 0.026089855639714242,
+              "maximum_opposing_fraction_of_line_capacity": 0.07282045410986324,
+              "opposing_energy_gwh": 5.116763843826808,
+              "excess_loss_gwh": 0.11936042189042713,
+              "opposing_share_of_gross_flow": 0.00042075023578960297,
+              "excess_loss_share_of_system_load": 2.832143755959219e-06
+            },
+            "result_reporting": "NET_FLOW",
+            "denominator_scope": "SELECTED_HORIZON_SYSTEM_LOAD"
+          },
+          "reservoir_transition": {
+            "status": "DEFERRED_BY_AUTHOR_20261012",
+            "passed": null,
+            "maximum_residual_m3": 3.831982901188894,
+            "station": {
+              "hydrochn_row_id": "HydroCHN_00968",
+              "hour_index": 6,
+              "residual_m3": 3.831982901188894,
+              "active_storage_m3": 4086856427.999999
+            },
+            "disclosure_complete": true
+          },
+          "extended_gw_gwh_physical_checks": {
+            "passed": true,
+            "checks": {
+              "load_component_input_closure": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_load_component_input_closure_error_gw",
+                    "value": 5.684341886080802e-14,
+                    "violation": 5.684341886080802e-14,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "effective_load_reconstruction": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_effective_load_reconstruction_error_gw",
+                    "value": 2.842170943040401e-14,
+                    "violation": 2.842170943040401e-14,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "effective_load_nonnegative": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "minimum_effective_load_gw",
+                    "value": 2.0219650270404395,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "ev_v2g_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_ev_v2g_transition_residual_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "up_reserve": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "minimum_up_reserve_margin_gw",
+                    "value": 0.9610258630759851,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "down_reserve": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "minimum_down_reserve_margin_gw",
+                    "value": 0.0008243414024327045,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "capacity_margin": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "minimum_capacity_margin_gw",
+                    "value": 6.021999607952466e-05,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "ruc_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_ruc_transition_residual_gw",
+                    "value": 4.8547080671905646e-08,
+                    "violation": 4.8547080671905646e-08,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "thermal_online_capacity": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_thermal_online_capacity_violation_gw",
+                    "value": 2.9063015993813224e-08,
+                    "violation": 2.9063015993813224e-08,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "thermal_minimum_generation": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_thermal_minimum_generation_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "thermal_maximum_generation": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_thermal_maximum_generation_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "vre_availability": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_vre_availability_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "wave_availability": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_wave_availability_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "hydro_aggregate_availability": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_hydro_aggregate_availability_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "hydro_aggregate_monthly_energy_budget": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_hydro_aggregate_monthly_energy_budget_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "line_capacity": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_line_capacity_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "nuclear_capacity_floor": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_nuclear_capacity_floor_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "nuclear_capacity_upper": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_nuclear_capacity_upper_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "biomass_beccs_capacity_upper": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_biomass_beccs_capacity_upper_violation_gw",
+                    "value": 1.0462769817198847e-08,
+                    "violation": 1.0462769817198847e-08,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "storage_capacity_floor": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_storage_capacity_floor_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "dc_fixed_direction": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-06,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_dc_reverse_flow_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "storage_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_storage_transition_residual_gwh",
+                    "value": 7.13746142425465e-08,
+                    "violation": 7.13746142425465e-08,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "storage_soc": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_storage_soc_upper_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "reservoir_energy": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_reservoir_energy_upper_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "heating_service_accounting": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v4_heating_state_transition_residual_gwh",
+                    "value": 1.3722641470126666e-07,
+                    "violation": 1.3722641470126666e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_heating_periodic_boundary_residual_gwh",
+                    "value": 1.3722641470034509e-07,
+                    "violation": 1.3722641470034509e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_heating_positive_state_bound_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_heating_negative_state_bound_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_heating_comfort_debt_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "heating_state_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "heating_daily_state_reset": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "heating_state_loss_accounting": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "cooling_service_accounting": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v4_cooling_state_transition_residual_gwh",
+                    "value": 1.0745087188784343e-07,
+                    "violation": 1.0745087188784343e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_cooling_periodic_boundary_residual_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_cooling_positive_state_bound_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_cooling_negative_state_bound_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_cooling_comfort_debt_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "cooling_state_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "cooling_daily_state_reset": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "cooling_state_loss_accounting": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "ev_v1g_daily_energy_conservation": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "ev_v1g_backlog_transition": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "ev_v1g_daily_backlog_reset": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "ev_v2g_daily_state_reset": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [],
+                "applicable": false
+              },
+              "ev_combined_grid_charging_power": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_ev_combined_grid_charging_power_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "v4_ev_mobility_service": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v4_ev_soc_transition_residual_gwh",
+                    "value": 3.1829520530379796e-07,
+                    "violation": 3.1829520530379796e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_ev_departure_soc_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_ev_soc_upper_violation_gwh",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_ev_charge_power_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "maximum_v4_ev_discharge_power_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "v5_v2g_contract_nesting": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v5_nested_v2g_contract_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "v5_v2g_national_power_cap": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v5_national_v2g_cap_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "v5_shared_bidirectional_connection_power": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v5_shared_connection_power_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "v5_firm_capacity_credit_physical_bound": {
+                "passed": true,
+                "strict_passed": true,
+                "strict_tolerance": 1e-05,
+                "relative_tolerance": 0.001,
+                "observations": [
+                  {
+                    "metric": "maximum_v5_firm_capacity_credit_bound_violation_gw",
+                    "value": 0.0,
+                    "violation": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  }
+                ],
+                "applicable": true
+              },
+              "optional_portfolio_physical_contract": {
+                "passed": true,
+                "strict_passed": true,
+                "observations": [
+                  {
+                    "metric": "enrollment_fraction_violation",
+                    "value": 0.0,
+                    "limit": 1e-05,
+                    "passed": true
+                  },
+                  {
+                    "metric": "contract_charge_residual_gw",
+                    "value": 1.4893879995980797e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "contract_v2g_residual_gw",
+                    "value": 8.477493032522584e-08,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "discharge_pool_power_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v1g_transition_residual_gwh",
+                    "value": 1.9030455922219858e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v1g_inventory_violation_gwh",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v1g_connection_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v2g_transition_residual_gwh",
+                    "value": 2.4968198264474495e-07,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v2g_inventory_violation_gwh",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "v2g_connection_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "baseline_reconstruction_residual_gw",
+                    "value": 1.7763568394002505e-15,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "relocation_lower_bound_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "heating_shared_contract_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "cooling_shared_contract_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "firm_credit_bound_violation_gw",
+                    "value": 0.0,
+                    "limit": 0.001,
+                    "passed": true
+                  },
+                  {
+                    "metric": "firm_credit_zero_when_unenrolled",
+                    "value": 0.0,
+                    "limit": 1e-05,
+                    "passed": true
+                  }
+                ]
+              }
+            },
+            "failed": [],
+            "rule": "max(strict_tolerance, 1e-3 GW or GWh); reference label only"
+          },
+          "extended_mt_mass_balance_checks": {
+            "passed": true,
+            "checks": {
+              "co2_source": {
+                "passed": true,
+                "strict_passed": true,
+                "metric": "maximum_co2_source_balance_residual_mt",
+                "residual_mt": 8.190423493590008e-07,
+                "strict_tolerance_mt": 1e-05,
+                "relative_tolerance_mt": 1e-05,
+                "annual_total_emissions_mt": null,
+                "denominator_field": null,
+                "denominator_scope": "SHORT_WINDOW_STRICT_FLOOR"
+              },
+              "beccs_capture_mass_balance": {
+                "passed": true,
+                "strict_passed": true,
+                "metric": "maximum_beccs_capture_balance_residual_mtco2",
+                "residual_mt": 5.551115123125783e-17,
+                "strict_tolerance_mt": 1e-05,
+                "relative_tolerance_mt": 1e-05,
+                "annual_total_emissions_mt": null,
+                "denominator_field": null,
+                "denominator_scope": "SHORT_WINDOW_STRICT_FLOOR"
+              },
+              "beccs_storage_mass_balance": {
+                "passed": true,
+                "strict_passed": true,
+                "metric": "maximum_beccs_storage_balance_residual_mtco2",
+                "residual_mt": 0.0,
+                "strict_tolerance_mt": 1e-05,
+                "relative_tolerance_mt": 1e-05,
+                "annual_total_emissions_mt": null,
+                "denominator_field": null,
+                "denominator_scope": "SHORT_WINDOW_STRICT_FLOOR"
+              },
+              "beccs_net_carbon_balance": {
+                "passed": true,
+                "strict_passed": true,
+                "metric": "maximum_beccs_net_carbon_balance_residual_mtco2",
+                "residual_mt": 5.551115123125783e-17,
+                "strict_tolerance_mt": 1e-05,
+                "relative_tolerance_mt": 1e-05,
+                "annual_total_emissions_mt": null,
+                "denominator_field": null,
+                "denominator_scope": "SHORT_WINDOW_STRICT_FLOOR"
+              },
+              "captured_co2_reconstruction": {
+                "passed": true,
+                "strict_passed": true,
+                "metric": "maximum_captured_co2_reconstruction_residual_mtco2",
+                "residual_mt": 7.393216039375261e-10,
+                "strict_tolerance_mt": 1e-05,
+                "relative_tolerance_mt": 1e-05,
+                "annual_total_emissions_mt": null,
+                "denominator_field": null,
+                "denominator_scope": "SHORT_WINDOW_STRICT_FLOOR"
+              }
+            },
+            "failed": [],
+            "rule": "max(1e-5 Mt, 1e-6 * full-year unabated fossil emissions); short windows retain 1e-5 Mt"
+          },
+          "remaining_physical_hard_checks": {
+            "passed": true,
+            "checks": {
+              "inertia": true,
+              "cascade_inflow_reconciliation": true,
+              "reservoir_active_storage": true,
+              "carbon": true,
+              "dac_selected_horizon_capacity": true,
+              "biomass": true,
+              "co2_sink": true
+            },
+            "failed": []
+          },
+          "solver": {
+            "passed": true,
+            "optimal": true,
+            "barrier_primal_infeasibility": 0.00016791616871670965,
+            "primal_limit": 0.01,
+            "relative_primal_dual_gap": 6.038986589264626e-05,
+            "relative_gap_limit": 0.01,
+            "mixed_unit_quality_record_only": {
+              "maximum_constraint_violation": 2.1417353759822788e-05,
+              "maximum_constraint_residual": 0.0,
+              "maximum_bound_violation": 6.293906944232486e-09,
+              "maximum_dual_violation": 4.198665694854536e-05,
+              "maximum_dual_residual": 2.3520624381490052e-07,
+              "maximum_complementarity_violation": 0.44171511589316637,
+              "maximum_violation": 0.44171511589316637,
+              "kappa": null,
+              "kappa_exact_computed": false
+            }
+          }
+        },
+        "strict_status_unchanged": "HARD_FAIL",
+        "dual": {
+          "grade": "BARRIER_DUAL_ENGINEERING_GRADE",
+          "BarConvTol": 0.0001
+        },
+        "disclosures": {
+          "heating_simultaneous_up_down_province_hours": 676,
+          "maximum_heating_up_down_overlap_gw": 0.020585310238545346,
+          "total_heating_up_down_overlap_gwh": 2.145441742559189,
+          "cooling_simultaneous_up_down_province_hours": 11,
+          "maximum_cooling_up_down_overlap_gw": 0.0002714640431430422,
+          "total_cooling_up_down_overlap_gwh": 0.0025902213870969853,
+          "ev_v1g_simultaneous_up_down_province_hours": 0,
+          "ev_v2g_simultaneous_charge_discharge_province_hours": 744,
+          "maximum_ev_v2g_charge_discharge_overlap_gw": 0.0018241601282211342,
+          "total_ev_v2g_charge_discharge_overlap_gwh": 0.24605595081953532,
+          "storage_simultaneous_charge_discharge_asset_hours": 1464,
+          "maximum_storage_charge_discharge_overlap_gw": 0.0016531659952204374,
+          "total_storage_charge_discharge_overlap_gwh": 0.8521963807511265,
+          "thermal_simultaneous_startup_shutdown_asset_hours": 4584,
+          "maximum_thermal_startup_shutdown_overlap_gw": 0.0024302644668160994,
+          "bidirectional_interprovincial_edge_hours": 1152,
+          "bidirectional_flow_tolerance_gw": 1e-06,
+          "maximum_bidirectional_minimum_flow_gw": 0.026089855639714242,
+          "total_bidirectional_minimum_flow_gwh": 5.116763843826808,
+          "diagnostic_bidirectional_flow_warning_applied": false,
+          "new_build_below_1mw": {
+            "vre_capacity.csv": {
+              "asset_rows": 25469,
+              "total_gw": 0.09343772545252024,
+              "negative_rows": 0
+            },
+            "hydro_capacity.csv": {
+              "asset_rows": 1028,
+              "total_gw": 0.0008329778875809138,
+              "negative_rows": 0
+            },
+            "thermal_nuclear_capacity.csv": {
+              "asset_rows": 171,
+              "total_gw": 0.017835412732696194,
+              "negative_rows": 1
+            },
+            "storage_capacity.csv": {
+              "asset_rows": 37,
+              "total_gw": 0.001849784736790737,
+              "negative_rows": 0
+            },
+            "wave_capacity.csv": {
+              "asset_rows": 836,
+              "total_gw": 0.0006260162742715944,
+              "negative_rows": 0
+            },
+            "transmission_capacity.csv": {
+              "asset_rows": 409,
+              "total_gw": 0.01009417948542014,
+              "negative_rows": 0
+            }
+          },
+          "numerical_robustness_audit": {
+            "retrofit_upper_cleanup": [
+              {
+                "cutoff_gw": 1e-05,
+                "site_rows": [],
+                "asset_ids": [],
+                "removed_gw": [],
+                "total_removed_gw": 0.0
+              },
+              {
+                "cutoff_gw": 1e-05,
+                "site_rows": [],
+                "asset_ids": [],
+                "removed_gw": [],
+                "total_removed_gw": 0.0
+              },
+              {
+                "cutoff_gw": 1e-05,
+                "site_rows": [],
+                "asset_ids": [],
+                "removed_gw": [],
+                "total_removed_gw": 0.0
+              },
+              {
+                "cutoff_gw": 1e-05,
+                "site_rows": [
+                  3
+                ],
+                "asset_ids": [
+                  "14::gchp::gchpccs"
+                ],
+                "removed_gw": [
+                  2.220446049250313e-16
+                ],
+                "total_removed_gw": 2.220446049250313e-16
+              },
+              {
+                "cutoff_gw": 1e-05,
+                "site_rows": [],
+                "asset_ids": [],
+                "removed_gw": [],
+                "total_removed_gw": 0.0
+              }
+            ],
+            "capacity_rhs_cleanup": [
+              {
+                "row": "thermal_non_ccs_capacity_accounting_gchp[3]",
+                "original_rhs": 2.220446049250313e-16,
+                "cleaned_rhs": 0.0,
+                "left_operand": 1.864,
+                "right_operand": -1.8639999999999999,
+                "roundoff_bound": 3.3111291486420667e-15,
+                "cutoff": 1e-12,
+                "reason": "OPPOSITE_SIGN_CAPACITY_CANCELLATION_ROUNDOFF"
+              }
+            ],
+            "hydro_capacity_headroom_cleanup": {
+              "cutoff_gw": 1e-05,
+              "site_rows": [
+                379,
+                562,
+                595,
+                624,
+                723,
+                757,
+                810,
+                815,
+                848,
+                854,
+                873,
+                890,
+                895,
+                933,
+                984,
+                1013,
+                1071,
+                1078,
+                1106,
+                1107,
+                1115,
+                1134,
+                1136,
+                1148,
+                1149,
+                1152,
+                1153,
+                1169,
+                1180,
+                1190,
+                1200,
+                1207,
+                1221,
+                1236,
+                1246,
+                1269,
+                1275,
+                1277,
+                1288,
+                1294,
+                1298,
+                1301,
+                1317,
+                1320,
+                1337,
+                1341,
+                1343,
+                1349,
+                1361,
+                1373,
+                1374,
+                1385,
+                1388,
+                1393,
+                1402,
+                1416,
+                1429,
+                1433,
+                1446,
+                1458,
+                1459,
+                1466,
+                1480,
+                1483,
+                1496,
+                1500,
+                1518,
+                1536,
+                1538,
+                1544,
+                1545,
+                1549,
+                1563,
+                1565,
+                1572,
+                1587,
+                1618,
+                1633,
+                1634,
+                1637,
+                1638,
+                1643,
+                1654,
+                1656,
+                1679,
+                1695,
+                1715,
+                1716,
+                1726,
+                1728,
+                1740,
+                1754,
+                1755
+              ],
+              "asset_ids": [
+                "HydroCHN_00379",
+                "HydroCHN_00562",
+                "HydroCHN_00595",
+                "HydroCHN_00624",
+                "HydroCHN_00723",
+                "HydroCHN_00757",
+                "HydroCHN_00810",
+                "HydroCHN_00815",
+                "HydroCHN_00848",
+                "HydroCHN_00854",
+                "HydroCHN_00873",
+                "HydroCHN_00890",
+                "HydroCHN_00895",
+                "HydroCHN_00933",
+                "HydroCHN_00984",
+                "HydroCHN_01013",
+                "HydroCHN_01071",
+                "HydroCHN_01078",
+                "HydroCHN_01106",
+                "HydroCHN_01107",
+                "HydroCHN_01115",
+                "HydroCHN_01134",
+                "HydroCHN_01136",
+                "HydroCHN_01148",
+                "HydroCHN_01149",
+                "HydroCHN_01152",
+                "HydroCHN_01153",
+                "HydroCHN_01169",
+                "HydroCHN_01180",
+                "HydroCHN_01190",
+                "HydroCHN_01200",
+                "HydroCHN_01207",
+                "HydroCHN_01221",
+                "HydroCHN_01236",
+                "HydroCHN_01246",
+                "HydroCHN_01269",
+                "HydroCHN_01275",
+                "HydroCHN_01277",
+                "HydroCHN_01288",
+                "HydroCHN_01294",
+                "HydroCHN_01298",
+                "HydroCHN_01301",
+                "HydroCHN_01317",
+                "HydroCHN_01320",
+                "HydroCHN_01337",
+                "HydroCHN_01341",
+                "HydroCHN_01343",
+                "HydroCHN_01349",
+                "HydroCHN_01361",
+                "HydroCHN_01373",
+                "HydroCHN_01374",
+                "HydroCHN_01385",
+                "HydroCHN_01388",
+                "HydroCHN_01393",
+                "HydroCHN_01402",
+                "HydroCHN_01416",
+                "HydroCHN_01429",
+                "HydroCHN_01433",
+                "HydroCHN_01446",
+                "HydroCHN_01458",
+                "HydroCHN_01459",
+                "HydroCHN_01466",
+                "HydroCHN_01480",
+                "HydroCHN_01483",
+                "HydroCHN_01496",
+                "HydroCHN_01500",
+                "HydroCHN_01518",
+                "HydroCHN_01536",
+                "HydroCHN_01538",
+                "HydroCHN_01544",
+                "HydroCHN_01545",
+                "HydroCHN_01549",
+                "HydroCHN_01563",
+                "HydroCHN_01565",
+                "HydroCHN_01572",
+                "HydroCHN_01587",
+                "HydroCHN_01618",
+                "HydroCHN_01633",
+                "HydroCHN_01634",
+                "HydroCHN_01637",
+                "HydroCHN_01638",
+                "HydroCHN_01643",
+                "HydroCHN_01654",
+                "HydroCHN_01656",
+                "HydroCHN_01679",
+                "HydroCHN_01695",
+                "HydroCHN_01715",
+                "HydroCHN_01716",
+                "HydroCHN_01726",
+                "HydroCHN_01728",
+                "HydroCHN_01740",
+                "HydroCHN_01754",
+                "HydroCHN_01755"
+              ],
+              "removed_gw": [
+                8.414442123350074e-07,
+                1.5774879004448739e-07,
+                3.148975884215144e-08,
+                1.8809976157219133e-07,
+                4.165769287162169e-08,
+                4.210276222105236e-08,
+                8.18624677295654e-07,
+                9.133460185384301e-08,
+                4.5754429218308745e-07,
+                8.351366982684016e-08,
+                6.653856252439305e-07,
+                1.7563922661417708e-07,
+                5.145911000092873e-08,
+                3.110454702998089e-06,
+                6.249541227992816e-07,
+                5.162955796916835e-08,
+                1.786573089121446e-08,
+                1.6324175552626108e-07,
+                1.3795323205653687e-07,
+                1.3795799472596237e-07,
+                5.486113372490942e-06,
+                5.210513545281237e-08,
+                2.4235457151550177e-08,
+                2.415829498947364e-08,
+                1.3031216863565454e-07,
+                9.726844632518272e-08,
+                2.7226179992109745e-07,
+                2.633943775066927e-06,
+                3.1548051751192907e-07,
+                4.58656135321478e-07,
+                9.499758573821432e-06,
+                1.2100478407987836e-06,
+                1.5046699814239006e-07,
+                3.28971037667769e-08,
+                1.3053762643738809e-08,
+                8.159395945006587e-07,
+                2.7301800811438404e-07,
+                1.2871666486835576e-07,
+                7.19608674350225e-08,
+                1.337797737727131e-07,
+                2.9533306898990586e-07,
+                1.8023548480072815e-07,
+                1.5599013626979574e-07,
+                1.4692387518416838e-08,
+                2.696108420893739e-08,
+                3.0139346928262367e-07,
+                1.3687162816987397e-06,
+                7.254852923271882e-09,
+                2.8788368654220076e-08,
+                1.2108908173692756e-06,
+                1.1664431609145764e-07,
+                1.2192022583526474e-07,
+                1.939496509575922e-08,
+                2.6675988228433423e-07,
+                4.727284166557849e-06,
+                1.2319556000339738e-08,
+                4.840354093590266e-06,
+                1.9621212080794814e-07,
+                9.862817655810485e-07,
+                1.9548404291136467e-08,
+                1.3023552064561628e-07,
+                6.404753498390203e-09,
+                5.125925353297381e-06,
+                4.346360692204093e-07,
+                5.758345895598427e-09,
+                2.787279142803245e-07,
+                3.694049622443574e-08,
+                1.4262311727464283e-07,
+                8.786890671672043e-09,
+                1.0841696446994842e-06,
+                3.830358048986099e-07,
+                1.0827499486998349e-06,
+                9.23621087042803e-08,
+                1.331271413662627e-07,
+                2.0468116682451076e-08,
+                1.6863293680197122e-07,
+                3.4188066234779046e-07,
+                2.874177858300936e-06,
+                6.715477927736468e-08,
+                7.287920416598759e-07,
+                3.3354834711937786e-08,
+                1.5540579827166834e-07,
+                2.742763840568943e-06,
+                3.65473391109733e-07,
+                1.2399192840691076e-07,
+                3.4325469701543265e-06,
+                9.442836191447812e-08,
+                3.032044371322623e-07,
+                2.8572405279432556e-07,
+                1.9629243081659142e-07,
+                2.120954813947945e-07,
+                5.558716062031843e-07,
+                4.647501834591228e-08
+              ],
+              "total_removed_gw": 6.63054686727265e-05
+            },
+            "other_capacity_headroom_cleanup": []
+          },
+          "continuation_cleanup": {
+            "rule_version": "AUTHOR_R1_20261014",
+            "source_year": 2050,
+            "planning_year": 2060,
+            "retrofit_protected_groups": [
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "15::bio",
+                "new_build_gw": 0.0006057401952318516
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "22::bio",
+                "new_build_gw": 0.00015163572192042224
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "31::bio",
+                "new_build_gw": 2.3446515907618596e-08
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "42::bio",
+                "new_build_gw": 0.00015914927353266094
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "45::bio",
+                "new_build_gw": 0.00021781559286781707
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "46::bio",
+                "new_build_gw": 0.00013671824567907518
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "51::bio",
+                "new_build_gw": 6.350099938575237e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "53::bio",
+                "new_build_gw": 0.00013068542637413726
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "54::bio",
+                "new_build_gw": 7.98674352091788e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bio",
+                "asset_id": "65::bio",
+                "new_build_gw": 0.00026373633208930135
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "11::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "12::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "13::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "14::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "15::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "21::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "22::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "23::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "31::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "32::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "33::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "34::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "35::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "36::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "37::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "41::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "42::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "43::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "44::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "45::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "46::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "50::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "51::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "52::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "53::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "54::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "61::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "62::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "63::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "64::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchp",
+                "asset_id": "65::cchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "11::coal",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "14::coal",
+                "new_build_gw": 0.00013616995955912164
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "23::coal",
+                "new_build_gw": 9.415490832258622e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "32::coal",
+                "new_build_gw": 0.00016096678885840768
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "34::coal",
+                "new_build_gw": 0.00010580904362760907
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "35::coal",
+                "new_build_gw": 6.309361499935381e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "36::coal",
+                "new_build_gw": 0.00011244064929483166
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "42::coal",
+                "new_build_gw": 6.515488898668659e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "43::coal",
+                "new_build_gw": 7.378466828478376e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "44::coal",
+                "new_build_gw": 9.04613597223126e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "45::coal",
+                "new_build_gw": 4.1979261379355265e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "46::coal",
+                "new_build_gw": 0.00017145861319557313
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "50::coal",
+                "new_build_gw": 8.353071397120026e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "51::coal",
+                "new_build_gw": 6.091941968654649e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "52::coal",
+                "new_build_gw": 0.00011986486741128743
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "53::coal",
+                "new_build_gw": 0.00012460406106619008
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "54::coal",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "61::coal",
+                "new_build_gw": 7.84422925335497e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "62::coal",
+                "new_build_gw": 7.06076484507421e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "63::coal",
+                "new_build_gw": 0.0001696270099234177
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "64::coal",
+                "new_build_gw": 4.898751933306674e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coal",
+                "asset_id": "65::coal",
+                "new_build_gw": 0.0002206125564276599
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "15::gas",
+                "new_build_gw": 0.0003146945625582471
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "21::gas",
+                "new_build_gw": 0.0003376621116887385
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "22::gas",
+                "new_build_gw": 0.00024879817695191823
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "23::gas",
+                "new_build_gw": 0.0005164735656822456
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "35::gas",
+                "new_build_gw": 0.0002061978703192689
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "42::gas",
+                "new_build_gw": 0.00025000354535327724
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "43::gas",
+                "new_build_gw": 0.00018561860626001923
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "45::gas",
+                "new_build_gw": 0.00015502354710117665
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "46::gas",
+                "new_build_gw": 7.535903415410803e-05
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "50::gas",
+                "new_build_gw": 0.0002842008672208576
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "51::gas",
+                "new_build_gw": 0.0002315133071163352
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "53::gas",
+                "new_build_gw": 0.00036809612777869214
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gas",
+                "asset_id": "54::gas",
+                "new_build_gw": 0.00018888102057098977
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "11::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "12::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "13::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "14::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "15::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "21::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "22::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "23::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "31::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "32::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "33::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "34::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "35::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "36::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "37::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "41::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "42::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "43::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "44::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "45::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "46::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "50::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "51::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "52::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "53::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "54::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "61::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "62::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "63::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "64::gchp",
+                "new_build_gw": 0.0
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchp",
+                "asset_id": "65::gchp",
+                "new_build_gw": 0.0
+              }
+            ],
+            "retrofit_protected_new_build_gw": 0.007264064856596261,
+            "status": "PASS",
+            "threshold_gw": 0.001,
+            "generation_and_storage_deleted_gw": 0.39171505124548534,
+            "network_deleted_gw": 0.22650442034944304,
+            "separate_total_limit_gw": 1,
+            "ratio_limit": 0.001,
+            "ratio_gate_minimum_installed_gw": 1,
+            "deleted_assets": 72478,
+            "positive_deleted_assets": 38551,
+            "deleted_cohort_rows": 72478,
+            "nonpositive_deleted_assets": 33927,
+            "retained_negative_rows": 26,
+            "retained_negative_zeroing_increase_gw": 4.7531423241764514e-15,
+            "removed_negative_cohort_rows": 3,
+            "signed_deleted_gw": 0.6182194478476302,
+            "by_technology": [
+              {
+                "asset_class": "hydro",
+                "technology": "hydro",
+                "selected_assets": 1798,
+                "positive_selected_assets": 1005,
+                "signed_deleted_gw": 0.010718761272903806,
+                "positive_deleted_gw": 0.010718761272903806,
+                "installed_source_year_gw": 314.48654316283483,
+                "ratio": 3.408337019798601e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "hydro_spur",
+                "technology": "hydro",
+                "selected_assets": 1798,
+                "positive_selected_assets": 1005,
+                "signed_deleted_gw": 0.010718761272903806,
+                "positive_deleted_gw": 0.010718761272903806,
+                "installed_source_year_gw": 314.48654316283483,
+                "ratio": 3.408337019798601e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "interprovincial_transmission",
+                "technology": "AC",
+                "selected_assets": 12,
+                "positive_selected_assets": 12,
+                "signed_deleted_gw": 0.003121449679819814,
+                "positive_deleted_gw": 0.003121449679819814,
+                "installed_source_year_gw": 547.4875079378146,
+                "ratio": 5.701408040481461e-06,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "interprovincial_transmission",
+                "technology": "DC",
+                "selected_assets": 17,
+                "positive_selected_assets": 17,
+                "signed_deleted_gw": 0.0009772666214632113,
+                "positive_deleted_gw": 0.0009772666214632113,
+                "installed_source_year_gw": 925.3950330464174,
+                "ratio": 1.0560534545404158e-06,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "intra_load_center_transmission",
+                "technology": "AC_500kV",
+                "selected_assets": 381,
+                "positive_selected_assets": 381,
+                "signed_deleted_gw": 0.004974882066099612,
+                "positive_deleted_gw": 0.004974882066099612,
+                "installed_source_year_gw": 1873.3759920718371,
+                "ratio": 2.655570524632219e-06,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "storage",
+                "technology": "phs",
+                "selected_assets": 2,
+                "positive_selected_assets": 0,
+                "signed_deleted_gw": 0.0,
+                "positive_deleted_gw": 0.0,
+                "installed_source_year_gw": 445.0683166321559,
+                "ratio": 0.0,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "bioccs",
+                "selected_assets": 9,
+                "positive_selected_assets": 8,
+                "signed_deleted_gw": 0.001847094385774551,
+                "positive_deleted_gw": 0.0018471181330726929,
+                "installed_source_year_gw": 141.52686500782494,
+                "ratio": 1.3051360481775434e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "cchpccs",
+                "selected_assets": 31,
+                "positive_selected_assets": 0,
+                "signed_deleted_gw": 0.0,
+                "positive_deleted_gw": 0.0,
+                "installed_source_year_gw": 0.1091708194618313,
+                "ratio": 0.0,
+                "ratio_gate_applicable": false,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "coalccs",
+                "selected_assets": 27,
+                "positive_selected_assets": 25,
+                "signed_deleted_gw": 0.0011250643877766722,
+                "positive_deleted_gw": 0.0011250643877766722,
+                "installed_source_year_gw": 5.224561243896456,
+                "ratio": 0.00021534141055213352,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gasccs",
+                "selected_assets": 15,
+                "positive_selected_assets": 15,
+                "signed_deleted_gw": 0.0011388080961644736,
+                "positive_deleted_gw": 0.0011388080961644736,
+                "installed_source_year_gw": 0.2862737409381818,
+                "ratio": 0.003978038965195864,
+                "ratio_gate_applicable": false,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "gchpccs",
+                "selected_assets": 31,
+                "positive_selected_assets": 0,
+                "signed_deleted_gw": 0.0,
+                "positive_deleted_gw": 0.0,
+                "installed_source_year_gw": 0.7594591759554302,
+                "ratio": 0.0,
+                "ratio_gate_applicable": false,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "thermal",
+                "technology": "nuclear",
+                "selected_assets": 22,
+                "positive_selected_assets": 0,
+                "signed_deleted_gw": 0.0,
+                "positive_deleted_gw": 0.0,
+                "installed_source_year_gw": 289.758764255202,
+                "ratio": 0.0,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "trunk",
+                "technology": "AC_trunk",
+                "selected_assets": 5226,
+                "positive_selected_assets": 1346,
+                "signed_deleted_gw": 0.03866311979704343,
+                "positive_deleted_gw": 0.038663119797043496,
+                "installed_source_year_gw": 4092.7488221196077,
+                "ratio": 9.446736527803853e-06,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre",
+                "technology": "dpv",
+                "selected_assets": 12863,
+                "positive_selected_assets": 12198,
+                "signed_deleted_gw": 0.18152185464542048,
+                "positive_deleted_gw": 0.18152185464542048,
+                "installed_source_year_gw": 290.6447492664131,
+                "ratio": 0.0006245488869266738,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre",
+                "technology": "offwind",
+                "selected_assets": 733,
+                "positive_selected_assets": 715,
+                "signed_deleted_gw": 0.019695351719538255,
+                "positive_deleted_gw": 0.019695351719538255,
+                "installed_source_year_gw": 439.9726531958263,
+                "ratio": 4.4764945222111573e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre",
+                "technology": "onwind",
+                "selected_assets": 7923,
+                "positive_selected_assets": 2697,
+                "signed_deleted_gw": 0.04826900815122455,
+                "positive_deleted_gw": 0.04826900815122455,
+                "installed_source_year_gw": 1398.123991564829,
+                "ratio": 3.4524125501344265e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre",
+                "technology": "upv",
+                "selected_assets": 6927,
+                "positive_selected_assets": 6574,
+                "signed_deleted_gw": 0.12134417879978625,
+                "positive_deleted_gw": 0.12134417879978625,
+                "installed_source_year_gw": 2604.3944231877585,
+                "ratio": 4.659208978464249e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre_spur",
+                "technology": "dpv",
+                "selected_assets": 15378,
+                "positive_selected_assets": 0,
+                "signed_deleted_gw": 0.0,
+                "positive_deleted_gw": 0.0,
+                "installed_source_year_gw": 0.0,
+                "ratio": null,
+                "ratio_gate_applicable": false,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre_spur",
+                "technology": "offwind",
+                "selected_assets": 748,
+                "positive_selected_assets": 679,
+                "signed_deleted_gw": 0.016359170452275088,
+                "positive_deleted_gw": 0.016359170452275088,
+                "installed_source_year_gw": 455.2654136571463,
+                "ratio": 3.593325994360498e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre_spur",
+                "technology": "onwind",
+                "selected_assets": 8174,
+                "positive_selected_assets": 2821,
+                "signed_deleted_gw": 0.03541760486166555,
+                "positive_deleted_gw": 0.03541760486166555,
+                "installed_source_year_gw": 1699.8998231517598,
+                "ratio": 2.0835112975068306e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "vre_spur",
+                "technology": "upv",
+                "selected_assets": 9079,
+                "positive_selected_assets": 7769,
+                "signed_deleted_gw": 0.11627216559817245,
+                "positive_deleted_gw": 0.11627216559817245,
+                "installed_source_year_gw": 2045.5035310360017,
+                "ratio": 5.6842808547626024e-05,
+                "ratio_gate_applicable": true,
+                "ratio_gate_pass": true
+              },
+              {
+                "asset_class": "wave",
+                "technology": "wave",
+                "selected_assets": 1284,
+                "positive_selected_assets": 1284,
+                "signed_deleted_gw": 0.006054906039598164,
+                "positive_deleted_gw": 0.006054906039598164,
+                "installed_source_year_gw": 0.0060549060395988,
+                "ratio": 0.999999999999895,
+                "ratio_gate_applicable": false,
+                "ratio_gate_pass": true
+              }
+            ],
+            "failures": [],
+            "source_sha256": {
+              "planning_state_candidate/capacity_cohorts.csv.gz": "fa96f211e668edf5ace3eba96d56c7a2b49fa01b49985784030c054aee04f5e2",
+              "annual_capacity_by_technology.csv": "ef3c28a66de7f78cef118fb0cd3c98aeb030d7eeb95e70b40575cf9a62ab58d4",
+              "intra_grid_vre_site_design.csv": "1596cf333026b27edf718588b0b423994b1f3b58342a28692353dbb79babb8c1",
+              "transmission_capacity.csv": "542653f619ad3ab4f484da5f1c9cf41408f088a7e1bc6f951a61401191b2bf53",
+              "load_center_intra_transmission.csv": "6327a26715505b9c6f7170dd80cebbe365338995d78d3d90e02b9f72082ab621",
+              "intra_grid_substation_design.csv": "d9f9d07dee40d58c8b36b864929dfe4369fec16cca9f16787b4bd863899c1504",
+              "hydro_capacity.csv": "f11e41bf108c713a82ebb8522aa16ca4e9434a7f95981e90238253f1fa597cb7"
+            },
+            "denominator_hydro_spur": "existing_capacity_gw + active hydro_spur cohorts in source year",
+            "disclosure": "Storage included in generation total conservatively; positive deleted storage GW by technology: phs=0. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.",
+            "state_changed": true,
+            "applied": true
+          },
+          "continuation_bound_closure": {
+            "rule": "OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER",
+            "threshold_gw": 1e-05,
+            "affected_rows": [
+              {
+                "asset_class": "thermal",
+                "asset_id": "31::bio",
+                "technology": "bio",
+                "build_year": 2050,
+                "before_gw": 2.3446515907618596e-08,
+                "after_gw": 0.0,
+                "reduction_gw": 2.3446515907618596e-08,
+                "original_excess_gw": 2.3446515895475528e-08,
+                "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+              }
+            ],
+            "total_reduction_gw": 2.3446515907618596e-08,
+            "shared_biomass_upper": [
+              {
+                "province_code": 31,
+                "shared_upper_gw": 0.3399999999999999,
+                "before_floor_gw": [
+                  0.3320119957713245,
+                  0.0079880276751913
+                ],
+                "after_floor_gw": [
+                  0.3320119723248086,
+                  0.0079880276751913
+                ],
+                "initial_excess_gw": 2.3446515895475528e-08,
+                "total_reduction_gw": 2.3446515907618596e-08,
+                "retrofit_pairs_unchanged": true,
+                "ccs_capacity_unchanged": true,
+                "affected_rows": [
+                  {
+                    "asset_class": "thermal",
+                    "asset_id": "31::bio",
+                    "technology": "bio",
+                    "build_year": 2050,
+                    "before_gw": 2.3446515907618596e-08,
+                    "after_gw": 0.0,
+                    "reduction_gw": 2.3446515907618596e-08,
+                    "original_excess_gw": 2.3446515895475528e-08,
+                    "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "inputs": {
+          "power_by_province": [
+            {
+              "province_code": 11,
+              "annual_peak_load_gw": 58.989490865598974,
+              "maximum_residual_gw": 9.106491479599034e-07
+            },
+            {
+              "province_code": 12,
+              "annual_peak_load_gw": 29.142653952905867,
+              "maximum_residual_gw": 7.443601471416607e-07
+            },
+            {
+              "province_code": 13,
+              "annual_peak_load_gw": 134.77240600217058,
+              "maximum_residual_gw": 6.215723733107143e-07
+            },
+            {
+              "province_code": 14,
+              "annual_peak_load_gw": 76.88032796004991,
+              "maximum_residual_gw": 6.357334511875577e-07
+            },
+            {
+              "province_code": 15,
+              "annual_peak_load_gw": 76.87975996189408,
+              "maximum_residual_gw": 6.608040946900671e-07
+            },
+            {
+              "province_code": 21,
+              "annual_peak_load_gw": 57.35563683980788,
+              "maximum_residual_gw": 5.155390735339443e-07
+            },
+            {
+              "province_code": 22,
+              "annual_peak_load_gw": 17.9102935745604,
+              "maximum_residual_gw": 4.518210039327253e-07
+            },
+            {
+              "province_code": 23,
+              "annual_peak_load_gw": 20.93842515262549,
+              "maximum_residual_gw": 4.927898758434919e-07
+            },
+            {
+              "province_code": 31,
+              "annual_peak_load_gw": 76.64708256358608,
+              "maximum_residual_gw": 3.9393456992617556e-07
+            },
+            {
+              "province_code": 32,
+              "annual_peak_load_gw": 172.83303505173726,
+              "maximum_residual_gw": 2.4910702203383064e-07
+            },
+            {
+              "province_code": 33,
+              "annual_peak_load_gw": 277.8898134228852,
+              "maximum_residual_gw": 1.6989860981785456e-07
+            },
+            {
+              "province_code": 34,
+              "annual_peak_load_gw": 94.13755442838672,
+              "maximum_residual_gw": 2.7407489191881573e-07
+            },
+            {
+              "province_code": 35,
+              "annual_peak_load_gw": 111.5619886719832,
+              "maximum_residual_gw": 5.081105171903997e-07
+            },
+            {
+              "province_code": 36,
+              "annual_peak_load_gw": 52.15608300103271,
+              "maximum_residual_gw": 1.4524845925859876e-07
+            },
+            {
+              "province_code": 37,
+              "annual_peak_load_gw": 253.4547025900344,
+              "maximum_residual_gw": 1.0165138612653387e-07
+            },
+            {
+              "province_code": 41,
+              "annual_peak_load_gw": 134.68355261759092,
+              "maximum_residual_gw": 1.3533960880837172e-07
+            },
+            {
+              "province_code": 42,
+              "annual_peak_load_gw": 74.99357596448424,
+              "maximum_residual_gw": 5.288486606054598e-07
+            },
+            {
+              "province_code": 43,
+              "annual_peak_load_gw": 78.12858059328309,
+              "maximum_residual_gw": 5.206994442128908e-07
+            },
+            {
+              "province_code": 44,
+              "annual_peak_load_gw": 309.1209802854789,
+              "maximum_residual_gw": 5.652407058320623e-07
+            },
+            {
+              "province_code": 45,
+              "annual_peak_load_gw": 52.74261142028915,
+              "maximum_residual_gw": 6.396762613743515e-07
+            },
+            {
+              "province_code": 46,
+              "annual_peak_load_gw": 13.916766541093091,
+              "maximum_residual_gw": 1.6181581185078673e-07
+            },
+            {
+              "province_code": 50,
+              "annual_peak_load_gw": 44.34657093292347,
+              "maximum_residual_gw": 7.591216764692718e-07
+            },
+            {
+              "province_code": 51,
+              "annual_peak_load_gw": 81.08929918795386,
+              "maximum_residual_gw": 3.0912000456978224e-06
+            },
+            {
+              "province_code": 52,
+              "annual_peak_load_gw": 45.50787378337886,
+              "maximum_residual_gw": 7.142165086198096e-07
+            },
+            {
+              "province_code": 53,
+              "annual_peak_load_gw": 49.25249349080854,
+              "maximum_residual_gw": 1.3938263570828372e-06
+            },
+            {
+              "province_code": 54,
+              "annual_peak_load_gw": 2.9250152868616843,
+              "maximum_residual_gw": 1.3967429143371159e-06
+            },
+            {
+              "province_code": 61,
+              "annual_peak_load_gw": 79.1768779935835,
+              "maximum_residual_gw": 7.549153835676651e-07
+            },
+            {
+              "province_code": 62,
+              "annual_peak_load_gw": 60.159855390045095,
+              "maximum_residual_gw": 1.0319691531729402e-06
+            },
+            {
+              "province_code": 63,
+              "annual_peak_load_gw": 29.795978214432395,
+              "maximum_residual_gw": 1.2436069755548344e-06
+            },
+            {
+              "province_code": 64,
+              "annual_peak_load_gw": 32.13874652064629,
+              "maximum_residual_gw": 1.0062059570571918e-06
+            },
+            {
+              "province_code": 65,
+              "annual_peak_load_gw": 139.38731728612487,
+              "maximum_residual_gw": 1.2331546300837007e-06
+            }
+          ],
+          "reservoir_worst": {
+            "hydrochn_row_id": "HydroCHN_00968",
+            "hour_index": 6,
+            "residual_m3": 3.831982901188894,
+            "active_storage_m3": 4086856427.999999
+          },
+          "barrier_convergence_tolerance": 0.0001,
+          "disclosures": {
+            "new_build_below_1mw": {
+              "vre_capacity.csv": {
+                "asset_rows": 25469,
+                "total_gw": 0.09343772545252024,
+                "negative_rows": 0
+              },
+              "hydro_capacity.csv": {
+                "asset_rows": 1028,
+                "total_gw": 0.0008329778875809138,
+                "negative_rows": 0
+              },
+              "thermal_nuclear_capacity.csv": {
+                "asset_rows": 171,
+                "total_gw": 0.017835412732696194,
+                "negative_rows": 1
+              },
+              "storage_capacity.csv": {
+                "asset_rows": 37,
+                "total_gw": 0.001849784736790737,
+                "negative_rows": 0
+              },
+              "wave_capacity.csv": {
+                "asset_rows": 836,
+                "total_gw": 0.0006260162742715944,
+                "negative_rows": 0
+              },
+              "transmission_capacity.csv": {
+                "asset_rows": 409,
+                "total_gw": 0.01009417948542014,
+                "negative_rows": 0
+              }
+            },
+            "numerical_robustness_audit": {
+              "retrofit_upper_cleanup": [
+                {
+                  "cutoff_gw": 1e-05,
+                  "site_rows": [],
+                  "asset_ids": [],
+                  "removed_gw": [],
+                  "total_removed_gw": 0.0
+                },
+                {
+                  "cutoff_gw": 1e-05,
+                  "site_rows": [],
+                  "asset_ids": [],
+                  "removed_gw": [],
+                  "total_removed_gw": 0.0
+                },
+                {
+                  "cutoff_gw": 1e-05,
+                  "site_rows": [],
+                  "asset_ids": [],
+                  "removed_gw": [],
+                  "total_removed_gw": 0.0
+                },
+                {
+                  "cutoff_gw": 1e-05,
+                  "site_rows": [
+                    3
+                  ],
+                  "asset_ids": [
+                    "14::gchp::gchpccs"
+                  ],
+                  "removed_gw": [
+                    2.220446049250313e-16
+                  ],
+                  "total_removed_gw": 2.220446049250313e-16
+                },
+                {
+                  "cutoff_gw": 1e-05,
+                  "site_rows": [],
+                  "asset_ids": [],
+                  "removed_gw": [],
+                  "total_removed_gw": 0.0
+                }
+              ],
+              "capacity_rhs_cleanup": [
+                {
+                  "row": "thermal_non_ccs_capacity_accounting_gchp[3]",
+                  "original_rhs": 2.220446049250313e-16,
+                  "cleaned_rhs": 0.0,
+                  "left_operand": 1.864,
+                  "right_operand": -1.8639999999999999,
+                  "roundoff_bound": 3.3111291486420667e-15,
+                  "cutoff": 1e-12,
+                  "reason": "OPPOSITE_SIGN_CAPACITY_CANCELLATION_ROUNDOFF"
+                }
+              ],
+              "hydro_capacity_headroom_cleanup": {
+                "cutoff_gw": 1e-05,
+                "site_rows": [
+                  379,
+                  562,
+                  595,
+                  624,
+                  723,
+                  757,
+                  810,
+                  815,
+                  848,
+                  854,
+                  873,
+                  890,
+                  895,
+                  933,
+                  984,
+                  1013,
+                  1071,
+                  1078,
+                  1106,
+                  1107,
+                  1115,
+                  1134,
+                  1136,
+                  1148,
+                  1149,
+                  1152,
+                  1153,
+                  1169,
+                  1180,
+                  1190,
+                  1200,
+                  1207,
+                  1221,
+                  1236,
+                  1246,
+                  1269,
+                  1275,
+                  1277,
+                  1288,
+                  1294,
+                  1298,
+                  1301,
+                  1317,
+                  1320,
+                  1337,
+                  1341,
+                  1343,
+                  1349,
+                  1361,
+                  1373,
+                  1374,
+                  1385,
+                  1388,
+                  1393,
+                  1402,
+                  1416,
+                  1429,
+                  1433,
+                  1446,
+                  1458,
+                  1459,
+                  1466,
+                  1480,
+                  1483,
+                  1496,
+                  1500,
+                  1518,
+                  1536,
+                  1538,
+                  1544,
+                  1545,
+                  1549,
+                  1563,
+                  1565,
+                  1572,
+                  1587,
+                  1618,
+                  1633,
+                  1634,
+                  1637,
+                  1638,
+                  1643,
+                  1654,
+                  1656,
+                  1679,
+                  1695,
+                  1715,
+                  1716,
+                  1726,
+                  1728,
+                  1740,
+                  1754,
+                  1755
+                ],
+                "asset_ids": [
+                  "HydroCHN_00379",
+                  "HydroCHN_00562",
+                  "HydroCHN_00595",
+                  "HydroCHN_00624",
+                  "HydroCHN_00723",
+                  "HydroCHN_00757",
+                  "HydroCHN_00810",
+                  "HydroCHN_00815",
+                  "HydroCHN_00848",
+                  "HydroCHN_00854",
+                  "HydroCHN_00873",
+                  "HydroCHN_00890",
+                  "HydroCHN_00895",
+                  "HydroCHN_00933",
+                  "HydroCHN_00984",
+                  "HydroCHN_01013",
+                  "HydroCHN_01071",
+                  "HydroCHN_01078",
+                  "HydroCHN_01106",
+                  "HydroCHN_01107",
+                  "HydroCHN_01115",
+                  "HydroCHN_01134",
+                  "HydroCHN_01136",
+                  "HydroCHN_01148",
+                  "HydroCHN_01149",
+                  "HydroCHN_01152",
+                  "HydroCHN_01153",
+                  "HydroCHN_01169",
+                  "HydroCHN_01180",
+                  "HydroCHN_01190",
+                  "HydroCHN_01200",
+                  "HydroCHN_01207",
+                  "HydroCHN_01221",
+                  "HydroCHN_01236",
+                  "HydroCHN_01246",
+                  "HydroCHN_01269",
+                  "HydroCHN_01275",
+                  "HydroCHN_01277",
+                  "HydroCHN_01288",
+                  "HydroCHN_01294",
+                  "HydroCHN_01298",
+                  "HydroCHN_01301",
+                  "HydroCHN_01317",
+                  "HydroCHN_01320",
+                  "HydroCHN_01337",
+                  "HydroCHN_01341",
+                  "HydroCHN_01343",
+                  "HydroCHN_01349",
+                  "HydroCHN_01361",
+                  "HydroCHN_01373",
+                  "HydroCHN_01374",
+                  "HydroCHN_01385",
+                  "HydroCHN_01388",
+                  "HydroCHN_01393",
+                  "HydroCHN_01402",
+                  "HydroCHN_01416",
+                  "HydroCHN_01429",
+                  "HydroCHN_01433",
+                  "HydroCHN_01446",
+                  "HydroCHN_01458",
+                  "HydroCHN_01459",
+                  "HydroCHN_01466",
+                  "HydroCHN_01480",
+                  "HydroCHN_01483",
+                  "HydroCHN_01496",
+                  "HydroCHN_01500",
+                  "HydroCHN_01518",
+                  "HydroCHN_01536",
+                  "HydroCHN_01538",
+                  "HydroCHN_01544",
+                  "HydroCHN_01545",
+                  "HydroCHN_01549",
+                  "HydroCHN_01563",
+                  "HydroCHN_01565",
+                  "HydroCHN_01572",
+                  "HydroCHN_01587",
+                  "HydroCHN_01618",
+                  "HydroCHN_01633",
+                  "HydroCHN_01634",
+                  "HydroCHN_01637",
+                  "HydroCHN_01638",
+                  "HydroCHN_01643",
+                  "HydroCHN_01654",
+                  "HydroCHN_01656",
+                  "HydroCHN_01679",
+                  "HydroCHN_01695",
+                  "HydroCHN_01715",
+                  "HydroCHN_01716",
+                  "HydroCHN_01726",
+                  "HydroCHN_01728",
+                  "HydroCHN_01740",
+                  "HydroCHN_01754",
+                  "HydroCHN_01755"
+                ],
+                "removed_gw": [
+                  8.414442123350074e-07,
+                  1.5774879004448739e-07,
+                  3.148975884215144e-08,
+                  1.8809976157219133e-07,
+                  4.165769287162169e-08,
+                  4.210276222105236e-08,
+                  8.18624677295654e-07,
+                  9.133460185384301e-08,
+                  4.5754429218308745e-07,
+                  8.351366982684016e-08,
+                  6.653856252439305e-07,
+                  1.7563922661417708e-07,
+                  5.145911000092873e-08,
+                  3.110454702998089e-06,
+                  6.249541227992816e-07,
+                  5.162955796916835e-08,
+                  1.786573089121446e-08,
+                  1.6324175552626108e-07,
+                  1.3795323205653687e-07,
+                  1.3795799472596237e-07,
+                  5.486113372490942e-06,
+                  5.210513545281237e-08,
+                  2.4235457151550177e-08,
+                  2.415829498947364e-08,
+                  1.3031216863565454e-07,
+                  9.726844632518272e-08,
+                  2.7226179992109745e-07,
+                  2.633943775066927e-06,
+                  3.1548051751192907e-07,
+                  4.58656135321478e-07,
+                  9.499758573821432e-06,
+                  1.2100478407987836e-06,
+                  1.5046699814239006e-07,
+                  3.28971037667769e-08,
+                  1.3053762643738809e-08,
+                  8.159395945006587e-07,
+                  2.7301800811438404e-07,
+                  1.2871666486835576e-07,
+                  7.19608674350225e-08,
+                  1.337797737727131e-07,
+                  2.9533306898990586e-07,
+                  1.8023548480072815e-07,
+                  1.5599013626979574e-07,
+                  1.4692387518416838e-08,
+                  2.696108420893739e-08,
+                  3.0139346928262367e-07,
+                  1.3687162816987397e-06,
+                  7.254852923271882e-09,
+                  2.8788368654220076e-08,
+                  1.2108908173692756e-06,
+                  1.1664431609145764e-07,
+                  1.2192022583526474e-07,
+                  1.939496509575922e-08,
+                  2.6675988228433423e-07,
+                  4.727284166557849e-06,
+                  1.2319556000339738e-08,
+                  4.840354093590266e-06,
+                  1.9621212080794814e-07,
+                  9.862817655810485e-07,
+                  1.9548404291136467e-08,
+                  1.3023552064561628e-07,
+                  6.404753498390203e-09,
+                  5.125925353297381e-06,
+                  4.346360692204093e-07,
+                  5.758345895598427e-09,
+                  2.787279142803245e-07,
+                  3.694049622443574e-08,
+                  1.4262311727464283e-07,
+                  8.786890671672043e-09,
+                  1.0841696446994842e-06,
+                  3.830358048986099e-07,
+                  1.0827499486998349e-06,
+                  9.23621087042803e-08,
+                  1.331271413662627e-07,
+                  2.0468116682451076e-08,
+                  1.6863293680197122e-07,
+                  3.4188066234779046e-07,
+                  2.874177858300936e-06,
+                  6.715477927736468e-08,
+                  7.287920416598759e-07,
+                  3.3354834711937786e-08,
+                  1.5540579827166834e-07,
+                  2.742763840568943e-06,
+                  3.65473391109733e-07,
+                  1.2399192840691076e-07,
+                  3.4325469701543265e-06,
+                  9.442836191447812e-08,
+                  3.032044371322623e-07,
+                  2.8572405279432556e-07,
+                  1.9629243081659142e-07,
+                  2.120954813947945e-07,
+                  5.558716062031843e-07,
+                  4.647501834591228e-08
+                ],
+                "total_removed_gw": 6.63054686727265e-05
+              },
+              "other_capacity_headroom_cleanup": []
+            },
+            "continuation_cleanup": {
+              "rule_version": "AUTHOR_R1_20261014",
+              "source_year": 2050,
+              "planning_year": 2060,
+              "retrofit_protected_groups": [
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "15::bio",
+                  "new_build_gw": 0.0006057401952318516
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "22::bio",
+                  "new_build_gw": 0.00015163572192042224
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "31::bio",
+                  "new_build_gw": 2.3446515907618596e-08
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "42::bio",
+                  "new_build_gw": 0.00015914927353266094
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "45::bio",
+                  "new_build_gw": 0.00021781559286781707
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "46::bio",
+                  "new_build_gw": 0.00013671824567907518
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "51::bio",
+                  "new_build_gw": 6.350099938575237e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "53::bio",
+                  "new_build_gw": 0.00013068542637413726
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "54::bio",
+                  "new_build_gw": 7.98674352091788e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bio",
+                  "asset_id": "65::bio",
+                  "new_build_gw": 0.00026373633208930135
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "11::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "12::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "13::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "14::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "15::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "21::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "22::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "23::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "31::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "32::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "33::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "34::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "35::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "36::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "37::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "41::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "42::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "43::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "44::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "45::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "46::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "50::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "51::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "52::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "53::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "54::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "61::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "62::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "63::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "64::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchp",
+                  "asset_id": "65::cchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "11::coal",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "14::coal",
+                  "new_build_gw": 0.00013616995955912164
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "23::coal",
+                  "new_build_gw": 9.415490832258622e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "32::coal",
+                  "new_build_gw": 0.00016096678885840768
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "34::coal",
+                  "new_build_gw": 0.00010580904362760907
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "35::coal",
+                  "new_build_gw": 6.309361499935381e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "36::coal",
+                  "new_build_gw": 0.00011244064929483166
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "42::coal",
+                  "new_build_gw": 6.515488898668659e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "43::coal",
+                  "new_build_gw": 7.378466828478376e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "44::coal",
+                  "new_build_gw": 9.04613597223126e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "45::coal",
+                  "new_build_gw": 4.1979261379355265e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "46::coal",
+                  "new_build_gw": 0.00017145861319557313
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "50::coal",
+                  "new_build_gw": 8.353071397120026e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "51::coal",
+                  "new_build_gw": 6.091941968654649e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "52::coal",
+                  "new_build_gw": 0.00011986486741128743
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "53::coal",
+                  "new_build_gw": 0.00012460406106619008
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "54::coal",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "61::coal",
+                  "new_build_gw": 7.84422925335497e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "62::coal",
+                  "new_build_gw": 7.06076484507421e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "63::coal",
+                  "new_build_gw": 0.0001696270099234177
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "64::coal",
+                  "new_build_gw": 4.898751933306674e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coal",
+                  "asset_id": "65::coal",
+                  "new_build_gw": 0.0002206125564276599
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "15::gas",
+                  "new_build_gw": 0.0003146945625582471
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "21::gas",
+                  "new_build_gw": 0.0003376621116887385
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "22::gas",
+                  "new_build_gw": 0.00024879817695191823
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "23::gas",
+                  "new_build_gw": 0.0005164735656822456
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "35::gas",
+                  "new_build_gw": 0.0002061978703192689
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "42::gas",
+                  "new_build_gw": 0.00025000354535327724
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "43::gas",
+                  "new_build_gw": 0.00018561860626001923
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "45::gas",
+                  "new_build_gw": 0.00015502354710117665
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "46::gas",
+                  "new_build_gw": 7.535903415410803e-05
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "50::gas",
+                  "new_build_gw": 0.0002842008672208576
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "51::gas",
+                  "new_build_gw": 0.0002315133071163352
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "53::gas",
+                  "new_build_gw": 0.00036809612777869214
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gas",
+                  "asset_id": "54::gas",
+                  "new_build_gw": 0.00018888102057098977
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "11::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "12::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "13::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "14::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "15::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "21::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "22::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "23::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "31::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "32::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "33::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "34::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "35::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "36::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "37::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "41::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "42::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "43::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "44::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "45::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "46::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "50::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "51::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "52::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "53::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "54::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "61::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "62::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "63::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "64::gchp",
+                  "new_build_gw": 0.0
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchp",
+                  "asset_id": "65::gchp",
+                  "new_build_gw": 0.0
+                }
+              ],
+              "retrofit_protected_new_build_gw": 0.007264064856596261,
+              "status": "PASS",
+              "threshold_gw": 0.001,
+              "generation_and_storage_deleted_gw": 0.39171505124548534,
+              "network_deleted_gw": 0.22650442034944304,
+              "separate_total_limit_gw": 1,
+              "ratio_limit": 0.001,
+              "ratio_gate_minimum_installed_gw": 1,
+              "deleted_assets": 72478,
+              "positive_deleted_assets": 38551,
+              "deleted_cohort_rows": 72478,
+              "nonpositive_deleted_assets": 33927,
+              "retained_negative_rows": 26,
+              "retained_negative_zeroing_increase_gw": 4.7531423241764514e-15,
+              "removed_negative_cohort_rows": 3,
+              "signed_deleted_gw": 0.6182194478476302,
+              "by_technology": [
+                {
+                  "asset_class": "hydro",
+                  "technology": "hydro",
+                  "selected_assets": 1798,
+                  "positive_selected_assets": 1005,
+                  "signed_deleted_gw": 0.010718761272903806,
+                  "positive_deleted_gw": 0.010718761272903806,
+                  "installed_source_year_gw": 314.48654316283483,
+                  "ratio": 3.408337019798601e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "hydro_spur",
+                  "technology": "hydro",
+                  "selected_assets": 1798,
+                  "positive_selected_assets": 1005,
+                  "signed_deleted_gw": 0.010718761272903806,
+                  "positive_deleted_gw": 0.010718761272903806,
+                  "installed_source_year_gw": 314.48654316283483,
+                  "ratio": 3.408337019798601e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "interprovincial_transmission",
+                  "technology": "AC",
+                  "selected_assets": 12,
+                  "positive_selected_assets": 12,
+                  "signed_deleted_gw": 0.003121449679819814,
+                  "positive_deleted_gw": 0.003121449679819814,
+                  "installed_source_year_gw": 547.4875079378146,
+                  "ratio": 5.701408040481461e-06,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "interprovincial_transmission",
+                  "technology": "DC",
+                  "selected_assets": 17,
+                  "positive_selected_assets": 17,
+                  "signed_deleted_gw": 0.0009772666214632113,
+                  "positive_deleted_gw": 0.0009772666214632113,
+                  "installed_source_year_gw": 925.3950330464174,
+                  "ratio": 1.0560534545404158e-06,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "intra_load_center_transmission",
+                  "technology": "AC_500kV",
+                  "selected_assets": 381,
+                  "positive_selected_assets": 381,
+                  "signed_deleted_gw": 0.004974882066099612,
+                  "positive_deleted_gw": 0.004974882066099612,
+                  "installed_source_year_gw": 1873.3759920718371,
+                  "ratio": 2.655570524632219e-06,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "storage",
+                  "technology": "phs",
+                  "selected_assets": 2,
+                  "positive_selected_assets": 0,
+                  "signed_deleted_gw": 0.0,
+                  "positive_deleted_gw": 0.0,
+                  "installed_source_year_gw": 445.0683166321559,
+                  "ratio": 0.0,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "bioccs",
+                  "selected_assets": 9,
+                  "positive_selected_assets": 8,
+                  "signed_deleted_gw": 0.001847094385774551,
+                  "positive_deleted_gw": 0.0018471181330726929,
+                  "installed_source_year_gw": 141.52686500782494,
+                  "ratio": 1.3051360481775434e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "cchpccs",
+                  "selected_assets": 31,
+                  "positive_selected_assets": 0,
+                  "signed_deleted_gw": 0.0,
+                  "positive_deleted_gw": 0.0,
+                  "installed_source_year_gw": 0.1091708194618313,
+                  "ratio": 0.0,
+                  "ratio_gate_applicable": false,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "coalccs",
+                  "selected_assets": 27,
+                  "positive_selected_assets": 25,
+                  "signed_deleted_gw": 0.0011250643877766722,
+                  "positive_deleted_gw": 0.0011250643877766722,
+                  "installed_source_year_gw": 5.224561243896456,
+                  "ratio": 0.00021534141055213352,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gasccs",
+                  "selected_assets": 15,
+                  "positive_selected_assets": 15,
+                  "signed_deleted_gw": 0.0011388080961644736,
+                  "positive_deleted_gw": 0.0011388080961644736,
+                  "installed_source_year_gw": 0.2862737409381818,
+                  "ratio": 0.003978038965195864,
+                  "ratio_gate_applicable": false,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "gchpccs",
+                  "selected_assets": 31,
+                  "positive_selected_assets": 0,
+                  "signed_deleted_gw": 0.0,
+                  "positive_deleted_gw": 0.0,
+                  "installed_source_year_gw": 0.7594591759554302,
+                  "ratio": 0.0,
+                  "ratio_gate_applicable": false,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "thermal",
+                  "technology": "nuclear",
+                  "selected_assets": 22,
+                  "positive_selected_assets": 0,
+                  "signed_deleted_gw": 0.0,
+                  "positive_deleted_gw": 0.0,
+                  "installed_source_year_gw": 289.758764255202,
+                  "ratio": 0.0,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "trunk",
+                  "technology": "AC_trunk",
+                  "selected_assets": 5226,
+                  "positive_selected_assets": 1346,
+                  "signed_deleted_gw": 0.03866311979704343,
+                  "positive_deleted_gw": 0.038663119797043496,
+                  "installed_source_year_gw": 4092.7488221196077,
+                  "ratio": 9.446736527803853e-06,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre",
+                  "technology": "dpv",
+                  "selected_assets": 12863,
+                  "positive_selected_assets": 12198,
+                  "signed_deleted_gw": 0.18152185464542048,
+                  "positive_deleted_gw": 0.18152185464542048,
+                  "installed_source_year_gw": 290.6447492664131,
+                  "ratio": 0.0006245488869266738,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre",
+                  "technology": "offwind",
+                  "selected_assets": 733,
+                  "positive_selected_assets": 715,
+                  "signed_deleted_gw": 0.019695351719538255,
+                  "positive_deleted_gw": 0.019695351719538255,
+                  "installed_source_year_gw": 439.9726531958263,
+                  "ratio": 4.4764945222111573e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre",
+                  "technology": "onwind",
+                  "selected_assets": 7923,
+                  "positive_selected_assets": 2697,
+                  "signed_deleted_gw": 0.04826900815122455,
+                  "positive_deleted_gw": 0.04826900815122455,
+                  "installed_source_year_gw": 1398.123991564829,
+                  "ratio": 3.4524125501344265e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre",
+                  "technology": "upv",
+                  "selected_assets": 6927,
+                  "positive_selected_assets": 6574,
+                  "signed_deleted_gw": 0.12134417879978625,
+                  "positive_deleted_gw": 0.12134417879978625,
+                  "installed_source_year_gw": 2604.3944231877585,
+                  "ratio": 4.659208978464249e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre_spur",
+                  "technology": "dpv",
+                  "selected_assets": 15378,
+                  "positive_selected_assets": 0,
+                  "signed_deleted_gw": 0.0,
+                  "positive_deleted_gw": 0.0,
+                  "installed_source_year_gw": 0.0,
+                  "ratio": null,
+                  "ratio_gate_applicable": false,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre_spur",
+                  "technology": "offwind",
+                  "selected_assets": 748,
+                  "positive_selected_assets": 679,
+                  "signed_deleted_gw": 0.016359170452275088,
+                  "positive_deleted_gw": 0.016359170452275088,
+                  "installed_source_year_gw": 455.2654136571463,
+                  "ratio": 3.593325994360498e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre_spur",
+                  "technology": "onwind",
+                  "selected_assets": 8174,
+                  "positive_selected_assets": 2821,
+                  "signed_deleted_gw": 0.03541760486166555,
+                  "positive_deleted_gw": 0.03541760486166555,
+                  "installed_source_year_gw": 1699.8998231517598,
+                  "ratio": 2.0835112975068306e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "vre_spur",
+                  "technology": "upv",
+                  "selected_assets": 9079,
+                  "positive_selected_assets": 7769,
+                  "signed_deleted_gw": 0.11627216559817245,
+                  "positive_deleted_gw": 0.11627216559817245,
+                  "installed_source_year_gw": 2045.5035310360017,
+                  "ratio": 5.6842808547626024e-05,
+                  "ratio_gate_applicable": true,
+                  "ratio_gate_pass": true
+                },
+                {
+                  "asset_class": "wave",
+                  "technology": "wave",
+                  "selected_assets": 1284,
+                  "positive_selected_assets": 1284,
+                  "signed_deleted_gw": 0.006054906039598164,
+                  "positive_deleted_gw": 0.006054906039598164,
+                  "installed_source_year_gw": 0.0060549060395988,
+                  "ratio": 0.999999999999895,
+                  "ratio_gate_applicable": false,
+                  "ratio_gate_pass": true
+                }
+              ],
+              "failures": [],
+              "source_sha256": {
+                "planning_state_candidate/capacity_cohorts.csv.gz": "fa96f211e668edf5ace3eba96d56c7a2b49fa01b49985784030c054aee04f5e2",
+                "annual_capacity_by_technology.csv": "ef3c28a66de7f78cef118fb0cd3c98aeb030d7eeb95e70b40575cf9a62ab58d4",
+                "intra_grid_vre_site_design.csv": "1596cf333026b27edf718588b0b423994b1f3b58342a28692353dbb79babb8c1",
+                "transmission_capacity.csv": "542653f619ad3ab4f484da5f1c9cf41408f088a7e1bc6f951a61401191b2bf53",
+                "load_center_intra_transmission.csv": "6327a26715505b9c6f7170dd80cebbe365338995d78d3d90e02b9f72082ab621",
+                "intra_grid_substation_design.csv": "d9f9d07dee40d58c8b36b864929dfe4369fec16cca9f16787b4bd863899c1504",
+                "hydro_capacity.csv": "f11e41bf108c713a82ebb8522aa16ca4e9434a7f95981e90238253f1fa597cb7"
+              },
+              "denominator_hydro_spur": "existing_capacity_gw + active hydro_spur cohorts in source year",
+              "disclosure": "Storage included in generation total conservatively; positive deleted storage GW by technology: phs=0. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.",
+              "state_changed": true,
+              "applied": true
+            },
+            "continuation_bound_closure": {
+              "rule": "OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER",
+              "threshold_gw": 1e-05,
+              "affected_rows": [
+                {
+                  "asset_class": "thermal",
+                  "asset_id": "31::bio",
+                  "technology": "bio",
+                  "build_year": 2050,
+                  "before_gw": 2.3446515907618596e-08,
+                  "after_gw": 0.0,
+                  "reduction_gw": 2.3446515907618596e-08,
+                  "original_excess_gw": 2.3446515895475528e-08,
+                  "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+                }
+              ],
+              "total_reduction_gw": 2.3446515907618596e-08,
+              "shared_biomass_upper": [
+                {
+                  "province_code": 31,
+                  "shared_upper_gw": 0.3399999999999999,
+                  "before_floor_gw": [
+                    0.3320119957713245,
+                    0.0079880276751913
+                  ],
+                  "after_floor_gw": [
+                    0.3320119723248086,
+                    0.0079880276751913
+                  ],
+                  "initial_excess_gw": 2.3446515895475528e-08,
+                  "total_reduction_gw": 2.3446515907618596e-08,
+                  "retrofit_pairs_unchanged": true,
+                  "ccs_capacity_unchanged": true,
+                  "affected_rows": [
+                    {
+                      "asset_class": "thermal",
+                      "asset_id": "31::bio",
+                      "technology": "bio",
+                      "build_year": 2050,
+                      "before_gw": 2.3446515907618596e-08,
+                      "after_gw": 0.0,
+                      "reduction_gw": 2.3446515907618596e-08,
+                      "original_excess_gw": 2.3446515895475528e-08,
+                      "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "scope": "ENGINEERING_WINDOW_ONLY",
+        "author_decision_reference": "AGENTS.md 2026-10-12/2026-10-27; no automatic legacy-state promotion"
+      }
+    },
+    "scientifically_accepted": false,
+    "solver_contract": {
+      "contract_version": "cispo_lp_solution_contract_v1",
+      "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+      "basis_required": false,
+      "barrier_status_code": 2,
+      "strict_quality_pass": false,
+      "acceptance_status": "HARD_FAIL",
+      "primal_final_solver_quality_pass": false,
+      "dual_publication_allowed": false,
+      "acceptance_policy": "FIXED_STAGE_A_PRIMAL_AND_DUAL_SPLIT_V1",
+      "maximum_primal_quality_limit": 1e-05,
+      "maximum_dual_quality_limit": 1e-05,
+      "maximum_constraint_residual_limit": 1e-05,
+      "maximum_dual_residual_limit": 1e-05,
+      "maximum_complementarity_violation_limit": 1e-05,
+      "maximum_relative_primal_dual_objective_gap_limit": 0.01,
+      "barrier_primal_dual_metrics": {
+        "iteration": 103.0,
+        "primal_objective": 3207858.4523175675,
+        "dual_objective": 3207664.7301758295,
+        "absolute_primal_dual_objective_gap": 193.7221417380497,
+        "relative_primal_dual_objective_gap": 6.038986589264626e-05,
+        "primal_infeasibility": 0.00016791616871670965,
+        "dual_infeasibility": 2.1267923839789085e-07,
+        "complementarity": 0.00039494953601238456,
+        "runtime_seconds": 66.3797459602356,
+        "work_units": 78.50421565656586,
+        "memory_used_gb": 0.405235784,
+        "max_memory_used_gb": 0.45631892
+      },
+      "relative_primal_dual_objective_gap": 6.038986589264626e-05,
+      "relative_primal_dual_objective_gap_source": "last_durable_barrier_callback_record",
+      "quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true,
+        "x_barx_consistency": true
+      },
+      "primal_quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true,
+        "x_barx_consistency": true
+      },
+      "dual_publication_checks": {
+        "dual_violation": false,
+        "dual_residual": true,
+        "complementarity_violation": false,
+        "barrier_dual_infeasibility": true,
+        "barrier_complementarity": true
+      },
+      "fixed_stage_a_acceptance_limits": {
+        "maximum_relative_primal_dual_objective_gap": 0.01,
+        "maximum_barrier_primal_infeasibility": 0.01,
+        "maximum_constraint_violation": 1e-05,
+        "maximum_constraint_residual": 1e-05,
+        "maximum_bound_violation": 1e-05,
+        "maximum_dual_violation_for_publication": 1e-05,
+        "maximum_dual_residual_for_publication": 1e-05,
+        "maximum_complementarity_violation_for_publication": 1e-05,
+        "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+        "maximum_barrier_complementarity_for_publication": 0.01
+      },
+      "maximum_x_barx_difference": 0.0,
+      "maximum_x_barx_difference_status": "COLLECTED",
+      "dual_attribute": "BarPi"
+    },
+    "solver_quality": {
+      "maximum_constraint_violation": 2.1417353759822788e-05,
+      "maximum_constraint_residual": 0.0,
+      "maximum_bound_violation": 6.293906944232486e-09,
+      "maximum_dual_violation": 4.198665694854536e-05,
+      "maximum_dual_residual": 2.3520624381490052e-07,
+      "maximum_complementarity_violation": 0.44171511589316637,
+      "maximum_violation": 0.44171511589316637,
+      "kappa": null,
+      "kappa_exact_computed": false
+    }
+  },
+  "preservation_report.json": {
+    "schema_version": "cispo_preservation_v1",
+    "scientifically_accepted": false,
+    "generated_at": "2026-10-30T08:23:04.338953+08:00",
+    "author_decision": "PENDING",
+    "stages": {
+      "candidate_selection": "COMPLETE",
+      "raw_checkpoint": "COMPLETE",
+      "capacity_and_cost": "COMPLETE",
+      "operation_carbon_dual_qc": "COMPLETE",
+      "summary": "COMPLETE",
+      "read_dual_export_status.json": "COMPLETE",
+      "candidate_state": "COMPLETE",
+      "output_catalog": "COMPLETE",
+      "read_model_archive/archive_manifest.json": "COMPLETE"
+    },
+    "errors": [],
+    "solver_contract": {
+      "contract_version": "cispo_lp_solution_contract_v1",
+      "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+      "basis_required": false,
+      "barrier_status_code": 2,
+      "strict_quality_pass": false,
+      "acceptance_status": "HARD_FAIL",
+      "primal_final_solver_quality_pass": false,
+      "dual_publication_allowed": false,
+      "acceptance_policy": "FIXED_STAGE_A_PRIMAL_AND_DUAL_SPLIT_V1",
+      "maximum_primal_quality_limit": 1e-05,
+      "maximum_dual_quality_limit": 1e-05,
+      "maximum_constraint_residual_limit": 1e-05,
+      "maximum_dual_residual_limit": 1e-05,
+      "maximum_complementarity_violation_limit": 1e-05,
+      "maximum_relative_primal_dual_objective_gap_limit": 0.01,
+      "barrier_primal_dual_metrics": {
+        "iteration": 103.0,
+        "primal_objective": 3207858.4523175675,
+        "dual_objective": 3207664.7301758295,
+        "absolute_primal_dual_objective_gap": 193.7221417380497,
+        "relative_primal_dual_objective_gap": 6.038986589264626e-05,
+        "primal_infeasibility": 0.00016791616871670965,
+        "dual_infeasibility": 2.1267923839789085e-07,
+        "complementarity": 0.00039494953601238456,
+        "runtime_seconds": 66.3797459602356,
+        "work_units": 78.50421565656586,
+        "memory_used_gb": 0.405235784,
+        "max_memory_used_gb": 0.45631892
+      },
+      "relative_primal_dual_objective_gap": 6.038986589264626e-05,
+      "relative_primal_dual_objective_gap_source": "last_durable_barrier_callback_record",
+      "quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true,
+        "x_barx_consistency": true
+      },
+      "primal_quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true,
+        "x_barx_consistency": true
+      },
+      "dual_publication_checks": {
+        "dual_violation": false,
+        "dual_residual": true,
+        "complementarity_violation": false,
+        "barrier_dual_infeasibility": true,
+        "barrier_complementarity": true
+      },
+      "fixed_stage_a_acceptance_limits": {
+        "maximum_relative_primal_dual_objective_gap": 0.01,
+        "maximum_barrier_primal_infeasibility": 0.01,
+        "maximum_constraint_violation": 1e-05,
+        "maximum_constraint_residual": 1e-05,
+        "maximum_bound_violation": 1e-05,
+        "maximum_dual_violation_for_publication": 1e-05,
+        "maximum_dual_residual_for_publication": 1e-05,
+        "maximum_complementarity_violation_for_publication": 1e-05,
+        "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+        "maximum_barrier_complementarity_for_publication": 0.01
+      },
+      "maximum_x_barx_difference": 0.0,
+      "maximum_x_barx_difference_status": "COLLECTED",
+      "dual_attribute": "BarPi"
+    },
+    "solver_quality": {
+      "maximum_constraint_violation": 2.1417353759822788e-05,
+      "maximum_constraint_residual": 0.0,
+      "maximum_bound_violation": 6.293906944232486e-09,
+      "maximum_dual_violation": 4.198665694854536e-05,
+      "maximum_dual_residual": 2.3520624381490052e-07,
+      "maximum_complementarity_violation": 0.44171511589316637,
+      "maximum_violation": 0.44171511589316637,
+      "kappa": null,
+      "kappa_exact_computed": false
+    },
+    "qc_status": "HARD_FAIL",
+    "status": "COMPLETE",
+    "candidate_selection": {
+      "path": "candidate_selection.csv",
+      "bytes": 2087138,
+      "sha256": "1089a0ae039c36eaa804278fc8edca06b62a89d626698d19301ff97232459c14"
+    },
+    "raw_checkpoint_source": "REUSED_EXISTING_CHECKPOINT",
+    "semantic_primal_attribute": "PERSISTED_BARRIER_VECTOR",
+    "original_model_archived": true,
+    "elapsed_seconds_before_manifest": 21.937697923975065
+  }
+}

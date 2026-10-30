@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "seconds": 136.69812479196116,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py",
+    "--year",
+    "2060",
+    "--state",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1/prepared_state/planning_state_candidate",
+    "--hours",
+    "24",
+    "--output",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/gate_24h",
+    "--solver-profile",
+    "config/solver_profiles/barrier_stagea_screened_agg0_lateentry_2060_v1_threads40.json",
+    "--screen-csv",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/source_screen.csv",
+    "--same-scenario-continuation",
+    "--threads",
+    "8"
+  ],
+  "tail": "    \"maximum_dual_violation\": 4.198665694854536e-05,\n    \"maximum_dual_residual\": 2.3520624381490052e-07,\n    \"maximum_complementarity_violation\": 0.44171511589316637,\n    \"maximum_violation\": 0.44171511589316637,\n    \"kappa\": null,\n    \"kappa_exact_computed\": false\n  },\n  \"qc_status\": \"HARD_FAIL\",\n  \"status\": \"COMPLETE\",\n  \"candidate_selection\": {\n    \"path\": \"candidate_selection.csv\",\n    \"bytes\": 2087138,\n    \"sha256\": \"1089a0ae039c36eaa804278fc8edca06b62a89d626698d19301ff97232459c14\"\n  },\n  \"raw_checkpoint_source\": \"REUSED_EXISTING_CHECKPOINT\",\n  \"semantic_primal_attribute\": \"PERSISTED_BARRIER_VECTOR\",\n  \"original_model_archived\": true,\n  \"elapsed_seconds_before_manifest\": 21.937697923975065\n}\n{\"runner_exit_code\": 0, \"year\": 2060, \"hours\": 24, \"unscreened\": false, \"result_use\": \"TEST_ONLY_TRUNCATED_HORIZON\", \"parameters\": \"PASS\", \"capacity_columns_inspected\": {\"vre_capacity\": 36686, \"vre_new\": 36686, \"hydro_capacity\": 2030, \"hydro_new\": 2030, \"storage_capacity\": 62, \"storage_new\": 62, \"thermal_capacity\": 341, \"thermal_new\": 341, \"thermal_retrofit_to_ccs\": 155, \"line_capacity\": 411, \"line_new\": 411, \"wave_capacity\": 1284, \"wave_new\": 1284, \"intra_load_center_capacity\": 642, \"intra_load_center_new\": 642, \"spur_augmentation\": 36686, \"hydro_spur_augmentation\": 2030, \"trunk_augmentation\": 6294}, \"tiny_capacity_columns\": [], \"status_code\": 2, \"M\": 2.4968198264474495e-07, \"credit\": {\"firm_credit_bound_violation_gw\": 0.0, \"firm_credit_zero_when_unenrolled\": 0.0}}"
+}

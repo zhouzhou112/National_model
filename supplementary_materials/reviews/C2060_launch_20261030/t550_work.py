@@ -100,7 +100,9 @@ print(json.dumps(result))
 import base64
 files={}
 for p in work.rglob('*'):
- if not p.is_file() or p.suffix not in {'.json','.csv','.log'} or p.stat().st_size>1000000:continue
+ if not p.is_file():continue
+ state_cohorts='prepared_state' in p.parts and p.name=='capacity_cohorts.csv.gz' and p.stat().st_size<32*2**20
+ if not state_cohorts and (p.suffix not in {'.json','.csv','.log'} or p.stat().st_size>1000000):continue
  if any(x in p.parts for x in ['model_archive','solution_snapshot','source_capsule']):continue
  raw=p.read_bytes();files[p.relative_to(work).as_posix()]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),base64=base64.b64encode(raw).decode())
 print(json.dumps(dict(files=files)))

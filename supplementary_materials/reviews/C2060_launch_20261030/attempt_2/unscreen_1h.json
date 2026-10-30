@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "seconds": 31.638405881123617,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "supplementary_materials/reviews/case3_2040_C2050_launch_20261019/run_continuation_gate.py",
+    "--year",
+    "2060",
+    "--state",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1/prepared_state/planning_state_candidate",
+    "--hours",
+    "1",
+    "--output",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/unscreen_1h",
+    "--solver-profile",
+    "config/solver_profiles/barrier_stagea_screened_agg0_lateentry_2060_v1_threads40.json",
+    "--screen-csv",
+    "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/source_screen.csv",
+    "--same-scenario-continuation",
+    "--threads",
+    "8",
+    "--unscreened"
+  ],
+  "tail": "        9.442836191447812e-08,\n        3.032044371322623e-07,\n        2.8572405279432556e-07,\n        1.9629243081659142e-07,\n        2.120954813947945e-07,\n        5.558716062031843e-07,\n        4.647501834591228e-08\n      ],\n      \"total_removed_gw\": 6.63054686727265e-05\n    },\n    \"other_capacity_headroom_cleanup\": []\n  },\n  \"memory_at_exit\": {\n    \"peak_process_tree_rss_bytes\": 463863808,\n    \"peak_process_tree_rss_gib\": 0.432,\n    \"elapsed_seconds\": 17.951,\n    \"sampling_interval_seconds\": 0.5\n  }\n}\n{\"runner_exit_code\": 0, \"year\": 2060, \"hours\": 1, \"unscreened\": true, \"result_use\": \"TEST_ONLY_TRUNCATED_HORIZON\", \"parameters\": \"PASS\", \"capacity_columns_inspected\": {\"vre_capacity\": 36686, \"vre_new\": 36686, \"hydro_capacity\": 2030, \"hydro_new\": 2030, \"storage_capacity\": 62, \"storage_new\": 62, \"thermal_capacity\": 341, \"thermal_new\": 341, \"thermal_retrofit_to_ccs\": 155, \"line_capacity\": 411, \"line_new\": 411, \"wave_capacity\": 1284, \"wave_new\": 1284, \"intra_load_center_capacity\": 642, \"intra_load_center_new\": 642, \"spur_augmentation\": 36686, \"hydro_spur_augmentation\": 2030, \"trunk_augmentation\": 6294}, \"tiny_capacity_columns\": []}"
+}

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "checks": 32,
+  "tested_commit": "54ce73e",
+  "different_mps_segments": [
+    "BOUNDS_VRE_NEW"
+  ],
+  "R1_generation_and_storage_deleted_gw": 0.39171505124548534,
+  "R1_network_deleted_gw": 0.22650442034944304,
+  "R1_retained_negative_rows": 26,
+  "R1_retained_negative_zeroing_increase_gw": 4.7531423241764514e-15,
+  "R1_retrofit_protected_new_build_gw": 0.007264064856596261,
+  "short_window_M_gw_gwh": 2.4968198264474495e-07,
+  "short_window_qc": "PASS",
+  "preservation": "COMPLETE",
+  "production_submitted": false
+}
