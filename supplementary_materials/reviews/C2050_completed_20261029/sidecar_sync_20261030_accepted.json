@@ -1,0 +1,18 @@
+{
+  "status": "VERIFIED",
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/acceptance_20261030",
+  "files": {
+    "acceptance_author_20261030.json": {
+      "bytes": 3675,
+      "sha256": "99ed6197d3d81679fb4e7b0499135f7385bb0160c38a77c11d10a70bc919b32f"
+    },
+    "ACCEPTED_20261030_ZH.md": {
+      "bytes": 1467,
+      "sha256": "2b59069e0ed93762d1bcefbe44d31b0a488845b9febca45fe6c22d3796769b9b"
+    },
+    "review_author_conditions.py": {
+      "bytes": 7293,
+      "sha256": "2a5822cda786424f0774d8ffe5dc1c628719ae0d6770c1e946a5f1630b9367c5"
+    }
+  }
+}

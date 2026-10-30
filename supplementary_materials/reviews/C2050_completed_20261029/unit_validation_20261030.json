@@ -1,0 +1,48 @@
+{
+  "at_utc": "2026-10-30T00:01:33.859337+00:00",
+  "results": [
+    {
+      "command": [
+        "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_archived_constraint_audit.py"
+      ],
+      "returncode": 0,
+      "output": "Located row 0: balance (=)\nLocated row 0: balance (=)\n.Located row 0: balance (=)\n.Located row 0: balance (=)\nLocated row 0: balance (<)\nLocated row 0: balance (>)\n.Located row 0: balance (=)\n.\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_c2050_author_row_condition.py"
+      ],
+      "returncode": 0,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\ZZ\\.conda\\envs\\RL\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_c2060_launch_profile.py"
+      ],
+      "returncode": 0,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 1.135s\n\nOK\n"
+    }
+  ],
+  "status": "PASS"
+}

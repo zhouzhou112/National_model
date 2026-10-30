@@ -1,8 +1,9 @@
-"""C2050 T550-only assess|price after verified complete backup.
+"""C2050 T550-only assess|price|collect after verified complete backup.
 
-Usage from repository root: python <this-file> C2050 assess|price
+Usage from repository root: python <this-file> C2050 assess|price|collect
 Full pricing evidence stays on T550; only existing small receipts/assessment
-JSON return locally. No collection, solving, state promotion, or scheduling.
+JSON return locally. Author 2026-10-29 explicitly requests collect with the
+Case3 2040 list (each file <=32 MiB). No solving, promotion, or scheduling.
 """
 from pathlib import Path
 import importlib.util
@@ -12,7 +13,7 @@ HERE = Path(__file__).resolve().parent
 RELEASES = {'C2050': '20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2'}
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3 or sys.argv[1] != 'C2050' or sys.argv[2] not in ('assess', 'price'):
+    if len(sys.argv) != 3 or sys.argv[1] != 'C2050' or sys.argv[2] not in ('assess', 'price', 'collect'):
         raise SystemExit(__doc__)
     spec = importlib.util.spec_from_file_location(
         'completed_postprocess', HERE.parent / 'completed_results_20261027/postprocess.py')

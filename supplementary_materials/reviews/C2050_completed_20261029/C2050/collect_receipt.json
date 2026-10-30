@@ -1,0 +1,700 @@
+{
+  "source": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760",
+  "files": {
+    "annual_adequacy_by_province.csv": {
+      "bytes": 6527,
+      "sha256": "601b997e8b71332e55d916db468662ec579cd1ab083dd50bc3217cbfbdaa0a5a"
+    },
+    "annual_capacity_by_province_technology.csv": {
+      "bytes": 35654,
+      "sha256": "7927cd31219c3b1c0b4daec90bc1ff6a74292a69f8fce6e02a0bf88627206559"
+    },
+    "annual_capacity_by_technology.csv": {
+      "bytes": 1210,
+      "sha256": "ef3c28a66de7f78cef118fb0cd3c98aeb030d7eeb95e70b40575cf9a62ab58d4"
+    },
+    "annual_capacity_link_row_scaling.json": {
+      "bytes": 60857,
+      "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038"
+    },
+    "annual_carbon_ccs.json": {
+      "bytes": 639,
+      "sha256": "3ce574c1bfefd39cf53415d1aa6a15817e878a2d5f8a5955cfd73038b09e6e10"
+    },
+    "annual_constraint_shadow_prices.csv": {
+      "bytes": 382087,
+      "sha256": "6f2481e2310d0fcb94789b8859dd2fffa901148f4fa35af6a594d84282c6da64"
+    },
+    "annual_flexible_load_by_province.csv": {
+      "bytes": 20036,
+      "sha256": "2e7a4896c13d8a4e9bc2e399d95aa1d97187aed1368dc6268197ed7adde490a4"
+    },
+    "annual_generation_by_province_technology.csv": {
+      "bytes": 14985,
+      "sha256": "aca54275db31f270450dfb72b921d9533efa204f3950803319af3fa3a4be5c7d"
+    },
+    "annual_generation_by_technology.csv": {
+      "bytes": 505,
+      "sha256": "cde54a4728417bce2a20de51afaf68fc45d7118014987430328b4d780d6206be"
+    },
+    "annual_resource_accounting_by_province.csv": {
+      "bytes": 9098,
+      "sha256": "7080fd365b4dc6383984dc85278f9e6398dabeb1003921c42cab323505bfa140"
+    },
+    "annual_storage_operation_by_technology.csv": {
+      "bytes": 381,
+      "sha256": "845d564b6b63d66ef5ce4ed8568af14059714bd39332fea0423d989903e3e238"
+    },
+    "annual_summary.json": {
+      "bytes": 2287,
+      "sha256": "36fe5dbc172f5a012dbd112ad2cbf95c531a3533f2f097afcd969e336778ce3e"
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 77788,
+      "sha256": "da3b0e8e72f396d2eaa495ed82469ace21fe90a42791b0e3cd0de28a86ffd309"
+    },
+    "build_report.json": {
+      "bytes": 89081,
+      "sha256": "d26fffae77d4a0655cc97af512d8ced5d943354b7e78f035f7bb4b8a947deb0d"
+    },
+    "candidate_selection.csv": {
+      "bytes": 2105474,
+      "sha256": "9b8e1076954362d8c69753f35cfcdbb51cc47c118474ab7f4e0bc92ec3013e6b"
+    },
+    "co2_source_sink_flows.csv": {
+      "bytes": 4823341,
+      "sha256": "d42b8da515cbcd1baba22a300ac14fa000045f75620bea9cec9a376149ddd89b"
+    },
+    "cost_components.csv": {
+      "bytes": 4778,
+      "sha256": "2d3964e97242f0618b8a719db98a24f6e3158a66d8ae875b1660804a7256db1f"
+    },
+    "dac_capacity_capture.csv": {
+      "bytes": 21185,
+      "sha256": "53f8c22ff94e7789374a9a692740c5dd8a21bae2010ddbb90e1824dd2a0ab328"
+    },
+    "dual_export_status.json": {
+      "bytes": 593,
+      "sha256": "51a3f20fe4d2a844520fe533beb6d4aa5f555d8a2466025776158381eb2c01cb"
+    },
+    "gurobi.log": {
+      "bytes": 218679,
+      "sha256": "9dacf102951fbdccaf197bdc884844a162d469083a6c6789ced9059ca0fe6644"
+    },
+    "hourly_marginal_prices.csv.gz": {
+      "bytes": 15272072,
+      "sha256": "5faf413debda333a03e966bca796865a24305a218f39fef1cda272dc0a1333e1"
+    },
+    "hourly_national_balance.csv.gz": {
+      "bytes": 863755,
+      "sha256": "f3f25243595b9086414f7d05cc41b164997628c6c978117607bda8c536a7b040"
+    },
+    "hydro_aggregate_capacity.csv": {
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571"
+    },
+    "hydro_capacity.csv": {
+      "bytes": 316329,
+      "sha256": "f11e41bf108c713a82ebb8522aa16ca4e9434a7f95981e90238253f1fa597cb7"
+    },
+    "hydro_cascade_reconciliation_audit.json": {
+      "bytes": 16559,
+      "sha256": "dd499acf8913d6aa3009644fd0d609e1e611d9676c0b827a0b1a5ebd0b2757ac"
+    },
+    "hydro_cascade_reconciliation_by_node.csv": {
+      "bytes": 12141,
+      "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63"
+    },
+    "hydro_dispatch.npz": {
+      "bytes": 7164736,
+      "sha256": "227b07edd00921832c81763b6a76967bd20feb84f612fc1acb8d1cc7225f84fc"
+    },
+    "input_manifest.csv": {
+      "bytes": 33323,
+      "sha256": "0c56132f11b6bb85969d86c7d4627b268484769186191e15a71da1a117bdcaae"
+    },
+    "intra_grid_substation_design.csv": {
+      "bytes": 1029741,
+      "sha256": "d9f9d07dee40d58c8b36b864929dfe4369fec16cca9f16787b4bd863899c1504"
+    },
+    "intra_grid_vre_site_design.csv": {
+      "bytes": 5433451,
+      "sha256": "1596cf333026b27edf718588b0b423994b1f3b58342a28692353dbb79babb8c1"
+    },
+    "load_center_annual_balance.csv": {
+      "bytes": 45389,
+      "sha256": "47fce55f3712e046002391ebe13c1e27ab960aaab172d17a9542a03cce224672"
+    },
+    "load_center_annual_generation.csv": {
+      "bytes": 98780,
+      "sha256": "562e5236b0b607d7543946d035a0565798c44552406c814199e17962a4407092"
+    },
+    "load_center_intra_transmission.csv": {
+      "bytes": 128808,
+      "sha256": "6327a26715505b9c6f7170dd80cebbe365338995d78d3d90e02b9f72082ab621"
+    },
+    "load_center_network_qc.csv": {
+      "bytes": 510,
+      "sha256": "3f1c870fd5072be60867f503a10a9ae19496f6c64138ebcd8896bd983c509265"
+    },
+    "model_archive/archive_manifest.json": {
+      "bytes": 609,
+      "sha256": "a2c2293fe5270f7619c05e39f1335b3ef247ecc4c8a9c3bff0f74aade771e4f9"
+    },
+    "model_archive/parameters.prm": {
+      "bytes": 207,
+      "sha256": "7c77d2175ec1d1d86718ea81a387b6f72f3edfecc9aa26521185befdb2ffa6a1"
+    },
+    "model_config_snapshot.json": {
+      "bytes": 22891,
+      "sha256": "2a71710e6abbf7e57b0cb6bec48d7f4a24f1939328f4b2e193e1347b2cbfb606"
+    },
+    "monthly_energy_by_technology.csv": {
+      "bytes": 5352,
+      "sha256": "3b2a1fbae2c1bd2336fd6bc3311806fc2037da76209c413c84bfdbcbf66876c9"
+    },
+    "output_catalog.csv": {
+      "bytes": 7611,
+      "sha256": "25bc83390e9ec7f968abd96f3a12fe907c5645617339d47ded7ea21ceb7d5401"
+    },
+    "output_data_dictionary.csv": {
+      "bytes": 141760,
+      "sha256": "e7dbd87cbcd4a291ed3c17b7a10a363f239306c5c4490e75923b53fe33796c7a"
+    },
+    "planning_state_candidate/capacity_cohorts.csv.gz": {
+      "bytes": 1086703,
+      "sha256": "fa96f211e668edf5ace3eba96d56c7a2b49fa01b49985784030c054aee04f5e2"
+    },
+    "planning_state_candidate/raw_new_cohorts.csv.gz": {
+      "bytes": 837201,
+      "sha256": "c7cfb21a10359e50df0e5be8383c5980e0deab1a700f6f8b6be0f5ee4202bb82"
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "bytes": 97598,
+      "sha256": "9fac16768fb7f99bf19939fa0c27098050836a8a0a8fa8cfde4d5508a6fc1db3"
+    },
+    "planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 2433,
+      "sha256": "f6d169d89d1eec6e957fa03ff1881bb1d037ea3d7fc938d180fc68d8c033ff8c"
+    },
+    "preflight_report.json": {
+      "bytes": 15627,
+      "sha256": "5502dc9a0d4d075e2add25bfe81c675fe52017f2a1168211b4be71eb00f26aa6"
+    },
+    "preservation_report.json": {
+      "bytes": 4396,
+      "sha256": "d89ef038415724ab6d6ef3ee143a5b048837009f69927ae90618bcf96b80f569"
+    },
+    "preservation_runtime_memory.json": {
+      "bytes": 159,
+      "sha256": "31023d830262cdd880f8f17c0c8b0bf276ceb5f0f58e3d4448f47fd327c29df8"
+    },
+    "province_annual_load_center_accounts.csv": {
+      "bytes": 3337,
+      "sha256": "57775a4779f37fb1a1dda890d8d5dd6faaed1f9d87e84fadfa0e1507e5c43cda"
+    },
+    "reservoir_station_index.csv": {
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104"
+    },
+    "result_manifest.json": {
+      "bytes": 13815,
+      "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+    },
+    "run_claim.json": {
+      "bytes": 273,
+      "sha256": "18791436ddfae94be983408febd731da27f7b1acf79748cb21e2513cef0ba7aa"
+    },
+    "run_environment.json": {
+      "bytes": 2664,
+      "sha256": "f705057c5d84c25a7b55bfe14327e8a7b48c70cb53c333fe16d62703efce14c4"
+    },
+    "run_identity.json": {
+      "bytes": 7518,
+      "sha256": "b475ac8d97b25f06a3b8561796e016e7c3d61f9dbe7251255c0f11dba5d705f7"
+    },
+    "run_scope.json": {
+      "bytes": 8228,
+      "sha256": "87b5915314a52b2e49a2e3c88ee7e36aaf7fc4baffcd9be7f392adc7db569586"
+    },
+    "run_summary.json": {
+      "bytes": 2287,
+      "sha256": "36fe5dbc172f5a012dbd112ad2cbf95c531a3533f2f097afcd969e336778ce3e"
+    },
+    "scenario_manifest.json": {
+      "bytes": 9887,
+      "sha256": "e37badb55b1d3deb973c2e0e6004edfed3f46eeae5a4ec487e8820c97e00e247"
+    },
+    "solution_qc.json": {
+      "bytes": 256380,
+      "sha256": "d58d57185b74854b6e134dee75619ceba7b88b779d680d0b056159e706d3bb86"
+    },
+    "solve_report.json": {
+      "bytes": 161981,
+      "sha256": "ea273141bfa19eb723395943de1288288d204d290b836aadeb353caf9fbe1853"
+    },
+    "solver_parameters_before_optimize.json": {
+      "bytes": 589,
+      "sha256": "a41eb02021b5494413599d18cb294241828e4e6f26ac5093edf26fad902263a5"
+    },
+    "solver_telemetry.jsonl": {
+      "bytes": 218665,
+      "sha256": "22dae28d55583970d7ba8c9db53a8a7e48abe41ce085cfc7fccdcd17f1620c86"
+    },
+    "storage_capacity.csv": {
+      "bytes": 11583,
+      "sha256": "e6b1fdc43b2fe1c763f1fe574aac2c67084760db97c6b1170438f474dddddbfe"
+    },
+    "storage_dispatch.npz": {
+      "bytes": 20211249,
+      "sha256": "cf8a16aeeeba9bea2756af6e7a05b899201a1d1066cdef42a0d83787cd1e491b"
+    },
+    "thermal_nuclear_capacity.csv": {
+      "bytes": 39804,
+      "sha256": "6505f195293cf8325fbe0ba9e90ef4bdd0fd5ff7786e697eb0137555ce06ba33"
+    },
+    "time_index.csv": {
+      "bytes": 335459,
+      "sha256": "ee996f1a78ce6894f14ea9877022bfbfc27c3e543c9890e1c1c57d378380756a"
+    },
+    "transmission_capacity.csv": {
+      "bytes": 37641,
+      "sha256": "542653f619ad3ab4f484da5f1c9cf41408f088a7e1bc6f951a61401191b2bf53"
+    },
+    "transmission_flows.npz": {
+      "bytes": 30175267,
+      "sha256": "f85e7f2a381705c0b6a0c163d7bf1bb12bf258169240034ec8fd2a997c90185a"
+    },
+    "visualizations/capacity_by_technology.svg": {
+      "bytes": 6002,
+      "sha256": "b4ea603e9432408e2ecce23164a3caea7f56b7fd1148c2b1651130ab68aea1db"
+    },
+    "visualizations/generation_by_technology.svg": {
+      "bytes": 5569,
+      "sha256": "547d1bae749e3ab739c7051a45506357941e22eb69c63060d884fbb2559e369d"
+    },
+    "visualizations/national_dispatch_first_week.svg": {
+      "bytes": 16904,
+      "sha256": "5a839ba2a2058c5a8cb32fe0d24d18e5a73080535eddf1aa113f592dfc0698f1"
+    },
+    "vre_capacity.csv": {
+      "bytes": 3424942,
+      "sha256": "774df0a6ba1152f58ec2e3c3a25fc2b0b41d9d0ddc6bfa35efe1f0490a129e33"
+    },
+    "vre_dispatch.npz": {
+      "bytes": 11615076,
+      "sha256": "402d5a72f79d740ed81751b42fba0bb43b843495eb69ab72e4228c621a6398e6"
+    },
+    "wave_capacity.csv": {
+      "bytes": 243757,
+      "sha256": "29139134dcaaa8e06fc1432fab5c7bfc798a02c0104ddcd6c2edae00e95063bd"
+    },
+    "wave_dispatch.npz": {
+      "bytes": 965015,
+      "sha256": "78423f6310ff2b7b1dc7fcff7ddcae65bf4c29c01bf75fb47fd0fa0a33cbbd28"
+    }
+  },
+  "verification": {
+    "annual_adequacy_by_province.csv": {
+      "bytes": 6527,
+      "sha256": "601b997e8b71332e55d916db468662ec579cd1ab083dd50bc3217cbfbdaa0a5a",
+      "manifest_match": true
+    },
+    "annual_capacity_by_province_technology.csv": {
+      "bytes": 35654,
+      "sha256": "7927cd31219c3b1c0b4daec90bc1ff6a74292a69f8fce6e02a0bf88627206559",
+      "manifest_match": true
+    },
+    "annual_capacity_by_technology.csv": {
+      "bytes": 1210,
+      "sha256": "ef3c28a66de7f78cef118fb0cd3c98aeb030d7eeb95e70b40575cf9a62ab58d4",
+      "manifest_match": true
+    },
+    "annual_capacity_link_row_scaling.json": {
+      "bytes": 60857,
+      "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+      "manifest_match": true
+    },
+    "annual_carbon_ccs.json": {
+      "bytes": 639,
+      "sha256": "3ce574c1bfefd39cf53415d1aa6a15817e878a2d5f8a5955cfd73038b09e6e10",
+      "manifest_match": true
+    },
+    "annual_constraint_shadow_prices.csv": {
+      "bytes": 382087,
+      "sha256": "6f2481e2310d0fcb94789b8859dd2fffa901148f4fa35af6a594d84282c6da64",
+      "manifest_match": true
+    },
+    "annual_flexible_load_by_province.csv": {
+      "bytes": 20036,
+      "sha256": "2e7a4896c13d8a4e9bc2e399d95aa1d97187aed1368dc6268197ed7adde490a4",
+      "manifest_match": true
+    },
+    "annual_generation_by_province_technology.csv": {
+      "bytes": 14985,
+      "sha256": "aca54275db31f270450dfb72b921d9533efa204f3950803319af3fa3a4be5c7d",
+      "manifest_match": true
+    },
+    "annual_generation_by_technology.csv": {
+      "bytes": 505,
+      "sha256": "cde54a4728417bce2a20de51afaf68fc45d7118014987430328b4d780d6206be",
+      "manifest_match": true
+    },
+    "annual_resource_accounting_by_province.csv": {
+      "bytes": 9098,
+      "sha256": "7080fd365b4dc6383984dc85278f9e6398dabeb1003921c42cab323505bfa140",
+      "manifest_match": true
+    },
+    "annual_storage_operation_by_technology.csv": {
+      "bytes": 381,
+      "sha256": "845d564b6b63d66ef5ce4ed8568af14059714bd39332fea0423d989903e3e238",
+      "manifest_match": true
+    },
+    "annual_summary.json": {
+      "bytes": 2287,
+      "sha256": "36fe5dbc172f5a012dbd112ad2cbf95c531a3533f2f097afcd969e336778ce3e",
+      "manifest_match": true
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 77788,
+      "sha256": "da3b0e8e72f396d2eaa495ed82469ace21fe90a42791b0e3cd0de28a86ffd309",
+      "manifest_match": true
+    },
+    "build_report.json": {
+      "bytes": 89081,
+      "sha256": "d26fffae77d4a0655cc97af512d8ced5d943354b7e78f035f7bb4b8a947deb0d",
+      "manifest_match": true
+    },
+    "candidate_selection.csv": {
+      "bytes": 2105474,
+      "sha256": "9b8e1076954362d8c69753f35cfcdbb51cc47c118474ab7f4e0bc92ec3013e6b",
+      "manifest_match": true
+    },
+    "co2_source_sink_flows.csv": {
+      "bytes": 4823341,
+      "sha256": "d42b8da515cbcd1baba22a300ac14fa000045f75620bea9cec9a376149ddd89b",
+      "manifest_match": true
+    },
+    "cost_components.csv": {
+      "bytes": 4778,
+      "sha256": "2d3964e97242f0618b8a719db98a24f6e3158a66d8ae875b1660804a7256db1f",
+      "manifest_match": true
+    },
+    "dac_capacity_capture.csv": {
+      "bytes": 21185,
+      "sha256": "53f8c22ff94e7789374a9a692740c5dd8a21bae2010ddbb90e1824dd2a0ab328",
+      "manifest_match": true
+    },
+    "dual_export_status.json": {
+      "bytes": 593,
+      "sha256": "51a3f20fe4d2a844520fe533beb6d4aa5f555d8a2466025776158381eb2c01cb",
+      "manifest_match": true
+    },
+    "gurobi.log": {
+      "bytes": 218679,
+      "sha256": "9dacf102951fbdccaf197bdc884844a162d469083a6c6789ced9059ca0fe6644",
+      "manifest_match": true
+    },
+    "hourly_marginal_prices.csv.gz": {
+      "bytes": 15272072,
+      "sha256": "5faf413debda333a03e966bca796865a24305a218f39fef1cda272dc0a1333e1",
+      "manifest_match": true
+    },
+    "hourly_national_balance.csv.gz": {
+      "bytes": 863755,
+      "sha256": "f3f25243595b9086414f7d05cc41b164997628c6c978117607bda8c536a7b040",
+      "manifest_match": true
+    },
+    "hydro_aggregate_capacity.csv": {
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571",
+      "manifest_match": true
+    },
+    "hydro_capacity.csv": {
+      "bytes": 316329,
+      "sha256": "f11e41bf108c713a82ebb8522aa16ca4e9434a7f95981e90238253f1fa597cb7",
+      "manifest_match": true
+    },
+    "hydro_cascade_reconciliation_audit.json": {
+      "bytes": 16559,
+      "sha256": "dd499acf8913d6aa3009644fd0d609e1e611d9676c0b827a0b1a5ebd0b2757ac",
+      "manifest_match": true
+    },
+    "hydro_cascade_reconciliation_by_node.csv": {
+      "bytes": 12141,
+      "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63",
+      "manifest_match": true
+    },
+    "hydro_dispatch.npz": {
+      "bytes": 7164736,
+      "sha256": "227b07edd00921832c81763b6a76967bd20feb84f612fc1acb8d1cc7225f84fc",
+      "manifest_match": true
+    },
+    "input_manifest.csv": {
+      "bytes": 33323,
+      "sha256": "0c56132f11b6bb85969d86c7d4627b268484769186191e15a71da1a117bdcaae",
+      "manifest_match": true
+    },
+    "intra_grid_substation_design.csv": {
+      "bytes": 1029741,
+      "sha256": "d9f9d07dee40d58c8b36b864929dfe4369fec16cca9f16787b4bd863899c1504",
+      "manifest_match": true
+    },
+    "intra_grid_vre_site_design.csv": {
+      "bytes": 5433451,
+      "sha256": "1596cf333026b27edf718588b0b423994b1f3b58342a28692353dbb79babb8c1",
+      "manifest_match": true
+    },
+    "load_center_annual_balance.csv": {
+      "bytes": 45389,
+      "sha256": "47fce55f3712e046002391ebe13c1e27ab960aaab172d17a9542a03cce224672",
+      "manifest_match": true
+    },
+    "load_center_annual_generation.csv": {
+      "bytes": 98780,
+      "sha256": "562e5236b0b607d7543946d035a0565798c44552406c814199e17962a4407092",
+      "manifest_match": true
+    },
+    "load_center_intra_transmission.csv": {
+      "bytes": 128808,
+      "sha256": "6327a26715505b9c6f7170dd80cebbe365338995d78d3d90e02b9f72082ab621",
+      "manifest_match": true
+    },
+    "load_center_network_qc.csv": {
+      "bytes": 510,
+      "sha256": "3f1c870fd5072be60867f503a10a9ae19496f6c64138ebcd8896bd983c509265",
+      "manifest_match": true
+    },
+    "model_archive/archive_manifest.json": {
+      "bytes": 609,
+      "sha256": "a2c2293fe5270f7619c05e39f1335b3ef247ecc4c8a9c3bff0f74aade771e4f9",
+      "manifest_match": true
+    },
+    "model_archive/parameters.prm": {
+      "bytes": 207,
+      "sha256": "7c77d2175ec1d1d86718ea81a387b6f72f3edfecc9aa26521185befdb2ffa6a1",
+      "manifest_match": true
+    },
+    "model_config_snapshot.json": {
+      "bytes": 22891,
+      "sha256": "2a71710e6abbf7e57b0cb6bec48d7f4a24f1939328f4b2e193e1347b2cbfb606",
+      "manifest_match": true
+    },
+    "monthly_energy_by_technology.csv": {
+      "bytes": 5352,
+      "sha256": "3b2a1fbae2c1bd2336fd6bc3311806fc2037da76209c413c84bfdbcbf66876c9",
+      "manifest_match": true
+    },
+    "output_catalog.csv": {
+      "bytes": 7611,
+      "sha256": "25bc83390e9ec7f968abd96f3a12fe907c5645617339d47ded7ea21ceb7d5401",
+      "manifest_match": true
+    },
+    "output_data_dictionary.csv": {
+      "bytes": 141760,
+      "sha256": "e7dbd87cbcd4a291ed3c17b7a10a363f239306c5c4490e75923b53fe33796c7a",
+      "manifest_match": true
+    },
+    "planning_state_candidate/capacity_cohorts.csv.gz": {
+      "bytes": 1086703,
+      "sha256": "fa96f211e668edf5ace3eba96d56c7a2b49fa01b49985784030c054aee04f5e2",
+      "manifest_match": true
+    },
+    "planning_state_candidate/raw_new_cohorts.csv.gz": {
+      "bytes": 837201,
+      "sha256": "c7cfb21a10359e50df0e5be8383c5980e0deab1a700f6f8b6be0f5ee4202bb82",
+      "manifest_match": true
+    },
+    "planning_state_candidate/state_metadata.json": {
+      "bytes": 97598,
+      "sha256": "9fac16768fb7f99bf19939fa0c27098050836a8a0a8fa8cfde4d5508a6fc1db3",
+      "manifest_match": true
+    },
+    "planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 2433,
+      "sha256": "f6d169d89d1eec6e957fa03ff1881bb1d037ea3d7fc938d180fc68d8c033ff8c",
+      "manifest_match": true
+    },
+    "preflight_report.json": {
+      "bytes": 15627,
+      "sha256": "5502dc9a0d4d075e2add25bfe81c675fe52017f2a1168211b4be71eb00f26aa6",
+      "manifest_match": true
+    },
+    "preservation_report.json": {
+      "bytes": 4396,
+      "sha256": "d89ef038415724ab6d6ef3ee143a5b048837009f69927ae90618bcf96b80f569",
+      "manifest_match": true
+    },
+    "preservation_runtime_memory.json": {
+      "bytes": 159,
+      "sha256": "31023d830262cdd880f8f17c0c8b0bf276ceb5f0f58e3d4448f47fd327c29df8",
+      "manifest_match": true
+    },
+    "province_annual_load_center_accounts.csv": {
+      "bytes": 3337,
+      "sha256": "57775a4779f37fb1a1dda890d8d5dd6faaed1f9d87e84fadfa0e1507e5c43cda",
+      "manifest_match": true
+    },
+    "reservoir_station_index.csv": {
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+      "manifest_match": true
+    },
+    "result_manifest.json": {
+      "bytes": 13815,
+      "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+      "manifest_match": false
+    },
+    "run_claim.json": {
+      "bytes": 273,
+      "sha256": "18791436ddfae94be983408febd731da27f7b1acf79748cb21e2513cef0ba7aa",
+      "manifest_match": true
+    },
+    "run_environment.json": {
+      "bytes": 2664,
+      "sha256": "f705057c5d84c25a7b55bfe14327e8a7b48c70cb53c333fe16d62703efce14c4",
+      "manifest_match": true
+    },
+    "run_identity.json": {
+      "bytes": 7518,
+      "sha256": "b475ac8d97b25f06a3b8561796e016e7c3d61f9dbe7251255c0f11dba5d705f7",
+      "manifest_match": true
+    },
+    "run_scope.json": {
+      "bytes": 8228,
+      "sha256": "87b5915314a52b2e49a2e3c88ee7e36aaf7fc4baffcd9be7f392adc7db569586",
+      "manifest_match": true
+    },
+    "run_summary.json": {
+      "bytes": 2287,
+      "sha256": "36fe5dbc172f5a012dbd112ad2cbf95c531a3533f2f097afcd969e336778ce3e",
+      "manifest_match": true
+    },
+    "scenario_manifest.json": {
+      "bytes": 9887,
+      "sha256": "e37badb55b1d3deb973c2e0e6004edfed3f46eeae5a4ec487e8820c97e00e247",
+      "manifest_match": true
+    },
+    "solution_qc.json": {
+      "bytes": 256380,
+      "sha256": "d58d57185b74854b6e134dee75619ceba7b88b779d680d0b056159e706d3bb86",
+      "manifest_match": true
+    },
+    "solve_report.json": {
+      "bytes": 161981,
+      "sha256": "ea273141bfa19eb723395943de1288288d204d290b836aadeb353caf9fbe1853",
+      "manifest_match": true
+    },
+    "solver_parameters_before_optimize.json": {
+      "bytes": 589,
+      "sha256": "a41eb02021b5494413599d18cb294241828e4e6f26ac5093edf26fad902263a5",
+      "manifest_match": true
+    },
+    "solver_telemetry.jsonl": {
+      "bytes": 218665,
+      "sha256": "22dae28d55583970d7ba8c9db53a8a7e48abe41ce085cfc7fccdcd17f1620c86",
+      "manifest_match": true
+    },
+    "storage_capacity.csv": {
+      "bytes": 11583,
+      "sha256": "e6b1fdc43b2fe1c763f1fe574aac2c67084760db97c6b1170438f474dddddbfe",
+      "manifest_match": true
+    },
+    "storage_dispatch.npz": {
+      "bytes": 20211249,
+      "sha256": "cf8a16aeeeba9bea2756af6e7a05b899201a1d1066cdef42a0d83787cd1e491b",
+      "manifest_match": true
+    },
+    "thermal_nuclear_capacity.csv": {
+      "bytes": 39804,
+      "sha256": "6505f195293cf8325fbe0ba9e90ef4bdd0fd5ff7786e697eb0137555ce06ba33",
+      "manifest_match": true
+    },
+    "time_index.csv": {
+      "bytes": 335459,
+      "sha256": "ee996f1a78ce6894f14ea9877022bfbfc27c3e543c9890e1c1c57d378380756a",
+      "manifest_match": true
+    },
+    "transmission_capacity.csv": {
+      "bytes": 37641,
+      "sha256": "542653f619ad3ab4f484da5f1c9cf41408f088a7e1bc6f951a61401191b2bf53",
+      "manifest_match": true
+    },
+    "transmission_flows.npz": {
+      "bytes": 30175267,
+      "sha256": "f85e7f2a381705c0b6a0c163d7bf1bb12bf258169240034ec8fd2a997c90185a",
+      "manifest_match": true
+    },
+    "visualizations/capacity_by_technology.svg": {
+      "bytes": 6002,
+      "sha256": "b4ea603e9432408e2ecce23164a3caea7f56b7fd1148c2b1651130ab68aea1db",
+      "manifest_match": true
+    },
+    "visualizations/generation_by_technology.svg": {
+      "bytes": 5569,
+      "sha256": "547d1bae749e3ab739c7051a45506357941e22eb69c63060d884fbb2559e369d",
+      "manifest_match": true
+    },
+    "visualizations/national_dispatch_first_week.svg": {
+      "bytes": 16904,
+      "sha256": "5a839ba2a2058c5a8cb32fe0d24d18e5a73080535eddf1aa113f592dfc0698f1",
+      "manifest_match": true
+    },
+    "vre_capacity.csv": {
+      "bytes": 3424942,
+      "sha256": "774df0a6ba1152f58ec2e3c3a25fc2b0b41d9d0ddc6bfa35efe1f0490a129e33",
+      "manifest_match": true
+    },
+    "vre_dispatch.npz": {
+      "bytes": 11615076,
+      "sha256": "402d5a72f79d740ed81751b42fba0bb43b843495eb69ab72e4228c621a6398e6",
+      "manifest_match": true
+    },
+    "wave_capacity.csv": {
+      "bytes": 243757,
+      "sha256": "29139134dcaaa8e06fc1432fab5c7bfc798a02c0104ddcd6c2edae00e95063bd",
+      "manifest_match": true
+    },
+    "wave_dispatch.npz": {
+      "bytes": 965015,
+      "sha256": "78423f6310ff2b7b1dc7fcff7ddcae65bf4c29c01bf75fb47fd0fa0a33cbbd28",
+      "manifest_match": true
+    }
+  },
+  "result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+  "small_file_limit_bytes": 33554432,
+  "omitted": [
+    {
+      "path": "barrier_checkpoint/dual_barpi.npy",
+      "bytes": 433742056
+    },
+    {
+      "path": "barrier_checkpoint/primal_barx.npy",
+      "bytes": 350093984
+    },
+    {
+      "path": "flexible_load_dispatch.npz",
+      "bytes": 42791128
+    },
+    {
+      "path": "hourly_province_balance.csv.gz",
+      "bytes": 49403535
+    },
+    {
+      "path": "hourly_province_security.csv.gz",
+      "bytes": 36563878
+    },
+    {
+      "path": "model_archive/original.mps.gz",
+      "bytes": 4145869329
+    },
+    {
+      "path": "reservoir_dispatch.npz",
+      "bytes": 238387524
+    },
+    {
+      "path": "thermal_dispatch.npz",
+      "bytes": 103972614
+    }
+  ]
+}

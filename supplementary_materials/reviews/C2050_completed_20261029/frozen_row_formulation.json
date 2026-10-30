@@ -1,0 +1,32 @@
+{
+  "cispo_model/load_center.py": {
+    "sha256": "8c96529eaa1905f758c52982748c230d67bc0b92559cb2c620b453b41672c3c7",
+    "bytes": 25487,
+    "excerpts": [
+      {
+        "first_line": 112,
+        "text": "    )\n    province_non_spatial_injection = model.addMVar(\n        len(provinces), lb=0.0, name=\"province_annual_non_spatial_injection_gwh\"\n    )\n    province_effective_demand = model.addMVar(\n        len(provinces), lb=0.0, name=\"province_annual_effective_demand_gwh\"\n    )\n    province_external_sent = model.addMVar(\n        len(provinces), lb=0.0, name=\"province_annual_external_sent_gwh\"\n    )\n    province_external_received = model.addMVar(\n        len(provinces), lb=0.0, name=\"province_annual_external_received_gwh\"\n    )"
+      },
+      {
+        "first_line": 342,
+        "text": "            center_ror_generation[center_positions].sum() == annual_sum(model, config, hours,\n                f\"ror_p{province_code}\", lambda t: ror_generation[p, t].sum(), nonnegative=True),\n            name=f\"load_center_ror_generation_closure_p{province_code}\",\n        )\n\n    received_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]\n    sent_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]\n    reverse_position_by_edge = {\n        int(edge_row): position\n        for position, edge_row in enumerate(interprovincial_reverse_edge_rows)\n    }\n    sent_components = [[] for _ in provinces]\n    received_components = [[] for _ in provinces]\n    for edge, row in enumerate(data.lines.itertuples(index=False)):\n        p_from = province_index[int(row.from_province_code)]\n        p_to = province_index[int(row.to_province_code)]\n        efficiency = float(interprovincial_efficiency[edge])\n        sent_components[p_from].append((interprovincial_flow_forward, edge, 1.0))\n        received_components[p_to].append((interprovincial_flow_forward, edge, efficiency))\n        sent_energy[p_from] += interprovincial_flow_forward[edge, :].sum()\n        received_energy[p_to] += efficiency * interprovincial_flow_forward[edge, :].sum()\n        reverse_position = reverse_position_by_edge.get(edge)\n        if reverse_position is not None:\n            sent_components[p_to].append((interprovincial_flow_reverse_ac, reverse_position, 1.0))\n            received_components[p_from].append((interprovincial_flow_reverse_ac, reverse_position, efficiency))\n            sent_energy[p_to] += interprovincial_flow_reverse_ac[\n                reverse_position, :\n            ].sum()"
+      },
+      {
+        "first_line": 390,
+        "text": "                + float(hours if t.stop is None else t.stop - t.start) * dac_load[p]),\n            name=f\"province_annual_effective_demand_p{province_code}\",\n        )\n        model.addConstr(\n            province_external_sent[p] == (annual_sum(model, config, hours,\n                f\"external_sent_p{province_code}\",\n                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),\n                nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),\n            name=f\"province_annual_external_sent_p{province_code}\",\n        )\n        model.addConstr("
+      }
+    ],
+    "matches_current_local_lf": true
+  },
+  "cispo_model/annual_dense_split.py": {
+    "sha256": "0623b45eb962579e140b07239377ee2916293b43426003df09d42448662b66e4",
+    "bytes": 2095,
+    "excerpts": [
+      {
+        "first_line": 10,
+        "text": "\n\ndef annual_split_enabled(config):\n    return bool(config.raw.get(\"formulation\", {}).get(\"annual_dense_row_split\", {}).get(\"enabled\", False))\n\n\ndef annual_sum(model, config, hours, family, sum_block, *, unit=\"gwh\", nonnegative=False):\n    if not annual_split_enabled(config):\n        return sum_block(slice(None))\n    width = int(config.raw[\"formulation\"][\"annual_dense_row_split\"].get(\"block_hours\", 730))\n    def scalar_expression(value):\n        if hasattr(value, \"item\"):"
+      }
+    ],
+    "matches_current_local_lf": true
+  }
+}

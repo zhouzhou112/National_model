@@ -1,0 +1,69 @@
+{
+  "B_million_cny": 566.3905795203025,
+  "B_over_objective": 9.935121758702802e-05,
+  "near_optimality_decision": "ACCEPT",
+  "base_comparison_decision": "INTERVAL_WITH_B",
+  "scope": "FULL_YEAR",
+  "certificate_path": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing/screen_pricing_certificate.json",
+  "certificate_sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/postprocess_tools_20261027_mt/scripts/price_screened_candidates.py",
+    "--run-dir",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing"
+  ],
+  "files": {
+    "negative_screened_columns.csv": {
+      "bytes": 2748,
+      "sha256": "5e0535b8dc5f75757066b529accffe77f399290147a32244d7c17e6cbb5bdbf8"
+    },
+    "screen_pricing_certificate.json": {
+      "bytes": 11073,
+      "sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15"
+    },
+    "vre_site_reduced_costs.csv": {
+      "bytes": 6676181,
+      "sha256": "09ab02b15ed25b2432379394421b6b29693e58411754688059a0a0fd582dd9dd"
+    },
+    "screen_sign_flip_sites.csv": {
+      "bytes": 2748,
+      "sha256": "5e0535b8dc5f75757066b529accffe77f399290147a32244d7c17e6cbb5bdbf8"
+    }
+  },
+  "tool_sha256": {
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b",
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_identity": {
+    "archive_manifest_sha256": "a2c2293fe5270f7619c05e39f1335b3ef247ecc4c8a9c3bff0f74aade771e4f9",
+    "checkpoint_manifest_sha256": "da3b0e8e72f396d2eaa495ed82469ace21fe90a42791b0e3cd0de28a86ffd309",
+    "mps_sha256": "a52dae483e198ab2876a43cafaea19db552c3d2006dc4ed4f9daac25e1f07aea",
+    "barpi_sha256": "bd27f64dc4e622325c5f59ffc1bf1d210cbcbc1d6c8271cce4100ff8a7fcbbd5",
+    "gurobi_fingerprint": -353209375,
+    "source": {
+      "planning_year": 2050,
+      "boundary_year": 2040,
+      "optimization_hours": 8760,
+      "optimization_start_hour": 0,
+      "result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_id": "case3_thermal_ev_v5",
+      "solver_profile_id": "barrier_stagea_screened_agg0_2050_v1_threads40",
+      "input_manifest_sha256": "0c56132f11b6bb85969d86c7d4627b268484769186191e15a71da1a117bdcaae",
+      "run_scope_result_use": "SCIENTIFIC_PRODUCTION",
+      "scenario_config_sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9",
+      "solver_config_sha256": "db712568b23b0b2af0a1e47177ff4ed4d7b92ac8e07885bd53d38937b26f8a37",
+      "planning_state_in": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate",
+      "gurobipy_version": "13.0.2"
+    },
+    "semantic_manifest": {
+      "manifest": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760/result_manifest.json",
+      "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+    }
+  },
+  "generated_at_utc": "2026-10-30T00:05:01.783316+00:00"
+}

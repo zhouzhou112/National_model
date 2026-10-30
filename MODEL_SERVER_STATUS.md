@@ -1,5 +1,9 @@
 # CISPO 2030 full-year server status
 
+**2026-10-30 作者新增年度汇总行口径后，C2050条件验收PASS。** 已读取AGENTS 10-29节新增第5条：年度电量汇总行阈值max(0.001GWh,1e-6×年度电量)。河北行阈值0.272271993GWh、残差0.012132951GWh，三个采纳条件全部满足；独立记录acceptance_author_20261030.json，旧停止证据保留。C2050筛选状态已按作者预授权采纳；准备C2060 R1/1h/24h，尚未提交。备份COMPLETE、小文件73项取回完成、证书B/obj=9.935122e-5。
+
+**2026-10-30 C2050备份、复评、证书与行定位完成；C2060停在作者条件门禁。** T550完整备份105文件5,511,013,265bytes，全部SHA/bytes通过且源身份未变；73个结果小文件108,454,785bytes已取回。10-27 Mt复评已有物理项全过（水库仍按作者暂缓），自身BarPi证书B=566.390580 million CNY、B/obj=9.935122e-5，近优性接受且不触发比较重解。最大违反定位河北年度外送行，0.012132951 GWh/272271.993460 GWh=4.456188e-8；当前一般GWh门槛0.001，超12.133倍，无已授权年度比例阈值，因此未采纳上游、未做R1/1h/24h、未提交C2060。已向作者请求明确该行容差。
+
 **2026-10-29 19:26 GMT C2050备份已自主启动。** 作者“再次尝试t550备份”解除本次等待确认；连接恢复后已确认无同名目标/operation、无活跃传输、全局锁可用。新计划105文件5,511,013,265bytes，完整T1/T2/T3含原MPS及显式启动元数据，30%余量门禁PASS，预计余35.2781%。PID351788/SID351788独立session、stdin DEVNULL，当前RUNNING/T1 TRANSFERRING，尚未完成校验；本机断线不影响T550直连云端任务。
 
 **2026-10-29 19:09 GMT（北京10月30日03:09）：云端1项RUNNING，C2050已完成。** C2050/5207165于16:28:53GMT（北京10月30日00:28:53）COMPLETED/0:0，总9天04:04:06，496轮OPTIMAL，目标5700892.181056213 million CNY，峰值RSS623.282GiB；保全COMPLETE/errors=[]，原模型已归档。最终PInf0.02918/DInf2.17e-6/Compl3.34e-5，旧10-14 relative_v1 HARD_FAIL（co2_source及solver原始残差>0.01）；10-27独立复评/筛选证书尚未执行，不自动采纳或放行2060。Case3 2050/5294579第129轮，运行2天05:38:15，PInf3.319e8/DInf4.760/Compl1.410e6，近10轮下降67.99%/89.88%/68.21%，22.12分钟/轮，stderr空。T550转发连接拒绝，备份配置已准备，尚未计划或启动传输，已请作者恢复。
@@ -3959,3 +3963,17 @@ Git基准bf72d8e；只读squeue/sacct及solve/preservation/QC/result_manifest核
 基准037faa2；新增backup_C_completed.py复用既有全局锁/可续传/逐文件SHA/最终源身份核验引擎，仅扩展明确启动文件清单并检查用户授权标记。旧待确认backup_config.json保留为历史，新执行配置backup_config_authorized_20261029.json。工具部署独立/home/zz2/National_model_server/C2050_completed_20261029_tools，未覆盖旧工具或原输出；新操作cloud_backup/_operations/20261029_C2050_completed。
 
 证据：本review目录backup_plan_execution_20261029.log、backup_launch_20261029.json；已核result_manifest SHA46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c。脚本AST通过，执行工具逐文件SHA留档。完整源不含输入环境镜像，不复制凭据。无模型/在跑作业变更、无后台监听。下一次查询先核现有PID/transfer_status/backup_manifest，禁止重复plan/start；三层全部VERIFIED且源身份未变才称完成，再在T550做assess/price，仅回传小JSON。本轮没有启动C2060。
+
+
+## 2026-10-30 C2050完整收尾取证与年度外送行容差停止
+
+**2026-10-30 C2050备份、复评、证书与行定位完成；C2060停在作者条件门禁。** T550完整备份105文件5,511,013,265bytes，全部SHA/bytes通过且源身份未变；73个结果小文件108,454,785bytes已取回。10-27 Mt复评已有物理项全过（水库仍按作者暂缓），自身BarPi证书B=566.390580 million CNY、B/obj=9.935122e-5，近优性接受且不触发比较重解。最大违反定位河北年度外送行，0.012132951 GWh/272271.993460 GWh=4.456188e-8；当前一般GWh门槛0.001，超12.133倍，无已授权年度比例阈值，因此未采纳上游、未做R1/1h/24h、未提交C2060。已向作者请求明确该行容差。
+
+Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_completed_20261029/REVIEW_20261030_ZH.md、acceptance_author_20261029.json、row_audit_summary.json、C2050/price_receipt.json、backup_complete_20261029.json、unit_validation_20261030.json。作者10-29决定已同步AGENTS，原来的C2060无授权描述已失效；当前停止原因是验收条件未满足，不是缺少提交权限。2060 profile/显式门禁入口已准备但未执行。无模型数值/容差改变，原档案和失败记录全部保留，5294579只读，无后台监听。下一步：作者明确年度汇总行容差后新旁置重评，通过再R1→1h/24h→冻结/preflight→提交并release。
+
+
+## 2026-10-30 C2050按作者新增年度电量汇总口径验收
+
+**2026-10-30 作者新增年度汇总行口径后，C2050条件验收PASS。** 已读取AGENTS 10-29节新增第5条：年度电量汇总行阈值max(0.001GWh,1e-6×年度电量)。河北行阈值0.272271993GWh、残差0.012132951GWh，三个采纳条件全部满足；独立记录acceptance_author_20261030.json，旧停止证据保留。C2050筛选状态已按作者预授权采纳；准备C2060 R1/1h/24h，尚未提交。备份COMPLETE、小文件73项取回完成、证书B/obj=9.935122e-5。
+
+依据：AGENTS新增第5条（mtime 00:04:19 UTC，提交审查时发现）；保留此前停止记录，新增接受记录，不覆盖原档案。下一步C2060按任务书第3节执行，5294579仍只读，无后台监听。

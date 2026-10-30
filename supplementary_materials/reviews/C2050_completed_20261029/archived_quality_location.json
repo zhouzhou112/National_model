@@ -1,0 +1,77 @@
+{
+  "locations": {
+    "maximum_bound_violation": {
+      "kind": "variable",
+      "index": 29924712,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_constraint_violation": {
+      "kind": "constraint",
+      "index": 53400865,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_dual_violation": {
+      "kind": "variable",
+      "index": 80932,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_complementarity_violation": null
+  },
+  "lookup": {
+    "maximum_objects_per_collection": 6000000,
+    "variable_names_resolved": false,
+    "constraint_names_resolved": false
+  },
+  "checkpoint_keys": [
+    "schema_version",
+    "generated_at",
+    "checkpoint_status",
+    "scientifically_accepted",
+    "deferred_crossover_eligible",
+    "eligibility_scope",
+    "source",
+    "identity_layers",
+    "solver_evidence",
+    "vectors",
+    "annual_capacity_link_row_scaling",
+    "lp_ordering",
+    "engineering_shadow_prices",
+    "reuse_contract",
+    "limitations"
+  ],
+  "checkpoint_model": {
+    "vectors": {
+      "primal": {
+        "path": "primal_barx.npy",
+        "attribute": "BarX",
+        "entries": 43761732,
+        "dtype": "float64",
+        "bytes": 350093984,
+        "sha256": "65af0275ecdfd449cc5d3de9c6aac6ab5ccbc4fad57bb127fa7160b5a77c64a3",
+        "current_solution_comparison": {
+          "status": "COLLECTED",
+          "current_attribute": "X",
+          "maximum_absolute_difference": 0.0,
+          "entries_compared": 43761732
+        }
+      },
+      "dual": {
+        "path": "dual_barpi.npy",
+        "attribute": "BarPi",
+        "entries": 54217741,
+        "dtype": "float64",
+        "bytes": 433742056,
+        "sha256": "bd27f64dc4e622325c5f59ffc1bf1d210cbcbc1d6c8271cce4100ff8a7fcbbd5",
+        "current_solution_comparison": {
+          "status": "COLLECTED",
+          "current_attribute": "Pi",
+          "maximum_absolute_difference": 0.0,
+          "entries_compared": 54217741
+        }
+      }
+    }
+  }
+}

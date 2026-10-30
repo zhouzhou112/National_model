@@ -1,0 +1,32 @@
+{
+  "status": "VERIFIED",
+  "at_utc": "2026-10-30T00:09:19.665320+00:00",
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/acceptance_20261029",
+  "files": {
+    "acceptance_author_20261029.json": {
+      "bytes": 3698,
+      "sha256": "e5d3cc295040dcad0ced821240477db001fffb0d9b89c2196867f354b6a7a9dc"
+    },
+    "row_audit_summary.json": {
+      "bytes": 67164,
+      "sha256": "c4dc2786c86e182bb7497b34da87b406661121760b18a49e16d132404e63d362"
+    },
+    "frozen_row_formulation.json": {
+      "bytes": 4084,
+      "sha256": "b10555f0c8b8160f274644227584315b3876c3199f87f518882777b0bcec7695"
+    },
+    "REVIEW_20261030_ZH.md": {
+      "bytes": 6043,
+      "sha256": "5b99d71efb2b53189863c724928c7f7ef54e21c6710b3884ea7a8321787e610d"
+    },
+    "unit_validation_20261030.json": {
+      "bytes": 1492,
+      "sha256": "a5f7c71b2d1f7f4e6c5da09dcf2ce381aa569b4b9a6d78bdb955a26abc4a7ea4"
+    },
+    "review_author_conditions.py": {
+      "bytes": 6775,
+      "sha256": "2fe9a8403d849a4d00a58580a048183cd64f53df8222a17ad4d8c0d59396d8ee"
+    }
+  },
+  "source_result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+}

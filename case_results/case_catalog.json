@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-10-29T19:10:30.848430+00:00",
+  "as_of_utc": "2026-10-30T00:13:30.082901+00:00",
   "cases": [
     {
       "case": "B",
@@ -214,21 +214,31 @@
       "year": 2050,
       "version": "v2",
       "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
-      "kind": "COMPLETED_PENDING_ACCEPTANCE",
+      "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "PENDING_REASSESSMENT_ORIGINAL_HARD_FAIL",
-      "backup_status": "TRANSFERRING",
+      "acceptance_status": "PASS_AUTHOR_20261030",
+      "backup_status": "COMPLETE",
       "job_id": "5207165",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
       "local_evidence": [
         "supplementary_materials\\reviews\\C2050_completed_20261029\\terminal_evidence.json",
         "supplementary_materials\\reviews\\C2050_completed_20261029\\qc_failed_checks.json",
-        "supplementary_materials\\reviews\\C2050_completed_20261029\\STATUS_ZH.md"
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\STATUS_ZH.md",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\REVIEW_20261030_ZH.md",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\acceptance_author_20261029.json",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\backup_complete_20261029.json",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\C2050\\collect_receipt.json",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\C2050\\price_receipt.json",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\acceptance_author_20261030.json",
+        "supplementary_materials\\reviews\\C2050_completed_20261029\\ACCEPTED_20261030_ZH.md"
       ],
       "case_card": "case_results\\by_case\\C\\2050\\20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\README.md",
       "iterations": 496,
       "source_result_manifest_sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
-      "backup_operation": "20261029_C2050_completed"
+      "backup_operation": "20261029_C2050_completed",
+      "backup_verified_at_utc": "2026-10-29T19:41:14.395627+00:00",
+      "local_small_files": 73,
+      "local_small_bytes": 108454785
     },
     {
       "case": "Case3",

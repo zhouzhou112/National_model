@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "author_decision": "ACCEPTED_RELATIVE_V1_20261030",
+  "conditions": {
+    "physical_relative_checks": true,
+    "maximum_constraint_row_within_family_tolerance": true,
+    "own_BarPi_certificate": true,
+    "barrier_terminal_range_and_gap": true
+  },
+  "row": {
+    "passed": true,
+    "name": "province_annual_external_sent_p13",
+    "province_code": 13,
+    "province_name": "河北",
+    "family": "province_annual_external_sent",
+    "unit": "GWh",
+    "variable_families": [
+      "province_annual_external_sent_gwh",
+      "flow_forward_gw",
+      "flow_reverse_ac_gw"
+    ],
+    "residual_gwh": 0.012132951352146483,
+    "row_magnitude_gwh": 272271.99346036953,
+    "relative_residual": 4.456187798805863e-08,
+    "tolerance_gwh": 0.2722719934603695,
+    "equivalent_relative_tolerance": 1e-06,
+    "ratio_to_authorized_tolerance": 0.04456187798805863,
+    "rule": "AGENTS.md 2026-10-30 item 5: max(1e-3 GWh, 1e-6 * annual row energy)",
+    "proportional_annual_account_tolerance_authorized": true,
+    "equation": "annual external sent GWh = sum of outgoing forward and AC reverse GW over 8760 one-hour periods",
+    "row_scaling": "Physical GWh; coefficient of annual account is 1; no capacity-link scaling",
+    "source_code": "cispo_model/load_center.py:394-398, frozen source SHA in frozen_row_formulation.json"
+  },
+  "archived_violation_gwh": 0.012132954492699355,
+  "recomputation_difference_gwh": 3.1405528715805486e-09,
+  "barrier_primal_infeasibility": 0.02918166220684557,
+  "relative_primal_dual_gap": 0.0005120516488320677,
+  "barrier_primal_infeasibility_disclosure_only": true,
+  "physical_deferred": [
+    "reservoir_transition"
+  ],
+  "certificate": {
+    "B_million_cny": 566.3905795203025,
+    "B_over_objective": 9.935121758702802e-05,
+    "near_optimality_decision": "ACCEPT",
+    "base_comparison_decision": "INTERVAL_WITH_B",
+    "certificate_sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+    "certificate_path": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing/screen_pricing_certificate.json"
+  },
+  "source_evidence": {
+    "source_sha256": {
+      "result_manifest.json": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+      "model_archive/original.mps.gz": "a52dae483e198ab2876a43cafaea19db552c3d2006dc4ed4f9daac25e1f07aea",
+      "barrier_checkpoint/primal_barx.npy": "65af0275ecdfd449cc5d3de9c6aac6ab5ccbc4fad57bb127fa7160b5a77c64a3",
+      "barrier_checkpoint/barrier_checkpoint_manifest.json": "da3b0e8e72f396d2eaa495ed82469ace21fe90a42791b0e3cd0de28a86ffd309",
+      "solve_report.json": "ea273141bfa19eb723395943de1288288d204d290b836aadeb353caf9fbe1853"
+    }
+  },
+  "evidence_sha256": {
+    "row_audit_receipt.json": "f4eff1c048fc982767ac4dc22576e6c85fdcb2cd810ba687e623d9392734c0f6",
+    "frozen_row_formulation.json": "b10555f0c8b8160f274644227584315b3876c3199f87f518882777b0bcec7695",
+    "backup_complete_20261029.json": "6a9a2d5ef4dd04813ba4a84f6ac4e01953a04cc9b122ffef48cb2daad5c0b98a",
+    "C2050/price_receipt.json": "b51ef9293e8fd8e1ade6dc9a5b058b7a453c98fc3b199dac9f6af9d403936736",
+    "C2050/collect_receipt.json": "79ca2eada200da7016b9329072a17f0e06615c19ce8fb0f653f10fa2a6b7e413",
+    "C2050/assessment/solution_qc_relative_v1.json": "ddc42bbbd197592f51b8be8cf77c3a0ca99e6c0fd05112429740bb4538f59153"
+  },
+  "C2060": {
+    "R1_executed": false,
+    "engineering_gates_executed": false,
+    "submitted": false,
+    "released": false
+  },
+  "source_archives_modified": false
+}
