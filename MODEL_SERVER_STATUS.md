@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
+
 **2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
 
 **2026-10-30 作者新增年度汇总行口径后，C2050条件验收PASS。** 已读取AGENTS 10-29节新增第5条：年度电量汇总行阈值max(0.001GWh,1e-6×年度电量)。河北行阈值0.272271993GWh、残差0.012132951GWh，三个采纳条件全部满足；独立记录acceptance_author_20261030.json，旧停止证据保留。C2050筛选状态已按作者预授权采纳；准备C2060 R1/1h/24h，尚未提交。备份COMPLETE、小文件73项取回完成、证书B/obj=9.935122e-5。
@@ -3986,3 +3988,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 **2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
 
 源码7317181→54ce73e；入口遗漏和finalizer压缩文件名适配记录均保留，新v2隔离门禁全部完成。证据见supplementary_materials/reviews/C2060_launch_20261030/REVIEW_ZH.md、GATES_SUMMARY.json与attempt_2/t550_evidence；命令t550_work.py prepare/r1/gate/collect --attempt 2，finalize_gates.py。未提交，下一步deploy_authorized.py C2060 prepare/preflight/submit/release/status。
+
+
+## 2026-10-30 C2060提交放行与启动验证完成
+
+**2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
+
+执行源码54ce73e、冻结提交7117aa2（相关核心源码SHA与门禁一致）；冻结493文件，release manifest SHA1621933d3ed323f7276aca166f44209702201ddfa58ed9e7e19f88caba2feaf2。32项门禁→preflight PASS→held资源核验→按既有授权release→实际资源/700GiB/计算节点smoke全通过。证据supplementary_materials/reviews/C2060_launch_20261030/deployment/{freeze,preflight,held_submission,released_submission,status}.json，GATES_SUMMARY.json及REVIEW_ZH.md。sbatch源为Case3 2050 v2已核验原件，WLS仅路径字符串比较。已更新case_results C2060卡片；未覆盖历史验证失败、原始QC或任一运行包，SI改动保持隔离，无后台监听。下一步：用户询问时同时只读检查两作业；任一新终态按10-20核对旧备份/活动传输→T550完整单次备份→扩展验收/证书→取回小文件。C2060启动成功不等于全年稳定或已收敛。

@@ -1,0 +1,603 @@
+{
+  "status": "PASS",
+  "report": {
+    "generated_at": "2026-10-30T08:26:24.152615+08:00",
+    "configuration": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+    "boundary_interpretation": "2050 is the inherited input state; no optimization is performed for the boundary inside this solve",
+    "planning_interpretation": "2060 is one sequential 8760-hour expansion decision representing 2050-2060 change",
+    "scale_estimate": {
+      "variables": 43490048,
+      "constraints": 59238927,
+      "nonzeros": 507075261,
+      "estimated_memory_gb": 34.76,
+      "dominant_blocks": {
+        "vre_site_capacity_and_new": 73372,
+        "vre_availability_and_dispatch": 2172480,
+        "thermal_capacity_new_and_retrofit": 837,
+        "thermal_hourly_ruc": 14935800,
+        "storage_capacity_and_hourly": 2715724,
+        "hydro_site_capacity_and_hourly": 16840780,
+        "transmission_capacity_and_flow": 4021662,
+        "dac_capacity_and_capture": 372,
+        "annual_resource_accounts": 63,
+        "capacity_margin_credited_capacity": 31,
+        "co2_source_sink_flow": 100471,
+        "spur_and_trunk_capacity": 45010,
+        "annual_load_center_network": 5756,
+        "optional_flexible_load": 2303225,
+        "optional_wave_energy": 274465
+      },
+      "block_count": 1,
+      "maximum_block_hours": 8760,
+      "maximum_block_variables": 42984665,
+      "maximum_block_nonzeros": 450323355,
+      "estimated_peak_block_memory_gb": 33.84
+    },
+    "checks": [
+      {
+        "check": "planning_boundary",
+        "status": "PASS",
+        "value": 2050,
+        "expected": "2050"
+      },
+      {
+        "check": "sequential_planning_year",
+        "status": "PASS",
+        "value": 2060,
+        "expected": "(2030, 2040, 2050, 2060)"
+      },
+      {
+        "check": "full_hours",
+        "status": "PASS",
+        "value": 8760,
+        "expected": "8760"
+      },
+      {
+        "check": "planning_state_boundary",
+        "status": "PASS",
+        "value": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/upstream_state/planning_state_candidate",
+        "expected": "no state for initial 2025 boundary; checksummed prior state thereafter"
+      },
+      {
+        "check": "province_count",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "load_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "load_finite",
+        "status": "PASS",
+        "value": true,
+        "expected": "True"
+      },
+      {
+        "check": "load_nonnegative",
+        "status": "PASS",
+        "value": 0.8199736389342615,
+        "expected": ">= 0 GW"
+      },
+      {
+        "check": "load_component_base_residual_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "load_component_base_residual_nonnegative",
+        "status": "PASS",
+        "value": 0.421648441463094,
+        "expected": ">= 0 GW and finite"
+      },
+      {
+        "check": "load_component_heating_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "load_component_heating_nonnegative",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": ">= 0 GW and finite"
+      },
+      {
+        "check": "load_component_cooling_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "load_component_cooling_nonnegative",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": ">= 0 GW and finite"
+      },
+      {
+        "check": "load_component_ev_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "load_component_ev_nonnegative",
+        "status": "PASS",
+        "value": 0.0687973407588004,
+        "expected": ">= 0 GW and finite"
+      },
+      {
+        "check": "load_component_closure",
+        "status": "PASS",
+        "value": 1.7053025658242404e-13,
+        "expected": "<= 1e-9 GW"
+      },
+      {
+        "check": "v5_calibration_contract_loaded",
+        "status": "PASS",
+        "value": true,
+        "expected": "validated province-year thermal, EV and cost inputs"
+      },
+      {
+        "check": "v5_heating_up_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_heating_down_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_cooling_up_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_cooling_down_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_heating_availability_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_cooling_availability_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_connected_vehicle_fraction_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_available_charge_power_gw_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_available_discharge_power_gw_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_fleet_energy_capacity_gwh_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_driving_energy_withdrawal_gwh_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "v5_minimum_departure_energy_gwh_shape",
+        "status": "PASS",
+        "value": "(31, 8760)",
+        "expected": "(31, 8760)"
+      },
+      {
+        "check": "vre_sites",
+        "status": "PASS",
+        "value": 36686,
+        "expected": "> 0"
+      },
+      {
+        "check": "vre_bounds",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 violations"
+      },
+      {
+        "check": "vre_cf_mapping",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 unresolved"
+      },
+      {
+        "check": "vre_cf_cross_technology_fallback",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 wind-to-PV or PV-to-wind mappings"
+      },
+      {
+        "check": "vre_cf_pv_fallback_uses_land_grid",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 non-land PV fallback source grids"
+      },
+      {
+        "check": "thermal_floor_rows",
+        "status": "PASS",
+        "value": 310,
+        "expected": "310"
+      },
+      {
+        "check": "nuclear_floor_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "nuclear_upper_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "nuclear_capacity_bounds",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 floor-above-upper violations"
+      },
+      {
+        "check": "ruc_technology_rows",
+        "status": "PASS",
+        "value": [
+          "bio",
+          "bioccs",
+          "cchp",
+          "cchpccs",
+          "coal",
+          "coalccs",
+          "gas",
+          "gasccs",
+          "gchp",
+          "gchpccs",
+          "nuclear"
+        ],
+        "expected": "11 technologies"
+      },
+      {
+        "check": "storage_rows",
+        "status": "PASS",
+        "value": [
+          "battery",
+          "phs"
+        ],
+        "expected": "battery and phs"
+      },
+      {
+        "check": "phs_bound_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31 province rows for the planning year"
+      },
+      {
+        "check": "battery_bound_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31 province rows for the planning year"
+      },
+      {
+        "check": "battery_capacity_floor_nonnegative",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": ">= 0 GW"
+      },
+      {
+        "check": "phs_bounds",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 floor-above-upper violations"
+      },
+      {
+        "check": "phs_national_capacity_bounds_gw",
+        "status": "INFO",
+        "value": {
+          "floor": 65.94,
+          "upper": 514.755
+        },
+        "expected": "GHT 2026 operating floor and year-available project upper"
+      },
+      {
+        "check": "allowed_candidate_corridors",
+        "status": "PASS",
+        "value": 411,
+        "expected": "411 allowed rows from the 465-pair matrix"
+      },
+      {
+        "check": "hydro_station_rows",
+        "status": "PASS",
+        "value": 2030,
+        "expected": "2030"
+      },
+      {
+        "check": "biomass_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "biomass_capacity_bound_rows",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "biomass_capacity_upper_nonnegative",
+        "status": "PASS",
+        "value": 0.3399999999999999,
+        "expected": ">= 0 GW"
+      },
+      {
+        "check": "dac_rows",
+        "status": "PASS",
+        "value": 4,
+        "expected": "4"
+      },
+      {
+        "check": "carbon_active",
+        "status": "PASS",
+        "value": true,
+        "expected": "True"
+      },
+      {
+        "check": "csp_source_gap_explicit",
+        "status": "PASS",
+        "value": false,
+        "expected": "False until source exists"
+      },
+      {
+        "check": "wave_feature_data_contract",
+        "status": "PASS",
+        "value": {
+          "feature_enabled": true,
+          "wave_data_loaded": true
+        },
+        "expected": "feature flag and loaded data agree"
+      },
+      {
+        "check": "wave_existing_grid_uid_unique",
+        "status": "PASS",
+        "value": 1284,
+        "expected": "1284"
+      },
+      {
+        "check": "wave_grid_uid_is_existing_optimization_grid",
+        "status": "PASS",
+        "value": 1284,
+        "expected": "1284"
+      },
+      {
+        "check": "wave_existing_grid_is_marine",
+        "status": "PASS",
+        "value": 1284,
+        "expected": "1284"
+      },
+      {
+        "check": "wave_coordinates_equal_existing_grid",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": "<= 1e-9 degrees"
+      },
+      {
+        "check": "wave_routes_equal_existing_grid_routes",
+        "status": "PASS",
+        "value": 1284,
+        "expected": "1284"
+      },
+      {
+        "check": "wave_capacity_upper_nonnegative",
+        "status": "PASS",
+        "value": 1.6533296555280684e-05,
+        "expected": ">= 0 GW"
+      },
+      {
+        "check": "wave_province_route_valid",
+        "status": "PASS",
+        "value": [
+          12,
+          13,
+          21,
+          31,
+          32,
+          33,
+          35,
+          37,
+          44,
+          45,
+          46
+        ],
+        "expected": "subset of active province codes"
+      },
+      {
+        "check": "wave_load_center_route_valid",
+        "status": "PASS",
+        "value": 43,
+        "expected": "all routed centers known"
+      },
+      {
+        "check": "phs_representation_gap_explicit",
+        "status": "PASS",
+        "value": true,
+        "expected": "province-level representation explicitly registered"
+      },
+      {
+        "check": "configured_load_center_count",
+        "status": "PASS",
+        "value": 337,
+        "expected": "337"
+      },
+      {
+        "check": "configured_load_center_provinces",
+        "status": "PASS",
+        "value": 31,
+        "expected": "31"
+      },
+      {
+        "check": "configured_load_center_annual_demand_share_closure",
+        "status": "PASS",
+        "value": 1.1102230246251565e-15,
+        "expected": "<= 1e-9"
+      },
+      {
+        "check": "vre_load_center_route_coverage",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 missing active VRE sites"
+      },
+      {
+        "check": "hydro_load_center_route_coverage",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0 missing hydropower stations"
+      },
+      {
+        "check": "hydro_cascade_nodes",
+        "status": "PASS",
+        "value": 142,
+        "expected": "142"
+      },
+      {
+        "check": "hydro_cascade_edges",
+        "status": "PASS",
+        "value": 124,
+        "expected": "124"
+      },
+      {
+        "check": "hydro_cascade_station_rows",
+        "status": "PASS",
+        "value": 146,
+        "expected": "146"
+      },
+      {
+        "check": "hydro_cascade_all_reservoir",
+        "status": "PASS",
+        "value": 0,
+        "expected": "0"
+      },
+      {
+        "check": "hydro_cascade_lag_nonnegative",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": ">= 0 h"
+      },
+      {
+        "check": "hydro_cascade_low_lag_correlation_edges",
+        "status": "WARN",
+        "value": 4,
+        "expected": "0 low-correlation lag estimates"
+      },
+      {
+        "check": "hydro_cascade_max_lag_bound_edges",
+        "status": "WARN",
+        "value": 18,
+        "expected": "0 lag estimates selected at the configured maximum bound"
+      },
+      {
+        "check": "configured_intra_load_center_edge_count",
+        "status": "PASS",
+        "value": 642,
+        "expected": "642"
+      },
+      {
+        "check": "intra_load_center_endpoints",
+        "status": "PASS",
+        "value": true,
+        "expected": "all endpoints known"
+      },
+      {
+        "check": "intra_load_center_same_province",
+        "status": "PASS",
+        "value": true,
+        "expected": "True"
+      },
+      {
+        "check": "intra_load_center_edge_costs",
+        "status": "PASS",
+        "value": 184.9946058409648,
+        "expected": "> 0 yuan/kW"
+      },
+      {
+        "check": "intra_load_center_initial_capacity",
+        "status": "PASS",
+        "value": 0.0,
+        "expected": ">= 0 GW"
+      },
+      {
+        "check": "intra_load_center_long_distance_proxy",
+        "status": "WARN",
+        "value": 3,
+        "expected": "0 AC500 edges beyond 1000 km source range"
+      },
+      {
+        "check": "selected_architecture",
+        "status": "PASS",
+        "value": "full_year_monolithic_lp",
+        "expected": "full_year_monolithic_lp"
+      },
+      {
+        "check": "monolithic_memory_gate",
+        "status": "PASS",
+        "value": 34.76,
+        "expected": "<= 80.0 GB configured build limit"
+      },
+      {
+        "check": "server_memory_requirement",
+        "status": "INFO",
+        "value": 34.76,
+        "expected": "run only when server available memory passes the runtime gate"
+      }
+    ],
+    "status_counts": {
+      "PASS": 80,
+      "WARN": 3,
+      "INFO": 2,
+      "HARD_FAIL": 0
+    },
+    "explicit_data_gaps": {
+      "csp": "TODO_SOURCE_DATA_REQUIRED: no 0.25-degree CSP potential or hourly CSP solar-field profile is present; capacity is fixed to zero",
+      "phs_water_pairing": "MODEL_SCOPE: PHS is province-level 8-hour storage with GHT 2026 operating capacity floor and year-available project-pipeline upper; open-loop/closed-loop reservoir water pairing is not represented",
+      "thermal_online_fuel": "TODO_SOURCE_DATA_REQUIRED: f_on is not present in the extracted RUC table; first block implementation charges fuel on gross generation only",
+      "capacity_credit": "SOFT_ASSUMPTION: values are explicit configuration parameters, not extracted CISPO source data",
+      "inertia_threshold": "SOFT_ASSUMPTION: minimum system inertia seconds is explicit configuration, not extracted CISPO source data",
+      "spur_trunk_cost": "SOFT_ASSUMPTION: proxy costs use the 330-kV AC anchor and must be sensitivity-tested"
+    },
+    "planning_state": {
+      "path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/upstream_state/planning_state_candidate",
+      "format": "capacity_cohorts_v2",
+      "source_planning_year": 2050,
+      "cohort_rows": 30837
+    },
+    "status": "PASS"
+  }
+}
