@@ -37,6 +37,74 @@ def _write_json(payload: dict[str, Any], path: Path) -> None:
     )
 
 
+def export_annual_row_duals(
+    artifacts: MasterArtifacts,
+    data: ModelData,
+    output_dir: Path,
+    *,
+    dual_attribute: str,
+) -> pd.DataFrame:
+    """Export the seven annual accounting families in the offline T4 schema.
+
+    These rows are in physical GWh coordinates. Capacity-link binary scaling
+    applies to the separate VRE/ROR allocation families, not these seven rows.
+    ``annual_dense_split`` introduces block definitions but leaves the outer
+    account's RHS coefficient at one; its outer-row Pi needs no scale conversion.
+    Raw row indices and signs are retained, including negative inequality Pi.
+    """
+    registry = artifacts.index["constraint_handles"]["annual_load_center_rows"]
+    centers = data.load_centers.reset_index(drop=True)
+    edges = data.intra_load_center_edges.reset_index(drop=True)
+    provinces = set(int(p) for p in data.province_codes)
+    rows: list[dict[str, Any]] = []
+    for family, handles in registry.items():
+        if family == "intra_load_center_annual_capacity":
+            entries = enumerate(handles.tolist())
+            if handles.size != len(edges):
+                raise ValueError("Annual intra-network row coverage mismatch")
+        else:
+            entries = handles.items()
+            expected = provinces if family.startswith("province_annual_") else set(range(len(centers)))
+            if set(handles) != expected:
+                raise ValueError(f"Incomplete annual row family: {family}")
+        for index, handle in entries:
+            constraint = handle.item() if hasattr(handle, "item") else handle
+            if family.startswith("province_annual_"):
+                province, city, entity = int(index), "", ""
+                expected_name = f"{family}_p{index}"
+            elif family == "load_center_annual_energy_balance":
+                row = centers.iloc[index]
+                province, city, entity = int(row.province_code), int(index), str(row.load_center_id)
+                expected_name = f"{family}_{index}"
+            else:
+                row = edges.iloc[index]
+                province, city, entity = int(row.province_code), "", str(row.intra_edge_id)
+                expected_name = f"{family}[{index}]"
+            if constraint.ConstrName != expected_name:
+                raise ValueError(f"Annual row identity mismatch: {expected_name}")
+            pi = float(getattr(constraint, dual_attribute))
+            if not np.isfinite(pi):
+                raise ValueError(f"Nonfinite annual dual: {expected_name}")
+            rows.append({
+                "row_family": family,
+                "row_name": constraint.ConstrName,
+                "index": int(index),
+                "province_code": province,
+                "city_index": city,
+                "pi_million_cny_per_gwh": pi,
+                "original_row_index": int(constraint.index),
+                "row_sense": {"=": "E", "<": "L", ">": "G"}[constraint.Sense],
+                "entity_id": entity,
+                "unit": "million CNY/GWh",
+            })
+    expected_count = 5 * len(provinces) + len(centers) + len(edges)
+    if len(rows) != expected_count:
+        raise ValueError(f"Annual row count {len(rows)} != {expected_count}")
+    result = pd.DataFrame(rows).sort_values("original_row_index").reset_index(drop=True)
+    result.to_csv(output_dir / "annual_row_duals.csv", index=False, encoding="utf-8")
+    return result
+
+
 def _ev_v1g_daily_energy_residual_for_qc(
     residual: np.ndarray,
     *,
@@ -2026,6 +2094,38 @@ def export_operational_solution(
         )
     except (AttributeError, KeyError, TypeError, ValueError, GurobiError) as exc:
         dual_status["reason"] = f"{type(exc).__name__}: {exc}"
+    dual_status["annual_row_duals_exported"] = False
+    dual_status["load_side_price_formula"] = {
+        "formula_cny_per_mwh": (
+            "1000 * (pi_balance + pi_annual_demand + "
+            "up_reserve_load_fraction * mu_up + down_reserve_load_fraction * mu_down + "
+            "minimum_system_inertia_seconds * mu_inertia)"
+        ),
+        "coefficient_source": "model_config_snapshot.json:resolved_configuration.security",
+        "coefficient_source_keys": {
+            "up_reserve_load_fraction": ["up_reserve_load_fraction"],
+            "down_reserve_load_fraction": ["down_reserve_load_fraction"],
+            "minimum_system_inertia_seconds": (
+                ["minimum_system_inertia_seconds"]
+                if config.raw["security"].get("minimum_system_inertia_seconds") is not None
+                else ["inertia_reference_seconds", "inertia_tolerance_fraction"]
+            ),
+        },
+        "inertia_coefficient_rule": (
+            "minimum_system_inertia_seconds if not null; otherwise "
+            "inertia_reference_seconds * inertia_tolerance_fraction"
+        ),
+        "up_reserve_load_fraction": float(config.raw["security"]["up_reserve_load_fraction"]),
+        "down_reserve_load_fraction": float(config.raw["security"]["down_reserve_load_fraction"]),
+        "minimum_system_inertia_seconds": resolve_minimum_system_inertia_seconds(config.raw["security"]),
+        "annual_demand_row_family": "province_annual_effective_demand",
+    }
+    if dual_status["available"]:
+        try:
+            export_annual_row_duals(artifacts, data, output_dir, dual_attribute=dual_attribute)
+            dual_status["annual_row_duals_exported"] = True
+        except (AttributeError, KeyError, TypeError, ValueError, GurobiError) as exc:
+            dual_status["annual_row_duals_reason"] = f"{type(exc).__name__}: {exc}"
     _write_json(dual_status, output_dir / "dual_export_status.json")
 
     pd.DataFrame(

@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "baseline_commit": "9bbff9991296d12e75efded94300da9509d437ae",
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "source_after_sha256": {
+    "cispo_model/load_center.py": "fa7ad0d6085399b70156b700b5a01c3161674bdb24ebeb1847dd46ce8c829f88",
+    "cispo_model/solution_export.py": "f8a59f8e78ba858285e493f247e83f976c2230f987761b179b7b7f07f8bf68c7",
+    "cispo_model/io_contract.py": "386bf4414e2e8d1d6f10ed1d184eac4d5e696a8898f9c98090af50be5bc20e6d",
+    "tests/test_annual_row_duals.py": "c7a4c39ff7fbb5bb85020e4cac6273d301b2f4a718bcb5758451ffbba31412cb",
+    "cispo_full_lp_model_spec.md": "d48a3e89ffef4e4111dc7367559cb03bf5707bacf1543349d6b80ddd6259be7f"
+  },
+  "gates": {
+    "1": {
+      "before": {
+        "NumVars": 239109,
+        "NumConstrs": 80896,
+        "NumNZs": 455184,
+        "Fingerprint": 692580241
+      },
+      "after": {
+        "NumVars": 239109,
+        "NumConstrs": 80896,
+        "NumNZs": 455184,
+        "Fingerprint": 692580241
+      },
+      "equal": true
+    },
+    "24": {
+      "before": {
+        "NumVars": 353638,
+        "NumConstrs": 226051,
+        "NumNZs": 1766991,
+        "Fingerprint": -1060391456
+      },
+      "after": {
+        "NumVars": 353638,
+        "NumConstrs": 226051,
+        "NumNZs": 1766991,
+        "Fingerprint": -1060391456
+      },
+      "equal": true
+    }
+  },
+  "diagnostic_solve": {
+    "status": 2,
+    "runtime_seconds": 61.43299984931946,
+    "objective_million_cny": 2121397.344356909,
+    "parameters": {
+      "Threads": 8,
+      "Method": 2,
+      "Crossover": 0,
+      "BarConvTol": 0.0001,
+      "Aggregate": 0,
+      "NumericFocus": 2
+    }
+  },
+  "annual_row_validation": {
+    "rows": 1134,
+    "family_counts": {
+      "intra_load_center_annual_capacity": 642,
+      "load_center_annual_energy_balance": 337,
+      "province_annual_non_spatial_injection": 31,
+      "province_annual_effective_demand": 31,
+      "province_annual_external_sent": 31,
+      "province_annual_external_received": 31,
+      "province_annual_external_net_import": 31
+    },
+    "offline_t4_max_absolute_difference": 3.552713678800501e-15,
+    "paired_provinces": 31,
+    "injection_demand_max_absolute_residual_cny_per_mwh": 0.1596239653776953,
+    "same_barpi_original_order": true
+  },
+  "existing_export_byte_identical_count": 23,
+  "existing_export_byte_differences": [
+    "dual_export_status.json"
+  ],
+  "scope": "New releases only; no production solve or existing release modified",
+  "input_manifest_entries": 86,
+  "input_manifest_v2_v3_identical": true,
+  "evidence": {
+    "verification_v2_gurobi13/verification.json": {
+      "bytes": 24529,
+      "sha256": "70e2eadac0a9233378cbfd0057bbb25c6c5cd0b0f8a6bfa67f0c88bc143d431e"
+    },
+    "verification_v3_final/verification.json": {
+      "bytes": 24775,
+      "sha256": "e0524efdd54f4e8f8f020ace7fab4243b01e4e651af99db33675173c655176ad"
+    },
+    "verification_v3_final/provenance/input_manifest.csv": {
+      "bytes": 24945,
+      "sha256": "6d4eb2c11f981415c861e31247b33387eec8a57859dcd6ebff30847c9042a63b"
+    },
+    "verification_v3_final/provenance/model_config_snapshot.json": {
+      "bytes": 23063,
+      "sha256": "3ff836557fe88685b2e019060225602a7310157d96ebe95345148e3c32a85c89"
+    },
+    "verification_v3_final/after/annual_row_duals.csv": {
+      "bytes": 171170,
+      "sha256": "0c79b34485f750fd12f2fbccc0ea3df8e8475f645a7d4f844c960251cd7e028e"
+    },
+    "verification_v3_final/after/dual_export_status.json": {
+      "bytes": 1535,
+      "sha256": "a1c0f3e762169da2d63f77c5e3b30557d2d67c202a46aef5bdfac728fe520ed5"
+    },
+    "verify_export.py": {
+      "bytes": 8883,
+      "sha256": "14f6c13e089db31327b11d4c055b7532ecb0d1f3f376c9fd05f536b8bc37fa01"
+    },
+    "record_provenance.py": {
+      "bytes": 1140,
+      "sha256": "9eeff3e2e30570f16c4506f5953a2dde76b8ee0e4404318a08f00afcaf9bc0ae"
+    },
+    "regression_gurobi13.log": {
+      "bytes": 63381,
+      "sha256": "5413425ce016aab9eabf93099c593963676efbd683e2929699c278779f351fe9"
+    },
+    "REVIEW_ZH.md": {
+      "bytes": 6451,
+      "sha256": "207bbe1d0a05eb1b489928e8ce6dc7bc6ee09efec4e60cdce715405816d7709d"
+    }
+  },
+  "regression": {
+    "status": "PASS",
+    "tests_run": 505,
+    "passed": 504,
+    "skipped": 1,
+    "skip_reason": "Linux /proc integration test on Windows",
+    "seconds": 206.473,
+    "log": "regression_gurobi13.log",
+    "sha256": "5413425ce016aab9eabf93099c593963676efbd683e2929699c278779f351fe9"
+  }
+}

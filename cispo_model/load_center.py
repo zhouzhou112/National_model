@@ -66,6 +66,18 @@ def attach_annual_load_center_network(
     technology_index = {technology: i for i, technology in enumerate(VRE_TECHS)}
     center_count = len(centers)
     edge_count = len(edges)
+    # Retain existing row handles only: no new rows, coefficients or ordering.
+    annual_row_handles: dict[str, Any] = {
+        family: {} for family in (
+            "province_annual_non_spatial_injection",
+            "province_annual_effective_demand",
+            "province_annual_external_sent",
+            "province_annual_external_received",
+            "province_annual_external_net_import",
+            "load_center_annual_energy_balance",
+        )
+    }
+    artifacts.index["constraint_handles"]["annual_load_center_rows"] = annual_row_handles
     resource_coefficient_tolerance = float(
         config.raw["numerics"]["coefficient_zero_tolerance"]
     )
@@ -376,35 +388,35 @@ def attach_annual_load_center_network(
     # coefficients without changing the formulation.
     for province_code in provinces:
         p = province_index[province_code]
-        model.addConstr(
+        annual_row_handles["province_annual_non_spatial_injection"][province_code] = model.addConstr(
             province_non_spatial_injection[p]
             == annual_sum(model, config, hours, f"non_spatial_injection_p{province_code}",
                 lambda t: actual_thermal[p, :, t].sum() + storage_discharge[p, :, t].sum()
                 + hydro_aggregate_generation[p, t].sum(), nonnegative=True),
             name=f"province_annual_non_spatial_injection_p{province_code}",
         )
-        model.addConstr(
+        annual_row_handles["province_annual_effective_demand"][province_code] = model.addConstr(
             province_effective_demand[p]
             == annual_sum(model, config, hours, f"effective_demand_p{province_code}",
                 lambda t: effective_load[p, t].sum() + storage_charge[p, :, t].sum()
                 + float(hours if t.stop is None else t.stop - t.start) * dac_load[p]),
             name=f"province_annual_effective_demand_p{province_code}",
         )
-        model.addConstr(
+        annual_row_handles["province_annual_external_sent"][province_code] = model.addConstr(
             province_external_sent[p] == (annual_sum(model, config, hours,
                 f"external_sent_p{province_code}",
                 lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),
                 nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),
             name=f"province_annual_external_sent_p{province_code}",
         )
-        model.addConstr(
+        annual_row_handles["province_annual_external_received"][province_code] = model.addConstr(
             province_external_received[p] == (annual_sum(model, config, hours,
                 f"external_received_p{province_code}",
                 lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in received_components[p]),
                 nonnegative=True) if annual_split_enabled(config) else received_energy[p]),
             name=f"province_annual_external_received_p{province_code}",
         )
-        model.addConstr(
+        annual_row_handles["province_annual_external_net_import"][province_code] = model.addConstr(
             province_external_net_import[p]
             == province_external_received[p] - province_external_sent[p],
             name=f"province_annual_external_net_import_p{province_code}",
@@ -469,7 +481,7 @@ def attach_annual_load_center_network(
             outflow += intra_forward[forward_out[center_position]].sum()
         if reverse_out[center_position]:
             outflow += intra_reverse[reverse_out[center_position]].sum()
-        model.addConstr(
+        annual_row_handles["load_center_annual_energy_balance"][center_position] = model.addConstr(
             center_injection[center_position]
             + center_external_net_import[center_position]
             + inflow
@@ -479,7 +491,7 @@ def attach_annual_load_center_network(
 
     utilization = float(config.raw["load_center_network"]["design_utilization_fraction"])
     design_hours = utilization * float(hours)
-    model.addConstr(
+    annual_row_handles["intra_load_center_annual_capacity"] = model.addConstr(
         intra_forward + intra_reverse
         <= design_hours * artifacts.variables["intra_load_center_capacity"],
         name="intra_load_center_annual_capacity",

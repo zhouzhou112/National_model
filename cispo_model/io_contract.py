@@ -47,6 +47,7 @@ OUTPUT_FILE_ROLES = {
     "annual_capacity_by_province_technology.csv": "Province-technology installed and new capacity",
     "annual_capacity_by_technology.csv": "National installed and new capacity by technology",
     "annual_constraint_shadow_prices.csv": "Annual policy, resource, adequacy and CCS constraint shadow prices",
+    "annual_row_duals.csv": "Unscaled annual province/city/network accounting row duals in the offline T4 schema",
     "annual_carbon_ccs.json": "National carbon, capture, DAC and storage accounting",
     "annual_generation_by_province_technology.csv": "Province-technology generation over the selected horizon",
     "annual_generation_by_technology.csv": "National generation by technology over the selected horizon",
@@ -638,7 +639,11 @@ def write_output_catalog(output_dir: str | Path) -> tuple[Path, Path]:
                         "dtype": "see CSV values",
                         "shape": "rows",
                         "dimensions": "record",
-                        "unit": _infer_unit(column),
+                        "unit": (
+                            "million CNY/GWh"
+                            if path.name == "annual_row_duals.csv" and column == "pi_million_cny_per_gwh"
+                            else _infer_unit(column)
+                        ),
                         "description": column.replace("_", " "),
                     }
                 )

@@ -2219,6 +2219,8 @@ D^{min}K^{PHS,P}_g\le K^{PHS,E}_g\le D^{max}K^{PHS,P}_g
 
 ### 14.6 生产输出和停止规则
 
+2026-11-05 起新冻结 release 另导出 `annual_row_duals.csv`：保留五类省级年度核算行、城市年度平衡与省内年度容量行的原始索引、符号及未缩放对偶（million CNY/GWh），与 T550 离线 T4 同列；完整负荷侧价格公式及安全系数来源记录在 `dual_export_status.json`，既有冻结结果不重导出。
+
 生产输出必须包含容量、逐小时运行、碳/CCS、成本分解、`solution_qc.json`、SHA256 manifest 和简要 SVG。每个成功求解还必须在 manifest 封存前生成固定结果查阅合同：`result_dashboard_summary.json`、`result_analysis_metrics.csv` 与 `visualizations/core_result_dashboard.svg`，统一显示 solver/QC/hard checks、容量、所选时域发电、灵活性、碳约束和安全裕度。
 
 对于采用物理车群 SOC、驾驶取能、充放电效率和周期边界的 V4/V5，

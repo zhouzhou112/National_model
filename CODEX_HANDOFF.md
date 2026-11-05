@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-05 年度行对偶标准导出验证完成。** 新release增加七类1134行 `annual_row_duals.csv`、公式状态及数据字典登记；仅登记原约束句柄、不改LP。Gurobi13.0.2的1h/24h前后Fingerprint/行列/NZ一致，同BarPi离线T4差3.55e-15，23旧导出字节一致；505测试504通过、1既定平台跳过。24h配对残差0.159624 CNY/MWh如实披露。报告 `supplementary_materials/reviews/export_annual_row_duals_20261105/REVIEW_ZH.md`；只对之后新冻结release生效，在跑5294579/5318408仍走T4。
+
 - **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
 
 - **2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
@@ -10599,3 +10601,14 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
 
 执行源码54ce73e、冻结提交7117aa2（相关核心源码SHA与门禁一致）；冻结493文件，release manifest SHA1621933d3ed323f7276aca166f44209702201ddfa58ed9e7e19f88caba2feaf2。32项门禁→preflight PASS→held资源核验→按既有授权release→实际资源/700GiB/计算节点smoke全通过。证据supplementary_materials/reviews/C2060_launch_20261030/deployment/{freeze,preflight,held_submission,released_submission,status}.json，GATES_SUMMARY.json及REVIEW_ZH.md。sbatch源为Case3 2050 v2已核验原件，WLS仅路径字符串比较。已更新case_results C2060卡片；未覆盖历史验证失败、原始QC或任一运行包，SI改动保持隔离，无后台监听。下一步：用户询问时同时只读检查两作业；任一新终态按10-20核对旧备份/活动传输→T550完整单次备份→扩展验收/证书→取回小文件。C2060启动成功不等于全年稳定或已收敛。
+
+
+## 2026-11-05 年度核算行对偶纳入标准导出
+
+**2026-11-05 年度行对偶标准导出验证完成。** 新release增加七类1134行 `annual_row_duals.csv`、公式状态及数据字典登记；仅登记原约束句柄、不改LP。Gurobi13.0.2的1h/24h前后Fingerprint/行列/NZ一致，同BarPi离线T4差3.55e-15，23旧导出字节一致；505测试504通过、1既定平台跳过。24h配对残差0.159624 CNY/MWh如实披露。报告 `supplementary_materials/reviews/export_annual_row_duals_20261105/REVIEW_ZH.md`；只对之后新冻结release生效，在跑5294579/5318408仍走T4。
+
+- Git基线9bbff99；修改load_center.py、solution_export.py、io_contract.py、规格书，新增test_annual_row_duals.py及独立验证脚本/报告/receipt。未改约束、变量、目标、求解参数或任何冻结包。
+- 命令与输出：独立verify_export.py的1h/24h真实case3_2030工程验证，最终verification_v3_final；`python -m unittest discover -s tests -v`在隔离Gurobi13.0.2路径下505项零错误。86项输入身份清单和源码/产物SHA见verification_receipt.json。
+- 早期Gurobi12环境/内存门禁错误及首轮验证器漏配置profile的失败保留，未用作通过证据；最终同版Gurobi串行全回归通过。
+- 只新增年度行CSV和状态字段；现行七类行是物理GWh坐标，无需套用另族VRE/ROR行缩放。完整负荷侧价格系数来源记录resolved_configuration.security。
+- 下一步：审查明确九文件清单并同步GitHub；不部署当前云端release。工程窗通过不等于全年科学采纳。
