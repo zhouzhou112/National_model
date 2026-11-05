@@ -5749,3 +5749,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
 
 执行源码54ce73e、冻结提交7117aa2（相关核心源码SHA与门禁一致）；冻结493文件，release manifest SHA1621933d3ed323f7276aca166f44209702201ddfa58ed9e7e19f88caba2feaf2。32项门禁→preflight PASS→held资源核验→按既有授权release→实际资源/700GiB/计算节点smoke全通过。证据supplementary_materials/reviews/C2060_launch_20261030/deployment/{freeze,preflight,held_submission,released_submission,status}.json，GATES_SUMMARY.json及REVIEW_ZH.md。sbatch源为Case3 2050 v2已核验原件，WLS仅路径字符串比较。已更新case_results C2060卡片；未覆盖历史验证失败、原始QC或任一运行包，SI改动保持隔离，无后台监听。下一步：用户询问时同时只读检查两作业；任一新终态按10-20核对旧备份/活动传输→T550完整单次备份→扩展验收/证书→取回小文件。C2060启动成功不等于全年稳定或已收敛。
+
+
+## 2026-11-05 T550三批主线取数完成
+
+本轮仅19:27 GMT一次性核对云端：5294579/5318408仍RUNNING，517/423轮，无新终态，未触发备份或证书。T550已解12案例只读分析完成；三批收据及完整命令见supplementary_materials/reviews/t550_flex_analysis_20261104/REVIEW_ZH.md。T4/T3/T2原始MPS/BarPi身份与行序一致；七个有限MPS任务全部COMPLETE，无轮询守护。T9、T6/T7/T8在独立analysis_tools_20261105_*目录计算，仅汇总小文件回传，各文件≤30MB、案例≤100MB。
+
+断线恢复先查terminal/既有进程，不重启已有目录；本轮19:29后SSH超时，经作者重连确认原A2040进程继续，未重复执行。两个既有collector原逻辑已封装在review，来源SHA留档；未来已解新案例须先完整备份与身份确认再按同样路线提取，不更改旧release。标准年度导出仅供新冻结release，源码80bcc8f，不能向两在跑包部署。CO2费用比例分摊只是作者批准的事后核算，不能反写源模型。

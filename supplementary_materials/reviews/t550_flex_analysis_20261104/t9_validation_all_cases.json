@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "b2030",
+      "status": "PASS",
+      "binding_hours": 1405,
+      "binding_share": 0.005173810575931654,
+      "high_dual_hours": 13343,
+      "return_bytes": 197402,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "b2040",
+      "status": "PASS",
+      "binding_hours": 11562,
+      "binding_share": 0.04257622624834291,
+      "high_dual_hours": 40062,
+      "return_bytes": 204169,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "b2050",
+      "status": "PASS",
+      "binding_hours": 15965,
+      "binding_share": 0.05878995433789954,
+      "high_dual_hours": 48655,
+      "return_bytes": 205149,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "b2060",
+      "status": "PASS",
+      "binding_hours": 23999,
+      "binding_share": 0.08837457652084255,
+      "high_dual_hours": 55282,
+      "return_bytes": 203461,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "base2030",
+      "status": "PASS",
+      "binding_hours": 6978,
+      "binding_share": 0.025695978789217852,
+      "high_dual_hours": 10691,
+      "return_bytes": 201205,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "base2040",
+      "status": "PASS",
+      "binding_hours": 2,
+      "binding_share": 7.364854912358227e-06,
+      "high_dual_hours": 30574,
+      "return_bytes": 190730,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "base2050",
+      "status": "PASS",
+      "binding_hours": 1,
+      "binding_share": 3.6824274561791133e-06,
+      "high_dual_hours": 35421,
+      "return_bytes": 190262,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "base2060",
+      "status": "PASS",
+      "binding_hours": 423,
+      "binding_share": 0.001557666813963765,
+      "high_dual_hours": 42902,
+      "return_bytes": 191477,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "c2050",
+      "status": "PASS",
+      "binding_hours": 2114,
+      "binding_share": 0.007784651642362646,
+      "high_dual_hours": 57334,
+      "return_bytes": 197781,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "case3_2030",
+      "status": "PASS",
+      "binding_hours": 1374,
+      "binding_share": 0.005059655324790102,
+      "high_dual_hours": 14566,
+      "return_bytes": 194602,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "case3_2040",
+      "status": "PASS",
+      "binding_hours": 9813,
+      "binding_share": 0.03613566062748564,
+      "high_dual_hours": 45869,
+      "return_bytes": 202317,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    },
+    {
+      "case": "nocredit_2030",
+      "status": "PASS",
+      "binding_hours": 11098,
+      "binding_share": 0.0408675799086758,
+      "high_dual_hours": 13740,
+      "return_bytes": 203278,
+      "rows": {
+        "province": 31,
+        "hour_month": 1116,
+        "joint": 1116,
+        "technology_groups": 682
+      }
+    }
+  ],
+  "total_files": 96,
+  "total_bytes": 2381833,
+  "checks": [
+    "all_returned_bytes_and_SHA256",
+    "joint_bins_partition_all_province_hours",
+    "joint_binding_bins_match_primal_binding",
+    "hour_month_dimension_counts",
+    "technology_group_hour_counts"
+  ]
+}

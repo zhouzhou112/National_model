@@ -12,6 +12,14 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-05 T550取数最终核验完成。** 三批收据全部PASS，12案例当前目录最大单文件15.27MB/最大案例33.17MB；T6八案、T7两案、T8十一案、T9十二案。标准导出提交80bcc8f已推工作分支，505回归零失败；本轮仅19:27只读核对两生产作业仍RUNNING。完整交付/异常/作者CO2事后分摊口径见t550_flex_analysis_20261104/REVIEW_ZH.md。
+
+- **2026-11-05 T550主线取数第3批完成。** 第三批11案例T8、两案例T3/T7/T2完成（A2030既有T2重新核SHA复用）。T8按作者批准同省全部捕集来源含DAC占比分摊共同CO2费用，并保留未分摊收益及共同费用；现实可结算收入无制度证据，保留NOT_DEFINED，不把影子收入称为结算。回传根为上级 `claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns/`；逐文件SHA及每文件30MB/每案例100MB检查通过。证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/batch3_receipt.json`，报告同目录 `REVIEW_ZH.md`。不改运行包、不求解、不建监听。
+
+- **2026-11-05 T550主线取数第2批完成。** 第二批B2040/2050/2060的T1/T4、其余T9及全部八柔性案例T6已回传；服务偏差与总负荷偏差闭合，全国同步窗按逐小时全国合计再求均值/最小值。回传根为上级 `claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns/`；逐文件SHA及每文件30MB/每案例100MB检查通过。证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/batch2_receipt.json`，报告同目录 `REVIEW_ZH.md`。不改运行包、不求解、不建监听。
+
+- **2026-11-05 T550主线取数第1批完成。** 第一批四案例T4与五案例T9已逐案例回传；1134年度行齐全、原始行序摘要一致、31省注入/需求配对残差已披露。回传根为上级 `claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns/`；逐文件SHA及每文件30MB/每案例100MB检查通过。证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/batch1_receipt.json`，报告同目录 `REVIEW_ZH.md`。不改运行包、不求解、不建监听。
+
 - **2026-11-05 年度行对偶标准导出验证完成。** 新release增加七类1134行 `annual_row_duals.csv`、公式状态及数据字典登记；仅登记原约束句柄、不改LP。Gurobi13.0.2的1h/24h前后Fingerprint/行列/NZ一致，同BarPi离线T4差3.55e-15，23旧导出字节一致；505测试504通过、1既定平台跳过。24h配对残差0.159624 CNY/MWh如实披露。报告 `supplementary_materials/reviews/export_annual_row_duals_20261105/REVIEW_ZH.md`；只对之后新冻结release生效，在跑5294579/5318408仍走T4。
 
 - **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
@@ -10612,3 +10620,49 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 - 早期Gurobi12环境/内存门禁错误及首轮验证器漏配置profile的失败保留，未用作通过证据；最终同版Gurobi串行全回归通过。
 - 只新增年度行CSV和状态字段；现行七类行是物理GWh坐标，无需套用另族VRE/ROR行缩放。完整负荷侧价格系数来源记录resolved_configuration.security。
 - 下一步：审查明确九文件清单并同步GitHub；不部署当前云端release。工程窗通过不等于全年科学采纳。
+
+
+## 2026-11-05 T550主线取数第1批完成
+
+第一批四案例T4与五案例T9已逐案例回传；1134年度行齐全、原始行序摘要一致、31省注入/需求配对残差已披露。
+
+- 时间：2026-11-05T19:50:31.231522+00:00；Git基线 `80bcc8fa86e521f8bf97bf70739105d83d3a569c`。只读备份输入，输出写独立analysis目录；原始MPS/BarPi/逐时数组未回传。
+- 命令：`dispatch.py t1|launch|collect <case>`、`collect_t4_checks.py <case>`、`t9_transfer.py`、`metrics_transfer.py`、`finalize_cases.py`、`record_batch.py 1`，脚本均在本review。
+- 验证：输入SHA对result/backup manifest、MPS行序digest、派生表自检、双端传输SHA；批次收据SHA `d43d9a1f82a04b7bb9a802d9ded6883c7166a9c856d46472e8dc66302c28166e`。完整文件/案例/任务清单见收据。
+- 输出：`D:/codeenv/pycharmproject/National_RL/claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns`；本轮前summary/transfer/sha已旁置保留。
+- 边界：物理绑定率与正对偶份额分开；连续RUC启停是GW，不是机组次数；价格为模型规划指标。
+- 下一步：继续后续批次与标准导出验收。
+
+
+## 2026-11-05 T550主线取数第2批完成
+
+第二批B2040/2050/2060的T1/T4、其余T9及全部八柔性案例T6已回传；服务偏差与总负荷偏差闭合，全国同步窗按逐小时全国合计再求均值/最小值。
+
+- 时间：2026-11-05T20:02:56.580101+00:00；Git基线 `80bcc8fa86e521f8bf97bf70739105d83d3a569c`。只读备份输入，输出写独立analysis目录；原始MPS/BarPi/逐时数组未回传。
+- 命令：`dispatch.py t1|launch|collect <case>`、`collect_t4_checks.py <case>`、`t9_transfer.py`、`metrics_dispatch.py`、`finalize_cases.py`、`record_batch.py 2`，脚本均在本review。
+- 验证：输入SHA对result/backup manifest、MPS行序digest、派生表自检、双端传输SHA；批次收据SHA `c14b07177cde262f28f0f890a1ff61adae834e5be2a1b37d314c491320abc286`。完整文件/案例/任务清单见收据。
+- 输出：`D:/codeenv/pycharmproject/National_RL/claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns`；本轮前summary/transfer/sha已旁置保留。
+- 边界：物理绑定率与正对偶份额分开；连续RUC启停是GW，不是机组次数；价格为模型规划指标。
+- 下一步：继续后续批次与标准导出验收。
+
+
+## 2026-11-05 T550主线取数第3批完成
+
+第三批11案例T8、两案例T3/T7/T2完成（A2030既有T2重新核SHA复用）。T8按作者批准同省全部捕集来源含DAC占比分摊共同CO2费用，并保留未分摊收益及共同费用；现实可结算收入无制度证据，保留NOT_DEFINED，不把影子收入称为结算。
+
+- 时间：2026-11-05T20:02:58.651201+00:00；Git基线 `80bcc8fa86e521f8bf97bf70739105d83d3a569c`。只读备份输入，输出写独立analysis目录；原始MPS/BarPi/逐时数组未回传。
+- 命令：`dispatch.py t1|launch|collect <case>`、`collect_t4_checks.py <case>`、`t9_transfer.py`、`metrics_dispatch.py`、`finalize_cases.py`、`record_batch.py 3`，脚本均在本review。
+- 验证：输入SHA对result/backup manifest、MPS行序digest、派生表自检、双端传输SHA；批次收据SHA `f2ad1bd3d332a648f1ae2039c2cd7b1154b270031b7c4309be6d4621325faff4`。完整文件/案例/任务清单见收据。
+- 输出：`D:/codeenv/pycharmproject/National_RL/claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns`；本轮前summary/transfer/sha已旁置保留。
+- 边界：物理绑定率与正对偶份额分开；连续RUC启停是GW，不是机组次数；价格为模型规划指标。
+- 下一步：完成源码与交接Git同步；作者用精确年度行对偶重跑2040/2050价格接受者，后续新终态仍按既定备份验收规则。
+
+
+## 2026-11-05 T550取数最终核验及记录更正
+
+**2026-11-05 T550取数最终核验完成。** 三批收据全部PASS，12案例当前目录最大单文件15.27MB/最大案例33.17MB；T6八案、T7两案、T8十一案、T9十二案。标准导出提交80bcc8f已推工作分支，505回归零失败；本轮仅19:27只读核对两生产作业仍RUNNING。完整交付/异常/作者CO2事后分摊口径见t550_flex_analysis_20261104/REVIEW_ZH.md。
+
+- 更正第1批命令记录：实际指标派发入口是 `metrics_dispatch.py`，不是误写的 `metrics_transfer.py`；实际命令与输入SHA在各case运行收据中，历史条目保留。
+- 作者在本轮明确批准同省全部CCS及DAC捕集量比例事后分摊CO2运输/封存费，并保留省总费、未分摊收益和上下界；已实现并核验。现实可结算收入无制度定义，列留空，不与理论收益混用。
+- 标准导出提交 `80bcc8f`；取数脚本/小证据/本记录由随后明确清单提交追溯。源数据、原模型、两云作业及冻结包均未改动；临时连接和试算失败均保全。
+- 总校验delivery_validation.json：1027文件320265193bytes（含既有交付），无NPZ/NPY/MPS回传；三批关键载荷哈希未因最终summary更新改变。下一步作者按精确年度行价格继续论文分析；状态仅按下次明确查询刷新。

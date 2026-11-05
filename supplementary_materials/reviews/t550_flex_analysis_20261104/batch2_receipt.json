@@ -1,0 +1,253 @@
+{
+  "batch": 2,
+  "status": "PASS",
+  "utc": "2026-11-05T20:02:56.580101+00:00",
+  "git_baseline": "80bcc8fa86e521f8bf97bf70739105d83d3a569c",
+  "return_root": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\analysis\\base_dual_diagnosis_20261020\\02_server_returns",
+  "cases": {
+    "base2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE_REUSED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2040": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2050": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2060": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2040": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "c2050": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "nocredit_2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": null,
+      "T9": "COMPLETE"
+    },
+    "b2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2040": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2050": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2060": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    }
+  },
+  "files": {
+    "case3_2030/credit_realization_by_province_service.csv": {
+      "sha256": "ebaea9daafd34748402f8c1d0a096a5e810d201f93553550e053e498ebe63aa5",
+      "bytes": 121441
+    },
+    "case3_2030/credit_realization_national_service.csv": {
+      "sha256": "27c830afc29b5103dca647ffb6354fe874e193c2c3ae11c5fd03eedf70c080a7",
+      "bytes": 1394
+    },
+    "case3_2030/metadata/metrics_summary.json": {
+      "sha256": "e29b3c8c936fc4de8bdfdf79ca6992b84ada9fce5a1ee8e16c43277cfa4ec1d2",
+      "bytes": 3710
+    },
+    "case3_2040/credit_realization_by_province_service.csv": {
+      "sha256": "d58db10e186f031ba9ea3b91ecfbbd59945975168c85984dd4e219858c61655d",
+      "bytes": 134020
+    },
+    "case3_2040/credit_realization_national_service.csv": {
+      "sha256": "721f8a775675e6711d22bcdfc43bc80dfab011570ccf5a211428ad2675ea67af",
+      "bytes": 1505
+    },
+    "case3_2040/metadata/metrics_summary.json": {
+      "sha256": "b841648f16ac891e0b2c54eebb80c839aa672371a7b48aa79090f98485176421",
+      "bytes": 3732
+    },
+    "c2050/credit_realization_by_province_service.csv": {
+      "sha256": "5d62d6b1786596b79a958abf3a99338de24ade587c93dc8babf177115ab97d96",
+      "bytes": 137973
+    },
+    "c2050/credit_realization_national_service.csv": {
+      "sha256": "191849faa1929cea2c27188c9e84d6d739be4dfba728c3585aca8131a0a4c9a9",
+      "bytes": 1515
+    },
+    "c2050/metadata/metrics_summary.json": {
+      "sha256": "b476472518bb85674b8c0136026bae3f974ef3685a83f13b0c946a99fd119f9d",
+      "bytes": 3149
+    },
+    "nocredit_2030/credit_realization_by_province_service.csv": {
+      "sha256": "1263adbb1fb7cfeded37ee598f2ec4aecc8af2fbcf1d7f99d7b0964285cd1681",
+      "bytes": 98676
+    },
+    "nocredit_2030/credit_realization_national_service.csv": {
+      "sha256": "457e18114c011ddc281cc260afee636265e4704c5f42c0594ab50fdcff91ab3a",
+      "bytes": 1098
+    },
+    "nocredit_2030/metadata/metrics_summary.json": {
+      "sha256": "4d4cf50bac8d7e5a19ab259bd24da32a3365af0a2b9bbac5d7b962acf295d506",
+      "bytes": 3176
+    },
+    "b2030/credit_realization_by_province_service.csv": {
+      "sha256": "cfb14170ad6f26c2c4bd4e9d4f23ae6a918a656984be2f76f2334476c74bed71",
+      "bytes": 98309
+    },
+    "b2030/credit_realization_national_service.csv": {
+      "sha256": "092745cf9148111edf297d044ab8e0c250610e7e20da0183b96353195509b253",
+      "bytes": 1098
+    },
+    "b2030/metadata/metrics_summary.json": {
+      "sha256": "e49e005e62b0a0892547ed1c054756bd1778931f3828d35f77c6f1259ec5cd6c",
+      "bytes": 3057
+    },
+    "b2040/credit_realization_by_province_service.csv": {
+      "sha256": "ab39eae990adaa6e6a351cc164d821e4d0a2573adf9867df1dcee66db86db530",
+      "bytes": 96580
+    },
+    "b2040/credit_realization_national_service.csv": {
+      "sha256": "bad56385cf6f32adbe9e27a338f389cb876f6c44cf9ce8466d1e9d31d18375fb",
+      "bytes": 1094
+    },
+    "b2040/metadata/metrics_summary.json": {
+      "sha256": "759e1cf8dbb4390ee377b452a2dc07cdec7f79b9686c414f705d4f4af95fc269",
+      "bytes": 3077
+    },
+    "b2040/annual_row_duals.csv": {
+      "sha256": "e67281cadab0cd7a7da241d3d70756e5ce0205103f48903fc0c802363772794b",
+      "bytes": 174297
+    },
+    "b2040/metadata/t4_price_checks.json": {
+      "sha256": "78c3c2d546aaa78bc95d82233d96d09e5492529eaffdbc2e4ad87b21666186eb",
+      "bytes": 1458
+    },
+    "b2050/credit_realization_by_province_service.csv": {
+      "sha256": "1edae66fda56c03b3256949d4b1a22a10989bb5a69a5952b7a9c71d1d505dbac",
+      "bytes": 96067
+    },
+    "b2050/credit_realization_national_service.csv": {
+      "sha256": "8be75635741bc13a9b014358e40424c1fe2361f15364abff36d6fcc89901fcce",
+      "bytes": 1096
+    },
+    "b2050/metadata/metrics_summary.json": {
+      "sha256": "84ff40090fe3d166cc7c729479fe50b9013b63c371d1f94370e60b167b7428af",
+      "bytes": 3078
+    },
+    "b2050/annual_row_duals.csv": {
+      "sha256": "f074ddc9b0db6d4b2e41f106f6ea7cf5acefeefdf5ef3d1c5f8349a3cd06597c",
+      "bytes": 174189
+    },
+    "b2050/metadata/t4_price_checks.json": {
+      "sha256": "0b048d040f44953672eb09be31fe7b4b3e76cf94c53ebebeba20722ce1e21041",
+      "bytes": 1458
+    },
+    "b2060/credit_realization_by_province_service.csv": {
+      "sha256": "5840db50899f58c431d27b42e8f324986e98eb97d5289d12417e80c9f8f3f69c",
+      "bytes": 96523
+    },
+    "b2060/credit_realization_national_service.csv": {
+      "sha256": "10cc04d595b64c7d0839340339dbb57e50f4630fa7e7db0472409ad1e9c6e956",
+      "bytes": 1096
+    },
+    "b2060/metadata/metrics_summary.json": {
+      "sha256": "b519c8f6934f8d1167c9e3c6d92aa6c5d7841ff394f5f71029fac4a4c2671c81",
+      "bytes": 3075
+    },
+    "b2060/annual_row_duals.csv": {
+      "sha256": "1418a684e6b20d5dd6442b8dafe0802e45a9900926428ca349618e56990c0048",
+      "bytes": 174303
+    },
+    "b2060/metadata/t4_price_checks.json": {
+      "sha256": "d66c98244d242c2a398d7915e3fed872ce82496e15b6698a499cdd5004f000f6",
+      "bytes": 1457
+    }
+  },
+  "model_changed": false,
+  "solver_started": false
+}

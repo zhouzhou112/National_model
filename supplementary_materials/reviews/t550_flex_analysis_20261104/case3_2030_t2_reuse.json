@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "case": "case3_2030",
+  "mode": "REUSE_VERIFIED_EXISTING_T2",
+  "inputs": {
+    "model_archive/original.mps.gz": "fe9a28b1be6865507d7e1b4249a84fd0e807c3ccb4112518676ea0642fc3d23d",
+    "barrier_checkpoint/dual_barpi.npy": "ff94e370bdaddc8399060025c54f1b85d394d5054b9c0a38ea7c7397b7b838ab",
+    "vre_capacity.csv": "92deac8536a6a68f309f246fa662d6e964d5d21bc2bf71d77ff738dc05d45c50"
+  },
+  "files": {
+    "vre_site_reduced_costs.csv": {
+      "sha256": "0ed9286b521cb7a6b61e8d64f4f685686faa635564a6bd159e119360457ce2e8",
+      "bytes": 7095746
+    },
+    "capacity_column_reduced_costs.csv": {
+      "sha256": "f134cbd79ae576a14d87edbeeaad935ef5def4094293350e558d98a132c56988",
+      "bytes": 4177812
+    },
+    "screening_summary.json": {
+      "sha256": "7448f66dcf899bcb6d86bd14328a9f4469e40a0f08412b467a82f061a29332f5",
+      "bytes": 2848
+    },
+    "column_family_summary.csv": {
+      "sha256": "ed7288353d4249b9d6e8e2d52b0172f50c145c604f8075200cc33b6b16c9dbed",
+      "bytes": 4188
+    }
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "batch": 3,
+  "status": "PASS",
+  "utc": "2026-11-05T20:02:58.651201+00:00",
+  "git_baseline": "80bcc8fa86e521f8bf97bf70739105d83d3a569c",
+  "return_root": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\analysis\\base_dual_diagnosis_20261020\\02_server_returns",
+  "cases": {
+    "base2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE_REUSED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2040": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2050": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2060": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2040": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "c2050": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "nocredit_2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": null,
+      "T9": "COMPLETE"
+    },
+    "b2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2040": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2050": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "b2060": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    }
+  },
+  "files": {
+    "base2030/firm_revenue_by_province_technology.csv": {
+      "sha256": "23cdd92b147ef7e2d20551d5dfa3f841cfa28db9e011c705ef333c791582d04c",
+      "bytes": 228880
+    },
+    "base2030/metadata/revenue_summary.json": {
+      "sha256": "fa45c0c500964a2e41315511047edad29d599fdceb39183aa7a3c0c8a6ecc63a",
+      "bytes": 11467
+    },
+    "base2040/firm_revenue_by_province_technology.csv": {
+      "sha256": "c8dc2c39feb6aff7ddee3b3180d4c55af36d2d6b0cde2eb31ab71dd744e937ac",
+      "bytes": 226885
+    },
+    "base2040/metadata/revenue_summary.json": {
+      "sha256": "35e633743248ce776fc8aab12ceab4da4040b6502b1232c8c24dce3a421ced3c",
+      "bytes": 11472
+    },
+    "base2050/firm_revenue_by_province_technology.csv": {
+      "sha256": "eb640228b92e8d9f8b93ce809542b0ef34dc32e9d83a4f2baab284d0c50cae5c",
+      "bytes": 226606
+    },
+    "base2050/metadata/revenue_summary.json": {
+      "sha256": "f79b0abefa5803862e31bd7e3a6112eea42a0f6ac2b130b611bf74ffe877d626",
+      "bytes": 11490
+    },
+    "base2060/firm_revenue_by_province_technology.csv": {
+      "sha256": "c0a3ccca71900e5c38c6adc10734dc3558c11abb5cac3cd05c933f652f8994e4",
+      "bytes": 221825
+    },
+    "base2060/metadata/revenue_summary.json": {
+      "sha256": "95d20fa416ceacbaa1ea44df28c6d5138e0eb857b35a08964a3f9bfe6b0d0bb6",
+      "bytes": 11551
+    },
+    "case3_2030/firm_revenue_by_province_technology.csv": {
+      "sha256": "903704ec5ce813b92e0f5a1837a14d4189544ccf19ab3c2f747980379d05584a",
+      "bytes": 228174
+    },
+    "case3_2030/metadata/revenue_summary.json": {
+      "sha256": "a334204771ae795a258f691116f79ad8eb2e9293f59bc013ee9e21fb5405e4d5",
+      "bytes": 11717
+    },
+    "case3_2030/rc_screen/vre_site_reduced_costs.csv": {
+      "sha256": "0ed9286b521cb7a6b61e8d64f4f685686faa635564a6bd159e119360457ce2e8",
+      "bytes": 7095746
+    },
+    "case3_2030/rc_screen/capacity_column_reduced_costs.csv": {
+      "sha256": "f134cbd79ae576a14d87edbeeaad935ef5def4094293350e558d98a132c56988",
+      "bytes": 4177812
+    },
+    "case3_2030/typical_day_case3_2030.csv": {
+      "sha256": "ecfc172e2ef46471812e57189f0e3fe8ac7b6761b9b008f2107a91685090e2a1",
+      "bytes": 32747
+    },
+    "case3_2040/firm_revenue_by_province_technology.csv": {
+      "sha256": "19fcc18a566dc5b6866c3e704cb01cac5a1528e73eae0fb075aae76b15dad206",
+      "bytes": 228484
+    },
+    "case3_2040/metadata/revenue_summary.json": {
+      "sha256": "a964862ec64201be34d65f25995adf80daa6eeeb79c089a9da655551ecc1bed3",
+      "bytes": 11762
+    },
+    "case3_2040/rc_screen/vre_site_reduced_costs.csv": {
+      "sha256": "4859eacff0750b8cc6b56033399a7eb3bac574928a34be97c25e68feaa458288",
+      "bytes": 7309589
+    },
+    "case3_2040/rc_screen/capacity_column_reduced_costs.csv": {
+      "sha256": "c37703213e84c21af7edeae4322d4cee8099a456fea76a51e9c29fc605f05927",
+      "bytes": 4216718
+    },
+    "case3_2040/typical_day_case3_2040.csv": {
+      "sha256": "506c1d56b848bb74f9e54250c54644303dec9af71cfbb17d7407eb8584e4288a",
+      "bytes": 32628
+    },
+    "case3_2040/corridor_duals.csv": {
+      "sha256": "1351e4e51ac334fad192bee74384d38d4936a7e2621a217621ebf85452407d9f",
+      "bytes": 113549
+    },
+    "case3_2040/corridor_duals_monthly.csv": {
+      "sha256": "fc590a937d1cf513f0aaedb02db5f9c869a4a6f5d5362a3921dc7cb1cc7a66e7",
+      "bytes": 337975
+    },
+    "c2050/firm_revenue_by_province_technology.csv": {
+      "sha256": "78fafd8f81989a53b580b4fc9dbd52ccf5618bc7d9760124dfb6ebd33972f7a7",
+      "bytes": 226963
+    },
+    "c2050/metadata/revenue_summary.json": {
+      "sha256": "b1631d2382d95d1ccd6ea60fe46b6ac9bb69909dfaa2e34341c85448f8ac96ee",
+      "bytes": 11790
+    },
+    "c2050/corridor_duals.csv": {
+      "sha256": "56ced02e2336063bbe444f70e673a494f48d4591cd61c627b6695377af7658e8",
+      "bytes": 113602
+    },
+    "c2050/corridor_duals_monthly.csv": {
+      "sha256": "a7b2afae4aed5cca911591777f94bde965206515e3b408eee5613cf3eef81943",
+      "bytes": 336503
+    },
+    "b2030/firm_revenue_by_province_technology.csv": {
+      "sha256": "a4ac7167453e7f51c1631239ea49f229336f0276fb0814bc918d3e0ded100ac0",
+      "bytes": 225869
+    },
+    "b2030/metadata/revenue_summary.json": {
+      "sha256": "30df49b0edbd12f1c6127952cdf9c989c278896885817e2e2462096303606603",
+      "bytes": 11655
+    },
+    "b2040/firm_revenue_by_province_technology.csv": {
+      "sha256": "228b41b7c927baeeea4b6bd7c8c20a46516adc653ef426517584e1a3a868ff5e",
+      "bytes": 222964
+    },
+    "b2040/metadata/revenue_summary.json": {
+      "sha256": "b68b5e2c271602e91703a2053a4f5a3b7a7f554be22b0781885a83108fb7d20d",
+      "bytes": 11666
+    },
+    "b2050/firm_revenue_by_province_technology.csv": {
+      "sha256": "33d446ff8568c6e7c6adfa8423e3e71f504d43d3ba3449f50868a15d2761fd6e",
+      "bytes": 222349
+    },
+    "b2050/metadata/revenue_summary.json": {
+      "sha256": "1997b0ab9540c6664f8a92c44fbb905beff95c2efe5fd89d7209d8c9b7f9a635",
+      "bytes": 11674
+    },
+    "b2060/firm_revenue_by_province_technology.csv": {
+      "sha256": "a9434b2e35c7f40412cc7cf5039cd82409bcd61cf63e9b101311d7069e861f95",
+      "bytes": 217782
+    },
+    "b2060/metadata/revenue_summary.json": {
+      "sha256": "0d08150c601b2013f79c407754db01de80efd8a470c3becfd293a7f7f0db5c16",
+      "bytes": 11686
+    }
+  },
+  "model_changed": false,
+  "solver_started": false
+}

@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"c2050\", \"status\": \"PASS_POSTHOC_CO2_ALLOCATION\", \"rows\": 403, \"cost_checks\": \"PASS\", \"seconds\": 3.9248344898223877}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/c2050/revenue_v1"
+}

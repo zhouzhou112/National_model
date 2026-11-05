@@ -1,0 +1,22 @@
+{
+  "case": "c2050",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "-u",
+    "/home/zz2/National_model_server/analysis_tools_20261020/c2050/scripts/run_rows_only.py",
+    "--root",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+    "--out",
+    "/home/zz2/National_model_server/analysis_tools_20261020/c2050"
+  ],
+  "pid": 2012337,
+  "utc": "2026-11-05T19:34:01.087574+00:00",
+  "source_release": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "script_sha256": {
+    "dual_extensions.py": "b8688a8aefb1426c27a1c00a79e0b9b0a7b7c347a415078252c02eba8aef8356",
+    "run_rows_only.py": "c3fdbc87a80775cb6e0c01788ca6c0e1cd81bdc91d2f944f647b805e02b855d5",
+    "vre_reduced_cost_screen.extended.py": "f662d73e5c47467d032e40dfc6e53ffef62d31d542171be28495c62193ecaef2"
+  },
+  "finite_one_case": true,
+  "solver_started": false
+}

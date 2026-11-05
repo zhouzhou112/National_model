@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"b2060\", \"T6_national\": \"PASS\", \"rows\": 8, \"seconds\": 0.17777633666992188}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/b2060/national_v1"
+}

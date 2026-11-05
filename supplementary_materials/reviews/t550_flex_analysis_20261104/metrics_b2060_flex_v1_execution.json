@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"b2060\", \"T6\": \"PASS\", \"T7\": null, \"closure\": 1.829647544582258e-13, \"rows\": 1364, \"seconds\": 1.2402961254119873}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/b2060/flex_v1"
+}

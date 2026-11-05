@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "case": "case3_2030",
+  "remote": "/home/zz2/National_model_server/analysis_tools_20261105_t9/case3_2030",
+  "files": {
+    "metadata/t9_summary.json": {
+      "bytes": 3202,
+      "sha256": "64419181a99abff952aa06ed60dc8c7079af4ed43a4341e44c951d1ee4d5ee52",
+      "verified": true
+    },
+    "inertia_online_startup_by_technology.csv": {
+      "bytes": 88071,
+      "sha256": "6c39654e0d8731befc9c643f0cc70eb18549cb1f5734aea53b6437a93d324dc9",
+      "verified": true
+    },
+    "inertia_binding_by_province.csv": {
+      "bytes": 10714,
+      "sha256": "210f1e54fbba9041b5ab6916e373b4a93b716367805897d31939996faf19f2d3",
+      "verified": true
+    },
+    "metadata/t9_input_identity.json": {
+      "bytes": 1518,
+      "sha256": "bde780e4af4f99ed1a45f906a2dc186f716b99af0b765a65311bf8d20184d41c",
+      "verified": true
+    },
+    "inertia_binding_by_hour_month.csv": {
+      "bytes": 32645,
+      "sha256": "368a1014e6476c81b29775d23ec4ebf997525812c5938781300167ac2ffc858c",
+      "verified": true
+    },
+    "inertia_slack_dual_joint_distribution.csv": {
+      "bytes": 46237,
+      "sha256": "6ba0e4c614e78b83ffbdf964e68ade9663e70f4f19df0f78bcab67909a036913",
+      "verified": true
+    },
+    "scripts/t9_inertia.py": {
+      "bytes": 11625,
+      "sha256": "9d997693507f9876e1d6af2cad4cb2009b4e9e14e1b97c605ea7c6a8dae94bc0",
+      "verified": true
+    },
+    "logs/t9_case3_2030.log": {
+      "bytes": 590,
+      "sha256": "46d86565aff840b30ff0752426eccb043f63fc3cf9e16cc3dc11b3925fdea48b",
+      "verified": true
+    }
+  },
+  "new_bytes": 194602,
+  "case_total_bytes": 30859035
+}

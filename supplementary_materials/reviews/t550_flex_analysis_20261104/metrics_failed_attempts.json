@@ -1,0 +1,28 @@
+[
+  {
+    "case": "case3_2030",
+    "attempt": "flex_v1",
+    "returncode": 2,
+    "stage": "launcher_before_scientific_script",
+    "cause": "Windows pathlib constructed backslashes for remote Linux script path",
+    "corrected_by": "Use POSIX string construction; flex_v2 PASS",
+    "source_outputs_changed": false
+  },
+  {
+    "case": "case3_2030",
+    "attempt": "revenue_v1",
+    "returncode": -15,
+    "stage": "offline_analysis_only",
+    "cause": "Agent stopped its own finite analysis process after detecting repeated NPZ decompression; updated producer-price decomposition before accepted delivery",
+    "corrected_by": "Cache arrays once and exact injection/demand annual-price mapping",
+    "cloud_solver_touched": false
+  },
+  {
+    "case": "case3_2030",
+    "attempt": "revenue_v2",
+    "returncode": 1,
+    "stage": "cost_reconciliation",
+    "cause": "CCS capture dispatch-reconstructed amount differs slightly from saved annual accounting variable; 5.8563892935e-5 million CNY difference exceeded strict reconstruction test",
+    "corrected_by": "Independently reconstruct accounting residual from annual_resource_accounting and report it as separate common numerical residual; no change to inputs or physical amounts. revenue_v3 PASS with author-approved CO2 allocation."
+  }
+]

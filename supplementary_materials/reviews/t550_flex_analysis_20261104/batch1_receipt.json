@@ -1,0 +1,241 @@
+{
+  "batch": 1,
+  "status": "PASS",
+  "utc": "2026-11-05T19:50:31.231522+00:00",
+  "git_baseline": "80bcc8fa86e521f8bf97bf70739105d83d3a569c",
+  "return_root": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\analysis\\base_dual_diagnosis_20261020\\02_server_returns",
+  "cases": {
+    "b2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": null,
+      "T9": "COMPLETE"
+    },
+    "base2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE_REUSED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2040": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "base2060": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": null,
+      "T7": null,
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "c2050": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2030": {
+      "T1": "COMPLETE",
+      "T2": "COMPLETE",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "case3_2040": {
+      "T1": "COMPLETE",
+      "T2": "PENDING",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "COMPLETE",
+      "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+      "T9": "COMPLETE"
+    },
+    "nocredit_2030": {
+      "T1": "COMPLETE",
+      "T2": "NOT_REQUESTED",
+      "T3": "COMPLETE",
+      "T4": "COMPLETE",
+      "T6": "COMPLETE",
+      "T7": "NOT_REQUESTED",
+      "T8": null,
+      "T9": "COMPLETE"
+    }
+  },
+  "files": {
+    "b2030/annual_row_duals.csv": {
+      "sha256": "81103f7d0fb6a14833c56dbbd9edcfdccc1e7c52ec4fa0ae3c3f54072812582f",
+      "bytes": 174072
+    },
+    "b2030/metadata/t4_price_checks.json": {
+      "sha256": "1dd1de1627e7d24fec376fef850dbe5604869eaf37d27c03c4ee2e28ea687ac7",
+      "bytes": 1457
+    },
+    "b2030/metadata/row_order_verification.json": {
+      "sha256": "fefc36d75216d447050a933d338374611111697c34dff79f14ed8506f75eab8d",
+      "bytes": 389
+    },
+    "b2030/inertia_binding_by_province.csv": {
+      "sha256": "c055ed4907733f301fa5da3c226ac652f35952640ac5bc08ac008ccc113c8a00",
+      "bytes": 11724
+    },
+    "b2030/inertia_binding_by_hour_month.csv": {
+      "sha256": "ae0255dff54fd5b8bd66c90e4d7b3ec369670a09b7e7bf51aea3a6fe8b5c48ba",
+      "bytes": 33894
+    },
+    "b2030/inertia_slack_dual_joint_distribution.csv": {
+      "sha256": "aeb6217397c41c62a15ffb7b80f36af09dbfd0840d2fd881db19b19659fdddd1",
+      "bytes": 46445
+    },
+    "b2030/inertia_online_startup_by_technology.csv": {
+      "sha256": "2d297edee8d2690b6478889f3e9ebcf67eaff950d193e230c92fa5d6fece5309",
+      "bytes": 88468
+    },
+    "b2030/metadata/t9_summary.json": {
+      "sha256": "424daffe3e07a54dc11c600f6e533498cb2246a892a452d5efb51b0e3c468f4a",
+      "bytes": 3162
+    },
+    "base2030/inertia_binding_by_province.csv": {
+      "sha256": "54875a037803f8f9ad73badab1301e7d4d5fb1e63091c8b2254498fe4e655647",
+      "bytes": 12445
+    },
+    "base2030/inertia_binding_by_hour_month.csv": {
+      "sha256": "ece1e6f3ceaeb39fa9470aefe5b6c13081a6fb026867cec55c9ac120cd5ece8f",
+      "bytes": 36838
+    },
+    "base2030/inertia_slack_dual_joint_distribution.csv": {
+      "sha256": "febced1117508259a562204b4ab9d04d7581a96269fdc8d8b29388f6c13f649f",
+      "bytes": 46771
+    },
+    "base2030/inertia_online_startup_by_technology.csv": {
+      "sha256": "da8f2b45b5b1b1ea56c93fdd845f438df0818a9a7421482a8fc4acabec425dbf",
+      "bytes": 88472
+    },
+    "base2030/metadata/t9_summary.json": {
+      "sha256": "c6cbcfd0f5e951c5cddcab65c5ab1ac9001879f37d787ca3c5bf226c2c61f8fd",
+      "bytes": 3052
+    },
+    "base2040/inertia_binding_by_province.csv": {
+      "sha256": "d1b70fe0dcb86cd42cfb74ad7e9ecce18c84305ee0a49e2afb23dd24f295b285",
+      "bytes": 9402
+    },
+    "base2040/inertia_binding_by_hour_month.csv": {
+      "sha256": "ba072c64f88210d72bc7aaf10ff24fe87b2609a3e8956842c86889c30b1cd8ea",
+      "bytes": 30799
+    },
+    "base2040/inertia_slack_dual_joint_distribution.csv": {
+      "sha256": "66252a844478bd893982a55a5bd015af6a03ae10d4c939f3163a455be0775b0f",
+      "bytes": 45946
+    },
+    "base2040/inertia_online_startup_by_technology.csv": {
+      "sha256": "158a3f94234548bd52c15bba29cfecc488fd28455fedd991a4545e88829dc323",
+      "bytes": 87855
+    },
+    "base2040/metadata/t9_summary.json": {
+      "sha256": "7220ff93948c7666f5761651ba142ea3c21f5db26880f6ea7884bad34bddf932",
+      "bytes": 3079
+    },
+    "base2060/inertia_binding_by_province.csv": {
+      "sha256": "c57602366a845e65ed93aa84510af0ae9b34126747ddfb5ec2a1e25e7cb2642f",
+      "bytes": 11319
+    },
+    "base2060/inertia_binding_by_hour_month.csv": {
+      "sha256": "4af28acc01f43d8fc20a925ee3d335e17f8ae40bf67667bc0896bda80fcbf8a4",
+      "bytes": 32333
+    },
+    "base2060/inertia_slack_dual_joint_distribution.csv": {
+      "sha256": "934de34f6dbf2876cd9876060ad3d80a3369d51e5c1811e6c55a0a3544531444",
+      "bytes": 46063
+    },
+    "base2060/inertia_online_startup_by_technology.csv": {
+      "sha256": "b65a322888252543abead4dd771af6886c375c0379d17cab1bfe84ee134f7f0e",
+      "bytes": 85003
+    },
+    "base2060/metadata/t9_summary.json": {
+      "sha256": "781ed1a80ee30bef0daf0f86c36e4d6c83778409c4111870548d04836ab18bd3",
+      "bytes": 3098
+    },
+    "c2050/annual_row_duals.csv": {
+      "sha256": "5a4cb87eecdc1f3ff0aff79bbdeff1ed6052f85fce49267850e00ac42a0decaf",
+      "bytes": 174246
+    },
+    "c2050/metadata/t4_price_checks.json": {
+      "sha256": "429036ce78a19ffbdec360052b6bdadafc9d565249503e1af0c4533e7c76750e",
+      "bytes": 1458
+    },
+    "c2050/metadata/row_order_verification.json": {
+      "sha256": "d0554fdcc850eb6b2f0d996ee68d29ca1916fa1bc2c31c4d1239c93dd191518e",
+      "bytes": 388
+    },
+    "case3_2030/inertia_binding_by_province.csv": {
+      "sha256": "210f1e54fbba9041b5ab6916e373b4a93b716367805897d31939996faf19f2d3",
+      "bytes": 10714
+    },
+    "case3_2030/inertia_binding_by_hour_month.csv": {
+      "sha256": "368a1014e6476c81b29775d23ec4ebf997525812c5938781300167ac2ffc858c",
+      "bytes": 32645
+    },
+    "case3_2030/inertia_slack_dual_joint_distribution.csv": {
+      "sha256": "6ba0e4c614e78b83ffbdf964e68ade9663e70f4f19df0f78bcab67909a036913",
+      "bytes": 46237
+    },
+    "case3_2030/inertia_online_startup_by_technology.csv": {
+      "sha256": "6c39654e0d8731befc9c643f0cc70eb18549cb1f5734aea53b6437a93d324dc9",
+      "bytes": 88071
+    },
+    "case3_2030/metadata/t9_summary.json": {
+      "sha256": "64419181a99abff952aa06ed60dc8c7079af4ed43a4341e44c951d1ee4d5ee52",
+      "bytes": 3202
+    },
+    "case3_2040/annual_row_duals.csv": {
+      "sha256": "fc667fadd7288f9e6cab352bf881a9a52bf291ca612804b0b489d07e0c9004a7",
+      "bytes": 174150
+    },
+    "case3_2040/metadata/t4_price_checks.json": {
+      "sha256": "8894747ea7174ef284eeb62c6152a0d7c41df89fb75c22925d7bcd23157cfdee",
+      "bytes": 1457
+    },
+    "case3_2040/metadata/row_order_verification.json": {
+      "sha256": "f4c65884f7ddace6a24af37785c917ff0b0b026942f70fde0890dd49dac9ad25",
+      "bytes": 389
+    },
+    "nocredit_2030/annual_row_duals.csv": {
+      "sha256": "65c0c33e766ad47032a4eafc1b18404f50250a1cfe9c6f12cd79772827ff1006",
+      "bytes": 174271
+    },
+    "nocredit_2030/metadata/t4_price_checks.json": {
+      "sha256": "5e626932cb2d5be539bf7738c0e7aed535169bf904802ee2f8ee561abd1e1965",
+      "bytes": 1457
+    },
+    "nocredit_2030/metadata/row_order_verification.json": {
+      "sha256": "f80543caeaacc2e363a2a8ec18711a6c99542df2b4fcd27e12b07b811e941a77",
+      "bytes": 388
+    }
+  },
+  "model_changed": false,
+  "solver_started": false
+}

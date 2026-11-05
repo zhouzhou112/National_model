@@ -1,0 +1,18 @@
+{
+  "case": "nocredit_2030",
+  "status": "PASS",
+  "files": 70,
+  "total_bytes": 20422309,
+  "summary_sha256": "736b30646863180ef60a7895030f9855452493f32235ebb4146675bcf3e21953",
+  "sha256_txt_sha256": "24e7ca7ffa3164068d27dd1251334d1f095365120d6a89ebfb1a79faaef3b920",
+  "tasks": {
+    "T1": "COMPLETE",
+    "T2": "NOT_REQUESTED",
+    "T3": "COMPLETE",
+    "T4": "COMPLETE",
+    "T6": "COMPLETE",
+    "T7": "NOT_REQUESTED",
+    "T8": null,
+    "T9": "COMPLETE"
+  }
+}

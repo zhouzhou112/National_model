@@ -1,0 +1,20 @@
+{
+  "metadata/t4_price_checks.json": {
+    "sha256": "78c3c2d546aaa78bc95d82233d96d09e5492529eaffdbc2e4ad87b21666186eb",
+    "bytes": 1458,
+    "verified": true,
+    "source": "/home/zz2/National_model_server/analysis_tools_20261020/b2040/t4_price_checks.json"
+  },
+  "annual_price_checks_by_province.csv": {
+    "sha256": "3176ca524b0851e1de5668012986c447ccf0528f982be765d4e8532a016607b8",
+    "bytes": 2565,
+    "verified": true,
+    "source": "/home/zz2/National_model_server/analysis_tools_20261020/b2040/annual_price_checks_by_province.csv"
+  },
+  "scripts/t4_price_checks.py": {
+    "sha256": "7cc3c78a125ef0391490e3d6b0519328969d859a05b8258b1751c9d368f2ad7b",
+    "bytes": 4313,
+    "verified": true,
+    "source": "/home/zz2/National_model_server/analysis_tools_20261020/b2040/scripts/t4_price_checks.py"
+  }
+}

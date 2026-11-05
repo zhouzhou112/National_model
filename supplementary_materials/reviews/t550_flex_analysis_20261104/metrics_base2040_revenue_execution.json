@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"base2040\", \"status\": \"PASS_POSTHOC_CO2_ALLOCATION\", \"rows\": 403, \"cost_checks\": \"PASS\", \"seconds\": 3.764580488204956}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/base2040/revenue_v1"
+}

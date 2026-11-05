@@ -1,0 +1,18 @@
+{
+  "case": "base2050",
+  "status": "PASS",
+  "files": 85,
+  "total_bytes": 33171694,
+  "summary_sha256": "4c24cec975310e548f71928d2977cbbd53ed8dcf7304f6dad2d760feb5fc52d5",
+  "sha256_txt_sha256": "12a64a52bfb5004920a48842007c3e58d747a36e8612a52ecfc018920d216332",
+  "tasks": {
+    "T1": "COMPLETE",
+    "T2": "COMPLETE",
+    "T3": "COMPLETE",
+    "T4": "COMPLETE",
+    "T6": null,
+    "T7": null,
+    "T8": "PASS_POSTHOC_CO2_ALLOCATION",
+    "T9": "COMPLETE"
+  }
+}

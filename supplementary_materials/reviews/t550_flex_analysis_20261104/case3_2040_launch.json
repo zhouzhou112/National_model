@@ -1,0 +1,26 @@
+{
+  "case": "case3_2040",
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "-u",
+    "/home/zz2/National_model_server/analysis_tools_20261020/case3_2040/scripts/vre_reduced_cost_screen.extended.py",
+    "--mps",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/output_8760/model_archive/original.mps.gz",
+    "--barpi",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/output_8760/barrier_checkpoint/dual_barpi.npy",
+    "--vre-capacity-csv",
+    "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/output_8760/vre_capacity.csv",
+    "--out",
+    "/home/zz2/National_model_server/analysis_tools_20261020/case3_2040/rc_screen"
+  ],
+  "pid": 2004342,
+  "utc": "2026-11-05T19:29:19.701905+00:00",
+  "source_release": "/home/zz2/National_model_server/cloud_backup/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+  "script_sha256": {
+    "dual_extensions.py": "b8688a8aefb1426c27a1c00a79e0b9b0a7b7c347a415078252c02eba8aef8356",
+    "run_rows_only.py": "c3fdbc87a80775cb6e0c01788ca6c0e1cd81bdc91d2f944f647b805e02b855d5",
+    "vre_reduced_cost_screen.extended.py": "f662d73e5c47467d032e40dfc6e53ffef62d31d542171be28495c62193ecaef2"
+  },
+  "finite_one_case": true,
+  "solver_started": false
+}

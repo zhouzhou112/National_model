@@ -1,0 +1,195 @@
+{
+  "status": "PASS",
+  "completed": [
+    {
+      "case": "b2030",
+      "task": "flex",
+      "files": 6,
+      "bytes": 814842,
+      "status": "PASS"
+    },
+    {
+      "case": "b2030",
+      "task": "national",
+      "files": 6,
+      "bytes": 16965,
+      "status": "PASS"
+    },
+    {
+      "case": "b2030",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 298144,
+      "status": "PASS"
+    },
+    {
+      "case": "b2040",
+      "task": "flex",
+      "files": 6,
+      "bytes": 813236,
+      "status": "PASS"
+    },
+    {
+      "case": "b2040",
+      "task": "national",
+      "files": 6,
+      "bytes": 16976,
+      "status": "PASS"
+    },
+    {
+      "case": "b2040",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 295601,
+      "status": "PASS"
+    },
+    {
+      "case": "b2050",
+      "task": "flex",
+      "files": 6,
+      "bytes": 812747,
+      "status": "PASS"
+    },
+    {
+      "case": "b2050",
+      "task": "national",
+      "files": 6,
+      "bytes": 16977,
+      "status": "PASS"
+    },
+    {
+      "case": "b2050",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 294817,
+      "status": "PASS"
+    },
+    {
+      "case": "b2060",
+      "task": "flex",
+      "files": 6,
+      "bytes": 812878,
+      "status": "PASS"
+    },
+    {
+      "case": "b2060",
+      "task": "national",
+      "files": 6,
+      "bytes": 16978,
+      "status": "PASS"
+    },
+    {
+      "case": "b2060",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 290033,
+      "status": "PASS"
+    },
+    {
+      "case": "base2030",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 300983,
+      "status": "PASS"
+    },
+    {
+      "case": "base2040",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 299122,
+      "status": "PASS"
+    },
+    {
+      "case": "base2050",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 298804,
+      "status": "PASS"
+    },
+    {
+      "case": "base2060",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 293859,
+      "status": "PASS"
+    },
+    {
+      "case": "c2050",
+      "task": "flex",
+      "files": 6,
+      "bytes": 854743,
+      "status": "PASS"
+    },
+    {
+      "case": "c2050",
+      "task": "national",
+      "files": 6,
+      "bytes": 17440,
+      "status": "PASS"
+    },
+    {
+      "case": "c2050",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 299287,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2030",
+      "task": "flex",
+      "files": 7,
+      "bytes": 871153,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2030",
+      "task": "national",
+      "files": 6,
+      "bytes": 17309,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2030",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 300152,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2040",
+      "task": "flex",
+      "files": 7,
+      "bytes": 883729,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2040",
+      "task": "national",
+      "files": 6,
+      "bytes": 17437,
+      "status": "PASS"
+    },
+    {
+      "case": "case3_2040",
+      "task": "revenue",
+      "files": 9,
+      "bytes": 301267,
+      "status": "PASS"
+    },
+    {
+      "case": "nocredit_2030",
+      "task": "flex",
+      "files": 6,
+      "bytes": 815323,
+      "status": "PASS"
+    },
+    {
+      "case": "nocredit_2030",
+      "task": "national",
+      "files": 6,
+      "bytes": 17069,
+      "status": "PASS"
+    }
+  ],
+  "missing": []
+}

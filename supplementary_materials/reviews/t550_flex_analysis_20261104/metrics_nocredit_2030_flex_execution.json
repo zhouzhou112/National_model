@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"nocredit_2030\", \"T6\": \"PASS\", \"T7\": null, \"closure\": 9.992007221626409e-14, \"rows\": 1364, \"seconds\": 1.256824254989624}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/nocredit_2030/flex_v1"
+}

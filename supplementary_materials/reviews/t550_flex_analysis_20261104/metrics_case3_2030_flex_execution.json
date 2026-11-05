@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\"case\": \"case3_2030\", \"T6\": \"PASS\", \"T7\": \"PASS\", \"closure\": 1.1901590823981678e-13, \"rows\": 1364, \"seconds\": 10.431594610214233}\n",
+  "stderr": "",
+  "output": "/home/zz2/National_model_server/analysis_tools_20261105_metrics/case3_2030/flex_v2"
+}

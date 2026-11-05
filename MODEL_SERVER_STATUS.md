@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+**2026-11-05 19:27 GMT，一次性只读核对：云端2项RUNNING，无新终态。** Case3 2050/5294579第517轮，PInf0.4261633/DInf6.7030e-6/Compl4.3777e-4，峰RSS617.821GiB；C2060/5318408第423轮，PInf7.420933/DInf3.9753e-5/Compl0.0119237，峰RSS600.748GiB。两项64CPU/750G，stderr空；仍未收敛，本轮未触发终态备份/证书/验收、未建监听。T550已恢复并开展已解案例只读小表提取；证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/cloud_once_20261105.json`，取数报告同目录 `REVIEW_ZH.md`。本条不表示19:27之后继续刷新状态。
+
 **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
 
 **2026-10-30 C2060全部32项工程门禁PASS。** C2050按新增年度汇总口径正式采纳；R1删除发电/储能0.391715051GW、网络0.226504420GW，保护改造关联新建0.007264065GW；26条负尾差置零增量4.75e-15GW，单处bound-close2.34465e-8GW。1h筛选/不筛选只有BOUNDS_VRE_NEW不同，tiny_capacity_columns均空；24h 103轮OPTIMAL，M=2.49682e-7，relative_v1 PASS、保全COMPLETE、2060参数通过。下一步冻结新C2060 release并preflight，按预授权提交/release。
