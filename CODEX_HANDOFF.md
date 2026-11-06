@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06 Case3 2050备份已于10:24:24 UTC全部完成：93文件/5,510,971,992bytes，T1/T2/T3逐文件bytes/SHA均通过，源身份未变；32个验收源小文件1,211,740bytes已回本机并核验。Claude判断包 `supplementary_materials/reviews/case3_2050_completed_20261106/claude_review_package/README_CLAUDE_ZH.md`；原relative_v1 HARD_FAIL保留，行定位与自身BarPi证书仍待完成，未正式采纳。**
+
 - **2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。**
 
 - **2026-11-05 T550取数最终核验完成。** 三批收据全部PASS，12案例当前目录最大单文件15.27MB/最大案例33.17MB；T6八案、T7两案、T8十一案、T9十二案。标准导出提交80bcc8f已推工作分支，505回归零失败；本轮仅19:27只读核对两生产作业仍RUNNING。完整交付/异常/作者CO2事后分摊口径见t550_flex_analysis_20261104/REVIEW_ZH.md。
@@ -10675,3 +10677,9 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
 
 Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、输出与下一步见`supplementary_materials/reviews/case3_2050_completed_20261106/REVIEW_ZH.md`。只读查询与既定备份，未修改求解设置。
+
+
+## 2026-11-06 Case3 2050备份完成与验收交接
+
+2026-11-06 Case3 2050备份已于10:24:24 UTC全部完成：93文件/5,510,971,992bytes，T1/T2/T3逐文件bytes/SHA均通过，源身份未变；32个验收源小文件1,211,740bytes已回本机并核验。Claude判断包 `supplementary_materials/reviews/case3_2050_completed_20261106/claude_review_package/README_CLAUDE_ZH.md`；原relative_v1 HARD_FAIL保留，行定位与自身BarPi证书仍待完成，未正式采纳。
+Git基准`c5f052d370f6cb047449ea665ce1dc4068beaf0d`；仅小文件取回与校验，脚本、清单、收据见上述目录。下一步由作者/Claude判断，补行重构与证书后再定验收；不改生产求解。

@@ -1,0 +1,50 @@
+{
+  "generated_at_utc": "2026-11-06T10:59:02.769674+00:00",
+  "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "job_id": "5294579",
+  "decision": "PENDING_AUTHOR_REVIEW",
+  "original_relative_v1_status": "HARD_FAIL",
+  "original_solver_check": {
+    "passed": false,
+    "optimal": true,
+    "barrier_primal_infeasibility": 0.05514924097398861,
+    "primal_limit": 0.01,
+    "relative_primal_dual_gap": 0.000825180306527595,
+    "relative_gap_limit": 0.01,
+    "mixed_unit_quality_record_only": {
+      "maximum_constraint_violation": 0.022921146999578923,
+      "maximum_constraint_residual": 0.0,
+      "maximum_bound_violation": 1.1629468588125746e-06,
+      "maximum_dual_violation": 0.0002671148834925037,
+      "maximum_dual_residual": 2.8336812647467013e-06,
+      "maximum_complementarity_violation": 405.7725005985394,
+      "maximum_violation": 405.7725005985394,
+      "kappa": null,
+      "kappa_exact_computed": false
+    }
+  },
+  "physical_checks": {
+    "power_balance": true,
+    "objective_components": true,
+    "unidirectional_interprovincial_flow": true,
+    "reservoir_transition": null,
+    "extended_gw_gwh_physical_checks": true,
+    "extended_mt_mass_balance_checks": true,
+    "remaining_physical_hard_checks": true,
+    "solver": false
+  },
+  "maximum_constraint_violation": 0.022921146999578923,
+  "maximum_constraint_row": {
+    "kind": "constraint",
+    "index": 53400865,
+    "name": null,
+    "lookup_status": "SKIPPED_MODEL_SIZE"
+  },
+  "row_physical_unit": "NOT_YET_RECONSTRUCTED",
+  "own_barpi_certificate": "NOT_COMPUTED",
+  "backup_status": "COMPLETE",
+  "source_documents_verified": true,
+  "source_file_count": 32,
+  "source_bytes": 1211740,
+  "note": "Evidence handoff only; no new acceptance exception or upstream adoption. C2050-specific exception not automatically applied."
+}
