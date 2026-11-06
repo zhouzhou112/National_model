@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "tests": {
+    "test_vre_pricing": 5,
+    "test_archived_constraint_audit": 4,
+    "test_relative_acceptance_and_mt": 22,
+    "test_acceptance_gate": 6
+  },
+  "tool_sha256": {
+    "cispo_model/vre_pricing.py": "f803d3693c2c322be966bec343cc22e6cebe061a81298056e7148ce19a2a3258",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "scripts/audit_archived_constraint.py": "03e8003f7d451091915df42eb25c7e8c70e8936a05173f06df63b3fb6394cd72",
+    "scripts/price_screened_candidates.py": "41412b27c91d4b881eddb0c8fdff773277cba19b1c042a9bd89d49b5c48f2c15",
+    "scripts/assess_relative_v1.py": "fee8a3826519d1c72ccc1a2da58a9c13be4ba3e48de8ae0af91c2d267bd5ea7b"
+  },
+  "scope": "Offline pricing, original MPS/BarX reconstruction, current relative_v1, evidence-bound author overlay; no model or numerical parameter changes"
+}

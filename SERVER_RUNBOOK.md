@@ -5768,3 +5768,8 @@ Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、�
 ## 2026-11-06 Case3 2050备份完成与验收材料交付
 
 2026-11-06 Case3 2050备份已于10:24:24 UTC全部完成：93文件/5,510,971,992bytes，T1/T2/T3逐文件bytes/SHA均通过，源身份未变；32个验收源小文件1,211,740bytes已回本机并核验。Claude判断包 `supplementary_materials/reviews/case3_2050_completed_20261106/claude_review_package/README_CLAUDE_ZH.md`；原relative_v1 HARD_FAIL保留，行定位与自身BarPi证书仍待完成，未正式采纳。
+
+
+## 2026-11-06 Case3 2050验收证据完成
+
+2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。

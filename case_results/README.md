@@ -2,7 +2,7 @@
 
 这里按情景 → 年份 → 完整运行版本索引案例。研究计算和大文件保存在 T550；本机保存可核验的小结果和导航。原有路径保持不变，不删除、移动或改写历史证据。
 
-当前索引：12个已验收生产案例、1个已解待验收案例、1个运行中案例、2个已备份失败尝试。未列入的旧诊断仍在原 reviews 目录，不表示被删除或已验收。
+当前索引：13个已验收生产案例、0个已解待验收案例、1个运行中案例、2个已备份失败尝试。未列入的旧诊断仍在原 reviews 目录，不表示被删除或已验收。
 
 |情景|年份|版本|类别|验收|备份|入口|
 |---|---|---|---|---|---|---|
@@ -20,7 +20,7 @@
 |C|2060|v1|RUNNING_PRODUCTION|NOT_FINISHED|NOT_TERMINAL|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/C/2060/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/README.md>)|
 |Case3|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2030/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 |Case3|2040|v2|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/README.md>)|
-|Case3|2050|v2|COMPLETED_PRODUCTION|HARD_FAIL_PENDING_REVIEW|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2050/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
+|Case3|2050|v2|COMPLETED_PRODUCTION|PASS_AUTHOR_20261106|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2050/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
 |nocredit|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/nocredit/2030/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 
 ## 初步分析（在 T550 计算）

@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-11-06T13:15:21.586663+00:00",
+  "git_baseline": "616fe3b3142f49c3b2c7bcf7c020579fa6f5cc3b",
+  "author_rule": "## 作者决定：case3 2050 验收条件与 case3 2060 预授权（2026-11-06）\n\n依据作者 2026-11-06 指示与 Claude 对验收包的审查；任务书 `claude_workspace/tasks/TASK_case3_2050_acceptance_and_case3_2060_launch_20261106.md`。\n\n1. **PInf 条件披露规则为通用规则。** 任何生产解，Barrier 终态 PInf 在 1e-2–1e-1 内时，满足以下三项证据即把 solver 项改为披露：全部物理相对检查通过；原模型最大约束违反所在行已定位，其变量族、物理单位、相对量级在该族 relative_v1 容差内；该解自身 BarPi 的筛选证书 B/obj ≤ 1e-2（未筛选的解免此项）。PInf > 1e-1 仍停止回报。逐案出具证据，不因索引或数值相近而推定。\n2. **case3 2050** 按第 1 条补齐行定位与证书后验收，作者采纳其筛选解为 case3 2060 上游。\n3. **比较用途重解不自动提交。** B > 1e-4 × obj 时，报告 B 与该解原对偶差（P − D）的比值，由作者决定是否重解；链的接续不受影响。（取代 2026-10-19 第 3 条中\"另起节点重解\"的自动执行。）\n4. **case3 2060 预授权：** case3 2050 状态 → R1 → v9_a12；Base 2060 清单，margin 0.2（若 case3 2050 的 B/obj > 5e-4 改用 0.3）；Aggregate=0，40 线程，64 CPU/750G/UNLIMITED/no-requeue；1h、24h、2060 参数核准与 preflight 全部通过后直接提交并 release。\n5. 不触碰 C 2060（5318408）及冻结包；所有结果完整保全；不建后台监听。\n",
+  "agents_sha256": "f750f70a020c3fb07864505d1ad15a5385b8a0785fdd25f88af8b2e50eb435c6",
+  "task_path": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\tasks\\TASK_case3_2050_acceptance_and_case3_2060_launch_20261106.md",
+  "task_sha256": "644c0066ec02a5f7c38092d06597d20dcf753e0f5b3e6bc939606b75a1ed58e2",
+  "source_release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "protected_running_job": "5318408",
+  "no_background_watcher": true,
+  "checkpoint": "Report step 1 row and certificate before Case3 2060 execution"
+}

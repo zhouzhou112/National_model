@@ -1,0 +1,122 @@
+{
+  "files": {
+    "author_review/excluded_rc_ratio_distribution.json": {
+      "bytes": 759,
+      "sha256": "2597697a6ddbf1edf80c2cbbd2c10239e3990b46d146d106a799f9f1811a5699"
+    },
+    "author_review/excluded_rc_ratio_columns.csv": {
+      "bytes": 614947,
+      "sha256": "4591b9a21708482e981e17d93195da314f0b1637ec884cc1895cb353f2a16d79"
+    },
+    "author_review/acceptance_author_20261106.json": {
+      "bytes": 5122,
+      "sha256": "b5ca1622ab264de0af0dbd625f368b7d10fad6a2653b06cc073a15a91bde9129"
+    },
+    "author_review/solution_qc_relative_v1_author_20261106.json": {
+      "bytes": 81449,
+      "sha256": "5a37e898132e0f745d15a138e3baf5377148ebb3ff9e67d831454558c5779cfd"
+    },
+    "pricing/screen_pricing_certificate.json": {
+      "bytes": 11053,
+      "sha256": "755cd6c66a93f022d3bd58b3e8bbc7c64c8f91a4598faf61cd75d68a80167cc6"
+    },
+    "pricing/negative_screened_columns.csv": {
+      "bytes": 2746,
+      "sha256": "3c37b2f78087fde2720d52f152fd2709c9a3148c4c349b23e86372b8ad069cb3"
+    },
+    "pricing/screen_sign_flip_sites.csv": {
+      "bytes": 2746,
+      "sha256": "3c37b2f78087fde2720d52f152fd2709c9a3148c4c349b23e86372b8ad069cb3"
+    }
+  },
+  "summary": {
+    "status": "PASS",
+    "row": {
+      "name": "province_annual_external_sent_p13",
+      "province_code": 13,
+      "family": "province_annual_external_sent",
+      "unit": "GWh",
+      "scope": "8760 one-hour periods",
+      "row_magnitude_gwh": 271412.7666526621,
+      "residual_gwh": 0.022921149666809196,
+      "relative_residual": 8.445125831587104e-08,
+      "tolerance_gwh": 0.27141276665266206,
+      "ratio_to_tolerance": 0.08445125831587105,
+      "passed": true,
+      "rule": "AGENTS 2026-10-30 annual energy row: max(1e-3 GWh,1e-6*annual row energy)",
+      "equation": "province_annual_external_sent_gwh = sum(outgoing forward GW and outgoing AC reverse GW)*1h",
+      "term_families": {
+        "flow_forward_gw": {
+          "count": 227760,
+          "coefficient_values": [
+            -1.0
+          ],
+          "contribution": -79452.16977856742
+        },
+        "flow_reverse_ac_gw": {
+          "count": 17520,
+          "coefficient_values": [
+            -1.0
+          ],
+          "contribution": -191960.59687409466
+        },
+        "province_annual_external_sent_gwh": {
+          "count": 1,
+          "coefficient_values": [
+            1.0
+          ],
+          "contribution": 271412.7437315124
+        }
+      }
+    },
+    "certificate": {
+      "B_million_cny": 535.3156164580678,
+      "B_over_objective": 9.393214619382875e-05,
+      "excluded_columns": 6195,
+      "near_optimality_decision": "ACCEPT",
+      "scope": "FULL_YEAR"
+    },
+    "comparison": {
+      "original_P_minus_D_million_cny": 4702.6701973397285,
+      "original_gap_yi_cny": 47.02670197339729,
+      "B_to_original_gap": 0.11383226847608674,
+      "automatic_resolve": false,
+      "author_decision_required": false,
+      "legacy_certificate_label": "INTERVAL_WITH_B",
+      "rule": "AGENTS 2026-11-06 supersedes automatic comparison re-solve"
+    },
+    "distribution": {
+      "excluded_columns": 6195,
+      "excluded_headroom_gw": 8637.929682740869,
+      "minimum_rc_ratio": -0.467265431834861,
+      "negative_count": 11,
+      "below_0p1_count": 21,
+      "below_0p1_fraction": 0.003389830508474576,
+      "current_quantiles": {
+        "0": -0.467265431834861,
+        "0.05": 0.20521252094043474,
+        "0.25": 0.2921704379111671,
+        "0.5": 0.46477625687312535,
+        "0.75": 0.6823644620774358,
+        "0.95": 0.9258858888201348,
+        "1": 1.098610783443274
+      },
+      "delta_definition": "current Case3 2050 rc_ratio minus original Base screening rc_ratio, equal weight per excluded column",
+      "delta_median": -0.0008859804947026761,
+      "delta_p05": -0.06394534147560811,
+      "quantile_method": "numpy default linear",
+      "B_recomputed_million_cny": 535.3156164580678
+    },
+    "case3_2060_margin": 0.2
+  },
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/acceptance_20261106/finalize_acceptance.py",
+    "--release-root",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+    "--output",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/author_review_20261106",
+    "--frozen-source",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/acceptance_20261106/frozen_row_formulation_verified.json"
+  ]
+}
