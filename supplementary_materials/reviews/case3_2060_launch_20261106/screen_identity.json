@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "sites_equal": true,
+  "case3_excluded": 8025,
+  "C2060_excluded": 8025,
+  "case3_only": [],
+  "C2060_only": [],
+  "excluded_identity_sha256": "ffb158fabfac69d8617749a5a9c7809a5c84572561b71bfe8a56312d35359cba",
+  "screen_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+  "screen_sha_matches_C2060": true,
+  "reference_candidate_sha_matches": true,
+  "margin": 0.2,
+  "site_addbacks": []
+}

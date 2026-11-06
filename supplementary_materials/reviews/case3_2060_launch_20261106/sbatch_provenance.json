@@ -1,0 +1,20 @@
+{
+  "source_release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+  "source_sha256": "141c1b06f77cfe2b546e321f3b981ff8f7245c46da663bb35d7248e6f5c3d530",
+  "derived_sha256": "2e0e140509041233bcc179969eacab265168994a40b9c402387729b6f576d75e",
+  "changes": [
+    "author comment",
+    "job name",
+    "OMP/OpenBLAS/MKL threads 40 to44",
+    "minimum CPU affinity 40 to44",
+    "Case3 2060 44-thread profile path"
+  ],
+  "unchanged_resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "time": "UNLIMITED",
+    "no_requeue": true,
+    "minimum_available_memory_gib": 700
+  },
+  "credential_contents_read": false
+}

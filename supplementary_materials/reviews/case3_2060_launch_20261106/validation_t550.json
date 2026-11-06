@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "gurobi_version": [
+    13,
+    0,
+    2
+  ],
+  "results": {
+    "test_*2060_launch_profile.py": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 2.068s\n\nOK\n"
+    },
+    "test_production_screen.py": {
+      "exit_code": 0,
+      "stdout": "Set parameter LicenseID to value 2840423\n",
+      "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 4.378s\n\nOK\n"
+    },
+    "test_factor_screen.py": {
+      "exit_code": 0,
+      "stdout": "Set parameter LicenseID to value 2840423\n",
+      "stderr": "..<frozen importlib._bootstrap>:241: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 16 from C header, got 96 from PyObject\n.\n----------------------------------------------------------------------\nRan 3 tests in 10.005s\n\nOK\n"
+    },
+    "test_continuation_cleanup.py": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "s.\n----------------------------------------------------------------------\nRan 2 tests in 0.004s\n\nOK (skipped=1)\n"
+    }
+  }
+}
