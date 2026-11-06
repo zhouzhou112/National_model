@@ -5773,3 +5773,9 @@ Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、�
 ## 2026-11-06 Case3 2050验收证据完成
 
 2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。
+
+## 2026-11-06 Case3 2060 44线程一次性部署
+
+2026-11-06 14:02 UTC：云端2项RUNNING。Case3 2060/5411471已按作者44线程尝试授权放行，节点m4cg1606，AllocTRES=64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用内存719.298GiB，Gurobi13.0.2 smoke PASS、stderr空，目前全年构建。R1/1h身份/24h/2060参数33项门禁及云端preflight全部PASS；清单SHA和8025剔除列与C2060完全一致、margin0.2无放回。C2060/5318408仅只读确认仍运行，第466轮。44线程全年峰值/提速尚未验证，不外推短窗，不建监听。
+
+复用路径：supplementary_materials/reviews/case3_2060_launch_20261106。先t550_work.py各阶段并finalize_gates.py；全部通过再deploy_authorized.py A2060 prepare/preflight/submit/release/status。每个已有操作目录拒绝覆盖，提交不确定时先读取held_submission，不能重复sbatch。本次作业5411471，源码7455614，原C2060 5318408仅只读。启动PASS不表示通过全年排序或科学验收。

@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-06T13:27:29.139928+00:00",
+  "as_of_utc": "2026-11-06T14:02:35.442459+00:00",
   "cases": [
     {
       "case": "B",
@@ -342,6 +342,23 @@
       ],
       "iterations": 404,
       "case_card": "case_results\\by_case\\nocredit\\2030\\20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1\\README.md"
+    },
+    {
+      "case": "Case3",
+      "year": 2060,
+      "version": "v1",
+      "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
+      "acceptance_status": "NOT_FINISHED",
+      "backup_status": "NOT_TERMINAL",
+      "job_id": "5411471",
+      "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\case3_2060_launch_20261106\\REVIEW_ZH.md",
+        "supplementary_materials\\reviews\\case3_2060_launch_20261106\\deployment\\startup_verified.json"
+      ],
+      "case_card": "case_results\\by_case\\Case3\\2060\\20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1\\README.md"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",

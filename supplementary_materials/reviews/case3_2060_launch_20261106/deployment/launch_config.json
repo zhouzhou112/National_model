@@ -1,0 +1,26 @@
+{
+  "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+  "source_commit": "7455614b082f9b39299a26b04d0f1e8e7d867c56",
+  "framework": "A",
+  "planning_year": 2060,
+  "boundary_year": 2050,
+  "scenario": "case3_thermal_ev_v5",
+  "solver_profile": "config/solver_profiles/barrier_stagea_screened_agg0_case3_2060_v1_threads44.json",
+  "license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+  "author_authorization": "AGENTS.md and author 2026-11-06: Case3 2050 accepted; exact C2060 screen; 44-thread trial; all gates passed then release",
+  "template_release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+  "validated_source_commit": "391a5f11c6b2e4cca5aae86d60a8158326a98d82",
+  "frozen_capacity_from": null,
+  "state_input": "upstream_state/planning_state_candidate",
+  "candidate_screen": true,
+  "automatic_successor": false,
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "billing": 64,
+    "solver_threads": 44,
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "minimum_available_memory_gib": 700
+  }
+}

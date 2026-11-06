@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06 14:02 UTC：云端2项RUNNING。Case3 2060/5411471已按作者44线程尝试授权放行，节点m4cg1606，AllocTRES=64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用内存719.298GiB，Gurobi13.0.2 smoke PASS、stderr空，目前全年构建。R1/1h身份/24h/2060参数33项门禁及云端preflight全部PASS；清单SHA和8025剔除列与C2060完全一致、margin0.2无放回。C2060/5318408仅只读确认仍运行，第466轮。44线程全年峰值/提速尚未验证，不外推短窗，不建监听。**
+
 - **2026-11-06 Case3 2060的R1、1h筛选身份、24h及2060参数共33项门禁全部PASS；与C2060清单SHA和8025剔除列集合一致。24h 101轮OPTIMAL、M=1.541792223e-7GWh、relative_v1 PASS、保全COMPLETE。作者本次要求44线程尝试，750G/64CPU及700GiB启动门槛不变。测试源码391a5f1、部署工具b3a5dfe；T550回传123小文件4,525,641bytes SHA通过。下一步云端冻结/preflight/提交release；尚未提交。5318408未改。**
 
 - **2026-11-06 Case3 2060准备：作者1b固定与C2060相同Base2060清单/margin0.2，无站点放回；旧0.3规则作废。本次按作者新指示试44个Gurobi线程，64CPU/750G/UNLIMITED/no-requeue及700GiB启动门槛不变。C2060实际剔除8025列，清单SHA与本地一致，1h后再逐列核对。新profile/生产约束14项本地测试通过；本地因Gurobi12未满足factor-runner要求13，保留失败证据并转T550已登记13环境补完后才做R1/门禁。未构建或提交，5318408未改。**
@@ -3894,6 +3896,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-06 Case3 2060 44线程放行与启动核验
+
+2026-11-06 14:02 UTC：云端2项RUNNING。Case3 2060/5411471已按作者44线程尝试授权放行，节点m4cg1606，AllocTRES=64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用内存719.298GiB，Gurobi13.0.2 smoke PASS、stderr空，目前全年构建。R1/1h身份/24h/2060参数33项门禁及云端preflight全部PASS；清单SHA和8025剔除列与C2060完全一致、margin0.2无放回。C2060/5318408仅只读确认仍运行，第466轮。44线程全年峰值/提速尚未验证，不外推短窗，不建监听。 源码7455614、测试391a5f1；命令deploy_authorized.py A2060 prepare/preflight/submit/release/status，详细输出与SHA见supplementary_materials/reviews/case3_2060_launch_20261106/REVIEW_ZH.md。下一步按作者询问一次性读状态，终态后备份/验收；不建监听。
 
 ### 2026-11-06 Case3 2060工程门禁通过
 

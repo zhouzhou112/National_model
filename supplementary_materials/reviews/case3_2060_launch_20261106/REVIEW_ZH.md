@@ -19,4 +19,12 @@
 
 `t550_work.py prepare → r1 → gate --name screen_1h → compare → gate --name unscreen_1h → gate --name gate_24h → finalize_gates.py → collect`。已有目录拒绝覆盖，不重复运行。`deploy_authorized.py A2060 prepare/preflight/submit/release/status`分阶段执行，首次sbatch使用hold，再按本次预授权release；不建立后台监听。新release目标为20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1。
 
-本记录阶段：门禁全过，尚未提交；云端preflight、分配和启动资源仍待验证。若新异常则停止，不自动重跑。完成后遵循既定T550全备份、验收和小文件规则。
+历史阶段：门禁全过时尚未提交，随后完成下述启动验证。
+
+## 放行和启动核验
+
+2026-11-06 14:02 UTC：云端2项RUNNING。Case3 2060/5411471已按作者44线程尝试授权放行，节点m4cg1606，AllocTRES=64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用内存719.298GiB，Gurobi13.0.2 smoke PASS、stderr空，目前全年构建。R1/1h身份/24h/2060参数33项门禁及云端preflight全部PASS；清单SHA和8025剔除列与C2060完全一致、margin0.2无放回。C2060/5318408仅只读确认仍运行，第466轮。44线程全年峰值/提速尚未验证，不外推短窗，不建监听。
+
+冻结release：`20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1`；源码提交`7455614b082f9b39299a26b04d0f1e8e7d867c56`。云端497个文件冻结并SHA核验，58个数据文件独立复制；preflight PASS，首次sbatch --hold的ReqTRES验证后按本次预授权release。证据见deployment/freeze.json、preflight.json、held_submission.json、released_submission.json、startup_verified.json。全部已有运行和失败证据保留，未修改5318408。
+
+Case3 2050完整备份93文件已校验、验收JSON已双端同步（本次复用，无重复传输）；新作业未终态，不启动结果备份。终态后按10-20规则备份、验收、取回小文件。44线程是否更快需等全年排序峰值及同阶段迭代耗时；没有保证，异常不自动重跑。
