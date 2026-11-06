@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-06T10:18:34.113089+00:00",
+  "status": "RUNNING",
+  "T1": "VERIFIED",
+  "T2": "VERIFIED",
+  "T3": "TRANSFERRING",
+  "verified_file_count": 92,
+  "verified_bytes": 1365121511,
+  "total_bytes": 5510971992,
+  "backup_manifest_present": false
+}

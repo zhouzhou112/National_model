@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。**
+
 - **2026-11-05 T550取数最终核验完成。** 三批收据全部PASS，12案例当前目录最大单文件15.27MB/最大案例33.17MB；T6八案、T7两案、T8十一案、T9十二案。标准导出提交80bcc8f已推工作分支，505回归零失败；本轮仅19:27只读核对两生产作业仍RUNNING。完整交付/异常/作者CO2事后分摊口径见t550_flex_analysis_20261104/REVIEW_ZH.md。
 
 - **2026-11-05 T550主线取数第3批完成。** 第三批11案例T8、两案例T3/T7/T2完成（A2030既有T2重新核SHA复用）。T8按作者批准同省全部捕集来源含DAC占比分摊共同CO2费用，并保留未分摊收益及共同费用；现实可结算收入无制度证据，保留NOT_DEFINED，不把影子收入称为结算。回传根为上级 `claude_workspace/analysis/base_dual_diagnosis_20261020/02_server_returns/`；逐文件SHA及每文件30MB/每案例100MB检查通过。证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/batch3_receipt.json`，报告同目录 `REVIEW_ZH.md`。不改运行包、不求解、不建监听。
@@ -10666,3 +10668,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 - 作者在本轮明确批准同省全部CCS及DAC捕集量比例事后分摊CO2运输/封存费，并保留省总费、未分摊收益和上下界；已实现并核验。现实可结算收入无制度定义，列留空，不与理论收益混用。
 - 标准导出提交 `80bcc8f`；取数脚本/小证据/本记录由随后明确清单提交追溯。源数据、原模型、两云作业及冻结包均未改动；临时连接和试算失败均保全。
 - 总校验delivery_validation.json：1027文件320265193bytes（含既有交付），无NPZ/NPY/MPS回传；三批关键载荷哈希未因最终summary更新改变。下一步作者按精确年度行价格继续论文分析；状态仅按下次明确查询刷新。
+
+
+## 2026-11-06 Case3 2050终态与T550备份启动
+
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
+Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、输出与下一步见`supplementary_materials/reviews/case3_2050_completed_20261106/REVIEW_ZH.md`。只读查询与既定备份，未修改求解设置。

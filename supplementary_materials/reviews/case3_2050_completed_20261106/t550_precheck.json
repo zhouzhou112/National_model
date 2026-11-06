@@ -1,0 +1,15 @@
+{
+  "target_exists": false,
+  "operation_exists": false,
+  "disk_usage": {
+    "total": 4029616283648,
+    "used": 2406382747648,
+    "free": 1418463682560
+  },
+  "transfers": [],
+  "tools": [
+    "/home/zz2/National_model_server/backup_tools/completed_20261020/backup_completed_cloud.py",
+    "/home/zz2/National_model_server/backup_tools/completed_20261027/backup_completed_cloud.py",
+    "/home/zz2/National_model_server/backup_tools/completed_20261025/backup_completed_cloud.py"
+  ]
+}

@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
 **2026-11-05 19:27 GMT，一次性只读核对：云端2项RUNNING，无新终态。** Case3 2050/5294579第517轮，PInf0.4261633/DInf6.7030e-6/Compl4.3777e-4，峰RSS617.821GiB；C2060/5318408第423轮，PInf7.420933/DInf3.9753e-5/Compl0.0119237，峰RSS600.748GiB。两项64CPU/750G，stderr空；仍未收敛，本轮未触发终态备份/证书/验收、未建监听。T550已恢复并开展已解案例只读小表提取；证据 `supplementary_materials/reviews/t550_flex_analysis_20261104/cloud_once_20261105.json`，取数报告同目录 `REVIEW_ZH.md`。本条不表示19:27之后继续刷新状态。
 
 **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
@@ -3997,3 +3999,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 **2026-10-30 00:27 UTC：云端2项RUNNING，C2060已放行并通过启动检查。** C2060/5318408，release 20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1，节点m4cm1701，AllocTRES=64CPU/750G/billing64，40线程、UNLIMITED/no-requeue，启动可用内存720.917GiB、Gurobi13.0.2 compute smoke PASS、stderr空；当前全年模型构建，尚无Barrier轮次。Case3 2050/5294579第145轮，运行2天10:56:40，PInf9.01364e6/DInf0.253776/Compl44855.78，仅只读。C2050已按作者10-30年度汇总规则验收PASS，自身证书B/obj9.93512e-5，完整备份与73小文件取回完成，验收JSON双端SHA一致。
 
 执行源码54ce73e、冻结提交7117aa2（相关核心源码SHA与门禁一致）；冻结493文件，release manifest SHA1621933d3ed323f7276aca166f44209702201ddfa58ed9e7e19f88caba2feaf2。32项门禁→preflight PASS→held资源核验→按既有授权release→实际资源/700GiB/计算节点smoke全通过。证据supplementary_materials/reviews/C2060_launch_20261030/deployment/{freeze,preflight,held_submission,released_submission,status}.json，GATES_SUMMARY.json及REVIEW_ZH.md。sbatch源为Case3 2050 v2已核验原件，WLS仅路径字符串比较。已更新case_results C2060卡片；未覆盖历史验证失败、原始QC或任一运行包，SI改动保持隔离，无后台监听。下一步：用户询问时同时只读检查两作业；任一新终态按10-20核对旧备份/活动传输→T550完整单次备份→扩展验收/证书→取回小文件。C2060启动成功不等于全年稳定或已收敛。
+
+
+## 2026-11-06 Case3 2050终态与T550备份启动
+
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
+Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、输出与下一步见`supplementary_materials/reviews/case3_2050_completed_20261106/REVIEW_ZH.md`。只读查询与既定备份，未修改求解设置。

@@ -1,5 +1,7 @@
 # 云端生产求解与 T550 备份台账
 
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
 更新：2026-10-20，新增两套已完整校验，见 `completed_acceptance_20261020/backup_completion_verification.json`。本表为当次核验快照，传输实时状态以 T550 操作目录中的 `transfer_status.json` 为准。
 
 目标根目录：`/home/zz2/National_model_server/cloud_backup/`，每个 release 保持原相对路径。备份不等于科学采纳，不受 QC 的 PASS/FAIL/HARD_FAIL 标签影响。
@@ -114,3 +116,10 @@ Git基准e9241075ee896980e35b41236786f173045c27ed（前次GitHub推送网络中�
 证据cloud_joint_progress_20261016/status_20261027T094845Z{,_summary}.json及completed_details_20261027.json（包含每份终态报告bytes/SHA和内容）。T550当前127.0.0.1:22转发拒绝连接、192.168.9.27:22超时；既有备份/活跃传输/磁盘无法核验，因此未创建远端plan或重复启动。新本地配置cloud_backup_20261027/backup_config.json覆盖两新完成release，blocked记录并列；原nocredit等已完成备份不重复操作。
 
 下一步恢复转发后先核manifest/进程/锁/至少30%空间，执行两release单次完整备份、全量bytes/SHA与源身份校验。Case3按10-26预授权优先T550备份上算证书、独立扩展验收并披露CO2项；B/obj≤1e-2时按作者规则采纳后完成2050 R1/v9_a12/Base2050 margin0.2/Aggregate0/40线程及1h/24h/参数门禁，全部通过才提交release，并生成Base2060筛选清单。连接阻塞前不跳过备份身份核验，不改运行C2050，不启后台监听。仅记录/小JSON更新，JSON解析和暂存diff/凭据检查；其他会话内容保留。
+
+
+## 2026-11-06 Case3 2050终态与T550备份启动
+
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
+Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、输出与下一步见`supplementary_materials/reviews/case3_2050_completed_20261106/REVIEW_ZH.md`。只读查询与既定备份，未修改求解设置。

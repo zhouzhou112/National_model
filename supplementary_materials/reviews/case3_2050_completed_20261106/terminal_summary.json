@@ -1,0 +1,79 @@
+{
+  "observed_utc": "2026-11-06T10:16:23.791484+00:00",
+  "source_commit_at_observation": "5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a",
+  "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+  "job_id": "5294579",
+  "slurm_state": "COMPLETED",
+  "exit_code": "0:0",
+  "ended_utc": "2026-11-06T08:40:14Z",
+  "elapsed": "9-19:09:08",
+  "solver_status": "OPTIMAL",
+  "iterations": 551,
+  "objective_million_cny": 5698960.772741691,
+  "terminal_metrics": {
+    "iteration": 551.0,
+    "primal_objective": 5698960.772741691,
+    "dual_objective": 5694258.1025443515,
+    "absolute_primal_dual_objective_gap": 4702.6701973397285,
+    "relative_primal_dual_objective_gap": 0.000825180306527595,
+    "primal_infeasibility": 0.05514924097398861,
+    "dual_infeasibility": 2.2365026266248144e-06,
+    "complementarity": 5.374775976995168e-05,
+    "runtime_seconds": 842951.6688518524,
+    "work_units": 2251494.0900730756,
+    "memory_used_gb": 377.5562836,
+    "max_memory_used_gb": 736.663073424
+  },
+  "peak_process_tree_rss_gib": 620.95,
+  "preservation_status": "COMPLETE",
+  "preservation_errors": [],
+  "relative_qc_status": "HARD_FAIL",
+  "relative_check_passed": {
+    "power_balance": true,
+    "objective_components": true,
+    "unidirectional_interprovincial_flow": true,
+    "reservoir_transition": null,
+    "extended_gw_gwh_physical_checks": true,
+    "extended_mt_mass_balance_checks": true,
+    "remaining_physical_hard_checks": true,
+    "solver": false
+  },
+  "solution_quality": {
+    "maximum_constraint_violation": 0.022921146999578923,
+    "maximum_constraint_residual": 0.0,
+    "maximum_bound_violation": 1.1629468588125746e-06,
+    "maximum_dual_violation": 0.0002671148834925037,
+    "maximum_dual_residual": 2.8336812647467013e-06,
+    "maximum_complementarity_violation": 405.7725005985394,
+    "maximum_violation": 405.7725005985394,
+    "kappa": null,
+    "kappa_exact_computed": false
+  },
+  "solution_quality_locations": {
+    "maximum_bound_violation": {
+      "kind": "variable",
+      "index": 29919747,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_constraint_violation": {
+      "kind": "constraint",
+      "index": 53400865,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_dual_violation": {
+      "kind": "variable",
+      "index": 80932,
+      "name": null,
+      "lookup_status": "SKIPPED_MODEL_SIZE"
+    },
+    "maximum_complementarity_violation": null
+  },
+  "scientific_acceptance": "PENDING_REVIEW",
+  "certificate": "NOT_COMPUTED",
+  "backup_status": "RUNNING_UNVERIFIED",
+  "backup_files": 93,
+  "backup_bytes": 5510971992,
+  "raw_terminal_evidence_sha256": "018307775ea2b6359e9a6ebecb43ae4e1bc9538dba7b4382eb3bc2be7a49f028"
+}

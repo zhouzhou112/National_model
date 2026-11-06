@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "{\n  \"hostname\": \"ln301.para.bscc\",\n  \"created_at_utc\": \"2026-11-06T10:14:28.983052+00:00\",\n  \"destination\": \"/home/zz2/National_model_server/cloud_backup\",\n  \"ssh_config\": \"/home/zz2/.ssh/paracloud_backup_20261012/ssh_config\",\n  \"all_tiers_bytes\": 5510971992,\n  \"disk_total_bytes\": 4029616283648,\n  \"disk_free_bytes\": 1418463625216,\n  \"projected_free_fraction_all_tiers\": 0.35064198518298073,\n  \"t3_included\": true,\n  \"source\": \"/publicfs01/fs1-a8/home/a8s001819/National_model_cloud\",\n  \"authorization\": \"AGENTS 2026-10-20 standing full backup rule. Terminal production result preserved regardless of QC. One autonomous T550 direct pull; no watcher.\"\n}\n",
+  "stderr": "",
+  "tool_sha256": "cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658"
+}

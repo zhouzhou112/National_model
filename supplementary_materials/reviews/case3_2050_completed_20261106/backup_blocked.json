@@ -1,0 +1,9 @@
+{
+  "status": "BLOCKED_CONNECTION",
+  "attempts": 2,
+  "observed_utc": "2026-11-06T10:13Z",
+  "local_listener_127_0_0_1_22": false,
+  "error": "Connection refused before SSH banner",
+  "started": false,
+  "next_action": "Restore existing T550 forwarding, check prior manifests/processes/locks/free space, then plan/run once."
+}

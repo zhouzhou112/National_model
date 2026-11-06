@@ -5756,3 +5756,10 @@ Git基准4ca1b35；证据与命令见 supplementary_materials/reviews/C2050_comp
 本轮仅19:27 GMT一次性核对云端：5294579/5318408仍RUNNING，517/423轮，无新终态，未触发备份或证书。T550已解12案例只读分析完成；三批收据及完整命令见supplementary_materials/reviews/t550_flex_analysis_20261104/REVIEW_ZH.md。T4/T3/T2原始MPS/BarPi身份与行序一致；七个有限MPS任务全部COMPLETE，无轮询守护。T9、T6/T7/T8在独立analysis_tools_20261105_*目录计算，仅汇总小文件回传，各文件≤30MB、案例≤100MB。
 
 断线恢复先查terminal/既有进程，不重启已有目录；本轮19:29后SSH超时，经作者重连确认原A2040进程继续，未重复执行。两个既有collector原逻辑已封装在review，来源SHA留档；未来已解新案例须先完整备份与身份确认再按同样路线提取，不更改旧release。标准年度导出仅供新冻结release，源码80bcc8f，不能向两在跑包部署。CO2费用比例分摊只是作者批准的事后核算，不能反写源模型。
+
+
+## 2026-11-06 Case3 2050终态与T550备份启动
+
+2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
+
+Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、输出与下一步见`supplementary_materials/reviews/case3_2050_completed_20261106/REVIEW_ZH.md`。只读查询与既定备份，未修改求解设置。
