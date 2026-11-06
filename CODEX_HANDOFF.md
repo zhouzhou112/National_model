@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06 20:38 UTC一次性只读快照：云端2项RUNNING，无新终态。Case3 2060/5411471已运行6:37:19，44线程排序完成（4631.32s）并进入Barrier第4轮，sstat峰值RSS650.685GiB；前0→4轮平均20.01分钟/轮，尚不足以判定加速效果。C2060/5318408运行7天20:11:36、第482轮，遥测PInf=0.6114393、DInf=1.53676e-6、Compl=9.31387e-4；472→482下降42.67%/48.15%/45.47%，24.49分钟/轮，sstat峰值600.748GiB。两项stderr空、无batch_exit；未结束，不触发新终态备份，不建监听。内存采用Slurm常驻内存RSS，不能把Gurobi累计分配峰值804.105GB直接当RSS。**
+
 - **2026-11-06 14:02 UTC：云端2项RUNNING。Case3 2060/5411471已按作者44线程尝试授权放行，节点m4cg1606，AllocTRES=64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用内存719.298GiB，Gurobi13.0.2 smoke PASS、stderr空，目前全年构建。R1/1h身份/24h/2060参数33项门禁及云端preflight全部PASS；清单SHA和8025剔除列与C2060完全一致、margin0.2无放回。C2060/5318408仅只读确认仍运行，第466轮。44线程全年峰值/提速尚未验证，不外推短窗，不建监听。**
 
 - **2026-11-06 Case3 2060的R1、1h筛选身份、24h及2060参数共33项门禁全部PASS；与C2060清单SHA和8025剔除列集合一致。24h 101轮OPTIMAL、M=1.541792223e-7GWh、relative_v1 PASS、保全COMPLETE。作者本次要求44线程尝试，750G/64CPU及700GiB启动门槛不变。测试源码391a5f1、部署工具b3a5dfe；T550回传123小文件4,525,641bytes SHA通过。下一步云端冻结/preflight/提交release；尚未提交。5318408未改。**
@@ -3896,6 +3898,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-06 20:38 UTC：44线程通过排序
+
+2026-11-06 20:38 UTC一次性只读快照：云端2项RUNNING，无新终态。Case3 2060/5411471已运行6:37:19，44线程排序完成（4631.32s）并进入Barrier第4轮，sstat峰值RSS650.685GiB；前0→4轮平均20.01分钟/轮，尚不足以判定加速效果。C2060/5318408运行7天20:11:36、第482轮，遥测PInf=0.6114393、DInf=1.53676e-6、Compl=9.31387e-4；472→482下降42.67%/48.15%/45.47%，24.49分钟/轮，sstat峰值600.748GiB。两项stderr空、无batch_exit；未结束，不触发新终态备份，不建监听。内存采用Slurm常驻内存RSS，不能把Gurobi累计分配峰值804.105GB直接当RSS。 Git基准123ff17；仅ssh只读队列/日志/遥测/sstat。证据见supplementary_materials/reviews/case3_2060_launch_20261106/STATUS_20261106T2038Z.md。下一步按作者询问读取快照，终态后按既定规则备份及验收。
 
 ### 2026-11-06 Case3 2060 44线程放行与启动核验
 
