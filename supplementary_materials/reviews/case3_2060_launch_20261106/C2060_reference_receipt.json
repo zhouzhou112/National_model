@@ -1,0 +1,24 @@
+{
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+  "files": {
+    "source_screen.csv": {
+      "bytes": 1315109,
+      "sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3"
+    },
+    "output_8760/candidate_selection.csv": {
+      "bytes": 2087138,
+      "sha256": "1089a0ae039c36eaa804278fc8edca06b62a89d626698d19301ff97232459c14"
+    },
+    "continuation.sbatch": {
+      "bytes": 5025,
+      "sha256": "141c1b06f77cfe2b546e321f3b981ff8f7245c46da663bb35d7248e6f5c3d530"
+    },
+    "launch_config.json": {
+      "bytes": 1087,
+      "sha256": "432b6b77505ae1915506585856351d60bfd577961db2bea99669b6f43d22636d"
+    }
+  },
+  "screen_sha_matches_local": true,
+  "excluded_columns": 8025,
+  "excluded_identity_sha256": "ffb158fabfac69d8617749a5a9c7809a5c84572561b71bfe8a56312d35359cba"
+}

@@ -1,0 +1,6 @@
+{
+  "test": "test_manifest_contains_actual_v5_override_files",
+  "error": "Required provenance inputs are missing: wave:2030",
+  "cause": "CISPO_WAVE_ROOT absent in local shell",
+  "resolution": "Use existing documented D:/codeenv/pycharmproject/National_RL/wave_energy; no input/model change"
+}

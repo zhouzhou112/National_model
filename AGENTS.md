@@ -157,3 +157,10 @@ If chat context conflicts with committed files or verified outputs, stop and res
 3. T550 上的柔性情景对偶提取与初步分析按 `claude_workspace/tasks/TASK_codex_t550_flex_analysis_20261104.md`（11-05 修订）立即执行：只读，计算在 T550 完成，只回传汇总小表。case3 2050 与 C 2060 验收后按同一清单补做，无需再请示。
 4. 不以"全年无负价"作为电价还原的正确性判据；采用年度注入行与需求行对偶的配对残差。
 5. 不建后台监听。派工提示：`claude_workspace/tasks/PROMPT_codex_dispatch_t550_and_export_20261105.md`。
+
+
+## 作者补充：case3 2060固定清单与44线程尝试（2026-11-06晚）
+
+按作者本轮明确指示，任务书新增第1b节决定生效：Case3 2060与C2060使用逐列一致的Base2060清单，margin固定0.2，不做站点级放回；此前B/obj>5e-4改0.3的条件规则作废。核对清单SHA及两案被剔除列集合，任何差异停止报告，不擅自修改筛选逻辑。
+
+作者随后要求尝试44个Gurobi线程以加速本次Case3 2060；仅本次新release取代此前40线程设置，Slurm仍64CPU/750G/UNLIMITED/no-requeue、启动可用内存至少700GiB，其余科学/数值设置与门禁不变。44线程的排序峰值与速度尚未实测，不承诺比40更快；失败完整保全、停止报告，不自动再起重跑。不修改5318408或任何冻结包，不建后台监听。

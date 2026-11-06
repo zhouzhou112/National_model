@@ -1,0 +1,14 @@
+{
+  "test_*2060_launch_profile.py": {
+    "exit_code": 0,
+    "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 1.262s\n\nOK\n"
+  },
+  "test_production_screen.py": {
+    "exit_code": 0,
+    "output": "Set parameter LicenseID to value 2808889\n......\n----------------------------------------------------------------------\nRan 6 tests in 1.343s\n\nOK\n"
+  },
+  "test_factor_screen.py": {
+    "exit_code": 1,
+    "output": "Set parameter LicenseID to value 2808889\n..<frozen importlib._bootstrap>:241: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 16 from C header, got 96 from PyObject\nE\n======================================================================\nERROR: test_real_runner_two_row_solve_never_exports_qc_or_state (test_factor_screen.FactorScreenTests)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\codeenv\\pycharmproject\\National_RL\\National_model\\tests\\test_factor_screen.py\", line 80, in test_real_runner_two_row_solve_never_exports_qc_or_state\n    runner.main()\n  File \"D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\run_cispo_2030_full_year.py\", line 1898, in main\n    configure_gurobi(artifacts.model, config, output_dir / \"gurobi.log\")\n  File \"D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\diagnostics.py\", line 435, in configure_gurobi\n    raise RuntimeError(\nRuntimeError: Solver profile requires Gurobi >= 13; installed major version is 12\n\n----------------------------------------------------------------------\nRan 3 tests in 6.585s\n\nFAILED (errors=1)\n"
+  }
+}

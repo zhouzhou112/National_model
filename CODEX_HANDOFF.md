@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06 Case3 2060准备：作者1b固定与C2060相同Base2060清单/margin0.2，无站点放回；旧0.3规则作废。本次按作者新指示试44个Gurobi线程，64CPU/750G/UNLIMITED/no-requeue及700GiB启动门槛不变。C2060实际剔除8025列，清单SHA与本地一致，1h后再逐列核对。新profile/生产约束14项本地测试通过；本地因Gurobi12未满足factor-runner要求13，保留失败证据并转T550已登记13环境补完后才做R1/门禁。未构建或提交，5318408未改。**
+
 - **2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。**
 
 - **2026-11-06 Case3 2050备份已于10:24:24 UTC全部完成：93文件/5,510,971,992bytes，T1/T2/T3逐文件bytes/SHA均通过，源身份未变；32个验收源小文件1,211,740bytes已回本机并核验。Claude判断包 `supplementary_materials/reviews/case3_2050_completed_20261106/claude_review_package/README_CLAUDE_ZH.md`；原relative_v1 HARD_FAIL保留，行定位与自身BarPi证书仍待完成，未正式采纳。**
@@ -10691,3 +10693,9 @@ Git基准`c5f052d370f6cb047449ea665ce1dc4068beaf0d`；仅小文件取回与校�
 
 2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。
 Git基准`616fe3b3142f49c3b2c7bcf7c020579fa6f5cc3b`；37测试通过，工具、命令、输入SHA、结果及下一步见上述review。原始HARD_FAIL和既有交接保留。
+
+
+## 2026-11-06 Case3 2060固定清单与44线程准备
+
+2026-11-06 Case3 2060准备：作者1b固定与C2060相同Base2060清单/margin0.2，无站点放回；旧0.3规则作废。本次按作者新指示试44个Gurobi线程，64CPU/750G/UNLIMITED/no-requeue及700GiB启动门槛不变。C2060实际剔除8025列，清单SHA与本地一致，1h后再逐列核对。新profile/生产约束14项本地测试通过；本地因Gurobi12未满足factor-runner要求13，保留失败证据并转T550已登记13环境补完后才做R1/门禁。未构建或提交，5318408未改。
+基准5907519；validation_initial.json保留本地平台错误，下一步T550隔离环境测试→R1→1h/24h→参数/preflight→放行。
