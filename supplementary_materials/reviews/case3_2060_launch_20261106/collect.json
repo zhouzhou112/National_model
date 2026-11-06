@@ -1,0 +1,496 @@
+{
+  "files": {
+    "unscreen_1h.log": {
+      "bytes": 56506,
+      "sha256": "07a5ea71e4e67fceef7759a3d854ad39d98e85c2134ce8d17cffa9bbe5395fb6"
+    },
+    "gate_24h_profile.json": {
+      "bytes": 1817,
+      "sha256": "56de931771e846af8c302c2221a843414c518d5ab9be18b3cc9bd8981b54aa77"
+    },
+    "unscreen_1h_profile.json": {
+      "bytes": 1477,
+      "sha256": "eb849c6975b8e5d4c853dbfc054e86b2de386e4701e64c7d77bb62f326e0578a"
+    },
+    "gate_24h_command.json": {
+      "bytes": 1184,
+      "sha256": "dfdc144e5a98b8aa49f77c254aa0b1fdc697083f2d364c0e226bd66f1dad9074"
+    },
+    "screen_1h_profile.json": {
+      "bytes": 1817,
+      "sha256": "56de931771e846af8c302c2221a843414c518d5ab9be18b3cc9bd8981b54aa77"
+    },
+    "screen_identity.json": {
+      "bytes": 442,
+      "sha256": "c26e251acdfab272fe752bde20bd542c6ae069ebedc1f513cc1728046c2080e5"
+    },
+    "unscreen_1h_scenario.json": {
+      "bytes": 4634,
+      "sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9"
+    },
+    "unscreen_1h_command.json": {
+      "bytes": 1049,
+      "sha256": "579d1d92c346e061fda44934161dfd0d85c02102c15ed056ae1f7c9aa41d0bc3"
+    },
+    "gate_24h.log": {
+      "bytes": 16110,
+      "sha256": "3d6622ac272b9b2e844a115b9eb14e7d7a6ed4d159d9f860c821500a3cc3741f"
+    },
+    "validation_initial.json": {
+      "bytes": 1731,
+      "sha256": "3dfeb4fbb773a1038aa45e6511752929598275d3ac3caa3a8c103dcb19eaf123"
+    },
+    "r1_execution.json": {
+      "bytes": 985,
+      "sha256": "fe5bc6b422d76b96777308f9aa4673972e3ead0d6c8f940c73250df2f5276190"
+    },
+    "screen_1h_execution.json": {
+      "bytes": 2501,
+      "sha256": "2e1561d4987245fb7137737cd46462c5c4efbe948294e61a3819e0b2e4d78a42"
+    },
+    "validation_t550.json": {
+      "bytes": 1196,
+      "sha256": "57e94e43b68fdfdac62140fd7644b9bd839640f3d6bc5a7378eaa7dc397cfe43"
+    },
+    "unscreen_1h_execution.json": {
+      "bytes": 2265,
+      "sha256": "aaf6b030169ceda0031dff8ce13e6a525dc7380df5667a5f1f7cb2fc4fb49d36"
+    },
+    "screen_1h_command.json": {
+      "bytes": 1171,
+      "sha256": "a87a61fe526c118a3fced21c727d38330d3cfeef08a82fc7b19babd4eaf56303"
+    },
+    "r1.log": {
+      "bytes": 119,
+      "sha256": "0d65feae062fba66d7543e2ed23af03796b06a693b5fd3eb9fea8ed73491d13e"
+    },
+    "screen_1h.log": {
+      "bytes": 57333,
+      "sha256": "499aa30b9ff7ec35219ff7fca3e88e317f5f3495233f564d6c348abc6a4bb1b1"
+    },
+    "tested_source_lf_sha256.json": {
+      "bytes": 52502,
+      "sha256": "f779deb1e66495df5dec21eb4ab4bcd6c19661064bab3e4942b76a4d993de116"
+    },
+    "C2060_reference_receipt.json": {
+      "bytes": 896,
+      "sha256": "a9e19adeed0ffb030ea955339f33d707282e3e6b90109bbb9d3d170c32a9e6bb"
+    },
+    "gate_24h_scenario.json": {
+      "bytes": 4634,
+      "sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9"
+    },
+    "validation_environment_failure.json": {
+      "bytes": 296,
+      "sha256": "f3e454607cc95c8b5dbc84639c58e301b3e8763acb5de061e13abfef368edf39"
+    },
+    "screen_1h_scenario.json": {
+      "bytes": 4634,
+      "sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9"
+    },
+    "acceptance_author_20261106.json": {
+      "bytes": 5122,
+      "sha256": "b5ca1622ab264de0af0dbd625f368b7d10fad6a2653b06cc073a15a91bde9129"
+    },
+    "FINAL_GATES_PASSED.json": {
+      "bytes": 98389,
+      "sha256": "b2fe40f4de9757276d88b48f33c112c2037e09ebc8e67d971cf74c1f1a887d9b"
+    },
+    "gate_24h_execution.json": {
+      "bytes": 2631,
+      "sha256": "61cf61c0da328c98564fd4caf1df7acd8c88dc86401b3dc990058333cabb7acd"
+    },
+    "gate_24h/run_claim.json": {
+      "bytes": 279,
+      "sha256": "37ffd0b647b1ececa3b8b72c783580ecf8b19a69e3d1a3543b583ecbc8640a8c"
+    },
+    "gate_24h/annual_generation_by_province_technology.csv": {
+      "bytes": 14996,
+      "sha256": "1c1ce2536b9cac1e47b819938e82a4ef2a7a76fe99f55070d221386d9ff4160d"
+    },
+    "gate_24h/annual_constraint_shadow_prices.csv": {
+      "bytes": 370509,
+      "sha256": "2a234207819b99289e096f5889386dbb237e863327730021b7ccce3c026f0a41"
+    },
+    "gate_24h/load_center_annual_generation.csv": {
+      "bytes": 99264,
+      "sha256": "16b9b40120fd910fb1ed4cfa3e029bac8c9aaf316984d6f1026cf60977f254a4"
+    },
+    "gate_24h/run_summary.json": {
+      "bytes": 2369,
+      "sha256": "79380e49e1a002bb3e6db953bcd7fab2bf53b14f691337c689982fe02eecb648"
+    },
+    "gate_24h/annual_capacity_by_province_technology.csv": {
+      "bytes": 35789,
+      "sha256": "91462818832bd73d33bbd0870004388a40aa8872b647033fed0e4783aeae860b"
+    },
+    "gate_24h/service_decisions.csv": {
+      "bytes": 3382,
+      "sha256": "b4c0993f83c1e0823ba85cf482e723101a73356b620acc90bd596d0880479375"
+    },
+    "gate_24h/hydro_aggregate_capacity.csv": {
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571"
+    },
+    "gate_24h/build_report.json": {
+      "bytes": 91401,
+      "sha256": "55def2b412801ee538526e9052cd14e3bfd0322d9760df167facb22e3622cd1c"
+    },
+    "gate_24h/transmission_capacity.csv": {
+      "bytes": 37887,
+      "sha256": "7bb446a3d8233860bd26aa1c6186d70cfb297dc03dcc451b8d6b3b082684ef54"
+    },
+    "gate_24h/result_manifest.json": {
+      "bytes": 13715,
+      "sha256": "f2a5f7fef877a7f54eb530f967fd2b34ff2222ef3e3ccce8caaf3c4bc46a4b42"
+    },
+    "gate_24h/output_catalog.csv": {
+      "bytes": 7553,
+      "sha256": "07fcceef70dd5c8aa646bdf9256181034ef49ea5cef33549bc71270028f0ba12"
+    },
+    "gate_24h/model_config_snapshot.json": {
+      "bytes": 22820,
+      "sha256": "39f4ce429b90306c2f2fc501c747f17269dc8fca6ebf99821269ef0e0e03c72b"
+    },
+    "gate_24h/run_scope.json": {
+      "bytes": 8335,
+      "sha256": "d8c270185136d438a8f66c22305b6d783117119e5bfcf2b2a718613a396a413c"
+    },
+    "gate_24h/preservation_report.json": {
+      "bytes": 4435,
+      "sha256": "e42483613789b47d6d7f8947c4522bab5e858622138a5b4bbefcfa4f460d040e"
+    },
+    "gate_24h/preflight_report.json": {
+      "bytes": 15608,
+      "sha256": "45dd2a3fc690fece24174c03e57f8241e216c379b53e82fa11fda7dde36e341a"
+    },
+    "gate_24h/monthly_energy_by_technology.csv": {
+      "bytes": 879,
+      "sha256": "b3f0db0bbeef147636d81185938a34e6e4ae8d391cee2f68ca69c7fce00300b4"
+    },
+    "gate_24h/annual_generation_by_technology.csv": {
+      "bytes": 507,
+      "sha256": "a398e9a9427fa51e3795d4a96b79577dc4c939da47996f61b7a27a137a41e68e"
+    },
+    "gate_24h/dual_export_status.json": {
+      "bytes": 1698,
+      "sha256": "60bd4c6c621f92b1f245deb924a9b1cfc39d7fee8a3b2913573493f1fbdab457"
+    },
+    "gate_24h/thermal_nuclear_capacity.csv": {
+      "bytes": 39978,
+      "sha256": "db89c5d164c3cd5e19b24730b5064ac8d1df703a2cb158179c8a60e9c7e428e0"
+    },
+    "gate_24h/hydro_capacity.csv": {
+      "bytes": 311613,
+      "sha256": "841745ec4764635cf572e356ce6d7360bc57ebfb810ab9b1e35a9542264d18d5"
+    },
+    "gate_24h/solution_qc.json": {
+      "bytes": 170641,
+      "sha256": "073cbb101cbf1432519b9878a21ce47b196f28da2c0d0cbc30b4da097ac5f8d2"
+    },
+    "gate_24h/parameter_verification.json": {
+      "bytes": 8330,
+      "sha256": "28df82e750c3b4ac7ba70c6c30ac52d07468b82f96b3d465c7b8d85aaa7f225d"
+    },
+    "gate_24h/solver_parameters_before_optimize.json": {
+      "bytes": 588,
+      "sha256": "499ca09428208f06f49aa6c4459d56afab910f7517d176dd0ade7a47f0728bee"
+    },
+    "gate_24h/annual_capacity_link_row_scaling.json": {
+      "bytes": 58411,
+      "sha256": "70616c3903a3bdab17e706112ac68370815bcb594188f89fa56b823849f8ae7e"
+    },
+    "gate_24h/output_data_dictionary.csv": {
+      "bytes": 142193,
+      "sha256": "ccf1c1122a29f10c7dbec6f8b43c100d104d6c5f2b77701811c4b81e3a4dec98"
+    },
+    "gate_24h/gurobi.log": {
+      "bytes": 10924,
+      "sha256": "57ca4fcef54948a46ab2e001759b23b2753e3f3d764e0f4a6b2d3b6256ac11e1"
+    },
+    "gate_24h/scenario_manifest.json": {
+      "bytes": 9892,
+      "sha256": "143a5f115c65be8c0ed00a2852235fd34a9010c3e0d57a0a8e3140c2d848ecb2"
+    },
+    "gate_24h/solve_report.json": {
+      "bytes": 199326,
+      "sha256": "c36b548405f28432bdaed1fc65f78323777e8ec3e5552952f7778dd03eb3add3"
+    },
+    "gate_24h/run_environment.json": {
+      "bytes": 2650,
+      "sha256": "f5f49f80d9ae01985179ce167d48bce5a210d4522b56e04d0ae0010b3368a783"
+    },
+    "gate_24h/storage_capacity.csv": {
+      "bytes": 11369,
+      "sha256": "6762ac089892fb3ced94bfb54480ab93ad65ae87de445816b6b2e484f691ceab"
+    },
+    "gate_24h/reservoir_station_index.csv": {
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104"
+    },
+    "gate_24h/annual_carbon_ccs.json": {
+      "bytes": 709,
+      "sha256": "33c148c43423db86a8fb645ead5b59f012b776db64ba62612211e262bebd51aa"
+    },
+    "gate_24h/annual_resource_accounting_by_province.csv": {
+      "bytes": 10189,
+      "sha256": "76a2f7612af5ce7517a217ce9f0881cf1cfeb2ce8e9f0236e5a667f7117a87f8"
+    },
+    "gate_24h/annual_capacity_by_technology.csv": {
+      "bytes": 1239,
+      "sha256": "a72395ab69be4c2bc2a75bca661dbe4a59293da5af740cb587419176f77433ee"
+    },
+    "gate_24h/continuation_gate.json": {
+      "bytes": 185783,
+      "sha256": "14518538effcf10c55610fad9b498d1bd050ce8e966c3593d939b5b7067c75de"
+    },
+    "gate_24h/service_diagnostics.json": {
+      "bytes": 1888,
+      "sha256": "7267e3ec6136e72ebb8c0a16ce2bd4035c060b6595a83dfec4370867446211e0"
+    },
+    "gate_24h/annual_storage_operation_by_technology.csv": {
+      "bytes": 386,
+      "sha256": "4a5382feda7fed9fd3f96031485aa53fe4544eb289f155b634285f8561c3996a"
+    },
+    "gate_24h/hydro_cascade_reconciliation_by_node.csv": {
+      "bytes": 8031,
+      "sha256": "289a5dfd0c872e01d6c9d9444ce02204b265fbac7fedaeb92503ea02405e2ce6"
+    },
+    "gate_24h/load_center_intra_transmission.csv": {
+      "bytes": 129231,
+      "sha256": "1f94349a5ebc2f393b98b72477855ec4c0457b51762b354e76f8352ca49cdae2"
+    },
+    "gate_24h/annual_adequacy_by_province.csv": {
+      "bytes": 6610,
+      "sha256": "9ff3b0f4cf0b4bac15512968cb0bfa1c86b07fa839673538ad9df80cb58cc8b6"
+    },
+    "gate_24h/load_center_network_qc.csv": {
+      "bytes": 505,
+      "sha256": "ed6c001b1f2122768a5015bee3504011f53a5b24039c9aeb7efe77aaf78f0107"
+    },
+    "gate_24h/time_index.csv": {
+      "bytes": 835,
+      "sha256": "cb4391698e591d0f0e3ab8a2ec7fbffe92479cbc32ac8c05dedccaebfc9487bf"
+    },
+    "gate_24h/annual_summary.json": {
+      "bytes": 2369,
+      "sha256": "79380e49e1a002bb3e6db953bcd7fab2bf53b14f691337c689982fe02eecb648"
+    },
+    "gate_24h/annual_flexible_load_by_province.csv": {
+      "bytes": 17893,
+      "sha256": "a6fb9eec0e873f37b74b5e2256ea86cb583877b94df27d953c42eb325784ea74"
+    },
+    "gate_24h/run_identity.json": {
+      "bytes": 7172,
+      "sha256": "38bdbd713c8bd2e4492b3c198128cec6d690639b331ff66a681dd7474ae9c5d0"
+    },
+    "gate_24h/province_annual_load_center_accounts.csv": {
+      "bytes": 3329,
+      "sha256": "c163a82fcca71a43adecb8655cccde9fbb32257cfabf1a1bccbba233e0c7d4b2"
+    },
+    "gate_24h/load_center_annual_balance.csv": {
+      "bytes": 45392,
+      "sha256": "f69021c4e56c62c16b658a4418246bc94fc1cfd5f60b8602bf342a4060e67f6d"
+    },
+    "gate_24h/dac_capacity_capture.csv": {
+      "bytes": 23474,
+      "sha256": "aa09f43ef0f009254d2638700d4db040a43f4cebb27ff79de51ab616f4014398"
+    },
+    "gate_24h/input_manifest.csv": {
+      "bytes": 27950,
+      "sha256": "44182281023412d2c275f0a5a4db8e4097e5f9db76a4d721c0822096e8020b39"
+    },
+    "gate_24h/cost_components.csv": {
+      "bytes": 4926,
+      "sha256": "17f0fd03af425eedb1ba71275aae30f9890a03286b805737cb2be750cba5eeeb"
+    },
+    "gate_24h/hydro_cascade_reconciliation_audit.json": {
+      "bytes": 8419,
+      "sha256": "d0186ea608ca3642bb44f4424e5c34938c6dee62569b75888a4d95523f1bccd1"
+    },
+    "gate_24h/wave_capacity.csv": {
+      "bytes": 226759,
+      "sha256": "a21c9c60998d6ccaf9e421bca2f7b026bb96f02fb05c703aa7528cfec74c5208"
+    },
+    "gate_24h/preservation_runtime_memory.json": {
+      "bytes": 151,
+      "sha256": "ab46f950ca398c36626ce7c5f31ef0c466d03ce663ceda03cbab74d14e792514"
+    },
+    "gate_24h/barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 74931,
+      "sha256": "8b336e648a8ca6a1e9c232e06fb9ee973db5a7a88070dae2e838266afa784670"
+    },
+    "gate_24h/planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 86,
+      "sha256": "30919b5fae61b365bcee511a72c2df328bbb9dbd2fed6ee01a3156c85105c0db"
+    },
+    "gate_24h/planning_state_candidate/state_metadata.json": {
+      "bytes": 136759,
+      "sha256": "5f7cc93c9d7c309a72a8e0f0e0b52216795ae0e2c1c26375fff21b03260fe94e"
+    },
+    "R1_v1/evidence/state_structure_audit.json": {
+      "bytes": 63493,
+      "sha256": "cc9410f479c79592436522d84ab1479af258e6b8c32bf46425cf0208c21a4990"
+    },
+    "R1_v1/evidence/state_bounds_hydro.csv": {
+      "bytes": 158713,
+      "sha256": "af23551d8464717564273af07eb055b7dc2ca620d30a926fc6516cc59f65f29e"
+    },
+    "R1_v1/evidence/retrofit_protected_groups.csv": {
+      "bytes": 3615,
+      "sha256": "fe82bd6510007c21632aa954e21633d9b31bf19f248cc115e05f72b72cb15b30"
+    },
+    "R1_v1/evidence/deletion_by_technology.csv": {
+      "bytes": 2443,
+      "sha256": "ed18c58e3cf516ed985ff86a6d220b0f43023f01117ee9122ce25e5bf68584d9"
+    },
+    "R1_v1/evidence/shared_biomass_bound_closure.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "R1_v1/evidence/cleanup_gate.json": {
+      "bytes": 25184,
+      "sha256": "c09b1fc8a633d6b0d80b3dcb68d9a9c508d0509f2b9941ab7b167a3df21eca7a"
+    },
+    "R1_v1/prepared_state/result_manifest.json": {
+      "bytes": 1673,
+      "sha256": "cc3bac08b0d096adff9f45aba2424d0603579f7c82476d68abe8a8782bd44eeb"
+    },
+    "R1_v1/prepared_state/original_result_manifest.json": {
+      "bytes": 13811,
+      "sha256": "149449443e12fdaad141d43e396a58bf2d532b141659b1f48b84797f9526def4"
+    },
+    "R1_v1/prepared_state/solution_qc.json": {
+      "bytes": 174414,
+      "sha256": "86aec43357f3dcfb085fd54ef249fb2c4e67d4750d7720ce3dfa7bce6de791c7"
+    },
+    "R1_v1/prepared_state/solve_report.json": {
+      "bytes": 158868,
+      "sha256": "dfb9d2e4adb3266fc32043f2db0aea9d04c6db90ae0f5a4c7c411a246a5163a7"
+    },
+    "R1_v1/prepared_state/bound_closure_audit.json": {
+      "bytes": 165,
+      "sha256": "0d824c334b1de32ba15ab0cc342d029195c679127a27d26d88ee67c678777bca"
+    },
+    "R1_v1/prepared_state/run_identity.json": {
+      "bytes": 7568,
+      "sha256": "5670459d4dd234c43265bfb645e76bdd7f0a541fb72807f8ec7a5166c30b9dd2"
+    },
+    "R1_v1/prepared_state/acceptance_relative_v1.json": {
+      "bytes": 5122,
+      "sha256": "b5ca1622ab264de0af0dbd625f368b7d10fad6a2653b06cc073a15a91bde9129"
+    },
+    "R1_v1/prepared_state/planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 2241,
+      "sha256": "99d6b3caa07643a1e3764e5e4739540685bcd11220ad55a15ff4b1fff2ff7256"
+    },
+    "R1_v1/prepared_state/planning_state_candidate/state_metadata.json": {
+      "bytes": 121939,
+      "sha256": "24da6469f02333e94fd97a6ed4097959dc9f28bd961aeed8cfa163b1cfd912c9"
+    },
+    "R1_v1/prepared_state/planning_state_candidate/capacity_cohorts.csv.gz": {
+      "bytes": 326070,
+      "sha256": "e2bbc3e0d5cf5b1b794e58da8998fb8cc4c1c05fc10c17e16e3882f17ef34215"
+    },
+    "screen_1h/run_claim.json": {
+      "bytes": 280,
+      "sha256": "300809fa7163deb403325e70d7e12e8729ebb895731953955104442254d3207a"
+    },
+    "screen_1h/build_report.json": {
+      "bytes": 55741,
+      "sha256": "308b4d1f8bcdaebf339db2d3f6e64499e417a313c0f667dea2c2f116517649ed"
+    },
+    "screen_1h/model_config_snapshot.json": {
+      "bytes": 22822,
+      "sha256": "590275135a5c251b145303fa0a2432c93e341bc63bb20c1c814a48a0812743e4"
+    },
+    "screen_1h/run_scope.json": {
+      "bytes": 8029,
+      "sha256": "b84318954075650d3411a3ececa8ea0a552ed6b8f4b0e619605af8722b96f959"
+    },
+    "screen_1h/preflight_report.json": {
+      "bytes": 15608,
+      "sha256": "fa3e0d2adf34309df4445ecb51e379ffedd943eb95ee49b6e111ccb51c858efa"
+    },
+    "screen_1h/parameter_verification.json": {
+      "bytes": 8301,
+      "sha256": "f42063f478185e6c69b2ecd464427ad3f0df36d00774a748d550c12b188c060c"
+    },
+    "screen_1h/solver_parameters_before_optimize.json": {
+      "bytes": 588,
+      "sha256": "499ca09428208f06f49aa6c4459d56afab910f7517d176dd0ade7a47f0728bee"
+    },
+    "screen_1h/annual_capacity_link_row_scaling.json": {
+      "bytes": 24917,
+      "sha256": "c7336f6582c57a0caecb21b5496cb67f906547c0a1390318a1778a804c5ac7eb"
+    },
+    "screen_1h/gurobi.log": {
+      "bytes": 981,
+      "sha256": "133c0111bf84f8e88e3cce9aa64579150a0725ac28646513ba052e766bc2d3a2"
+    },
+    "screen_1h/run_environment.json": {
+      "bytes": 2637,
+      "sha256": "01f0350f2e05d7911bd85fc3daa49dec6e92e624a5dbfa512acc7ce67861f1a6"
+    },
+    "screen_1h/continuation_gate.json": {
+      "bytes": 731,
+      "sha256": "c7fc94fa9cccacf95230b94ea6399f9dbdac9797b9eae3b8a40b539e2898d6fe"
+    },
+    "screen_1h/run_identity.json": {
+      "bytes": 7172,
+      "sha256": "c9d82e239df4003babd7b363770153434ec295adf0b4592c717c87d6a1c80747"
+    },
+    "screen_1h/input_manifest.csv": {
+      "bytes": 27954,
+      "sha256": "f680b55c9dc1ca5346b891ab83a1576e17481c88e1531ac7ea2e8a190165b15f"
+    },
+    "unscreen_1h/run_claim.json": {
+      "bytes": 282,
+      "sha256": "c09a51b7edbd95fd5d2e246ab6aa6393f5e8fef351aa3d7c9d42a11f704124ff"
+    },
+    "unscreen_1h/build_report.json": {
+      "bytes": 54913,
+      "sha256": "6fe7f905bb297af0de5cfc856f980a08f6ea05f15c7d6e58773f275b0357f7ad"
+    },
+    "unscreen_1h/model_config_snapshot.json": {
+      "bytes": 22472,
+      "sha256": "afd3913ea115d96aa8fa9281f226a412ab22f42dd209691a548c04b38ce1c6cb"
+    },
+    "unscreen_1h/run_scope.json": {
+      "bytes": 8026,
+      "sha256": "e08b7408619a92e87e92eccffdb67fe2ca4262f1f42a551c39de48147375f9e0"
+    },
+    "unscreen_1h/preflight_report.json": {
+      "bytes": 15608,
+      "sha256": "5eba7a8f5e12b52ea8437d74580213c53f286a394c042d2197e4fb9c36f48196"
+    },
+    "unscreen_1h/parameter_verification.json": {
+      "bytes": 8301,
+      "sha256": "f42063f478185e6c69b2ecd464427ad3f0df36d00774a748d550c12b188c060c"
+    },
+    "unscreen_1h/annual_capacity_link_row_scaling.json": {
+      "bytes": 24917,
+      "sha256": "c7336f6582c57a0caecb21b5496cb67f906547c0a1390318a1778a804c5ac7eb"
+    },
+    "unscreen_1h/gurobi.log": {
+      "bytes": 983,
+      "sha256": "8972df3f68fbd39aceabc4567b8063ea3e6e8b54fa5504887744d39991cad17b"
+    },
+    "unscreen_1h/run_environment.json": {
+      "bytes": 2513,
+      "sha256": "0382ff79edc13da1e6dc394d0df32c79a1c81c085adf6005e7c9307974a89ccf"
+    },
+    "unscreen_1h/continuation_gate.json": {
+      "bytes": 730,
+      "sha256": "5e98d34f73dd1a47d44cde272ab6d5b5c3e491269810a374aeb4bbf465ed9471"
+    },
+    "unscreen_1h/run_identity.json": {
+      "bytes": 6486,
+      "sha256": "7940f0d3cc79e3621a7b6ac20557c4ba2ef100dacd576411ba5b05f348d25677"
+    },
+    "unscreen_1h/input_manifest.csv": {
+      "bytes": 27962,
+      "sha256": "82dc68ed20e3394723f543f22be5d5d1f9fc0dec168d20f445d647465570a306"
+    }
+  }
+}

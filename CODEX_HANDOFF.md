@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-06 Case3 2060的R1、1h筛选身份、24h及2060参数共33项门禁全部PASS；与C2060清单SHA和8025剔除列集合一致。24h 101轮OPTIMAL、M=1.541792223e-7GWh、relative_v1 PASS、保全COMPLETE。作者本次要求44线程尝试，750G/64CPU及700GiB启动门槛不变。测试源码391a5f1、部署工具b3a5dfe；T550回传123小文件4,525,641bytes SHA通过。下一步云端冻结/preflight/提交release；尚未提交。5318408未改。**
+
 - **2026-11-06 Case3 2060准备：作者1b固定与C2060相同Base2060清单/margin0.2，无站点放回；旧0.3规则作废。本次按作者新指示试44个Gurobi线程，64CPU/750G/UNLIMITED/no-requeue及700GiB启动门槛不变。C2060实际剔除8025列，清单SHA与本地一致，1h后再逐列核对。新profile/生产约束14项本地测试通过；本地因Gurobi12未满足factor-runner要求13，保留失败证据并转T550已登记13环境补完后才做R1/门禁。未构建或提交，5318408未改。**
 
 - **2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。**
@@ -3892,6 +3894,10 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-06 Case3 2060工程门禁通过
+
+2026-11-06 Case3 2060的R1、1h筛选身份、24h及2060参数共33项门禁全部PASS；与C2060清单SHA和8025剔除列集合一致。24h 101轮OPTIMAL、M=1.541792223e-7GWh、relative_v1 PASS、保全COMPLETE。作者本次要求44线程尝试，750G/64CPU及700GiB启动门槛不变。测试源码391a5f1、部署工具b3a5dfe；T550回传123小文件4,525,641bytes SHA通过。下一步云端冻结/preflight/提交release；尚未提交。5318408未改。 详见supplementary_materials/reviews/case3_2060_launch_20261106/REVIEW_ZH.md；命令与SHA见该目录。
 
 ### 2026-10-20：其他作业许可影响只读核验
 
