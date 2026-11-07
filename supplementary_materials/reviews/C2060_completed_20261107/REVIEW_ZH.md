@@ -7,3 +7,7 @@
 来源：terminal_source.json保留5个云端小文件的来源bytes/SHA与数据；A44_C40_matched_progress.json为两冻结包既有solver_telemetry和stdout只读汇总。原物理QC与严格QC不覆盖。最大违反行不得仅因index与Case3 2050相同而推定为同一行；须备份校验后在T550原MPS+BarX上定位，再计算自身BarPi证书并按11-06规则验收。
 
 备份工具backup_C2060.py复用已审核backup_completed_cloud.py引擎（SHA cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658），追加显式启动/验收来源元数据；plan通过、run已独立session启动，PPID1/SID=PID，持有互斥锁，原模型不省略。全部结果和失败尝试保留。传输与SHA完成前不写COMPLETE；本机不取逐时数组、原模型或BarPi。恢复时先查既有operation状态，不重复启动。
+
+## 19:41 UTC核验更新
+
+2026-11-07 19:41 UTC一次性只读核对：云端1项RUNNING，Case3 2060/5411471运行1天05:39:51、第74轮；PInf1.2552731e10/DInf20773.543/Compl5.3633379e7，64→74下降15.99%/30.25%/16.82%，19.50分钟/轮，Slurm峰值RSS650.685GiB未升、stderr空。C2060/5318408仍COMPLETED；T550备份已于13:29:12UTC完成，106文件5,506,707,098bytes，T1/T2/T3逐文件bytes/SHA全部VERIFIED、source_unchanged=true，无重复传输。正式验收仍待原MPS+BarX行定位及自身BarPi证书，不将备份完成等同验收。未修改运行作业，不建监听。

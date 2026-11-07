@@ -5785,3 +5785,9 @@ Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、�
 2026-11-07 13:17 UTC：云端1项RUNNING，C2060/5318408于12:52:45UTC COMPLETED/0:0，527轮OPTIMAL，总8天12:25:33；目标5714441.107401 million CNY，进程树峰值603.149GiB，保全COMPLETE/errors=[]。原relative_v1仅solver失败，物理项全通过、水库暂缓；PInf0.0426386，最大行违反0.0300494（index53400865）尚未独立定位，自身BarPi证书待办，不宣称正式验收。Case3 2060/5411471运行23:15:44、第55轮，PInf2.08190e10/DInf48129.99/Compl8.98099e7；45→55下降14.93%/51.21%/17.40%，19.54分钟/轮，sstat峰值650.685GiB、stderr空。T550恢复后核无重复传输，13:20UTC自主全备份启动PID1382003，106文件5,506,707,098bytes，预计余量34.88%；当前传输中，未称完成，不建监听。
 
 T550工具目录/home/zz2/National_model_server/backup_tools/C2060_completed_20261107，操作目录cloud_backup/_operations/20261107_C2060_completed。backup_C2060.py plan|run --config backup_config.json --engine backup_completed_cloud.py；已有plan/run不要重启，先查transfer_status.json、进程与锁。详细清单/来源SHA在本地reviews/C2060_completed_20261107。后续验收行定位与证书必须在T550完成，不向本机取大文件。
+
+## 2026-11-07 C2060备份完成核验
+
+2026-11-07 19:41 UTC一次性只读核对：云端1项RUNNING，Case3 2060/5411471运行1天05:39:51、第74轮；PInf1.2552731e10/DInf20773.543/Compl5.3633379e7，64→74下降15.99%/30.25%/16.82%，19.50分钟/轮，Slurm峰值RSS650.685GiB未升、stderr空。C2060/5318408仍COMPLETED；T550备份已于13:29:12UTC完成，106文件5,506,707,098bytes，T1/T2/T3逐文件bytes/SHA全部VERIFIED、source_unchanged=true，无重复传输。正式验收仍待原MPS+BarX行定位及自身BarPi证书，不将备份完成等同验收。未修改运行作业，不建监听。
+
+操作20261107_C2060_completed已COMPLETE，禁止重复启动。目标完整路径与manifest见reviews/C2060_completed_20261107/backup_status_20261107T194117Z.json；后续仅追加独立验收/证书，不覆盖原输出。

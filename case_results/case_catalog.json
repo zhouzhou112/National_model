@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-07T13:20:25+00:00",
+  "as_of_utc": "2026-11-07T19:41:18.862659+00:00",
   "cases": [
     {
       "case": "B",
@@ -248,7 +248,7 @@
       "kind": "COMPLETED_PENDING_ACCEPTANCE",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_ROW_AND_CERTIFICATE",
-      "backup_status": "TRANSFERRING",
+      "backup_status": "COMPLETE",
       "job_id": "5318408",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
       "local_evidence": [
@@ -256,9 +256,12 @@
         "supplementary_materials\\reviews\\C2060_launch_20261030\\deployment\\status.json",
         "supplementary_materials\\reviews\\C2060_launch_20261030\\GATES_SUMMARY.json",
         "supplementary_materials\\reviews\\C2060_completed_20261107\\REVIEW_ZH.md",
-        "supplementary_materials\\reviews\\C2060_completed_20261107\\terminal_summary.json"
+        "supplementary_materials\\reviews\\C2060_completed_20261107\\terminal_summary.json",
+        "supplementary_materials\\reviews\\C2060_completed_20261107\\backup_status_20261107T194117Z.json"
       ],
-      "case_card": "case_results\\by_case\\C\\2060\\20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1\\README.md"
+      "case_card": "case_results\\by_case\\C\\2060\\20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1\\README.md",
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "backup_verified_at_utc": "2026-11-07T13:29:12.930761+00:00"
     },
     {
       "case": "Case3",
@@ -365,5 +368,5 @@
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
-  "last_backup_update_utc": "2026-11-06T10:59:02.769674+00:00"
+  "last_backup_update_utc": "2026-11-07T19:41:18.862659+00:00"
 }
