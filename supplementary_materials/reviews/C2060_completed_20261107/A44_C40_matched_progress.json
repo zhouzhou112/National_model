@@ -1,0 +1,321 @@
+{
+  "as_of_utc": "2026-11-07T13:21:37.819146+00:00",
+  "cases": {
+    "A2060": {
+      "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "model_statistics": {
+        "variables": 43761732,
+        "constraints": 54217741,
+        "nonzeros": 502989585,
+        "coefficient_min_abs": 2.999999999999999e-05,
+        "coefficient_max_abs": 58911.46380730896,
+        "objective_coefficient_min_abs": 0.001,
+        "objective_coefficient_max_abs": 2282.1265455852517,
+        "rhs_min_abs": 3.0682892231559857e-06,
+        "rhs_max_abs": 2087999.9999993155,
+        "quadratic_constraints": 0,
+        "integer_variables": 0,
+        "binary_variables": 0
+      },
+      "factor_statistics": [
+        "Thread count: 128 physical cores, 128 logical processors, using up to 44 threads",
+        "Ordering time: 4631.32s",
+        "Dense cols : 28795",
+        "Free vars  : 353",
+        "AA' NZ     : 7.278e+08",
+        "Factor NZ  : 3.298e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.677e+15 (roughly 2000 seconds per iteration)",
+        "Threads    : 44"
+      ],
+      "solver_start_to_iteration_0_seconds": 15044.260155916214,
+      "windows": {
+        "0-4": {
+          "mean_minutes": 20.007589637239775,
+          "median_minutes": 19.02474883198738,
+          "elapsed_seconds": 4801.821512937546,
+          "work_units_per_iteration": 2362.225013250647,
+          "first": {
+            "primal_infeasibility": 2065515940703.06,
+            "dual_infeasibility": 21419742.838156868,
+            "complementarity": 10554517752.272133
+          },
+          "last": {
+            "primal_infeasibility": 1791982511200.6628,
+            "dual_infeasibility": 17398208.13554631,
+            "complementarity": 9008749595.69796
+          }
+        },
+        "0-15": {
+          "mean_minutes": 20.444623024463656,
+          "median_minutes": 20.493813518683115,
+          "elapsed_seconds": 18400.16072201729,
+          "work_units_per_iteration": 2926.410793111534,
+          "first": {
+            "primal_infeasibility": 2065515940703.06,
+            "dual_infeasibility": 21419742.838156868,
+            "complementarity": 10554517752.272133
+          },
+          "last": {
+            "primal_infeasibility": 641189145355.2029,
+            "dual_infeasibility": 6811206.3989443295,
+            "complementarity": 3361610725.923466
+          }
+        },
+        "5-15": {
+          "mean_minutes": 20.618288553158443,
+          "median_minutes": 20.712539782126743,
+          "elapsed_seconds": 12370.973131895065,
+          "work_units_per_iteration": 3135.9185806884707,
+          "first": {
+            "primal_infeasibility": 1665129978594.7185,
+            "dual_infeasibility": 15861444.739653971,
+            "complementarity": 8347605328.4117155
+          },
+          "last": {
+            "primal_infeasibility": 641189145355.2029,
+            "dual_infeasibility": 6811206.3989443295,
+            "complementarity": 3361610725.923466
+          }
+        },
+        "15-25": {
+          "mean_minutes": 19.17239054163297,
+          "median_minutes": 19.53066003918648,
+          "elapsed_seconds": 11503.434324979782,
+          "work_units_per_iteration": 2575.6631719271186,
+          "first": {
+            "primal_infeasibility": 641189145355.2029,
+            "dual_infeasibility": 6811206.3989443295,
+            "complementarity": 3361610725.923466
+          },
+          "last": {
+            "primal_infeasibility": 201472535527.30646,
+            "dual_infeasibility": 1256965.1188525239,
+            "complementarity": 940349208.1734117
+          }
+        },
+        "25-35": {
+          "mean_minutes": 19.615822971661885,
+          "median_minutes": 20.47368279894193,
+          "elapsed_seconds": 11769.493782997131,
+          "work_units_per_iteration": 2746.3116434480194,
+          "first": {
+            "primal_infeasibility": 201472535527.30646,
+            "dual_infeasibility": 1256965.1188525239,
+            "complementarity": 940349208.1734117
+          },
+          "last": {
+            "primal_infeasibility": 48213825738.871544,
+            "dual_infeasibility": 227254.2873315867,
+            "complementarity": 216068140.07403418
+          }
+        },
+        "35-45": {
+          "mean_minutes": 20.187347246805825,
+          "median_minutes": 20.551568082968394,
+          "elapsed_seconds": 12112.408348083496,
+          "work_units_per_iteration": 2965.1365519401675,
+          "first": {
+            "primal_infeasibility": 48213825738.871544,
+            "dual_infeasibility": 227254.2873315867,
+            "complementarity": 216068140.07403418
+          },
+          "last": {
+            "primal_infeasibility": 24472981039.77019,
+            "dual_infeasibility": 98638.0414483226,
+            "complementarity": 108724156.27010605
+          }
+        },
+        "45-55": {
+          "mean_minutes": 19.538254234790802,
+          "median_minutes": 19.3708657681942,
+          "elapsed_seconds": 11722.952540874481,
+          "work_units_per_iteration": 2708.6630050560693,
+          "first": {
+            "primal_infeasibility": 24472981039.77019,
+            "dual_infeasibility": 98638.0414483226,
+            "complementarity": 108724156.27010605
+          },
+          "last": {
+            "primal_infeasibility": 20818982305.755962,
+            "dual_infeasibility": 48129.9904197758,
+            "complementarity": 89809903.77591696
+          }
+        },
+        "0-55": {
+          "mean_minutes": 19.85104536937945,
+          "median_minutes": 20.09164611498515,
+          "elapsed_seconds": 65508.44971895218,
+          "work_units_per_iteration": 2797.3437385524867,
+          "first": {
+            "primal_infeasibility": 2065515940703.06,
+            "dual_infeasibility": 21419742.838156868,
+            "complementarity": 10554517752.272133
+          },
+          "last": {
+            "primal_infeasibility": 20818982305.755962,
+            "dual_infeasibility": 48129.9904197758,
+            "complementarity": 89809903.77591696
+          }
+        }
+      }
+    },
+    "C2060": {
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "model_statistics": {
+        "variables": 43761732,
+        "constraints": 54217741,
+        "nonzeros": 502989585,
+        "coefficient_min_abs": 2.999999999999999e-05,
+        "coefficient_max_abs": 58911.46380730896,
+        "objective_coefficient_min_abs": 0.001,
+        "objective_coefficient_max_abs": 2282.1265455852517,
+        "rhs_min_abs": 8.040496406408745e-08,
+        "rhs_max_abs": 2087999.9999993155,
+        "quadratic_constraints": 0,
+        "integer_variables": 0,
+        "binary_variables": 0
+      },
+      "factor_statistics": [
+        "Thread count: 128 physical cores, 128 logical processors, using up to 40 threads",
+        "Ordering time: 4335.25s",
+        "Dense cols : 28910",
+        "Free vars  : 353",
+        "AA' NZ     : 7.296e+08",
+        "Factor NZ  : 3.293e+10 (roughly 300.0 GB of memory)",
+        "Factor Ops : 1.728e+15 (roughly 2000 seconds per iteration)",
+        "Threads    : 40"
+      ],
+      "solver_start_to_iteration_0_seconds": 14911.922472000122,
+      "windows": {
+        "0-4": {
+          "mean_minutes": 21.7296943962574,
+          "median_minutes": 20.59660920103391,
+          "elapsed_seconds": 5215.126655101776,
+          "work_units_per_iteration": 2489.124406461924,
+          "first": {
+            "primal_infeasibility": 2067942414867.5354,
+            "dual_infeasibility": 21498261.184547562,
+            "complementarity": 10573950278.472576
+          },
+          "last": {
+            "primal_infeasibility": 1797354710952.377,
+            "dual_infeasibility": 17405504.15524507,
+            "complementarity": 9024171271.973486
+          }
+        },
+        "0-15": {
+          "mean_minutes": 21.816550017992654,
+          "median_minutes": 22.065700765450796,
+          "elapsed_seconds": 19634.89501619339,
+          "work_units_per_iteration": 2937.5003678020644,
+          "first": {
+            "primal_infeasibility": 2067942414867.5354,
+            "dual_infeasibility": 21498261.184547562,
+            "complementarity": 10573950278.472576
+          },
+          "last": {
+            "primal_infeasibility": 598534993209.4294,
+            "dual_infeasibility": 7128821.125196399,
+            "complementarity": 3251248659.6875544
+          }
+        },
+        "5-15": {
+          "mean_minutes": 22.020989198684692,
+          "median_minutes": 22.068433890740078,
+          "elapsed_seconds": 13212.593519210815,
+          "work_units_per_iteration": 3166.4678993486973,
+          "first": {
+            "primal_infeasibility": 1750556703517.6924,
+            "dual_infeasibility": 15927268.0529458,
+            "complementarity": 8673621781.363445
+          },
+          "last": {
+            "primal_infeasibility": 598534993209.4294,
+            "dual_infeasibility": 7128821.125196399,
+            "complementarity": 3251248659.6875544
+          }
+        },
+        "15-25": {
+          "mean_minutes": 20.81283589323362,
+          "median_minutes": 20.881184858083724,
+          "elapsed_seconds": 12487.70153594017,
+          "work_units_per_iteration": 2702.892057163571,
+          "first": {
+            "primal_infeasibility": 598534993209.4294,
+            "dual_infeasibility": 7128821.125196399,
+            "complementarity": 3251248659.6875544
+          },
+          "last": {
+            "primal_infeasibility": 196062668982.52478,
+            "dual_infeasibility": 1738850.7213285058,
+            "complementarity": 993918872.7799703
+          }
+        },
+        "25-35": {
+          "mean_minutes": 20.97034703175227,
+          "median_minutes": 20.97939054965973,
+          "elapsed_seconds": 12582.208219051361,
+          "work_units_per_iteration": 2761.3798992137918,
+          "first": {
+            "primal_infeasibility": 196062668982.52478,
+            "dual_infeasibility": 1738850.7213285058,
+            "complementarity": 993918872.7799703
+          },
+          "last": {
+            "primal_infeasibility": 47364299261.37845,
+            "dual_infeasibility": 327924.5883330939,
+            "complementarity": 230117818.79639778
+          }
+        },
+        "35-45": {
+          "mean_minutes": 21.61098178466161,
+          "median_minutes": 22.060719950993857,
+          "elapsed_seconds": 12966.589070796967,
+          "work_units_per_iteration": 3006.5752279273293,
+          "first": {
+            "primal_infeasibility": 47364299261.37845,
+            "dual_infeasibility": 327924.5883330939,
+            "complementarity": 230117818.79639778
+          },
+          "last": {
+            "primal_infeasibility": 27763044190.95697,
+            "dual_infeasibility": 169711.10057321566,
+            "complementarity": 132524983.73664363
+          }
+        },
+        "45-55": {
+          "mean_minutes": 21.15027616341909,
+          "median_minutes": 21.318680775165557,
+          "elapsed_seconds": 12690.165698051453,
+          "work_units_per_iteration": 2825.190855511182,
+          "first": {
+            "primal_infeasibility": 27763044190.95697,
+            "dual_infeasibility": 169711.10057321566,
+            "complementarity": 132524983.73664363
+          },
+          "last": {
+            "primal_infeasibility": 21922741442.692177,
+            "dual_infeasibility": 73113.85296452753,
+            "complementarity": 100273466.20600702
+          }
+        },
+        "0-55": {
+          "mean_minutes": 21.321684709101014,
+          "median_minutes": 21.783746949831645,
+          "elapsed_seconds": 70361.55954003334,
+          "work_units_per_iteration": 2854.961562094358,
+          "first": {
+            "primal_infeasibility": 2067942414867.5354,
+            "dual_infeasibility": 21498261.184547562,
+            "complementarity": 10573950278.472576
+          },
+          "last": {
+            "primal_infeasibility": 21922741442.692177,
+            "dual_infeasibility": 73113.85296452753,
+            "complementarity": 100273466.20600702
+          }
+        }
+      }
+    }
+  }
+}

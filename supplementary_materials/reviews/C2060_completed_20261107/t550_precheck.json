@@ -1,0 +1,11 @@
+{
+  "target_exists": false,
+  "operation_exists": false,
+  "global_lock_free": true,
+  "transfers": [],
+  "disk": {
+    "total": 4029616283648,
+    "used": 2413814595584,
+    "free": 1411031834624
+  }
+}

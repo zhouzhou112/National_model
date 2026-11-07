@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED_CONNECTION_REFUSED",
+  "entry": "national-model-server via 127.0.0.1:22",
+  "backup_started_this_turn": false,
+  "previous_manifest_checked": false,
+  "next_action": "Restore forwarding; inspect existing manifests/processes and free space before plan/run; no duplicate transfer."
+}

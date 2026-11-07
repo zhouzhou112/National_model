@@ -1,0 +1,23 @@
+{
+  "status": "COMPLETED_ACCEPTANCE_PENDING",
+  "job_id": "5318408",
+  "solver_status": "OPTIMAL",
+  "iterations": 527,
+  "elapsed_job": "8-12:25:33",
+  "completed_at_utc": "2026-11-07T12:52:45+00:00",
+  "objective_million_cny": 5714441.107400633,
+  "peak_process_tree_rss_gib": 603.149,
+  "preservation": "COMPLETE",
+  "preservation_errors": [],
+  "raw_relative_v1": "HARD_FAIL",
+  "relative_failed_checks": [
+    "solver"
+  ],
+  "reservoir": "DEFERRED_BY_AUTHOR_20261012",
+  "maximum_constraint_violation": 0.030049423628952354,
+  "constraint_index": 53400865,
+  "row_name_verified": false,
+  "own_BarPi_certificate_completed": false,
+  "backup": "RUNNING_T550_AUTONOMOUS",
+  "backup_operation": "20261107_C2060_completed"
+}

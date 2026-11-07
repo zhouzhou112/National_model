@@ -1,0 +1,22 @@
+{
+  "as_of_utc": "2026-11-07T13:20:25.037250+00:00",
+  "file_count": 106,
+  "bytes": 5506707098,
+  "projected_free_fraction": 0.34879872781474425,
+  "status": {
+    "started_at_utc": "2026-11-07T13:20:10.133408+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 577147159,
+        "file_count": 102,
+        "started_at_utc": "2026-11-07T13:20:10.134007+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 0
+  },
+  "process": "1382003       1 1382003 Ss\n"
+}
