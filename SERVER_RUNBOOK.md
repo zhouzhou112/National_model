@@ -5791,3 +5791,14 @@ T550工具目录/home/zz2/National_model_server/backup_tools/C2060_completed_202
 2026-11-07 19:41 UTC一次性只读核对：云端1项RUNNING，Case3 2060/5411471运行1天05:39:51、第74轮；PInf1.2552731e10/DInf20773.543/Compl5.3633379e7，64→74下降15.99%/30.25%/16.82%，19.50分钟/轮，Slurm峰值RSS650.685GiB未升、stderr空。C2060/5318408仍COMPLETED；T550备份已于13:29:12UTC完成，106文件5,506,707,098bytes，T1/T2/T3逐文件bytes/SHA全部VERIFIED、source_unchanged=true，无重复传输。正式验收仍待原MPS+BarX行定位及自身BarPi证书，不将备份完成等同验收。未修改运行作业，不建监听。
 
 操作20261107_C2060_completed已COMPLETE，禁止重复启动。目标完整路径与manifest见reviews/C2060_completed_20261107/backup_status_20261107T194117Z.json；后续仅追加独立验收/证书，不覆盖原输出。
+
+
+## C2060验收收尾（2026-11-08）
+
+- Git：证据、工具、测试、catalog提交 `806ffa4`；科学运行冻结源码 `7117aa2b3fcffb051995a95729ac84eb9ff4810c`。本次不改模型/参数/筛选，不重解，不更新任何运行包。
+- 规则：执行 `TASK_C2060_acceptance_20261108.md`；第1节证据PASS后已先向作者汇报，再执行第2节取回、成本对照与登记。行独立核验，未借用Case3 2050同索引作推定。
+- 结果：2026-11-08 C2060验收完成PASS（证据提交806ffa4）。本案原MPS+BarX独立核实河北年度外送行53400865，残差0.030049423GWh/年度296139.149785GWh=1.014706e-7，低于0.296139150GWh容差。自身BarPi证书B=181.472947million CNY（1.814729亿元），B/obj=3.1756902e-5，B为原P−D的3.959334%；8025剔除列仅3个负价列，与Case3 2050/C2050翻转集合均无交集，陕西11站本案全部非负、B贡献0。已执行物理相对检查通过，水库暂缓，PInf条件披露，原QC保留，不重解。73小文件108474686bytes回本机，验收JSON双端SHA一致；收尾T550原备份106文件5506707098bytes逐文件SHA全部匹配。Base−C点差746.565273亿元、工程对偶区间[699.270273,794.214215]亿元，B−C点差263.874535亿元。未查询或修改5411471，不建监听。
+- 文件：`supplementary_materials/reviews/C2060_acceptance_20261108/` 内验收JSON、行摘要、8025列rc_ratio表、陕西11站与两案集合比较、负价列清单、当前评估器记录、成本两表、SHA收据；`case_results/case_catalog.{json,csv}`及README/案例卡已登记。原始大件与完整245281项行审计留T550；本机输出目录不纳入Git。
+- 命令：T550只读有限任务 `execute_evidence.py row|price|assess` → `finish_evidence.py`；汇报第1节后 `execute_evidence.py collect` → `compare_costs.py` → `verify_delivery.py` → `write_report.py`。34项相关测试通过；成本主项/运营分解与目标在容差内闭合；全部验收/成本小件双端SHA一致。`section2_verification.json`记收尾106原件重读，`report_sync_receipt.json`记报告与工具7文件旁置同步。
+- 未决：水库检查仍按作者决定暂缓；原严格与基础relative_v1的HARD_FAIL标签保留，不当作条件验收失败。正式机制分析由Claude另开目录；A/C2060比较待Case32060终态。本任务未刷新5411471运行快照。
+- 下一步：保持现有询问时只读查询方式；发现Case32060终态后按10-20规则先核既有传输/manifest，再完成备份与对应验收；不建监听、不自动重解。保留其余作者未审查修改。

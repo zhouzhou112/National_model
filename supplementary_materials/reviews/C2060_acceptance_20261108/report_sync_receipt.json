@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "directory": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/delivery_20261108",
+  "files": {
+    "REVIEW_ZH.md": {
+      "bytes": 7264,
+      "sha256": "e70a6a703200805567278d7414d81a604ef6257ec87c4d38fb9a7532a03ecf83"
+    },
+    "section2_verification.json": {
+      "bytes": 3083,
+      "sha256": "5ad603a60b34296aa04a198ba24227eef41fdec45a90315c9d4663a2f31e199f"
+    },
+    "delivery_provenance.json": {
+      "bytes": 249,
+      "sha256": "ea0e9d53540c8473fa046a1f9ad69bca9e8ce2ba62a41fe0c617782e34812436"
+    },
+    "compare_costs.py": {
+      "bytes": 8133,
+      "sha256": "45647fb6ce9f353bed984d7893534f5281f0378e877915c2381231e85a087973"
+    },
+    "verify_delivery.py": {
+      "bytes": 3956,
+      "sha256": "3433c6010fa3599bdd05ef430284005871cdd57a262c64621037e79b82137c8c"
+    },
+    "write_report.py": {
+      "bytes": 8590,
+      "sha256": "787c93b9167049c136654381b26c49296c412c060ef2a448d00afa7eba26ac67"
+    },
+    "validation.json": {
+      "bytes": 801,
+      "sha256": "5db6b58ac69cebd7f169cfa34114858d55614af4c33abfc8aad06d925a3e8a97"
+    }
+  }
+}
