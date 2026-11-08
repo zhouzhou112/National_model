@@ -1,0 +1,26 @@
+[
+  {
+    "file": "D:\\National_model\\Data\\Gis\\grfr_3hourly\\discharge\\output_pfaf_03_2019.nc",
+    "bytes": 3380260808,
+    "sha256": "84ff2c882fb17a4b8693bb0773718c2472038021b64618b05f99f8070a506e0f",
+    "target_comids": 8,
+    "compared_values": 23360,
+    "all_values_equal": true,
+    "max_abs_error_m3s": 0.0,
+    "time_axis_equal": true,
+    "Qout_units": "m3 s-1",
+    "Qout_long_name": "average river water discharge downstream of each river reach"
+  },
+  {
+    "file": "D:\\National_model\\Data\\Gis\\grfr_3hourly\\discharge\\output_pfaf_04_2019.nc",
+    "bytes": 5445519752,
+    "sha256": "e56d5da855ddbdafabdafcb5582981b3f0003054156cf8d912d24a9efd232756",
+    "target_comids": 1849,
+    "compared_values": 5399080,
+    "all_values_equal": true,
+    "max_abs_error_m3s": 0.0,
+    "time_axis_equal": true,
+    "Qout_units": "m3 s-1",
+    "Qout_long_name": "average river water discharge downstream of each river reach"
+  }
+]

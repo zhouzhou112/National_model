@@ -1,0 +1,50 @@
+{
+  "station_rows": 2030,
+  "unique_comids": 1857,
+  "source_raw_rows": 2030,
+  "all_raw_comids_preserved": true,
+  "all_raw_heads_preserved": true,
+  "inventory_to_model_capacity_max_abs_gw": 4.440892098500626e-16,
+  "inventory_to_model_head_max_abs_m": 0.0,
+  "repaired_vs_original_head_max_abs_m": 0.0,
+  "repaired_vs_original_qrated_max_abs_m3s": 0.0,
+  "existing_station_capacity_gw": 297.88949999999994,
+  "pumped_label_rows": 0,
+  "qrated_implied_eta_min_max": [
+    0.899999999999991,
+    0.9000000000000004
+  ],
+  "production_reservoir_eta": 0.85,
+  "hourly_time_range": [
+    "2019-01-01 00:00:00",
+    "2019-12-31 23:00:00"
+  ],
+  "hourly_time_steps_s": [
+    3600
+  ],
+  "three_hour_shape": [
+    2920,
+    1857
+  ],
+  "negative_raw_values": 924,
+  "negative_clipping_max_error_m3s": 0.0,
+  "hourly_hold_max_error_m3s": 0.0,
+  "hourly_shape": [
+    8760,
+    1857
+  ],
+  "hourly_nonfinite": 0,
+  "hourly_sha_matches_index": true,
+  "environment_comid_axis_equal": true,
+  "monthly_p30_recompute_max_error_m3s": 0.0,
+  "missing_station_comids": 0,
+  "duplicate_comid_station_rows": 319,
+  "duplicate_comid_existing_gw": 35.906000000000006,
+  "affected_existing_rows": 142,
+  "aggregate_profile_recompute_max_abs_cf_error": 9.8879238130678e-17,
+  "independent_vs_production_available_flow_max_abs_m3s": 0.0,
+  "cascade_natural_reconstruction_max_abs_m3s_after_cleanup": 0.066650390625,
+  "cascade_nodes": 142,
+  "cascade_edges": 124,
+  "cascade_existing_capacity_gw": 188.91
+}

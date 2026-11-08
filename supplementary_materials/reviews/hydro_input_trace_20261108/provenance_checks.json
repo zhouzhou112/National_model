@@ -1,0 +1,12 @@
+{
+  "ght_operating_count": 901,
+  "matched_count": 736,
+  "match_pair_sets_equal": true,
+  "ght_operating_gw": 302.939,
+  "matched_ght_gw": 263.07,
+  "large_station_low_raw_flow_count": 13,
+  "large_station_low_raw_flow_capacity_gw": 22.720000000000002,
+  "low_flow_screen_definition": "existing >= 0.5 GW and instantaneous raw-flow no-share energy / capacity < 500 h; screening only, not proof each station is mis-mapped",
+  "all_archived_production_hydro_inputs_match": true,
+  "production_hydro_inputs_compared": 11
+}

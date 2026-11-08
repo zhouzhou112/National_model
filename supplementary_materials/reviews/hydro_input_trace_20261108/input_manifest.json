@@ -1,0 +1,52 @@
+[
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\repaired_storage_audit_20260913_v2\\hydro_stations.csv",
+    "bytes": 861090,
+    "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\hydro_phs_module\\data_output\\hydrochn_ght2026_updated.csv",
+    "bytes": 674820,
+    "sha256": "509f55985346a8bd588bf6b60e739145f207146b26e4bf4f09026a7f6345f8fb"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\HydroCHN-main\\HydroCHN-main\\Hydropower_resource_China.csv",
+    "bytes": 207120,
+    "sha256": "36cdb4e89f56a310f6b4f4d8419c3d3b3442fcf0dd55cf44f3ccff47537d7bf4"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\hydro_model_2019_stage1_20260629\\model_inputs\\grfr_target_comids_hourly_2019.nc",
+    "bytes": 17151296,
+    "sha256": "d70fe0a05a98a43cea2a616a972d2678f5cae71210c5a5022c277abfcc6e4804"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\grfr_monthly_p30_single_year_proxy_2019.nc",
+    "bytes": 182396,
+    "sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\hydro_model_2019_stage1_20260629\\data_intermediate\\grfr_target_comids_3h_2019.nc",
+    "bytes": 33282580,
+    "sha256": "f9af99a8e8b794e42bdbf6056227df2ed24734187e92b7664aa840e4616d621c"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\hydro_capacity.csv",
+    "bytes": 316795,
+    "sha256": "4ee4021006cab6c0365166a6003a6f688a1957b4cc058463da931ae0b87894fc"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\reviews\\completed_acceptance_20261020\\evidence\\base2060\\model_config_snapshot.json",
+    "bytes": 19433,
+    "sha256": "ca8481c19e6a4ea10e05460e8e578dc8a53fecbbfe607d8cd7bdfaeb707ed03a"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\cispo_model\\hydro.py",
+    "bytes": 33049,
+    "sha256": "fa2e20be707f0dd36ff082c4fc7110f18baae898af38b6d026b2112314f842b6"
+  },
+  {
+    "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\scripts\\build_cispo_data_package.py",
+    "bytes": 155371,
+    "sha256": "d5cf5f1fb69d0892ca99227647b6f7e3e01ceb3fae468d0cfe07538545597d0e"
+  }
+]

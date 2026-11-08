@@ -1,0 +1,79 @@
+[
+  {
+    "logical_path": "hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\repaired_storage_audit_20260913_v2\\hydro_stations.csv",
+    "archived_sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94",
+    "local_sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/provincial_aggregate_capacity_2025.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\provincial_aggregate_capacity_2025.csv",
+    "archived_sha256": "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199",
+    "local_sha256": "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\provincial_aggregate_monthly_capacity_factor_2019.csv",
+    "archived_sha256": "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d",
+    "local_sha256": "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/cascade_topology_nodes.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\cascade_topology_nodes.csv",
+    "archived_sha256": "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7",
+    "local_sha256": "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/cascade_topology_edges.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\cascade_topology_edges.csv",
+    "archived_sha256": "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de",
+    "local_sha256": "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/timeseries_index.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\timeseries_index.csv",
+    "archived_sha256": "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5",
+    "local_sha256": "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/repaired_storage_audit_20260913_v2/corrections.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\repaired_storage_audit_20260913_v2\\corrections.csv",
+    "archived_sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341",
+    "local_sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341",
+    "match": true
+  },
+  {
+    "logical_path": "hydro/classification_summary.csv",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\classification_summary.csv",
+    "archived_sha256": "c5a11163780bfbc4c5e272b6fb818218afe56f283ef1a39b41b77387bb0a8bee",
+    "local_sha256": "c5a11163780bfbc4c5e272b6fb818218afe56f283ef1a39b41b77387bb0a8bee",
+    "match": true
+  },
+  {
+    "logical_path": "hourly_discharge_2019",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\hydro_model_2019_stage1_20260629\\model_inputs\\grfr_target_comids_hourly_2019.nc",
+    "archived_sha256": "d70fe0a05a98a43cea2a616a972d2678f5cae71210c5a5022c277abfcc6e4804",
+    "local_sha256": "d70fe0a05a98a43cea2a616a972d2678f5cae71210c5a5022c277abfcc6e4804",
+    "match": true
+  },
+  {
+    "logical_path": "monthly_environmental_flow_2019_p30",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\data\\hydro\\grfr_monthly_p30_single_year_proxy_2019.nc",
+    "archived_sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767",
+    "local_sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767",
+    "match": true
+  },
+  {
+    "logical_path": "explicit_ror_profiles_2019",
+    "local_path": "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\hydro_power\\process_hydro\\hydro_model_2019_stage1_20260629\\model_inputs\\ror_hourly_profiles_2019_provisional.nc",
+    "archived_sha256": "5256ab6c40646ad0b20db7351bb3d3616fe6391638cfe317b10528de7d4c8fff",
+    "local_sha256": "5256ab6c40646ad0b20db7351bb3d3616fe6391638cfe317b10528de7d4c8fff",
+    "match": true
+  }
+]

@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "scope": "audit arithmetic, provenance, output closure; not scientific acceptance of hydro model",
+  "checks": [
+    {
+      "check": "hourly_hold_max_error_m3s",
+      "pass": true
+    },
+    {
+      "check": "negative_clipping_max_error_m3s",
+      "pass": true
+    },
+    {
+      "check": "monthly_p30_recompute_max_error_m3s",
+      "pass": true
+    },
+    {
+      "check": "missing_station_comids",
+      "pass": true
+    },
+    {
+      "check": "independent_vs_production_available_flow_max_abs_m3s",
+      "pass": true
+    },
+    {
+      "check": "aggregate_curve_recomputed",
+      "pass": true
+    },
+    {
+      "check": "matching_reproduced",
+      "pass": true
+    },
+    {
+      "check": "archived_production_inputs_same",
+      "pass": true
+    },
+    {
+      "check": "all_original_target_values_equal",
+      "pass": true
+    },
+    {
+      "check": "original_value_count",
+      "pass": true
+    },
+    {
+      "check": "all_31_provinces",
+      "pass": true
+    },
+    {
+      "check": "2060_generation_closes",
+      "pass": true
+    },
+    {
+      "check": "2060_capacity_closes",
+      "pass": true
+    },
+    {
+      "check": "station_sum_closes",
+      "pass": true
+    },
+    {
+      "check": "p30_reduces_more_than_p10",
+      "pass": true
+    },
+    {
+      "check": "comid_share_reduces_availability",
+      "pass": true
+    },
+    {
+      "check": "base2060_export_annual_generation_by_province_technology.csv",
+      "pass": true
+    },
+    {
+      "check": "base2060_export_annual_capacity_by_province_technology.csv",
+      "pass": true
+    },
+    {
+      "check": "python_ast",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_hydro_stations.csv",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_hydrochn_ght2026_updated.csv",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_Hydropower_resource_China.csv",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_grfr_target_comids_hourly_2019.nc",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_grfr_monthly_p30_single_year_proxy_2019.nc",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_grfr_target_comids_3h_2019.nc",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_hydro_capacity.csv",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_model_config_snapshot.json",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_hydro.py",
+      "pass": true
+    },
+    {
+      "check": "source_unchanged_build_cispo_data_package.py",
+      "pass": true
+    }
+  ]
+}
