@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-11-08T19:28:40.048199+00:00",
+  "executable": "D:\\Program Files\\ArcGISPro\\bin\\Python\\envs\\arcgispro-py3\\python.exe",
+  "python": "3.13.7",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {},
+  "arcgis_install": {
+    "LicenseLevel": "Advanced",
+    "InstallDir": "d:\\program files\\arcgispro\\",
+    "Installer": "ZZ",
+    "ProductName": "ArcGISPro",
+    "Version": "3.6",
+    "SourceDir": "D:\\ArcgisDownload\\arcgispro\\SetupFiles\\",
+    "InstallType": "N/A",
+    "BuildNumber": "59527",
+    "InstallDate": "2026/2/23",
+    "InstallTime": "21:57:01",
+    "SPNumber": "N/A",
+    "SPBuild": "N/A",
+    "LicenseType": ""
+  },
+  "resource_checks": {
+    "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\suitable_area\\intermediate\\run_current_v3\\suitability_work.gdb\\grid_025_polygon_master_prj": {
+      "exists": true,
+      "data_type": "FeatureClass",
+      "crs": "User_Defined_Sinusoidal",
+      "count": 16739
+    },
+    "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\suitable_area\\final_pointV2\\vector\\final_025deg_optimization_points.gdb\\final_025deg_points_for_optimization": {
+      "exists": true,
+      "data_type": "FeatureClass",
+      "crs": "GCS_WGS_1984",
+      "count": 16739
+    },
+    "D:\\codeenv\\pycharmproject\\National_RL\\Gis_process\\suitable_area\\intermediate\\run_current_v3\\rasters\\area_rasters_v3\\area_onwind_B_infra_km2.crf": {
+      "exists": true,
+      "data_type": "RasterDataset",
+      "crs": "User_Defined_Sinusoidal",
+      "cell_x": 463.31271652750013,
+      "cell_y": 463.3127165275
+    }
+  }
+}

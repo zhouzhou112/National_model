@@ -1,0 +1,51 @@
+{
+  "checked_at_utc": "2026-11-08T19:34:36.845053+00:00",
+  "checks": [
+    {
+      "file": "01_地图绘制原则与成图标准.md",
+      "utf8_and_links": "PASS"
+    },
+    {
+      "file": "02_本机资源与运行环境.md",
+      "utf8_and_links": "PASS"
+    },
+    {
+      "file": "03_Codex地图任务交接模板.md",
+      "utf8_and_links": "PASS"
+    },
+    {
+      "file": "README.md",
+      "utf8_and_links": "PASS"
+    },
+    {
+      "file": "evidence\\arcgis_runtime.json",
+      "json_parse": "PASS"
+    },
+    {
+      "file": "evidence\\geospatial_checks.json",
+      "json_parse": "PASS"
+    },
+    {
+      "file": "evidence\\grid_scope_checks.json",
+      "json_parse": "PASS"
+    },
+    {
+      "file": "evidence\\rl_runtime.json",
+      "json_parse": "PASS"
+    },
+    {
+      "file": "evidence\\table_checks.json",
+      "json_parse": "PASS"
+    },
+    {
+      "file": "scripts\\audit_local_resources.py",
+      "syntax": "PASS"
+    },
+    {
+      "resources": 72,
+      "all_paths_exist": true,
+      "source_hashes_rechecked": 55
+    }
+  ],
+  "scope": "Documentation, source identity, runtime imports and selected GIS reads only; no new map rendering or scientific validation."
+}

@@ -1,0 +1,93 @@
+{
+  "target_crs_name": "Asia_North_Albers_Equal_Area_Conic",
+  "target_wkt": "PROJCRS[\"Asia_North_Albers_Equal_Area_Conic\",BASEGEOGCRS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]],ID[\"EPSG\",6326]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"Degree\",0.0174532925199433]]],CONVERSION[\"unnamed\",METHOD[\"Albers Equal Area\",ID[\"EPSG\",9822]],PARAMETER[\"Latitude of false origin\",30,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8821]],PARAMETER[\"Longitude of false origin\",105,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8822]],PARAMETER[\"Latitude of 1st standard parallel\",25,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8823]],PARAMETER[\"Latitude of 2nd standard parallel\",47,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8824]],PARAMETER[\"Easting at false origin\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8826]],PARAMETER[\"Northing at false origin\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8827]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]",
+  "target_proj4": {
+    "proj": "aea",
+    "lat_0": 30,
+    "lon_0": 105,
+    "lat_1": 25,
+    "lat_2": 47,
+    "x_0": 0,
+    "y_0": 0,
+    "datum": "WGS84",
+    "units": "m",
+    "no_defs": null,
+    "type": "crs"
+  },
+  "axis_units": [
+    "metre",
+    "metre"
+  ],
+  "layers": {
+    "provinces": {
+      "count": 34,
+      "source_crs": "EPSG:4326",
+      "projected_bounds": [
+        -2625769.3867456666,
+        -2764839.6994928718,
+        2207315.3598921597,
+        2749845.4694723566
+      ],
+      "all_valid": false,
+      "invalid_geometries": [
+        {
+          "index": "22",
+          "gb": "156230000",
+          "name_read_default": "黑龙江省",
+          "reason": "Ring Self-intersection[133.865512 46.509559]"
+        }
+      ],
+      "fields": [
+        "name",
+        "gb",
+        "geometry"
+      ],
+      "sidecars": {
+        ".shp": true,
+        ".shx": true,
+        ".dbf": true,
+        ".prj": true,
+        ".cpg": true
+      }
+    },
+    "nine_dash": {
+      "count": 10,
+      "source_crs": "PROJCS[\"China_Lambert_Conformal_Conic\",GEOGCS[\"Beijing 1954\",DATUM[\"Beijing_1954\",SPHEROID[\"Krassowsky 1940\",6378245,298.3,AUTHORITY[\"EPSG\",\"7024\"]],AUTHORITY[\"EPSG\",\"6214\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic_2SP\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",105],PARAMETER[\"standard_parallel_1\",30],PARAMETER[\"standard_parallel_2\",62],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+      "projected_bounds": [
+        385758.9755115337,
+        -2808988.5251437575,
+        1794621.5011512078,
+        -443813.6167915133
+      ],
+      "all_valid": true,
+      "invalid_geometries": [],
+      "fields": [
+        "FNODE_",
+        "TNODE_",
+        "LPOLY_",
+        "RPOLY_",
+        "LENGTH",
+        "BOU1_4M_",
+        "BOU1_4M_ID",
+        "GBCODE",
+        "geometry"
+      ],
+      "sidecars": {
+        ".shp": true,
+        ".shx": true,
+        ".dbf": true,
+        ".prj": true,
+        ".cpg": true
+      }
+    }
+  },
+  "legacy_prj_exists": true,
+  "legacy_crs_equivalent": true,
+  "main_extent": [
+    -2770761.9291448016,
+    3657240.7838835074,
+    -1591610.3369453943,
+    3039830.554270626
+  ],
+  "box_aspect": 0.7205101021237891
+}

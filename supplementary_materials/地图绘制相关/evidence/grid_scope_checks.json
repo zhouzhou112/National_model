@@ -1,0 +1,9 @@
+{
+  "upstream_rows": 16739,
+  "upstream_columns": 37,
+  "model_rows": 16609,
+  "excluded_rows": 130,
+  "model_subset_of_upstream": true,
+  "excluded_equals_upstream_minus_model": true,
+  "model_and_excluded_disjoint": true
+}
