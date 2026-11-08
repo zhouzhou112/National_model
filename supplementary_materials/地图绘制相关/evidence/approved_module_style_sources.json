@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-08",
+  "authority": "user directs reuse of reviewed module maps",
+  "files": [
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\01_wind_solar_suitability\\scripts\\generate_module_outputs.py",
+      "bytes": 57451,
+      "sha256": "3619addcfd4d305c5bedf2de084a867c89021356190909e3550dd17aee7dd5e9",
+      "cartography_functions": [
+        {
+          "name": "load_map_layers",
+          "line": 176,
+          "end_line": 198
+        },
+        {
+          "name": "add_inset",
+          "line": 236,
+          "end_line": 252
+        },
+        {
+          "name": "add_north_arrow",
+          "line": 255,
+          "end_line": 267
+        },
+        {
+          "name": "add_scale_bar",
+          "line": 270,
+          "end_line": 279
+        },
+        {
+          "name": "finish_map_axis",
+          "line": 282,
+          "end_line": 294
+        }
+      ]
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\01_wind_solar_suitability\\figures\\04_exist.png",
+      "bytes": 1050464,
+      "sha256": "b659862e5ffb0922dd144aac00d3c91595413ef6a27d7299992e98c02d0a9b10"
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\01_wind_solar_suitability\\figures\\Figure_M02_wind_pixel_and_grid_scenarios.png",
+      "bytes": 4461282,
+      "sha256": "250b2ec4b5908457136f080f5a0bbcc6064c1291e37ce36892cc352825e23121"
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\03_load_reconstruction_and_centers\\scripts\\generate_module_outputs.py",
+      "bytes": 20466,
+      "sha256": "e5a2476597872fedad4190ec096b9b4bf9e071eb8b7d0dfc78e7b566629966fe",
+      "cartography_functions": [
+        {
+          "name": "china_layers",
+          "line": 248,
+          "end_line": 261
+        },
+        {
+          "name": "finish_map",
+          "line": 264,
+          "end_line": 294
+        }
+      ]
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\03_load_reconstruction_and_centers\\figures\\Figure_M09_load_center_network.png",
+      "bytes": 929823,
+      "sha256": "50dc48e0e7026fe1b50903284f01e67946ee6bf494aafdc852ed7009ff4c3bb0"
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\09_model_formulation\\scripts\\draw_network_generation_maps.py",
+      "bytes": 16205,
+      "sha256": "f4d20d9f696cfb3e08e3fe84485b46a2c418ab097bccc553979d72fe6f485c7e",
+      "cartography_functions": []
+    },
+    {
+      "path": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\supplementary_materials\\modules\\09_model_formulation\\figures_spatial\\Figure_generation_initial_capacity_2025.png",
+      "bytes": 917933,
+      "sha256": "f715736ad1809594da88745e7d28e734bb717d153f8a399866c724e83ac3e87f"
+    }
+  ]
+}

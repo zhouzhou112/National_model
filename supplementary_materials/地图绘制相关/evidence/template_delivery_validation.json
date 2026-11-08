@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-08",
+  "git_baseline": "dd96f4f1bc553a24af0d562d8b8ed857815e525a",
+  "status": "PASS_SOURCE_FIDELITY_AND_CARTOGRAPHY",
+  "author_aesthetic_acceptance": "NOT_CLAIMED",
+  "figure_pairs": 17,
+  "atlas_pages": 15,
+  "atlas_map_panels": 53,
+  "all_map_panels": 58,
+  "all_scales_horizontal": true,
+  "all_north_arrows_upright": true,
+  "equal_projected_scale": true,
+  "pdf_fonts_embedded": true,
+  "all_text_inside_page": true,
+  "all_scale_and_north_labels_rendered": true,
+  "full_source_line_features_in_inset": 10,
+  "output_dpi": 450,
+  "size_groups": {
+    "3150x2835": 13,
+    "3150x1575": 2,
+    "3150x2790": 2
+  },
+  "unchanged_input_files": 29,
+  "unchanged_reference_files": 7,
+  "data_checks": {
+    "PASS": 18,
+    "DISCLOSED_NOT_CLIPPED": 1
+  },
+  "existing_capacity_source_equality": "EXACT_EQUAL_ALL_16739_ROWS_FOUR_FIELDS",
+  "existing_nominal_total_residuals_mw": {
+    "existing_onwind_mw": -2.8999987989664078e-05,
+    "existing_offwind_mw": -2.0000006770715117e-06,
+    "existing_cpv_mw": -7.00005330145359e-06,
+    "existing_dpv_mw": -0.0022360000293701887
+  },
+  "nominal_total_note": "Source totals are retained exactly; nominal whole-GW controls are approximate. An initial extra 0.001 MW nominal-total assertion failed for DPV (-0.002236 MW); no data were changed and no exact nominal closure is claimed. Source fidelity is the relevant plotting criterion.",
+  "max_pdf_png_mean_absolute_rgb_difference_150dpi": 1.934273015873016,
+  "markdown_link_check": "PASS",
+  "source_code_syntax": "PASS",
+  "code_files": {
+    "通用模板\\build_base2060_atlas.py": {
+      "bytes": 29230,
+      "sha256": "19c2eb2a7ddde7ad47b5739ea3c9e2f59265733c6ab1dcb6b594e771fc2b48c6"
+    },
+    "通用模板\\build_example.py": {
+      "bytes": 1536,
+      "sha256": "debb7549405c313c1dea21f089d965d320b6397f0fb830ac61e40ac6ddfcddd3"
+    },
+    "通用模板\\china_map.py": {
+      "bytes": 19344,
+      "sha256": "f64ecea36e3e38e14b7c58e466c81cb64d54a115caf25f85e2b29fed6ea6f21a"
+    },
+    "通用模板\\review_outputs.py": {
+      "bytes": 6356,
+      "sha256": "1fa3b8edcc43993eaa4ababcf9132ca5d992169ce331d71d3294657b4d4bee49"
+    }
+  },
+  "combined_atlas_sha256": "e47fb018aafcc821ce2780b9bd5dd685a9ff0bff5a7643b2abe309b36448322b",
+  "visual_evidence": "Base2060全要素图集/核验记录/视觉检查记录.json",
+  "scientific_scope_limitation": "No verified Base2060 full CO2 source-sink flow table locally; input resource maps are explicitly separated from solved capture totals."
+}

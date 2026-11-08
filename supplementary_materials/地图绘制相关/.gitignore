@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+
+# Generated research figures/data remain local; publish only reviewed utilities/docs.
+Base2060全要素图集/
+示例图_现有风光装机/
+地图图集浏览.html
