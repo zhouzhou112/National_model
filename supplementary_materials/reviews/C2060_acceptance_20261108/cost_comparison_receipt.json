@@ -1,0 +1,17 @@
+{
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/cost_comparison_20261108",
+  "files": {
+    "operating_cost_comparison.csv": {
+      "bytes": 1718,
+      "sha256": "c379442d44090ffc77c0818499865c00713ffa02321af0f8b60ec8a7a3ebf324"
+    },
+    "comparison_summary.json": {
+      "bytes": 5036,
+      "sha256": "c79d2ae854ce84629a10013e18ef2a77f27b415a43d51fc86d5ac4ac4aade43b"
+    },
+    "primary_cost_comparison.csv": {
+      "bytes": 2241,
+      "sha256": "6b88d2909aa5930adb75bca70128df0d52727a86399aa53025a4db160b27321c"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "files": {
+    "finalize_acceptance.py": {
+      "bytes": 15812,
+      "sha256": "77cce8a7cf440925fcbd753f0e4193b76ca01be7fc0f7fb50b92fecc754513c3"
+    },
+    "frozen_row_formulation_verified.json": {
+      "bytes": 8660,
+      "sha256": "7c3848977c66ecd173902b0fbf12680d1ed460f2a71ab0591cf6724d20caae53"
+    }
+  },
+  "progress_logs": {
+    "acceptance_20261108/row_audit.stderr.log": "Located row 53400865: province_annual_external_sent_p13 (=)\n",
+    "postprocess_20261108/pricing.stderr.log": "",
+    "postprocess_20261108/pricing.stdout.log": ""
+  }
+}

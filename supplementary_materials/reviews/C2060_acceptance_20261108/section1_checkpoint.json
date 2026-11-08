@@ -1,0 +1,13 @@
+{
+  "recorded_at_utc": "2026-11-08T16:11:08.282475+00:00",
+  "section1_status": "PASS",
+  "reported_to_user_before_section2": true,
+  "acceptance_sha256": "f130a6a3d259b67358d0bb9cfb2b6a886dc083cfcaf24cedf89d73121da2c2e0",
+  "authorized_next_actions": [
+    "collect_small_files",
+    "T550_cost_comparison",
+    "case_catalog_registration"
+  ],
+  "no_resolve": true,
+  "protected_job": "5411471"
+}

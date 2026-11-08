@@ -1,0 +1,130 @@
+{
+  "status": "PASS",
+  "computed_on": "T550",
+  "units": "million CNY/year; savings columns yi CNY/year",
+  "accounting": "Primary table is additive; operating table decomposes annual_operation and must not be added again. Diagnostic detail rows excluded.",
+  "metrics": {
+    "Base": {
+      "P": 5789097.634735345,
+      "D": 5784368.134738793
+    },
+    "B": {
+      "P": 5740828.560943967,
+      "D": 5738792.258424055
+    },
+    "C": {
+      "P": 5714441.107400633,
+      "D": 5709857.686201862
+    }
+  },
+  "checks": {
+    "Base": {
+      "primary_sum": 5789097.634620213,
+      "objective": 5789097.634735345,
+      "primary_difference": -0.00011513195931911469,
+      "operation_detail_sum": 1719317.0009093785,
+      "annual_operation": 1719317.0008024143,
+      "operation_difference": 0.00010696426033973694,
+      "tolerance_million_cny": 0.5789097634735345
+    },
+    "B": {
+      "primary_sum": 5740828.560950662,
+      "objective": 5740828.560943967,
+      "primary_difference": 6.695277988910675e-06,
+      "operation_detail_sum": 1681623.7102140547,
+      "annual_operation": 1681623.7102205877,
+      "operation_difference": -6.532995030283928e-06,
+      "tolerance_million_cny": 0.5740828560943967
+    },
+    "C": {
+      "primary_sum": 5714441.107396973,
+      "objective": 5714441.107400633,
+      "primary_difference": -3.6600977182388306e-06,
+      "operation_detail_sum": 1674702.5537255905,
+      "annual_operation": 1674702.553713854,
+      "operation_difference": 1.173652708530426e-05,
+      "tolerance_million_cny": 0.5714441107400633
+    },
+    "missing_Base_components": {
+      "names": [
+        "operating_detail_flexible_load_v5_thermal_precondition",
+        "operating_detail_flexible_load_v5_thermal_release",
+        "operating_flexible_load_v5_enablement",
+        "operating_flexible_load_v5_ev_v1g_relocation",
+        "operating_flexible_load_v5_ev_v2g_degradation",
+        "operating_flexible_load_v5_ev_v2g_participation",
+        "operating_flexible_load_v5_thermal_activation",
+        "operating_flexible_load_v5_v2g_infrastructure"
+      ],
+      "treatment": "zero; archived Base configuration flexible_load=false; all other components required"
+    }
+  },
+  "sources": {
+    "Base": {
+      "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "result_manifest_sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+      "backup_manifest_sha256": "abf3c21e018c9889d5093dc07ab7d54be0e63fd11fcd2a89732749dd389940df",
+      "files": {
+        "cost_components.csv": {
+          "bytes": 3540,
+          "sha256": "bc9d2aeb2a60292e9bec94783670a98e108a10b6142b687693649ab65407db71"
+        },
+        "solve_report.json": {
+          "bytes": 238723,
+          "sha256": "8b12e7066e1e60a13d37e3372a3ef170d16fcce07777dfb42b8c163a070844a8"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 19433,
+          "sha256": "ca8481c19e6a4ea10e05460e8e578dc8a53fecbbfe607d8cd7bdfaeb707ed03a"
+        }
+      }
+    },
+    "B": {
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "result_manifest_sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+      "backup_manifest_sha256": "2443a46d845836c1a154dfc62e05626827cdb4210ce99bad3fada7806dc6c512",
+      "files": {
+        "cost_components.csv": {
+          "bytes": 4786,
+          "sha256": "9336df0be30a1ca3147d459f0e1391aad651c4942d5e9d91a759285719de7e2b"
+        },
+        "solve_report.json": {
+          "bytes": 238883,
+          "sha256": "cb204f30136f33332f6f0f67774e92f77a0b992c6b6ca11e26a307cb902472fc"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 30001,
+          "sha256": "18a306ef4c65c00a5754ddeacd275b2c76898e235d563e2bca079463d2f51b37"
+        }
+      }
+    },
+    "C": {
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "result_manifest_sha256": "fe3a1e02dcce0564a00f3d818954d727192abfe21d1302b527e47ecd871cf162",
+      "backup_manifest_sha256": "466d1d7dbfcb71a00332a5d5436244ebfa9afe2d8a3952f2176c2fb698fba496",
+      "files": {
+        "cost_components.csv": {
+          "bytes": 4764,
+          "sha256": "8ca222201af1293d9626e63efc317c883800d194e611dceb83a0e658321d89e8"
+        },
+        "solve_report.json": {
+          "bytes": 205415,
+          "sha256": "76cfed14b51b7f6f5c777d520189de44f448f1e6d8590d9f3ecf9666c34b7240"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 22918,
+          "sha256": "1065d65c22c013f609c548c2e2499b7fa309c402e31fde48fe38e9a412746b3a"
+        }
+      }
+    }
+  },
+  "acceptance_sha256": "f130a6a3d259b67358d0bb9cfb2b6a886dc083cfcaf24cedf89d73121da2c2e0",
+  "C_B_million_cny": 181.47294729100688,
+  "Base_minus_C_point_yi_cny": 746.5652733471152,
+  "B_minus_C_point_yi_cny": 263.8745354333334,
+  "Base_minus_C_engineering_interval_yi_cny": [
+    699.2702733815927,
+    794.2142148077386
+  ],
+  "interval_label": "BARRIER_DUAL_ENGINEERING_GRADE; author comparison rule; not market settlement"
+}

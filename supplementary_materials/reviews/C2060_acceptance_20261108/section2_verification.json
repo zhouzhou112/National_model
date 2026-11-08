@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "verified_at_utc": "2026-11-08T16:11:26.572339+00:00",
+  "original_backup_file_count": 106,
+  "original_backup_bytes": 5506707098,
+  "original_backup_all_bytes_sha_match": true,
+  "backup_manifest_sha256": "466d1d7dbfcb71a00332a5d5436244ebfa9afe2d8a3952f2176c2fb698fba496",
+  "result_manifest_sha256": "fe3a1e02dcce0564a00f3d818954d727192abfe21d1302b527e47ecd871cf162",
+  "sidecar_matches": {
+    "author_review_20261108/base_screen_ratio_identity.json": {
+      "bytes": 190,
+      "sha256": "06f605fdf171d52277be27d9319d301dfe6ac4df238859143d1e61ee030e9e5a"
+    },
+    "author_review_20261108/acceptance_author_20261108.json": {
+      "bytes": 12675,
+      "sha256": "f130a6a3d259b67358d0bb9cfb2b6a886dc083cfcaf24cedf89d73121da2c2e0"
+    },
+    "author_review_20261108/shaanxi_11_sites.csv": {
+      "bytes": 1465,
+      "sha256": "ab71351b06e16bfb8da6206d9502d29ffb7a1b2024d4b3c122ec1a4f85087706"
+    },
+    "author_review_20261108/excluded_rc_ratio_distribution.json": {
+      "bytes": 756,
+      "sha256": "ef01d19292cf25097f3f1c02b6366ce6b382622c0242c91d95754a865a624445"
+    },
+    "author_review_20261108/shaanxi_flip_comparison.json": {
+      "bytes": 4705,
+      "sha256": "0772b38ed6b368300b4549631140e6adb23ccb72e3e5d5c402f1ecd4634e9f55"
+    },
+    "author_review_20261108/excluded_rc_ratio_columns.csv": {
+      "bytes": 800899,
+      "sha256": "36f23183e3ef777ac672347b703ee3547cdf23f1f9f74373b84638c9d5e7edf1"
+    },
+    "author_review_20261108/solution_qc_relative_v1_author_20261108.json": {
+      "bytes": 73919,
+      "sha256": "141cfa9d34bf9295d28d1592b1dd4b5b8ac30bfa28b62075ab3b0aaf7baf5e16"
+    },
+    "postprocess_20261108/pricing/screen_pricing_certificate.json": {
+      "bytes": 5584,
+      "sha256": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233"
+    },
+    "postprocess_20261108/pricing/negative_screened_columns.csv": {
+      "bytes": 959,
+      "sha256": "b268515d2f5a73608f5624d15a6a4f8f9946b4d4530055bff7a7280d7055699f"
+    },
+    "postprocess_20261108/pricing/screen_sign_flip_sites.csv": {
+      "bytes": 959,
+      "sha256": "b268515d2f5a73608f5624d15a6a4f8f9946b4d4530055bff7a7280d7055699f"
+    },
+    "cost_comparison_20261108/operating_cost_comparison.csv": {
+      "bytes": 1718,
+      "sha256": "c379442d44090ffc77c0818499865c00713ffa02321af0f8b60ec8a7a3ebf324"
+    },
+    "cost_comparison_20261108/comparison_summary.json": {
+      "bytes": 5036,
+      "sha256": "c79d2ae854ce84629a10013e18ef2a77f27b415a43d51fc86d5ac4ac4aade43b"
+    },
+    "cost_comparison_20261108/primary_cost_comparison.csv": {
+      "bytes": 2241,
+      "sha256": "6b88d2909aa5930adb75bca70128df0d52727a86399aa53025a4db160b27321c"
+    }
+  },
+  "gurobi_log": {
+    "exists_in_output": true,
+    "collected": true
+  },
+  "protected_job_5411471_untouched": true,
+  "local_delivered_file_count": 86,
+  "local_all_bytes_sha_match": true,
+  "collected_small_file_count": 73,
+  "collected_small_bytes": 108474686,
+  "maximum_collected_file_bytes": 30124573
+}

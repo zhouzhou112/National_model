@@ -1,0 +1,306 @@
+{
+  "cispo_model/load_center.py": {
+    "sha256": "8c96529eaa1905f758c52982748c230d67bc0b92559cb2c620b453b41672c3c7",
+    "bytes": 25487,
+    "source_commit": "7117aa2b3fcffb051995a95729ac84eb9ff4810c",
+    "verification": "Exact Git blob SHA equals this C2060 backup cloud_source_repo_sha256.json",
+    "excerpts": [
+      {
+        "line": 115,
+        "text": "    )"
+      },
+      {
+        "line": 116,
+        "text": "    province_effective_demand = model.addMVar("
+      },
+      {
+        "line": 117,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_effective_demand_gwh\""
+      },
+      {
+        "line": 118,
+        "text": "    )"
+      },
+      {
+        "line": 119,
+        "text": "    province_external_sent = model.addMVar("
+      },
+      {
+        "line": 120,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_external_sent_gwh\""
+      },
+      {
+        "line": 121,
+        "text": "    )"
+      },
+      {
+        "line": 122,
+        "text": "    province_external_received = model.addMVar("
+      },
+      {
+        "line": 123,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_external_received_gwh\""
+      },
+      {
+        "line": 124,
+        "text": "    )"
+      },
+      {
+        "line": 125,
+        "text": "    province_external_net_import = model.addMVar("
+      },
+      {
+        "line": 126,
+        "text": "        len(provinces),"
+      },
+      {
+        "line": 346,
+        "text": ""
+      },
+      {
+        "line": 347,
+        "text": "    received_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]"
+      },
+      {
+        "line": 348,
+        "text": "    sent_energy: list[gp.LinExpr] = [gp.LinExpr() for _ in provinces]"
+      },
+      {
+        "line": 349,
+        "text": "    reverse_position_by_edge = {"
+      },
+      {
+        "line": 350,
+        "text": "        int(edge_row): position"
+      },
+      {
+        "line": 351,
+        "text": "        for position, edge_row in enumerate(interprovincial_reverse_edge_rows)"
+      },
+      {
+        "line": 352,
+        "text": "    }"
+      },
+      {
+        "line": 353,
+        "text": "    sent_components = [[] for _ in provinces]"
+      },
+      {
+        "line": 354,
+        "text": "    received_components = [[] for _ in provinces]"
+      },
+      {
+        "line": 355,
+        "text": "    for edge, row in enumerate(data.lines.itertuples(index=False)):"
+      },
+      {
+        "line": 356,
+        "text": "        p_from = province_index[int(row.from_province_code)]"
+      },
+      {
+        "line": 357,
+        "text": "        p_to = province_index[int(row.to_province_code)]"
+      },
+      {
+        "line": 358,
+        "text": "        efficiency = float(interprovincial_efficiency[edge])"
+      },
+      {
+        "line": 359,
+        "text": "        sent_components[p_from].append((interprovincial_flow_forward, edge, 1.0))"
+      },
+      {
+        "line": 360,
+        "text": "        received_components[p_to].append((interprovincial_flow_forward, edge, efficiency))"
+      },
+      {
+        "line": 361,
+        "text": "        sent_energy[p_from] += interprovincial_flow_forward[edge, :].sum()"
+      },
+      {
+        "line": 362,
+        "text": "        received_energy[p_to] += efficiency * interprovincial_flow_forward[edge, :].sum()"
+      },
+      {
+        "line": 363,
+        "text": "        reverse_position = reverse_position_by_edge.get(edge)"
+      },
+      {
+        "line": 364,
+        "text": "        if reverse_position is not None:"
+      },
+      {
+        "line": 365,
+        "text": "            sent_components[p_to].append((interprovincial_flow_reverse_ac, reverse_position, 1.0))"
+      },
+      {
+        "line": 366,
+        "text": "            received_components[p_from].append((interprovincial_flow_reverse_ac, reverse_position, efficiency))"
+      },
+      {
+        "line": 367,
+        "text": "            sent_energy[p_to] += interprovincial_flow_reverse_ac["
+      },
+      {
+        "line": 368,
+        "text": "                reverse_position, :"
+      },
+      {
+        "line": 369,
+        "text": "            ].sum()"
+      },
+      {
+        "line": 370,
+        "text": "            received_energy[p_from] += efficiency * interprovincial_flow_reverse_ac["
+      },
+      {
+        "line": 371,
+        "text": "                reverse_position, :"
+      },
+      {
+        "line": 372,
+        "text": "            ].sum()"
+      },
+      {
+        "line": 373,
+        "text": ""
+      },
+      {
+        "line": 392,
+        "text": "        )"
+      },
+      {
+        "line": 393,
+        "text": "        model.addConstr("
+      },
+      {
+        "line": 394,
+        "text": "            province_external_sent[p] == (annual_sum(model, config, hours,"
+      },
+      {
+        "line": 395,
+        "text": "                f\"external_sent_p{province_code}\","
+      },
+      {
+        "line": 396,
+        "text": "                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),"
+      },
+      {
+        "line": 397,
+        "text": "                nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),"
+      },
+      {
+        "line": 398,
+        "text": "            name=f\"province_annual_external_sent_p{province_code}\","
+      },
+      {
+        "line": 399,
+        "text": "        )"
+      },
+      {
+        "line": 400,
+        "text": "        model.addConstr("
+      },
+      {
+        "line": 401,
+        "text": "            province_external_received[p] == (annual_sum(model, config, hours,"
+      },
+      {
+        "line": 402,
+        "text": "                f\"external_received_p{province_code}\","
+      },
+      {
+        "line": 403,
+        "text": "                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in received_components[p]),"
+      },
+      {
+        "line": 404,
+        "text": "                nonnegative=True) if annual_split_enabled(config) else received_energy[p]),"
+      },
+      {
+        "line": 405,
+        "text": "            name=f\"province_annual_external_received_p{province_code}\","
+      },
+      {
+        "line": 406,
+        "text": "        )"
+      },
+      {
+        "line": 407,
+        "text": "        model.addConstr("
+      },
+      {
+        "line": 408,
+        "text": "            province_external_net_import[p]"
+      },
+      {
+        "line": 409,
+        "text": "            == province_external_received[p] - province_external_sent[p],"
+      },
+      {
+        "line": 410,
+        "text": "            name=f\"province_annual_external_net_import_p{province_code}\","
+      },
+      {
+        "line": 411,
+        "text": "        )"
+      }
+    ]
+  },
+  "cispo_model/annual_dense_split.py": {
+    "sha256": "0623b45eb962579e140b07239377ee2916293b43426003df09d42448662b66e4",
+    "bytes": 2095,
+    "source_commit": "7117aa2b3fcffb051995a95729ac84eb9ff4810c",
+    "verification": "Exact Git blob SHA equals this C2060 backup cloud_source_repo_sha256.json",
+    "excerpts": [
+      {
+        "line": 12,
+        "text": "def annual_split_enabled(config):"
+      },
+      {
+        "line": 13,
+        "text": "    return bool(config.raw.get(\"formulation\", {}).get(\"annual_dense_row_split\", {}).get(\"enabled\", False))"
+      },
+      {
+        "line": 14,
+        "text": ""
+      },
+      {
+        "line": 15,
+        "text": ""
+      },
+      {
+        "line": 16,
+        "text": "def annual_sum(model, config, hours, family, sum_block, *, unit=\"gwh\", nonnegative=False):"
+      },
+      {
+        "line": 17,
+        "text": "    if not annual_split_enabled(config):"
+      },
+      {
+        "line": 18,
+        "text": "        return sum_block(slice(None))"
+      },
+      {
+        "line": 19,
+        "text": "    width = int(config.raw[\"formulation\"][\"annual_dense_row_split\"].get(\"block_hours\", 730))"
+      },
+      {
+        "line": 20,
+        "text": "    def scalar_expression(value):"
+      },
+      {
+        "line": 21,
+        "text": "        if hasattr(value, \"item\"):"
+      },
+      {
+        "line": 22,
+        "text": "            value = value.item()"
+      },
+      {
+        "line": 23,
+        "text": "        return gp.LinExpr(value)"
+      }
+    ]
+  }
+}

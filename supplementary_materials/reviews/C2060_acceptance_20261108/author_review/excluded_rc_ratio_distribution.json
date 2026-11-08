@@ -1,0 +1,22 @@
+{
+  "excluded_columns": 8025,
+  "excluded_headroom_gw": 9885.613532262747,
+  "minimum_rc_ratio": -0.08521176827124416,
+  "negative_count": 3,
+  "below_0p1_count": 8,
+  "below_0p1_fraction": 0.0009968847352024922,
+  "current_quantiles": {
+    "0": -0.08521176827124416,
+    "0.05": 0.2016516279717282,
+    "0.25": 0.24320711122678804,
+    "0.5": 0.3766440593023989,
+    "0.75": 0.6255945418505393,
+    "0.95": 0.9129016996279183,
+    "1": 1.10572857418826
+  },
+  "delta_definition": "current C2060 rc_ratio minus original Base screening rc_ratio, equal weight per excluded column",
+  "delta_median": -0.0009615465568317549,
+  "delta_p05": -0.04003444351472144,
+  "quantile_method": "numpy default linear",
+  "B_recomputed_million_cny": 181.47294729100688
+}

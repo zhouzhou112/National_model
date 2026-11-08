@@ -245,9 +245,9 @@
       "year": 2060,
       "version": "v1",
       "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
-      "kind": "COMPLETED_PENDING_ACCEPTANCE",
+      "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "PENDING_ROW_AND_CERTIFICATE",
+      "acceptance_status": "PASS_AUTHOR_20261108",
       "backup_status": "COMPLETE",
       "job_id": "5318408",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
@@ -257,11 +257,19 @@
         "supplementary_materials\\reviews\\C2060_launch_20261030\\GATES_SUMMARY.json",
         "supplementary_materials\\reviews\\C2060_completed_20261107\\REVIEW_ZH.md",
         "supplementary_materials\\reviews\\C2060_completed_20261107\\terminal_summary.json",
-        "supplementary_materials\\reviews\\C2060_completed_20261107\\backup_status_20261107T194117Z.json"
+        "supplementary_materials\\reviews\\C2060_completed_20261107\\backup_status_20261107T194117Z.json",
+        "supplementary_materials\\reviews\\C2060_acceptance_20261108\\REVIEW_ZH.md",
+        "supplementary_materials\\reviews\\C2060_acceptance_20261108\\section2_verification.json",
+        "supplementary_materials\\reviews\\C2060_acceptance_20261108\\author_review\\acceptance_author_20261108.json",
+        "supplementary_materials\\reviews\\C2060_acceptance_20261108\\cost_comparison\\comparison_summary.json"
       ],
       "case_card": "case_results\\by_case\\C\\2060\\20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1\\README.md",
       "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
-      "backup_verified_at_utc": "2026-11-07T13:29:12.930761+00:00"
+      "backup_verified_at_utc": "2026-11-07T13:29:12.930761+00:00",
+      "acceptance_verified_at_utc": "2026-11-08T16:11:26.572339+00:00",
+      "local_output_directory": "supplementary_materials\\reviews\\C2060_acceptance_20261108\\C2060\\output_8760",
+      "acceptance_json": "supplementary_materials\\reviews\\C2060_acceptance_20261108\\author_review\\acceptance_author_20261108.json",
+      "acceptance_sha256": "f130a6a3d259b67358d0bb9cfb2b6a886dc083cfcaf24cedf89d73121da2c2e0"
     },
     {
       "case": "Case3",
@@ -368,5 +376,6 @@
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
-  "last_backup_update_utc": "2026-11-07T19:41:18.862659+00:00"
+  "last_backup_update_utc": "2026-11-07T19:41:18.862659+00:00",
+  "last_catalog_update_utc": "2026-11-08T16:11:26.572339+00:00"
 }

@@ -1,0 +1,9 @@
+{
+  "task_path": "../claude_workspace/tasks/TASK_C2060_acceptance_20261108.md",
+  "task_sha256": "f50e6ff3f49300d6c879b75b2fe4b5ccba8eab4a4116d81371b70cf552b01e43",
+  "git_baseline": "7ac1bbd3714a94a9a659587f6e4b4cf3927f2dac",
+  "protected_job": "5411471",
+  "read_only_source": true,
+  "no_resolve": true,
+  "checkpoint": "Report Section 1 evidence before Section 2 collection"
+}
