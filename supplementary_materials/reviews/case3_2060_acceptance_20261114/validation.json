@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "tests": {
+    "acceptance_gate": 9,
+    "archived_constraint_audit": 4,
+    "vre_pricing": 5,
+    "relative_acceptance": 16,
+    "cost_intervals": 3
+  },
+  "total_passed": 37,
+  "source_sha256": {
+    "compare_costs.py": "0b745845a04e8b4f3ce02a59c58a40633a2bb687b20496927b1d93e24c95d19a",
+    "execute_evidence.py": "26a27001ca3df44cbcf694baf7752a125f6f105d62a2e0862c7dfecf6b04192a",
+    "finalize_acceptance.py": "ce43d3f687544eef179185b8d15e6d27ac264879786d5981e7d903ca499b264b",
+    "finish_evidence.py": "a9a0f0ff1fa38d0ce5f49dddc26e623cf4dfb129697bc4d621e0f4d121157212",
+    "test_acceptance_gate.py": "37fb5e96d4c14f1711bb00e9e1d46fd095570d143db70cf74be82b9c56fbf7c1",
+    "test_cost_intervals.py": "ed20f441f17f4a9f1d595e6a4cb40dd2f9d2674b752e8701ae770e89fe536282",
+    "verify_backup.py": "a6f544822b9dd5b027d9d84427dc619ed0cd6d8c1aa83a91e1797c574e197561",
+    "verify_delivery.py": "a6921919888d50cc40ff7e10e44f40c7f7dfda8729f0ff341bc4ad4abf8bd1b8",
+    "write_report.py": "b1426458cf779bae41511ec00697fa7184e5052ef31c64aa95d17448afc365f2"
+  },
+  "core_model_changes": false
+}

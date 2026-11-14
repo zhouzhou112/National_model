@@ -1,0 +1,277 @@
+{
+  "cispo_model/load_center.py": {
+    "sha256": "fa7ad0d6085399b70156b700b5a01c3161674bdb24ebeb1847dd46ce8c829f88",
+    "bytes": 26544,
+    "source_commit": "7455614b082f9b39299a26b04d0f1e8e7d867c56",
+    "verification": "Exact Git blob SHA equals this case3 2060 backup cloud_source_repo_sha256.json",
+    "excerpts": [
+      {
+        "line": 70,
+        "text": "    annual_row_handles: dict[str, Any] = {"
+      },
+      {
+        "line": 71,
+        "text": "        family: {} for family in ("
+      },
+      {
+        "line": 72,
+        "text": "            \"province_annual_non_spatial_injection\","
+      },
+      {
+        "line": 73,
+        "text": "            \"province_annual_effective_demand\","
+      },
+      {
+        "line": 74,
+        "text": "            \"province_annual_external_sent\","
+      },
+      {
+        "line": 75,
+        "text": "            \"province_annual_external_received\","
+      },
+      {
+        "line": 76,
+        "text": "            \"province_annual_external_net_import\","
+      },
+      {
+        "line": 77,
+        "text": "            \"load_center_annual_energy_balance\","
+      },
+      {
+        "line": 78,
+        "text": "        )"
+      },
+      {
+        "line": 79,
+        "text": "    }"
+      },
+      {
+        "line": 80,
+        "text": "    artifacts.index[\"constraint_handles\"][\"annual_load_center_rows\"] = annual_row_handles"
+      },
+      {
+        "line": 81,
+        "text": "    resource_coefficient_tolerance = float("
+      },
+      {
+        "line": 116,
+        "text": "        lb=-gp.GRB.INFINITY,"
+      },
+      {
+        "line": 117,
+        "text": "        name=\"load_center_external_net_import_gwh\","
+      },
+      {
+        "line": 118,
+        "text": "    )"
+      },
+      {
+        "line": 119,
+        "text": "    intra_forward = model.addMVar("
+      },
+      {
+        "line": 120,
+        "text": "        edge_count, lb=0.0, name=\"intra_load_center_flow_forward_gwh\""
+      },
+      {
+        "line": 121,
+        "text": "    )"
+      },
+      {
+        "line": 122,
+        "text": "    intra_reverse = model.addMVar("
+      },
+      {
+        "line": 123,
+        "text": "        edge_count, lb=0.0, name=\"intra_load_center_flow_reverse_gwh\""
+      },
+      {
+        "line": 124,
+        "text": "    )"
+      },
+      {
+        "line": 125,
+        "text": "    province_non_spatial_injection = model.addMVar("
+      },
+      {
+        "line": 126,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_non_spatial_injection_gwh\""
+      },
+      {
+        "line": 127,
+        "text": "    )"
+      },
+      {
+        "line": 128,
+        "text": "    province_effective_demand = model.addMVar("
+      },
+      {
+        "line": 129,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_effective_demand_gwh\""
+      },
+      {
+        "line": 130,
+        "text": "    )"
+      },
+      {
+        "line": 131,
+        "text": "    province_external_sent = model.addMVar("
+      },
+      {
+        "line": 132,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_external_sent_gwh\""
+      },
+      {
+        "line": 133,
+        "text": "    )"
+      },
+      {
+        "line": 134,
+        "text": "    province_external_received = model.addMVar("
+      },
+      {
+        "line": 135,
+        "text": "        len(provinces), lb=0.0, name=\"province_annual_external_received_gwh\""
+      },
+      {
+        "line": 136,
+        "text": "    )"
+      },
+      {
+        "line": 137,
+        "text": "    province_external_net_import = model.addMVar("
+      },
+      {
+        "line": 138,
+        "text": "        len(provinces),"
+      },
+      {
+        "line": 139,
+        "text": "        lb=-gp.GRB.INFINITY,"
+      },
+      {
+        "line": 401,
+        "text": "                lambda t: effective_load[p, t].sum() + storage_charge[p, :, t].sum()"
+      },
+      {
+        "line": 402,
+        "text": "                + float(hours if t.stop is None else t.stop - t.start) * dac_load[p]),"
+      },
+      {
+        "line": 403,
+        "text": "            name=f\"province_annual_effective_demand_p{province_code}\","
+      },
+      {
+        "line": 404,
+        "text": "        )"
+      },
+      {
+        "line": 405,
+        "text": "        annual_row_handles[\"province_annual_external_sent\"][province_code] = model.addConstr("
+      },
+      {
+        "line": 406,
+        "text": "            province_external_sent[p] == (annual_sum(model, config, hours,"
+      },
+      {
+        "line": 407,
+        "text": "                f\"external_sent_p{province_code}\","
+      },
+      {
+        "line": 408,
+        "text": "                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in sent_components[p]),"
+      },
+      {
+        "line": 409,
+        "text": "                nonnegative=True) if annual_split_enabled(config) else sent_energy[p]),"
+      },
+      {
+        "line": 410,
+        "text": "            name=f\"province_annual_external_sent_p{province_code}\","
+      },
+      {
+        "line": 411,
+        "text": "        )"
+      },
+      {
+        "line": 412,
+        "text": "        annual_row_handles[\"province_annual_external_received\"][province_code] = model.addConstr("
+      },
+      {
+        "line": 413,
+        "text": "            province_external_received[p] == (annual_sum(model, config, hours,"
+      },
+      {
+        "line": 414,
+        "text": "                f\"external_received_p{province_code}\","
+      },
+      {
+        "line": 415,
+        "text": "                lambda t: gp.quicksum(eff * v[e, t].sum() for v, e, eff in received_components[p]),"
+      },
+      {
+        "line": 416,
+        "text": "                nonnegative=True) if annual_split_enabled(config) else received_energy[p]),"
+      },
+      {
+        "line": 417,
+        "text": "            name=f\"province_annual_external_received_p{province_code}\","
+      },
+      {
+        "line": 507,
+        "text": "        intra_load_center_flow_forward=intra_forward,"
+      },
+      {
+        "line": 508,
+        "text": "        intra_load_center_flow_reverse=intra_reverse,"
+      },
+      {
+        "line": 509,
+        "text": "        province_annual_non_spatial_injection=province_non_spatial_injection,"
+      },
+      {
+        "line": 510,
+        "text": "        province_annual_effective_demand=province_effective_demand,"
+      },
+      {
+        "line": 511,
+        "text": "        province_annual_external_sent=province_external_sent,"
+      },
+      {
+        "line": 512,
+        "text": "        province_annual_external_received=province_external_received,"
+      },
+      {
+        "line": 513,
+        "text": "        province_annual_external_net_import=province_external_net_import,"
+      },
+      {
+        "line": 514,
+        "text": "    )"
+      },
+      {
+        "line": 515,
+        "text": "    if center_wave_generation is not None:"
+      },
+      {
+        "line": 516,
+        "text": "        artifacts.variables[\"load_center_wave_generation\"] = ("
+      },
+      {
+        "line": 517,
+        "text": "            center_wave_generation"
+      },
+      {
+        "line": 518,
+        "text": "        )"
+      }
+    ]
+  },
+  "cispo_model/annual_dense_split.py": {
+    "sha256": "0623b45eb962579e140b07239377ee2916293b43426003df09d42448662b66e4",
+    "bytes": 2095,
+    "source_commit": "7455614b082f9b39299a26b04d0f1e8e7d867c56",
+    "verification": "Exact Git blob SHA equals this case3 2060 backup cloud_source_repo_sha256.json",
+    "excerpts": []
+  }
+}

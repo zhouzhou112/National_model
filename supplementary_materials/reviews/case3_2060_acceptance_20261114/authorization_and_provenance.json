@@ -1,0 +1,8 @@
+{
+  "task_path": "..\\claude_workspace\\tasks\\TASK_case3_2060_acceptance_20261114.md",
+  "task_sha256": "06cd8fe3441440befe5d690445504ab2900b44159e67bcb7a34683311e41158e",
+  "git_baseline": "ca4fa9ace9399ec0ccf117e3a5aa9f2d1c768b29",
+  "read_only_source": true,
+  "no_resolve": true,
+  "checkpoint": "Verify complete backup before Section 2; report Section 2 before Section 3 collection"
+}
