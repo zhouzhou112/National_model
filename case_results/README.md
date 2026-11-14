@@ -21,7 +21,7 @@
 |Case3|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2030/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 |Case3|2040|v2|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/README.md>)|
 |Case3|2050|v2|COMPLETED_PRODUCTION|PASS_AUTHOR_20261106|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2050/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
-|Case3|2060|v1|COMPLETED_PENDING_ACCEPTANCE|PENDING_ROW_AND_CERTIFICATE|RUNNING_T550_AUTONOMOUS|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/README.md>)|
+|Case3|2060|v1|COMPLETED_PENDING_ACCEPTANCE|PENDING_ROW_AND_CERTIFICATE|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/README.md>)|
 |nocredit|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/nocredit/2030/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 
 ## 初步分析（在 T550 计算）

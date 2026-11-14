@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-14 15:47UTC：Case3 2060全备份已COMPLETE，PID1081649退出，T1/T2/T3全部VERIFIED，106文件5506884504bytes；15:47重读全部目标bytes/SHA通过，当前云端result_manifest身份仍匹配2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d，源身份未变。case_catalog与备份台账已登记COMPLETE。随后按任务书在新目录启动只读MPS+BarX行审计、自身BarPi证书与重评，当前评估器六组物理检查通过/水库暂缓，正式验收尚待三项证据。不得重复传输、不建监听。**
+
 - **2026-11-14：云端0运行/0排队，Case3 2060/5411471于10:43:56UTC（北京18:43:56）COMPLETED/0:0，518轮OPTIMAL，总7天20:42:27；目标5713559.887379million CNY，进程树峰653.886GiB/Slurm峰650.685GiB。保全COMPLETE/errors=[]，原relative_v1仅solver失败、物理项通过、水库暂缓；PInf0.04653917，最大违反0.03278405/index53400865仍待独立行定位与自身BarPi证书，不宣称正式验收。T550恢复后核无同名备份/活跃传输，106文件5506884504bytes；30%磁盘余量门禁因仅余约211GiB触发，作者明确“直接保存别管门槛”，本次特定operation取消预留比例，其余锁/断点续传/全量SHA/源身份校验保留。15:37UTC自主拉取启动PID1081649、PPID1/SID同PID，本机可断线；15:39核T1的102文件已VERIFIED、T2传输中，尚未完整备份完成。未重解、不删除、不建监听。**
 
 - **2026-11-14 01:31 UTC一次性只读快照：云端1项RUNNING、无排队，Case3 2060/5411471运行7天11:29:57、第490轮，较上次458轮推进32轮。PInf=0.271833234、DInf=1.019381e-5、Compl=0.000353353；最近480→490原始不可行度/互补性下降46.89%/48.41%，对偶不可行度略升1.28%，21.316分钟/轮，不能称三项同时下降。C2060同490轮PInf0.369239525/DInf1.964989e-6/Compl0.000550880：本案PInf/Compl更低，DInf更高，非严格线程消融。Slurm峰值RSS650.685GiB未增加，stderr空、近期日志无报错，无batch_exit/solve_report，尚未收敛。C2060仍COMPLETED，11-08验收、全备份和73小文件取回已完成；无新终态，不重复备份、不建监听。**
@@ -3926,6 +3928,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-14 15:47UTC Case3 2060备份完成，验收启动
+
+2026-11-14 15:47UTC：Case3 2060全备份已COMPLETE，PID1081649退出，T1/T2/T3全部VERIFIED，106文件5506884504bytes；15:47重读全部目标bytes/SHA通过，当前云端result_manifest身份仍匹配2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d，源身份未变。case_catalog与备份台账已登记COMPLETE。随后按任务书在新目录启动只读MPS+BarX行审计、自身BarPi证书与重评，当前评估器六组物理检查通过/水库暂缓，正式验收尚待三项证据。不得重复传输、不建监听。 Git基准ca4fa9ac；证据`supplementary_materials/reviews/case3_2060_acceptance_20261114/backup_precheck.json`含旧PID、三层状态、backup_manifest及SHA，现有完整备份复用。命令verify_backup.py后execute_evidence.py row|price|assess；大件仍在T550。下一步等待本案行审计/证书完成，按第2节门禁判断并先汇报，再取73小文件，不重解。
+
 
 ### 2026-11-14：Case3 2060终态保全与作者磁盘门禁例外备份
 

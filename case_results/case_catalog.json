@@ -364,7 +364,7 @@
       "kind": "COMPLETED_PENDING_ACCEPTANCE",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_ROW_AND_CERTIFICATE",
-      "backup_status": "RUNNING_T550_AUTONOMOUS",
+      "backup_status": "COMPLETE",
       "job_id": "5411471",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
       "local_evidence": [
@@ -378,11 +378,12 @@
       "completed_at_utc": "2026-11-14T10:43:56+00:00",
       "iterations": 518,
       "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
-      "backup_operation": "20261114_case3_2060_completed"
+      "backup_operation": "20261114_case3_2060_completed",
+      "backup_verified_at_utc": "2026-11-14T15:47:55.766825+00:00"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
-  "last_backup_update_utc": "2026-11-07T19:41:18.862659+00:00",
+  "last_backup_update_utc": "2026-11-14T15:47:55.766825+00:00",
   "last_catalog_update_utc": "2026-11-14T15:37:47+00:00"
 }
