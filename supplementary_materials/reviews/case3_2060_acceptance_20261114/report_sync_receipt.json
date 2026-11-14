@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "directory": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/delivery_20261114",
+  "files": {
+    "REVIEW_ZH.md": {
+      "bytes": 7370,
+      "sha256": "8a5558026bfff97ba55aaa665f5c45f54edb98e5e58c5e4a40a49ebdea54cb90"
+    },
+    "section2_verification.json": {
+      "bytes": 2900,
+      "sha256": "7d65848bfc33a8c88e6a61d2421df172e98b54938d4acef8cbd1aa73d52e570a"
+    },
+    "delivery_provenance.json": {
+      "bytes": 301,
+      "sha256": "e8643ded12baa4d111910d7118690802fac32e863ca1b5bfb4120a6db3e6ffef"
+    },
+    "compare_costs.py": {
+      "bytes": 5913,
+      "sha256": "0b745845a04e8b4f3ce02a59c58a40633a2bb687b20496927b1d93e24c95d19a"
+    },
+    "verify_delivery.py": {
+      "bytes": 4278,
+      "sha256": "a6921919888d50cc40ff7e10e44f40c7f7dfda8729f0ff341bc4ad4abf8bd1b8"
+    },
+    "write_report.py": {
+      "bytes": 8023,
+      "sha256": "15f244a7e6d95b490997b6d6a98d7376289dc6826757fcd713758e416980a5f1"
+    },
+    "validation.json": {
+      "bytes": 1172,
+      "sha256": "f7ec52ca9370ab84a3d20ca07d20d19498943ef7ebb6811b181e7a343a7585a2"
+    }
+  }
+}

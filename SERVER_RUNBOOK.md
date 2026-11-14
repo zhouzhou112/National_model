@@ -5811,3 +5811,13 @@ T550工具目录/home/zz2/National_model_server/backup_tools/C2060_completed_202
 - 授权：作者2026-11-14原话“直接保存别管门槛”，覆盖本案30%余量要求；只限`20261114_case3_2060_completed`、`20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1`与既定目标。wrapper调用原configure后设本操作MIN_FREE_FRACTION=0，仍要求完整待传数据放得下，不推广全局规则。6项授权作用域检查通过，wrapper原字节SHA与引擎SHA记backup_tool_provenance。历史backup_blocked保留，但已被明确例外覆盖。
 - 命令：T550 `backup_case3_2060.py plan|run --config backup_config.json --engine backup_completed_cloud.py`；工具目录`/home/zz2/National_model_server/backup_tools/case3_2060_20261114`，操作目录`/home/zz2/National_model_server/cloud_backup/_operations/20261114_case3_2060_completed`。plan与本机只读云端盘点逐项相同，run为独立session+DEVNULL，不依赖本机。
 - 未决/下一步：先核旧PID/transfer_status/backup_manifest，三层全部VERIFIED且源身份未变才登记COMPLETE；不重复启动。随后在T550完整备份上做本案原MPS+BarX最大违反行定位、自身BarPi证书及当前评估器重评；同索引不推定同行。继续保全全部原始结果，不因原HARD_FAIL放弃导出。保留其他会话修改，不建立后台监听。
+
+### 2026-11-14：Case3 2060独立验收、73小文件交付及三情景区间
+
+- Git：备份完成登记 `e71464e3`，工具/37项测试 `229e24c5`，验收证据与catalog `90bf8780`；冻结运行源码 `7455614b082f9b39299a26b04d0f1e8e7d867c56`。
+- 结果：2026-11-14 Case3 2060验收PASS（证据90bf8780，工具229e24c5）。先核旧PID1081649与三层VERIFIED，完整备份106文件5506884504bytes、源身份不变后开始独立证据。本案原MPS+BarX定位河北年度外送行53400865，残差0.032784048GWh/295306.392013GWh=1.11017e-7，低于0.295306392GWh容差。自身BarPi证书B=187.045720million CNY（1.870457亿元），B/obj=3.273716e-5；P=5713559.887379、D=5708901.410421、P−D=4658.476958million CNY，B为原差的4.015169%。8025剔除列中3个负价列，与C2060三站逐列相同、无新增；陕西11站全部非负/B贡献0。六组物理检查通过、水库暂缓，solver条件披露，原QC保留，不重解。第2节先向作者回报后取73文件108431688bytes；收尾106原件与全部85交付小件SHA通过，验收JSON双端一致。A相对Base/B/C节省点差755.377474/272.686736/8.812200亿元，工程区间[708.082474,803.832700]/[252.323710,321.141962]/[-38.836741,57.267427]；A/C包含零，不仅凭点差判定优势。case_catalog登记完成，不建监听。
+- 执行：`verify_backup.py` → `execute_evidence.py row|price|assess` → `finish_evidence.py`；第2节PASS后先回报，再 `execute_evidence.py collect` → `compare_costs.py` → `verify_delivery.py` → `write_report.py`。原始行审计245281项和大型原件在T550，本机仅73既定≤32MiB清单及小证据。当前原评估器HARD_FAIL原样保留，新作者profile PASS。
+- 文件：`supplementary_materials/reviews/case3_2060_acceptance_20261114/REVIEW_ZH.md`、author_review/、pricing/、cost_comparison/、全部来源与回传收据；`case_results/case_catalog.{json,csv}`、README、案例卡已登记PASS_AUTHOR_20261114。全部报告/工具7个文件已同步T550独立delivery_20261114并SHA回读，来源commit见delivery_provenance。
+- 校验：37项测试通过；三套历史翻转集合与各自BarPi/receiptSHA匹配；当前Base筛选清单身份核验。验收JSON SHA `7788a85a14215dcb2bbd35dcc3cf6151b03a7f8f0ef0b882df2e1b9a9e285a19`。收尾转发曾握手超时，作者重连后16:12UTC重新核验全备份及小件通过，无遗留读取失败，不重复计算或传输。
+- 比较：Base/B未筛选，区间 `[D_ref-P_A,P_ref-D_A+B_A]`；C用 `[D_C-B_C-P_A,P_C-D_A+B_A]`，已扣除C自身B_C。标记BARRIER_DUAL_ENGINEERING_GRADE，非统计置信区间/市场结算。旧联合集合字段名含both但本案实际并入全部三个历史集合，报告明确注释，以逐案comparisons为准。
+- 未决/下一步：水库逐站检查仍为作者暂缓；A/C成本区间包含零，不作未经支持的显著成本优势或因果归因。正式A/C的2050与2060机制分析由Claude另开文件夹完成。原始科学数据全部保全，无重解、无排程或监听；其他会话未审查修改保持原状。

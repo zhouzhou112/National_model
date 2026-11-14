@@ -1,0 +1,9 @@
+{
+  "evidence_commit": "90bf87803c93ac2c5286665ee2c6002e3186c91a",
+  "tool_commit": "229e24c5",
+  "original_frozen_source_commit": "7455614b082f9b39299a26b04d0f1e8e7d867c56",
+  "read_only_archives": true,
+  "no_resolve": true,
+  "no_watcher": true,
+  "large_originals_remain_on_T550": true
+}
