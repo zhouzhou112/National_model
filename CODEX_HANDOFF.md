@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-14：云端0运行/0排队，Case3 2060/5411471于10:43:56UTC（北京18:43:56）COMPLETED/0:0，518轮OPTIMAL，总7天20:42:27；目标5713559.887379million CNY，进程树峰653.886GiB/Slurm峰650.685GiB。保全COMPLETE/errors=[]，原relative_v1仅solver失败、物理项通过、水库暂缓；PInf0.04653917，最大违反0.03278405/index53400865仍待独立行定位与自身BarPi证书，不宣称正式验收。T550恢复后核无同名备份/活跃传输，106文件5506884504bytes；30%磁盘余量门禁因仅余约211GiB触发，作者明确“直接保存别管门槛”，本次特定operation取消预留比例，其余锁/断点续传/全量SHA/源身份校验保留。15:37UTC自主拉取启动PID1081649、PPID1/SID同PID，本机可断线；15:39核T1的102文件已VERIFIED、T2传输中，尚未完整备份完成。未重解、不删除、不建监听。**
+
 - **2026-11-14 01:31 UTC一次性只读快照：云端1项RUNNING、无排队，Case3 2060/5411471运行7天11:29:57、第490轮，较上次458轮推进32轮。PInf=0.271833234、DInf=1.019381e-5、Compl=0.000353353；最近480→490原始不可行度/互补性下降46.89%/48.41%，对偶不可行度略升1.28%，21.316分钟/轮，不能称三项同时下降。C2060同490轮PInf0.369239525/DInf1.964989e-6/Compl0.000550880：本案PInf/Compl更低，DInf更高，非严格线程消融。Slurm峰值RSS650.685GiB未增加，stderr空、近期日志无报错，无batch_exit/solve_report，尚未收敛。C2060仍COMPLETED，11-08验收、全备份和73小文件取回已完成；无新终态，不重复备份、不建监听。**
 
 - **2026-11-13 13:14 UTC一次性只读快照：云端1项RUNNING、无排队，Case3 2060/5411471运行6天23:13:29、第458轮，较上次392轮推进66轮。PInf=1.63557230、DInf=3.861809e-6、Compl=0.002410304；最近448→458分别下降29.28%/71.92%/33.52%，25.478分钟/轮，对偶残差反弹后继续回落。C2060同458轮PInf1.94617144/DInf1.045391e-5/Compl0.003084306，同窗27.018分钟/轮；本案三项残差较低，同窗耗时少约5.70%，非严格线程消融。Slurm峰值RSS650.685GiB未增加，stderr空、近期日志无报错，无batch_exit/solve_report，尚未收敛。C2060仍COMPLETED，11-08验收、全备份及73小文件取回已完成；无新终态，不重复备份、不建监听。**
@@ -3924,6 +3926,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-14：Case3 2060终态保全与作者磁盘门禁例外备份
+
+- Git：证据、作用域限定wrapper、config与catalog提交 `8dc0de5b`；核心`scripts/backup_completed_cloud.py`未改，SHA `cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658`。
+- 结果：2026-11-14：云端0运行/0排队，Case3 2060/5411471于10:43:56UTC（北京18:43:56）COMPLETED/0:0，518轮OPTIMAL，总7天20:42:27；目标5713559.887379million CNY，进程树峰653.886GiB/Slurm峰650.685GiB。保全COMPLETE/errors=[]，原relative_v1仅solver失败、物理项通过、水库暂缓；PInf0.04653917，最大违反0.03278405/index53400865仍待独立行定位与自身BarPi证书，不宣称正式验收。T550恢复后核无同名备份/活跃传输，106文件5506884504bytes；30%磁盘余量门禁因仅余约211GiB触发，作者明确“直接保存别管门槛”，本次特定operation取消预留比例，其余锁/断点续传/全量SHA/源身份校验保留。15:37UTC自主拉取启动PID1081649、PPID1/SID同PID，本机可断线；15:39核T1的102文件已VERIFIED、T2传输中，尚未完整备份完成。未重解、不删除、不建监听。
+- 证据：`supplementary_materials/reviews/case3_2060_completed_20261114/REVIEW_ZH.md`、terminal_source/summary、terminal_qc_summary、source_inventory、backup_plan_receipt、backup_launch_receipt、backup_closeout_status；case_catalog/README/案例卡已登记COMPLETED_PENDING_ACCEPTANCE和备份RUNNING。CSV按完整release匹配时修复本条历史空case字段为Case3，其他案例不改。
+- 授权：作者2026-11-14原话“直接保存别管门槛”，覆盖本案30%余量要求；只限`20261114_case3_2060_completed`、`20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1`与既定目标。wrapper调用原configure后设本操作MIN_FREE_FRACTION=0，仍要求完整待传数据放得下，不推广全局规则。6项授权作用域检查通过，wrapper原字节SHA与引擎SHA记backup_tool_provenance。历史backup_blocked保留，但已被明确例外覆盖。
+- 命令：T550 `backup_case3_2060.py plan|run --config backup_config.json --engine backup_completed_cloud.py`；工具目录`/home/zz2/National_model_server/backup_tools/case3_2060_20261114`，操作目录`/home/zz2/National_model_server/cloud_backup/_operations/20261114_case3_2060_completed`。plan与本机只读云端盘点逐项相同，run为独立session+DEVNULL，不依赖本机。
+- 未决/下一步：先核旧PID/transfer_status/backup_manifest，三层全部VERIFIED且源身份未变才登记COMPLETE；不重复启动。随后在T550完整备份上做本案原MPS+BarX最大违反行定位、自身BarPi证书及当前评估器重评；同索引不推定同行。继续保全全部原始结果，不因原HARD_FAIL放弃导出。保留其他会话修改，不建立后台监听。
+
 
 ### 2026-11-14 01:31 UTC Case3 2060第490轮
 

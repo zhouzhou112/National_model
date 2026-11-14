@@ -1,5 +1,7 @@
 # 云端生产求解与 T550 备份台账
 
+2026-11-14：云端0运行/0排队，Case3 2060/5411471于10:43:56UTC（北京18:43:56）COMPLETED/0:0，518轮OPTIMAL，总7天20:42:27；目标5713559.887379million CNY，进程树峰653.886GiB/Slurm峰650.685GiB。保全COMPLETE/errors=[]，原relative_v1仅solver失败、物理项通过、水库暂缓；PInf0.04653917，最大违反0.03278405/index53400865仍待独立行定位与自身BarPi证书，不宣称正式验收。T550恢复后核无同名备份/活跃传输，106文件5506884504bytes；30%磁盘余量门禁因仅余约211GiB触发，作者明确“直接保存别管门槛”，本次特定operation取消预留比例，其余锁/断点续传/全量SHA/源身份校验保留。15:37UTC自主拉取启动PID1081649、PPID1/SID同PID，本机可断线；15:39核T1的102文件已VERIFIED、T2传输中，尚未完整备份完成。未重解、不删除、不建监听。
+
 2026-11-06：云端1项RUNNING。Case3 2050/5294579于08:40:14 UTC COMPLETED/0:0，551轮OPTIMAL，总9天19:09:08，目标5698960.772742 million CNY，进程树峰值620.95GiB。终态PInf0.05514924/DInf2.2365e-6/Compl5.3748e-5。全部结果保全COMPLETE/errors=[]；原relative_v1 HARD_FAIL仅solver失败，已执行物理检查通过、水库按作者暂缓。尚未正式采纳：最大违反行index53400865（0.022921147，原单位待重构）与自身BarPi证书待核；不将C2050特例自动推广、不提交Case3 2060。T550恢复后确认无重复备份/传输，93文件5,510,971,992bytes单次自主备份已启动（PID3271938），当前RUNNING/T1传输，预计余量35.0642%；尚未校验完成。C2060/5318408第457轮，PInf2.02223/DInf1.07433e-5/Compl0.00318225，仍RUNNING，stderr空。
 
 更新：2026-10-20，新增两套已完整校验，见 `completed_acceptance_20261020/backup_completion_verification.json`。本表为当次核验快照，传输实时状态以 T550 操作目录中的 `transfer_status.json` 为准。

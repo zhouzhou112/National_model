@@ -5802,3 +5802,12 @@ T550工具目录/home/zz2/National_model_server/backup_tools/C2060_completed_202
 - 命令：T550只读有限任务 `execute_evidence.py row|price|assess` → `finish_evidence.py`；汇报第1节后 `execute_evidence.py collect` → `compare_costs.py` → `verify_delivery.py` → `write_report.py`。34项相关测试通过；成本主项/运营分解与目标在容差内闭合；全部验收/成本小件双端SHA一致。`section2_verification.json`记收尾106原件重读，`report_sync_receipt.json`记报告与工具7文件旁置同步。
 - 未决：水库检查仍按作者决定暂缓；原严格与基础relative_v1的HARD_FAIL标签保留，不当作条件验收失败。正式机制分析由Claude另开目录；A/C2060比较待Case32060终态。本任务未刷新5411471运行快照。
 - 下一步：保持现有询问时只读查询方式；发现Case32060终态后按10-20规则先核既有传输/manifest，再完成备份与对应验收；不建监听、不自动重解。保留其余作者未审查修改。
+
+### 2026-11-14：Case3 2060终态保全与作者磁盘门禁例外备份
+
+- Git：证据、作用域限定wrapper、config与catalog提交 `8dc0de5b`；核心`scripts/backup_completed_cloud.py`未改，SHA `cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658`。
+- 结果：2026-11-14：云端0运行/0排队，Case3 2060/5411471于10:43:56UTC（北京18:43:56）COMPLETED/0:0，518轮OPTIMAL，总7天20:42:27；目标5713559.887379million CNY，进程树峰653.886GiB/Slurm峰650.685GiB。保全COMPLETE/errors=[]，原relative_v1仅solver失败、物理项通过、水库暂缓；PInf0.04653917，最大违反0.03278405/index53400865仍待独立行定位与自身BarPi证书，不宣称正式验收。T550恢复后核无同名备份/活跃传输，106文件5506884504bytes；30%磁盘余量门禁因仅余约211GiB触发，作者明确“直接保存别管门槛”，本次特定operation取消预留比例，其余锁/断点续传/全量SHA/源身份校验保留。15:37UTC自主拉取启动PID1081649、PPID1/SID同PID，本机可断线；15:39核T1的102文件已VERIFIED、T2传输中，尚未完整备份完成。未重解、不删除、不建监听。
+- 证据：`supplementary_materials/reviews/case3_2060_completed_20261114/REVIEW_ZH.md`、terminal_source/summary、terminal_qc_summary、source_inventory、backup_plan_receipt、backup_launch_receipt、backup_closeout_status；case_catalog/README/案例卡已登记COMPLETED_PENDING_ACCEPTANCE和备份RUNNING。CSV按完整release匹配时修复本条历史空case字段为Case3，其他案例不改。
+- 授权：作者2026-11-14原话“直接保存别管门槛”，覆盖本案30%余量要求；只限`20261114_case3_2060_completed`、`20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1`与既定目标。wrapper调用原configure后设本操作MIN_FREE_FRACTION=0，仍要求完整待传数据放得下，不推广全局规则。6项授权作用域检查通过，wrapper原字节SHA与引擎SHA记backup_tool_provenance。历史backup_blocked保留，但已被明确例外覆盖。
+- 命令：T550 `backup_case3_2060.py plan|run --config backup_config.json --engine backup_completed_cloud.py`；工具目录`/home/zz2/National_model_server/backup_tools/case3_2060_20261114`，操作目录`/home/zz2/National_model_server/cloud_backup/_operations/20261114_case3_2060_completed`。plan与本机只读云端盘点逐项相同，run为独立session+DEVNULL，不依赖本机。
+- 未决/下一步：先核旧PID/transfer_status/backup_manifest，三层全部VERIFIED且源身份未变才登记COMPLETE；不重复启动。随后在T550完整备份上做本案原MPS+BarX最大违反行定位、自身BarPi证书及当前评估器重评；同索引不推定同行。继续保全全部原始结果，不因原HARD_FAIL放弃导出。保留其他会话修改，不建立后台监听。
