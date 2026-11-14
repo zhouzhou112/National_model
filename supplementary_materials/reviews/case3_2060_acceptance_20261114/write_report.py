@@ -68,6 +68,7 @@ P−D = **{comp['original_gap_yi_cny']:.9f}亿元**；B/(P−D) = **{comp['B_to_
  for label,c in flips['comparisons'].items():
   def sites(key):return '、'.join(r['grid_uid']+'/'+r['technology'] for r in c[key]) or '无'
   text+=f"- 相对{label}：交集{len(c['intersection'])}站（{sites('intersection')}）；新增{len(c['new_in_case3_2060'])}站（{sites('new_in_case3_2060')}）；本案不再翻转{len(c['no_longer_flipped'])}站（{sites('no_longer_flipped')}）。\n"
+ text+='\n字段说明：原工具沿用名称`new_vs_both_historical_union`，本案实际取的是全部三个历史集合（C2060、Case3 2050、C2050）的并集，故该字段为空。相对两份2050集合则新增上述3站；以逐案`comparisons`为准，不把字段旧名称理解为只含2050两案。\n'
  text+='\n|陕西grid_uid|本解rc_ratio|B贡献 million CNY|本案翻转|C2060翻转|Case3 2050翻转|C2050翻转|\n|---|---:|---:|---|---|---|---|\n'
  for r in csv.DictReader((W/'author_review/shaanxi_11_sites.csv').open(encoding='utf-8-sig')):
   text+=f"|{r['grid_uid']}|{float(r['current_rc_ratio']):.9f}|{float(r['improvement_bound_million_cny']):.9f}|{r['currently_flipped']}|{r['flipped_in_C2060']}|{r['flipped_in_case3_2050']}|{r['flipped_in_C2050']}|\n"

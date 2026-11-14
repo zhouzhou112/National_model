@@ -2,7 +2,7 @@
 
 这里按情景 → 年份 → 完整运行版本索引案例。研究计算和大文件保存在 T550；本机保存可核验的小结果和导航。原有路径保持不变，不删除、移动或改写历史证据。
 
-当前索引：14个已验收生产案例、1个已解待验收案例、0个运行中案例、2个已备份失败尝试。未列入的旧诊断仍在原 reviews 目录，不表示被删除或已验收。
+当前索引：15个已验收生产案例、0个运行中案例、2个已备份失败尝试。未列入的旧诊断仍在原 reviews 目录，不表示被删除或已验收。
 
 |情景|年份|版本|类别|验收|备份|入口|
 |---|---|---|---|---|---|---|
@@ -21,10 +21,12 @@
 |Case3|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2030/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 |Case3|2040|v2|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/README.md>)|
 |Case3|2050|v2|COMPLETED_PRODUCTION|PASS_AUTHOR_20261106|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2050/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/README.md>)|
-|Case3|2060|v1|COMPLETED_PENDING_ACCEPTANCE|PENDING_ROW_AND_CERTIFICATE|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/README.md>)|
+|Case3|2060|v1|COMPLETED_PRODUCTION|PASS_AUTHOR_20261114|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/README.md>)|
 |nocredit|2030|v1|COMPLETED_PRODUCTION|PASS|COMPLETE|[打开](<D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/nocredit/2030/20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/README.md>)|
 
 ## 初步分析（在 T550 计算）
+
+- [Case3 2060验收与站点对照](<D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/case3_2060_acceptance_20261114/REVIEW_ZH.md>)；[A相对Base/B/C成本点差与区间](<D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/case3_2060_acceptance_20261114/cost_comparison/A2060_cost_intervals.csv>)。A相对C的节省点差8.8122亿元/年，工程区间[-38.8367,57.2674]包含零，不能仅凭点差判定成本优势。
 
 - [C2060验收报告与陕西站点对照](<D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/C2060_acceptance_20261108/REVIEW_ZH.md>)；[Base/B/C 2060成本分量](<D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/C2060_acceptance_20261108/cost_comparison/primary_cost_comparison.csv>)；[运营细分](<D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/C2060_acceptance_20261108/cost_comparison/operating_cost_comparison.csv>)。
 
@@ -46,3 +48,5 @@
 - 原 `supplementary_materials/reviews/` 含发布门禁、短窗诊断、失败保全与历史快照，是溯源档案；通过此目录查找，无需搬动。
 
 2026-11-08：按作者任务书对C2060明确执行Case3 2050同一≤32MiB清单，73文件/108,474,686bytes取回本机；原始大文件继续留T550。此为本次指定交付，不改变一般按需小表规则。C2060已验收；Case3 2060运行状态沿用先前快照，本次未查询或修改5411471。
+
+2026-11-14：Case3 2060按任务书验收PASS，73小文件108431688bytes回本机，目录与C2060同清单；大原件仍留T550。15个生产案例均已验收，历史失败尝试完整保留。

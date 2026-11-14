@@ -1,0 +1,4 @@
+reference,target,units,point_saving,lower_saving,upper_saving,reference_B_yi_cny,A_B_yi_cny,formula,interval_contains_zero
+Base,A,yi CNY/year,755.3774735677429,708.0824736022204,803.8327003441307,0.0,1.8704571965265375,"[D_reference-B_reference-P_A, P_reference-D_A+B_A]",False
+B,A,yi CNY/year,272.6867356539611,252.3237104548421,321.14196243034894,0.0,1.8704571965265375,"[D_reference-B_reference-P_A, P_reference-D_A+B_A]",False
+C,A,yi CNY/year,8.81220022062771,-38.83674123999663,57.26742699701556,1.8147294729100687,1.8704571965265375,"[D_reference-B_reference-P_A, P_reference-D_A+B_A]",True

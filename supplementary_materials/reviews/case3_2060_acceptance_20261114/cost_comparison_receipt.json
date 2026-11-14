@@ -1,0 +1,13 @@
+{
+  "remote_directory": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/cost_comparison_20261114",
+  "files": {
+    "comparison_summary.json": {
+      "bytes": 4911,
+      "sha256": "76e30fa38d985d1f3628698d6cbada369eda8a9e806d8f8f8c35553c8fe9db48"
+    },
+    "A2060_cost_intervals.csv": {
+      "bytes": 601,
+      "sha256": "6685ba3408ff6fc3d14c3a872f244d7886f2f0526f037372e6811ce95cb0ae37"
+    }
+  }
+}

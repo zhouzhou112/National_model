@@ -1,0 +1,346 @@
+{
+  "status": "PASS",
+  "author_decision": "ACCEPTED_RELATIVE_V1_20261114",
+  "conditions": {
+    "physical_relative_checks": true,
+    "maximum_constraint_row_within_family_tolerance": true,
+    "own_BarPi_certificate": true,
+    "barrier_terminal_range_and_gap": true
+  },
+  "row": {
+    "name": "province_annual_external_sent_p13",
+    "province_code": 13,
+    "family": "province_annual_external_sent",
+    "unit": "GWh",
+    "scope": "8760 one-hour periods",
+    "row_magnitude_gwh": 295306.39201266447,
+    "residual_gwh": 0.03278404780674673,
+    "relative_residual": 1.110170612403837e-07,
+    "tolerance_gwh": 0.29530639201266445,
+    "ratio_to_tolerance": 0.11101706124038371,
+    "passed": true,
+    "rule": "AGENTS 2026-10-30 annual energy row: max(1e-3 GWh,1e-6*annual row energy)",
+    "equation": "province_annual_external_sent_gwh = sum(outgoing forward GW and outgoing AC reverse GW)*1h",
+    "term_families": {
+      "flow_forward_gw": {
+        "count": 227760,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -83618.65258483117
+      },
+      "flow_reverse_ac_gw": {
+        "count": 17520,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -211687.73942783326
+      },
+      "province_annual_external_sent_gwh": {
+        "count": 1,
+        "coefficient_values": [
+          1.0
+        ],
+        "contribution": 295306.35922861664
+      }
+    }
+  },
+  "reconstruction_difference": 9.521661029077144e-10,
+  "physical_deferred": [
+    "reservoir_transition"
+  ],
+  "barrier_primal_infeasibility": 0.04653917422358622,
+  "barrier_primal_infeasibility_disclosure_only": true,
+  "certificate": {
+    "B_million_cny": 187.04571965265376,
+    "B_over_objective": 3.273715920364176e-05,
+    "excluded_columns": 8025,
+    "near_optimality_decision": "ACCEPT",
+    "scope": "FULL_YEAR"
+  },
+  "comparison": {
+    "P_million_cny": 5713559.887378571,
+    "D_million_cny": 5708901.4104205845,
+    "original_P_minus_D_million_cny": 4658.476957986131,
+    "original_gap_yi_cny": 46.584769579861316,
+    "B_to_original_gap": 0.04015168934816713,
+    "automatic_resolve": false,
+    "author_decision_required": false,
+    "legacy_certificate_label": "INTERVAL_WITH_B",
+    "rule": "AGENTS 2026-11-06 supersedes automatic comparison re-solve"
+  },
+  "rc_ratio_distribution": {
+    "excluded_columns": 8025,
+    "excluded_headroom_gw": 9885.613527850686,
+    "minimum_rc_ratio": -0.08649100333839976,
+    "negative_count": 3,
+    "below_0p1_count": 8,
+    "below_0p1_fraction": 0.0009968847352024922,
+    "current_quantiles": {
+      "0": -0.08649100333839976,
+      "0.05": 0.20104364252358478,
+      "0.25": 0.24300814296170448,
+      "0.5": 0.37769807600295685,
+      "0.75": 0.6281954961406045,
+      "0.95": 0.9132332651567947,
+      "1": 1.1058144862564745
+    },
+    "delta_definition": "current case3_2060 rc_ratio minus original Base screening rc_ratio, equal weight per excluded column",
+    "delta_median": -0.0008409330318073505,
+    "delta_p05": -0.03684727991212813,
+    "quantile_method": "numpy default linear",
+    "B_recomputed_million_cny": 187.04571965265376
+  },
+  "shaanxi_comparison": {
+    "current_flip_count": 3,
+    "current_flips": [
+      {
+        "grid_uid": "G000031280",
+        "technology": "upv"
+      },
+      {
+        "grid_uid": "G000041198",
+        "technology": "onwind"
+      },
+      {
+        "grid_uid": "G000041199",
+        "technology": "onwind"
+      }
+    ],
+    "comparisons": {
+      "C2060": {
+        "historical_count": 3,
+        "intersection": [
+          {
+            "grid_uid": "G000031280",
+            "technology": "upv"
+          },
+          {
+            "grid_uid": "G000041198",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000041199",
+            "technology": "onwind"
+          }
+        ],
+        "new_in_case3_2060": [],
+        "no_longer_flipped": []
+      },
+      "case3_2050": {
+        "historical_count": 11,
+        "intersection": [],
+        "new_in_case3_2060": [
+          {
+            "grid_uid": "G000031280",
+            "technology": "upv"
+          },
+          {
+            "grid_uid": "G000041198",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000041199",
+            "technology": "onwind"
+          }
+        ],
+        "no_longer_flipped": [
+          {
+            "grid_uid": "G000027695",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029382",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029386",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029663",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029664",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029667",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029668",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029948",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029949",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029950",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000030230",
+            "technology": "onwind"
+          }
+        ]
+      },
+      "C2050": {
+        "historical_count": 11,
+        "intersection": [],
+        "new_in_case3_2060": [
+          {
+            "grid_uid": "G000031280",
+            "technology": "upv"
+          },
+          {
+            "grid_uid": "G000041198",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000041199",
+            "technology": "onwind"
+          }
+        ],
+        "no_longer_flipped": [
+          {
+            "grid_uid": "G000027695",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029382",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029386",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029663",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029664",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029667",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029668",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029948",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029949",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000029950",
+            "technology": "onwind"
+          },
+          {
+            "grid_uid": "G000030230",
+            "technology": "onwind"
+          }
+        ]
+      }
+    },
+    "new_vs_both_historical_union": [],
+    "shaanxi_requested_sites": [
+      "G000029382",
+      "G000029386",
+      "G000029663",
+      "G000029664",
+      "G000029667",
+      "G000029668",
+      "G000029948",
+      "G000029949",
+      "G000029950",
+      "G000030230",
+      "G000027695"
+    ],
+    "shaanxi_current_flip_count": 0,
+    "shaanxi_B_million_cny": 0.0,
+    "shaanxi_nonnegative_now": [
+      "G000029382",
+      "G000029386",
+      "G000029663",
+      "G000029664",
+      "G000029667",
+      "G000029668",
+      "G000029948",
+      "G000029949",
+      "G000029950",
+      "G000030230",
+      "G000027695"
+    ],
+    "historical_source_verification": {
+      "C2060": {
+        "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+        "flips_sha256": "b268515d2f5a73608f5624d15a6a4f8f9946b4d4530055bff7a7280d7055699f",
+        "certificate_sha256": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233",
+        "barpi_sha256": "2c2b570f19241d649bb47a2291a9b5ceaed62e26b3698caeb16c26f873a41e0b"
+      },
+      "case3_2050": {
+        "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+        "flips_sha256": "3c37b2f78087fde2720d52f152fd2709c9a3148c4c349b23e86372b8ad069cb3",
+        "certificate_sha256": "755cd6c66a93f022d3bd58b3e8bbc7c64c8f91a4598faf61cd75d68a80167cc6",
+        "barpi_sha256": "2aacccf359158a1e0f288d7441581a8daedd5f1e1f66817354d56ab4b8bcd7d1"
+      },
+      "C2050": {
+        "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+        "flips_sha256": "5e0535b8dc5f75757066b529accffe77f399290147a32244d7c17e6cbb5bdbf8",
+        "certificate_sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+        "barpi_sha256": "bd27f64dc4e622325c5f59ffc1bf1d210cbcbc1d6c8271cce4100ff8a7fcbbd5"
+      }
+    }
+  },
+  "base_screen_ratio_identity": {
+    "status": "PASS",
+    "rows": 36686,
+    "maximum_rc_ratio_difference": 2.220446049250313e-16,
+    "source_screen_sha256": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3"
+  },
+  "source_evidence": {
+    "source_sha256": {
+      "result_manifest.json": "2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d",
+      "model_archive/original.mps.gz": "c774f9ccb67e68dd44785dbaf171ccb172fda7067dbfc5c3978b7101b9d74b42",
+      "barrier_checkpoint/primal_barx.npy": "6d07aa7f72bb15e1cf8278866ddfa5b26fb2d24d7c8324ccf0acbd8c067f4a12",
+      "barrier_checkpoint/barrier_checkpoint_manifest.json": "d9ab02455bcbaef60d5860229dd26bab2190db5e76d5a6628fd99eeda6869bcd",
+      "solve_report.json": "132c453e794b4f7316ec082c032d7f3e060cc3cfded6daf115304fcfc8fc650e"
+    }
+  },
+  "evidence_sha256": {
+    "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/postprocess_20261108/pricing_receipt.json": "be547bc2762be22102eb94caeddd7bdcfe316c6d22b58d213fe66149ca5d444a",
+    "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/postprocess_20261108/pricing/screen_sign_flip_sites.csv": "b268515d2f5a73608f5624d15a6a4f8f9946b4d4530055bff7a7280d7055699f",
+    "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/postprocess_20261108/pricing/screen_pricing_certificate.json": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233",
+    "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": "acd181c2b8642c2d47f328581b91ca882516326a8eca09b5844bc020e95f2515",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261106/pricing_receipt.json": "2116db4f1d2b8eeab4cc6c7689bbc34564f50eaaf5a3287eb39157dc6da45823",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261106/pricing/screen_sign_flip_sites.csv": "3c37b2f78087fde2720d52f152fd2709c9a3148c4c349b23e86372b8ad069cb3",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261106/pricing/screen_pricing_certificate.json": "755cd6c66a93f022d3bd58b3e8bbc7c64c8f91a4598faf61cd75d68a80167cc6",
+    "/home/zz2/National_model_server/cloud_backup/20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": "318474e2ef550ccae2aad32de87166a651e1fff98e531d9c2ee3fdc7afd4f313",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing_receipt.json": "781575db70a6ec88dc838bddac5a6d784e3ac2185dc610810b2a5e9d3834d2c6",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing/screen_sign_flip_sites.csv": "5e0535b8dc5f75757066b529accffe77f399290147a32244d7c17e6cbb5bdbf8",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/postprocess_20261027_mt/pricing/screen_pricing_certificate.json": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+    "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": "da3b0e8e72f396d2eaa495ed82469ace21fe90a42791b0e3cd0de28a86ffd309",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/source_screen.csv": "831514fdb19da9ffa0a4ccca40def435a3972f37db00284524916c1d8b6c9fc3",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/acceptance_20261114/archived_constraint_audit.json": "d62aac7c852893707cfbe0f0fb908bd71b06067a415266e295cb78f5f95d0556",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/postprocess_20261114/pricing/screen_pricing_certificate.json": "6bdc1431f7a8beedb719f4406b09a32291b527acee90a6fa1303af980df1a978",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/postprocess_20261114/solution_qc_relative_v1.json": "f11e7075d8088c4fb7d97946682fe28cd5988c0b8c05706a726d3e9bc050b5af",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/postprocess_20261114/assessment_evidence.json": "644c858a621db1995c2a94b55c6a8d33bccad8f96c825345a4a68de1dafb14d7",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/backup_manifest.json": "70b1a3cfa2e84cf6521263f874c34fc9467c16da1d1ecada5a8ab780f348391d",
+    "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/acceptance_20261114/frozen_row_formulation_verified.json": "9c4089a83157ddd30d7489a99d556feb91f055e67c22b8e6ff61a1763e03e674"
+  },
+  "source_archives_modified": false
+}

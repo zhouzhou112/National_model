@@ -1,0 +1,702 @@
+{
+  "disclosures": {
+    "new_build_below_1mw": {
+      "vre_capacity.csv": {
+        "asset_rows": 24003,
+        "total_gw": 0.5251198570357017,
+        "negative_rows": 0
+      },
+      "hydro_capacity.csv": {
+        "asset_rows": 1127,
+        "total_gw": 0.01567595797961525,
+        "negative_rows": 0
+      },
+      "thermal_nuclear_capacity.csv": {
+        "asset_rows": 90,
+        "total_gw": 0.015412571369909743,
+        "negative_rows": 2
+      },
+      "storage_capacity.csv": {
+        "asset_rows": 16,
+        "total_gw": 0.0006027615795599775,
+        "negative_rows": 0
+      },
+      "wave_capacity.csv": {
+        "asset_rows": 1284,
+        "total_gw": 0.010455154622657737,
+        "negative_rows": 0
+      },
+      "transmission_capacity.csv": {
+        "asset_rows": 206,
+        "total_gw": 0.10993629826588058,
+        "negative_rows": 0
+      }
+    },
+    "numerical_robustness_audit": {
+      "retrofit_upper_cleanup": [
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [
+            3
+          ],
+          "asset_ids": [
+            "14::gchp::gchpccs"
+          ],
+          "removed_gw": [
+            2.220446049250313e-16
+          ],
+          "total_removed_gw": 2.220446049250313e-16
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        }
+      ],
+      "capacity_rhs_cleanup": [
+        {
+          "row": "thermal_non_ccs_capacity_accounting_gchp[3]",
+          "original_rhs": 2.220446049250313e-16,
+          "cleaned_rhs": 0.0,
+          "left_operand": 1.864,
+          "right_operand": -1.8639999999999999,
+          "roundoff_bound": 3.3111291486420667e-15,
+          "cutoff": 1e-12,
+          "reason": "OPPOSITE_SIGN_CAPACITY_CANCELLATION_ROUNDOFF"
+        }
+      ],
+      "hydro_capacity_headroom_cleanup": {
+        "cutoff_gw": 1e-05,
+        "site_rows": [
+          379,
+          562,
+          595,
+          624,
+          723,
+          757,
+          810,
+          815,
+          848,
+          854,
+          873,
+          890,
+          895,
+          984,
+          1013,
+          1071,
+          1078,
+          1106,
+          1107,
+          1115,
+          1134,
+          1136,
+          1148,
+          1149,
+          1152,
+          1153,
+          1169,
+          1180,
+          1190,
+          1200,
+          1207,
+          1221,
+          1236,
+          1246,
+          1275,
+          1277,
+          1288,
+          1294,
+          1298,
+          1301,
+          1317,
+          1320,
+          1337,
+          1341,
+          1343,
+          1349,
+          1361,
+          1373,
+          1374,
+          1385,
+          1388,
+          1393,
+          1402,
+          1416,
+          1429,
+          1433,
+          1446,
+          1458,
+          1459,
+          1466,
+          1480,
+          1483,
+          1496,
+          1500,
+          1518,
+          1536,
+          1538,
+          1544,
+          1545,
+          1549,
+          1563,
+          1565,
+          1572,
+          1587,
+          1618,
+          1633,
+          1634,
+          1637,
+          1638,
+          1643,
+          1654,
+          1656,
+          1679,
+          1695,
+          1715,
+          1716,
+          1726,
+          1728,
+          1729,
+          1740,
+          1754,
+          1755
+        ],
+        "asset_ids": [
+          "HydroCHN_00379",
+          "HydroCHN_00562",
+          "HydroCHN_00595",
+          "HydroCHN_00624",
+          "HydroCHN_00723",
+          "HydroCHN_00757",
+          "HydroCHN_00810",
+          "HydroCHN_00815",
+          "HydroCHN_00848",
+          "HydroCHN_00854",
+          "HydroCHN_00873",
+          "HydroCHN_00890",
+          "HydroCHN_00895",
+          "HydroCHN_00984",
+          "HydroCHN_01013",
+          "HydroCHN_01071",
+          "HydroCHN_01078",
+          "HydroCHN_01106",
+          "HydroCHN_01107",
+          "HydroCHN_01115",
+          "HydroCHN_01134",
+          "HydroCHN_01136",
+          "HydroCHN_01148",
+          "HydroCHN_01149",
+          "HydroCHN_01152",
+          "HydroCHN_01153",
+          "HydroCHN_01169",
+          "HydroCHN_01180",
+          "HydroCHN_01190",
+          "HydroCHN_01200",
+          "HydroCHN_01207",
+          "HydroCHN_01221",
+          "HydroCHN_01236",
+          "HydroCHN_01246",
+          "HydroCHN_01275",
+          "HydroCHN_01277",
+          "HydroCHN_01288",
+          "HydroCHN_01294",
+          "HydroCHN_01298",
+          "HydroCHN_01301",
+          "HydroCHN_01317",
+          "HydroCHN_01320",
+          "HydroCHN_01337",
+          "HydroCHN_01341",
+          "HydroCHN_01343",
+          "HydroCHN_01349",
+          "HydroCHN_01361",
+          "HydroCHN_01373",
+          "HydroCHN_01374",
+          "HydroCHN_01385",
+          "HydroCHN_01388",
+          "HydroCHN_01393",
+          "HydroCHN_01402",
+          "HydroCHN_01416",
+          "HydroCHN_01429",
+          "HydroCHN_01433",
+          "HydroCHN_01446",
+          "HydroCHN_01458",
+          "HydroCHN_01459",
+          "HydroCHN_01466",
+          "HydroCHN_01480",
+          "HydroCHN_01483",
+          "HydroCHN_01496",
+          "HydroCHN_01500",
+          "HydroCHN_01518",
+          "HydroCHN_01536",
+          "HydroCHN_01538",
+          "HydroCHN_01544",
+          "HydroCHN_01545",
+          "HydroCHN_01549",
+          "HydroCHN_01563",
+          "HydroCHN_01565",
+          "HydroCHN_01572",
+          "HydroCHN_01587",
+          "HydroCHN_01618",
+          "HydroCHN_01633",
+          "HydroCHN_01634",
+          "HydroCHN_01637",
+          "HydroCHN_01638",
+          "HydroCHN_01643",
+          "HydroCHN_01654",
+          "HydroCHN_01656",
+          "HydroCHN_01679",
+          "HydroCHN_01695",
+          "HydroCHN_01715",
+          "HydroCHN_01716",
+          "HydroCHN_01726",
+          "HydroCHN_01728",
+          "HydroCHN_01729",
+          "HydroCHN_01740",
+          "HydroCHN_01754",
+          "HydroCHN_01755"
+        ],
+        "removed_gw": [
+          3.374693451074773e-07,
+          7.685908870458391e-08,
+          2.777677629017816e-07,
+          9.790545520138583e-08,
+          6.202768289970129e-08,
+          5.225307759051945e-07,
+          6.202320302975406e-07,
+          4.3353750096841726e-08,
+          2.640887677984871e-07,
+          1.4846386909433962e-07,
+          2.5938234200079124e-07,
+          7.897330543703285e-06,
+          1.5901274229984663e-07,
+          4.69729664959867e-06,
+          5.116623707016044e-07,
+          2.4256678709741464e-07,
+          1.038276908900404e-06,
+          7.229330119956634e-08,
+          7.680423029857164e-08,
+          1.1674514178994233e-06,
+          2.6884013170150323e-07,
+          2.7291712220017805e-07,
+          2.0563989210076183e-07,
+          6.797584140016966e-08,
+          3.793152368002095e-07,
+          1.2878626109991131e-07,
+          1.8146635189994487e-07,
+          1.7678806800078273e-07,
+          1.7608571750010737e-07,
+          1.9051560450067395e-07,
+          1.8703364280010792e-06,
+          7.153491309724869e-08,
+          2.870780658019434e-07,
+          1.7921974990176004e-07,
+          5.224488043992226e-07,
+          6.504224810133241e-08,
+          1.9027346529962297e-07,
+          6.08947459020126e-08,
+          9.796246110138629e-08,
+          8.319516190194443e-08,
+          7.72246846018898e-08,
+          1.327363989001018e-07,
+          2.3273913230328902e-07,
+          1.3806433750082614e-07,
+          1.7507188255008743e-06,
+          2.1158805769971867e-07,
+          2.4810108300091227e-07,
+          7.529952658971717e-07,
+          5.463738719790889e-08,
+          5.8217614597178e-08,
+          1.7923543389752883e-07,
+          1.2562326670226276e-07,
+          4.4232885650086207e-07,
+          1.1262184129723352e-07,
+          3.2610033609895006e-07,
+          9.413802199917387e-08,
+          6.118906356010478e-07,
+          2.3442831000031195e-07,
+          9.776799381987222e-07,
+          5.862610530024681e-08,
+          2.2017612432995853e-06,
+          6.457588864541841e-07,
+          5.9023035998626017e-08,
+          1.3435710939993517e-07,
+          3.2211343399882186e-07,
+          8.310321860001413e-08,
+          8.431663060110006e-08,
+          7.91840928329908e-06,
+          5.7207685459984e-07,
+          1.6815273152000904e-06,
+          7.701678178002186e-07,
+          6.359019419886758e-08,
+          1.5723417540018658e-07,
+          8.856892600057897e-08,
+          1.6157301259943357e-07,
+          8.228578189002633e-07,
+          2.7420638100995876e-06,
+          4.0258301320025836e-07,
+          2.8742122099890965e-07,
+          8.272903260012066e-08,
+          2.740105854100866e-06,
+          2.1156682960057904e-07,
+          5.842148790083379e-08,
+          7.163002628991777e-07,
+          3.0024944439911716e-07,
+          1.3185924330021137e-07,
+          1.3550634949885398e-07,
+          9.496020029857444e-08,
+          8.69649396899666e-07,
+          4.3031621800582176e-08,
+          3.1216661919991617e-07,
+          4.3513190649963063e-07
+        ],
+        "total_removed_gw": 5.6198972874862627e-05
+      },
+      "other_capacity_headroom_cleanup": [
+        {
+          "variable": "storage_capacity_gw[1,1]",
+          "family": "storage_capacity_gw",
+          "indices": [
+            1,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 1.8,
+          "inherited_lower": 1.7999924939317202,
+          "closed_upper": 1.7999924939317202,
+          "removed_headroom": 7.506068279816702e-06,
+          "cutoff": 1e-05
+        },
+        {
+          "variable": "storage_new_gw[1,1]",
+          "family": "storage_new_gw",
+          "indices": [
+            1,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 7.506068279816702e-06,
+          "inherited_lower": 0.0,
+          "closed_upper": 0.0,
+          "removed_headroom": 7.506068279816702e-06,
+          "cutoff": 1e-05,
+          "paired_capacity": "storage_capacity_gw[1,1]"
+        },
+        {
+          "variable": "storage_capacity_gw[9,1]",
+          "family": "storage_capacity_gw",
+          "indices": [
+            9,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 7.255935472558304,
+          "inherited_lower": 7.255929180728812,
+          "closed_upper": 7.255929180728812,
+          "removed_headroom": 6.29182949118956e-06,
+          "cutoff": 1e-05
+        },
+        {
+          "variable": "storage_new_gw[9,1]",
+          "family": "storage_new_gw",
+          "indices": [
+            9,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 6.29182949118956e-06,
+          "inherited_lower": 0.0,
+          "closed_upper": 0.0,
+          "removed_headroom": 6.29182949118956e-06,
+          "cutoff": 1e-05,
+          "paired_capacity": "storage_capacity_gw[9,1]"
+        },
+        {
+          "variable": "storage_capacity_gw[10,1]",
+          "family": "storage_capacity_gw",
+          "indices": [
+            10,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 39.48165509381028,
+          "inherited_lower": 39.48164913766595,
+          "closed_upper": 39.48164913766595,
+          "removed_headroom": 5.956144335073077e-06,
+          "cutoff": 1e-05
+        },
+        {
+          "variable": "storage_new_gw[10,1]",
+          "family": "storage_new_gw",
+          "indices": [
+            10,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 5.956144335073077e-06,
+          "inherited_lower": 0.0,
+          "closed_upper": 0.0,
+          "removed_headroom": 5.956144335073077e-06,
+          "cutoff": 1e-05,
+          "paired_capacity": "storage_capacity_gw[10,1]"
+        },
+        {
+          "variable": "storage_capacity_gw[11,1]",
+          "family": "storage_capacity_gw",
+          "indices": [
+            11,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 14.689310889005789,
+          "inherited_lower": 14.689304767503984,
+          "closed_upper": 14.689304767503984,
+          "removed_headroom": 6.121501805012031e-06,
+          "cutoff": 1e-05
+        },
+        {
+          "variable": "storage_new_gw[11,1]",
+          "family": "storage_new_gw",
+          "indices": [
+            11,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 6.121501805012031e-06,
+          "inherited_lower": 0.0,
+          "closed_upper": 0.0,
+          "removed_headroom": 6.121501805012031e-06,
+          "cutoff": 1e-05,
+          "paired_capacity": "storage_capacity_gw[11,1]"
+        },
+        {
+          "variable": "storage_capacity_gw[13,1]",
+          "family": "storage_capacity_gw",
+          "indices": [
+            13,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 11.856233561283537,
+          "inherited_lower": 11.856227785235824,
+          "closed_upper": 11.856227785235824,
+          "removed_headroom": 5.776047713013099e-06,
+          "cutoff": 1e-05
+        },
+        {
+          "variable": "storage_new_gw[13,1]",
+          "family": "storage_new_gw",
+          "indices": [
+            13,
+            1
+          ],
+          "unit": "GW",
+          "original_upper": 5.776047713013099e-06,
+          "inherited_lower": 0.0,
+          "closed_upper": 0.0,
+          "removed_headroom": 5.776047713013099e-06,
+          "cutoff": 1e-05,
+          "paired_capacity": "storage_capacity_gw[13,1]"
+        }
+      ]
+    },
+    "continuation_cleanup": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    },
+    "continuation_bound_closure": {
+      "status": "NOT_RECORDED_IN_SOURCE"
+    }
+  },
+  "annual_fossil_unabated_emissions_mtco2": 585.2257601719095,
+  "annual_carbon_source": {
+    "path": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/output_8760/annual_carbon_ccs.json",
+    "sha256": "10353bb9be150cee152b64c2e2667311941c188b9e6353eb533fabcfcd6ba1d2",
+    "bytes": 639,
+    "field": "annual_fossil_unabated_emissions_mtco2"
+  },
+  "power_by_province": [
+    {
+      "province_code": "11",
+      "annual_peak_load_gw": 58.989490865598974,
+      "maximum_residual_gw": 2.3624574187448377e-06
+    },
+    {
+      "province_code": "12",
+      "annual_peak_load_gw": 29.142653952905867,
+      "maximum_residual_gw": 2.3054070391369057e-06
+    },
+    {
+      "province_code": "13",
+      "annual_peak_load_gw": 134.77240600217058,
+      "maximum_residual_gw": 3.1407735167928005e-06
+    },
+    {
+      "province_code": "14",
+      "annual_peak_load_gw": 76.88032796004991,
+      "maximum_residual_gw": 1.6845862775819896e-06
+    },
+    {
+      "province_code": "15",
+      "annual_peak_load_gw": 76.87975996189408,
+      "maximum_residual_gw": 1.6517995140757683e-06
+    },
+    {
+      "province_code": "21",
+      "annual_peak_load_gw": 57.35563683980788,
+      "maximum_residual_gw": 2.3032146940961005e-06
+    },
+    {
+      "province_code": "22",
+      "annual_peak_load_gw": 17.9102935745604,
+      "maximum_residual_gw": 1.528541268545612e-06
+    },
+    {
+      "province_code": "23",
+      "annual_peak_load_gw": 20.93842515262549,
+      "maximum_residual_gw": 2.0180407540793986e-06
+    },
+    {
+      "province_code": "31",
+      "annual_peak_load_gw": 76.64708256358608,
+      "maximum_residual_gw": 1.0735289697721943e-06
+    },
+    {
+      "province_code": "32",
+      "annual_peak_load_gw": 172.83303505173726,
+      "maximum_residual_gw": 1.5117048950747032e-06
+    },
+    {
+      "province_code": "33",
+      "annual_peak_load_gw": 277.8898134228852,
+      "maximum_residual_gw": 1.4171846044933436e-06
+    },
+    {
+      "province_code": "34",
+      "annual_peak_load_gw": 94.13755442838672,
+      "maximum_residual_gw": 1.0974126176960125e-06
+    },
+    {
+      "province_code": "35",
+      "annual_peak_load_gw": 111.5619886719832,
+      "maximum_residual_gw": 1.320026534875555e-06
+    },
+    {
+      "province_code": "36",
+      "annual_peak_load_gw": 52.15608300103271,
+      "maximum_residual_gw": 9.99749063484439e-07
+    },
+    {
+      "province_code": "37",
+      "annual_peak_load_gw": 253.4547025900344,
+      "maximum_residual_gw": 8.783925365732744e-07
+    },
+    {
+      "province_code": "41",
+      "annual_peak_load_gw": 134.68355261759092,
+      "maximum_residual_gw": 4.698487491590472e-07
+    },
+    {
+      "province_code": "42",
+      "annual_peak_load_gw": 74.99357596448424,
+      "maximum_residual_gw": 2.058586376261877e-06
+    },
+    {
+      "province_code": "43",
+      "annual_peak_load_gw": 78.12858059328309,
+      "maximum_residual_gw": 2.7318111140474467e-06
+    },
+    {
+      "province_code": "44",
+      "annual_peak_load_gw": 309.1209802854789,
+      "maximum_residual_gw": 1.6860406648031731e-06
+    },
+    {
+      "province_code": "45",
+      "annual_peak_load_gw": 52.74261142028915,
+      "maximum_residual_gw": 2.990837693804592e-06
+    },
+    {
+      "province_code": "46",
+      "annual_peak_load_gw": 13.916766541093091,
+      "maximum_residual_gw": 2.897340381140343e-07
+    },
+    {
+      "province_code": "50",
+      "annual_peak_load_gw": 44.34657093292347,
+      "maximum_residual_gw": 1.756261909266364e-06
+    },
+    {
+      "province_code": "51",
+      "annual_peak_load_gw": 81.08929918795386,
+      "maximum_residual_gw": 1.2460273355250788e-05
+    },
+    {
+      "province_code": "52",
+      "annual_peak_load_gw": 45.50787378337886,
+      "maximum_residual_gw": 3.515047508820387e-06
+    },
+    {
+      "province_code": "53",
+      "annual_peak_load_gw": 49.25249349080854,
+      "maximum_residual_gw": 4.614557901944213e-06
+    },
+    {
+      "province_code": "54",
+      "annual_peak_load_gw": 2.9250152868616843,
+      "maximum_residual_gw": 2.384780564454404e-06
+    },
+    {
+      "province_code": "61",
+      "annual_peak_load_gw": 79.1768779935835,
+      "maximum_residual_gw": 2.4613590764311347e-06
+    },
+    {
+      "province_code": "62",
+      "annual_peak_load_gw": 60.159855390045095,
+      "maximum_residual_gw": 2.604672801897505e-06
+    },
+    {
+      "province_code": "63",
+      "annual_peak_load_gw": 29.795978214432395,
+      "maximum_residual_gw": 2.841110719943612e-06
+    },
+    {
+      "province_code": "64",
+      "annual_peak_load_gw": 32.13874652064629,
+      "maximum_residual_gw": 2.3037793459253003e-06
+    },
+    {
+      "province_code": "65",
+      "annual_peak_load_gw": 139.38731728612487,
+      "maximum_residual_gw": 4.153653395092168e-06
+    }
+  ],
+  "reservoir_worst": {
+    "hydrochn_row_id": "HydroCHN_00283",
+    "hour_index": 6670,
+    "residual_m3": 9.771969847376113,
+    "active_storage_m3": 354128.744
+  }
+}

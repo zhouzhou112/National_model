@@ -1,0 +1,215 @@
+{
+  "current_flip_count": 3,
+  "current_flips": [
+    {
+      "grid_uid": "G000031280",
+      "technology": "upv"
+    },
+    {
+      "grid_uid": "G000041198",
+      "technology": "onwind"
+    },
+    {
+      "grid_uid": "G000041199",
+      "technology": "onwind"
+    }
+  ],
+  "comparisons": {
+    "C2060": {
+      "historical_count": 3,
+      "intersection": [
+        {
+          "grid_uid": "G000031280",
+          "technology": "upv"
+        },
+        {
+          "grid_uid": "G000041198",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000041199",
+          "technology": "onwind"
+        }
+      ],
+      "new_in_case3_2060": [],
+      "no_longer_flipped": []
+    },
+    "case3_2050": {
+      "historical_count": 11,
+      "intersection": [],
+      "new_in_case3_2060": [
+        {
+          "grid_uid": "G000031280",
+          "technology": "upv"
+        },
+        {
+          "grid_uid": "G000041198",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000041199",
+          "technology": "onwind"
+        }
+      ],
+      "no_longer_flipped": [
+        {
+          "grid_uid": "G000027695",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029382",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029386",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029663",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029664",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029667",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029668",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029948",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029949",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029950",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000030230",
+          "technology": "onwind"
+        }
+      ]
+    },
+    "C2050": {
+      "historical_count": 11,
+      "intersection": [],
+      "new_in_case3_2060": [
+        {
+          "grid_uid": "G000031280",
+          "technology": "upv"
+        },
+        {
+          "grid_uid": "G000041198",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000041199",
+          "technology": "onwind"
+        }
+      ],
+      "no_longer_flipped": [
+        {
+          "grid_uid": "G000027695",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029382",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029386",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029663",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029664",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029667",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029668",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029948",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029949",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000029950",
+          "technology": "onwind"
+        },
+        {
+          "grid_uid": "G000030230",
+          "technology": "onwind"
+        }
+      ]
+    }
+  },
+  "new_vs_both_historical_union": [],
+  "shaanxi_requested_sites": [
+    "G000029382",
+    "G000029386",
+    "G000029663",
+    "G000029664",
+    "G000029667",
+    "G000029668",
+    "G000029948",
+    "G000029949",
+    "G000029950",
+    "G000030230",
+    "G000027695"
+  ],
+  "shaanxi_current_flip_count": 0,
+  "shaanxi_B_million_cny": 0.0,
+  "shaanxi_nonnegative_now": [
+    "G000029382",
+    "G000029386",
+    "G000029663",
+    "G000029664",
+    "G000029667",
+    "G000029668",
+    "G000029948",
+    "G000029949",
+    "G000029950",
+    "G000030230",
+    "G000027695"
+  ],
+  "historical_source_verification": {
+    "C2060": {
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "flips_sha256": "b268515d2f5a73608f5624d15a6a4f8f9946b4d4530055bff7a7280d7055699f",
+      "certificate_sha256": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233",
+      "barpi_sha256": "2c2b570f19241d649bb47a2291a9b5ceaed62e26b3698caeb16c26f873a41e0b"
+    },
+    "case3_2050": {
+      "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "flips_sha256": "3c37b2f78087fde2720d52f152fd2709c9a3148c4c349b23e86372b8ad069cb3",
+      "certificate_sha256": "755cd6c66a93f022d3bd58b3e8bbc7c64c8f91a4598faf61cd75d68a80167cc6",
+      "barpi_sha256": "2aacccf359158a1e0f288d7441581a8daedd5f1e1f66817354d56ab4b8bcd7d1"
+    },
+    "C2050": {
+      "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "flips_sha256": "5e0535b8dc5f75757066b529accffe77f399290147a32244d7c17e6cbb5bdbf8",
+      "certificate_sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+      "barpi_sha256": "bd27f64dc4e622325c5f59ffc1bf1d210cbcbc1d6c8271cce4100ff8a7fcbbd5"
+    }
+  }
+}

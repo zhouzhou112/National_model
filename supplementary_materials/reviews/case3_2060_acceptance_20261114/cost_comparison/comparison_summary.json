@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "computed_on": "T550",
+  "metrics_million_cny": {
+    "Base": {
+      "P": 5789097.634735345,
+      "D": 5784368.134738793,
+      "B": 0.0
+    },
+    "B": {
+      "P": 5740828.560943967,
+      "D": 5738792.258424055,
+      "B": 0.0
+    },
+    "C": {
+      "P": 5714441.107400633,
+      "D": 5709857.686201862,
+      "B": 181.47294729100688
+    },
+    "A": {
+      "P": 5713559.887378571,
+      "D": 5708901.4104205845,
+      "B": 187.04571965265376
+    }
+  },
+  "comparisons": [
+    {
+      "reference": "Base",
+      "target": "A",
+      "units": "yi CNY/year",
+      "point_saving": 755.3774735677429,
+      "lower_saving": 708.0824736022204,
+      "upper_saving": 803.8327003441307,
+      "reference_B_yi_cny": 0.0,
+      "A_B_yi_cny": 1.8704571965265375,
+      "formula": "[D_reference-B_reference-P_A, P_reference-D_A+B_A]",
+      "interval_contains_zero": false
+    },
+    {
+      "reference": "B",
+      "target": "A",
+      "units": "yi CNY/year",
+      "point_saving": 272.6867356539611,
+      "lower_saving": 252.3237104548421,
+      "upper_saving": 321.14196243034894,
+      "reference_B_yi_cny": 0.0,
+      "A_B_yi_cny": 1.8704571965265375,
+      "formula": "[D_reference-B_reference-P_A, P_reference-D_A+B_A]",
+      "interval_contains_zero": false
+    },
+    {
+      "reference": "C",
+      "target": "A",
+      "units": "yi CNY/year",
+      "point_saving": 8.81220022062771,
+      "lower_saving": -38.83674123999663,
+      "upper_saving": 57.26742699701556,
+      "reference_B_yi_cny": 1.8147294729100687,
+      "A_B_yi_cny": 1.8704571965265375,
+      "formula": "[D_reference-B_reference-P_A, P_reference-D_A+B_A]",
+      "interval_contains_zero": true
+    }
+  ],
+  "sources": {
+    "Base": {
+      "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "result_manifest_sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+      "files": {
+        "solve_report.json": {
+          "bytes": 238723,
+          "sha256": "8b12e7066e1e60a13d37e3372a3ef170d16fcce07777dfb42b8c163a070844a8"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 19433,
+          "sha256": "ca8481c19e6a4ea10e05460e8e578dc8a53fecbbfe607d8cd7bdfaeb707ed03a"
+        },
+        "screening_bound_basis": "unscreened reference; no screened-out candidates; B=0"
+      }
+    },
+    "B": {
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "result_manifest_sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+      "files": {
+        "solve_report.json": {
+          "bytes": 238883,
+          "sha256": "cb204f30136f33332f6f0f67774e92f77a0b992c6b6ca11e26a307cb902472fc"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 30001,
+          "sha256": "18a306ef4c65c00a5754ddeacd275b2c76898e235d563e2bca079463d2f51b37"
+        },
+        "screening_bound_basis": "unscreened reference; no screened-out candidates; B=0"
+      }
+    },
+    "C": {
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "result_manifest_sha256": "fe3a1e02dcce0564a00f3d818954d727192abfe21d1302b527e47ecd871cf162",
+      "files": {
+        "solve_report.json": {
+          "bytes": 205415,
+          "sha256": "76cfed14b51b7f6f5c777d520189de44f448f1e6d8590d9f3ecf9666c34b7240"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 22918,
+          "sha256": "1065d65c22c013f609c548c2e2499b7fa309c402e31fde48fe38e9a412746b3a"
+        },
+        "acceptance_sha256": "f130a6a3d259b67358d0bb9cfb2b6a886dc083cfcaf24cedf89d73121da2c2e0",
+        "certificate_sha256": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233",
+        "barpi_sha256": "2c2b570f19241d649bb47a2291a9b5ceaed62e26b3698caeb16c26f873a41e0b"
+      }
+    },
+    "A": {
+      "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "result_manifest_sha256": "2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d",
+      "files": {
+        "solve_report.json": {
+          "bytes": 201087,
+          "sha256": "132c453e794b4f7316ec082c032d7f3e060cc3cfded6daf115304fcfc8fc650e"
+        },
+        "model_config_snapshot.json": {
+          "bytes": 22940,
+          "sha256": "bf70ceac093667675e03ba5af68b173850b0aeb08b6c000a02272f24297a16a0"
+        },
+        "acceptance_sha256": "7788a85a14215dcb2bbd35dcc3cf6151b03a7f8f0ef0b882df2e1b9a9e285a19",
+        "certificate_sha256": "6bdc1431f7a8beedb719f4406b09a32291b527acee90a6fa1303af980df1a978",
+        "barpi_sha256": "be56af18a9eb3daec65e80cb18aaac8c27d61a1deea0c43f2b2ea0cbd4d864d8"
+      }
+    }
+  },
+  "sign_convention": "reference minus A; positive means A saving",
+  "label": "BARRIER_DUAL_ENGINEERING_GRADE",
+  "interpretation": "Author engineering comparison intervals, not market settlement or statistical confidence intervals. No causal attribution or automatic re-solve."
+}

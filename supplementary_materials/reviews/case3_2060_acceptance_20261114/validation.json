@@ -17,7 +17,8 @@
     "test_cost_intervals.py": "ed20f441f17f4a9f1d595e6a4cb40dd2f9d2674b752e8701ae770e89fe536282",
     "verify_backup.py": "a6f544822b9dd5b027d9d84427dc619ed0cd6d8c1aa83a91e1797c574e197561",
     "verify_delivery.py": "a6921919888d50cc40ff7e10e44f40c7f7dfda8729f0ff341bc4ad4abf8bd1b8",
-    "write_report.py": "b1426458cf779bae41511ec00697fa7184e5052ef31c64aa95d17448afc365f2"
+    "write_report.py": "15f244a7e6d95b490997b6d6a98d7376289dc6826757fcd713758e416980a5f1"
   },
-  "core_model_changes": false
+  "core_model_changes": false,
+  "report_generator_syntax": "PASS"
 }
