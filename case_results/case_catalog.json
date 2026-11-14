@@ -361,21 +361,28 @@
       "year": 2060,
       "version": "v1",
       "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
-      "kind": "RUNNING_PRODUCTION",
-      "solver_status": "RUNNING",
-      "acceptance_status": "NOT_FINISHED",
-      "backup_status": "NOT_TERMINAL",
+      "kind": "COMPLETED_PENDING_ACCEPTANCE",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PENDING_ROW_AND_CERTIFICATE",
+      "backup_status": "RUNNING_T550_AUTONOMOUS",
       "job_id": "5411471",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
       "local_evidence": [
         "supplementary_materials\\reviews\\case3_2060_launch_20261106\\REVIEW_ZH.md",
-        "supplementary_materials\\reviews\\case3_2060_launch_20261106\\deployment\\startup_verified.json"
+        "supplementary_materials\\reviews\\case3_2060_launch_20261106\\deployment\\startup_verified.json",
+        "supplementary_materials\\reviews\\case3_2060_completed_20261114\\REVIEW_ZH.md",
+        "supplementary_materials\\reviews\\case3_2060_completed_20261114\\terminal_summary.json",
+        "supplementary_materials\\reviews\\case3_2060_completed_20261114\\backup_launch_receipt.json"
       ],
-      "case_card": "case_results\\by_case\\Case3\\2060\\20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1\\README.md"
+      "case_card": "case_results\\by_case\\Case3\\2060\\20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1\\README.md",
+      "completed_at_utc": "2026-11-14T10:43:56+00:00",
+      "iterations": 518,
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "backup_operation": "20261114_case3_2060_completed"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-07T19:41:18.862659+00:00",
-  "last_catalog_update_utc": "2026-11-08T16:11:26.572339+00:00"
+  "last_catalog_update_utc": "2026-11-14T15:37:47+00:00"
 }

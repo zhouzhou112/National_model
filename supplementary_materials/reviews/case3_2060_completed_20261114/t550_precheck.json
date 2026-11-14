@@ -1,0 +1,12 @@
+{
+  "host": "t550",
+  "disk": {
+    "total": 4029616283648,
+    "used": 3598107770880,
+    "free": 226738659328
+  },
+  "active_transfers": [],
+  "global_lock_available": true,
+  "target_exists": false,
+  "operation_exists": false
+}

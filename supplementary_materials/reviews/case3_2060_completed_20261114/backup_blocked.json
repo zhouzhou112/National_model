@@ -1,0 +1,20 @@
+{
+  "status": "BLOCKED_FREE_SPACE_GATE",
+  "connection": "RESTORED",
+  "active_transfers": [],
+  "target_exists": false,
+  "operation_exists": false,
+  "disk": {
+    "total": 4029616283648,
+    "used": 3598107770880,
+    "free": 226738659328
+  },
+  "source_bytes": 5506884504,
+  "current_free_fraction": 0.05626805218355286,
+  "projected_free_fraction": 0.054901449480872035,
+  "minimum_free_fraction": 0.3,
+  "additional_free_bytes_required": 987653110270,
+  "transmission_started": false,
+  "source_preserved": true,
+  "rule": "AGENTS 2026-10-20 section 3: maintain at least 30% free space; no deletion or silent T3 omission"
+}

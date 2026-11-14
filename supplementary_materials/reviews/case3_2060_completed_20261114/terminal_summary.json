@@ -1,0 +1,47 @@
+{
+  "status": "COMPLETED_ACCEPTANCE_PENDING",
+  "job_id": "5411471",
+  "solver_status": "OPTIMAL",
+  "iterations": 518,
+  "elapsed_job": "7-20:42:27",
+  "completed_at_utc": "2026-11-14T10:43:56+00:00",
+  "objective_million_cny": 5713559.887378571,
+  "barrier_metrics": {
+    "iteration": 518.0,
+    "primal_objective": 5713559.887378571,
+    "dual_objective": 5708901.4104205845,
+    "absolute_primal_dual_objective_gap": 4658.476957986131,
+    "relative_primal_dual_objective_gap": 0.0008153370315198498,
+    "primal_infeasibility": 0.04653917422358622,
+    "dual_infeasibility": 5.02035266621882e-06,
+    "complementarity": 5.4194972584882825e-05,
+    "runtime_seconds": 675685.7915959358,
+    "work_units": 1804494.9445471338,
+    "memory_used_gb": 369.741747872,
+    "max_memory_used_gb": 804.105472688
+  },
+  "peak_process_tree_rss_gib": 653.886,
+  "slurm_peak_rss_gib": 650.6850967407227,
+  "preservation": "COMPLETE",
+  "preservation_errors": [],
+  "raw_relative_v1": "HARD_FAIL",
+  "relative_failed_checks": [
+    "solver"
+  ],
+  "reservoir": "DEFERRED_BY_AUTHOR_20261012",
+  "maximum_constraint_violation": 0.03278404875891283,
+  "constraint_location": {
+    "kind": "constraint",
+    "index": 53400865,
+    "name": null,
+    "lookup_status": "SKIPPED_MODEL_SIZE"
+  },
+  "row_name_verified": false,
+  "own_BarPi_certificate_completed": false,
+  "backup": "RUNNING_T550_AUTONOMOUS",
+  "backup_files": 106,
+  "backup_bytes": 5506884504,
+  "backup_operation": "20261114_case3_2060_completed",
+  "backup_pid": 1081649,
+  "author_space_override": "2026-11-14: 直接保存别管门槛; this operation only"
+}

@@ -1,0 +1,34 @@
+{
+  "relative_status": "HARD_FAIL",
+  "checks": {
+    "power_balance": {
+      "passed": true
+    },
+    "objective_components": {
+      "passed": true
+    },
+    "unidirectional_interprovincial_flow": {
+      "passed": true
+    },
+    "reservoir_transition": {
+      "passed": null,
+      "status": "DEFERRED_BY_AUTHOR_20261012"
+    },
+    "extended_gw_gwh_physical_checks": {
+      "passed": true
+    },
+    "extended_mt_mass_balance_checks": {
+      "passed": true
+    },
+    "remaining_physical_hard_checks": {
+      "passed": true
+    },
+    "solver": {
+      "passed": false
+    }
+  },
+  "profile_keys": [
+    "relative_v1"
+  ],
+  "accounting": "5411471|COMPLETED||7-20:42:27|0:0\n5411471.batch|COMPLETED|682292776K|7-20:42:27|0:0\n5411471.extern|COMPLETED|0|7-20:42:27|0:0\n"
+}

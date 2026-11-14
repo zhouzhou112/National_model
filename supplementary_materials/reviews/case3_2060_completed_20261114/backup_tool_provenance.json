@@ -1,0 +1,9 @@
+{
+  "wrapper_source": "supplementary_materials/reviews/C2060_completed_20261107/backup_C2060.py",
+  "wrapper_sha256": "8bf3532dac62e57b1d9ac8a9e07dd3f9a5e9202a58e41effd7838194c31ee03c",
+  "engine": "scripts/backup_completed_cloud.py",
+  "engine_sha256": "cd261143d85b91664b26d8b8582468f7171a64155f5d443ca535b579a2f47658",
+  "core_engine_changed": false,
+  "author_scope_tests_passed": 6,
+  "changed_behavior": "Explicit author exception only for this release/operation/destination: reserve=0; payload must still fit. All transfer and SHA logic reused unchanged."
+}
