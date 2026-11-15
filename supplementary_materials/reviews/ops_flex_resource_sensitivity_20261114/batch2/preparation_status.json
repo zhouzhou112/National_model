@@ -1,0 +1,32 @@
+{
+  "status": "PREPARED_NOT_SUBMITTED_T550_CONNECTION_BLOCKED",
+  "recorded_at_utc": "2026-11-15T21:43:21.131193+00:00",
+  "authorized_years": [
+    2030,
+    2040,
+    2060
+  ],
+  "first_batch_adopted": true,
+  "third_batch_authorized": false,
+  "maximum_cloud_jobs": 4,
+  "protected_running_job": "5587177",
+  "threads": 44,
+  "runtime": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115",
+  "installation_status": "UNKNOWN_AFTER_SSH_DISCONNECT_CHECK_RECEIPT_FIRST",
+  "gates_started": false,
+  "new_cloud_jobs_submitted": false,
+  "checks": {
+    "source_metadata_read": true,
+    "T550_frozen_source_SHA_matches_cloud": true,
+    "closure_2040_2060_SHA_matches": true,
+    "production_CLI_scope": "PASS",
+    "python_compile": "PASS"
+  },
+  "pending": [
+    "Recover T550 connection; inspect existing installation_receipt.json and processes before resuming",
+    "Verify all per-year inputs and source packages; complete installation if needed",
+    "537-test full regression and per-year 1h/24h gates",
+    "Report gates, then immutable release/preflight/submit-release and startup checks"
+  ],
+  "third_batch_submissions_forbidden": true
+}

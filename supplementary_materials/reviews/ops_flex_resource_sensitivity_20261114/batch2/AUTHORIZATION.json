@@ -1,0 +1,14 @@
+{
+  "author_message": "第一批已由 Claude 复核，确认采纳。放行第二批其余三个作业：OPS-Open 2030、2040、2060，各自门禁通过后提交。连同在跑的 LATE-Open 2050，云端同时不超过 4 个。第三批仍等我确认。LATE-Open 2050 结束后按第一批同样方法恢复年度核算行对偶。",
+  "authorized_cases": [
+    "ops_open_2030",
+    "ops_open_2040",
+    "ops_open_2060"
+  ],
+  "batch": 2,
+  "third_batch_authorized": false,
+  "maximum_cloud_jobs": 4,
+  "threads": 44,
+  "first_batch_adopted": true,
+  "late_open_postsolve_annual_dual_recovery": "original MPS ROWS plus own BarPi with full raw row-order digest verification; T550 sidecar only"
+}

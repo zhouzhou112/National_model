@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-15T20:49:36.439683+00:00",
+  "as_of_utc": "2026-11-15T21:43:21.131193+00:00",
   "cases": [
     {
       "case": "B",
@@ -415,7 +415,9 @@
       "delivered_bytes": 142735375,
       "delivery_sha_status": "PASS",
       "author_state_adoption": "NOT_REQUESTED",
-      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md"
+      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md",
+      "author_result_adoption": "ACCEPTED_AFTER_CLAUDE_REVIEW_20261115",
+      "batch1_review_confirmed": true
     },
     {
       "case": "OPS-Conservative",
@@ -443,7 +445,9 @@
       "delivered_bytes": 138775945,
       "delivery_sha_status": "PASS",
       "author_state_adoption": "NOT_REQUESTED",
-      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md"
+      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md",
+      "author_result_adoption": "ACCEPTED_AFTER_CLAUDE_REVIEW_20261115",
+      "batch1_review_confirmed": true
     },
     {
       "case": "C5",
@@ -471,7 +475,9 @@
       "delivered_bytes": 141408749,
       "delivery_sha_status": "PASS",
       "author_state_adoption": "NOT_REQUESTED",
-      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md"
+      "first_batch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch1_20261115\\BATCH1_REPORT_ZH.md",
+      "author_result_adoption": "ACCEPTED_AFTER_CLAUDE_REVIEW_20261115",
+      "batch1_review_confirmed": true
     },
     {
       "case": "LATE-Open-TEST",
@@ -491,7 +497,9 @@
       "case_card": "case_results\\by_case\\LATE-Open-TEST\\2050\\20261115_lateopen_2050_restricted_factor5_t44_m750_v1\\README.md",
       "batch": 1,
       "main_comparison_eligible": false,
-      "backup_manifest_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\factor_test_backup_complete.json"
+      "backup_manifest_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\factor_test_backup_complete.json",
+      "author_result_adoption": "ACCEPTED_AFTER_CLAUDE_REVIEW_20261115",
+      "batch1_review_confirmed": true
     },
     {
       "case": "LATE-Open",
@@ -511,7 +519,9 @@
       "batch": 2,
       "explicit_early_launch_authorization": true,
       "main_comparison_eligible": true,
-      "certificate_required": true
+      "certificate_required": true,
+      "postsolve_annual_row_duals_recovery_required": true,
+      "annual_dual_recovery_method": "T550 original MPS ROWS plus own BarPi; verify full original row-order digest; sidecar only"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
