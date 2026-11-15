@@ -1,5 +1,11 @@
 # C5 2050 — 第一批启动记录
 
+> 最新状态：验收PASS、备份COMPLETE；108件、141,408,749bytes已回本机，双端SHA全部通过。
+
+[验收包说明](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/C5/2050/20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch1_20261115/README_ZH.md) · [验收JSON](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/C5/2050/20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch1_20261115/acceptance_record.json) · [第一批报告](D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/acceptance_batch1_20261115/BATCH1_REPORT_ZH.md)
+
+下方保留历次运行记录。
+
 Job 5584390，截至 2026-11-15T00:52:34.902580Z 为RUNNING，尚未验收/备份。44线程、64CPU/750G/UNLIMITED/no-requeue；启动可用内存 724.460155 GiB。
 
 云端：/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1

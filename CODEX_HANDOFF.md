@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15 第一批已完成：T550全量备份335件16.57GB校验后，Open/Conservative/D1三案当前relative_v1全部PASS；恢复每案1134年度对偶并完成只读分析。322件422.92MB验收/结果已回本机、双端SHA全匹配。第一批报告与表格已同步T550，case_catalog更新；证据919b4249。Open较REF省729.84亿元/年；D1较中央OPS少弃风光49.411TWh、年容量行均值51.09→2.94元/MWh。其余第二/三批未提交，等待作者审阅；生产LATE5587177按既有单独授权运行。**
+
 - **2026-11-15 19:40UTC：云端1运行/3完成。LATE5587177已实际启动9:08:17至33轮，718.97GiB启动内存/64CPU750G分配/smoke/实际44线程/全年结构均PASS。OPS-Open150轮15:55:05、Conservative161轮17:12:19、D1/C5 149轮14:53:19均OPTIMAL+保全COMPLETE+内置relative_v1 PASS，正式验收待备份。作者把通用备份余量门槛改5%，代码acb27944/9项测试PASS；335件16.57GB已由T550 PID3841220自主拉取，尚未完成。无新求解/监听，其他第二批未提交。**
 
 - **2026-11-15 08:47UTC：按作者新指示单独提前放行LATE-Open2050正式受限求解5587177，44线程、64CPU/750G/UNLIMITED/no-requeue。门禁与preflight PASS；当前Resources排队，实际分配/启动内存尚待节点启动，云端3运行+1排队。48线程已评估，保留44实测配置，未启动其他第二批。五轮测试42文件4.19GB备份已COMPLETE、SHA/源身份通过。详见LATE_PRODUCTION_LAUNCH_REPORT_ZH.md；源c92ee1bb。**
@@ -3940,6 +3942,21 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 第一批T550验收、分析、报告与本地交付完成
+
+证据/工具提交919b4249。备份在20:12:03UTC COMPLETE，335文件16565040777bytes，T1/T2/T3全部VERIFIED。验收前在T550重新核335原件bytes/SHA及三案云端源manifest，收尾源identity仍一致。当前relative_v1分别重评OPS-Open2050、OPS-Conservative2050、D1/C5，全部PASS，P/D、原严格HARD_FAIL原因、水库暂缓与小量披露均保留；无候选筛选，不需筛选证书。验收为质量标签，不自动采纳候选状态。
+
+三案自动导出annual_row_duals失败原因均为SavedDual缺ConstrName。沿用原T4 RowsObserver从各自原MPS ROWS+自身BarPi恢复1134年度核算行，完整原始行数/名称/sense顺序哈希匹配。只写旁置acceptance_resource_batch1_20261115，未改原输出或运行LATE冻结包。现已提供31省逐时完整负荷侧边际价格、全国及五省8760调度、签约/上限/年调用/等效小时、分省技术发电/风光弃电、连续启停容量与等效次数/成本、储能充放电、成本分项；计算在T550完成。导出接口缺陷作为独立新版本待办，不在本轮改运行包。
+
+主要结果（亿元/年，2025不变价）：Open相对REF节省729.84，工程区间[683.52,748.66]，相对中央OPS再省302.15；Conservative相对REF207.35，[161.04,209.28]。D1相对REF448.44，[402.12,450.79]，只作诊断：相对中央OPS多省20.75，[2.24,23.11]，省内链路新建增加20.633GW、风光弃电少49.411TWh、642年容量行的有符号容量价值均值51.09→2.94元/MWh。Open智能充电465.184GW近满额、V2G仅1.313GW；不得把多参数资源组合结果当单因素因果。区间公式[D_ref-P_case,P_ref-D_case]，工程对偶非统计置信区间/非市场结算。
+
+三案按Case3 2040清单取回72项适用原文件（无筛选candidate_selection.csv不适用），另加冻结审计/验收/恢复年度行/分析：Open107件142735375bytes，Conservative107件138775945bytes，D1 108件141408749bytes；合计322件422920069bytes，最大单件30118087bytes。原MPS、BarX/BarPi、热电/水库/柔性大NPZ留T550。三个包本地及远端回读SHA全部匹配，验收JSON双端一致；转发曾中断，重连后仅补D1回传，无重复备份或计算。
+
+主报告supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/acceptance_batch1_20261115/BATCH1_REPORT_ZH.md；各案包在case_results/by_case/<case>/2050/<release>/，统一索引case_results/RESOURCE_SENSITIVITY_BATCH1_20261115.md。报告/三张汇总CSV/交付清单已同步T550 /home/zz2/National_model_server/analysis_tools_resource_batch1_20261115/batch_report_20261115，收尾closeout_verification.json PASS；case_catalog登记备份COMPLETE、验收PASS、交付路径，D1保持诊断。
+
+第一批三解一测试报告完成。生产LATE-Open5587177为作者单独预先放行案，不是此处五轮测试续跑；未新增任何求解、未改运行参数/冻结包、未建监听、未改SI/在线LaTeX。其余第二批OPS-Open2030/2040/2060及第三批仍等作者/Claude审阅后明确确认。下一步按询问时只读方式查看原LATE；若新终态按5%余量规则备份并验收；不得自动提交其他批次。
+
 
 ## 2026-11-15 19:40UTC 三案完成、LATE启动核验与5%门槛备份
 
