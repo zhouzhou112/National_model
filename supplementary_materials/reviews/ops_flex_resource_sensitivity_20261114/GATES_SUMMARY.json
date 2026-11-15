@@ -1,0 +1,74 @@
+{
+  "batch": 1,
+  "common_pre_submission": "PASS",
+  "later_batches_authorized": false,
+  "source_commit": "29e3782d32015c7d96c8ea09109eac2b4bc14385",
+  "maximum_cloud_jobs": 4,
+  "threads": 44,
+  "five_items": {
+    "immutable_input_installation": "PASS",
+    "four_allowed_scenario_overrides": "PASS",
+    "engineering_gates": "PASS",
+    "opt_in_entry_and_small_examples": "PASS",
+    "fixed_selection_and_identity": "PASS"
+  },
+  "cases": {
+    "ops_open_2050": {
+      "status": "PASS",
+      "production_entry_1h": "PASS",
+      "engineering_window": "PASS"
+    },
+    "ops_conservative_2050": {
+      "status": "PASS",
+      "production_entry_1h": "PASS",
+      "engineering_window": "PASS"
+    },
+    "D1_2050": {
+      "status": "PASS",
+      "production_entry_1h": "PASS",
+      "engineering_window": "PASS"
+    },
+    "late_open_2050_factor5": {
+      "status": "PASS",
+      "actual_selection_1h": "PASS",
+      "own_24h_identity": "PASS",
+      "free_sites": 4481,
+      "lower_sites": 28846,
+      "upper_sites": 3359,
+      "scope": "FACTOR_AND_FIRST_FIVE_ITERATIONS_ONLY",
+      "full_solve_authorized": false
+    }
+  },
+  "evidence_sha256": {
+    "installation_receipt.json": "72c934dca9a3030a3cdce734fdc94db4b525da5c78192482b61c9387795fcf7f",
+    "cloud_input_installation_receipt.json": "f76d3202dd15d5359bfaf3b034853a87139057ebfe2a9c707723dfc23b7807d9",
+    "scenario_override_audit.json": "025212b6419ffc0c99ebd4ebbc34af8c3b3da86913faba59785358d95b5c1290",
+    "neutrality_execution.json": "57398b3e9305786ebe738d780d53951e69c46854f0810081440be2a045596faa",
+    "resource_1h_v2_executions.json": "4d5f06c3f738ad87dad9afb40f0d553dbd74510dd728f36ee6839e29638e79e7",
+    "resource_24h_gate_summary.json": "1bf65053a2ecb5f087d50aafb6c4a3f04023cbced4f6bd962f1ab2d87bdf5ccf",
+    "D1_and_off_gate_results.json": "8956e9c1877eb24c2c04855ee615c09823538be8ec2b11a9a9b29365c2af3aa8",
+    "late_identity_24h_v2_execution.json": "85f844604257b677bb84de190c3fedd73e529589cb58832ae38ed7b7cad43e09",
+    "late_selected_1h_v7_gate.json": "1aafdf116fdcbbac0eba4a12330894e8f676cae7971c1b8277db6167b98cbc62",
+    "production_profile_1h_receipts.json": "e20e8bbe01c39c8062accd1a72fca8994ec131cd41c1b16022043096bc9d09a2",
+    "full_test_coverage.json": "861230e4e23088ea048c9072719212ecddf87660f0b2ce8e809fb1ea55aa224a",
+    "full_tests_v7.json": "3cb80703d184da48cfa48e1daf704445c436a0512f1ab1d10020dbcc7c148fb6",
+    "local_archive_tests.json": "8ebca19f6d7d2ad399a88629c15080b4cec149c24d5a802023b888f8c5aebd8a",
+    "reference_pricing_v2_execution.json": "450faca85214d79673d700f3574524aee165cf98450b0bc4ae1b44f4dc5b20ab",
+    "LATE_upstream_identity.json": "01969d20caff1f471acffeaaa975d1f061d9b3de1808ce5e85e339299dc2b55d",
+    "LATE_Open_2050_fixed_selection.json": "1c54c2630c2fb2010129f309def39b4a3ae26fab8acd9d0007790efff779cb4a",
+    "D1_intra_selection.json": "0ccd50ce3f58510a615b202de1d0810581a6641f865661c873d07ad0dbac86cf",
+    "author_contract_snapshot.json": "79f09bf2c13e9298936a25ed63894cead55d52c4ad1a1ffc256847b817c26bf4"
+  },
+  "solver": {
+    "cpus": 64,
+    "memory": "750G",
+    "time": "UNLIMITED",
+    "requeue": false,
+    "minimum_available_gib": 700
+  },
+  "notes": [
+    "24h monotonicity raw roundoff disclosed; relative comparison tolerance 1e-7",
+    "Five-iteration callback changes no numeric parameter",
+    "Reference price threshold 0.005 is not a solution certificate"
+  ]
+}

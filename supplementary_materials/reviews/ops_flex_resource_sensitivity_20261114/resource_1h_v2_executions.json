@@ -1,0 +1,1567 @@
+{
+  "conservative": {
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/resource_gate_v2.py",
+      "--resource",
+      "conservative",
+      "--year",
+      "2050",
+      "--mode",
+      "frozen",
+      "--hours",
+      "1",
+      "--output",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/gates/conservative_1h_v2",
+      "--source-release",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "--supplement",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/frozen_capacity_B_20261027",
+      "--closure",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/derived_static/closure.json"
+    ],
+    "exit_code": 0,
+    "seconds": 125.28685518307611,
+    "parameter_verification.json": {
+      "status": "PASS",
+      "year": 2050,
+      "checks": [
+        {
+          "parameter": "v1g_fraction",
+          "actual": 0.2,
+          "expected": 0.2,
+          "passed": true
+        },
+        {
+          "parameter": "v2g_fraction",
+          "actual": 0.1,
+          "expected": 0.1,
+          "passed": true
+        },
+        {
+          "parameter": "v2g_cap_gw",
+          "actual": 120,
+          "expected": 120,
+          "passed": true
+        },
+        {
+          "parameter": "legacy_bidirectional_activation",
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        {
+          "parameter": "heating.retention_per_hour",
+          "actual": {
+            "min": 0.94,
+            "max": 0.94
+          },
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "heating.positive_state_duration_hours",
+          "actual": {
+            "min": 4.0,
+            "max": 4.0
+          },
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "parameter": "heating.negative_state_duration_hours",
+          "actual": {
+            "min": 4.0,
+            "max": 4.0
+          },
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "parameter": "heating.comfort_band",
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        {
+          "parameter": "heating.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "heating.activation_cost_release_yuan_per_mwh",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "heating.activation_cost_precondition_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.retention_per_hour",
+          "actual": {
+            "min": 0.92,
+            "max": 0.92
+          },
+          "expected": 0.92,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.positive_state_duration_hours",
+          "actual": {
+            "min": 5.0,
+            "max": 5.0
+          },
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.negative_state_duration_hours",
+          "actual": {
+            "min": 5.0,
+            "max": 5.0
+          },
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.comfort_band",
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.activation_cost_release_yuan_per_mwh",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.activation_cost_precondition_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.activation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 20.0,
+            "max": 20.0
+          },
+          "expected": 20,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.infrastructure_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.degradation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.activation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 100.0,
+            "max": 100.0
+          },
+          "expected": 100,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.infrastructure_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 20.0,
+            "max": 20.0
+          },
+          "expected": 20,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.degradation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 80.0,
+            "max": 80.0
+          },
+          "expected": 80,
+          "passed": true
+        },
+        {
+          "parameter": "charge_efficiency",
+          "actual": 0.94,
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "discharge_efficiency",
+          "actual": 0.94,
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "power_duration_hours",
+          "actual": 4.0,
+          "expected": 4.0,
+          "passed": true
+        },
+        {
+          "parameter": "maximum_power_to_daily_average_ratio",
+          "actual": 2.0,
+          "expected": 2.0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_ev_charge_envelope_error",
+          "actual": {
+            "min": -1.3322676295501878e-15,
+            "max": 8.881784197001252e-16
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_ev_inventory_error",
+          "actual": {
+            "min": -2.842170943040401e-14,
+            "max": 1.0658141036401503e-14
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "heating.participation_up_error",
+          "actual": {
+            "min": -1.0061396160665481e-16,
+            "max": 1.3552527156068805e-20
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "heating.participation_down_error",
+          "actual": {
+            "min": -1.0061396160665481e-16,
+            "max": 6.776263578034403e-21
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.participation_up_error",
+          "actual": {
+            "min": -1.1102230246251565e-16,
+            "max": 0.0
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.participation_down_error",
+          "actual": {
+            "min": -1.1102230246251565e-16,
+            "max": 0.0
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "credit.heating",
+          "actual": 0.45,
+          "expected": 0.45,
+          "passed": true
+        },
+        {
+          "parameter": "credit.cooling",
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        {
+          "parameter": "credit.ev_v1g",
+          "actual": 0.4,
+          "expected": 0.4,
+          "passed": true
+        },
+        {
+          "parameter": "credit.ev_v2g",
+          "actual": 0.4,
+          "expected": 0.4,
+          "passed": true
+        },
+        {
+          "parameter": "credit.duration",
+          "actual": 4.0,
+          "expected": 4.0,
+          "passed": true
+        },
+        {
+          "parameter": "credit.peak_reference",
+          "actual": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "expected": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.heating_shift_up_gw_active[",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.cooling_shift_up_gw_active[",
+          "actual": "ABSENT_IN_WINDOW",
+          "expected": "support-dependent",
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.heating_shift_down_gw_active[",
+          "actual": {
+            "min": 0.03,
+            "max": 0.03
+          },
+          "expected": 0.03,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.cooling_shift_down_gw_active[",
+          "actual": "ABSENT_IN_WINDOW",
+          "expected": "support-dependent",
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.ev_mobility_v1g_relocated_gw[",
+          "actual": {
+            "min": 0.02,
+            "max": 0.02
+          },
+          "expected": 0.02,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.ev_mobility_discharge_gw[",
+          "actual": {
+            "min": 0.18,
+            "max": 0.18
+          },
+          "expected": 0.18,
+          "passed": true
+        },
+        {
+          "parameter": "credit.variable_count",
+          "actual": 124,
+          "expected": 124,
+          "passed": true
+        },
+        {
+          "parameter": "annual_8760_contract_upper_sums_gw",
+          "actual": [
+            1.375420616461301,
+            5.351552165296251,
+            43.51466483389391,
+            18.905354041255578
+          ],
+          "expected": [
+            1.3754206164613023,
+            5.351552165296251,
+            43.5146648338939,
+            18.905354041255578
+          ],
+          "absolute_difference_gw": [
+            1.3322676295501878e-15,
+            0.0,
+            7.105427357601002e-15,
+            0.0
+          ],
+          "tolerance_gw": 1e-06,
+          "passed": true
+        },
+        {
+          "parameter": "selected_window_thermal_upper_by_province",
+          "maximum_absolute_difference_gw": 0.0,
+          "maximum_exceedance_over_annual_gw": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "selected_window_EV_upper_equals_annual",
+          "actual": [
+            43.51466483389391,
+            18.905354041255578
+          ],
+          "expected": [
+            43.5146648338939,
+            18.905354041255578
+          ],
+          "absolute_difference_gw": [
+            7.105427357601002e-15,
+            0.0
+          ],
+          "passed": true
+        }
+      ],
+      "selected_window_contract_upper_sums_gw": [
+        1.2985769275472947,
+        0.0,
+        43.51466483389391,
+        18.905354041255578
+      ],
+      "annual_8760_contract_upper_sums_gw": [
+        1.375420616461301,
+        5.351552165296251,
+        43.51466483389391,
+        18.905354041255578
+      ],
+      "selected_window_thermal_upper_by_province": [
+        {
+          "province_code": 11,
+          "actual_heating_gw": 0.0380739374992545,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0380739374992545,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0380739374992545,
+          "annual_cooling_gw": 0.1008365907257516
+        },
+        {
+          "province_code": 12,
+          "actual_heating_gw": 0.0171165218560734,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0171165218560734,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0171165218560735,
+          "annual_cooling_gw": 0.0603300008580616
+        },
+        {
+          "province_code": 13,
+          "actual_heating_gw": 0.0624806159871592,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0624806159871592,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0624806159871597,
+          "annual_cooling_gw": 0.2034717067056444
+        },
+        {
+          "province_code": 14,
+          "actual_heating_gw": 0.0406072663663209,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0406072663663209,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0406072663663211,
+          "annual_cooling_gw": 0.1074985009341138
+        },
+        {
+          "province_code": 15,
+          "actual_heating_gw": 0.0142643765052557,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0142643765052557,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0142643765052558,
+          "annual_cooling_gw": 0.0455310750720265
+        },
+        {
+          "province_code": 21,
+          "actual_heating_gw": 0.0369258207225344,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0369258207225344,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0369258207225346,
+          "annual_cooling_gw": 0.0962105396975968
+        },
+        {
+          "province_code": 22,
+          "actual_heating_gw": 0.0226055587417504,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0226055587417504,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0226055587417505,
+          "annual_cooling_gw": 0.049149554310585
+        },
+        {
+          "province_code": 23,
+          "actual_heating_gw": 0.0170445883899432,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0170445883899432,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0170445883899434,
+          "annual_cooling_gw": 0.0278684429705943
+        },
+        {
+          "province_code": 31,
+          "actual_heating_gw": 0.0427452345595566,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0427452345595566,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.042745234559557,
+          "annual_cooling_gw": 0.1488222846796082
+        },
+        {
+          "province_code": 32,
+          "actual_heating_gw": 0.1080497443929514,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.1080497443929514,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.1080497443929518,
+          "annual_cooling_gw": 0.4347185147156391
+        },
+        {
+          "province_code": 33,
+          "actual_heating_gw": 0.0475552805851192,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0475552805851192,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0475552805851195,
+          "annual_cooling_gw": 0.3431887579840781
+        },
+        {
+          "province_code": 34,
+          "actual_heating_gw": 0.0523319331788555,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0523319331788555,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0523319331788558,
+          "annual_cooling_gw": 0.2262366563657342
+        },
+        {
+          "province_code": 35,
+          "actual_heating_gw": 0.0056407200978437,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0056407200978437,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0056407200978437,
+          "annual_cooling_gw": 0.1804947018369471
+        },
+        {
+          "province_code": 36,
+          "actual_heating_gw": 0.0405997449830592,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0405997449830592,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0405997449830595,
+          "annual_cooling_gw": 0.1357273034370978
+        },
+        {
+          "province_code": 37,
+          "actual_heating_gw": 0.0865285924385867,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0865285924385867,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0865285924385867,
+          "annual_cooling_gw": 0.3342461300877368
+        },
+        {
+          "province_code": 41,
+          "actual_heating_gw": 0.0881621725963507,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0881621725963507,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0881621725963511,
+          "annual_cooling_gw": 0.3377067636627418
+        },
+        {
+          "province_code": 42,
+          "actual_heating_gw": 0.0549528971060192,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0549528971060192,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0549528971060194,
+          "annual_cooling_gw": 0.2321135575314283
+        },
+        {
+          "province_code": 43,
+          "actual_heating_gw": 0.078720749331767,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.078720749331767,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0787207493317676,
+          "annual_cooling_gw": 0.2273136864461705
+        },
+        {
+          "province_code": 44,
+          "actual_heating_gw": 0.0,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0065342755387372,
+          "annual_cooling_gw": 0.5618742273198176
+        },
+        {
+          "province_code": 45,
+          "actual_heating_gw": 0.0,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0665290819340813,
+          "annual_cooling_gw": 0.0934437628130928
+        },
+        {
+          "province_code": 46,
+          "actual_heating_gw": 0.0,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0037803314411823,
+          "annual_cooling_gw": 0.0227496218223257
+        },
+        {
+          "province_code": 50,
+          "actual_heating_gw": 0.0368571073300285,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0368571073300285,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0368571073300286,
+          "annual_cooling_gw": 0.1918009549635516
+        },
+        {
+          "province_code": 51,
+          "actual_heating_gw": 0.0961798940057127,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0961798940057127,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.096179894005713,
+          "annual_cooling_gw": 0.3457754874554332
+        },
+        {
+          "province_code": 52,
+          "actual_heating_gw": 0.0903653911081282,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0903653911081282,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0903653911081287,
+          "annual_cooling_gw": 0.009903954641956
+        },
+        {
+          "province_code": 53,
+          "actual_heating_gw": 0.096607522273511,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.096607522273511,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0966075222735112,
+          "annual_cooling_gw": 0.0
+        },
+        {
+          "province_code": 54,
+          "actual_heating_gw": 0.0041686386963357,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0041686386963357,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0041686386963357,
+          "annual_cooling_gw": 0.0
+        },
+        {
+          "province_code": 61,
+          "actual_heating_gw": 0.0516388913605743,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0516388913605743,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0516388913605746,
+          "annual_cooling_gw": 0.1917202236313777
+        },
+        {
+          "province_code": 62,
+          "actual_heating_gw": 0.0204081777138176,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0204081777138176,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0204081777138176,
+          "annual_cooling_gw": 0.1280904107619968
+        },
+        {
+          "province_code": 63,
+          "actual_heating_gw": 0.0127560986684653,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0127560986684653,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0127560986684654,
+          "annual_cooling_gw": 0.3641150065936564
+        },
+        {
+          "province_code": 64,
+          "actual_heating_gw": 0.0060078463367298,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0060078463367298,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0060078463367298,
+          "annual_cooling_gw": 0.0131754129998404
+        },
+        {
+          "province_code": 65,
+          "actual_heating_gw": 0.0291816047155903,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0291816047155903,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.0291816047155904,
+          "annual_cooling_gw": 0.1374383342716468
+        }
+      ],
+      "resource": "conservative",
+      "contract_reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+      "effective_load_nonnegative_selected_window_rows": 0,
+      "full_year_negative_cells_from_supplied_input_acceptance": 0
+    },
+    "identity_gate_probe.json": {
+      "mode": "frozen",
+      "planning_year": 2050,
+      "hours": 1,
+      "runner_exit_code": 0,
+      "variables": 239109,
+      "constraints": 80896,
+      "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+      "investment_fixed": {
+        "vre_new": true,
+        "thermal_new": true,
+        "thermal_retrofit_to_ccs": true,
+        "storage_new": true,
+        "line_new": true,
+        "intra_load_center_new": true,
+        "spur_augmentation": true,
+        "hydro_spur_augmentation": true,
+        "trunk_augmentation": true,
+        "hydro_new": true,
+        "wave_new": true,
+        "dac_new": true
+      },
+      "all_investment_families_fixed": true,
+      "parameters": "PASS"
+    }
+  },
+  "open": {
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/resource_gate_v2.py",
+      "--resource",
+      "open",
+      "--year",
+      "2050",
+      "--mode",
+      "frozen",
+      "--hours",
+      "1",
+      "--output",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/gates/open_1h_v2",
+      "--source-release",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "--supplement",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/frozen_capacity_B_20261027",
+      "--closure",
+      "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/derived_static/closure.json"
+    ],
+    "exit_code": 0,
+    "seconds": 71.07497207587585,
+    "parameter_verification.json": {
+      "status": "PASS",
+      "year": 2050,
+      "checks": [
+        {
+          "parameter": "v1g_fraction",
+          "actual": 1.0,
+          "expected": 1.0,
+          "passed": true
+        },
+        {
+          "parameter": "v2g_fraction",
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        {
+          "parameter": "v2g_cap_gw",
+          "actual": 1000,
+          "expected": 1000,
+          "passed": true
+        },
+        {
+          "parameter": "legacy_bidirectional_activation",
+          "actual": false,
+          "expected": false,
+          "passed": true
+        },
+        {
+          "parameter": "heating.retention_per_hour",
+          "actual": {
+            "min": 0.94,
+            "max": 0.94
+          },
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "heating.positive_state_duration_hours",
+          "actual": {
+            "min": 4.0,
+            "max": 4.0
+          },
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "parameter": "heating.negative_state_duration_hours",
+          "actual": {
+            "min": 4.0,
+            "max": 4.0
+          },
+          "expected": 4,
+          "passed": true
+        },
+        {
+          "parameter": "heating.comfort_band",
+          "actual": 2.0,
+          "expected": 2.0,
+          "passed": true
+        },
+        {
+          "parameter": "heating.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "heating.activation_cost_release_yuan_per_mwh",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "heating.activation_cost_precondition_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.retention_per_hour",
+          "actual": {
+            "min": 0.92,
+            "max": 0.92
+          },
+          "expected": 0.92,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.positive_state_duration_hours",
+          "actual": {
+            "min": 5.0,
+            "max": 5.0
+          },
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.negative_state_duration_hours",
+          "actual": {
+            "min": 5.0,
+            "max": 5.0
+          },
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.comfort_band",
+          "actual": 2.0,
+          "expected": 2.0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.activation_cost_release_yuan_per_mwh",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.activation_cost_precondition_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.activation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 20.0,
+            "max": 20.0
+          },
+          "expected": 20,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.infrastructure_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v1g.degradation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.enablement_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 30.0,
+            "max": 30.0
+          },
+          "expected": 30,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.activation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 100.0,
+            "max": 100.0
+          },
+          "expected": 100,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.infrastructure_cost_yuan_per_kw_year",
+          "actual": {
+            "min": 20.0,
+            "max": 20.0
+          },
+          "expected": 20,
+          "passed": true
+        },
+        {
+          "parameter": "ev_v2g.degradation_cost_yuan_per_mwh",
+          "actual": {
+            "min": 80.0,
+            "max": 80.0
+          },
+          "expected": 80,
+          "passed": true
+        },
+        {
+          "parameter": "charge_efficiency",
+          "actual": 0.94,
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "discharge_efficiency",
+          "actual": 0.94,
+          "expected": 0.94,
+          "passed": true
+        },
+        {
+          "parameter": "power_duration_hours",
+          "actual": 4.0,
+          "expected": 4.0,
+          "passed": true
+        },
+        {
+          "parameter": "maximum_power_to_daily_average_ratio",
+          "actual": 2.0,
+          "expected": 2.0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_ev_charge_envelope_error",
+          "actual": {
+            "min": -1.4210854715202004e-14,
+            "max": 1.4210854715202004e-14
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_ev_inventory_error",
+          "actual": {
+            "min": -1.7053025658242404e-13,
+            "max": 1.1368683772161603e-13
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "heating.participation_up_error",
+          "actual": {
+            "min": -4.440892098500626e-16,
+            "max": 4.440892098500626e-16
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "heating.participation_down_error",
+          "actual": {
+            "min": -4.440892098500626e-16,
+            "max": 4.440892098500626e-16
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.participation_up_error",
+          "actual": {
+            "min": -1.7763568394002505e-15,
+            "max": 1.7763568394002505e-15
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "cooling.participation_down_error",
+          "actual": {
+            "min": -1.7763568394002505e-15,
+            "max": 1.7763568394002505e-15
+          },
+          "expected": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "credit.heating",
+          "actual": 0.45,
+          "expected": 0.45,
+          "passed": true
+        },
+        {
+          "parameter": "credit.cooling",
+          "actual": 0.5,
+          "expected": 0.5,
+          "passed": true
+        },
+        {
+          "parameter": "credit.ev_v1g",
+          "actual": 0.4,
+          "expected": 0.4,
+          "passed": true
+        },
+        {
+          "parameter": "credit.ev_v2g",
+          "actual": 0.4,
+          "expected": 0.4,
+          "passed": true
+        },
+        {
+          "parameter": "credit.duration",
+          "actual": 4.0,
+          "expected": 4.0,
+          "passed": true
+        },
+        {
+          "parameter": "credit.peak_reference",
+          "actual": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "expected": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.heating_shift_up_gw_active[",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.cooling_shift_up_gw_active[",
+          "actual": {
+            "min": 0.0,
+            "max": 0.0
+          },
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.heating_shift_down_gw_active[",
+          "actual": {
+            "min": 0.03,
+            "max": 0.03
+          },
+          "expected": 0.03,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.cooling_shift_down_gw_active[",
+          "actual": "ABSENT_IN_WINDOW",
+          "expected": "support-dependent",
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.ev_mobility_v1g_relocated_gw[",
+          "actual": {
+            "min": 0.02,
+            "max": 0.02
+          },
+          "expected": 0.02,
+          "passed": true
+        },
+        {
+          "parameter": "actual_objective.ev_mobility_discharge_gw[",
+          "actual": {
+            "min": 0.18,
+            "max": 0.18
+          },
+          "expected": 0.18,
+          "passed": true
+        },
+        {
+          "parameter": "credit.variable_count",
+          "actual": 124,
+          "expected": 124,
+          "passed": true
+        },
+        {
+          "parameter": "annual_8760_contract_upper_sums_gw",
+          "actual": [
+            34.284406561842104,
+            129.08275523908523,
+            465.18410149402615,
+            202.5533434596954
+          ],
+          "expected": [
+            34.284406561842104,
+            129.08275523908523,
+            465.18410149402627,
+            202.5533434596954
+          ],
+          "absolute_difference_gw": [
+            0.0,
+            0.0,
+            1.1368683772161603e-13,
+            0.0
+          ],
+          "tolerance_gw": 1e-06,
+          "passed": true
+        },
+        {
+          "parameter": "selected_window_thermal_upper_by_province",
+          "maximum_absolute_difference_gw": 0.0,
+          "maximum_exceedance_over_annual_gw": 0.0,
+          "passed": true
+        },
+        {
+          "parameter": "selected_window_EV_upper_equals_annual",
+          "actual": [
+            465.18410149402615,
+            202.5533434596954
+          ],
+          "expected": [
+            465.18410149402627,
+            202.5533434596954
+          ],
+          "absolute_difference_gw": [
+            1.1368683772161603e-13,
+            0.0
+          ],
+          "passed": true
+        }
+      ],
+      "selected_window_contract_upper_sums_gw": [
+        32.924526875560765,
+        0.168977993042951,
+        465.18410149402615,
+        202.5533434596954
+      ],
+      "annual_8760_contract_upper_sums_gw": [
+        34.284406561842104,
+        129.08275523908523,
+        465.18410149402615,
+        202.5533434596954
+      ],
+      "selected_window_thermal_upper_by_province": [
+        {
+          "province_code": 11,
+          "actual_heating_gw": 0.834445501782154,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.834445501782154,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.8344455017821552,
+          "annual_cooling_gw": 2.209979977715705
+        },
+        {
+          "province_code": 12,
+          "actual_heating_gw": 0.373918112462117,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.373918112462117,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.3739181124621177,
+          "annual_cooling_gw": 1.3179359822848475
+        },
+        {
+          "province_code": 13,
+          "actual_heating_gw": 1.4683728628527786,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.4683728628527786,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.468372862852781,
+          "annual_cooling_gw": 4.781840379843722
+        },
+        {
+          "province_code": 14,
+          "actual_heating_gw": 1.123469051300684,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.123469051300684,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.1234690513006858,
+          "annual_cooling_gw": 2.974128762355224
+        },
+        {
+          "province_code": 15,
+          "actual_heating_gw": 0.4220972992932488,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.4220972992932488,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.4220972992932488,
+          "annual_cooling_gw": 1.3473104705795884
+        },
+        {
+          "province_code": 21,
+          "actual_heating_gw": 0.9825453365380896,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.9825453365380896,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.9825453365380912,
+          "annual_cooling_gw": 2.5600302242706285
+        },
+        {
+          "province_code": 22,
+          "actual_heating_gw": 0.7038819024331413,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.7038819024331413,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.7038819024331423,
+          "annual_cooling_gw": 1.5303971110424628
+        },
+        {
+          "province_code": 23,
+          "actual_heating_gw": 0.5189693077509862,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.5189693077509862,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.5189693077509872,
+          "annual_cooling_gw": 0.8485312889738428
+        },
+        {
+          "province_code": 31,
+          "actual_heating_gw": 0.8957164329154248,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.8957164329154248,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.8957164329154258,
+          "annual_cooling_gw": 3.118536308083943
+        },
+        {
+          "province_code": 32,
+          "actual_heating_gw": 2.3307621712053326,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 2.3307621712053326,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 2.330762171205337,
+          "annual_cooling_gw": 9.377398113381176
+        },
+        {
+          "province_code": 33,
+          "actual_heating_gw": 1.0500545767436522,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.0500545767436522,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.0500545767436538,
+          "annual_cooling_gw": 7.57785300757774
+        },
+        {
+          "province_code": 34,
+          "actual_heating_gw": 1.2034814127345346,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.2034814127345346,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.2034814127345357,
+          "annual_cooling_gw": 5.202781442925579
+        },
+        {
+          "province_code": 35,
+          "actual_heating_gw": 0.1283086519739282,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.1283086519739282,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.1283086519739284,
+          "annual_cooling_gw": 4.1056871249448665
+        },
+        {
+          "province_code": 36,
+          "actual_heating_gw": 0.9517579052503712,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.9517579052503712,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.9517579052503732,
+          "annual_cooling_gw": 3.1817819067207127
+        },
+        {
+          "province_code": 37,
+          "actual_heating_gw": 2.030543951071796,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 2.030543951071796,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 2.030543951071798,
+          "annual_cooling_gw": 7.84366691392232
+        },
+        {
+          "province_code": 41,
+          "actual_heating_gw": 1.9764169834010163,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.9764169834010163,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.9764169834010183,
+          "annual_cooling_gw": 7.570700261305294
+        },
+        {
+          "province_code": 42,
+          "actual_heating_gw": 1.2978540656863515,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.2978540656863515,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.2978540656863526,
+          "annual_cooling_gw": 5.48195891768716
+        },
+        {
+          "province_code": 43,
+          "actual_heating_gw": 1.8423449956678373,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.8423449956678373,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.8423449956678404,
+          "annual_cooling_gw": 5.319947234063114
+        },
+        {
+          "province_code": 44,
+          "actual_heating_gw": 0.0,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.0,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.1492807335396912,
+          "annual_cooling_gw": 12.836464626277284
+        },
+        {
+          "province_code": 45,
+          "actual_heating_gw": 0.4456584627106535,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.4456584627106535,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.5673944705056937,
+          "annual_cooling_gw": 2.2014919322290747
+        },
+        {
+          "province_code": 46,
+          "actual_heating_gw": 0.0,
+          "actual_cooling_gw": 0.168977993042951,
+          "input_window_heating_gw": 0.0,
+          "input_window_cooling_gw": 0.168977993042951,
+          "annual_heating_gw": 0.0888629449465675,
+          "annual_cooling_gw": 0.5347674993598716
+        },
+        {
+          "province_code": 50,
+          "actual_heating_gw": 0.8102336915711799,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.8102336915711799,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.810233691571181,
+          "annual_cooling_gw": 4.216380694107923
+        },
+        {
+          "province_code": 51,
+          "actual_heating_gw": 2.278638407840868,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 2.278638407840868,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 2.278638407840872,
+          "annual_cooling_gw": 8.191912814533241
+        },
+        {
+          "province_code": 52,
+          "actual_heating_gw": 2.644666894751614,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 2.644666894751614,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 2.6446668947516163,
+          "annual_cooling_gw": 0.2898527926179346
+        },
+        {
+          "province_code": 53,
+          "actual_heating_gw": 3.1610419491661865,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 3.1610419491661865,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 3.1610419491661887,
+          "annual_cooling_gw": 0.0
+        },
+        {
+          "province_code": 54,
+          "actual_heating_gw": 0.1258620970445256,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.1258620970445256,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.1258620970445258,
+          "annual_cooling_gw": 0.0
+        },
+        {
+          "province_code": 61,
+          "actual_heating_gw": 1.2714961690613962,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 1.2714961690613962,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 1.2714961690613975,
+          "annual_cooling_gw": 4.720696425814581
+        },
+        {
+          "province_code": 62,
+          "actual_heating_gw": 0.6223093137527957,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.6223093137527957,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.6223093137527969,
+          "annual_cooling_gw": 3.9058781600888386
+        },
+        {
+          "province_code": 63,
+          "actual_heating_gw": 0.4009885738215778,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.4009885738215778,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.4009885738215796,
+          "annual_cooling_gw": 11.445972706527373
+        },
+        {
+          "province_code": 64,
+          "actual_heating_gw": 0.1811933672609727,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.1811933672609727,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.1811933672609731,
+          "annual_cooling_gw": 0.3973632667500132
+        },
+        {
+          "province_code": 65,
+          "actual_heating_gw": 0.8474974275155471,
+          "actual_cooling_gw": 0.0,
+          "input_window_heating_gw": 0.8474974275155471,
+          "input_window_cooling_gw": 0.0,
+          "annual_heating_gw": 0.84749742751555,
+          "annual_cooling_gw": 3.991508893101176
+        }
+      ],
+      "resource": "open",
+      "contract_reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+      "effective_load_nonnegative_selected_window_rows": 0,
+      "full_year_negative_cells_from_supplied_input_acceptance": 139
+    },
+    "identity_gate_probe.json": {
+      "mode": "frozen",
+      "planning_year": 2050,
+      "hours": 1,
+      "runner_exit_code": 0,
+      "variables": 239113,
+      "constraints": 80904,
+      "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+      "investment_fixed": {
+        "vre_new": true,
+        "thermal_new": true,
+        "thermal_retrofit_to_ccs": true,
+        "storage_new": true,
+        "line_new": true,
+        "intra_load_center_new": true,
+        "spur_augmentation": true,
+        "hydro_spur_augmentation": true,
+        "trunk_augmentation": true,
+        "hydro_new": true,
+        "wave_new": true,
+        "dac_new": true
+      },
+      "all_investment_families_fixed": true,
+      "parameters": "PASS"
+    }
+  }
+}

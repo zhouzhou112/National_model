@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "raw_monotonicity": {
+    "order": [
+      "open",
+      "central",
+      "conservative",
+      "zero"
+    ],
+    "objectives": [
+      3742659.121383092,
+      3742659.1213830863,
+      3742659.1213830905,
+      3742659.121383086
+    ],
+    "adjacent_saving": [
+      -5.587935447692871e-09,
+      4.190951585769653e-09,
+      -4.6566128730773926e-09
+    ],
+    "passed": false
+  },
+  "relative_order_violations": [
+    1.4930388438976674e-15,
+    0.0,
+    1.2441990365813896e-15
+  ],
+  "relative_objective_tolerance": 1e-07,
+  "rule": "AGENTS 2026-10-10 item 3: Cross2/1e-8 comparisons use relative objective tolerance 1e-7",
+  "checks": {
+    "conservative_24h": {
+      "exit_zero": true,
+      "optimal": true,
+      "relative": true,
+      "capacity_identity": true
+    },
+    "open_24h": {
+      "exit_zero": true,
+      "optimal": true,
+      "relative": true,
+      "capacity_identity": true
+    },
+    "zero_24h": {
+      "exit_zero": true,
+      "optimal": true,
+      "relative": true,
+      "capacity_identity": true
+    }
+  },
+  "input_receipt_sha256": "0eb8be30a98f6bce70efb246ba02b8dcab4c30b45dacca71c8f18ec7da36badf",
+  "unmodified_objectives": true,
+  "scientific_scope": "Short-window engineering gate only; no observed substantive cost separation"
+}

@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "source": "supplementary_materials\\reviews\\case3_2040_C2050_launch_20261019\\R1_C2050_01\\prepared_state",
+  "reference": "C2050 production input_manifest.csv planning_state records",
+  "records": [
+    {
+      "kind": "planning_state",
+      "logical_path": "state_metadata.json",
+      "resolved_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate/state_metadata.json",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "87745.0",
+      "sha256": "2fe97c255aaed7329d5617ae858c0b97b31937b95c1ae41852750c36c2e48c63",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "planning_state",
+      "logical_path": "capacity_cohorts.csv.gz",
+      "resolved_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate/capacity_cohorts.csv.gz",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "223252.0",
+      "sha256": "1b7b068d6ed00653e2ffb23f853e98b8bfdf8c2426b8d44b2a838d396b47b246",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "planning_state",
+      "logical_path": "state_transition_summary.csv",
+      "resolved_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate/state_transition_summary.csv",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "2282.0",
+      "sha256": "d4f9bd7c388dc97c3bcbd6a460c634b3689d2562addd17c4073e96243583c1a4",
+      "integrity_method": "sha256_file",
+      "role": ""
+    },
+    {
+      "kind": "planning_state",
+      "logical_path": "../result_manifest.json",
+      "resolved_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/upstream_state/planning_state_candidate/../result_manifest.json",
+      "required": "True",
+      "exists": "True",
+      "size_bytes": "1724.0",
+      "sha256": "cb24288c0e8c55ec252b1b6c631abfe8ae4459b5bcaac5728a2f5cf6ce456f7b",
+      "integrity_method": "sha256_file",
+      "role": ""
+    }
+  ]
+}

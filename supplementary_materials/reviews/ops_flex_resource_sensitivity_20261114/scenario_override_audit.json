@@ -1,0 +1,164 @@
+{
+  "conservative": {
+    "path": "config\\scenarios\\ops_conservative_resource_v1.json",
+    "sha256": "46b251c436129161e0464b27579180ec60faa1a72b842ecb8513546cc3ed1c00",
+    "changes": [
+      {
+        "path": ".overrides.flexible_load.v5_input_files.ev_mobility_hourly_file",
+        "before": "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz",
+        "after": "flexibility/resource_conservative_v1/ev_mobility_hourly_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.ev_availability_hourly_file",
+        "before": "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz",
+        "after": "flexibility/resource_conservative_v1/ev_availability_hourly_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.enablement_cost_file",
+        "before": "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv",
+        "after": "flexibility/resource_conservative_v1/flex_enablement_cost_v5.csv"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.thermal_hourly_envelope_file",
+        "before": "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz",
+        "after": "flexibility/resource_conservative_v1/thermal_hourly_envelope_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.thermal_parameters_file",
+        "before": "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv",
+        "after": "flexibility/resource_conservative_v1/thermal_parameters_by_province_v5.csv"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.input_manifest_file",
+        "before": "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json",
+        "after": "flexibility/resource_conservative_v1/flexible_load_v5.manifest.json"
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2050",
+        "before": 0.4,
+        "after": 0.2
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2040",
+        "before": 0.3,
+        "after": 0.2
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2060",
+        "before": 0.5,
+        "after": 0.2
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2050",
+        "before": 0.2,
+        "after": 0.1
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2040",
+        "before": 0.15,
+        "after": 0.1
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2060",
+        "before": 0.25,
+        "after": 0.1
+      }
+    ]
+  },
+  "open": {
+    "path": "config\\scenarios\\ops_open_resource_v1.json",
+    "sha256": "e281842d02c8a6d13a73b5c6f1021b77bec4e8c6d63963b16ccedcabc4cca9c3",
+    "changes": [
+      {
+        "path": ".overrides.flexible_load.v5_input_files.ev_mobility_hourly_file",
+        "before": "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz",
+        "after": "flexibility/resource_open_v1/ev_mobility_hourly_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.ev_availability_hourly_file",
+        "before": "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz",
+        "after": "flexibility/resource_open_v1/ev_availability_hourly_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.enablement_cost_file",
+        "before": "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv",
+        "after": "flexibility/resource_open_v1/flex_enablement_cost_v5.csv"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.thermal_hourly_envelope_file",
+        "before": "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz",
+        "after": "flexibility/resource_open_v1/thermal_hourly_envelope_v5.csv.gz"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.thermal_parameters_file",
+        "before": "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv",
+        "after": "flexibility/resource_open_v1/thermal_parameters_by_province_v5.csv"
+      },
+      {
+        "path": ".overrides.flexible_load.v5_input_files.input_manifest_file",
+        "before": "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json",
+        "after": "flexibility/resource_open_v1/flexible_load_v5.manifest.json"
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2050",
+        "before": 0.4,
+        "after": 1.0
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2040",
+        "before": 0.3,
+        "after": 1.0
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2060",
+        "before": 0.5,
+        "after": 1.0
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v1g.shiftable_energy_fraction.2030",
+        "before": 0.2,
+        "after": 1.0
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2050",
+        "before": 0.2,
+        "after": 0.5
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2040",
+        "before": 0.15,
+        "after": 0.5
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2060",
+        "before": 0.25,
+        "after": 0.5
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.participation_fraction.2030",
+        "before": 0.1,
+        "after": 0.5
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year.2050",
+        "before": 120,
+        "after": 1000
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year.2040",
+        "before": 60,
+        "after": 1000
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year.2060",
+        "before": 200,
+        "after": 1000
+      },
+      {
+        "path": ".overrides.flexible_load.ev_v2g.national_contracted_power_cap_gw_by_planning_year.2030",
+        "before": 10,
+        "after": 1000
+      }
+    ]
+  }
+}

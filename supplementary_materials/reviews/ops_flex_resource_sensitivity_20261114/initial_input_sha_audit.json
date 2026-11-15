@@ -1,0 +1,368 @@
+{
+  "status": "PASS",
+  "utc": "2026-11-14T21:28:59.199851+00:00",
+  "git_baseline": "3e139ea6dd8b1c52d860b21343ee60328406bcda",
+  "package": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\inputs\\flex_resource_scenarios_v1_20261114",
+  "scenarios": {
+    "conservative": {
+      "build_audit_sha256": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896",
+      "files": {
+        "config/flexible_load_v5_parameters.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "9908ec42185771dec8c534c875aec05eed6537da08d9754a32ecbc0eb30985a6",
+            "bytes": 8703
+          },
+          "actual": {
+            "bytes": 8703,
+            "sha256": "9908ec42185771dec8c534c875aec05eed6537da08d9754a32ecbc0eb30985a6"
+          }
+        },
+        "flexibility/resource_conservative_v1/ev_availability_hourly_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "b87254b0e9fd2bba0de5c0a1b5070c4aa862fe46e6ac0f9b7595f39f503f65c6",
+            "bytes": 3788352
+          },
+          "actual": {
+            "bytes": 3788352,
+            "sha256": "b87254b0e9fd2bba0de5c0a1b5070c4aa862fe46e6ac0f9b7595f39f503f65c6"
+          }
+        },
+        "flexibility/resource_conservative_v1/ev_mobility_hourly_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "e3d561a9e9daa6816d5049ba17990999c5404f6ad6ca8c0b86d6953db4355a30",
+            "bytes": 5225808
+          },
+          "actual": {
+            "bytes": 5225808,
+            "sha256": "e3d561a9e9daa6816d5049ba17990999c5404f6ad6ca8c0b86d6953db4355a30"
+          }
+        },
+        "flexibility/resource_conservative_v1/flex_enablement_cost_v5.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+            "bytes": 20979
+          },
+          "actual": {
+            "bytes": 20979,
+            "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550"
+          }
+        },
+        "flexibility/resource_conservative_v1/flexible_load_v5.manifest.json": {
+          "passed": true,
+          "expected": {
+            "sha256": "a2e1dc2946077e240950d154dbbea2abffca9e7622e6e4a6ba550aefa1909ce9",
+            "bytes": 3206
+          },
+          "actual": {
+            "bytes": 3206,
+            "sha256": "a2e1dc2946077e240950d154dbbea2abffca9e7622e6e4a6ba550aefa1909ce9"
+          }
+        },
+        "flexibility/resource_conservative_v1/thermal_hourly_envelope_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "2288f2d46a35923e05ff6cd4406e8650524f4b3e03777226adfc8ea28dfa6c7b",
+            "bytes": 6217260
+          },
+          "actual": {
+            "bytes": 6217260,
+            "sha256": "2288f2d46a35923e05ff6cd4406e8650524f4b3e03777226adfc8ea28dfa6c7b"
+          }
+        },
+        "flexibility/resource_conservative_v1/thermal_parameters_by_province_v5.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+            "bytes": 13787
+          },
+          "actual": {
+            "bytes": 13787,
+            "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+          }
+        },
+        "load/flexible_load_envelope_v3.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "4e9793c34bac05ae56afb906ae393d58ae216386fee9cc8ec23e318617b9fc16",
+            "bytes": 6493930
+          },
+          "actual": {
+            "bytes": 6493930,
+            "sha256": "4e9793c34bac05ae56afb906ae393d58ae216386fee9cc8ec23e318617b9fc16"
+          }
+        },
+        "load/flexible_load_envelope_v3.manifest.json": {
+          "passed": true,
+          "expected": {
+            "sha256": "3b3bf74ebb65134d6d64fecdf160653f5cc6bdc375dd299ebc3251dae6e5c473",
+            "bytes": 1715
+          },
+          "actual": {
+            "bytes": 1715,
+            "sha256": "3b3bf74ebb65134d6d64fecdf160653f5cc6bdc375dd299ebc3251dae6e5c473"
+          }
+        },
+        "load/hourly_load_2025_2060.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "95b7affd7bb61f4a20eb05a05ca461dd03bfd3afb8c1c99fcfe407de3addbfba",
+            "bytes": 45957798
+          },
+          "actual": {
+            "bytes": 45957798,
+            "sha256": "95b7affd7bb61f4a20eb05a05ca461dd03bfd3afb8c1c99fcfe407de3addbfba"
+          }
+        },
+        "sets/provinces.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b",
+            "bytes": 616
+          },
+          "actual": {
+            "bytes": 616,
+            "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+          }
+        }
+      },
+      "upstream": {
+        "National_model/data/load/hourly_load_2025_2060.csv.gz": {
+          "passed": true,
+          "expected": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+          "actual": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+        },
+        "National_model/data/load/flexible_load_envelope_v3.csv.gz": {
+          "passed": true,
+          "expected": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df",
+          "actual": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+        },
+        "National_model/data/sets/provinces.csv": {
+          "passed": true,
+          "expected": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b",
+          "actual": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+        },
+        "National_model/config/flexible_load_v5_central_parameters.csv": {
+          "passed": true,
+          "expected": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536",
+          "actual": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536"
+        },
+        "National_model/scripts/build_flexible_load_v5_inputs.py": {
+          "passed": true,
+          "expected": "98d63d6354ccc7f3a6ed0d16f66c9ea358a7ccdc75abc51325d7a16fc931d51e",
+          "actual": "98d63d6354ccc7f3a6ed0d16f66c9ea358a7ccdc75abc51325d7a16fc931d51e"
+        },
+        "National_model/supplementary_materials/modules/10_demand_flexibility_resources/resource_sensitivity_20261113/scripts/compute_resources.py": {
+          "passed": true,
+          "expected": "68b45d17d8b9f1aa21697a0f60fd317dcbfceba6a3408a8f50aa2abd7d6ea29a",
+          "actual": "68b45d17d8b9f1aa21697a0f60fd317dcbfceba6a3408a8f50aa2abd7d6ea29a"
+        }
+      },
+      "all_package_files": [
+        "BUILD_AUDIT.json",
+        "config\\draft_scenario_for_loader_acceptance.json",
+        "config\\flexible_load_v5_parameters.csv",
+        "flexibility\\resource_conservative_v1\\ev_availability_hourly_v5.csv.gz",
+        "flexibility\\resource_conservative_v1\\ev_mobility_hourly_v5.csv.gz",
+        "flexibility\\resource_conservative_v1\\flex_enablement_cost_v5.csv",
+        "flexibility\\resource_conservative_v1\\flexible_load_v5.manifest.json",
+        "flexibility\\resource_conservative_v1\\thermal_hourly_envelope_v5.csv.gz",
+        "flexibility\\resource_conservative_v1\\thermal_parameters_by_province_v5.csv",
+        "load\\flexible_load_envelope_v3.csv.gz",
+        "load\\flexible_load_envelope_v3.manifest.json",
+        "load\\hourly_load_2025_2060.csv.gz",
+        "sets\\provinces.csv"
+      ]
+    },
+    "open": {
+      "build_audit_sha256": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8",
+      "files": {
+        "config/flexible_load_v5_parameters.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "f3a2a938fffba45590046d99749b63da97ef86d1de4f6ffdc6c0dbd332b12f6b",
+            "bytes": 8703
+          },
+          "actual": {
+            "bytes": 8703,
+            "sha256": "f3a2a938fffba45590046d99749b63da97ef86d1de4f6ffdc6c0dbd332b12f6b"
+          }
+        },
+        "flexibility/resource_open_v1/ev_availability_hourly_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "779489b2bb16fad2ff385b520db154d774f9f85a170b2e68f82e2041f6569efd",
+            "bytes": 3787614
+          },
+          "actual": {
+            "bytes": 3787614,
+            "sha256": "779489b2bb16fad2ff385b520db154d774f9f85a170b2e68f82e2041f6569efd"
+          }
+        },
+        "flexibility/resource_open_v1/ev_mobility_hourly_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "fecc7faf825c375e63406ed6f883f1da97814ec79c8fba673020cd38a27766f6",
+            "bytes": 5094853
+          },
+          "actual": {
+            "bytes": 5094853,
+            "sha256": "fecc7faf825c375e63406ed6f883f1da97814ec79c8fba673020cd38a27766f6"
+          }
+        },
+        "flexibility/resource_open_v1/flex_enablement_cost_v5.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550",
+            "bytes": 20979
+          },
+          "actual": {
+            "bytes": 20979,
+            "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550"
+          }
+        },
+        "flexibility/resource_open_v1/flexible_load_v5.manifest.json": {
+          "passed": true,
+          "expected": {
+            "sha256": "90a9c40d21d7941ec367583ee2b108f6a2b4af709f11316dbe17f3932ad78ff0",
+            "bytes": 3166
+          },
+          "actual": {
+            "bytes": 3166,
+            "sha256": "90a9c40d21d7941ec367583ee2b108f6a2b4af709f11316dbe17f3932ad78ff0"
+          }
+        },
+        "flexibility/resource_open_v1/thermal_hourly_envelope_v5.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "5982fc16a47f2afe58e74d1ef171d7ddda8830473dc40072ca0424b3e84fc17a",
+            "bytes": 8636747
+          },
+          "actual": {
+            "bytes": 8636747,
+            "sha256": "5982fc16a47f2afe58e74d1ef171d7ddda8830473dc40072ca0424b3e84fc17a"
+          }
+        },
+        "flexibility/resource_open_v1/thermal_parameters_by_province_v5.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae",
+            "bytes": 13787
+          },
+          "actual": {
+            "bytes": 13787,
+            "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+          }
+        },
+        "heating_baseline_adjustments.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "dab11bfd853d490a2665e0bd26ea589f1304d1f06c323d791601491c49d580c3",
+            "bytes": 1471
+          },
+          "actual": {
+            "bytes": 1471,
+            "sha256": "dab11bfd853d490a2665e0bd26ea589f1304d1f06c323d791601491c49d580c3"
+          }
+        },
+        "load/flexible_load_envelope_v3.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "d3c5cb91210e5ab91dc1ca519f973bf1dcc49a29b7ec8050166b2ce6300eab61",
+            "bytes": 8810206
+          },
+          "actual": {
+            "bytes": 8810206,
+            "sha256": "d3c5cb91210e5ab91dc1ca519f973bf1dcc49a29b7ec8050166b2ce6300eab61"
+          }
+        },
+        "load/flexible_load_envelope_v3.manifest.json": {
+          "passed": true,
+          "expected": {
+            "sha256": "0411b2370f671bc4ffcc9609b34e0c724c6921851ebe9db0218df98bbceb9c6b",
+            "bytes": 1708
+          },
+          "actual": {
+            "bytes": 1708,
+            "sha256": "0411b2370f671bc4ffcc9609b34e0c724c6921851ebe9db0218df98bbceb9c6b"
+          }
+        },
+        "load/hourly_load_2025_2060.csv.gz": {
+          "passed": true,
+          "expected": {
+            "sha256": "c6dc617c185c4c51f1d7d8b192a3fdeaa661647e03b39d8735bca1a1d9cc72c1",
+            "bytes": 45933561
+          },
+          "actual": {
+            "bytes": 45933561,
+            "sha256": "c6dc617c185c4c51f1d7d8b192a3fdeaa661647e03b39d8735bca1a1d9cc72c1"
+          }
+        },
+        "sets/provinces.csv": {
+          "passed": true,
+          "expected": {
+            "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b",
+            "bytes": 616
+          },
+          "actual": {
+            "bytes": 616,
+            "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+          }
+        }
+      },
+      "upstream": {
+        "National_model/data/load/hourly_load_2025_2060.csv.gz": {
+          "passed": true,
+          "expected": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903",
+          "actual": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+        },
+        "National_model/data/load/flexible_load_envelope_v3.csv.gz": {
+          "passed": true,
+          "expected": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df",
+          "actual": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+        },
+        "National_model/data/sets/provinces.csv": {
+          "passed": true,
+          "expected": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b",
+          "actual": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+        },
+        "National_model/config/flexible_load_v5_central_parameters.csv": {
+          "passed": true,
+          "expected": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536",
+          "actual": "586c213c417bc74bf6f7d7be3e4631481fdee7b24c20c0293f6197d1a3cfb536"
+        },
+        "National_model/scripts/build_flexible_load_v5_inputs.py": {
+          "passed": true,
+          "expected": "98d63d6354ccc7f3a6ed0d16f66c9ea358a7ccdc75abc51325d7a16fc931d51e",
+          "actual": "98d63d6354ccc7f3a6ed0d16f66c9ea358a7ccdc75abc51325d7a16fc931d51e"
+        },
+        "National_model/supplementary_materials/modules/10_demand_flexibility_resources/resource_sensitivity_20261113/scripts/compute_resources.py": {
+          "passed": true,
+          "expected": "68b45d17d8b9f1aa21697a0f60fd317dcbfceba6a3408a8f50aa2abd7d6ea29a",
+          "actual": "68b45d17d8b9f1aa21697a0f60fd317dcbfceba6a3408a8f50aa2abd7d6ea29a"
+        }
+      },
+      "all_package_files": [
+        "BUILD_AUDIT.json",
+        "config\\draft_scenario_for_loader_acceptance.json",
+        "config\\flexible_load_v5_parameters.csv",
+        "flexibility\\resource_open_v1\\ev_availability_hourly_v5.csv.gz",
+        "flexibility\\resource_open_v1\\ev_mobility_hourly_v5.csv.gz",
+        "flexibility\\resource_open_v1\\flex_enablement_cost_v5.csv",
+        "flexibility\\resource_open_v1\\flexible_load_v5.manifest.json",
+        "flexibility\\resource_open_v1\\thermal_hourly_envelope_v5.csv.gz",
+        "flexibility\\resource_open_v1\\thermal_parameters_by_province_v5.csv",
+        "heating_baseline_adjustments.csv",
+        "load\\flexible_load_envelope_v3.csv.gz",
+        "load\\flexible_load_envelope_v3.manifest.json",
+        "load\\hourly_load_2025_2060.csv.gz",
+        "sets\\provinces.csv"
+      ]
+    }
+  },
+  "failures": [],
+  "no_input_modified": true
+}

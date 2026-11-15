@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "counts": {
+    "lower": 30992,
+    "upper": 3685,
+    "free": 2009
+  },
+  "per_source_overlap_count": {
+    "REF": 4497,
+    "LATE": 4493,
+    "PLAN": 4508
+  },
+  "classification": "Per-source lower-first: cap-floor <0.01 GW, else upper-cap <0.01 GW, else interior; common states only",
+  "source_references": {
+    "REF": {
+      "directory": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050",
+      "table_sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+      "manifest": {
+        "manifest": "supplementary_materials\\reviews\\base_acceptance_relative_v1_20261012\\evidence\\2050\\result_manifest.json",
+        "sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413"
+      }
+    },
+    "LATE": {
+      "directory": "supplementary_materials\\reviews\\C2050_completed_20261029\\C2050\\output_8760",
+      "table_sha256": "774df0a6ba1152f58ec2e3c3a25fc2b0b41d9d0ddc6bfa35efe1f0490a129e33",
+      "manifest": {
+        "manifest": "supplementary_materials\\reviews\\C2050_completed_20261029\\C2050\\output_8760\\result_manifest.json",
+        "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c"
+      }
+    },
+    "PLAN": {
+      "directory": "supplementary_materials\\reviews\\case3_2050_acceptance_20261106\\case3_2050\\output_8760",
+      "table_sha256": "9c7b63fa3dcb99d9c7657cc463d7e8e20d575285812fae9d520eb7060b431ea4",
+      "manifest": {
+        "manifest": "supplementary_materials\\reviews\\case3_2050_acceptance_20261106\\case3_2050\\output_8760\\result_manifest.json",
+        "sha256": "149449443e12fdaad141d43e396a58bf2d532b141659b1f48b84797f9526def4"
+      }
+    }
+  },
+  "initial_selection_sha256": "1407e6a355e65c60fca3d5f9dbca2ef76fffb3e6589bc417502b50dae3332157",
+  "final_priced_selection_pending": true
+}

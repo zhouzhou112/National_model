@@ -1,0 +1,678 @@
+{
+  "status": "PASS",
+  "installed_at_utc": "2026-11-14T21:44:32.773839+00:00",
+  "runtime": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime",
+  "source_data_root": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/data",
+  "source_files": {
+    "model_defaults.json": {
+      "bytes": 2324,
+      "sha256": "bde57d1b2e51530047a6a8eb622a725410e4f4d9797a428608b7e2cf1bb4f592"
+    },
+    "output_manifest.csv": {
+      "bytes": 17426,
+      "sha256": "28b9f31321eb3b08a4e498d9b522a9adb635f572327f93bd7c834df1b02def16"
+    },
+    "smoke_test_report.json": {
+      "bytes": 21590,
+      "sha256": "94e1954d2d58a8faa0c20714312cf3493b127da054a857251661deadbe75595f"
+    },
+    "source_manifest.csv": {
+      "bytes": 9725,
+      "sha256": "4d2601f9c62c01e5ebf42568ca4803ae2243a31e182b2c0e03eb9846008324e2"
+    },
+    "README.md": {
+      "bytes": 3143,
+      "sha256": "eb36ae248f7eb4e295388805c163ec58b04292683d5f5c847cbb9e23363f8c6a"
+    },
+    "qc_summary.csv": {
+      "bytes": 8912,
+      "sha256": "34e944d82dc8530fdbc8724d441fee6a64f3ea822b5f94c46287e19bc4bdfa20"
+    },
+    "load_center_network/natural_earth_278/substation_initial_capacity_2025.csv": {
+      "bytes": 2988212,
+      "sha256": "afdec2f67fa488852d3a7714f5cad606440c8f9971a457e7dcaceabc158860a5"
+    },
+    "load_center_network/natural_earth_278/intra_edges.csv": {
+      "bytes": 183335,
+      "sha256": "b303b64f7af693add04a57d90b422ec94b2f3ea31c83e5c22772cd7778a58958"
+    },
+    "load_center_network/natural_earth_278/initial_spur_capacity_2025.csv": {
+      "bytes": 7583211,
+      "sha256": "99f473ffc11a8aa2bd924415293c20f1060c64971c30f6517a314fe15c1bbcb5"
+    },
+    "load_center_network/natural_earth_278/README_zh.md": {
+      "bytes": 1479,
+      "sha256": "d62efb99b21bc9b3b188283cd7ef86be4c8395b4e5a642e4a5a6b59374b14860"
+    },
+    "load_center_network/natural_earth_278/load_centers.csv": {
+      "bytes": 60284,
+      "sha256": "86b45e993e3b3021906b0c4365fe4032801f1c19f121649e90c8fb21a2168e4c"
+    },
+    "load_center_network/natural_earth_278/manifest.json": {
+      "bytes": 2535,
+      "sha256": "d0f38c1df2099166f9852008e9baf0b520fb2c0c8f7abc63af5ef8ec84c0134b"
+    },
+    "load_center_network/natural_earth_278/hydro_routes.csv": {
+      "bytes": 514991,
+      "sha256": "43735dee06a47cab08d25b65fb4a5859e06bbde0563f2392568dc1d6a72ced22"
+    },
+    "load_center_network/natural_earth_278/initial_capacity_2025_audit.csv": {
+      "bytes": 2328,
+      "sha256": "f21e659068c4dfd3f515f823b0023cc47f5b5dbf4c4c4921a60aacd23d2414e0"
+    },
+    "load_center_network/natural_earth_278/vre_routes.csv": {
+      "bytes": 4644846,
+      "sha256": "6a59b071538a6a85a9d9a263db1ef1a1f464e308cc8c6ca51a10820ab520b37d"
+    },
+    "load_center_network/city_337/route_optimization_comparison.csv": {
+      "bytes": 1784293,
+      "sha256": "4115f98922e3e873e9e3ddaff8fa714c4525a945956dbd9aea13cd34256b97c2"
+    },
+    "load_center_network/city_337/substation_initial_capacity_2025.csv": {
+      "bytes": 2833870,
+      "sha256": "fcc4a250e189177ad6002b2bba3a4e18707ceeb4513dfb42c7b993f80e104e2d"
+    },
+    "load_center_network/city_337/intra_edges.csv": {
+      "bytes": 247942,
+      "sha256": "5c925c74fdaf6fe525128cd641b7ce9feea781c6cf2b560a4044cc853eefeccf"
+    },
+    "load_center_network/city_337/load_center_initial_capacity_2025.csv": {
+      "bytes": 65498,
+      "sha256": "15e5abe8e3a13a62f1f2c1deb04068927f479945b22c54dd2deccd8d85ee110e"
+    },
+    "load_center_network/city_337/initial_spur_capacity_2025.csv": {
+      "bytes": 6808149,
+      "sha256": "52394fa48f3564f7a06b531a867a97f47329ebff2e6102b1f2dfa137d8052bfc"
+    },
+    "load_center_network/city_337/README_zh.md": {
+      "bytes": 1075,
+      "sha256": "0cbf1a20017c48404c02acad16fd91c48b6e346ef89dc173e2486dd47bd7de7e"
+    },
+    "load_center_network/city_337/load_centers.csv": {
+      "bytes": 228029,
+      "sha256": "0566142e0437a3b824c5d60be2c49f3a975742a36420106628af72e865ecbbb3"
+    },
+    "load_center_network/city_337/manifest.json": {
+      "bytes": 4558,
+      "sha256": "9d4ffe6dc324bff8f9b1382f98b4d5559fc0fd7e614cee68d83f7de8e43dd888"
+    },
+    "load_center_network/city_337/hydro_routes.csv": {
+      "bytes": 804092,
+      "sha256": "62cfed249a50223e1f3edcfe79937ce9d6a74ed1a39793f0ba911e95aa89b1fc"
+    },
+    "load_center_network/city_337/initial_capacity_2025_audit.csv": {
+      "bytes": 3099,
+      "sha256": "1968b1445b7188dcd795ad1b9445337d4f42d10cd83722ff55df3dcc19bb3e0d"
+    },
+    "load_center_network/city_337/vre_routes.csv": {
+      "bytes": 8456982,
+      "sha256": "b293bec27f620a656a15c931ff22a7497c05152bec2c9adc614bcdfda8962f27"
+    },
+    "sets/provinces.csv": {
+      "bytes": 616,
+      "sha256": "68713595c56f97cb418f11be9622a04db6af6efe6095a50984a862a51ab2d77b"
+    },
+    "sets/model_years.csv": {
+      "bytes": 247,
+      "sha256": "533b208d7e026f0b8860370cd808e0bc55004813f57a4facc4acc90ae0412eab"
+    },
+    "technology/thermal_nuclear_ruc_parameters.csv": {
+      "bytes": 2166,
+      "sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f"
+    },
+    "technology/technology_capex_by_year.csv": {
+      "bytes": 24186,
+      "sha256": "09d66c89812ab7d2777b167375903776d65524b371c4810dc4498060a51091ce"
+    },
+    "technology/nuclear_capex_by_year.csv": {
+      "bytes": 1220,
+      "sha256": "f4e67579a42149b0a62787d152142c4544f7bfe9b435b1fa1fe503ed721471d4"
+    },
+    "technology/province_fuel_generation_cost_by_year.csv": {
+      "bytes": 508789,
+      "sha256": "1b8a9ad4f117428ca906f8352dfe59edd4d070e38036f3644cb73e91113abbd4"
+    },
+    "technology/emission_factors_by_year.csv": {
+      "bytes": 2386,
+      "sha256": "6c1002b18c623901483397e2ef405eb51cb61577c6e92b62d206ed7fa943dec9"
+    },
+    "technology/thermal_nuclear_om_parameters.csv": {
+      "bytes": 1716,
+      "sha256": "3df7296fe416ee485b0fbc2f470f19c9cd4dbc930f330ccf60c0b65bab97f908"
+    },
+    "technology/technoeconomic_price_basis_manifest.json": {
+      "bytes": 3275,
+      "sha256": "397297ec3980ffb38988a0463f934e310f228cbe48268d59ce38c7fa8350ec75"
+    },
+    "technology/ccs_cost_parameters.csv": {
+      "bytes": 322,
+      "sha256": "23fe9546861fa2745c0a9bb2a6a5be6841bff537d735561685b7f38dee886b74"
+    },
+    "technology/vre_hydro_cost_anchor.csv": {
+      "bytes": 1289,
+      "sha256": "e1c5a4b105c630fd6cdcaedf669feb5b297759d0a98814bd359e265b87f41db7"
+    },
+    "technology/unresolved_parameters.csv": {
+      "bytes": 4718,
+      "sha256": "c0a811b6afc3b38edaa84406e0642d0833a71c1f2594485d23491224d024337f"
+    },
+    "technology/dac_parameters_by_year.csv": {
+      "bytes": 9014,
+      "sha256": "1749e705360323ea24d90c55191955b7a0ffed96982c69393d5233f521918ea6"
+    },
+    "technology/fuel_price_source_table_screenshot.csv": {
+      "bytes": 5978,
+      "sha256": "7fb0697827bc782665e5326447a150570656de54b4b3a765acd1ad75d6c0f294"
+    },
+    "technology/transmission_cost_parameters.csv": {
+      "bytes": 1404,
+      "sha256": "0393624d080cc500866c3d304615e6477765ba9c662fe534690925451fe4dd47"
+    },
+    "technology/storage_technical_parameters.csv": {
+      "bytes": 722,
+      "sha256": "4a36c0a329e3d5932551dad73f09f02a59aa5f098ed5ccd9981f220ffd5ec374"
+    },
+    "technology/province_fuel_prices.csv": {
+      "bytes": 13709,
+      "sha256": "a3081fd33f5df28408ffb06779a263a18c5f3af868276fac0f138e6524ac4f42"
+    },
+    "hydro/cascade_topology_nodes.csv": {
+      "bytes": 18070,
+      "sha256": "adf3e99bb509bb03c226b2d412bf89a3ca960655e6a9123efaf595712919f0a7"
+    },
+    "hydro/timeseries_index.csv": {
+      "bytes": 1667,
+      "sha256": "9564dc01ae63e5ab46d0fa912da61a55271984ca144b4dc02a497ee667c9b0d5"
+    },
+    "hydro/hydro_stations.csv": {
+      "bytes": 861705,
+      "sha256": "bcb091d3307c86c87fce3112dc9b6e9a5a6bea109948b6bf48cca3c6587e0142"
+    },
+    "hydro/classification_summary.csv": {
+      "bytes": 809,
+      "sha256": "c5a11163780bfbc4c5e272b6fb818218afe56f283ef1a39b41b77387bb0a8bee"
+    },
+    "hydro/grfr_monthly_p30_single_year_proxy_2019.nc": {
+      "bytes": 182396,
+      "sha256": "c28f628642baaaac18d4461ac9474b3d622fcd80fbcd651884e6095d58203767"
+    },
+    "hydro/provincial_aggregate_capacity_2025.csv": {
+      "bytes": 7064,
+      "sha256": "353a76d20ab07a4cc5341e868c561016d19f6706ead10682953ab58deff88199"
+    },
+    "hydro/cascade_topology_edges.csv": {
+      "bytes": 32475,
+      "sha256": "55eb35e27ac54eb5f4d3075c08f4918331386552a955e77b76cbb8f3a9d7d7de"
+    },
+    "hydro/provincial_aggregate_monthly_capacity_factor_2019.csv": {
+      "bytes": 66506,
+      "sha256": "6dd1e9a8f6de7a265c498c9f90836fd31f2b2c1fa9ad2620407568eddc99c03d"
+    },
+    "hydro/repaired_storage_audit_20260913_v2/corrections.csv": {
+      "bytes": 733,
+      "sha256": "5244572958c2c357b7f09e81a50858d2be484e977b85bafdf85091a390538341"
+    },
+    "hydro/repaired_storage_audit_20260913_v2/hydro_stations.csv": {
+      "bytes": 861090,
+      "sha256": "f8135eaffa2de77461912cba5216106f66e0b6207c8b6c381fd725339a378e94"
+    },
+    "vre/hourly_cf_grid_coverage_2023.csv": {
+      "bytes": 665585,
+      "sha256": "536c611636d647d58a986b8158118bfd1ea088f6b863f8cd365b4d1730508bdb"
+    },
+    "vre/land_province_correction_audit.csv": {
+      "bytes": 14721,
+      "sha256": "2488998eec4ad9c00e8466c3dea594818177535331cb221fcac9032309f0bf78"
+    },
+    "vre/hourly_cf_index.csv": {
+      "bytes": 10231,
+      "sha256": "fcdd4be53b4ccc3eb72ed2c1dc502e3b431e3b2a775b651f7401a8d229b5b2d6"
+    },
+    "vre/optimization_points.csv": {
+      "bytes": 6727712,
+      "sha256": "0042fe90a23930ab06df524fde3fe4b7ec252ba55a7e7745e49054140c9e8878"
+    },
+    "vre/out_of_scope_points.csv": {
+      "bytes": 12710,
+      "sha256": "45c4ba0f6bda95627fdb16ababeac54a7266b39bd4fccdd7b4bfa44da3d342cc"
+    },
+    "vre/existing_capacity_cohorts_2025.csv": {
+      "bytes": 1858671,
+      "sha256": "e00791ec9597897da80377458d6acefdc481ef1708c0f86d68adb2a5576f92d0"
+    },
+    "vre/land_province_correction_capacity_impact.csv": {
+      "bytes": 72972,
+      "sha256": "8b73f60fdebe5090eb750884480804cc0a5d218c3bca1d574e97a6e2401f64e7"
+    },
+    "vre/existing_capacity_cohorts_2025_manifest.json": {
+      "bytes": 2645,
+      "sha256": "8c6b9a7069d4883212793ca1012f600b54ff7c20d8f48834e7f7c60d058539d2"
+    },
+    "vre/province_correction_audit.csv": {
+      "bytes": 9344,
+      "sha256": "5e62624c83acdd854177e3579e12a6bf2e758b2c2edde7a5fb310896f5548175"
+    },
+    "storage/phs_capacity_bounds_by_province_year.csv": {
+      "bytes": 36478,
+      "sha256": "21e3d51dbde54e7a651ba11d9a998d5b4ec6302dc9a0ee11383f7c5b99abe319"
+    },
+    "storage/battery_capacity_floor_by_province_year.csv": {
+      "bytes": 23308,
+      "sha256": "8e6039bcd179dbc4dd732e2dde9a12ea537e48f36db63cdf317c7081a9ff3d0d"
+    },
+    "flexibility/thermal_hourly_envelope_v5.csv.gz": {
+      "bytes": 7070656,
+      "sha256": "1f2d8fdde9f39b7cfed48300a2055cb93d80d1358c78c360598e894b281c9ddd"
+    },
+    "flexibility/ev_availability_hourly_v4.csv.gz": {
+      "bytes": 3792483,
+      "sha256": "58c5680b9113ea6f61b0630e020d31c2c84de927d44da95f38f0d4fa69cb354b"
+    },
+    "flexibility/ev_availability_hourly_v5.csv.gz": {
+      "bytes": 3788409,
+      "sha256": "e5b362011add3dda47b57fea0e67e011507275a18b823e8e4392cd2632412422"
+    },
+    "flexibility/flex_enablement_cost_v5.csv": {
+      "bytes": 18327,
+      "sha256": "40a5fceaa58d93953c248d090847ddd5e3920cb7ce7b7181fc384030e887f16a"
+    },
+    "flexibility/thermal_hourly_envelope_v4.csv.gz": {
+      "bytes": 7195581,
+      "sha256": "d76870555566bf7db21f46c3cc1780423cac874a27d8ca617d82a2bdf51266c4"
+    },
+    "flexibility/ev_mobility_hourly_v4.csv.gz": {
+      "bytes": 5352799,
+      "sha256": "f28123d9f8be53ecd23a2e859601452493e780c8407da049d61c26197d6ae456"
+    },
+    "flexibility/flexible_load_v5.manifest.json": {
+      "bytes": 2986,
+      "sha256": "323f499d8c811ff5996e0e7502c8f70ac10626a54e6e93617c3357257a90fcba"
+    },
+    "flexibility/thermal_parameters_by_province_v4.csv": {
+      "bytes": 11928,
+      "sha256": "1e0660cf67c19fbdba95123ad412d9a81f7b6e4548c92e8a95c14abf0f398ee3"
+    },
+    "flexibility/flex_enablement_cost_v4.csv": {
+      "bytes": 19191,
+      "sha256": "b2d8a4f758bb4c128e8f4c4df476cecff56e2f95d1bd7d9c97aeaba56881884f"
+    },
+    "flexibility/flexible_load_v4.manifest.json": {
+      "bytes": 3494,
+      "sha256": "6a663d1247ef61eb58af87075fba545a244244eea03a5395efaf74712faae552"
+    },
+    "flexibility/ev_mobility_hourly_v5.csv.gz": {
+      "bytes": 5232200,
+      "sha256": "ba577eedc68ab1e2ffe202c895794549a95ee03232e7eb8fc44ac5eadd0f54f6"
+    },
+    "flexibility/thermal_parameters_by_province_v5.csv": {
+      "bytes": 13787,
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+    },
+    "flexibility/participation_pathway_v2/thermal_hourly_envelope_v5.csv.gz": {
+      "bytes": 7066220,
+      "sha256": "1549f2a2d0c6f043d46432ca16b6fb9f88a11089801366210d69b7504cf35e0c"
+    },
+    "flexibility/participation_pathway_v2/ev_availability_hourly_v5.csv.gz": {
+      "bytes": 3787326,
+      "sha256": "b02a8c94fe3e10a37e969439d909846223c6304c656acfee392d4bc785c2f00a"
+    },
+    "flexibility/participation_pathway_v2/flex_enablement_cost_v5.csv": {
+      "bytes": 20979,
+      "sha256": "c2d8939b1e70bd47d020b4f45f252ea087abcfb773442d9e72c5b3b682e6e550"
+    },
+    "flexibility/participation_pathway_v2/flexible_load_v5.manifest.json": {
+      "bytes": 3206,
+      "sha256": "156cd5e972af5688ed94c25bf55ee13687c2fb6db3fce8995cdc86375200d492"
+    },
+    "flexibility/participation_pathway_v2/ev_mobility_hourly_v5.csv.gz": {
+      "bytes": 5192557,
+      "sha256": "daefef5075b0fa81d7b9456a9142a35aee8e61bf1eee500e84064bbb0e506669"
+    },
+    "flexibility/participation_pathway_v2/thermal_parameters_by_province_v5.csv": {
+      "bytes": 13787,
+      "sha256": "8d20af05386a3f5ba1ed641e1b46a0b49faa88fb3e074c5645b370a9c8e5f8ae"
+    },
+    "load/hourly_load_2025_2060.csv.gz": {
+      "bytes": 45549980,
+      "sha256": "bd94df0fd192c31e553ec9df7e486c90cc51ce2f9cd063cc660e499dce0c9903"
+    },
+    "load/hourly_load_2030_2060.csv.gz": {
+      "bytes": 36430922,
+      "sha256": "22232fd513cccb6d181159890c3e506d7f5d35753275366629ad705122a67f14"
+    },
+    "load/flexible_load_envelope_v3.manifest.json": {
+      "bytes": 2210,
+      "sha256": "966bf1dff45bf96a2b4e94b474d74389e980def61030088a570c84e67e3658a4"
+    },
+    "load/power_curve_v3_qc_update_manifest.json": {
+      "bytes": 3266,
+      "sha256": "d4c96bcf8321f9aee6aea408da90b77864c6cb8edef2fd08fc4e0be0c22e5de4"
+    },
+    "load/flexible_load_envelope_v3.csv.gz": {
+      "bytes": 6549964,
+      "sha256": "79ca66c1024abd9b27d2ad30d215223b0362ce5a1e214faccdd54a742d0289df"
+    },
+    "load/annual_load_summary.csv": {
+      "bytes": 10986,
+      "sha256": "c2bfb38103d30c5ccf69d29f1d2815a94a20d3896186a73d9ee8e9959a802fe4"
+    },
+    "carbon/reference_pathways.csv": {
+      "bytes": 1836,
+      "sha256": "ceb9d3535717319f5136bd1b599bd6f0160981a592dc45712c7128a00b26ce70"
+    },
+    "carbon/emissions_limits_by_scenario.csv": {
+      "bytes": 1664,
+      "sha256": "8eacc77a9aeab81af1779a63ba2eea96b522e9f9ed6ff5e11390349353d1e38d"
+    },
+    "wave/wave_sites.csv": {
+      "bytes": 226773,
+      "sha256": "9b318630e4783a9453492ae6403ae9f3d108a9cec09499dd6f0acd961fdd79d3"
+    },
+    "wave/wave_input_manifest.json": {
+      "bytes": 3093,
+      "sha256": "540d601070b093f0d991193ce606c861ab5b310b7a892ca9787a455b95405af9"
+    },
+    "biomass/fuel_potential_by_province_year.csv": {
+      "bytes": 23514,
+      "sha256": "a886806b9dce30f0ce9f5f91203a6ea1791780b42554c5fb87a87363abea1180"
+    },
+    "biomass/source_potential_2020_2050.csv": {
+      "bytes": 5829,
+      "sha256": "46bc5330954c7079a3998a3c48a63b9ba0b99b1af884f36330418f63158ee6d8"
+    },
+    "biomass/capacity_upper_by_province_year.csv": {
+      "bytes": 30164,
+      "sha256": "5321fe2cb6d561a3d38c8acdaaaaba06c56ffa9fbd3bf6afdde7dd4c24e96770"
+    },
+    "load_centers_1km/PRODUCTION_PROPAGATION_20260702.md": {
+      "bytes": 4416,
+      "sha256": "071d5a56d6293faa23ce5afdf760988ec65affd40bf8a3156eba29a7d54c1d49"
+    },
+    "load_centers_1km/WORKFLOW_AND_DATA_LINEAGE.md": {
+      "bytes": 12555,
+      "sha256": "d664560553dbd8e0721cbb2a008934214aadf42443cb3d4e5b13c423993302b1"
+    },
+    "load_centers_1km/METHOD_DECISION_LOG.md": {
+      "bytes": 1946,
+      "sha256": "b86e7711be0c302a54d184c5ea4760ab6c50b4a8c651d0cf3d04d73e5b1dd216"
+    },
+    "load_centers_1km/data_lineage.json": {
+      "bytes": 3192,
+      "sha256": "e935208ce0382aeb5aa2bfa9d77b1f36c54949d1218a53e80360a59813358d93"
+    },
+    "load_centers_1km/\u8d1f\u8377\u4e2d\u5fc3\u4e24\u79cd\u5019\u9009\u65b9\u6848\u65b9\u6cd5\u4e0e\u51b3\u7b56\u8bb0\u5f55.md": {
+      "bytes": 19613,
+      "sha256": "d1c7465b11b12402f06e5acb4a163a7cf568d161e1eebc22b26608373a38772d"
+    },
+    "load_centers_1km/qc/province_raster_coverage_summary.csv": {
+      "bytes": 2297,
+      "sha256": "94734f46c72b8b3ba7a03dcf99db95fee476b4d0c75309f1081df86bd6fc0db9"
+    },
+    "load_centers_1km/qc/land_point_province_spatial_audit.csv": {
+      "bytes": 3245039,
+      "sha256": "c77e2544c00aad37c153ae73b37453acec0c882eb937b905a2de0242a3bb9971"
+    },
+    "load_centers_1km/qc/source_city_inventory_clean.csv": {
+      "bytes": 17236,
+      "sha256": "c5c7823acbe4175e1ef1421fd9458af8ce84d6aa7f5ab49f89ffbf8b93f0b450"
+    },
+    "load_centers_1km/qc/raster_inventory.csv": {
+      "bytes": 32607,
+      "sha256": "ad1230b4a5446dff10f58c480aa88a67a35374669a1a4000786a4fabd5ab399c"
+    },
+    "load_centers_1km/qc/annual_2019_unmatched_positive_cells.csv.gz": {
+      "bytes": 1031,
+      "sha256": "5cb4ec75972006007a534b07482bea4fd0d38cb226a3abbd6599892070083a9b"
+    },
+    "load_centers_1km/qc/land_point_province_corrections.csv": {
+      "bytes": 9357,
+      "sha256": "6d7d7563e9ff434d75c1725d8d3ab1508480643873b82fb9a87fcdda65e17e28"
+    },
+    "load_centers_1km/qc/audit_summary.json": {
+      "bytes": 6599,
+      "sha256": "c65114e9d6c770b8c3d1ec325aa3c8bfea7cee103ba9b3c7bdde4b36ee2cc246"
+    },
+    "load_centers_1km/qc/model_city_raster_coverage.csv": {
+      "bytes": 68713,
+      "sha256": "62155f2adc3d58f64e7c093cb1f6379e1744c513ca2c0fa64c6ea744bb298773"
+    },
+    "load_centers_1km/qc/land_point_province_audit_summary.json": {
+      "bytes": 3338,
+      "sha256": "d7b96f330b5c0c6b9bf93c5f42f356d1ac2af0d775dd04e24f9b7542a9909bd1"
+    },
+    "load_centers_1km/qc/annual_2019_boundary_leakage_cells.csv.gz": {
+      "bytes": 2981,
+      "sha256": "6b3190911b27495b18eeda3de0578328fb592344382e02a5c60857926a104052"
+    },
+    "load_centers_1km/candidate/current_vs_gridded_comparison.csv": {
+      "bytes": 597,
+      "sha256": "4ccad2cea8d4a40c0159dcc35886cf96ca994694c519a5a225acc8fe153d1b67"
+    },
+    "load_centers_1km/candidate/run_manifest.json": {
+      "bytes": 5080,
+      "sha256": "52d354ef58caaf53e2f652d23d9b2916f76f30c29220ed58ee5dd2ece6e601ce"
+    },
+    "load_centers_1km/candidate/load_center_candidates.csv": {
+      "bytes": 287858,
+      "sha256": "007e016858da4bdc3e548330eb6ec5e4568b64a62b2ca19e2ab62ab397a75aad"
+    },
+    "load_centers_1km/candidate/center_count_search_trace.csv": {
+      "bytes": 16278,
+      "sha256": "1803cae54ada2415064c7b1ff1e2f0adc6cc582c2e4805be6504438e8b2bffd0"
+    },
+    "load_centers_1km/candidate/demand_point_to_load_center.csv.gz": {
+      "bytes": 9975986,
+      "sha256": "b15bc95a49b99c8d165214bf00810ad6c2d014efee29e592948db5b4b1887ca6"
+    },
+    "load_centers_1km/candidate/province_load_center_qc.csv": {
+      "bytes": 6538,
+      "sha256": "33ead611464c774f6c100fd0a12cf40e7c2ec0105ece7406955ba8827693a8df"
+    },
+    "load_centers_1km/candidate/substation_to_load_center_gridded_candidate.csv": {
+      "bytes": 1801744,
+      "sha256": "b226428f196f8c97550c9770b0d5e209e0f11de9130c83d95f186836fa385ed3"
+    },
+    "load_centers_1km/paper_method_candidate/demand_point_to_paper_load_center.csv.gz": {
+      "bytes": 6605515,
+      "sha256": "c2c4855a3012af28c2ab1158608e691357bcb8e3ea4e4fa5917f1cce06b9ffc6"
+    },
+    "load_centers_1km/paper_method_candidate/run_manifest.json": {
+      "bytes": 8848,
+      "sha256": "11d18503b684df1d64e2b0e75259e2c70497d08cf7ba6e07e8ad5228b04293c1"
+    },
+    "load_centers_1km/paper_method_candidate/current_vs_paper_route_comparison.csv": {
+      "bytes": 471,
+      "sha256": "5a0dc59caafd437b09c6859209b0e1857bda83cf3c6057915f0298d7dd88203d"
+    },
+    "load_centers_1km/paper_method_candidate/smoke_test_report.json": {
+      "bytes": 3918,
+      "sha256": "4a890da45950f91d41309b278526bbce308461ce2a4b19feccd7decba5ca8b70"
+    },
+    "load_centers_1km/paper_method_candidate/grid_point_paper_route.csv": {
+      "bytes": 8880654,
+      "sha256": "7b2c61a4c9a84a0602788dc02f8388e5c1953f595b86ef59cf88f2e4251714b8"
+    },
+    "load_centers_1km/paper_method_candidate/substation_to_paper_load_center.csv": {
+      "bytes": 1485853,
+      "sha256": "88a024027efc03cac68b73078af0c96c02bec808e090311b57021102731e7a80"
+    },
+    "load_centers_1km/paper_method_candidate/paper_load_centers.csv": {
+      "bytes": 158376,
+      "sha256": "e69e1704926cd1a9e6ef7c04f62d3982350710a0a5db198bb56278a9455e1025"
+    },
+    "load_centers_1km/paper_method_candidate/paper_urban_areas.geojson": {
+      "bytes": 292722,
+      "sha256": "8d266275259bb39baacd4c5fdb3905f4970028fc317673275f7b9a544104db72"
+    },
+    "load_centers_1km/paper_method_candidate/province_summary.csv": {
+      "bytes": 8758,
+      "sha256": "c0edaf07a846c640e59a4b201ad60ab4a2fcadc3a2815cc460ff531951f88ef9"
+    },
+    "load_centers_1km/paper_method_candidate/paper_load_centers.geojson": {
+      "bytes": 368861,
+      "sha256": "3cac759ca4d6d9903f66e44ddb4dd3b02a52e76bfabe78a81c5b5237c0bad7b5"
+    },
+    "load_centers_1km/paper_method_candidate/initial_2025/substation_initial_capacity_2025_paper_route.csv": {
+      "bytes": 3286421,
+      "sha256": "7737498ea61437c3408fb7f901a53901e0c15e8f3267f7192ffe892a4a7d2ac4"
+    },
+    "load_centers_1km/paper_method_candidate/initial_2025/run_manifest.json": {
+      "bytes": 4565,
+      "sha256": "57431370d810a0a6554e036cc831f25737f6072f45285897cec9603ad4d1314b"
+    },
+    "load_centers_1km/paper_method_candidate/initial_2025/load_center_initial_capacity_2025.csv": {
+      "bytes": 70993,
+      "sha256": "b3a43a6fd9fc6d4696cbd73b4274746e16a7e60b14692638fcf649b6e12903c2"
+    },
+    "load_centers_1km/paper_method_candidate/initial_2025/province_initial_intra_grid_capacity_2025_paper_route.csv": {
+      "bytes": 6215,
+      "sha256": "876e5f6a930ed4260af374f5a0da81331b0cbf64af8524f201cc93e8b0126642"
+    },
+    "load_centers_1km/paper_method_candidate/initial_2025/initial_spur_capacity_2025_paper_route.csv": {
+      "bytes": 7957497,
+      "sha256": "33e74d709807ec254b55c079210a6bd45499a0e6cf3a6812fec4ec38b5571f2b"
+    },
+    "load_centers_1km/intermediate/annual_2019_native_units.tif.aux.xml": {
+      "bytes": 1629,
+      "sha256": "d0f4eafe103caaec05bd41fd8ebca52319ec1e686617587d6cf30926aa8ddb3b"
+    },
+    "load_centers_1km/intermediate/annual_2019_positive_cells.csv.gz": {
+      "bytes": 4113232,
+      "sha256": "efe4c100fd5ab8007c4c7ba5f25cc32688d807209999a843953df4301d35eb5d"
+    },
+    "load_centers_1km/intermediate/demand_points_2019_spatial_2022_city_weights.csv.gz": {
+      "bytes": 7643626,
+      "sha256": "d63edf89cb5532fc22f8d3f72628296c6ffdfa4985cbd2ed963b063749d84921"
+    },
+    "load_centers_1km/intermediate/annual_2019_native_units.tif.ovr": {
+      "bytes": 812585,
+      "sha256": "9293fe732d76d864cd1de4bf3054301b73ab3ca557c110e7887ebc65a876258f"
+    },
+    "load_centers_1km/intermediate/annual_2019_native_units.tif": {
+      "bytes": 4411314,
+      "sha256": "78f86eb06ac5ad92694a85a62126009e56d3d32b638d447adc6a44f9fbc231c7"
+    },
+    "load_centers_1km/intermediate/optimization_points_spatially_validated_candidate.csv": {
+      "bytes": 8865346,
+      "sha256": "e58ebb5d4b2e78dd8b6f1f673c5a6a9d4a5500987000c357b79dc8955bdb9fa2"
+    },
+    "transmission/existing_lines.csv": {
+      "bytes": 17858,
+      "sha256": "91b2fd55b666ac7c5c308cc1a90c317ceb6c1001e45536cbcfeb223e8dcd7e85"
+    },
+    "transmission/candidate_corridors.csv": {
+      "bytes": 65820,
+      "sha256": "aac273c1e576eb13b58f1e9296a862102cafefbaafdedab77e91c8e8387311cb"
+    },
+    "grid/substation_initial_capacity_2025.csv": {
+      "bytes": 6436823,
+      "sha256": "feae561668dae927a1885654276b9cff484343fc49961d9498a3467324a5c258"
+    },
+    "grid/grid_connection_by_point.csv": {
+      "bytes": 4754136,
+      "sha256": "81757796fb7cd1302d57fe2c0973740a9743f0c2871947b60980a9e0cb1d3e70"
+    },
+    "grid/load_center_proxy_validation.csv": {
+      "bytes": 318,
+      "sha256": "f93fbb934f8dfa4358d63388de5880d3f8034ccb7c931bc423506778b6fc3a8c"
+    },
+    "grid/city_load_center_imputed_weights.csv": {
+      "bytes": 4720,
+      "sha256": "618c2d13b65ca6b3ca605b2a498383d18b66dd7736014e541db3685f788a5aea"
+    },
+    "grid/initial_spur_capacity_2025.csv": {
+      "bytes": 4060790,
+      "sha256": "65a693c587d98d8500381d2562227af26ce9fa197b3ca85afe545c2095da7890"
+    },
+    "grid/substations_osm_220kv_plus.csv": {
+      "bytes": 946309,
+      "sha256": "049f7a1290798bcd0e06532d0683bf0c97d717bb2839cd9996b12115eec284b5"
+    },
+    "grid/substation_filter_summary.csv": {
+      "bytes": 211,
+      "sha256": "da347c683819d9d3dd722cc50c823501770cd01ad092704c74c2e4f9940db941"
+    },
+    "grid/city_load_centers.csv": {
+      "bytes": 170106,
+      "sha256": "acfa1a4c1d38b45ed71a216cc76d33acb957a4a762a91d47bd40163b6d1a6c4e"
+    },
+    "grid/substation_to_load_center.csv": {
+      "bytes": 1659265,
+      "sha256": "91cadb8313daa98070259aaf3556f2d75d39310afd7029438a574d3126ef3ced"
+    },
+    "grid/province_initial_intra_grid_capacity_2025.csv": {
+      "bytes": 4587,
+      "sha256": "a5995d80868c6b755f8771c986f4d03be6d50d79bcf62caafa3f9c75e4052cd0"
+    },
+    "thermal/retirement_schedule.csv": {
+      "bytes": 83359,
+      "sha256": "2f463d6e3e0b754e70ead27e158c218c2bef06b06f555720a973fc4d4bd64def"
+    },
+    "thermal/nuclear_capacity_floor_by_year.csv": {
+      "bytes": 9186,
+      "sha256": "90ade3212ea5be9704e5177879593a64cbabff3be3327022b3ae8ef3c9130f01"
+    },
+    "thermal/existing_capacity_2025.csv": {
+      "bytes": 9128,
+      "sha256": "60088ff3b1375cba6de943acc09bac4c8dd363e32bbe6ff692321a93906ae374"
+    },
+    "thermal/capacity_floor_by_year.csv": {
+      "bytes": 54592,
+      "sha256": "50b62750d1b44141847c9b18f94d131a22eaf329a25eaea42c4e9635428944bb"
+    },
+    "thermal/nuclear_capacity_upper_by_year.csv": {
+      "bytes": 20796,
+      "sha256": "dac3ff4e422b51d076c32c61549389e7d0b10daf0bca6ce327865b17f18afb01"
+    }
+  },
+  "roots": {
+    "neutral": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/data_roots/neutral",
+    "conservative": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/data_roots/conservative",
+    "open": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/data_roots/open"
+  },
+  "checks": {
+    "neutral": {
+      "all_installed_SHA_match": true,
+      "unchanged_other_files_SHA_match": true,
+      "demand_gw_text_identical": true,
+      "rows": 1357800,
+      "overlaid_files": []
+    },
+    "conservative": {
+      "all_installed_SHA_match": true,
+      "unchanged_other_files_SHA_match": true,
+      "demand_gw_text_identical": true,
+      "rows": 1357800,
+      "overlaid_files": [
+        "flexibility/resource_conservative_v1/ev_availability_hourly_v5.csv.gz",
+        "flexibility/resource_conservative_v1/ev_mobility_hourly_v5.csv.gz",
+        "flexibility/resource_conservative_v1/flex_enablement_cost_v5.csv",
+        "flexibility/resource_conservative_v1/flexible_load_v5.manifest.json",
+        "flexibility/resource_conservative_v1/thermal_hourly_envelope_v5.csv.gz",
+        "flexibility/resource_conservative_v1/thermal_parameters_by_province_v5.csv",
+        "load/flexible_load_envelope_v3.csv.gz",
+        "load/flexible_load_envelope_v3.manifest.json",
+        "load/hourly_load_2025_2060.csv.gz"
+      ]
+    },
+    "open": {
+      "all_installed_SHA_match": true,
+      "unchanged_other_files_SHA_match": true,
+      "demand_gw_text_identical": true,
+      "rows": 1357800,
+      "overlaid_files": [
+        "flexibility/resource_open_v1/ev_availability_hourly_v5.csv.gz",
+        "flexibility/resource_open_v1/ev_mobility_hourly_v5.csv.gz",
+        "flexibility/resource_open_v1/flex_enablement_cost_v5.csv",
+        "flexibility/resource_open_v1/flexible_load_v5.manifest.json",
+        "flexibility/resource_open_v1/thermal_hourly_envelope_v5.csv.gz",
+        "flexibility/resource_open_v1/thermal_parameters_by_province_v5.csv",
+        "load/flexible_load_envelope_v3.csv.gz",
+        "load/flexible_load_envelope_v3.manifest.json",
+        "load/hourly_load_2025_2060.csv.gz"
+      ]
+    }
+  },
+  "source_modified": false,
+  "payload_SHA": "1d004681780684247dda48f198cce339718abd2d43b62c3e7500d0d67e1e571e"
+}

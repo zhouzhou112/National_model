@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/neutral_gate.py",
+    "--year",
+    "2050",
+    "--mode",
+    "frozen",
+    "--hours",
+    "24",
+    "--output",
+    "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/gates/neutral24h",
+    "--source-release",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1",
+    "--supplement",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260930_base2050_v9_t48_m750_tol1e4_v1/frozen_capacity_B_20261027",
+    "--closure",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/cloud_identity_v2/derived_static/closure.json",
+    "--window-carbon-budget",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2050/window_carbon_budget.json"
+  ],
+  "exit_code": 0,
+  "seconds": 181.43620993895456,
+  "data_root": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/data_roots/neutral",
+  "status": "OPTIMAL",
+  "objective": 3742659.1213830863,
+  "reference_objective": 3742659.1213830924,
+  "relative_difference": 1.617458747555806e-15,
+  "neutrality_pass": true
+}

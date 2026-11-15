@@ -1,0 +1,3864 @@
+{
+  "schema_version": "capacity_bound_selection_v1",
+  "planning_year": 2050,
+  "mode": "release_base_intra",
+  "source_references": {
+    "diagnostic": "C5; not a main-comparison planning scenario",
+    "table_sha256": "69a04695b21f8741f4c4800ffbfb5c86c6b9b72bb9341e7cd9e1a3d162ac7ee0",
+    "source_result_manifest_sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413"
+  },
+  "columns": [
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130100_LC_156130400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130100_LC_156130500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130100_LC_156130600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130100_LC_156131100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130200_LC_156130300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130200_LC_156130800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130200_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130300_LC_156130800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130300_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130400_LC_156130500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130400_LC_156131100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130500_LC_156131100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130600_LC_156130700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130600_LC_156130900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130600_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130700_LC_156130800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130700_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130800_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130900_LC_156131000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_13_LC_156130900_LC_156131100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140100_LC_156140300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140100_LC_156140600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140100_LC_156140700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140100_LC_156140900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140100_LC_156141100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140200_LC_156140300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140200_LC_156140600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140200_LC_156140900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140300_LC_156140700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140300_LC_156140900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140400_LC_156140500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140400_LC_156140700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140400_LC_156140800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140400_LC_156141000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140500_LC_156140800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140500_LC_156141000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140600_LC_156140900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140700_LC_156141100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156140800_LC_156141000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_14_LC_156141000_LC_156141100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150100_LC_156150200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150100_LC_156150600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150100_LC_156150900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150100_LC_156152500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150200_LC_156150600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150200_LC_156150800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150200_LC_156150900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150300_LC_156150600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150300_LC_156150800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150300_LC_156152900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150400_LC_156150500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150400_LC_156152200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150400_LC_156152500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150500_LC_156150700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150500_LC_156152200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150500_LC_156152500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150600_LC_156150800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150600_LC_156150900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150600_LC_156152900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150700_LC_156152200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150700_LC_156152500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150800_LC_156152900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_15_LC_156150900_LC_156152500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210100_LC_156210400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210100_LC_156210500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210100_LC_156210900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210100_LC_156211000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210100_LC_156211200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210200_LC_156210800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210200_LC_156211100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210200_LC_156211400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210300_LC_156210600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210300_LC_156210800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210300_LC_156211000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210300_LC_156211100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210400_LC_156210500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210400_LC_156211200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210500_LC_156210600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210500_LC_156211000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210500_LC_156211200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210600_LC_156211000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210700_LC_156210900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210700_LC_156211100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210700_LC_156211300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210700_LC_156211400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210800_LC_156211000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210800_LC_156211100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210900_LC_156211100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156210900_LC_156211300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156211100_LC_156211400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_21_LC_156211300_LC_156211400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220100_LC_156220200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220100_LC_156220300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220100_LC_156220400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220100_LC_156220700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220100_LC_156220800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220200_LC_156220300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220200_LC_156220400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220200_LC_156220600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220200_LC_156222400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220300_LC_156220400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220300_LC_156220500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220300_LC_156220700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220300_LC_156220800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220400_LC_156220500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220400_LC_156220600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220500_LC_156220600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220500_LC_156222400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220600_LC_156222400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_22_LC_156220700_LC_156220800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230100_LC_156230600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230100_LC_156231000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230100_LC_156231200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230200_LC_156230600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230200_LC_156231100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230200_LC_156231200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230200_LC_156232700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230300_LC_156230500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230300_LC_156230900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230300_LC_156231000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230400_LC_156230500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230400_LC_156230700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230400_LC_156230800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230500_LC_156230800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230500_LC_156230900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230600_LC_156231200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230700_LC_156230800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230700_LC_156231100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230700_LC_156231200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230700_LC_156232700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230800_LC_156230900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156230900_LC_156231000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156231100_LC_156231200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_23_LC_156231100_LC_156232700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320100_LC_156320400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320100_LC_156321000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320100_LC_156321100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320200_LC_156320400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320200_LC_156320500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320200_LC_156320600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320200_LC_156321100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320300_LC_156320700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320300_LC_156320800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320300_LC_156321300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320400_LC_156320500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320400_LC_156321100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320400_LC_156321200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320500_LC_156320600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320600_LC_156321200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320700_LC_156320800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320700_LC_156320900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320700_LC_156321300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320800_LC_156320900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320800_LC_156321000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320800_LC_156321300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320900_LC_156321000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156320900_LC_156321200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156321000_LC_156321100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156321000_LC_156321200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_32_LC_156321100_LC_156321200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330100_LC_156330400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330100_LC_156330500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330100_LC_156330600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330100_LC_156330700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330100_LC_156330800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330200_LC_156330400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330200_LC_156330600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330200_LC_156330900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330200_LC_156331000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330300_LC_156330700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330300_LC_156331000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330300_LC_156331100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330400_LC_156330500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330400_LC_156330600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330400_LC_156330900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330500_LC_156330600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330600_LC_156330700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330600_LC_156330900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330700_LC_156330800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330700_LC_156331000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330700_LC_156331100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_33_LC_156330800_LC_156331100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340100_LC_156340400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340100_LC_156340700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340100_LC_156341100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340100_LC_156341500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340200_LC_156340500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340200_LC_156340700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340200_LC_156341800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340300_LC_156340400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340300_LC_156340600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340300_LC_156341100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340300_LC_156341300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340400_LC_156341200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340400_LC_156341500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340500_LC_156341100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340500_LC_156341800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340600_LC_156341200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340600_LC_156341300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340600_LC_156341600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340700_LC_156340800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340700_LC_156341000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340700_LC_156341700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340700_LC_156341800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340800_LC_156341500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156340800_LC_156341700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156341000_LC_156341700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156341000_LC_156341800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156341200_LC_156341600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_34_LC_156341300_LC_156341600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350100_LC_156350300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350100_LC_156350500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350100_LC_156350700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350100_LC_156350900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350200_LC_156350300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350200_LC_156350500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350200_LC_156350600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350200_LC_156350800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350300_LC_156350400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350300_LC_156350500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350300_LC_156350900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350400_LC_156350700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350400_LC_156350800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350500_LC_156350600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350600_LC_156350800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_35_LC_156350700_LC_156350900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360100_LC_156360200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360100_LC_156360400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360100_LC_156360600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360100_LC_156360900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360100_LC_156361000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360200_LC_156360400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360200_LC_156360600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360200_LC_156361100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360300_LC_156360500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360300_LC_156360700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360300_LC_156360800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360300_LC_156360900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360400_LC_156360900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360500_LC_156360700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360500_LC_156360800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360500_LC_156360900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360500_LC_156361000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360600_LC_156361000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360600_LC_156361100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360700_LC_156360800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156360800_LC_156360900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_36_LC_156361000_LC_156361100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370100_LC_156370300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370100_LC_156370900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370100_LC_156371400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370100_LC_156371500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370100_LC_156371600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370200_LC_156370600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370200_LC_156370700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370200_LC_156371000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370200_LC_156371100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370300_LC_156370500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370300_LC_156370700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370300_LC_156370900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370300_LC_156371600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370400_LC_156370800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370400_LC_156370900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370400_LC_156371300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370400_LC_156371700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370500_LC_156370700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370500_LC_156371600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370600_LC_156370700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370600_LC_156371000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370700_LC_156371000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370700_LC_156371100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370800_LC_156370900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370800_LC_156371700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370900_LC_156371300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156370900_LC_156371500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156371100_LC_156371300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156371400_LC_156371500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156371400_LC_156371600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_37_LC_156371500_LC_156371700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410100_LC_156410200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410100_LC_156410400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410100_LC_156410700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410100_LC_156410800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410100_LC_156411000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410200_LC_156410700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410200_LC_156411000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410200_LC_156411400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410300_LC_156410400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410300_LC_156410800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410300_LC_156411200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410400_LC_156411000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410400_LC_156411100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410400_LC_156411200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410400_LC_156411300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410500_LC_156410600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410500_LC_156410700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410500_LC_156410900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410600_LC_156410700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410600_LC_156410900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410700_LC_156410800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410700_LC_156410900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410800_LC_156411200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156410900_LC_156411400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411000_LC_156411100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411100_LC_156411300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411100_LC_156411500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411100_LC_156411600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411100_LC_156411700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411300_LC_156411700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411400_LC_156411600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411500_LC_156411600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411500_LC_156411700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_41_LC_156411600_LC_156411700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420100_LC_156420200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420100_LC_156420700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420100_LC_156420900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420100_LC_156421100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420100_LC_156421200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420200_LC_156420700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420200_LC_156421100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420200_LC_156421200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420300_LC_156420500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420300_LC_156420600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420300_LC_156420800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420300_LC_156422800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420500_LC_156420600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420500_LC_156420800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420500_LC_156421000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420500_LC_156422800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420600_LC_156420800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420600_LC_156421300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420700_LC_156420900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420700_LC_156421100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420700_LC_156421200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420800_LC_156421000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420800_LC_156421300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420900_LC_156421000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156420900_LC_156421300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_42_LC_156421000_LC_156422800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430100_LC_156430200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430100_LC_156430300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430100_LC_156430600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430100_LC_156430900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430200_LC_156430300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430200_LC_156430400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430200_LC_156431000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430300_LC_156430400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430300_LC_156430900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430300_LC_156431300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430400_LC_156431000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430400_LC_156431100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430500_LC_156431100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430500_LC_156431200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430500_LC_156431300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430600_LC_156430700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430600_LC_156430900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430700_LC_156430800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430700_LC_156430900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430700_LC_156433100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430800_LC_156430900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430800_LC_156433100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156430900_LC_156431300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156431000_LC_156431100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156431200_LC_156431300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_43_LC_156431200_LC_156433100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440100_LC_156440200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440100_LC_156440600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440100_LC_156441800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440100_LC_156441900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440100_LC_156442000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440200_LC_156441600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440200_LC_156441800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440300_LC_156440400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440300_LC_156441300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440300_LC_156441900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440300_LC_156442000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440400_LC_156440700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440400_LC_156442000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440500_LC_156441400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440500_LC_156441500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440500_LC_156445100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440500_LC_156445200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440600_LC_156440700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440600_LC_156441200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440600_LC_156442000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440700_LC_156441700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440700_LC_156442000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440700_LC_156445300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440800_LC_156440900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440800_LC_156441700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440800_LC_156445300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440900_LC_156441700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156440900_LC_156445300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441200_LC_156441800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441200_LC_156445300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441300_LC_156441500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441300_LC_156441600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441300_LC_156441900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441400_LC_156441600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441400_LC_156445100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441400_LC_156445200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441500_LC_156441600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441500_LC_156445200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156441700_LC_156445300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_44_LC_156445100_LC_156445200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450100_LC_156450600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450100_LC_156450700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450100_LC_156451000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450100_LC_156451300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450100_LC_156451400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450200_LC_156450300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450200_LC_156450800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450200_LC_156451200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450200_LC_156451300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450300_LC_156451100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450300_LC_156451300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450400_LC_156450800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450400_LC_156450900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450400_LC_156451100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450500_LC_156450600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450500_LC_156450700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450500_LC_156450900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450600_LC_156450700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450600_LC_156451400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450700_LC_156450900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450800_LC_156450900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450800_LC_156451100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156450800_LC_156451300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156451000_LC_156451200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156451000_LC_156451400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_45_LC_156451200_LC_156451300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460100_LC_156460200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460100_LC_156460300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460100_LC_156460400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460200_LC_156460300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460200_LC_156460400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_46_LC_156460300_LC_156460400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156510600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156510700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156511400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156511800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156512000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510100_LC_156513200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510300_LC_156510500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510300_LC_156511000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510300_LC_156511100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510300_LC_156511500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510300_LC_156512000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510400_LC_156511100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510400_LC_156511500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510400_LC_156513400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510500_LC_156511000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510500_LC_156511500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510600_LC_156510700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510600_LC_156510900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510600_LC_156513200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510700_LC_156510800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510700_LC_156510900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510700_LC_156513200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510800_LC_156511300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510800_LC_156511900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510900_LC_156511300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510900_LC_156511600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156510900_LC_156512000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511000_LC_156511500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511000_LC_156512000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511100_LC_156511400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511100_LC_156511800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511100_LC_156513400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511300_LC_156511600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511300_LC_156511700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511300_LC_156511900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511400_LC_156511800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511400_LC_156513300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511600_LC_156511700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511700_LC_156511900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511800_LC_156513300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156511800_LC_156513400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_51_LC_156513200_LC_156513300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520100_LC_156520300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520100_LC_156520400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520100_LC_156520500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520100_LC_156522600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520100_LC_156522700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520200_LC_156520400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520200_LC_156520500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520200_LC_156522300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520300_LC_156520500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520300_LC_156520600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520400_LC_156520500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520400_LC_156522300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520400_LC_156522700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520500_LC_156522300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520600_LC_156522600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156520600_LC_156522700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_52_LC_156522600_LC_156522700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530100_LC_156530300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530100_LC_156530400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530100_LC_156530600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530100_LC_156532300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530100_LC_156532500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530300_LC_156530400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530300_LC_156530600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530300_LC_156532600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530400_LC_156530800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530400_LC_156532300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530400_LC_156532500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530400_LC_156532600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530500_LC_156530900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530500_LC_156532900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530500_LC_156533100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530500_LC_156533300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530600_LC_156530700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530700_LC_156532900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530700_LC_156533300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530700_LC_156533400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530800_LC_156530900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530800_LC_156532800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530900_LC_156532800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156530900_LC_156533100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156532300_LC_156532900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156532500_LC_156532600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156532500_LC_156532800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156532900_LC_156533300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156532900_LC_156533400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156533100_LC_156533300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_53_LC_156533300_LC_156533400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540100_LC_156540200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540100_LC_156540500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540100_LC_156540600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540100_LC_156542500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540200_LC_156540500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540200_LC_156540600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540200_LC_156542500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540300_LC_156540400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540300_LC_156540500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540300_LC_156540600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540400_LC_156540500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540400_LC_156540600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540500_LC_156540600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_54_LC_156540600_LC_156542500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156610200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156610300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156610400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156610500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156610900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610100_LC_156611000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610200_LC_156610400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610200_LC_156610500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610200_LC_156610600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610200_LC_156610800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610300_LC_156610400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610300_LC_156610700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610400_LC_156610500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610400_LC_156610700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610500_LC_156610600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610500_LC_156610800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610500_LC_156611000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610600_LC_156610800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610700_LC_156610900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_61_LC_156610900_LC_156611000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620100_LC_156620400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620100_LC_156620600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620100_LC_156621100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620100_LC_156622900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620100_LC_156623000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620200_LC_156620300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620200_LC_156620700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620200_LC_156620900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620300_LC_156620400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620300_LC_156620600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620300_LC_156620700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620300_LC_156620900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620400_LC_156620600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620400_LC_156621000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620400_LC_156621100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620400_LC_156622900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620500_LC_156620800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620500_LC_156621000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620500_LC_156621100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620500_LC_156621200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620600_LC_156620700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620700_LC_156620900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620800_LC_156621000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156620800_LC_156621100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156621100_LC_156621200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156621100_LC_156622900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156621100_LC_156623000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156621200_LC_156623000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_62_LC_156622900_LC_156623000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630100_LC_156630200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630100_LC_156632200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630100_LC_156632300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630100_LC_156632500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630100_LC_156632600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630200_LC_156632200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630200_LC_156632300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156630200_LC_156632500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632200_LC_156632500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632300_LC_156632500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632300_LC_156632600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632500_LC_156632600"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632500_LC_156632700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632500_LC_156632800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632600_LC_156632700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632600_LC_156632800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_63_LC_156632700_LC_156632800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640100_LC_156640200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640100_LC_156640300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640100_LC_156640400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640100_LC_156640500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640200_LC_156640300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640200_LC_156640500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640300_LC_156640400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640300_LC_156640500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_64_LC_156640400_LC_156640500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650100_LC_156650200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650100_LC_156650400"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650100_LC_156650500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650100_LC_156652300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650100_LC_156652800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650200_LC_156652700"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650200_LC_156654000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650200_LC_156654200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650200_LC_156654300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650400_LC_156650500"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650400_LC_156652300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650400_LC_156652800"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156650500_LC_156652300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652300_LC_156654300"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652700_LC_156654000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652700_LC_156654200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652800_LC_156652900"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652900_LC_156653000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652900_LC_156653100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652900_LC_156653200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156652900_LC_156654000"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156653000_LC_156653100"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156653000_LC_156653200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156653100_LC_156653200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156654000_LC_156654200"
+      ]
+    },
+    {
+      "family": "intra_load_center_new",
+      "stable_key": [
+        "INTRA_65_LC_156654200_LC_156654300"
+      ]
+    }
+  ]
+}

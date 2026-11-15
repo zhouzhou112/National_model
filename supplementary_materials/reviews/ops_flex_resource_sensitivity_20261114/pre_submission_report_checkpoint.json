@@ -1,0 +1,9 @@
+{
+  "reported_at_utc": "2026-11-15T00:46:13.274415+00:00",
+  "channel": "commentary",
+  "five_items_reported": true,
+  "cloud_jobs_at_report": 0,
+  "author_already_authorized_first_batch_release": true,
+  "gate_summary_sha256": "942e70a7001bfce893ee75692d9f232f53cb03ac5c8dc2b8b7ea73114ebaafba",
+  "no_second_or_third_batch_authorization": true
+}

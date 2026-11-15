@@ -1,0 +1,9 @@
+{
+  "bytes": 3514910,
+  "sha256": "1c54c2630c2fb2010129f309def39b4a3ae26fab8acd9d0007790efff779cb4a",
+  "state_counts": {
+    "lower": 28846,
+    "free": 4481,
+    "upper": 3359
+  }
+}

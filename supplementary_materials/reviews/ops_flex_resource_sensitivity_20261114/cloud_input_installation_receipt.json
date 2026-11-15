@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "root": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/_staging/ops_resource_sensitivity_20261114",
+  "source_payload_sha256": "1d004681780684247dda48f198cce339718abd2d43b62c3e7500d0d67e1e571e",
+  "inputs": {
+    "conservative": {
+      "status": "PASS",
+      "files": 11,
+      "audit_sha256": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896"
+    },
+    "open": {
+      "status": "PASS",
+      "files": 12,
+      "audit_sha256": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8"
+    }
+  },
+  "generated_or_repaired": false,
+  "baseline_repo_extracted": false
+}
