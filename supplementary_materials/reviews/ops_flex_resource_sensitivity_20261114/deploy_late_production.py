@@ -43,7 +43,7 @@ def main():
     c=CASES[a.case];root=BASE+'/'+c['release'];dest=HERE/'deployment'/a.case;dest.mkdir(parents=True,exist_ok=True)
     args,profile,scenario=scientific_args(a.case,root)
     if a.phase=='prepare':
-        gates=json.loads((HERE/'LATE_PRODUCTION_LAUNCH_GATES.json').read_text());assert gates['common_pre_submission']=='PASS' and gates['cases'][a.case]['status']=='PASS'
+        gates=json.loads((HERE/'LATE_PRODUCTION_LAUNCH_GATES.json').read_text(encoding='utf-8'));assert gates['common_pre_submission']=='PASS' and gates['cases'][a.case]['status']=='PASS'
         assert gates['batch']==2 and gates['other_batch2_cases_authorized'] is False and gates['explicit_late_launch_authorization']=='启动LATE-Open，可以考量48核心吧'
         commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
         assert not subprocess.check_output(['git','diff','HEAD','--','cispo_model','scripts','config','tests'],cwd=REPO).strip(),'Commit reviewed executable sources first'
