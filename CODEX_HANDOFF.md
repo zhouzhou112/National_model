@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15：作者已批准2030短窗沿用原B10.958904Mt例外；全年4000Mt/容量/容差不变。新目录门禁进程4185607，原B/中性/Open24h及Open1h已PASS，继续剩余对照。源代码125fdfdd；旧失败完整保留，537项模型回归源码未变，额外3项作用域测试PASS。2030未提交，其他三云端作业保持原运行，第三批待确认。**
+
 - **2026-11-15 22:53UTC：云端3运行。OPS-Open2040/5590946与2060/5590961已启动，64CPU/750G/UNLIMITED/no-requeue、启动可用720.66/719.15GiB、smoke均PASS；模型构建中。LATE5587177原作业继续。2030因24h碳预算门禁不可行停止，待作者决定，不自动重跑/提交；第三批未提交。证据eb85777c及batch2/startup_verification_2040_2060.json。**
 
 - **2026-11-15 第二批：2040/2060全部门禁和preflight PASS，已release5590946/5590961，当前等待Resources；与LATE5587177共1运行+2排队，启动内存尚待节点分配。2030原B参考24h INFEASIBLE，停止放行；MPS唯一差异是碳行10.958904→9.002825Mt，IIS包含该行，已请求作者决定是否沿用2030原B窗口额度。537项测试覆盖完成。第三批未提交，原运行不改。详见batch2/2030/STOP_REPORT_ZH.md。**
@@ -3948,6 +3950,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 作者批准2030原B窗口额度例外，新目录门禁进行中
+
+作者明确选择“2030沿用原B窗口额度（推荐）”，已写AGENTS，限定2030前24h原B/复制根中性/Open/Conservative/zero全部对照使用10.95890410958904Mt；全年4000Mt、冻结容量和容差不变，不推广其他年份。代码125fdfdd。旧9.002825Mt不可行MPS/IIS/日志继续保留，未覆盖旧安装或运行包。
+
+新T550 runtime_batch2_2030_author_window_20261115只复制代码/诊断夹具，复用只读数据根；生产模块、config、tests与537项覆盖快照LF SHA完全一致。新增3项例外作用域测试本机/T550均PASS，拒绝其他年份/全年/错误来源/额度。有限门禁进程4185607；开放1h、原B参考24h、复制根中性24h、开放24h已PASS，其余对照及真实生产profile1h继续。不得重复启动，先读新目录execution_receipt和gates/2030状态。
+
+2030发布将从最新成功启动的OPS-Open2060/5590961脚本派生，源SHA1741d4f28c559f57f7686245eff6e0c6c2c88031f8f0feca8e8891f41c37b1e2已与云端核对。完整门禁通过后由finalize_2030_author_gate.py生成2030唯一放行证据，deploy_batch2按其预算元数据路径记录例外（不把短窗额度传入全年命令）。当前2030尚未提交；2040/2060及LATE原运行不动，第三批仍未授权。下一步完成门禁后冻结/preflight/提交release，核总并发≤4与实际启动资源。
+
 
 ## 2026-11-15 22:53UTC 第二批2040/2060启动检查通过
 

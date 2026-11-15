@@ -1,5 +1,5 @@
 {
-  "status": "2040_2060_RELEASED_2030_STOPPED_PENDING_AUTHOR",
+  "status": "2030_AUTHOR_EXCEPTION_GATES_RUNNING",
   "recorded_at_utc": "2026-11-15T21:43:21.131193+00:00",
   "authorized_years": [
     2030,
@@ -26,8 +26,8 @@
     "python_compile": "PASS"
   },
   "pending": [
-    "Author decision on 2030 engineering-window carbon budget",
-    "Actual allocation/startup memory when 2040/2060 receive nodes"
+    "Finish scoped 2030 gates and preflight",
+    "Submit/release 2030 only after PASS; max cloud 4"
   ],
   "third_batch_submissions_forbidden": true,
   "full_regression": "537 covered: 535 T550 pass and 2 unchanged local archive tests",
@@ -35,5 +35,6 @@
     2040,
     2060
   ],
-  "year2030": "STOP_INFEASIBLE_ORIGINAL_B_24H"
+  "year2030": "RUNNING_IN_FRESH_AUTHOR_WINDOW_V2",
+  "author_2030_budget_exception_approved": true
 }
