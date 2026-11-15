@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "cases": {
+    "OPS-Open": {
+      "status": "PASS",
+      "case": "OPS-Open",
+      "release": "20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Open\\2050\\20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "files": 107,
+      "bytes": 142735375,
+      "maximum_file_bytes": 30118087,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    },
+    "OPS-Conservative": {
+      "status": "PASS",
+      "case": "OPS-Conservative",
+      "release": "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2050\\20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "files": 107,
+      "bytes": 138775945,
+      "maximum_file_bytes": 29966854,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    },
+    "D1-C5": {
+      "status": "PASS",
+      "case": "D1-C5",
+      "release": "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\C5\\2050\\20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "files": 108,
+      "bytes": 141408749,
+      "maximum_file_bytes": 30000692,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    }
+  },
+  "all_three_acceptance_pass": true,
+  "total_files": 322,
+  "total_bytes": 422920069,
+  "report_sha256": "133b6114b4c9e2a2d3a7c481ca737bdb7e5209928cece4959ce6a51b181f3cb7"
+}

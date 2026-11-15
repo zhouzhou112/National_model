@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "case": "D1-C5",
+  "release": "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+  "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\C5\\2050\\20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+  "files": 108,
+  "bytes": 141408749,
+  "maximum_file_bytes": 30000692,
+  "all_bytes_sha_match": true,
+  "omitted_not_applicable": {
+    "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+  }
+}

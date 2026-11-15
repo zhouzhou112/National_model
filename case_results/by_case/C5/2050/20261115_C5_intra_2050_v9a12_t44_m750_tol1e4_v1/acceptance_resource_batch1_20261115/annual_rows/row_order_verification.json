@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "mps_rows": 54217741,
+  "barpi_entries": 54217741,
+  "expected_rows": 54217741,
+  "actual_digest": "62a440b308bfbc51e4b81664b750a28a586aae02b6e253d35a80cee0a07ff55a",
+  "expected_digest": "62a440b308bfbc51e4b81664b750a28a586aae02b6e253d35a80cee0a07ff55a",
+  "constraint_vector": "raw_original_model_linear_constraint_index_order",
+  "seconds": 255.70836448669434
+}

@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "case": "OPS-Conservative",
+  "release": "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+  "checks": {
+    "current_relative_v1": true,
+    "frozen_capacity_identity": true,
+    "annual_resource_structure": true,
+    "original_preservation": true,
+    "optimal": true
+  },
+  "P_million_cny": 5731237.04826789,
+  "D_million_cny": 5731044.78388663,
+  "primal_dual_gap_million_cny": 192.2643812596798,
+  "screening_certificate": "NOT_APPLICABLE_UNSCREENED",
+  "screening_B_million_cny": 0.0,
+  "strict_source_status": "HARD_FAIL",
+  "strict_failed_checks": [
+    "unidirectional_interprovincial_flow",
+    "reservoir_transition",
+    "objective_components"
+  ],
+  "evaluator_version": "relative_v1_author_20261027_mt",
+  "source_sha256": {
+    "result_manifest.json": "807f5043a1b5f2f052e910146996916d448eee9fc323dbf02a2405ca9b8329c2",
+    "solution_qc.json": "42035040ff41b55461f057de70ade9c8578d1335d2c5770d31ad17832994d68c",
+    "solve_report.json": "1cd986ecf91fd9538722211e5143cff1d06820fd0208444d6826a694eb0bfe40",
+    "model_config_snapshot.json": "d2c7d6de54ece17c57becd2a1067caea4967b606a4d82d180921c82581e4c85e",
+    "frozen_capacity_output_check.json": "7a0689ee8fdd140dcf9bc7839dc955906fa0213362716c0f1bf29be611362f9f",
+    "resource_structure_audit.json": "05fdd3ce77f5c747ea0be6538c1f448d8313fc4e738c21e6ae1813469686987b",
+    "preservation_report.json": "5786cfcf1d106c8b94924225f7a6bed88247fa099f1fec6b86099cf10f5a1dfc"
+  },
+  "scope": "Quality label under author relative_v1 rules; no change to archived QC or automatic state adoption",
+  "assessed_at_utc": "2026-11-15T20:23:58.194026+00:00"
+}

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "verified_at_utc": "2026-11-15T20:45:58.988660+00:00",
+  "cases": {
+    "20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1": {
+      "files": 107,
+      "bytes": 142735375,
+      "original_stats_unchanged": true,
+      "acceptance_status": "PASS",
+      "result_manifest_sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e"
+    },
+    "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1": {
+      "files": 107,
+      "bytes": 138775945,
+      "original_stats_unchanged": true,
+      "acceptance_status": "PASS",
+      "result_manifest_sha256": "807f5043a1b5f2f052e910146996916d448eee9fc323dbf02a2405ca9b8329c2"
+    },
+    "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1": {
+      "files": 108,
+      "bytes": 141408749,
+      "original_stats_unchanged": true,
+      "acceptance_status": "PASS",
+      "result_manifest_sha256": "33fdff98c7cfe55a9004b2cfc20a8eff2beaa0b55ab295139e40fb7b689eaf0e"
+    }
+  },
+  "report_directory": "/home/zz2/National_model_server/analysis_tools_resource_batch1_20261115/batch_report_20261115",
+  "report_files": {
+    "BATCH1_REPORT_ZH.md": {
+      "bytes": 11259,
+      "sha256": "133b6114b4c9e2a2d3a7c481ca737bdb7e5209928cece4959ce6a51b181f3cb7"
+    },
+    "batch_case_summary.csv": {
+      "bytes": 2915,
+      "sha256": "b11606726df07faa9f638db9b42bcd580a31d2a881f36a957dce3799c7a1e00e"
+    },
+    "batch_service_summary.csv": {
+      "bytes": 2013,
+      "sha256": "c4552689002845b0304de99d8e279165c1aa7174b358302e6668c24f1196f93c"
+    },
+    "batch_cost_comparisons.csv": {
+      "bytes": 1423,
+      "sha256": "cc922774f93e98680a4825955ff2a10dcdafec6c015d74bf95685057239d81f2"
+    },
+    "batch_delivery_summary.json": {
+      "bytes": 1926,
+      "sha256": "e28fd2e838bead8e333cb774ff2c01757615bd7f1717969f1a986a58eff72707"
+    }
+  },
+  "local_files_verified": 322,
+  "local_all_sha_match": true
+}
