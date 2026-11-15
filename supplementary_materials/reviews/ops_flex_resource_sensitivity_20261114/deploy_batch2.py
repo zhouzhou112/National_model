@@ -52,17 +52,20 @@ def main():
         commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
         assert not subprocess.check_output(['git','diff','HEAD','--','cispo_model','scripts','config','tests'],cwd=REPO).strip(),'Commit reviewed executable sources first'
         tested=json.loads((HERE/'batch2/full_tests.json').read_text())['tested_source_lf_sha256']
-        template=TEMPLATE.read_bytes().replace(b'\r\n',b'\n').decode()
+        template_path=HERE/gates['template_local_path'] if 'template_local_path' in gates else TEMPLATE
+        template=template_path.read_bytes().replace(b'\r\n',b'\n').decode()
         expected_template=gates['template_sha256']
         assert hashlib.sha256(template.encode()).hexdigest()==expected_template
         marker='/usr/bin/time -v -o "$RELEASE_ROOT/resource_usage.txt"'
         assert template.count(marker)==1
-        prefix=template[:template.index(marker)].replace('#SBATCH --job-name=late_open_2050_t44','#SBATCH --job-name='+a.case+'_t44')
+        import re
+        prefix,count=re.subn(r'#SBATCH --job-name=\S+','#SBATCH --job-name='+a.case+'_t44',template[:template.index(marker)])
+        assert count==1
         import shlex
         command=['scripts/run_resource_sensitivity_case.py','--resource',c['resource'],'--reference',root+'/resource_contract_reference.csv','--']+args
         batch=prefix+marker+' \\\n  "$PYTHON" '+shlex.join(command)+' \\\n  > "$RELEASE_ROOT/stdout.log" 2> "$RELEASE_ROOT/stderr.log"\n'
         (dest/'job.sbatch').write_bytes(batch.encode())
-        launch=dict(release=c['release'],source_commit=commit,framework=c['kind'],resource_scenario=c['resource'],scenario='case3_thermal_ev_v5',scenario_config='config/scenarios/'+scenario+'.json',solver_profile='config/solver_profiles/'+profile+'.json',planning_year=c['year'],boundary_year=(2025 if c['year']==2030 else c['year']-10),batch=2,automatic_successor=False,license_path=LICENSE_PATH,template_release='20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1',author_authorization='Author 2026-11-15 adopted reviewed first batch and released the three remaining second-batch OPS-Open years after individual gates; third batch remains unauthorized',resources=dict(cpus=64,memory='750G',billing=64,solver_threads=44,time_limit='UNLIMITED',requeue=False,minimum_available_memory_gib=700),diagnostic_only=False,maximum_barrier_iterations=None)
+        launch=dict(release=c['release'],source_commit=commit,framework=c['kind'],resource_scenario=c['resource'],scenario='case3_thermal_ev_v5',scenario_config='config/scenarios/'+scenario+'.json',solver_profile='config/solver_profiles/'+profile+'.json',planning_year=c['year'],boundary_year=(2025 if c['year']==2030 else c['year']-10),batch=2,automatic_successor=False,license_path=LICENSE_PATH,template_release=gates.get('template_release','20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1'),author_authorization='Author 2026-11-15 adopted reviewed first batch and released the three remaining second-batch OPS-Open years after individual gates; third batch remains unauthorized',resources=dict(cpus=64,memory='750G',billing=64,solver_threads=44,time_limit='UNLIMITED',requeue=False,minimum_available_memory_gib=700),diagnostic_only=False,maximum_barrier_iterations=None)
         save(dest/'launch_config.json',launch)
         gate=dict(status='PASS',framework=c['kind'],planning_year=c['year'],batch=2,case=a.case,common_gate_sha256=sha(HERE/'batch2'/str(c['year'])/'FINAL_YEAR_RELEASE_GATES.json'),checks=gates['checks'],author_report_checkpoint_sha256=sha(HERE/'batch2/AUTHORIZATION.json'))
         save(dest/'FINAL_GATES_PASSED.json',gate)
@@ -79,7 +82,9 @@ def main():
             for n in ['launch_config.json','FINAL_GATES_PASSED.json']:add(n,(dest/n).read_bytes())
             add('continuation.sbatch',batch.encode());add('resource_contract_reference.csv',(HERE/'contractable_total_national_source.csv').read_bytes())
             add('source_code_sha256.json',json.dumps(sources,indent=2).encode())
-            add('engineering_gate_window_carbon_budget.json',(HERE/'batch2'/str(c['year'])/'window_carbon_budget.json').read_bytes())
+            budget_path=HERE/gates['window_carbon_budget_path'] if 'window_carbon_budget_path' in gates else HERE/'batch2'/str(c['year'])/'window_carbon_budget.json'
+            assert sha(budget_path)==gates['budget_sha256']
+            add('engineering_gate_window_carbon_budget.json',budget_path.read_bytes())
         remote(root,"assert not root.exists()\nroot.mkdir()\nprint(json.dumps({'status':'CREATED','root':str(root)}))",dest,'create')
         subprocess.run(['scp','-o','BatchMode=yes','-o','ConnectTimeout=15','-o','ServerAliveInterval=15','-o','ServerAliveCountMax=2',str(payload),'paracloud-bscc-a8:'+root+'/release_payload.tar.gz'],check=True)
         code='expected='+repr(hashes)+'\nexpected_data='+repr(json.loads((HERE/'batch2/cloud_source_file_sha256.json').read_text())[str(c['year'])]['data_overlay'])+'\nsource_b='+repr(BASE+'/'+c['source_release'])+'\nsource_c='+repr(LATE_SOURCE)+'\ninput_stage='+repr(INPUT_STAGE)+'\nresource='+repr(c['resource'])+'\nkind='+repr(c['kind'])+'\nsource_frozen_expected='+repr(json.loads((HERE/'batch2/cloud_source_file_sha256.json').read_text())[str(c['year'])]['frozen_source'])+'\nclosure_sha='+repr(gates.get('closure_sha256'))+'\npayload_sha='+repr(sha(payload))+'\n'+r'''

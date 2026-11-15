@@ -1,0 +1,20 @@
+{
+  "author_message": "2030沿用原B窗口额度（推荐）",
+  "approved_year": 2030,
+  "hours": 24,
+  "scope": [
+    "original_B_24h",
+    "neutral_24h",
+    "open_24h",
+    "conservative_24h",
+    "zero_24h"
+  ],
+  "window_carbon_limit_mt": 10.95890410958904,
+  "annual_carbon_limit_mt": 4000,
+  "capacity_and_solver_tolerances_unchanged": true,
+  "production_model_sources_match_537_tested_snapshot": true,
+  "additional_scope_tests": 3,
+  "old_failed_runtime_preserved": true,
+  "third_batch_authorized": false,
+  "recorded_at_utc": "2026-11-15T23:09:19.293739+00:00"
+}
