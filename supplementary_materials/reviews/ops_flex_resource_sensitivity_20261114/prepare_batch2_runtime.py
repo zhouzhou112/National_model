@@ -8,12 +8,15 @@ helpers=['resource_gate_batch2.py','resource_audit_batch2.py','window_gate.py','
 files={str((HERE/n).relative_to(REPO)).replace('\\','/'):base64.b64encode((HERE/n).read_bytes()).decode() for n in helpers}
 files['batch2/t550_sources.json']=base64.b64encode((HERE/'batch2/t550_sources.json').read_bytes()).decode()
 files['batch2/cloud_source_file_sha256.json']=base64.b64encode((HERE/'batch2/cloud_source_file_sha256.json').read_bytes()).decode()
-resume=sys.argv[1:]==['--resume-after-metadata-copy'];assert not sys.argv[1:] or resume
-code='archive='+repr(base64.b64encode(archive).decode())+'\nfiles='+repr(files)+'\nsource_commit='+repr(commit)+'\nresume='+repr(resume)+'\n'+r'''
+resume_data=sys.argv[1:]==['--resume-after-data-install']
+resume=sys.argv[1:]==['--resume-after-metadata-copy'] or resume_data;assert not sys.argv[1:] or resume
+code='archive='+repr(base64.b64encode(archive).decode())+'\nfiles='+repr(files)+'\nsource_commit='+repr(commit)+'\nresume='+repr(resume)+'\nresume_data='+repr(resume_data)+'\n'+r'''
 from pathlib import Path
 import base64,hashlib,json,shutil,tarfile,io,subprocess,sys,csv,gzip,itertools,os
 base=Path('/home/zz2/National_model_server');parent=base/'ops_flex_resource_sensitivity_20261114';runtime=parent/'runtime_batch2_20261115';repo=runtime/'repo'
-if resume:assert runtime.exists() and not (runtime/'installation_receipt.json').exists() and not (runtime/'data_roots/2030/neutral').exists()
+if resume:
+ assert runtime.exists() and not (runtime/'installation_receipt.json').exists()
+ assert (runtime/'data_roots/2030/neutral').exists()==resume_data
 else:
  assert not runtime.exists();runtime.mkdir();shutil.copytree(parent/'validation_runtime_v7/repo',repo,symlinks=True)
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive))) as tf:
@@ -30,9 +33,10 @@ sources=json.loads((runtime/'batch2/t550_sources.json').read_text());cloud=json.
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 shared=parent/'baseline_runtime';original2030=runtime/'data_roots/2030/original'
 if not resume:original2030.parent.mkdir(parents=True);shutil.copytree(shared/'data_roots/neutral',original2030)
-missing=[name for name,e in cloud['2030']['data_overlay'].items() if not (original2030/name).exists() or sha(original2030/name)!=e['sha256']]
-listing=runtime/'original2030_metadata.files';listing.write_text(''.join(n+'\n' for n in missing))
-if missing:
+listing=runtime/'original2030_metadata.files'
+missing=listing.read_text().splitlines() if resume_data else [name for name,e in cloud['2030']['data_overlay'].items() if not (original2030/name).exists() or sha(original2030/name)!=e['sha256']]
+if not resume_data:listing.write_text(''.join(n+'\n' for n in missing))
+if missing and not resume_data:
  subprocess.run(['rsync','-rt','--copy-links','--no-owner','--no-group','--protect-args','--files-from='+str(listing),'-e','ssh -F /home/zz2/.ssh/paracloud_backup_20261012/ssh_config','paracloud-backup:/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/data_overlay/',str(original2030)+'/'],check=True)
 def validate_base(root,year):
  for n,e in cloud[str(year)]['data_overlay'].items():
@@ -40,19 +44,26 @@ def validate_base(root,year):
 validate_base(original2030,2030)
 roots2030={'original':str(original2030)}
 for resource in ['neutral','conservative','open']:
- dest=original2030.parent/resource;shutil.copytree(original2030,dest);roots2030[resource]=str(dest)
+ dest=original2030.parent/resource
+ if resume_data:assert dest.is_dir()
+ else:shutil.copytree(original2030,dest)
+ roots2030[resource]=str(dest)
  if resource!='neutral':
   bundle=shared/'inputs'/resource;a=json.loads((bundle/'BUILD_AUDIT.json').read_text())
   for n,e in a['files'].items():
    assert (bundle/n).stat().st_size==e['bytes'] and sha(bundle/n)==e['sha256'],n
    if n.startswith(('load/','flexibility/')):
-    target=dest/n;target.parent.mkdir(parents=True,exist_ok=True);assert not target.is_symlink();shutil.copy2(bundle/n,target);assert sha(target)==e['sha256']
+    target=dest/n;target.parent.mkdir(parents=True,exist_ok=True);assert not target.is_symlink()
+    if not resume_data:shutil.copy2(bundle/n,target)
+    assert sha(target)==e['sha256']
  with gzip.open(original2030/'load/hourly_load_2025_2060.csv.gz','rt') as f,gzip.open(dest/'load/hourly_load_2025_2060.csv.gz','rt') as g:
   for x,y in itertools.zip_longest(csv.DictReader(f),csv.DictReader(g)):assert x and y and x['demand_gw']==y['demand_gw']
 sys.path.insert(0,str(repo));import numpy as np;import pandas as pd
 from cispo_model.carbon_accounting import resolve_beccs_carbon_factors
 windowfile=repo/'supplementary_materials/reviews/base_frozen_batch2_20261027/window_carbon.py'
-if not windowfile.exists():shutil.copy2(base/'base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/window_carbon.py',windowfile)
+if not windowfile.exists():
+ windowfile.parent.mkdir(parents=True,exist_ok=True)
+ shutil.copy2(base/'base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/window_carbon.py',windowfile)
 ns={};exec(windowfile.read_text(),ns)
 report=dict(status='PASS',source_commit=source_commit,years={},source_data_not_regenerated=True,metadata_2030_copied_from_original_B_cloud=missing)
 for year,meta in sources.items():

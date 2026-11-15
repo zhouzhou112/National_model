@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "local": {
+    "open": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8",
+    "conservative": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896"
+  },
+  "remote": {
+    "t550": {
+      "open": {
+        "audit_sha256": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8",
+        "files": 12,
+        "status": "PASS"
+      },
+      "conservative": {
+        "audit_sha256": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896",
+        "files": 11,
+        "status": "PASS"
+      }
+    },
+    "cloud": {
+      "open": {
+        "audit_sha256": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8",
+        "files": 12,
+        "status": "PASS"
+      },
+      "conservative": {
+        "audit_sha256": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896",
+        "files": 11,
+        "status": "PASS"
+      }
+    }
+  },
+  "source": "First-batch immutable BUILD_AUDIT identities; no regeneration"
+}

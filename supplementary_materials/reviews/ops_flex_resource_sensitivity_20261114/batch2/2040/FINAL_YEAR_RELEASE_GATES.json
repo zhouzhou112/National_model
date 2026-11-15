@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "year": 2040,
+  "batch": 2,
+  "third_batch_authorized": false,
+  "source_commit": "353efa86817fa52ca5cb94393ab67fe0b0265443",
+  "template_sha256": "15abf4c775b05d36046a0e98aad1bd3280b5319361afc7807b3a2491e385a30a",
+  "closure_sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+  "budget_sha256": "1160aeee0c547131534ac5c4a0c2e884b4897f5309ab0c83a0e45f4bb5725ffb",
+  "source_result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+  "checks": {
+    "per_year_1h_24h_and_production_profile": "PASS",
+    "neutrality_relative_objective_difference": 0.0,
+    "monotonicity_relative_order_violations": [
+      0.0,
+      1.2988653979098609e-16,
+      0.0
+    ],
+    "objective_comparison_relative_tolerance": 1e-07,
+    "full_regression_tests_covered": 537,
+    "T550_passed": 535,
+    "unchanged_local_archive_tests": 2,
+    "immutable_input_SHA": "PASS",
+    "original_frozen_source_and_closure_reused": true,
+    "threads": 44
+  },
+  "evidence_sha256": {
+    "batch2\\2040\\YEAR_GATES_PASSED.json": "5f80e7d8a38054f63dec372314bb3bf8abe65846d37a3ba538d9236819719419",
+    "batch2\\2040\\window_carbon_budget.json": "1160aeee0c547131534ac5c4a0c2e884b4897f5309ab0c83a0e45f4bb5725ffb",
+    "batch2\\full_tests.json": "36a1bb3cda1e451c385dcd033d6ceab7cd2d8f122024d8708999bd7bf5ff0bca",
+    "batch2\\unchanged_local_archive_tests.json": "c37649fa7443c5aae6f5cc79a58707e4847be34aac61407adbe9eed30f93bfbc",
+    "batch2\\input_identity_recheck.json": "ac8edffa6bbea35cb5e96b380eba175c88ae484bc20b3dfb0fec7896222f15b4",
+    "batch2\\installation_receipt.json": "53c002bec34e8724d56ab05ae9f8bd2536d5a60e09a2be342989370158f784f1",
+    "batch2\\AUTHORIZATION.json": "6e02f7456e592d39d563c64ba30b363290e638bf65e830935c34067df9b4e3f2"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "tests": 2,
+  "source_unchanged": {
+    "tests/test_continuation_cleanup.py": true,
+    "tests/test_relative_acceptance.py": true,
+    "cispo_model/continuation_cleanup.py": true,
+    "cispo_model/relative_acceptance.py": true
+  },
+  "reference_sha256": "8ebca19f6d7d2ad399a88629c15080b4cec149c24d5a802023b888f8c5aebd8a",
+  "reference": "local_archive_tests.json"
+}

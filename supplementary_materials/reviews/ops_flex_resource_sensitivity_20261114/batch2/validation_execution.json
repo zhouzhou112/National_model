@@ -1,0 +1,40 @@
+{
+  "regression": {
+    "pid": 4093151,
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/batch2/full_regression.py",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115"
+    ]
+  },
+  "2030": {
+    "pid": 4093152,
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/run_batch2_year_gates.py",
+      "2030",
+      "--runtime",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115"
+    ]
+  },
+  "2040": {
+    "pid": 4093153,
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/run_batch2_year_gates.py",
+      "2040",
+      "--runtime",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115"
+    ]
+  },
+  "2060": {
+    "pid": 4093154,
+    "command": [
+      "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/run_batch2_year_gates.py",
+      "2060",
+      "--runtime",
+      "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115"
+    ]
+  }
+}
