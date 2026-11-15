@@ -1,0 +1,381 @@
+{
+  "status": {
+    "started_at_utc": "2026-11-15T08:35:52.123861+00:00",
+    "status": "COMPLETE",
+    "stages": [
+      {
+        "release": "20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+        "tier": "T1",
+        "bytes": 44330128,
+        "file_count": 41,
+        "started_at_utc": "2026-11-15T08:35:52.124288+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-15T08:35:59.397785+00:00"
+      },
+      {
+        "release": "20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+        "tier": "T3",
+        "bytes": 4147274538,
+        "file_count": 1,
+        "started_at_utc": "2026-11-15T08:35:59.398301+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-15T08:43:29.195244+00:00"
+      }
+    ],
+    "completed_bytes": 4191604666,
+    "finished_at_utc": "2026-11-15T08:43:31.416018+00:00",
+    "source_unchanged": true,
+    "disk_free_bytes": 1215597182976
+  },
+  "manifest": {
+    "status": "COMPLETE",
+    "verified_at_utc": "2026-11-15T08:43:31.415245+00:00",
+    "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+    "destination": "/home/zz2/National_model_server/cloud_backup/20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+    "source_unchanged_after_transfer": true,
+    "source_result_manifest_sha256": "cb52d97ae9d6a523283b90e34921df48b0cfe4ee7bb4ab336c9213dfd02c5eaa",
+    "files": [
+      {
+        "path": "FINAL_GATES_PASSED.json",
+        "bytes": 621,
+        "sha256": "0cf06028fac78fa662666ed7e5f006a86af6921d0455a1a78ab2a26aa72ab714",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "batch_exit.json",
+        "bytes": 35,
+        "sha256": "e16b62517cd76bd97699b18aeb234ee29b74b81c7f5b4b0e6f708b583a6203eb",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794720514900115726,
+        "tier": "T1"
+      },
+      {
+        "path": "capacity_selection.json",
+        "bytes": 3514910,
+        "sha256": "1c54c2630c2fb2010129f309def39b4a3ae26fab8acd9d0007790efff779cb4a",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "compute_node_smoke.json",
+        "bytes": 263,
+        "sha256": "f1aec3b14d95c28ea47c02c147bb1732db2176577604396a86df6d65e25d0bbf",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703941281821586,
+        "tier": "T1"
+      },
+      {
+        "path": "continuation.sbatch",
+        "bytes": 5496,
+        "sha256": "67d9a8cc761ba0f02b898a752040989800724267f941d4094f63203175525758",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "data_copy_verification.json",
+        "bytes": 2863,
+        "sha256": "64b3402ab2d07f8a731fc51b56170b4e2d888b79495a91eed9b367ed2d00150b",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703861130235000,
+        "tier": "T1"
+      },
+      {
+        "path": "launch_config.json",
+        "bytes": 1119,
+        "sha256": "08d954594a750f6942a70ab9b328b4cdf5bc4c7d7a03364e29a5f8f8deb83ce3",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "license_path_preflight.json",
+        "bytes": 70,
+        "sha256": "50ecd712cd50f9f33406907471f3380893779743620cbcc7c770317198fee5e5",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703861130855414,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/annual_capacity_link_row_scaling.json",
+        "bytes": 60857,
+        "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706377971408000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/build_report.json",
+        "bytes": 90925,
+        "sha256": "f5fa4b1ff9d66cf73b977c2f31fe3c7e30caa98b5f026f7ccad2a344b95b1ab3",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706381583698000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/capacity_bound_selection_audit.json",
+        "bytes": 40173115,
+        "sha256": "f19e02a9f7edc0b521c678da9036c8ce33123c91178bc28332ffef0fdc723e96",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706377964514134,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/gurobi.log",
+        "bytes": 104429,
+        "sha256": "89faec6d010c38dab6854d38b125c9109286ef267b8c2baca3e49ac0c35afad6",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794720483648156631,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/input_manifest.csv",
+        "bytes": 31602,
+        "sha256": "25bb11b8a6a8b81336903be7ff19bdd43a523d2b00d4a27e189484cb2ef41508",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703951003914000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/model_archive/archive_manifest.json",
+        "bytes": 608,
+        "sha256": "7a869495c5d5c437f629f9be2902168c23bd0195ae55604f96a54ba233f850f4",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706922185020590,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/model_archive/original.mps.gz",
+        "bytes": 4147274538,
+        "sha256": "e5d6b1640f45db9480c4fa6c0c6cf7c5983b9d909c6361acebf155680a860a17",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706919461902576,
+        "tier": "T3"
+      },
+      {
+        "path": "output_8760/model_archive/parameters.prm",
+        "bytes": 207,
+        "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706922184355592,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/model_config_snapshot.json",
+        "bytes": 24962,
+        "sha256": "b84aa07808ff67a812a3bda41373226e7b106c64c5060fbd102ac4bd47b52129",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703946247730000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/mps_section_sha256.json",
+        "bytes": 651,
+        "sha256": "c214091d2a6adf1eace8eccd594c37142fb3d03099d0f48d1df2bfb7c16b67b7",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794707450816060699,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/preflight_report.json",
+        "bytes": 15597,
+        "sha256": "36e7c2b54ff9a4d52a183307837ba0d73f2274dd640ad2f5b7444a25a726d309",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703955990946000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/preservation_report.json",
+        "bytes": 393,
+        "sha256": "927f3e61b94adb3d4520c23fabb725bf9e4fda5e646c4e086807ab0afc5742f6",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794720483678716049,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/resource_structure_audit.json",
+        "bytes": 6536,
+        "sha256": "7b789066da53206e7b07b2c8a59544846ba20b489aa9fa81d95921da0e17af5a",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706376640095000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/result_manifest.json",
+        "bytes": 3819,
+        "sha256": "cb52d97ae9d6a523283b90e34921df48b0cfe4ee7bb4ab336c9213dfd02c5eaa",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794720486451882000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/run_claim.json",
+        "bytes": 263,
+        "sha256": "34f3eb30f019400e146804f191bba296981696f6c11e269f3e7d00fa45676a05",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703946246599913,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/run_environment.json",
+        "bytes": 2566,
+        "sha256": "b5d928bb2e79fac6d994033fe023cc0c91b4868dd58d8c5919ca5c6e7517218f",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703946291688000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/run_identity.json",
+        "bytes": 6854,
+        "sha256": "97d93f4ba21331a59359f303cdd6b584a7a2a46414f46c3e113e1322d9d2d6ae",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706381116353000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/run_scope.json",
+        "bytes": 8300,
+        "sha256": "e6ae11bddba0557c905ba4020f8573ca00941ffde20bf90b970311495c7c3bdc",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794703956075438000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/solve_report.json",
+        "bytes": 3020,
+        "sha256": "dc08afcb0cfb8958402c98f7f1cd471dad5066da477ff86e3c67b0746d79801d",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794720483678373000,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/solver_parameters_before_optimize.json",
+        "bytes": 589,
+        "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794706381588356588,
+        "tier": "T1"
+      },
+      {
+        "path": "output_8760/solver_telemetry.jsonl",
+        "bytes": 2972,
+        "sha256": "8773c109c3a657bee1467dd5a37c6546fcf482d16bc8c24ef651af9ef97f57c5",
+        "sha_source": "result_manifest.json",
+        "mtime_ns": 1794720483648468962,
+        "tier": "T1"
+      },
+      {
+        "path": "release_files.sha256",
+        "bytes": 60744,
+        "sha256": "5e02cf3a14c7f0342b29e413337b1eae09bab4208b80dcb17425e20f0b4dd0b5",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703861298605000,
+        "tier": "T1"
+      },
+      {
+        "path": "release_receipt.json",
+        "bytes": 1626,
+        "sha256": "084e987412fa85bf5857f0516dd8a01d275452f3d89eacc81e27c23a802934ce",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703935616276000,
+        "tier": "T1"
+      },
+      {
+        "path": "resource_contract_reference.csv",
+        "bytes": 12364,
+        "sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "resource_usage.txt",
+        "bytes": 1816,
+        "sha256": "15eab805e68ac1d8c46563436f8a09c9ed0e16d3e2618bb6ea4056d855230825",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794720514898568000,
+        "tier": "T1"
+      },
+      {
+        "path": "runtime_hash_check.log",
+        "bytes": 28938,
+        "sha256": "b859772aaf63f7550e4463430a8fc48f76f507fe5fb8a47d62c0172e17cfaf81",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703939594499020,
+        "tier": "T1"
+      },
+      {
+        "path": "runtime_slurm_job.txt",
+        "bytes": 1599,
+        "sha256": "ea4333d2aa3e60b5ecd1fe305bba08302de4d28ddd798fb6b4cac2ac7294b545",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703940842680000,
+        "tier": "T1"
+      },
+      {
+        "path": "slurm-5584392.err",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703939127865000,
+        "tier": "T1"
+      },
+      {
+        "path": "slurm-5584392.out",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703939127329000,
+        "tier": "T1"
+      },
+      {
+        "path": "source_code_sha256.json",
+        "bytes": 51548,
+        "sha256": "cae854d8874ee61e8a06562b5ebf777f2a90e1b11a8558bd3b932fd0b67baaa9",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 0,
+        "tier": "T1"
+      },
+      {
+        "path": "startup_resources.json",
+        "bytes": 195,
+        "sha256": "3140cee419cfcf44526ea6bcff526649d96844db8e3f3337c92df647c51be30b",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703940843549851,
+        "tier": "T1"
+      },
+      {
+        "path": "stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703941311558000,
+        "tier": "T1"
+      },
+      {
+        "path": "stdout.log",
+        "bytes": 107569,
+        "sha256": "65e9af1cf94750719d1eed8d741f7dbb6217d032ce415c8439e214692eb8ec95",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794720486452322463,
+        "tier": "T1"
+      },
+      {
+        "path": "submission.json",
+        "bytes": 87,
+        "sha256": "b77d8e9c8ff2fc1b22caab145bf2c655f084495f3a121299c6cc5c54640aa07a",
+        "sha_source": "source_sha256_read",
+        "mtime_ns": 1794703935595396314,
+        "tier": "T1"
+      }
+    ],
+    "deferred_files": [],
+    "verification": "Every target bytes/SHA256 equals source archive manifest or source-side SHA256",
+    "scope": "Full output_8760 including T1/T2/T3 plus explicit root launch/log metadata; no input datasets or repo copy",
+    "scientific_acceptance": "BACKUP_ONLY; original QC and author status preserved without alteration"
+  },
+  "manifest_sha256": "833f83967336d068982f6aa642896322947678c14a2e251aa853a626267afa05"
+}

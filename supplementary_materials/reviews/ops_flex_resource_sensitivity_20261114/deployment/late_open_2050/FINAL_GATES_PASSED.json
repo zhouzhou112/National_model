@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "framework": "LATE_RESTRICTED_PRODUCTION",
+  "planning_year": 2050,
+  "batch": 2,
+  "case": "late_open_2050",
+  "common_gate_sha256": "981d960cc4f5be026d7fcb6717338eed2d91ae92f4a505962aff996947f6979a",
+  "checks": {
+    "status": "PASS",
+    "construction_1h": "PASS",
+    "identity_24h": "PASS",
+    "complete_unit_coverage": 535,
+    "full_annual_structure": "PASS",
+    "factor_and_five_iterations": "PASS",
+    "profile_numeric_identity_to_test": "PASS",
+    "selected_threads": 44,
+    "free_sites": 4481,
+    "conditional_full_runtime_days": [
+      3.568,
+      4.034
+    ],
+    "conservative_800_second_scenario_days": [
+      4.752,
+      5.261
+    ]
+  },
+  "author_report_checkpoint_sha256": "6e1fe9c38670da5156984c865479f4e6431f577f6b1a4aa81a461fe00d96a480"
+}

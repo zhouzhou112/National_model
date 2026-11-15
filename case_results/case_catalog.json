@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-15T08:33:39.332549Z",
+  "as_of_utc": "2026-11-15T08:47:42.414088Z",
   "cases": [
     {
       "case": "B",
@@ -453,7 +453,7 @@
       "kind": "COMPLETED_FACTOR_TEST",
       "solver_status": "INTERRUPTED_AT_AUTHORIZED_ITERATION_5",
       "acceptance_status": "NOT_APPLICABLE_TEST_ONLY",
-      "backup_status": "RUNNING",
+      "backup_status": "COMPLETE",
       "release": "20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
       "job_id": "5584392",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
@@ -463,7 +463,28 @@
       ],
       "case_card": "case_results\\by_case\\LATE-Open-TEST\\2050\\20261115_lateopen_2050_restricted_factor5_t44_m750_v1\\README.md",
       "batch": 1,
-      "main_comparison_eligible": false
+      "main_comparison_eligible": false,
+      "backup_manifest_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\factor_test_backup_complete.json"
+    },
+    {
+      "case": "LATE-Open",
+      "year": 2050,
+      "version": "v1",
+      "kind": "QUEUED_RESTRICTED_PRODUCTION",
+      "solver_status": "PENDING_RESOURCES",
+      "acceptance_status": "PENDING",
+      "backup_status": "PENDING_TERMINAL",
+      "release": "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "job_id": "5587177",
+      "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "case_card": "case_results\\by_case\\LATE-Open\\2050\\20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1\\README.md",
+      "local_evidence": [
+        "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\LATE_PRODUCTION_LAUNCH_REPORT_ZH.md"
+      ],
+      "batch": 2,
+      "explicit_early_launch_authorization": true,
+      "main_comparison_eligible": true,
+      "certificate_required": true
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",

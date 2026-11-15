@@ -2,6 +2,8 @@
 from pathlib import Path
 import datetime,json,subprocess
 from deploy_batch1 import BASE,CASES
+from deploy_late_production import CASES as AUTHORIZED_LATE_CASES
+CASES={**CASES,**AUTHORIZED_LATE_CASES}
 HERE=Path(__file__).resolve().parent
 stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 out=HERE/'snapshots'/stamp;out.mkdir(parents=True,exist_ok=False)
