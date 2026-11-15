@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15 22:53UTC：云端3运行。OPS-Open2040/5590946与2060/5590961已启动，64CPU/750G/UNLIMITED/no-requeue、启动可用720.66/719.15GiB、smoke均PASS；模型构建中。LATE5587177原作业继续。2030因24h碳预算门禁不可行停止，待作者决定，不自动重跑/提交；第三批未提交。证据eb85777c及batch2/startup_verification_2040_2060.json。**
+
 - **2026-11-15 第二批：2040/2060全部门禁和preflight PASS，已release5590946/5590961，当前等待Resources；与LATE5587177共1运行+2排队，启动内存尚待节点分配。2030原B参考24h INFEASIBLE，停止放行；MPS唯一差异是碳行10.958904→9.002825Mt，IIS包含该行，已请求作者决定是否沿用2030原B窗口额度。537项测试覆盖完成。第三批未提交，原运行不改。详见batch2/2030/STOP_REPORT_ZH.md。**
 
 - **2026-11-15 第二批已获作者明确放行：第一批Claude复核后采纳，授权OPS-Open2030/2040/2060逐案门禁后提交，44线程、总云端≤4；第三批待确认。来源SHA/原闭合已核对，脚本准备02395a37，但T550安装后转发断开且握手超时，安装终态未知、门禁/回归未启动、三案未提交。恢复须先查runtime_batch2_20261115的旧安装/进程，再启动有限验证；不重复安装或提交。LATE5587177保持原运行，终态年度行对偶恢复已列入收尾。**
@@ -3946,6 +3948,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 22:53UTC 第二批2040/2060启动检查通过
+
+Job5590946（OPS-Open2040/m4cm1702）和5590961（OPS-Open2060/m4cm1803）均于22:48:15UTC开始运行；实配cpu64/mem750G/node1/billing64、UNLIMITED/no-requeue。启动可用内存分别720.655060与719.145313GiB，均≥700，Gurobi13.0.2计算节点smoke PASS，stderr空，配置44线程；全年模型仍在构建，实际求解参数/全年服务上界读回待构建完成。云端3运行（含LATE5587177），无新增第四项；2030仍在门禁STOP等待作者窗口预算决定，不能因另两案已运行而绕过该门禁。
+
+证据batch2/startup_verification_2040_2060.json及snapshots/20261115T225352Z/snapshot.json。放行与2030停止证据eb85777c，模型源码相对537项覆盖回归无变化。case_catalog已改RUNNING。下一步：作者明确2030短窗例外前不重跑或提交2030；后续询问时只读核实际模型构建/迭代，终态按5%余量规则备份、T550恢复年度对偶和验收；第三批未提交，无监听。
+
 
 ## 2026-11-15 第二批2040/2060已放行；2030在24h碳预算门禁停止
 

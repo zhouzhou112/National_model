@@ -5915,3 +5915,9 @@ OPS-Open2040 Job5590946、2060 Job5590961已逐案新建冻结release、prefligh
 已提交具体停止报告batch2/2030/STOP_REPORT_ZH.md并询问作者：是否只对2030全部24h对照恢复原B已验证10.95890410958904 Mt，全年4000 Mt/冻结容量/容差保持不变。当前尚未获该例外授权，不改预算、不重跑、不放行2030。等待答复时继续收尾两案登记和启动资源核验，不创建第三批。LATE结束后的年度行对偶恢复保持已授权安排。
 
 操作入口：prepare_batch2_runtime.py的受限断点恢复、start_batch2_validation.py的有限回归/逐年门禁、collect_batch2_progress.py的一次性读回、finalize_batch2_year_gate.py及deploy_batch2.py。精确下一步：先读现有两job排队/启动状态；2030只有作者明确例外后才在新目录重跑相关门禁，旧失败目录不得覆盖。所有运行保留，无监听、无凭据读取，未改5587177或其他冻结包。
+
+## 2026-11-15 22:53UTC 第二批2040/2060启动检查通过
+
+Job5590946（OPS-Open2040/m4cm1702）和5590961（OPS-Open2060/m4cm1803）均于22:48:15UTC开始运行；实配cpu64/mem750G/node1/billing64、UNLIMITED/no-requeue。启动可用内存分别720.655060与719.145313GiB，均≥700，Gurobi13.0.2计算节点smoke PASS，stderr空，配置44线程；全年模型仍在构建，实际求解参数/全年服务上界读回待构建完成。云端3运行（含LATE5587177），无新增第四项；2030仍在门禁STOP等待作者窗口预算决定，不能因另两案已运行而绕过该门禁。
+
+证据batch2/startup_verification_2040_2060.json及snapshots/20261115T225352Z/snapshot.json。放行与2030停止证据eb85777c，模型源码相对537项覆盖回归无变化。case_catalog已改RUNNING。下一步：作者明确2030短窗例外前不重跑或提交2030；后续询问时只读核实际模型构建/迭代，终态按5%余量规则备份、T550恢复年度对偶和验收；第三批未提交，无监听。

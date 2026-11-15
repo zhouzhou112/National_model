@@ -1,0 +1,70 @@
+{
+  "2040": {
+    "job_id": "5590946",
+    "state": "RUNNING",
+    "startup": {
+      "job_id": "5590946",
+      "allocation": {
+        "cpu": "64",
+        "mem": "750G",
+        "node": "1",
+        "billing": "64"
+      },
+      "time_limit": "UNLIMITED",
+      "available_memory_gib": 720.6550598144531
+    },
+    "compute_smoke": {
+      "status": "PASS",
+      "job_id": "5590946",
+      "gurobi_version": [
+        13,
+        0,
+        2
+      ],
+      "allocation": {
+        "cpu": "64",
+        "mem": "750G",
+        "node": "1",
+        "billing": "64"
+      },
+      "time_limit": "UNLIMITED",
+      "available_memory_gib": 720.6550598144531
+    },
+    "as_of_utc": "2026-11-15T22:53:55.331053Z",
+    "annual_structure": "PENDING_BUILD"
+  },
+  "2060": {
+    "job_id": "5590961",
+    "state": "RUNNING",
+    "startup": {
+      "job_id": "5590961",
+      "allocation": {
+        "cpu": "64",
+        "mem": "750G",
+        "node": "1",
+        "billing": "64"
+      },
+      "time_limit": "UNLIMITED",
+      "available_memory_gib": 719.1453132629395
+    },
+    "compute_smoke": {
+      "status": "PASS",
+      "job_id": "5590961",
+      "gurobi_version": [
+        13,
+        0,
+        2
+      ],
+      "allocation": {
+        "cpu": "64",
+        "mem": "750G",
+        "node": "1",
+        "billing": "64"
+      },
+      "time_limit": "UNLIMITED",
+      "available_memory_gib": 719.1453132629395
+    },
+    "as_of_utc": "2026-11-15T22:53:55.331053Z",
+    "annual_structure": "PENDING_BUILD"
+  }
+}
