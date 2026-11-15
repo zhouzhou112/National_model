@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
@@ -14,6 +15,11 @@ import numpy as np
 import pandas as pd
 
 PROFILE_ID = "barrier_stagea_base_frozen_agg0_v1_threads48"
+RESOURCE_PROFILE_ID = "barrier_stagea_base_frozen_agg0_v1_threads44"
+PROFILE_IDS = frozenset({PROFILE_ID, RESOURCE_PROFILE_ID})
+RESTRICTED_RESOURCE_PROFILE_ID = 'barrier_stagea_resource_restricted_agg0_v1_threads44'
+RESOURCE_FACTOR_PROFILE_ID = 'barrier_factor_resource_restricted_2050_threads44'
+SELECTION_SCHEMA = 'capacity_bound_selection_v1'
 TABLE_KEYS = {
     "vre_capacity.csv": ["grid_uid", "technology"],
     "thermal_nuclear_capacity.csv": ["province_code", "technology"],
@@ -363,9 +369,10 @@ def validate_mode(config, args, *, test_only):
     if config.raw.get('candidate_screen',{}).get('enabled'):
         raise ValueError('Base-frozen cannot use candidate screening')
     if not test_only:
-        if config.raw.get('solver_profile',{}).get('id')!=PROFILE_ID:
+        profile_id = config.raw.get('solver_profile',{}).get('id')
+        if profile_id not in PROFILE_IDS:
             raise ValueError('Base-frozen requires its reviewed production profile')
-        expected=json.loads((Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{PROFILE_ID}.json').read_text())
+        expected=json.loads((Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{profile_id}.json').read_text())
         if any(config.raw['numerics'].get(k)!=v for k,v in expected['numerics'].items()):
             raise ValueError('Base-frozen production numeric settings differ from reviewed profile')
         if not getattr(args, 'preflight_only', False) and (not args.archive_original_model or not args.export_barrier_checkpoint):
@@ -463,6 +470,10 @@ def export_frozen_capacity_check(artifacts, data, output):
         checks.append(dict(table=table,column=column,entries=len(actual),
                            max_abs_difference=float(delta.max(initial=0.)),passed=bool((delta<=1e-9).all())))
     for key,table,column,rows,unit,subset in registry:
+        if key not in expected:
+            if key != 'intra_load_center_new' or artifacts.index.get('capacity_bound_selection',{}).get('mode') != 'release_base_intra':
+                raise ValueError('Unexpected missing frozen output expectation: '+key)
+            continue
         table_check(table,column,rows,expected[key],subset=subset)
         cap={'vre_new':'vre_capacity','thermal_new':'thermal_capacity','storage_new':'storage_capacity',
              'line_new':'line_capacity','intra_load_center_new':'intra_load_center_capacity',
@@ -487,4 +498,182 @@ def export_frozen_capacity_check(artifacts, data, output):
     report=dict(status='PASS' if all(r['passed'] for r in checks) else 'FAIL',
                 tolerance=1e-9,checks=checks,interpretation='quality label; preserve every result')
     (root/'frozen_capacity_output_check.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    return report
+
+
+def read_capacity_selection(path, config, *, base_frozen):
+    """Opt-in input identity; absent means no file access or configuration change."""
+    if path is None:
+        return None
+    path = Path(path).resolve()
+    payload = json.loads(path.read_text(encoding='utf-8'))
+    if payload.get('schema_version') != SELECTION_SCHEMA:
+        raise ValueError('Unsupported capacity selection schema')
+    if payload.get('planning_year') != config.planning_year:
+        raise ValueError('Capacity selection year mismatch')
+    mode = payload.get('mode')
+    if mode not in {'release_base_intra', 'vre_boundary_states'}:
+        raise ValueError('Unsupported capacity selection mode')
+    if (mode == 'release_base_intra') != bool(base_frozen):
+        raise ValueError('D1 requires Base-frozen; VRE states require own upstream')
+    if not isinstance(payload.get('columns'), list) or not payload['columns']:
+        raise ValueError('Explicit nonempty column list required')
+    evidence = dict(path=str(path), sha256=digest(path), schema_version=SELECTION_SCHEMA,
+                    mode=mode, planning_year=config.planning_year,
+                    column_records=len(payload['columns']),
+                    source_references=payload.get('source_references', {}))
+    config.raw['capacity_bound_selection'] = evidence
+    return dict(payload=payload, evidence=evidence)
+
+
+def validate_restricted_resource_mode(config, args, *, test_only):
+    """Reviewed resource experiment only; no starts, screening or alternate LP."""
+    raw=config.raw
+    if (raw['scenario']['id']!='case3_thermal_ev_v5' or config.planning_year not in {2050,2060}
+            or not getattr(args,'state_in',None)):
+        raise ValueError('Restricted LATE resource mode requires 2050/2060 case3 upstream')
+    if bool(getattr(args,'late_entry_base_state',False)) != (config.planning_year==2050):
+        raise ValueError('Restricted LATE starts from Base2040 only in 2050')
+    forbidden=('vre_screen_csv','frozen_capacity_from','mga_spec','mga_baseline','basis_in',
+               'primal_dual_checkpoint_in','recover_stage_a_from','formulation_config','archive_presolved_model')
+    if any(getattr(args,k,None) for k in forbidden) or raw.get('candidate_screen',{}).get('enabled'):
+        raise ValueError('Restricted state list replaces screening and forbids alternate solve modes')
+    if not test_only:
+        if raw.get('solver_profile',{}).get('id')!=RESTRICTED_RESOURCE_PROFILE_ID:
+            raise ValueError('Restricted resource production requires reviewed 44-thread profile')
+        path=Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{RESTRICTED_RESOURCE_PROFILE_ID}.json'
+        reference=json.loads(path.read_text())
+        if any(raw['numerics'].get(k)!=v for k,v in reference['numerics'].items()):
+            raise ValueError('Restricted resource production numeric settings drift')
+        if not getattr(args,'preflight_only',False) and (not args.archive_original_model or not args.export_barrier_checkpoint):
+            raise ValueError('Restricted production requires complete preservation')
+
+
+def validate_resource_factor_mode(config, args):
+    """Only the author-approved 2050 five-iteration restricted timing probe."""
+    validate_restricted_resource_mode(config,args,test_only=True)
+    if (config.planning_year!=2050 or args.horizon!='full_year'
+            or getattr(args,'diagnostic_hours',None) is not None):
+        raise ValueError('Resource factor probe must use the full 2050 model')
+    if config.raw.get('solver_profile',{}).get('id')!=RESOURCE_FACTOR_PROFILE_ID:
+        raise ValueError('Wrong resource factor probe profile')
+    reference=json.loads((Path(__file__).resolve().parents[1]/'config/solver_profiles'/f'{RESTRICTED_RESOURCE_PROFILE_ID}.json').read_text())
+    if any(config.raw['numerics'].get(k)!=v for k,v in reference['numerics'].items()):
+        raise ValueError('Five-iteration probe must retain production numeric parameters')
+    if config.raw['solver_profile'].get('direct_nonbasic_scientific_acceptance'):
+        raise ValueError('Factor probe cannot claim scientific acceptance')
+    if any(getattr(args,k,None) for k in ['export_diagnostic_state','allow_nonbasic_planning_state',
+            'export_scientific_solver_artifacts','export_barrier_checkpoint','export_warm_start_basis']):
+        raise ValueError('Factor probe cannot export a scientific solution or planning state')
+    if not getattr(args,'preflight_only',False) and not args.archive_original_model:
+        raise ValueError('Factor probe must preserve the original model')
+
+
+def capture_selected_original_bounds(artifacts, data, selection):
+    """Keep exact in-memory pre-freeze bounds for the authorized D1 columns."""
+    if selection is None or selection['payload']['mode'] != 'release_base_intra':
+        return
+    records = selection['payload']['columns']
+    if any(set(r) != {'family','stable_key'} or r['family'] != 'intra_load_center_new'
+           or not isinstance(r['stable_key'],list) or len(r['stable_key']) != 1 for r in records):
+        raise ValueError('D1 may release only explicitly listed intra-city investment columns')
+    wanted = [tuple(map(str,r['stable_key'])) for r in records]
+    if len(wanted) != len(set(wanted)):
+        raise ValueError('Duplicate D1 stable keys')
+    actual = list(map(tuple,data.intra_load_center_edges[['intra_edge_id']].astype(str).values.tolist()))
+    if set(wanted) != set(actual) or len(actual) != len(wanted):
+        raise ValueError('D1 must list exactly all intra-city link investment columns')
+    artifacts.model.update()
+    mv = artifacts.variables['intra_load_center_new']
+    artifacts.index['_selected_original_intra_bounds'] = (
+        np.asarray(mv.LB).copy(), np.asarray(mv.UB).copy(), actual)
+
+
+def apply_capacity_selection(artifacts, data, selection, output):
+    """Change only opted-in bounds. No rows, objective terms or parameters change."""
+    if selection is None:
+        return None
+    root=Path(output);payload=selection['payload'];mode=payload['mode']
+    if mode not in {'release_base_intra','vre_boundary_states'}:
+        raise ValueError('Unsupported capacity selection mode')
+    def bound_value(value):
+        value=float(value)
+        if math.isnan(value):raise ValueError('NaN original bound')
+        return value if math.isfinite(value) else ('+inf' if value>0 else '-inf')
+    audit=[];plans=[];model=artifacts.model;model.update()
+    if mode == 'release_base_intra':
+        original=artifacts.index.get('_selected_original_intra_bounds')
+        if original is None:
+            raise ValueError('Missing exact pre-freeze D1 bounds')
+        mv=artifacts.variables['intra_load_center_new']
+        lo,up,keys=original
+        before_lo=np.asarray(mv.LB);before_up=np.asarray(mv.UB)
+        names=np.asarray(mv.VarName)
+        if not np.array_equal(before_lo,before_up):
+            raise ValueError('D1 source was not fully Base-frozen')
+        for i,key in enumerate(keys):
+            audit.append(dict(variable=str(names[i]),family='intra_load_center_new',
+                stable_key=list(key),state='free',before_lb=bound_value(before_lo[i]),
+                before_ub=bound_value(before_up[i]),after_lb=bound_value(lo[i]),after_ub=bound_value(up[i])))
+        # Existing exact Base source/closure checks run first. Remove only the
+        # two explicitly released expectations; other investment checks remain.
+        expected_path=root/'frozen_capacity_expected.json'
+        expected=json.loads(expected_path.read_text(encoding='utf-8'))
+        for key in ['intra_load_center_new','intra_load_center_capacity']:
+            if key not in expected:raise ValueError('Missing D1 source expectation')
+        plans.append((mv,lo,up))
+        expected.pop('intra_load_center_new');expected.pop('intra_load_center_capacity')
+    else:
+        records=payload['columns']
+        if any(set(r) != {'grid_uid','technology','state'} or r['state'] not in {'lower','upper','free'} for r in records):
+            raise ValueError('VRE selection requires stable site keys and explicit states')
+        lookup={(str(r['grid_uid']),str(r['technology'])):r['state'] for r in records}
+        keys=list(map(tuple,data.vre_sites[['grid_uid','technology']].astype(str).values.tolist()))
+        if len(lookup)!=len(records) or len(set(keys))!=len(keys) or set(lookup)!=set(keys):
+            raise ValueError('VRE selection/current sites must match one-to-one')
+        v=artifacts.variables
+        required=['vre_capacity','vre_new','spur_augmentation']
+        arrays={name:[np.asarray(v[name].LB).copy(),np.asarray(v[name].UB).copy()] for name in required}
+        names={name:np.asarray(v[name].VarName) for name in required}
+        floor=np.asarray(artifacts.index['vre_capacity_floor_gw'])
+        spur_floor=np.asarray(artifacts.index['vre_spur_floor_gw'])
+        max_cf=np.asarray(artifacts.index['vre_max_cf'])
+        for i,key in enumerate(keys):
+            state=lookup[key]
+            if state=='free':continue
+            cap_lo,cap_up=arrays['vre_capacity'][0][i],arrays['vre_capacity'][1][i]
+            if not math.isclose(float(cap_lo),float(floor[i]),rel_tol=0,abs_tol=1e-12):
+                raise ValueError('VRE inherited floor differs from original bounds')
+            value=float(cap_lo if state=='lower' else cap_up)
+            if not math.isfinite(value):raise ValueError('Cannot fix nonfinite VRE bound')
+            new=value-float(floor[i])
+            # The original spur row is s + inherited_spur >= max_cf * capacity.
+            # Positive spur cost implies its minimal feasible value; DPV has UB=0.
+            spur=0.0 if key[1]=='dpv' else max(float(arrays['spur_augmentation'][0][i]),float(max_cf[i])*value-float(spur_floor[i]))
+            for name,x in [('vre_capacity',value),('vre_new',new),('spur_augmentation',spur)]:
+                lo,up=arrays[name][0][i],arrays[name][1][i]
+                if not math.isfinite(x) or x<lo or x>up:
+                    raise ValueError('Selected value is outside original bounds: '+str((key,name,x,lo,up)))
+                audit.append(dict(variable=str(names[name][i]),family=name,stable_key=list(key),
+                    state=state,original_lb=bound_value(lo),original_ub=bound_value(up),fixed_value=float(x),
+                    capacity_floor_gw=float(floor[i]),capacity_upper_gw=float(cap_up),
+                    inherited_spur_gw=float(spur_floor[i]),max_cf=float(max_cf[i])))
+                arrays[name][0][i]=arrays[name][1][i]=x
+        for name,(lo,up) in arrays.items():plans.append((v[name],lo,up))
+    # All identities/ranges checked before the first bound mutation.
+    for mv,lo,up in plans:mv.LB=lo;mv.UB=up
+    model.update()
+    if mode=='release_base_intra':
+        expected_path.write_text(json.dumps(expected,indent=2)+'\n',encoding='utf-8')
+    changed=sum((r['before_lb']!=r['after_lb'] or r['before_ub']!=r['after_ub'])
+                if mode=='release_base_intra' else
+                (float(r['original_lb'])!=r['fixed_value'] or float(r['original_ub'])!=r['fixed_value'])
+                for r in audit)
+    report=dict(status='PASS',**selection['evidence'],selected_bound_columns=len(audit),changed_bound_columns=changed,
+                constraints_and_objective_unchanged=True,rows=audit)
+    if mode=='vre_boundary_states':
+        report['site_states']={s:sum(v==s for v in lookup.values()) for s in ['lower','upper','free']}
+        report['movable_free_sites']=int(sum(lookup[k]=='free' and arrays['vre_capacity'][1][i]>arrays['vre_capacity'][0][i] for i,k in enumerate(keys)))
+    (root/'capacity_bound_selection_audit.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+    artifacts.index['capacity_bound_selection']=report
     return report

@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "suite_tests": 535,
+  "T550_Gurobi_13_0_2_passed": 533,
+  "archive_only_tests_passed_locally": 2,
+  "uncovered_tests": 0,
+  "T550_receipt": "full_tests_v7.json",
+  "local_receipt": "local_archive_tests.json",
+  "tested_staged_sources_match": true
+}

@@ -183,15 +183,32 @@ def apply_vre_screen(artifacts, sites, source, output_dir, *, margin=0.2):
         original_headroom_gw=float(ub.sum()))
 
 
-def solve_factor_screen(model, config, output_dir):
+def solve_factor_screen(model, config, output_dir, *, stop_after_barrier_iterations=None):
     """Optimize with telemetry, never evaluate or export a primal/dual solution."""
     from .diagnostics import SolverTelemetry, GracefulSolverTermination
+    from gurobipy import GRB
+    if stop_after_barrier_iterations not in {None,5}:
+        raise ValueError('Only the authorized five-iteration probe is supported')
     telemetry = SolverTelemetry(Path(output_dir) / "solver_telemetry.jsonl")
+    stop_record={'observed':False,'error':None}
+    def bounded_callback(callback_model,where):
+        telemetry(callback_model,where)
+        if where != GRB.Callback.BARRIER:return
+        try:
+            iteration=SolverTelemetry._cb_get(callback_model,'BARRIER_ITRCNT')
+            if iteration is None:raise RuntimeError('Missing barrier iteration counter')
+            if iteration>=stop_after_barrier_iterations:
+                stop_record['observed']=True
+                telemetry.write_event('author_factor_probe_stop',iteration=iteration)
+                callback_model.terminate()
+        except Exception as error:
+            stop_record['error']=repr(error)
+            callback_model.terminate()
     try:
         with GracefulSolverTermination(model, telemetry):
             telemetry.write_event("solver_start", result_use=RESULT_USE)
             try:
-                model.optimize(telemetry)
+                model.optimize(telemetry if stop_after_barrier_iterations is None else bounded_callback)
             finally:
                 telemetry.write_event("solver_end", status_code=int(model.Status),
                     runtime_seconds=float(model.Runtime), work_units=float(model.Work))
@@ -201,5 +218,9 @@ def solve_factor_screen(model, config, output_dir):
         publication_accepted=False, production_state_written=False, qc="NOT_EVALUATED",
         status_code=int(model.Status), barrier_iterations=int(model.BarIterCount),
         runtime_seconds=float(model.Runtime), work_units=float(model.Work))
+    if stop_after_barrier_iterations is not None:
+        report.update(requested_barrier_stop=stop_after_barrier_iterations,
+                      requested_stop_observed=stop_record['observed'],callback_stop_error=stop_record['error'],
+                      solver_parameters_changed_by_probe=False)
     (Path(output_dir) / "solve_report.json").write_text(json.dumps(report, indent=2) + "\n")
     return report

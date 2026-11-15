@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "tests_run": 2,
+  "skipped": 0,
+  "source_sha256": {
+    "tests/test_continuation_cleanup.py": "922162d7027a29b8df148b002888c52e4dd1402a51a62f1902950c5d0c4cf952",
+    "tests/test_relative_acceptance.py": "27b0af33e69cc34324a35d528d62c5eab1b3c53fa30f2dc42a48f0b9368be4f1",
+    "cispo_model/continuation_cleanup.py": "9d091caccec68ff59eb244e5d6494a4e4f7894dbd06705fe663535f8305f62aa",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af"
+  },
+  "log": "test_known_2050_cleanup_matches_independent_historical_audit (test_continuation_cleanup.ReusableContinuationTests) ... ok\ntest_archived_2050_and_offline_source_immutable (test_relative_acceptance.RelativeAcceptanceTests) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 2.898s\n\nOK\n"
+}

@@ -19,6 +19,7 @@ from pathlib import Path
 import numpy as np
 
 SITE_COLUMN = re.compile(r'^(vre_capacity_gw|vre_new_gw)\[(\d+)\]$')
+SPUR_COLUMN = re.compile(r'^spur_augmentation_gw\[(\d+)\]$')
 
 
 def sha256(path):
@@ -45,7 +46,7 @@ def finite(value):
     return x
 
 
-def parse_vre_mps(mps, barpi):
+def parse_vre_mps(mps, barpi, *, include_spur=False):
     """Read the original Gurobi continuous, minimization MPS. Fail on drift."""
     pi = np.load(barpi, mmap_mode='r', allow_pickle=False)
     if pi.ndim != 1:
@@ -54,6 +55,7 @@ def parse_vre_mps(mps, barpi):
         if not np.isfinite(pi[start:start+1000000]).all():
             raise ValueError('Nonfinite BarPi')
     rows = {}; columns = {}; objective = None; section = None
+    spur_rows = {}; rhs_set = None
     ended = False; row_hash = hashlib.sha256(); column_count = 0; previous = None
     opener = gzip.open if str(mps).endswith('.gz') else open
     with opener(mps, 'rt', encoding='ascii', errors='strict') as stream:
@@ -87,6 +89,8 @@ def parse_vre_mps(mps, barpi):
                         raise ValueError('Invalid or duplicate MPS row')
                     rows[name] = len(rows)
                     row_hash.update((name+'\n').encode('ascii'))
+                    if include_spur and name.startswith('spur_capacity_non_dpv['):
+                        spur_rows[name] = dict(sense=sense, pi=float(pi[rows[name]]), rhs=0.)
             elif section == 'COLUMNS':
                 if "'MARKER'" in tokens:
                     raise ValueError('Integer MPS is not a continuous pricing LP')
@@ -95,7 +99,7 @@ def parse_vre_mps(mps, barpi):
                     column_count += 1
                     previous = name
                 match = SITE_COLUMN.fullmatch(name)
-                if not match:
+                if not match and not (include_spur and SPUR_COLUMN.fullmatch(name)):
                     continue
                 if len(tokens) not in {3, 5}:
                     raise ValueError('Unexpected MPS column record')
@@ -109,9 +113,18 @@ def parse_vre_mps(mps, barpi):
                             raise ValueError('Unknown MPS row ' + row)
                         d['atpi'] += value * float(pi[rows[row]])
                         d['nnz'] += 1
+                        if include_spur and row in spur_rows:
+                            d.setdefault('spur_links', []).append(dict(row=row, coefficient=value))
+            elif section == 'RHS' and include_spur:
+                if rhs_set is not None and rhs_set != tokens[0]:
+                    raise ValueError('Directional pricing requires one RHS vector')
+                rhs_set=tokens[0]
+                for k in range(1,len(tokens),2):
+                    if tokens[k] in spur_rows:
+                        spur_rows[tokens[k]]['rhs'] += finite(tokens[k+1].replace('D','E'))
             elif section == 'BOUNDS':
                 kind, _, name = tokens[:3]
-                if not SITE_COLUMN.fullmatch(name):
+                if not SITE_COLUMN.fullmatch(name) and not (include_spur and SPUR_COLUMN.fullmatch(name)):
                     continue
                 d = columns[name]
                 value = finite(tokens[3]) if len(tokens) == 4 else None
@@ -126,9 +139,112 @@ def parse_vre_mps(mps, barpi):
         raise ValueError('Incomplete MPS/BarPi or missing VRE columns')
     for d in columns.values():
         d['rc'] = finite(d['obj'] - d['atpi'])
+        if include_spur:
+            for link in d.get('spur_links',[]):
+                link.update(spur_rows[link['row']])
     return columns, dict(constraint_rows=len(rows), columns=column_count,
         constraint_name_order_sha256=row_hash.hexdigest(),
         method='c-A_transpose_BarPi; original MPS row order; raw solver-unit BarPi')
+
+
+def directional_site_prices(columns, capacity_rows, selection, *, require_fixed=False):
+    """Both directions, retaining the original minimal spur-capacity relation.
+
+    Fixing a site also fixes its spur. It is therefore insufficient to price
+    cap+new alone. Remove the spur row's multiplier and retain that inequality
+    in the one-dimensional minimization: s(x)=max(0,max_cf*x-inherited_spur).
+    Its objective coefficient is nonnegative and it must have no other rows.
+    This is an analytical pricing calculation, not a change to the primal LP.
+    Reference pricing at a proposed boundary is SCORE_ONLY; a certificate
+    requires verified fixed bounds in the archived model itself.
+    """
+    states={(str(r['grid_uid']),str(r['technology'])):r['state'] for r in selection}
+    keys=[(r['grid_uid'],r['technology']) for r in capacity_rows]
+    if len(states)!=len(selection) or len(keys)!=len(set(keys)) or set(states)!=set(keys):
+        raise ValueError('Directional selection/site identity mismatch')
+    if len(columns)!=3*len(keys):
+        raise ValueError('Directional pricing requires every cap/new/spur column')
+    cap_owners={}
+    for name,d in columns.items():
+        if name.startswith('vre_capacity_gw['):
+            for link in d.get('spur_links',[]):
+                if link['coefficient']!=0:cap_owners.setdefault(link['row'],set()).add(name)
+    result=[]
+    for i,(row,key) in enumerate(zip(capacity_rows,keys)):
+        state=states[key]
+        if state not in {'lower','upper','free'}:raise ValueError('Unknown boundary state')
+        cap=columns[f'vre_capacity_gw[{i}]'];new=columns[f'vre_new_gw[{i}]'];spur=columns[f'spur_augmentation_gw[{i}]']
+        lo=finite(row['capacity_floor_gw']);up=finite(row['capacity_upper_gw'])
+        if lo>up:raise ValueError('Invalid physical capacity span')
+        cost=finite(cap['obj']+new['obj']);rc=finite(cap['rc']+new['rc']);scost=finite(spur['obj'])
+        if cost<=0 or scost<0:raise ValueError('Directional pairing requires positive VRE/nonnegative spur cost')
+        if key[1]=='dpv':
+            if spur['ub']!=0 or spur['nnz']!=0:raise ValueError('DPV spur definition drift')
+            m=stock=pi=0.
+        else:
+            cl=cap.get('spur_links',[]);sl=spur.get('spur_links',[])
+            if len(sl)!=1 or spur['nnz']!=1 or sl[0]['sense']!='G' or sl[0]['coefficient']!=1:
+                raise ValueError(f'Unreviewed spur row for site {i} {key}')
+            owners=cap_owners.get(sl[0]['row'],set())
+            if len(cl)==1 and cl[0]['row']==sl[0]['row'] and cl[0]['coefficient']<=0 and owners<={f'vre_capacity_gw[{i}]'}:
+                m=-finite(cl[0]['coefficient'])
+            elif not cl and not owners:
+                # A zero design CF leaves s >= -inherited_spur in the original
+                # MPS. No capacity column may own this row, including other sites.
+                m=0.
+            else:
+                raise ValueError(f'Unreviewed coupled spur columns for site {i} {key}')
+            stock=-finite(sl[0]['rhs']);pi=finite(sl[0]['pi'])
+        # c-A'pi without relaxing this site's spur inequality.
+        retained_rc=rc-m*pi
+        item=dict(site_index=i,grid_uid=key[0],technology=key[1],province_code=row.get('province_code',''),
+                  state=state,capacity_floor_gw=lo,capacity_upper_gw=up,obj_total=cost,
+                  rc_pair=rc,spur_objective=scost,spur_row_pi=pi,max_cf=m,inherited_spur_gw=stock,
+                  retained_row_pair_rc=retained_rc,fixed_archived_bounds_verified=False)
+        if state=='free':
+            item.update(improvement_bound_million_cny=0.,increase_rc_ratio=None,decrease_rc_ratio=None)
+            result.append(item);continue
+        x0=lo if state=='lower' else up
+        s0=0. if key[1]=='dpv' else max(0.,m*x0-stock)
+        if require_fixed:
+            for d,x in [(cap,x0),(new,x0-lo),(spur,s0)]:
+                if not (math.isclose(d['lb'],x,rel_tol=1e-12,abs_tol=1e-10) and math.isclose(d['ub'],x,rel_tol=1e-12,abs_tol=1e-10)):
+                    raise ValueError('Archived selected cap/new/spur bounds differ from state')
+            item['fixed_archived_bounds_verified']=True
+        candidates=[lo,up,x0]
+        if m>0 and lo<stock/m<up:candidates.append(stock/m)
+        def delta(x):
+            s=0. if key[1]=='dpv' else max(0.,m*x-stock)
+            return retained_rc*(x-x0)+scost*(s-s0)
+        best=min(candidates,key=delta);bound=max(0.,-delta(best))
+        up_rc=retained_rc+(scost*m if m*x0>=stock else 0.)
+        down_rc=-(retained_rc+(scost*m if m*x0>stock else 0.))
+        item.update(anchor_capacity_gw=x0,anchor_spur_gw=s0,increase_rc=up_rc,decrease_rc=down_rc,
+                    increase_rc_ratio=up_rc/cost,decrease_rc_ratio=down_rc/cost,
+                    best_relaxed_capacity_gw=best,improvement_bound_million_cny=bound,
+                    calculation_scope='FIXED_ARCHIVE_CERTIFICATE_TERM' if require_fixed else 'REFERENCE_BOUNDARY_SCORE_ONLY')
+        result.append(item)
+    return result
+
+
+def directional_certificate(prices, objective):
+    """No automatic release/re-solve; author inspects bound and adverse directions."""
+    objective=finite(objective)
+    if objective<=0:raise ValueError('Positive objective required')
+    fixed=[r for r in prices if r['state']!='free']
+    if any(r.get('fixed_archived_bounds_verified') is not True for r in fixed):
+        raise ValueError('Reference scores cannot be promoted to a solution certificate')
+    terms=[finite(r['improvement_bound_million_cny']) for r in fixed]
+    if any(x<0 for x in terms):raise ValueError('Negative improvement term')
+    bound=math.fsum(terms)
+    negative=[r for r in fixed if r['improvement_bound_million_cny']>0]
+    return dict(B_million_cny=bound,B_over_objective=bound/objective,objective_million_cny=objective,
+                fixed_sites=len(fixed),negative_fixed_sites=len(negative),negative_columns=negative,
+                dual_grade='BARRIER_DUAL_ENGINEERING_GRADE',automatic_resolve=False,
+                formula='sum(max(0,-min_delta_L)) over fixed sites; candidates are original endpoints and spur-reuse kink',
+                scope='VRE cap/new plus corresponding fixed spur; original spur inequalities retained analytically',
+                near_optimality_decision='ACCEPT' if bound/objective<=1e-3 else 'ACCEPT_DISCLOSE' if bound/objective<=1e-2 else 'REPORT_AUTHOR_BEFORE_ANY_RESOLVE',
+                all_runs_must_be_preserved=True)
 
 
 def site_prices(columns, capacity_rows, *, headroom_zero_gw=0.):
