@@ -1,0 +1,11 @@
+{
+  "operation": "20261115_lateopen2050_factor5_completed",
+  "releases": [
+    "20261115_lateopen_2050_restricted_factor5_t44_m750_v1"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.3,
+  "authorization": "Author 2026-11-14 first-batch test preservation; standing 10-20 backup. All generated diagnostic artifacts, no final scientific solution by design. No watcher."
+}

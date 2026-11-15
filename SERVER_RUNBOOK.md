@@ -5841,3 +5841,15 @@ T550工具目录/home/zz2/National_model_server/backup_tools/C2060_completed_202
 证据：reviews/ops_flex_resource_sensitivity_20261114/BATCH1_LAUNCH_RECEIPT.json、deployment/、snapshots/20261115T005231Z/snapshot.json、GATES_SUMMARY.json。case_results/case_catalog追加四案及小型case卡，旧17条记录逐项不变；C5与五轮测试标为诊断，不进入主比较。T550验证与定价均结束，没有后台监听。
 
 精确下一步：首次复查读四案原任务状态，不重复提交。构建完成后读resource_structure_audit四服务全年上界与Open139行、实际参数44线程；LATE读FactorNZ/Ops与前5轮逐轮耗时、确认回调终止并条件性估时，>5天先报作者。发现终态按10-20核旧manifest/传输后完整备份到T550（测试仅保全其实际生成原模型/日志，不伪称完整解），生产解relative_v1验收、取小文件与T550初步分析。第一批全部终态并备份后交批次报告，作者明确确认前绝不提交第二/三批。当前无新终态，备份与正式批次报告尚待运行结束。
+
+## 2026-11-15 08:33UTC 第一批进度与LATE五轮测试结束
+
+云端3运行/1测试结束，无第二批提交。OPS-Open5584373运行7:45:05到79轮（打印PInf0.0617/DInf9.56e-8/Compl0.00909），OPS-Conservative5584377运行7:43:23到76轮（0.131/9.63e-8/0.0238），D1/C5 5584390运行7:42:21到82轮（0.0178/1.33e-7/0.00469）；近10轮打印PInf分别降69.75%/80.21%/75.41%，均无终态。这里用gurobi.log打印口径，与callback未缩放残差分开。四案全年服务上界结构审计均PASS，开放139条effective_load_nonnegative行，其余0。
+
+LATE测试5584392于05:28:34UTC结束（Slurm显示北京13:28:34），COMPLETED/0:0，总4:36:18；solve status11为预定callback中断，requested_stop_observed=True、5轮、callback_stop_error=None，保全COMPLETE且明确TEST_ONLY_FACTOR_PROBE_NO_FINAL_SOLUTION。排序3915.91秒，DenseCols7872、FactorNZ2.233e10、FactorOps7.483e14、实际44线程；5轮增量684/511/547/510/545秒，平均559.4秒=9.323分钟。进程树峰649.791GiB，Slurm峰643.327GiB；两口径不混用。自由集4481。
+
+只读取C2050、Case32050原日志：历史终态496/551轮，首5轮均值1468.2/1382.8秒，本次耗时为各自38.10%/40.45%。按历史轮数及后期相对增幅，完整受限求解条件估计3.568/4.034天；按Gurobi粗估800秒/轮则4.752/5.261天。不是收敛保证、不是纯线程消融；保守端超过5天提示线，记录给作者，禁止据此自行放行第二批。当前只跑了5轮，不能评价近优性/物理QC或签约结果。
+
+T550已核无同名备份/旧传输，使用原backup_completed_cloud引擎并补显式测试启动元数据，未读凭据。42文件4191604666bytes，全量包含原MPS，测试按设计无BarX/BarPi或最终状态。备份后预计保留30.1665%，满足原门禁，无沿用旧空间例外。单次自主拉取PID2744265；当前T1的41件44330128bytes已VERIFIED、T3原MPS传输中，尚未COMPLETE，不重复启动。源输出/冻结release不改。
+
+证据：status_20261115T083334Z/{summary.json,historical_timing.json,backup_launch.json,backup_status.json}及snapshots/20261115T083334Z/snapshot.json；源码基准0c1e0d53，本轮只加状态/只读取证与测试备份封装。下一步核已有备份终态及源身份，确认全部SHA后登记COMPLETE；只在询问时查3项原作业，不建监听。第一批全终态、备份、验收与批次报告后等作者确认，第二/三批保持未提交。

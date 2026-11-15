@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-15T00:52:34.902580Z",
+  "as_of_utc": "2026-11-15T08:33:39.332549Z",
   "cases": [
     {
       "case": "B",
@@ -450,10 +450,10 @@
       "case": "LATE-Open-TEST",
       "year": 2050,
       "version": "v1",
-      "kind": "RUNNING_FACTOR_TEST",
-      "solver_status": "RUNNING",
+      "kind": "COMPLETED_FACTOR_TEST",
+      "solver_status": "INTERRUPTED_AT_AUTHORIZED_ITERATION_5",
       "acceptance_status": "NOT_APPLICABLE_TEST_ONLY",
-      "backup_status": "PENDING_TERMINAL",
+      "backup_status": "RUNNING",
       "release": "20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
       "job_id": "5584392",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
