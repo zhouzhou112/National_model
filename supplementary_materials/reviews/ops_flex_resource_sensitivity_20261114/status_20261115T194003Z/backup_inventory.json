@@ -1,0 +1,2700 @@
+{
+  "hostname": "ln301.para.bscc",
+  "releases": {
+    "20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1": {
+      "result_manifest_sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e",
+      "files": [
+        {
+          "path": "FINAL_GATES_PASSED.json",
+          "bytes": 431,
+          "sha256": "9e67f08c079769724e0eae497a22c3953fc94d6c314502d7e14613351eb28726",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "batch_exit.json",
+          "bytes": 35,
+          "sha256": "89785be74ac17944e32f371f33e080a97506df957d12b9285560f6e2c93b9398",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794761019259734051,
+          "tier": "T1"
+        },
+        {
+          "path": "compute_node_smoke.json",
+          "bytes": 263,
+          "sha256": "7eb6232840a5d1762c5221ce8953406f81939b787552dba4303609d0dfe7de86",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703719603144479,
+          "tier": "T1"
+        },
+        {
+          "path": "continuation.sbatch",
+          "bytes": 5708,
+          "sha256": "3aba915b8669db65766a88746705045012b6e5e53b64805e390a30e7411a41b9",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "data_copy_verification.json",
+          "bytes": 6578,
+          "sha256": "8c1dc167907eb3204c42c9ca87c48f9216e5d30d6967a911c2d9297fdfb8b083",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703599729637000,
+          "tier": "T1"
+        },
+        {
+          "path": "frozen_closure.json",
+          "bytes": 10168,
+          "sha256": "ec2b4195fb82b2d39add75c6a0c043b1669150eb3f5a8123d661cbf92c6fac9a",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "launch_config.json",
+          "bytes": 1098,
+          "sha256": "3837dbce637ade0204f2c5ca3235730f0802294a8e9402921e524a08f43febff",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "license_path_preflight.json",
+          "bytes": 70,
+          "sha256": "50ecd712cd50f9f33406907471f3380893779743620cbcc7c770317198fee5e5",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703599730076667,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_adequacy_by_province.csv",
+          "bytes": 6134,
+          "sha256": "77d0d2932a7b692ec1a2f351616559613cb8aa2c97b84e204ed45e2bece5706e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760881361041000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_province_technology.csv",
+          "bytes": 35119,
+          "sha256": "00b1b7cb6ca9c8eead694918c56601601d0da37b45be2da6db0d71598f7e0d15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760898530730000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_technology.csv",
+          "bytes": 1209,
+          "sha256": "583f979338bd2f0f4ccd7c7e60cbbff9034fb9910a6a37b0a1d47efef8dfc05a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760898330236000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_link_row_scaling.json",
+          "bytes": 60857,
+          "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706637132714000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_carbon_ccs.json",
+          "bytes": 640,
+          "sha256": "17d579ede9fcc9a29a5e3acc7a473d9bdfae39a53485366670ead341271ef82b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760898203423057,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_constraint_shadow_prices.csv",
+          "bytes": 381243,
+          "sha256": "87e2765611cf76526b5fa12d0afdf94cfa8059af4656d4c090a2638105d71119",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760881358733000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_flexible_load_by_province.csv",
+          "bytes": 19067,
+          "sha256": "cc98a72114ed7b38b95631c165c3b55385b3fdb46079b58a4a14b9b0546dbc4b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760888361779000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_province_technology.csv",
+          "bytes": 14930,
+          "sha256": "3c7fd165e546fdd81e50bab117c2b5aca3374a2a0ea229bcd5d5563712f75bde",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760881368836000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_technology.csv",
+          "bytes": 501,
+          "sha256": "4fa8151be83e16051d23d51418ed95ecdbe176495d47b0f7aed6f68743b2a65f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760956887678882,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_resource_accounting_by_province.csv",
+          "bytes": 9198,
+          "sha256": "1eea4ea7c44015453e9951ce165a6ad3e8e115799b7818bf38ba0d6461c35b15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760881370185000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_storage_operation_by_technology.csv",
+          "bytes": 380,
+          "sha256": "3a850d8f2f6975ceac49d905d8b8f3aa01b1742ecc60f4311b824fa4ca94b505",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760957244161185,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_summary.json",
+          "bytes": 2282,
+          "sha256": "f64ca182fe85f0483e2b550336a5b4984e4d3c73c45821c7f6a2ee0a3c149340",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975192540000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+          "bytes": 77761,
+          "sha256": "74a32046a627b8ab5231155030372aff447922b8e765d7b3908ff0fbfc1dd75d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760483602805000,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/dual_barpi.npy",
+          "bytes": 434308752,
+          "sha256": "818a1e4ce1a239af1044ed33e31da84637916f97b16658d8e0fcfe5d94b5466b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760371632555902,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/primal_barx.npy",
+          "bytes": 350376776,
+          "sha256": "3c8c5a5a442c13bb2f543da3295c6950fe1c37c835e4a126186c60635b7d1173",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760361156779358,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/build_report.json",
+          "bytes": 107150,
+          "sha256": "a8a5b8b8a56c49b086268703e8aa1ddce7dcdb2d448b2338fcbf40c027afbc43",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706641909345000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/co2_source_sink_flows.csv",
+          "bytes": 4830986,
+          "sha256": "d53e2e4407084a8e58f9cbf5db82686459aff423caf74a8a770e981151b28648",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537808828901,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/cost_components.csv",
+          "bytes": 4790,
+          "sha256": "f4cb2dcbbcbab7719ffe4720b49a1139d615413b085ef8ba86dad3168d9ecc56",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534452243000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dac_capacity_capture.csv",
+          "bytes": 21022,
+          "sha256": "1b6a48940784cd65124fb49232ee445c413c97c7f33e27120654e5ad1309138d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760535012941000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dual_export_status.json",
+          "bytes": 1701,
+          "sha256": "5db3cce11ee9c8e123b22c956eaf4769d5eed34c14c2670c4b1dda8eea9be7f2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975202259000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/flexible_load_dispatch.npz",
+          "bytes": 43294619,
+          "sha256": "cb07b53e864daf8098ae04755ec28f678af06ea1b59b7d0896d9ffcc1898c57e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760888353465794,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_audit.csv",
+          "bytes": 14116592,
+          "sha256": "7d1612f2a947e2d4f69d415266e709a51aa2f89a9309b7cca17e166c1ec008a3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706134396551451,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_audit.csv",
+          "bytes": 4215,
+          "sha256": "00eaff9dc419cddcd8a8d8fced49499e36fa503ba52729f77015de62e63f3e78",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706636728757000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_report.json",
+          "bytes": 10133,
+          "sha256": "7e39bb4a0c7a421860cc3b8bfa1a8feb84c8e683eb57f0035f76afb9a65bc134",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706636729423000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_expected.json",
+          "bytes": 2970535,
+          "sha256": "6114e8d8d79168d22c78748ea4c5b6fdb6539086d3be6bb75c7735c7dd7fb643",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706637125130981,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_output_check.json",
+          "bytes": 7230,
+          "sha256": "7a0689ee8fdd140dcf9bc7839dc955906fa0213362716c0f1bf29be611362f9f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760542474613000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_report.json",
+          "bytes": 18109,
+          "sha256": "56346f46999945de2910e57b6ee2abeeae8d1654f41e3de9c80577e2fb3f58ab",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706637131835000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_source_alignment.json",
+          "bytes": 1404,
+          "sha256": "666add50865a9865722f40c1fc4ebe64b0ac837b513162e5a9c3f15c8258bbda",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706637035482000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/gurobi.log",
+          "bytes": 24418,
+          "sha256": "6eed577a4c88cfa9c5e1fea0ddee7992372117287a648e78ddb44634ccad1f10",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760349439792018,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_marginal_prices.csv.gz",
+          "bytes": 15133708,
+          "sha256": "00ac6ee06a2838fccbcc30e241126f8324c28bc9e3b3922499b4a0bd598fb0c8",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760881335669270,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_national_balance.csv.gz",
+          "bytes": 860364,
+          "sha256": "306a3d503ab469fd3cf4c00d3a9e9c17c9cd2e8ed7f210ab8def90c1f9759611",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760972955941235,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_balance.csv.gz",
+          "bytes": 49055796,
+          "sha256": "a9be521894014b7f4c414938f91e510d27e45c3ed087d21cd12888a6adb16cca",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760860889116794,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_security.csv.gz",
+          "bytes": 36259509,
+          "sha256": "c50d5386cd04ac724d9b565e963ecabfeb73a4fb189a931381253a3704e9fff2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760872246369954,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_aggregate_capacity.csv",
+          "bytes": 9698,
+          "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760535010736000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_capacity.csv",
+          "bytes": 353312,
+          "sha256": "8698bfa6e7182a90a57c8f2814fb11d265d3050430686fcd7519f36bad5fb734",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760535008198000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_audit.json",
+          "bytes": 16559,
+          "sha256": "37ae56fd5d29be5a4d49ee5eaa1741e4c759dcc8577ef83eed5d00449209afa2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760843848947000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_by_node.csv",
+          "bytes": 12141,
+          "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760843851725000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_dispatch.npz",
+          "bytes": 6748760,
+          "sha256": "a6c35cf48e7f1a28bc9c99c8ee666ccf8c7c5daf16af8d1746f436d9fa7e30b1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760897108112641,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_spur_capacity.csv",
+          "bytes": 60879,
+          "sha256": "9dadac70f346720b5e6d38c422f12a7441711649105f33ea8109a7a1f2805633",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760542092105000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/input_manifest.csv",
+          "bytes": 31276,
+          "sha256": "7bb2e84d885be72b667404bd7cde45bdc2855b13787753b2d0ba9f54a0c946bf",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703731570994000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_substation_design.csv",
+          "bytes": 1045446,
+          "sha256": "dca9a65e30138ceedf28937428ed49b762eee18ddcfca805b1708052f66f2a0d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534972318710,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_vre_site_design.csv",
+          "bytes": 5852227,
+          "sha256": "8af78c56db965c7b859bbf9ef8f370774e7e4330267678b73daea824d5c7c8a1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534926689629,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_balance.csv",
+          "bytes": 45430,
+          "sha256": "270b1f6a1de058dbf25e8a068e34030deb0bb7e48307aa4204d609b07a358b9b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537823911000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_generation.csv",
+          "bytes": 99390,
+          "sha256": "26467c82762da1753257fa67dd1dcd5f8821bc76d9fa8ac26ce9858154f04caa",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537923975000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_intra_transmission.csv",
+          "bytes": 128606,
+          "sha256": "8d3d5a06138bb3a631ad4c88a3e29dc95278b8e6730953077130db3d3f54f64b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537820145000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_network_qc.csv",
+          "bytes": 488,
+          "sha256": "02e7c49b06e9ac29ad1fe538bd9327fade9e9ab2e1c7c37d2a2da0006b1e1805",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760542028209881,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/archive_manifest.json",
+          "bytes": 608,
+          "sha256": "bada5b5be4c72f053cb13c33f8e645a3d2444880bac9ff7115ca6fdc490e0b15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707182898300175,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/original.mps.gz",
+          "bytes": 4148509456,
+          "sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707180089350976,
+          "tier": "T3"
+        },
+        {
+          "path": "output_8760/model_archive/parameters.prm",
+          "bytes": 207,
+          "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707182897615215,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_config_snapshot.json",
+          "bytes": 29759,
+          "sha256": "15a8c2133ce43b01419f5eedd7691857465ec030c344932bed707e944697e93b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703726054344000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/monthly_energy_by_technology.csv",
+          "bytes": 5360,
+          "sha256": "0d5a8fe4cb7625a0e9262d818fc06332116a8e2fce46e89df134ec5e6a9d6178",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760972960948000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_catalog.csv",
+          "bytes": 8226,
+          "sha256": "3cb0798ade3025aab787a2f9e81cd075dba1aff8abd61079dbe7a034192807ed",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760984094623000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_data_dictionary.csv",
+          "bytes": 154265,
+          "sha256": "8b844e31c08708fbc8e71c41ba8ef5d65dd2ed9f1074f8b590bec886e3e5c781",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760984098492000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/capacity_cohorts.csv.gz",
+          "bytes": 2923122,
+          "sha256": "e0437b5cae8d0e0e9b8351eceb62903e3b29f99e01c2d2bc0e059f1c9ba94430",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760979575633763,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz",
+          "bytes": 940472,
+          "sha256": "f77161de1bbf1479c1e6104d13db515e2590b30d2da2e710fc743afaafae180a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760977876113588,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_metadata.json",
+          "bytes": 101075,
+          "sha256": "539c6fbed0afa219628fd314a5446cfaa7659816aa8076751edff5e6893f1058",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760979645546000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_transition_summary.csv",
+          "bytes": 2433,
+          "sha256": "a3b112da09551063003dfc23ddb8ffa783965b9136a2183010a7fecee336d032",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760979636422000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preflight_report.json",
+          "bytes": 15709,
+          "sha256": "8d24107a63f8b055067320486979abf1f115881b426ebd0814285e4148bc9f6e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703736657731000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_report.json",
+          "bytes": 4234,
+          "sha256": "9f1cd243e17b1898e5f1282ccb7f4904e49eaf7e1c63639eba6125d233397021",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760984102294000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_runtime_memory.json",
+          "bytes": 158,
+          "sha256": "04f63bfc65a67b88b51c358d291484e425c7346d5c228064500a7c99f715390a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760984127505649,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/province_annual_load_center_accounts.csv",
+          "bytes": 3341,
+          "sha256": "3d5a0167aa45c5d0d93cabb82084b61b2c2833feb255bc6de7f227638df8f37d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537925946000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_dispatch.npz",
+          "bytes": 239125152,
+          "sha256": "7e98e4864272c098887ef030764d5a81ad126cc0fbd627a06ac0d9a6b9307fc3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760896832273315,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_station_index.csv",
+          "bytes": 157869,
+          "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760888368854000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_structure_audit.json",
+          "bytes": 6536,
+          "sha256": "7b789066da53206e7b07b2c8a59544846ba20b489aa9fa81d95921da0e17af5a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706133647971000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_v2g_slack_check.json",
+          "bytes": 172,
+          "sha256": "425df67413b606008649bd06fb77aafae3d88d68546944aa3f30bf71f0a9ce00",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760987867978227,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/result_manifest.json",
+          "bytes": 15298,
+          "sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794760991405012000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_claim.json",
+          "bytes": 256,
+          "sha256": "9a24cb9d75d26c0d315f31b9111ce6dc9921594036f79ad3dcf34da9019f96e3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703726053032052,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_environment.json",
+          "bytes": 2860,
+          "sha256": "2f94ec717c25c281b7c791ae6d13d5cac145734feeff4d1f7e04a8bb56c6b340",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703726106783000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_identity.json",
+          "bytes": 25619,
+          "sha256": "2ad8f2eb2129e6ca9b2239898574406e0f77e0502e0ae21d064cb1d5851c8863",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706641463263000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_scope.json",
+          "bytes": 8281,
+          "sha256": "6b591d8b2b63b8ade14643fc5805044a2ae71867ee7a1d9f7d47a9e05594f05b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703736741635000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_summary.json",
+          "bytes": 2282,
+          "sha256": "f64ca182fe85f0483e2b550336a5b4984e4d3c73c45821c7f6a2ee0a3c149340",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975193094000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/scenario_manifest.json",
+          "bytes": 9843,
+          "sha256": "78c39a4f8b5ec702c08d1e264aeec0ad6c7df533926dfc5c1658e41d48951364",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760888362768000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solution_qc.json",
+          "bytes": 264859,
+          "sha256": "e05f0b181c6ad997b7f59728bd70e610c03aecd10340a51c41de2cbea67d7dda",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760898289068000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solve_report.json",
+          "bytes": 165337,
+          "sha256": "63e89c216bb523548be1e7930a5e8dd9baea76128b4261c0ca935c5bc9cdf882",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975206391000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_parameters_before_optimize.json",
+          "bytes": 589,
+          "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706641915457114,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_telemetry.jsonl",
+          "bytes": 66995,
+          "sha256": "c4dafce5c6449af38d222c3b27a497fd45d5ec12e6b8f870de919846f10e573c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760349439999534,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_capacity.csv",
+          "bytes": 11405,
+          "sha256": "1edbc33c0933d4d1df931079a9074bc79134f0dea85ab6ecff91cdd8376410d4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534992612000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_dispatch.npz",
+          "bytes": 20070960,
+          "sha256": "ae28315dca1835a82d29f8eeafabfdd8290d9e024352b8119bd0af86689144b4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760886894414685,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_dispatch.npz",
+          "bytes": 102154779,
+          "sha256": "c37790b9f62350020a46bb958ed9ba1ec4c4f560cb3f0218cf69f3fd4cf377a6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760885747714149,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_nuclear_capacity.csv",
+          "bytes": 38871,
+          "sha256": "04729cd0ddde3d4a55cefcf72475404b86e7208fe54b507ad7ec4d0711c6e4fc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534990244000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/time_index.csv",
+          "bytes": 335459,
+          "sha256": "ee996f1a78ce6894f14ea9877022bfbfc27c3e543c9890e1c1c57d378380756a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760815833299000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_capacity.csv",
+          "bytes": 36549,
+          "sha256": "8f6f0b52b56efaca4eb58f2badfe020674f6bbb5e45269fd3f0b773b5edde198",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760537812921000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_flows.npz",
+          "bytes": 30118087,
+          "sha256": "5890d858c27f800f500abd8adbbc2570a7b6b756b1510287dc42ff1b31b918d1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760898202311125,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/capacity_by_technology.svg",
+          "bytes": 6002,
+          "sha256": "2f79c0f4637bb630d1fcc0f7b11a9b11e877002a5cbcd4a1526df396f383c52e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975194772000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/generation_by_technology.svg",
+          "bytes": 5569,
+          "sha256": "87709d139b97c5a27aed741344825e9670d3189940d4b26ff467b78cd3a9d183",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975195646000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/national_dispatch_first_week.svg",
+          "bytes": 16933,
+          "sha256": "0d2d1e73a9f3f8ff00b75b8e1c206895c92a27242bfd10ae825b8bdb8c07e2b6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760975197276000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_capacity.csv",
+          "bytes": 3772988,
+          "sha256": "8d222dec6f7c7d909b2ddde8e026712bc944e5bf1c71e529ddc78c06a252e90b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534729549237,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_dispatch.npz",
+          "bytes": 11593535,
+          "sha256": "5fd11256ab88d662cbc2865e8648f2a557c6300f23bea3a1946d32af3cb92a00",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760886198969227,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_capacity.csv",
+          "bytes": 267347,
+          "sha256": "48b935247a422d0fa32f83398d32a68819df9b50c06b63efb56398d8e2687fc6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760534986143000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_dispatch.npz",
+          "bytes": 966323,
+          "sha256": "48837d4448bc15c16f8486a92abe7acbf442fb7193f536cb60c11de6c39abe05",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794760886243015329,
+          "tier": "T1"
+        },
+        {
+          "path": "release_files.sha256",
+          "bytes": 64545,
+          "sha256": "3aaf4e5debb0ce4d029ac1a0f7f2e4b080543a53a74a52e4b776d2af4ded650f",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703599878841000,
+          "tier": "T1"
+        },
+        {
+          "path": "release_receipt.json",
+          "bytes": 1589,
+          "sha256": "54177a7cb14733ae37d20a377823eea527f266d725d13ec8bb3d5313d1e054b0",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703713910912000,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_contract_reference.csv",
+          "bytes": 12364,
+          "sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_usage.txt",
+          "bytes": 2041,
+          "sha256": "beb942b8b1f1508ff33b319872de06dbab460da2930c0976502d150d9c1271fd",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794761019258515000,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_hash_check.log",
+          "bytes": 31499,
+          "sha256": "8d0a690acd76586c62b3930adb7d5d78dec4dc76e8ce5115ab99368e01533196",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703717689300618,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_slurm_job.txt",
+          "bytes": 1562,
+          "sha256": "9e2e8a1bfb895163e6848f2848ee0e30ccb1f839a6f0977793f1c96d7cbf1300",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703719023223000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584373.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703717145638000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584373.out",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703717144734000,
+          "tier": "T1"
+        },
+        {
+          "path": "source_code_sha256.json",
+          "bytes": 51548,
+          "sha256": "cae854d8874ee61e8a06562b5ebf777f2a90e1b11a8558bd3b932fd0b67baaa9",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "startup_resources.json",
+          "bytes": 195,
+          "sha256": "8bd8dad6b759e215b3089f37e856ff1c5fb1e48681991f453c6ad894fa046715",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703719025450724,
+          "tier": "T1"
+        },
+        {
+          "path": "stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703719644261000,
+          "tier": "T1"
+        },
+        {
+          "path": "stdout.log",
+          "bytes": 28772,
+          "sha256": "0aa77e3168f26f23753664cd300d4c85accc1afa7ec1a688fd29ddebeb471b23",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794760987819878136,
+          "tier": "T1"
+        },
+        {
+          "path": "submission.json",
+          "bytes": 87,
+          "sha256": "fa0eda5972ca0030d73312d39732f8ede87b22055fd436935ddda818382a7e7d",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703713890538264,
+          "tier": "T1"
+        }
+      ]
+    },
+    "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1": {
+      "result_manifest_sha256": "807f5043a1b5f2f052e910146996916d448eee9fc323dbf02a2405ca9b8329c2",
+      "files": [
+        {
+          "path": "FINAL_GATES_PASSED.json",
+          "bytes": 439,
+          "sha256": "26b942c854bcc3ee39aa5424161385ba37aade041f08484055baadd0ce345eb5",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "batch_exit.json",
+          "bytes": 35,
+          "sha256": "707696ed5d5d3f9a8a18b99bd86d66617d394d5e8ca3e5f831235fea9e307aa1",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794765755382689934,
+          "tier": "T1"
+        },
+        {
+          "path": "compute_node_smoke.json",
+          "bytes": 263,
+          "sha256": "c67192501ca0de23263d7c03eaebe1f494f47509326b7d6442b7151fa9281419",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703819607212827,
+          "tier": "T1"
+        },
+        {
+          "path": "continuation.sbatch",
+          "bytes": 5732,
+          "sha256": "0d16ea0e5f5c774e007072bf93fc0baf84ea03f59f4014c7337e666e859c7a74",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "data_copy_verification.json",
+          "bytes": 6626,
+          "sha256": "17be62c854b1b2f786d4bf93d546ea7f7cac7db310dba6db37a8bf9767837afa",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703740880246000,
+          "tier": "T1"
+        },
+        {
+          "path": "frozen_closure.json",
+          "bytes": 10168,
+          "sha256": "ec2b4195fb82b2d39add75c6a0c043b1669150eb3f5a8123d661cbf92c6fac9a",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "launch_config.json",
+          "bytes": 1114,
+          "sha256": "e093006425b5d7f7c75d1cf9eda27637881d1f6d029b212b5367c7f5c3d89107",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "license_path_preflight.json",
+          "bytes": 70,
+          "sha256": "50ecd712cd50f9f33406907471f3380893779743620cbcc7c770317198fee5e5",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703740881107935,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_adequacy_by_province.csv",
+          "bytes": 6137,
+          "sha256": "1ccdc6aaef641367969e1037347b6f60ce58a402cfbb6d1cab76638b7dc55607",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765617968271000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_province_technology.csv",
+          "bytes": 35119,
+          "sha256": "00b1b7cb6ca9c8eead694918c56601601d0da37b45be2da6db0d71598f7e0d15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765635512750000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_technology.csv",
+          "bytes": 1209,
+          "sha256": "583f979338bd2f0f4ccd7c7e60cbbff9034fb9910a6a37b0a1d47efef8dfc05a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765635311864000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_link_row_scaling.json",
+          "bytes": 60857,
+          "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706691156291000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_carbon_ccs.json",
+          "bytes": 639,
+          "sha256": "3045ccf19aae5c37d8ea80e87142552084dc5eb23e971c4cc871be36bc656c1b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765635195527610,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_constraint_shadow_prices.csv",
+          "bytes": 381181,
+          "sha256": "be0087648d3758143038fbf128f4c475bb05f1efb83e42a5f90a3605d9fcd559",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765617965970000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_flexible_load_by_province.csv",
+          "bytes": 18982,
+          "sha256": "ec196a9650a362c5a8fcae820055230951f13c498d622df0ec291d60c6accda7",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765625038894000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_province_technology.csv",
+          "bytes": 14987,
+          "sha256": "74f5f93d680ff714352494d0289bc7dfa748184c046309770edd1695248a9e93",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765617981136000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_technology.csv",
+          "bytes": 506,
+          "sha256": "b64f9be7fdb7bea418fb1af041bce60e551c5ee5864b653436f327841795383d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765692609074551,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_resource_accounting_by_province.csv",
+          "bytes": 9174,
+          "sha256": "5d1242e7acbdd1bf11fd106a2e53813dc39b28bedf7557d8be9ef32d6782f646",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765617982437000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_storage_operation_by_technology.csv",
+          "bytes": 381,
+          "sha256": "0da5f2af594daa846ff7c32850c2d1843ab7296ccc7488d7dcb9bf6963ddc56f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765692962953586,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_summary.json",
+          "bytes": 2280,
+          "sha256": "a259f90aaa0430dcf860415f6d6c03064dfcf4f2dd89bd9118f751fcdd443a9f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710479370000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+          "bytes": 77770,
+          "sha256": "5965f6f820d8045ae9fdb6b8d5334c0cbf44a800482601a513be4808c867b558",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765229597622000,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/dual_barpi.npy",
+          "bytes": 433454776,
+          "sha256": "be98e5c0d23dbd9c2755ad1726639c09c408bda65d27e121b909a99aa485cca6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765116988548485,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/primal_barx.npy",
+          "bytes": 349950344,
+          "sha256": "adb9a42b5f1d0b05b6475fa50b1dce3e2b5f4f7e944354f75136a4ae5dbc0209",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765106169172963,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/build_report.json",
+          "bytes": 107137,
+          "sha256": "ef58ae9a433efe26ca6fd6cb7fe16ff0a08f259e3ceaa0a89e8576ef4f3001bd",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706696019287000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/co2_source_sink_flows.csv",
+          "bytes": 2317464,
+          "sha256": "a1aa9121813a494e0f9168ad6b91a2f361028a0cf32d3a7d2ef274124354c4fe",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281143040863,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/cost_components.csv",
+          "bytes": 4782,
+          "sha256": "def4f17ba8e68bf2c40dd0c4dc61a2eaeb77310ba4acfc88b836e7d3662ef163",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279338962000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dac_capacity_capture.csv",
+          "bytes": 21001,
+          "sha256": "f6f5e101eb6aa8f95345982bbb919fbce35465f5c9c2f37027af22833704d5d3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279818218000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dual_export_status.json",
+          "bytes": 1701,
+          "sha256": "279ec2e1c817d9c37ca27fb88498ba8759ee54b4ba59b7f514a0435d7d135d3e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710488178000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/flexible_load_dispatch.npz",
+          "bytes": 42575761,
+          "sha256": "8c5e4f50b0505690ccb2dc51c2030bedeef8036354cb2e511662aebdf7c4f0ed",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765625027028079,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_audit.csv",
+          "bytes": 14116592,
+          "sha256": "7d1612f2a947e2d4f69d415266e709a51aa2f89a9309b7cca17e166c1ec008a3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706192784923209,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_audit.csv",
+          "bytes": 4215,
+          "sha256": "00eaff9dc419cddcd8a8d8fced49499e36fa503ba52729f77015de62e63f3e78",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706690743331000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_report.json",
+          "bytes": 10133,
+          "sha256": "7e39bb4a0c7a421860cc3b8bfa1a8feb84c8e683eb57f0035f76afb9a65bc134",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706690743978000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_expected.json",
+          "bytes": 2970535,
+          "sha256": "6114e8d8d79168d22c78748ea4c5b6fdb6539086d3be6bb75c7735c7dd7fb643",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706691148737187,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_output_check.json",
+          "bytes": 7230,
+          "sha256": "7a0689ee8fdd140dcf9bc7839dc955906fa0213362716c0f1bf29be611362f9f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765285819842000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_report.json",
+          "bytes": 18109,
+          "sha256": "420caa4f2f296500abce745f2a690d5e82d8514cf2e13d2d2f8fc5ae7f1d4e33",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706691155461000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_source_alignment.json",
+          "bytes": 1404,
+          "sha256": "666add50865a9865722f40c1fc4ebe64b0ac837b513162e5a9c3f15c8258bbda",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706691059920000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/gurobi.log",
+          "bytes": 24770,
+          "sha256": "81bf0ccec9e0c4eabea96fc21189f6e6cc1ba81fa12adc6191ed125f0f688b9c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765093641523183,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_marginal_prices.csv.gz",
+          "bytes": 14630439,
+          "sha256": "10cfa6d81f92d0de116cb7702de1170f5e70503335b1d6c2d8e7361e9034b9b2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765617944014302,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_national_balance.csv.gz",
+          "bytes": 859295,
+          "sha256": "b0a44e2169d218fe503f67d65182ba075d7816768e4b4608152fe17316977add",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765708332623179,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_balance.csv.gz",
+          "bytes": 49208090,
+          "sha256": "2a94ec97b8721df3828b6944228a2a54797f025e4a68b6f726f64d45a78fe735",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765598287908033,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_security.csv.gz",
+          "bytes": 36215238,
+          "sha256": "59f4965923c017068852c3bf2e2f0273416cf6219ad235dc3ab370c8a8d226d8",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765609054757194,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_aggregate_capacity.csv",
+          "bytes": 9698,
+          "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279816000000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_capacity.csv",
+          "bytes": 353312,
+          "sha256": "8698bfa6e7182a90a57c8f2814fb11d265d3050430686fcd7519f36bad5fb734",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279813753000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_audit.json",
+          "bytes": 16559,
+          "sha256": "5c99af99cac5ec4264ed92596c4edd799f4b0dd364d3d32598631c8b271f7a0b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765581457670000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_by_node.csv",
+          "bytes": 12141,
+          "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765581460403000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_dispatch.npz",
+          "bytes": 6495394,
+          "sha256": "dbb5e641686d20dcc10e91c7e60ca909201b6727357ea20cfd46428d6faae72e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765634094347179,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_spur_capacity.csv",
+          "bytes": 60879,
+          "sha256": "9dadac70f346720b5e6d38c422f12a7441711649105f33ea8109a7a1f2805633",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765285440934000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/input_manifest.csv",
+          "bytes": 31388,
+          "sha256": "ac48818cd09c8aee6bb528720756705a48d64df698fa7a5d1ffd30a8899039f5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703829313877000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_substation_design.csv",
+          "bytes": 1045446,
+          "sha256": "dca9a65e30138ceedf28937428ed49b762eee18ddcfca805b1708052f66f2a0d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279777853492,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_vre_site_design.csv",
+          "bytes": 5852227,
+          "sha256": "8af78c56db965c7b859bbf9ef8f370774e7e4330267678b73daea824d5c7c8a1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279732023137,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_balance.csv",
+          "bytes": 45418,
+          "sha256": "0106e4c617ff827decbd1e0447e65cd202863e422aa0c6aeb5884ef845897461",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281158365000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_generation.csv",
+          "bytes": 99368,
+          "sha256": "225f5040ccd5edae650b35e90b0f62596e1ddb9eac806e53ed2d18c902acaf74",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281257748000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_intra_transmission.csv",
+          "bytes": 129137,
+          "sha256": "ebcd6230837d5bc2e8caa159691caa7a4e2024eb7d81f1398662a00622ace47e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281154485000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_network_qc.csv",
+          "bytes": 491,
+          "sha256": "4c93c0ed7119f3f13e30303ae9a1c7c1b3ae323db70201f78d38d378f509495e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765285387710710,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/archive_manifest.json",
+          "bytes": 609,
+          "sha256": "8954c3d129341c54950a355a47aa0c7f350857d72be6e8e235f3eb59cbf1a079",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707235192734212,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/original.mps.gz",
+          "bytes": 4145794105,
+          "sha256": "5a5f1f7ab06a4b2b616271105533fec5a056578ddfd17f1cc527770c580e373b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707232401239650,
+          "tier": "T3"
+        },
+        {
+          "path": "output_8760/model_archive/parameters.prm",
+          "bytes": 207,
+          "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707235192062484,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_config_snapshot.json",
+          "bytes": 29809,
+          "sha256": "d2c7d6de54ece17c57becd2a1067caea4967b606a4d82d180921c82581e4c85e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703824604117000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/monthly_energy_by_technology.csv",
+          "bytes": 5368,
+          "sha256": "a389002936328850642d35b57bfb499a1ff87503decbbdff36d04b2fb0496596",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765708337566000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_catalog.csv",
+          "bytes": 8225,
+          "sha256": "3a2ac1d806199c431e697ecf322adedc69a4bab29e3dbed8b08a98063075d2f2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765719296714000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_data_dictionary.csv",
+          "bytes": 154265,
+          "sha256": "8b844e31c08708fbc8e71c41ba8ef5d65dd2ed9f1074f8b590bec886e3e5c781",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765719300811000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/capacity_cohorts.csv.gz",
+          "bytes": 2923122,
+          "sha256": "8383563fa5264ce4eef4dac5382fcd0b519a4b718ad497187d8b4608114a9161",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765714802613466,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz",
+          "bytes": 940472,
+          "sha256": "88e3eacf7715da5da6057e40fd2e7d67e33901bcfe2fa615698f09704b1bde9e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765713121395483,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_metadata.json",
+          "bytes": 101070,
+          "sha256": "27fd8631a511ea369985347437a043ed672ad104df4ce6cfabe8229350157e82",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765714867027000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_transition_summary.csv",
+          "bytes": 2433,
+          "sha256": "a3b112da09551063003dfc23ddb8ffa783965b9136a2183010a7fecee336d032",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765714858234000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preflight_report.json",
+          "bytes": 15709,
+          "sha256": "5202995bedca300f3bb2815a081c677ed9f0fdb8870b04bc618b9c2e008261f4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703834199923000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_report.json",
+          "bytes": 4229,
+          "sha256": "5786cfcf1d106c8b94924225f7a6bed88247fa099f1fec6b86099cf10f5a1dfc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765719304889000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_runtime_memory.json",
+          "bytes": 158,
+          "sha256": "1bdd7fbdc87410522e4d39af79d5036b1b3f63b4206b126876db0b1ee5351ccf",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765719330604959,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/province_annual_load_center_accounts.csv",
+          "bytes": 3335,
+          "sha256": "8ca398ffd1ccc8a148320a3aa10e6cb7814f4ad3d77c5fecb89fd2a3543893ce",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281259719000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_dispatch.npz",
+          "bytes": 235957910,
+          "sha256": "11220f64512802f630cd59e5acbe7fa0c69cac18e3829e61db59a67d530ac453",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765633805946092,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_station_index.csv",
+          "bytes": 157869,
+          "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765625046242000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_structure_audit.json",
+          "bytes": 6558,
+          "sha256": "05fdd3ce77f5c747ea0be6538c1f448d8313fc4e738c21e6ae1813469686987b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706192036546000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_v2g_slack_check.json",
+          "bytes": 179,
+          "sha256": "e389f157bf2b178b3c8c1a35d45d1333a7a87c2b519a664dd9053dc642ac2943",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765723245940159,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/result_manifest.json",
+          "bytes": 15298,
+          "sha256": "807f5043a1b5f2f052e910146996916d448eee9fc323dbf02a2405ca9b8329c2",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794765726921860000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_claim.json",
+          "bytes": 256,
+          "sha256": "3aafb152f96a4d8f2ac6b76b79c8932dc354ef66bfda44d6c6a555068f2acf0a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703824602477809,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_environment.json",
+          "bytes": 2868,
+          "sha256": "348e2fc4b7ea98cad9d8f71eba8e83361aa6f9a748f437e4c0f8b312b2a2289b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703824663177000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_identity.json",
+          "bytes": 25636,
+          "sha256": "5d5917e0af63930198b23d4c46151fb93c30c6f80bb3770eeedc69f307566485",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706695583454000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_scope.json",
+          "bytes": 8280,
+          "sha256": "c7d7478f473c11b2e42bfd2ffbe276093038a18cd579b8189e2ba4e89336819c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703834273400000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_summary.json",
+          "bytes": 2280,
+          "sha256": "a259f90aaa0430dcf860415f6d6c03064dfcf4f2dd89bd9118f751fcdd443a9f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710479712000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/scenario_manifest.json",
+          "bytes": 9885,
+          "sha256": "f547cb2466037255552e727732b647a59f306a7d648bd238a52c6addac01bf88",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765625040102000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solution_qc.json",
+          "bytes": 264850,
+          "sha256": "42035040ff41b55461f057de70ade9c8578d1335d2c5770d31ad17832994d68c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765635276064000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solve_report.json",
+          "bytes": 165335,
+          "sha256": "1cd986ecf91fd9538722211e5143cff1d06820fd0208444d6826a694eb0bfe40",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710492148000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_parameters_before_optimize.json",
+          "bytes": 589,
+          "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706696025696304,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_telemetry.jsonl",
+          "bytes": 71913,
+          "sha256": "b87992eda536f7e9de146230aeb2a17650e9b03827b39f5a9739edf0f86e054b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765093641719348,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_capacity.csv",
+          "bytes": 11405,
+          "sha256": "1edbc33c0933d4d1df931079a9074bc79134f0dea85ab6ecff91cdd8376410d4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279798293000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_dispatch.npz",
+          "bytes": 20127445,
+          "sha256": "d4ced4440d0a395c7e431af970989f61c638d265455bdfd22142902416e6b469",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765623590799508,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_dispatch.npz",
+          "bytes": 100669362,
+          "sha256": "903c9a270bf836ecc6b7c058fb55e84538f2ff8749d17e510f977c5d097a4e3e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765622476262658,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_nuclear_capacity.csv",
+          "bytes": 38871,
+          "sha256": "04729cd0ddde3d4a55cefcf72475404b86e7208fe54b507ad7ec4d0711c6e4fc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279795842000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/time_index.csv",
+          "bytes": 335459,
+          "sha256": "ee996f1a78ce6894f14ea9877022bfbfc27c3e543c9890e1c1c57d378380756a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765553074114000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_capacity.csv",
+          "bytes": 36549,
+          "sha256": "8f6f0b52b56efaca4eb58f2badfe020674f6bbb5e45269fd3f0b773b5edde198",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765281147353000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_flows.npz",
+          "bytes": 29966854,
+          "sha256": "e7164b2984d2ab89e2e232eba2acc7f3a74ae2528a9ee2f127312a729667ae87",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765635194844059,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/capacity_by_technology.svg",
+          "bytes": 6002,
+          "sha256": "2f79c0f4637bb630d1fcc0f7b11a9b11e877002a5cbcd4a1526df396f383c52e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710481520000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/generation_by_technology.svg",
+          "bytes": 5569,
+          "sha256": "bb133540b0c9a581bd0882e276a4f9a7f3b27f7649c3608bdc1caf4f039561ff",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710482330000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/national_dispatch_first_week.svg",
+          "bytes": 16895,
+          "sha256": "518f3a8caaaeffe030f1a80ffac0973e261213773289fc1a5312cd3c5515f56f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765710483969000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_capacity.csv",
+          "bytes": 3772988,
+          "sha256": "8d222dec6f7c7d909b2ddde8e026712bc944e5bf1c71e529ddc78c06a252e90b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279531556499,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_dispatch.npz",
+          "bytes": 11490535,
+          "sha256": "c437bda0985756c863d317cf9f30e1cdd1d493d24822a2b5bad3fb56a4260be4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765622917254523,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_capacity.csv",
+          "bytes": 267347,
+          "sha256": "48b935247a422d0fa32f83398d32a68819df9b50c06b63efb56398d8e2687fc6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765279791754000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_dispatch.npz",
+          "bytes": 964081,
+          "sha256": "b1b70992b75ecd186a23a712ab360d64217b3b82ce1eb02c7f6202c4f49d98da",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794765622961194145,
+          "tier": "T1"
+        },
+        {
+          "path": "release_files.sha256",
+          "bytes": 64593,
+          "sha256": "470af6793f75906e1b5fe523fe909c1269124b83c220ac8ae98ebb4814552eb8",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703741065505000,
+          "tier": "T1"
+        },
+        {
+          "path": "release_receipt.json",
+          "bytes": 1597,
+          "sha256": "f93eda6a93c56705ee0d4263308102c40b4d277d4872ccdd377b21d981b02251",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703815341199000,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_contract_reference.csv",
+          "bytes": 12364,
+          "sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_usage.txt",
+          "bytes": 2058,
+          "sha256": "04f3a3ea2b7c18dc45b17c44f05d483556d842af229d87a877780de7feb6e7ad",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794765755381391000,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_hash_check.log",
+          "bytes": 31547,
+          "sha256": "2cc7cc0355aa5911fc201b74c07e90966835d0268be6ce76ea68480f14f52f95",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703817910919014,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_slurm_job.txt",
+          "bytes": 1570,
+          "sha256": "6779049708d0eee8c7c6cb529aaf748a8d05e8c46dd6b79990962ffbc9e2f3d1",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703819089407000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584377.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703817358286000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584377.out",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703817357292000,
+          "tier": "T1"
+        },
+        {
+          "path": "source_code_sha256.json",
+          "bytes": 51548,
+          "sha256": "cae854d8874ee61e8a06562b5ebf777f2a90e1b11a8558bd3b932fd0b67baaa9",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "startup_resources.json",
+          "bytes": 195,
+          "sha256": "59961f5c18b661261bfafe25e959d68d37b316a389e705e99ce4fbe54819ec0c",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703819090104650,
+          "tier": "T1"
+        },
+        {
+          "path": "stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703819637548000,
+          "tier": "T1"
+        },
+        {
+          "path": "stdout.log",
+          "bytes": 29119,
+          "sha256": "3ab24f02e35a10ae02792a366db30c982144ef4225affba4d1391d24e9fb0565",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794765723192792947,
+          "tier": "T1"
+        },
+        {
+          "path": "submission.json",
+          "bytes": 87,
+          "sha256": "4de25225d2575d16b4efa2e906ff0dd89d5a9b0a6cd30670713d682e69616b2a",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703815321060172,
+          "tier": "T1"
+        }
+      ]
+    },
+    "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1": {
+      "result_manifest_sha256": "33fdff98c7cfe55a9004b2cfc20a8eff2beaa0b55ab295139e40fb7b689eaf0e",
+      "files": [
+        {
+          "path": "FINAL_GATES_PASSED.json",
+          "bytes": 435,
+          "sha256": "ac68454eb08b8caee2b1b25421ff9d6a2237d1c00e1fa2e62993e425e55436ad",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "batch_exit.json",
+          "bytes": 35,
+          "sha256": "5eb710576b8644a91fd82b1676f9d0746c09fc20bda528357f0824e38aa8ab98",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794757477459255764,
+          "tier": "T1"
+        },
+        {
+          "path": "capacity_selection.json",
+          "bytes": 87099,
+          "sha256": "0ccd50ce3f58510a615b202de1d0810581a6641f865661c873d07ad0dbac86cf",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "compute_node_smoke.json",
+          "bytes": 263,
+          "sha256": "bf5408f2fcf7fb788cc8a33bd842ecb41e6c5c8225cc97cbe89f9d6f3c3ebbda",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703883161653056,
+          "tier": "T1"
+        },
+        {
+          "path": "continuation.sbatch",
+          "bytes": 5860,
+          "sha256": "4da1ac46b31dd4452271e24e7bc648adb3c798fdb75872ba004d3c67a885c940",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "data_copy_verification.json",
+          "bytes": 4994,
+          "sha256": "77b03f4067e89be5966cef6c28d4b3d0a6c7ee913cb4b1d31a537b2d6ae1e08e",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703820830032000,
+          "tier": "T1"
+        },
+        {
+          "path": "frozen_closure.json",
+          "bytes": 10168,
+          "sha256": "ec2b4195fb82b2d39add75c6a0c043b1669150eb3f5a8123d661cbf92c6fac9a",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "launch_config.json",
+          "bytes": 1107,
+          "sha256": "b423182138632d230d7eab219ec2026c5651443f2cf75f24abbdc836ac228122",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "license_path_preflight.json",
+          "bytes": 70,
+          "sha256": "50ecd712cd50f9f33406907471f3380893779743620cbcc7c770317198fee5e5",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703820830476223,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_adequacy_by_province.csv",
+          "bytes": 6133,
+          "sha256": "89e283062acc76d425e4f0fc07f8e6929311429b0431a03d3616ea296bab24a4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757338688108000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_province_technology.csv",
+          "bytes": 35119,
+          "sha256": "00b1b7cb6ca9c8eead694918c56601601d0da37b45be2da6db0d71598f7e0d15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757356127852000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_by_technology.csv",
+          "bytes": 1209,
+          "sha256": "583f979338bd2f0f4ccd7c7e60cbbff9034fb9910a6a37b0a1d47efef8dfc05a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757355930202000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_capacity_link_row_scaling.json",
+          "bytes": 60857,
+          "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706819280620000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_carbon_ccs.json",
+          "bytes": 639,
+          "sha256": "227f1d89559a11b12804e30a328b71a73c0ae0d7fbf199e1433e11876b4e5bd4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757355807525005,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_constraint_shadow_prices.csv",
+          "bytes": 381157,
+          "sha256": "956c2ef726284f39047eb4d02263c55b305ffe826bcffefab994b429fb54fdbc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757338685798000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_flexible_load_by_province.csv",
+          "bytes": 18923,
+          "sha256": "1d68e6fb4f6026bf02b68fd64b7e7945f28df8a5a096f4679ab96261fdb2121f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757345758733000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_province_technology.csv",
+          "bytes": 14989,
+          "sha256": "c3296e6937fc7761706c9009777834fbdd3e39495dad4c1974ec5b471bbb927b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757338697347000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_generation_by_technology.csv",
+          "bytes": 506,
+          "sha256": "4e5b875181a83c724f904eb898744b559e42d56ab91454c00c029930a7024763",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757414729295168,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_resource_accounting_by_province.csv",
+          "bytes": 9167,
+          "sha256": "001997b6c00a7f50e618b8bb9352c9f554834ea71bfeadf2c9fc4400006dca69",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757338698587000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_storage_operation_by_technology.csv",
+          "bytes": 382,
+          "sha256": "f8b547cf895768736020d61be8fd9bf356947cc9e99a8d4e2417bb62f9768c2b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757415091923645,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/annual_summary.json",
+          "bytes": 2275,
+          "sha256": "f6d1960a3bf4f7d794a2b2856e1817799a3636d70d579eb9d307fa504d6b7b30",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432843257000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+          "bytes": 77772,
+          "sha256": "6d0735109c6ba513844300d3b1236b228cd1aba5811fed27ac327f76a53b1769",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756940775736000,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/dual_barpi.npy",
+          "bytes": 433742056,
+          "sha256": "7f7e1a7100d94e4fb56bd53256640516a5f552e75863c6708b0ac530a457b51a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756832928522468,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/barrier_checkpoint/primal_barx.npy",
+          "bytes": 350093984,
+          "sha256": "04c73d598f8478626eb7238af165237f3a0d21f883c8c678c641b4c0c321c286",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756822252125875,
+          "tier": "T2"
+        },
+        {
+          "path": "output_8760/build_report.json",
+          "bytes": 108805,
+          "sha256": "a1a017a543261ffda18134ec8ed3842085dfb07cf3f93b4882af8243b943041f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706829824101000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/capacity_bound_selection_audit.json",
+          "bytes": 215583,
+          "sha256": "395d391cac1106f57c8f2fea817a9f167975007a3fdefeaf4151f796a8f1cb74",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706819275535000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/co2_source_sink_flows.csv",
+          "bytes": 4379625,
+          "sha256": "7182540e4fe676574cb056fe80e2f32a425c3f6e9dd489a19e931774fc79f4c7",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756994958810964,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/cost_components.csv",
+          "bytes": 4780,
+          "sha256": "33121140a4721b5afec0725dd970602c97273ea91cf59022cee5845f069cff16",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756991956869000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dac_capacity_capture.csv",
+          "bytes": 20998,
+          "sha256": "4aaff708e2cd06ed5288193868fb370929fb6acf3f8ba8feb4d6e85294029869",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992426680000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/dual_export_status.json",
+          "bytes": 1701,
+          "sha256": "7b7c529e9bbb68eaa88641da26f099e7aa4ac7c21f7566a113b81e93a2c96dc1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432852699000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/flexible_load_dispatch.npz",
+          "bytes": 42853560,
+          "sha256": "20c9bff4d636def25f7ebe9dc8bff39b452383d99c19193521e8981e3d04c109",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757345749768856,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_audit.csv",
+          "bytes": 14116592,
+          "sha256": "7d1612f2a947e2d4f69d415266e709a51aa2f89a9309b7cca17e166c1ec008a3",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706300077604439,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_audit.csv",
+          "bytes": 4215,
+          "sha256": "00eaff9dc419cddcd8a8d8fced49499e36fa503ba52729f77015de62e63f3e78",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706818736024000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_closure_report.json",
+          "bytes": 10133,
+          "sha256": "7e39bb4a0c7a421860cc3b8bfa1a8feb84c8e683eb57f0035f76afb9a65bc134",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706818736761000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_expected.json",
+          "bytes": 2937403,
+          "sha256": "1b25a8426658c762941f40044eea2a4bb720ff1f4aa64f89750307f4e4614e23",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706819269626926,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_output_check.json",
+          "bytes": 6559,
+          "sha256": "6bc18673f465f94362b4274939582347c5652fc8e5e821d3e8686b22f1a5aedc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756999574213000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_report.json",
+          "bytes": 18914,
+          "sha256": "49d5afb7c4e1769ce3a154cff23da5a4a2ee06465b4d7e5833301a1de4770f6f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706819279009000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/frozen_capacity_source_alignment.json",
+          "bytes": 1404,
+          "sha256": "666add50865a9865722f40c1fc4ebe64b0ac837b513162e5a9c3f15c8258bbda",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706819046388000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/gurobi.log",
+          "bytes": 24143,
+          "sha256": "4019cd37158db11ded053ea85c4e41f20cf63448b7e380a3e480a2df9aebfe5c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756810353122505,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_marginal_prices.csv.gz",
+          "bytes": 14769471,
+          "sha256": "7ff79b842bf2ade608fd8c7ee2781334042c2cd3d56080359e3c6dff165d6ed1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757338663335798,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_national_balance.csv.gz",
+          "bytes": 860466,
+          "sha256": "2d67c8281a060169f1fdaba19154622b756ecd759eb0ab4e0073888b3b8f9f88",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757430477469614,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_balance.csv.gz",
+          "bytes": 49279073,
+          "sha256": "fe3151339f41d7cd8e98e4dd8706b11c2eaff9c17a8bdf1f0453640348365829",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757318929319381,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hourly_province_security.csv.gz",
+          "bytes": 36194465,
+          "sha256": "3ea5ec451e6c79aecfcc2320b70ea9059f95351ff85f9a89efe1e720df92c886",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757329692356748,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_aggregate_capacity.csv",
+          "bytes": 9698,
+          "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992424531000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_capacity.csv",
+          "bytes": 353312,
+          "sha256": "8698bfa6e7182a90a57c8f2814fb11d265d3050430686fcd7519f36bad5fb734",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992422269000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_audit.json",
+          "bytes": 16559,
+          "sha256": "c30e789c9d6a54dae33abbcacb3bcd5016a3c2c7f4efe29d1d0d61f999f913f5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757302035121000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_cascade_reconciliation_by_node.csv",
+          "bytes": 12141,
+          "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757302037845000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_dispatch.npz",
+          "bytes": 6560652,
+          "sha256": "8c0d9c584d9b5ea684b83a2a5938cc50cada84fc606c5e88c08e2c0d0688697a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757354707443320,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/hydro_spur_capacity.csv",
+          "bytes": 60879,
+          "sha256": "9dadac70f346720b5e6d38c422f12a7441711649105f33ea8109a7a1f2805633",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756999208731000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/input_manifest.csv",
+          "bytes": 31380,
+          "sha256": "f639b48a752c749ef221cf6dee26469896347dd0fcd6fc2a46e9a2b0122ba90d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703893013350000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_substation_design.csv",
+          "bytes": 1045446,
+          "sha256": "dca9a65e30138ceedf28937428ed49b762eee18ddcfca805b1708052f66f2a0d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992386631976,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/intra_grid_vre_site_design.csv",
+          "bytes": 5852227,
+          "sha256": "8af78c56db965c7b859bbf9ef8f370774e7e4330267678b73daea824d5c7c8a1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992337687890,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_balance.csv",
+          "bytes": 45396,
+          "sha256": "8d633bd3984923dcb870fe59740bf82afd8c1a283318ecfbf4e40c791984df24",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756994974001000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_annual_generation.csv",
+          "bytes": 99402,
+          "sha256": "4fb3817379dd3899e0aef0df4b954cf1a813dc47e9808fb6ec206131937d270d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756995075649000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_intra_transmission.csv",
+          "bytes": 129307,
+          "sha256": "7dfd5417c78fedeea720416485f869536c34f9ee005515de4e69a4f53d994e15",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756994970186000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/load_center_network_qc.csv",
+          "bytes": 492,
+          "sha256": "f675dafebaa8df41658a660b8b6eb5f9691ed4012b9400990518e724bb09a6d9",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756999155042928,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/archive_manifest.json",
+          "bytes": 610,
+          "sha256": "97023add5ac5ba511136d729e1b9010a37d26fe782086bb09beb42df7a2d65d1",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707368851873063,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_archive/original.mps.gz",
+          "bytes": 4146729442,
+          "sha256": "5bc0860db98462ddc99098cd7ad99a1d887dc31500e141973c806a799fbdb7f9",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707365978200295,
+          "tier": "T3"
+        },
+        {
+          "path": "output_8760/model_archive/parameters.prm",
+          "bytes": 207,
+          "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794707368847996682,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/model_config_snapshot.json",
+          "bytes": 30544,
+          "sha256": "f5ea34f55e7ac10b29d34662e91a22a171e149f13b6c2feab56f7df8efa511fb",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703888241426000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/monthly_energy_by_technology.csv",
+          "bytes": 5366,
+          "sha256": "5a92deb68a6c367529316807874ee9b52bb45cbf1b491e6047be050128b82f76",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757430483250000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_catalog.csv",
+          "bytes": 8306,
+          "sha256": "8f8014caf322293a86eded5d23b16a5d41974bcb828ea99fd5e15dd4a979f2b4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757441745804000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/output_data_dictionary.csv",
+          "bytes": 156199,
+          "sha256": "997b8901cf0989850baeb1c0a413b5e85198348ff1bbddfa500fc6c8fd5ce1d5",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757441749806000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/capacity_cohorts.csv.gz",
+          "bytes": 2923167,
+          "sha256": "aac5f0869d9065b927ff7aea238a9b2b67491708eb0098022a392bd0d10da336",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757437236997354,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz",
+          "bytes": 940507,
+          "sha256": "e062ebafa0a9bdbc4c3540a1f238973f62826fac769b6e3c931df7c3eb9f96ab",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757435549071263,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_metadata.json",
+          "bytes": 101077,
+          "sha256": "f65b4020c638b2c6bbc6476d4aeda616f4be9b73bbed3896ca529b0a3074e79f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757437303247000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/planning_state_candidate/state_transition_summary.csv",
+          "bytes": 2432,
+          "sha256": "c156139faad1eb3488236a408fea0bb0afcf239eab6d66c92761643e6aa3dd25",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757437293934000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preflight_report.json",
+          "bytes": 15712,
+          "sha256": "5318bedc0007ba25714aeaab3830a626485a2ea0123b478adf3f9a780a0e846d",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703898031393000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_report.json",
+          "bytes": 4237,
+          "sha256": "ee2c8d7d5173804f80ca9290335b705141ad563cc33a4116be4091e0f050c21f",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757441753832000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/preservation_runtime_memory.json",
+          "bytes": 158,
+          "sha256": "68949034cc6ae4e33e57c0891d0715588d4abf931d48e69de2746ef45361b4c2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757441779931875,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/province_annual_load_center_accounts.csv",
+          "bytes": 3334,
+          "sha256": "e11b6ce68dff2f13775afe5e6ecd531f76d60f464289d482db2ae403417a3dc6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756995077663000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_dispatch.npz",
+          "bytes": 236772185,
+          "sha256": "080851add8194f15848e220801179f533674be7525d79d24d19d106aac3b2c27",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757354423378863,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/reservoir_station_index.csv",
+          "bytes": 157869,
+          "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757345765944000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_structure_audit.json",
+          "bytes": 6500,
+          "sha256": "1621671670fcf12ae53df814ccd5f63846c20bdf80ae52483908c1d053a58e6c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706299326131000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/resource_v2g_slack_check.json",
+          "bytes": 172,
+          "sha256": "cf367d1fb306fbe65746b59ef0bf52e7d9710ee6795d8ec126ad0f22ceaf9764",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757445562891669,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/result_manifest.json",
+          "bytes": 15471,
+          "sha256": "33fdff98c7cfe55a9004b2cfc20a8eff2beaa0b55ab295139e40fb7b689eaf0e",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794757449242545000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_claim.json",
+          "bytes": 257,
+          "sha256": "56d7a737bcd880562d9509fde1c9f25badebaa7533c117fa84c906cb8f4f15ed",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703888240121136,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_environment.json",
+          "bytes": 3033,
+          "sha256": "40a9b52dbf13558a3cac358d0d22150c8a6f089cc53852db1962e42c6a2049c8",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703888308752000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_identity.json",
+          "bytes": 26460,
+          "sha256": "5282c2a0b6ef07aa7ca66b233fe8e09b5d39bc4387b8dc2637f2f154a3239e31",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706829257489000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_scope.json",
+          "bytes": 8279,
+          "sha256": "b07bd3f09f198b1088fdfebd61ca43561d8820d3f17697693be25a304dda1c21",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794703898110880000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/run_summary.json",
+          "bytes": 2275,
+          "sha256": "f6d1960a3bf4f7d794a2b2856e1817799a3636d70d579eb9d307fa504d6b7b30",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432843687000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/scenario_manifest.json",
+          "bytes": 9887,
+          "sha256": "e37badb55b1d3deb973c2e0e6004edfed3f46eeae5a4ec487e8820c97e00e247",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757345759812000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solution_qc.json",
+          "bytes": 264850,
+          "sha256": "0c9c1dd037ef094c111238b5f640928106ee7ea3eb9961224580d27b442be19c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757355893379000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solve_report.json",
+          "bytes": 165347,
+          "sha256": "38919e600df7f5e228de4050805084217d61834ffa23efa0a78f717471fe3b2e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432856713000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_parameters_before_optimize.json",
+          "bytes": 589,
+          "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794706829829071056,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/solver_telemetry.jsonl",
+          "bytes": 66422,
+          "sha256": "8d31e8d0c9650d249e5837992c19bca10f9dd3a3a09f6bae92887defbf147cbe",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756810353314594,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_capacity.csv",
+          "bytes": 11405,
+          "sha256": "1edbc33c0933d4d1df931079a9074bc79134f0dea85ab6ecff91cdd8376410d4",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992406947000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/storage_dispatch.npz",
+          "bytes": 20078713,
+          "sha256": "f066135e7ed787b3ae17e6aead6925779d9fa0e17dd74e6979a3de27359498c6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757344310571241,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_dispatch.npz",
+          "bytes": 100348829,
+          "sha256": "63db496ad2dfe3e52c06394f92099f4ad42f621315cef7e3f001079d841ff7ca",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757343178245201,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/thermal_nuclear_capacity.csv",
+          "bytes": 38871,
+          "sha256": "04729cd0ddde3d4a55cefcf72475404b86e7208fe54b507ad7ec4d0711c6e4fc",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992404582000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/time_index.csv",
+          "bytes": 335459,
+          "sha256": "ee996f1a78ce6894f14ea9877022bfbfc27c3e543c9890e1c1c57d378380756a",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757273915172000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_capacity.csv",
+          "bytes": 36549,
+          "sha256": "8f6f0b52b56efaca4eb58f2badfe020674f6bbb5e45269fd3f0b773b5edde198",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756994963149000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/transmission_flows.npz",
+          "bytes": 30000692,
+          "sha256": "23b91e5be70b02aebcab13658b7559144cdac9ab60a868428b64ae3b2daa6799",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757355806534206,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/capacity_by_technology.svg",
+          "bytes": 6002,
+          "sha256": "2f79c0f4637bb630d1fcc0f7b11a9b11e877002a5cbcd4a1526df396f383c52e",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432845359000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/generation_by_technology.svg",
+          "bytes": 5569,
+          "sha256": "ac73c1139b156b6d96f6eb10bb171fd5e8eccd39f9913061b220cb2808131c2c",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432846222000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/visualizations/national_dispatch_first_week.svg",
+          "bytes": 16908,
+          "sha256": "3dc3515d2336ce8375e7f73166b5874b018e34a9091cebff901dc3b5907f0119",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757432847861000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_capacity.csv",
+          "bytes": 3772988,
+          "sha256": "8d222dec6f7c7d909b2ddde8e026712bc944e5bf1c71e529ddc78c06a252e90b",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992144255203,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/vre_dispatch.npz",
+          "bytes": 11517707,
+          "sha256": "f75103ceae8d6816505f7aebbef5b23225a5ab4710e86005f92764fae73d4858",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757343622657580,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_capacity.csv",
+          "bytes": 267347,
+          "sha256": "48b935247a422d0fa32f83398d32a68819df9b50c06b63efb56398d8e2687fc6",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794756992400480000,
+          "tier": "T1"
+        },
+        {
+          "path": "output_8760/wave_dispatch.npz",
+          "bytes": 964193,
+          "sha256": "0c1aee2567d31bbfd084b19c4dc476734f3e6df1b37153c13e06737c938b3fed",
+          "sha_source": "result_manifest.json",
+          "mtime_ns": 1794757343667808179,
+          "tier": "T1"
+        },
+        {
+          "path": "release_files.sha256",
+          "bytes": 63581,
+          "sha256": "11a7682e8cf37049d8a4c190e7f285b00dcc77ed0c252dad3ccdbcb1c081a019",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703820976989000,
+          "tier": "T1"
+        },
+        {
+          "path": "release_receipt.json",
+          "bytes": 1587,
+          "sha256": "12a44eeeeeeb0a86496ab2d3aa4fff23eedba9593a54142c214e8c4623862812",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703877832940000,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_contract_reference.csv",
+          "bytes": 12364,
+          "sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "resource_usage.txt",
+          "bytes": 2200,
+          "sha256": "ff75a1321d8a3feef40b236255381540a6a2f635db4f62f987154ef411880338",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794757477458134000,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_hash_check.log",
+          "bytes": 30969,
+          "sha256": "2897d43546c4873dd7a359fc0f266d5434827ce7d37873121adcb94f18e9e807",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703881423009804,
+          "tier": "T1"
+        },
+        {
+          "path": "runtime_slurm_job.txt",
+          "bytes": 1560,
+          "sha256": "770e6f4867bd2ece7f61144cb59fdeaa7b7e1157ef2e506236c1cfb7b5b451e7",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703882621802000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584390.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703881002267000,
+          "tier": "T1"
+        },
+        {
+          "path": "slurm-5584390.out",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703881001640000,
+          "tier": "T1"
+        },
+        {
+          "path": "source_code_sha256.json",
+          "bytes": 51548,
+          "sha256": "cae854d8874ee61e8a06562b5ebf777f2a90e1b11a8558bd3b932fd0b67baaa9",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 0,
+          "tier": "T1"
+        },
+        {
+          "path": "startup_resources.json",
+          "bytes": 195,
+          "sha256": "60d7af06d51dbf404317799a47776c957d07aa5ad69b5e6c41a1bae7679fc6e9",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703882622799941,
+          "tier": "T1"
+        },
+        {
+          "path": "stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703883192702000,
+          "tier": "T1"
+        },
+        {
+          "path": "stdout.log",
+          "bytes": 28500,
+          "sha256": "2ba60d1c58579dc3f93d569c3a679d9252273c8cf54ae58828691e0daf981d92",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794757445512605055,
+          "tier": "T1"
+        },
+        {
+          "path": "submission.json",
+          "bytes": 87,
+          "sha256": "6124a8c43f58b333fb9cc30748601df1f69b60c710ad79678ee3b9d7b59786c6",
+          "sha_source": "source_sha256_read",
+          "mtime_ns": 1794703877813699419,
+          "tier": "T1"
+        }
+      ]
+    }
+  }
+}

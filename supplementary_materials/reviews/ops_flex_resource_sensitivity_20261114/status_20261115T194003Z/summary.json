@@ -1,0 +1,83 @@
+{
+  "as_of_utc": "2026-11-15T19:40:07.504567Z",
+  "running": 1,
+  "completed_production_or_diagnostic": 3,
+  "late_open": {
+    "job_id": "5587177",
+    "state": "RUNNING",
+    "node": "m4cm2206",
+    "started_at_utc": "2026-11-15T10:31:51Z",
+    "elapsed": "09:08:17",
+    "iteration": 33,
+    "actual_threads": 44,
+    "startup_available_gib": 718.9680252075195,
+    "startup_gate": "PASS",
+    "allocation": "64CPU/750G/billing64/UNLIMITED/no-requeue",
+    "structure": "PASS",
+    "last10_mean_minutes": 9.806666666666667,
+    "printed_pinf": 13700000000.0,
+    "printed_dinf": 105.0,
+    "compl": 564000000.0,
+    "slurm_peak_rss_gib": 643.9342575073242
+  },
+  "completed": {
+    "ops_open_2050": {
+      "release": "20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "status": "OPTIMAL",
+      "preservation": "COMPLETE",
+      "iterations": 150,
+      "objective_million_cny": 5678988.615606979,
+      "peak_process_tree_rss_gib": 525.316,
+      "strict_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "objective_components"
+      ],
+      "embedded_relative_v1": "PASS",
+      "frozen_output_check": "PASS",
+      "formal_acceptance_package": "PENDING_BACKUP_AND_ASSESSMENT"
+    },
+    "ops_conservative_2050": {
+      "release": "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "status": "OPTIMAL",
+      "preservation": "COMPLETE",
+      "iterations": 161,
+      "objective_million_cny": 5731237.04826789,
+      "peak_process_tree_rss_gib": 522.365,
+      "strict_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "reservoir_transition",
+        "objective_components"
+      ],
+      "embedded_relative_v1": "PASS",
+      "frozen_output_check": "PASS",
+      "formal_acceptance_package": "PENDING_BACKUP_AND_ASSESSMENT"
+    },
+    "D1_2050": {
+      "release": "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "status": "OPTIMAL",
+      "preservation": "COMPLETE",
+      "iterations": 149,
+      "objective_million_cny": 5707128.582745798,
+      "peak_process_tree_rss_gib": 522.378,
+      "strict_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "objective_components"
+      ],
+      "embedded_relative_v1": "PASS",
+      "frozen_output_check": "PASS",
+      "formal_acceptance_package": "PENDING_BACKUP_AND_ASSESSMENT"
+    }
+  },
+  "backup": {
+    "state": "RUNNING",
+    "pid": 3841220,
+    "total_files": 335,
+    "total_bytes": 16565040777,
+    "minimum_free_fraction": 0.05,
+    "author_decision": "改掉至少30%改为至少5%，然后直接备份"
+  },
+  "additional_jobs_submitted": false
+}

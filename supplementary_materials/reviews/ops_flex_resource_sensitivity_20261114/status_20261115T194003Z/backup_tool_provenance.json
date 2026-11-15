@@ -1,0 +1,10 @@
+{
+  "commit": "acb27944",
+  "sha256": {
+    "backup_ops_completed.py": "e322c8f4f2dcb4135d28af8e16a56e88862d4d6682b6a741f90b1f1ba526e9e0",
+    "backup_completed_cloud.py": "b493f4c8ee3ded9267b08384aeb4a59ce38460e819443d9ae5706cf0e2e825f0",
+    "backup_config.json": "5d0dd3f263da51c0d2c437ed19a27c9f2f45899f30a2fbc689c4cf79c108201d"
+  },
+  "focused_backup_tests": 9,
+  "author_minimum_free_fraction": 0.05
+}

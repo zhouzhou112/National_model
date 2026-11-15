@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15 19:40UTC：云端1运行/3完成。LATE5587177已实际启动9:08:17至33轮，718.97GiB启动内存/64CPU750G分配/smoke/实际44线程/全年结构均PASS。OPS-Open150轮15:55:05、Conservative161轮17:12:19、D1/C5 149轮14:53:19均OPTIMAL+保全COMPLETE+内置relative_v1 PASS，正式验收待备份。作者把通用备份余量门槛改5%，代码acb27944/9项测试PASS；335件16.57GB已由T550 PID3841220自主拉取，尚未完成。无新求解/监听，其他第二批未提交。**
+
 - **2026-11-15 08:47UTC：按作者新指示单独提前放行LATE-Open2050正式受限求解5587177，44线程、64CPU/750G/UNLIMITED/no-requeue。门禁与preflight PASS；当前Resources排队，实际分配/启动内存尚待节点启动，云端3运行+1排队。48线程已评估，保留44实测配置，未启动其他第二批。五轮测试42文件4.19GB备份已COMPLETE、SHA/源身份通过。详见LATE_PRODUCTION_LAUNCH_REPORT_ZH.md；源c92ee1bb。**
 
 - **2026-11-15 08:33UTC：云端3运行（OPS-Open79轮、Conservative76轮、D1/C5 82轮）/1结束。LATE测试5584392已按预定5轮回调终止，总4:36:18，排序65.27分钟、均9.32分钟/轮、进程树峰649.791GiB；条件估算3.6–4.1天，保守800秒/轮为4.8–5.3天，不能保证5天内。T55042文件4.19GB备份PID2744265运行中，T1已VERIFIED、T3传输中。全年上界四案PASS；第二/三批未提交，无监听。详见ops_flex_resource_sensitivity_20261114/status_20261115T083334Z/REVIEW_ZH.md。**
@@ -3938,6 +3940,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 19:40UTC 三案完成、LATE启动核验与5%门槛备份
+
+云端1运行/3新终态。LATE-Open5587177于10:31:51UTC在m4cm2206启动，已运行9:08:17、第33轮；AllocTRES64CPU/750G/billing64、UNLIMITED/no-requeue，启动可用718.968025GiB≥700，Gurobi13.0.2 smoke PASS、实际44线程、全年服务结构PASS、stderr空。当前打印PInf1.37e10/DInf105/Compl5.64e8，仍在早期；近10轮9.8067分钟/轮，Slurm峰643.934GiB。排序3871.64秒、FactorNZ2.233e10/FactorOps7.483e14，与测试相同规模，尚无终态。
+
+OPS-Open5584373 COMPLETED/0:0，150轮、15:55:05、目标5678988.615607million CNY、进程树峰525.316GiB；OPS-Conservative5584377同为COMPLETED/0:0，161轮、17:12:19、目标5731237.048268、峰522.365GiB；D1/C5 5584390同为COMPLETED/0:0，149轮、14:53:19、目标5707128.582746、峰522.378GiB。三案preservation COMPLETE、内置relative_v1 PASS、冻结容量输出检查PASS。严格绝对口径原HARD_FAIL保留：双向流/成本重构（保守另有水库项），未替换或删除原QC。此为终态与内置QC核验，正式验收包/完整批次报告尚待备份后整理。
+
+备份清单335件16565040777bytes，含全部output_8760、原MPS、BarX/BarPi与明确启动元数据。T550原30%规则会在备份后29.7531%处拦截；已向作者回报完整清单与余量。作者明确“改掉至少30%改为至少5%，然后直接备份”，本次改为通用新规则，不是单案例外。AGENTS第10-20节第3条改5%并追加本日决定；backup_completed_cloud默认及下限改5%，保留显式旧配置不改写。9项针对性备份测试PASS（含整批备份后的余量检查、活跃作业拒绝、路径/旧目标保护）。代码提交acb27944，未改模型或任何冻结作业。
+
+核无同名备份与旧传输后已启动T550单次自主拉取PID3841220，operation=20261115_resource_batch1_completed，计划备份后余29.7531%（约1.20TB）满足新5%。源root为National_model_cloud，目标/home/zz2/National_model_server/cloud_backup。状态RUNNING，不能称备份完成；不重复启动，不建立监听。此前LATE五轮测试备份已COMPLETE，未重复传输。
+
+证据status_20261115T194003Z/{summary,terminal_qc,backup_inventory,backup_config,backup_launch,backup_tool_provenance}.json及snapshots/20261115T194003Z/snapshot.json。下一步核旧PID3841220与各层VERIFIED/backup_manifest，源身份一致后登记COMPLETE；在T550做验收与初步分析，只取小文件；完成第一批报告后等作者明确授权其他第二批作业。LATE继续原作业，不重启/调参。
+
 
 ## 2026-11-15 08:47UTC 作者单独授权LATE-Open2050正式求解已放行
 
