@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "framework": "OPS",
+  "planning_year": 2030,
+  "batch": 2,
+  "case": "ops_open_2030",
+  "common_gate_sha256": "8030fece6c40c8344c697b5afe7a63322f9e8ef36ed7fe495de7d6900c91ca95",
+  "checks": {
+    "per_year_1h_24h_and_production_profile": "PASS",
+    "neutrality_relative_objective_difference": 0.0,
+    "monotonicity_relative_order_violations": [
+      1.3874680136190803e-15,
+      0.0,
+      1.560901515321464e-15
+    ],
+    "full_regression_tests_covered": 537,
+    "scoped_author_exception_tests": 3,
+    "immutable_input_SHA": "PASS",
+    "annual_carbon_limit_unchanged_mt": 4000,
+    "all_24h_sides_share_original_B_quota_mt": 10.95890410958904,
+    "threads": 44
+  },
+  "author_report_checkpoint_sha256": "6e02f7456e592d39d563c64ba30b363290e638bf65e830935c34067df9b4e3f2"
+}

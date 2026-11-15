@@ -1,5 +1,8 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-15 23:20UTC：2030作者原B窗口额度例外下七项门禁全部PASS（中性差0、单调性反向≤1.56e-15）；preflight后release5591162，源02c4dd84。第二批4项全部已提交：LATE5587177/2040 5590946/2060 5590961运行，2030待Resources，启动内存待节点分配。全年4000Mt不变，旧不可行证据保留。第三批未提交；恢复年度行对偶及5%备份规则继续。**
+
+
 - **2026-11-15：作者已批准2030短窗沿用原B10.958904Mt例外；全年4000Mt/容量/容差不变。新目录门禁进程4185607，原B/中性/Open24h及Open1h已PASS，继续剩余对照。源代码125fdfdd；旧失败完整保留，537项模型回归源码未变，额外3项作用域测试PASS。2030未提交，其他三云端作业保持原运行，第三批待确认。**
 
 
@@ -4189,3 +4192,15 @@ Job5590946（OPS-Open2040/m4cm1702）和5590961（OPS-Open2060/m4cm1803）均于
 新T550 runtime_batch2_2030_author_window_20261115只复制代码/诊断夹具，复用只读数据根；生产模块、config、tests与537项覆盖快照LF SHA完全一致。新增3项例外作用域测试本机/T550均PASS，拒绝其他年份/全年/错误来源/额度。有限门禁进程4185607；开放1h、原B参考24h、复制根中性24h、开放24h已PASS，其余对照及真实生产profile1h继续。不得重复启动，先读新目录execution_receipt和gates/2030状态。
 
 2030发布将从最新成功启动的OPS-Open2060/5590961脚本派生，源SHA1741d4f28c559f57f7686245eff6e0c6c2c88031f8f0feca8e8891f41c37b1e2已与云端核对。完整门禁通过后由finalize_2030_author_gate.py生成2030唯一放行证据，deploy_batch2按其预算元数据路径记录例外（不把短窗额度传入全年命令）。当前2030尚未提交；2040/2060及LATE原运行不动，第三批仍未授权。下一步完成门禁后冻结/preflight/提交release，核总并发≤4与实际启动资源。
+
+## 2026-11-15 23:20UTC OPS-Open2030已按作者例外放行，第二批齐备
+
+作者明确批准2030的24h工程门禁及全部对照使用原B额度10.95890410958904Mt；全年4000Mt/冻结容量/求解容差保持不变。新目录runtime_batch2_2030_author_window_20261115七项门禁全部PASS：Open1h、原B/复制根中性/Open/Conservative/zero24h、真实生产profile1h。数据根中性目标差0，单调性最大反向1.5609e-15<1e-7。原537项模型回归源码LF SHA未变，额外3项例外作用域测试本机/T550均PASS。证据/冻结源提交02c4dd84，例外工具125fdfdd；旧失败MPS/IIS/日志完整保留。
+
+新release20261115_opsopen_2030_v9_t44_m750_tol1e4_v1，沿用B2030 v3原冻结源，无新增闭合或筛选；90项原数据与作者输入SHA匹配，负荷逐行一致。sbatch从最新成功启动OPS-Open2060/5590961派生，preflight PASS，经held核对后release Job5591162。全年命令horizon=full_year、V9、44线程、64CPU/750G/UNLIMITED/no-requeue，不传短窗预算；原模型/BarX/BarPi/状态保全开启。
+
+23:20UTC快照：LATE5587177、OPS-Open2040/5590946、2060/5590961三项RUNNING；2030/5591162 PENDING等待Resources，实际启动内存/smoke尚待分配节点，不宣称已通过。四项已全部提交，未超过4个并发/排队名额。2030启动脚本继续强制可用内存≥700GiB。
+
+精确证据：batch2/2030/author_window_v2/、batch2/2030/FINAL_YEAR_RELEASE_GATES.json、batch2/deployment/ops_open_2030/。注意batch2/2030/YEAR_GATES_STOP.json与原窗口预算仍是历史失败记录，当前有效门禁/预算位于author_window_v2，不得用旧STOP再次拦截已获作者例外通过的新作业，也不得删除旧失败。
+
+下一步询问时核原2030job实际分配/启动内存及四案运行，禁止重复提交；任何终态按5%余量规则完整备份T550、relative_v1与小文件交付。LATE-Open结束后按第一批在原MPS+自身BarPi上恢复年度核算行对偶并核完整行序SHA。第三批仍须作者明确确认，无后台监听，原有三项运行和冻结包未修改。

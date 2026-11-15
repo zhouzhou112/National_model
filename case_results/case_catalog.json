@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-15T22:53:55.331053Z",
+  "as_of_utc": "2026-11-15T23:22:35.953306+00:00",
   "cases": [
     {
       "case": "B",
@@ -566,6 +566,28 @@
         "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch2\\2060\\FINAL_YEAR_RELEASE_GATES.json"
       ],
       "startup_available_memory_gib": 719.1453132629395
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "version": "v1",
+      "release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "job_id": "5591162",
+      "kind": "QUEUED_PRODUCTION",
+      "solver_status": "PENDING_RESOURCES",
+      "acceptance_status": "PENDING",
+      "backup_status": "PENDING_TERMINAL",
+      "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "case_card": "case_results\\by_case\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1\\README.md",
+      "batch": 2,
+      "main_comparison_eligible": true,
+      "source_commit": "02c4dd8485de01c7688f3fab9ab177abb14327dd",
+      "engineering_window_author_exception": "2030 original B quota 10.95890410958904 Mt, annual 4000 unchanged",
+      "postsolve_annual_row_duals_recovery_required": true,
+      "local_evidence": [
+        "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch2\\deployment\\ops_open_2030\\release.json",
+        "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch2\\2030\\author_window_v2\\YEAR_GATES_PASSED.json"
+      ]
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
