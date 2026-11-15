@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "framework": "FACTOR_TEST_ONLY",
+  "planning_year": 2050,
+  "batch": 1,
+  "case": "late_open_2050_factor5",
+  "common_gate_sha256": "942e70a7001bfce893ee75692d9f232f53cb03ac5c8dc2b8b7ea73114ebaafba",
+  "checks": {
+    "status": "PASS",
+    "actual_selection_1h": "PASS",
+    "own_24h_identity": "PASS",
+    "free_sites": 4481,
+    "lower_sites": 28846,
+    "upper_sites": 3359,
+    "scope": "FACTOR_AND_FIRST_FIVE_ITERATIONS_ONLY",
+    "full_solve_authorized": false
+  },
+  "author_report_checkpoint_sha256": "13236d7ea511d5ef0eb0ab45177e832134acafc1d637d8b4cd51c19ef0f4a276"
+}

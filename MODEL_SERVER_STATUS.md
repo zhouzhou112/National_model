@@ -1,5 +1,8 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-15 00:52UTC：柔性资源量敏感性第一批四项已全部RUNNING：OPS-Open5584373、OPS-Conservative5584377、D1/C5 5584390、LATE-Open五轮测试5584392。64CPU/750G/UNLIMITED/no-requeue、配置44线程；启动可用内存719.04/720.81/724.46/718.34GiB、smoke均PASS。仍在启动/构建，无科学终态；全年上界、排序/5轮、备份及批次报告待输出。仅第一批放行，后两批仍需作者确认；无监听。源码29e3782d/门禁5648e488，详见本日版本记录与BATCH1_LAUNCH_RECEIPT.json。**
+
+
 2026-11-14 Case3 2060验收PASS（证据90bf8780，工具229e24c5）。先核旧PID1081649与三层VERIFIED，完整备份106文件5506884504bytes、源身份不变后开始独立证据。本案原MPS+BarX定位河北年度外送行53400865，残差0.032784048GWh/295306.392013GWh=1.11017e-7，低于0.295306392GWh容差。自身BarPi证书B=187.045720million CNY（1.870457亿元），B/obj=3.273716e-5；P=5713559.887379、D=5708901.410421、P−D=4658.476958million CNY，B为原差的4.015169%。8025剔除列中3个负价列，与C2060三站逐列相同、无新增；陕西11站全部非负/B贡献0。六组物理检查通过、水库暂缓，solver条件披露，原QC保留，不重解。第2节先向作者回报后取73文件108431688bytes；收尾106原件与全部85交付小件SHA通过，验收JSON双端一致。A相对Base/B/C节省点差755.377474/272.686736/8.812200亿元，工程区间[708.082474,803.832700]/[252.323710,321.141962]/[-38.836741,57.267427]；A/C包含零，不仅凭点差判定优势。case_catalog登记完成，不建监听。
 
 2026-11-14 15:47UTC：Case3 2060全备份已COMPLETE，PID1081649退出，T1/T2/T3全部VERIFIED，106文件5506884504bytes；15:47重读全部目标bytes/SHA通过，当前云端result_manifest身份仍匹配2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d，源身份未变。case_catalog与备份台账已登记COMPLETE。随后按任务书在新目录启动只读MPS+BarX行审计、自身BarPi证书与重评，当前评估器六组物理检查通过/水库暂缓，正式验收尚待三项证据。不得重复传输、不建监听。
@@ -4064,3 +4067,13 @@ Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、�
 已修正本轮新增profile遗漏physical_v1校验分支的入口登记错误并加回归；未改变模型缩放。完整失败记录保留，实际启动profile的1h复核尚在T550新目录进行。尚未提交云端作业；下一步取回本轮1h结果、汇报五项门禁，逐案云端冻结/preflight通过才提交并release。只授权第一批三解加一测试；测试前5轮终止，后两批必须等待作者确认。不建监听、不读取凭据、不改旧release或论文模块。
 
 命令/路径：`resume_validation_v7.py`、`check_production_profiles_1h.py`、`stage_cloud_inputs.py --resume-uploaded`；证据均在`reviews/ops_flex_resource_sensitivity_20261114/`（supplementary_materials下）。远端为`/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/validation_runtime_v7`。云端输入暂存`National_model_cloud/_staging/ops_resource_sensitivity_20261114`；首次提取因登录Python版本不支持Path.is_relative_to停止，改用等价父路径校验后仅解包已核SHA的原上传文件，未重复上传/重建数据。
+
+## 2026-11-15 00:52UTC 柔性资源敏感性第一批四项放行与启动核验
+
+源码29e3782d、门禁/操作记录5648e488均已推送GitHub工作分支；此前已先在对话汇报五项PASS，再逐案冻结、preflight、held提交核对并release。OPS-Open2050 Job5584373（m4cm1608）、OPS-Conservative2050 Job5584377（m4cm1702）、D1/C5 Job5584390（m4cm2001）、LATE-Open2050五轮测试Job5584392（m4cm2004）均RUNNING。实际AllocTRES均cpu64/mem750G/billing64，UNLIMITED/Requeue=0；启动可用内存分别719.039097/720.810307/724.460155/718.335464GiB，均≥700，Gurobi13.0.2计算节点smoke PASS。配置44线程，实际参数读回待构建结束；无终态、stderr均空，不能称已收敛或验收。
+
+四个新release分别为20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1、20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1、20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1、20261115_lateopen_2050_restricted_factor5_t44_m750_v1；根目录均为National_model_cloud。OPS/D1复用原B2050冻结源与ec2b4195…原闭合；LATE复用原C2050 R1状态，清单4481自由/28846下界/3359上界。云端每个新包安装后SHA与demand_gw逐行核验通过，启动release_files SHA通过。首个OPS-Open冻结自29e3782d，其余自5648e488；两提交的模型/脚本/config/tests字节完全相同并对应535项回归。
+
+证据：reviews/ops_flex_resource_sensitivity_20261114/BATCH1_LAUNCH_RECEIPT.json、deployment/、snapshots/20261115T005231Z/snapshot.json、GATES_SUMMARY.json。case_results/case_catalog追加四案及小型case卡，旧17条记录逐项不变；C5与五轮测试标为诊断，不进入主比较。T550验证与定价均结束，没有后台监听。
+
+精确下一步：首次复查读四案原任务状态，不重复提交。构建完成后读resource_structure_audit四服务全年上界与Open139行、实际参数44线程；LATE读FactorNZ/Ops与前5轮逐轮耗时、确认回调终止并条件性估时，>5天先报作者。发现终态按10-20核旧manifest/传输后完整备份到T550（测试仅保全其实际生成原模型/日志，不伪称完整解），生产解relative_v1验收、取小文件与T550初步分析。第一批全部终态并备份后交批次报告，作者明确确认前绝不提交第二/三批。当前无新终态，备份与正式批次报告尚待运行结束。

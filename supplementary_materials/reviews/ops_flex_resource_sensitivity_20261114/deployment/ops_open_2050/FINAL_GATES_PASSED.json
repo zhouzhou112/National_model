@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "framework": "OPS",
+  "planning_year": 2050,
+  "batch": 1,
+  "case": "ops_open_2050",
+  "common_gate_sha256": "942e70a7001bfce893ee75692d9f232f53cb03ac5c8dc2b8b7ea73114ebaafba",
+  "checks": {
+    "status": "PASS",
+    "production_entry_1h": "PASS",
+    "engineering_window": "PASS"
+  },
+  "author_report_checkpoint_sha256": "13236d7ea511d5ef0eb0ab45177e832134acafc1d637d8b4cd51c19ef0f4a276"
+}

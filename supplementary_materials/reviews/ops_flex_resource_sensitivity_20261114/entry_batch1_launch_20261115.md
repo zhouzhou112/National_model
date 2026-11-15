@@ -1,0 +1,9 @@
+## 2026-11-15 00:52UTC 柔性资源敏感性第一批四项放行与启动核验
+
+源码29e3782d、门禁/操作记录5648e488均已推送GitHub工作分支；此前已先在对话汇报五项PASS，再逐案冻结、preflight、held提交核对并release。OPS-Open2050 Job5584373（m4cm1608）、OPS-Conservative2050 Job5584377（m4cm1702）、D1/C5 Job5584390（m4cm2001）、LATE-Open2050五轮测试Job5584392（m4cm2004）均RUNNING。实际AllocTRES均cpu64/mem750G/billing64，UNLIMITED/Requeue=0；启动可用内存分别719.039097/720.810307/724.460155/718.335464GiB，均≥700，Gurobi13.0.2计算节点smoke PASS。配置44线程，实际参数读回待构建结束；无终态、stderr均空，不能称已收敛或验收。
+
+四个新release分别为20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1、20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1、20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1、20261115_lateopen_2050_restricted_factor5_t44_m750_v1；根目录均为National_model_cloud。OPS/D1复用原B2050冻结源与ec2b4195…原闭合；LATE复用原C2050 R1状态，清单4481自由/28846下界/3359上界。云端每个新包安装后SHA与demand_gw逐行核验通过，启动release_files SHA通过。首个OPS-Open冻结自29e3782d，其余自5648e488；两提交的模型/脚本/config/tests字节完全相同并对应535项回归。
+
+证据：reviews/ops_flex_resource_sensitivity_20261114/BATCH1_LAUNCH_RECEIPT.json、deployment/、snapshots/20261115T005231Z/snapshot.json、GATES_SUMMARY.json。case_results/case_catalog追加四案及小型case卡，旧17条记录逐项不变；C5与五轮测试标为诊断，不进入主比较。T550验证与定价均结束，没有后台监听。
+
+精确下一步：首次复查读四案原任务状态，不重复提交。构建完成后读resource_structure_audit四服务全年上界与Open139行、实际参数44线程；LATE读FactorNZ/Ops与前5轮逐轮耗时、确认回调终止并条件性估时，>5天先报作者。发现终态按10-20核旧manifest/传输后完整备份到T550（测试仅保全其实际生成原模型/日志，不伪称完整解），生产解relative_v1验收、取小文件与T550初步分析。第一批全部终态并备份后交批次报告，作者明确确认前绝不提交第二/三批。当前无新终态，备份与正式批次报告尚待运行结束。

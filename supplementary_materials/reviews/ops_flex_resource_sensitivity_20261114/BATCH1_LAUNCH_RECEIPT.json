@@ -1,0 +1,73 @@
+{
+  "as_of_utc": "2026-11-15T00:52:34.902580Z",
+  "batch": 1,
+  "cloud_running_jobs": 4,
+  "cases": [
+    {
+      "case": "ops_open_2050",
+      "job_id": "5584373",
+      "status": "RUNNING",
+      "source_commit": "29e3782d32015c7d96c8ea09109eac2b4bc14385",
+      "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "startup_available_memory_gib": 719.0390968322754,
+      "preflight": "PASS",
+      "allocation": "64CPU/750G/UNLIMITED/no-requeue",
+      "configured_gurobi_threads": 44,
+      "compute_node_smoke": "PASS",
+      "annual_resource_audit": "PENDING_BUILD",
+      "terminal": false,
+      "backup": "PENDING_TERMINAL"
+    },
+    {
+      "case": "ops_conservative_2050",
+      "job_id": "5584377",
+      "status": "RUNNING",
+      "source_commit": "5648e4885ce16b1c2c0623c48b2586c14742b240",
+      "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "startup_available_memory_gib": 720.8103065490723,
+      "preflight": "PASS",
+      "allocation": "64CPU/750G/UNLIMITED/no-requeue",
+      "configured_gurobi_threads": 44,
+      "compute_node_smoke": "PASS",
+      "annual_resource_audit": "PENDING_BUILD",
+      "terminal": false,
+      "backup": "PENDING_TERMINAL"
+    },
+    {
+      "case": "D1_2050",
+      "job_id": "5584390",
+      "status": "RUNNING",
+      "source_commit": "5648e4885ce16b1c2c0623c48b2586c14742b240",
+      "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "startup_available_memory_gib": 724.4601554870605,
+      "preflight": "PASS",
+      "allocation": "64CPU/750G/UNLIMITED/no-requeue",
+      "configured_gurobi_threads": 44,
+      "compute_node_smoke": "PASS",
+      "annual_resource_audit": "PENDING_BUILD",
+      "terminal": false,
+      "backup": "PENDING_TERMINAL"
+    },
+    {
+      "case": "late_open_2050_factor5",
+      "job_id": "5584392",
+      "status": "RUNNING",
+      "source_commit": "5648e4885ce16b1c2c0623c48b2586c14742b240",
+      "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+      "startup_available_memory_gib": 718.3354644775391,
+      "preflight": "PASS",
+      "allocation": "64CPU/750G/UNLIMITED/no-requeue",
+      "configured_gurobi_threads": 44,
+      "compute_node_smoke": "PASS",
+      "annual_resource_audit": "PENDING_BUILD",
+      "terminal": false,
+      "backup": "PENDING_TERMINAL"
+    }
+  ],
+  "source_code_commit": "29e3782d",
+  "gate_evidence_commit": "5648e488",
+  "pre_submission_report_checkpoint_sha256": "13236d7ea511d5ef0eb0ab45177e832134acafc1d637d8b4cd51c19ef0f4a276",
+  "snapshot_sha256": "897039326ef3de098b0a9b427505da76617f7e7372585d4b530653186e940ac6",
+  "later_batches_authorized": false,
+  "background_watcher": false
+}
