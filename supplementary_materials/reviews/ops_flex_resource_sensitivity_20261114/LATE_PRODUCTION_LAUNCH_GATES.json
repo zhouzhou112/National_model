@@ -1,0 +1,37 @@
+{
+  "batch": 2,
+  "common_pre_submission": "PASS",
+  "other_batch2_cases_authorized": false,
+  "explicit_late_launch_authorization": "启动LATE-Open，可以考量48核心吧",
+  "template_sha256": "67d9a8cc761ba0f02b898a752040989800724267f941d4094f63203175525758",
+  "cases": {
+    "late_open_2050": {
+      "status": "PASS",
+      "construction_1h": "PASS",
+      "identity_24h": "PASS",
+      "complete_unit_coverage": 535,
+      "full_annual_structure": "PASS",
+      "factor_and_five_iterations": "PASS",
+      "profile_numeric_identity_to_test": "PASS",
+      "selected_threads": 44,
+      "free_sites": 4481,
+      "conditional_full_runtime_days": [
+        3.568,
+        4.034
+      ],
+      "conservative_800_second_scenario_days": [
+        4.752,
+        5.261
+      ]
+    }
+  },
+  "evidence_sha256": {
+    "GATES_SUMMARY.json": "942e70a7001bfce893ee75692d9f232f53cb03ac5c8dc2b8b7ea73114ebaafba",
+    "LATE_PRODUCTION_AUTHORIZATION.json": "6e1fe9c38670da5156984c865479f4e6431f577f6b1a4aa81a461fe00d96a480",
+    "late_selected_1h_v7_gate.json": "1aafdf116fdcbbac0eba4a12330894e8f676cae7971c1b8277db6167b98cbc62",
+    "late_identity_24h_v2_execution.json": "85f844604257b677bb84de190c3fedd73e529589cb58832ae38ed7b7cad43e09",
+    "full_tests_v7.json": "3cb80703d184da48cfa48e1daf704445c436a0512f1ab1d10020dbcc7c148fb6",
+    "status_20261115T083334Z/summary.json": "ef673cd8bc18e0ad41f46fa70e971f2667b370f819018348e20e300762338d5e",
+    "LATE_Open_2050_fixed_selection.json": "1c54c2630c2fb2010129f309def39b4a3ae26fab8acd9d0007790efff779cb4a"
+  }
+}
