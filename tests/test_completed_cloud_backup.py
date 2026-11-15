@@ -28,7 +28,27 @@ class CompletedCloudBackupTests(unittest.TestCase):
 
     def test_cannot_reduce_reserve(self):
         with self.assertRaises(AssertionError):
-            backup.configure(dict(self.config(), minimum_free_fraction=0.1))
+            backup.configure(dict(self.config(), minimum_free_fraction=0.049))
+
+    def test_author_five_percent_default_and_stricter_saved_configs(self):
+        backup.configure(self.config())
+        self.assertEqual(backup.MIN_FREE_FRACTION, 0.05)
+        backup.configure(dict(self.config(), minimum_free_fraction=0.30))
+        self.assertEqual(backup.MIN_FREE_FRACTION, 0.30)
+
+    def test_plan_checks_reserve_after_entire_payload(self):
+        from collections import namedtuple
+        usage = namedtuple('usage', 'total used free')
+        backup.configure(self.config())
+        with TemporaryDirectory() as folder:
+            backup.DEST = Path(folder)
+            backup.OP = backup.DEST / '_operations/new'
+            inv = {'releases': {'release1': {'files': [{'bytes': 6}]}}}
+            with patch.object(backup, 'inventory', return_value=inv), patch.object(
+                    backup.shutil, 'disk_usage', return_value=usage(100, 90, 10)):
+                with self.assertRaises(AssertionError):
+                    backup.plan()
+            self.assertFalse(backup.OP.exists())
 
     def test_plan_rejects_existing_destination_before_network(self):
         backup.configure(self.config())

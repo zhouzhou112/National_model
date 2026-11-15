@@ -24,7 +24,7 @@ import re
 import subprocess
 
 DEST = OP = SOURCE = SSH_CONFIG = SSH = RELEASES = None
-MIN_FREE_FRACTION = 0.30
+MIN_FREE_FRACTION = 0.05  # Author 2026-11-15: complete-backup reserve changed to 5%.
 AUTHORIZATION = ''
 
 def configure(config):
@@ -37,8 +37,8 @@ def configure(config):
         assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', item) and item not in ['.', '..'], item
     for key in ['destination', 'source', 'ssh_config']:
         assert PurePosixPath(config[key]).is_absolute(), key
-    minimum = float(config.get('minimum_free_fraction', 0.30))
-    assert 0.30 <= minimum < 1, 'Keep at least the established 30% reserve'
+    minimum = float(config.get('minimum_free_fraction', 0.05))
+    assert 0.05 <= minimum < 1, 'Keep at least the author-approved 5% reserve'
     DEST = Path(config['destination'])
     OP = DEST / '_operations' / operation
     SOURCE = config['source'].rstrip('/')
