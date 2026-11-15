@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15 第二批已获作者明确放行：第一批Claude复核后采纳，授权OPS-Open2030/2040/2060逐案门禁后提交，44线程、总云端≤4；第三批待确认。来源SHA/原闭合已核对，脚本准备02395a37，但T550安装后转发断开且握手超时，安装终态未知、门禁/回归未启动、三案未提交。恢复须先查runtime_batch2_20261115的旧安装/进程，再启动有限验证；不重复安装或提交。LATE5587177保持原运行，终态年度行对偶恢复已列入收尾。**
+
 - **2026-11-15 第一批已完成：T550全量备份335件16.57GB校验后，Open/Conservative/D1三案当前relative_v1全部PASS；恢复每案1134年度对偶并完成只读分析。322件422.92MB验收/结果已回本机、双端SHA全匹配。第一批报告与表格已同步T550，case_catalog更新；证据919b4249。Open较REF省729.84亿元/年；D1较中央OPS少弃风光49.411TWh、年容量行均值51.09→2.94元/MWh。其余第二/三批未提交，等待作者审阅；生产LATE5587177按既有单独授权运行。**
 
 - **2026-11-15 19:40UTC：云端1运行/3完成。LATE5587177已实际启动9:08:17至33轮，718.97GiB启动内存/64CPU750G分配/smoke/实际44线程/全年结构均PASS。OPS-Open150轮15:55:05、Conservative161轮17:12:19、D1/C5 149轮14:53:19均OPTIMAL+保全COMPLETE+内置relative_v1 PASS，正式验收待备份。作者把通用备份余量门槛改5%，代码acb27944/9项测试PASS；335件16.57GB已由T550 PID3841220自主拉取，尚未完成。无新求解/监听，其他第二批未提交。**
@@ -3942,6 +3944,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 作者采纳第一批并授权第二批其余三案；待T550连接恢复
+
+已按作者新消息记录：第一批经Claude复核、确认采纳；OPS-Open2030/2040/2060各自门禁通过即提交/release，44线程、64CPU/750G/UNLIMITED/no-requeue、启动可用内存≥700GiB；与LATE-Open2050/5587177合计最多4个。第三批仍待确认。LATE结束后按第一批只读MPS ROWS+自身BarPi/全行序摘要恢复年度核算行对偶，写旁置件并纳入验收回传。AGENTS和case_catalog已记录作者采纳与该收尾要求，未把OPS/D1候选状态用于新的续接链。
+
+准备代码/来源证据02395a37：batch2/cloud_frozen_sources.json、cloud_source_file_sha256.json、t550_sources.json等。已核B2030 v3/B2040 v1/B2060 v2真实命令与逐文件冻结源SHA；2040/2060原闭合及窗口预算SHA匹配，2030原B无额外闭合。2030生产数据根90项、后两年58项；4个历史元数据/水库审计文件需按B2030原件复制到独立根，未重新生成作者输入。初次rsync因符号链接跳过这4项，失败日志保留，随后改--copy-links限定这4项；该复制为安装原件，不是修补科学输入。
+
+T550新隔离目录/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115。安装返回连接随后断开，多次SSH复查均banner exchange超时，已向用户请求重连。安装可能已自行完成，但当前无法核验；新门禁与完整回归尚未启动，三个新云端作业均未提交。不得把本轮py_compile/三年CLI静态检查PASS当成科学门禁PASS。现有LATE未被修改，没有后台监听。
+
+精确恢复步骤：先读runtime的installation_receipt.json并核旧进程/目录状态，若已PASS则取回并校验，不重跑安装；若未完成则检查旧stderr和已生成数据根，按实际阶段补齐。prepare_batch2_runtime.py的--resume-after-metadata-copy只适用于neutral等数据根尚未建立的阶段，不可盲目重复。随后start_batch2_validation.py启动有限完整回归和三个独立逐年门禁；先核validation_execution.json不存在以免重复。每年open1h、同窗原B/复制根中性、open/conservative/zero 24h、真实生产profile1h全部通过；同窗使用同一Base实际排放×1.0001预算。新2030参数审计按已核中央表加入V1G调用30元/MWh、供暖参与率0.25等。模型源码/约束/目标/生产数值参数未改。
+
+deploy_batch2.py只允许这三个Open年份；缺逐年PASS/完整回归/preflight证据即拒绝提交，账户队列≥4时拒绝新增。完成门禁后先报告结果，逐案冻结并preflight/held核对/release/启动资源核验。第二批记录在reviews/ops_flex_resource_sensitivity_20261114/batch2/REVIEW_ZH.md；第三批未授权，不得提交。其他会话未审文件原样保留。
+
 
 ## 2026-11-15 第一批T550验收、分析、报告与本地交付完成
 
