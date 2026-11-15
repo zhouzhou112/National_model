@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-15 第二批：2040/2060全部门禁和preflight PASS，已release5590946/5590961，当前等待Resources；与LATE5587177共1运行+2排队，启动内存尚待节点分配。2030原B参考24h INFEASIBLE，停止放行；MPS唯一差异是碳行10.958904→9.002825Mt，IIS包含该行，已请求作者决定是否沿用2030原B窗口额度。537项测试覆盖完成。第三批未提交，原运行不改。详见batch2/2030/STOP_REPORT_ZH.md。**
+
 - **2026-11-15 第二批已获作者明确放行：第一批Claude复核后采纳，授权OPS-Open2030/2040/2060逐案门禁后提交，44线程、总云端≤4；第三批待确认。来源SHA/原闭合已核对，脚本准备02395a37，但T550安装后转发断开且握手超时，安装终态未知、门禁/回归未启动、三案未提交。恢复须先查runtime_batch2_20261115的旧安装/进程，再启动有限验证；不重复安装或提交。LATE5587177保持原运行，终态年度行对偶恢复已列入收尾。**
 
 - **2026-11-15 第一批已完成：T550全量备份335件16.57GB校验后，Open/Conservative/D1三案当前relative_v1全部PASS；恢复每案1134年度对偶并完成只读分析。322件422.92MB验收/结果已回本机、双端SHA全匹配。第一批报告与表格已同步T550，case_catalog更新；证据919b4249。Open较REF省729.84亿元/年；D1较中央OPS少弃风光49.411TWh、年容量行均值51.09→2.94元/MWh。其余第二/三批未提交，等待作者审阅；生产LATE5587177按既有单独授权运行。**
@@ -3944,6 +3946,19 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-15 第二批2040/2060已放行；2030在24h碳预算门禁停止
+
+恢复T550后先确认旧安装仅有original数据根、无新门禁进程；按断点补齐原件，后续缺少历史诊断助手目录已在新运行目录补齐，没有重建作者输入或改科学模型。安装PASS；537项测试完整覆盖（T550535通过，2项本机原归档测试已通过且源码SHA未变）。2040/2060原件SHA、原闭合/预算、三端BUILD_AUDIT身份、1h资源与全部投资固定审计、24h可行/容量身份/中性/单调性、真实44线程profile1h全部PASS。中性相对目标差均0；单调性最大浮点反向分别1.30e-16/2.14e-15，低于既有1e-7比较容差。证据提交db8e1915。
+
+OPS-Open2040 Job5590946、2060 Job5590961已逐案新建冻结release、preflight PASS、held核对后release。根分别20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1和20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1，源码db8e1915；生产参数44线程/64CPU/750G/UNLIMITED/no-requeue，节点启动必须可用内存≥700GiB。22:41UTC快照为LATE5587177 RUNNING+两新案PENDING(Resources)，无实际AllocTRES/startup资源文件，不能宣称启动检查已通过。2030未提交，总队列3项，第三批未提交。
+
+2030开放1h PASS，随后原B参考24h在201.84秒判INFEASIBLE，IIS另用841.74秒提取62214约束/82613界；门禁STOP，日志、原MPS和27.14MB IIS完整保留T550。只读比较本轮与原已通过B2030的24h MPS：NAME/ROWS/COLUMNS（含目标）/全部BOUNDS/ENDATA逐字节相同，唯一RHS差为annual_net_carbon_limit从10.95890410958904降至9.002825025595003 Mt，IIS包含该碳行。原额为4000×24/8760，新额按一般规则取Base同窗实际净排放×1.0001；该短窗不可行不等于全年OPS2030不可行。
+
+已提交具体停止报告batch2/2030/STOP_REPORT_ZH.md并询问作者：是否只对2030全部24h对照恢复原B已验证10.95890410958904 Mt，全年4000 Mt/冻结容量/容差保持不变。当前尚未获该例外授权，不改预算、不重跑、不放行2030。等待答复时继续收尾两案登记和启动资源核验，不创建第三批。LATE结束后的年度行对偶恢复保持已授权安排。
+
+操作入口：prepare_batch2_runtime.py的受限断点恢复、start_batch2_validation.py的有限回归/逐年门禁、collect_batch2_progress.py的一次性读回、finalize_batch2_year_gate.py及deploy_batch2.py。精确下一步：先读现有两job排队/启动状态；2030只有作者明确例外后才在新目录重跑相关门禁，旧失败目录不得覆盖。所有运行保留，无监听、无凭据读取，未改5587177或其他冻结包。
+
 
 ## 2026-11-15 作者采纳第一批并授权第二批其余三案；待T550连接恢复
 

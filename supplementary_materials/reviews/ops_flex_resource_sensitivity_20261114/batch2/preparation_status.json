@@ -1,5 +1,5 @@
 {
-  "status": "VALIDATION_RUNNING",
+  "status": "2040_2060_RELEASED_2030_STOPPED_PENDING_AUTHOR",
   "recorded_at_utc": "2026-11-15T21:43:21.131193+00:00",
   "authorized_years": [
     2030,
@@ -14,7 +14,10 @@
   "runtime": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115",
   "installation_status": "PASS",
   "gates_started": true,
-  "new_cloud_jobs_submitted": false,
+  "new_cloud_jobs_submitted": [
+    "5590946",
+    "5590961"
+  ],
   "checks": {
     "source_metadata_read": true,
     "T550_frozen_source_SHA_matches_cloud": true,
@@ -23,10 +26,14 @@
     "python_compile": "PASS"
   },
   "pending": [
-    "Finish per-year 24h comparisons and exact production 1h gates",
-    "Report passed gates then freeze/preflight/submit-release",
-    "Verify actual allocation and startup memory"
+    "Author decision on 2030 engineering-window carbon budget",
+    "Actual allocation/startup memory when 2040/2060 receive nodes"
   ],
   "third_batch_submissions_forbidden": true,
-  "full_regression": "537 covered: 535 T550 pass and 2 unchanged local archive tests"
+  "full_regression": "537 covered: 535 T550 pass and 2 unchanged local archive tests",
+  "gates_passed_years": [
+    2040,
+    2060
+  ],
+  "year2030": "STOP_INFEASIBLE_ORIGINAL_B_24H"
 }

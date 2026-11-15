@@ -5903,3 +5903,15 @@ T550新隔离目录/home/zz2/National_model_server/ops_flex_resource_sensitivity
 精确恢复步骤：先读runtime的installation_receipt.json并核旧进程/目录状态，若已PASS则取回并校验，不重跑安装；若未完成则检查旧stderr和已生成数据根，按实际阶段补齐。prepare_batch2_runtime.py的--resume-after-metadata-copy只适用于neutral等数据根尚未建立的阶段，不可盲目重复。随后start_batch2_validation.py启动有限完整回归和三个独立逐年门禁；先核validation_execution.json不存在以免重复。每年open1h、同窗原B/复制根中性、open/conservative/zero 24h、真实生产profile1h全部通过；同窗使用同一Base实际排放×1.0001预算。新2030参数审计按已核中央表加入V1G调用30元/MWh、供暖参与率0.25等。模型源码/约束/目标/生产数值参数未改。
 
 deploy_batch2.py只允许这三个Open年份；缺逐年PASS/完整回归/preflight证据即拒绝提交，账户队列≥4时拒绝新增。完成门禁后先报告结果，逐案冻结并preflight/held核对/release/启动资源核验。第二批记录在reviews/ops_flex_resource_sensitivity_20261114/batch2/REVIEW_ZH.md；第三批未授权，不得提交。其他会话未审文件原样保留。
+
+## 2026-11-15 第二批2040/2060已放行；2030在24h碳预算门禁停止
+
+恢复T550后先确认旧安装仅有original数据根、无新门禁进程；按断点补齐原件，后续缺少历史诊断助手目录已在新运行目录补齐，没有重建作者输入或改科学模型。安装PASS；537项测试完整覆盖（T550535通过，2项本机原归档测试已通过且源码SHA未变）。2040/2060原件SHA、原闭合/预算、三端BUILD_AUDIT身份、1h资源与全部投资固定审计、24h可行/容量身份/中性/单调性、真实44线程profile1h全部PASS。中性相对目标差均0；单调性最大浮点反向分别1.30e-16/2.14e-15，低于既有1e-7比较容差。证据提交db8e1915。
+
+OPS-Open2040 Job5590946、2060 Job5590961已逐案新建冻结release、preflight PASS、held核对后release。根分别20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1和20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1，源码db8e1915；生产参数44线程/64CPU/750G/UNLIMITED/no-requeue，节点启动必须可用内存≥700GiB。22:41UTC快照为LATE5587177 RUNNING+两新案PENDING(Resources)，无实际AllocTRES/startup资源文件，不能宣称启动检查已通过。2030未提交，总队列3项，第三批未提交。
+
+2030开放1h PASS，随后原B参考24h在201.84秒判INFEASIBLE，IIS另用841.74秒提取62214约束/82613界；门禁STOP，日志、原MPS和27.14MB IIS完整保留T550。只读比较本轮与原已通过B2030的24h MPS：NAME/ROWS/COLUMNS（含目标）/全部BOUNDS/ENDATA逐字节相同，唯一RHS差为annual_net_carbon_limit从10.95890410958904降至9.002825025595003 Mt，IIS包含该碳行。原额为4000×24/8760，新额按一般规则取Base同窗实际净排放×1.0001；该短窗不可行不等于全年OPS2030不可行。
+
+已提交具体停止报告batch2/2030/STOP_REPORT_ZH.md并询问作者：是否只对2030全部24h对照恢复原B已验证10.95890410958904 Mt，全年4000 Mt/冻结容量/容差保持不变。当前尚未获该例外授权，不改预算、不重跑、不放行2030。等待答复时继续收尾两案登记和启动资源核验，不创建第三批。LATE结束后的年度行对偶恢复保持已授权安排。
+
+操作入口：prepare_batch2_runtime.py的受限断点恢复、start_batch2_validation.py的有限回归/逐年门禁、collect_batch2_progress.py的一次性读回、finalize_batch2_year_gate.py及deploy_batch2.py。精确下一步：先读现有两job排队/启动状态；2030只有作者明确例外后才在新目录重跑相关门禁，旧失败目录不得覆盖。所有运行保留，无监听、无凭据读取，未改5587177或其他冻结包。

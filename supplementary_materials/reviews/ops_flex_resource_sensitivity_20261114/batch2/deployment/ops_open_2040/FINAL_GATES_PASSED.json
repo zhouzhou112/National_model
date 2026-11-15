@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "framework": "OPS",
+  "planning_year": 2040,
+  "batch": 2,
+  "case": "ops_open_2040",
+  "common_gate_sha256": "5e713cd9f97220ffbaab5c454c92728b833cb840867b04054cc342eb10117a55",
+  "checks": {
+    "per_year_1h_24h_and_production_profile": "PASS",
+    "neutrality_relative_objective_difference": 0.0,
+    "monotonicity_relative_order_violations": [
+      0.0,
+      1.2988653979098609e-16,
+      0.0
+    ],
+    "objective_comparison_relative_tolerance": 1e-07,
+    "full_regression_tests_covered": 537,
+    "T550_passed": 535,
+    "unchanged_local_archive_tests": 2,
+    "immutable_input_SHA": "PASS",
+    "original_frozen_source_and_closure_reused": true,
+    "threads": 44
+  },
+  "author_report_checkpoint_sha256": "6e02f7456e592d39d563c64ba30b363290e638bf65e830935c34067df9b4e3f2"
+}
