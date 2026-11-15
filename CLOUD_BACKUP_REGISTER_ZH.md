@@ -139,3 +139,18 @@ Git基准`5c7d308d47e274a0c0ba5998aa0b1d6fcca6087a`；命令、输入身份、�
 ## 2026-11-06 Case3 2050验收证据完成
 
 2026-11-06 Case3 2050条件验收PASS并按作者规则采纳。原MPS/BarX核实河北年度外送行，残差0.022921150GWh/量级271412.766653GWh=8.44513e-8，小于0.271412767GWh容差。自身BarPi证书B=535.315616million CNY（5.353156亿元），B/obj=9.3932146e-5，B为原对偶差的11.38323%；6195剔除列中11个负价列均陕西陆风，21列rc_ratio<0.1（0.338983%），变化中位数-0.0008859805、p05=-0.0639453415。比较用途不触发重解，2060 margin保持0.2。完整备份93文件已校验，73小文件108322922bytes回本机；独立验收JSON双端SHA一致，原QC保留，水库暂缓。详见 supplementary_materials/reviews/case3_2050_acceptance_20261106/REVIEW_ZH.md；2060待按授权准备，5318408未动。
+
+## 2026-11-15 柔性资源量敏感性第一批：备份、验收与本地交付完成
+
+目标根仍为 `/home/zz2/National_model_server/cloud_backup/`，不删除或覆盖任何旧备份。作者已将通用余量门槛从30%改为5%（AGENTS同日决定、代码acb27944）；下面三案完成后仍余约29.75%。历史30%记录保留为当时规则，不再当作新操作的最低门槛。
+
+| 案例 | release | 完整备份文件/bytes | 终态与验收 |
+|---|---|---:|---|
+| OPS-Open2050 | `20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1` | 111 / 5,528,585,075 | 20:12:03UTC批次COMPLETE，T1/T2/T3全部VERIFIED；T550当前relative_v1 PASS |
+| OPS-Conservative2050 | `20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1` | 111 / 5,515,861,005 | 同上；T550当前relative_v1 PASS |
+| D1/C5 2050 | `20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1` | 113 / 5,520,594,697 | 同上；T550当前relative_v1 PASS，保持诊断身份 |
+| LATE-Open2050五轮测试 | `20261115_lateopen_2050_restricted_factor5_t44_m750_v1` | 42 / 4,191,604,666 | 08:43:31UTC COMPLETE，T1/T3全部VERIFIED；测试未产生BarX/BarPi/最终状态，不称完整科学解 |
+
+三案335文件16,565,040,777bytes，operation `20261115_resource_batch1_completed`；验收前重新核全部目标bytes/SHA，云端result_manifest在收尾仍与原备份一致。PID3841220已退出，不再启动传输。验收与分析在旁置 `acceptance_resource_batch1_20261115`，原输出不改。每案恢复1134年度行对偶，完整原MPS行序摘要与自身BarPi一致；原SavedDual导出缺项及严格QC标签保留。
+
+本地回传Open107件142,735,375bytes、Conservative107件138,775,945bytes、D1 108件141,408,749bytes；有效载荷322件422,920,069bytes，双端SHA全部匹配。清单内73项有72项适用（无筛选candidate_selection.csv不适用），再加验收、冻结审计与分析。MPS、BarX/BarPi和大型调度NPZ留T550。验收证据919b4249，交接/索引5f853144；主报告 `supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/acceptance_batch1_20261115/BATCH1_REPORT_ZH.md`，本地索引 `case_results/RESOURCE_SENSITIVITY_BATCH1_20261115.md`。未提交其他第二/三批、未改生产LATE5587177、无监听。
