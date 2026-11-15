@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "year": 2030,
+  "batch": 2,
+  "third_batch_authorized": false,
+  "source_commit": "e4a86404f6470c04fca72e4d3a42814e37934577",
+  "template_sha256": "1741d4f28c559f57f7686245eff6e0c6c2c88031f8f0feca8e8891f41c37b1e2",
+  "template_local_path": "batch2/deployment/ops_open_2060/job.sbatch",
+  "template_release": "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+  "closure_sha256": null,
+  "budget_sha256": "847b90bd4cd1a2e9d8e5c63e8183fda436f54942aef6c98cb4404b33e6c0e9c8",
+  "window_carbon_budget_path": "batch2/2030/author_window_v2/window_carbon_budget.json",
+  "source_result_manifest_sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+  "checks": {
+    "per_year_1h_24h_and_production_profile": "PASS",
+    "neutrality_relative_objective_difference": 0.0,
+    "monotonicity_relative_order_violations": [
+      1.3874680136190803e-15,
+      0.0,
+      1.560901515321464e-15
+    ],
+    "full_regression_tests_covered": 537,
+    "scoped_author_exception_tests": 3,
+    "immutable_input_SHA": "PASS",
+    "annual_carbon_limit_unchanged_mt": 4000,
+    "all_24h_sides_share_original_B_quota_mt": 10.95890410958904,
+    "threads": 44
+  },
+  "evidence_sha256": {
+    "batch2\\2030\\author_window_v2\\YEAR_GATES_PASSED.json": "e4bbbed08c3c64e0374351c24c73d691067b8addd2b11fb026db3b6fc46d82cd",
+    "batch2\\2030\\author_window_v2\\window_carbon_budget.json": "847b90bd4cd1a2e9d8e5c63e8183fda436f54942aef6c98cb4404b33e6c0e9c8",
+    "batch2\\2030\\author_window_v2\\installation_receipt.json": "dfe52a6b2f5eda4fed03fb4b3558fce39c5167b1b3fd48ba2327d5390ad1efa9",
+    "batch2\\2030\\author_window_v2\\execution_receipt.json": "689990b7bf7f8d16bd580c00db3954cb12d62050b14d9c754fb98290d5b84d79",
+    "batch2\\full_tests.json": "36a1bb3cda1e451c385dcd033d6ceab7cd2d8f122024d8708999bd7bf5ff0bca",
+    "batch2\\AUTHORIZATION.json": "6e02f7456e592d39d563c64ba30b363290e638bf65e830935c34067df9b4e3f2"
+  }
+}
