@@ -1,5 +1,11 @@
 # OPS-Open 2040 第二批启动记录
 
+> 最新：验收PASS、备份COMPLETE；107件140,663,242bytes回本机，双端SHA通过。
+
+[验收说明](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/OPS-Open/2040/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/README_ZH.md) · [验收JSON](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/OPS-Open/2040/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/acceptance_record.json) · [阶段报告](D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/acceptance_batch2_20261116/OPS_OPEN_2030_2040_2060_REPORT_ZH.md)
+
+下方保留历次运行记录。
+
 Job 5590946 已提交并release；门禁及preflight PASS。当前等待节点资源，实际分配和启动内存尚待验证，不标为已运行。44线程，64CPU/750G/UNLIMITED/no-requeue，启动可用内存至少700GiB。
 
 原冻结来源/上游/闭合复用已验收B2040，作者输入文件原样使用；全年碳上限不变。无候选筛选。终态后完整T550备份（5%余量）、relative_v1验收、年度行对偶恢复和小文件回传。第三批未授权，不自动提交。

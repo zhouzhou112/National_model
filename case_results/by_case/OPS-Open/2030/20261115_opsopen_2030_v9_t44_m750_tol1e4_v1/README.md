@@ -1,5 +1,11 @@
 # OPS-Open2030第二批启动记录
 
+> 最新：验收PASS、备份COMPLETE；105件138,555,336bytes回本机，双端SHA通过。
+
+[验收说明](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/OPS-Open/2030/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/README_ZH.md) · [验收JSON](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/OPS-Open/2030/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/acceptance_record.json) · [阶段报告](D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/acceptance_batch2_20261116/OPS_OPEN_2030_2040_2060_REPORT_ZH.md)
+
+下方保留历次运行记录。
+
 ## 2026-11-15 23:20UTC OPS-Open2030已按作者例外放行，第二批齐备
 
 作者明确批准2030的24h工程门禁及全部对照使用原B额度10.95890410958904Mt；全年4000Mt/冻结容量/求解容差保持不变。新目录runtime_batch2_2030_author_window_20261115七项门禁全部PASS：Open1h、原B/复制根中性/Open/Conservative/zero24h、真实生产profile1h。数据根中性目标差0，单调性最大反向1.5609e-15<1e-7。原537项模型回归源码LF SHA未变，额外3项例外作用域测试本机/T550均PASS。证据/冻结源提交02c4dd84，例外工具125fdfdd；旧失败MPS/IIS/日志完整保留。

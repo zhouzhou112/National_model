@@ -1,5 +1,5 @@
 {
-  "as_of_utc": "2026-11-16T20:52:45.592555Z",
+  "as_of_utc": "2026-11-16T22:02:41.492166+00:00",
   "cases": [
     {
       "case": "B",
@@ -531,8 +531,8 @@
       "job_id": "5590946",
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "EMBEDDED_RELATIVE_PASS_FORMAL_PENDING",
-      "backup_status": "RUNNING",
+      "acceptance_status": "PASS",
+      "backup_status": "COMPLETE",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
       "case_card": "case_results\\by_case\\OPS-Open\\2040\\20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1\\README.md",
       "batch": 2,
@@ -545,7 +545,17 @@
       ],
       "startup_available_memory_gib": 720.6550598144531,
       "backup_operation": "20261116_resource_batch2_ops_completed",
-      "backup_pid": 2385473
+      "backup_pid": 2385473,
+      "acceptance_profile": "relative_v1",
+      "acceptance_path": "case_results\\by_case\\OPS-Open\\2040\\20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1\\acceptance_resource_batch2_20261116\\acceptance_record.json",
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+      "local_collection_directory": "case_results\\by_case\\OPS-Open\\2040\\20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+      "delivered_file_count": 107,
+      "delivered_bytes": 140663242,
+      "delivery_sha_status": "PASS",
+      "annual_row_duals_recovered": 1134,
+      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
     },
     {
       "case": "OPS-Open",
@@ -555,8 +565,8 @@
       "job_id": "5590961",
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "EMBEDDED_RELATIVE_PASS_FORMAL_PENDING",
-      "backup_status": "RUNNING",
+      "acceptance_status": "PASS",
+      "backup_status": "COMPLETE",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
       "case_card": "case_results\\by_case\\OPS-Open\\2060\\20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1\\README.md",
       "batch": 2,
@@ -569,7 +579,17 @@
       ],
       "startup_available_memory_gib": 719.1453132629395,
       "backup_operation": "20261116_resource_batch2_ops_completed",
-      "backup_pid": 2385473
+      "backup_pid": 2385473,
+      "acceptance_profile": "relative_v1",
+      "acceptance_path": "case_results\\by_case\\OPS-Open\\2060\\20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1\\acceptance_resource_batch2_20261116\\acceptance_record.json",
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+      "local_collection_directory": "case_results\\by_case\\OPS-Open\\2060\\20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+      "delivered_file_count": 107,
+      "delivered_bytes": 140978073,
+      "delivery_sha_status": "PASS",
+      "annual_row_duals_recovered": 1134,
+      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
     },
     {
       "case": "OPS-Open",
@@ -579,8 +599,8 @@
       "job_id": "5591162",
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "EMBEDDED_RELATIVE_PASS_FORMAL_PENDING",
-      "backup_status": "RUNNING",
+      "acceptance_status": "PASS",
+      "backup_status": "COMPLETE",
       "remote_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
       "case_card": "case_results\\by_case\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1\\README.md",
       "batch": 2,
@@ -598,7 +618,17 @@
       "objective_million_cny": 4181810.139273937,
       "terminal_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\ops_open_2030_completed_20261116\\terminal_summary.json",
       "backup_operation": "20261116_resource_batch2_ops_completed",
-      "backup_pid": 2385473
+      "backup_pid": 2385473,
+      "acceptance_profile": "relative_v1",
+      "acceptance_path": "case_results\\by_case\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1\\acceptance_resource_batch2_20261116\\acceptance_record.json",
+      "backup_directory": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "local_collection_directory": "case_results\\by_case\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "delivered_file_count": 105,
+      "delivered_bytes": 138555336,
+      "delivery_sha_status": "PASS",
+      "annual_row_duals_recovered": 1134,
+      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",

@@ -1,10 +1,13 @@
 {
-  "status": "SUPERSEDED_BY_COMBINED_RUNNING_TRANSFER",
+  "status": "COMPLETE_VIA_COMBINED_BACKUP",
   "user_reply": "稍后恢复",
   "no_transfer_started": true,
   "old_backup_and_process_check_required_before_start": true,
   "total_files": 109,
   "total_bytes": 5520216730,
   "operation": "20261116_resource_batch2_ops_completed",
-  "pid": 2385473
+  "pid": 2385473,
+  "acceptance_status": "PASS",
+  "delivery_status": "SHA_VERIFIED",
+  "completed_at_utc": "2026-11-16T21:19:45.525927Z"
 }

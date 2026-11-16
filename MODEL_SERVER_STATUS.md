@@ -1,5 +1,8 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-16：OPS-Open2030/2040/2060备份333件16.57GB已COMPLETE；T550当前relative_v1全部PASS，每案1134年度对偶恢复及只读分析完成。319件420.20MB验收/小文件回本机，双端SHA一致，报告/四年概览已同步T550；证据af640553。LATE21:55UTC第197轮(PInf294/Compl7.87)仍运行，第二批整体未结束，第三批未提交。索引case_results/OPS_OPEN_SECOND_BATCH_20261116.md。**
+
+
 - **2026-11-16 20:52UTC：云端仅LATE5587177运行，OPS-Open2030/2040/2060均OPTIMAL+保全COMPLETE+内置relative_v1 PASS。T550恢复后核无重复备份，333件16.57GB已合并自主拉取PID2385473，PPID1；2030/2040 T1已VERIFIED、其余传输中，尚未COMPLETE。预计剩余空间29.22%满足5%规则。旧2030单案待办已并入本次，不重复启动。正式验收/年度对偶恢复待备份完成，第三批未提交、无监听。**
 
 
@@ -4245,3 +4248,19 @@ OPS-Open2030/5591162运行12:46:34到121轮，打印PInf1.78e-4/DInf8.41e-8/Comp
 证据batch2_completed_backup_20261116/{terminal_summary,terminal_qc_summary,source_inventory,target_precheck,backup_config,launch_receipt,initial_transfer_status,tool_provenance}.json，源状态snapshots/20261116T204903Z/snapshot.json。备用包装器backup_batch2_completed.py复用既有校验/互斥锁/续传引擎，只限定本次三案并扩充明确元数据清单；引擎/科学模型未修改。此前ops_open_2030_completed_20261116待办由本合并operation接续，不能再启动旧单案配置。
 
 下一步先核PID2385473和transfer_status/backup_manifest，全部层VERIFIED且源身份不变后登记COMPLETE，再在T550按第一批方法验收、恢复各自原MPS+BarPi年度行对偶、分析并取小文件。LATE仍运行不纳入此次备份，不改其作业/冻结包；第三批未提交，无后台监听。
+
+## 2026-11-16 OPS-Open2030/2040/2060 T550验收与本地交付完成
+
+证据/工具提交af640553。合并备份于21:19:45UTC COMPLETE：333文件16567230513bytes，T1/T2/T3全部VERIFIED、源身份未变，原PID2385473退出。验收前T550逐文件重新核全部原件bytes/SHA；当前relative_v1重评三个年份全部PASS，冻结容量身份/全年资源结构/保全亦PASS。原严格HARD_FAIL双向流/成本重构及水库暂缓披露保留，不自动决定作者采用状态。无候选筛选，无筛选证书要求。
+
+逐案从原MPS ROWS+本解BarPi恢复1134年度核算行，完整原始行数/名称/sense顺序哈希匹配，旁置acceptance_resource_batch2_20261116/annual_rows，原SavedDual导出缺项和原输出不改。T550完成合同/上限/调用/等效小时、全国及五省8760调度、31省完整负荷侧价格、分省技术发电/风光弃电、连续启停容量/等效次数/成本、储能与同年REF/中央OPS成本比较；数值闭合/重构核对通过。不是用离散机组次数解释连续RUC变量，不以无负价作为正确性标准。
+
+相对同年REF，2030/2040/2060成本点差109.69/521.16/704.13亿元/年；工程区间[106.62,124.16]/[482.65,535.63]/[656.83,723.16]。相对中央OPS再省79.23/265.12/221.44亿元。四年概览复用第一批已验收2050及其登记SHA，未重算旧案；不能把不同资源量跨框架比值当投资替代份额。
+
+三个本地包：2030 105件138555336bytes，2040 107件140663242bytes，2060 107件140978073bytes；有效载荷319件420196651bytes，单件最大30158372bytes，双端SHA全部匹配，验收JSON同步。Case3 2040清单72项适用原文件（无筛选candidate_selection.csv不适用）加冻结/结构/验收/分析；大MPS、BarX/BarPi、热电/水库/柔性大NPZ留T550。回传2040时转发中断，重连后一次连接补2040/2060，2030未重复传输，未重跑备份或科学计算。
+
+主报告acceptance_batch2_20261116/OPS_OPEN_2030_2040_2060_REPORT_ZH.md，四年概览CSV、当前三案表和逐案包均已交付；统一索引case_results/OPS_OPEN_SECOND_BATCH_20261116.md。报告/表/回执与LATE快照已同步T550 analysis_tools_resource_batch2_20261116/final_report，closeout_verification PASS，云端源manifest收尾仍一致。case_catalog与备份台账改COMPLETE/PASS。
+
+LATE5587177截至21:55UTC仍RUNNING，第197轮，打印PInf294/DInf1.57e-7/Compl7.87；近10轮PInf/Compl降44.2%/47.5%，DInf小量反弹40.2%，10.99分钟/轮，Slurm峰643.93GiB、stderr空、无终态。第二批整体尚未结束，当前仅OPS三案阶段交付；第三批仍待作者明确确认，无新提交/重解/监听、不改冻结包或SI。
+
+下一步按询问只读核LATE终态，结束后按5%余量备份、恢复年度行对偶、当前验收和自身双向定价证书；若需要放开重解先报作者。不得据OPS三案已PASS而自动启动第三批。
