@@ -1,0 +1,155 @@
+{
+  "late_open_2050": {
+    "last": {
+      "iter": 160,
+      "P": 2069578920.0,
+      "D": -7454523730.0,
+      "pinf": 3260.0,
+      "dinf": 8.94e-08,
+      "compl": 135.0,
+      "seconds": 99912.0
+    },
+    "rss": {
+      "exit_code": 0,
+      "stdout": "5587177.batch|675214008K|339395560K\n",
+      "stderr": ""
+    },
+    "status": null,
+    "objective": null,
+    "preservation": null,
+    "iterations": null,
+    "memory": null,
+    "previous10": {
+      "iter": 150,
+      "P": 7602314100.0,
+      "D": -30803270900.0,
+      "pinf": 20900.0,
+      "dinf": 1.25e-07,
+      "compl": 710.0,
+      "seconds": 93211.0
+    },
+    "drop_last10": {
+      "pinf": 0.8440191387559809,
+      "dinf": 0.28479999999999994,
+      "compl": 0.8098591549295775
+    },
+    "minutes_per_round": 11.168333333333333
+  },
+  "ops_open_2030": {
+    "last": {
+      "iter": 131,
+      "P": 4181810.14,
+      "D": 4180362.93,
+      "pinf": 9.85e-05,
+      "dinf": 7.18e-08,
+      "compl": 1.71e-05,
+      "seconds": 46235.0
+    },
+    "rss": {
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "sstat: error: couldn't get steps for job 5591162\n"
+    },
+    "status": "OPTIMAL",
+    "objective": 4181810.139273937,
+    "preservation": "COMPLETE",
+    "iterations": {
+      "simplex": 0.0,
+      "barrier": 131,
+      "pdhg": 0
+    },
+    "memory": {
+      "peak_process_tree_rss_bytes": 559012630528,
+      "peak_process_tree_rss_gib": 520.621,
+      "elapsed_seconds": 49302.334,
+      "sampling_interval_seconds": 0.5
+    },
+    "previous10": {
+      "iter": 121,
+      "P": 4182421.21,
+      "D": 4179937.54,
+      "pinf": 0.000178,
+      "dinf": 8.41e-08,
+      "compl": 2.94e-05,
+      "seconds": 42737.0
+    },
+    "drop_last10": {
+      "pinf": 0.4466292134831461,
+      "dinf": 0.14625445897740796,
+      "compl": 0.41836734693877553
+    },
+    "minutes_per_round": 5.83
+  },
+  "ops_open_2040": {
+    "last": {
+      "iter": 151,
+      "P": 5036712.41,
+      "D": 5033613.64,
+      "pinf": 0.000484,
+      "dinf": 1.04e-08,
+      "compl": 3.66e-05,
+      "seconds": 55337.0
+    },
+    "rss": {
+      "exit_code": 0,
+      "stdout": "5590946.batch|549074572K|254057316K\n",
+      "stderr": ""
+    },
+    "status": null,
+    "objective": null,
+    "preservation": null,
+    "iterations": null,
+    "memory": null,
+    "previous10": {
+      "iter": 141,
+      "P": 5038266.25,
+      "D": 5032308.14,
+      "pinf": 0.001,
+      "dinf": 1.89e-08,
+      "compl": 7.04e-05,
+      "seconds": 50848.0
+    },
+    "drop_last10": {
+      "pinf": 0.516,
+      "dinf": 0.44973544973544977,
+      "compl": 0.48011363636363635
+    },
+    "minutes_per_round": 7.4816666666666665
+  },
+  "ops_open_2060": {
+    "last": {
+      "iter": 162,
+      "P": 5719285.59,
+      "D": 5716156.48,
+      "pinf": 0.000314,
+      "dinf": 1.17e-08,
+      "compl": 3.76e-05,
+      "seconds": 55084.0
+    },
+    "rss": {
+      "exit_code": 0,
+      "stdout": "5590961.batch|536432052K|256304056K\n",
+      "stderr": ""
+    },
+    "status": null,
+    "objective": null,
+    "preservation": null,
+    "iterations": null,
+    "memory": null,
+    "previous10": {
+      "iter": 152,
+      "P": 5720312.93,
+      "D": 5715119.17,
+      "pinf": 0.00052,
+      "dinf": 1.12e-08,
+      "compl": 6.24e-05,
+      "seconds": 50987.0
+    },
+    "drop_last10": {
+      "pinf": 0.3961538461538461,
+      "dinf": -0.044642857142857206,
+      "compl": 0.39743589743589747
+    },
+    "minutes_per_round": 6.828333333333333
+  }
+}

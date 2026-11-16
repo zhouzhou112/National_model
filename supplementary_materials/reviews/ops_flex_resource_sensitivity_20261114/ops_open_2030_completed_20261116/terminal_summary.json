@@ -1,0 +1,29 @@
+{
+  "status": "OPTIMAL",
+  "embedded_relative_v1": "PASS",
+  "strict_status": "HARD_FAIL",
+  "strict_failed": [
+    "unidirectional_interprovincial_flow",
+    "objective_components"
+  ],
+  "source_result_manifest_sha256": "a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a",
+  "objective_million_cny": 4181810.139273937,
+  "barrier_iterations": 131,
+  "runtime_memory": {
+    "peak_process_tree_rss_bytes": 559012630528,
+    "peak_process_tree_rss_gib": 520.621,
+    "elapsed_seconds": 49302.334,
+    "sampling_interval_seconds": 0.5
+  },
+  "preservation": "COMPLETE",
+  "frozen_capacity_check": "PASS",
+  "v2g_slack": {
+    "resource": "open",
+    "national_v2g_cap_gw": 1000.0,
+    "contracted_v2g_gw": 0.5562144847511442,
+    "slack_gw": 999.4437855152488,
+    "passed": true,
+    "attribute": "X"
+  },
+  "sacct": "5591162|COMPLETED|13:50:57|0:0|\n5591162.batch|COMPLETED|13:50:57|0:0|542316960K\n5591162.extern|COMPLETED|13:50:57|0:0|0\n"
+}

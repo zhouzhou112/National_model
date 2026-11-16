@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-16 15:09UTC：云端3 RUNNING+OPS-Open2030新完成。2030/5591162于14:30UTC COMPLETED、131轮OPTIMAL、保全COMPLETE/内置relative_v1与容量检查PASS；109件5.52GB备份清单已备，T550拒连且用户答复稍后恢复，未启动传输/正式验收。LATE160轮(PInf3260/Compl135)、OPS2040 151轮、2060 162轮继续；原作业不改、无监听、第三批未提交。**
+
 - **2026-11-16 13:26UTC：云端4 RUNNING，无新终态。LATE2050到151轮(PInf2e4/Compl626)；OPS-Open2030/2040/2060到121/137/147轮，打印PInf1.78e-4/1.26e-3/6.58e-4，尚未结束。2030实际启动已核：718.47GiB、64CPU750G、smoke与全年结构PASS；三项OPS对偶残差有小量反弹，不能称全部单调。证据snapshots/20261116T132611Z；不改运行作业，不建监听，第三批未提交。**
 
 - **2026-11-15 23:20UTC：2030作者原B窗口额度例外下七项门禁全部PASS（中性差0、单调性反向≤1.56e-15）；preflight后release5591162，源02c4dd84。第二批4项全部已提交：LATE5587177/2040 5590946/2060 5590961运行，2030待Resources，启动内存待节点分配。全年4000Mt不变，旧不可行证据保留。第三批未提交；恢复年度行对偶及5%备份规则继续。**
@@ -3954,6 +3956,17 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+## 2026-11-16 15:09UTC OPS-Open2030完成；备份待用户恢复T550
+
+云端3运行/1新终态。OPS-Open2030/5591162于14:30:41UTC COMPLETED/0:0，总13:50:57、131轮OPTIMAL，目标4181810.139273937 million CNY，进程树峰520.621GiB（Slurm峰另记）。preservation COMPLETE、内置relative_v1 PASS、冻结容量输出PASS；原严格HARD_FAIL仅双向流/成本重构，原记录保留，正式T550验收尚未完成。开放全国V2G1000GW上限的实际松弛999.4437855GW通过。
+
+终态盘点109文件5520216730bytes，完整含原MPS、BarX/BarPi、状态/日志和明确启动元数据，source_result_manifest SHA a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a。本机到T550转发连接被拒绝，尚未能核已有目标manifest/活跃传输；用户明确“稍后恢复”。仅准备source_inventory、backup_config和backup_pending，没有启动传输，不把待备份写成COMPLETE。
+
+其余三项RUNNING：LATE-Open2050到160轮，打印PInf3260/DInf8.94e-8/Compl135，近10轮降84.4%/28.5%/81.0%，11.17分钟/轮；OPS-Open2040到151轮，4.84e-4/1.04e-8/3.66e-5；2060到162轮，3.14e-4/1.17e-8/3.76e-5。两OPS原始残差与互补性继续下降；2060近10轮DInf略反弹4.46%，不说全部单调。三项stderr为空、无终态，不因互补性小于1e-4宣称完成。所有残差为Gurobi日志打印口径。
+
+证据snapshots/20261116T150932Z/及ops_open_2030_completed_20261116/{terminal_summary,source_inventory,backup_config,backup_pending}.json；代码基准d12bcb7d，本轮无模型/环境变更。恢复后先核T550旧目标和传输，再按5%余量、互斥锁、全层SHA/源身份规则备份；完成后在T550验收与年度对偶恢复，只取小文件。其余原作业不操作，第三批未授权，无后台监听。
+
 
 ## 2026-11-16 13:26UTC 第二批四案运行快照与2030启动核验
 

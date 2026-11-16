@@ -1,0 +1,11 @@
+{
+  "operation": "20261116_opsopen2030_completed",
+  "releases": [
+    "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.05,
+  "authorization": "Standing 10-20 terminal backup; author 11-15 minimum 5% reserve; no watcher; user will restore T550 later."
+}
