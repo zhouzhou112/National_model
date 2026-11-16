@@ -1,0 +1,14 @@
+{
+  "four_year_summary.json": {
+    "bytes": 10458,
+    "sha256": "c20bda508a516f8517eeb907d336264f6d64ff35acafff6cd666fb5ec033730d"
+  },
+  "OPS_Open_four_year_summary.csv": {
+    "bytes": 1285,
+    "sha256": "302b799eb155654e49025eba6b36e30d425c03f9457a4c59fef3c1da9fb66d08"
+  },
+  "OPS_Open_four_year_services.csv": {
+    "bytes": 2453,
+    "sha256": "b7e761e7a3e0223265a4e429e26fdca6e0a40e76dfc24938def8f506cb15d76e"
+  }
+}

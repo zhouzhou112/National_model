@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "result_label": "初步结果",
+  "dual_grade": "BARRIER_DUAL_ENGINEERING_GRADE",
+  "T3_corridors": 411,
+  "T3_monthly_rows": 4932,
+  "T4_rows": 1134,
+  "selected_families": {
+    "ac_line_shared_capacity_hourly": 420480,
+    "dc_line_forward_capacity_hourly": 3179880,
+    "province_annual_non_spatial_injection": 31,
+    "province_annual_effective_demand": 31,
+    "province_annual_external_sent": 31,
+    "province_annual_external_received": 31,
+    "province_annual_external_net_import": 31,
+    "load_center_annual_energy_balance": 337,
+    "intra_load_center_annual_capacity": 642
+  },
+  "seconds": 258.02150225639343,
+  "no_province_offset_correction": true,
+  "no_clipping": true,
+  "signs": "Min LP, capacity rows L: raw pi normally <=0. Raw signed pi retained; capacity value = -sum(pi).",
+  "units_note": "Task legacy rent_million_cny_per_year stores requested sum(pi), whose actual unit is million CNY/GW, NOT cash/year. Legacy rent_per_gw=sum(pi)/capacity has unit million CNY/GW^2. Use explicitly unit-named columns. capacity_rent=-sum(pi)*capacity is million CNY.",
+  "binding_note": "hours_binding is abs(pi)>1e-6 as requested; dual-active proxy, not primal slack verification. AC uses shared bidirectional row; no identifiable separate direction counts. DC has no reverse row.",
+  "voltage_note": "voltage_class absent in archived transmission_capacity.csv; left empty, not inferred.",
+  "annual_capacity_units": "intra_load_center_annual_capacity constrains annual GWh flows by design_hours*capacity_GW; raw pi unit million CNY/GWh."
+}

@@ -1,0 +1,652 @@
+{
+  "case": "OPS-Open-2030",
+  "release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+  "files": {
+    "output_8760/annual_adequacy_by_province.csv": {
+      "bytes": 6096,
+      "sha256": "11b49a8ba9434cfda7afba05bbca62f8b2e413415b0c2bc5b2628eb8babaee15",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_adequacy_by_province.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_capacity_by_province_technology.csv": {
+      "bytes": 35581,
+      "sha256": "4a0d4548803a415b1d935a835c3e2c9656e6f1a58ce4381fa87ba52d7074e7e3",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_capacity_by_province_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_capacity_by_technology.csv": {
+      "bytes": 1217,
+      "sha256": "f1dbe005d2f90d05cc9c13d9dc96ed24d7f2f59293866d030dbb91125541cba2",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_capacity_by_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_capacity_link_row_scaling.json": {
+      "bytes": 60857,
+      "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_capacity_link_row_scaling.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_carbon_ccs.json": {
+      "bytes": 620,
+      "sha256": "cf01370eadcbb4220ce52b809ec0758bf529fd78ea7b154158aec0f64ec34b61",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_carbon_ccs.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_constraint_shadow_prices.csv": {
+      "bytes": 381675,
+      "sha256": "22b39afcec20d420c691e4d1798363714107b057152e7b2c35517f26054b51b3",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_constraint_shadow_prices.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_flexible_load_by_province.csv": {
+      "bytes": 19110,
+      "sha256": "083ba98d9d62812bc3e86deb8a569f15eb191b5027d0118df1953ba8d4c6cdad",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_flexible_load_by_province.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_generation_by_province_technology.csv": {
+      "bytes": 15055,
+      "sha256": "540d30c99009bd3b7c6d9c2f374b924d4740e94886dac2b1ac9d5fc923ce9e8f",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_generation_by_province_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_generation_by_technology.csv": {
+      "bytes": 508,
+      "sha256": "853cf31eaa9ece91ac23a9a7a0fd3d99c116b855ec9312a1773ac52545d72bfd",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_generation_by_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_resource_accounting_by_province.csv": {
+      "bytes": 8566,
+      "sha256": "d3e902b6c3667854e47be2a5d136a31230a609a807cd5da5d6e977eafb942a02",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_resource_accounting_by_province.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_storage_operation_by_technology.csv": {
+      "bytes": 383,
+      "sha256": "b924ba67d7fd103400cd13e3d2c9ab869e83d7097f3c67b431567a9021558062",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_storage_operation_by_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/annual_summary.json": {
+      "bytes": 2284,
+      "sha256": "e3cfcc3653ade412938e145e17a575fb748c335150085e7c11f244fe3498b211",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_summary.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 77532,
+      "sha256": "62dfecdb3cfa4aaba800b9879434c63b6d3e7887f617f5e63e812d9d2469dfc9",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/build_report.json": {
+      "bytes": 87129,
+      "sha256": "5358584bb15395f30d4a1a366a2cfc46b23e05423cc2cb2a2e97ef4a76a56f3b",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/build_report.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/co2_source_sink_flows.csv": {
+      "bytes": 4835951,
+      "sha256": "32332b586a4a19a91476f09a2b01bf1eda672b5f8889f7726d0fe9ecb82d6637",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/co2_source_sink_flows.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/cost_components.csv": {
+      "bytes": 4758,
+      "sha256": "21f651ab9a1119d533c0e5417312e6b5d58946efeb39e6f80c0b1f95893a17d2",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/cost_components.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/dac_capacity_capture.csv": {
+      "bytes": 5333,
+      "sha256": "3d5840f5526ab3f58e3315b86c13d7199fd3e68f167934770fe5e3b538bdb661",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/dac_capacity_capture.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/dual_export_status.json": {
+      "bytes": 1701,
+      "sha256": "73b9a878f290020c5da0dac3b47c49a20608fd3810d29b516fbcd7c2cef2a74b",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/dual_export_status.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/gurobi.log": {
+      "bytes": 22672,
+      "sha256": "e02a74454d698fac184aaeb8647bbacfc75b3dc1d9f0244c6ee543f1a946aa49",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/gurobi.log",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hourly_marginal_prices.csv.gz": {
+      "bytes": 14579246,
+      "sha256": "0d80c2995e34de288fd8db688357c7835d2bdf18d2eeed6a1142fda145503695",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hourly_marginal_prices.csv.gz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hourly_national_balance.csv.gz": {
+      "bytes": 852304,
+      "sha256": "8312a3676181b6d412f84e0305375e4580805c4a05d463875e8fd531b2616685",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hourly_national_balance.csv.gz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hydro_aggregate_capacity.csv": {
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hydro_aggregate_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hydro_capacity.csv": {
+      "bytes": 310066,
+      "sha256": "448626fe1fc765b3efe25fe6dcb75633052e8673774215224aa527263b9cc740",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hydro_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hydro_cascade_reconciliation_audit.json": {
+      "bytes": 16560,
+      "sha256": "c724ae638ceeb373791aa52bec3a68d4e585f1581308b34113eda058d93a7419",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hydro_cascade_reconciliation_audit.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hydro_cascade_reconciliation_by_node.csv": {
+      "bytes": 12141,
+      "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hydro_cascade_reconciliation_by_node.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/hydro_dispatch.npz": {
+      "bytes": 6767845,
+      "sha256": "a18f5e59a9301dc5ac9258cd57b480e1469b030e8c0fc286455a8e3b35d8e78d",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/hydro_dispatch.npz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/input_manifest.csv": {
+      "bytes": 29745,
+      "sha256": "218bb1017adf20298c12bfd9f4083086a561925e04c80c3986af17e49ab83301",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/input_manifest.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/intra_grid_substation_design.csv": {
+      "bytes": 1036920,
+      "sha256": "add40b80d778265e648f0b8383fa42b7aae6087c53d82a96f493127769a21aed",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_substation_design.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/intra_grid_vre_site_design.csv": {
+      "bytes": 5670786,
+      "sha256": "88ed26cc565c588aa4db062c45dfc21414823413ea3fd7ecc649656bd44e8a94",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_vre_site_design.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/load_center_annual_balance.csv": {
+      "bytes": 45387,
+      "sha256": "b78533943006bad6b9322701e2b90b6f57ba47a3ac97de46ae8ec4f95bf28338",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/load_center_annual_balance.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/load_center_annual_generation.csv": {
+      "bytes": 99128,
+      "sha256": "3409699d96d5ed6fd36eadec2838d88bcba54f2e5e8ff8fc2367232d0c075807",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/load_center_annual_generation.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/load_center_intra_transmission.csv": {
+      "bytes": 129421,
+      "sha256": "9dacfd19a3f0c6c5124ca42f02d0fa482616ca933859ff2c883dd70b23ec7c5a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/load_center_intra_transmission.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/load_center_network_qc.csv": {
+      "bytes": 489,
+      "sha256": "18a256ec139a4a2f358ffafd971a3f2134cdc692ec5ecc96d52ad57b0a130347",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/load_center_network_qc.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/model_archive/archive_manifest.json": {
+      "bytes": 609,
+      "sha256": "d99bbf253d06b68acdc585ed1b63af59d562ee0a138c360f1d539ca498f236c2",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/model_archive/archive_manifest.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/model_archive/parameters.prm": {
+      "bytes": 207,
+      "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/model_archive/parameters.prm",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/model_config_snapshot.json": {
+      "bytes": 27680,
+      "sha256": "79b076148d7999677a6bd9401cf39e98b64c11c0e0c38cba0783a95ad1fa7df4",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/model_config_snapshot.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/monthly_energy_by_technology.csv": {
+      "bytes": 5381,
+      "sha256": "16d3ce0ec3b6bcddee941f101029f2fe5faf3b121ac78e7b00483dad0737f783",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/monthly_energy_by_technology.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/output_catalog.csv": {
+      "bytes": 8056,
+      "sha256": "c89ea418080cf757a2ae24c5e43cd9f2c7bcae33895aa1753d1a513b8b82c52c",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/output_catalog.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/output_data_dictionary.csv": {
+      "bytes": 150043,
+      "sha256": "0c404d9925da3ae7db4b4e48326f9f5b49b0c40004c0e0e18a82dd060f53c956",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/output_data_dictionary.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/planning_state_candidate/capacity_cohorts.csv.gz": {
+      "bytes": 955990,
+      "sha256": "01ce5deec9532a59affebf3d826965252682fad598ddeb1ccf6788738d9011cf",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/planning_state_candidate/capacity_cohorts.csv.gz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz": {
+      "bytes": 934473,
+      "sha256": "3834bf41130df0a514f8206ce77d5ff10e81226f4e5f776370058fd24350dc23",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/planning_state_candidate/raw_new_cohorts.csv.gz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/planning_state_candidate/state_metadata.json": {
+      "bytes": 7091,
+      "sha256": "903d6d59deb4a11daf2f58be2b3c7cf51ea88e238385c905bf4eb3089f5f026f",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/planning_state_candidate/state_metadata.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 2383,
+      "sha256": "ead0c157351b3fbbf4501c7a156dece4ef208cde4f19715f54a8a868520a00d5",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/planning_state_candidate/state_transition_summary.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/preflight_report.json": {
+      "bytes": 15286,
+      "sha256": "2fd9e79790f82a4f908ae4b4a00c8d8577f36af79486e40138c9792b5df84503",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/preflight_report.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/preservation_report.json": {
+      "bytes": 4230,
+      "sha256": "7b3ef15f7556c57ed43ee76bfa254511b7ea4e57864a65bfe2cb8015ad7d130b",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/preservation_report.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/preservation_runtime_memory.json": {
+      "bytes": 158,
+      "sha256": "bccacc7494ece191e7c578301119257cec8ca80a07af03e54231f4b957c43147",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/preservation_runtime_memory.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/province_annual_load_center_accounts.csv": {
+      "bytes": 3352,
+      "sha256": "9f671369a8610cf9ca2bdf758e287040fd76f03258862cc117ae0bd3a872cbca",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/province_annual_load_center_accounts.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/reservoir_station_index.csv": {
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/reservoir_station_index.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/result_manifest.json": {
+      "bytes": 14943,
+      "sha256": "a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/result_manifest.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/run_claim.json": {
+      "bytes": 253,
+      "sha256": "64b9fcfb69742eda825c5f13b86d5089d076c343b25ffc89448f2cd69eecd22f",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/run_claim.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/run_environment.json": {
+      "bytes": 2469,
+      "sha256": "f9471961007a068f6b7a569d18ae03c84a690133ca137ce4e07cef12fd4de575",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/run_environment.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/run_identity.json": {
+      "bytes": 12653,
+      "sha256": "da2f64f8ce02871696b65857e48f9399c7f60fe9cf39ea1ff7b894cc9acce6b0",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/run_identity.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/run_scope.json": {
+      "bytes": 8070,
+      "sha256": "df960343d2d63a5ea3b2d7d319f1d753aec371a90f5a6179dfe4f81e2ceab846",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/run_scope.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/run_summary.json": {
+      "bytes": 2284,
+      "sha256": "e3cfcc3653ade412938e145e17a575fb748c335150085e7c11f244fe3498b211",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/run_summary.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/scenario_manifest.json": {
+      "bytes": 9842,
+      "sha256": "e79b608d392d1c3ed95dc40239cfd3c80518503d3988b0b0f11546394ca25c5d",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/scenario_manifest.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/solution_qc.json": {
+      "bytes": 71807,
+      "sha256": "dd679745f354f491f38da01af22826278c4a0cf399461c75d0d37119da599d86",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/solution_qc.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/solve_report.json": {
+      "bytes": 71531,
+      "sha256": "d68ca19189053f83d1735bf4aaebc51c78678c27e03dfb01f21da93fcff0f898",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/solver_parameters_before_optimize.json": {
+      "bytes": 589,
+      "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/solver_parameters_before_optimize.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/solver_telemetry.jsonl": {
+      "bytes": 58629,
+      "sha256": "332d611db6fb8496f70c97a717c231f1428aa89c39f30d44880d7ecedbe35ba4",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/solver_telemetry.jsonl",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/storage_capacity.csv": {
+      "bytes": 9322,
+      "sha256": "e8e7af1be9643164575d1f47ee49e72e5b4e61497ecd50d2e433c13a49a6c2d3",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/storage_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/storage_dispatch.npz": {
+      "bytes": 19610895,
+      "sha256": "564404add74c4344e45bb90d05ca170106fe94d1d457c36c4d90b8140e08673a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/storage_dispatch.npz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/thermal_nuclear_capacity.csv": {
+      "bytes": 27813,
+      "sha256": "2c44207662f547ede4bd4a9954f49e54e13f43ba45d2d591ae4a202bab3b8f2a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/time_index.csv": {
+      "bytes": 335459,
+      "sha256": "bb206b9ab67206a181fc345c6bf2c8618893111e84b75f5ec760f806991e383f",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/time_index.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/transmission_capacity.csv": {
+      "bytes": 30360,
+      "sha256": "2b34f9ee57925655bc96f7f4d9eb19ecfb464a7a228daa3579b37ae030c4b05b",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/transmission_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/transmission_flows.npz": {
+      "bytes": 30122909,
+      "sha256": "3e0c4d6b3a12414f01a773b0f740f171349ddfe33f2227c31c27e1b2cb938549",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/transmission_flows.npz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/visualizations/capacity_by_technology.svg": {
+      "bytes": 5996,
+      "sha256": "4c848b441c8328771abd85caba608a7456567d6bb33f00684cc6733626e1ef82",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/visualizations/capacity_by_technology.svg",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/visualizations/generation_by_technology.svg": {
+      "bytes": 5568,
+      "sha256": "de76894f9bd24fe4aeaa300ddaa637be026e2dd8812ffa81bafbd57cf30798d8",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/visualizations/generation_by_technology.svg",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/visualizations/national_dispatch_first_week.svg": {
+      "bytes": 16930,
+      "sha256": "e6cf0d7f135129fd8ce3c73fd947eaf51bb6c5670a9c23de85e898dbbeb54fc3",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/visualizations/national_dispatch_first_week.svg",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/vre_capacity.csv": {
+      "bytes": 3627741,
+      "sha256": "9b628354ed6b2a066e1b54d446eb55ae6af96988f6a14d7ae5b3279ab3b165f7",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/vre_dispatch.npz": {
+      "bytes": 11562689,
+      "sha256": "dbe19032f7ff7e31bdd1f23617d10e254fe776c8787997c2f83b5633c645076a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/vre_dispatch.npz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/wave_capacity.csv": {
+      "bytes": 243799,
+      "sha256": "4e73042e19b2fc0728d97efeb14a5a4b06b44b22376b10eb7c1c5f26d25633b9",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/wave_capacity.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/wave_dispatch.npz": {
+      "bytes": 970549,
+      "sha256": "69f5656d126b86aabd60e745fae556713c1de1b53e63bfa3501a25f88a868023",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/wave_dispatch.npz",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/frozen_capacity_audit.csv": {
+      "bytes": 14160561,
+      "sha256": "4cd979fe124fb408ab50aa9bcacc843ae9c906517bce2111f9d98682178ae35e",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/frozen_capacity_audit.csv",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/frozen_capacity_expected.json": {
+      "bytes": 2993771,
+      "sha256": "8abfe36f00a018648efb7d68fd9c9cca58ea9cc913c72532f505a10933b312b7",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/frozen_capacity_expected.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/frozen_capacity_output_check.json": {
+      "bytes": 7179,
+      "sha256": "2b00d7b182c65c572a5082e296c3b735ba3b44f4ac4300d4555e0a4b901850df",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/frozen_capacity_output_check.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/frozen_capacity_report.json": {
+      "bytes": 5718,
+      "sha256": "d971485dd12bfd67f9075c4ecf42ac2ed7b923be8e615bef07848beb21413814",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/frozen_capacity_report.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/frozen_capacity_source_alignment.json": {
+      "bytes": 1258,
+      "sha256": "8da3b9f47e2fdba632b5ed736f0ad201bd348bfb48ee4bb374f7b886b851b6bb",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/frozen_capacity_source_alignment.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/resource_structure_audit.json": {
+      "bytes": 6553,
+      "sha256": "35385563bcc4e1cf38226b7293828cf35e7a1afa3ca4abaf891dd202da5c36f7",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/resource_structure_audit.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "output_8760/resource_v2g_slack_check.json": {
+      "bytes": 172,
+      "sha256": "f59b5c2ecde8bae9f559851d72466ace7902afd100a510430411a91e67fbaf3b",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/resource_v2g_slack_check.json",
+      "source_type": "ORIGINAL_OUTPUT"
+    },
+    "acceptance_resource_batch2_20261116/backup_verification.json": {
+      "bytes": 27491,
+      "sha256": "302f93cc679624259bd5ab949008ac719d1b65f6661993626f3ce3e0adb7500f",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/backup_verification.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/solution_qc_relative_v1.json": {
+      "bytes": 51465,
+      "sha256": "8c42153ad0872b1f0d85fee341281f01ea8e82a4ea9aa2ced5fccee4eee85df2",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/solution_qc_relative_v1.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/ACCEPTANCE_AND_ROWS_COMPLETE.json": {
+      "bytes": 83,
+      "sha256": "c89729c388a67d0ce184fdde9d915da323bbf62ab81cb1e7c1e26ff1d4aad689",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/ACCEPTANCE_AND_ROWS_COMPLETE.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/acceptance_record.json": {
+      "bytes": 1630,
+      "sha256": "9fbe3339d9bdbe1bfcb4d6403e681e4ff898fd3c6cd58183ae7b5152c729c235",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/acceptance_record.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/README_ZH.md": {
+      "bytes": 1158,
+      "sha256": "76e5b873be203de93c68669bcdb1c7f429f40fa923f9677e22a049890a611918",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/README_ZH.md",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/assessment_inputs.json": {
+      "bytes": 6119,
+      "sha256": "625c1e0f4cf61b5d9483d602dfc59977a7ff5f1e557ea8d5687da7889e93aae5",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/assessment_inputs.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/evidence_manifest.json": {
+      "bytes": 1539,
+      "sha256": "7b8c03ec8098f7880561e49373e332c73a9338325209671d7e24af37ebca1ba1",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/evidence_manifest.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/row_extraction_summary.json": {
+      "bytes": 1577,
+      "sha256": "dd227504399366fbef8b7810e9e4e297cc8ed634a6489b0f8ff86361afc63ab1",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/row_extraction_summary.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/annual_row_duals.csv": {
+      "bytes": 174040,
+      "sha256": "ea7b0e2d59fabfde582d7c7d587ba4e83e0ebdfe13c976d7bb973f622abf1c98",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/annual_row_duals.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/corridor_duals_monthly.csv": {
+      "bytes": 333088,
+      "sha256": "9323fec73bc3231fa75d382fba2fe8549594868df460c14d346caac3c4b05b73",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/corridor_duals_monthly.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/row_family_inventory.csv": {
+      "bytes": 19714,
+      "sha256": "81edeb378064a747e73716559057feeb4d1076d2a99e15f9d235f947cf65f885",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/row_family_inventory.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/corridor_duals.csv": {
+      "bytes": 92880,
+      "sha256": "173310d11077f90073d6ada6ab1f85720d26030db571f0d122275b0568f01c3d",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/corridor_duals.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/annual_rows/row_order_verification.json": {
+      "bytes": 388,
+      "sha256": "1a30dd56e9ee7e110beafdf5e43ab81adb8123b12115119c46990c84620e0cb9",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/annual_rows/row_order_verification.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/storage_operation_by_province_technology.csv": {
+      "bytes": 5106,
+      "sha256": "78d7c8495c5e5d44481c1f519e17277e7675916edd0a2ff56032fdef1cda5135",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/storage_operation_by_province_technology.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/generation_and_vre_curtailment_by_province_technology.csv": {
+      "bytes": 42610,
+      "sha256": "ba230e60d916bdd67d450b01037a85b781692631847dfff23626d1463c04bcf9",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/generation_and_vre_curtailment_by_province_technology.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/services_by_province.csv": {
+      "bytes": 17837,
+      "sha256": "b73fd8b8a35541ee8b1d76fb159de9e1d7e60a07f1ad28446ccbc3af6a8daaef",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/services_by_province.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/services_national.csv": {
+      "bytes": 692,
+      "sha256": "dbbfed7206724c798efea58ac27dfbda5834cc32392d2a0284e383f5480d5db4",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/services_national.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/vre_generation_curtailment_by_province_technology.csv": {
+      "bytes": 7137,
+      "sha256": "f9b9a8be5dd17fc8d43e43b632642917432050121dfed057759ef1ebc281bace",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/vre_generation_curtailment_by_province_technology.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/cost_comparisons.csv": {
+      "bytes": 636,
+      "sha256": "991b70d87f32248afed72bff85221cbf3e2ab7f3d06ec2cec2e50bdad52a707d",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/cost_comparisons.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/thermal_start_stop_by_province_technology.csv": {
+      "bytes": 42425,
+      "sha256": "cedd58ab5e777335658e951e672a5dc4d51b8eacbbb1c1bdbcf6ddaf773e3cd4",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/thermal_start_stop_by_province_technology.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/analysis_manifest.json": {
+      "bytes": 1661,
+      "sha256": "d933e549b9c1e4026bc8938e63ffba61acf9d108988cacf9ed824bd4028e67fa",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/analysis_manifest.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/hourly_dispatch_national_and_five_provinces.csv.gz": {
+      "bytes": 5391401,
+      "sha256": "b7531f0f3ef948c44ad1337acd829ef6c9958922d7831051631999e8553560a5",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/hourly_dispatch_national_and_five_provinces.csv.gz",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/cost_saving_by_component.csv": {
+      "bytes": 5988,
+      "sha256": "fa1d1d58a1c6694ac2fdf54af578742edebc8fc5289646f0e7fdabf61b04956e",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/cost_saving_by_component.csv",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/hourly_province_load_marginal_prices.csv.gz": {
+      "bytes": 10886887,
+      "sha256": "64619e308fa74658c8389d7fae7421d3018de92b888814875b54604c45b73e8a",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/hourly_province_load_marginal_prices.csv.gz",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "acceptance_resource_batch2_20261116/analysis/analysis_summary.json": {
+      "bytes": 13207,
+      "sha256": "b2184e8cc37d283d0ebacffe19e5fe6cdc5c315a5f1de68cd93edabb87111245",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/analysis_summary.json",
+      "source_type": "READ_ONLY_DERIVED_SIDECAR"
+    },
+    "backup_manifest.json": {
+      "bytes": 30693,
+      "sha256": "7b3c4d4901a96892080c8ec3adb3e6c4c8b8e7a6a110efb8cf95dbf77c8be733",
+      "remote_source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/backup_manifest.json",
+      "source_type": "VERIFIED_BACKUP_MANIFEST"
+    }
+  },
+  "standard_list_count": 73,
+  "original_standard_returned": 72,
+  "omitted_not_applicable": {
+    "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+  },
+  "original_source_manifest_sha256": "a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a",
+  "file_count": 105,
+  "bytes": 138555336,
+  "maximum_file_bytes": 30122909,
+  "excludes": [
+    "original.mps.gz",
+    "primal_barx.npy",
+    "dual_barpi.npy",
+    "large thermal/reservoir/flexible dispatch NPZ",
+    "hourly_province_balance.csv.gz"
+  ]
+}

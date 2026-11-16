@@ -1,0 +1,34 @@
+{
+  "as_of_utc": "2026-11-16T21:55:22.245844Z",
+  "job": "5587177",
+  "queue": "5587177|late_open_2050_t44|RUNNING|1-11:23:31|m4cm2206\n",
+  "accounting": "5587177|RUNNING|1-11:23:31|0:0\n",
+  "last": {
+    "iteration": 197,
+    "P": 251336816.0,
+    "D": -375916450.0,
+    "pinf": 294.0,
+    "dinf": 1.57e-07,
+    "compl": 7.87,
+    "seconds": 124072.0
+  },
+  "previous10": {
+    "iteration": 187,
+    "P": 448283814.0,
+    "D": -716905461.0,
+    "pinf": 527.0,
+    "dinf": 1.12e-07,
+    "compl": 15.0,
+    "seconds": 117481.0
+  },
+  "minutes_per_round": 10.985,
+  "drop_last10": {
+    "pinf": 0.44212523719165087,
+    "dinf": -0.4017857142857142,
+    "compl": 0.4753333333333333
+  },
+  "rss": "5587177.batch|675214008K|339463308K\n",
+  "stderr": "",
+  "terminal": false,
+  "source_log_sha256": "9f30e1052eb384dce59460c0024052e954d5f599ec4732ecf269a6c1a815f384"
+}

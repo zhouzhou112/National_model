@@ -1,0 +1,267 @@
+{
+  "status": "PASS",
+  "computed_on": "T550",
+  "rows": [
+    {
+      "planning_year": 2030,
+      "P_million_cny": 4181810.139273937,
+      "D_million_cny": 4180362.9285282344,
+      "vre_curtailment_gwh": 304081.0275263679,
+      "storage_charge_gwh": 347575.9688994611,
+      "storage_discharge_gwh": 286369.5657561077,
+      "v2g_discharge_gwh": 99.48547221236952,
+      "startup_shutdown_cost_million_cny": 10216.80221994334,
+      "ref_point_saving_yi_cny": 109.68696918817237,
+      "ref_lower_saving_yi_cny": 106.62333783564158,
+      "ref_upper_saving_yi_cny": 124.15907664519735,
+      "central_ops_point_saving_yi_cny": 79.23267619911582,
+      "central_ops_lower_saving_yi_cny": 64.29877118370962,
+      "central_ops_upper_saving_yi_cny": 93.70478365614079
+    },
+    {
+      "planning_year": 2040,
+      "P_million_cny": 5035960.232688588,
+      "D_million_cny": 5034512.92670544,
+      "vre_curtailment_gwh": 688803.944314712,
+      "storage_charge_gwh": 760389.7974220896,
+      "storage_discharge_gwh": 601708.003660711,
+      "v2g_discharge_gwh": 86.46055757224472,
+      "startup_shutdown_cost_million_cny": 17512.523932615688,
+      "ref_point_saving_yi_cny": 521.1613830925152,
+      "ref_lower_saving_yi_cny": 482.6464715561457,
+      "ref_upper_saving_yi_cny": 535.6344429240003,
+      "central_ops_point_saving_yi_cny": 265.12447782661764,
+      "central_ops_lower_saving_yi_cny": 250.7244477501046,
+      "central_ops_upper_saving_yi_cny": 279.5975376581028
+    },
+    {
+      "planning_year": 2050,
+      "P_million_cny": 5678988.615606979,
+      "D_million_cny": 5677106.078051538,
+      "vre_curtailment_gwh": 627603.4390870653,
+      "storage_charge_gwh": 982197.4680416562,
+      "storage_discharge_gwh": 791521.3095543949,
+      "v2g_discharge_gwh": 240.60974228930212,
+      "startup_shutdown_cost_million_cny": 19615.132705994074,
+      "ref_point_saving_yi_cny": 729.8388970354292,
+      "ref_lower_saving_yi_cny": 683.524497284498,
+      "ref_upper_saving_yi_cny": 748.6642725898325,
+      "central_ops_point_saving_yi_cny": 302.150715726316,
+      "central_ops_lower_saving_yi_cny": 283.635777341295,
+      "central_ops_upper_saving_yi_cny": 320.9760912807193
+    },
+    {
+      "planning_year": 2060,
+      "P_million_cny": 5718684.655942873,
+      "D_million_cny": 5716781.51404679,
+      "vre_curtailment_gwh": 717897.5484595068,
+      "storage_charge_gwh": 1242519.7890978728,
+      "storage_discharge_gwh": 1015937.2790341292,
+      "v2g_discharge_gwh": 115.3449104529438,
+      "startup_shutdown_cost_million_cny": 22742.75955011839,
+      "ref_point_saving_yi_cny": 704.1297879247181,
+      "ref_lower_saving_yi_cny": 656.8347879591956,
+      "ref_upper_saving_yi_cny": 723.1612068855483,
+      "central_ops_point_saving_yi_cny": 221.43905001093634,
+      "central_ops_lower_saving_yi_cny": 201.07602481181732,
+      "central_ops_upper_saving_yi_cny": 240.47046897176654
+    }
+  ],
+  "services": [
+    {
+      "planning_year": 2030,
+      "service": "heating",
+      "contract_gw": 6.543110038185247,
+      "upper_gw": 26.837969915501017,
+      "down_regulation_gwh": 2535.8019080922572,
+      "up_regulation_gwh": 3391.0066734438847,
+      "net_load_change_gwh": 855.2047653516273,
+      "contract_share_of_upper": 0.2438004833743439,
+      "equivalent_down_hours": 387.55299747267736
+    },
+    {
+      "planning_year": 2030,
+      "service": "cooling",
+      "contract_gw": 4.996324338116236,
+      "upper_gw": 105.65219016758141,
+      "down_regulation_gwh": 895.2722291237798,
+      "up_regulation_gwh": 1148.485082103841,
+      "net_load_change_gwh": 253.21285298006134,
+      "contract_share_of_upper": 0.04729030538970617,
+      "equivalent_down_hours": 179.18617138080435
+    },
+    {
+      "planning_year": 2030,
+      "service": "ev_v1g",
+      "contract_gw": 134.75072931295162,
+      "upper_gw": 135.37277025613946,
+      "down_regulation_gwh": 128395.3180954711,
+      "up_regulation_gwh": 128395.31852632572,
+      "net_load_change_gwh": 0.00043085462078806813,
+      "contract_share_of_upper": 0.9954049773672292,
+      "equivalent_down_hours": 952.8357935434962
+    },
+    {
+      "planning_year": 2030,
+      "service": "ev_v2g",
+      "contract_gw": 0.5562144847511442,
+      "upper_gw": 58.91159556473363,
+      "down_regulation_gwh": 660.4946880484266,
+      "up_regulation_gwh": 673.6001602783904,
+      "net_load_change_gwh": 13.105472229963828,
+      "contract_share_of_upper": 0.009441511122202774,
+      "equivalent_down_hours": 1187.4819986824657
+    },
+    {
+      "planning_year": 2040,
+      "service": "heating",
+      "contract_gw": 6.189861300530482,
+      "upper_gw": 31.43445579804442,
+      "down_regulation_gwh": 1815.6653889645913,
+      "up_regulation_gwh": 2377.0175223376123,
+      "net_load_change_gwh": 561.3521333730208,
+      "contract_share_of_upper": 0.1969132642313967,
+      "equivalent_down_hours": 293.3289294881269
+    },
+    {
+      "planning_year": 2040,
+      "service": "cooling",
+      "contract_gw": 6.871840614907356,
+      "upper_gw": 120.55620599098104,
+      "down_regulation_gwh": 1316.351328659876,
+      "up_regulation_gwh": 1731.3648870048246,
+      "net_load_change_gwh": 415.0135583449489,
+      "contract_share_of_upper": 0.05700113534944395,
+      "equivalent_down_hours": 191.55731374273478
+    },
+    {
+      "planning_year": 2040,
+      "service": "ev_v1g",
+      "contract_gw": 317.33912006540044,
+      "upper_gw": 317.3391651870556,
+      "down_regulation_gwh": 312392.5774810408,
+      "up_regulation_gwh": 312392.5788293911,
+      "net_load_change_gwh": 0.0013483503055340407,
+      "contract_share_of_upper": 0.9999998578125233,
+      "equivalent_down_hours": 984.41243996851
+    },
+    {
+      "planning_year": 2040,
+      "service": "ev_v2g",
+      "contract_gw": 0.6377353923272762,
+      "upper_gw": 137.90056031807276,
+      "down_regulation_gwh": 666.9492958465925,
+      "up_regulation_gwh": 678.3385416472072,
+      "net_load_change_gwh": 11.389245800614706,
+      "contract_share_of_upper": 0.004624603343571018,
+      "equivalent_down_hours": 1045.8088164320104
+    },
+    {
+      "planning_year": 2050,
+      "service": "heating",
+      "contract_gw": 5.2342591095019255,
+      "upper_gw": 34.284406561842104,
+      "down_regulation_gwh": 1841.2472034191494,
+      "up_regulation_gwh": 2314.8779181682794,
+      "net_load_change_gwh": 473.63071474913005,
+      "contract_share_of_upper": 0.1526717138901146,
+      "equivalent_down_hours": 351.7684480076028
+    },
+    {
+      "planning_year": 2050,
+      "service": "cooling",
+      "contract_gw": 10.637838313218326,
+      "upper_gw": 129.08275523908523,
+      "down_regulation_gwh": 1807.7643279553697,
+      "up_regulation_gwh": 2145.7830581370476,
+      "net_load_change_gwh": 338.0187301816779,
+      "contract_share_of_upper": 0.08241099512878443,
+      "equivalent_down_hours": 169.93718786918245
+    },
+    {
+      "planning_year": 2050,
+      "service": "ev_v1g",
+      "contract_gw": 465.1838274570992,
+      "upper_gw": 465.1841014940262,
+      "down_regulation_gwh": 452553.21716611617,
+      "up_regulation_gwh": 452553.2189282781,
+      "net_load_change_gwh": 0.001762161908231974,
+      "contract_share_of_upper": 0.9999994109065075,
+      "equivalent_down_hours": 972.8481311140425
+    },
+    {
+      "planning_year": 2050,
+      "service": "ev_v2g",
+      "contract_gw": 1.313132696160053,
+      "upper_gw": 202.5533434596954,
+      "down_regulation_gwh": 1464.240893215482,
+      "up_regulation_gwh": 1495.936660294121,
+      "net_load_change_gwh": 31.695767078639058,
+      "contract_share_of_upper": 0.006482898152808538,
+      "equivalent_down_hours": 1115.074582711488
+    },
+    {
+      "planning_year": 2060,
+      "service": "heating",
+      "contract_gw": 3.7882289787181977,
+      "upper_gw": 36.24588061038798,
+      "down_regulation_gwh": 1297.4310854325047,
+      "up_regulation_gwh": 1582.314071910624,
+      "net_load_change_gwh": 284.8829864781194,
+      "contract_share_of_upper": 0.10451474525997585,
+      "equivalent_down_hours": 342.49014320974584
+    },
+    {
+      "planning_year": 2060,
+      "service": "cooling",
+      "contract_gw": 3.4608756716059976,
+      "upper_gw": 134.83535227828233,
+      "down_regulation_gwh": 506.071074090417,
+      "up_regulation_gwh": 579.2242874492006,
+      "net_load_change_gwh": 73.15321335878352,
+      "contract_share_of_upper": 0.025667420399237792,
+      "equivalent_down_hours": 146.22630863118465
+    },
+    {
+      "planning_year": 2060,
+      "service": "ev_v1g",
+      "contract_gw": 486.4650351066258,
+      "upper_gw": 497.51685122082836,
+      "down_regulation_gwh": 495024.6870174182,
+      "up_regulation_gwh": 495024.68913831306,
+      "net_load_change_gwh": 0.0021208948055573273,
+      "contract_share_of_upper": 0.977786046669408,
+      "equivalent_down_hours": 1017.5956159087904
+    },
+    {
+      "planning_year": 2060,
+      "service": "ev_v2g",
+      "contract_gw": 1.1993596200567591,
+      "upper_gw": 216.70843094605343,
+      "down_regulation_gwh": 1291.2812130093503,
+      "up_regulation_gwh": 1306.475209640648,
+      "net_load_change_gwh": 15.193996631297722,
+      "contract_share_of_upper": 0.00553443913012929,
+      "equivalent_down_hours": 1076.6422275816165
+    }
+  ],
+  "sources": {
+    "2030": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/analysis_summary.json",
+      "sha256": "b2184e8cc37d283d0ebacffe19e5fe6cdc5c315a5f1de68cd93edabb87111245"
+    },
+    "2040": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/analysis_summary.json",
+      "sha256": "1ca758826a23f8d02c84bb4a4d13498da301bc4e1d2bbfb2ac14c39fabbd11d6"
+    },
+    "2050": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch1_20261115/analysis/analysis_summary.json",
+      "sha256": "9f3000cf227bb16bc184dba1d9e177e7a5fa682285388aad0a6d3072e007cfa9"
+    },
+    "2060": {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch2_20261116/analysis/analysis_summary.json",
+      "sha256": "20a38a5d1d5b618971d863fa3103a62600640ea13731be5fc48dbf865efc5198"
+    }
+  },
+  "previous_2050_reused_without_recalculation": true
+}

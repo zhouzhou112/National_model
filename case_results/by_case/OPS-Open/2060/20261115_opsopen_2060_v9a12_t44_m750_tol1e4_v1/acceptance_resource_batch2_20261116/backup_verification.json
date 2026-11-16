@@ -1,0 +1,907 @@
+{
+  "status": "PASS",
+  "files": 112,
+  "bytes": 5520870430,
+  "all_tiers_verified": true,
+  "source_result_manifest_sha256": "50b641a81e884bc0479b20aa07a573af7c2b4ea3e5f92fb5239b633d59e392fe",
+  "checked": {
+    "FINAL_GATES_PASSED.json": {
+      "bytes": 832,
+      "sha256": "eea63f8cf4ef06ab009768a1f291e9be101d968b4f19d5f6764a5e14cb70993b"
+    },
+    "batch_exit.json": {
+      "bytes": 35,
+      "sha256": "030144d0d53ce0344ecf0c44a8f3633f2224e7686bd397c27ba257ed9a16cdd9"
+    },
+    "compute_node_smoke.json": {
+      "bytes": 263,
+      "sha256": "a404caf40117fb423d0bd5513d50d52222f1ee910d55c25791a3687003c46de2"
+    },
+    "continuation.sbatch": {
+      "bytes": 5714,
+      "sha256": "1741d4f28c559f57f7686245eff6e0c6c2c88031f8f0feca8e8891f41c37b1e2"
+    },
+    "data_copy_verification.json": {
+      "bytes": 6608,
+      "sha256": "2d5c860c3c91a35a39c3022dffcc5f534a9cf8cc50aa51496948b93e3df141be"
+    },
+    "engineering_gate_window_carbon_budget.json": {
+      "bytes": 3199,
+      "sha256": "2b13868bdc79ab66ec70d2485d6b822a62814095d1790543dee6492570ee551e"
+    },
+    "frozen_closure.json": {
+      "bytes": 31140,
+      "sha256": "24a551f1d8f8b3e9693a41e6c5c0f7d82f2a758efb7f580074569b72df0981a0"
+    },
+    "launch_config.json": {
+      "bytes": 1160,
+      "sha256": "26c3b540f8b7f73d19e3dcb1f847813fd50df8d57d22c1b3dd2fa92eda05c21f"
+    },
+    "license_path_preflight.json": {
+      "bytes": 70,
+      "sha256": "50ecd712cd50f9f33406907471f3380893779743620cbcc7c770317198fee5e5"
+    },
+    "output_8760/annual_adequacy_by_province.csv": {
+      "bytes": 6164,
+      "sha256": "779219257f16ffff685e2d5074a40f115374227738db7f1ebe291bbbf4a02c42"
+    },
+    "output_8760/annual_capacity_by_province_technology.csv": {
+      "bytes": 35001,
+      "sha256": "278eb13de3ae2b59757932fc1b0d33f1a9552dd4f17b0b5696d356fcee4aeed3"
+    },
+    "output_8760/annual_capacity_by_technology.csv": {
+      "bytes": 1216,
+      "sha256": "97cf0206c1159751622588c7e31ca9b54c8492c7b45145b58950d6c17783c60a"
+    },
+    "output_8760/annual_capacity_link_row_scaling.json": {
+      "bytes": 60857,
+      "sha256": "ee43f02eb4d396b7c5901c35cc439308e77e57d03234a61fb8a80991467b4038"
+    },
+    "output_8760/annual_carbon_ccs.json": {
+      "bytes": 637,
+      "sha256": "c1b3b0a1f483a90809e0c2c3af156454b77d29ca68794726c9cd62385e5a14f4"
+    },
+    "output_8760/annual_constraint_shadow_prices.csv": {
+      "bytes": 380887,
+      "sha256": "a93a699bad3b2c853048ba9213206da7e19603084ded0379f896258dbcee6b98"
+    },
+    "output_8760/annual_flexible_load_by_province.csv": {
+      "bytes": 19097,
+      "sha256": "af62ba0425fdc80c00dcfeb2d6bfe0fffd1922aa7e6656f892478fa6e5da30e0"
+    },
+    "output_8760/annual_generation_by_province_technology.csv": {
+      "bytes": 14737,
+      "sha256": "b39522a33ea4bbf78b4c9c5284b1012abe763dc0f0e6868e9ee21b4e572030a5"
+    },
+    "output_8760/annual_generation_by_technology.csv": {
+      "bytes": 507,
+      "sha256": "5316bad9e09b5279d74c3d5b45685841dcdb90547894b7e2214a18f3bc23edb9"
+    },
+    "output_8760/annual_resource_accounting_by_province.csv": {
+      "bytes": 9197,
+      "sha256": "8e3abc43b7254d2659f7c8a368cdbd0fc48719d85c7f5eabd3d3fbf2d8aac2cb"
+    },
+    "output_8760/annual_storage_operation_by_technology.csv": {
+      "bytes": 382,
+      "sha256": "a157232dd11501390271e2fcd3bed51dba1e46202dc69d9fbe247dbb457496c1"
+    },
+    "output_8760/annual_summary.json": {
+      "bytes": 2284,
+      "sha256": "8618caef7e6b072b3712f5631ef26b751ca6197f226991fa11d6163cb47d4757"
+    },
+    "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 77753,
+      "sha256": "83f7ce38ab10c5ad6f7a07a2a30aa80b072832a692dbbbe9766e6ce71cb11495"
+    },
+    "output_8760/barrier_checkpoint/dual_barpi.npy": {
+      "bytes": 434325632,
+      "sha256": "c45e38ae6fa753948308aa6c3b26fbe3e56a65ca0ad622b8f5949b185a56b644"
+    },
+    "output_8760/barrier_checkpoint/primal_barx.npy": {
+      "bytes": 350376776,
+      "sha256": "ddf30c964fc33ee21a900a1e0a762c29adffe7da4851903a43584bc65233ae55"
+    },
+    "output_8760/build_report.json": {
+      "bytes": 132958,
+      "sha256": "42f24ccb9af8b90e8a56f0b5ae624578a701ce8bb614d8c1c77f7d85fa6e77f5"
+    },
+    "output_8760/co2_source_sink_flows.csv": {
+      "bytes": 4837366,
+      "sha256": "1c0bb635fe3b741874b15b3c4f0d7660eea51bae303a81d783025bc9475b53f6"
+    },
+    "output_8760/cost_components.csv": {
+      "bytes": 4780,
+      "sha256": "3a64d58cf4e7b5537c3223670bf444ff734f25f90ff9eeee28bc1a04f0784095"
+    },
+    "output_8760/dac_capacity_capture.csv": {
+      "bytes": 21067,
+      "sha256": "28c44afb520fae554d40a7680fa1aade876122924ddba6ca01023438b658ea2f"
+    },
+    "output_8760/dual_export_status.json": {
+      "bytes": 1701,
+      "sha256": "cbc38f4028f490631da6459275d4670390ebdd943b4b3b44a589e114533da7c9"
+    },
+    "output_8760/flexible_load_dispatch.npz": {
+      "bytes": 43290601,
+      "sha256": "fc1ff295ce19d6914eefd616863481d61f8ac330837d5c46d987d7f73b94c47c"
+    },
+    "output_8760/frozen_capacity_audit.csv": {
+      "bytes": 14027605,
+      "sha256": "907b82305ed638bb35023f20e86d64a06874e1afdf30390127bcaa6802005069"
+    },
+    "output_8760/frozen_capacity_closure_audit.csv": {
+      "bytes": 13525,
+      "sha256": "f8d2cdaf44a2db4f5107386d4085de8fefc32d52f32c04b11f388bcea850553b"
+    },
+    "output_8760/frozen_capacity_closure_report.json": {
+      "bytes": 32057,
+      "sha256": "bd4ecdc2ba6140ef085ce6f9631a6af41615c755207c998734fb0aaba379b781"
+    },
+    "output_8760/frozen_capacity_expected.json": {
+      "bytes": 2949530,
+      "sha256": "5576891d7f059009ca8c9cb7ceff28b377ab7553875310fa6957332cafc2f9bf"
+    },
+    "output_8760/frozen_capacity_output_check.json": {
+      "bytes": 7230,
+      "sha256": "021320189661e58cf732bd0147e56f2d875b814638997ec7e2e0c460f8d51ffd"
+    },
+    "output_8760/frozen_capacity_report.json": {
+      "bytes": 41136,
+      "sha256": "19ad06b5ae71fee1d1c30b7e5ade2f27d89a3d3701e2c4e9d5f0ad71560e8a5d"
+    },
+    "output_8760/frozen_capacity_source_alignment.json": {
+      "bytes": 1384,
+      "sha256": "3040cfce80059504be914f8aed0ad92bc6b46168608ae3ad7771084adeeda010"
+    },
+    "output_8760/gurobi.log": {
+      "bytes": 25758,
+      "sha256": "1c2cec60b03025fd4f121bdc02f96a0a36c7409aa4e443a250b695b214dd4bc4"
+    },
+    "output_8760/hourly_marginal_prices.csv.gz": {
+      "bytes": 15151721,
+      "sha256": "bc8ee461ddd2e569db5ca0571a9dc9b4937c51a40f3501b34fc51b2eecfb47d9"
+    },
+    "output_8760/hourly_national_balance.csv.gz": {
+      "bytes": 859902,
+      "sha256": "179791127967d6fae427e30c9f99241abd85ffe4e533b03d875df679fb11aff9"
+    },
+    "output_8760/hourly_province_balance.csv.gz": {
+      "bytes": 49010032,
+      "sha256": "5d78b3efd98bc041acdc4b1718df1f35a28608be6d2eda00b459c609c516eb28"
+    },
+    "output_8760/hourly_province_security.csv.gz": {
+      "bytes": 36297664,
+      "sha256": "a20009cfff487a76207eee641754df07868d4f8d2f31432589c69f7b18c6d78f"
+    },
+    "output_8760/hydro_aggregate_capacity.csv": {
+      "bytes": 9698,
+      "sha256": "185f5ae37b392ea573f9a8c2dd238c95f4e9dc6aa6f8eda6384209cc1bb91571"
+    },
+    "output_8760/hydro_capacity.csv": {
+      "bytes": 316268,
+      "sha256": "b779cdfabee5e0043282202500c8fdd654311d73588f8c637851f1be4c8655c4"
+    },
+    "output_8760/hydro_cascade_reconciliation_audit.json": {
+      "bytes": 16558,
+      "sha256": "05f64993d72faa833c436e539ccecbd3b03d5c3d55c06cf1c81499624711a835"
+    },
+    "output_8760/hydro_cascade_reconciliation_by_node.csv": {
+      "bytes": 12141,
+      "sha256": "fd2d34df2dee8ee63a064ceca4ff8b4a7bee3247979cb15718428b48dcdbcd63"
+    },
+    "output_8760/hydro_dispatch.npz": {
+      "bytes": 6747417,
+      "sha256": "ed57d7c70bbe4457cbedf8a285d0cb46fa16617fb1d0c774b87ac4cb146f1bc8"
+    },
+    "output_8760/hydro_spur_capacity.csv": {
+      "bytes": 59348,
+      "sha256": "b2a9f6e05ac515e5a0304a682a4ab666567a4e59cd7309f4bf94bcc27e73b805"
+    },
+    "output_8760/input_manifest.csv": {
+      "bytes": 31272,
+      "sha256": "cedb40b69e8f20497cd7088dce3402ff33ba1e74b6b55a8a669db3db293be70a"
+    },
+    "output_8760/intra_grid_substation_design.csv": {
+      "bytes": 1035147,
+      "sha256": "01010ec56f936b6ca936b5b51d4ca6bebcf4683a1dd8e2c5fa87dad9fdca4ab8"
+    },
+    "output_8760/intra_grid_vre_site_design.csv": {
+      "bytes": 5596263,
+      "sha256": "5f0994a6e307085d0deab211356b868e15dfc5c6f568a6941f9e1b35ebee2af1"
+    },
+    "output_8760/load_center_annual_balance.csv": {
+      "bytes": 45412,
+      "sha256": "aca73b4d63aa69787bed7218395827a1acd26b26ed1a93f2499498431f4854f2"
+    },
+    "output_8760/load_center_annual_generation.csv": {
+      "bytes": 99513,
+      "sha256": "272c94a534b6fb60e477fecd57232897f39a8d06cfbbd436fccdba5c4d1f519e"
+    },
+    "output_8760/load_center_intra_transmission.csv": {
+      "bytes": 128485,
+      "sha256": "e3909df31e130165091a935f3656fa94c119ad8278aa13e68e09642666daf335"
+    },
+    "output_8760/load_center_network_qc.csv": {
+      "bytes": 490,
+      "sha256": "b5a8ceaee2ca3998e4f33d95cf5236d4597ff1818e0c5b2a8220e8fb6833c45a"
+    },
+    "output_8760/model_archive/archive_manifest.json": {
+      "bytes": 609,
+      "sha256": "eacf8df375f6b9030c6a83f70876265442dac045f0811d1720a1b9a419fa236e"
+    },
+    "output_8760/model_archive/original.mps.gz": {
+      "bytes": 4148014236,
+      "sha256": "1979e5523b2041485b1db7faa40f20eda9ec92d3677544fed1557bda49826fba"
+    },
+    "output_8760/model_archive/parameters.prm": {
+      "bytes": 207,
+      "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5"
+    },
+    "output_8760/model_config_snapshot.json": {
+      "bytes": 29799,
+      "sha256": "038cea4f9e8814db4da832356f8766b01ea1b9d358a807bbc60af7745ddecbaa"
+    },
+    "output_8760/monthly_energy_by_technology.csv": {
+      "bytes": 5359,
+      "sha256": "7a4658bbed50903c23f99a5185761ad774590de3d922583a3dc4aa07aaf2aa9e"
+    },
+    "output_8760/output_catalog.csv": {
+      "bytes": 8223,
+      "sha256": "1e79c3c0fe6af87e1f313cf97061347eb6ac8552f9395a787ee7f37fa5a3ec47"
+    },
+    "output_8760/output_data_dictionary.csv": {
+      "bytes": 154265,
+      "sha256": "8b844e31c08708fbc8e71c41ba8ef5d65dd2ed9f1074f8b590bec886e3e5c781"
+    },
+    "output_8760/planning_state_candidate/capacity_cohorts.csv.gz": {
+      "bytes": 1405111,
+      "sha256": "dd108e68107f62c73dea445a51fb75cec404f66ac51da2eb582770543ce48caa"
+    },
+    "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz": {
+      "bytes": 918099,
+      "sha256": "d3ce2e37f29a18911c1de8c981d00ffed7dba6b9431847986c337526aeca9dcc"
+    },
+    "output_8760/planning_state_candidate/state_metadata.json": {
+      "bytes": 174580,
+      "sha256": "0e5392ddd5bf5148a939b4307b358ae7fe445da7df8707a1c2b88ece8b3e791e"
+    },
+    "output_8760/planning_state_candidate/state_transition_summary.csv": {
+      "bytes": 86,
+      "sha256": "30919b5fae61b365bcee511a72c2df328bbb9dbd2fed6ee01a3156c85105c0db"
+    },
+    "output_8760/preflight_report.json": {
+      "bytes": 15704,
+      "sha256": "bc72e3bf63515df728201e5a36c0c7fa0916c6f55f1b115c054fc41fe4833214"
+    },
+    "output_8760/preservation_report.json": {
+      "bytes": 4227,
+      "sha256": "e437589359491d3d830c6df4f16384b98cd2aad729dc0d14a5f2880998cc1153"
+    },
+    "output_8760/preservation_runtime_memory.json": {
+      "bytes": 158,
+      "sha256": "ab9bd08b98e7ca0d662e2574a363dbfd848937b57ad4d8f42b20afa5d670b189"
+    },
+    "output_8760/province_annual_load_center_accounts.csv": {
+      "bytes": 3330,
+      "sha256": "df0dd9dd1e12197ad46fd8cb183ebc106f2c5376df4a2138f5109a1ba49c884b"
+    },
+    "output_8760/reservoir_dispatch.npz": {
+      "bytes": 238781210,
+      "sha256": "54432a23da4a89eb88449bad02705f83e8341ca0a3d2d35092adb267e51d0ce3"
+    },
+    "output_8760/reservoir_station_index.csv": {
+      "bytes": 157869,
+      "sha256": "27172e57719651c6881c6155f77b896584db7bf3afd143f1681ed155c7800104"
+    },
+    "output_8760/resource_structure_audit.json": {
+      "bytes": 6556,
+      "sha256": "544c37fcd1f24db84520bde8ef972a0444d8090d6a978117454f26600e6a958a"
+    },
+    "output_8760/resource_v2g_slack_check.json": {
+      "bytes": 172,
+      "sha256": "78441617c39fe977e4ad4d102b0734fc279f240e60dd4d2fdfcf03406623c15a"
+    },
+    "output_8760/result_manifest.json": {
+      "bytes": 15296,
+      "sha256": "50b641a81e884bc0479b20aa07a573af7c2b4ea3e5f92fb5239b633d59e392fe"
+    },
+    "output_8760/run_claim.json": {
+      "bytes": 256,
+      "sha256": "d6e72cfa8263d894043eada53592a2d952074b59d3fc6a36a5c8ee3ceea32d91"
+    },
+    "output_8760/run_environment.json": {
+      "bytes": 2865,
+      "sha256": "d03315273209c72ae62cfd026bdedd841e9c7c3d7cf53664fe81377f9247105d"
+    },
+    "output_8760/run_identity.json": {
+      "bytes": 49711,
+      "sha256": "58009e10909edfc7c317df8489a3c73287657a357679cad3f9cd5d32db143eb6"
+    },
+    "output_8760/run_scope.json": {
+      "bytes": 8280,
+      "sha256": "f19ccb6fc3fc9ee31748d1075d28347237813d0030d011f1f0e8936bb46a98a1"
+    },
+    "output_8760/run_summary.json": {
+      "bytes": 2284,
+      "sha256": "8618caef7e6b072b3712f5631ef26b751ca6197f226991fa11d6163cb47d4757"
+    },
+    "output_8760/scenario_manifest.json": {
+      "bytes": 9843,
+      "sha256": "78c39a4f8b5ec702c08d1e264aeec0ad6c7df533926dfc5c1658e41d48951364"
+    },
+    "output_8760/solution_qc.json": {
+      "bytes": 234405,
+      "sha256": "01e4db12f45aaad766948e6f326254c5c0d77c6b176e6cb67237183ee1ab5181"
+    },
+    "output_8760/solve_report.json": {
+      "bytes": 238845,
+      "sha256": "9337e9adf926b3a5ee928b1917f0412d32579d7294fa64874341f9c510511168"
+    },
+    "output_8760/solver_parameters_before_optimize.json": {
+      "bytes": 589,
+      "sha256": "e0ce4e33eab851c216b2fef12ada81e5ea227b8f7f3d5769b223395d509510a2"
+    },
+    "output_8760/solver_telemetry.jsonl": {
+      "bytes": 76331,
+      "sha256": "f59809d9d575cde462fabdab968f385d566da855f36979615aa5d153b2bcdfff"
+    },
+    "output_8760/storage_capacity.csv": {
+      "bytes": 11394,
+      "sha256": "24acd1378626012804995c5c2e756b399094becc23b1469a6d00c01766004f6b"
+    },
+    "output_8760/storage_dispatch.npz": {
+      "bytes": 20095425,
+      "sha256": "467844bf1d7857fcce575c5f78b6e0df2a313779c24dee311783497faf422399"
+    },
+    "output_8760/thermal_dispatch.npz": {
+      "bytes": 97010922,
+      "sha256": "c63c807f869a628fdea817f71b2e18585b899f9288c4192a34fc94c9529f7087"
+    },
+    "output_8760/thermal_nuclear_capacity.csv": {
+      "bytes": 38628,
+      "sha256": "c33ae6d1a981f88d7a954535aa8f0f52a188cba0c2c676cfef9b05d776706eaa"
+    },
+    "output_8760/time_index.csv": {
+      "bytes": 335483,
+      "sha256": "2b2665508a28f768c691916346d64707d68c847095d562eeddab0fc6cd3b871d"
+    },
+    "output_8760/transmission_capacity.csv": {
+      "bytes": 36227,
+      "sha256": "17a7d521a286a417fd9d6d135048223ee71c76749381678ad99a244a4260c142"
+    },
+    "output_8760/transmission_flows.npz": {
+      "bytes": 30073521,
+      "sha256": "9bbb962ad5757c395b5b54a97762449e3aae549af6af11779cbd4149397ac26f"
+    },
+    "output_8760/visualizations/capacity_by_technology.svg": {
+      "bytes": 5999,
+      "sha256": "47a96e538e63b2aba905ba39d19c4325dc8817455c441ede4c7a4f2ed6f5ec58"
+    },
+    "output_8760/visualizations/generation_by_technology.svg": {
+      "bytes": 5569,
+      "sha256": "f7641d4d1f3d8bd3c7b913039e666f0f3c35a95f1d5605ae5ba580bebeeb1ff0"
+    },
+    "output_8760/visualizations/national_dispatch_first_week.svg": {
+      "bytes": 16946,
+      "sha256": "87d36881c8584c26c61d72fc4477013aa73dcf4c9c327f91ce612016f0b4cf10"
+    },
+    "output_8760/vre_capacity.csv": {
+      "bytes": 3747062,
+      "sha256": "d1cd8eaee8e54a70edb78890122bf0dd2e754c5b6eaff272bddf99fe10b85864"
+    },
+    "output_8760/vre_dispatch.npz": {
+      "bytes": 11607884,
+      "sha256": "4ca5fc85e44c42f67ac7c6a2ef59feaaadf10a62180b09f740293119bbfe22bd"
+    },
+    "output_8760/wave_capacity.csv": {
+      "bytes": 243399,
+      "sha256": "7b43b7863bf3b7478522cf142b55553868fd213863002ebcbc377718a9db7189"
+    },
+    "output_8760/wave_dispatch.npz": {
+      "bytes": 963530,
+      "sha256": "5e772e6f6bd1c6ed07a07508731afea8342057ee1958695a686cd0bbe4adb2d7"
+    },
+    "release_files.sha256": {
+      "bytes": 64684,
+      "sha256": "5bddb8e9a305476e38dd1b0055a6fe96cc58a32da221f7619eebcf7ec97dae68"
+    },
+    "release_receipt.json": {
+      "bytes": 1590,
+      "sha256": "3e71ac6a2c0643b17834cc229ea9557634886083093daf7127b492e914013afd"
+    },
+    "resource_contract_reference.csv": {
+      "bytes": 12364,
+      "sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827"
+    },
+    "resource_usage.txt": {
+      "bytes": 2047,
+      "sha256": "c59a4ea0f9677a6f993d4fa069d7c7fb262dec0b975d7e2878cc1dbf8a14dd6f"
+    },
+    "runtime_hash_check.log": {
+      "bytes": 31576,
+      "sha256": "0686355147d4021a5f606e09399e5f6edd0654f6d1cbea00b2e1e23570393488"
+    },
+    "runtime_slurm_job.txt": {
+      "bytes": 1563,
+      "sha256": "6296e9196851720a7d18d099fe05431b7baf302da319e5904a024038929d51ee"
+    },
+    "slurm-5590961.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "slurm-5590961.out": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_code_sha256.json": {
+      "bytes": 51548,
+      "sha256": "21f75511355e95f354b651f7e63017e302a12276b0b4eec631e136b54340c596"
+    },
+    "startup_resources.json": {
+      "bytes": 195,
+      "sha256": "d815cd11b0439b3e164561d2386d41ddebae390f48f4a64601a7e9c1e578babb"
+    },
+    "stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout.log": {
+      "bytes": 30105,
+      "sha256": "7a39aa6676c06218b9d680f3ad032f6b2632b50c662ede8e63a71c141f90b112"
+    },
+    "submission.json": {
+      "bytes": 87,
+      "sha256": "db094ef728350d030d65bec6423a26bd7b4498faaf497b6f7ffd71e1bb27a913"
+    }
+  },
+  "source_file_stats": {
+    "FINAL_GATES_PASSED.json": [
+      832,
+      0
+    ],
+    "batch_exit.json": [
+      35,
+      1794845773800166583
+    ],
+    "compute_node_smoke.json": [
+      263,
+      1794782897896921737
+    ],
+    "continuation.sbatch": [
+      5714,
+      0
+    ],
+    "data_copy_verification.json": [
+      6608,
+      1794782070349711000
+    ],
+    "engineering_gate_window_carbon_budget.json": [
+      3199,
+      0
+    ],
+    "frozen_closure.json": [
+      31140,
+      0
+    ],
+    "launch_config.json": [
+      1160,
+      0
+    ],
+    "license_path_preflight.json": [
+      70,
+      1794782070352778149
+    ],
+    "output_8760/annual_adequacy_by_province.csv": [
+      6164,
+      1794845636428475000
+    ],
+    "output_8760/annual_capacity_by_province_technology.csv": [
+      35001,
+      1794845653466916000
+    ],
+    "output_8760/annual_capacity_by_technology.csv": [
+      1216,
+      1794845653266508000
+    ],
+    "output_8760/annual_capacity_link_row_scaling.json": [
+      60857,
+      1794785866317349000
+    ],
+    "output_8760/annual_carbon_ccs.json": [
+      637,
+      1794845653150623115
+    ],
+    "output_8760/annual_constraint_shadow_prices.csv": [
+      380887,
+      1794845636426221000
+    ],
+    "output_8760/annual_flexible_load_by_province.csv": [
+      19097,
+      1794845643359111000
+    ],
+    "output_8760/annual_generation_by_province_technology.csv": [
+      14737,
+      1794845636437892000
+    ],
+    "output_8760/annual_generation_by_technology.csv": [
+      507,
+      1794845712113393252
+    ],
+    "output_8760/annual_resource_accounting_by_province.csv": [
+      9197,
+      1794845636439202000
+    ],
+    "output_8760/annual_storage_operation_by_technology.csv": [
+      382,
+      1794845712462291381
+    ],
+    "output_8760/annual_summary.json": [
+      2284,
+      1794845730329248000
+    ],
+    "output_8760/barrier_checkpoint/barrier_checkpoint_manifest.json": [
+      77753,
+      1794845238037543000
+    ],
+    "output_8760/barrier_checkpoint/dual_barpi.npy": [
+      434325632,
+      1794845125311682907
+    ],
+    "output_8760/barrier_checkpoint/primal_barx.npy": [
+      350376776,
+      1794845114146664131
+    ],
+    "output_8760/build_report.json": [
+      132958,
+      1794785871039433000
+    ],
+    "output_8760/co2_source_sink_flows.csv": [
+      4837366,
+      1794845291593335244
+    ],
+    "output_8760/cost_components.csv": [
+      4780,
+      1794845288398573000
+    ],
+    "output_8760/dac_capacity_capture.csv": [
+      21067,
+      1794845288853176000
+    ],
+    "output_8760/dual_export_status.json": [
+      1701,
+      1794845730339239000
+    ],
+    "output_8760/flexible_load_dispatch.npz": [
+      43290601,
+      1794845643349939224
+    ],
+    "output_8760/frozen_capacity_audit.csv": [
+      14027605,
+      1794785352417996053
+    ],
+    "output_8760/frozen_capacity_closure_audit.csv": [
+      13525,
+      1794785865911837000
+    ],
+    "output_8760/frozen_capacity_closure_report.json": [
+      32057,
+      1794785865913623000
+    ],
+    "output_8760/frozen_capacity_expected.json": [
+      2949530,
+      1794785866309178223
+    ],
+    "output_8760/frozen_capacity_output_check.json": [
+      7230,
+      1794845296345421000
+    ],
+    "output_8760/frozen_capacity_report.json": [
+      41136,
+      1794785866316451000
+    ],
+    "output_8760/frozen_capacity_source_alignment.json": [
+      1384,
+      1794785866221449000
+    ],
+    "output_8760/gurobi.log": [
+      25758,
+      1794845102084615873
+    ],
+    "output_8760/hourly_marginal_prices.csv.gz": [
+      15151721,
+      1794845636403723716
+    ],
+    "output_8760/hourly_national_balance.csv.gz": [
+      859902,
+      1794845728122925772
+    ],
+    "output_8760/hourly_province_balance.csv.gz": [
+      49010032,
+      1794845615855054281
+    ],
+    "output_8760/hourly_province_security.csv.gz": [
+      36297664,
+      1794845627264815311
+    ],
+    "output_8760/hydro_aggregate_capacity.csv": [
+      9698,
+      1794845288851047000
+    ],
+    "output_8760/hydro_capacity.csv": [
+      316268,
+      1794845288848801000
+    ],
+    "output_8760/hydro_cascade_reconciliation_audit.json": [
+      16558,
+      1794845598752065000
+    ],
+    "output_8760/hydro_cascade_reconciliation_by_node.csv": [
+      12141,
+      1794845598754807000
+    ],
+    "output_8760/hydro_dispatch.npz": [
+      6747417,
+      1794845652076549278
+    ],
+    "output_8760/hydro_spur_capacity.csv": [
+      59348,
+      1794845295968582000
+    ],
+    "output_8760/input_manifest.csv": [
+      31272,
+      1794782900929313000
+    ],
+    "output_8760/intra_grid_substation_design.csv": [
+      1035147,
+      1794845288815863468
+    ],
+    "output_8760/intra_grid_vre_site_design.csv": [
+      5596263,
+      1794845288772991861
+    ],
+    "output_8760/load_center_annual_balance.csv": [
+      45412,
+      1794845291608136000
+    ],
+    "output_8760/load_center_annual_generation.csv": [
+      99513,
+      1794845291710288000
+    ],
+    "output_8760/load_center_intra_transmission.csv": [
+      128485,
+      1794845291604172000
+    ],
+    "output_8760/load_center_network_qc.csv": [
+      490,
+      1794845295909115195
+    ],
+    "output_8760/model_archive/archive_manifest.json": [
+      609,
+      1794786418807807691
+    ],
+    "output_8760/model_archive/original.mps.gz": [
+      4148014236,
+      1794786416178319249
+    ],
+    "output_8760/model_archive/parameters.prm": [
+      207,
+      1794786418807113841
+    ],
+    "output_8760/model_config_snapshot.json": [
+      29799,
+      1794782899595667000
+    ],
+    "output_8760/monthly_energy_by_technology.csv": [
+      5359,
+      1794845728128573000
+    ],
+    "output_8760/output_catalog.csv": [
+      8223,
+      1794845738233467000
+    ],
+    "output_8760/output_data_dictionary.csv": [
+      154265,
+      1794845738237519000
+    ],
+    "output_8760/planning_state_candidate/capacity_cohorts.csv.gz": [
+      1405111,
+      1794845733822209059
+    ],
+    "output_8760/planning_state_candidate/raw_new_cohorts.csv.gz": [
+      918099,
+      1794845733019477088
+    ],
+    "output_8760/planning_state_candidate/state_metadata.json": [
+      174580,
+      1794845733837098000
+    ],
+    "output_8760/planning_state_candidate/state_transition_summary.csv": [
+      86,
+      1794845733827773834
+    ],
+    "output_8760/preflight_report.json": [
+      15704,
+      1794782905533181000
+    ],
+    "output_8760/preservation_report.json": [
+      4227,
+      1794845738245145000
+    ],
+    "output_8760/preservation_runtime_memory.json": [
+      158,
+      1794845738272726807
+    ],
+    "output_8760/province_annual_load_center_accounts.csv": [
+      3330,
+      1794845291712264000
+    ],
+    "output_8760/reservoir_dispatch.npz": [
+      238781210,
+      1794845651802086382
+    ],
+    "output_8760/reservoir_station_index.csv": [
+      157869,
+      1794845643366955000
+    ],
+    "output_8760/resource_structure_audit.json": [
+      6556,
+      1794785351673218000
+    ],
+    "output_8760/resource_v2g_slack_check.json": [
+      172,
+      1794845741989467176
+    ],
+    "output_8760/result_manifest.json": [
+      15296,
+      1794845745522159000
+    ],
+    "output_8760/run_claim.json": [
+      256,
+      1794782899594350083
+    ],
+    "output_8760/run_environment.json": [
+      2865,
+      1794782899622201000
+    ],
+    "output_8760/run_identity.json": [
+      49711,
+      1794785870623649000
+    ],
+    "output_8760/run_scope.json": [
+      8280,
+      1794782905618606000
+    ],
+    "output_8760/run_summary.json": [
+      2284,
+      1794845730329618000
+    ],
+    "output_8760/scenario_manifest.json": [
+      9843,
+      1794845643360206000
+    ],
+    "output_8760/solution_qc.json": [
+      234405,
+      1794845653231311000
+    ],
+    "output_8760/solve_report.json": [
+      238845,
+      1794845730345560000
+    ],
+    "output_8760/solver_parameters_before_optimize.json": [
+      589,
+      1794785871045433660
+    ],
+    "output_8760/solver_telemetry.jsonl": [
+      76331,
+      1794845102084986382
+    ],
+    "output_8760/storage_capacity.csv": [
+      11394,
+      1794845288835136000
+    ],
+    "output_8760/storage_dispatch.npz": [
+      20095425,
+      1794845641894297269
+    ],
+    "output_8760/thermal_dispatch.npz": [
+      97010922,
+      1794845640753093383
+    ],
+    "output_8760/thermal_nuclear_capacity.csv": [
+      38628,
+      1794845288832670000
+    ],
+    "output_8760/time_index.csv": [
+      335483,
+      1794845570089146000
+    ],
+    "output_8760/transmission_capacity.csv": [
+      36227,
+      1794845291597424000
+    ],
+    "output_8760/transmission_flows.npz": [
+      30073521,
+      1794845653149587130
+    ],
+    "output_8760/visualizations/capacity_by_technology.svg": [
+      5999,
+      1794845730331283000
+    ],
+    "output_8760/visualizations/generation_by_technology.svg": [
+      5569,
+      1794845730332222000
+    ],
+    "output_8760/visualizations/national_dispatch_first_week.svg": [
+      16946,
+      1794845730334092000
+    ],
+    "output_8760/vre_capacity.csv": [
+      3747062,
+      1794845288586317358
+    ],
+    "output_8760/vre_dispatch.npz": [
+      11607884,
+      1794845641203142337
+    ],
+    "output_8760/wave_capacity.csv": [
+      243399,
+      1794845288828576000
+    ],
+    "output_8760/wave_dispatch.npz": [
+      963530,
+      1794845641248365728
+    ],
+    "release_files.sha256": [
+      64684,
+      1794782071127088000
+    ],
+    "release_receipt.json": [
+      1590,
+      1794782307151346000
+    ],
+    "resource_contract_reference.csv": [
+      12364,
+      0
+    ],
+    "resource_usage.txt": [
+      2047,
+      1794845773798876000
+    ],
+    "runtime_hash_check.log": [
+      31576,
+      1794782897254034947
+    ],
+    "runtime_slurm_job.txt": [
+      1563,
+      1794782897445678000
+    ],
+    "slurm-5590961.err": [
+      0,
+      1794782896633447000
+    ],
+    "slurm-5590961.out": [
+      0,
+      1794782896632379000
+    ],
+    "source_code_sha256.json": [
+      51548,
+      0
+    ],
+    "startup_resources.json": [
+      195,
+      1794782897446948001
+    ],
+    "stderr.log": [
+      0,
+      1794782897940704000
+    ],
+    "stdout.log": [
+      30105,
+      1794845741945045996
+    ],
+    "submission.json": [
+      87,
+      1794782307122710735
+    ]
+  }
+}

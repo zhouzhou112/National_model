@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "original_backup_all_bytes_sha_match": true,
+  "source_unchanged": true,
+  "source_sha256": {
+    "result_manifest.json": "50b641a81e884bc0479b20aa07a573af7c2b4ea3e5f92fb5239b633d59e392fe",
+    "solution_qc.json": "01e4db12f45aaad766948e6f326254c5c0d77c6b176e6cb67237183ee1ab5181",
+    "solve_report.json": "9337e9adf926b3a5ee928b1917f0412d32579d7294fa64874341f9c510511168",
+    "model_config_snapshot.json": "038cea4f9e8814db4da832356f8766b01ea1b9d358a807bbc60af7745ddecbaa",
+    "frozen_capacity_output_check.json": "021320189661e58cf732bd0147e56f2d875b814638997ec7e2e0c460f8d51ffd",
+    "resource_structure_audit.json": "544c37fcd1f24db84520bde8ef972a0444d8090d6a978117454f26600e6a958a",
+    "preservation_report.json": "e437589359491d3d830c6df4f16384b98cd2aad729dc0d14a5f2880998cc1153"
+  },
+  "tool_sha256": {
+    "dual_extensions.py": "b8688a8aefb1426c27a1c00a79e0b9b0a7b7c347a415078252c02eba8aef8356",
+    "accept_batch2_on_t550.py": "9da626af74dd220f688d599212d2d9ed6af4c6cc3ca3e687e6baa1e779e7f05c",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "evaluator_version": "relative_v1_author_20261027_mt",
+  "seconds": 272.60290479660034,
+  "annual_row_duals_recovered_from": "Original MPS ROWS plus own BarPi, complete row-order digest checked",
+  "original_export_error": "AttributeError: 'SavedDual' object has no attribute 'ConstrName'"
+}

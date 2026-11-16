@@ -1,0 +1,22 @@
+{
+  "cases": {
+    "OPS-Open-2030": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+    "OPS-Open-2040": "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+    "OPS-Open-2060": "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1"
+  },
+  "references": {
+    "2030": {
+      "REF": "20260914_base_v9_t48_m750_tol1e4_v3",
+      "OPS-Central": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3"
+    },
+    "2040": {
+      "REF": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "OPS-Central": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1"
+    },
+    "2060": {
+      "REF": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "OPS-Central": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2"
+    }
+  },
+  "sidecar": "acceptance_resource_batch2_20261116"
+}

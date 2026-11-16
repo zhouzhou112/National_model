@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "verified_at_utc": "2026-11-16T21:58:56.385657+00:00",
+  "cases": {
+    "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1": {
+      "files": 105,
+      "bytes": 138555336,
+      "acceptance_status": "PASS",
+      "original_source_unchanged": true,
+      "result_manifest_sha256": "a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a"
+    },
+    "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1": {
+      "files": 107,
+      "bytes": 140663242,
+      "acceptance_status": "PASS",
+      "original_source_unchanged": true,
+      "result_manifest_sha256": "e9eb171b122850e3e54fe3e473ee649b43b2c4be910b7fd4d75b7978cf42c5d5"
+    },
+    "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1": {
+      "files": 107,
+      "bytes": 140978073,
+      "acceptance_status": "PASS",
+      "original_source_unchanged": true,
+      "result_manifest_sha256": "50b641a81e884bc0479b20aa07a573af7c2b4ea3e5f92fb5239b633d59e392fe"
+    }
+  },
+  "report_directory": "/home/zz2/National_model_server/analysis_tools_resource_batch2_20261116/final_report",
+  "report_files": {
+    "OPS_OPEN_2030_2040_2060_REPORT_ZH.md": {
+      "bytes": 8638,
+      "sha256": "1bb85f9c99ad3f4608d8434c977d15c16f9698f25481bd0ca7eb45199e79e907"
+    },
+    "accepted_OPS_cases.csv": {
+      "bytes": 409,
+      "sha256": "c0700dde54a6ba54ea18a953d367e15988b66a5ce3fc415491b0a0bfa730a1c0"
+    },
+    "OPS_Open_four_year_summary.csv": {
+      "bytes": 1285,
+      "sha256": "302b799eb155654e49025eba6b36e30d425c03f9457a4c59fef3c1da9fb66d08"
+    },
+    "OPS_Open_four_year_services.csv": {
+      "bytes": 2453,
+      "sha256": "b7e761e7a3e0223265a4e429e26fdca6e0a40e76dfc24938def8f506cb15d76e"
+    },
+    "four_year_summary.json": {
+      "bytes": 10458,
+      "sha256": "c20bda508a516f8517eeb907d336264f6d64ff35acafff6cd666fb5ec033730d"
+    },
+    "delivery_summary.json": {
+      "bytes": 2028,
+      "sha256": "4376855b76b2930d22d888be0d34298fe96a66601049cffe1fd92a5c1aa8c8ac"
+    },
+    "late_progress_final.json": {
+      "bytes": 899,
+      "sha256": "533b1b3bcda376685fd3806c049dca9ff45daf0368e5d76ddbe5a8bb492029a1"
+    }
+  },
+  "local_files_verified": 319,
+  "local_all_sha_match": true
+}
