@@ -1,0 +1,21 @@
+{
+  "targets": {
+    "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1": {
+      "exists": false,
+      "manifest": null
+    },
+    "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1": {
+      "exists": false,
+      "manifest": null
+    },
+    "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1": {
+      "exists": false,
+      "manifest": null
+    }
+  },
+  "disk": {
+    "total": 4029616283648,
+    "free": 1194106249216
+  },
+  "operations": []
+}

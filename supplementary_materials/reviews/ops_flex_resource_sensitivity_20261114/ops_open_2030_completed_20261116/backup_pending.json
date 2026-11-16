@@ -1,8 +1,10 @@
 {
-  "status": "PENDING_T550_CONNECTION",
+  "status": "SUPERSEDED_BY_COMBINED_RUNNING_TRANSFER",
   "user_reply": "稍后恢复",
   "no_transfer_started": true,
   "old_backup_and_process_check_required_before_start": true,
   "total_files": 109,
-  "total_bytes": 5520216730
+  "total_bytes": 5520216730,
+  "operation": "20261116_resource_batch2_ops_completed",
+  "pid": 2385473
 }

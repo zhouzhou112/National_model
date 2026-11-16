@@ -1,0 +1,47 @@
+{
+  "ops_open_2030": {
+    "release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+    "job_id": "5591162",
+    "accounting": "5591162|COMPLETED|0:0|13:50:57|2026-11-16T08:39:44|2026-11-16T22:30:41|m4cm1901\n",
+    "solver_status": "OPTIMAL",
+    "barrier_iterations": 131,
+    "objective_million_cny": 4181810.139273937,
+    "memory": {
+      "peak_process_tree_rss_bytes": 559012630528,
+      "peak_process_tree_rss_gib": 520.621,
+      "elapsed_seconds": 49302.334,
+      "sampling_interval_seconds": 0.5
+    },
+    "preservation": "COMPLETE"
+  },
+  "ops_open_2040": {
+    "release": "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+    "job_id": "5590946",
+    "accounting": "5590946|COMPLETED|0:0|18:09:23|2026-11-16T06:48:15|2026-11-17T00:57:38|m4cm1702\n",
+    "solver_status": "OPTIMAL",
+    "barrier_iterations": 164,
+    "objective_million_cny": 5035960.232688588,
+    "memory": {
+      "peak_process_tree_rss_bytes": 562288750592,
+      "peak_process_tree_rss_gib": 523.672,
+      "elapsed_seconds": 64822.633,
+      "sampling_interval_seconds": 0.5
+    },
+    "preservation": "COMPLETE"
+  },
+  "ops_open_2060": {
+    "release": "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+    "job_id": "5590961",
+    "accounting": "5590961|COMPLETED|0:0|17:27:58|2026-11-16T06:48:15|2026-11-17T00:16:13|m4cm1803\n",
+    "solver_status": "OPTIMAL",
+    "barrier_iterations": 171,
+    "objective_million_cny": 5718684.655942873,
+    "memory": {
+      "peak_process_tree_rss_bytes": 551093362688,
+      "peak_process_tree_rss_gib": 513.246,
+      "elapsed_seconds": 62332.8,
+      "sampling_interval_seconds": 0.5
+    },
+    "preservation": "COMPLETE"
+  }
+}

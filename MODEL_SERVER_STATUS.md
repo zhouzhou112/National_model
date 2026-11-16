@@ -1,5 +1,8 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-16 20:52UTC：云端仅LATE5587177运行，OPS-Open2030/2040/2060均OPTIMAL+保全COMPLETE+内置relative_v1 PASS。T550恢复后核无重复备份，333件16.57GB已合并自主拉取PID2385473，PPID1；2030/2040 T1已VERIFIED、其余传输中，尚未COMPLETE。预计剩余空间29.22%满足5%规则。旧2030单案待办已并入本次，不重复启动。正式验收/年度对偶恢复待备份完成，第三批未提交、无监听。**
+
+
 - **2026-11-16 15:09UTC：云端3 RUNNING+OPS-Open2030新完成。2030/5591162于14:30UTC COMPLETED、131轮OPTIMAL、保全COMPLETE/内置relative_v1与容量检查PASS；109件5.52GB备份清单已备，T550拒连且用户答复稍后恢复，未启动传输/正式验收。LATE160轮(PInf3260/Compl135)、OPS2040 151轮、2060 162轮继续；原作业不改、无监听、第三批未提交。**
 
 
@@ -4230,3 +4233,15 @@ OPS-Open2030/5591162运行12:46:34到121轮，打印PInf1.78e-4/DInf8.41e-8/Comp
 其余三项RUNNING：LATE-Open2050到160轮，打印PInf3260/DInf8.94e-8/Compl135，近10轮降84.4%/28.5%/81.0%，11.17分钟/轮；OPS-Open2040到151轮，4.84e-4/1.04e-8/3.66e-5；2060到162轮，3.14e-4/1.17e-8/3.76e-5。两OPS原始残差与互补性继续下降；2060近10轮DInf略反弹4.46%，不说全部单调。三项stderr为空、无终态，不因互补性小于1e-4宣称完成。所有残差为Gurobi日志打印口径。
 
 证据snapshots/20261116T150932Z/及ops_open_2030_completed_20261116/{terminal_summary,source_inventory,backup_config,backup_pending}.json；代码基准d12bcb7d，本轮无模型/环境变更。恢复后先核T550旧目标和传输，再按5%余量、互斥锁、全层SHA/源身份规则备份；完成后在T550验收与年度对偶恢复，只取小文件。其余原作业不操作，第三批未授权，无后台监听。
+
+## 2026-11-16 20:52UTC 第二批三个OPS已结束并合并启动T550全备份
+
+云端只剩LATE-Open2050/5587177运行（20:49UTC快照34:17:38）。OPS-Open2030/5591162、2040/5590946、2060/5590961均COMPLETED/0:0、OPTIMAL、preservation COMPLETE、内置relative_v1与冻结容量检查PASS。2030为131轮13:50:57、目标4181810.139274million CNY、进程树峰520.621GiB；2040为164轮18:09:23、目标5035960.232689、峰523.672GiB；2060为171轮17:27:58、目标5718684.655943、峰513.246GiB。原严格HARD_FAIL双向流/成本重构标签保留，正式T550验收仍待备份后执行。
+
+用户恢复T550并明确把剩余已结束案例一起备份。先核hostname、空间、对应目标目录均不存在、无本批旧operation/活跃传输；2030此前仅有本地待办，未启动过单独传输。合并operation=20261116_resource_batch2_ops_completed，PID2385473已脱离本机（PPID1/SID同PID），由T550直连云端单次自主拉取。目标/home/zz2/National_model_server/cloud_backup/<release>/，保持相对路径、不删除源或旧备份。
+
+规模：2030 109件5520216730bytes，2040 112件5526143353bytes，2060 112件5520870430bytes；合计333件16567230513bytes。含全部output_8760（原MPS、BarX/BarPi、状态/QC/日志）及明确启动/窗口门禁元数据，不含输入环境镜像或凭据。5%余量门槛满足，完成后预计仍余29.22%。已核传输RUNNING：2030/2040的T1已VERIFIED，2060的T1传输中；T2/T3未全完，不报告备份COMPLETE。本机断线不影响该单次进程。
+
+证据batch2_completed_backup_20261116/{terminal_summary,terminal_qc_summary,source_inventory,target_precheck,backup_config,launch_receipt,initial_transfer_status,tool_provenance}.json，源状态snapshots/20261116T204903Z/snapshot.json。备用包装器backup_batch2_completed.py复用既有校验/互斥锁/续传引擎，只限定本次三案并扩充明确元数据清单；引擎/科学模型未修改。此前ops_open_2030_completed_20261116待办由本合并operation接续，不能再启动旧单案配置。
+
+下一步先核PID2385473和transfer_status/backup_manifest，全部层VERIFIED且源身份不变后登记COMPLETE，再在T550按第一批方法验收、恢复各自原MPS+BarPi年度行对偶、分析并取小文件。LATE仍运行不纳入此次备份，不改其作业/冻结包；第三批未提交，无后台监听。

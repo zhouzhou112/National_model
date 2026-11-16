@@ -1,0 +1,35 @@
+{
+  "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1": {
+    "solver": "OPTIMAL",
+    "relative_v1": "PASS",
+    "strict": "HARD_FAIL",
+    "strict_failed": [
+      "unidirectional_interprovincial_flow",
+      "objective_components"
+    ],
+    "frozen_capacity": "PASS",
+    "annual_duals_export": false
+  },
+  "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1": {
+    "solver": "OPTIMAL",
+    "relative_v1": "PASS",
+    "strict": "HARD_FAIL",
+    "strict_failed": [
+      "unidirectional_interprovincial_flow",
+      "objective_components"
+    ],
+    "frozen_capacity": "PASS",
+    "annual_duals_export": false
+  },
+  "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1": {
+    "solver": "OPTIMAL",
+    "relative_v1": "PASS",
+    "strict": "HARD_FAIL",
+    "strict_failed": [
+      "unidirectional_interprovincial_flow",
+      "objective_components"
+    ],
+    "frozen_capacity": "PASS",
+    "annual_duals_export": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "status": {
+    "started_at_utc": "2026-11-16T20:52:45.592555+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 590282511,
+        "file_count": 105,
+        "started_at_utc": "2026-11-16T20:52:45.593184+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-16T20:53:43.773548+00:00"
+      },
+      {
+        "release": "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 592602516,
+        "file_count": 108,
+        "started_at_utc": "2026-11-16T20:53:43.774497+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-16T20:54:42.733270+00:00"
+      },
+      {
+        "release": "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 588076033,
+        "file_count": 108,
+        "started_at_utc": "2026-11-16T20:54:42.734431+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 1182885027
+  },
+  "process": "    PID    PPID     SID     ELAPSED COMMAND\n2385473       1 2385473       02:17 /home/zz2/National_model_server/envs/cispo-2030-v1/bin/python /home/zz2/National_model_server/backup_tools/resource_batch2_ops_20261116/backup_batch2_completed.py run --config /home/zz2/National_model_server/backup_tools/resource_batch2_ops_20261116/backup_config.json --engine /home/zz2/National_model_server/backup_tools/resource_batch2_ops_20261116/backup_completed_cloud.py\n"
+}
