@@ -1,0 +1,2620 @@
+{
+  "year": 2040,
+  "command": [
+    "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+    "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/resource_gate_batch2.py",
+    "--year",
+    "2040",
+    "--mode",
+    "frozen",
+    "--resource",
+    "conservative",
+    "--hours",
+    "1",
+    "--production-profile",
+    "--source-release",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1",
+    "--supplement",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027",
+    "--output",
+    "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/conservative_gates_20261117/2040/conservative_production_1h",
+    "--closure",
+    "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2/derived_static/closure.json"
+  ],
+  "exit_code": 0,
+  "seconds": 58.22356581687927,
+  "reused_24h_sha256": "5f80e7d8a38054f63dec372314bb3bf8abe65846d37a3ba538d9236819719419",
+  "remote_24h_raw_sha256": "1b4d1e931d08a2a25e70d45f7d4a9058d18f529949db343f15c20b240ce71d7a",
+  "source_and_input_recheck": "PASS",
+  "tested_sources_unchanged": true,
+  "identity_gate_probe.json": {
+    "mode": "frozen",
+    "planning_year": 2040,
+    "hours": 1,
+    "runner_exit_code": 0,
+    "variables": 239109,
+    "constraints": 80896,
+    "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+    "investment_fixed": {
+      "vre_new": true,
+      "thermal_new": true,
+      "thermal_retrofit_to_ccs": true,
+      "storage_new": true,
+      "line_new": true,
+      "intra_load_center_new": true,
+      "spur_augmentation": true,
+      "hydro_spur_augmentation": true,
+      "trunk_augmentation": true,
+      "hydro_new": true,
+      "wave_new": true,
+      "dac_new": true
+    },
+    "all_investment_families_fixed": true,
+    "parameters": "PASS"
+  },
+  "parameter_verification.json": {
+    "status": "PASS",
+    "year": 2040,
+    "checks": [
+      {
+        "parameter": "v1g_fraction",
+        "actual": 0.2,
+        "expected": 0.2,
+        "passed": true
+      },
+      {
+        "parameter": "v2g_fraction",
+        "actual": 0.1,
+        "expected": 0.1,
+        "passed": true
+      },
+      {
+        "parameter": "v2g_cap_gw",
+        "actual": 60,
+        "expected": 60,
+        "passed": true
+      },
+      {
+        "parameter": "legacy_bidirectional_activation",
+        "actual": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "parameter": "heating.retention_per_hour",
+        "actual": {
+          "min": 0.94,
+          "max": 0.94
+        },
+        "expected": 0.94,
+        "passed": true
+      },
+      {
+        "parameter": "heating.positive_state_duration_hours",
+        "actual": {
+          "min": 4.0,
+          "max": 4.0
+        },
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "parameter": "heating.negative_state_duration_hours",
+        "actual": {
+          "min": 4.0,
+          "max": 4.0
+        },
+        "expected": 4,
+        "passed": true
+      },
+      {
+        "parameter": "heating.comfort_band",
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      {
+        "parameter": "heating.enablement_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 35.0,
+          "max": 35.0
+        },
+        "expected": 35,
+        "passed": true
+      },
+      {
+        "parameter": "heating.activation_cost_release_yuan_per_mwh",
+        "actual": {
+          "min": 40.0,
+          "max": 40.0
+        },
+        "expected": 40,
+        "passed": true
+      },
+      {
+        "parameter": "heating.activation_cost_precondition_yuan_per_mwh",
+        "actual": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.retention_per_hour",
+        "actual": {
+          "min": 0.92,
+          "max": 0.92
+        },
+        "expected": 0.92,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.positive_state_duration_hours",
+        "actual": {
+          "min": 5.0,
+          "max": 5.0
+        },
+        "expected": 5,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.negative_state_duration_hours",
+        "actual": {
+          "min": 5.0,
+          "max": 5.0
+        },
+        "expected": 5,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.comfort_band",
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.enablement_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 35.0,
+          "max": 35.0
+        },
+        "expected": 35,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.activation_cost_release_yuan_per_mwh",
+        "actual": {
+          "min": 40.0,
+          "max": 40.0
+        },
+        "expected": 40,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.activation_cost_precondition_yuan_per_mwh",
+        "actual": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v1g.enablement_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 35.0,
+          "max": 35.0
+        },
+        "expected": 35,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v1g.activation_cost_yuan_per_mwh",
+        "actual": {
+          "min": 20.0,
+          "max": 20.0
+        },
+        "expected": 20,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v1g.infrastructure_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v1g.degradation_cost_yuan_per_mwh",
+        "actual": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v2g.enablement_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 40.0,
+          "max": 40.0
+        },
+        "expected": 40,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v2g.activation_cost_yuan_per_mwh",
+        "actual": {
+          "min": 120.0,
+          "max": 120.0
+        },
+        "expected": 120,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v2g.infrastructure_cost_yuan_per_kw_year",
+        "actual": {
+          "min": 30.0,
+          "max": 30.0
+        },
+        "expected": 30,
+        "passed": true
+      },
+      {
+        "parameter": "ev_v2g.degradation_cost_yuan_per_mwh",
+        "actual": {
+          "min": 110.0,
+          "max": 110.0
+        },
+        "expected": 110,
+        "passed": true
+      },
+      {
+        "parameter": "charge_efficiency",
+        "actual": 0.94,
+        "expected": 0.94,
+        "passed": true
+      },
+      {
+        "parameter": "discharge_efficiency",
+        "actual": 0.94,
+        "expected": 0.94,
+        "passed": true
+      },
+      {
+        "parameter": "power_duration_hours",
+        "actual": 4.0,
+        "expected": 4.0,
+        "passed": true
+      },
+      {
+        "parameter": "maximum_power_to_daily_average_ratio",
+        "actual": 2.0,
+        "expected": 2.0,
+        "passed": true
+      },
+      {
+        "parameter": "actual_ev_charge_envelope_error",
+        "actual": {
+          "min": -8.881784197001252e-16,
+          "max": 8.881784197001252e-16
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "actual_ev_inventory_error",
+        "actual": {
+          "min": -1.0658141036401503e-14,
+          "max": 1.0658141036401503e-14
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "heating.participation_up_error",
+        "actual": {
+          "min": -1.0061396160665481e-16,
+          "max": 1.3552527156068805e-20
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "heating.participation_down_error",
+        "actual": {
+          "min": -1.0061396160665481e-16,
+          "max": 6.776263578034403e-21
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.participation_up_error",
+        "actual": {
+          "min": -1.1102230246251565e-16,
+          "max": 6.776263578034403e-21
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "cooling.participation_down_error",
+        "actual": {
+          "min": -1.1102230246251565e-16,
+          "max": 3.3881317890172014e-21
+        },
+        "expected": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "credit.heating",
+        "actual": 0.5,
+        "expected": 0.5,
+        "passed": true
+      },
+      {
+        "parameter": "credit.cooling",
+        "actual": 0.55,
+        "expected": 0.55,
+        "passed": true
+      },
+      {
+        "parameter": "credit.ev_v1g",
+        "actual": 0.45,
+        "expected": 0.45,
+        "passed": true
+      },
+      {
+        "parameter": "credit.ev_v2g",
+        "actual": 0.45,
+        "expected": 0.45,
+        "passed": true
+      },
+      {
+        "parameter": "credit.duration",
+        "actual": 4.0,
+        "expected": 4.0,
+        "passed": true
+      },
+      {
+        "parameter": "credit.peak_reference",
+        "actual": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+        "expected": "four_hour_window_containing_immutable_full_year_province_baseline_peak_v1",
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.heating_shift_up_gw_active[",
+        "actual": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.cooling_shift_up_gw_active[",
+        "actual": "ABSENT_IN_WINDOW",
+        "expected": "support-dependent",
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.heating_shift_down_gw_active[",
+        "actual": {
+          "min": 0.04,
+          "max": 0.04
+        },
+        "expected": 0.04,
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.cooling_shift_down_gw_active[",
+        "actual": "ABSENT_IN_WINDOW",
+        "expected": "support-dependent",
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.ev_mobility_v1g_relocated_gw[",
+        "actual": {
+          "min": 0.02,
+          "max": 0.02
+        },
+        "expected": 0.02,
+        "passed": true
+      },
+      {
+        "parameter": "actual_objective.ev_mobility_discharge_gw[",
+        "actual": {
+          "min": 0.22999999999999998,
+          "max": 0.22999999999999998
+        },
+        "expected": 0.23,
+        "passed": true
+      },
+      {
+        "parameter": "credit.variable_count",
+        "actual": 124,
+        "expected": 124,
+        "passed": true
+      },
+      {
+        "parameter": "annual_8760_contract_upper_sums_gw",
+        "actual": [
+          1.3225721553594736,
+          5.189052050021011,
+          33.213780121997,
+          14.400681644225868
+        ],
+        "expected": [
+          1.3225721553594751,
+          5.189052050021012,
+          33.213780121997,
+          14.400681644225868
+        ],
+        "absolute_difference_gw": [
+          1.5543122344752192e-15,
+          1.7763568394002505e-15,
+          0.0,
+          0.0
+        ],
+        "tolerance_gw": 1e-06,
+        "passed": true
+      },
+      {
+        "parameter": "selected_window_thermal_upper_by_province",
+        "maximum_absolute_difference_gw": 0.0,
+        "maximum_exceedance_over_annual_gw": 0.0,
+        "passed": true
+      },
+      {
+        "parameter": "selected_window_EV_upper_equals_annual",
+        "actual": [
+          33.213780121997,
+          14.400681644225868
+        ],
+        "expected": [
+          33.213780121997,
+          14.400681644225868
+        ],
+        "absolute_difference_gw": [
+          0.0,
+          0.0
+        ],
+        "passed": true
+      }
+    ],
+    "selected_window_contract_upper_sums_gw": [
+      1.247219300095972,
+      0.0,
+      33.213780121997,
+      14.400681644225868
+    ],
+    "annual_8760_contract_upper_sums_gw": [
+      1.3225721553594736,
+      5.189052050021011,
+      33.213780121997,
+      14.400681644225868
+    ],
+    "selected_window_thermal_upper_by_province": [
+      {
+        "province_code": 11,
+        "actual_heating_gw": 0.0378680766888859,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0378680766888859,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0378680766888859,
+        "annual_cooling_gw": 0.1002913804416296
+      },
+      {
+        "province_code": 12,
+        "actual_heating_gw": 0.0169468619823238,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0169468619823238,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0169468619823239,
+        "annual_cooling_gw": 0.0597320066852408
+      },
+      {
+        "province_code": 13,
+        "actual_heating_gw": 0.0606946981274563,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0606946981274563,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0606946981274567,
+        "annual_cooling_gw": 0.1976557628451593
+      },
+      {
+        "province_code": 14,
+        "actual_heating_gw": 0.0377101017367568,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0377101017367568,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.037710101736757,
+        "annual_cooling_gw": 0.0998289165836691
+      },
+      {
+        "province_code": 15,
+        "actual_heating_gw": 0.0130110236415479,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0130110236415479,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0130110236415481,
+        "annual_cooling_gw": 0.0415304443183311
+      },
+      {
+        "province_code": 21,
+        "actual_heating_gw": 0.0352467218408521,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0352467218408521,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0352467218408523,
+        "annual_cooling_gw": 0.0918356332919635
+      },
+      {
+        "province_code": 22,
+        "actual_heating_gw": 0.0204724125617967,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0204724125617967,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0204724125617968,
+        "annual_cooling_gw": 0.0445116161281318
+      },
+      {
+        "province_code": 23,
+        "actual_heating_gw": 0.0154245288855928,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0154245288855928,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.015424528885593,
+        "annual_cooling_gw": 0.0252195942643037
+      },
+      {
+        "province_code": 31,
+        "actual_heating_gw": 0.0424450545263693,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0424450545263693,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0424450545263697,
+        "annual_cooling_gw": 0.1477771745330752
+      },
+      {
+        "province_code": 32,
+        "actual_heating_gw": 0.1071386086003513,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.1071386086003513,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.1071386086003517,
+        "annual_cooling_gw": 0.4310527254008316
+      },
+      {
+        "province_code": 33,
+        "actual_heating_gw": 0.0469206046826784,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0469206046826784,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0469206046826786,
+        "annual_cooling_gw": 0.3386085382482018
+      },
+      {
+        "province_code": 34,
+        "actual_heating_gw": 0.0513872288321579,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0513872288321579,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0513872288321581,
+        "annual_cooling_gw": 0.222152596410972
+      },
+      {
+        "province_code": 35,
+        "actual_heating_gw": 0.0055494882199739,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0055494882199739,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0055494882199739,
+        "annual_cooling_gw": 0.1775754166555346
+      },
+      {
+        "province_code": 36,
+        "actual_heating_gw": 0.0396182754777172,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0396182754777172,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0396182754777174,
+        "annual_cooling_gw": 0.132446193927139
+      },
+      {
+        "province_code": 37,
+        "actual_heating_gw": 0.0846122412846776,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0846122412846776,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0846122412846776,
+        "annual_cooling_gw": 0.3268435717075356
+      },
+      {
+        "province_code": 41,
+        "actual_heating_gw": 0.0872128008308278,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0872128008308278,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0872128008308282,
+        "annual_cooling_gw": 0.3340701782995901
+      },
+      {
+        "province_code": 42,
+        "actual_heating_gw": 0.0535734266750075,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0535734266750075,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0535734266750077,
+        "annual_cooling_gw": 0.2262868621957157
+      },
+      {
+        "province_code": 43,
+        "actual_heating_gw": 0.0769233433616393,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0769233433616393,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0769233433616399,
+        "annual_cooling_gw": 0.2221235049428395
+      },
+      {
+        "province_code": 44,
+        "actual_heating_gw": 0.0,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0064837687741884,
+        "annual_cooling_gw": 0.557531213448268
+      },
+      {
+        "province_code": 45,
+        "actual_heating_gw": 0.0,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0651544496970957,
+        "annual_cooling_gw": 0.0915130160633423
+      },
+      {
+        "province_code": 46,
+        "actual_heating_gw": 0.0,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0037146367922119,
+        "annual_cooling_gw": 0.0223542785983045
+      },
+      {
+        "province_code": 50,
+        "actual_heating_gw": 0.0365345611878851,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0365345611878851,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0365345611878852,
+        "annual_cooling_gw": 0.190122454870504
+      },
+      {
+        "province_code": 51,
+        "actual_heating_gw": 0.0941397071720414,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0941397071720414,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0941397071720416,
+        "annual_cooling_gw": 0.3384408297891339
+      },
+      {
+        "province_code": 52,
+        "actual_heating_gw": 0.0821036103817583,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0821036103817583,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0821036103817588,
+        "annual_cooling_gw": 0.0089984719060063
+      },
+      {
+        "province_code": 53,
+        "actual_heating_gw": 0.0862319166952746,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0862319166952746,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0862319166952747,
+        "annual_cooling_gw": 0.0
+      },
+      {
+        "province_code": 54,
+        "actual_heating_gw": 0.003791277307527,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.003791277307527,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.003791277307527,
+        "annual_cooling_gw": 0.0
+      },
+      {
+        "province_code": 61,
+        "actual_heating_gw": 0.0498428640139619,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0498428640139619,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0498428640139621,
+        "annual_cooling_gw": 0.18505209510522
+      },
+      {
+        "province_code": 62,
+        "actual_heating_gw": 0.0183295079691325,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0183295079691325,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0183295079691325,
+        "annual_cooling_gw": 0.1150437945883745
+      },
+      {
+        "province_code": 63,
+        "actual_heating_gw": 0.0112987796362533,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0112987796362533,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0112987796362535,
+        "annual_cooling_gw": 0.322516729344931
+      },
+      {
+        "province_code": 64,
+        "actual_heating_gw": 0.0054346555037599,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0054346555037599,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.00543465550376,
+        "annual_cooling_gw": 0.0119183858508718
+      },
+      {
+        "province_code": 65,
+        "actual_heating_gw": 0.0267569222717653,
+        "actual_cooling_gw": 0.0,
+        "input_window_heating_gw": 0.0267569222717653,
+        "input_window_cooling_gw": 0.0,
+        "annual_heating_gw": 0.0267569222717654,
+        "annual_cooling_gw": 0.1260186635761904
+      }
+    ],
+    "resource": "conservative",
+    "contract_reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+    "effective_load_nonnegative_selected_window_rows": 0,
+    "full_year_negative_cells_from_supplied_input_acceptance": 0
+  },
+  "build_report.json": {
+    "generated_at": "2026-11-17T20:42:10.028227+08:00",
+    "build_started_at": "2026-11-17T20:41:29.570594+08:00",
+    "architecture": "full_year_monolithic_lp",
+    "boundary_year": 2030,
+    "planning_year": 2040,
+    "scenario_id": "case3_thermal_ev_v5",
+    "formulation_profile_id": null,
+    "annual_emissions_accounting": "national_dense_v1",
+    "horizon": "diagnostic_1h",
+    "optimization_hours": 1,
+    "optimization_start_hour": 0,
+    "optimization_stop_hour_exclusive": 1,
+    "selected_time_start_bj": "2040-01-01 00:00:00",
+    "selected_time_end_bj": "2040-01-01 00:00:00",
+    "result_use": "TEST_ONLY_TRUNCATED_HORIZON",
+    "available_memory_gb_before_build": 57.66,
+    "full_max_cf_used": true,
+    "constraint_family_audit": {
+      "enabled": false,
+      "path": null,
+      "matrix_nonzero_safety_limit": null
+    },
+    "flexible_load_structural_audit": {
+      "schema_version": "cispo_flexible_load_structural_audit_v2",
+      "formulation": "integrated_service_constrained_v5",
+      "contract_version": "v5",
+      "portfolio_contract": "optional_service_pools_v1",
+      "province_count": 31,
+      "optimization_hours": 1,
+      "optimization_start_hour": 0,
+      "optimization_stop_hour_exclusive": 1,
+      "heating_sparse_hourly_control": {
+        "possible_up_variables": 31,
+        "active_up_variables": 28,
+        "fixed_zero_up_variables_omitted": 3,
+        "possible_down_variables": 31,
+        "active_down_variables": 28,
+        "fixed_zero_down_variables_omitted": 3
+      },
+      "heating_sparse_state": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 31,
+        "control_support_state_variables": 28,
+        "decay_anchor_state_variables": 0,
+        "retained_state_variables": 28,
+        "redundant_inactive_state_variables_omitted": 3,
+        "retained_transition_rows": 28,
+        "redundant_inactive_transition_rows_omitted": 3,
+        "maximum_retained_transition_gap_hours": 1,
+        "minimum_retained_transition_coefficient": 0.94,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+        "active_state_variables": 28,
+        "inactive_provinces_omitted": 3,
+        "fixed_zero_state_variables_omitted": 3,
+        "redundant_state_variables_eliminated": 3,
+        "redundant_state_bound_rows_omitted": 3,
+        "redundant_state_transition_rows_omitted": 3
+      },
+      "heating_state_chain_numerical_risk": {
+        "active_provinces": 28,
+        "inactive_provinces_with_state_chain_omitted": 3,
+        "worst_active_province": {
+          "province_position": 0,
+          "province_code": 11,
+          "maximum_cyclic_zero_control_run_hours": 0,
+          "retention_per_hour": 0.94,
+          "inverse_decay_amplification_log10": -0.0
+        },
+        "automatic_presolve_aggregation_risk": false,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 31,
+          "control_support_state_variables": 28,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 28,
+          "redundant_inactive_state_variables_omitted": 3,
+          "retained_transition_rows": 28,
+          "redundant_inactive_transition_rows_omitted": 3,
+          "maximum_retained_transition_gap_hours": 1,
+          "minimum_retained_transition_coefficient": 0.94,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": false,
+        "aggregate_zero_required_for_solve": false
+      },
+      "cooling_sparse_hourly_control": {
+        "possible_up_variables": 31,
+        "active_up_variables": 0,
+        "fixed_zero_up_variables_omitted": 31,
+        "possible_down_variables": 31,
+        "active_down_variables": 0,
+        "fixed_zero_down_variables_omitted": 31
+      },
+      "cooling_sparse_state": {
+        "representation": "active_control_hours_plus_decay_anchors_v1",
+        "possible_state_variables": 31,
+        "control_support_state_variables": 0,
+        "decay_anchor_state_variables": 0,
+        "retained_state_variables": 0,
+        "redundant_inactive_state_variables_omitted": 31,
+        "retained_transition_rows": 0,
+        "redundant_inactive_transition_rows_omitted": 31,
+        "maximum_retained_transition_gap_hours": 0,
+        "minimum_retained_transition_coefficient": null,
+        "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds",
+        "active_state_variables": 0,
+        "inactive_provinces_omitted": 31,
+        "fixed_zero_state_variables_omitted": 31,
+        "redundant_state_variables_eliminated": 31,
+        "redundant_state_bound_rows_omitted": 31,
+        "redundant_state_transition_rows_omitted": 31
+      },
+      "cooling_state_chain_numerical_risk": {
+        "active_provinces": 0,
+        "inactive_provinces_with_state_chain_omitted": 31,
+        "worst_active_province": null,
+        "automatic_presolve_aggregation_risk": false,
+        "zero_control_state_compression_enabled": true,
+        "zero_control_state_compression": {
+          "representation": "active_control_hours_plus_decay_anchors_v1",
+          "possible_state_variables": 31,
+          "control_support_state_variables": 0,
+          "decay_anchor_state_variables": 0,
+          "retained_state_variables": 0,
+          "redundant_inactive_state_variables_omitted": 31,
+          "retained_transition_rows": 0,
+          "redundant_inactive_transition_rows_omitted": 31,
+          "maximum_retained_transition_gap_hours": 0,
+          "minimum_retained_transition_coefficient": null,
+          "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+        },
+        "zero_control_state_compression_well_scaled": true,
+        "automatic_presolve_aggregation_risk_mitigated": false,
+        "aggregate_zero_required_for_solve": false
+      },
+      "ev_shared_connection_power_contract": "disjoint_proportional_service_pools_v1",
+      "firm_capacity_credit_contract": "author_2026_10_11_derated_credit_v1",
+      "ev_charge_deviation_representation": "postsolve_derived_absolute_deviation",
+      "ev_charge_deviation_variables_omitted": 31,
+      "ev_charge_deviation_constraints_omitted": 62,
+      "minimum_departure_energy_min_gwh": 0.0,
+      "minimum_departure_energy_max_gwh": 0.0,
+      "minimum_departure_positive_cells": 0,
+      "departure_soc_constraint_rows_added": 0,
+      "departure_soc_constraint_rows_omitted_as_redundant": 31,
+      "effective_load_static_lower_bound_min_gw": 1.8883601782705448,
+      "effective_load_redundancy_safety_margin_gw": 1e-06,
+      "effective_load_naturally_nonnegative": true,
+      "effective_load_nonnegative_enforcement": "inherent_static_lower_bound",
+      "effective_load_nonnegative_constraint_rows_added": 0,
+      "effective_load_nonnegative_constraint_rows_omitted": 31,
+      "redundant_raw_variables_omitted": 133,
+      "net_raw_variables_removed": 133,
+      "thermal_fixed_zero_raw_variables_omitted": 68,
+      "thermal_fixed_zero_state_variables_omitted": 34,
+      "thermal_redundant_state_variables_eliminated": 34,
+      "thermal_tautological_contracted_power_rows_omitted": 68,
+      "redundant_raw_constraint_rows_omitted": 260,
+      "net_raw_constraint_rows_removed": 260,
+      "legacy_bidirectional_activation": false
+    },
+    "solver_numerical_compatibility": {
+      "schema_version": "cispo_solver_numerical_compatibility_v1",
+      "status": "PASS",
+      "author_authorized_thermal_route": false,
+      "author_authorized_case3_route": true,
+      "scientific_acceptance_established": false,
+      "formulation": "integrated_service_constrained_v5",
+      "aggregate_parameter": 0,
+      "aggregate_parameter_source": "explicit_profile",
+      "aggregate_zero_required": false,
+      "stable_crossover_required": false,
+      "crossover_parameter": 0,
+      "crossover_basis_parameter": 1,
+      "solution_target_parameter": 1,
+      "barrier_convergence_tolerance": 0.0001,
+      "stable_basic_route": false,
+      "accepted_basic_crossover_orders": [
+        1,
+        2,
+        4
+      ],
+      "strict_nonbasic_primal_dual_route": false,
+      "engineering_relaxed_nonbasic_route": false,
+      "engineering_relaxed_nonbasic_authorized": false,
+      "required_long_horizon_settings": {
+        "aggregate": "automatic_allowed",
+        "accepted_solver_routes": [
+          {
+            "method": 2,
+            "crossover": [
+              1,
+              2,
+              4
+            ],
+            "crossover_basis": 1,
+            "solution_form": "basic"
+          },
+          {
+            "method": 2,
+            "crossover": 0,
+            "solution_target": 1,
+            "maximum_barrier_convergence_tolerance": 1e-09,
+            "solution_form": "primal_dual_nonbasic"
+          }
+        ]
+      },
+      "inverse_decay_amplification_log10_threshold": 3.0,
+      "component_risks": {
+        "heating": {
+          "active_provinces": 28,
+          "inactive_provinces_with_state_chain_omitted": 3,
+          "worst_active_province": {
+            "province_position": 0,
+            "province_code": 11,
+            "maximum_cyclic_zero_control_run_hours": 0,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": -0.0
+          },
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 31,
+            "control_support_state_variables": 28,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 28,
+            "redundant_inactive_state_variables_omitted": 3,
+            "retained_transition_rows": 28,
+            "redundant_inactive_transition_rows_omitted": 3,
+            "maximum_retained_transition_gap_hours": 1,
+            "minimum_retained_transition_coefficient": 0.94,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 31,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 31,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 31,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 31,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        }
+      },
+      "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+    },
+    "solver_numerical_compatibility_prebuild": {
+      "schema_version": "cispo_solver_numerical_compatibility_v1",
+      "status": "PASS",
+      "author_authorized_thermal_route": false,
+      "author_authorized_case3_route": true,
+      "scientific_acceptance_established": false,
+      "formulation": "integrated_service_constrained_v5",
+      "aggregate_parameter": 0,
+      "aggregate_parameter_source": "explicit_profile",
+      "aggregate_zero_required": false,
+      "stable_crossover_required": false,
+      "crossover_parameter": 0,
+      "crossover_basis_parameter": 1,
+      "solution_target_parameter": 1,
+      "barrier_convergence_tolerance": 0.0001,
+      "stable_basic_route": false,
+      "accepted_basic_crossover_orders": [
+        1,
+        2,
+        4
+      ],
+      "strict_nonbasic_primal_dual_route": false,
+      "engineering_relaxed_nonbasic_route": false,
+      "engineering_relaxed_nonbasic_authorized": false,
+      "required_long_horizon_settings": {
+        "aggregate": "automatic_allowed",
+        "accepted_solver_routes": [
+          {
+            "method": 2,
+            "crossover": [
+              1,
+              2,
+              4
+            ],
+            "crossover_basis": 1,
+            "solution_form": "basic"
+          },
+          {
+            "method": 2,
+            "crossover": 0,
+            "solution_target": 1,
+            "maximum_barrier_convergence_tolerance": 1e-09,
+            "solution_form": "primal_dual_nonbasic"
+          }
+        ]
+      },
+      "inverse_decay_amplification_log10_threshold": 3.0,
+      "component_risks": {
+        "heating": {
+          "active_provinces": 28,
+          "inactive_provinces_with_state_chain_omitted": 3,
+          "worst_active_province": {
+            "province_position": 0,
+            "province_code": 11,
+            "maximum_cyclic_zero_control_run_hours": 0,
+            "retention_per_hour": 0.94,
+            "inverse_decay_amplification_log10": -0.0
+          },
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 31,
+            "control_support_state_variables": 28,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 28,
+            "redundant_inactive_state_variables_omitted": 3,
+            "retained_transition_rows": 28,
+            "redundant_inactive_transition_rows_omitted": 3,
+            "maximum_retained_transition_gap_hours": 1,
+            "minimum_retained_transition_coefficient": 0.94,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        },
+        "cooling": {
+          "active_provinces": 0,
+          "inactive_provinces_with_state_chain_omitted": 31,
+          "worst_active_province": null,
+          "automatic_presolve_aggregation_risk": false,
+          "zero_control_state_compression_enabled": true,
+          "zero_control_state_compression": {
+            "representation": "active_control_hours_plus_decay_anchors_v1",
+            "possible_state_variables": 31,
+            "control_support_state_variables": 0,
+            "decay_anchor_state_variables": 0,
+            "retained_state_variables": 0,
+            "redundant_inactive_state_variables_omitted": 31,
+            "retained_transition_rows": 0,
+            "redundant_inactive_transition_rows_omitted": 31,
+            "maximum_retained_transition_gap_hours": 0,
+            "minimum_retained_transition_coefficient": null,
+            "mathematical_equivalence": "exact_elimination_of_zero_control_states_with_time_invariant_bounds"
+          },
+          "zero_control_state_compression_well_scaled": true,
+          "automatic_presolve_aggregation_risk_mitigated": false,
+          "aggregate_zero_required_for_solve": false
+        }
+      },
+      "reason": "No selected-horizon V5 inverse-decay chain requires special solver protection."
+    },
+    "solver_numerical_compatibility_gate_consistent": true,
+    "memory_after_build": {
+      "peak_process_tree_rss_bytes": 546623488,
+      "peak_process_tree_rss_gib": 0.509,
+      "elapsed_seconds": 40.539,
+      "sampling_interval_seconds": 0.5
+    },
+    "statistics": {
+      "variables": 239109,
+      "constraints": 80896,
+      "nonzeros": 455432,
+      "coefficient_min_abs": 2.9176454125368068e-05,
+      "coefficient_max_abs": 6250.0,
+      "objective_coefficient_min_abs": 0.001,
+      "objective_coefficient_max_abs": 2684.396781204636,
+      "rhs_min_abs": 5.822134224443606e-10,
+      "rhs_max_abs": 617.3507528309497,
+      "quadratic_constraints": 0,
+      "integer_variables": 0,
+      "binary_variables": 0
+    },
+    "annual_capacity_link_row_scaling": {
+      "schema_version": "cispo_annual_capacity_link_row_scaling_v1",
+      "profile": "physical_v1",
+      "maximum_binary_exponent": 13,
+      "minimum_scaled_abs_coefficient": 1e-06,
+      "transformation": "selected zero-RHS rows are left-multiplied by 2^-k",
+      "feasible_set_and_objective_unchanged": true,
+      "explicitly_not_scaled": [
+        "wave: its audited capacity-column span is not pathological",
+        "intra-load-center capacity: no hourly tiny-coefficient coupling"
+      ],
+      "families": {
+        "vre": {
+          "profile": "physical_v1",
+          "family": "vre",
+          "constraint_prefix": "load_center_vre_availability_",
+          "exponent": 0,
+          "row_scale": 1.0,
+          "coefficient_count_used_for_guard": 7352,
+          "original_coefficient_min_abs": 0.012342830188572407,
+          "original_coefficient_max_abs": 1.0,
+          "scaled_coefficient_min_abs": 0.012342830188572407,
+          "scaled_coefficient_max_abs": 1.0,
+          "primal_variables_remain_in_physical_units": true,
+          "physical_dual_mapping": "pi_physical = row_scale * pi_solver",
+          "physical_slack_mapping": "slack_physical = slack_solver / row_scale",
+          "reduced_cost_mapping": "unchanged",
+          "constraint_rows": 330,
+          "matrix_nonzeros_scaled": 7681,
+          "constraint_names": [
+            "load_center_vre_availability_0_onwind",
+            "load_center_vre_availability_1_onwind",
+            "load_center_vre_availability_1_offwind",
+            "load_center_vre_availability_2_onwind",
+            "load_center_vre_availability_3_onwind",
+            "load_center_vre_availability_3_offwind",
+            "load_center_vre_availability_4_onwind",
+            "load_center_vre_availability_4_offwind",
+            "load_center_vre_availability_5_onwind",
+            "load_center_vre_availability_6_onwind",
+            "load_center_vre_availability_7_onwind",
+            "load_center_vre_availability_8_onwind",
+            "load_center_vre_availability_9_onwind",
+            "load_center_vre_availability_10_onwind",
+            "load_center_vre_availability_11_onwind",
+            "load_center_vre_availability_12_onwind",
+            "load_center_vre_availability_13_onwind",
+            "load_center_vre_availability_14_onwind",
+            "load_center_vre_availability_15_onwind",
+            "load_center_vre_availability_16_onwind",
+            "load_center_vre_availability_17_onwind",
+            "load_center_vre_availability_18_onwind",
+            "load_center_vre_availability_19_onwind",
+            "load_center_vre_availability_20_onwind",
+            "load_center_vre_availability_21_onwind",
+            "load_center_vre_availability_22_onwind",
+            "load_center_vre_availability_23_onwind",
+            "load_center_vre_availability_24_onwind",
+            "load_center_vre_availability_25_onwind",
+            "load_center_vre_availability_26_onwind",
+            "load_center_vre_availability_27_onwind",
+            "load_center_vre_availability_28_onwind",
+            "load_center_vre_availability_29_onwind",
+            "load_center_vre_availability_30_onwind",
+            "load_center_vre_availability_31_onwind",
+            "load_center_vre_availability_32_onwind",
+            "load_center_vre_availability_33_onwind",
+            "load_center_vre_availability_34_onwind",
+            "load_center_vre_availability_35_onwind",
+            "load_center_vre_availability_36_onwind",
+            "load_center_vre_availability_37_onwind",
+            "load_center_vre_availability_37_offwind",
+            "load_center_vre_availability_38_onwind",
+            "load_center_vre_availability_39_onwind",
+            "load_center_vre_availability_40_onwind",
+            "load_center_vre_availability_41_onwind",
+            "load_center_vre_availability_41_offwind",
+            "load_center_vre_availability_42_onwind",
+            "load_center_vre_availability_42_offwind",
+            "load_center_vre_availability_43_onwind",
+            "load_center_vre_availability_43_offwind",
+            "load_center_vre_availability_44_onwind",
+            "load_center_vre_availability_45_onwind",
+            "load_center_vre_availability_46_onwind",
+            "load_center_vre_availability_46_offwind",
+            "load_center_vre_availability_47_onwind",
+            "load_center_vre_availability_48_onwind",
+            "load_center_vre_availability_49_onwind",
+            "load_center_vre_availability_49_offwind",
+            "load_center_vre_availability_50_onwind",
+            "load_center_vre_availability_51_onwind",
+            "load_center_vre_availability_52_onwind",
+            "load_center_vre_availability_54_onwind",
+            "load_center_vre_availability_55_onwind",
+            "load_center_vre_availability_56_onwind",
+            "load_center_vre_availability_57_onwind",
+            "load_center_vre_availability_58_onwind",
+            "load_center_vre_availability_59_onwind",
+            "load_center_vre_availability_60_onwind",
+            "load_center_vre_availability_61_onwind",
+            "load_center_vre_availability_62_onwind",
+            "load_center_vre_availability_63_onwind",
+            "load_center_vre_availability_64_onwind",
+            "load_center_vre_availability_65_onwind",
+            "load_center_vre_availability_66_onwind",
+            "load_center_vre_availability_67_onwind",
+            "load_center_vre_availability_68_onwind",
+            "load_center_vre_availability_69_onwind",
+            "load_center_vre_availability_70_onwind",
+            "load_center_vre_availability_71_onwind",
+            "load_center_vre_availability_72_onwind",
+            "load_center_vre_availability_72_offwind",
+            "load_center_vre_availability_73_onwind",
+            "load_center_vre_availability_74_onwind",
+            "load_center_vre_availability_75_onwind",
+            "load_center_vre_availability_76_onwind",
+            "load_center_vre_availability_77_onwind",
+            "load_center_vre_availability_78_onwind",
+            "load_center_vre_availability_78_offwind",
+            "load_center_vre_availability_79_onwind",
+            "load_center_vre_availability_79_offwind",
+            "load_center_vre_availability_80_onwind",
+            "load_center_vre_availability_81_onwind",
+            "load_center_vre_availability_81_offwind",
+            "load_center_vre_availability_82_onwind",
+            "load_center_vre_availability_83_onwind",
+            "load_center_vre_availability_84_onwind",
+            "load_center_vre_availability_85_onwind",
+            "load_center_vre_availability_86_onwind",
+            "load_center_vre_availability_87_onwind",
+            "load_center_vre_availability_87_offwind",
+            "load_center_vre_availability_88_onwind",
+            "load_center_vre_availability_88_offwind",
+            "load_center_vre_availability_89_onwind",
+            "load_center_vre_availability_89_offwind",
+            "load_center_vre_availability_90_onwind",
+            "load_center_vre_availability_91_onwind",
+            "load_center_vre_availability_92_onwind",
+            "load_center_vre_availability_93_onwind",
+            "load_center_vre_availability_94_onwind",
+            "load_center_vre_availability_94_offwind",
+            "load_center_vre_availability_95_onwind",
+            "load_center_vre_availability_95_offwind",
+            "load_center_vre_availability_96_onwind",
+            "load_center_vre_availability_97_onwind",
+            "load_center_vre_availability_98_onwind",
+            "load_center_vre_availability_99_onwind",
+            "load_center_vre_availability_100_onwind",
+            "load_center_vre_availability_101_onwind",
+            "load_center_vre_availability_102_onwind",
+            "load_center_vre_availability_103_onwind",
+            "load_center_vre_availability_104_onwind",
+            "load_center_vre_availability_105_onwind",
+            "load_center_vre_availability_106_onwind",
+            "load_center_vre_availability_107_onwind",
+            "load_center_vre_availability_108_onwind",
+            "load_center_vre_availability_109_onwind",
+            "load_center_vre_availability_110_onwind",
+            "load_center_vre_availability_111_onwind",
+            "load_center_vre_availability_112_onwind",
+            "load_center_vre_availability_113_onwind",
+            "load_center_vre_availability_113_offwind",
+            "load_center_vre_availability_114_onwind",
+            "load_center_vre_availability_114_offwind",
+            "load_center_vre_availability_115_onwind",
+            "load_center_vre_availability_115_offwind",
+            "load_center_vre_availability_116_onwind",
+            "load_center_vre_availability_118_onwind",
+            "load_center_vre_availability_118_offwind",
+            "load_center_vre_availability_119_onwind",
+            "load_center_vre_availability_120_onwind",
+            "load_center_vre_availability_121_onwind",
+            "load_center_vre_availability_121_offwind",
+            "load_center_vre_availability_122_onwind",
+            "load_center_vre_availability_123_onwind",
+            "load_center_vre_availability_124_onwind",
+            "load_center_vre_availability_125_onwind",
+            "load_center_vre_availability_126_onwind",
+            "load_center_vre_availability_127_onwind",
+            "load_center_vre_availability_128_onwind",
+            "load_center_vre_availability_129_onwind",
+            "load_center_vre_availability_130_onwind",
+            "load_center_vre_availability_131_onwind",
+            "load_center_vre_availability_132_onwind",
+            "load_center_vre_availability_133_onwind",
+            "load_center_vre_availability_134_onwind",
+            "load_center_vre_availability_134_offwind",
+            "load_center_vre_availability_135_onwind",
+            "load_center_vre_availability_136_onwind",
+            "load_center_vre_availability_137_onwind",
+            "load_center_vre_availability_137_offwind",
+            "load_center_vre_availability_138_onwind",
+            "load_center_vre_availability_138_offwind",
+            "load_center_vre_availability_139_onwind",
+            "load_center_vre_availability_139_offwind",
+            "load_center_vre_availability_140_onwind",
+            "load_center_vre_availability_141_onwind",
+            "load_center_vre_availability_142_onwind",
+            "load_center_vre_availability_142_offwind",
+            "load_center_vre_availability_143_onwind",
+            "load_center_vre_availability_144_onwind",
+            "load_center_vre_availability_145_onwind",
+            "load_center_vre_availability_146_onwind",
+            "load_center_vre_availability_147_onwind",
+            "load_center_vre_availability_148_onwind",
+            "load_center_vre_availability_149_onwind",
+            "load_center_vre_availability_150_onwind",
+            "load_center_vre_availability_151_onwind",
+            "load_center_vre_availability_152_onwind",
+            "load_center_vre_availability_154_onwind",
+            "load_center_vre_availability_155_onwind",
+            "load_center_vre_availability_156_onwind",
+            "load_center_vre_availability_157_onwind",
+            "load_center_vre_availability_158_onwind",
+            "load_center_vre_availability_159_onwind",
+            "load_center_vre_availability_160_onwind",
+            "load_center_vre_availability_161_onwind",
+            "load_center_vre_availability_162_onwind",
+            "load_center_vre_availability_163_onwind",
+            "load_center_vre_availability_164_onwind",
+            "load_center_vre_availability_165_onwind",
+            "load_center_vre_availability_166_onwind",
+            "load_center_vre_availability_167_onwind",
+            "load_center_vre_availability_168_onwind",
+            "load_center_vre_availability_169_onwind",
+            "load_center_vre_availability_170_onwind",
+            "load_center_vre_availability_171_onwind",
+            "load_center_vre_availability_172_onwind",
+            "load_center_vre_availability_173_onwind",
+            "load_center_vre_availability_174_onwind",
+            "load_center_vre_availability_175_onwind",
+            "load_center_vre_availability_176_onwind",
+            "load_center_vre_availability_177_onwind",
+            "load_center_vre_availability_178_onwind",
+            "load_center_vre_availability_179_onwind",
+            "load_center_vre_availability_180_onwind",
+            "load_center_vre_availability_181_onwind",
+            "load_center_vre_availability_182_onwind",
+            "load_center_vre_availability_183_onwind",
+            "load_center_vre_availability_184_onwind",
+            "load_center_vre_availability_185_onwind",
+            "load_center_vre_availability_186_onwind",
+            "load_center_vre_availability_187_onwind",
+            "load_center_vre_availability_188_onwind",
+            "load_center_vre_availability_189_onwind",
+            "load_center_vre_availability_190_onwind",
+            "load_center_vre_availability_191_onwind",
+            "load_center_vre_availability_192_onwind",
+            "load_center_vre_availability_193_onwind",
+            "load_center_vre_availability_194_onwind",
+            "load_center_vre_availability_195_onwind",
+            "load_center_vre_availability_195_offwind",
+            "load_center_vre_availability_196_onwind",
+            "load_center_vre_availability_196_offwind",
+            "load_center_vre_availability_197_onwind",
+            "load_center_vre_availability_197_offwind",
+            "load_center_vre_availability_198_onwind",
+            "load_center_vre_availability_199_onwind",
+            "load_center_vre_availability_199_offwind",
+            "load_center_vre_availability_200_onwind",
+            "load_center_vre_availability_200_offwind",
+            "load_center_vre_availability_201_onwind",
+            "load_center_vre_availability_202_onwind",
+            "load_center_vre_availability_203_onwind",
+            "load_center_vre_availability_204_onwind",
+            "load_center_vre_availability_205_onwind",
+            "load_center_vre_availability_205_offwind",
+            "load_center_vre_availability_206_onwind",
+            "load_center_vre_availability_207_onwind",
+            "load_center_vre_availability_207_offwind",
+            "load_center_vre_availability_208_onwind",
+            "load_center_vre_availability_209_onwind",
+            "load_center_vre_availability_210_onwind",
+            "load_center_vre_availability_211_onwind",
+            "load_center_vre_availability_211_offwind",
+            "load_center_vre_availability_212_onwind",
+            "load_center_vre_availability_214_onwind",
+            "load_center_vre_availability_215_onwind",
+            "load_center_vre_availability_216_onwind",
+            "load_center_vre_availability_217_onwind",
+            "load_center_vre_availability_218_onwind",
+            "load_center_vre_availability_218_offwind",
+            "load_center_vre_availability_219_offwind",
+            "load_center_vre_availability_221_onwind",
+            "load_center_vre_availability_222_onwind",
+            "load_center_vre_availability_223_onwind",
+            "load_center_vre_availability_224_onwind",
+            "load_center_vre_availability_225_onwind",
+            "load_center_vre_availability_226_onwind",
+            "load_center_vre_availability_227_onwind",
+            "load_center_vre_availability_228_onwind",
+            "load_center_vre_availability_228_offwind",
+            "load_center_vre_availability_229_onwind",
+            "load_center_vre_availability_229_offwind",
+            "load_center_vre_availability_231_onwind",
+            "load_center_vre_availability_231_offwind",
+            "load_center_vre_availability_232_onwind",
+            "load_center_vre_availability_235_onwind",
+            "load_center_vre_availability_237_onwind",
+            "load_center_vre_availability_238_onwind",
+            "load_center_vre_availability_239_onwind",
+            "load_center_vre_availability_240_onwind",
+            "load_center_vre_availability_241_onwind",
+            "load_center_vre_availability_243_onwind",
+            "load_center_vre_availability_246_onwind",
+            "load_center_vre_availability_247_onwind",
+            "load_center_vre_availability_254_onwind",
+            "load_center_vre_availability_255_onwind",
+            "load_center_vre_availability_256_onwind",
+            "load_center_vre_availability_257_onwind",
+            "load_center_vre_availability_258_onwind",
+            "load_center_vre_availability_259_onwind",
+            "load_center_vre_availability_260_onwind",
+            "load_center_vre_availability_261_onwind",
+            "load_center_vre_availability_262_onwind",
+            "load_center_vre_availability_263_onwind",
+            "load_center_vre_availability_264_onwind",
+            "load_center_vre_availability_265_onwind",
+            "load_center_vre_availability_271_onwind",
+            "load_center_vre_availability_272_onwind",
+            "load_center_vre_availability_273_onwind",
+            "load_center_vre_availability_286_onwind",
+            "load_center_vre_availability_287_onwind",
+            "load_center_vre_availability_289_onwind",
+            "load_center_vre_availability_290_onwind",
+            "load_center_vre_availability_291_onwind",
+            "load_center_vre_availability_293_onwind",
+            "load_center_vre_availability_295_onwind",
+            "load_center_vre_availability_297_onwind",
+            "load_center_vre_availability_298_onwind",
+            "load_center_vre_availability_299_onwind",
+            "load_center_vre_availability_300_onwind",
+            "load_center_vre_availability_301_onwind",
+            "load_center_vre_availability_302_onwind",
+            "load_center_vre_availability_303_onwind",
+            "load_center_vre_availability_304_onwind",
+            "load_center_vre_availability_305_onwind",
+            "load_center_vre_availability_306_onwind",
+            "load_center_vre_availability_312_onwind",
+            "load_center_vre_availability_314_onwind",
+            "load_center_vre_availability_317_onwind",
+            "load_center_vre_availability_318_onwind",
+            "load_center_vre_availability_319_onwind",
+            "load_center_vre_availability_320_onwind",
+            "load_center_vre_availability_321_onwind",
+            "load_center_vre_availability_322_onwind",
+            "load_center_vre_availability_323_onwind",
+            "load_center_vre_availability_324_onwind",
+            "load_center_vre_availability_325_onwind",
+            "load_center_vre_availability_326_onwind",
+            "load_center_vre_availability_327_onwind",
+            "load_center_vre_availability_328_onwind",
+            "load_center_vre_availability_329_onwind",
+            "load_center_vre_availability_330_onwind",
+            "load_center_vre_availability_331_onwind",
+            "load_center_vre_availability_332_onwind",
+            "load_center_vre_availability_333_onwind",
+            "load_center_vre_availability_334_onwind",
+            "load_center_vre_availability_335_onwind",
+            "load_center_vre_availability_336_onwind"
+          ],
+          "constraint_name_order_sha256": "f3663b0f80b9b9ed015aded7f6fe9fb90cc1c20557bd723038f81887341e6a72"
+        },
+        "ror": {
+          "profile": "physical_v1",
+          "family": "ror",
+          "constraint_prefix": "load_center_ror_availability_",
+          "exponent": 0,
+          "row_scale": 1.0,
+          "coefficient_count_used_for_guard": 675,
+          "original_coefficient_min_abs": 0.01013911422342062,
+          "original_coefficient_max_abs": 1.0,
+          "scaled_coefficient_min_abs": 0.01013911422342062,
+          "scaled_coefficient_max_abs": 1.0,
+          "primal_variables_remain_in_physical_units": true,
+          "physical_dual_mapping": "pi_physical = row_scale * pi_solver",
+          "physical_slack_mapping": "slack_physical = slack_solver / row_scale",
+          "reduced_cost_mapping": "unchanged",
+          "constraint_rows": 135,
+          "matrix_nonzeros_scaled": 809,
+          "constraint_names": [
+            "load_center_ror_availability_2",
+            "load_center_ror_availability_21",
+            "load_center_ror_availability_30",
+            "load_center_ror_availability_31",
+            "load_center_ror_availability_40",
+            "load_center_ror_availability_54",
+            "load_center_ror_availability_55",
+            "load_center_ror_availability_56",
+            "load_center_ror_availability_58",
+            "load_center_ror_availability_59",
+            "load_center_ror_availability_67",
+            "load_center_ror_availability_68",
+            "load_center_ror_availability_69",
+            "load_center_ror_availability_93",
+            "load_center_ror_availability_96",
+            "load_center_ror_availability_109",
+            "load_center_ror_availability_113",
+            "load_center_ror_availability_114",
+            "load_center_ror_availability_115",
+            "load_center_ror_availability_116",
+            "load_center_ror_availability_118",
+            "load_center_ror_availability_119",
+            "load_center_ror_availability_120",
+            "load_center_ror_availability_121",
+            "load_center_ror_availability_127",
+            "load_center_ror_availability_128",
+            "load_center_ror_availability_131",
+            "load_center_ror_availability_132",
+            "load_center_ror_availability_168",
+            "load_center_ror_availability_169",
+            "load_center_ror_availability_178",
+            "load_center_ror_availability_179",
+            "load_center_ror_availability_182",
+            "load_center_ror_availability_185",
+            "load_center_ror_availability_186",
+            "load_center_ror_availability_187",
+            "load_center_ror_availability_188",
+            "load_center_ror_availability_190",
+            "load_center_ror_availability_192",
+            "load_center_ror_availability_193",
+            "load_center_ror_availability_194",
+            "load_center_ror_availability_199",
+            "load_center_ror_availability_202",
+            "load_center_ror_availability_203",
+            "load_center_ror_availability_204",
+            "load_center_ror_availability_205",
+            "load_center_ror_availability_206",
+            "load_center_ror_availability_207",
+            "load_center_ror_availability_208",
+            "load_center_ror_availability_211",
+            "load_center_ror_availability_212",
+            "load_center_ror_availability_213",
+            "load_center_ror_availability_214",
+            "load_center_ror_availability_215",
+            "load_center_ror_availability_216",
+            "load_center_ror_availability_217",
+            "load_center_ror_availability_219",
+            "load_center_ror_availability_223",
+            "load_center_ror_availability_224",
+            "load_center_ror_availability_225",
+            "load_center_ror_availability_226",
+            "load_center_ror_availability_227",
+            "load_center_ror_availability_231",
+            "load_center_ror_availability_232",
+            "load_center_ror_availability_233",
+            "load_center_ror_availability_234",
+            "load_center_ror_availability_235",
+            "load_center_ror_availability_236",
+            "load_center_ror_availability_237",
+            "load_center_ror_availability_238",
+            "load_center_ror_availability_239",
+            "load_center_ror_availability_240",
+            "load_center_ror_availability_241",
+            "load_center_ror_availability_242",
+            "load_center_ror_availability_243",
+            "load_center_ror_availability_244",
+            "load_center_ror_availability_245",
+            "load_center_ror_availability_246",
+            "load_center_ror_availability_247",
+            "load_center_ror_availability_248",
+            "load_center_ror_availability_250",
+            "load_center_ror_availability_251",
+            "load_center_ror_availability_252",
+            "load_center_ror_availability_253",
+            "load_center_ror_availability_255",
+            "load_center_ror_availability_257",
+            "load_center_ror_availability_259",
+            "load_center_ror_availability_263",
+            "load_center_ror_availability_264",
+            "load_center_ror_availability_265",
+            "load_center_ror_availability_266",
+            "load_center_ror_availability_267",
+            "load_center_ror_availability_268",
+            "load_center_ror_availability_269",
+            "load_center_ror_availability_272",
+            "load_center_ror_availability_273",
+            "load_center_ror_availability_275",
+            "load_center_ror_availability_276",
+            "load_center_ror_availability_277",
+            "load_center_ror_availability_278",
+            "load_center_ror_availability_279",
+            "load_center_ror_availability_280",
+            "load_center_ror_availability_281",
+            "load_center_ror_availability_282",
+            "load_center_ror_availability_283",
+            "load_center_ror_availability_285",
+            "load_center_ror_availability_290",
+            "load_center_ror_availability_292",
+            "load_center_ror_availability_294",
+            "load_center_ror_availability_296",
+            "load_center_ror_availability_297",
+            "load_center_ror_availability_299",
+            "load_center_ror_availability_302",
+            "load_center_ror_availability_304",
+            "load_center_ror_availability_306",
+            "load_center_ror_availability_307",
+            "load_center_ror_availability_308",
+            "load_center_ror_availability_309",
+            "load_center_ror_availability_310",
+            "load_center_ror_availability_311",
+            "load_center_ror_availability_313",
+            "load_center_ror_availability_314",
+            "load_center_ror_availability_315",
+            "load_center_ror_availability_316",
+            "load_center_ror_availability_317",
+            "load_center_ror_availability_322",
+            "load_center_ror_availability_323",
+            "load_center_ror_availability_324",
+            "load_center_ror_availability_329",
+            "load_center_ror_availability_330",
+            "load_center_ror_availability_331",
+            "load_center_ror_availability_332",
+            "load_center_ror_availability_333",
+            "load_center_ror_availability_334",
+            "load_center_ror_availability_336"
+          ],
+          "constraint_name_order_sha256": "a9972e0d2e364fda4b75bf066790a230d4428fda49943f8dd22b702b2d572759"
+        }
+      }
+    },
+    "annual_capacity_link_row_scaling_path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/conservative_gates_20261117/2040/conservative_production_1h/annual_capacity_link_row_scaling.json",
+    "warm_start": null,
+    "primal_dual_start": null,
+    "mga": null,
+    "numerical_robustness_audit": {
+      "retrofit_upper_cleanup": [
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [
+            3
+          ],
+          "asset_ids": [
+            "14::gchp::gchpccs"
+          ],
+          "removed_gw": [
+            2.220446049250313e-16
+          ],
+          "total_removed_gw": 2.220446049250313e-16
+        },
+        {
+          "cutoff_gw": 1e-05,
+          "site_rows": [],
+          "asset_ids": [],
+          "removed_gw": [],
+          "total_removed_gw": 0.0
+        }
+      ],
+      "hydro_capacity_headroom_cleanup": {
+        "cutoff_gw": 1e-05,
+        "site_rows": [
+          595,
+          723,
+          757,
+          854,
+          895,
+          1013,
+          1071,
+          1078,
+          1134,
+          1136,
+          1148,
+          1152,
+          1236,
+          1246,
+          1288,
+          1320,
+          1337,
+          1349,
+          1361,
+          1388,
+          1416,
+          1458,
+          1459,
+          1466,
+          1496,
+          1518,
+          1538,
+          1563,
+          1572,
+          1634,
+          1638,
+          1715,
+          1740,
+          1755
+        ],
+        "asset_ids": [
+          "HydroCHN_00595",
+          "HydroCHN_00723",
+          "HydroCHN_00757",
+          "HydroCHN_00854",
+          "HydroCHN_00895",
+          "HydroCHN_01013",
+          "HydroCHN_01071",
+          "HydroCHN_01078",
+          "HydroCHN_01134",
+          "HydroCHN_01136",
+          "HydroCHN_01148",
+          "HydroCHN_01152",
+          "HydroCHN_01236",
+          "HydroCHN_01246",
+          "HydroCHN_01288",
+          "HydroCHN_01320",
+          "HydroCHN_01337",
+          "HydroCHN_01349",
+          "HydroCHN_01361",
+          "HydroCHN_01388",
+          "HydroCHN_01416",
+          "HydroCHN_01458",
+          "HydroCHN_01459",
+          "HydroCHN_01466",
+          "HydroCHN_01496",
+          "HydroCHN_01518",
+          "HydroCHN_01538",
+          "HydroCHN_01563",
+          "HydroCHN_01572",
+          "HydroCHN_01634",
+          "HydroCHN_01638",
+          "HydroCHN_01715",
+          "HydroCHN_01740",
+          "HydroCHN_01755"
+        ],
+        "removed_gw": [
+          7.201115369281919e-08,
+          1.1247016579868374e-07,
+          1.2039282810266672e-07,
+          2.9270416659898935e-07,
+          1.3098042930120846e-07,
+          1.3183327170207537e-07,
+          4.067316919723063e-08,
+          7.802661616020112e-07,
+          1.1724010619967862e-07,
+          7.706064190232675e-08,
+          5.457263030014814e-08,
+          2.837046850015512e-07,
+          7.495057200226918e-08,
+          3.0174110002278987e-08,
+          5.244521984991424e-07,
+          3.38004264993641e-08,
+          6.016195740199404e-08,
+          2.1744639699949886e-08,
+          6.40875786987738e-08,
+          5.398565229922103e-08,
+          2.868360689939342e-08,
+          5.8558262398811234e-08,
+          2.898102057988239e-07,
+          1.4817349999751706e-08,
+          1.4917591099894434e-08,
+          8.432155799986685e-08,
+          2.1220355800669055e-08,
+          2.0980921859939383e-07,
+          6.725079910140097e-08,
+          1.666173063998022e-07,
+          7.418254430006932e-08,
+          4.5083748439860016e-07,
+          1.7270692850013258e-06,
+          1.3423953730030969e-07
+        ],
+        "total_removed_gw": 6.419601649600495e-06
+      },
+      "other_capacity_headroom_cleanup": []
+    },
+    "frozen_capacity": {
+      "source_directory": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760",
+      "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+      "tables": {
+        "vre_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv",
+          "sha256": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+          "bytes": 3804184,
+          "rows": 36686
+        },
+        "thermal_nuclear_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv",
+          "sha256": "6a55ca5625ff34c6808d3d3d9162d6d94ddbf7ecf38cee6b1bbd78fa440c47d0",
+          "bytes": 38818,
+          "rows": 341
+        },
+        "storage_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/storage_capacity.csv",
+          "sha256": "03ac0cbcdd6e127173ec4b4a21bb193400706213ab4fead8b6a7fcb14a9198d9",
+          "bytes": 11560,
+          "rows": 62
+        },
+        "transmission_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/transmission_capacity.csv",
+          "sha256": "80ba8adc10712431e22d6ecb8c5e71faca5cf08439067362856e0d8154d1a4a7",
+          "bytes": 37416,
+          "rows": 411
+        },
+        "load_center_intra_transmission.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/load_center_intra_transmission.csv",
+          "sha256": "c44ea47755ead6a512683442981f883e37a0acc20b765b98e3928fa4316be284",
+          "bytes": 128411,
+          "rows": 642
+        },
+        "intra_grid_vre_site_design.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_vre_site_design.csv",
+          "sha256": "28f0716b5045b8c2a2a516758fb49b2f551cb23ab2973361ce5b08c25fd62d3a",
+          "bytes": 5932371,
+          "rows": 36686
+        },
+        "intra_grid_substation_design.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_substation_design.csv",
+          "sha256": "5a740f76a0ef11ced47b47580387da7cfd6940ec120184970187923b31c5b7e5",
+          "bytes": 1047888,
+          "rows": 6294
+        },
+        "hydro_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/hydro_capacity.csv",
+          "sha256": "8ee576b58faa6ec9c42e8b205b4526cf9c572add409ea62b2e4571008130c489",
+          "bytes": 354711,
+          "rows": 2030
+        },
+        "wave_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/wave_capacity.csv",
+          "sha256": "95201cff62afa2731ad83e514d0c7dbf1966e7d49204d4568c2e7f10883543ba",
+          "bytes": 267280,
+          "rows": 1284
+        },
+        "dac_capacity_capture.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/dac_capacity_capture.csv",
+          "sha256": "a1f82eae2a295f32b827f3cc6ac5ab26ebaf6846ea74387998fe29af79edde4f",
+          "bytes": 19007,
+          "rows": 124
+        },
+        "hydro_spur_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/hydro_spur_capacity.csv",
+          "sha256": "deea3fc8b18a0c233e0f1f028ffddcff4bea15279f9f5a125db5ddd49c3d0af7",
+          "bytes": 78040,
+          "rows": 2030
+        }
+      },
+      "supplement": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/supplement_manifest.json",
+        "sha256": "7c0877583e6fce78989704abb2af460c25f1c8694b0cec743fb814624e996a31",
+        "vector_attribute": "BarX"
+      },
+      "upstream": {
+        "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+        "environment_sha256": "7f8accf536030925c1e2f819366f672b22f40aa9b4110673b08b6d9f3a2d7d79",
+        "input_manifest_sha256": "a592763946e95833efdbf7ed0599e945c843b53bc04ebbe71a3a9ce4d7b43b34",
+        "restored_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+        "allow_candidate": true,
+        "files": [
+          {
+            "path": "state_metadata.json",
+            "sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+            "bytes": 8354
+          },
+          {
+            "path": "capacity_cohorts.csv.gz",
+            "sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+            "bytes": 961111
+          },
+          {
+            "path": "state_transition_summary.csv",
+            "sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+            "bytes": 2381
+          },
+          {
+            "path": "../result_manifest.json",
+            "sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+            "bytes": 1880
+          }
+        ],
+        "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+        "scope_sha256": "4611c24ea534107efff4eaf23a497ac5aae53857a9d0f1899de2e5dc2f43c911",
+        "metadata_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd"
+      },
+      "static_closure": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2/derived_static/closure.json",
+        "sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+        "definition": "Base clipped values plus author-approved minimal static closure"
+      },
+      "frozen_columns": 86745,
+      "clip_statistics": {
+        "GW": {
+          "columns": 86621,
+          "clipped_columns": 69,
+          "sum_absolute_clip": 4.752220324486314e-06,
+          "maximum_absolute_clip": 1.5149738036065311e-06
+        },
+        "MtCO2_per_year": {
+          "columns": 124,
+          "clipped_columns": 0,
+          "sum_absolute_clip": 0.0,
+          "maximum_absolute_clip": 0.0
+        }
+      },
+      "audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+      "clip_reporting_threshold_exceeded": false,
+      "closure": {
+        "schema_version": "base_frozen_static_closure_20261027_v1",
+        "planning_year": 2040,
+        "source_result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+        "mode": "STATIC_EXACT",
+        "rows": [
+          {
+            "row": "biomass_beccs_shared_capacity_upper_s4_34[8]",
+            "variable": "thermal_new_gw[8,8]",
+            "family": "thermal_new",
+            "stable_key": "[\"31\", \"bio\"]",
+            "base_value": 9.389033735814761e-09,
+            "before_gw": 9.38903373581476e-09,
+            "after_gw": 2.269759566929358e-10,
+            "delta_gw": -9.162057779121824e-09,
+            "objective_coefficient": 0.0,
+            "row_sha256": "d0c1d6ab6b7bd9b72b79891168e37ce88612c625adcdc15d42073eff38c1da2a",
+            "lhs": 0.6270000091620578,
+            "rhs": 0.627,
+            "gap_gw": 9.162057779121824e-09,
+            "direct_annual_cost_delta_million_cny": -0.0,
+            "derived_annual_cost_delta_million_cny": -3.630044479218158e-06,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[1879]",
+            "variable": "spur_augmentation_gw[1879]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000038976\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 5.648090428689301e-08,
+            "delta_gw": 5.648090428689301e-08,
+            "objective_coefficient": 24.742619591849483,
+            "row_sha256": "631a831b774e803afbd09cb4a6232ae8dafbe7f2b9f93c7f7ec13e7836a779d5",
+            "lhs": -0.4428450259850225,
+            "rhs": -0.4428449695041182,
+            "gap_gw": 5.648090428689301e-08,
+            "direct_annual_cost_delta_million_cny": 1.3974855289742543e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[4161]",
+            "variable": "spur_augmentation_gw[4161]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000016777\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 3.9648828675797887e-07,
+            "delta_gw": 3.9648828675797887e-07,
+            "objective_coefficient": 31.155919541453724,
+            "row_sha256": "8b7df41fe2d452c6e931713a2aadfc08c839c3a2c4ba0e096ebe86f19a421e4c",
+            "lhs": -0.8745962266990879,
+            "rhs": -0.8745958302108011,
+            "gap_gw": 3.9648828675797887e-07,
+            "direct_annual_cost_delta_million_cny": 1.2352957161360421e-05,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[5168]",
+            "variable": "spur_augmentation_gw[5168]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000019314\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 6.140025787804149e-08,
+            "delta_gw": 6.140025787804149e-08,
+            "objective_coefficient": 30.636408187828874,
+            "row_sha256": "10e01d402fb9a5705b35bb531e66c72d29a15041d103001e4b63289a5ae453fd",
+            "lhs": -0.6440785222676356,
+            "rhs": -0.6440784608673777,
+            "gap_gw": 6.140025787804149e-08,
+            "direct_annual_cost_delta_million_cny": 1.8810833631896346e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[5714]",
+            "variable": "spur_augmentation_gw[5714]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000020410\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 4.697547340004604e-08,
+            "delta_gw": 4.697547340004604e-08,
+            "objective_coefficient": 28.3495389873279,
+            "row_sha256": "c573949ede35343650d27a73109df3b4c3ffb0e28b5c39fda4f8923fb6c0a094",
+            "lhs": -0.9607345596399236,
+            "rhs": -0.9607345126644502,
+            "gap_gw": 4.697547340004604e-08,
+            "direct_annual_cost_delta_million_cny": 1.33173301460279e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[11773]",
+            "variable": "spur_augmentation_gw[11773]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000032802\", \"upv\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 1.2738179089311075e-07,
+            "delta_gw": 1.2738179089311075e-07,
+            "objective_coefficient": 22.518099455034776,
+            "row_sha256": "407d56c177c3264054061bcdee6bfba0ca56fbc9ee3384927e674d23536bdd4b",
+            "lhs": -0.4240320609010536,
+            "rhs": -0.4240319335192627,
+            "gap_gw": 1.2738179089311075e-07,
+            "direct_annual_cost_delta_million_cny": 2.868395836091511e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "trunk_capacity_458",
+            "variable": "trunk_augmentation_gw[458]",
+            "family": "trunk_augmentation",
+            "stable_key": "[\"way/798613043/p13\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 4.10037674924979e-08,
+            "delta_gw": 4.10037674924979e-08,
+            "objective_coefficient": 31.107725450482285,
+            "row_sha256": "41bc3128c89d40e641a9bb812e40968df606a35d2f409c11533a2e8099f34898",
+            "lhs": -4.269749429200419,
+            "rhs": -4.269749388196652,
+            "gap_gw": 4.10037674924979e-08,
+            "direct_annual_cost_delta_million_cny": 1.275533941592035e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "trunk_capacity_1876",
+            "variable": "trunk_augmentation_gw[1876]",
+            "family": "trunk_augmentation",
+            "stable_key": "[\"way/128731546/p31\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 1.3727933279028548e-07,
+            "delta_gw": 1.3727933279028548e-07,
+            "objective_coefficient": 22.5756043351689,
+            "row_sha256": "953d5d51056a042d599fdee362bc4fb9ae03c71836f3ec2760905cb5955fcee9",
+            "lhs": -0.9069692325785284,
+            "rhs": -0.9069690952991956,
+            "gap_gw": 1.3727933279028548e-07,
+            "direct_annual_cost_delta_million_cny": 3.099163900469463e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          }
+        ],
+        "annual_cost_delta_million_cny": 2.057630826706195e-05,
+        "annual_cost_terms_million_cny": {
+          "thermal_new_gw[8,8]": -0.0,
+          "spur_augmentation_gw[1879]": 1.3974855289742543e-06,
+          "spur_augmentation_gw[4161]": 1.2352957161360421e-05,
+          "spur_augmentation_gw[5168]": 1.8810833631896346e-06,
+          "spur_augmentation_gw[5714]": 1.33173301460279e-06,
+          "spur_augmentation_gw[11773]": 2.868395836091511e-06,
+          "trunk_augmentation_gw[458]": 1.275533941592035e-06,
+          "trunk_augmentation_gw[1876]": 3.099163900469463e-06,
+          "thermal_capacity_gw[8,8]": -3.630044479218158e-06
+        },
+        "definition": "Base clipped values plus author-approved minimal static closure",
+        "status": "PASS",
+        "payload_sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+        "original_frozen_audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+        "original_audit_unchanged": true,
+        "constraint_rhs_unchanged": true
+      },
+      "expected_capacity_sha256": "20358b401c9074f0680d6caeb4bdfe16a40fc9f2ca8f32e488587b369389287a"
+    },
+    "memory_at_exit": {
+      "peak_process_tree_rss_bytes": 546885632,
+      "peak_process_tree_rss_gib": 0.509,
+      "elapsed_seconds": 41.664,
+      "sampling_interval_seconds": 0.5
+    }
+  },
+  "run_identity.json": {
+    "schema_version": "cispo_run_identity_v3",
+    "baseline_contract": {
+      "schema_version": "cispo_baseline_contract_v1",
+      "case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "label": "Numerical cleanup v8 with explicit DAC schedule: disabled in 2030, available in 2040/2050/2060",
+      "contract_sha256": "84530dc46caa975a70aead3591d9b6ba8106c5b979107ef7a7233fe34693aca7",
+      "weather_bundle": {
+        "contract_version": "hybrid_weather_bundle_v1",
+        "vre": "2024 Beijing natural year from 2023/2024 UTC capacity-factor stores",
+        "wave": "2023 wave_grid.nc reference chronology",
+        "hydro": "2019 GRFR discharge and derived environmental-flow proxy"
+      },
+      "parameter_registry": {
+        "path": "config/critical_parameter_registry.csv",
+        "closure_rule": "required_base_scope_rows_and_resolvable_runtime_authorities_v1"
+      }
+    },
+    "analysis_case": {
+      "schema_version": "cispo_analysis_case_v1",
+      "configuration_path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+      "resolved_scientific_configuration_sha256": "5ccb7b1f47820545ea5d3baec29030a23d23751085b61dc5e2432283d3924d33",
+      "scenario_configuration": {
+        "path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/config/scenarios/ops_conservative_resource_v1.json",
+        "sha256": "d4af46c303d5f6b81e0544322c18e3c03306fa5c48918b87fb9ddab147c959fb"
+      },
+      "formulation_configuration": {
+        "path": null,
+        "sha256": null
+      },
+      "case_id": "case3_thermal_ev_v5",
+      "scenario_id": "case3_thermal_ev_v5",
+      "scenario_family": "integrated_demand_flexibility",
+      "analysis_role": "CENTRAL_COUNTERFACTUAL",
+      "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+      "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+      "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "supersedes": null,
+      "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "planning_years": [
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "weather_bundle": {
+        "weather_year": 2024,
+        "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+        "weather_source_years": [
+          2023,
+          2024
+        ],
+        "wave_enabled": true,
+        "wave_time_reference_year": 2023
+      }
+    },
+    "scientific_case": {
+      "schema_version": "cispo_analysis_case_v1",
+      "configuration_path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/config/optimization_numeric_dac_by_year_v9_a12.json",
+      "resolved_scientific_configuration_sha256": "5ccb7b1f47820545ea5d3baec29030a23d23751085b61dc5e2432283d3924d33",
+      "scenario_configuration": {
+        "path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/runtime_batch2_20261115/repo/config/scenarios/ops_conservative_resource_v1.json",
+        "sha256": "d4af46c303d5f6b81e0544322c18e3c03306fa5c48918b87fb9ddab147c959fb"
+      },
+      "formulation_configuration": {
+        "path": null,
+        "sha256": null
+      },
+      "case_id": "case3_thermal_ev_v5",
+      "scenario_id": "case3_thermal_ev_v5",
+      "scenario_family": "integrated_demand_flexibility",
+      "analysis_role": "CENTRAL_COUNTERFACTUAL",
+      "publication_status": "REQUIRES_FULL_YEAR_ACCEPTANCE_AND_SENSITIVITY_VALIDATION",
+      "evidence_status": "LOCAL_QUALIFICATION_REQUIRED",
+      "parent_baseline_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "supersedes": null,
+      "baseline_contract_case_id": "base_2024_numeric_water_dac_by_year_20260913_v9",
+      "planning_years": [
+        2030,
+        2040,
+        2050,
+        2060
+      ],
+      "weather_bundle": {
+        "weather_year": 2024,
+        "weather_time_alignment": "beijing_natural_year_drop_feb29_v1",
+        "weather_source_years": [
+          2023,
+          2024
+        ],
+        "wave_enabled": true,
+        "wave_time_reference_year": 2023
+      }
+    },
+    "solver_runtime": {
+      "schema_version": "cispo_solver_runtime_v1",
+      "solver_configuration": {
+        "path": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/conservative_gates_20261117/2040/conservative_production_1h_profile.json",
+        "sha256": "4f4e2b7ddd1c4e543cc18ed3ca47f7d42af32ab37b81e47134d6599405e534e9"
+      },
+      "solver_profile": {
+        "id": "barrier_stagea_base_frozen_agg0_v1_threads44",
+        "description": "Author 2026-11-14 OPS resource sensitivity and D1: reviewed Base-frozen numerics with 44 threads; all outputs preserved.",
+        "minimum_gurobi_major_version": 13,
+        "host_memory_soft_limit_fraction": null,
+        "direct_nonbasic_scientific_acceptance": true,
+        "stage_b_required": false,
+        "stage_a_acceptance": {
+          "maximum_relative_primal_dual_objective_gap": 0.01,
+          "maximum_barrier_primal_infeasibility": 0.01,
+          "maximum_constraint_violation": 1e-05,
+          "maximum_constraint_residual": 1e-05,
+          "maximum_bound_violation": 1e-05,
+          "maximum_dual_violation_for_publication": 1e-05,
+          "maximum_dual_residual_for_publication": 1e-05,
+          "maximum_complementarity_violation_for_publication": 1e-05,
+          "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+          "maximum_barrier_complementarity_for_publication": 0.01
+        },
+        "required_formulation_profile_id": null
+      },
+      "resolved_numerics_sha256": "712a838a7327417203aa297254090714f454df55beaad20db5fdd743adb47ed3"
+    },
+    "implementation_bundle": {
+      "git_commit": "58a75afd8618341c442fb0569dbe4e2cd688b552",
+      "source_bundle_sha256": "264c4dd9395d37c728654c9aa5960b9446fb4f5e936408590c83cd63c8264613",
+      "source_file_count": 48
+    },
+    "data_roots": {
+      "CISPO_DATA_ROOT": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/baseline_runtime/data_roots/conservative",
+      "CISPO_CF_ROOT": "/data/zz2/National_model/data/hourly_cf",
+      "CISPO_HYDRO_ROOT": "/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse",
+      "CISPO_RAW_GRFR_ROOT": "/data/zz2/National_model/data/grfr_raw_2019",
+      "CISPO_WAVE_ROOT": "/data/zz2/National_model/data/wave_energy_20260727"
+    },
+    "lp_model": {
+      "schema_version": "cispo_lp_lightweight_identity_v1",
+      "variables": 239109,
+      "constraints": 80896,
+      "nonzeros": 455432,
+      "gurobi_fingerprint": 1961281988,
+      "basis_compatible": false,
+      "matrix_materialized": false
+    },
+    "frozen_capacity": {
+      "source_directory": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760",
+      "source_release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+      "tables": {
+        "vre_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv",
+          "sha256": "2931de9b34238d5b1bd1a6a2298733155337bdda4f1de77fb6ca7aee4cdc1c92",
+          "bytes": 3804184,
+          "rows": 36686
+        },
+        "thermal_nuclear_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv",
+          "sha256": "6a55ca5625ff34c6808d3d3d9162d6d94ddbf7ecf38cee6b1bbd78fa440c47d0",
+          "bytes": 38818,
+          "rows": 341
+        },
+        "storage_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/storage_capacity.csv",
+          "sha256": "03ac0cbcdd6e127173ec4b4a21bb193400706213ab4fead8b6a7fcb14a9198d9",
+          "bytes": 11560,
+          "rows": 62
+        },
+        "transmission_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/transmission_capacity.csv",
+          "sha256": "80ba8adc10712431e22d6ecb8c5e71faca5cf08439067362856e0d8154d1a4a7",
+          "bytes": 37416,
+          "rows": 411
+        },
+        "load_center_intra_transmission.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/load_center_intra_transmission.csv",
+          "sha256": "c44ea47755ead6a512683442981f883e37a0acc20b765b98e3928fa4316be284",
+          "bytes": 128411,
+          "rows": 642
+        },
+        "intra_grid_vre_site_design.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_vre_site_design.csv",
+          "sha256": "28f0716b5045b8c2a2a516758fb49b2f551cb23ab2973361ce5b08c25fd62d3a",
+          "bytes": 5932371,
+          "rows": 36686
+        },
+        "intra_grid_substation_design.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/intra_grid_substation_design.csv",
+          "sha256": "5a740f76a0ef11ced47b47580387da7cfd6940ec120184970187923b31c5b7e5",
+          "bytes": 1047888,
+          "rows": 6294
+        },
+        "hydro_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/hydro_capacity.csv",
+          "sha256": "8ee576b58faa6ec9c42e8b205b4526cf9c572add409ea62b2e4571008130c489",
+          "bytes": 354711,
+          "rows": 2030
+        },
+        "wave_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/wave_capacity.csv",
+          "sha256": "95201cff62afa2731ad83e514d0c7dbf1966e7d49204d4568c2e7f10883543ba",
+          "bytes": 267280,
+          "rows": 1284
+        },
+        "dac_capacity_capture.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/dac_capacity_capture.csv",
+          "sha256": "a1f82eae2a295f32b827f3cc6ac5ab26ebaf6846ea74387998fe29af79edde4f",
+          "bytes": 19007,
+          "rows": 124
+        },
+        "hydro_spur_capacity.csv": {
+          "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/hydro_spur_capacity.csv",
+          "sha256": "deea3fc8b18a0c233e0f1f028ffddcff4bea15279f9f5a125db5ddd49c3d0af7",
+          "bytes": 78040,
+          "rows": 2030
+        }
+      },
+      "supplement": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/frozen_capacity_B_20261027/supplement_manifest.json",
+        "sha256": "7c0877583e6fce78989704abb2af460c25f1c8694b0cec743fb814624e996a31",
+        "vector_attribute": "BarX"
+      },
+      "upstream": {
+        "original_path": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+        "environment_sha256": "7f8accf536030925c1e2f819366f672b22f40aa9b4110673b08b6d9f3a2d7d79",
+        "input_manifest_sha256": "a592763946e95833efdbf7ed0599e945c843b53bc04ebbe71a3a9ce4d7b43b34",
+        "restored_path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_followups_20261027/source_base/20260919_base2040_v9_t44_m750_tol1e4_v1/upstream_2030_bound_closed/planning_state_candidate",
+        "allow_candidate": true,
+        "files": [
+          {
+            "path": "state_metadata.json",
+            "sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd",
+            "bytes": 8354
+          },
+          {
+            "path": "capacity_cohorts.csv.gz",
+            "sha256": "cc5b11f1a1c6bbe6da230953e864c9163dc370762f3f5bc45c9b0380c942016e",
+            "bytes": 961111
+          },
+          {
+            "path": "state_transition_summary.csv",
+            "sha256": "74b3aadef321ee87a53cdba36fa2a0c1a1cf0286159b2d5a16b99c5b25ba21fc",
+            "bytes": 2381
+          },
+          {
+            "path": "../result_manifest.json",
+            "sha256": "0804627e347f877a2ef2fbe3c620bd8dc0b18ff95119fb5a01d2391d20d46bf8",
+            "bytes": 1880
+          }
+        ],
+        "candidate_flag_source": "VERIFIED_RUN_ENVIRONMENT_COMMAND_AND_STATE_METADATA",
+        "scope_sha256": "4611c24ea534107efff4eaf23a497ac5aae53857a9d0f1899de2e5dc2f43c911",
+        "metadata_sha256": "4a1935ab5e8b46257868b21374b168bc9b3700b1b4c1d518b67e5339e5a3b2fd"
+      },
+      "static_closure": {
+        "path": "/home/zz2/National_model_server/base_frozen_batch2_20261027/repo/supplementary_materials/reviews/base_frozen_batch2_20261027/2040/cloud_identity_v2/derived_static/closure.json",
+        "sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+        "definition": "Base clipped values plus author-approved minimal static closure"
+      },
+      "frozen_columns": 86745,
+      "clip_statistics": {
+        "GW": {
+          "columns": 86621,
+          "clipped_columns": 69,
+          "sum_absolute_clip": 4.752220324486314e-06,
+          "maximum_absolute_clip": 1.5149738036065311e-06
+        },
+        "MtCO2_per_year": {
+          "columns": 124,
+          "clipped_columns": 0,
+          "sum_absolute_clip": 0.0,
+          "maximum_absolute_clip": 0.0
+        }
+      },
+      "audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+      "clip_reporting_threshold_exceeded": false,
+      "closure": {
+        "schema_version": "base_frozen_static_closure_20261027_v1",
+        "planning_year": 2040,
+        "source_result_manifest_sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+        "mode": "STATIC_EXACT",
+        "rows": [
+          {
+            "row": "biomass_beccs_shared_capacity_upper_s4_34[8]",
+            "variable": "thermal_new_gw[8,8]",
+            "family": "thermal_new",
+            "stable_key": "[\"31\", \"bio\"]",
+            "base_value": 9.389033735814761e-09,
+            "before_gw": 9.38903373581476e-09,
+            "after_gw": 2.269759566929358e-10,
+            "delta_gw": -9.162057779121824e-09,
+            "objective_coefficient": 0.0,
+            "row_sha256": "d0c1d6ab6b7bd9b72b79891168e37ce88612c625adcdc15d42073eff38c1da2a",
+            "lhs": 0.6270000091620578,
+            "rhs": 0.627,
+            "gap_gw": 9.162057779121824e-09,
+            "direct_annual_cost_delta_million_cny": -0.0,
+            "derived_annual_cost_delta_million_cny": -3.630044479218158e-06,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[1879]",
+            "variable": "spur_augmentation_gw[1879]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000038976\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 5.648090428689301e-08,
+            "delta_gw": 5.648090428689301e-08,
+            "objective_coefficient": 24.742619591849483,
+            "row_sha256": "631a831b774e803afbd09cb4a6232ae8dafbe7f2b9f93c7f7ec13e7836a779d5",
+            "lhs": -0.4428450259850225,
+            "rhs": -0.4428449695041182,
+            "gap_gw": 5.648090428689301e-08,
+            "direct_annual_cost_delta_million_cny": 1.3974855289742543e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[4161]",
+            "variable": "spur_augmentation_gw[4161]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000016777\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 3.9648828675797887e-07,
+            "delta_gw": 3.9648828675797887e-07,
+            "objective_coefficient": 31.155919541453724,
+            "row_sha256": "8b7df41fe2d452c6e931713a2aadfc08c839c3a2c4ba0e096ebe86f19a421e4c",
+            "lhs": -0.8745962266990879,
+            "rhs": -0.8745958302108011,
+            "gap_gw": 3.9648828675797887e-07,
+            "direct_annual_cost_delta_million_cny": 1.2352957161360421e-05,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[5168]",
+            "variable": "spur_augmentation_gw[5168]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000019314\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 6.140025787804149e-08,
+            "delta_gw": 6.140025787804149e-08,
+            "objective_coefficient": 30.636408187828874,
+            "row_sha256": "10e01d402fb9a5705b35bb531e66c72d29a15041d103001e4b63289a5ae453fd",
+            "lhs": -0.6440785222676356,
+            "rhs": -0.6440784608673777,
+            "gap_gw": 6.140025787804149e-08,
+            "direct_annual_cost_delta_million_cny": 1.8810833631896346e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[5714]",
+            "variable": "spur_augmentation_gw[5714]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000020410\", \"onwind\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 4.697547340004604e-08,
+            "delta_gw": 4.697547340004604e-08,
+            "objective_coefficient": 28.3495389873279,
+            "row_sha256": "c573949ede35343650d27a73109df3b4c3ffb0e28b5c39fda4f8923fb6c0a094",
+            "lhs": -0.9607345596399236,
+            "rhs": -0.9607345126644502,
+            "gap_gw": 4.697547340004604e-08,
+            "direct_annual_cost_delta_million_cny": 1.33173301460279e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "spur_capacity_non_dpv[11773]",
+            "variable": "spur_augmentation_gw[11773]",
+            "family": "spur_augmentation",
+            "stable_key": "[\"G000032802\", \"upv\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 1.2738179089311075e-07,
+            "delta_gw": 1.2738179089311075e-07,
+            "objective_coefficient": 22.518099455034776,
+            "row_sha256": "407d56c177c3264054061bcdee6bfba0ca56fbc9ee3384927e674d23536bdd4b",
+            "lhs": -0.4240320609010536,
+            "rhs": -0.4240319335192627,
+            "gap_gw": 1.2738179089311075e-07,
+            "direct_annual_cost_delta_million_cny": 2.868395836091511e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "trunk_capacity_458",
+            "variable": "trunk_augmentation_gw[458]",
+            "family": "trunk_augmentation",
+            "stable_key": "[\"way/798613043/p13\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 4.10037674924979e-08,
+            "delta_gw": 4.10037674924979e-08,
+            "objective_coefficient": 31.107725450482285,
+            "row_sha256": "41bc3128c89d40e641a9bb812e40968df606a35d2f409c11533a2e8099f34898",
+            "lhs": -4.269749429200419,
+            "rhs": -4.269749388196652,
+            "gap_gw": 4.10037674924979e-08,
+            "direct_annual_cost_delta_million_cny": 1.275533941592035e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          },
+          {
+            "row": "trunk_capacity_1876",
+            "variable": "trunk_augmentation_gw[1876]",
+            "family": "trunk_augmentation",
+            "stable_key": "[\"way/128731546/p31\"]",
+            "base_value": 0.0,
+            "before_gw": 0.0,
+            "after_gw": 1.3727933279028548e-07,
+            "delta_gw": 1.3727933279028548e-07,
+            "objective_coefficient": 22.5756043351689,
+            "row_sha256": "953d5d51056a042d599fdee362bc4fb9ae03c71836f3ec2760905cb5955fcee9",
+            "lhs": -0.9069692325785284,
+            "rhs": -0.9069690952991956,
+            "gap_gw": 1.3727933279028548e-07,
+            "direct_annual_cost_delta_million_cny": 3.099163900469463e-06,
+            "derived_annual_cost_delta_million_cny": 0.0,
+            "post_closure_gap_gw": 0.0
+          }
+        ],
+        "annual_cost_delta_million_cny": 2.057630826706195e-05,
+        "annual_cost_terms_million_cny": {
+          "thermal_new_gw[8,8]": -0.0,
+          "spur_augmentation_gw[1879]": 1.3974855289742543e-06,
+          "spur_augmentation_gw[4161]": 1.2352957161360421e-05,
+          "spur_augmentation_gw[5168]": 1.8810833631896346e-06,
+          "spur_augmentation_gw[5714]": 1.33173301460279e-06,
+          "spur_augmentation_gw[11773]": 2.868395836091511e-06,
+          "trunk_augmentation_gw[458]": 1.275533941592035e-06,
+          "trunk_augmentation_gw[1876]": 3.099163900469463e-06,
+          "thermal_capacity_gw[8,8]": -3.630044479218158e-06
+        },
+        "definition": "Base clipped values plus author-approved minimal static closure",
+        "status": "PASS",
+        "payload_sha256": "5e927a864e974f7476611d27d2b6e7da969b3b213daaa467c32d0da577cc2b03",
+        "original_frozen_audit_sha256": "65b1a4e507694e89bd525528db4068974efeb3045bde04e5f17da03ccec3fafc",
+        "original_audit_unchanged": true,
+        "constraint_rhs_unchanged": true
+      },
+      "expected_capacity_sha256": "20358b401c9074f0680d6caeb4bdfe16a40fc9f2ca8f32e488587b369389287a"
+    }
+  },
+  "status": "PASS"
+}

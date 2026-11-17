@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "year": 2060,
+  "batch": 3,
+  "resource": "conservative",
+  "late_open_2060_authorized": false,
+  "source_commit": "22400fa1ce321615cdf575433dd979bd56fd41dd",
+  "template_release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+  "template_local_path": "batch3_conservative_20261117/template.sbatch",
+  "template_sha256": "6018ec21f869c41eceee9c8066b222e7297c7c8e0019cc5a69fc9bde5d3601cb",
+  "closure_sha256": "24a551f1d8f8b3e9693a41e6c5c0f7d82f2a758efb7f580074569b72df0981a0",
+  "budget_sha256": "2b13868bdc79ab66ec70d2485d6b822a62814095d1790543dee6492570ee551e",
+  "window_carbon_budget_path": "batch2/2060/window_carbon_budget.json",
+  "source_result_manifest_sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+  "checks": {
+    "conservative_1h_and_exact_production_profile": "PASS",
+    "conservative_24h": "PASS_REUSED_WITH_SHA_RECHECK",
+    "frozen_capacity_max_difference": 2.842170943040401e-14,
+    "neutrality_relative_objective_difference": 0.0,
+    "monotonicity_relative_order_violations": [
+      0.0,
+      2.135943001605841e-15,
+      0.0
+    ],
+    "full_regression_tests_covered": 537,
+    "model_sources_unchanged": true,
+    "immutable_input_SHA": "PASS",
+    "original_frozen_source_and_closure_reused": true,
+    "threads": 44,
+    "annual_carbon_limit_unchanged": true
+  },
+  "evidence_sha256": {
+    "batch2\\2060\\YEAR_GATES_PASSED.json": "59ddbfe9f0b024a97fb0809532cb2f26545d3778e80c29f0d77500a4bb2ad1a6",
+    "batch3_conservative_20261117\\2060\\t550_receipt.json": "ac094e671b40878c7bdb8da81fef69c73659f979de78ff608e170b91f6047410",
+    "batch3_conservative_20261117\\cloud_recheck.json": "8ca97078b17a164a3edca398c4ab9ef0b228607dd31083a78e3ff2eaf9a31b02",
+    "batch3_conservative_20261117\\AUTHORIZATION.json": "4872c1458e444ca40bf883297512e7bd93462128ebba0f5c98525b4684927b82",
+    "batch2\\full_tests.json": "36a1bb3cda1e451c385dcd033d6ceab7cd2d8f122024d8708999bd7bf5ff0bca",
+    "batch2\\unchanged_local_archive_tests.json": "c37649fa7443c5aae6f5cc79a58707e4847be34aac61407adbe9eed30f93bfbc"
+  }
+}
