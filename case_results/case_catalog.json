@@ -554,8 +554,13 @@
       "delivered_bytes": 140663242,
       "delivery_sha_status": "PASS",
       "annual_row_duals_recovered": 1134,
-      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
-      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
+      "author_result_adoption": "ADOPTED_BY_AUTHOR_20261117",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md",
+      "author_adoption": {
+        "status": "ADOPTED",
+        "date": "2026-11-17",
+        "basis": "Claude review followed by explicit author confirmation in chat; see AGENTS.md 2026-11-17"
+      }
     },
     {
       "case": "OPS-Open",
@@ -588,8 +593,13 @@
       "delivered_bytes": 140978073,
       "delivery_sha_status": "PASS",
       "annual_row_duals_recovered": 1134,
-      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
-      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
+      "author_result_adoption": "ADOPTED_BY_AUTHOR_20261117",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md",
+      "author_adoption": {
+        "status": "ADOPTED",
+        "date": "2026-11-17",
+        "basis": "Claude review followed by explicit author confirmation in chat; see AGENTS.md 2026-11-17"
+      }
     },
     {
       "case": "OPS-Open",
@@ -627,12 +637,17 @@
       "delivered_bytes": 138555336,
       "delivery_sha_status": "PASS",
       "annual_row_duals_recovered": 1134,
-      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
-      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md"
+      "author_result_adoption": "ADOPTED_BY_AUTHOR_20261117",
+      "second_batch_ops_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch2_20261116\\OPS_OPEN_2030_2040_2060_REPORT_ZH.md",
+      "author_adoption": {
+        "status": "ADOPTED",
+        "date": "2026-11-17",
+        "basis": "Claude review followed by explicit author confirmation in chat; see AGENTS.md 2026-11-17"
+      }
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-14T15:47:55.766825+00:00",
-  "last_catalog_update_utc": "2026-11-14T16:12:31.684216+00:00"
+  "last_catalog_update_utc": "2026-11-17T12:39:18.547158+00:00"
 }

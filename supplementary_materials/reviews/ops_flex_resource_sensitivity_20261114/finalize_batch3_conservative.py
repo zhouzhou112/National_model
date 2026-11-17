@@ -12,6 +12,10 @@ for n,h in data['tested'].items():assert hashlib.sha256((REPO/n).read_bytes().re
 commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
 results={}
 for year,meta in data['years'].items():
+ existing=OUT/year/'FINAL_YEAR_RELEASE_GATES.json'
+ if existing.exists():
+  assert load(existing)['status']=='PASS'
+  results[year]='ALREADY_FINALIZED';continue
  r=status.get('results.json',{}).get(year)
  if not r or r['status']!='PASS':
   results[year]='WAIT_OR_STOP';continue
@@ -22,7 +26,9 @@ for year,meta in data['years'].items():
  assert r['parameter_verification.json']['status']=='PASS' and r['source_and_input_recheck']=='PASS'
  p=OUT/year;p.mkdir(exist_ok=True);oldfinal=load(HERE/'batch2'/year/'FINAL_YEAR_RELEASE_GATES.json')
  budget=oldfinal.get('window_carbon_budget_path','batch2/'+year+'/window_carbon_budget.json');assert sha(HERE/budget)==oldfinal['budget_sha256']
- evidence=[oldpath,OUT/'status.json',OUT/'cloud_recheck.json',OUT/'AUTHORIZATION.json',HERE/'batch2/full_tests.json',HERE/'batch2/unchanged_local_archive_tests.json']
+ receipt=p/'t550_receipt.json';assert not receipt.exists()
+ receipt.write_text(json.dumps(r,indent=2)+'\n')
+ evidence=[oldpath,receipt,OUT/'cloud_recheck.json',OUT/'AUTHORIZATION.json',HERE/'batch2/full_tests.json',HERE/'batch2/unchanged_local_archive_tests.json']
  record=dict(status='PASS',year=int(year),batch=3,resource='conservative',late_open_2060_authorized=False,source_commit=commit,template_release=cloud['template_release'],template_local_path='batch3_conservative_20261117/template.sbatch',template_sha256=cloud['template_sha256'],closure_sha256=oldfinal['closure_sha256'],budget_sha256=oldfinal['budget_sha256'],window_carbon_budget_path=budget,source_result_manifest_sha256=oldfinal['source_result_manifest_sha256'],checks=dict(conservative_1h_and_exact_production_profile='PASS',conservative_24h='PASS_REUSED_WITH_SHA_RECHECK',frozen_capacity_max_difference=max(e['max_abs_difference'] for e in cons['frozen_capacity_output_check.json']['checks']),neutrality_relative_objective_difference=old['neutrality_relative_objective_difference'],monotonicity_relative_order_violations=old['relative_order_violations'],full_regression_tests_covered=537,model_sources_unchanged=True,immutable_input_SHA='PASS',original_frozen_source_and_closure_reused=True,threads=44,annual_carbon_limit_unchanged=True),evidence_sha256={str(e.relative_to(HERE)):sha(e) for e in evidence})
  if year=='2030':record['checks']['all_24h_sides_share_original_B_quota_mt']=10.95890410958904
  target=p/'FINAL_YEAR_RELEASE_GATES.json';assert not target.exists(),'Do not overwrite existing final gates'
