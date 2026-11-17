@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-17",
+  "batch": 3,
+  "cases": [
+    "ops_conservative_2030",
+    "ops_conservative_2040",
+    "ops_conservative_2060"
+  ],
+  "late_open_2060_authorized": false,
+  "maximum_cloud_jobs": 4,
+  "threads": 44,
+  "source": "Explicit author chat: second-batch OPS-Open adopted; conservative years released early after individual gates",
+  "window_carbon_2030_mt": 10.95890410958904
+}

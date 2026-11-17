@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "cases": {
+    "ops_conservative_2030": {
+      "status": "PASS",
+      "data_files": 90,
+      "frozen_source_files": 16
+    },
+    "ops_conservative_2040": {
+      "status": "PASS",
+      "data_files": 58,
+      "frozen_source_files": 30
+    },
+    "ops_conservative_2060": {
+      "status": "PASS",
+      "data_files": 58,
+      "frozen_source_files": 30
+    }
+  },
+  "immutable_input_files": 11,
+  "audit_sha256": "bdbc9af7b6eef96e97eb97dad3034a17102a1e850230e9d855a116be63fac896",
+  "template_release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+  "template_sha256": "6018ec21f869c41eceee9c8066b222e7297c7c8e0019cc5a69fc9bde5d3601cb",
+  "queue": "5587177|late_open_2050_t44|RUNNING|2-02:05:04\n",
+  "startup": {
+    "job_id": "5591162",
+    "allocation": {
+      "cpu": "64",
+      "mem": "750G",
+      "node": "1",
+      "billing": "64"
+    },
+    "time_limit": "UNLIMITED",
+    "available_memory_gib": 718.4662437438965
+  }
+}

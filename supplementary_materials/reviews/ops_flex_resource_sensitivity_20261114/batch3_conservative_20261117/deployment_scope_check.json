@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "authorized_cases": [
+    "ops_conservative_2030",
+    "ops_conservative_2040",
+    "ops_conservative_2060"
+  ],
+  "threads": 44,
+  "late_2060_representable": false,
+  "annual_production_window_override": false,
+  "checks": "Deployment argument scope and compilation; model regression reused by exact source SHA"
+}
