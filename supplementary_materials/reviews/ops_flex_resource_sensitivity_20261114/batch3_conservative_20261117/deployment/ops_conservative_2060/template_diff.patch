@@ -1,0 +1,18 @@
+--- successful_ops_open_2030
++++ ops_conservative_2060
+@@ -8,7 +8,7 @@
+ #SBATCH --mem=750G
+ #SBATCH --time=0
+ #SBATCH --no-requeue
+-#SBATCH --job-name=ops_open_2030_t44
++#SBATCH --job-name=ops_conservative_2060_t44
+ #SBATCH --output=slurm-%j.out
+ #SBATCH --error=slurm-%j.err
+ set -euo pipefail
+@@ -86,5 +86,5 @@
+ cd "$RELEASE_ROOT/repo"
+ # Scientific and regression gates reused unchanged from FINAL_GATES_PASSED.json.
+ /usr/bin/time -v -o "$RELEASE_ROOT/resource_usage.txt" \
+-  "$PYTHON" scripts/run_resource_sensitivity_case.py --resource open --reference /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/resource_contract_reference.csv -- --config config/optimization_numeric_dac_by_year_v9.json --scenario-config config/scenarios/ops_open_resource_v1.json --solver-config config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads44.json --planning-year 2030 --horizon full_year --frozen-capacity-from /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/frozen_source/20260914_base_v9_t48_m750_tol1e4_v3/output_8760 --frozen-capacity-supplement /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/frozen_source/20260914_base_v9_t48_m750_tol1e4_v3/frozen_capacity_B_20261026 --archive-original-model --export-barrier-checkpoint --allow-nonbasic-planning-state --output-dir /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760 \
++  "$PYTHON" scripts/run_resource_sensitivity_case.py --resource conservative --reference /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/resource_contract_reference.csv -- --config config/optimization_numeric_dac_by_year_v9_a12.json --scenario-config config/scenarios/ops_conservative_resource_v1.json --solver-config config/solver_profiles/barrier_stagea_base_frozen_agg0_v1_threads44.json --planning-year 2060 --horizon full_year --frozen-capacity-from /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/frozen_source/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760 --frozen-capacity-supplement /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/frozen_source/20261012_base2060_v9a12_t48_m750_tol1e4_v1/frozen_capacity_B_20261027 --frozen-capacity-closure /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/frozen_closure.json --archive-original-model --export-barrier-checkpoint --allow-nonbasic-planning-state --output-dir /publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760 \
+   > "$RELEASE_ROOT/stdout.log" 2> "$RELEASE_ROOT/stderr.log"

@@ -1,0 +1,119 @@
+{
+  "as_of_utc": "2026-11-17T12:49:40.263885Z",
+  "cloud_running": 1,
+  "cloud_pending": 3,
+  "cloud_total": 4,
+  "late_open_2060_authorized": false,
+  "records": [
+    {
+      "year": 2030,
+      "case": "ops_conservative_2030",
+      "job_id": "5613302",
+      "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "status": "PENDING",
+      "release_status": "RELEASED",
+      "gates": "PASS",
+      "preflight": "PASS",
+      "startup": "PENDING_NODE_ALLOCATION",
+      "allocation": "JobId=5613302 JobName=ops_conservative_2030_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1001303 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:47:08 EligibleTime=2026-11-17T20:47:09 AccrueTime=2026-11-17T20:47:09 StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-17T20:49:57 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:725545 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/slurm-5613302.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/slurm-5613302.out Power= TresPerTask=cpu:64 \n",
+      "freeze": {
+        "status": "FROZEN",
+        "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+        "files": 550,
+        "manifest_sha256": "d032c1f7bfcf9ec36617e5f06e8f08e5f513f3951fda593a987fa44848950bc9"
+      },
+      "checks": {
+        "conservative_1h_and_exact_production_profile": "PASS",
+        "conservative_24h": "PASS_REUSED_WITH_SHA_RECHECK",
+        "frozen_capacity_max_difference": 2.842170943040401e-14,
+        "neutrality_relative_objective_difference": 0.0,
+        "monotonicity_relative_order_violations": [
+          1.3874680136190803e-15,
+          0.0,
+          1.560901515321464e-15
+        ],
+        "full_regression_tests_covered": 537,
+        "model_sources_unchanged": true,
+        "immutable_input_SHA": "PASS",
+        "original_frozen_source_and_closure_reused": true,
+        "threads": 44,
+        "annual_carbon_limit_unchanged": true,
+        "all_24h_sides_share_original_B_quota_mt": 10.95890410958904
+      }
+    },
+    {
+      "year": 2040,
+      "case": "ops_conservative_2040",
+      "job_id": "5613303",
+      "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "status": "PENDING",
+      "release_status": "RELEASED",
+      "gates": "PASS",
+      "preflight": "PASS",
+      "startup": "PENDING_NODE_ALLOCATION",
+      "allocation": "JobId=5613303 JobName=ops_conservative_2040_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1001257 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:47:29 EligibleTime=2026-11-17T20:47:29 AccrueTime=2026-11-17T20:47:29 StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-17T20:49:57 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:730946 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/slurm-5613303.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/slurm-5613303.out Power= TresPerTask=cpu:64 \n",
+      "freeze": {
+        "status": "FROZEN",
+        "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+        "files": 534,
+        "manifest_sha256": "e7cfe8388f49a0732b7167ae0121e01ad2d71a60c2715de647091a4d6e16c6dd"
+      },
+      "checks": {
+        "conservative_1h_and_exact_production_profile": "PASS",
+        "conservative_24h": "PASS_REUSED_WITH_SHA_RECHECK",
+        "frozen_capacity_max_difference": 5.684341886080802e-14,
+        "neutrality_relative_objective_difference": 0.0,
+        "monotonicity_relative_order_violations": [
+          0.0,
+          1.2988653979098609e-16,
+          0.0
+        ],
+        "full_regression_tests_covered": 537,
+        "model_sources_unchanged": true,
+        "immutable_input_SHA": "PASS",
+        "original_frozen_source_and_closure_reused": true,
+        "threads": 44,
+        "annual_carbon_limit_unchanged": true
+      }
+    },
+    {
+      "year": 2060,
+      "case": "ops_conservative_2060",
+      "job_id": "5613360",
+      "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "status": "PENDING",
+      "release_status": "RELEASED",
+      "gates": "PASS",
+      "preflight": "PASS",
+      "startup": "PENDING_NODE_ALLOCATION",
+      "allocation": "JobId=5613360 JobName=ops_conservative_2060_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1000998 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:49:26 EligibleTime=2026-11-17T20:49:26 AccrueTime=2026-11-17T20:49:26 StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-17T20:49:57 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:768285 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/slurm-5613360.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/slurm-5613360.out Power= TresPerTask=cpu:64 \n",
+      "freeze": {
+        "status": "FROZEN",
+        "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+        "files": 534,
+        "manifest_sha256": "8104884a8c817d79a307696532347b84e270755f4212ccf56cfb72874edd92a1"
+      },
+      "checks": {
+        "conservative_1h_and_exact_production_profile": "PASS",
+        "conservative_24h": "PASS_REUSED_WITH_SHA_RECHECK",
+        "frozen_capacity_max_difference": 2.842170943040401e-14,
+        "neutrality_relative_objective_difference": 0.0,
+        "monotonicity_relative_order_violations": [
+          0.0,
+          2.135943001605841e-15,
+          0.0
+        ],
+        "full_regression_tests_covered": 537,
+        "model_sources_unchanged": true,
+        "immutable_input_SHA": "PASS",
+        "original_frozen_source_and_closure_reused": true,
+        "threads": 44,
+        "annual_carbon_limit_unchanged": true
+      }
+    }
+  ],
+  "source_snapshot": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\snapshots\\20261117T124933Z\\snapshot.json"
+}
