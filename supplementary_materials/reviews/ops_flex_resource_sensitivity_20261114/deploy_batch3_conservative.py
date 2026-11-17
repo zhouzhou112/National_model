@@ -49,6 +49,8 @@ def main():
     if a.phase=='prepare':
         gates=json.loads((HERE/'batch3_conservative_20261117'/str(c['year'])/'FINAL_YEAR_RELEASE_GATES.json').read_text(encoding='utf-8'));assert gates['status']=='PASS' and gates['year']==c['year']
         assert gates['batch']==3 and gates['late_open_2060_authorized'] is False and gates['resource']=='conservative'
+        for name,expected in gates['evidence_sha256'].items():
+            assert sha(HERE/name)==expected, 'Gate evidence changed: '+name
         commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
         assert not subprocess.check_output(['git','diff','HEAD','--','cispo_model','scripts','config','tests'],cwd=REPO).strip(),'Commit reviewed executable sources first'
         tested=json.loads((HERE/'batch2/full_tests.json').read_text())['tested_source_lf_sha256']

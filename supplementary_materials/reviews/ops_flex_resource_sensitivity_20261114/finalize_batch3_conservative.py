@@ -24,6 +24,9 @@ for year,meta in data['years'].items():
  assert cons['relative_v1']=='PASS' and cons['frozen_capacity_output_check.json']['status']=='PASS'
  assert r['identity_gate_probe.json']['all_investment_families_fixed'] is True
  assert r['parameter_verification.json']['status']=='PASS' and r['source_and_input_recheck']=='PASS'
+ assert r['run_identity.json']['solver_runtime']['solver_profile']['id']=='barrier_stagea_base_frozen_agg0_v1_threads44'
+ numerics=r['build_report.json']['solver_numerical_compatibility']
+ assert numerics['status']=='PASS' and numerics['aggregate_parameter']==0 and numerics['crossover_parameter']==0 and numerics['barrier_convergence_tolerance']==1e-4
  p=OUT/year;p.mkdir(exist_ok=True);oldfinal=load(HERE/'batch2'/year/'FINAL_YEAR_RELEASE_GATES.json')
  budget=oldfinal.get('window_carbon_budget_path','batch2/'+year+'/window_carbon_budget.json');assert sha(HERE/budget)==oldfinal['budget_sha256']
  receipt=p/'t550_receipt.json';assert not receipt.exists()
