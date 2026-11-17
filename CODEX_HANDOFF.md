@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-17 12:49UTC：作者采纳OPS-Open2030/2040/2060，并提前授权三年OPS-Conservative。全部门禁/preflight PASS，已release5613302/5613303/5613360（2030/2040/2060），当前1个LATE运行+3排队。源码f75fb4f2，放行证据8337e779；44线程/64CPU750G/UNLIMITED/no-requeue，节点启动内存与全年结构待分配后核验。2030短窗10.95890410958904Mt，年度碳上限不变。LATE-Open2060未授权/未提交；无监听。详见ops_flex_resource_sensitivity_20261114/batch3_conservative_20261117/LAUNCH_REPORT_ZH.md。**
+
 - **2026-11-16：OPS-Open2030/2040/2060备份333件16.57GB已COMPLETE；T550当前relative_v1全部PASS，每案1134年度对偶恢复及只读分析完成。319件420.20MB验收/小文件回本机，双端SHA一致，报告/四年概览已同步T550；证据af640553。LATE21:55UTC第197轮(PInf294/Compl7.87)仍运行，第二批整体未结束，第三批未提交。索引case_results/OPS_OPEN_SECOND_BATCH_20261116.md。**
 
 - **2026-11-16 20:52UTC：云端仅LATE5587177运行，OPS-Open2030/2040/2060均OPTIMAL+保全COMPLETE+内置relative_v1 PASS。T550恢复后核无重复备份，333件16.57GB已合并自主拉取PID2385473，PPID1；2030/2040 T1已VERIFIED、其余传输中，尚未COMPLETE。预计剩余空间29.22%满足5%规则。旧2030单案待办已并入本次，不重复启动。正式验收/年度对偶恢复待备份完成，第三批未提交、无监听。**
@@ -3960,6 +3962,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-17 — OPS-Conservative三年提前放行（门禁与release完成，实际启动待调度）
+
+- 授权：作者采纳经Claude复核的OPS-Open三案，提前开放Conservative2030/2040/2060，LATE2060仍另行确认；AGENTS本日追加，case_catalog登记。
+- Git：工具/授权c1294588、采纳与证据边界3f2b4b53、门禁校验22400fa1；新release源码及门禁提交f75fb4f2，放行证据8337e779。模型/数据/约束/目标/容差均未改。
+- 核验：本地与T550/云端保守输入11件BUILD_AUDIT SHA一致；原B冻结来源和静态闭合不变。既有各年Conservative24h、原B/中性/Open/zero对照回读身份后引用；新增三案保守1h实际生产profile均PASS，44线程/Aggregate0/Cross0/BarConvTol1e-4。537项回归覆盖的源码LF SHA未变，最大冻结容量偏差5.68e-14GW。2030窗口额度10.95890410958904Mt，全年4000Mt不变。
+- 操作：prepare_batch3_conservative.py prepare/start/status（有限串行构建PID4003977已完成退出）；verify_batch3_cloud.py；finalize_batch3_conservative.py；deploy_batch3_conservative.py ops_conservative_<year> prepare/preflight/submit-release。脚本从成功OPS-Open2030派生，各包550/534/534件冻结校验通过，held核验后按授权release。
+- 输出：supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/batch3_conservative_20261117/{PRE_SUBMISSION_REPORT_ZH.md,LAUNCH_REPORT_ZH.md,LAUNCH_RECEIPT.json}及逐年门禁/提交凭据；case_results已建三个案例卡片。12:49UTC快照1运行+3排队，作业5613302/5613303/5613360分别对应2030/2040/2060；LATE5587177原样继续。
+- 未完及精确下一步：只读核三案实际AllocTRES、startup_resources、smoke及全年resource_structure_audit，未分配时不能宣称≥700GiB已通过；不重复提交。发现终态按5%规则完整T550备份、relative_v1验收、原MPS+自身BarPi恢复年度核算行对偶和小文件回传。LATE2060待前案验收且B/obj≤1e-2及作者确认。既有脏稿与其他交接改动均保留，不建后台监听。
+
 
 ## 2026-11-16 OPS-Open2030/2040/2060 T550验收与本地交付完成
 

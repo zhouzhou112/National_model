@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## OPS-Conservative三年提前放行（2026-11-17）
+
+作者仅提前授权Conservative2030/2040/2060，三案已release5613302/5613303/5613360；本次源码f75fb4f2/证据8337e779。一次性状态入口仍为`python supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/snapshot_batch1.py`，已纳入三案。不要重复prepare/submit；排队待节点后核startup_resources、smoke、全年resource_structure_audit。T550有限1h构建已完成，无活跃门禁任务或监听。
+
+`deploy_batch3_conservative.py`只允许这三案；所有启动脚本均已冻结，结束后按既有全量备份和旁置年度行对偶恢复规则执行。LATE-Open2060未在本次授权内，须前案验收及证书满足后由作者确认。详细报告位于`supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/batch3_conservative_20261117/LAUNCH_REPORT_ZH.md`。
+
 ## 作者决定：新作业 sbatch 派生规则（2026-10-26）
 
 今后所有新作业的 sbatch 必须从最近一次成功启动且有计算节点 smoke 证据的脚本派生，记录源 release、脚本 SHA 与逐行差异；只改本作业参数和路径，不从早期默认许可模板重新拼装。作者指定某个成功脚本时以该指定为准，原冻结脚本不得修改。
