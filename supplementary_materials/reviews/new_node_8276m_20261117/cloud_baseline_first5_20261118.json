@@ -1,0 +1,71 @@
+{
+  "source_log_sha256": "6eed577a4c88cfa9c5e1fea0ddee7992372117287a648e78ddb44634ccad1f10",
+  "source_threads": 44,
+  "source_cpu": "AMD EPYC 9554",
+  "source_platform": "Linux; model built in Python rather than this Windows MPS replay",
+  "ordering_seconds": 1349.93,
+  "first_rows": [
+    {
+      "iteration": 0,
+      "primal_objective": 22062458000000.0,
+      "dual_objective": -1929194920000.0,
+      "pinf": 104000000000.0,
+      "dinf": 8.53e-14,
+      "complementarity": 847000000.0,
+      "logged_seconds": 2107.0
+    },
+    {
+      "iteration": 1,
+      "primal_objective": 21288695700000.0,
+      "dual_objective": -1937260720000.0,
+      "pinf": 100000000000.0,
+      "dinf": 702.0,
+      "complementarity": 818000000.0,
+      "logged_seconds": 2280.0
+    },
+    {
+      "iteration": 2,
+      "primal_objective": 20333748500000.0,
+      "dual_objective": -1940655020000.0,
+      "pinf": 95900000000.0,
+      "dinf": 760.0,
+      "complementarity": 780000000.0,
+      "logged_seconds": 2480.0
+    },
+    {
+      "iteration": 3,
+      "primal_objective": 19632859300000.0,
+      "dual_objective": -1951391820000.0,
+      "pinf": 92700000000.0,
+      "dinf": 719.0,
+      "complementarity": 747000000.0,
+      "logged_seconds": 2681.0
+    },
+    {
+      "iteration": 4,
+      "primal_objective": 16884162100000.0,
+      "dual_objective": -1980126520000.0,
+      "pinf": 79900000000.0,
+      "dinf": 538.0,
+      "complementarity": 636000000.0,
+      "logged_seconds": 2914.0
+    },
+    {
+      "iteration": 5,
+      "primal_objective": 12573046800000.0,
+      "dual_objective": -1994260660000.0,
+      "pinf": 59500000000.0,
+      "dinf": 425.0,
+      "complementarity": 477000000.0,
+      "logged_seconds": 3166.0
+    }
+  ],
+  "first_five_iteration_deltas_seconds": [
+    173.0,
+    200.0,
+    201.0,
+    233.0,
+    252.0
+  ],
+  "comparison_limit": "Hardware/platform/thread count and construction route differ; not a controlled single-factor CPU experiment"
+}

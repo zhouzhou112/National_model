@@ -1,0 +1,15 @@
+{
+  "utc": "2026-11-18T19:04:10.862454+00:00",
+  "code_commit": "10c0a3cc00773b7fe1bb0f95c960e1c839e4e393",
+  "continuation_reason": "v1 stopped in dependency preflight before any optimize or large MPS load; SciPy fixed",
+  "files": [
+    {
+      "path": "benchmark_mps.py",
+      "sha256": "ed481a081c5fd8f16acadf7fb269524dbfed468b14cdbf7dc7788b362b25d8c8"
+    },
+    {
+      "path": "run_test_once.ps1",
+      "sha256": "da4e394ebd77728f3a327a783e1ccc98fdb44036e325c6217f0facbaa9582f70"
+    }
+  ]
+}

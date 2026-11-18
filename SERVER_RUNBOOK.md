@@ -1,5 +1,7 @@
 # CISPO 2030/8760 server runbook
 
+- **2026-11-18 19:16UTC：新节点v1在小模型检查因缺SciPy退出，未读取/优化大模型；原件保留。补SciPy1.15.3并把依赖检查提前至许可申请前后，19:06以新冻结v2继续，控制器7360/Python7464，源码10c0a3cc。19:08:43同一Env的3001变量/32线程小模型PASS，正加载原MPS；19:15 OS峰RSS8.42GiB、无错误，尚未排序。已加仅跟随本次PID的有限外部资源采样以覆盖原生读取期间的Python采样暂停。详见new_node_8276m_20261117/ENVIRONMENT_FIX_AND_CONTINUATION_20261118_ZH.md；无额外WLS会话、无重复触发或后台监听。**
+
 - **2026-11-18 18:58UTC：新节点32线程/前5轮测试已启动，单次任务无触发器/自动重试，控制器9160/Python5340；正做44.278GB原MPS SHA校验，尚未进入许可验证/排序。作者提供本机D:/gurobi1，308byte许可经加密SCP配置新节点，未显示/记录/散列内容。小型检查与大MPS共用1个Env；源码f6cb4196已冻结/推送。详见new_node_8276m_20261117/TEST_LAUNCH_20261118_ZH.md；原云作业/输入不改，失败不自动重跑，无监听。**
 
 - **2026-11-18 18:46UTC：作者重新放行新节点32线程前5轮测试；云端squeue确认仅LATE5587177运行。新节点约785GiB可用、无其他Python/Gurobi进程，但WLS许可文件/GRB_LICENSE_FILE均未配置，测试尚未启动。授权改AUTHORIZED/run-only，小模型检查与MPS共用一个Env以最多新增1个会话；缺许可在导入gurobipy前阻断。详见new_node_8276m_20261117/TEST_RELEASE_20261118_ZH.md；待作者配置许可后沿用本次放行，不需重复授权，无监听。**
@@ -6031,3 +6033,11 @@ LATE5587177截至21:55UTC仍RUNNING，第197轮，打印PInf294/DInf1.57e-7/Comp
 - 作者已放行并提供本机D:/gurobi1许可位置；308byte gurobi.lic加密SCP至新节点用户默认位置，未输出/记录/散列内容，不入Git。源码f6cb4196，冻结目录runsource/t32_factor5_v1，脚本与清单SHA校验后手动启动一次性任务，控制器9160/Python5340；XML触发器0、无自动重试。首回执数组null计数1已追加更正，不代表定时触发器。
 - 18:58:37仍在完整原MPS SHA校验，RSS约49MiB/stderr空，不冒充许可或排序PASS。小型许可模型与原MPS共享同一Env；线程32/最多5轮/原科学数值设置及内存保护不变。仅白名单参数导出，避开环境凭据。静态检查误判普通write已纠正为model/env对象检查，检查通过。
 - 证据：new_node_8276m_20261117/TEST_LAUNCH_20261118_ZH.md、launch_t32_v1_20261118.json、source_manifest_t32_v1.json及license_installation_metadata_20261118.json。下一步跟踪本次有界终态、保全与报告，不自动重跑/改参数，不改云端作业或冻结包，无后台监听。
+
+
+<!-- node8276m-v2-smoke-pass-20261118 -->
+### 2026-11-18 19:16UTC — SciPy缺项修复，v2许可门禁通过并读取大模型
+
+- v1在小模型MVar.sum阶段因缺SciPy退出，无optimize/大MPS读取；失败源码/输出完整保留。补SciPy1.15.3，其他版本不变，导入/pip check通过；依赖预检前移，许可和大模型仍共享一个Env。控制器空ExitCode留raw值并用terminal明确判定，不伪造真实进程退出码。
+- 源码10c0a3cc，距旧环境释放超过6分钟后手动启动v2，无触发器/重试，控制器7360/Python7464。19:08:43 3001变量小模型目标1/Threads32/PASS；随后原MPS加载中。19:15:54 CPU575.34秒、OS峰RSS8.42GiB/stderr空，尚无排序和大模型科学结果。
+- 原生MPS读取使Python线程采样暂停，补充仅观测本次PID、随其退出的外部psutil采样（不导入Gurobi/不控作业），记录OS全生命周期RSS峰值；早期时序缺口如实保留。source_manifest_t32_v2、launch_t32_v2、runtime_scipy_fix、cloud_baseline_first5和ENVIRONMENT_FIX_AND_CONTINUATION_20261118_ZH.md为证据。下一步等v2终态保全/报告，不改在跑参数/模型，发生模型/求解异常即停止回报。
