@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 19:59UTC：新节点v2原MPS读取680.75秒，规模/指纹及参数门禁PASS；预求解816.29秒（云端446.41），两侧消元后规模完全一致。仍在32线程排序/初始分解，无第0轮/终态，OS峰RSS269.516GiB，系统可用约598GiB。实际日志许可号2868774；此前日志尾为空是只读查询器路径拼接错误，已修复并保留旧快照，不是求解器未写日志。详见new_node_8276m_20261117/MODEL_IDENTITY_AND_PRESOLVE_20261118_ZH.md；原求解器/模型/云作业不改，继续等待本次有界终态。**
+
 - **2026-11-18 19:16UTC：新节点v1在小模型检查因缺SciPy退出，未读取/优化大模型；原件保留。补SciPy1.15.3并把依赖检查提前至许可申请前后，19:06以新冻结v2继续，控制器7360/Python7464，源码10c0a3cc。19:08:43同一Env的3001变量/32线程小模型PASS，正加载原MPS；19:15 OS峰RSS8.42GiB、无错误，尚未排序。已加仅跟随本次PID的有限外部资源采样以覆盖原生读取期间的Python采样暂停。详见new_node_8276m_20261117/ENVIRONMENT_FIX_AND_CONTINUATION_20261118_ZH.md；无额外WLS会话、无重复触发或后台监听。**
 
 - **2026-11-18 18:58UTC：新节点32线程/前5轮测试已启动，单次任务无触发器/自动重试，控制器9160/Python5340；正做44.278GB原MPS SHA校验，尚未进入许可验证/排序。作者提供本机D:/gurobi1，308byte许可经加密SCP配置新节点，未显示/记录/散列内容。小型检查与大MPS共用1个Env；源码f6cb4196已冻结/推送。详见new_node_8276m_20261117/TEST_LAUNCH_20261118_ZH.md；原云作业/输入不改，失败不自动重跑，无监听。**
@@ -11162,3 +11164,11 @@ Git基准`616fe3b3142f49c3b2c7bcf7c020579fa6f5cc3b`；37测试通过，工具、
 - v1在小模型MVar.sum阶段因缺SciPy退出，无optimize/大MPS读取；失败源码/输出完整保留。补SciPy1.15.3，其他版本不变，导入/pip check通过；依赖预检前移，许可和大模型仍共享一个Env。控制器空ExitCode留raw值并用terminal明确判定，不伪造真实进程退出码。
 - 源码10c0a3cc，距旧环境释放超过6分钟后手动启动v2，无触发器/重试，控制器7360/Python7464。19:08:43 3001变量小模型目标1/Threads32/PASS；随后原MPS加载中。19:15:54 CPU575.34秒、OS峰RSS8.42GiB/stderr空，尚无排序和大模型科学结果。
 - 原生MPS读取使Python线程采样暂停，补充仅观测本次PID、随其退出的外部psutil采样（不导入Gurobi/不控作业），记录OS全生命周期RSS峰值；早期时序缺口如实保留。source_manifest_t32_v2、launch_t32_v2、runtime_scipy_fix、cloud_baseline_first5和ENVIRONMENT_FIX_AND_CONTINUATION_20261118_ZH.md为证据。下一步等v2终态保全/报告，不改在跑参数/模型，发生模型/求解异常即停止回报。
+
+
+<!-- node8276m-identity-presolve-20261118 -->
+### 2026-11-18 19:59UTC — 模型身份与预求解门禁通过，排序进行中
+
+- 冻结求解源码仍10c0a3cc；原MPS读取680.75秒，54288578行/43797081列/503239404非零元/Fingerprint4277593037匹配。实际Threads32、Aggregate0、Crossover0及原容差回读通过。预求解816.29秒，对照云端446.41秒；两侧消元后32880062行/36874949列/213287887非零元一致，不作纯CPU归因。
+- 19:58:56 Python7464运行，排序/初始分解中，无第0轮/终态；OS峰RSS269.516GiB、当前139.315GiB、private291.936GiB、可用598.473GiB，未达保护门槛。实际求解器日志许可号2868774、最多32线程及AVX512已核，虚拟可见44核不等于宿主机独占核数。
+- 只读查询器数组内路径拼接错误导致旧gurobi_tail为空，已修复括号并显式输出读取错误；旧快照保留，原资源/身份JSON及求解器不受影响。证据MODEL_IDENTITY_AND_PRESOLVE_20261118_ZH.md、solver_header、effective_parameter_readback、license_nonsecret_log_metadata及test_snapshots。下一步等本次最多5轮终态与保全，未宣称内存最终峰值或全年速度。

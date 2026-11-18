@@ -1,0 +1,30 @@
+{
+  "utc": "2026-11-18T19:25:49.7027136Z",
+  "parameters": {
+    "Aggregate": 0,
+    "BarConvTol": 0.0001,
+    "BarIterLimit": 5,
+    "Crossover": 0,
+    "CrossoverBasis": 1,
+    "DualReductions": 1,
+    "FeasibilityTol": 1e-06,
+    "InfUnbdInfo": 0,
+    "LogFile": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v2\\gurobi.log",
+    "LogToConsole": 0,
+    "MarkowitzTol": 0.01,
+    "MemLimit": 708.66960384,
+    "Method": 2,
+    "NumericFocus": 2,
+    "OptimalityTol": 1e-06,
+    "OutputFlag": 1,
+    "Presolve": 2,
+    "ScaleFlag": 2,
+    "SoftMemLimit": 687.19476736,
+    "SolutionTarget": 1,
+    "Threads": 32,
+    "TimeLimit": 86400.0
+  },
+  "files": [],
+  "read_transfer_bytes": 88561097194,
+  "write_transfer_bytes": 128078
+}

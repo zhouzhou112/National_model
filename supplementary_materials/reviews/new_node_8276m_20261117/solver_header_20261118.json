@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-18T19:40:11.3683734Z",
+  "lines": [
+    "Gurobi Optimizer version 13.0.2 build v13.0.2rc1 (win64 - Windows 10.0 (19042.2))",
+    "CPU model: Intel(R) Xeon(R) Platinum 8276M CPU @ 2.20GHz, instruction set [SSE2|AVX|AVX2|AVX512]",
+    "Thread count: 44 physical cores, 44 logical processors, using up to 32 threads",
+    "Presolve time: 816.29s",
+    "Presolved: 32880062 rows, 36874949 columns, 213287887 nonzeros"
+  ],
+  "log_bytes": 13111
+}
