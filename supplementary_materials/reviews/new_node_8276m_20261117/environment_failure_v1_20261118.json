@@ -1,0 +1,40 @@
+{
+  "utc": "2026-11-18T19:02:43.8874428Z",
+  "terminal": {
+    "started_utc": "2026-11-18T18:57:12.058418+00:00",
+    "diagnostic_only": true,
+    "scientific_acceptance": "NOT_APPLICABLE",
+    "source_mps_sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+    "thread_limit": 32,
+    "iteration_limit": 5,
+    "hard_memory_limit_gib": 660,
+    "soft_memory_limit_gib": 640,
+    "minimum_available_gib": 30,
+    "admission_available_gib": 785.0162124633789,
+    "platform": "win32",
+    "python": "3.10.20 | packaged by conda-forge | (main, Jun 11 2026, 03:28:51) [MSC v.1944 64 bit (AMD64)]",
+    "status": "TEST_STOPPED",
+    "error_type": "ModuleNotFoundError",
+    "error": "No module named 'scipy'",
+    "finished_utc": "2026-11-18T18:59:38.724823+00:00",
+    "wall_seconds": 146.67200000000594,
+    "resources": {
+      "peak_rss_bytes": 51908608,
+      "peak_private_bytes": 41431040,
+      "minimum_available_bytes": 842814054400
+    }
+  },
+  "controller": {
+    "utc": "2026-11-18T18:59:38.7678277Z",
+    "solver_pid": 5340,
+    "exit_code": null,
+    "terminal_exists": true,
+    "output": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v1"
+  },
+  "remaining_python": [
+    {
+      "ProcessId": 10084,
+      "ExecutablePath": "C:\\NationalModelBench\\envs\\gurobi1302_py31020\\python.exe"
+    }
+  ]
+}

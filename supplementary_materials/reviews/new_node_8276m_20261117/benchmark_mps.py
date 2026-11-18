@@ -47,6 +47,7 @@ def environment():
     candidates = [Path(os.environ['GRB_LICENSE_FILE'])] if os.environ.get('GRB_LICENSE_FILE') else [Path.home()/'gurobi.lic', Path('C:/gurobi/gurobi.lic')]
     if not any(p.is_file() for p in candidates):
         raise RuntimeError('License file not configured; no Gurobi environment was created')
+    import scipy.sparse  # Matrix-API smoke dependency: check before requesting a WLS token.
     import gurobipy as gp
     if gp.gurobi.version() != (13, 0, 2):
         raise RuntimeError('Exact Gurobi 13.0.2 required')

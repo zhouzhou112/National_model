@@ -33,10 +33,11 @@ try {
     if (Test-Path -LiteralPath "$benchEnv\conda-meta\history") { $benchCondaAction = 'install' }
     Invoke-BenchProcess "$benchRuntime\Scripts\conda.exe" "$benchCondaAction --yes --prefix $benchEnv --override-channels --channel conda-forge --no-shortcuts python=3.10.20 pip numpy=1.26.4 psutil=7.0.0" 'conda_create.log'
     Invoke-BenchProcess "$benchEnv\python.exe" '-m pip install --disable-pip-version-check gurobipy==13.0.2' 'pip_install.log'
+    Invoke-BenchProcess "$benchEnv\python.exe" '-m pip install --disable-pip-version-check scipy==1.15.3' 'scipy_install.log'
     Invoke-BenchProcess "$benchEnv\python.exe" '-m pip check' 'pip_check.log'
     Invoke-BenchProcess "$benchEnv\python.exe" '-m pip freeze' 'pip_freeze.txt'
     Invoke-BenchProcess "$benchRuntime\Scripts\conda.exe" "list --prefix $benchEnv --explicit" 'conda_explicit.txt'
-    Invoke-BenchProcess "$benchEnv\python.exe" '-c "import json,sys,gurobipy,numpy,psutil; print(json.dumps(dict(python=sys.version,gurobi=gurobipy.gurobi.version(),numpy=numpy.__version__,psutil=psutil.__version__)))"' 'versions.json'
+    Invoke-BenchProcess "$benchEnv\python.exe" '-c "import json,sys,gurobipy,numpy,scipy,psutil; print(json.dumps(dict(python=sys.version,gurobi=gurobipy.gurobi.version(),numpy=numpy.__version__,scipy=scipy.__version__,psutil=psutil.__version__)))"' 'versions.json'
     [ordered]@{utc=[DateTime]::UtcNow.ToString('o');status='RUNTIME_READY_LICENSE_NOT_TESTED';runtime=$benchRuntime;environment=$benchEnv;installer_sha256=$benchActual} | ConvertTo-Json | Set-Content -LiteralPath "$benchRoot\setup\bootstrap_complete.json" -Encoding UTF8
     Get-Content -LiteralPath "$benchRoot\setup\bootstrap_complete.json" -Raw
 } catch {
