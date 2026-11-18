@@ -1,0 +1,18 @@
+{
+  "as_of_utc": "2026-11-18T23:25:32.5820815Z",
+  "status": "RUNNING_ORDERING_NO_BARRIER_ITERATION",
+  "completed_five_iterations": false,
+  "ordering_seconds_so_far": 13825.0,
+  "cloud_ordering_seconds": 1349.93,
+  "ordering_time_ratio_lower_bound": 10.241271769647314,
+  "new_node_peak_rss_gib_so_far": 270.7081718444824,
+  "cloud_full_run_peak_process_tree_rss_gib": 525.316,
+  "current_rss_gib": 27.821659088134766,
+  "current_available_gib": 700.9081497192383,
+  "new_node_presolve_seconds": 816.29,
+  "cloud_presolve_seconds": 446.41,
+  "cloud_first_five_iteration_mean_seconds": 211.8,
+  "new_node_iteration_speed": null,
+  "comparison_scope": "New node unfinished test, main-process RSS vs cloud complete production run process-tree RSS; platform, threads and build path differ",
+  "polling_policy": "User requested no continuous polling; at least 2h between proactive checks, except user-triggered requests; no recurring watcher created"
+}
