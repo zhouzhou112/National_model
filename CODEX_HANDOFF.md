@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 论文定位与终点储能口径复核。** 已按作者要求对读 Chrome 中三篇 Nature Energy 正文，核对 2060 年生产配置的终端服务边界及储能运行、投资的同技术对照。编辑建议和复算表保存在 `D:/National_model/文献分析与文章定位/运行中少用电池不能直接推出规划中少建电池_2060_20261118/`，供作者审阅。
+
 - **2026-11-17 论文签约分析采用2060年主口径。** 已对四个已验收柔性方案及同年REF完成本地复算，31省固定签约费用归集、按服务可签资源比较及费用分项回加均已核验。审阅稿与数据位于 `../claude_workspace/paper/codex_contract_distribution_2060_20261117/`，科学主张待作者审定。
 
 - **2026-11-17 12:49UTC：作者采纳OPS-Open2030/2040/2060，并提前授权三年OPS-Conservative。全部门禁/preflight PASS，已release5613302/5613303/5613360（2030/2040/2060），当前1个LATE运行+3排队。源码f75fb4f2，放行证据8337e779；44线程/64CPU750G/UNLIMITED/no-requeue，节点启动内存与全年结构待分配后核验。2030短窗10.95890410958904Mt，年度碳上限不变。LATE-Open2060未授权/未提交；无监听。详见ops_flex_resource_sensitivity_20261114/batch3_conservative_20261117/LAUNCH_REPORT_ZH.md。**
@@ -3964,6 +3966,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-18  终端柔性在固定设施运行与联合规划中的储能对照
+
+- 工程源码基准 `fe62464b33e63ed6e2462ce2592efea7afcd415b`。仓库内仅增加论文后处理索引。上述本地目录含 `主张与研究边界.md`、`三篇Nature Energy正文如何立论.md`、阅读版 HTML、复算脚本、两张物理量 CSV 和来源清单。
+- 在该目录执行 `python 复核储能对照.py`。核对 2060 年 31 省、两项储能技术、五种设施与资源情景共 310 个省技术账户。固定设施容量、REF 与 OPS 月度充放电总量、四案分技术年导出及 17 项来源 SHA256 均通过。全国表 SHA256 为 `ffd89c3690af63f41366b7b51ac74c5f5701724be7e290d446871cd3eec35b73`。
+- 下一步由作者审定这一规划判断是否置于主线。容量差的唯一性、跨气象年稳健性及单一驱动因素仍待识别，研究稿和数据保存于本地。
 
 ### 2026-11-17  2060年省级柔性签约费用与采购分布复算
 
