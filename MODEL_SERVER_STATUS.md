@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-18 18:58UTC：新节点32线程/前5轮测试已启动，单次任务无触发器/自动重试，控制器9160/Python5340；正做44.278GB原MPS SHA校验，尚未进入许可验证/排序。作者提供本机D:/gurobi1，308byte许可经加密SCP配置新节点，未显示/记录/散列内容。小型检查与大MPS共用1个Env；源码f6cb4196已冻结/推送。详见new_node_8276m_20261117/TEST_LAUNCH_20261118_ZH.md；原云作业/输入不改，失败不自动重跑，无监听。**
+
 - **2026-11-18 18:46UTC：作者重新放行新节点32线程前5轮测试；云端squeue确认仅LATE5587177运行。新节点约785GiB可用、无其他Python/Gurobi进程，但WLS许可文件/GRB_LICENSE_FILE均未配置，测试尚未启动。授权改AUTHORIZED/run-only，小模型检查与MPS共用一个Env以最多新增1个会话；缺许可在导入gurobipy前阻断。详见new_node_8276m_20261117/TEST_RELEASE_20261118_ZH.md；待作者配置许可后沿用本次放行，不需重复授权，无监听。**
 
 - **2026-11-18 18:36UTC：三案OPS-Conservative全部COMPLETED/OPTIMAL，2030/2040/2060为122/160/174轮、11:16/16:32/16:11；保全COMPLETE、内置relative_v1和容量检查PASS，正式T550验收待办。核无旧备份/传输后启动PID3339359自主全备份，333件16.55GB，预计余28.79%，当前T1传输中。LATE5587177仍运行，第396轮(PInf0.105/DInf2.24e-6/Compl0.00145)，无新放行或监听。详见batch3_completed_backup_20261118/REVIEW_ZH.md。**
@@ -4292,3 +4294,11 @@ LATE5587177截至21:55UTC仍RUNNING，第197轮，打印PInf294/DInf1.57e-7/Comp
 - Git基准ff4ed8cb；作者明确放行原OPS-Open2050的32线程前5轮。只读squeue确认仅5587177 RUNNING，新节点44 vCPU/约785GiB可用、无Python/Gurobi进程；默认两处许可文件与三个GRB_LICENSE_FILE作用域均未配置。未创建Env、未许可smoke、未求解，未触碰云端作业/冻结包。
 - benchmark_mps.py改为run内许可检查与MPS共享一个Env；缺许可在导入前停止，异常释放环境、先停资源线程再dispose。语法/缺许可阻断/单环境编排检查PASS；部署SHA a109e69b115fb37fadc61db1819b815512335e990f8238b1c415c10b49e8ffaa，与本机一致。授权改AUTHORIZED/run-only，旧PREPARE_ONLY副本保留。
 - 记录：supplementary_materials/reviews/new_node_8276m_20261117/TEST_RELEASE_20261118_ZH.md及pretest_check、single_session_validation、test_release_pending_license三份JSON。下一步作者配置新节点WLS许可路径后沿用本次授权继续，先核旧进程与许可名额；无重复放行请求、无后台文件监听。其他未提交改动保留。
+
+
+<!-- node8276m-test-started-20261118 -->
+### 2026-11-18 18:58UTC — 32线程单环境测试已启动
+
+- 作者已放行并提供本机D:/gurobi1许可位置；308byte gurobi.lic加密SCP至新节点用户默认位置，未输出/记录/散列内容，不入Git。源码f6cb4196，冻结目录runsource/t32_factor5_v1，脚本与清单SHA校验后手动启动一次性任务，控制器9160/Python5340；XML触发器0、无自动重试。首回执数组null计数1已追加更正，不代表定时触发器。
+- 18:58:37仍在完整原MPS SHA校验，RSS约49MiB/stderr空，不冒充许可或排序PASS。小型许可模型与原MPS共享同一Env；线程32/最多5轮/原科学数值设置及内存保护不变。仅白名单参数导出，避开环境凭据。静态检查误判普通write已纠正为model/env对象检查，检查通过。
+- 证据：new_node_8276m_20261117/TEST_LAUNCH_20261118_ZH.md、launch_t32_v1_20261118.json、source_manifest_t32_v1.json及license_installation_metadata_20261118.json。下一步跟踪本次有界终态、保全与报告，不自动重跑/改参数，不改云端作业或冻结包，无后台监听。

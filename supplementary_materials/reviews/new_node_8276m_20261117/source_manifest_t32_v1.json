@@ -1,0 +1,19 @@
+{
+  "utc": "2026-11-18T18:56:13.350376+00:00",
+  "code_commit": "f6cb41961262701d3042c21714cb507df83c8968",
+  "files": [
+    {
+      "path": "benchmark_mps.py",
+      "sha256": "8edb5b22c990b5c9a16bce27687c4027e292f30f0ef43266c4f5f8ceac828c62"
+    },
+    {
+      "path": "run_test_once.ps1",
+      "sha256": "de7582ddd777908f71094d9a31a0ca1013ac71a3046e05467c9a45908f6f144d"
+    }
+  ],
+  "checks": {
+    "one_environment_creation": true,
+    "no_whole_model_or_environment_parameter_export": true
+  },
+  "qa_note": "Initial broad AST check matched ordinary log/lock writes; narrowed to model/env exports and passed."
+}

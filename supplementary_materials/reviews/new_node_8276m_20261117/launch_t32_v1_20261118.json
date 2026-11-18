@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-18T18:57:11.1894120Z",
+  "task": "NationalModel_OPS2050_T32_Factor5_20261118_v1",
+  "user": "DESKTOP-30RRU21\\zz2",
+  "recurring_triggers": 1,
+  "state": "Running",
+  "started_once": true,
+  "actual_xml_trigger_count": 0,
+  "trigger_count_correction": "Original PowerShell array count includes null; XML inspected: no triggers"
+}
