@@ -191,14 +191,22 @@ def run(root, out):
         terminal.update(dimensions=dims, fingerprint=fingerprint)
         if dims != EXPECTED_DIMS or fingerprint != EXPECTED_FINGERPRINT:
             raise RuntimeError('Read MPS dimension/fingerprint differs from archived LP; do not optimize')
-        for key,value in parameters(root/'input/model_archive/parameters.prm').items():
+        source_parameters = parameters(root/'input/model_archive/parameters.prm')
+        for key,value in source_parameters.items():
             model.setParam(key, value)
         overrides = dict(Threads=32, BarIterLimit=5, TimeLimit=24*3600,
                          SoftMemLimit=640*GIB/1e9, MemLimit=660*GIB/1e9,
                          OutputFlag=1, LogToConsole=0, LogFile=str(out/'gurobi.log'))
         for key,value in overrides.items():
             model.setParam(key,value)
-        model.write(str(out/'effective_parameters.prm'))
+        # Export only the explicitly reviewed scientific/runtime parameter names.
+        # Never serialize the whole environment, which can hold WLS credentials.
+        parameter_names = sorted(set(source_parameters) | set(overrides) |
+                                 {'FeasibilityTol','OptimalityTol','DualReductions','InfUnbdInfo'})
+        effective = {key:model.getParamInfo(key)[2] for key in parameter_names}
+        save(out/'effective_parameters.json', effective)
+        (out/'effective_parameters.prm').write_text(
+            ''.join(f'{key}  {value}\n' for key,value in effective.items()), encoding='utf-8')
         terminal['overrides'] = overrides
         save(out/'identity_before_optimize.json',terminal)
         if state['memory_stop_requested']:
