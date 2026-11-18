@@ -1,5 +1,11 @@
 {
-  "status": "PREPARE_ONLY",
-  "date": "2026-11-18",
-  "reason": "Author explicitly deferred solver and license smoke tests"
+  "status": "AUTHORIZED",
+  "allowed_modes": [
+    "run"
+  ],
+  "authorized_utc": "2026-11-18T18:46:32.4744351Z",
+  "scope": "One OPS-Open2050 MPS replay, Threads=32, first 5 Barrier iterations",
+  "license_environment_limit": 1,
+  "license_configuration": "MISSING",
+  "source": "User explicitly released this test after cloud concurrency fell to one"
 }

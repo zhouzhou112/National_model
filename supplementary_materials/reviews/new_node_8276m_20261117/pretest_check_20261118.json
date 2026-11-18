@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-18T18:43:37.3810882Z",
+  "host": "DESKTOP-30RRU21",
+  "vcpus": 44,
+  "visible_gib": 799.999,
+  "available_gib": 785.056,
+  "license_env_process": null,
+  "license_env_user": null,
+  "license_env_machine": null,
+  "default_license_paths_existing": [],
+  "processes": [],
+  "authorization": {
+    "status": "PREPARE_ONLY",
+    "date": "2026-11-18",
+    "reason": "Author explicitly deferred all solver and license smoke tests; environment preparation only."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-18T18:46:26.448310+00:00",
+  "checks": {
+    "missing_license_rejected_before_environment": true,
+    "gurobipy_not_imported": true,
+    "one_environment_creation_in_run": true,
+    "run_uses_shared_environment_smoke": true
+  },
+  "script_sha256": "a109e69b115fb37fadc61db1819b815512335e990f8238b1c415c10b49e8ffaa",
+  "scope": "No Gurobi environment or solve executed; missing-license and single-environment orchestration checks"
+}

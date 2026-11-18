@@ -44,6 +44,9 @@ def safe_number(value):
     return v if math.isfinite(v) else None
 
 def environment():
+    candidates = [Path(os.environ['GRB_LICENSE_FILE'])] if os.environ.get('GRB_LICENSE_FILE') else [Path.home()/'gurobi.lic', Path('C:/gurobi/gurobi.lic')]
+    if not any(p.is_file() for p in candidates):
+        raise RuntimeError('License file not configured; no Gurobi environment was created')
     import gurobipy as gp
     if gp.gurobi.version() != (13, 0, 2):
         raise RuntimeError('Exact Gurobi 13.0.2 required')
@@ -51,12 +54,16 @@ def environment():
     env.setParam('OutputFlag', 0)
     env.setParam('ThreadLimit', 32)
     env.setParam('MemLimit', 660*GIB/1e9)
-    env.start()  # Solver consumes the configured license; no code reads its contents.
+    try:
+        env.start()  # Solver consumes the configured license; no code reads its contents.
+    except Exception:
+        env.dispose()
+        raise
     return gp, env
 
-def smoke(out):
-    gp, env = environment()
-    with env, gp.Model(env=env) as model:
+def smoke_in_environment(gp, env, out):
+    """Dispose only the small model; retain the one Env for the large LP."""
+    with gp.Model(env=env) as model:
         model.Params.Threads = 32
         x = model.addMVar(3001, lb=0, ub=1)
         model.addConstr(x.sum() >= 1)
@@ -70,6 +77,11 @@ def smoke(out):
         save(out/'license_smoke.json', result)
         if not ok:
             raise RuntimeError('License/runtime smoke failed')
+
+def smoke(out):
+    gp, env = environment()
+    with env:
+        smoke_in_environment(gp, env, out)
 
 def prepare(root):
     source = root/'input/model_archive/original.mps.gz'
@@ -167,6 +179,9 @@ def run(root, out):
         if mps.stat().st_size != metadata['bytes'] or sha(mps) != metadata['sha256']:
             raise RuntimeError('Prepared MPS integrity check failed')
         gp, env = environment()
+        state['stage'] = 'license_smoke_same_environment'
+        smoke_in_environment(gp, env, out)
+        terminal['license_environment_count'] = 1
         state['stage'] = 'read_mps'
         t = time.monotonic()
         model = gp.read(str(mps), env=env)
@@ -227,13 +242,13 @@ def run(root, out):
         raise
     finally:
         state['stage']='finalize'
+        stop.set();thread.join(timeout=5)
         try:
             if model is not None:
                 model.dispose()
             if env is not None:
                 env.dispose()
         finally:
-            stop.set();thread.join(timeout=5)
             terminal.update(finished_utc=utc(),wall_seconds=time.monotonic()-start,resources=samples)
             save(out/'terminal.json',terminal)
             lock.close()
@@ -247,8 +262,11 @@ def main():
     root=a.root.resolve()
     if a.mode in {'smoke','run'}:
         authorization=root/'setup/execution_authorization.json'
-        if not authorization.exists() or json.loads(authorization.read_text(encoding='utf-8-sig')).get('status')!='AUTHORIZED':
+        permission=json.loads(authorization.read_text(encoding='utf-8-sig')) if authorization.exists() else {}
+        if permission.get('status')!='AUTHORIZED':
             raise RuntimeError('PREPARE_ONLY: author has deferred solver and license smoke execution; no Gurobi environment was created')
+        if a.mode not in permission.get('allowed_modes',['smoke','run']):
+            raise RuntimeError('This mode is not authorized; use the single-environment run entry')
     if a.mode=='prepare':
         print(prepare(root));return
     if a.output is None:

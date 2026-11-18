@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-18 18:46UTC：作者重新放行新节点32线程前5轮测试；云端squeue确认仅LATE5587177运行。新节点约785GiB可用、无其他Python/Gurobi进程，但WLS许可文件/GRB_LICENSE_FILE均未配置，测试尚未启动。授权改AUTHORIZED/run-only，小模型检查与MPS共用一个Env以最多新增1个会话；缺许可在导入gurobipy前阻断。详见new_node_8276m_20261117/TEST_RELEASE_20261118_ZH.md；待作者配置许可后沿用本次放行，不需重复授权，无监听。**
+
 - **2026-11-18 18:36UTC：三案OPS-Conservative全部COMPLETED/OPTIMAL，2030/2040/2060为122/160/174轮、11:16/16:32/16:11；保全COMPLETE、内置relative_v1和容量检查PASS，正式T550验收待办。核无旧备份/传输后启动PID3339359自主全备份，333件16.55GB，预计余28.79%，当前T1传输中。LATE5587177仍运行，第396轮(PInf0.105/DInf2.24e-6/Compl0.00145)，无新放行或监听。详见batch3_completed_backup_20261118/REVIEW_ZH.md。**
 
 - **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
@@ -4282,3 +4284,11 @@ LATE5587177截至21:55UTC仍RUNNING，第197轮，打印PInf294/DInf1.57e-7/Comp
 - 资源复核：当前44 vCPU/约800GiB，空闲约785GiB、C盘约640GiB；与此前700GiB实测不同，以新记录为准，不推定宿主机物理DRAM/Optane和独占核数。UU两次中断已先核旧进程再恢复；多余云端安装包下载仅按精确PID/同UID/目标文件句柄终止，8MiB部分件保留，最终无本任务残留Python/SFTP/Conda进程。
 - 文件与验证：`supplementary_materials/reviews/new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md`、`final_preparation_receipt_20261118.json`、传输/源身份收据、两份依赖清单及`validation_20261118.json`；Python/PowerShell语法、源参数身份/变更拒绝、执行锁均通过，不冒充实算验证。命令：SSH/SFTP reget、官方Miniforge+Conda/pip安装、版本查询、gzip流式解压和SHA；许可内容未读取/复制/记录。
 - 下一步：等待作者重新明确放行，先核许可并发名额和新节点许可配置，再审查独立32线程前5轮诊断门禁；不自动启动。不刷新当前云端作业终态。既有未提交稿件/记录保留，仅提交本次明确范围。
+
+
+<!-- node8276m-test-released-license-missing-20261118 -->
+### 2026-11-18 18:46UTC — 32线程测试已放行，许可配置缺失
+
+- Git基准ff4ed8cb；作者明确放行原OPS-Open2050的32线程前5轮。只读squeue确认仅5587177 RUNNING，新节点44 vCPU/约785GiB可用、无Python/Gurobi进程；默认两处许可文件与三个GRB_LICENSE_FILE作用域均未配置。未创建Env、未许可smoke、未求解，未触碰云端作业/冻结包。
+- benchmark_mps.py改为run内许可检查与MPS共享一个Env；缺许可在导入前停止，异常释放环境、先停资源线程再dispose。语法/缺许可阻断/单环境编排检查PASS；部署SHA a109e69b115fb37fadc61db1819b815512335e990f8238b1c415c10b49e8ffaa，与本机一致。授权改AUTHORIZED/run-only，旧PREPARE_ONLY副本保留。
+- 记录：supplementary_materials/reviews/new_node_8276m_20261117/TEST_RELEASE_20261118_ZH.md及pretest_check、single_session_validation、test_release_pending_license三份JSON。下一步作者配置新节点WLS许可路径后沿用本次授权继续，先核旧进程与许可名额；无重复放行请求、无后台文件监听。其他未提交改动保留。

@@ -1,0 +1,16 @@
+{
+  "authorization": {
+    "status": "AUTHORIZED",
+    "allowed_modes": [
+      "run"
+    ],
+    "authorized_utc": "2026-11-18T18:46:32.4744351Z",
+    "scope": "One OPS-Open2050 MPS replay, Threads=32, first 5 Barrier iterations",
+    "license_environment_limit": 1,
+    "license_configuration": "MISSING",
+    "source": "User explicitly released this test after cloud concurrency fell to one"
+  },
+  "script_sha256": "a109e69b115fb37fadc61db1819b815512335e990f8238b1c415c10b49e8ffaa",
+  "license_exists": false,
+  "test_started": false
+}
