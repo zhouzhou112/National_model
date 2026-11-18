@@ -1,0 +1,20 @@
+{
+  "utc": "2026-11-18T17:40:59.234525+00:00",
+  "checks": {
+    "AST_benchmark_mps.py": true,
+    "AST_node_access.py": true,
+    "blocked_smoke": true,
+    "blocked_run": true,
+    "blocked_before_gurobi_import": true,
+    "source_parameters_kept": true,
+    "source_license_id_excluded": true,
+    "modified_source_rejected": true
+  },
+  "scope": "Static/PREPARE_ONLY gate checks only; no solver execution or WLS session",
+  "source_sha256": {
+    "benchmark_mps.py": "f3c1a14313fcf07c175777eaf21e23b1faa657eacaa03cc90c0b8b33d2f1141a",
+    "bootstrap_node.ps1": "0fe6855e63b6474374a77bd07389a6dd5a85a78c7f6ec40df9df2ba290d4cfe8",
+    "transfer_model.ps1": "300c905239feea957d236caa4e6887869a401dfbc9a9caa8594fe975b925883a",
+    "node_access.py": "fb20f3c0b164ef8d47ac5066a50242c633520a3d7bc615e8721027f50c3fc7bb"
+  }
+}
