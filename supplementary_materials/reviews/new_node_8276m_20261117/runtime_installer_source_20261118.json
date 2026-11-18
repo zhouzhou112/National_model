@@ -1,0 +1,11 @@
+{
+  "tag": "26.9.4-2",
+  "assets": [
+    {
+      "name": "Miniforge3-Windows-x86_64.exe",
+      "size": 158341784,
+      "browser_download_url": "https://github.com/conda-forge/miniforge/releases/download/26.9.4-2/Miniforge3-Windows-x86_64.exe",
+      "digest": "sha256:9d83983669bc5d3b5dd4c631454bf953c3caf4ac78b9c9ada9971e5b021d83c3"
+    }
+  ]
+}

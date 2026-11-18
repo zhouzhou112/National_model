@@ -1,0 +1,186 @@
+{
+  "host": "ln301.para.bscc",
+  "release": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+  "source_files": {
+    "model_archive/original.mps.gz": {
+      "bytes": 4148509456,
+      "mtime_ns": 1794707180089350976
+    },
+    "model_archive/parameters.prm": {
+      "bytes": 207,
+      "mtime_ns": 1794707182897615215,
+      "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5"
+    },
+    "model_archive/archive_manifest.json": {
+      "bytes": 608,
+      "mtime_ns": 1794707182898300175,
+      "sha256": "bada5b5be4c72f053cb13c33f8e645a3d2444880bac9ff7115ca6fdc490e0b15"
+    },
+    "solve_report.json": {
+      "bytes": 165337,
+      "mtime_ns": 1794760975206391000,
+      "sha256": "63e89c216bb523548be1e7930a5e8dd9baea76128b4261c0ca935c5bc9cdf882"
+    },
+    "run_environment.json": {
+      "bytes": 2860,
+      "mtime_ns": 1794703726106783000,
+      "sha256": "2f94ec717c25c281b7c791ae6d13d5cac145734feeff4d1f7e04a8bb56c6b340"
+    },
+    "preservation_report.json": {
+      "bytes": 4234,
+      "mtime_ns": 1794760984102294000,
+      "sha256": "9f1cd243e17b1898e5f1282ccb7f4904e49eaf7e1c63639eba6125d233397021"
+    },
+    "result_manifest.json": {
+      "bytes": 15298,
+      "mtime_ns": 1794760991405012000,
+      "sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e"
+    },
+    "gurobi.log": {
+      "bytes": 24418,
+      "mtime_ns": 1794760349439792018,
+      "sha256": "6eed577a4c88cfa9c5e1fea0ddee7992372117287a648e78ddb44634ccad1f10"
+    },
+    "model_config_snapshot.json": {
+      "bytes": 29759,
+      "mtime_ns": 1794703726054344000,
+      "sha256": "15a8c2133ce43b01419f5eedd7691857465ec030c344932bed707e944697e93b"
+    },
+    "build_report.json": {
+      "bytes": 107150,
+      "mtime_ns": 1794706641909345000,
+      "sha256": "a8a5b8b8a56c49b086268703e8aa1ddce7dcdb2d448b2338fcbf40c027afbc43"
+    }
+  },
+  "archive_manifest": {
+    "schema_version": "cispo_model_archive_v1",
+    "files": [
+      {
+        "path": "original.mps.gz",
+        "bytes": 4148509456,
+        "sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b"
+      },
+      {
+        "path": "parameters.prm",
+        "bytes": 207,
+        "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5"
+      }
+    ],
+    "errors": [],
+    "warnings": [],
+    "presolved_status": "NOT_REQUESTED",
+    "uncrush_mapping_saved": false,
+    "factorization_saved": false,
+    "gurobi_fingerprint": -17374259,
+    "full_name_catalog_requested": false,
+    "status": "COMPLETE"
+  },
+  "status": "OPTIMAL",
+  "preservation": {
+    "schema_version": "cispo_preservation_v1",
+    "scientifically_accepted": false,
+    "generated_at": "2026-11-16T00:34:44.362589+08:00",
+    "author_decision": "PENDING",
+    "stages": {
+      "raw_checkpoint": "COMPLETE",
+      "capacity_and_cost": "COMPLETE",
+      "frozen_capacity_identity": "COMPLETE",
+      "operation_carbon_dual_qc": "COMPLETE",
+      "summary": "COMPLETE",
+      "read_dual_export_status.json": "COMPLETE",
+      "candidate_state": "COMPLETE",
+      "output_catalog": "COMPLETE",
+      "read_model_archive/archive_manifest.json": "COMPLETE"
+    },
+    "errors": [],
+    "solver_contract": {
+      "contract_version": "cispo_lp_solution_contract_v1",
+      "mode": "OPTIMAL_PRIMAL_DUAL_NONBASIC",
+      "basis_required": false,
+      "barrier_status_code": 2,
+      "strict_quality_pass": false,
+      "acceptance_status": "HARD_FAIL",
+      "primal_final_solver_quality_pass": false,
+      "dual_publication_allowed": false,
+      "acceptance_policy": "FIXED_STAGE_A_PRIMAL_AND_DUAL_SPLIT_V1",
+      "maximum_primal_quality_limit": 1e-05,
+      "maximum_dual_quality_limit": 1e-05,
+      "maximum_constraint_residual_limit": 1e-05,
+      "maximum_dual_residual_limit": 1e-05,
+      "maximum_complementarity_violation_limit": 1e-05,
+      "maximum_relative_primal_dual_objective_gap_limit": 0.01,
+      "barrier_primal_dual_metrics": {
+        "iteration": 150.0,
+        "primal_objective": 5678988.615606979,
+        "dual_objective": 5677106.078051538,
+        "absolute_primal_dual_objective_gap": 1882.537555440329,
+        "relative_primal_dual_objective_gap": 0.00033149169383202233,
+        "primal_infeasibility": 0.0008484010923016302,
+        "dual_infeasibility": 2.0050090129468333e-06,
+        "complementarity": 2.2247007802503946e-05,
+        "runtime_seconds": 53160.295405864716,
+        "work_units": 186628.32219592974,
+        "memory_used_gb": 221.635792272,
+        "max_memory_used_gb": 612.050586104
+      },
+      "relative_primal_dual_objective_gap": 0.00033149169383202233,
+      "relative_primal_dual_objective_gap_source": "last_durable_barrier_callback_record",
+      "quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true
+      },
+      "primal_quality_gate_checks": {
+        "optimal_status": true,
+        "constraint_violation": false,
+        "constraint_residual": true,
+        "bound_violation": true,
+        "barrier_primal_infeasibility": true,
+        "relative_primal_dual_objective_gap": true
+      },
+      "dual_publication_checks": {
+        "dual_violation": false,
+        "dual_residual": true,
+        "complementarity_violation": false,
+        "barrier_dual_infeasibility": true,
+        "barrier_complementarity": true
+      },
+      "fixed_stage_a_acceptance_limits": {
+        "maximum_relative_primal_dual_objective_gap": 0.01,
+        "maximum_barrier_primal_infeasibility": 0.01,
+        "maximum_constraint_violation": 1e-05,
+        "maximum_constraint_residual": 1e-05,
+        "maximum_bound_violation": 1e-05,
+        "maximum_dual_violation_for_publication": 1e-05,
+        "maximum_dual_residual_for_publication": 1e-05,
+        "maximum_complementarity_violation_for_publication": 1e-05,
+        "maximum_barrier_dual_infeasibility_for_publication": 0.01,
+        "maximum_barrier_complementarity_for_publication": 0.01
+      },
+      "maximum_x_barx_difference": null,
+      "maximum_x_barx_difference_status": "DEFERRED_TO_CHECKPOINT_EXPORT_MODEL_SIZE",
+      "dual_attribute": "BarPi"
+    },
+    "solver_quality": {
+      "maximum_constraint_violation": 0.0006599623593501747,
+      "maximum_constraint_residual": 0.0,
+      "maximum_bound_violation": 2.8719227884721477e-08,
+      "maximum_dual_violation": 0.000386653433470564,
+      "maximum_dual_residual": 1.6209774003073107e-06,
+      "maximum_complementarity_violation": 3.4325890626315485,
+      "maximum_violation": 3.4325890626315485,
+      "kappa": null,
+      "kappa_exact_computed": false
+    },
+    "qc_status": "HARD_FAIL",
+    "status": "COMPLETE",
+    "raw_checkpoint_source": "REUSED_EXISTING_CHECKPOINT",
+    "semantic_primal_attribute": "PERSISTED_BARRIER_VECTOR",
+    "original_model_archived": true,
+    "elapsed_seconds_before_manifest": 499.7394866691902
+  },
+  "params": "MarkowitzTol  0.01\nMethod  2\nScaleFlag  2\nBarIterLimit  2000000000\nBarConvTol  0.0001\nCrossover  0\nCrossoverBasis  1\nLicenseID  2868774\nAggregate  0\nNumericFocus  2\nPresolve  2\nSolutionTarget  1\nThreads  44\n"
+}

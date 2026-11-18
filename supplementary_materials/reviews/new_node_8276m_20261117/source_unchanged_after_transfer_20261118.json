@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "path": "model_archive/original.mps.gz",
+      "same_size_mtime": true
+    },
+    {
+      "path": "model_archive/parameters.prm",
+      "same_size_mtime": true
+    },
+    {
+      "path": "model_archive/archive_manifest.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "solve_report.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "run_environment.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "preservation_report.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "result_manifest.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "gurobi.log",
+      "same_size_mtime": true
+    },
+    {
+      "path": "model_config_snapshot.json",
+      "same_size_mtime": true
+    },
+    {
+      "path": "build_report.json",
+      "same_size_mtime": true
+    }
+  ],
+  "archive_manifest_sha256": "bada5b5be4c72f053cb13c33f8e645a3d2444880bac9ff7115ca6fdc490e0b15"
+}

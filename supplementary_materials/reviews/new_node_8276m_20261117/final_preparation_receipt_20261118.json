@@ -1,0 +1,139 @@
+{
+  "utc": "2026-11-18T17:43:53.8366631Z",
+  "host": "DESKTOP-30RRU21",
+  "bootstrap_complete.json": {
+    "utc": "2026-11-18T17:37:29.1344306Z",
+    "status": "RUNTIME_READY_LICENSE_NOT_TESTED",
+    "runtime": "C:\\NationalModelBench\\miniforge_26.9.4-2",
+    "environment": "C:\\NationalModelBench\\envs\\gurobi1302_py31020",
+    "installer_sha256": "9d83983669bc5d3b5dd4c631454bf953c3caf4ac78b9c9ada9971e5b021d83c3"
+  },
+  "versions.json": {
+    "python": "3.10.20 | packaged by conda-forge | (main, Jun 11 2026, 03:28:51) [MSC v.1944 64 bit (AMD64)]",
+    "gurobi": [
+      13,
+      0,
+      2
+    ],
+    "numpy": "1.26.4",
+    "psutil": "7.0.0"
+  },
+  "execution_authorization.json": {
+    "status": "PREPARE_ONLY",
+    "date": "2026-11-18",
+    "reason": "Author explicitly deferred all solver and license smoke tests; environment preparation only."
+  },
+  "transfer_verified.json": {
+    "utc": "2026-11-18T17:28:28.4925102Z",
+    "status": "TARGET_VERIFIED_SOURCE_RECHECK_PENDING",
+    "transport": "New node directly pulls cloud via SFTP reget",
+    "files": [
+      {
+        "path": "model_archive/original.mps.gz",
+        "bytes": 4148509456,
+        "sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "model_archive/parameters.prm",
+        "bytes": 207,
+        "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "model_archive/archive_manifest.json",
+        "bytes": 608,
+        "sha256": "bada5b5be4c72f053cb13c33f8e645a3d2444880bac9ff7115ca6fdc490e0b15",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "solve_report.json",
+        "bytes": 165337,
+        "sha256": "63e89c216bb523548be1e7930a5e8dd9baea76128b4261c0ca935c5bc9cdf882",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "run_environment.json",
+        "bytes": 2860,
+        "sha256": "2f94ec717c25c281b7c791ae6d13d5cac145734feeff4d1f7e04a8bb56c6b340",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "preservation_report.json",
+        "bytes": 4234,
+        "sha256": "9f1cd243e17b1898e5f1282ccb7f4904e49eaf7e1c63639eba6125d233397021",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "result_manifest.json",
+        "bytes": 15298,
+        "sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "gurobi.log",
+        "bytes": 24418,
+        "sha256": "6eed577a4c88cfa9c5e1fea0ddee7992372117287a648e78ddb44634ccad1f10",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "model_config_snapshot.json",
+        "bytes": 29759,
+        "sha256": "15a8c2133ce43b01419f5eedd7691857465ec030c344932bed707e944697e93b",
+        "status": "VERIFIED"
+      },
+      {
+        "path": "build_report.json",
+        "bytes": 107150,
+        "sha256": "a8a5b8b8a56c49b086268703e8aa1ddce7dcdb2d448b2338fcbf40c027afbc43",
+        "status": "VERIFIED"
+      }
+    ]
+  },
+  "decompression": {
+    "utc": "2026-11-18T17:42:51.032813+00:00",
+    "source_sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+    "sha256": "eb226e5d4c7894cac319b6867b404ebbb6ba0ea3c928f04e0e4fa0706e2a7d72",
+    "bytes": 44277662634,
+    "elapsed_seconds": 245.28100000000268,
+    "gzip_crc_verified": true
+  },
+  "pip_check": "No broken requirements found.\r\n",
+  "license_file_exists": false,
+  "model_file_bytes": 44277662634,
+  "code": [
+    {
+      "name": "benchmark_mps.py",
+      "sha256": "f3c1a14313fcf07c175777eaf21e23b1faa657eacaa03cc90c0b8b33d2f1141a"
+    },
+    {
+      "name": "bootstrap_node.ps1",
+      "sha256": "0fe6855e63b6474374a77bd07389a6dd5a85a78c7f6ec40df9df2ba290d4cfe8"
+    },
+    {
+      "name": "transfer_model.ps1",
+      "sha256": "300c905239feea957d236caa4e6887869a401dfbc9a9caa8594fe975b925883a"
+    }
+  ],
+  "free_memory_gib": 785.002,
+  "free_disk_gib": 640.428,
+  "own_remaining_processes": [],
+  "status": "PREPARATION_COMPLETE_TEST_DEFERRED_BY_AUTHOR",
+  "code_commit": "6f379f79",
+  "cloud_direct_authentication_verified": true,
+  "source_unchanged_after_transfer": true,
+  "solver_environment_created": false,
+  "license_smoke_performed": false,
+  "solver_started": false,
+  "full_source_input_deployment": false,
+  "hardware_final": {
+    "utc": "2026-11-18T17:44:22.0511887Z",
+    "host": "DESKTOP-30RRU21",
+    "visible_vcpus": 44,
+    "total_visible_kib": 838859808,
+    "free_physical_kib": 823156400,
+    "total_physical_bytes": 858992443392,
+    "last_boot": "2026-11-17T16:28:17.6931540Z"
+  },
+  "total_visible_memory_gib": 799.9990539550781
+}

@@ -1,5 +1,7 @@
 # CISPO 2030/8760 server runbook
 
+- **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
+
 ## OPS-Conservative三年提前放行（2026-11-17）
 
 作者仅提前授权Conservative2030/2040/2060，三案已release5613302/5613303/5613360；本次源码f75fb4f2/证据8337e779。一次性状态入口仍为`python supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/snapshot_batch1.py`，已纳入三案。不要重复prepare/submit；排队待节点后核startup_resources、smoke、全年resource_structure_audit。T550有限1h构建已完成，无活跃门禁任务或监听。
@@ -5995,3 +5997,13 @@ OPS-Open2030/5591162运行12:46:34到121轮，打印PInf1.78e-4/DInf8.41e-8/Comp
 LATE5587177截至21:55UTC仍RUNNING，第197轮，打印PInf294/DInf1.57e-7/Compl7.87；近10轮PInf/Compl降44.2%/47.5%，DInf小量反弹40.2%，10.99分钟/轮，Slurm峰643.93GiB、stderr空、无终态。第二批整体尚未结束，当前仅OPS三案阶段交付；第三批仍待作者明确确认，无新提交/重解/监听、不改冻结包或SI。
 
 下一步按询问只读核LATE终态，结束后按5%余量备份、恢复年度行对偶、当前验收和自身双向定价证书；若需要放开重解先报作者。不得据OPS三案已PASS而自动启动第三批。
+
+
+<!-- node8276m-preparation-complete-deferred-20261118 -->
+### 2026-11-18 17:44UTC — 8276M环境预设完成，作者暂缓32线程测试
+
+- 源码提交6f379f79已推送GitHub工作分支；本机→新节点SSH和新节点→云端独立密钥认证通过，主机密钥沿用可信锚定。MPS+9件元数据4,148,859,327bytes直接SFTP拉取、目标逐件SHA通过、源stat/manifest未变；44,277,662,634bytes解压件CRC/SHA通过。Python3.10.20/Gurobi13.0.2/NumPy1.26.4/psutil7.0.0安装及pip check通过；代码与部署SHA一致。
+- 作者提供截图确认许可2868774基线2/截图活跃3，并要求只预设环境。执行锁PREPARE_ONLY已部署，smoke/run在导入gurobipy前阻断；未创建Gurobi Env/Model、未许可smoke、未求解、未停云端作业或改冻结包，无后台监听。原代码/输入科学边界不改。本轮只传归档LP，不宣称完整源码/输入重建部署。
+- 资源复核：当前44 vCPU/约800GiB，空闲约785GiB、C盘约640GiB；与此前700GiB实测不同，以新记录为准，不推定宿主机物理DRAM/Optane和独占核数。UU两次中断已先核旧进程再恢复；多余云端安装包下载仅按精确PID/同UID/目标文件句柄终止，8MiB部分件保留，最终无本任务残留Python/SFTP/Conda进程。
+- 文件与验证：`supplementary_materials/reviews/new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md`、`final_preparation_receipt_20261118.json`、传输/源身份收据、两份依赖清单及`validation_20261118.json`；Python/PowerShell语法、源参数身份/变更拒绝、执行锁均通过，不冒充实算验证。命令：SSH/SFTP reget、官方Miniforge+Conda/pip安装、版本查询、gzip流式解压和SHA；许可内容未读取/复制/记录。
+- 下一步：等待作者重新明确放行，先核许可并发名额和新节点许可配置，再审查独立32线程前5轮诊断门禁；不自动启动。不刷新当前云端作业终态。既有未提交稿件/记录保留，仅提交本次明确范围。

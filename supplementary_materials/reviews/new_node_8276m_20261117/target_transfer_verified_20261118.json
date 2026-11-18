@@ -1,0 +1,67 @@
+{
+  "utc": "2026-11-18T17:28:28.4925102Z",
+  "status": "TARGET_VERIFIED_SOURCE_RECHECK_PENDING",
+  "transport": "New node directly pulls cloud via SFTP reget",
+  "files": [
+    {
+      "path": "model_archive/original.mps.gz",
+      "bytes": 4148509456,
+      "sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "model_archive/parameters.prm",
+      "bytes": 207,
+      "sha256": "24d9ead7a115503af26481af3e1f8c5f8de5f5e0ff20459ffdf600943ae4a3c5",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "model_archive/archive_manifest.json",
+      "bytes": 608,
+      "sha256": "bada5b5be4c72f053cb13c33f8e645a3d2444880bac9ff7115ca6fdc490e0b15",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "solve_report.json",
+      "bytes": 165337,
+      "sha256": "63e89c216bb523548be1e7930a5e8dd9baea76128b4261c0ca935c5bc9cdf882",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "run_environment.json",
+      "bytes": 2860,
+      "sha256": "2f94ec717c25c281b7c791ae6d13d5cac145734feeff4d1f7e04a8bb56c6b340",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "preservation_report.json",
+      "bytes": 4234,
+      "sha256": "9f1cd243e17b1898e5f1282ccb7f4904e49eaf7e1c63639eba6125d233397021",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result_manifest.json",
+      "bytes": 15298,
+      "sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "gurobi.log",
+      "bytes": 24418,
+      "sha256": "6eed577a4c88cfa9c5e1fea0ddee7992372117287a648e78ddb44634ccad1f10",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "model_config_snapshot.json",
+      "bytes": 29759,
+      "sha256": "15a8c2133ce43b01419f5eedd7691857465ec030c344932bed707e944697e93b",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "build_report.json",
+      "bytes": 107150,
+      "sha256": "a8a5b8b8a56c49b086268703e8aa1ddce7dcdb2d448b2338fcbf40c027afbc43",
+      "status": "VERIFIED"
+    }
+  ]
+}

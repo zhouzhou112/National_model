@@ -1,0 +1,5 @@
+{
+  "status": "PREPARE_ONLY",
+  "date": "2026-11-18",
+  "reason": "Author explicitly deferred solver and license smoke tests"
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
+
 - **2026-11-18 12:27UTC：云端4项均RUNNING。三案OPS-Conservative于01:45UTC启动，2030/2040/2060启动可用内存718.319/718.139/717.720GiB，64CPU/750G、smoke、全年四服务上界均PASS；当前117/108/114轮。LATE2050第365轮(PInf0.461/DInf1.36e-5/Compl0.00668)，近期PInf/Compl继续下降而DInf反弹；无终态或stderr错误。新启动证据batch3_conservative_20261117/startup_verification_20261118.json；原release不改，无监听。**
 
 - **2026-11-18 论文定位与终点储能口径复核。** 已按作者要求对读 Chrome 中三篇 Nature Energy 正文，核对 2060 年生产配置的终端服务边界及储能运行、投资的同技术对照。编辑建议和复算表保存在 `D:/National_model/文献分析与文章定位/运行中少用电池不能直接推出规划中少建电池_2060_20261118/`，供作者审阅。
@@ -11101,3 +11103,13 @@ Git基准`616fe3b3142f49c3b2c7bcf7c020579fa6f5cc3b`；37测试通过，工具、
 - 发现：水库生态水直接扣除与原最小下泄设计不一致；P30切换有历史记录，不能称未授权。生态处理主导输入压低，同COMID分摊次之；另有锦屏二级37.5→4800MW、大岗山11.4→2600MW等小河段容量替换，以及拉西瓦原始COMID异常。聚合82.1105GW承接低CF，2060实际已用约99.80%输入上限。
 - 未决：大站正确取水口/坝址/尾水与河段人工核准、正式多年生态流量、全部31省同机组/常规口径历史校验、最终最优结果的因素分解；不宣称简单放大流量或仅调P30可修复，不保证修正后情景差值不变。
 - 下一步：作者审阅后决定修正和独立水电回放，再决定全链重解；本任务没有新增求解/部署授权。不访问云端/T550，不刷新运行状态或建立监听；历史记录保持。
+
+
+<!-- node8276m-preparation-complete-deferred-20261118 -->
+### 2026-11-18 17:44UTC — 8276M环境预设完成，作者暂缓32线程测试
+
+- 源码提交6f379f79已推送GitHub工作分支；本机→新节点SSH和新节点→云端独立密钥认证通过，主机密钥沿用可信锚定。MPS+9件元数据4,148,859,327bytes直接SFTP拉取、目标逐件SHA通过、源stat/manifest未变；44,277,662,634bytes解压件CRC/SHA通过。Python3.10.20/Gurobi13.0.2/NumPy1.26.4/psutil7.0.0安装及pip check通过；代码与部署SHA一致。
+- 作者提供截图确认许可2868774基线2/截图活跃3，并要求只预设环境。执行锁PREPARE_ONLY已部署，smoke/run在导入gurobipy前阻断；未创建Gurobi Env/Model、未许可smoke、未求解、未停云端作业或改冻结包，无后台监听。原代码/输入科学边界不改。本轮只传归档LP，不宣称完整源码/输入重建部署。
+- 资源复核：当前44 vCPU/约800GiB，空闲约785GiB、C盘约640GiB；与此前700GiB实测不同，以新记录为准，不推定宿主机物理DRAM/Optane和独占核数。UU两次中断已先核旧进程再恢复；多余云端安装包下载仅按精确PID/同UID/目标文件句柄终止，8MiB部分件保留，最终无本任务残留Python/SFTP/Conda进程。
+- 文件与验证：`supplementary_materials/reviews/new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md`、`final_preparation_receipt_20261118.json`、传输/源身份收据、两份依赖清单及`validation_20261118.json`；Python/PowerShell语法、源参数身份/变更拒绝、执行锁均通过，不冒充实算验证。命令：SSH/SFTP reget、官方Miniforge+Conda/pip安装、版本查询、gzip流式解压和SHA；许可内容未读取/复制/记录。
+- 下一步：等待作者重新明确放行，先核许可并发名额和新节点许可配置，再审查独立32线程前5轮诊断门禁；不自动启动。不刷新当前云端作业终态。既有未提交稿件/记录保留，仅提交本次明确范围。
