@@ -649,8 +649,8 @@
       "case": "OPS-Conservative",
       "year": 2030,
       "version": "v1",
-      "kind": "PRODUCTION_SUBMITTED",
-      "solver_status": "PENDING",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
       "acceptance_status": "PENDING_SOLVE",
       "backup_status": "PENDING_SOLVE",
       "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
@@ -662,14 +662,18 @@
         "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\LAUNCH_RECEIPT.json"
       ],
       "author_authorization": "2026-11-17 early conservative three-year authorization",
-      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214"
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "startup_check": "PASS",
+      "startup_available_memory_gib": 718.3192253112793,
+      "annual_resource_structure": "PASS",
+      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\startup_verification_20261118.json"
     },
     {
       "case": "OPS-Conservative",
       "year": 2040,
       "version": "v1",
-      "kind": "PRODUCTION_SUBMITTED",
-      "solver_status": "PENDING",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
       "acceptance_status": "PENDING_SOLVE",
       "backup_status": "PENDING_SOLVE",
       "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
@@ -681,14 +685,18 @@
         "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\LAUNCH_RECEIPT.json"
       ],
       "author_authorization": "2026-11-17 early conservative three-year authorization",
-      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214"
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "startup_check": "PASS",
+      "startup_available_memory_gib": 718.1393165588379,
+      "annual_resource_structure": "PASS",
+      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\startup_verification_20261118.json"
     },
     {
       "case": "OPS-Conservative",
       "year": 2060,
       "version": "v1",
-      "kind": "PRODUCTION_SUBMITTED",
-      "solver_status": "PENDING",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
       "acceptance_status": "PENDING_SOLVE",
       "backup_status": "PENDING_SOLVE",
       "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
@@ -700,11 +708,15 @@
         "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\LAUNCH_RECEIPT.json"
       ],
       "author_authorization": "2026-11-17 early conservative three-year authorization",
-      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214"
+      "source_commit": "f75fb4f272d49830cd0a1e1e236b5d9ddbf53214",
+      "startup_check": "PASS",
+      "startup_available_memory_gib": 717.7199935913086,
+      "annual_resource_structure": "PASS",
+      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_conservative_20261117\\startup_verification_20261118.json"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-14T15:47:55.766825+00:00",
-  "last_catalog_update_utc": "2026-11-17T12:50:58.362290+00:00"
+  "last_catalog_update_utc": "2026-11-18T12:27:36.152529Z"
 }

@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-18 12:27UTC：云端4项均RUNNING。三案OPS-Conservative于01:45UTC启动，2030/2040/2060启动可用内存718.319/718.139/717.720GiB，64CPU/750G、smoke、全年四服务上界均PASS；当前117/108/114轮。LATE2050第365轮(PInf0.461/DInf1.36e-5/Compl0.00668)，近期PInf/Compl继续下降而DInf反弹；无终态或stderr错误。新启动证据batch3_conservative_20261117/startup_verification_20261118.json；原release不改，无监听。**
+
 - **2026-11-17 12:49UTC：作者采纳OPS-Open2030/2040/2060，并提前授权三年OPS-Conservative。全部门禁/preflight PASS，已release5613302/5613303/5613360（2030/2040/2060），当前1个LATE运行+3排队。源码f75fb4f2，放行证据8337e779；44线程/64CPU750G/UNLIMITED/no-requeue，节点启动内存与全年结构待分配后核验。2030短窗10.95890410958904Mt，年度碳上限不变。LATE-Open2060未授权/未提交；无监听。详见ops_flex_resource_sensitivity_20261114/batch3_conservative_20261117/LAUNCH_REPORT_ZH.md。**
 
 - **2026-11-16：OPS-Open2030/2040/2060备份333件16.57GB已COMPLETE；T550当前relative_v1全部PASS，每案1134年度对偶恢复及只读分析完成。319件420.20MB验收/小文件回本机，双端SHA一致，报告/四年概览已同步T550；证据af640553。LATE21:55UTC第197轮(PInf294/Compl7.87)仍运行，第二批整体未结束，第三批未提交。索引case_results/OPS_OPEN_SECOND_BATCH_20261116.md。**

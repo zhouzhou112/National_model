@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 12:27UTC：云端4项均RUNNING。三案OPS-Conservative于01:45UTC启动，2030/2040/2060启动可用内存718.319/718.139/717.720GiB，64CPU/750G、smoke、全年四服务上界均PASS；当前117/108/114轮。LATE2050第365轮(PInf0.461/DInf1.36e-5/Compl0.00668)，近期PInf/Compl继续下降而DInf反弹；无终态或stderr错误。新启动证据batch3_conservative_20261117/startup_verification_20261118.json；原release不改，无监听。**
+
 - **2026-11-18 论文定位与终点储能口径复核。** 已按作者要求对读 Chrome 中三篇 Nature Energy 正文，核对 2060 年生产配置的终端服务边界及储能运行、投资的同技术对照。编辑建议和复算表保存在 `D:/National_model/文献分析与文章定位/运行中少用电池不能直接推出规划中少建电池_2060_20261118/`，供作者审阅。
 
 - **2026-11-17 论文签约分析采用2060年主口径。** 已对四个已验收柔性方案及同年REF完成本地复算，31省固定签约费用归集、按服务可签资源比较及费用分项回加均已核验。审阅稿与数据位于 `../claude_workspace/paper/codex_contract_distribution_2060_20261117/`，科学主张待作者审定。
@@ -3966,6 +3968,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-18 — 三年OPS-Conservative实际启动与全年上界核验
+
+- 基线Git f40e8432（本轮开始时HEAD），生产release源码仍f75fb4f2；仅登记运行证据、case_catalog/案例卡与交接，不改模型、运行包或排程。
+- 命令：snapshot_batch1.py 一次性读取squeue/sacct/scontrol/sstat、startup_resources、smoke、resource_structure_audit和日志；证据snapshots/20261118T122729Z及batch3_conservative_20261117/startup_verification_20261118.json。
+- 三案5613302/5613303/5613360于01:45:04UTC启动，运行10:42，分别117/108/114轮；启动可用内存718.319/718.139/717.720GiB均≥700，实际64CPU/750G/billing64、UNLIMITED/no-requeue和smoke核验PASS，全年服务上限误差≤7.11e-15GW（门槛1e-6）。
+- LATE5587177运行3天01:55，第365轮；最近10轮12.342分钟/轮，PInf/Compl降36.15%/38.15%，DInf从5.51e-6升至1.36e-5；不能称三项同时下降，仍未收敛。四案stderr空，全部无终态，本轮无新备份事项。
+- 下一步：用户下次询问时一并只读检查；新终态按5%余量规则全量T550备份及验收，年度行对偶只读恢复、小文件归档。LATE2060仍须前案验收、B/obj≤1e-2与作者单独确认。
+
 
 ### 2026-11-18  终端柔性在固定设施运行与联合规划中的储能对照
 

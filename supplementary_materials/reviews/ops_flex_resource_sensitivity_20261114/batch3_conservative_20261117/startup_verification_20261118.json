@@ -1,0 +1,1164 @@
+{
+  "as_of_utc": "2026-11-18T12:27:36.152529Z",
+  "status": "PASS",
+  "cases": {
+    "ops_conservative_2030": {
+      "job_id": "5613302",
+      "startup": {
+        "job_id": "5613302",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 718.3192253112793
+      },
+      "smoke": {
+        "status": "PASS",
+        "job_id": "5613302",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 718.3192253112793
+      },
+      "structure": {
+        "status": "PASS",
+        "resource": "conservative",
+        "planning_year": 2030,
+        "optimization_hours": 8760,
+        "checks": {
+          "annual_upper_matches_reference": true,
+          "effective_load_row_count": true
+        },
+        "services": [
+          "heating",
+          "cooling",
+          "ev_v1g",
+          "ev_v2g"
+        ],
+        "actual_upper_sums_gw": [
+          1.226290202288049,
+          4.869483348529304,
+          16.586589545482347,
+          7.193004805541394
+        ],
+        "reference_upper_sums_gw": [
+          1.2262902022880504,
+          4.869483348529306,
+          16.586589545482347,
+          7.193004805541394
+        ],
+        "absolute_difference_gw": [
+          1.3322676295501878e-15,
+          1.7763568394002505e-15,
+          0.0,
+          0.0
+        ],
+        "tolerance_gw": 1e-06,
+        "national_v2g_cap_gw": 10.0,
+        "national_v2g_slack_lower_bound_gw": 2.8069951944586062,
+        "effective_load_nonnegative_rows": 0,
+        "reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+        "province_upper_gw": [
+          {
+            "province_code": 11,
+            "values_gw": [
+              0.0368528421964242,
+              0.0976025914239706,
+              0.5203918195692395,
+              0.2601959097846197
+            ]
+          },
+          {
+            "province_code": 12,
+            "values_gw": [
+              0.0164271650182972,
+              0.0579002491267073,
+              0.2780552580477517,
+              0.1390276290238758
+            ]
+          },
+          {
+            "province_code": 13,
+            "values_gw": [
+              0.0570716324034668,
+              0.1858570416782864,
+              0.596115984667297,
+              0.2980579923336485
+            ]
+          },
+          {
+            "province_code": 14,
+            "values_gw": [
+              0.0332702527258503,
+              0.0880754262417995,
+              0.2999562334006715,
+              0.1499781167003357
+            ]
+          },
+          {
+            "province_code": 15,
+            "values_gw": [
+              0.0111914982664286,
+              0.0357226232460608,
+              0.1281969573792717,
+              0.0640984786896358
+            ]
+          },
+          {
+            "province_code": 21,
+            "values_gw": [
+              0.0317369533553297,
+              0.0826909016760275,
+              0.2649433455100194,
+              0.1269732604209837
+            ]
+          },
+          {
+            "province_code": 22,
+            "values_gw": [
+              0.0173034474377615,
+              0.0376215752646666,
+              0.1462309689168481,
+              0.073115484458424
+            ]
+          },
+          {
+            "province_code": 23,
+            "values_gw": [
+              0.0131258815429481,
+              0.0214612329057036,
+              0.110037816661502,
+              0.055018908330751
+            ]
+          },
+          {
+            "province_code": 31,
+            "values_gw": [
+              0.0417039074614765,
+              0.1451967886580762,
+              0.9798378199782024,
+              0.4695841763714587
+            ]
+          },
+          {
+            "province_code": 32,
+            "values_gw": [
+              0.1043142127856626,
+              0.4196892820125211,
+              1.3283826453492993,
+              0.5324941532517947
+            ]
+          },
+          {
+            "province_code": 33,
+            "values_gw": [
+              0.0452490224542745,
+              0.3265453515363194,
+              1.1245402166385177,
+              0.5389323423324562
+            ]
+          },
+          {
+            "province_code": 34,
+            "values_gw": [
+              0.0488644897605352,
+              0.2112465201822084,
+              0.5096298134860906,
+              0.2548149067430453
+            ]
+          },
+          {
+            "province_code": 35,
+            "values_gw": [
+              0.0052989100424543,
+              0.1695572855209066,
+              0.4245074072460337,
+              0.2122537036230168
+            ]
+          },
+          {
+            "province_code": 36,
+            "values_gw": [
+              0.037347910399064,
+              0.1248562317224019,
+              0.3729957489906765,
+              0.1495187069935579
+            ]
+          },
+          {
+            "province_code": 37,
+            "values_gw": [
+              0.0798227264024889,
+              0.3083424408182817,
+              0.9522980130176552,
+              0.4761490065088275
+            ]
+          },
+          {
+            "province_code": 41,
+            "values_gw": [
+              0.083930034516715,
+              0.3214954837888729,
+              1.2350957654614885,
+              0.4640946588798647
+            ]
+          },
+          {
+            "province_code": 42,
+            "values_gw": [
+              0.0503725828762808,
+              0.2127669336687165,
+              0.6644693806636849,
+              0.2496783643655391
+            ]
+          },
+          {
+            "province_code": 43,
+            "values_gw": [
+              0.0725975084087246,
+              0.2096322431287444,
+              0.6038331858026247,
+              0.2268939496207423
+            ]
+          },
+          {
+            "province_code": 44,
+            "values_gw": [
+              0.0062369181301907,
+              0.5363048335631005,
+              2.6980599555500437,
+              1.013812248186729
+            ]
+          },
+          {
+            "province_code": 45,
+            "values_gw": [
+              0.0614551659401006,
+              0.0863171681135768,
+              0.4557362724170246,
+              0.2278681362085123
+            ]
+          },
+          {
+            "province_code": 46,
+            "values_gw": [
+              0.0035139860021964,
+              0.0211467840539168,
+              0.2418565470760149,
+              0.0908790515293892
+            ]
+          },
+          {
+            "province_code": 50,
+            "values_gw": [
+              0.0353918597882005,
+              0.1841759431777881,
+              0.443074389539164,
+              0.1664878654933695
+            ]
+          },
+          {
+            "province_code": 51,
+            "values_gw": [
+              0.0886327187441471,
+              0.3186427043310881,
+              0.9034418744638472,
+              0.3394737155385045
+            ]
+          },
+          {
+            "province_code": 52,
+            "values_gw": [
+              0.0708310828993305,
+              0.0077630143982467,
+              0.3126672219677011,
+              0.1174865883114711
+            ]
+          },
+          {
+            "province_code": 53,
+            "values_gw": [
+              0.0715394128089576,
+              0.0,
+              0.2911604052574813,
+              0.1455802026287406
+            ]
+          },
+          {
+            "province_code": 54,
+            "values_gw": [
+              0.0032383032243636,
+              0.0,
+              0.0117512128121677,
+              0.0058756064060838
+            ]
+          },
+          {
+            "province_code": 61,
+            "values_gw": [
+              0.0461009681714701,
+              0.1711595213332816,
+              0.3861086119572041,
+              0.193054305978602
+            ]
+          },
+          {
+            "province_code": 62,
+            "values_gw": [
+              0.0155697965791138,
+              0.0977226711402618,
+              0.1026876383947411,
+              0.0513438191973705
+            ]
+          },
+          {
+            "province_code": 63,
+            "values_gw": [
+              0.009481805533753,
+              0.2706523188768639,
+              0.0284888518918428,
+              0.0142444259459214
+            ]
+          },
+          {
+            "province_code": 64,
+            "values_gw": [
+              0.004638631415981,
+              0.0101726777341063,
+              0.0459429265323172,
+              0.0229714632661586
+            ]
+          },
+          {
+            "province_code": 65,
+            "values_gw": [
+              0.0231785749960611,
+              0.1091655092068032,
+              0.1260952568359258,
+              0.0630476284179629
+            ]
+          }
+        ],
+        "method": "Read only 31x4 MVar upper bounds and existing structural audit; no LP modification"
+      },
+      "accounting": {
+        "exit_code": 0,
+        "stdout": "5613302|RUNNING|0:0|10:42:33|2026-11-18T09:45:04|Unknown|m4cm2101\n",
+        "stderr": ""
+      },
+      "allocation": "JobId=5613302 JobName=ops_conservative_2030_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1108942 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=10:42:33 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:47:08 EligibleTime=2026-11-17T20:47:09 AccrueTime=2026-11-17T20:47:09 StartTime=2026-11-18T09:45:04 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-18T09:45:04 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:725545 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cm2101 BatchHost=m4cm2101 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/slurm-5613302.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/slurm-5613302.out Power= TresPerTask=cpu:64 \n",
+      "progress": {
+        "latest": {
+          "i": 117,
+          "p": 6.13e-05,
+          "d": 4.72e-08,
+          "c": 1.82e-05,
+          "t": 35466.0
+        },
+        "previous_10": {
+          "i": 107,
+          "p": 0.000164,
+          "d": 2.78e-08,
+          "c": 5.21e-05,
+          "t": 31908.0
+        },
+        "minutes_per_round": 5.93,
+        "drops": {
+          "p": 0.626219512195122,
+          "d": -0.6978417266187049,
+          "c": 0.6506717850287909
+        },
+        "rss": {
+          "exit_code": 0,
+          "stdout": "5613302.batch|531551004K|244561668K\n",
+          "stderr": ""
+        },
+        "stderr": ""
+      }
+    },
+    "ops_conservative_2040": {
+      "job_id": "5613303",
+      "startup": {
+        "job_id": "5613303",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 718.1393165588379
+      },
+      "smoke": {
+        "status": "PASS",
+        "job_id": "5613303",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 718.1393165588379
+      },
+      "structure": {
+        "status": "PASS",
+        "resource": "conservative",
+        "planning_year": 2040,
+        "optimization_hours": 8760,
+        "checks": {
+          "annual_upper_matches_reference": true,
+          "effective_load_row_count": true
+        },
+        "services": [
+          "heating",
+          "cooling",
+          "ev_v1g",
+          "ev_v2g"
+        ],
+        "actual_upper_sums_gw": [
+          1.3225721553594736,
+          5.189052050021011,
+          33.213780121997,
+          14.400681644225868
+        ],
+        "reference_upper_sums_gw": [
+          1.3225721553594751,
+          5.189052050021012,
+          33.213780121997,
+          14.400681644225868
+        ],
+        "absolute_difference_gw": [
+          1.5543122344752192e-15,
+          1.7763568394002505e-15,
+          0.0,
+          0.0
+        ],
+        "tolerance_gw": 1e-06,
+        "national_v2g_cap_gw": 60.0,
+        "national_v2g_slack_lower_bound_gw": 45.59931835577413,
+        "effective_load_nonnegative_rows": 0,
+        "reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+        "province_upper_gw": [
+          {
+            "province_code": 11,
+            "values_gw": [
+              0.0378680766888859,
+              0.1002913804416296,
+              0.7246015346113409,
+              0.3623007673056704
+            ]
+          },
+          {
+            "province_code": 12,
+            "values_gw": [
+              0.0169468619823239,
+              0.0597320066852408,
+              0.405987658129245,
+              0.2029938290646225
+            ]
+          },
+          {
+            "province_code": 13,
+            "values_gw": [
+              0.0606946981274567,
+              0.1976557628451593,
+              1.2946330770252572,
+              0.6473165385126286
+            ]
+          },
+          {
+            "province_code": 14,
+            "values_gw": [
+              0.037710101736757,
+              0.0998289165836691,
+              0.6292544609779517,
+              0.3146272304889759
+            ]
+          },
+          {
+            "province_code": 15,
+            "values_gw": [
+              0.0130110236415481,
+              0.0415304443183311,
+              0.354733732346296,
+              0.177366866173148
+            ]
+          },
+          {
+            "province_code": 21,
+            "values_gw": [
+              0.0352467218408523,
+              0.0918356332919635,
+              0.6801796328121297,
+              0.3259739378766076
+            ]
+          },
+          {
+            "province_code": 22,
+            "values_gw": [
+              0.0204724125617968,
+              0.0445116161281318,
+              0.3813464544667198,
+              0.1906732272333599
+            ]
+          },
+          {
+            "province_code": 23,
+            "values_gw": [
+              0.015424528885593,
+              0.0252195942643037,
+              0.4164835047212882,
+              0.2082417523606441
+            ]
+          },
+          {
+            "province_code": 31,
+            "values_gw": [
+              0.0424450545263697,
+              0.1477771745330752,
+              1.2037665371997814,
+              0.5769013058988242
+            ]
+          },
+          {
+            "province_code": 32,
+            "values_gw": [
+              0.1071386086003517,
+              0.4310527254008316,
+              2.331825909439348,
+              0.9347334275441396
+            ]
+          },
+          {
+            "province_code": 33,
+            "values_gw": [
+              0.0469206046826786,
+              0.3386085382482018,
+              1.7793240378855717,
+              0.8527354178337612
+            ]
+          },
+          {
+            "province_code": 34,
+            "values_gw": [
+              0.0513872288321581,
+              0.222152596410972,
+              1.206116885965166,
+              0.6030584429825829
+            ]
+          },
+          {
+            "province_code": 35,
+            "values_gw": [
+              0.0055494882199739,
+              0.1775754166555346,
+              0.8763014184893981,
+              0.438150709244699
+            ]
+          },
+          {
+            "province_code": 36,
+            "values_gw": [
+              0.0396182754777174,
+              0.132446193927139,
+              0.9587026988640166,
+              0.3843046155707398
+            ]
+          },
+          {
+            "province_code": 37,
+            "values_gw": [
+              0.0846122412846776,
+              0.3268435717075356,
+              1.905596948938516,
+              0.9527984744692578
+            ]
+          },
+          {
+            "province_code": 41,
+            "values_gw": [
+              0.0872128008308282,
+              0.3340701782995901,
+              2.721856235285202,
+              1.0227538433529724
+            ]
+          },
+          {
+            "province_code": 42,
+            "values_gw": [
+              0.0535734266750077,
+              0.2262868621957157,
+              1.5682479898955604,
+              0.5892786100174736
+            ]
+          },
+          {
+            "province_code": 43,
+            "values_gw": [
+              0.0769233433616399,
+              0.2221235049428395,
+              1.5314217738279636,
+              0.5754409379424331
+            ]
+          },
+          {
+            "province_code": 44,
+            "values_gw": [
+              0.0064837687741884,
+              0.557531213448268,
+              4.384981937547448,
+              1.6476833241672273
+            ]
+          },
+          {
+            "province_code": 45,
+            "values_gw": [
+              0.0651544496970957,
+              0.0915130160633423,
+              0.9871953149891444,
+              0.4935976574945722
+            ]
+          },
+          {
+            "province_code": 46,
+            "values_gw": [
+              0.0037146367922119,
+              0.0223542785983045,
+              0.4262919723568965,
+              0.160181771346513
+            ]
+          },
+          {
+            "province_code": 50,
+            "values_gw": [
+              0.0365345611878852,
+              0.190122454870504,
+              0.962072284928293,
+              0.3615044447381277
+            ]
+          },
+          {
+            "province_code": 51,
+            "values_gw": [
+              0.0941397071720416,
+              0.3384408297891339,
+              2.1153687055094386,
+              0.7948625080272412
+            ]
+          },
+          {
+            "province_code": 52,
+            "values_gw": [
+              0.0821036103817588,
+              0.0089984719060063,
+              0.8092359612493494,
+              0.3040752773118035
+            ]
+          },
+          {
+            "province_code": 53,
+            "values_gw": [
+              0.0862319166952747,
+              0.0,
+              0.7817013529971867,
+              0.3908506764985934
+            ]
+          },
+          {
+            "province_code": 54,
+            "values_gw": [
+              0.003791277307527,
+              0.0,
+              0.0490206073397056,
+              0.0245103036698528
+            ]
+          },
+          {
+            "province_code": 61,
+            "values_gw": [
+              0.0498428640139621,
+              0.18505209510522,
+              0.808221917585759,
+              0.4041109587928795
+            ]
+          },
+          {
+            "province_code": 62,
+            "values_gw": [
+              0.0183295079691325,
+              0.1150437945883745,
+              0.3310472695649366,
+              0.1655236347824683
+            ]
+          },
+          {
+            "province_code": 63,
+            "values_gw": [
+              0.0112987796362535,
+              0.322516729344931,
+              0.0858576034782032,
+              0.0429288017391016
+            ]
+          },
+          {
+            "province_code": 64,
+            "values_gw": [
+              0.00543465550376,
+              0.0119183858508718,
+              0.1150506323682271,
+              0.0575253161841135
+            ]
+          },
+          {
+            "province_code": 65,
+            "values_gw": [
+              0.0267569222717654,
+              0.1260186635761904,
+              0.3873540712016664,
+              0.1936770356008332
+            ]
+          }
+        ],
+        "method": "Read only 31x4 MVar upper bounds and existing structural audit; no LP modification"
+      },
+      "accounting": {
+        "exit_code": 0,
+        "stdout": "5613303|RUNNING|0:0|10:42:33|2026-11-18T09:45:04|Unknown|m4cm2108\n",
+        "stderr": ""
+      },
+      "allocation": "JobId=5613303 JobName=ops_conservative_2040_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1108896 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=10:42:33 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:47:29 EligibleTime=2026-11-17T20:47:29 AccrueTime=2026-11-17T20:47:29 StartTime=2026-11-18T09:45:04 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-18T09:45:04 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:730946 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cm2108 BatchHost=m4cm2108 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/slurm-5613303.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/slurm-5613303.out Power= TresPerTask=cpu:64 \n",
+      "progress": {
+        "latest": {
+          "i": 108,
+          "p": 0.00377,
+          "d": 1.55e-08,
+          "c": 0.000837,
+          "t": 34937.0
+        },
+        "previous_10": {
+          "i": 98,
+          "p": 0.0135,
+          "d": 2.89e-08,
+          "c": 0.00283,
+          "t": 31652.0
+        },
+        "minutes_per_round": 5.475,
+        "drops": {
+          "p": 0.7207407407407407,
+          "d": 0.46366782006920415,
+          "c": 0.7042402826855123
+        },
+        "rss": {
+          "exit_code": 0,
+          "stdout": "5613303.batch|546251560K|250921448K\n",
+          "stderr": ""
+        },
+        "stderr": ""
+      }
+    },
+    "ops_conservative_2060": {
+      "job_id": "5613360",
+      "startup": {
+        "job_id": "5613360",
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 717.7199935913086
+      },
+      "smoke": {
+        "status": "PASS",
+        "job_id": "5613360",
+        "gurobi_version": [
+          13,
+          0,
+          2
+        ],
+        "allocation": {
+          "cpu": "64",
+          "mem": "750G",
+          "node": "1",
+          "billing": "64"
+        },
+        "time_limit": "UNLIMITED",
+        "available_memory_gib": 717.7199935913086
+      },
+      "structure": {
+        "status": "PASS",
+        "resource": "conservative",
+        "planning_year": 2060,
+        "optimization_hours": 8760,
+        "checks": {
+          "annual_upper_matches_reference": true,
+          "effective_load_row_count": true
+        },
+        "services": [
+          "heating",
+          "cooling",
+          "ev_v1g",
+          "ev_v2g"
+        ],
+        "actual_upper_sums_gw": [
+          1.4083615291405098,
+          5.449717350727682,
+          52.53670972573359,
+          22.885756591039154
+        ],
+        "reference_upper_sums_gw": [
+          1.4083615291405118,
+          5.449717350727683,
+          52.536709725733594,
+          22.88575659103916
+        ],
+        "absolute_difference_gw": [
+          1.9984014443252818e-15,
+          8.881784197001252e-16,
+          7.105427357601002e-15,
+          7.105427357601002e-15
+        ],
+        "tolerance_gw": 1e-06,
+        "national_v2g_cap_gw": 200.0,
+        "national_v2g_slack_lower_bound_gw": 177.11424340896085,
+        "effective_load_nonnegative_rows": 0,
+        "reference_sha256": "223fc02d41dd824f36af80fc830cba9028dc0d12f65013ea8fc7bd07a176c827",
+        "province_upper_gw": [
+          {
+            "province_code": 11,
+            "values_gw": [
+              0.0381162242304835,
+              0.1009485846536229,
+              0.7109378109225754,
+              0.3554689054612877
+            ]
+          },
+          {
+            "province_code": 12,
+            "values_gw": [
+              0.0171726806378947,
+              0.0605279417355335,
+              0.4442140055420947,
+              0.2221070027710473
+            ]
+          },
+          {
+            "province_code": 13,
+            "values_gw": [
+              0.0633817246362754,
+              0.2064062186637289,
+              2.402793939068603,
+              1.2013969695343014
+            ]
+          },
+          {
+            "province_code": 14,
+            "values_gw": [
+              0.0425712814497727,
+              0.1126977841209806,
+              1.1222591371686648,
+              0.5611295685843323
+            ]
+          },
+          {
+            "province_code": 15,
+            "values_gw": [
+              0.0151660991111859,
+              0.048409322126822,
+              0.7777001797907056,
+              0.3888500898953528
+            ]
+          },
+          {
+            "province_code": 21,
+            "values_gw": [
+              0.0377621902841205,
+              0.0983897076979906,
+              1.4117560376796627,
+              0.6765796162123916
+            ]
+          },
+          {
+            "province_code": 22,
+            "values_gw": [
+              0.0241153220931555,
+              0.0524321184216397,
+              0.7545776032558897,
+              0.3772888016279448
+            ]
+          },
+          {
+            "province_code": 23,
+            "values_gw": [
+              0.0182395093440033,
+              0.0298221766543151,
+              0.9864547087881266,
+              0.4932273543940633
+            ]
+          },
+          {
+            "province_code": 31,
+            "values_gw": [
+              0.0428677106156089,
+              0.1492486986803268,
+              0.8426365760398465,
+              0.403830914129177
+            ]
+          },
+          {
+            "province_code": 32,
+            "values_gw": [
+              0.1083471941253114,
+              0.435915249669344,
+              3.4633912791520816,
+              1.3883316023650665
+            ]
+          },
+          {
+            "province_code": 33,
+            "values_gw": [
+              0.0478000096722679,
+              0.3449548767079643,
+              2.2662846621716843,
+              1.0861097569522622
+            ]
+          },
+          {
+            "province_code": 34,
+            "values_gw": [
+              0.0526933860307186,
+              0.2277992564775974,
+              1.994077973558832,
+              0.997038986779416
+            ]
+          },
+          {
+            "province_code": 35,
+            "values_gw": [
+              0.0056746040224038,
+              0.1815789373165426,
+              1.3655346959222905,
+              0.6827673479611451
+            ]
+          },
+          {
+            "province_code": 36,
+            "values_gw": [
+              0.041034285821417,
+              0.1371799986756559,
+              1.8287810859421367,
+              0.7330833771812718
+            ]
+          },
+          {
+            "province_code": 37,
+            "values_gw": [
+              0.087314216969272,
+              0.3372808721502513,
+              3.2827545277597614,
+              1.6413772638798807
+            ]
+          },
+          {
+            "province_code": 41,
+            "values_gw": [
+              0.0884415615855021,
+              0.3387769681342351,
+              4.240360435367381,
+              1.5933409253040318
+            ]
+          },
+          {
+            "province_code": 42,
+            "values_gw": [
+              0.0555624342038346,
+              0.2346881592662248,
+              2.528182195189912,
+              0.9499796584796852
+            ]
+          },
+          {
+            "province_code": 43,
+            "values_gw": [
+              0.0794855743705649,
+              0.2295221918342816,
+              2.8336961560416247,
+              1.0647783659236647
+            ]
+          },
+          {
+            "province_code": 44,
+            "values_gw": [
+              0.0065448016669804,
+              0.5627793559967833,
+              5.538253077567205,
+              2.0810318881334204
+            ]
+          },
+          {
+            "province_code": 45,
+            "values_gw": [
+              0.0670528078449291,
+              0.0941793647238605,
+              1.632584171394809,
+              0.8162920856974045
+            ]
+          },
+          {
+            "province_code": 46,
+            "values_gw": [
+              0.0038023748580643,
+              0.0228822766981059,
+              0.4541540864859492,
+              0.1706511282287812
+            ]
+          },
+          {
+            "province_code": 50,
+            "values_gw": [
+              0.0369494836952034,
+              0.1922816729672173,
+              1.3823965037120018,
+              0.519443796803256
+            ]
+          },
+          {
+            "province_code": 51,
+            "values_gw": [
+              0.0969554627396413,
+              0.348563727760765,
+              3.624565629168397,
+              1.3619523249098535
+            ]
+          },
+          {
+            "province_code": 52,
+            "values_gw": [
+              0.0966624232321333,
+              0.0105941029362345,
+              1.645816163551414,
+              0.6184253175841512
+            ]
+          },
+          {
+            "province_code": 53,
+            "values_gw": [
+              0.1043338547802762,
+              0.0,
+              1.515994278444612,
+              0.7579971392223059
+            ]
+          },
+          {
+            "province_code": 54,
+            "values_gw": [
+              0.0044383182824248,
+              0.0,
+              0.1204979340546737,
+              0.0602489670273368
+            ]
+          },
+          {
+            "province_code": 61,
+            "values_gw": [
+              0.0525272057228065,
+              0.195018277166123,
+              1.287373873832772,
+              0.643686936916386
+            ]
+          },
+          {
+            "province_code": 62,
+            "values_gw": [
+              0.0220409119375836,
+              0.1383381457788157,
+              0.7939124850634335,
+              0.3969562425317168
+            ]
+          },
+          {
+            "province_code": 63,
+            "values_gw": [
+              0.0139737222283013,
+              0.3988713237123274,
+              0.1931223645795177,
+              0.0965611822897588
+            ]
+          },
+          {
+            "province_code": 64,
+            "values_gw": [
+              0.0064388576589527,
+              0.0141206356070125,
+              0.2374134970969114,
+              0.1187067485484557
+            ]
+          },
+          {
+            "province_code": 65,
+            "values_gw": [
+              0.0308952952894202,
+              0.1455094043933786,
+              0.8542326514200252,
+              0.4271163257100126
+            ]
+          }
+        ],
+        "method": "Read only 31x4 MVar upper bounds and existing structural audit; no LP modification"
+      },
+      "accounting": {
+        "exit_code": 0,
+        "stdout": "5613360|RUNNING|0:0|10:42:33|2026-11-18T09:45:04|Unknown|m4cm2204\n",
+        "stderr": ""
+      },
+      "allocation": "JobId=5613360 JobName=ops_conservative_2060_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=1108625 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=10:42:33 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-17T20:49:26 EligibleTime=2026-11-17T20:49:26 AccrueTime=2026-11-17T20:49:26 StartTime=2026-11-18T09:45:04 EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-18T09:45:04 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:768285 ReqNodeList=(null) ExcNodeList=(null) NodeList=m4cm2204 BatchHost=m4cm2204 NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=cpu=64,mem=750G,node=1,billing=64 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/slurm-5613360.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/slurm-5613360.out Power= TresPerTask=cpu:64 \n",
+      "progress": {
+        "latest": {
+          "i": 114,
+          "p": 0.0034,
+          "d": 2.08e-08,
+          "c": 0.000539,
+          "t": 34875.0
+        },
+        "previous_10": {
+          "i": 104,
+          "p": 0.00875,
+          "d": 2.5e-08,
+          "c": 0.00129,
+          "t": 31590.0
+        },
+        "minutes_per_round": 5.475,
+        "drops": {
+          "p": 0.6114285714285714,
+          "d": 0.16799999999999993,
+          "c": 0.5821705426356589
+        },
+        "rss": {
+          "exit_code": 0,
+          "stdout": "5613360.batch|535665296K|251323680K\n",
+          "stderr": ""
+        },
+        "stderr": ""
+      }
+    }
+  }
+}
