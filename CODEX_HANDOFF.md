@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 论文主线按“一项主张、三条判断、九项证据”重排。** 本地增加 2060 年全国同步负荷变化及两组共同光伏出力的价格时序对照，资料位于 `D:/National_model/文献分析与文章定位/需求柔性重塑区域保供与服务采购_2060主线讨论_20261118/`。使用 PLAN、LATE 两种曲线分别作四案共同权重，原 REF 出力权重的完整分解另记待核。正文主张待作者审阅。
+
 - **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
 
 - **2026-11-18 12:27UTC：云端4项均RUNNING。三案OPS-Conservative于01:45UTC启动，2030/2040/2060启动可用内存718.319/718.139/717.720GiB，64CPU/750G、smoke、全年四服务上界均PASS；当前117/108/114轮。LATE2050第365轮(PInf0.461/DInf1.36e-5/Compl0.00668)，近期PInf/Compl继续下降而DInf反弹；无终态或stderr错误。新启动证据batch3_conservative_20261117/startup_verification_20261118.json；原release不改，无监听。**
@@ -3970,6 +3972,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-18  需求柔性与区域建设、服务采购的主线讨论稿
+
+- 工程源码基准 `085659651100973f2e2ca0e4257d19e49d98834e`。新稿、阅读版、两张 CSV、`复核全国负荷与光伏时序价值.py` 和来源清单保存在上述本地目录。仓库变更仅为交接索引。
+- 本地运行 `python 复核全国负荷与光伏时序价值.py`，核对 31 省 × 8760 小时及分省年度发电量、原始价格单位、去均价恒等式、全国小时与省级年度负荷闭合。复读 13 个来源 SHA256，光伏结果表 SHA256 为 `7dcc56f245ab92dbdf7b2821e21c78d70d10fa5803f527e7b0469f155de50ac3`。
+- 当前稿以 2060 年运行价值、区域保供及服务与价格反馈为三条观点。工作站仅使用归档数据，未发起求解。下一步由作者审定科学主张，REF 出力权重的同年价格分解仍需在可用归档上核准。
 
 ### 2026-11-18 — 三年OPS-Conservative实际启动与全年上界核验
 
