@@ -1,0 +1,15 @@
+{
+  "pid": 3339359,
+  "command": [
+    "python3",
+    "-u",
+    "/home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_batch3_completed.py",
+    "run",
+    "--config",
+    "/home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_config.json",
+    "--engine",
+    "/home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_completed_cloud.py"
+  ],
+  "operation": "/home/zz2/National_model_server/cloud_backup/_operations/20261118_resource_batch3_ops_completed",
+  "finite_autonomous_pull": true
+}

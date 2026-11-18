@@ -1,0 +1,16 @@
+{
+  "host": "t550",
+  "disk": {
+    "total": 4029616283648,
+    "used": 2648166064128,
+    "free": 1176680366080
+  },
+  "operation_exists": false,
+  "existing_destinations": {
+    "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1": false,
+    "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1": false,
+    "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1": false
+  },
+  "matching_plans": [],
+  "global_transfer_lock_available": true
+}

@@ -1,0 +1,74 @@
+{
+  "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1": {
+    "status": "OPTIMAL",
+    "preservation": "COMPLETE",
+    "errors": [],
+    "relative_v1": "PASS",
+    "strict_status": "HARD_FAIL",
+    "frozen": "PASS",
+    "iterations": 122.0,
+    "objective": 4190370.9384320835,
+    "metrics": {
+      "iteration": 122.0,
+      "primal_objective": 4190370.9384320835,
+      "dual_objective": 4189331.4093508734,
+      "absolute_primal_dual_objective_gap": 1039.5290812100284,
+      "relative_primal_dual_objective_gap": 0.0002480756707421683,
+      "primal_infeasibility": 0.0001629830073181759,
+      "dual_infeasibility": 1.624145947115872e-07,
+      "complementarity": 1.2325564606588772e-05,
+      "runtime_seconds": 36955.76785612106,
+      "work_units": 122268.52125104488,
+      "memory_used_gb": 215.34632064,
+      "max_memory_used_gb": 602.376071456
+    }
+  },
+  "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1": {
+    "status": "OPTIMAL",
+    "preservation": "COMPLETE",
+    "errors": [],
+    "relative_v1": "PASS",
+    "strict_status": "HARD_FAIL",
+    "frozen": "PASS",
+    "iterations": 160.0,
+    "objective": 5073199.256988895,
+    "metrics": {
+      "iteration": 160.0,
+      "primal_objective": 5073199.256988895,
+      "dual_objective": 5071766.086734447,
+      "absolute_primal_dual_objective_gap": 1433.1702544484288,
+      "relative_primal_dual_objective_gap": 0.00028249831750134347,
+      "primal_infeasibility": 0.00016203314335185766,
+      "dual_infeasibility": 1.7245338803572847e-06,
+      "complementarity": 1.6964138334053914e-05,
+      "runtime_seconds": 55366.627432107925,
+      "work_units": 187289.12944088035,
+      "memory_used_gb": 220.692796424,
+      "max_memory_used_gb": 607.079824632
+    }
+  },
+  "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1": {
+    "status": "OPTIMAL",
+    "preservation": "COMPLETE",
+    "errors": [],
+    "relative_v1": "PASS",
+    "strict_status": "HARD_FAIL",
+    "frozen": "PASS",
+    "iterations": 174.0,
+    "objective": 5767643.547864859,
+    "metrics": {
+      "iteration": 174.0,
+      "primal_objective": 5767643.547864859,
+      "dual_objective": 5766835.652088347,
+      "absolute_primal_dual_objective_gap": 807.8957765121013,
+      "relative_primal_dual_objective_gap": 0.0001400738048056348,
+      "primal_infeasibility": 0.0002743286333574092,
+      "dual_infeasibility": 6.84670701103312e-07,
+      "complementarity": 9.736617655403609e-06,
+      "runtime_seconds": 54108.62453985214,
+      "work_units": 172463.7436007215,
+      "memory_used_gb": 216.88641792,
+      "max_memory_used_gb": 591.825822624
+    }
+  }
+}

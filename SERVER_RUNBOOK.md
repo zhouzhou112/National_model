@@ -1,5 +1,9 @@
 # CISPO 2030/8760 server runbook
 
+## 2026-11-18 Conservative三年完整备份已启动
+
+operation=`20261118_resource_batch3_ops_completed`，PID3339359，工具目录`/home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118`。源三案20261117_opsconservative_2030/2040/2060；完整333件16.55GB、5%余量门禁通过。不要重复plan/run，先只读核操作目录transfer_status和各release的backup_manifest；当前传输中，尚未完成。下一步全层SHA与源身份通过后才登记COMPLETE并执行T550验收/年度对偶恢复。
+
 - **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
 
 ## OPS-Conservative三年提前放行（2026-11-17）

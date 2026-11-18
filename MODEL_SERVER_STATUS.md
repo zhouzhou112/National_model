@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-18 18:36UTC：三案OPS-Conservative全部COMPLETED/OPTIMAL，2030/2040/2060为122/160/174轮、11:16/16:32/16:11；保全COMPLETE、内置relative_v1和容量检查PASS，正式T550验收待办。核无旧备份/传输后启动PID3339359自主全备份，333件16.55GB，预计余28.79%，当前T1传输中。LATE5587177仍运行，第396轮(PInf0.105/DInf2.24e-6/Compl0.00145)，无新放行或监听。详见batch3_completed_backup_20261118/REVIEW_ZH.md。**
+
 - **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
 
 - **2026-11-18 12:27UTC：云端4项均RUNNING。三案OPS-Conservative于01:45UTC启动，2030/2040/2060启动可用内存718.319/718.139/717.720GiB，64CPU/750G、smoke、全年四服务上界均PASS；当前117/108/114轮。LATE2050第365轮(PInf0.461/DInf1.36e-5/Compl0.00668)，近期PInf/Compl继续下降而DInf反弹；无终态或stderr错误。新启动证据batch3_conservative_20261117/startup_verification_20261118.json；原release不改，无监听。**

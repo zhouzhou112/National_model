@@ -1,0 +1,19 @@
+{
+  "status": {
+    "started_at_utc": "2026-11-18T18:36:26.173828+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 588551612,
+        "file_count": 105,
+        "started_at_utc": "2026-11-18T18:36:26.174483+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 0
+  },
+  "process": "    PID    PPID     SID     ELAPSED COMMAND\n3339359       1 3339359       00:28 python3 -u /home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_batch3_completed.py run --config /home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_config.json --engine /home/zz2/National_model_server/backup_tools/resource_batch3_ops_20261118/backup_completed_cloud.py\n",
+  "stderr": ""
+}

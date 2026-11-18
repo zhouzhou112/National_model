@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 18:36UTC：三案OPS-Conservative全部COMPLETED/OPTIMAL，2030/2040/2060为122/160/174轮、11:16/16:32/16:11；保全COMPLETE、内置relative_v1和容量检查PASS，正式T550验收待办。核无旧备份/传输后启动PID3339359自主全备份，333件16.55GB，预计余28.79%，当前T1传输中。LATE5587177仍运行，第396轮(PInf0.105/DInf2.24e-6/Compl0.00145)，无新放行或监听。详见batch3_completed_backup_20261118/REVIEW_ZH.md。**
+
 - **2026-11-18 论文主线按“一项主张、三条判断、九项证据”重排。** 本地增加 2060 年全国同步负荷变化及两组共同光伏出力的价格时序对照，资料位于 `D:/National_model/文献分析与文章定位/需求柔性重塑区域保供与服务采购_2060主线讨论_20261118/`。使用 PLAN、LATE 两种曲线分别作四案共同权重，原 REF 出力权重的完整分解另记待核。正文主张待作者审阅。
 
 - **2026-11-18 17:44UTC：8276M新节点环境预设完成；作者明确暂不测试，PREPARE_ONLY锁已部署，未创建Gurobi Env/许可会话或启动求解。新节点直连云端认证通过，OPS-Open2050原MPS及9配套文件4.149GB逐件SHA与源身份闭合，44.278GB解压件CRC/SHA完成；Python3.10.20/Gurobi13.0.2及依赖就绪。最终VMware实测44 vCPU/约800GiB（此前700为历史）、空闲约785GiB。截图许可基线2/活跃3，保留现有作业。代码6f379f79；详见new_node_8276m_20261117/PREPARATION_REPORT_20261118_ZH.md，等待作者重新放行及许可名额核准，无监听。**
@@ -3972,6 +3974,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-18 — OPS-Conservative三年完成与全量备份启动
+
+- 起始Git d89ddcc5；新增backup_batch3_completed.py复用原引擎，改三案白名单，编译通过且原引擎SHA有据。只更新备份配置/证据、case_catalog/案例卡、台账和交接；科学模型/输入/运行包未改。
+- 命令：snapshot_batch1.py一次性云端状态；读取三案solution_qc/solve_report/preservation/frozen_capacity检查；T550预核目标/旧operation和global lock后，包装器plan/run。原结果内置relative_v1 PASS而严格HARD_FAIL保留，正式验收未提前宣布。
+- 结果：333文件16551979130bytes，含所有output_8760和明确启动元数据。18:36UTC有限自主拉取PID3339359、PPID1，operation=20261118_resource_batch3_ops_completed，预计备份后余28.790%，T1传输中，不称COMPLETE。证据ops_flex_resource_sensitivity_20261114/batch3_completed_backup_20261118。
+- LATE2050第396轮，近10轮PInf/DInf/Compl降40.34%/64.33%/40.08%，11.842分钟每轮，无终态/stderr报错。原作业保持；LATE2060未提交。
+- 下一步：先核PID/transfer_status/backup_manifest，三层VERIFIED且源身份不变后登记COMPLETE；然后T550正式验收、原MPS+自身BarPi恢复年度行对偶、分析与小文件取回。所有结果完整保留，不建监听。
+
 
 ### 2026-11-18  需求柔性与区域建设、服务采购的主线讨论稿
 
