@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图正式版式和三情景稳健性。** 作者本地统一入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新增地图框内图例、四省比较、31 省高峰窗口电量环及 S11，e 的 18 个 Base 点带 Conservative、Base、Open 最小–最大短须。
+
 - **2026-11-19 首图版式与论文情景命名。** 作者指定 B 表示 Base 柔性资源情景，REF 表示关闭柔性的参考优化。首图统一入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新版两幅地图在左列对齐，2025 充电基线直接标值，右下使用固定发电规模下的小时、日和年重合点。
 
 - **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**
@@ -4010,6 +4012,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 首图地图内图例、绝对电量环与资源情景范围
+
+- 数据与源文件核验时 Git 为 `eb4d5a79`。统一目录更新 `draw_figures.py`、`figure_maps.py`、`publish_reader.py`、`verify_outputs.py`、图表说明、图件与源表。最终主图 `Figure1.pdf` 的 SHA256 为 `66301b9ae93eacf9f0960e87609b84be5f9212beee78f84006e5fda8c83db4bb`，`交付核验.json` 为 `aba7355005a2f44d9b84efa9a8feb758806c9f967b3d9e3ee824b3edf9c2b569`。
+- 使用 `draw_figures.py`、`publish_reader.py`、`verify_outputs.py` 复算并渲染。核对 18 点及情景上下界、情景内作差后的 12 组范围、各年 P99 刻度、31 省六小时窗口电量与九色归属、框内图例落位、地图比例尺、环形标签边界及 PDF 矢量。图件和源数据保存在作者本地目录。下一步由作者审阅本版主图和图注。
 
 ### 2026-11-19 — 首图地图列、充电基年读数与时间尺度点图
 
