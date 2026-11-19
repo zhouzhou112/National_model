@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图 b 的省内分项对照与三页讨论稿。** 作者统一目录的每个省级符号同时表示当地高峰和全年的供暖、制冷、充电构成，右下仅为图例。双语讨论稿共三页，2025 年充电专项核查归入技术说明。
+
 - **2026-11-19 首图仅呈现未经协调的需求、签约潜力与风光资源。** 作者统一目录中的 `Figure1.pdf` 和四页 `Figure1_discussion.pdf` 已按同一口径更新。a 给出基准增长倍数，b 给出全年与最高负荷小时的两项省际中位数，d、e 采用参考设施弃电前可发出力。运行协调前后差值单独留作后续图。
 
 - **2026-11-19 首图导师讨论稿与充电基年外核。** 正式中英文图注、四页双语讨论稿与 EV 逐时基年复算已在作者的图 1 统一目录校验。讨论稿入口为 `Figure1_discussion.pdf` 和 `Figure1_discussion.docx`，首图单独矢量文件仍为 `Figure1.pdf`。
@@ -4016,6 +4018,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 21:42 UTC ｜图 b 逐省高峰与全年构成及讨论稿精简
+
+- 核验时 Git 为 `0eccf6ee`。作者材料位于 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`。在 `unmanaged_metrics.py`、`figure_maps.py`、`draw_figures.py` 和源表中实现并核验同省同服务的两个时间窗口，更新双语图注、技术说明和入口。图 b 的内盘和虚线外缘均按各自时段的总用电作分母，面积继续按省级 P99 映射。
+- 用 `python unmanaged_metrics.py` 核对来源，渲染 `draw_figures.main_figure(draw_figures.time_resolution_table())`，以 `python make_discussion.py --pdf`、`python publish_reader.py` 和 `python verify_outputs.py` 在作者统一目录复核。31 省基准曲线均有 88 个 P99 高负荷小时，逐项核对 SVG 路径的端点、颜色和占比，93 组成对角度通过。地图图例、南海插图、比例尺和符号间距通过，旧新主图栅格对比的差异限于 b；Word 三页逐页目检，讨论 PDF 双语图均为矢量。
+- `Figure1.pdf` SHA256 为 `60f688176286d8093bd0c69bc5101e457f24e187899283ff8d0b55b8af305767`，`Figure1_discussion.docx` 为 `0d2d0d6087ccb7a97717ca801d7766865f6b8a59a6ed840738b2cbbec89598fb`，`Figure1_discussion.pdf` 为 `93ef86d66af473fb6476610db9ca87659075a76516dd7867f87b1e5a1dca1e58`，`交付核验.json` 为 `c6f0de1205a44ac426c6ebfb84745df327ff5a5e93a59e496badedd37b746c0f`。小省分项可从同目录图 b 放大预览及逐省源表核对。下一步为作者与导师讨论首图。
 
 ### 2026-11-19 21:21 UTC ｜首图按未调节基线重算并同步讨论稿
 
