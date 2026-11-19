@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "remote_directory": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/final_review",
+  "sha256": {
+    "PREPARATION_REPORT_ZH.md": "7a6ea2fdaf0c3edf7338ff40776bf6b8171fce22ee14eaae50dcc52f626af85b",
+    "PREPARATION_RECEIPT.json": "56a48bc34ccf125f15563f3c17ef96e192d266f71f86b57fde3c5a7c8bad6222",
+    "FINAL_PREPARATION_GATES.json": "9d2254c9390c7a5632f91c5f63b5ef56c7fa01ca7b49671ee8bf15c6fc6bf106",
+    "AUTHORIZATION.json": "a4af59c2ffa5e94fc4f044a367db8fd7294548692bf34329f0803f4266060bdd"
+  },
+  "submitted": false
+}

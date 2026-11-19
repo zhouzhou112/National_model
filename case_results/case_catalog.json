@@ -786,10 +786,29 @@
       "annual_row_duals_recovered": 1134,
       "author_result_adoption": "PENDING_AUTHOR_REVIEW",
       "acceptance_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\acceptance_batch3_20261119\\OPS_CONSERVATIVE_REPORT_ZH.md"
+    },
+    {
+      "case": "LATE-Open",
+      "year": 2060,
+      "version": "v1",
+      "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+      "kind": "PREPARED_NOT_SUBMITTED",
+      "solver_status": "NOT_SUBMITTED",
+      "acceptance_status": "NO_PRODUCTION_SOLUTION",
+      "backup_status": "NOT_APPLICABLE_NOT_RUN",
+      "remote_directory": "",
+      "cloud_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+      "preparation_directory": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119",
+      "case_card": "case_results\\by_case\\LATE-Open\\2060\\20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1\\README.md",
+      "preparation_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\PREPARATION_REPORT_ZH.md",
+      "source_commit": "52958cf1e7973171d7f4b4b3438ba96c6403fc58",
+      "submission_authorized": false,
+      "free_groups": 4879,
+      "margin": 0.02
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-18T23:59:32Z",
-  "last_catalog_update_utc": "2026-11-19T10:59:47Z"
+  "last_catalog_update_utc": "2026-11-19T12:06:37.398463+00:00"
 }

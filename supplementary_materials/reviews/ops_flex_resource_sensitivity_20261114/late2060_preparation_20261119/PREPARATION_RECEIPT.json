@@ -1,0 +1,17 @@
+{
+  "status": "READY_NOT_SUBMITTED",
+  "planning_year": 2060,
+  "source_year": 2050,
+  "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+  "source_commit": "52958cf1e7973171d7f4b4b3438ba96c6403fc58",
+  "local_gates": "PASS",
+  "cloud_preflight": "PASS",
+  "selection_free_groups": 4879,
+  "selection_margin": 0.02,
+  "selection_sha256": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+  "release_manifest_sha256": "97f939102e142ab5c843b5c54520f68787d08a3b6aa150a34dbd98cc426390c4",
+  "submission_authorized": false,
+  "submitted": false,
+  "actual_startup_checks": "PENDING_AUTHOR_AUTHORIZATION_AND_NODE_ALLOCATION",
+  "queue": ""
+}

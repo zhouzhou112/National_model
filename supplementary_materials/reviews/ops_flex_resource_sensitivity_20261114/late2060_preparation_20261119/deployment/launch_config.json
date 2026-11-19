@@ -1,0 +1,26 @@
+{
+  "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+  "source_commit": "52958cf1e7973171d7f4b4b3438ba96c6403fc58",
+  "framework": "LATE_RESTRICTED_PRODUCTION",
+  "resource_scenario": "open",
+  "scenario": "case3_thermal_ev_v5",
+  "scenario_config": "config/scenarios/ops_open_resource_v1.json",
+  "solver_profile": "config/solver_profiles/barrier_stagea_resource_restricted_agg0_v1_threads44.json",
+  "planning_year": 2060,
+  "boundary_year": 2050,
+  "batch": 3,
+  "automatic_successor": false,
+  "license_path": "/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic",
+  "template_release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+  "author_authorization": "2026-11-19 PREPARATION ONLY; no submission including held jobs. Separate author release instruction required.",
+  "submission_authorized": false,
+  "resources": {
+    "cpus": 64,
+    "memory": "750G",
+    "billing": 64,
+    "solver_threads": 44,
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "minimum_available_memory_gib": 700
+  }
+}

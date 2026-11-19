@@ -11,3 +11,5 @@
 - [OPS-Conservative 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/by_case/OPS-Conservative/2060/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/README.md)
 
 原MPS、BarX/BarPi及大型逐时数组只在云端/T550；本机只保存既定结果小文件、旁置验收、方向价格CSV和分析表。各案delivery_manifest记录逐件来源/大小/SHA；40MB固定审计以无损gzip回传，解压SHA已核对。
+
+2060准备已完成、未提交：[准备报告](D:/codeenv/pycharmproject/National_RL/National_model/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/PREPARATION_REPORT_ZH.md)。需作者另行明确放行。

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 12:10UTC：四案验收与回传已完成，423件556324412bytes双端SHA通过；LATE2050条件PASS，B=6517.873876million CNY/B÷P=0.00115236245，接受并披露、不自动重解。作者仅授权2060准备，明确不提交；R1、基准入口恒等性、本案Open1h/24h、参数及双端preflight全部PASS。2060清单margin0.02、4879自由/31215下界/592上界，含强制845自由组；云端新包20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1已冻结515文件，source52958cf1，无提交记录/held作业、队列空。详见completion_20261119总报告及late2060_preparation_20261119/PREPARATION_REPORT_ZH.md。**
+
 - **2026-11-19 主图 1 的统一迭代入口。** 作者指定的本地目录为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`。目录含当前主图、补充图、中文读图及出图规范、逐案来源和核验清单。下列 11 月 18 日条目为旧稿历史记录。
 
 - **2026-11-19 10:47UTC：Conservative2030/2040/2060正式验收、年度对偶恢复及T550分析全部PASS，316件418288225bytes验收/小文件已回本机，双端SHA和333原件统计收尾通过，报告已同步T550；证据64d5b13e。LATE最大行独立重构已PASS：河北年度外送53471702，0.015772605GWh/274339.463GWh=5.7493e-8，容差0.274339463GWh；自身双向定价PID603950仍扫描，主worker597322等待，原行审计PID603949已完成，不重复启动。云端0作业，LATE2060仍未提交。**
@@ -3998,6 +4000,20 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 四案正式交付与LATE-Open2060准备完成（不提交）
+
+- 授权：作者先要求继续四案验收/年度对偶/分析/回传；随后明确2060“先完成准备并汇报，暂不提交”，并确定2050变动站点采用相对中央LATE2050或REF2050容量变化≥10MW并集，845基础自由组再定价。AGENTS本日已追加，禁止held与release，等待新明确指示。
+- Git：验收工具e3a46038；Conservative交付64d5b13e；LATE完整验收/2060准备授权2d98c37e；R1与准备工具b6f43bc4；通过的门禁及新云端包源码52958cf1。原模型/输入/约束/目标/数值设置未改，429文件发布包与T550验证源精确比对，537项回归覆盖沿用。
+- 四案：Conservative三年PASS、LATE2050条件PASS；每案1134年度行对偶由自身原MPS+BarPi恢复并验完整行序。LATE独立53471702河北年度外送行：残差0.015772605434GWh/274339.462585GWh=5.74930245e-8，容差0.274339462585GWh。双向B=6517.873876million CNY=65.178739亿元，B/P=0.001152362446，B/(P-D)=1.630719974；420正B组/28省，负方向组1605中1185无原始可动余量；不混淆组数、不自动重解。
+- 交付：四案423有效载荷556324412bytes，小文件单件≤32MiB；40MB固定审计无损gzip且解压SHA同源，原MPS/BarX/BarPi/大调度数组留云端/T550。验收JSON、报告和小表双端同步PASS，当前云端源manifest四案再次匹配。总报告completion_20261119/RESOURCE_SENSITIVITY_ACCEPTANCE_REPORT_ZH.md；case_results/RESOURCE_SENSITIVITY_ACCEPTANCE_20261119.md为索引。中央LATE比较含双方B，点差447.950931亿元、区间[413.095513,553.098971]。
+- 2060 R1：删发电/储能0.261294274900GW、网络0.194209224186GW，分别<1GW，技术比例PASS；保留改造保护新建0.008241887946GW，派生状态30807cohort，3条最小bound-close共1.262458129e-8GW。原状态不改。
+- 2060固定集：三参考共同边界35399 lower/876 upper/411 free，作者变动并集576组，合并845基础free。中央C2060自身MPS+BarPi参考定价margin0.02新增4034组，最终free4879/lower31215/upper592；清单SHA f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219。参考评分不冒充未来2060自身证书。
+- 门禁：基准资源24h用既有中央C2050→2060 R1，目标相对差5.8068e-16、容量最大差5.3646e-13GW；本案Open1h/实际受限24h使用自己的Open2050→2060 R1，均PASS，矩阵/目标/RHS与其他投资边界保持。2060延续同一Open源情景，去掉2050专用late-entry-base-state标记。源情景SHA首轮错误调用在建模前被拒绝，已按中央参照正确重跑通用测试，未放松校验，旧失败保留。
+- 云端包：/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1，515文件，manifestSHA97f939102e142ab5c843b5c54520f68787d08a3b6aa150a34dbd98cc426390c4。从最近成功启动OPS-Conservative2060/5613360脚本派生，44线程/64CPU750G/billing64/UNLIMITED/no-requeue/启动可用≥700GiB。T550及云端preflight PASS、未提交、队列空；actual AllocTRES/许可smoke/启动内存/全年结构仍待后续作者授权后节点实测。
+- 操作：collect_preparation.py按SHA复用已传文件并支持Windows长路径；62文件13.38MB准备证据回本机，诊断原MPS和大型审计留T550。prepare_cloud.py只有prepare/preflight/status，无提交入口；所有已运行的门禁和定价均有限任务，已完成，无监听。
+- 精确下一步：停在提交前检查点。作者若明确放行，先重核作者授权、云端冻结清单/队列≤4与许可路径字符串，再按既定held核验→release流程；不要重复prepare覆盖包或重做未变门禁。未获新指示不得sbatch，包括held。2050比较用途重解也须另经作者决定。
+
 
 ### 2026-11-19 — 首图省级负荷与区域典型日独立核算
 

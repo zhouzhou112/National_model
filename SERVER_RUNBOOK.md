@@ -1,5 +1,11 @@
 # CISPO 2030/8760 server runbook
 
+## LATE-Open2060已准备但未授权提交（2026-11-19）
+
+本案全部准备门禁及T550/云端preflight PASS，515文件已冻结，release=`20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1`；source52958cf1，44线程/64CPU750G/UNLIMITED/no-requeue/启动可用≥700GiB。作者明确“先完成准备并汇报，暂不提交”，包括held；当前无作业号/无submission.json。`prepare_cloud.py`只有prepare/preflight/status，不能用它提交；不要重复prepare覆盖已冻结包。
+
+报告：`supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/PREPARATION_REPORT_ZH.md`。未来须作者新明确放行，再只读核manifest SHA、当时队列≤4和注册WLS路径字符串，held提交核资源后release；实际AllocTRES/启动内存/许可smoke及全年结构核验不得提前标PASS。不会自动重解2050，不建监听。
+
 - **2026-11-19 10:18UTC终态核验：新节点32线程v2已于05:20UTC完成5轮，按ITERATION_LIMIT(7)退出，SolCount0，非科学收敛解。总墙钟10:14:29；排序4:30:33为云端12.03倍，前5轮均54.05min/轮为云端15.31倍（前三轮约70min，后两轮约29min）。OS峰RSS270.708GiB、private峰409.306GiB、最低可用471.674GiB，未触发内存保护。14件1.586GB输出及4向量SHA复核，小件已回本机；进程/采样器退出，授权改COMPLETED，无新求解/监听。详见new_node_8276m_20261117/FINAL_BENCHMARK_REPORT_20261119_ZH.md；建议先排查宿主机/虚拟化内存与调度，不直接批量排全年敏感性。**
 
 - **2026-11-18 23:25UTC：按作者主动请求一次性核新节点32线程v2，已运行约4h19m，仍在ordering（13825s、至少为云端1349.93s的10.24倍），尚无第0轮/未完成5轮。OS峰RSS270.708GiB（未终态），当前RSS27.822GiB、可用700.908GiB，stderr空。云端完整作业进程树峰525.316GiB，与本次未结束单进程峰不可直接算节省率。详见new_node_8276m_20261117/STATUS_20261118T2325Z_ZH.md。原任务不改；用户要求主动查询至少间隔2h，主动询问除外，不建定时监听。**
