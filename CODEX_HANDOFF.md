@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图版式与论文情景命名。** 作者指定 B 表示 Base 柔性资源情景，REF 表示关闭柔性的参考优化。首图统一入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新版两幅地图在左列对齐，2025 充电基线直接标值，右下使用固定发电规模下的小时、日和年重合点。
+
 - **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**
 
 - **2026-11-19 首图共同基年与风光发电份额。** 作者本地固定入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前 b、c 采用 2025 年共同基线与绝对量；d 为省内先算的重合电量堆叠及一张风电／光伏发电份额图。最新文件指纹见本日版本条目。
@@ -4008,6 +4010,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 首图地图列、充电基年读数与时间尺度点图
+
+- 复核时工程 HEAD `069e5298`。在作者本地统一目录更新了 `draw_figures.py`、`integrated_metrics.py`、`publish_reader.py`、`verify_outputs.py`、图注、图例规范及点图源表。状态记录仅涉及图件与历史输出的只读核算。最终 `Figure1.pdf` SHA256 为 `1e7cb441b516aa5dda401ae864fe547b81d5bb79f96b344a8d995a544a8183fe`，`交付核验.json` SHA256 为 `0d62681f680cf81bfde6113cea6977f99dbf451d61105c4095f12e42b81ff901`。
+- `integrated_metrics.py --day-boundary` 复核 24 个自然日划分，`draw_figures.py` 导出主图与补充图，`publish_reader.py` 在完整图下附正式图注，`verify_outputs.py` 直接核对 2025 原始充电输入、18 个正文点与版面。正式历史解和原始输入用于保全与溯源，论文图件采用作者的新情景名称。下一步由作者审阅正文重合结论和当前版式。
 
 ### 2026-11-19 — LATE-Open2060启动检查通过并进入Barrier
 
