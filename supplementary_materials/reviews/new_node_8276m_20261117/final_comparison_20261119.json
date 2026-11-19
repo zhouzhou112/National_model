@@ -1,0 +1,45 @@
+{
+  "completed_five": true,
+  "ordering_seconds": 16233.49,
+  "cloud_ordering_seconds": 1349.93,
+  "ordering_ratio": 12.02543094827139,
+  "iteration_seconds": [
+    4150.004999876022,
+    4284.637000083923,
+    4268.925999879837,
+    1747.5069999694824,
+    1764.3140001296997
+  ],
+  "iteration_minutes": [
+    69.1667499979337,
+    71.41061666806539,
+    71.14876666466395,
+    29.12511666615804,
+    29.405233335494994
+  ],
+  "cloud_iteration_seconds": [
+    173.0,
+    200.0,
+    201.0,
+    233.0,
+    252.0
+  ],
+  "mean_iteration_seconds": 3243.077799987793,
+  "cloud_mean_iteration_seconds": 211.8,
+  "mean_iteration_ratio": 15.311982058488162,
+  "peak_os_rss_gib": 270.7081718444824,
+  "peak_private_gib": 409.30551528930664,
+  "minimum_available_gib": 471.67383193969727,
+  "total_wall_seconds": 36868.90700000001,
+  "solver_seconds": 35976.08800005913,
+  "time_to_iter5_seconds": 35818.90100002289,
+  "cloud_time_to_iter5_seconds": 3166.0,
+  "memory_stop_requested": false,
+  "solution_count": 0,
+  "status_code": 7,
+  "ended_utc": "2026-11-19T05:20:46.305957+00:00",
+  "vectors_bytes": 1569371056,
+  "presolve_ratio": 1.8285656683318023,
+  "callback_seconds": 199.62,
+  "callback_share_solver_seconds": 0.005548685560244125
+}

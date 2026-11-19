@@ -1,0 +1,299 @@
+{
+  "utc": "2026-11-19T10:18:52.3853086Z",
+  "terminal.json": {
+    "started_utc": "2026-11-18T19:06:17.393605+00:00",
+    "diagnostic_only": true,
+    "scientific_acceptance": "NOT_APPLICABLE",
+    "source_mps_sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+    "thread_limit": 32,
+    "iteration_limit": 5,
+    "hard_memory_limit_gib": 660,
+    "soft_memory_limit_gib": 640,
+    "minimum_available_gib": 30,
+    "admission_available_gib": 785.0637321472168,
+    "platform": "win32",
+    "python": "3.10.20 | packaged by conda-forge | (main, Jun 11 2026, 03:28:51) [MSC v.1944 64 bit (AMD64)]",
+    "license_environment_count": 1,
+    "read_mps_seconds": 680.75,
+    "dimensions": [
+      54288578,
+      43797081,
+      503239404
+    ],
+    "fingerprint": 4277593037,
+    "overrides": {
+      "Threads": 32,
+      "BarIterLimit": 5,
+      "TimeLimit": 86400,
+      "SoftMemLimit": 687.19476736,
+      "MemLimit": 708.66960384,
+      "OutputFlag": 1,
+      "LogToConsole": 0,
+      "LogFile": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v2\\gurobi.log"
+    },
+    "status_code": 7,
+    "barrier_iterations": 5,
+    "solver_seconds": 35976.08800005913,
+    "solution_count": 0,
+    "memory_stop_requested": false,
+    "vectors": {
+      "BarX": {
+        "status": "SAVED",
+        "bytes": 350376776,
+        "sha256": "adbd2d7cd35eecc35413d4cdb4497cc429e6418770248872df99bd5e5066c601"
+      },
+      "BarPi": {
+        "status": "SAVED",
+        "bytes": 434308752,
+        "sha256": "bf0beecceaed3abaca6d0344435b4ee252253970545df6a1e5f9ca1d2dd5a98e"
+      },
+      "X": {
+        "status": "SAVED",
+        "bytes": 350376776,
+        "sha256": "adbd2d7cd35eecc35413d4cdb4497cc429e6418770248872df99bd5e5066c601"
+      },
+      "Pi": {
+        "status": "SAVED",
+        "bytes": 434308752,
+        "sha256": "bf0beecceaed3abaca6d0344435b4ee252253970545df6a1e5f9ca1d2dd5a98e"
+      }
+    },
+    "status": "BOUNDED_TEST_FINISHED",
+    "finished_utc": "2026-11-19T05:20:46.305957+00:00",
+    "wall_seconds": 36868.90700000001,
+    "resources": {
+      "peak_rss_bytes": 289640534016,
+      "peak_private_bytes": 439488450560,
+      "minimum_available_bytes": 506455920640
+    }
+  },
+  "identity_before_optimize.json": {
+    "started_utc": "2026-11-18T19:06:17.393605+00:00",
+    "diagnostic_only": true,
+    "scientific_acceptance": "NOT_APPLICABLE",
+    "source_mps_sha256": "33a4f822cbf894810082843e6ccabbb59db2183e3282f182b0df1cb807768a4b",
+    "thread_limit": 32,
+    "iteration_limit": 5,
+    "hard_memory_limit_gib": 660,
+    "soft_memory_limit_gib": 640,
+    "minimum_available_gib": 30,
+    "admission_available_gib": 785.0637321472168,
+    "platform": "win32",
+    "python": "3.10.20 | packaged by conda-forge | (main, Jun 11 2026, 03:28:51) [MSC v.1944 64 bit (AMD64)]",
+    "license_environment_count": 1,
+    "read_mps_seconds": 680.75,
+    "dimensions": [
+      54288578,
+      43797081,
+      503239404
+    ],
+    "fingerprint": 4277593037,
+    "overrides": {
+      "Threads": 32,
+      "BarIterLimit": 5,
+      "TimeLimit": 86400,
+      "SoftMemLimit": 687.19476736,
+      "MemLimit": 708.66960384,
+      "OutputFlag": 1,
+      "LogToConsole": 0,
+      "LogFile": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v2\\gurobi.log"
+    }
+  },
+  "license_smoke.json": {
+    "utc": "2026-11-18T19:08:43.191122+00:00",
+    "status": "PASS",
+    "variables": 3001,
+    "requested_threads": 32,
+    "effective_threads": 32,
+    "version": [
+      13,
+      0,
+      2
+    ],
+    "objective": 1.0,
+    "scope": "License/runtime check only; not the national model"
+  },
+  "effective_parameters.json": {
+    "Aggregate": 0,
+    "BarConvTol": 0.0001,
+    "BarIterLimit": 5,
+    "Crossover": 0,
+    "CrossoverBasis": 1,
+    "DualReductions": 1,
+    "FeasibilityTol": 1e-06,
+    "InfUnbdInfo": 0,
+    "LogFile": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v2\\gurobi.log",
+    "LogToConsole": 0,
+    "MarkowitzTol": 0.01,
+    "MemLimit": 708.66960384,
+    "Method": 2,
+    "NumericFocus": 2,
+    "OptimalityTol": 1e-06,
+    "OutputFlag": 1,
+    "Presolve": 2,
+    "ScaleFlag": 2,
+    "SoftMemLimit": 687.19476736,
+    "SolutionTarget": 1,
+    "Threads": 32,
+    "TimeLimit": 86400.0
+  },
+  "external_resources_summary.json": {
+    "finished_utc": "2026-11-19T05:20:48.261978+00:00",
+    "pid": 7464,
+    "create_time": 1795028777.0268075,
+    "reason": "PID_EXITED_OR_CHANGED",
+    "peak_rss_bytes": 289640861696,
+    "os_lifetime_peak_rss_bytes": 290670686208,
+    "peak_private_bytes": 439488450560,
+    "minimum_available_bytes": 506532618240,
+    "elapsed_seconds": 36604.84399999998,
+    "note": "Started after MPS read began; OS lifetime peak covers earlier RSS, but pre-start time series is unavailable"
+  },
+  "iterations": [
+    {
+      "utc": "2026-11-19T00:46:52.831649+00:00",
+      "iteration": 0,
+      "runtime_seconds": 19603.512000083923,
+      "primal": 22062451933048.582,
+      "dual": -1929194919163.1235,
+      "pinf": 535611565546.0688,
+      "dinf": 6019457.125588533,
+      "complementarity": 846629400.681334
+    },
+    {
+      "utc": "2026-11-19T01:56:02.836361+00:00",
+      "iteration": 1,
+      "runtime_seconds": 23753.516999959946,
+      "primal": 21288690153289.277,
+      "dual": -1937260718388.6084,
+      "pinf": 516740667021.4937,
+      "dinf": 5781048.882243963,
+      "complementarity": 818418762.5293146
+    },
+    {
+      "utc": "2026-11-19T03:07:27.473623+00:00",
+      "iteration": 2,
+      "runtime_seconds": 28038.15400004387,
+      "primal": 20333743246951.87,
+      "dual": -1940655007756.9077,
+      "pinf": 494220746605.7265,
+      "dinf": 5412812.69669827,
+      "complementarity": 779800745.5111474
+    },
+    {
+      "utc": "2026-11-19T04:18:36.399623+00:00",
+      "iteration": 3,
+      "runtime_seconds": 32307.079999923706,
+      "primal": 19632854300138.176,
+      "dual": -1951391805794.0566,
+      "pinf": 477706019151.8779,
+      "dinf": 4879139.312664515,
+      "complementarity": 747104369.1320229
+    },
+    {
+      "utc": "2026-11-19T04:47:43.906620+00:00",
+      "iteration": 4,
+      "runtime_seconds": 34054.58699989319,
+      "primal": 16295914865864.283,
+      "dual": -1978706972661.032,
+      "pinf": 397670633439.347,
+      "dinf": 2976354.3612363334,
+      "complementarity": 601402190.5360897
+    },
+    {
+      "utc": "2026-11-19T05:17:08.220120+00:00",
+      "iteration": 5,
+      "runtime_seconds": 35818.90100002289,
+      "primal": 9250915293770.227,
+      "dual": -1983603201278.2334,
+      "pinf": 226485111736.3179,
+      "dinf": 2539487.441471007,
+      "complementarity": 362012551.8736844
+    }
+  ],
+  "log_selected": [
+    "Presolve time: 816.29s",
+    "Presolved: 32880062 rows, 36874949 columns, 213287887 nonzeros",
+    "Ordering time: 16233.49s",
+    " Dense cols : 246",
+    " AA' NZ     : 5.200e+08",
+    " Factor NZ  : 1.486e+10 (roughly 150.0 GB of memory)",
+    " Factor Ops : 3.354e+14 (roughly 600 seconds per iteration)",
+    "   0   2.20624519e+13 -1.92919492e+12  1.04e+11 1.14e-13  8.47e+08  19604s",
+    "   1   2.12886902e+13 -1.93726072e+12  1.00e+11 7.02e+02  8.18e+08  23754s",
+    "   2   2.03337432e+13 -1.94065501e+12  9.59e+10 7.60e+02  7.80e+08  28038s",
+    "   3   1.96328543e+13 -1.95139181e+12  9.27e+10 7.19e+02  7.47e+08  32307s",
+    "   4   1.62959149e+13 -1.97870697e+12  7.72e+10 4.00e+02  6.01e+08  34055s",
+    "   5   9.25091529e+12 -1.98360320e+12  4.40e+10 4.08e+02  3.62e+08  35819s",
+    "Barrier performed 5 iterations in 35820.37 seconds (8090.64 work units)",
+    "Iteration limit reached",
+    "User-callback calls 2761903, time in user-callback 199.62 sec"
+  ],
+  "controller_finished": {
+    "utc": "2026-11-19T05:20:47.6459830Z",
+    "solver_pid": 7464,
+    "raw_exit_code": 0,
+    "controller_exit_code": 0,
+    "terminal_exists": true,
+    "output": "C:\\NationalModelBench\\ops_open2050_t32_20261118\\runs\\t32_factor5_v2"
+  },
+  "files": [
+    {
+      "Name": "BarPi.npy",
+      "Length": 434308752
+    },
+    {
+      "Name": "barrier_iterations.jsonl",
+      "Length": 1498
+    },
+    {
+      "Name": "BarX.npy",
+      "Length": 350376776
+    },
+    {
+      "Name": "effective_parameters.json",
+      "Length": 584
+    },
+    {
+      "Name": "effective_parameters.prm",
+      "Length": 464
+    },
+    {
+      "Name": "external_resources.jsonl",
+      "Length": 8392606
+    },
+    {
+      "Name": "external_resources_summary.json",
+      "Length": 478
+    },
+    {
+      "Name": "gurobi.log",
+      "Length": 41821
+    },
+    {
+      "Name": "identity_before_optimize.json",
+      "Length": 1025
+    },
+    {
+      "Name": "license_smoke.json",
+      "Length": 281
+    },
+    {
+      "Name": "Pi.npy",
+      "Length": 434308752
+    },
+    {
+      "Name": "resources.jsonl",
+      "Length": 8568602
+    },
+    {
+      "Name": "terminal.json",
+      "Length": 2108
+    },
+    {
+      "Name": "X.npy",
+      "Length": 350376776
+    }
+  ],
+  "processes": []
+}

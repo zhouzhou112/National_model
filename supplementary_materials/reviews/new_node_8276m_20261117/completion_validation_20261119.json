@@ -1,0 +1,10 @@
+{
+  "five_iterations_and_expected_limit": true,
+  "memory_guard_not_triggered": true,
+  "iteration_records_0_to_5": true,
+  "controller_exit_zero": true,
+  "no_remaining_test_processes": true,
+  "manifest_matches_actual_file_listing": true,
+  "four_vectors_reverified": true,
+  "all_retrieved_small_files_match": true
+}

@@ -1,0 +1,81 @@
+{
+  "utc": "2026-11-19T10:20:38.6726213Z",
+  "scope": "All v2 test output files; originals retained on node; not a production acceptance or T550 backup",
+  "files": [
+    {
+      "path": "BarPi.npy",
+      "bytes": 434308752,
+      "sha256": "bf0beecceaed3abaca6d0344435b4ee252253970545df6a1e5f9ca1d2dd5a98e",
+      "matches_terminal": true
+    },
+    {
+      "path": "barrier_iterations.jsonl",
+      "bytes": 1498,
+      "sha256": "cc0d1950ae371a952b047fbf3de1fbdaea274ab0557be01ca2be4a5b1289e13d"
+    },
+    {
+      "path": "BarX.npy",
+      "bytes": 350376776,
+      "sha256": "adbd2d7cd35eecc35413d4cdb4497cc429e6418770248872df99bd5e5066c601",
+      "matches_terminal": true
+    },
+    {
+      "path": "effective_parameters.json",
+      "bytes": 584,
+      "sha256": "4273d64cbb46a3d6a0c45bf0fc14085d9a21c2f0abe4c0a38b426e5d4180ea22"
+    },
+    {
+      "path": "effective_parameters.prm",
+      "bytes": 464,
+      "sha256": "e26d163f9ca075366a81a4b332b66470a0e3bd7873d6d19bbc7583d9bd26dbd0"
+    },
+    {
+      "path": "external_resources.jsonl",
+      "bytes": 8392606,
+      "sha256": "9b3b198e5afe396417cb01493f04bf77d29caa8b30a6ac32e5e429a30f5fec74"
+    },
+    {
+      "path": "external_resources_summary.json",
+      "bytes": 478,
+      "sha256": "72e8ff9bbb131b4fbff72cfdecc7def48508a9256a01bbdbe13599cf8bc04ebe"
+    },
+    {
+      "path": "gurobi.log",
+      "bytes": 41821,
+      "sha256": "a7e480b728692387ae5726f421fa42a9822b3b94c135f83e876d0d817a6c9abf"
+    },
+    {
+      "path": "identity_before_optimize.json",
+      "bytes": 1025,
+      "sha256": "b124fd0d3f988849410d9814eda5b0dca033da0a0974f52c4c3628ec37dfbfd3"
+    },
+    {
+      "path": "license_smoke.json",
+      "bytes": 281,
+      "sha256": "a3021d0c5da91c515193e5575f883c2ee27a1eebb295f3e332bbcf46fff22cb7"
+    },
+    {
+      "path": "Pi.npy",
+      "bytes": 434308752,
+      "sha256": "bf0beecceaed3abaca6d0344435b4ee252253970545df6a1e5f9ca1d2dd5a98e",
+      "matches_terminal": true
+    },
+    {
+      "path": "resources.jsonl",
+      "bytes": 8568602,
+      "sha256": "5929b5e3b6afe475bda916f3ed5ff799cf3df575669f8d3a565bf25e77a540c1"
+    },
+    {
+      "path": "terminal.json",
+      "bytes": 2108,
+      "sha256": "28b94c92dea5ac0b7372dc656e6a22aa17f5bd1052b24f486d6ee9fd8d0cd0eb"
+    },
+    {
+      "path": "X.npy",
+      "bytes": 350376776,
+      "sha256": "adbd2d7cd35eecc35413d4cdb4497cc429e6418770248872df99bd5e5066c601",
+      "matches_terminal": true
+    }
+  ],
+  "verified": true
+}

@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 10:18UTC终态核验：新节点32线程v2已于05:20UTC完成5轮，按ITERATION_LIMIT(7)退出，SolCount0，非科学收敛解。总墙钟10:14:29；排序4:30:33为云端12.03倍，前5轮均54.05min/轮为云端15.31倍（前三轮约70min，后两轮约29min）。OS峰RSS270.708GiB、private峰409.306GiB、最低可用471.674GiB，未触发内存保护。14件1.586GB输出及4向量SHA复核，小件已回本机；进程/采样器退出，授权改COMPLETED，无新求解/监听。详见new_node_8276m_20261117/FINAL_BENCHMARK_REPORT_20261119_ZH.md；建议先排查宿主机/虚拟化内存与调度，不直接批量排全年敏感性。**
+
 - **2026-11-18 23:59UTC：云端仅LATE5587177运行，第426轮(PInf0.0169/DInf1.01e-6/Compl0.000219)，近10轮三残差下降45.5%/49.8%/46.1%，10.47分钟/轮，未收敛。Conservative三案全量备份19:03UTC COMPLETE，333件16.55GB、9层次VERIFIED、源身份未变、PID3339359退出；当前云端manifest再核一致。正式T550验收/年度对偶恢复/小文件回传待办，不重复备份。**
 
 - **2026-11-18 主图1 v2 四年三情景与省域差异核对。** 作者确认 OPT 指各资源规模各自的固定设施优化运行（OPS）。跨双栏主图、八页补充图、图注和源数据在 `D:/National_model/文献分析与文章定位/图1_v2_四年三情景的负荷结构与省际时序差异_20261118/`，供作者审阅。
@@ -11208,3 +11210,13 @@ Git基准`616fe3b3142f49c3b2c7bcf7c020579fa6f5cc3b`；37测试通过，工具、
 - Git基准fc3e1df9；用户主动询问，执行inspect_test_once.py --compact一次。v2/Python7464 Running，约4h19m；ordering13825s仍未完，对照1349.93s至少10.24倍。预求解816.29对446.41秒；无第0轮/terminal，未完成5轮，不能比较迭代速度。
 - OS全生命周期峰RSS270.708GiB、当前27.822GiB、可用700.908GiB，stderr空。云端525.316GiB是完整作业进程树峰，本次未结束单进程峰不能解释为内存节省或容量验收通过。排序慢原因未定位，不归因单一硬件项。
 - 证据STATUS_20261118T2325Z_ZH.md、status_comparison_20261118T2325Z.json与test_snapshots。仅记录，不改参数/停止/重启；遵守用户纠正：主动查询至少间隔2小时，用户主动询问除外，无新定时监听。下一步在允许频率下关注原任务终态，结束再保全并给完整比较。
+
+
+<!-- node8276m-test-complete-20261119 -->
+### 2026-11-19 10:18UTC — 新节点32线程5轮测试完成与收尾
+
+- Git基准7b7c71bb60dd6baacb955925fd7565497f8fe0ff；冻结测试源码10c0a3cc。用户主动查询后核验，v2从11-18 19:06:17到11-19 05:20:46，总墙钟36868.907秒；Status7/BarIterCount5/SolCount0，按预设上限退出，不是全年最优科学解。控制器/Python退出0，外部采样05:20:48退出，无遗留本任务进程。
+- 排序16233.49秒，对照1349.93秒=12.03倍；5轮耗时4150.005/4284.637/4268.926/1747.507/1764.314秒，均3243.078秒（54.05min），对照211.8秒=15.31倍。后两轮明显变快，不把均值线性外推完整求解。原LP/指纹/消元后规模一致，日志精度下FactorNZ1.486e10、FactorOps3.354e14一致；平台/线程/构建路径不同，不作纯CPU归因。
+- OS全生命周期RSS峰270.708GiB，private提交峰409.306GiB，系统最低可用471.674GiB，未触发保护。云端525.316GiB是完整作业进程树峰，口径不同不能算内存节省率。回调199.62秒约0.55%solver时间，不能单独解释数量级慢；宿主机原因仍未定位。
+- 14个v2输出1,586,380,523bytes逐件SHA，4个向量1,569,371,056bytes与terminal一致，原件留新节点。8个白名单小文件回本机且SHA匹配。v1失败原件保留，未宣称T550全备份。执行授权关闭为COMPLETED并保留旧副本，未启动新的全年求解或监控。
+- 证据FINAL_BENCHMARK_REPORT_20261119_ZH.md、completed_test_evidence、final_comparison、test_output_manifest、completion_validation_20261119.json及completed_small_files_20261119。完成收尾；下一步如作者要求，再只读排查宿主机DRAM/PMem/NUMA/换页/CPU调度。遵守至少2小时主动查询间隔、用户主动询问除外，本次已结束无需继续轮询。
