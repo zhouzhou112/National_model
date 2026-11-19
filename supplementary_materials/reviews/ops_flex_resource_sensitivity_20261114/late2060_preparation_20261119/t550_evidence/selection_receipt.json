@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "initial_free": 845,
+  "final_free": 4879,
+  "forced_preserved": true,
+  "chosen_margin": 0.02,
+  "sha256": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+  "source": "Central LATE2060 reference scores only; future own solution certificate still required"
+}

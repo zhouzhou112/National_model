@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "submission_authorized": false,
+  "submitted": false,
+  "planning_year": 2060,
+  "source_commit": "2d98c37e11895e5ffeb468432a3fcbef873ab13d",
+  "selection_sha256": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+  "free_groups": 4879,
+  "identity_gate": "identity_24h_central_v2/identity_gate.json",
+  "identity_reference_scope": "Central-resource generic entry identity; actual Open2060 tested separately with own Open2050 R1 state",
+  "records": {
+    "selected_1h": {
+      "pid": 709929,
+      "command": [
+        "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/selected_build_2060.py",
+        "--state",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/R1_v1/prepared_state/planning_state_candidate",
+        "--selection",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/final_selection.json",
+        "--output",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/selected_1h"
+      ],
+      "resource": "open",
+      "available_memory_gib": 112.08292388916016,
+      "status": "PASS",
+      "started_at": 1795088609.983689,
+      "returncode": 0,
+      "seconds": 48.23660206794739
+    },
+    "restricted_24h": {
+      "pid": 711144,
+      "command": [
+        "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/repo/supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/restricted_gate24_2060.py",
+        "--state",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/R1_v1/prepared_state/planning_state_candidate",
+        "--selection",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/final_selection.json",
+        "--output",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/restricted_24h"
+      ],
+      "resource": "open",
+      "available_memory_gib": 111.7938232421875,
+      "status": "PASS",
+      "started_at": 1795088658.2224061,
+      "returncode": 0,
+      "seconds": 182.74113583564758
+    },
+    "t550_preflight": {
+      "pid": 715648,
+      "command": [
+        "/home/zz2/National_model_server/envs/cispo-2030-v1/bin/python",
+        "scripts/run_cispo_2030_full_year.py",
+        "--config",
+        "config/optimization_numeric_dac_by_year_v9_a12.json",
+        "--scenario-config",
+        "config/scenarios/ops_open_resource_v1.json",
+        "--solver-config",
+        "config/solver_profiles/barrier_stagea_resource_restricted_agg0_v1_threads44.json",
+        "--planning-year",
+        "2060",
+        "--horizon",
+        "full_year",
+        "--state-in",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/R1_v1/prepared_state/planning_state_candidate",
+        "--allow-candidate-state-in",
+        "--capacity-bound-selection",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/final_selection.json",
+        "--preflight-only",
+        "--output-dir",
+        "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119/t550_preflight"
+      ],
+      "resource": "open",
+      "available_memory_gib": 111.89487838745117,
+      "status": "PASS",
+      "started_at": 1795088840.9651685,
+      "returncode": 0,
+      "seconds": 10.198210000991821
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "pid": 709927,
+  "tool_sha256": "5177ad8143b0301f07b0db6601f5c874b1940570303d6cddf92c4d1d7d135dc2",
+  "submission_authorized": false,
+  "submitted": false,
+  "corrected_identity_gate": "identity_24h_central_v2",
+  "original_stop_retained": true
+}

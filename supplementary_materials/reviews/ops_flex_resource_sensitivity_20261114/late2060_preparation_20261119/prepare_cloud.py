@@ -1,6 +1,6 @@
 """Freeze a reviewable LATE-Open2060 package and preflight it; cannot submit jobs."""
 from pathlib import Path
-import argparse,hashlib,io,json,shlex,subprocess,tarfile,re
+import argparse,hashlib,io,json,shlex,subprocess,tarfile,re,os
 
 HERE=Path(__file__).resolve().parent
 WORK=HERE.parent
@@ -15,8 +15,11 @@ TEMPLATE_SOURCE='20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1'
 LICENSE='/publicfs01/fs1-a8/home/a8s001819/.config/gurobi/licenses/author_wls_20261020_f5e565f5/gurobi.lic'
 DEST=HERE/'deployment'
 
-def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-def load(p):return json.loads(Path(p).read_text(encoding='utf-8'))
+def longpath(p):
+ p=Path(p)
+ return Path('\\\\?\\'+str(p.resolve())) if os.name=='nt' and not str(p).startswith('\\\\?\\') else p
+def sha(p):return hashlib.sha256(longpath(p).read_bytes()).hexdigest()
+def load(p):return json.loads(longpath(p).read_text(encoding='utf-8'))
 def save(p,x):Path(p).write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def remote(code,label):
  header='from pathlib import Path\nimport json,hashlib,subprocess,os,tarfile,shutil\nroot=Path('+repr(ROOT)+')\n'
@@ -56,7 +59,7 @@ def main():
     raw=src.extractfile(member).read()
     if member.name!='AGENTS.md':assert hashlib.sha256(raw).hexdigest()==source['files'][member.name]['sha256'],member.name
     add('repo/'+member.name,raw);sources[member.name]=hashlib.sha256(raw).hexdigest()
-   upstream=HERE/'t550_evidence/R1_v1/prepared_state';state_manifest=load(upstream/'result_manifest.json')
+   upstream=longpath(HERE/'t550_evidence/R1_v1/prepared_state');state_manifest=load(upstream/'result_manifest.json')
    for e in state_manifest['files']:
     p=upstream/e['path'];assert p.stat().st_size==e['bytes'] and sha(p)==e['sha256'];add('upstream_state/'+e['path'],p.read_bytes())
    add('upstream_state/result_manifest.json',(upstream/'result_manifest.json').read_bytes())

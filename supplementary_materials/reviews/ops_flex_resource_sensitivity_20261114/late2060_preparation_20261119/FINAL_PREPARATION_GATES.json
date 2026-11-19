@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "planning_year": 2060,
+  "submitted": false,
+  "submission_authorized": false,
+  "source_commit": "2d98c37e11895e5ffeb468432a3fcbef873ab13d",
+  "regression_tests_covered": 537,
+  "selection_sha256": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+  "selection_margin": 0.02,
+  "free_groups": 4879,
+  "mandatory_initial_free_groups": 845,
+  "selection_state_counts": {
+    "lower": 31215,
+    "upper": 592,
+    "free": 4879
+  },
+  "open_BUILD_AUDIT_sha256": "dd018a0ae38062473b30c2822cbeb549c938c5803443f053cb68b1d7bb5b92b8",
+  "template_release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+  "template_sha256": "ee760128c7f0f064ef9ea8e86cc85f0c0b9355ed8c680f5df74ab43772256ad0",
+  "checks": {
+    "R1": "PASS",
+    "central_resource_entry_identity": "PASS",
+    "actual_open_selected_1h": "PASS",
+    "actual_open_restricted_24h": "PASS",
+    "parameters": "PASS",
+    "source_and_input_identity": "PASS",
+    "T550_preflight": "PASS",
+    "model_matrix_objective_rhs_unchanged_by_selection": true,
+    "other_investment_bounds_unchanged": true,
+    "threads": 44,
+    "production_scenario_entry": "same Open configuration as own Open2050 upstream; no late-entry-base-state flag"
+  },
+  "local_evidence_sha256": {
+    "AUTHORIZATION.json": "a4af59c2ffa5e94fc4f044a367db8fd7294548692bf34329f0803f4266060bdd",
+    "installation_receipt.json": "2cbf0951a2407418c65dbc1f1a2bc711efce8693c54ec55c7d150e9409c14931",
+    "t550_evidence/PREPARATION_GATES_COMPLETE_v2.json": "fb3a17cc7ce3fd3af530dbc280d1f2a569204e0c8569464919424230b9bc927f",
+    "t550_evidence/R1_v1/evidence/cleanup_gate.json": "2cea7047df16085bfe32c667740fa217e3fb53f016776ca6b894aaabd239d013",
+    "t550_evidence/identity_24h_central_v2/identity_gate.json": "7da37b7ac60f7b1d0503e4b807270ec7fc6d3f83620a366c44fc704848e0cf56",
+    "t550_evidence/selected_1h/selection_build_gate.json": "dfdc118c0ba288c5331e6b3ed790f036dff984e6f145460234081a2c566ce507",
+    "t550_evidence/restricted_24h/selection_build_gate.json": "80b36bc247939177402caa505b113c1aa1c6998bfedd35e3a5e13e41bb74d4a3",
+    "t550_evidence/t550_preflight/preflight_report.json": "f29076e46035563d03163de74296a84cdf3fe15fbd6c22316e5eda5fef4801ed",
+    "t550_evidence/selection_receipt.json": "c85e1501cc7db84a1ee7c516f21be17277085ca448308246dfaacb47ee198040",
+    "t550_evidence/final_selection.json": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+    "t550_evidence/R1_v1/prepared_state/result_manifest.json": "fc86818a9939c49d4ddd16fbe93bd724227f4f9aca6187756b28c3c1b64e560f",
+    "t550_evidence/R1_v1/prepared_state/acceptance_relative_v1.json": "ffa510da623fe9c9a362ab7edb82afaa80d9b35fa459b6480d4cacfe6e6e9c03"
+  }
+}

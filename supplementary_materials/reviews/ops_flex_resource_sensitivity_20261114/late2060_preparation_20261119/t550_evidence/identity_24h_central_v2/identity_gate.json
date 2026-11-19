@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "runs": {
+    "unrestricted": {
+      "exit_code": 2,
+      "status": 2,
+      "solution_count": 1,
+      "variables": 353638,
+      "constraints": 226051,
+      "relative_qc": "PASS",
+      "complete_preservation": "COMPLETE",
+      "candidate_preservation_exit": true,
+      "objective": 3207714.9467011876,
+      "state_counts": {
+        "lower": 36686,
+        "upper": 0,
+        "free": 0
+      }
+    },
+    "fixed_from_own_solution": {
+      "exit_code": 0,
+      "status": 2,
+      "solution_count": 1,
+      "variables": 353638,
+      "constraints": 226051,
+      "relative_qc": "PASS",
+      "complete_preservation": "COMPLETE",
+      "candidate_preservation_exit": false,
+      "objective": 3207714.946701186
+    }
+  },
+  "relative_objective_difference": 5.806766437106577e-16,
+  "objective_tolerance": 1e-07,
+  "maximum_capacity_difference_by_family": {
+    "vre_capacity": 0.0,
+    "vre_new": 0.0,
+    "thermal_capacity": 3.1796787425264483e-13,
+    "thermal_new": 3.1796787425264483e-13,
+    "thermal_retrofit_to_ccs": 5.329070518200751e-15,
+    "storage_capacity": 2.859934511434403e-13,
+    "storage_new": 2.859934511434403e-13,
+    "line_capacity": 0.0,
+    "line_new": 0.0,
+    "intra_load_center_capacity": 5.364597654988756e-13,
+    "intra_load_center_new": 5.364597654988756e-13,
+    "hydro_capacity": 0.0,
+    "hydro_new": 0.0,
+    "wave_capacity": 0.0,
+    "wave_new": 0.0,
+    "dac_capacity": 0.0,
+    "dac_new": 0.0,
+    "spur_augmentation": 8.881784197001252e-16,
+    "hydro_spur_augmentation": 0.0,
+    "trunk_augmentation": 0.0
+  },
+  "capacity_tolerance": 1e-09,
+  "scope": "TEST_ONLY_TRUNCATED_HORIZON",
+  "no_original_model_or_input_changed": true
+}
