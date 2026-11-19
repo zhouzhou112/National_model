@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图仅呈现未经协调的需求、签约潜力与风光资源。** 作者统一目录中的 `Figure1.pdf` 和四页 `Figure1_discussion.pdf` 已按同一口径更新。a 给出基准增长倍数，b 给出全年与最高负荷小时的两项省际中位数，d、e 采用参考设施弃电前可发出力。运行协调前后差值单独留作后续图。
+
 - **2026-11-19 首图导师讨论稿与充电基年外核。** 正式中英文图注、四页双语讨论稿与 EV 逐时基年复算已在作者的图 1 统一目录校验。讨论稿入口为 `Figure1_discussion.pdf` 和 `Figure1_discussion.docx`，首图单独矢量文件仍为 `Figure1.pdf`。
 
 - **2026-11-19 首图正式版式和三情景稳健性。** 作者本地统一入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新增地图框内图例、四省比较、31 省高峰窗口电量环及 S11，e 的 18 个 Base 点带 Conservative、Base、Open 最小–最大短须。
@@ -4014,6 +4016,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 21:21 UTC ｜首图按未调节基线重算并同步讨论稿
+
+- Git 基准为 `b20550a1`。按作者决定，图 1 聚焦建筑冷热与车辆充电形成峰荷压力和可签约潜力的双重作用，将优化运行效果留给后续图。更新作者本地统一入口 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`，稿件、主图、补充图与源表保存在该目录。
+- `unmanaged_metrics.py` 核对未调节分项、参考设施和风光可发出力来源。运行 `python draw_figures.py`、`python make_discussion.py --pdf`、`python publish_reader.py`、`python verify_outputs.py`。逐省复核 2060 年三个资源情景的 8,760 小时、两电源、三类用电、六小时及八小时选窗、18 个主点和情景范围。用四页 Word 渲染与正式矢量 PDF 核对中英文图注、地图图例和端点标签。补充图 S5 显示全年与高峰占比的逐省配对。
+- 当前主图 SHA256 为 `03105e6690ea619494aea08677dec0de399a90ca8de0f1ffb01152ab4a3a4778`，汇报 Word 为 `11c8ecc7d0d6d4dfe2b02dc766de575e925bda42b21e93ed40d34e20ffa91ef4`，汇报 PDF 为 `18388822a8a18751238e46e6896416faa30dfe32972ae456b78ccdff7ad69f02`，`交付核验.json` 为 `106103b0a41f0b7d7842e3a07f4f6997e6d90f758869d8c0fc1c1709dcc25431`。时间聚合给出潜在重合上限，逐小时调用效果留到运行分析。下一步为作者与导师讨论该主张。
 
 ### 2026-11-19 20:43 UTC ｜图 1 双语图注、导师讨论稿与基年充电核查
 
