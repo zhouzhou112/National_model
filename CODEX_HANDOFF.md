@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 主图 1 的统一迭代入口。** 作者指定的本地目录为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`。目录含当前主图、补充图、中文读图及出图规范、逐案来源和核验清单。下列 11 月 18 日条目为旧稿历史记录。
+
 - **2026-11-19 10:47UTC：Conservative2030/2040/2060正式验收、年度对偶恢复及T550分析全部PASS，316件418288225bytes验收/小文件已回本机，双端SHA和333原件统计收尾通过，报告已同步T550；证据64d5b13e。LATE最大行独立重构已PASS：河北年度外送53471702，0.015772605GWh/274339.463GWh=5.7493e-8，容差0.274339463GWh；自身双向定价PID603950仍扫描，主worker597322等待，原行审计PID603949已完成，不重复启动。云端0作业，LATE2060仍未提交。**
 
 - **2026-11-19 10:35UTC：云端0运行/0排队，LATE-Open2050于04:22UTC COMPLETED/OPTIMAL，451轮3天17:50，进程树峰651.927GiB；物理相对检查通过、solver条件证据待补。104件5.55GB T550备份10:28UTC COMPLETE，当前只读行定位(独立索引53471702，已识别河北年度外送行)和自身双向证书运行。Conservative2030/2040验收PASS、年度行恢复/分析完成，104/106小文件已回本机SHA通过；2060继续。工具e3a46038，不重解/不提交LATE2060，无监听。**
@@ -3996,6 +3998,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 首图省级负荷与区域典型日独立核算
+
+- 模型证据核对时仓库 HEAD 为 `2d98c37e`。四年三种资源规模的未调节逐时重构、七区固定设施运行与风光曲线、全年可发和实际出力窗口对照均在作者本地定位目录完成。当前主图 PDF 的 SHA256 为 `597f4ca0dd1febdee6139d5598f4295d1ea6a66b411aea44d8a9dd0475d83abf`。
+- 复算入口为同目录 `analyze.py`、`check_generation.py`、`draw_figures.py`、`publish_reader.py`、`verify_outputs.py`，读图入口 `00_图1与读图说明.html`。检查覆盖源文件身份、年度闭合、跨口径统计、字体嵌入、版面与矢量导出。两套旧草图目录已移入回收站，有独立价值的旧数值表另存当前源数据。后续由作者审定正文表述与图稿。
 
 ### 2026-11-19 — 三项Conservative交付完成，LATE行定位通过
 
