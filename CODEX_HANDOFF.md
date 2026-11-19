@@ -4003,6 +4003,7 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
 
 - 模型证据核对时仓库 HEAD 为 `2d98c37e`。四年三种资源规模的未调节逐时重构、七区固定设施运行与风光曲线、全年可发和实际出力窗口对照均在作者本地定位目录完成。当前主图 PDF 的 SHA256 为 `597f4ca0dd1febdee6139d5598f4295d1ea6a66b411aea44d8a9dd0475d83abf`。
 - 复算入口为同目录 `analyze.py`、`check_generation.py`、`draw_figures.py`、`publish_reader.py`、`verify_outputs.py`，读图入口 `00_图1与读图说明.html`。检查覆盖源文件身份、年度闭合、跨口径统计、字体嵌入、版面与矢量导出。两套旧草图目录已移入回收站，有独立价值的旧数值表另存当前源数据。后续由作者审定正文表述与图稿。
+- 最终成图在面板 c 下加入“2060 年同省同电量、O 高于 C 的省份数”，并同步英文图注。该次导出替代本节前一文件指纹。最终主图 PDF 的 SHA256 为 `6f90b53de96e6b98db28aa26d72086a8cfa86bf3f82c2e595fe652eecc5a00f3`，本地 `交付核验.json` 的 SHA256 为 `845a3426e33502faa220f5b0f7dded4d12f1071977339c241b6d0d26a2d5dc04`。
 
 ### 2026-11-19 — 三项Conservative交付完成，LATE行定位通过
 
