@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reference": "LATE-Central2050",
+  "target": "LATE-Open2050",
+  "reference_P_million_cny": 5700892.181056213,
+  "reference_D_million_cny": 5697973.029815089,
+  "reference_B_million_cny": 566.3905795203025,
+  "target_P_million_cny": 5656097.087967489,
+  "target_D_million_cny": 5652100.157790446,
+  "target_B_million_cny": 6517.873876122278,
+  "point_saving_yi_cny": 447.9509308872372,
+  "lower_saving_yi_cny": 413.0955126807932,
+  "upper_saving_yi_cny": 553.0989714188919,
+  "formula": "[D_reference-B_reference-P_target, P_reference-D_target+B_target]",
+  "reference_certificate_sha256": "b1ce3af43db2179aa4f1f901cc2beaaf1da50ebc2bbcf3cff43448368b959c15",
+  "target_acceptance_sha256": "d998141a644c5da7d628531020131852e05ec463487a219b7e82f75b84d77003",
+  "source_identity": {
+    "result_manifest.json": {
+      "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+      "bytes": 13815
+    },
+    "solve_report.json": {
+      "sha256": "ea273141bfa19eb723395943de1288288d204d290b836aadeb353caf9fbe1853",
+      "bytes": 161981,
+      "source": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760/solve_report.json"
+    }
+  },
+  "meaning": "Same REF2040 upstream; own resource inputs and restricted sets differ, both certificate bounds retained"
+}

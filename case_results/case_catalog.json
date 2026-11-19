@@ -507,7 +507,7 @@
       "version": "v1",
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
-      "acceptance_status": "PENDING_ROW_AND_DIRECTIONAL_CERTIFICATE",
+      "acceptance_status": "PASS_CONDITIONAL_DISCLOSURE",
       "backup_status": "COMPLETE",
       "release": "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
       "job_id": "5587177",
@@ -530,7 +530,17 @@
       "backup_verified_at_utc": "2026-11-19T10:28:18.774853+00:00",
       "source_result_manifest_sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904",
       "backup_operation": "20261119_resource_lateopen2050_completed",
-      "peak_process_tree_rss_gib": 651.9272613525391
+      "peak_process_tree_rss_gib": 651.9272613525391,
+      "acceptance_path": "case_results\\by_case\\LATE-Open\\2050\\20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1\\acceptance_resource_late_20261119\\acceptance_record.json",
+      "delivery_sha_status": "PASS",
+      "local_payload_files": 107,
+      "local_payload_bytes": 138036187,
+      "annual_row_duals_recovered": 1134,
+      "author_result_adoption": "PENDING_AUTHOR_REVIEW",
+      "restriction_B_million_cny": 6517.873876122278,
+      "restriction_B_over_objective": 0.0011523624461800862,
+      "comparison_resolve_automatic": false,
+      "acceptance_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\completion_20261119\\RESOURCE_SENSITIVITY_ACCEPTANCE_REPORT_ZH.md"
     },
     {
       "case": "OPS-Open",
@@ -781,5 +791,5 @@
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-18T23:59:32Z",
-  "last_catalog_update_utc": "2026-11-19T10:29:04.293803+00:00"
+  "last_catalog_update_utc": "2026-11-19T10:59:47Z"
 }

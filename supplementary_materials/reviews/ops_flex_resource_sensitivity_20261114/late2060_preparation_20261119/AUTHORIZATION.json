@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-19",
+  "phase": "PREPARATION_ONLY",
+  "submission_authorized": false,
+  "held_submission_authorized": false,
+  "upstream": "LATE-Open2050 conditional acceptance PASS, B/P 0.0011523624461800862",
+  "mandatory_2050_changed_sites": "Union abs(capacity_OPEN2050 - capacity_LATE2050)>=0.01GW or abs(capacity_OPEN2050 - capacity_REF2050)>=0.01GW",
+  "mandatory_groups": 576,
+  "base_free_groups": 845,
+  "reference_pricing": "own central LATE2060 MPS/BarPi, target at most about 5000 free groups",
+  "threads": 44
+}

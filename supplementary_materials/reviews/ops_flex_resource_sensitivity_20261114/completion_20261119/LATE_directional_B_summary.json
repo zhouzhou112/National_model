@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "negative_direction_groups": 1605,
+  "negative_direction_zero_original_range": 1185,
+  "positive_improvement_groups": 420,
+  "B_million_cny": 6517.873876122278,
+  "province_count": 28,
+  "source_prices_sha256": "898b2a408d64a9981543d2163a5d1ce17786f87d2306e4c239071466813858ca"
+}

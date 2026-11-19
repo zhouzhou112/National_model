@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "as_of_utc": "2026-11-19T10:59:47.296984+00:00",
+  "late_payload_files": 107,
+  "original_files_stats_unchanged": 104,
+  "acceptance_json_sha256": "d998141a644c5da7d628531020131852e05ec463487a219b7e82f75b84d77003",
+  "report_sync_sha256": {
+    "delivery_summary.json": "968338e4df2137601c1eecc9c1a1d0a286420c51df709a820de763d79b93a164",
+    "LATE_directional_B_by_province_technology.csv": "dc59523c6921a0a30cf18192cc21df02757d86887f99659f7b8560f18134c9b9",
+    "LATE_directional_B_summary.json": "a819ebad1e42174e918a329cf101d383b50ca8e2d8602bcfa8a0ebe19c9e9e22",
+    "LATE_Open_vs_central.json": "c53968868db0559bce3967c941d43bc760dfc2b90601ccb3c574a825454b0986",
+    "Open_vs_Conservative_intervals.csv": "37bb4ef536db9a27acde989bc76f41b712ddefff6aa477980cddee8bcc3b2dcd",
+    "OPS_resources_four_year_costs.csv": "f34f86264dc149d3b09f05f5a51fe0f2540b05881c662337f39037086033a95f",
+    "OPS_resources_four_year_services.csv": "4a178760e1ca8671ae943342af4fcd02c5b6e44a39b169a94789243638c0ff23",
+    "OPS_resources_four_year_summary.json": "2ce255e54710a2b1914adc5e925252ac99a80e58c73318e1f30bac3b2a47b14c",
+    "RESOURCE_SENSITIVITY_ACCEPTANCE_REPORT_ZH.md": "4d9f63f7c53357997a29e431665bf86a88094918513c0313116b2cb33e423d4b"
+  },
+  "remote_report_directory": "/home/zz2/National_model_server/resource_comparison_20261119/final_report"
+}

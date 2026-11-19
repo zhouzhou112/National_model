@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "files": 423,
+  "bytes": 556324412,
+  "cases": [
+    {
+      "status": "PASS",
+      "case": "OPS-Conservative-2030",
+      "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2030\\20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "files": 104,
+      "bytes": 138179384,
+      "maximum_file_bytes": 30163317,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    },
+    {
+      "status": "PASS",
+      "case": "OPS-Conservative-2040",
+      "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2040\\20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "files": 106,
+      "bytes": 139962712,
+      "maximum_file_bytes": 30173177,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    },
+    {
+      "status": "PASS",
+      "case": "OPS-Conservative-2060",
+      "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2060\\20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "files": 106,
+      "bytes": 140146129,
+      "maximum_file_bytes": 30085542,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    },
+    {
+      "status": "PASS",
+      "case": "LATE-Open-2050",
+      "release": "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\LATE-Open\\2050\\20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "files": 107,
+      "bytes": 138036187,
+      "maximum_file_bytes": 30132006,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_BOUNDARY_SELECTION_NOT_CANDIDATE_SCREEN"
+      }
+    }
+  ],
+  "late_B_million_cny": 6517.873876122278,
+  "late_B_over_objective": 0.0011523624461800862,
+  "late_2060_submitted": false
+}

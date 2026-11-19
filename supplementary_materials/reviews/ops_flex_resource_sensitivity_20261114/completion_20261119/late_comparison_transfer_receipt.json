@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "files": {
+    "LATE_Open_vs_central.json": {
+      "bytes": 1367,
+      "sha256": "c53968868db0559bce3967c941d43bc760dfc2b90601ccb3c574a825454b0986"
+    },
+    "LATE_directional_B_by_province_technology.csv": {
+      "bytes": 2026,
+      "sha256": "dc59523c6921a0a30cf18192cc21df02757d86887f99659f7b8560f18134c9b9"
+    },
+    "LATE_directional_B_summary.json": {
+      "bytes": 304,
+      "sha256": "a819ebad1e42174e918a329cf101d383b50ca8e2d8602bcfa8a0ebe19c9e9e22"
+    }
+  }
+}

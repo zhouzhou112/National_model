@@ -13,6 +13,7 @@ def main():
  cons=load(HERE/'acceptance_batch3_20261119/case_summaries.json');perf=load(HERE/'acceptance_batch3_20261119/terminal_performance.json');four=load(OUT/'OPS_resources_four_year_summary.json');comparison=load(OUT/'LATE_Open_vs_central.json')
  late_receipt=load(HERE/'acceptance_late_20261119/LATE-Open-2050_return_receipt.json');late=Path(late_receipt['local_directory'])/'acceptance_resource_late_20261119';a=load(late/'acceptance_record.json');analysis=load(late/'analysis/analysis_summary.json');row=a['row'];cert=a['certificate'];assert a['status']==analysis['status']=='PASS'
  receipts=[load(HERE/'acceptance_batch3_20261119'/f'OPS-Conservative-{y}_return_receipt.json') for y in (2030,2040,2060)]+[late_receipt];assert all(r['all_bytes_sha_match'] for r in receipts)
+ direction=load(OUT/'LATE_directional_B_summary.json')
  rows=[]
  for y in (2030,2040,2060):
   t=perf[f'ops_conservative_{y}'];rows.append([f'OPS-Conservative {y}',t['iterations'],{2030:'11:16:20',2040:'16:32:15',2060:'16:11:04'}[y],f"{t['peak_process_tree_rss_gib']:.3f}",'PASS'])
@@ -25,6 +26,7 @@ def main():
  '## 2. LATE-Open2050独立行定位与双向定价','',
  f"最大违反索引53471702独立定位为`{row['name']}`，河北年度外送汇总等式；变量族为年度外送GWh与8760小时省际正向/交流反向GW流量。原MPS变量、约束名称和sense完整顺序摘要均与本解checkpoint一致。残差{row['residual_gwh']:.12g} GWh，年度量级{row['row_magnitude_gwh']:.9f} GWh，相对比例{row['relative_residual']:.9g}，容差`max(1e-3,1e-6×年度电量)`={row['tolerance_gwh']:.9f} GWh；在容差内。完整245281项行系数/BarX重构留T550，回传摘要含SHA与路径。",'',
  f"本解自身BarPi双向证书：**B={a['screening_B_million_cny']:.9f} million CNY（{a['screening_B_million_cny']/100:.6f}亿元），B/P={a['B_over_objective']:.9g}**；固定站点×技术组{cert['fixed_sites']}个，其中{cert['negative_fixed_sites']}组有正的潜在改进上界。上下界固定分别计算增加/减少方向，并保留相应接入线约束的解析关系；没有把参考解价格当作本解证书。逐组价格、负价组与上下界rc_ratio分布已回传。",'',
+ f"负方向约化成本组数为{direction['negative_direction_groups']}，其中{direction['negative_direction_zero_original_range']}组原始可动区间为零；实际对B有正贡献的是{direction['positive_improvement_groups']}组，覆盖{direction['province_count']}省。两种计数不混用，省码×技术×固定方向及B贡献见LATE_directional_B_by_province_technology.csv，全部方向价格在逐案包内。",'',
  f"P={a['P_million_cny']:.9f}、D={a['D_million_cny']:.9f}、P−D={a['primal_dual_gap_million_cny']:.9f} million CNY；B为原对偶差的{100*a['B_to_original_gap']:.4f}%。B/P≤1e-2，满足近优性条件。比较用途是否需要作者考虑重解：{'B/P>1e-4，须报告作者决定，不自动重解' if a['comparison_resolve_requires_author'] else 'B/P≤1e-4，不触发比较用途重解报告阈值'}。",'',
  f"验收使用的终态回调PInf={a['barrier_primal_infeasibility']:.12g}；日志打印PInf=0.00394，尺度不同，不能混作残差反弹。全部已执行物理相对检查、独立最大行容差、自身证书及终态范围满足作者11月6日规则，solver转为条件披露，新旁置记录PASS；原HARD_FAIL记录未改。原模型未求解第二次，固定集未放回。",'',
  '## 3. LATE成本比较','',

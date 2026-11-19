@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "as_of_utc": "2026-11-19T11:01:37.255777+00:00",
+  "manifest_sha256": {
+    "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67",
+    "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+    "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed",
+    "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904"
+  },
+  "queue": ""
+}

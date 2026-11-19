@@ -1,0 +1,105 @@
+{
+  "status": "AUDITED_NO_FINAL_SELECTION",
+  "source_identity": {
+    "REF2060": {
+      "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+          "bytes": 13458
+        },
+        "vre_capacity.csv": {
+          "sha256": "1309717c54d35060948bd5a342848d392dcedf7fd73c0c0f115f19c9e9749c29",
+          "bytes": 3760926,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/vre_capacity.csv"
+        }
+      }
+    },
+    "LATE2060": {
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "fe3a1e02dcce0564a00f3d818954d727192abfe21d1302b527e47ecd871cf162",
+          "bytes": 13813
+        },
+        "vre_capacity.csv": {
+          "sha256": "136e617012fc72ce0070ba3473048c3816fbd02cd724e243c91ac91b5d5bd53b",
+          "bytes": 3454866,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/output_8760/vre_capacity.csv"
+        }
+      }
+    },
+    "PLAN2060": {
+      "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "2769049a1e38dd81ad3b0baef4fa1eee0696811bee4d095979ae88057438514d",
+          "bytes": 13810
+        },
+        "vre_capacity.csv": {
+          "sha256": "d17b0e8bde6be8af375f634fd834c2ad1c4311d04961e550722ae62e186089e6",
+          "bytes": 3459237,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv"
+        }
+      }
+    },
+    "REF2050": {
+      "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+          "bytes": 13452
+        },
+        "vre_capacity.csv": {
+          "sha256": "268c454afcd3d278c86ccf02cf2f6b7417e3a5fa89d8eb738bcc1e22f775e29d",
+          "bytes": 3794637,
+          "source": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/vre_capacity.csv"
+        }
+      }
+    },
+    "LATE2050": {
+      "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "46e39579d1d5ef4bcef80d722e4586a0c92b10019920db2a2ae5a051fbbf035c",
+          "bytes": 13815
+        },
+        "vre_capacity.csv": {
+          "sha256": "774df0a6ba1152f58ec2e3c3a25fc2b0b41d9d0ddc6bfa35efe1f0490a129e33",
+          "bytes": 3424942,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/output_8760/vre_capacity.csv"
+        }
+      }
+    },
+    "OPEN2050": {
+      "release": "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "files": {
+        "result_manifest.json": {
+          "sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904",
+          "bytes": 14144
+        },
+        "vre_capacity.csv": {
+          "sha256": "17bf4698435e1e69b02befcd2d25936a6262e375cb1aebc91415285d852c39db",
+          "bytes": 2613928,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1/output_8760/vre_capacity.csv"
+        }
+      }
+    }
+  },
+  "sites": 36686,
+  "common_state_counts": {
+    "lower": 35399,
+    "upper": 876,
+    "free": 411
+  },
+  "mandatory_change_candidate_counts": {
+    "vs_LATE2050_ge_10MW": 434,
+    "vs_REF2050_ge_10MW": 527,
+    "positive_new_build_ge_10MW": 5537,
+    "positive_new_build_ge_1MW": 6120,
+    "union": 6275,
+    "common_free_plus_union": 6440
+  },
+  "classification": "lower-first cap-floor<0.01GW, else upper-cap<0.01GW, else free; common states across same-year REF/LATE/PLAN",
+  "no_inputs_or_original_outputs_changed": true
+}
