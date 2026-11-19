@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图共同基年与风光发电份额。** 作者本地固定入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前 b、c 采用 2025 年共同基线与绝对量；d 为省内先算的重合电量堆叠及一张风电／光伏发电份额图。最新文件指纹见本日版本条目。
+
 - **2026-11-19 首图作者修订。** 图 1 的固定入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前主图采用同年共同负荷 P99 换算、独立重构峰谷与爬坡、省级冷热匹配和七地区实际功率。当前文件身份以本节最新记录为准。
 
 - **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**
@@ -4004,6 +4006,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 首图共同基年、绝对负荷特性和按负荷选时的发电份额
+
+- 核对基准 Git `93ce38b1`。在作者本地固定目录更新 `integrated_metrics.py`、`check_generation.py`、`draw_figures.py`、`publish_reader.py`、`verify_outputs.py`、读图说明、源表及导出。主图 PDF SHA256 为 `0c2a20761e37d19a8730b1aa4e66c0ff340a6333a599ffa1e865db754d38071f`，最终目录的 `交付核验.json` SHA256 为 `10b5f464efb342568c82bb783dc9278ede4d5050e1ae3b5458a3351a7f3d924b`。
+- 命令为 `integrated_metrics.py --loads`、`integrated_metrics.py --generation`、`draw_figures.py`、`publish_reader.py`、`verify_outputs.py`。校对三套 2025 省时负荷、12 案未来负荷、2060 三个已保全运行解和年度分省发电报表。b、c 统计基准及实际单位、三类用电窗口方向、分子分母、6/8 小时和九色分类均有源表。版面、字体、矢量、图 d 放大预览、补充图与本地链接已核验。逐省先匹配与全国先聚合、实际发电与可发出力的差异写入作者本地补充结果。下一步为作者审阅首图及其正文表述。
 
 ### 2026-11-19 — 首图的签约上限、负荷口径与区域匹配复核
 
