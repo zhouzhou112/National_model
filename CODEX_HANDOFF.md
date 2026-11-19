@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图 b 更新为每省一条年度合计占比虚线。** 高峰分项使用整圆三色扇区，虚线由圆心指向三类用电的全年合计占比。右下角用同源青海符号六倍放大示意，P99 圆面积口径、三页讨论稿及作者统一入口沿用既有约定。
+
 - **2026-11-19 首图 b 的省内分项对照与三页讨论稿。** 作者统一目录的每个省级符号同时表示当地高峰和全年的供暖、制冷、充电构成，右下仅为图例。双语讨论稿共三页，2025 年充电专项核查归入技术说明。
 
 - **2026-11-19 首图仅呈现未经协调的需求、签约潜力与风光资源。** 作者统一目录中的 `Figure1.pdf` 和四页 `Figure1_discussion.pdf` 已按同一口径更新。a 给出基准增长倍数，b 给出全年与最高负荷小时的两项省际中位数，d、e 采用参考设施弃电前可发出力。运行协调前后差值单独留作后续图。
@@ -4018,6 +4020,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 22:00 UTC ｜省级全年合计占比径向虚线与单一放大图例
+
+- Git 基准 `dce0441f`。仅在作者的 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/` 迭代 b 的符号、双语图注、三页汇报稿和读图说明。每省三个高峰分项对同期总电量取比例，单条中性虚线按全年三类电量合计除以全省全年电量定角，零点在正上方。右下角为青海真实数据的六倍放大示意。
+- 以 `draw_figures.main_figure(draw_figures.time_resolution_table())` 直接重绘，运行 `make_discussion.py --pdf`、`publish_reader.py` 和 `verify_outputs.py`。核对 31 条径向虚线的角度与端点、31 省的三个峰时分项、图例的六倍直径及 300/600 dpi 下各条虚线的明暗间隔。三页 Word 逐页检查，主图像素变化仅落在 b。图 b 放大图由原矢量源以 720 dpi 光栅化。
+- 主图 SHA256 为 `1241a7d26851579fd21734a8f0bd953a7cfa26c5b6beea91415ccd9e9c5b52fd`，汇报 Word 为 `cd3ff5fd9dc69b254164ad178c0f3016e439639121157bb0a077c5c454b1e04c`，汇报 PDF 为 `ef41d88ef16bf2946df24cacaedcb90c5ec2b1c51d896e0f80f68349c28f88da`，最终核验记录为 `0b572ba3d6405e6d5d5350c3c3790b5dd24ddeec421a49342ac811f42f0c4e0d`。小尺寸符号可用放大图及矢量 PDF 阅读。下一步为作者与导师讨论首图。
 
 ### 2026-11-19 21:42 UTC ｜图 b 逐省高峰与全年构成及讨论稿精简
 
