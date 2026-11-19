@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**
+
 - **2026-11-19 12:10UTC：四案验收与回传已完成，423件556324412bytes双端SHA通过；LATE2050条件PASS，B=6517.873876million CNY/B÷P=0.00115236245，接受并披露、不自动重解。作者仅授权2060准备，明确不提交；R1、基准入口恒等性、本案Open1h/24h、参数及双端preflight全部PASS。2060清单margin0.02、4879自由/31215下界/592上界，含强制845自由组；云端新包20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1已冻结515文件，source52958cf1，无提交记录/held作业、队列空。详见completion_20261119总报告及late2060_preparation_20261119/PREPARATION_REPORT_ZH.md。**
 
 - **2026-11-19 10:47UTC：Conservative2030/2040/2060正式验收、年度对偶恢复及T550分析全部PASS，316件418288225bytes验收/小文件已回本机，双端SHA和333原件统计收尾通过，报告已同步T550；证据64d5b13e。LATE最大行独立重构已PASS：河北年度外送53471702，0.015772605GWh/274339.463GWh=5.7493e-8，容差0.274339463GWh；自身双向定价PID603950仍扫描，主worker597322等待，原行审计PID603949已完成，不重复启动。云端0作业，LATE2060仍未提交。**

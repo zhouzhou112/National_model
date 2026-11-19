@@ -1,5 +1,9 @@
 # CISPO 2030/8760 server runbook
 
+## LATE-Open2060已获新授权并release（2026-11-19）
+
+Job5658666已提交放行，当前等待Resources。准备阶段“未授权提交”的记录保留为历史，新授权见同目录release_20261119/AUTHORIZATION.json及云端author_release_20261119.json。只读状态入口为`release_authorized.py status`或`snapshot_batch1.py`，不得再运行submit-release或prepare。冻结源码52958cf1、44线程/64CPU750G/UNLIMITED/no-requeue及≥700GiB启动门槛不变。节点启动后核AllocTRES、startup_resources、smoke和全年resource_structure_audit；失败保全，不自动重跑，不建监听。
+
 ## LATE-Open2060已准备但未授权提交（2026-11-19）
 
 本案全部准备门禁及T550/云端preflight PASS，515文件已冻结，release=`20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1`；source52958cf1，44线程/64CPU750G/UNLIMITED/no-requeue/启动可用≥700GiB。作者明确“先完成准备并汇报，暂不提交”，包括held；当前无作业号/无submission.json。`prepare_cloud.py`只有prepare/preflight/status，不能用它提交；不要重复prepare覆盖已冻结包。

@@ -1,0 +1,36 @@
+{
+  "job_id": "5658666",
+  "status": "RELEASED",
+  "held_control": "JobId=5658666 JobName=late_open_2060_t44 UserId=a8s001819(8005717) GroupId=a8s001819(8005717) MCS_label=N/A Priority=0 Nice=0 Account=bscc-a8 QOS=normal WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=UNLIMITED TimeMin=N/A SubmitTime=2026-11-19T20:43:13 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-19T20:43:13 Scheduler=Main Partition=amd_a8_768 AllocNode:Sid=ln301:3613113 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=64,mem=750G,node=1,billing=64 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=125 MinMemoryNode=750G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1/continuation.sbatch WorkDir=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1 StdErr=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1/slurm-5658666.err StdIn=/dev/null StdOut=/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1/slurm-5658666.out Power= TresPerTask=cpu:64 \n",
+  "pre_release_recheck": {
+    "status": "PRE_RELEASE_RECHECK_PASS",
+    "as_of_utc": "2026-11-19T12:43:13.566410+00:00",
+    "frozen_files_verified": true,
+    "expected": {
+      "release_manifest_sha256": "97f939102e142ab5c843b5c54520f68787d08a3b6aa150a34dbd98cc426390c4",
+      "selection_sha256": "f3d352f39d549d1c9d855a298a616effbccdbc35ed35312d6965d6f1e32e9219",
+      "script_sha256": "a12ae2a9aeaffeb05fd2573137650d55e68110751973583ab3f6318778c85b24"
+    },
+    "queue_before": "",
+    "license_path_only": true,
+    "credential_contents_read": false
+  },
+  "author_authorization": {
+    "date": "2026-11-19",
+    "authorization": "User explicitly requested continuing the solve after reviewing preparation; engineering readiness explained without promising convergence or unrestricted optimality",
+    "user_instruction": "也就是说是高度靠谱的对吗，如果是就继续求解吧",
+    "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+    "submission_authorized": true,
+    "automatic_resolve": false,
+    "resources": {
+      "threads": 44,
+      "cpus": 64,
+      "memory": "750G",
+      "time_limit": "UNLIMITED",
+      "requeue": false,
+      "minimum_available_memory_gib": 700
+    },
+    "as_of_utc": "2026-11-19T12:43:13.566410+00:00",
+    "frozen_preparation_records_retained": true
+  }
+}

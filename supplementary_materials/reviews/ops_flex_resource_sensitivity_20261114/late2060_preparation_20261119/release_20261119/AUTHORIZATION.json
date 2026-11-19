@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-19",
+  "authorization": "User explicitly requested continuing the solve after reviewing preparation; engineering readiness explained without promising convergence or unrestricted optimality",
+  "user_instruction": "也就是说是高度靠谱的对吗，如果是就继续求解吧",
+  "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+  "submission_authorized": true,
+  "automatic_resolve": false,
+  "resources": {
+    "threads": 44,
+    "cpus": 64,
+    "memory": "750G",
+    "time_limit": "UNLIMITED",
+    "requeue": false,
+    "minimum_available_memory_gib": 700
+  }
+}

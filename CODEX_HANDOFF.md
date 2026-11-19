@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**
+
 - **2026-11-19 12:10UTC：四案验收与回传已完成，423件556324412bytes双端SHA通过；LATE2050条件PASS，B=6517.873876million CNY/B÷P=0.00115236245，接受并披露、不自动重解。作者仅授权2060准备，明确不提交；R1、基准入口恒等性、本案Open1h/24h、参数及双端preflight全部PASS。2060清单margin0.02、4879自由/31215下界/592上界，含强制845自由组；云端新包20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1已冻结515文件，source52958cf1，无提交记录/held作业、队列空。详见completion_20261119总报告及late2060_preparation_20261119/PREPARATION_REPORT_ZH.md。**
 
 - **2026-11-19 主图 1 的统一迭代入口。** 作者指定的本地目录为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`。目录含当前主图、补充图、中文读图及出图规范、逐案来源和核验清单。下列 11 月 18 日条目为旧稿历史记录。
@@ -4000,6 +4002,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 作者放行LATE-Open2060
+
+- 用户明确“如果是就继续求解吧”；已说明工程门禁可靠但不保证收敛或受限误差，按新授权放行既有准备包。AGENTS追加本次决定，取代该案此前暂不提交安排，其他科学/保护规则不变。
+- 工具commit906dd578，冻结运行源码52958cf1。命令release_authorized.py submit-release/status；实际重新sha256sum核515文件、manifest与4879自由清单SHA、已通过preflight/门禁、44线程/Method2/Cross0/Aggregate0/NF2/1e-4、注册WLS路径字符串，队列0后提交。不读取凭据或改冻结源码/输入/参数/脚本。
+- Job5658666先held，核NumCPUs64/ReqTRES750G/billing64/UNLIMITED/no-requeue和目录，随即release。2026-11-19T12:43:32.877168+00:00为PENDING(Resources)，无节点/启动内存/smoke记录；未把请求资源当实际分配。
+- 证据late2060_preparation_20261119/release_20261119/AUTHORIZATION.json、release.json及时间戳状态、LAUNCH_REPORT_ZH.md；云端新增author_release_20261119.json/release_recheck/submission/release_receipt，原冻结准备阶段False元数据保持历史原样。
+- 下一步只读查既有5658666状态和启动检查，不重复提交；结束按完整T550备份、relative_v1、原MPS独立行定位与自身双向证书、小文件回传规则。失败保全不自动重跑；无后台监听。
+
 
 ### 2026-11-19 — 四案正式交付与LATE-Open2060准备完成（不提交）
 
