@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 10:35UTC：云端0运行/0排队，LATE-Open2050于04:22UTC COMPLETED/OPTIMAL，451轮3天17:50，进程树峰651.927GiB；物理相对检查通过、solver条件证据待补。104件5.55GB T550备份10:28UTC COMPLETE，当前只读行定位(独立索引53471702，已识别河北年度外送行)和自身双向证书运行。Conservative2030/2040验收PASS、年度行恢复/分析完成，104/106小文件已回本机SHA通过；2060继续。工具e3a46038，不重解/不提交LATE2060，无监听。**
+
 - **2026-11-19 10:18UTC终态核验：新节点32线程v2已于05:20UTC完成5轮，按ITERATION_LIMIT(7)退出，SolCount0，非科学收敛解。总墙钟10:14:29；排序4:30:33为云端12.03倍，前5轮均54.05min/轮为云端15.31倍（前三轮约70min，后两轮约29min）。OS峰RSS270.708GiB、private峰409.306GiB、最低可用471.674GiB，未触发内存保护。14件1.586GB输出及4向量SHA复核，小件已回本机；进程/采样器退出，授权改COMPLETED，无新求解/监听。详见new_node_8276m_20261117/FINAL_BENCHMARK_REPORT_20261119_ZH.md；建议先排查宿主机/虚拟化内存与调度，不直接批量排全年敏感性。**
 
 - **2026-11-18 23:59UTC：云端仅LATE5587177运行，第426轮(PInf0.0169/DInf1.01e-6/Compl0.000219)，近10轮三残差下降45.5%/49.8%/46.1%，10.47分钟/轮，未收敛。Conservative三案全量备份19:03UTC COMPLETE，333件16.55GB、9层次VERIFIED、源身份未变、PID3339359退出；当前云端manifest再核一致。正式T550验收/年度对偶恢复/小文件回传待办，不重复备份。**
@@ -3992,6 +3994,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — LATE2050终态、备份闭合与四案验收继续
+
+- Git工具e3a46038；原模型/数据/冻结release不变。LATE5587177于04:22:33UTC正常完成451轮，总3天17:50:42，P=5656097.087967489、D=5652100.157790446 million CNY，进程树峰651.927GiB。验收回调PInf0.0193882与日志打印0.00394尺度不同，不混作反弹；内置relative_v1仅solver未过，物理通过、水库暂缓。
+- T550恢复后先核目标/旧operation/global lock，104件5550464171bytes单次完整备份于10:28:18UTC COMPLETE，三层VERIFIED/源身份未变；operation=20261119_resource_lateopen2050_completed。工具backup_late_completed.py复用原引擎，加入原capacity_selection。
+- 用户明确继续四案验收/分析/回传；Conservative有限worker首次因工具namespace __init__缺config在导入阶段退出（无科学计算），新v2空namespace初始化复用评估器；失败日志保留。v2 PID588798，2030/2040已PASS并各恢复1134行、分析完成，104件138179384bytes/106件139962712bytes已回本机SHA通过；2060继续。
+- LATE有限worker PID597322，先全量重读原件SHA/年度行序，随后并行原MPS+BarX行重构和自身BarPi双向证书；本案独立索引53471702已定位province_annual_external_sent_p13，残差重构和证书仍待完成。条件合取5项小测试PASS；无求解器调用。
+- 来源与证据：ops_flex_resource_sensitivity_20261114/{late_completed_backup_20261119,acceptance_batch3_20261119,acceptance_late_20261119}及case_results按案例目录。下一步先读旧process/results，不重复备份或计算；证据齐后判定LATE、整理报告和小文件、收尾SHA同步。B超门槛/需要重解先报作者；LATE2060必须另经作者确认。
+
 
 ### 2026-11-18 — Conservative三年完整备份闭合
 
