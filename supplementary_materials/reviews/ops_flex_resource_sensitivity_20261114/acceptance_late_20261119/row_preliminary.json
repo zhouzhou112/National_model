@@ -1,0 +1,47 @@
+{
+  "status": "ROW_VERIFIED_CERTIFICATE_PENDING",
+  "row": {
+    "name": "province_annual_external_sent_p13",
+    "province_code": 13,
+    "family": "province_annual_external_sent",
+    "unit": "GWh",
+    "scope": "8760 one-hour periods",
+    "row_magnitude_gwh": 274339.46258537844,
+    "residual_gwh": 0.01577260543436406,
+    "relative_residual": 5.749302446583089e-08,
+    "tolerance_gwh": 0.27433946258537845,
+    "ratio_to_tolerance": 0.05749302446583089,
+    "passed": true,
+    "rule": "AGENTS 2026-10-30 annual energy row: max(1e-3 GWh,1e-6*annual row energy)",
+    "equation": "province_annual_external_sent_gwh = sum(outgoing forward GW and outgoing AC reverse GW)*1h",
+    "term_families": {
+      "flow_forward_gw": {
+        "count": 227760,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -79227.29536762966
+      },
+      "flow_reverse_ac_gw": {
+        "count": 17520,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -195112.16721774876
+      },
+      "province_annual_external_sent_gwh": {
+        "count": 1,
+        "coefficient_values": [
+          1.0
+        ],
+        "contribution": 274339.446812773
+      }
+    }
+  },
+  "counts": {
+    "variable": 43797081,
+    "constraint": 54288578
+  },
+  "source_result_manifest_sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904",
+  "row_audit_sha256": "2e9282de43d2382bd86a69f5f4112bec9bba5db81edfc62bcb8b0bf829fc56bb"
+}

@@ -5,7 +5,7 @@ HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2]
 CASES={'LATE-Open-2050':('LATE-Open',2050,'20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1')}
 REMOTE=r'''
 from pathlib import Path
-import hashlib,json,tarfile,sys,io
+import hashlib,json,tarfile,sys,io,gzip
 root=Path('/home/zz2/National_model_server/cloud_backup')/release;out=root/'output_8760';side=root/'acceptance_resource_late_20261119'
 assert json.loads((side/'acceptance_record.json').read_text())['status']=='PASS'
 assert json.loads((side/'analysis/analysis_summary.json').read_text())['status']=='PASS'
@@ -28,7 +28,23 @@ for name in standard_names:
  add('output_8760/'+name,out/name,'ORIGINAL_OUTPUT',index['output_8760/'+name])
 extras=['frozen_capacity_audit.csv','frozen_capacity_closure_audit.csv','frozen_capacity_closure_report.json','frozen_capacity_expected.json','frozen_capacity_output_check.json','frozen_capacity_report.json','frozen_capacity_source_alignment.json','resource_structure_audit.json','resource_v2g_slack_check.json','capacity_bound_selection_audit.json']
 for name in extras:
- if (out/name).exists():add('output_8760/'+name,out/name,'ORIGINAL_OUTPUT',index['output_8760/'+name])
+ if (out/name).exists():
+  if (out/name).stat().st_size>32*1024**2:
+   assert name=='capacity_bound_selection_audit.json'
+   expected=index['output_8760/'+name];assert sha(out/name)==expected['sha256']
+   compact=side/'compressed_audits';compact.mkdir(exist_ok=True);target=compact/(name+'.gz')
+   if not target.exists():
+    with target.open('xb') as raw,gzip.GzipFile(fileobj=raw,mode='wb',mtime=0) as gz,(out/name).open('rb') as source:
+     for block in iter(lambda:source.read(8<<20),b''):gz.write(block)
+   h=hashlib.sha256();size=0
+   with gzip.open(target,'rb') as f:
+    for block in iter(lambda:f.read(8<<20),b''):h.update(block);size+=len(block)
+   assert h.hexdigest()==expected['sha256'] and size==expected['bytes'] and target.stat().st_size<=32*1024**2
+   record=dict(status='PASS',source='output_8760/'+name,source_bytes=size,source_sha256=h.hexdigest(),compression='LOSSLESS_GZIP',compressed_sha256=sha(target),compressed_bytes=target.stat().st_size)
+   manifest=compact/'compression_manifest.json';data=(json.dumps(record,indent=2)+'\n').encode()
+   if manifest.exists():assert manifest.read_bytes()==data
+   else:manifest.write_bytes(data)
+  else:add('output_8760/'+name,out/name,'ORIGINAL_OUTPUT',index['output_8760/'+name])
 for p in side.rglob('*'):
  if p.is_file():
   if p.name in {'row_audit_full.json','parsed_columns.json.gz'}:continue

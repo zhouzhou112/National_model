@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 10:47UTC：Conservative2030/2040/2060正式验收、年度对偶恢复及T550分析全部PASS，316件418288225bytes验收/小文件已回本机，双端SHA和333原件统计收尾通过，报告已同步T550；证据64d5b13e。LATE最大行独立重构已PASS：河北年度外送53471702，0.015772605GWh/274339.463GWh=5.7493e-8，容差0.274339463GWh；自身双向定价PID603950仍扫描，主worker597322等待，原行审计PID603949已完成，不重复启动。云端0作业，LATE2060仍未提交。**
+
 - **2026-11-19 10:35UTC：云端0运行/0排队，LATE-Open2050于04:22UTC COMPLETED/OPTIMAL，451轮3天17:50，进程树峰651.927GiB；物理相对检查通过、solver条件证据待补。104件5.55GB T550备份10:28UTC COMPLETE，当前只读行定位(独立索引53471702，已识别河北年度外送行)和自身双向证书运行。Conservative2030/2040验收PASS、年度行恢复/分析完成，104/106小文件已回本机SHA通过；2060继续。工具e3a46038，不重解/不提交LATE2060，无监听。**
 
 - **2026-11-19 10:18UTC终态核验：新节点32线程v2已于05:20UTC完成5轮，按ITERATION_LIMIT(7)退出，SolCount0，非科学收敛解。总墙钟10:14:29；排序4:30:33为云端12.03倍，前5轮均54.05min/轮为云端15.31倍（前三轮约70min，后两轮约29min）。OS峰RSS270.708GiB、private峰409.306GiB、最低可用471.674GiB，未触发内存保护。14件1.586GB输出及4向量SHA复核，小件已回本机；进程/采样器退出，授权改COMPLETED，无新求解/监听。详见new_node_8276m_20261117/FINAL_BENCHMARK_REPORT_20261119_ZH.md；建议先排查宿主机/虚拟化内存与调度，不直接批量排全年敏感性。**
@@ -3994,6 +3996,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 三项Conservative交付完成，LATE行定位通过
+
+- Git64d5b13e记录三案PASS与T550分析、316文件418288225bytes回传、双端SHA收尾和四年OPS资源量小表。2050和Open复用已验收来源，四年汇总在T550计算，源manifest和摘要SHA齐备；本机只格式化报告。
+- LATE原MPS+BarX完整43797081变量/54288578约束顺序摘要通过，最大行province_annual_external_sent_p13在作者年度GWh容差内；重构残差0.01577260543436406、量级274339.46258537844、比例5.749302446583089e-8。证据acceptance_late_20261119/row_preliminary.json，完整245281项条目留T550。
+- 后续只需等待已运行603950双向证书（worker597322），不得重跑；证书后条件验收、分析、小文件回传、中央LATE双边证书区间与总报告。40MB固定审计原件改无损gzip小文件，解压SHA验证，不省略原件或超限回传。需要重解先报作者，LATE2060仍须单独确认。
+
 
 ### 2026-11-19 — LATE2050终态、备份闭合与四案验收继续
 
