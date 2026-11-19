@@ -6,6 +6,7 @@ from deploy_late_production import CASES as AUTHORIZED_LATE_CASES
 from deploy_batch2 import CASES as AUTHORIZED_BATCH2_CASES
 from deploy_batch3_conservative import CASES as AUTHORIZED_CONSERVATIVE_CASES
 CASES={**CASES,**AUTHORIZED_LATE_CASES,**AUTHORIZED_BATCH2_CASES,**AUTHORIZED_CONSERVATIVE_CASES}
+CASES['late_open_2060']=dict(resource='open',kind='LATE_RESTRICTED_PRODUCTION',release='20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1')
 HERE=Path(__file__).resolve().parent
 stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 out=HERE/'snapshots'/stamp;out.mkdir(parents=True,exist_ok=False)
