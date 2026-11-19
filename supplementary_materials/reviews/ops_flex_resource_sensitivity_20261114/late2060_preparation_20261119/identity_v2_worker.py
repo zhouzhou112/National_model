@@ -1,0 +1,7 @@
+
+from pathlib import Path
+import json,subprocess,os,time,sys
+root=Path(__file__).resolve().parent;repo=root/'repo';source=Path('/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1/prepared_state/planning_state_candidate');out=root/'identity_24h_central_v2';assert not out.exists();info=json.loads((root/'installation_receipt.json').read_text());env=dict(os.environ,PYTHONPATH=str(repo),PYTHONUTF8='1',PYTHONDONTWRITEBYTECODE='1',OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',CISPO_DATA_ROOT=info['neutral_data_root'],CISPO_CF_ROOT='/data/zz2/National_model/data/hourly_cf',CISPO_HYDRO_ROOT='/data/zz2/National_model/data/hydro_timeseries_20260719_sequential_sparse',CISPO_RAW_GRFR_ROOT='/data/zz2/National_model/data/grfr_raw_2019',CISPO_WAVE_ROOT='/data/zz2/National_model/data/wave_energy_20260727')
+args=[sys.executable,str(repo/'supplementary_materials/reviews/ops_flex_resource_sensitivity_20261114/identity_gate_2060.py'),'--state',str(source),'--output',str(out)];started=time.time()
+with (root/'identity_v2.stdout.log').open('x') as f,(root/'identity_v2.stderr.log').open('x') as g:p=subprocess.run(args,cwd=repo,env=env,stdout=f,stderr=g)
+r=dict(status='PASS' if p.returncode==0 else 'STOP',returncode=p.returncode,seconds=time.time()-started,command=args,scope='Generic central-resource entry identity; actual Open2060 uses its own R1 in separate gates');(root/'identity_v2_result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r),flush=True)

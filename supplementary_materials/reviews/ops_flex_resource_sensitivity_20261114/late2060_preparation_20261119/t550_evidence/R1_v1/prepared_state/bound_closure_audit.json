@@ -1,0 +1,67 @@
+{
+  "rule": "OLDEST_POSITIVE_NEW_BUILD_FIRST_NEXTAFTER",
+  "threshold_gw": 1e-05,
+  "affected_rows": [
+    {
+      "asset_class": "vre",
+      "asset_id": "G000030549::upv",
+      "build_year": 2050,
+      "before_gw": 2.869074507329908,
+      "after_gw": 2.869074507329907,
+      "reduction_gw": 1.3322676295501878e-15,
+      "original_excess_gw": 4.440892098500626e-16
+    },
+    {
+      "asset_class": "vre",
+      "asset_id": "G000027949::upv",
+      "build_year": 2050,
+      "before_gw": 3.618109655527536,
+      "after_gw": 3.6181096555275345,
+      "reduction_gw": 1.3322676295501878e-15,
+      "original_excess_gw": 4.440892098500626e-16
+    },
+    {
+      "asset_class": "thermal",
+      "asset_id": "31::bio",
+      "technology": "bio",
+      "build_year": 2050,
+      "before_gw": 1.2624578629022444e-08,
+      "after_gw": 0.0,
+      "reduction_gw": 1.2624578629022444e-08,
+      "original_excess_gw": 1.2624578604736314e-08,
+      "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+    }
+  ],
+  "total_reduction_gw": 1.2624581293557703e-08,
+  "shared_biomass_upper": [
+    {
+      "province_code": 31,
+      "shared_upper_gw": 0.3399999999999999,
+      "before_floor_gw": [
+        0.3300681003140957,
+        0.0099319123104828
+      ],
+      "after_floor_gw": [
+        0.3300680876895171,
+        0.0099319123104828
+      ],
+      "initial_excess_gw": 1.2624578604736314e-08,
+      "total_reduction_gw": 1.2624578629022444e-08,
+      "retrofit_pairs_unchanged": true,
+      "ccs_capacity_unchanged": true,
+      "affected_rows": [
+        {
+          "asset_class": "thermal",
+          "asset_id": "31::bio",
+          "technology": "bio",
+          "build_year": 2050,
+          "before_gw": 1.2624578629022444e-08,
+          "after_gw": 0.0,
+          "reduction_gw": 1.2624578629022444e-08,
+          "original_excess_gw": 1.2624578604736314e-08,
+          "reason": "AUTHOR_R1_NON_CCS_NEW_BUILD_SHARED_BOUND_CLOSE"
+        }
+      ]
+    }
+  ]
+}

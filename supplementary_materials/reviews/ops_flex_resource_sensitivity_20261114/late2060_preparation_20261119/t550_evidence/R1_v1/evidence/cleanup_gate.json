@@ -1,0 +1,956 @@
+{
+  "rule_version": "AUTHOR_R1_20261014",
+  "source_year": 2050,
+  "planning_year": 2060,
+  "retrofit_protected_groups": [
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "15::bio",
+      "new_build_gw": 0.00039260240013935165
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "22::bio",
+      "new_build_gw": 0.0001322865382971788
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "31::bio",
+      "new_build_gw": 1.2624578629022444e-08
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "42::bio",
+      "new_build_gw": 0.00014644655595973986
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "45::bio",
+      "new_build_gw": 0.00019801972216312863
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "46::bio",
+      "new_build_gw": 0.00012858340521292199
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "51::bio",
+      "new_build_gw": 6.466052082322948e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "53::bio",
+      "new_build_gw": 0.00015868350863557933
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "54::bio",
+      "new_build_gw": 0.00010587207121833184
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "63::bio",
+      "new_build_gw": 0.00018038643403661773
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bio",
+      "asset_id": "65::bio",
+      "new_build_gw": 0.0005108353935643013
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "11::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "12::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "13::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "14::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "15::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "21::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "22::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "23::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "31::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "32::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "33::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "34::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "35::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "36::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "37::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "41::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "42::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "43::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "44::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "45::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "46::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "50::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "51::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "52::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "53::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "54::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "61::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "62::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "63::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "64::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchp",
+      "asset_id": "65::cchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "11::coal",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "14::coal",
+      "new_build_gw": 0.00013881006390782164
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "23::coal",
+      "new_build_gw": 0.00013638428971431127
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "32::coal",
+      "new_build_gw": 0.00015864185486918288
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "34::coal",
+      "new_build_gw": 0.00010025546864385424
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "35::coal",
+      "new_build_gw": 0.00010006022667579924
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "36::coal",
+      "new_build_gw": 0.00012769433084253813
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "42::coal",
+      "new_build_gw": 7.9714383942006e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "43::coal",
+      "new_build_gw": 7.023896623708782e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "44::coal",
+      "new_build_gw": 9.200396795655518e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "45::coal",
+      "new_build_gw": 7.008835601311661e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "46::coal",
+      "new_build_gw": 0.00017347212801478284
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "50::coal",
+      "new_build_gw": 7.545301833373341e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "51::coal",
+      "new_build_gw": 9.047042321626926e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "52::coal",
+      "new_build_gw": 0.00012349432067575942
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "53::coal",
+      "new_build_gw": 0.00012332137543673497
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "54::coal",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "61::coal",
+      "new_build_gw": 0.00010457514212590543
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "62::coal",
+      "new_build_gw": 7.727713560829654e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "63::coal",
+      "new_build_gw": 0.00014366834534873313
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "64::coal",
+      "new_build_gw": 7.178891583770774e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coal",
+      "asset_id": "65::coal",
+      "new_build_gw": 0.00013848369163248203
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "15::gas",
+      "new_build_gw": 0.0004965638085018471
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "21::gas",
+      "new_build_gw": 0.00031475916728634576
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "22::gas",
+      "new_build_gw": 0.00018629210259211683
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "23::gas",
+      "new_build_gw": 0.0006025255214152456
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "35::gas",
+      "new_build_gw": 0.0001299999666142152
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "42::gas",
+      "new_build_gw": 0.00023930677309097725
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "43::gas",
+      "new_build_gw": 0.00020351911331217612
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "45::gas",
+      "new_build_gw": 0.00016384143918660445
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "46::gas",
+      "new_build_gw": 9.503947116154841e-05
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "50::gas",
+      "new_build_gw": 0.0003726711709660576
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "51::gas",
+      "new_build_gw": 0.0001682594950979882
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "53::gas",
+      "new_build_gw": 0.00036617897331969214
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "54::gas",
+      "new_build_gw": 0.00013376315899435312
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gas",
+      "asset_id": "65::gas",
+      "new_build_gw": 0.0005548822046526128
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "11::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "12::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "13::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "14::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "15::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "21::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "22::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "23::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "31::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "32::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "33::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "34::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "35::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "36::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "37::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "41::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "42::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "43::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "44::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "45::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "46::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "50::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "51::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "52::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "53::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "54::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "61::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "62::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "63::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "64::gchp",
+      "new_build_gw": 0.0
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchp",
+      "asset_id": "65::gchp",
+      "new_build_gw": 0.0
+    }
+  ],
+  "retrofit_protected_new_build_gw": 0.008241887945853468,
+  "status": "PASS",
+  "threshold_gw": 0.001,
+  "generation_and_storage_deleted_gw": 0.2612942748995499,
+  "network_deleted_gw": 0.19420922418563422,
+  "separate_total_limit_gw": 1,
+  "ratio_limit": 0.001,
+  "ratio_gate_minimum_installed_gw": 1,
+  "deleted_assets": 72508,
+  "positive_deleted_assets": 7609,
+  "deleted_cohort_rows": 72508,
+  "nonpositive_deleted_assets": 64899,
+  "retained_negative_rows": 0,
+  "retained_negative_zeroing_increase_gw": -0.0,
+  "removed_negative_cohort_rows": 11,
+  "signed_deleted_gw": 0.4555034819832779,
+  "by_technology": [
+    {
+      "asset_class": "hydro",
+      "technology": "hydro",
+      "selected_assets": 1793,
+      "positive_selected_assets": 1000,
+      "signed_deleted_gw": 0.012917547559946122,
+      "positive_deleted_gw": 0.012917547559946122,
+      "installed_source_year_gw": 314.6423643025666,
+      "ratio": 4.105469900272025e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "hydro_spur",
+      "technology": "hydro",
+      "selected_assets": 1793,
+      "positive_selected_assets": 1000,
+      "signed_deleted_gw": 0.012917547559946122,
+      "positive_deleted_gw": 0.012917547559946122,
+      "installed_source_year_gw": 314.6423643025666,
+      "ratio": 4.105469900272025e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "interprovincial_transmission",
+      "technology": "AC",
+      "selected_assets": 12,
+      "positive_selected_assets": 12,
+      "signed_deleted_gw": 0.0039368584810144,
+      "positive_deleted_gw": 0.0039368584810144,
+      "installed_source_year_gw": 551.0771999208446,
+      "ratio": 7.143932794860467e-06,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "interprovincial_transmission",
+      "technology": "DC",
+      "selected_assets": 17,
+      "positive_selected_assets": 17,
+      "signed_deleted_gw": 0.002142467023431955,
+      "positive_deleted_gw": 0.002142467023431955,
+      "installed_source_year_gw": 943.2534325990493,
+      "ratio": 2.2713588409941763e-06,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "intra_load_center_transmission",
+      "technology": "AC_500kV",
+      "selected_assets": 379,
+      "positive_selected_assets": 379,
+      "signed_deleted_gw": 0.007657099735197486,
+      "positive_deleted_gw": 0.007657099735197486,
+      "installed_source_year_gw": 1901.7480101765952,
+      "ratio": 4.0263482302718185e-06,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "storage",
+      "technology": "phs",
+      "selected_assets": 2,
+      "positive_selected_assets": 0,
+      "signed_deleted_gw": 0.0,
+      "positive_deleted_gw": 0.0,
+      "installed_source_year_gw": 444.7397765086431,
+      "ratio": 0.0,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "bioccs",
+      "selected_assets": 9,
+      "positive_selected_assets": 8,
+      "signed_deleted_gw": 0.0009071885920389979,
+      "positive_deleted_gw": 0.0009072056939447384,
+      "installed_source_year_gw": 141.37008785425255,
+      "ratio": 6.417239373013863e-06,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "cchpccs",
+      "selected_assets": 31,
+      "positive_selected_assets": 0,
+      "signed_deleted_gw": 0.0,
+      "positive_deleted_gw": 0.0,
+      "installed_source_year_gw": 0.1261601700512458,
+      "ratio": 0.0,
+      "ratio_gate_applicable": false,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "coalccs",
+      "selected_assets": 27,
+      "positive_selected_assets": 25,
+      "signed_deleted_gw": 0.0016803565716949972,
+      "positive_deleted_gw": 0.0016803565716949972,
+      "installed_source_year_gw": 5.241768021116051,
+      "ratio": 0.00032057057178528557,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gasccs",
+      "selected_assets": 15,
+      "positive_selected_assets": 15,
+      "signed_deleted_gw": 0.0017126063736433814,
+      "positive_deleted_gw": 0.0017126063736433814,
+      "installed_source_year_gw": 0.2902720673640746,
+      "ratio": 0.005900004052044524,
+      "ratio_gate_applicable": false,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "gchpccs",
+      "selected_assets": 31,
+      "positive_selected_assets": 0,
+      "signed_deleted_gw": 0.0,
+      "positive_deleted_gw": 0.0,
+      "installed_source_year_gw": 0.7687037782754068,
+      "ratio": 0.0,
+      "ratio_gate_applicable": false,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "thermal",
+      "technology": "nuclear",
+      "selected_assets": 22,
+      "positive_selected_assets": 0,
+      "signed_deleted_gw": 0.0,
+      "positive_deleted_gw": 0.0,
+      "installed_source_year_gw": 290.6912673625094,
+      "ratio": 0.0,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "trunk",
+      "technology": "AC_trunk",
+      "selected_assets": 5234,
+      "positive_selected_assets": 868,
+      "signed_deleted_gw": 0.037435592859664184,
+      "positive_deleted_gw": 0.03743559285966473,
+      "installed_source_year_gw": 4084.906478151559,
+      "ratio": 9.164369627528052e-06,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre",
+      "technology": "dpv",
+      "selected_assets": 12907,
+      "positive_selected_assets": 483,
+      "signed_deleted_gw": 0.10649466315407233,
+      "positive_deleted_gw": 0.10649466315407233,
+      "installed_source_year_gw": 254.96209229329085,
+      "ratio": 0.0004176882225753317,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre",
+      "technology": "offwind",
+      "selected_assets": 727,
+      "positive_selected_assets": 98,
+      "signed_deleted_gw": 0.01979884903601744,
+      "positive_deleted_gw": 0.01979884903601744,
+      "installed_source_year_gw": 446.2755895249316,
+      "ratio": 4.436462468649399e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre",
+      "technology": "onwind",
+      "selected_assets": 7923,
+      "positive_selected_assets": 219,
+      "signed_deleted_gw": 0.03682849771241792,
+      "positive_deleted_gw": 0.03682849771241792,
+      "installed_source_year_gw": 1415.320083843602,
+      "ratio": 2.6021320641760637e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre",
+      "technology": "upv",
+      "selected_assets": 6928,
+      "positive_selected_assets": 245,
+      "signed_deleted_gw": 0.07288608744295966,
+      "positive_deleted_gw": 0.07288608744295966,
+      "installed_source_year_gw": 2564.970205594163,
+      "ratio": 2.8415958705483654e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "dpv",
+      "selected_assets": 15378,
+      "positive_selected_assets": 0,
+      "signed_deleted_gw": 0.0,
+      "positive_deleted_gw": 0.0,
+      "installed_source_year_gw": 0.0,
+      "ratio": null,
+      "ratio_gate_applicable": false,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "offwind",
+      "selected_assets": 742,
+      "positive_selected_assets": 101,
+      "signed_deleted_gw": 0.015865683118574926,
+      "positive_deleted_gw": 0.015865683118574926,
+      "installed_source_year_gw": 460.81817622545964,
+      "ratio": 3.4429377869879184e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "onwind",
+      "selected_assets": 8168,
+      "positive_selected_assets": 384,
+      "signed_deleted_gw": 0.025704959693882798,
+      "positive_deleted_gw": 0.025704959693882798,
+      "installed_source_year_gw": 1715.3881047384314,
+      "ratio": 1.4984923600016677e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "vre_spur",
+      "technology": "upv",
+      "selected_assets": 9086,
+      "positive_selected_assets": 1471,
+      "signed_deleted_gw": 0.08854901571392179,
+      "positive_deleted_gw": 0.08854901571392179,
+      "installed_source_year_gw": 2018.6844703827576,
+      "ratio": 4.3864713387888814e-05,
+      "ratio_gate_applicable": true,
+      "ratio_gate_pass": true
+    },
+    {
+      "asset_class": "wave",
+      "technology": "wave",
+      "selected_assets": 1284,
+      "positive_selected_assets": 1284,
+      "signed_deleted_gw": 0.008068461354853366,
+      "positive_deleted_gw": 0.008068461354853366,
+      "installed_source_year_gw": 0.0080684613548542,
+      "ratio": 0.9999999999998966,
+      "ratio_gate_applicable": false,
+      "ratio_gate_pass": true
+    }
+  ],
+  "failures": [],
+  "source_sha256": {
+    "planning_state_candidate/capacity_cohorts.csv.gz": "6a1afd10e307037d9209dfad3f68491f479df1275d0f0246ee51878cbd2a8aff",
+    "annual_capacity_by_technology.csv": "485e848f6522d2b3c12cecaf74787a35d40c1ec3572eb5714693f356f81ddbed",
+    "intra_grid_vre_site_design.csv": "88131a8fc324faddb4720721d11ebb54957e1151477f0b78878aae4d3a61b3b8",
+    "transmission_capacity.csv": "ff079bb933e26e7d08e0fc8b272a6710da427e70050c8d90890c38894328b231",
+    "load_center_intra_transmission.csv": "c3145b93d3bcae7c119327c0df3f6e9e330bafb36454cdf799c8d1ad0bb6704c",
+    "intra_grid_substation_design.csv": "134f99e9ad9ec0fe342a5d633791a2f748c38784d7766542cbbfc52ef6f9f5bf",
+    "hydro_capacity.csv": "d29ef11e7fbdde61ad4a16d03ca12ccd926c0718f27c5e81bd2fb87e319e361d"
+  },
+  "denominator_hydro_spur": "existing_capacity_gw + active hydro_spur cohorts in source year",
+  "disclosure": "Storage included in generation total conservatively; positive deleted storage GW by technology: phs=0. Positive deletion totals do not cancel negative groups; signed deltas disclosed separately.",
+  "state_changed": false
+}

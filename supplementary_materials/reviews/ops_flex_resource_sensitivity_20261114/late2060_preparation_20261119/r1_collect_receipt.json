@@ -1,0 +1,30 @@
+{
+  "R1_v1/evidence/cleanup_gate.json": {
+    "bytes": 25328,
+    "sha256": "2cea7047df16085bfe32c667740fa217e3fb53f016776ca6b894aaabd239d013"
+  },
+  "R1_v1/evidence/deletion_by_technology.csv": {
+    "bytes": 2454,
+    "sha256": "bf00179750fae898830e7c268f19f5bceb20dd734e275a48da0af28559c2fbf2"
+  },
+  "R1_v1/evidence/shared_biomass_bound_closure.json": {
+    "bytes": 824,
+    "sha256": "d26399f768ee385d588d7e3e772dce71f2061c610ff7b71580193fa60fa59ad9"
+  },
+  "R1_v1/prepared_state/bound_closure_audit.json": {
+    "bytes": 1974,
+    "sha256": "4b4606db6c5b24ceddd33365d01da6a2283ba3061ef903750aaf4abd0630ca75"
+  },
+  "R1_v1/prepared_state/planning_state_candidate/state_metadata.json": {
+    "bytes": 127125,
+    "sha256": "e2f2841fafa219bf48b3d98bfd088c945d0ab7cc3954231444b61a8ae4058854"
+  },
+  "R1_v1/prepared_state/result_manifest.json": {
+    "bytes": 1673,
+    "sha256": "fc86818a9939c49d4ddd16fbe93bd724227f4f9aca6187756b28c3c1b64e560f"
+  },
+  "identity_reference_source.json": {
+    "bytes": 473,
+    "sha256": "faf88b9416a589cd5bb69c93a5cdf0c10b73a504c7d90a2f3a612ce2bbf7c6e5"
+  }
+}

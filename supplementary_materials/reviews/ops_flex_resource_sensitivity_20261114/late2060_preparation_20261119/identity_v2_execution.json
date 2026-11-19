@@ -1,0 +1,14 @@
+{
+  "pid": 679179,
+  "source": {
+    "status": "PASS",
+    "source": "/home/zz2/National_model_server/C2060_launch_20261030_v2/repo/supplementary_materials/reviews/C2060_launch_20261030/R1_v1/prepared_state",
+    "source_state_manifest_sha256": "92035c722a2a82a510a29d1f58f745d8ca67d217b74dbe911ae0a443175e0a1b",
+    "files_verified": 9,
+    "scenario_sha256": "c401d675609258f9c2284314d16844a39e423defee4a0ff3d8aed88355c1c5f9",
+    "scope": "Central-resource identity gate only; not the actual Open2060 upstream"
+  },
+  "available_memory_gib": 103.92536544799805,
+  "previous_mismatch_preserved": true,
+  "submitted": false
+}

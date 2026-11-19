@@ -1,0 +1,51 @@
+{
+  "manifest_purpose": "AUTHOR_R1_DERIVED_STATE_INTEGRITY",
+  "source_manifest_sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904",
+  "files": [
+    {
+      "path": "acceptance_relative_v1.json",
+      "bytes": 659,
+      "sha256": "ffa510da623fe9c9a362ab7edb82afaa80d9b35fa459b6480d4cacfe6e6e9c03"
+    },
+    {
+      "path": "bound_closure_audit.json",
+      "bytes": 1974,
+      "sha256": "4b4606db6c5b24ceddd33365d01da6a2283ba3061ef903750aaf4abd0630ca75"
+    },
+    {
+      "path": "original_result_manifest.json",
+      "bytes": 14144,
+      "sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904"
+    },
+    {
+      "path": "planning_state_candidate/capacity_cohorts.csv.gz",
+      "bytes": 390188,
+      "sha256": "7f912bac5ac6f997a9b13ed8922a2f34afe49a4578596227f264fa5180b83dd8"
+    },
+    {
+      "path": "planning_state_candidate/state_metadata.json",
+      "bytes": 127125,
+      "sha256": "e2f2841fafa219bf48b3d98bfd088c945d0ab7cc3954231444b61a8ae4058854"
+    },
+    {
+      "path": "planning_state_candidate/state_transition_summary.csv",
+      "bytes": 2247,
+      "sha256": "f8e8d7d1293c4e08df9eff049a9b28a3cd305146a8bd6a50cdfde8c723b50407"
+    },
+    {
+      "path": "run_identity.json",
+      "bytes": 6820,
+      "sha256": "b1c08a035a1ae2dc70b70fe5aa69ac882691a5d7711e54fc99cca41886512d69"
+    },
+    {
+      "path": "solution_qc.json",
+      "bytes": 259040,
+      "sha256": "a0fa08694423b689892f9adb8a37ac0bc4bed5964438cba0654622b7538f8a53"
+    },
+    {
+      "path": "solve_report.json",
+      "bytes": 161951,
+      "sha256": "04d09a180c5270c64c2d8af5912698cf6ae68f3122d50b48714c943af2597343"
+    }
+  ]
+}
