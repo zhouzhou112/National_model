@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图导师讨论稿与充电基年外核。** 正式中英文图注、四页双语讨论稿与 EV 逐时基年复算已在作者的图 1 统一目录校验。讨论稿入口为 `Figure1_discussion.pdf` 和 `Figure1_discussion.docx`，首图单独矢量文件仍为 `Figure1.pdf`。
+
 - **2026-11-19 首图正式版式和三情景稳健性。** 作者本地统一入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新增地图框内图例、四省比较、31 省高峰窗口电量环及 S11，e 的 18 个 Base 点带 Conservative、Base、Open 最小–最大短须。
 
 - **2026-11-19 首图版式与论文情景命名。** 作者指定 B 表示 Base 柔性资源情景，REF 表示关闭柔性的参考优化。首图统一入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。新版两幅地图在左列对齐，2025 充电基线直接标值，右下使用固定发电规模下的小时、日和年重合点。
@@ -4012,6 +4014,13 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 20:43 UTC ｜图 1 双语图注、导师讨论稿与基年充电核查
+
+- 核验时的 Git 基准为 `ae458e29`。作者材料在 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/`，单独维护。本条记录本地文件身份与复算入口。
+- 正式图注源为 `Figure1_captions.md`。通过 `python audit_2025_ev.py` 溯源车辆、单车月度用电与四城日型，分别复核 2025 年、2060 年的 271,560 个省小时。全国上半年充电量与国家能源局公开数据对照，年末车队与国家统计局数据核对。省级极端小时仍属模型重构。
+- 以 `draw_figures.py` 和 `figure_maps.py` 更新年份框及九色图例。以 `python make_discussion.py --pdf` 生成 Word 与含矢量主图的 PDF，以 `python publish_reader.py` 更新统一入口，以 `python verify_outputs.py` 在最终目录复核图注顺序、两次嵌图、13 个年度百分比刻度、双语稿页幅、源数据身份及图形。补充图 S8、S11 随主图更新色标。汇报稿已逐页检查。
+- 主图 SHA256 为 `be9b07b8a87a5d4f2c994d5050f0d902d51268fb9d312704aded6a4ebe1821a1`，讨论 PDF 为 `5775e6a38b7deb365c13d3a7ed3d447409907c84b2adad90f754b6ae0f1002fd`，Word 为 `a517aa89757e97ea42353dd90988a1c3bab8d6856dc39cc4bc931ea1300a16d0`，最终 `交付核验.json` 为 `1477871fe6187c92ac77b4a1cf52c5e7f2670a3c07a7e7acf4bc188679b02458`。下一步为作者与导师讨论图 1 的正文主张。
 
 ### 2026-11-19 — 首图地图内图例、绝对电量环与资源情景范围
 
