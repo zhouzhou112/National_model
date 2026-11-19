@@ -1,0 +1,14 @@
+{
+  "status": "STARTED",
+  "pid": 597322,
+  "root": "/home/zz2/National_model_server/acceptance_tools_resource_late_20261119",
+  "available_memory_gib": 112.06244277954102,
+  "backup": {
+    "status": "COMPLETE",
+    "finished_at_utc": "2026-11-19T10:28:18.774853+00:00",
+    "files": 104,
+    "bytes": 5550464171,
+    "source_result_manifest_sha256": "c6aef5d74ee502deaef276c6f44dff01297b31dc5cd638c6156648b6a2b2e904"
+  },
+  "as_of_utc": "2026-11-19T10:29:04.293803+00:00"
+}
