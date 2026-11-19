@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "case": "OPS-Conservative-2040",
+  "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+  "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2040\\20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+  "files": 106,
+  "bytes": 139962712,
+  "maximum_file_bytes": 30173177,
+  "all_bytes_sha_match": true,
+  "omitted_not_applicable": {
+    "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+  }
+}

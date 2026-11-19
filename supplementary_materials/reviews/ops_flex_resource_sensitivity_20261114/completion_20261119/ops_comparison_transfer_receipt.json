@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "files": {
+    "OPS_resources_four_year_services.csv": {
+      "bytes": 5179,
+      "sha256": "4a178760e1ca8671ae943342af4fcd02c5b6e44a39b169a94789243638c0ff23"
+    },
+    "OPS_resources_four_year_summary.json": {
+      "bytes": 28524,
+      "sha256": "2ce255e54710a2b1914adc5e925252ac99a80e58c73318e1f30bac3b2a47b14c"
+    },
+    "OPS_resources_four_year_costs.csv": {
+      "bytes": 1643,
+      "sha256": "f34f86264dc149d3b09f05f5a51fe0f2540b05881c662337f39037086033a95f"
+    },
+    "Open_vs_Conservative_intervals.csv": {
+      "bytes": 311,
+      "sha256": "37bb4ef536db9a27acde989bc76f41b712ddefff6aa477980cddee8bcc3b2dcd"
+    }
+  },
+  "bytes": 35657
+}

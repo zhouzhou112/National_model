@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "as_of_utc": "2026-11-19T10:43:10.308866+00:00",
+  "cases": {
+    "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1": {
+      "status": "PASS",
+      "payload_files": 104,
+      "original_files_stats_unchanged": 109,
+      "acceptance_json_sha256": "ee5c24204f6e39a3905689f314fa5ed46b5ca60c6af328663d8b24de51fdbb1d"
+    },
+    "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1": {
+      "status": "PASS",
+      "payload_files": 106,
+      "original_files_stats_unchanged": 112,
+      "acceptance_json_sha256": "9b9456060d7dd3681feddafaa4f915923adcdee54f056b2c8cdfc9f5f9bee1ae"
+    },
+    "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1": {
+      "status": "PASS",
+      "payload_files": 106,
+      "original_files_stats_unchanged": 112,
+      "acceptance_json_sha256": "ad1cb99bd12c2411ba251535a57a3471caf98ccb62a493dafa1e5ac5d8aa0920"
+    }
+  }
+}

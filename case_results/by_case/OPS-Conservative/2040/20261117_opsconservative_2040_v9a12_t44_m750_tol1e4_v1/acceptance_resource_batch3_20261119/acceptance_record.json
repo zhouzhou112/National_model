@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "case": "OPS-Conservative-2040",
+  "planning_year": 2040,
+  "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+  "checks": {
+    "current_relative_v1": true,
+    "frozen_capacity_identity": true,
+    "annual_resource_structure": true,
+    "original_preservation": true,
+    "optimal": true
+  },
+  "P_million_cny": 5073199.256988895,
+  "D_million_cny": 5071766.086734447,
+  "primal_dual_gap_million_cny": 1433.1702544484288,
+  "screening_certificate": "NOT_APPLICABLE_UNSCREENED",
+  "screening_B_million_cny": 0.0,
+  "strict_source_status": "HARD_FAIL",
+  "strict_failed_checks": [
+    "unidirectional_interprovincial_flow",
+    "objective_components"
+  ],
+  "evaluator_version": "relative_v1_author_20261027_mt",
+  "source_sha256": {
+    "result_manifest.json": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+    "solution_qc.json": "4b5236216491d16e673446a80ae89ef2a727507dbb77073a84a78db500c46400",
+    "solve_report.json": "95942344e54345735bf831f0410239f463ffdba019fd1d98d227c46532dbcb18",
+    "model_config_snapshot.json": "525bc3db747e634e6423b932f43c2470a19006e11e2aff525dc0dd994b875d06",
+    "frozen_capacity_output_check.json": "16c7efe746e527dbcd1621649d6c95852ae920e6ec5adfeb6f9e5a574e79a877",
+    "resource_structure_audit.json": "ff29aaebfddf2da1267aee8c14be4f2d35d01101c495faece2adfd116c6bab3f",
+    "preservation_report.json": "4753864ae698961f0b825a0b68e18b5da9a38ebfbbab970161d3b3f9712545d7"
+  },
+  "scope": "Quality label under author relative_v1 rules; no change to archived QC or automatic state adoption",
+  "assessed_at_utc": "2026-11-19T10:28:10.923486+00:00"
+}

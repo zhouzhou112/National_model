@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "root": "/home/zz2/National_model_server/acceptance_tools_resource_batch3_20261119_v2/final_report",
+  "sha256": {
+    "OPS_CONSERVATIVE_REPORT_ZH.md": "b44a3a88554edc08da672d2848f2ebd440686d9698a7a7a536dce58bc0e053c5",
+    "accepted_conservative_cases.csv": "1380d682c8bdbad1607cbf83d45af0c7c8e6da334f6302d70cc385e14d4bd52f",
+    "conservative_service_summary.csv": "5c346be6a77e2e230a94ac17731ecabc91df16107b721891a4b0621435445f87"
+  }
+}

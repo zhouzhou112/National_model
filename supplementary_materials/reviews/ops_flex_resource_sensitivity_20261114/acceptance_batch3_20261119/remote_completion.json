@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "results": {
+    "OPS-Conservative-2030": {
+      "acceptance": {
+        "exit_code": 0,
+        "seconds": 258.26220059394836
+      },
+      "analysis": {
+        "exit_code": 0,
+        "seconds": 11.424983263015747
+      }
+    },
+    "OPS-Conservative-2040": {
+      "acceptance": {
+        "exit_code": 0,
+        "seconds": 260.0652332305908
+      },
+      "analysis": {
+        "exit_code": 0,
+        "seconds": 10.895814657211304
+      }
+    },
+    "OPS-Conservative-2060": {
+      "acceptance": {
+        "exit_code": 0,
+        "seconds": 258.2616856098175
+      },
+      "analysis": {
+        "exit_code": 0,
+        "seconds": 10.575498104095459
+      }
+    }
+  }
+}

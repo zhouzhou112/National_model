@@ -1,0 +1,1046 @@
+{
+  "OPS-Conservative-2030": {
+    "acceptance": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2030",
+      "planning_year": 2030,
+      "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "checks": {
+        "current_relative_v1": true,
+        "frozen_capacity_identity": true,
+        "annual_resource_structure": true,
+        "original_preservation": true,
+        "optimal": true
+      },
+      "P_million_cny": 4190370.9384320835,
+      "D_million_cny": 4189331.4093508734,
+      "primal_dual_gap_million_cny": 1039.5290812100284,
+      "screening_certificate": "NOT_APPLICABLE_UNSCREENED",
+      "screening_B_million_cny": 0.0,
+      "strict_source_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "objective_components"
+      ],
+      "evaluator_version": "relative_v1_author_20261027_mt",
+      "source_sha256": {
+        "result_manifest.json": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67",
+        "solution_qc.json": "04b73f564ec845d581c2871bce2019ae6ada670b60ca8337f830f4c6269c97e3",
+        "solve_report.json": "890363fe9fd352515a9e15d617d84c486b00e173ad3c7d737702f365560e8980",
+        "model_config_snapshot.json": "0465466a20fe63d3ee397cbcc48249ba97d6ae43db15bbb160017b4554a5c2ea",
+        "frozen_capacity_output_check.json": "2b00d7b182c65c572a5082e296c3b735ba3b44f4ac4300d4555e0a4b901850df",
+        "resource_structure_audit.json": "dc633b50e6c5ebd36a6c799a8d8fcf81e529069960ef4ebb5a8d159da56dbba3",
+        "preservation_report.json": "a4672e1b9d6ae5011de35af2d9018e96e5ca5b6853635eceda3501d0af6fffb2"
+      },
+      "scope": "Quality label under author relative_v1 rules; no change to archived QC or automatic state adoption",
+      "assessed_at_utc": "2026-11-19T10:23:41.304121+00:00"
+    },
+    "analysis": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2030",
+      "planning_year": 2030,
+      "computed_on": "T550",
+      "P_million_cny": 4190370.9384320835,
+      "D_million_cny": 4189331.4093508734,
+      "comparisons": [
+        {
+          "reference": "REF",
+          "case": "OPS-Conservative-2030",
+          "point_saving_yi_cny": 24.07897760670632,
+          "lower_saving_yi_cny": 21.01534625417553,
+          "upper_saving_yi_cny": 34.4742684188066,
+          "reference_P_million_cny": 4192778.836192754,
+          "reference_D_million_cny": 4192472.473057501,
+          "target_P_million_cny": 4190370.9384320835,
+          "target_D_million_cny": 4189331.4093508734,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": -23.89414218632737,
+          "storage_charge_difference_gwh": -10631.388923797698
+        },
+        {
+          "reference": "OPS-Central",
+          "case": "OPS-Conservative-2030",
+          "point_saving_yi_cny": -6.375315382350236,
+          "lower_saving_yi_cny": -21.309220397756434,
+          "upper_saving_yi_cny": 4.019975429750048,
+          "reference_P_million_cny": 4189733.4068938484,
+          "reference_D_million_cny": 4188240.016392308,
+          "target_P_million_cny": 4190370.9384320835,
+          "target_D_million_cny": 4189331.4093508734,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": -18.027707767498214,
+          "storage_charge_difference_gwh": 2893.0996017060825
+        }
+      ],
+      "services": [
+        {
+          "service": "heating",
+          "contract_gw": 1.1415657476494565,
+          "upper_gw": 1.2262902022880489,
+          "down_regulation_gwh": 505.3309713929073,
+          "up_regulation_gwh": 678.9393154740887,
+          "net_load_change_gwh": 173.60834408118143,
+          "contract_share_of_upper": 0.9309099473513602,
+          "equivalent_down_hours": 442.6647982680018
+        },
+        {
+          "service": "cooling",
+          "contract_gw": 3.8498125880482785,
+          "upper_gw": 4.869483348529306,
+          "down_regulation_gwh": 1107.193775812809,
+          "up_regulation_gwh": 1388.3782095334343,
+          "net_load_change_gwh": 281.1844337206254,
+          "contract_share_of_upper": 0.7905998054621153,
+          "equivalent_down_hours": 287.5967986727681
+        },
+        {
+          "service": "ev_v1g",
+          "contract_gw": 16.586578104283742,
+          "upper_gw": 16.58658954548235,
+          "down_regulation_gwh": 18907.99922399632,
+          "up_regulation_gwh": 18907.999324136537,
+          "net_load_change_gwh": 0.00010014021639825899,
+          "contract_share_of_upper": 0.9999993102139184,
+          "equivalent_down_hours": 1139.9578083627168
+        },
+        {
+          "service": "ev_v2g",
+          "contract_gw": 1.4150262510812566,
+          "upper_gw": 7.193004805541393,
+          "down_regulation_gwh": 2226.254478633871,
+          "up_regulation_gwh": 2274.5635951577024,
+          "net_load_change_gwh": 48.30911652383141,
+          "contract_share_of_upper": 0.19672255049671866,
+          "equivalent_down_hours": 1573.2955321024856
+        }
+      ],
+      "annual": {
+        "generated_at": "2026-11-18T21:00:41.148358+08:00",
+        "boundary_year": 2025,
+        "planning_year": 2030,
+        "scenario_id": "case3_thermal_ev_v5",
+        "scenario_family": "integrated_demand_flexibility",
+        "flexible_load_enabled": true,
+        "wave_energy_enabled": true,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "selected_time_start_bj": "2030-01-01T00:00:00",
+        "selected_time_end_bj": "2030-12-31T23:00:00",
+        "configured_hours": 8760,
+        "result_use": "SCIENTIFIC_PRODUCTION",
+        "energy_scope": "full_year",
+        "objective_interpretation": "annual system objective",
+        "objective_million_cny_per_year": 4190370.9384320835,
+        "full_year_reference_baseline_load_gwh": 10607999.999996534,
+        "full_year_reference_baseline_peak_load_gw": 1651.9249861858696,
+        "reference_load_definition": "immutable baseline electricity demand before demand-flexibility redispatch; used for Base/V5 cost-intensity comparability",
+        "period_load_gwh": 10608503.101991002,
+        "period_baseline_load_gwh": 10607999.999996535,
+        "period_effective_peak_load_gw": 1647.755370641559,
+        "period_baseline_peak_load_gw": 1651.9249861858696,
+        "period_generation_gwh": 10838520.233714504,
+        "period_wave_generation_gwh": 0.47213324985097654,
+        "period_vre_curtailment_gwh": 304089.9881447279,
+        "period_ror_curtailment_gwh": 19.388268603067992,
+        "period_hydro_aggregate_curtailment_gwh": 13.891353509297648,
+        "period_storage_charge_gwh": 384500.3423141399,
+        "period_storage_discharge_gwh": 316556.8145617085,
+        "period_interprovincial_transmission_losses_gwh": 162073.60401365173,
+        "annual_load_gwh": 10608503.101991002,
+        "peak_load_gw": 1647.755370641559,
+        "annual_generation_gwh": 10838520.233714504,
+        "vre_curtailment_gwh": 304089.9881447279,
+        "ror_curtailment_gwh": 19.388268603067992,
+        "hydro_aggregate_curtailment_gwh": 13.891353509297648,
+        "storage_charge_gwh": 384500.3423141399,
+        "storage_discharge_gwh": 316556.8145617085,
+        "interprovincial_transmission_losses_gwh": 162073.60401365173,
+        "thermal_activation_detail_million_cny": {
+          "flexible_load_v5_thermal_release": 66.93929218252012,
+          "flexible_load_v5_thermal_precondition": 0.0
+        },
+        "thermal_activation_detail_accounting": "NON_ADDITIVE_COMPONENTS_OF_THERMAL_ACTIVATION"
+      },
+      "startup_shutdown_cost_million_cny": 14979.183739666167,
+      "startup_capacity_sum_gw": 13080.481237754342,
+      "shutdown_capacity_sum_gw": 13080.481219660296,
+      "service_decomposition_max_abs_gw": 7.127631818093505e-14,
+      "actual_v2g_discharge_gwh": 366.71788474949255,
+      "price_metadata": {
+        "annual_duals_path": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/acceptance_resource_batch3_20261119/annual_rows/annual_row_duals.csv",
+        "annual_duals_sha256": "92e26004471ba0e3ae4401a706c2d79f13a5630bc377b3300800d11067f069a0",
+        "annual_pair_max_abs_cny_per_mwh": 0.0020995139493606985,
+        "load_price_formula": "1000*(power_balance_pi+annual_effective_demand_pi+0.05*up_pi+0.05*down_pi+inertia_seconds*inertia_pi)",
+        "inertia_seconds": 3.5,
+        "energy_negative_hours": 0,
+        "load_price_negative_hours": 0
+      },
+      "source_files": {
+        "result_manifest.json": {
+          "sha256": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67",
+          "bytes": 14951
+        },
+        "model_config_snapshot.json": {
+          "sha256": "0465466a20fe63d3ee397cbcc48249ba97d6ae43db15bbb160017b4554a5c2ea",
+          "bytes": 27858,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/model_config_snapshot.json"
+        },
+        "annual_summary.json": {
+          "sha256": "99eaa9e2e183bcc2025dce0b40073a2bef5eff9456792f4f196b3db65ef539f7",
+          "bytes": 2285,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_summary.json"
+        },
+        "solve_report.json": {
+          "sha256": "890363fe9fd352515a9e15d617d84c486b00e173ad3c7d737702f365560e8980",
+          "bytes": 71572,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+        },
+        "flexible_load_dispatch.npz": {
+          "sha256": "b2e6d2c65bcf2403b60a9c6d53a10c78a2f2ca4e8baa4fd9b9aa365585009336",
+          "bytes": 42856820,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/flexible_load_dispatch.npz"
+        },
+        "annual_flexible_load_by_province.csv": {
+          "sha256": "4c304a17edabe0ee0f176acf369523877bcc2c160f1f46b83270cc75d2fa2447",
+          "bytes": 19069,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_flexible_load_by_province.csv"
+        },
+        "resource_structure_audit.json": {
+          "sha256": "dc633b50e6c5ebd36a6c799a8d8fcf81e529069960ef4ebb5a8d159da56dbba3",
+          "bytes": 6559,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/resource_structure_audit.json"
+        },
+        "hourly_marginal_prices.csv.gz": {
+          "sha256": "cfca564411378b2ac7ea75cf22f5ac69499bf6c2f3ee7ed9a8e6a79a0385974c",
+          "bytes": 14391019,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/hourly_marginal_prices.csv.gz"
+        },
+        "vre_dispatch.npz": {
+          "sha256": "31adfe9a5a67b20e5c4ddc55cafb0962ec7403b1d139e7eb855e30e72921c64c",
+          "bytes": 11540771,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/vre_dispatch.npz"
+        },
+        "annual_generation_by_province_technology.csv": {
+          "sha256": "5147261e5ea1415a94beb61fb0fd7835677615ccd0b1a1e0485dcd3683bd5b56",
+          "bytes": 15060,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/annual_generation_by_province_technology.csv"
+        },
+        "thermal_dispatch.npz": {
+          "sha256": "1c770ce6360452b9bb488460b86cfa3f0c96392ab6f5c00b57a2b3cde477721f",
+          "bytes": 100811577,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/thermal_dispatch.npz"
+        },
+        "input_manifest.csv": {
+          "sha256": "1e10babedc8d08d315aec1776f381439abe0020e481cc983941432a8b348bcc9",
+          "bytes": 30473,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/input_manifest.csv"
+        },
+        "thermal_nuclear_capacity.csv": {
+          "sha256": "2c44207662f547ede4bd4a9954f49e54e13f43ba45d2d591ae4a202bab3b8f2a",
+          "bytes": 27813,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv"
+        },
+        "cost_components.csv": {
+          "sha256": "1c0f05064f533c6b7fbff78cdbfd725c823f565a2cc9003abf27c2508481e618",
+          "bytes": 4742,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/cost_components.csv"
+        },
+        "storage_dispatch.npz": {
+          "sha256": "141ba9ae60a573445288475e80ae37073be0f14cc2c6b52f861a566b6e3a3264",
+          "bytes": 19626121,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/storage_dispatch.npz"
+        }
+      },
+      "reference_source_files": {
+        "REF": {
+          "result_manifest.json": {
+            "sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+            "bytes": 13615
+          },
+          "solve_report.json": {
+            "sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+            "bytes": 71557,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "994106b1e705ad72e725a345b31d2f65c4af0d331906678f9421ac3a67911f08",
+            "bytes": 2006,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "8ac645d577324109f9760b6e866c8c197c443d951d97d5ba220688b1a612ee29",
+            "bytes": 3520,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/cost_components.csv"
+          }
+        },
+        "OPS-Central": {
+          "result_manifest.json": {
+            "sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135",
+            "bytes": 14623
+          },
+          "solve_report.json": {
+            "sha256": "fb1d285cd006bd48b2c11911a1d5a3a4097217f7027a7c55814632d22ae14c5e",
+            "bytes": 71566,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "f4157dd95a69bb2cdb639cc1f431f97e7dbc7c7d115cc8e7d5bea2522f8f54b5",
+            "bytes": 2280,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "f96d8fc51881f45a20bcf1f163157636087a736a9d0622f3662f6b4e697a4c87",
+            "bytes": 4748,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/output_8760/cost_components.csv"
+          }
+        }
+      },
+      "ruc_parameter_sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f",
+      "seconds": 11.051301002502441,
+      "interpretation": [
+        "Engineering dual comparison intervals, not statistical confidence intervals or market settlement",
+        "Each OPS year uses its own accepted Base-frozen source, not another OPS year as upstream",
+        "Start/stop variables are continuous GW capacities; equivalent full-capacity cycles are not discrete unit start counts",
+        "Service down/up calculated against each contracted service pool baseline; V2G discharge is separately reported and not added again to net-service down regulation",
+        "Province code 0 in six-scope dispatch means synchronous national sum"
+      ]
+    },
+    "annual_rows": {
+      "status": "PASS",
+      "result_label": "初步结果",
+      "dual_grade": "BARRIER_DUAL_ENGINEERING_GRADE",
+      "T3_corridors": 411,
+      "T3_monthly_rows": 4932,
+      "T4_rows": 1134,
+      "selected_families": {
+        "ac_line_shared_capacity_hourly": 420480,
+        "dc_line_forward_capacity_hourly": 3179880,
+        "province_annual_non_spatial_injection": 31,
+        "province_annual_effective_demand": 31,
+        "province_annual_external_sent": 31,
+        "province_annual_external_received": 31,
+        "province_annual_external_net_import": 31,
+        "load_center_annual_energy_balance": 337,
+        "intra_load_center_annual_capacity": 642
+      },
+      "seconds": 248.3173110485077,
+      "no_province_offset_correction": true,
+      "no_clipping": true,
+      "signs": "Min LP, capacity rows L: raw pi normally <=0. Raw signed pi retained; capacity value = -sum(pi).",
+      "units_note": "Task legacy rent_million_cny_per_year stores requested sum(pi), whose actual unit is million CNY/GW, NOT cash/year. Legacy rent_per_gw=sum(pi)/capacity has unit million CNY/GW^2. Use explicitly unit-named columns. capacity_rent=-sum(pi)*capacity is million CNY.",
+      "binding_note": "hours_binding is abs(pi)>1e-6 as requested; dual-active proxy, not primal slack verification. AC uses shared bidirectional row; no identifiable separate direction counts. DC has no reverse row.",
+      "voltage_note": "voltage_class absent in archived transmission_capacity.csv; left empty, not inferred.",
+      "annual_capacity_units": "intra_load_center_annual_capacity constrains annual GWh flows by design_hours*capacity_GW; raw pi unit million CNY/GWh."
+    },
+    "return": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2030",
+      "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2030\\20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "files": 104,
+      "bytes": 138179384,
+      "maximum_file_bytes": 30163317,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    }
+  },
+  "OPS-Conservative-2040": {
+    "acceptance": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2040",
+      "planning_year": 2040,
+      "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "checks": {
+        "current_relative_v1": true,
+        "frozen_capacity_identity": true,
+        "annual_resource_structure": true,
+        "original_preservation": true,
+        "optimal": true
+      },
+      "P_million_cny": 5073199.256988895,
+      "D_million_cny": 5071766.086734447,
+      "primal_dual_gap_million_cny": 1433.1702544484288,
+      "screening_certificate": "NOT_APPLICABLE_UNSCREENED",
+      "screening_B_million_cny": 0.0,
+      "strict_source_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "objective_components"
+      ],
+      "evaluator_version": "relative_v1_author_20261027_mt",
+      "source_sha256": {
+        "result_manifest.json": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+        "solution_qc.json": "4b5236216491d16e673446a80ae89ef2a727507dbb77073a84a78db500c46400",
+        "solve_report.json": "95942344e54345735bf831f0410239f463ffdba019fd1d98d227c46532dbcb18",
+        "model_config_snapshot.json": "525bc3db747e634e6423b932f43c2470a19006e11e2aff525dc0dd994b875d06",
+        "frozen_capacity_output_check.json": "16c7efe746e527dbcd1621649d6c95852ae920e6ec5adfeb6f9e5a574e79a877",
+        "resource_structure_audit.json": "ff29aaebfddf2da1267aee8c14be4f2d35d01101c495faece2adfd116c6bab3f",
+        "preservation_report.json": "4753864ae698961f0b825a0b68e18b5da9a38ebfbbab970161d3b3f9712545d7"
+      },
+      "scope": "Quality label under author relative_v1 rules; no change to archived QC or automatic state adoption",
+      "assessed_at_utc": "2026-11-19T10:28:10.923486+00:00"
+    },
+    "analysis": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2040",
+      "planning_year": 2040,
+      "computed_on": "T550",
+      "P_million_cny": 5073199.256988895,
+      "D_million_cny": 5071766.086734447,
+      "comparisons": [
+        {
+          "reference": "REF",
+          "case": "OPS-Conservative-2040",
+          "point_saving_yi_cny": 148.77114008944483,
+          "lower_saving_yi_cny": 110.25622855307535,
+          "upper_saving_yi_cny": 163.1028426339291,
+          "reference_P_million_cny": 5088076.37099784,
+          "reference_D_million_cny": 5084224.879844203,
+          "target_P_million_cny": 5073199.256988895,
+          "target_D_million_cny": 5071766.086734447,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": 1.9415304041467607,
+          "storage_charge_difference_gwh": -27589.969332192326
+        },
+        {
+          "reference": "OPS-Central",
+          "case": "OPS-Conservative-2040",
+          "point_saving_yi_cny": -107.2657651764527,
+          "lower_saving_yi_cny": -121.66579525296576,
+          "upper_saving_yi_cny": -92.9340626319684,
+          "reference_P_million_cny": 5062472.68047125,
+          "reference_D_million_cny": 5061032.677463599,
+          "target_P_million_cny": 5073199.256988895,
+          "target_D_million_cny": 5071766.086734447,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": -41.22276228351984,
+          "storage_charge_difference_gwh": 24956.606512163067
+        }
+      ],
+      "services": [
+        {
+          "service": "heating",
+          "contract_gw": 1.254421932810436,
+          "upper_gw": 1.3225721553594734,
+          "down_regulation_gwh": 597.5320832528406,
+          "up_regulation_gwh": 795.6866131144193,
+          "net_load_change_gwh": 198.1545298615787,
+          "contract_share_of_upper": 0.948471452182876,
+          "equivalent_down_hours": 476.34058973611525
+        },
+        {
+          "service": "cooling",
+          "contract_gw": 4.858255033836013,
+          "upper_gw": 5.189052050021011,
+          "down_regulation_gwh": 2046.713229144172,
+          "up_regulation_gwh": 2568.955896231139,
+          "net_load_change_gwh": 522.2426670869669,
+          "contract_share_of_upper": 0.9362509735889701,
+          "equivalent_down_hours": 421.28567044948124
+        },
+        {
+          "service": "ev_v1g",
+          "contract_gw": 33.21377573296878,
+          "upper_gw": 33.213780121997004,
+          "down_regulation_gwh": 26986.794684972698,
+          "up_regulation_gwh": 26986.79478897642,
+          "net_load_change_gwh": 0.00010400372296004434,
+          "contract_share_of_upper": 0.9999998678552031,
+          "equivalent_down_hours": 812.5181220569563
+        },
+        {
+          "service": "ev_v2g",
+          "contract_gw": 12.164078623647262,
+          "upper_gw": 14.400681644225868,
+          "down_regulation_gwh": 21145.37254464509,
+          "up_regulation_gwh": 21647.53897881762,
+          "net_load_change_gwh": 502.1664341725302,
+          "contract_share_of_upper": 0.8446876977191284,
+          "equivalent_down_hours": 1738.3455992744061
+        }
+      ],
+      "annual": {
+        "generated_at": "2026-11-19T02:16:35.127905+08:00",
+        "boundary_year": 2030,
+        "planning_year": 2040,
+        "scenario_id": "case3_thermal_ev_v5",
+        "scenario_family": "integrated_demand_flexibility",
+        "flexible_load_enabled": true,
+        "wave_energy_enabled": true,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "selected_time_start_bj": "2040-01-01T00:00:00",
+        "selected_time_end_bj": "2040-12-31T23:00:00",
+        "configured_hours": 8760,
+        "result_use": "SCIENTIFIC_PRODUCTION",
+        "energy_scope": "full_year",
+        "objective_interpretation": "annual system objective",
+        "objective_million_cny_per_year": 5073199.256988895,
+        "full_year_reference_baseline_load_gwh": 13672999.999995576,
+        "full_year_reference_baseline_peak_load_gw": 2066.7983970689293,
+        "reference_load_definition": "immutable baseline electricity demand before demand-flexibility redispatch; used for Base/V5 cost-intensity comparability",
+        "period_load_gwh": 13674222.5637307,
+        "period_baseline_load_gwh": 13672999.999995576,
+        "period_effective_peak_load_gw": 2056.413255512579,
+        "period_baseline_peak_load_gw": 2066.7983970689293,
+        "period_generation_gwh": 14035806.22822461,
+        "period_wave_generation_gwh": 15.20318323962676,
+        "period_vre_curtailment_gwh": 688644.3259191904,
+        "period_ror_curtailment_gwh": 154.36896608534752,
+        "period_hydro_aggregate_curtailment_gwh": 18.124836696981102,
+        "period_storage_charge_gwh": 863656.8413053852,
+        "period_storage_discharge_gwh": 683081.2446175741,
+        "period_interprovincial_transmission_losses_gwh": 180983.40813500382,
+        "annual_load_gwh": 13674222.5637307,
+        "peak_load_gw": 2056.413255512579,
+        "annual_generation_gwh": 14035806.22822461,
+        "vre_curtailment_gwh": 688644.3259191904,
+        "ror_curtailment_gwh": 154.36896608534752,
+        "hydro_aggregate_curtailment_gwh": 18.124836696981102,
+        "storage_charge_gwh": 863656.8413053852,
+        "storage_discharge_gwh": 683081.2446175741,
+        "interprovincial_transmission_losses_gwh": 180983.40813500382,
+        "thermal_activation_detail_million_cny": {
+          "flexible_load_v5_thermal_release": 108.54043833248872,
+          "flexible_load_v5_thermal_precondition": 0.0
+        },
+        "thermal_activation_detail_accounting": "NON_ADDITIVE_COMPONENTS_OF_THERMAL_ACTIVATION"
+      },
+      "startup_shutdown_cost_million_cny": 30916.420747861644,
+      "startup_capacity_sum_gw": 33614.77404977945,
+      "shutdown_capacity_sum_gw": 33614.7740141425,
+      "service_decomposition_max_abs_gw": 9.445222381998519e-14,
+      "actual_v2g_discharge_gwh": 3811.9785108164697,
+      "price_metadata": {
+        "annual_duals_path": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch3_20261119/annual_rows/annual_row_duals.csv",
+        "annual_duals_sha256": "94d3211609fa7abb61ce33305da352b6ae561e1671d83762baca0ccd49e3fe45",
+        "annual_pair_max_abs_cny_per_mwh": 0.0022602584976993967,
+        "load_price_formula": "1000*(power_balance_pi+annual_effective_demand_pi+0.05*up_pi+0.05*down_pi+inertia_seconds*inertia_pi)",
+        "inertia_seconds": 3.5,
+        "energy_negative_hours": 0,
+        "load_price_negative_hours": 0
+      },
+      "source_files": {
+        "result_manifest.json": {
+          "sha256": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+          "bytes": 15302
+        },
+        "model_config_snapshot.json": {
+          "sha256": "525bc3db747e634e6423b932f43c2470a19006e11e2aff525dc0dd994b875d06",
+          "bytes": 29953,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/model_config_snapshot.json"
+        },
+        "annual_summary.json": {
+          "sha256": "0c6b374ff337ac61ac71a350a39892872adfcc25520ea3776e223f70a31325d8",
+          "bytes": 2277,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/annual_summary.json"
+        },
+        "solve_report.json": {
+          "sha256": "95942344e54345735bf831f0410239f463ffdba019fd1d98d227c46532dbcb18",
+          "bytes": 80368,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+        },
+        "flexible_load_dispatch.npz": {
+          "sha256": "a336aa8a961ed29dfbc1ebbc7641a3d9d1407da2c42f5f23c009274b4588168f",
+          "bytes": 42847218,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/flexible_load_dispatch.npz"
+        },
+        "annual_flexible_load_by_province.csv": {
+          "sha256": "285c850cbe8f80899b770ff21ac718b9fe9447e77c0a36344865ba3575d04027",
+          "bytes": 18950,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/annual_flexible_load_by_province.csv"
+        },
+        "resource_structure_audit.json": {
+          "sha256": "ff29aaebfddf2da1267aee8c14be4f2d35d01101c495faece2adfd116c6bab3f",
+          "bytes": 6542,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/resource_structure_audit.json"
+        },
+        "hourly_marginal_prices.csv.gz": {
+          "sha256": "4fb1a4ad9274e1166c5d1c131301584d4f573997236fc61dc9b0f308dc624398",
+          "bytes": 14264499,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/hourly_marginal_prices.csv.gz"
+        },
+        "vre_dispatch.npz": {
+          "sha256": "d878ade2aca5a3486f26275c3b321bf1093133755a58d631200793c363aac36b",
+          "bytes": 11560911,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/vre_dispatch.npz"
+        },
+        "annual_generation_by_province_technology.csv": {
+          "sha256": "564ef8a0adb14c75f5f450ae11f29f8ecc1927a1155949ad3d847781c28f2d75",
+          "bytes": 14972,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/annual_generation_by_province_technology.csv"
+        },
+        "thermal_dispatch.npz": {
+          "sha256": "092fa2da494d6e773ccf9f551a05b45e26c14ab6d8cf0b956d69d60bd67aa48f",
+          "bytes": 102767369,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/thermal_dispatch.npz"
+        },
+        "input_manifest.csv": {
+          "sha256": "2d72b82ebfd9f445cc585cde224fb82a8d7b62a6e916b5eacae3e63a68f8ebed",
+          "bytes": 32050,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/input_manifest.csv"
+        },
+        "thermal_nuclear_capacity.csv": {
+          "sha256": "3ee156211499e27d2072982814d2c2e9074ca8f312626453d33040a21921b762",
+          "bytes": 37975,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv"
+        },
+        "cost_components.csv": {
+          "sha256": "4aeddc5a23dfabf51bf641d8beec4dc17474979a4b48b0941c8470a7683c619d",
+          "bytes": 4782,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/cost_components.csv"
+        },
+        "storage_dispatch.npz": {
+          "sha256": "e88f9ae9bbf9baa3db03942562dd2c2935624b759c79345026d7bc09124b7413",
+          "bytes": 20089084,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/storage_dispatch.npz"
+        }
+      },
+      "reference_source_files": {
+        "REF": {
+          "result_manifest.json": {
+            "sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+            "bytes": 13450
+          },
+          "solve_report.json": {
+            "sha256": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230",
+            "bytes": 80184,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "2e6fe330bd9ca710c9645a12f34d7866a95718e65c4e699e99a1a5f465a77841",
+            "bytes": 2009,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "c2ca36a81c53b89a2466b649435e7bcc87fc482770921db7848316e60050f77f",
+            "bytes": 3536,
+            "source": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/cost_components.csv"
+          }
+        },
+        "OPS-Central": {
+          "result_manifest.json": {
+            "sha256": "7941224437da19c66a68b51340cf0239474088d631049a55304e3d5562e910d1",
+            "bytes": 14974
+          },
+          "solve_report.json": {
+            "sha256": "6002aebe2f67098c0fc02f5ec425a0bc4a6b07d0a4bf149c87e3475bf8049eb9",
+            "bytes": 80365,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "05ca70641f24f2e0c518bbf30d03f63f83dac3d0916c26a071cdb55ee086a1b5",
+            "bytes": 2285,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "583b17b24f0cc928bec3b91a2635e9b10db7ee83d45a6f5b64ebde941537d6a1",
+            "bytes": 4786,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/cost_components.csv"
+          }
+        }
+      },
+      "ruc_parameter_sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f",
+      "seconds": 10.530727624893188,
+      "interpretation": [
+        "Engineering dual comparison intervals, not statistical confidence intervals or market settlement",
+        "Each OPS year uses its own accepted Base-frozen source, not another OPS year as upstream",
+        "Start/stop variables are continuous GW capacities; equivalent full-capacity cycles are not discrete unit start counts",
+        "Service down/up calculated against each contracted service pool baseline; V2G discharge is separately reported and not added again to net-service down regulation",
+        "Province code 0 in six-scope dispatch means synchronous national sum"
+      ]
+    },
+    "annual_rows": {
+      "status": "PASS",
+      "result_label": "初步结果",
+      "dual_grade": "BARRIER_DUAL_ENGINEERING_GRADE",
+      "T3_corridors": 411,
+      "T3_monthly_rows": 4932,
+      "T4_rows": 1134,
+      "selected_families": {
+        "ac_line_shared_capacity_hourly": 420480,
+        "dc_line_forward_capacity_hourly": 3179880,
+        "province_annual_non_spatial_injection": 31,
+        "province_annual_effective_demand": 31,
+        "province_annual_external_sent": 31,
+        "province_annual_external_received": 31,
+        "province_annual_external_net_import": 31,
+        "load_center_annual_energy_balance": 337,
+        "intra_load_center_annual_capacity": 642
+      },
+      "seconds": 250.17757439613342,
+      "no_province_offset_correction": true,
+      "no_clipping": true,
+      "signs": "Min LP, capacity rows L: raw pi normally <=0. Raw signed pi retained; capacity value = -sum(pi).",
+      "units_note": "Task legacy rent_million_cny_per_year stores requested sum(pi), whose actual unit is million CNY/GW, NOT cash/year. Legacy rent_per_gw=sum(pi)/capacity has unit million CNY/GW^2. Use explicitly unit-named columns. capacity_rent=-sum(pi)*capacity is million CNY.",
+      "binding_note": "hours_binding is abs(pi)>1e-6 as requested; dual-active proxy, not primal slack verification. AC uses shared bidirectional row; no identifiable separate direction counts. DC has no reverse row.",
+      "voltage_note": "voltage_class absent in archived transmission_capacity.csv; left empty, not inferred.",
+      "annual_capacity_units": "intra_load_center_annual_capacity constrains annual GWh flows by design_hours*capacity_GW; raw pi unit million CNY/GWh."
+    },
+    "return": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2040",
+      "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2040\\20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "files": 106,
+      "bytes": 139962712,
+      "maximum_file_bytes": 30173177,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    }
+  },
+  "OPS-Conservative-2060": {
+    "acceptance": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2060",
+      "planning_year": 2060,
+      "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "checks": {
+        "current_relative_v1": true,
+        "frozen_capacity_identity": true,
+        "annual_resource_structure": true,
+        "original_preservation": true,
+        "optimal": true
+      },
+      "P_million_cny": 5767643.547864859,
+      "D_million_cny": 5766835.652088347,
+      "primal_dual_gap_million_cny": 807.8957765121013,
+      "screening_certificate": "NOT_APPLICABLE_UNSCREENED",
+      "screening_B_million_cny": 0.0,
+      "strict_source_status": "HARD_FAIL",
+      "strict_failed_checks": [
+        "unidirectional_interprovincial_flow",
+        "objective_components"
+      ],
+      "evaluator_version": "relative_v1_author_20261027_mt",
+      "source_sha256": {
+        "result_manifest.json": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed",
+        "solution_qc.json": "8374638c1b24b2dc9434dc29c7a47566321d3e18b6b6967550ec088e8818004e",
+        "solve_report.json": "651c4971288b6cc1cc041f860e5a709149f106679ad6a12559f84f7471f4149c",
+        "model_config_snapshot.json": "10e545785e1e226c5ddb9c4636519fa14b07f44876bbedc01764a9268734cc58",
+        "frozen_capacity_output_check.json": "021320189661e58cf732bd0147e56f2d875b814638997ec7e2e0c460f8d51ffd",
+        "resource_structure_audit.json": "5fe567aba8785bc64cf3ada3ec4e49854d002077700f85485f8991a2bd794230",
+        "preservation_report.json": "a229e1f247f9949a2e08bf8458d110afd4e31e8011b0aa9844543a8d49dae48e"
+      },
+      "scope": "Quality label under author relative_v1 rules; no change to archived QC or automatic state adoption",
+      "assessed_at_utc": "2026-11-19T10:32:41.904499+00:00"
+    },
+    "analysis": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2060",
+      "planning_year": 2060,
+      "computed_on": "T550",
+      "P_million_cny": 5767643.547864859,
+      "D_million_cny": 5766835.652088347,
+      "comparisons": [
+        {
+          "reference": "REF",
+          "case": "OPS-Conservative-2060",
+          "point_saving_yi_cny": 214.54086870485918,
+          "lower_saving_yi_cny": 167.24586873933674,
+          "upper_saving_yi_cny": 222.61982646998018,
+          "reference_P_million_cny": 5789097.634735345,
+          "reference_D_million_cny": 5784368.134738793,
+          "target_P_million_cny": 5767643.547864859,
+          "target_D_million_cny": 5766835.652088347,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": 91.11979961080942,
+          "storage_charge_difference_gwh": -45406.24833938782
+        },
+        {
+          "reference": "OPS-Central",
+          "case": "OPS-Conservative-2060",
+          "point_saving_yi_cny": -268.1498692089226,
+          "lower_saving_yi_cny": -288.51289440804163,
+          "upper_saving_yi_cny": -260.0709114438016,
+          "reference_P_million_cny": 5740828.560943967,
+          "reference_D_million_cny": 5738792.258424055,
+          "target_P_million_cny": 5767643.547864859,
+          "target_D_million_cny": 5766835.652088347,
+          "screening_B_million_cny": 0.0,
+          "vre_curtailment_difference_gwh": 58.48072618886363,
+          "storage_charge_difference_gwh": 66480.38317181496
+        }
+      ],
+      "services": [
+        {
+          "service": "heating",
+          "contract_gw": 1.3419119461553697,
+          "upper_gw": 1.4083615291405098,
+          "down_regulation_gwh": 912.5907474199646,
+          "up_regulation_gwh": 1139.3708790085136,
+          "net_load_change_gwh": 226.780131588549,
+          "contract_share_of_upper": 0.9528178087726574,
+          "equivalent_down_hours": 680.0675335178086
+        },
+        {
+          "service": "cooling",
+          "contract_gw": 4.967079882542307,
+          "upper_gw": 5.44971735072768,
+          "down_regulation_gwh": 2362.8527786318414,
+          "up_regulation_gwh": 2908.4532974793474,
+          "net_load_change_gwh": 545.6005188475059,
+          "contract_share_of_upper": 0.9114380733670657,
+          "equivalent_down_hours": 475.70259277216604
+        },
+        {
+          "service": "ev_v1g",
+          "contract_gw": 52.5367020115866,
+          "upper_gw": 52.536709725733594,
+          "down_regulation_gwh": 48492.46949980289,
+          "up_regulation_gwh": 48492.46969566789,
+          "net_load_change_gwh": 0.0001958649902178422,
+          "contract_share_of_upper": 0.9999998531665375,
+          "equivalent_down_hours": 923.0208148411795
+        },
+        {
+          "service": "ev_v2g",
+          "contract_gw": 17.18506800419702,
+          "upper_gw": 22.88575659103916,
+          "down_regulation_gwh": 33322.0414289177,
+          "up_regulation_gwh": 34302.89810237976,
+          "net_load_change_gwh": 980.8566734620623,
+          "contract_share_of_upper": 0.7509067019844899,
+          "equivalent_down_hours": 1939.011321967398
+        }
+      ],
+      "annual": {
+        "generated_at": "2026-11-19T01:55:24.135708+08:00",
+        "boundary_year": 2050,
+        "planning_year": 2060,
+        "scenario_id": "case3_thermal_ev_v5",
+        "scenario_family": "integrated_demand_flexibility",
+        "flexible_load_enabled": true,
+        "wave_energy_enabled": true,
+        "optimization_hours": 8760,
+        "optimization_start_hour": 0,
+        "optimization_stop_hour_exclusive": 8760,
+        "selected_time_start_bj": "2060-01-01T00:00:00",
+        "selected_time_end_bj": "2060-12-31T23:00:00",
+        "configured_hours": 8760,
+        "result_use": "SCIENTIFIC_PRODUCTION",
+        "energy_scope": "full_year",
+        "objective_interpretation": "annual system objective",
+        "objective_million_cny_per_year": 5767643.547864859,
+        "full_year_reference_baseline_load_gwh": 16817999.999994606,
+        "full_year_reference_baseline_peak_load_gw": 2485.7097265534862,
+        "reference_load_definition": "immutable baseline electricity demand before demand-flexibility redispatch; used for Base/V5 cost-intensity comparability",
+        "period_load_gwh": 16819753.237514373,
+        "period_baseline_load_gwh": 16817999.99999461,
+        "period_effective_peak_load_gw": 2466.5050891530013,
+        "period_baseline_peak_load_gw": 2485.7097265534862,
+        "period_generation_gwh": 17276909.226597328,
+        "period_wave_generation_gwh": 27.34395278329134,
+        "period_vre_curtailment_gwh": 717949.6209625453,
+        "period_ror_curtailment_gwh": 254.29720766652287,
+        "period_hydro_aggregate_curtailment_gwh": 8.339887458870827,
+        "period_storage_charge_gwh": 1355821.7067468322,
+        "period_storage_discharge_gwh": 1102521.2478106646,
+        "period_interprovincial_transmission_losses_gwh": 203822.8921270432,
+        "annual_load_gwh": 16819753.237514373,
+        "peak_load_gw": 2466.5050891530013,
+        "annual_generation_gwh": 17276909.226597328,
+        "vre_curtailment_gwh": 717949.6209625453,
+        "ror_curtailment_gwh": 254.29720766652287,
+        "hydro_aggregate_curtailment_gwh": 8.339887458870827,
+        "storage_charge_gwh": 1355821.7067468322,
+        "storage_discharge_gwh": 1102521.2478106646,
+        "interprovincial_transmission_losses_gwh": 203822.8921270432,
+        "thermal_activation_detail_million_cny": {
+          "flexible_load_v5_thermal_release": 99.92576116292432,
+          "flexible_load_v5_thermal_precondition": 0.0
+        },
+        "thermal_activation_detail_accounting": "NON_ADDITIVE_COMPONENTS_OF_THERMAL_ACTIVATION"
+      },
+      "startup_shutdown_cost_million_cny": 43014.966899117455,
+      "startup_capacity_sum_gw": 64636.80429558924,
+      "shutdown_capacity_sum_gw": 64636.80422931009,
+      "service_decomposition_max_abs_gw": 1.3700152123874432e-13,
+      "actual_v2g_discharge_gwh": 7445.747636898932,
+      "price_metadata": {
+        "annual_duals_path": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/acceptance_resource_batch3_20261119/annual_rows/annual_row_duals.csv",
+        "annual_duals_sha256": "2d3359544972f02981a976bd358ad083331a24ca42d6c1819475cd29dc3314d7",
+        "annual_pair_max_abs_cny_per_mwh": 0.0003682798705995083,
+        "load_price_formula": "1000*(power_balance_pi+annual_effective_demand_pi+0.05*up_pi+0.05*down_pi+inertia_seconds*inertia_pi)",
+        "inertia_seconds": 3.5,
+        "energy_negative_hours": 0,
+        "load_price_negative_hours": 0
+      },
+      "source_files": {
+        "result_manifest.json": {
+          "sha256": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed",
+          "bytes": 15304
+        },
+        "model_config_snapshot.json": {
+          "sha256": "10e545785e1e226c5ddb9c4636519fa14b07f44876bbedc01764a9268734cc58",
+          "bytes": 29993,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/model_config_snapshot.json"
+        },
+        "annual_summary.json": {
+          "sha256": "76462eca9e13e8ea2a3a3ef91be1ef36f735cba53c94b6e78032e51053881e2c",
+          "bytes": 2283,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/annual_summary.json"
+        },
+        "solve_report.json": {
+          "sha256": "651c4971288b6cc1cc041f860e5a709149f106679ad6a12559f84f7471f4149c",
+          "bytes": 238993,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+        },
+        "flexible_load_dispatch.npz": {
+          "sha256": "550abff3be26890c6e9e7e783d42f441300d993d420e1eaf4a3d23f56b983660",
+          "bytes": 42752216,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/flexible_load_dispatch.npz"
+        },
+        "annual_flexible_load_by_province.csv": {
+          "sha256": "2ed3d60d2ba2bbbb86ff43652aa7ccb7faf4471f68d056967d4d124dc34afa4e",
+          "bytes": 19005,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/annual_flexible_load_by_province.csv"
+        },
+        "resource_structure_audit.json": {
+          "sha256": "5fe567aba8785bc64cf3ada3ec4e49854d002077700f85485f8991a2bd794230",
+          "bytes": 6587,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/resource_structure_audit.json"
+        },
+        "hourly_marginal_prices.csv.gz": {
+          "sha256": "f0f2ee5903e36282e4be9512e8372c866e2fa8f41c0026f6b555312498d3f376",
+          "bytes": 14728522,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/hourly_marginal_prices.csv.gz"
+        },
+        "vre_dispatch.npz": {
+          "sha256": "968bd8905f42ff05420b4612b0ccbcf11277045dd6dc92a2bf942017db2ebec8",
+          "bytes": 11561283,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/vre_dispatch.npz"
+        },
+        "annual_generation_by_province_technology.csv": {
+          "sha256": "e0f14d97f29d62515a8196089cbc6266ee03af2ad3bb510fb0b1b0eb96c6df7d",
+          "bytes": 14726,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/annual_generation_by_province_technology.csv"
+        },
+        "thermal_dispatch.npz": {
+          "sha256": "80b326625bf2e398c5424353ea79ffdbae4c6df73a88ba1939d767e04bd033e0",
+          "bytes": 96964868,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/thermal_dispatch.npz"
+        },
+        "input_manifest.csv": {
+          "sha256": "5d1a6255e2d81c2cbc8ed2a75be670e50ceabf9cf02ba09e924e777737e0d8da",
+          "bytes": 32048,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/input_manifest.csv"
+        },
+        "thermal_nuclear_capacity.csv": {
+          "sha256": "c33ae6d1a981f88d7a954535aa8f0f52a188cba0c2c676cfef9b05d776706eaa",
+          "bytes": 38628,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/thermal_nuclear_capacity.csv"
+        },
+        "cost_components.csv": {
+          "sha256": "b287863830aeefc8002e1f8a02413331ee0ae60f17316d4a5a9c0e32a5a52d46",
+          "bytes": 4774,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/cost_components.csv"
+        },
+        "storage_dispatch.npz": {
+          "sha256": "9b2a55db76b2ea9adb6a1b491cb38f27ffa0e49e1ae90852f203608fc4d2bdad",
+          "bytes": 20090559,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/storage_dispatch.npz"
+        }
+      },
+      "reference_source_files": {
+        "REF": {
+          "result_manifest.json": {
+            "sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+            "bytes": 13458
+          },
+          "solve_report.json": {
+            "sha256": "8b12e7066e1e60a13d37e3372a3ef170d16fcce07777dfb42b8c163a070844a8",
+            "bytes": 238723,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "07fa6d9d20b7219e2cd87a60df6822f6a426b4c6447a7ba537e24de67e6fd8ab",
+            "bytes": 2004,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "bc9d2aeb2a60292e9bec94783670a98e108a10b6142b687693649ab65407db71",
+            "bytes": 3540,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/cost_components.csv"
+          }
+        },
+        "OPS-Central": {
+          "result_manifest.json": {
+            "sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+            "bytes": 14976
+          },
+          "solve_report.json": {
+            "sha256": "cb204f30136f33332f6f0f67774e92f77a0b992c6b6ca11e26a307cb902472fc",
+            "bytes": 238883,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2/output_8760/solve_report.json"
+          },
+          "annual_summary.json": {
+            "sha256": "c24f5b228c350137e998c67b52ba909c2dd73dba0785bdefbb19fb655bb39f36",
+            "bytes": 2286,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2/output_8760/annual_summary.json"
+          },
+          "cost_components.csv": {
+            "sha256": "9336df0be30a1ca3147d459f0e1391aad651c4942d5e9d91a759285719de7e2b",
+            "bytes": 4786,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2/output_8760/cost_components.csv"
+          }
+        }
+      },
+      "ruc_parameter_sha256": "591da89bd6150cb02dd0ea089888b47db5a4bb666620680bcad789c46431716f",
+      "seconds": 10.200164794921875,
+      "interpretation": [
+        "Engineering dual comparison intervals, not statistical confidence intervals or market settlement",
+        "Each OPS year uses its own accepted Base-frozen source, not another OPS year as upstream",
+        "Start/stop variables are continuous GW capacities; equivalent full-capacity cycles are not discrete unit start counts",
+        "Service down/up calculated against each contracted service pool baseline; V2G discharge is separately reported and not added again to net-service down regulation",
+        "Province code 0 in six-scope dispatch means synchronous national sum"
+      ]
+    },
+    "annual_rows": {
+      "status": "PASS",
+      "result_label": "初步结果",
+      "dual_grade": "BARRIER_DUAL_ENGINEERING_GRADE",
+      "T3_corridors": 411,
+      "T3_monthly_rows": 4932,
+      "T4_rows": 1134,
+      "selected_families": {
+        "ac_line_shared_capacity_hourly": 420480,
+        "dc_line_forward_capacity_hourly": 3179880,
+        "province_annual_non_spatial_injection": 31,
+        "province_annual_effective_demand": 31,
+        "province_annual_external_sent": 31,
+        "province_annual_external_received": 31,
+        "province_annual_external_net_import": 31,
+        "load_center_annual_energy_balance": 337,
+        "intra_load_center_annual_capacity": 642
+      },
+      "seconds": 248.3322937488556,
+      "no_province_offset_correction": true,
+      "no_clipping": true,
+      "signs": "Min LP, capacity rows L: raw pi normally <=0. Raw signed pi retained; capacity value = -sum(pi).",
+      "units_note": "Task legacy rent_million_cny_per_year stores requested sum(pi), whose actual unit is million CNY/GW, NOT cash/year. Legacy rent_per_gw=sum(pi)/capacity has unit million CNY/GW^2. Use explicitly unit-named columns. capacity_rent=-sum(pi)*capacity is million CNY.",
+      "binding_note": "hours_binding is abs(pi)>1e-6 as requested; dual-active proxy, not primal slack verification. AC uses shared bidirectional row; no identifiable separate direction counts. DC has no reverse row.",
+      "voltage_note": "voltage_class absent in archived transmission_capacity.csv; left empty, not inferred.",
+      "annual_capacity_units": "intra_load_center_annual_capacity constrains annual GWh flows by design_hours*capacity_GW; raw pi unit million CNY/GWh."
+    },
+    "return": {
+      "status": "PASS",
+      "case": "OPS-Conservative-2060",
+      "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\OPS-Conservative\\2060\\20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "files": 106,
+      "bytes": 140146129,
+      "maximum_file_bytes": 30085542,
+      "all_bytes_sha_match": true,
+      "omitted_not_applicable": {
+        "candidate_selection.csv": "NOT_APPLICABLE_UNSCREENED_FROZEN_CASE"
+      }
+    }
+  }
+}

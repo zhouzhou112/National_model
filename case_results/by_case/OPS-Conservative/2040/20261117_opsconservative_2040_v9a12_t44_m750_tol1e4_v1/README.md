@@ -9,3 +9,5 @@ Job 5613303 已release，截至2026-11-17T12:49:40.263885Z为PENDING；尚无全
 2026-11-18 18:34UTC更新：COMPLETED/OPTIMAL，160轮，总耗时16:32:15；原结果保全COMPLETE、内置relative_v1与冻结容量检查PASS。18:36UTC由T550 PID3339359启动合并全量备份，当前RUNNING，正式验收/年度对偶恢复与小文件回传待全量SHA校验完成。
 
 2026-11-18 23:59UTC收尾核验：全量备份已于19:03:46UTC完成；三层逐文件bytes/SHA全部VERIFIED，当前云端manifest仍一致。正式T550验收、年度核算行对偶恢复及结果小文件回传仍待执行。
+
+2026-11-19验收更新：当前relative_v1 PASS，原严格标签不改；恢复1134条年度核算行对偶、T550只读分析完成，验收包和结果小文件已回传且SHA全匹配。正式记录见本目录acceptance_resource_batch3_20261119/acceptance_record.json，作者采纳仍待审阅。

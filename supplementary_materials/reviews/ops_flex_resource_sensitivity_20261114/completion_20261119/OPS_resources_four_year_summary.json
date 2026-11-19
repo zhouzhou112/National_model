@@ -1,0 +1,749 @@
+{
+  "status": "PASS",
+  "computed_on": "T550",
+  "rows": [
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "P_million_cny": 4181810.139273937,
+      "D_million_cny": 4180362.9285282344,
+      "ref_point_saving_yi_cny": 109.68696918817237,
+      "ref_lower_saving_yi_cny": 106.62333783564158,
+      "ref_upper_saving_yi_cny": 124.15907664519735,
+      "central_point_saving_yi_cny": 79.23267619911582,
+      "central_lower_saving_yi_cny": 64.29877118370962,
+      "central_upper_saving_yi_cny": 93.70478365614079,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": true
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2030,
+      "P_million_cny": 4190370.9384320835,
+      "D_million_cny": 4189331.4093508734,
+      "ref_point_saving_yi_cny": 24.07897760670632,
+      "ref_lower_saving_yi_cny": 21.01534625417553,
+      "ref_upper_saving_yi_cny": 34.4742684188066,
+      "central_point_saving_yi_cny": -6.375315382350236,
+      "central_lower_saving_yi_cny": -21.309220397756434,
+      "central_upper_saving_yi_cny": 4.019975429750048,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": false
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2040,
+      "P_million_cny": 5035960.232688588,
+      "D_million_cny": 5034512.92670544,
+      "ref_point_saving_yi_cny": 521.1613830925152,
+      "ref_lower_saving_yi_cny": 482.6464715561457,
+      "ref_upper_saving_yi_cny": 535.6344429240003,
+      "central_point_saving_yi_cny": 265.12447782661764,
+      "central_lower_saving_yi_cny": 250.7244477501046,
+      "central_upper_saving_yi_cny": 279.5975376581028,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": true
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2040,
+      "P_million_cny": 5073199.256988895,
+      "D_million_cny": 5071766.086734447,
+      "ref_point_saving_yi_cny": 148.77114008944483,
+      "ref_lower_saving_yi_cny": 110.25622855307535,
+      "ref_upper_saving_yi_cny": 163.1028426339291,
+      "central_point_saving_yi_cny": -107.2657651764527,
+      "central_lower_saving_yi_cny": -121.66579525296576,
+      "central_upper_saving_yi_cny": -92.9340626319684,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": false
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2050,
+      "P_million_cny": 5678988.615606979,
+      "D_million_cny": 5677106.078051538,
+      "ref_point_saving_yi_cny": 729.8388970354292,
+      "ref_lower_saving_yi_cny": 683.524497284498,
+      "ref_upper_saving_yi_cny": 748.6642725898325,
+      "central_point_saving_yi_cny": 302.150715726316,
+      "central_lower_saving_yi_cny": 283.635777341295,
+      "central_upper_saving_yi_cny": 320.9760912807193,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": true
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2050,
+      "P_million_cny": 5731237.04826789,
+      "D_million_cny": 5731044.78388663,
+      "ref_point_saving_yi_cny": 207.35457042631694,
+      "ref_lower_saving_yi_cny": 161.04017067538575,
+      "ref_upper_saving_yi_cny": 209.27721423891373,
+      "central_point_saving_yi_cny": -220.33361088279634,
+      "central_lower_saving_yi_cny": -238.84854926781728,
+      "central_upper_saving_yi_cny": -218.41096707019955,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": true
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2060,
+      "P_million_cny": 5718684.655942873,
+      "D_million_cny": 5716781.51404679,
+      "ref_point_saving_yi_cny": 704.1297879247181,
+      "ref_lower_saving_yi_cny": 656.8347879591956,
+      "ref_upper_saving_yi_cny": 723.1612068855483,
+      "central_point_saving_yi_cny": 221.43905001093634,
+      "central_lower_saving_yi_cny": 201.07602481181732,
+      "central_upper_saving_yi_cny": 240.47046897176654,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": true
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2060,
+      "P_million_cny": 5767643.547864859,
+      "D_million_cny": 5766835.652088347,
+      "ref_point_saving_yi_cny": 214.54086870485918,
+      "ref_lower_saving_yi_cny": 167.24586873933674,
+      "ref_upper_saving_yi_cny": 222.61982646998018,
+      "central_point_saving_yi_cny": -268.1498692089226,
+      "central_lower_saving_yi_cny": -288.51289440804163,
+      "central_upper_saving_yi_cny": -260.0709114438016,
+      "acceptance": "PASS",
+      "reused_prior_acceptance": false
+    }
+  ],
+  "services": [
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "service": "heating",
+      "contract_gw": 6.543110038185247,
+      "upper_gw": 26.837969915501017,
+      "down_regulation_gwh": 2535.8019080922572,
+      "up_regulation_gwh": 3391.0066734438847,
+      "net_load_change_gwh": 855.2047653516273,
+      "contract_share_of_upper": 0.2438004833743439,
+      "equivalent_down_hours": 387.55299747267736
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "service": "cooling",
+      "contract_gw": 4.996324338116236,
+      "upper_gw": 105.65219016758141,
+      "down_regulation_gwh": 895.2722291237798,
+      "up_regulation_gwh": 1148.485082103841,
+      "net_load_change_gwh": 253.21285298006134,
+      "contract_share_of_upper": 0.04729030538970617,
+      "equivalent_down_hours": 179.18617138080435
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "service": "ev_v1g",
+      "contract_gw": 134.75072931295162,
+      "upper_gw": 135.37277025613946,
+      "down_regulation_gwh": 128395.3180954711,
+      "up_regulation_gwh": 128395.31852632572,
+      "net_load_change_gwh": 0.00043085462078806813,
+      "contract_share_of_upper": 0.9954049773672292,
+      "equivalent_down_hours": 952.8357935434962
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2030,
+      "service": "ev_v2g",
+      "contract_gw": 0.5562144847511442,
+      "upper_gw": 58.91159556473363,
+      "down_regulation_gwh": 660.4946880484266,
+      "up_regulation_gwh": 673.6001602783904,
+      "net_load_change_gwh": 13.105472229963828,
+      "contract_share_of_upper": 0.009441511122202774,
+      "equivalent_down_hours": 1187.4819986824657
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2030,
+      "service": "heating",
+      "contract_gw": 1.1415657476494565,
+      "upper_gw": 1.2262902022880489,
+      "down_regulation_gwh": 505.3309713929073,
+      "up_regulation_gwh": 678.9393154740887,
+      "net_load_change_gwh": 173.60834408118143,
+      "contract_share_of_upper": 0.9309099473513602,
+      "equivalent_down_hours": 442.6647982680018
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2030,
+      "service": "cooling",
+      "contract_gw": 3.8498125880482785,
+      "upper_gw": 4.869483348529306,
+      "down_regulation_gwh": 1107.193775812809,
+      "up_regulation_gwh": 1388.3782095334343,
+      "net_load_change_gwh": 281.1844337206254,
+      "contract_share_of_upper": 0.7905998054621153,
+      "equivalent_down_hours": 287.5967986727681
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2030,
+      "service": "ev_v1g",
+      "contract_gw": 16.586578104283742,
+      "upper_gw": 16.58658954548235,
+      "down_regulation_gwh": 18907.99922399632,
+      "up_regulation_gwh": 18907.999324136537,
+      "net_load_change_gwh": 0.00010014021639825899,
+      "contract_share_of_upper": 0.9999993102139184,
+      "equivalent_down_hours": 1139.9578083627168
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2030,
+      "service": "ev_v2g",
+      "contract_gw": 1.4150262510812566,
+      "upper_gw": 7.193004805541393,
+      "down_regulation_gwh": 2226.254478633871,
+      "up_regulation_gwh": 2274.5635951577024,
+      "net_load_change_gwh": 48.30911652383141,
+      "contract_share_of_upper": 0.19672255049671866,
+      "equivalent_down_hours": 1573.2955321024856
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2040,
+      "service": "heating",
+      "contract_gw": 6.189861300530482,
+      "upper_gw": 31.43445579804442,
+      "down_regulation_gwh": 1815.6653889645913,
+      "up_regulation_gwh": 2377.0175223376123,
+      "net_load_change_gwh": 561.3521333730208,
+      "contract_share_of_upper": 0.1969132642313967,
+      "equivalent_down_hours": 293.3289294881269
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2040,
+      "service": "cooling",
+      "contract_gw": 6.871840614907356,
+      "upper_gw": 120.55620599098104,
+      "down_regulation_gwh": 1316.351328659876,
+      "up_regulation_gwh": 1731.3648870048246,
+      "net_load_change_gwh": 415.0135583449489,
+      "contract_share_of_upper": 0.05700113534944395,
+      "equivalent_down_hours": 191.55731374273478
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2040,
+      "service": "ev_v1g",
+      "contract_gw": 317.33912006540044,
+      "upper_gw": 317.3391651870556,
+      "down_regulation_gwh": 312392.5774810408,
+      "up_regulation_gwh": 312392.5788293911,
+      "net_load_change_gwh": 0.0013483503055340407,
+      "contract_share_of_upper": 0.9999998578125233,
+      "equivalent_down_hours": 984.41243996851
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2040,
+      "service": "ev_v2g",
+      "contract_gw": 0.6377353923272762,
+      "upper_gw": 137.90056031807276,
+      "down_regulation_gwh": 666.9492958465925,
+      "up_regulation_gwh": 678.3385416472072,
+      "net_load_change_gwh": 11.389245800614706,
+      "contract_share_of_upper": 0.004624603343571018,
+      "equivalent_down_hours": 1045.8088164320104
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2040,
+      "service": "heating",
+      "contract_gw": 1.254421932810436,
+      "upper_gw": 1.3225721553594734,
+      "down_regulation_gwh": 597.5320832528406,
+      "up_regulation_gwh": 795.6866131144193,
+      "net_load_change_gwh": 198.1545298615787,
+      "contract_share_of_upper": 0.948471452182876,
+      "equivalent_down_hours": 476.34058973611525
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2040,
+      "service": "cooling",
+      "contract_gw": 4.858255033836013,
+      "upper_gw": 5.189052050021011,
+      "down_regulation_gwh": 2046.713229144172,
+      "up_regulation_gwh": 2568.955896231139,
+      "net_load_change_gwh": 522.2426670869669,
+      "contract_share_of_upper": 0.9362509735889701,
+      "equivalent_down_hours": 421.28567044948124
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2040,
+      "service": "ev_v1g",
+      "contract_gw": 33.21377573296878,
+      "upper_gw": 33.213780121997004,
+      "down_regulation_gwh": 26986.794684972698,
+      "up_regulation_gwh": 26986.79478897642,
+      "net_load_change_gwh": 0.00010400372296004434,
+      "contract_share_of_upper": 0.9999998678552031,
+      "equivalent_down_hours": 812.5181220569563
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2040,
+      "service": "ev_v2g",
+      "contract_gw": 12.164078623647262,
+      "upper_gw": 14.400681644225868,
+      "down_regulation_gwh": 21145.37254464509,
+      "up_regulation_gwh": 21647.53897881762,
+      "net_load_change_gwh": 502.1664341725302,
+      "contract_share_of_upper": 0.8446876977191284,
+      "equivalent_down_hours": 1738.3455992744061
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2050,
+      "service": "heating",
+      "contract_gw": 5.2342591095019255,
+      "upper_gw": 34.284406561842104,
+      "down_regulation_gwh": 1841.2472034191494,
+      "up_regulation_gwh": 2314.8779181682794,
+      "net_load_change_gwh": 473.63071474913005,
+      "contract_share_of_upper": 0.1526717138901146,
+      "equivalent_down_hours": 351.7684480076028
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2050,
+      "service": "cooling",
+      "contract_gw": 10.637838313218326,
+      "upper_gw": 129.08275523908523,
+      "down_regulation_gwh": 1807.7643279553697,
+      "up_regulation_gwh": 2145.7830581370476,
+      "net_load_change_gwh": 338.0187301816779,
+      "contract_share_of_upper": 0.08241099512878443,
+      "equivalent_down_hours": 169.93718786918245
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2050,
+      "service": "ev_v1g",
+      "contract_gw": 465.1838274570992,
+      "upper_gw": 465.1841014940262,
+      "down_regulation_gwh": 452553.21716611617,
+      "up_regulation_gwh": 452553.2189282781,
+      "net_load_change_gwh": 0.001762161908231974,
+      "contract_share_of_upper": 0.9999994109065075,
+      "equivalent_down_hours": 972.8481311140425
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2050,
+      "service": "ev_v2g",
+      "contract_gw": 1.313132696160053,
+      "upper_gw": 202.5533434596954,
+      "down_regulation_gwh": 1464.240893215482,
+      "up_regulation_gwh": 1495.936660294121,
+      "net_load_change_gwh": 31.695767078639058,
+      "contract_share_of_upper": 0.006482898152808538,
+      "equivalent_down_hours": 1115.074582711488
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2050,
+      "service": "heating",
+      "contract_gw": 1.3072002152760693,
+      "upper_gw": 1.375420616461301,
+      "down_regulation_gwh": 818.2721030798723,
+      "up_regulation_gwh": 1035.8143116139395,
+      "net_load_change_gwh": 217.54220853406724,
+      "contract_share_of_upper": 0.9504003354546554,
+      "equivalent_down_hours": 625.9730479826002
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2050,
+      "service": "cooling",
+      "contract_gw": 4.979115775030948,
+      "upper_gw": 5.351552165296251,
+      "down_regulation_gwh": 2353.9523846330485,
+      "up_regulation_gwh": 2907.2346052434314,
+      "net_load_change_gwh": 553.2822206103829,
+      "contract_share_of_upper": 0.9304059123854796,
+      "equivalent_down_hours": 472.76514365011275
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2050,
+      "service": "ev_v1g",
+      "contract_gw": 43.51466416068164,
+      "upper_gw": 43.5146648338939,
+      "down_regulation_gwh": 37261.64859688175,
+      "up_regulation_gwh": 37261.648624333175,
+      "net_load_change_gwh": 2.74514208626897e-05,
+      "contract_share_of_upper": 0.9999999845290716,
+      "equivalent_down_hours": 856.3009577481722
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2050,
+      "service": "ev_v2g",
+      "contract_gw": 16.12371745884329,
+      "upper_gw": 18.905354041255578,
+      "down_regulation_gwh": 30829.085247145773,
+      "up_regulation_gwh": 31655.860819553276,
+      "net_load_change_gwh": 826.7755724075009,
+      "contract_share_of_upper": 0.8528651419940535,
+      "equivalent_down_hours": 1912.0333338660128
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2060,
+      "service": "heating",
+      "contract_gw": 3.7882289787181977,
+      "upper_gw": 36.24588061038798,
+      "down_regulation_gwh": 1297.4310854325047,
+      "up_regulation_gwh": 1582.314071910624,
+      "net_load_change_gwh": 284.8829864781194,
+      "contract_share_of_upper": 0.10451474525997585,
+      "equivalent_down_hours": 342.49014320974584
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2060,
+      "service": "cooling",
+      "contract_gw": 3.4608756716059976,
+      "upper_gw": 134.83535227828233,
+      "down_regulation_gwh": 506.071074090417,
+      "up_regulation_gwh": 579.2242874492006,
+      "net_load_change_gwh": 73.15321335878352,
+      "contract_share_of_upper": 0.025667420399237792,
+      "equivalent_down_hours": 146.22630863118465
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2060,
+      "service": "ev_v1g",
+      "contract_gw": 486.4650351066258,
+      "upper_gw": 497.51685122082836,
+      "down_regulation_gwh": 495024.6870174182,
+      "up_regulation_gwh": 495024.68913831306,
+      "net_load_change_gwh": 0.0021208948055573273,
+      "contract_share_of_upper": 0.977786046669408,
+      "equivalent_down_hours": 1017.5956159087904
+    },
+    {
+      "case": "OPS-Open",
+      "year": 2060,
+      "service": "ev_v2g",
+      "contract_gw": 1.1993596200567591,
+      "upper_gw": 216.70843094605343,
+      "down_regulation_gwh": 1291.2812130093503,
+      "up_regulation_gwh": 1306.475209640648,
+      "net_load_change_gwh": 15.193996631297722,
+      "contract_share_of_upper": 0.00553443913012929,
+      "equivalent_down_hours": 1076.6422275816165
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2060,
+      "service": "heating",
+      "contract_gw": 1.3419119461553697,
+      "upper_gw": 1.4083615291405098,
+      "down_regulation_gwh": 912.5907474199646,
+      "up_regulation_gwh": 1139.3708790085136,
+      "net_load_change_gwh": 226.780131588549,
+      "contract_share_of_upper": 0.9528178087726574,
+      "equivalent_down_hours": 680.0675335178086
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2060,
+      "service": "cooling",
+      "contract_gw": 4.967079882542307,
+      "upper_gw": 5.44971735072768,
+      "down_regulation_gwh": 2362.8527786318414,
+      "up_regulation_gwh": 2908.4532974793474,
+      "net_load_change_gwh": 545.6005188475059,
+      "contract_share_of_upper": 0.9114380733670657,
+      "equivalent_down_hours": 475.70259277216604
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2060,
+      "service": "ev_v1g",
+      "contract_gw": 52.5367020115866,
+      "upper_gw": 52.536709725733594,
+      "down_regulation_gwh": 48492.46949980289,
+      "up_regulation_gwh": 48492.46969566789,
+      "net_load_change_gwh": 0.0001958649902178422,
+      "contract_share_of_upper": 0.9999998531665375,
+      "equivalent_down_hours": 923.0208148411795
+    },
+    {
+      "case": "OPS-Conservative",
+      "year": 2060,
+      "service": "ev_v2g",
+      "contract_gw": 17.18506800419702,
+      "upper_gw": 22.88575659103916,
+      "down_regulation_gwh": 33322.0414289177,
+      "up_regulation_gwh": 34302.89810237976,
+      "net_load_change_gwh": 980.8566734620623,
+      "contract_share_of_upper": 0.7509067019844899,
+      "equivalent_down_hours": 1939.011321967398
+    }
+  ],
+  "pairs": [
+    {
+      "year": 2030,
+      "open_vs_conservative_point_yi_cny": 85.60799158146605,
+      "lower_yi_cny": 75.21270076936577,
+      "upper_yi_cny": 100.08009903849103
+    },
+    {
+      "year": 2040,
+      "open_vs_conservative_point_yi_cny": 372.39024300307034,
+      "lower_yi_cny": 358.0585404585861,
+      "upper_yi_cny": 386.8633028345555
+    },
+    {
+      "year": 2050,
+      "open_vs_conservative_point_yi_cny": 522.4843266091124,
+      "lower_yi_cny": 520.5616827965155,
+      "upper_yi_cny": 541.3097021635156
+    },
+    {
+      "year": 2060,
+      "open_vs_conservative_point_yi_cny": 489.58891921985895,
+      "lower_yi_cny": 481.50996145473795,
+      "upper_yi_cny": 508.62033818068915
+    }
+  ],
+  "source_identity": {
+    "2030": {
+      "REF": {
+        "result_manifest.json": {
+          "sha256": "af1e51f1c13d7bc41b997c1d4fafa8fee7efbffe40103d64b6bc5d79960dc342",
+          "bytes": 13615
+        },
+        "solve_report.json": {
+          "sha256": "5814b1af83dc0a57c57eb9a611956bda68233951fafee8de4db1061c80f8c237",
+          "bytes": 71557,
+          "source": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/solve_report.json"
+        }
+      },
+      "OPS-Central": {
+        "result_manifest.json": {
+          "sha256": "7bdb58a82b5c539b384373d71f9a1686172e57e4943d1a4e4c8a93ee2fd7c135",
+          "bytes": 14623
+        },
+        "solve_report.json": {
+          "sha256": "fb1d285cd006bd48b2c11911a1d5a3a4097217f7027a7c55814632d22ae14c5e",
+          "bytes": 71566,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3/output_8760/solve_report.json"
+        }
+      },
+      "Open": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "a9304f86c46e2248d4ce623a550dbb0e347007f9395c84fdfe3d2e5721f6e67a",
+            "bytes": 14943
+          },
+          "solve_report.json": {
+            "sha256": "d68ca19189053f83d1735bf4aaebc51c78678c27e03dfb01f21da93fcff0f898",
+            "bytes": 71531,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2030_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "9fbe3339d9bdbe1bfcb4d6403e681e4ff898fd3c6cd58183ae7b5152c729c235",
+        "analysis_sha256": "b2184e8cc37d283d0ebacffe19e5fe6cdc5c315a5f1de68cd93edabb87111245"
+      },
+      "Conservative": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67",
+            "bytes": 14951
+          },
+          "solve_report.json": {
+            "sha256": "890363fe9fd352515a9e15d617d84c486b00e173ad3c7d737702f365560e8980",
+            "bytes": 71572,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "ee5c24204f6e39a3905689f314fa5ed46b5ca60c6af328663d8b24de51fdbb1d",
+        "analysis_sha256": "98c539d9b95983071a28a8bfcbf1ed833f957b189a3a22d4b8778f919f0c10a2"
+      }
+    },
+    "2040": {
+      "REF": {
+        "result_manifest.json": {
+          "sha256": "f1485ad027a8fd7264e7e30afcd544eac58a4664ca5747f22a233aee191d11d1",
+          "bytes": 13450
+        },
+        "solve_report.json": {
+          "sha256": "9f4cadb02e3cfd6cfdca8d04150324e512a541c3aebf1aa4f4eeb930a22b8230",
+          "bytes": 80184,
+          "source": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+        }
+      },
+      "OPS-Central": {
+        "result_manifest.json": {
+          "sha256": "7941224437da19c66a68b51340cf0239474088d631049a55304e3d5562e910d1",
+          "bytes": 14974
+        },
+        "solve_report.json": {
+          "sha256": "6002aebe2f67098c0fc02f5ec425a0bc4a6b07d0a4bf149c87e3475bf8049eb9",
+          "bytes": 80365,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+        }
+      },
+      "Open": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "e9eb171b122850e3e54fe3e473ee649b43b2c4be910b7fd4d75b7978cf42c5d5",
+            "bytes": 15294
+          },
+          "solve_report.json": {
+            "sha256": "dbb558f6b5b5b9508207b099941d71c09b8b1abaedf742fa3561447803f2d8a6",
+            "bytes": 80442,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "43ac0c503c189d3f5e9021eb9426a19df6914d05a39448cf221f105ec3ce488d",
+        "analysis_sha256": "1ca758826a23f8d02c84bb4a4d13498da301bc4e1d2bbfb2ac14c39fabbd11d6"
+      },
+      "Conservative": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+            "bytes": 15302
+          },
+          "solve_report.json": {
+            "sha256": "95942344e54345735bf831f0410239f463ffdba019fd1d98d227c46532dbcb18",
+            "bytes": 80368,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "9b9456060d7dd3681feddafaa4f915923adcdee54f056b2c8cdfc9f5f9bee1ae",
+        "analysis_sha256": "7472462cb91b2a5e51cb6a29c8685df1220eb2834a39001d6763d5a3d23c4f1d"
+      }
+    },
+    "2050": {
+      "REF": {
+        "result_manifest.json": {
+          "sha256": "bfb6b5a399ee9586a7a655e848ae393d9336177840a389f024c6554d20791413",
+          "bytes": 13452
+        },
+        "solve_report.json": {
+          "sha256": "1e6f1112ac66142f2f336a340d24f6c911bbe82b3394e85eaa760b0d235256c1",
+          "bytes": 165192,
+          "source": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+        }
+      },
+      "OPS-Central": {
+        "result_manifest.json": {
+          "sha256": "5fdf40797da5d3a4f1eb66cbff557eb2490b53e181bcb6a702a5921fcef48c7c",
+          "bytes": 14978
+        },
+        "solve_report.json": {
+          "sha256": "36d33551b419354980c46c988c8465b46c5016a8a3154905540c528a79258336",
+          "bytes": 165366,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+        }
+      },
+      "Open": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "47ab8257f79d420a9265e59e390bf8e3ca4aafa40dc5c184aa7540b86891775e",
+            "bytes": 15298
+          },
+          "solve_report.json": {
+            "sha256": "63e89c216bb523548be1e7930a5e8dd9baea76128b4261c0ca935c5bc9cdf882",
+            "bytes": 165337,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "5749fc2eecef2bb57aeb302779b589f12c0e86010fbe0879b1e088e881707c29",
+        "analysis_sha256": "9f3000cf227bb16bc184dba1d9e177e7a5fa682285388aad0a6d3072e007cfa9"
+      },
+      "Conservative": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "807f5043a1b5f2f052e910146996916d448eee9fc323dbf02a2405ca9b8329c2",
+            "bytes": 15298
+          },
+          "solve_report.json": {
+            "sha256": "1cd986ecf91fd9538722211e5143cff1d06820fd0208444d6826a694eb0bfe40",
+            "bytes": 165335,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "e4e30e515c557cd33d9a89da3c59a44022348cd1ccc7349e6f5626f83690989f",
+        "analysis_sha256": "765221581f2d4315af56f51dc23be803d014b0fcb362932caf7fc8214e02f947"
+      }
+    },
+    "2060": {
+      "REF": {
+        "result_manifest.json": {
+          "sha256": "78e685536879e5f04be7552a91cf885939470e06f3b7125340aea7d30a84d0ea",
+          "bytes": 13458
+        },
+        "solve_report.json": {
+          "sha256": "8b12e7066e1e60a13d37e3372a3ef170d16fcce07777dfb42b8c163a070844a8",
+          "bytes": 238723,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261012_base2060_v9a12_t48_m750_tol1e4_v1/output_8760/solve_report.json"
+        }
+      },
+      "OPS-Central": {
+        "result_manifest.json": {
+          "sha256": "49e2b5f0451109857ac9351b4ff34ffab606ecd4a259e8c142c6e3b62f5891ea",
+          "bytes": 14976
+        },
+        "solve_report.json": {
+          "sha256": "cb204f30136f33332f6f0f67774e92f77a0b992c6b6ca11e26a307cb902472fc",
+          "bytes": 238883,
+          "source": "/home/zz2/National_model_server/cloud_backup/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2/output_8760/solve_report.json"
+        }
+      },
+      "Open": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "50b641a81e884bc0479b20aa07a573af7c2b4ea3e5f92fb5239b633d59e392fe",
+            "bytes": 15296
+          },
+          "solve_report.json": {
+            "sha256": "9337e9adf926b3a5ee928b1917f0412d32579d7294fa64874341f9c510511168",
+            "bytes": 238845,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "65a343a502f2a76a90b3b695cad4c4581c8816dea72e823df7ade6b2d941c86e",
+        "analysis_sha256": "20a38a5d1d5b618971d863fa3103a62600640ea13731be5fc48dbf865efc5198"
+      },
+      "Conservative": {
+        "original_files": {
+          "result_manifest.json": {
+            "sha256": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed",
+            "bytes": 15304
+          },
+          "solve_report.json": {
+            "sha256": "651c4971288b6cc1cc041f860e5a709149f106679ad6a12559f84f7471f4149c",
+            "bytes": 238993,
+            "source": "/home/zz2/National_model_server/cloud_backup/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1/output_8760/solve_report.json"
+          }
+        },
+        "acceptance_sha256": "ad1cb99bd12c2411ba251535a57a3471caf98ccb62a493dafa1e5ac5d8aa0920",
+        "analysis_sha256": "5a8f126693f2ff6d5d69614f0c8e7523341c60ece5b3cfe5a4808f0b7643aad2"
+      }
+    }
+  },
+  "interpretation": "Cost intervals are engineering dual intervals, not statistical CI; no capacity investment response in OPS; do not interpret resource-scenario co-movement as a single-parameter causal effect"
+}

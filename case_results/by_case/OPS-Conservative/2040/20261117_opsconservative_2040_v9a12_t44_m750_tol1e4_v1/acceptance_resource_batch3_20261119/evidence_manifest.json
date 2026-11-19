@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "original_backup_all_bytes_sha_match": true,
+  "source_unchanged": true,
+  "source_sha256": {
+    "result_manifest.json": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+    "solution_qc.json": "4b5236216491d16e673446a80ae89ef2a727507dbb77073a84a78db500c46400",
+    "solve_report.json": "95942344e54345735bf831f0410239f463ffdba019fd1d98d227c46532dbcb18",
+    "model_config_snapshot.json": "525bc3db747e634e6423b932f43c2470a19006e11e2aff525dc0dd994b875d06",
+    "frozen_capacity_output_check.json": "16c7efe746e527dbcd1621649d6c95852ae920e6ec5adfeb6f9e5a574e79a877",
+    "resource_structure_audit.json": "ff29aaebfddf2da1267aee8c14be4f2d35d01101c495faece2adfd116c6bab3f",
+    "preservation_report.json": "4753864ae698961f0b825a0b68e18b5da9a38ebfbbab970161d3b3f9712545d7"
+  },
+  "tool_sha256": {
+    "analyze_batch3_on_t550.py": "ac13f35625b374a0b660b486ae4f56376b79ad8be70da2bfc2c9c5b69afcd80d",
+    "dual_extensions.py": "b8688a8aefb1426c27a1c00a79e0b9b0a7b7c347a415078252c02eba8aef8356",
+    "accept_batch3_on_t550.py": "17abb0bcde40b8955218fa36af648d6634fcb166ba56c02f1536473b002555c5",
+    "metrics_flex.py": "35d49235e0433ada397377ee7b5a6476dc65a7380fec75cd53dd5c074d0a8f5c",
+    "worker.py": "7773cfcf4939486242c73c1306f897a44759a4c77331651fb91a26530bda8d39",
+    "cispo_model/relative_acceptance.py": "0e379b51bb639671dbed124259aace86da49d5193768df6c5107c423e588e9af",
+    "cispo_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "evaluator_version": "relative_v1_author_20261027_mt",
+  "seconds": 259.90396785736084,
+  "annual_row_duals_recovered_from": "Original MPS ROWS plus own BarPi, complete row-order digest checked",
+  "original_export_error": "AttributeError: 'SavedDual' object has no attribute 'ConstrName'"
+}
