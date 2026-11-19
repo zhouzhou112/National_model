@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 首图作者修订。** 图 1 的固定入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前主图采用同年共同负荷 P99 换算、独立重构峰谷与爬坡、省级冷热匹配和七地区实际功率。当前文件身份以本节最新记录为准。
+
 - **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**
 
 - **2026-11-19 12:10UTC：四案验收与回传已完成，423件556324412bytes双端SHA通过；LATE2050条件PASS，B=6517.873876million CNY/B÷P=0.00115236245，接受并披露、不自动重解。作者仅授权2060准备，明确不提交；R1、基准入口恒等性、本案Open1h/24h、参数及双端preflight全部PASS。2060清单margin0.02、4879自由/31215下界/592上界，含强制845自由组；云端新包20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1已冻结515文件，source52958cf1，无提交记录/held作业、队列空。详见completion_20261119总报告及late2060_preparation_20261119/PREPARATION_REPORT_ZH.md。**
@@ -4002,6 +4004,11 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — 首图的签约上限、负荷口径与区域匹配复核
+
+- 数据核对时仓库 HEAD 为 `46c3db2e`。作者本地唯一迭代目录已更新主图、补充图、读图说明和源表。主图 PDF SHA256 为 `35339099e1046a74cb5fb6a5c035106b584e140386e8ed376525029b9af9991a`，`交付核验.json` SHA256 为 `58ee2699dadc7b4b4c3b9e47468ac7139fe9a53d7583e159d1fda419d76d61aa`。
+- 命令为 `analyze.py`、`panel_metrics.py`、`check_generation.py --province`、`draw_figures.py`、`publish_reader.py`、`verify_outputs.py`。核验 12 案输入及三套曲线、1,116 个省级合同上限、31 项省区归属、全部分位数与同案实际发电匹配；核验主图矢量、字体、图例和 PDF 版面。区域实际出力另复用现有同案身份。后续由作者审阅正文主张与图稿。
 
 ### 2026-11-19 — 作者放行LATE-Open2060
 
