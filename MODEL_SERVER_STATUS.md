@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**
+
 - **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**
 
 - **2026-11-19 12:10UTC：四案验收与回传已完成，423件556324412bytes双端SHA通过；LATE2050条件PASS，B=6517.873876million CNY/B÷P=0.00115236245，接受并披露、不自动重解。作者仅授权2060准备，明确不提交；R1、基准入口恒等性、本案Open1h/24h、参数及双端preflight全部PASS。2060清单margin0.02、4879自由/31215下界/592上界，含强制845自由组；云端新包20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1已冻结515文件，source52958cf1，无提交记录/held作业、队列空。详见completion_20261119总报告及late2060_preparation_20261119/PREPARATION_REPORT_ZH.md。**

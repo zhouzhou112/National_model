@@ -792,8 +792,8 @@
       "year": 2060,
       "version": "v1",
       "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
-      "kind": "PRODUCTION_SUBMITTED",
-      "solver_status": "PENDING",
+      "kind": "RUNNING_PRODUCTION",
+      "solver_status": "RUNNING",
       "acceptance_status": "PENDING_SOLVE",
       "backup_status": "PENDING_SOLVE",
       "remote_directory": "",
@@ -807,11 +807,15 @@
       "margin": 0.02,
       "job_id": "5658666",
       "author_release_date": "2026-11-19",
-      "launch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\release_20261119\\LAUNCH_REPORT_ZH.md"
+      "launch_report": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\release_20261119\\LAUNCH_REPORT_ZH.md",
+      "startup_check": "PASS",
+      "startup_available_memory_gib": 710.7368659973145,
+      "annual_resource_structure": "PASS",
+      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\release_20261119\\startup_verification_20261119.json"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-18T23:59:32Z",
-  "last_catalog_update_utc": "2026-11-19T12:43:32.877168+00:00"
+  "last_catalog_update_utc": "2026-11-19T18:34:05.536767+00:00"
 }

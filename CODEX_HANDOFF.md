@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**
+
 - **2026-11-19 首图共同基年与风光发电份额。** 作者本地固定入口为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前 b、c 采用 2025 年共同基线与绝对量；d 为省内先算的重合电量堆叠及一张风电／光伏发电份额图。最新文件指纹见本日版本条目。
 
 - **2026-11-19 首图作者修订。** 图 1 的固定入口仍为 `D:/National_model/文献分析与文章定位/图1_终端电气化负荷与风光时序/00_图1与读图说明.html`。当前主图采用同年共同负荷 P99 换算、独立重构峰谷与爬坡、省级冷热匹配和七地区实际功率。当前文件身份以本节最新记录为准。
@@ -4006,6 +4008,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-19 — LATE-Open2060启动检查通过并进入Barrier
+
+- 起始Git 575e784b；仅更新运行证据/目录/交接，不修改模型、参数、冻结包或排程。运行源码仍52958cf1，放行906dd578/46c3db2e。
+- 一次性命令release_authorized.py status，源快照18:34UTC；Job5658666于14:00:29UTC在m4cm1903启动，4:33:36运行至第6轮，实际44线程。64CPU/750G/billing64、UNLIMITED/no-requeue、启动可用710.736866GiB、Gurobi13.0.2 smoke均PASS。
+- 全年合同上限供暖36.245880610/制冷134.835352278/V1G497.516851221/V2G216.708430946GW，与参考最大差5.68e-14GW≤1e-6；effective_load_nonnegative2249行匹配。排序3711.02s、FactorNZ2.182e10、FactorOps7.246e14；机器提示800秒/轮不当作实测或ETA，前6步实际均约8.86分钟。
+- 证据release_20261119/startup_verification_20261119.json及时间戳status；stderr空、无batch_exit/solve_report。下一步按用户询问只读检查原作业；终态后完整T550备份、验收、独立行定位/自身双向证书和小文件回传。无监听，不自动重跑。
+
 
 ### 2026-11-19 — 首图共同基年、绝对负荷特性和按负荷选时的发电份额
 
