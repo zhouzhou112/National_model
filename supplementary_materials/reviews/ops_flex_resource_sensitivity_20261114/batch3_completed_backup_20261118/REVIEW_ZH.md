@@ -9,3 +9,9 @@ T550可连，先核三个目标目录和同源计划均不存在、全局传输�
 LATE-Open2050/5587177原样运行3天08:02、第396轮，PInf0.105/DInf2.24e-6/Compl0.00145；近10轮分别下降40.34%/64.33%/40.08%，11.842分钟/轮，stderr空，未收敛。LATE2060仍未授权/未提交。未改变任何科学参数或冻结结果，无后台监听。
 
 证据：本目录terminal_qc_summary、target_precheck、source_inventory、backup_config、tool_provenance、launch_receipt、initial_transfer_status、late_progress；原云端快照`../snapshots/20261118T183412Z/snapshot.json`。原模型和全部大数组仅云端/T550，本机只取小JSON用于状态。
+
+## 2026-11-18 23:59UTC：完整备份校验完成
+
+19:03:46UTC完成，历时约27分20秒；333件16551979130bytes，T1/T2/T3共9层次全部VERIFIED，3份backup_manifest为COMPLETE、source_unchanged=true，原PID3339359已退出。收尾重读云端result_manifest SHA与原计划和T550证书一致；剩余空间1160114929664bytes。正式T550验收/年度对偶恢复/小文件回传尚未执行，不把备份完成写成验收完成。
+
+LATE5587177第426轮，PInf0.0169/DInf1.01e-6/Compl0.000219；近10轮分别降45.48%/49.75%/46.06%，10.47分钟/轮，仍RUNNING，stderr空。无新提交或监听。

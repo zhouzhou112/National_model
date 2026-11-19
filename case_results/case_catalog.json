@@ -652,7 +652,7 @@
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_T550_REASSESSMENT",
-      "backup_status": "RUNNING",
+      "backup_status": "COMPLETE",
       "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
       "job_id": "5613302",
       "cloud_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
@@ -673,7 +673,11 @@
       "iterations": 122,
       "elapsed": "11:16:20",
       "objective_million_cny": 4190370.9384320835,
-      "source_result_manifest_sha256": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67"
+      "source_result_manifest_sha256": "64644db5e30f0da7ae4c8b5fc672aa7bf9f3716214c6e0b4bd36ac9528535a67",
+      "backup_verified_at_utc": "2026-11-18T19:03:46.246216+00:00",
+      "backup_file_count": 109,
+      "backup_bytes": 5514496933,
+      "backup_verification_path": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_completed_backup_20261118\\backup_completion_verification.json"
     },
     {
       "case": "OPS-Conservative",
@@ -682,7 +686,7 @@
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_T550_REASSESSMENT",
-      "backup_status": "RUNNING",
+      "backup_status": "COMPLETE",
       "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
       "job_id": "5613303",
       "cloud_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
@@ -703,7 +707,11 @@
       "iterations": 160,
       "elapsed": "16:32:15",
       "objective_million_cny": 5073199.256988895,
-      "source_result_manifest_sha256": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe"
+      "source_result_manifest_sha256": "276c1d2d18c766b97139e0c3027bc546da92ab3705276b42eae7ddff9f2c25fe",
+      "backup_verified_at_utc": "2026-11-18T19:03:46.247036+00:00",
+      "backup_file_count": 112,
+      "backup_bytes": 5522178080,
+      "backup_verification_path": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_completed_backup_20261118\\backup_completion_verification.json"
     },
     {
       "case": "OPS-Conservative",
@@ -712,7 +720,7 @@
       "kind": "COMPLETED_PRODUCTION",
       "solver_status": "OPTIMAL",
       "acceptance_status": "PENDING_T550_REASSESSMENT",
-      "backup_status": "RUNNING",
+      "backup_status": "COMPLETE",
       "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
       "job_id": "5613360",
       "cloud_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
@@ -733,11 +741,15 @@
       "iterations": 174,
       "elapsed": "16:11:04",
       "objective_million_cny": 5767643.547864859,
-      "source_result_manifest_sha256": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed"
+      "source_result_manifest_sha256": "7f52ccfbd3cd59ed216933a5d04715dd008fee0cce6b0042df179858fc7be0ed",
+      "backup_verified_at_utc": "2026-11-18T19:03:46.247682+00:00",
+      "backup_file_count": 112,
+      "backup_bytes": 5515304117,
+      "backup_verification_path": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\batch3_completed_backup_20261118\\backup_completion_verification.json"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
-  "last_backup_update_utc": "2026-11-14T15:47:55.766825+00:00",
-  "last_catalog_update_utc": "2026-11-18T18:36:26Z"
+  "last_backup_update_utc": "2026-11-18T23:59:32Z",
+  "last_catalog_update_utc": "2026-11-18T23:59:32Z"
 }

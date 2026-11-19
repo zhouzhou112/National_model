@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-18 23:59UTC：云端仅LATE5587177运行，第426轮(PInf0.0169/DInf1.01e-6/Compl0.000219)，近10轮三残差下降45.5%/49.8%/46.1%，10.47分钟/轮，未收敛。Conservative三案全量备份19:03UTC COMPLETE，333件16.55GB、9层次VERIFIED、源身份未变、PID3339359退出；当前云端manifest再核一致。正式T550验收/年度对偶恢复/小文件回传待办，不重复备份。**
+
 - **2026-11-18 主图1 v2 四年三情景与省域差异核对。** 作者确认 OPT 指各资源规模各自的固定设施优化运行（OPS）。跨双栏主图、八页补充图、图注和源数据在 `D:/National_model/文献分析与文章定位/图1_v2_四年三情景的负荷结构与省际时序差异_20261118/`，供作者审阅。
 
 - **2026-11-18 23:25UTC：按作者主动请求一次性核新节点32线程v2，已运行约4h19m，仍在ordering（13825s、至少为云端1349.93s的10.24倍），尚无第0轮/未完成5轮。OS峰RSS270.708GiB（未终态），当前RSS27.822GiB、可用700.908GiB，stderr空。云端完整作业进程树峰525.316GiB，与本次未结束单进程峰不可直接算节省率。详见new_node_8276m_20261117/STATUS_20261118T2325Z_ZH.md。原任务不改；用户要求主动查询至少间隔2h，主动询问除外，不建定时监听。**
@@ -3988,6 +3990,14 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-18 — Conservative三年完整备份闭合
+
+- 起始Git dbc907e7；仅更新备份证据、case_catalog/案例卡、台账和交接。一次性snapshot_batch1.py与T550 transfer_status/backup_manifest读取，当前云端result_manifest SHA再核与原计划及目标一致。
+- 333文件16551979130bytes，19:03:46UTC COMPLETE、三案T1/T2/T3全部VERIFIED，source_unchanged=true，原PID3339359退出；剩余约1.16TB。证据batch3_completed_backup_20261118/backup_completion_verification.json。
+- LATE第426轮，近期10.47分钟每轮、三项残差下降，仍无终态。未改原作业/输入/模型，未启动新求解或监听。
+- 下一步：在已完成T550备份上正式验收、原MPS+本解BarPi恢复年度行对偶、分析与取回小文件；不要重复传输。LATE结束后同样全备份与自身双向证书；2060仍需作者确认。
+
 
 ### 2026-11-18  图1 v2 的四年需求结构、省级峰谷变化与 OPS 时序匹配
 
