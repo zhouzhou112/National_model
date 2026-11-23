@@ -1,0 +1,11 @@
+{
+  "operation": "20261123_resource_lateopen2060_completed",
+  "releases": [
+    "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1"
+  ],
+  "destination": "/home/zz2/National_model_server/cloud_backup",
+  "source": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud",
+  "ssh_config": "/home/zz2/.ssh/paracloud_backup_20261012/ssh_config",
+  "minimum_free_fraction": 0.05,
+  "authorization": "Standing author 2026-10-20 terminal full-output backup and 5% reserve; finite T550 direct pull of completed LATE-Open2060; no watcher or new solve."
+}

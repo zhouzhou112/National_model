@@ -46,7 +46,9 @@ root=Path(root);r={'as_of_utc':datetime.datetime.now(datetime.timezone.utc).isof
 for n in ['submission.json','release_receipt.json','startup_resources.json','compute_node_smoke.json','batch_exit.json','output_8760/resource_structure_audit.json','output_8760/solve_report.json','output_8760/preservation_report.json']:
  if (root/n).exists():r[n]=json.loads((root/n).read_text())
 if 'submission.json' in r:
- job=r['submission.json']['job_id'];r['accounting']=subprocess.check_output(['sacct','-j',job,'-X','-n','-P','--format=JobID,State,ExitCode,Elapsed,Start,NodeList'],universal_newlines=True);r['control']=subprocess.check_output(['scontrol','show','job','-o',job],universal_newlines=True)
+ job=r['submission.json']['job_id'];r['accounting']=subprocess.check_output(['sacct','-j',job,'-X','-n','-P','--format=JobID,State,ExitCode,Elapsed,Start,End,NodeList'],universal_newlines=True)
+ control=subprocess.run(['scontrol','show','job','-o',job],stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
+ r['control']=control.stdout;r['control_returncode']=control.returncode;r['control_stderr']=control.stderr
 for n in ['stderr.log','stdout.log','output_8760/gurobi.log']:
  p=root/n
  if p.exists():

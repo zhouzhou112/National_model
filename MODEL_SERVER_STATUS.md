@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-23 15:55UTC：云端0运行/0排队，LATE-Open2060/5658666已于22日22:34:36UTC正常完成477轮、总3天08:34，进程树峰637.028GiB；原结果保全COMPLETE，物理相对检查通过/水库暂缓，solver条件证据待补（PInf0.0184097、最大行索引53473812）。T550恢复后核无旧传输，108件5.55GB全备份PID1588484自主运行，T1已VERIFIED、T2传输中，预计余24.84%；尚未COMPLETE。正式验收/自身双向证书/年度对偶/小文件回传待备份闭合，不重解、不建监听。详见late2060_completed_20261123/REVIEW_ZH.md。**
+
 - **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**
 
 - **2026-11-19 12:43UTC：作者新授权LATE-Open2060继续求解，已对原冻结515件SHA/清单/门禁/preflight/许可路径与队列重核，held核资源后release Job5658666；当前PENDING(Resources)，云端1项排队，启动AllocTRES/≥700GiB内存/smoke/全年结构待节点核验。44线程、64CPU750G/UNLIMITED/no-requeue、4879自由/margin0.02不变，冻结源码仍52958cf1；放行工具906dd578。准备阶段False记录保留，新授权旁置，不重解、不建监听。详见late2060_preparation_20261119/release_20261119/LAUNCH_REPORT_ZH.md。**

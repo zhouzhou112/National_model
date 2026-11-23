@@ -1,0 +1,28 @@
+{
+  "transfer_status": {
+    "started_at_utc": "2026-11-23T15:54:03.275343+00:00",
+    "status": "RUNNING",
+    "stages": [
+      {
+        "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 614805147,
+        "file_count": 104,
+        "started_at_utc": "2026-11-23T15:54:03.275946+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-23T15:55:03.507695+00:00"
+      },
+      {
+        "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 784780138,
+        "file_count": 3,
+        "started_at_utc": "2026-11-23T15:55:03.508108+00:00",
+        "status": "TRANSFERRING"
+      }
+    ],
+    "completed_bytes": 614805147
+  },
+  "process": "    PID    PPID     SID     ELAPSED COMMAND\n1588484       1 1588484       01:47 python3 -u /home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_late2060_completed.py run --config /home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_config.json --engine /home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_completed_cloud.py\n",
+  "stderr": ""
+}

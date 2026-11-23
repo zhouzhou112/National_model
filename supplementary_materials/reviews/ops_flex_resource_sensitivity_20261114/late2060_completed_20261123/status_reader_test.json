@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "case": "completed job expired from scontrol cache",
+  "control_returncode": 1,
+  "accounting": "COMPLETED",
+  "exit_code": 0,
+  "scope": "Read-only live regression of local status helper"
+}

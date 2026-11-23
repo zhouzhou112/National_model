@@ -1,0 +1,15 @@
+{
+  "pid": 1588484,
+  "command": [
+    "python3",
+    "-u",
+    "/home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_late2060_completed.py",
+    "run",
+    "--config",
+    "/home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_config.json",
+    "--engine",
+    "/home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123/backup_completed_cloud.py"
+  ],
+  "operation": "/home/zz2/National_model_server/cloud_backup/_operations/20261123_resource_lateopen2060_completed",
+  "finite_autonomous_pull": true
+}

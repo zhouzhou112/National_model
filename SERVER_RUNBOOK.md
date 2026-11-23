@@ -1,5 +1,9 @@
 # CISPO 2030/8760 server runbook
 
+## LATE-Open2060已完成、备份运行中（2026-11-23）
+
+Job5658666已COMPLETED，原status助手已修正scontrol缓存过期的非零返回处理；不能把Invalid job id误判作作业失败。T550 operation=`20261123_resource_lateopen2060_completed`，PID1588484，自主拉取108件5.55GB；检查旧transfer_status和backup_manifest，不重复启动。T1已VERIFIED/T2传输中，未完成验收。工具在`/home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123`；备份闭合后按自身行定位/双向证书与年度行恢复流程验收，无监听。
+
 ## LATE-Open2060已获新授权并release（2026-11-19）
 
 Job5658666已提交放行，当前等待Resources。准备阶段“未授权提交”的记录保留为历史，新授权见同目录release_20261119/AUTHORIZATION.json及云端author_release_20261119.json。只读状态入口为`release_authorized.py status`或`snapshot_batch1.py`，不得再运行submit-release或prepare。冻结源码52958cf1、44线程/64CPU750G/UNLIMITED/no-requeue及≥700GiB启动门槛不变。节点启动后核AllocTRES、startup_resources、smoke和全年resource_structure_audit；失败保全，不自动重跑，不建监听。

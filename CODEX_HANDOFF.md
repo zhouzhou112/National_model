@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-23 15:55UTC：云端0运行/0排队，LATE-Open2060/5658666已于22日22:34:36UTC正常完成477轮、总3天08:34，进程树峰637.028GiB；原结果保全COMPLETE，物理相对检查通过/水库暂缓，solver条件证据待补（PInf0.0184097、最大行索引53473812）。T550恢复后核无旧传输，108件5.55GB全备份PID1588484自主运行，T1已VERIFIED、T2传输中，预计余24.84%；尚未COMPLETE。正式验收/自身双向证书/年度对偶/小文件回传待备份闭合，不重解、不建监听。详见late2060_completed_20261123/REVIEW_ZH.md。**
+
 - **2026-11-20 图 1 与导师讨论内容本轮定稿。** 作者统一目录根层保留阅读入口、矢量主图和同源 Word/PDF 讨论稿。a 的四年分框以三组零基线堆叠柱显示年均取电、共同高峰小时取电和可签约上限。三页讨论稿以一项主张和三项论点阐明规划意义。复算与交付核验移至 `03_复算与核验/`，审查原稿在 `04_评阅与历史/`。
 
 - **2026-11-19 首图 b 更新为每省一条年度合计占比虚线。** 高峰分项使用整圆三色扇区，虚线由圆心指向三类用电的全年合计占比。右下角用同源青海符号六倍放大示意，P99 圆面积口径、三页讨论稿及作者统一入口沿用既有约定。
@@ -4022,6 +4024,15 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-23 — LATE-Open2060终态确认与全量备份启动
+
+- 起始Git fcedb560。一次性查询5658666：scontrol活动缓存已过期，改用sacct与既有batch_exit/solve_report/preservation/QC确认；本地status助手保留scontrol非零错误而不再中断，已只读实测终态路径PASS，不修改冻结脚本或云端求解。
+- 完成于2026-11-22 22:34:36UTC，477轮、3天08:34:07、OPTIMAL/0:0，进程树峰637.027908GiB。P=5667038.950043306、D=5663102.686448496、P−D=3936.2635948099196million CNY。preservation COMPLETE/errors=[]；物理相对检查通过、水库暂缓，原relative_v1仅solver未过。PInf0.0184097448101，最大约束违反0.0148682114086、独立索引53473812，待原MPS+BarX行定位和本解自身BarPi双向证书，不提前宣布正式验收。
+- 按长期授权，T550拒连后作者恢复；检查同名目标和旧operation均无、global transfer lock可用。包装器backup_late2060_completed.py仅改白名单并纳入新增放行/准备元数据，沿用原校验引擎。plan通过108件5546730397bytes、预计余24.836%，15:54UTC单次自主拉取PID1588484/PPID1启动，operation20261123_resource_lateopen2060_completed，T1已VERIFIED、T2传输中，不称COMPLETE。
+- 证据ops_flex_resource_sensitivity_20261114/late2060_completed_20261123/terminal_snapshot、terminal_summary、target_precheck、source_inventory、tool_provenance、launch_receipt、initial_transfer_status、status_reader_test与REVIEW_ZH。所有原件保全；无新求解/重启/监听，未读取凭据。
+- 下一步：先核现有PID/transfer_status/backup_manifest；全部层VERIFIED且源身份不变后登记COMPLETE，然后T550正式验收、年度对偶恢复和自身双向证书、小文件取回。不得重复plan/run，不因原QC标签放弃数据。
+
 
 ### 2026-11-20 14:23 UTC ｜首图与三点讨论定稿及作者目录整理
 

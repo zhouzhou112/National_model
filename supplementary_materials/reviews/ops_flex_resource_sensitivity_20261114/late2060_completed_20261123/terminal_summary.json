@@ -1,0 +1,31 @@
+{
+  "as_of_utc": "2026-11-23T15:49:27.441403Z",
+  "job_id": "5658666",
+  "status": "OPTIMAL",
+  "accounting": "5658666|COMPLETED|0:0|3-08:34:07|2026-11-19T22:00:29|2026-11-23T06:34:36|\n5658666.batch|COMPLETED|0:0|3-08:34:07|2026-11-19T22:00:29|2026-11-23T06:34:36|644093360K\n5658666.extern|COMPLETED|0:0|3-08:34:07|2026-11-19T22:00:29|2026-11-23T06:34:36|8K\n",
+  "iterations": 477,
+  "P_million_cny": 5667038.950043306,
+  "D_million_cny": 5663102.686448496,
+  "P_minus_D_million_cny": 3936.2635948099196,
+  "relative_gap": 0.0006945891195577259,
+  "barrier_primal_infeasibility": 0.018409744810108625,
+  "barrier_dual_infeasibility": 9.645335600761976e-07,
+  "complementarity": 4.5787199182898725e-05,
+  "peak_process_tree_rss_gib": 637.0279083251953,
+  "maximum_constraint_violation": 0.014868211408611387,
+  "maximum_row_index": 53473812,
+  "relative_v1": "HARD_FAIL",
+  "physical_checks": {
+    "power_balance": true,
+    "objective_components": true,
+    "unidirectional_interprovincial_flow": true,
+    "reservoir_transition": null,
+    "extended_gw_gwh_physical_checks": true,
+    "extended_mt_mass_balance_checks": true,
+    "remaining_physical_hard_checks": true,
+    "solver": false
+  },
+  "preservation": "COMPLETE",
+  "preservation_errors": [],
+  "formal_acceptance": "PENDING_OWN_ROW_AND_DIRECTIONAL_CERTIFICATE"
+}

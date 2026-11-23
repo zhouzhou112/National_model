@@ -792,10 +792,10 @@
       "year": 2060,
       "version": "v1",
       "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
-      "kind": "RUNNING_PRODUCTION",
-      "solver_status": "RUNNING",
-      "acceptance_status": "PENDING_SOLVE",
-      "backup_status": "PENDING_SOLVE",
+      "kind": "COMPLETED_PRODUCTION",
+      "solver_status": "OPTIMAL",
+      "acceptance_status": "PENDING_OWN_ROW_AND_DIRECTIONAL_CERTIFICATE",
+      "backup_status": "RUNNING",
       "remote_directory": "",
       "cloud_directory": "/publicfs01/fs1-a8/home/a8s001819/National_model_cloud/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
       "preparation_directory": "/home/zz2/National_model_server/ops_flex_resource_sensitivity_20261114/late2060_preparation_20261119",
@@ -811,11 +811,20 @@
       "startup_check": "PASS",
       "startup_available_memory_gib": 710.7368659973145,
       "annual_resource_structure": "PASS",
-      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\release_20261119\\startup_verification_20261119.json"
+      "startup_evidence": "supplementary_materials\\reviews\\ops_flex_resource_sensitivity_20261114\\late2060_preparation_20261119\\release_20261119\\startup_verification_20261119.json",
+      "iterations": 477,
+      "elapsed": "3-08:34:07",
+      "ended_at_utc": "2026-11-22T22:34:36Z",
+      "native_relative_v1": "HARD_FAIL_SOLVER_ONLY",
+      "preservation_status": "COMPLETE",
+      "backup_operation": "20261123_resource_lateopen2060_completed",
+      "objective_million_cny": 5667038.950043306,
+      "peak_process_tree_rss_gib": 637.0279083251953,
+      "source_result_manifest_sha256": "a8717e52cb0c8afb96176f786d9f1a62fefe96003153fdf058f219aac27db0b7"
     }
   ],
   "organization": "Index only: originals were not moved, renamed, overwritten or deleted",
   "scientific_analysis_location": "/home/zz2/National_model_server/cloud_backup/_analysis/20261028_compact_case_results_v1",
   "last_backup_update_utc": "2026-11-18T23:59:32Z",
-  "last_catalog_update_utc": "2026-11-19T18:34:05.536767+00:00"
+  "last_catalog_update_utc": "2026-11-23T15:49:27.441403Z"
 }
