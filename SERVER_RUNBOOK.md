@@ -1,5 +1,13 @@
 # CISPO 2030/8760 server runbook
 
+## 全量与轻量案例资料统一入口（2026-11-23）
+
+T550统一入口`/home/zz2/National_model_server/case_library_v2_20261123/INDEX_ZH.md`，按case/year/release排列。每案`core/`为统一预处理文件，`full_backup/`与`analysis_links/`仅为原备份/分析导航符号链接；不通过链接修改原件。当前29登记案，26完整解每案同21核心文件。
+
+本机入口`case_results/00_案例总览.html`，数据在`core_library_20261123/`。原模型/逐时数组/BarX/BarPi不回本机；`90_remote_files.csv`和`91_remote_directories.json`保留远端路径与索引。后续按同核心schema补齐全部适用条目、SHA核验并登记；旧交付保留。有限脚本及收据见`case_results/organization_20261123/`。
+
+LATE-Open2060备份与条件验收均完成，21:54UTC报告同步/回读PASS，不再续传旧备份或重算验收。全部原件保全，无后台监听。
+
 ## LATE-Open2060已完成、备份运行中（2026-11-23）
 
 Job5658666已COMPLETED，原status助手已修正scontrol缓存过期的非零返回处理；不能把Invalid job id误判作作业失败。T550 operation=`20261123_resource_lateopen2060_completed`，PID1588484，自主拉取108件5.55GB；检查旧transfer_status和backup_manifest，不重复启动。T1已VERIFIED/T2传输中，未完成验收。工具在`/home/zz2/National_model_server/backup_tools/resource_lateopen2060_20261123`；备份闭合后按自身行定位/双向证书与年度行恢复流程验收，无监听。

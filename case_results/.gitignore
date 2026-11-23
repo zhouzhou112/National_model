@@ -1,2 +1,8 @@
 /_packages/
 /deliveries/
+/core_library_20261123/
+/organization_20261123/*.tar.gz
+/organization_20261123/library_inputs.json
+/organization_20261123/remote_inventory.json
+/organization_20261123/schema_inventory.json
+/organization_20261123/stage_projection/

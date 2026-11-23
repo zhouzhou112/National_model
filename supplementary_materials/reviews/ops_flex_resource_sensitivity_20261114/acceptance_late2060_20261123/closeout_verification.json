@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "as_of_utc": "2026-11-23T21:54:18.299292+00:00",
+  "acceptance_json_sha256": "78eda53e81bf56701cc03f5c73ee1ab824cda824c0d37eb23920e53ab149f2c1",
+  "original_files_stats_unchanged": 108,
+  "report_sync_sha256": {
+    "ACCEPTANCE_REPORT_ZH.md": "dde48099e1f54dc0ba474482a8cbef0efd2c5f616167c8edb29d4bcd75b147e7",
+    "acceptance_delivery_summary.json": "9698ddcc00f4935210809dd5bbf852d260ac69c7821cf08cee66d7c7dd96db14"
+  },
+  "remote_report_directory": "/home/zz2/National_model_server/acceptance_tools_resource_late2060_20261123/final_report"
+}

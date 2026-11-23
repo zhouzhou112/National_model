@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "source": "output_8760/capacity_bound_selection_audit.json",
+  "source_bytes": 39774262,
+  "source_sha256": "27e020aa15925895028080ab689358a642d5cefdb0357bc13e9267eb6798b9cf",
+  "compression": "LOSSLESS_GZIP",
+  "compressed_sha256": "92340cf4e81b1e29367ca5a9a2cb5d7b8e7d119bfdb3546f08a491a2a412dbae",
+  "compressed_bytes": 1734563
+}

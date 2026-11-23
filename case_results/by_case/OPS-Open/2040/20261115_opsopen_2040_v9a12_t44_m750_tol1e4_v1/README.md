@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[OPS-Open 2040](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/OPS-Open/2040/20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+
 # OPS-Open 2040 第二批启动记录
 
 > 最新：验收PASS、备份COMPLETE；107件140,663,242bytes回本机，双端SHA通过。

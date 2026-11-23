@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "case": "LATE-Open-2060",
+  "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+  "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\LATE-Open\\2060\\20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+  "files": 111,
+  "bytes": 138133855,
+  "maximum_file_bytes": 30131014,
+  "all_bytes_sha_match": true,
+  "source_original_stats_unchanged_after_transfer": true,
+  "omitted_not_applicable": {
+    "candidate_selection.csv": "NOT_APPLICABLE_BOUNDARY_SELECTION_NOT_CANDIDATE_SCREEN"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "negative_direction_groups": 2241,
+  "zero_range_negative_groups": 1945,
+  "positive_improvement_groups": 296,
+  "province_count": 23,
+  "central_comparison": {
+    "status": "PASS",
+    "reference": "LATE-Central2060",
+    "target": "LATE-Open2060",
+    "reference_P_million_cny": 5714441.107400633,
+    "reference_D_million_cny": 5709857.686201862,
+    "reference_B_million_cny": 181.47294729100688,
+    "target_P_million_cny": 5667038.950043306,
+    "target_D_million_cny": 5663102.686448496,
+    "target_B_million_cny": 10273.555872281126,
+    "point_saving_yi_cny": 474.0215735732764,
+    "lower_saving_yi_cny": 426.37263211265207,
+    "upper_saving_yi_cny": 616.1197682441868,
+    "formula": "[D_reference-B_reference-P_target, P_reference-D_target+B_target]",
+    "reference_certificate_sha256": "72ee281b247fb4ecdcd5bcbce3493b33b5c16f0a0e23c2ce934a9efa7ac39233",
+    "target_acceptance_sha256": "78eda53e81bf56701cc03f5c73ee1ab824cda824c0d37eb23920e53ab149f2c1",
+    "source_identity": {
+      "result_manifest.json": {
+        "sha256": "fe3a1e02dcce0564a00f3d818954d727192abfe21d1302b527e47ecd871cf162",
+        "bytes": 13813
+      },
+      "solve_report.json": {
+        "sha256": "76cfed14b51b7f6f5c777d520189de44f448f1e6d8590d9f3ecf9666c34b7240",
+        "bytes": 205415,
+        "source": "/home/zz2/National_model_server/cloud_backup/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/output_8760/solve_report.json"
+      }
+    },
+    "interpretation": "Engineering intervals conditional on each inherited state; not a certificate for the whole intertemporal pathway; resource inputs and inherited states differ"
+  }
+}

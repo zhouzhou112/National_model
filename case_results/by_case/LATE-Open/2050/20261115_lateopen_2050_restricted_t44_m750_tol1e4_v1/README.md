@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[LATE-Open 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/LATE-Open/2050/20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+
 ## 2026-11-15 08:47UTC 作者单独授权LATE-Open2050正式求解已放行
 
 作者在五轮测试与条件耗时报告后明确“启动LATE-Open，可以考量48核心吧”。按本次直接授权仅提前启动LATE-Open2050受限全年作业，覆盖该案等待第一批结束的时间条件，未授权其他第二/三批案例。考虑44线程实测进程树峰649.791GiB、48线程峰值及加速未验证，执行方推荐并沿用44线程；简单比例外推708.863GiB仅为风险提示，不是可靠内存预测。没有改模型源码/约束/目标/输入/数值参数，复用535项回归、真实1h界审计、24h自身解恒等性、全年结构审计与5轮测试。

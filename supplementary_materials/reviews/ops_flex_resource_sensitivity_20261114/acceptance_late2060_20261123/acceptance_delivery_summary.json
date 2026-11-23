@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "case": "LATE-Open-2060",
+  "classification": "ACCEPT_DISCLOSE",
+  "P_million_cny": 5667038.950043306,
+  "D_million_cny": 5663102.686448496,
+  "B_million_cny": 10273.555872281126,
+  "B_over_P": 0.001812861348377113,
+  "B_over_gap": 2.609976599592343,
+  "row": {
+    "name": "province_annual_external_sent_p13",
+    "province_code": 13,
+    "family": "province_annual_external_sent",
+    "unit": "GWh",
+    "scope": "8760 one-hour periods",
+    "row_magnitude_gwh": 297124.76031122543,
+    "residual_gwh": 0.014868208138512326,
+    "relative_residual": 5.0040286521185634e-08,
+    "tolerance_gwh": 0.2971247603112254,
+    "ratio_to_tolerance": 0.05004028652118563,
+    "passed": true,
+    "rule": "AGENTS 2026-10-30 annual energy row: max(1e-3 GWh,1e-6*annual row energy)",
+    "equation": "province_annual_external_sent_gwh = sum(outgoing forward GW and outgoing AC reverse GW)*1h",
+    "term_families": {
+      "flow_forward_gw": {
+        "count": 227760,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -83931.71276653254
+      },
+      "flow_reverse_ac_gw": {
+        "count": 17520,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -213193.04754469288
+      },
+      "province_annual_external_sent_gwh": {
+        "count": 1,
+        "coefficient_values": [
+          1.0
+        ],
+        "contribution": 297124.7454430173
+      }
+    }
+  },
+  "negative_direction_groups": 2241,
+  "positive_improvement_groups": 296,
+  "province_count": 23,
+  "delivery": {
+    "status": "PASS",
+    "case": "LATE-Open-2060",
+    "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+    "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_case\\LATE-Open\\2060\\20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+    "files": 111,
+    "bytes": 138133855,
+    "maximum_file_bytes": 30131014,
+    "all_bytes_sha_match": true,
+    "source_original_stats_unchanged_after_transfer": true,
+    "omitted_not_applicable": {
+      "candidate_selection.csv": "NOT_APPLICABLE_BOUNDARY_SELECTION_NOT_CANDIDATE_SCREEN"
+    }
+  },
+  "automatic_resolve": false,
+  "author_adoption": "PENDING_AUTHOR_REVIEW"
+}

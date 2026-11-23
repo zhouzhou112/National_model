@@ -1,0 +1,5 @@
+{
+  "status": "PASS",
+  "tests": 5,
+  "scope": "Unchanged condition conjunction; independent 2060 source, no added cost monotonicity gate"
+}

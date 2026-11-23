@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "as_of_utc": "2026-11-23T22:17:37.840087+00:00",
+  "cases": 29,
+  "files_sha_verified": 590,
+  "navigation_links_verified": 111,
+  "reports_sha256": {
+    "REPORT_ZH.md": "c2d71ab155f7d8a632a8f00fc33c64cc19b6b0968cf7f3695c0854e3bf25d43f",
+    "local_library_verification.json": "0327db3ef59f481089de9bb9098cd9eb07c3e6f3644787b2ea81e4ee89114585",
+    "navigation_verification.json": "2820d6f62595925c29f9abf1319901cf65d95b02f6a31e8f6d15006769a29906"
+  },
+  "organized_directory": "/home/zz2/National_model_server/case_library_v2_20261123",
+  "source_backup_manifests_unchanged": true
+}

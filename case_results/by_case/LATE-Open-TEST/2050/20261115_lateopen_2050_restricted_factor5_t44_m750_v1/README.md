@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[LATE-Open-TEST 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/LATE-Open-TEST/2050/20261115_lateopen_2050_restricted_factor5_t44_m750_v1/index.html)。本卡以下内容作为历史记录保留。
+
 # LATE-Open-TEST 2050 — 第一批启动记录
 
 Job 5584392，截至 2026-11-15T00:52:34.902580Z 为RUNNING，尚未验收/备份。44线程、64CPU/750G/UNLIMITED/no-requeue；启动可用内存 718.335464 GiB。

@@ -12,6 +12,10 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-23 22:17UTC：LATE-Open2060条件验收收尾及全案例资料整理均完成。此前21:47的镜像/回读待办已于21:54补齐（closeout_verification=PASS）。T550 case_library_v2_20261123统一导航29条记录；25生产+1诊断各21核心文件，另2失败+1测试明确不适用。本地case_results/00_案例总览.html为总入口，统一核心约19.99MiB、压缩回传4.83MiB；590件SHA一致、594本地链接及111远端导航链接通过。大模型、逐时数组及分析留T550，原件未移动/删除，无新求解/监听。详见case_results/organization_20261123/REPORT_ZH.md。**
+
+- **2026-11-23 21:47UTC：LATE-Open2060在T550条件验收PASS（接受并披露），108原件全备份SHA/源身份闭合。独立53473812河北年度外送行残差0.014868208GWh、年度297124.760GWh、比例5.0040e-8，在0.297124760GWh容差内；自身双向B=10273.555872million CNY/B÷P=0.00181286135，B为原对偶差2.6099766倍，不自动重解。1134年度行对偶恢复和分析完成；111小文件138133855bytes已回本机，SHA全匹配、传输后108原件统计不变。报告远端镜像/最后回读遇T550握手超时，已请求恢复；不重算。详见acceptance_late2060_20261123/ACCEPTANCE_REPORT_ZH.md及case_results/LATE_OPEN_2060_ACCEPTANCE_20261123.md。**
+
 - **2026-11-23 15:55UTC：云端0运行/0排队，LATE-Open2060/5658666已于22日22:34:36UTC正常完成477轮、总3天08:34，进程树峰637.028GiB；原结果保全COMPLETE，物理相对检查通过/水库暂缓，solver条件证据待补（PInf0.0184097、最大行索引53473812）。T550恢复后核无旧传输，108件5.55GB全备份PID1588484自主运行，T1已VERIFIED、T2传输中，预计余24.84%；尚未COMPLETE。正式验收/自身双向证书/年度对偶/小文件回传待备份闭合，不重解、不建监听。详见late2060_completed_20261123/REVIEW_ZH.md。**
 
 - **2026-11-20 图 1 与导师讨论内容本轮定稿。** 作者统一目录根层保留阅读入口、矢量主图和同源 Word/PDF 讨论稿。a 的四年分框以三组零基线堆叠柱显示年均取电、共同高峰小时取电和可签约上限。三页讨论稿以一项主张和三项论点阐明规划意义。复算与交付核验移至 `03_复算与核验/`，审查原稿在 `04_评阅与历史/`。
@@ -4024,6 +4028,26 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-23 — 统一 T550 全量导航与本地轻量核心库
+
+- 起始 Git e91bd892；用户明确要求 T550 全量有序、本地只取 T550 预处理核心文件，并逐案对齐条目。模型、参数、release 和原输出未改。
+- 旧 LATE-Open2060 报告同步与验收 JSON 回读于21:54:18UTC完成，原108件统计不变。该事实补正本日早先“镜像待完成”快照；既有历史保留。
+- 从case_catalog登记29案、核全部备份COMPLETE。新T550根case_library_v2_20261123下按case/year/release组织，core/放派生小表、full_backup/和analysis_links/为导航符号链接，原目标未改写。v1整理尝试因重复解压低效停止，部分派生及旧脚本保留；v2只缓存数组，不改公式。
+- 命令：prepare_library.py；T550 Python build_library_on_t550.py；仅scp core_library.tar.gz与receipt；install_local_library.py、verify_navigation.py；T550 verify_remote_library.py。26完整解同21核心文件/相同CSV字段，服务31×4条；按既有V5服务池公式闭合≤1e-6GW，弃电/储能汇总与原年度表吻合，所有读取源件SHA一致。Base关闭柔性显式不适用，失败/测试不混入生产比较。
+- 590交付文件20956260bytes，压缩5064080bytes；archive SHA 15c4db7c30ff63c9730d3f3a24883c54435e301ba93b262dff5f8a0627cef03e。全部SHA匹配，30页/594本地链接通过；22:17:37UTC远端590件再核、111导航链接及原备份manifest通过，报告镜像SHA匹配。
+- 本地入口case_results/00_案例总览.html；逐案核心core_library_20261123，core_case_summary.csv/core_coverage.csv供比较与缺项核查；远端原件路径与大小/SHA在90_remote_files.csv，既有分析目录在91_remote_directories.json。旧by_case、deliveries及审查目录保留引用，生成核心不入Git，仅明确清单的小型代码/报告/台账入Git。
+- 证据：case_results/organization_20261123/{local_library_verification,navigation_verification,remote_closeout_verification}.json；报告REPORT_ZH.md。下一步为作者审阅LATE-Open2060条件验收结果；不自动放开重解或新增作业。后续完成案例按同模式补齐适用核心文件、SHA和总览。
+
+### 2026-11-23 — LATE-Open2060条件验收与小文件交付
+
+- 起始Git e91bd892，用户明确“条件验收”并要求继续。先核原备份PID1588484已退出、16:03:07UTC COMPLETE：108件5546730397bytes，三层VERIFIED、source_unchanged=true，当前云端manifest a8717e52cb0c8afb96176f786d9f1a62fefe96003153fdf058f219aac27db0b7匹配。
+- 全部计算在T550新工具目录acceptance_tools_resource_late2060_20261123完成；有限worker1735921及两个审计进程均退出，所有阶段returncode0/COMPLETE PASS。未调用优化器，不改原输出，未建监听。当前评估器复用，5项条件合取测试PASS；2060与中央LATE继承状态不同，未把2050专用成本单调条件外推成新验收门槛。
+- 原MPS+本解BarX独立定位索引53473812=province_annual_external_sent_p13；完整变量/行序摘要通过，残差0.014868208138512326GWh、量级297124.76031122543GWh、比例5.0040286521185634e-8、容差0.2971247603112254GWh。与归档最大违反差约3.27e-9GWh，完整行条目留T550。
+- 自身BarPi双向证书B=10273.555872281126million CNY=102.73555872281126亿元，B/P=0.001812861348377113；P=5667038.950043306、D=5663102.686448496、P-D=3936.2635948099196million CNY，B/(P-D)=2.609976599592343。负方向2241组，1945原可动区间零，296正B组覆盖23省；完整方向价格/分布/省技术表已交付。满足≤1e-2条件，solver转旁置条件披露，原严格和基线relative标签不改，采纳仍待作者审阅，不自动重解。
+- 每案原MPS ROWS+自身BarPi恢复1134年度行并核完整行序。T550完成价格、服务签约与调用、分项成本、弃电、连续启停等效量、储能及同比分析。中央LATE比较包含双方B，点差474.021574亿元，工程区间[426.372632,616.119768]；这些是给定各自上游状态下的工程区间，不是全路径最优证书或统计置信区间。
+- 111文件138133855bytes回本机，单件最大30131014bytes；原73清单72项适用，candidate_selection.csv不适用；固定审计无损gzip，解压SHA核同。原MPS/BarX/BarPi/大数组/完整行项与解析缓存留T550。传输每件SHA匹配、结束后108原件bytes/mtime与manifest不变，原始验收JSON已回本机。
+- 证据/报告：ops_flex_resource_sensitivity_20261114/acceptance_late2060_20261123及case_results/by_case/LATE-Open/2060/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1。综合报告远端镜像和最后验收JSON再次回读时转发握手超时，已向用户请求重连；后续只补同步/回读，不重启备份或验收。云端无新求解，比较用途重解由作者另定。
 
 ### 2026-11-23 — LATE-Open2060终态确认与全量备份启动
 

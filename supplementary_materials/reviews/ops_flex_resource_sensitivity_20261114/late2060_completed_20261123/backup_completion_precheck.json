@@ -1,0 +1,53 @@
+{
+  "as_of_utc": "2026-11-23T17:32:06.262079Z",
+  "status": {
+    "started_at_utc": "2026-11-23T15:54:03.275343+00:00",
+    "status": "COMPLETE",
+    "stages": [
+      {
+        "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+        "tier": "T1",
+        "bytes": 614805147,
+        "file_count": 104,
+        "started_at_utc": "2026-11-23T15:54:03.275946+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-23T15:55:03.507695+00:00"
+      },
+      {
+        "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+        "tier": "T2",
+        "bytes": 784780138,
+        "file_count": 3,
+        "started_at_utc": "2026-11-23T15:55:03.508108+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-23T15:56:20.409457+00:00"
+      },
+      {
+        "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+        "tier": "T3",
+        "bytes": 4147145112,
+        "file_count": 1,
+        "started_at_utc": "2026-11-23T15:56:20.428640+00:00",
+        "status": "VERIFIED",
+        "finished_at_utc": "2026-11-23T16:03:05.643373+00:00"
+      }
+    ],
+    "completed_bytes": 5546730397,
+    "finished_at_utc": "2026-11-23T16:03:07.593810+00:00",
+    "source_unchanged": true,
+    "disk_free_bytes": 1000810725376
+  },
+  "manifest_summary": {
+    "status": "COMPLETE",
+    "verified_at_utc": "2026-11-23T16:03:07.593355+00:00",
+    "source_unchanged_after_transfer": true,
+    "source_result_manifest_sha256": "a8717e52cb0c8afb96176f786d9f1a62fefe96003153fdf058f219aac27db0b7"
+  },
+  "manifest_sha256": "a10049a07d93535f1e69b6c25f3cff5b7a0510872911ea29968b2abbfb864f7b",
+  "files": 108,
+  "bytes": 5546730397,
+  "backup_process_exists": false,
+  "existing_acceptance": false,
+  "existing_tool_dir": false,
+  "available_memory_gib": 116.46326065063477
+}

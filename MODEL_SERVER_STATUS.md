@@ -1,5 +1,9 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-23 22:17UTC：LATE-Open2060条件验收收尾及全案例资料整理均完成。此前21:47的镜像/回读待办已于21:54补齐（closeout_verification=PASS）。T550 case_library_v2_20261123统一导航29条记录；25生产+1诊断各21核心文件，另2失败+1测试明确不适用。本地case_results/00_案例总览.html为总入口，统一核心约19.99MiB、压缩回传4.83MiB；590件SHA一致、594本地链接及111远端导航链接通过。大模型、逐时数组及分析留T550，原件未移动/删除，无新求解/监听。详见case_results/organization_20261123/REPORT_ZH.md。**
+
+- **2026-11-23 21:47UTC：LATE-Open2060在T550条件验收PASS（接受并披露），108原件全备份SHA/源身份闭合。独立53473812河北年度外送行残差0.014868208GWh、年度297124.760GWh、比例5.0040e-8，在0.297124760GWh容差内；自身双向B=10273.555872million CNY/B÷P=0.00181286135，B为原对偶差2.6099766倍，不自动重解。1134年度行对偶恢复和分析完成；111小文件138133855bytes已回本机，SHA全匹配、传输后108原件统计不变。报告远端镜像/最后回读遇T550握手超时，已请求恢复；不重算。详见acceptance_late2060_20261123/ACCEPTANCE_REPORT_ZH.md及case_results/LATE_OPEN_2060_ACCEPTANCE_20261123.md。**
+
 - **2026-11-23 15:55UTC：云端0运行/0排队，LATE-Open2060/5658666已于22日22:34:36UTC正常完成477轮、总3天08:34，进程树峰637.028GiB；原结果保全COMPLETE，物理相对检查通过/水库暂缓，solver条件证据待补（PInf0.0184097、最大行索引53473812）。T550恢复后核无旧传输，108件5.55GB全备份PID1588484自主运行，T1已VERIFIED、T2传输中，预计余24.84%；尚未COMPLETE。正式验收/自身双向证书/年度对偶/小文件回传待备份闭合，不重解、不建监听。详见late2060_completed_20261123/REVIEW_ZH.md。**
 
 - **2026-11-19 18:34UTC：云端仅LATE-Open2060/5658666 RUNNING，14:00:29UTC启动于m4cm1903，运行4:33:36、Barrier第6轮。实际64CPU/750G/billing64/UNLIMITED/no-requeue、启动可用710.737GiB≥700、smoke与全年四服务上界PASS，实际44线程；排序3711.02s，FactorNZ2.182e10/FactorOps7.246e14。stderr空，无终态，不推定收敛或最终峰值。证据late2060_preparation_20261119/release_20261119/startup_verification_20261119.json；原作业不改，无监听。**

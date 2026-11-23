@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[C 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/C/2050/20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2/index.html)。本卡以下内容作为历史记录保留。
+
 # C 2050 · v2
 
 类型：COMPLETED_PRODUCTION；求解：OPTIMAL；验收：PASS_AUTHOR_20261030（作者新增年度汇总行口径）；备份：T550 COMPLETE，105文件逐项校验通过。

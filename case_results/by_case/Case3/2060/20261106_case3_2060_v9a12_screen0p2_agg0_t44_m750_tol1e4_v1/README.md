@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[Case3 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+
 # Case3 2060 · v1 · 44线程尝试
 
 2026-11-14：**PASS_AUTHOR_20261114**。本案原MPS+BarX独立定位河北年度外送行：0.032784048GWh/295306.392013GWh=1.11017e-7，小于0.295306392GWh容差。自身BarPi证书B=187.045720million CNY，B/obj=3.273716e-5，为原P−D的4.015169%；3个翻转站与C2060完全一致，陕西11站全部非负/B贡献0。物理项通过、水库暂缓，solver条件披露，原QC保留，不重解。T550完整备份已COMPLETE，73小文件108431688bytes回本机，验收JSON双端SHA匹配。

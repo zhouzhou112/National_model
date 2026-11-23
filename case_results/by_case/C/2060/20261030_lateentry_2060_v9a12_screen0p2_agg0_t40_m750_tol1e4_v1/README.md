@@ -1,3 +1,6 @@
+<!-- unified-core-20261123 -->
+最新统一核心入口：[C 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/C/2060/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+
 # C 2060 · v1
 
 2026-11-08：**PASS_AUTHOR_20261108**。本案原MPS+BarX独立定位河北年度外送行，0.030049423GWh / 296139.149785GWh = 1.014706e-7，小于0.296139150GWh容差。自身BarPi证书B=181.472947million CNY，B/obj=3.1756902e-5，B/(P−D)=3.959334%；8025剔除列中3个负价列，与两份2050翻转集合无交集，陕西11站本案全部非负、B贡献0。物理检查通过/水库暂缓，PInf条件披露；原QC保留，不重解。73小文件108474686bytes回本机；原备份106文件5.51GB收尾重新SHA全部通过，验收JSON双端一致。

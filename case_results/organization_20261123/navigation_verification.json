@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "cases": 29,
+  "html_pages": 30,
+  "local_links_checked": 594,
+  "core_files_checked": 561,
+  "all_core_hashes_match": true,
+  "service_rows_per_complete_case": 124,
+  "no_large_original_payload": true,
+  "model_or_solver_changed": false
+}

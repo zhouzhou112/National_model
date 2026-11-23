@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "created_at_utc": "2026-11-23T22:12:48.815134+00:00",
+  "cases": 29,
+  "scientific_cases": 26,
+  "uniform_scientific_file_count": 21,
+  "total_core_bytes": 20956260,
+  "archive_bytes": 5064080,
+  "archive_sha256": "15c4db7c30ff63c9730d3f3a24883c54435e301ba93b262dff5f8a0627cef03e",
+  "library": "/home/zz2/National_model_server/case_library_v2_20261123",
+  "source_originals_modified": false,
+  "solver_loaded": false
+}

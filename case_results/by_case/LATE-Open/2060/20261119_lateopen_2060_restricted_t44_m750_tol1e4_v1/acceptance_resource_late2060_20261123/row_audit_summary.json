@@ -1,0 +1,84 @@
+{
+  "status": "ORDER_AND_ROW_VERIFIED",
+  "index": 53473812,
+  "name": "province_annual_external_sent_p13",
+  "sense": "=",
+  "lhs": -0.014868208138512326,
+  "rhs": 0.0,
+  "signed_residual": -0.014868208138512326,
+  "violation": 0.014868208138512326,
+  "positive_lhs_sum": 297124.7454430173,
+  "negative_lhs_sum": 297124.76031122543,
+  "row_magnitude": 297124.76031122543,
+  "relative_violation": 5.0040286521185634e-08,
+  "counts": {
+    "variable": 43797081,
+    "constraint": 54290688
+  },
+  "ordering_sha256": {
+    "variable": "6b130922ec6cf9743443db7c13a618edd085e5f59d3c20b4df16670b40e35b92",
+    "constraint": "d3ee935e71ce64fb7f2aea9df9505d7535b730a99abf4d43df278a08d57a3a66"
+  },
+  "scientific_acceptance": "NOT_ASSESSED_REQUIRES_FAMILY_UNIT_AND_TOLERANCE",
+  "source_result_manifest_sha256": "a8717e52cb0c8afb96176f786d9f1a62fefe96003153fdf058f219aac27db0b7",
+  "source_files": {
+    "model_archive/original.mps.gz": {
+      "bytes": 4147145112,
+      "sha256": "db3e335c73975a35a0091a60aa5aba04475f3aed2558fe6c1ccf76250abc72c6"
+    },
+    "barrier_checkpoint/primal_barx.npy": {
+      "bytes": 350376776,
+      "sha256": "3ac405a521bd0403d6e201516b29b0aed8259b44ffa5a5a1cf06cdaee1ea07b4"
+    },
+    "barrier_checkpoint/barrier_checkpoint_manifest.json": {
+      "bytes": 77730,
+      "sha256": "021dc9b57467186f593c55b51c51fa45eb43a215ef4384b94c4fbd31a73fb36c"
+    },
+    "solve_report.json": {
+      "bytes": 206294,
+      "sha256": "0489842a7d8f6b39a05a005c46fc6af6790cb702144f397d6d322fcfce0c9a19"
+    }
+  },
+  "source_unchanged_stat_and_manifest": true,
+  "family_assessment": {
+    "name": "province_annual_external_sent_p13",
+    "province_code": 13,
+    "family": "province_annual_external_sent",
+    "unit": "GWh",
+    "scope": "8760 one-hour periods",
+    "row_magnitude_gwh": 297124.76031122543,
+    "residual_gwh": 0.014868208138512326,
+    "relative_residual": 5.0040286521185634e-08,
+    "tolerance_gwh": 0.2971247603112254,
+    "ratio_to_tolerance": 0.05004028652118563,
+    "passed": true,
+    "rule": "AGENTS 2026-10-30 annual energy row: max(1e-3 GWh,1e-6*annual row energy)",
+    "equation": "province_annual_external_sent_gwh = sum(outgoing forward GW and outgoing AC reverse GW)*1h",
+    "term_families": {
+      "flow_forward_gw": {
+        "count": 227760,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -83931.71276653254
+      },
+      "flow_reverse_ac_gw": {
+        "count": 17520,
+        "coefficient_values": [
+          -1.0
+        ],
+        "contribution": -213193.04754469288
+      },
+      "province_annual_external_sent_gwh": {
+        "count": 1,
+        "coefficient_values": [
+          1.0
+        ],
+        "contribution": 297124.7454430173
+      }
+    }
+  },
+  "term_count": 245281,
+  "full_row_audit_sha256": "d5a65171e8519d82172ee7d876da7f7579edaa1974495ec378c6aa42d839e9c3",
+  "full_row_audit_remote_path": "/home/zz2/National_model_server/cloud_backup/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1/acceptance_resource_late2060_20261123/row_audit_full.json"
+}
