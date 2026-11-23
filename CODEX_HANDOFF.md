@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- 本轮主要实现提交 `7c58a8f5` 已推送并核验 GitHub 工作分支一致；26案验收身份关联补核 PASS。凭证见 `case_results/organization_20261123/git_sync_receipt.json` 与 `acceptance_identity_verification.json`。
+
 - **2026-11-23 22:17UTC：LATE-Open2060条件验收收尾及全案例资料整理均完成。此前21:47的镜像/回读待办已于21:54补齐（closeout_verification=PASS）。T550 case_library_v2_20261123统一导航29条记录；25生产+1诊断各21核心文件，另2失败+1测试明确不适用。本地case_results/00_案例总览.html为总入口，统一核心约19.99MiB、压缩回传4.83MiB；590件SHA一致、594本地链接及111远端导航链接通过。大模型、逐时数组及分析留T550，原件未移动/删除，无新求解/监听。详见case_results/organization_20261123/REPORT_ZH.md。**
 
 - **2026-11-23 21:47UTC：LATE-Open2060在T550条件验收PASS（接受并披露），108原件全备份SHA/源身份闭合。独立53473812河北年度外送行残差0.014868208GWh、年度297124.760GWh、比例5.0040e-8，在0.297124760GWh容差内；自身双向B=10273.555872million CNY/B÷P=0.00181286135，B为原对偶差2.6099766倍，不自动重解。1134年度行对偶恢复和分析完成；111小文件138133855bytes已回本机，SHA全匹配、传输后108原件统计不变。报告远端镜像/最后回读遇T550握手超时，已请求恢复；不重算。详见acceptance_late2060_20261123/ACCEPTANCE_REPORT_ZH.md及case_results/LATE_OPEN_2060_ACCEPTANCE_20261123.md。**
