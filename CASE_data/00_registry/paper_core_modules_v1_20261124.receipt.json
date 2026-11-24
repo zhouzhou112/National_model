@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "schema_version": "paper_core_v1_20261124",
+  "cases": 29,
+  "complete_cases": 26,
+  "files": 648,
+  "core_bytes": 20963291,
+  "archive_bytes": 5073185,
+  "archive_sha256": "1fead4fc645c7897e9a63ccf0213ff546e66a5fce0ea25e0cf9297b0d046d0a4",
+  "source_library": "/home/zz2/National_model_server/case_library_v2_20261123",
+  "destination": "/home/zz2/National_model_server/paper_core_modules_v1_20261124",
+  "archive": "/home/zz2/National_model_server/paper_core_modules_v1_20261124.tar.gz",
+  "source_originals_modified": false
+}

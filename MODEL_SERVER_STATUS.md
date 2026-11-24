@@ -1,5 +1,7 @@
 # CISPO 2030 full-year server status
 
+- **2026-11-24：作者要求的CASE_data实体迁移完成。62个reviews目录+3个旧交付根共17931文件/62.0493GiB已剪切入CASE_data，迁移前后SHA/NTFS身份/大小/mtime一致；37个论文/SI/输入方法审查目录原位保留约0.2581GiB。核心新流程T550→8模块/22文件→本地，29记录中26完整解，648包内文件SHA通过；CASE_data/00_案例总览.html为正式入口，旧书签跳转。原大数据未新增回传、无数据删除；9个远端匹配大副本约16.803GiB、137重复组/19.445GiB逻辑上限仅列候选且不相加。详见CASE_data/README.md及00_registry/migration_20261124/REPORT_ZH.md。**
+
 - **2026-11-24：案例导航采用论文正式名 REF/OPS/LATE/PLAN/PLAN-NC（对应旧 Base/B/C/Case3/nocredit），C5显示D1；资源情景后缀保留。本地与T550新增by_paper_scenario正式名入口，29案对应、1155本地链接/58远端链接通过、590原件SHA不变；旧case/release和核心数据保留身份。总入口case_results/00_案例总览.html，证据case_results/naming_20261124。**
 
 - **2026-11-23 22:17UTC：LATE-Open2060条件验收收尾及全案例资料整理均完成。此前21:47的镜像/回读待办已于21:54补齐（closeout_verification=PASS）。T550 case_library_v2_20261123统一导航29条记录；25生产+1诊断各21核心文件，另2失败+1测试明确不适用。本地case_results/00_案例总览.html为总入口，统一核心约19.99MiB、压缩回传4.83MiB；590件SHA一致、594本地链接及111远端导航链接通过。大模型、逐时数组及分析留T550，原件未移动/删除，无新求解/监听。详见case_results/organization_20261123/REPORT_ZH.md。**

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "pages": 31,
+  "links_checked": 811,
+  "cases": 29,
+  "core_files_per_complete_case": 22,
+  "modules_per_case": 8,
+  "scientific_payloads_modified": false
+}

@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "workflow_case": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+  "scientific_files_identical": [
+    "06_storage_annual.csv",
+    "04_generation.csv",
+    "11_annual_constraint_duals.csv",
+    "07_interprovince_network.csv",
+    "14_vre_curtailment.csv",
+    "13_flex_services.csv",
+    "15_storage_operation.csv",
+    "08_city_network.csv",
+    "10_resource_accounting.csv",
+    "01_annual_summary.json",
+    "05_storage_capacity.csv",
+    "16_thermal_operation.csv",
+    "03_capacity.csv",
+    "09_adequacy.csv",
+    "02_costs.csv",
+    "12_dac.csv"
+  ],
+  "scientific_file_count": 16,
+  "remote_targets": [
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2/release_payload.tar.gz",
+      "bytes": 92173159,
+      "sha256": "29a1e8dc2697a311eaf07c0af27d7eeccdf336088676fccedb24f667cadba0e0",
+      "backup_manifest_sha256": "08548ade3933309d56d85a3b3b1fbcdc85cdf4976fff9d5c5980079e933b1a91",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/barrier_checkpoint/dual_barpi.npy",
+      "bytes": 407257992,
+      "sha256": "f2aa7651125202126e3c20ae8b60e03ac721d7e3d82c295b6cbcee1f80800b5e",
+      "backup_manifest_sha256": "bc7e1ab207e215d0f37c035fecc3ac09e587aad441e44851d7b8083dd9e90846",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260914_base_v9_t48_m750_tol1e4_v3/output_8760/model_archive/original.mps.gz",
+      "bytes": 4048048342,
+      "sha256": "fa729325647ebde2d56c553397e02ef013ba09478cddc2f996f3250db14f6739",
+      "backup_manifest_sha256": "bc7e1ab207e215d0f37c035fecc3ac09e587aad441e44851d7b8083dd9e90846",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/output_8760/barrier_checkpoint/dual_barpi.npy",
+      "bytes": 433742056,
+      "sha256": "ff94e370bdaddc8399060025c54f1b85d394d5054b9c0a38ea7c7397b7b838ab",
+      "backup_manifest_sha256": "5d7005b1278d88f798ce511ea72110d14a6221eb23b7aace2d26cc88f84d3c6e",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1/output_8760/model_archive/original.mps.gz",
+      "bytes": 4142788418,
+      "sha256": "fe9a28b1be6865507d7e1b4249a84fd0e807c3ccb4112518676ea0642fc3d23d",
+      "backup_manifest_sha256": "5d7005b1278d88f798ce511ea72110d14a6221eb23b7aace2d26cc88f84d3c6e",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/barrier_checkpoint/dual_barpi.npy",
+      "bytes": 407257992,
+      "sha256": "150c12faa140596a1216f3120ebbf37594c0858b7d2a19d577edd9deb35b83cc",
+      "backup_manifest_sha256": "9408d58c76f81c8910729f59dbd56a5940fefdbf0de96f4986768cdc4e3e3b0e",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260919_base2040_v9_t44_m750_tol1e4_v1/output_8760/model_archive/original.mps.gz",
+      "bytes": 4051693374,
+      "sha256": "62267732e960d713a7800b7879d50e7f35865fe8333370dc635c2dbc418723cc",
+      "backup_manifest_sha256": "9408d58c76f81c8910729f59dbd56a5940fefdbf0de96f4986768cdc4e3e3b0e",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/barrier_checkpoint/dual_barpi.npy",
+      "bytes": 407257992,
+      "sha256": "b6133ff2777e6d9ad27ffb73f2b43188037f09dad0bbeac83a7b3905d18a8911",
+      "backup_manifest_sha256": "969f23dc55d6487e2ed7d33176af94d3478274eb6dca7a53b1c4b25d7c4b1bc4",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    },
+    {
+      "path": "/home/zz2/National_model_server/cloud_backup/20260930_base2050_v9_t48_m750_tol1e4_v1/output_8760/model_archive/original.mps.gz",
+      "bytes": 4051434705,
+      "sha256": "4c04977cfe0b462993fb8e6c63958b7b3725a60cd5f82301315993def912e082",
+      "backup_manifest_sha256": "969f23dc55d6487e2ed7d33176af94d3478274eb6dca7a53b1c4b25d7c4b1bc4",
+      "status": "COMPLETE_MANIFEST_MATCH_AND_LIVE_STAT",
+      "hash_scope": "SHA from previously verified COMPLETE manifest; no new remote full-file hash"
+    }
+  ],
+  "remote_target_count": 9,
+  "solver_used": false
+}

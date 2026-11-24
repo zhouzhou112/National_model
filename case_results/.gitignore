@@ -8,3 +8,6 @@
 /organization_20261123/schema_inventory.json
 /organization_20261123/stage_projection/
 /naming_20261124/stage_projection/
+
+# Historical payloads physically relocated to CASE_data; old path is compatibility only.
+/by_case/

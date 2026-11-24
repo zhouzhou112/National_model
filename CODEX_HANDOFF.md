@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-24：作者要求的CASE_data实体迁移完成。62个reviews目录+3个旧交付根共17931文件/62.0493GiB已剪切入CASE_data，迁移前后SHA/NTFS身份/大小/mtime一致；37个论文/SI/输入方法审查目录原位保留约0.2581GiB。核心新流程T550→8模块/22文件→本地，29记录中26完整解，648包内文件SHA通过；CASE_data/00_案例总览.html为正式入口，旧书签跳转。原大数据未新增回传、无数据删除；9个远端匹配大副本约16.803GiB、137重复组/19.445GiB逻辑上限仅列候选且不相加。详见CASE_data/README.md及00_registry/migration_20261124/REPORT_ZH.md。**
+
 - **2026-11-24：案例导航采用论文正式名 REF/OPS/LATE/PLAN/PLAN-NC（对应旧 Base/B/C/Case3/nocredit），C5显示D1；资源情景后缀保留。本地与T550新增by_paper_scenario正式名入口，29案对应、1155本地链接/58远端链接通过、590原件SHA不变；旧case/release和核心数据保留身份。总入口case_results/00_案例总览.html，证据case_results/naming_20261124。**
 
 - 本轮主要实现提交 `7c58a8f5` 已推送并核验 GitHub 工作分支一致；26案验收身份关联补核 PASS。凭证见 `case_results/organization_20261123/git_sync_receipt.json` 与 `acceptance_identity_verification.json`。
@@ -4032,6 +4034,16 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-24 — 求解数据实体迁出补充材料与标准核心工作流
+
+- 起始Git ea5cd6e4；作者明确要求剪切到项目根CASE_data，保留交互目录并筛查reviews。未动SI模块、在线稿件、GIS/生产输入或其他National_RL分支。
+- 精确计划65根（62 reviews+3 case_results旧交付），17931文件66624973245bytes。先hash_manifest.py，PowerShell Move-Item同卷迁移，目录占用后按清单续接；数据不复制，空目录清除，两份占用旧导航卡留小型兼容副本。前后全量SHA、file ID、bytes、mtime均一致。62旧review入口为junction，旧by_case为兼容路由，其余旧交付为junction；没有数据删除。
+- 37份脚本/配置仍引用旧路径，兼容入口保留；269归档脚本存在__file__父级表达式，逐行提示重放前核对，不改历史源码。新的生产收尾数据/操作记录进入CASE_data，旧reviews仅保留论文/SI/方法审查实体。
+- T550 export_core_on_t550.py输出paper_core_modules_v1_20261124；29记录、26完整解同8模块22核心文件。包5073185bytes/SHA1fead4fc645c7897e9a63ccf0213ff546e66a5fce0ea25e0cf9297b0d046d0a4，648文件本地核验。core约20MiB，原MPS/BarX/BarPi/逐时数组不新增取回。碳JSON仅取原年度值；年度约束影子值不冒充完整逐时负荷价格。
+- 新入口extract_core_from_backup.py在OPS-Conservative2060备份实测，16科学文件与旧提取逐字节一致。import_core_package.py验证两个独立批次增量保留、重复导入、篡改拒绝且目的不变；build_navigation.py生成31页811链接PASS。浏览器file URL受工具限制，未冒称视觉截图验收。
+- reviews实体剩约0.2581GiB。筛查171可重建Python缓存约2.07MiB；137组414成员重复，额外逻辑上限20878885300bytes；9大副本18041654030bytes本机SHA匹配T550 COMPLETE清单且本次stat一致。两量重叠，非已释放空间；没有确认整review可删。失效运行状态与失败方案作为方法证据保留。
+- 证据CASE_data/00_registry/migration_20261124及workflow_verification/import_tests/navigation_verification。完整哈希/未跟踪大数据留本地；Git仅迁移原2621已跟踪blob并提交本轮脚本/小报告，既有dirty原件在新位置保留。下一步仅在作者另行授权后按候选文件清单清理冗余；当前从CASE_data正式名/年份/模块查数据，无求解/监听。
 
 ### 2026-11-24 — 案例入口改用论文正式情景名
 

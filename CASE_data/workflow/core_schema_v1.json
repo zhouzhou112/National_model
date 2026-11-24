@@ -1,0 +1,43 @@
+{
+  "version": "paper_core_v1_20261124",
+  "max_file_bytes": 1048576,
+  "max_case_bytes": 3145728,
+  "modules": {
+    "00_identity_acceptance": "身份与验收",
+    "01_system_costs": "年度系统与成本",
+    "02_capacity_network": "容量、网络与充裕度",
+    "03_operations": "发电、弃电、储能与火电运行",
+    "04_flexibility": "柔性资源签约与调用",
+    "05_prices": "年度约束工程影子值",
+    "06_carbon": "碳排放与DAC",
+    "07_provenance": "来源、远端原件与分析目录"
+  },
+  "file_modules": {
+    "00_identity.json": "00_identity_acceptance",
+    "20_acceptance.json": "00_identity_acceptance",
+    "01_annual_summary.json": "01_system_costs",
+    "02_costs.csv": "01_system_costs",
+    "03_capacity.csv": "02_capacity_network",
+    "05_storage_capacity.csv": "02_capacity_network",
+    "07_interprovince_network.csv": "02_capacity_network",
+    "08_city_network.csv": "02_capacity_network",
+    "09_adequacy.csv": "02_capacity_network",
+    "10_resource_accounting.csv": "02_capacity_network",
+    "04_generation.csv": "03_operations",
+    "06_storage_annual.csv": "03_operations",
+    "14_vre_curtailment.csv": "03_operations",
+    "15_storage_operation.csv": "03_operations",
+    "16_thermal_operation.csv": "03_operations",
+    "13_flex_services.csv": "04_flexibility",
+    "11_annual_constraint_duals.csv": "05_prices",
+    "12_dac.csv": "06_carbon",
+    "90_remote_files.csv": "07_provenance",
+    "91_remote_directories.json": "07_provenance",
+    "92_provenance.json": "07_provenance"
+  },
+  "derived_files": {"06_carbon/carbon_accounting.json": "01_annual_summary.json carbon object; exact values, no new scientific calculation"},
+  "scientific_core_count": 22,
+  "price_boundary": "Annual constraint duals are not complete hourly load marginal prices or market settlement. Full hourly price reconstruction stays in T550 analysis directories and needs a separate compact extraction request.",
+  "disabled_services": "31 provinces x 4 services retained; DISABLED_BY_SCENARIO with blank quantities, never fabricated zeros",
+  "failed_and_test": "Same eight module directories; absent scientific results explicitly NOT_APPLICABLE_NO_COMPLETE_SOLUTION"
+}

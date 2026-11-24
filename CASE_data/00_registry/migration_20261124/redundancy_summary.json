@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "migration_files": 17931,
+  "migration_bytes": 66624973245,
+  "exact_duplicate_groups_over_1MiB": 137,
+  "duplicate_members": 414,
+  "logical_duplicate_bytes_upper_bound": 20878885300,
+  "large_files_with_complete_T550_manifest_match": 9,
+  "local_large_remote_matched_bytes": 18041654030,
+  "deletion_count": 0,
+  "confirmed_disposable_entire_review_directories": 0,
+  "limitations": [
+    "Duplicate logical bytes are not measured reclaimable disk space",
+    "Remote-matched bytes overlap duplicate groups; never add the two totals",
+    "Failed or superseded experiments preserve method-selection and diagnostic evidence"
+  ]
+}

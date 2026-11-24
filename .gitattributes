@@ -30,3 +30,13 @@ supplementary_materials/reviews/case3_2050_preparation_20261026/case3_2050.sbatc
 supplementary_materials/reviews/base_2060_screen_20261026/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 supplementary_materials/reviews/base_2060_screen_20261026/source_evidence/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 supplementary_materials/reviews/base_2060_screen_20261026/ready/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the same byte and newline rules after the CASE_data physical relocation.
+CASE_data/02_history/02_numerical_experiments/validation_coordination_20261005/unittest_verified_20261005T185140Z.log -text
+CASE_data/02_history/01_production/case3_2030_launch_20261014/P4_*_20261015/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+CASE_data/02_history/01_production/case3_2030_launch_20261014/P4_*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+CASE_data/02_history/01_production/case3_2030_launch_20261014/P4_Base2040_archive/download_identity.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+CASE_data/02_history/01_production/case3_2050_preparation_20261026/case3_2050.sbatch text eol=lf
+CASE_data/02_history/01_production/base_2060_screen_20261026/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+CASE_data/02_history/01_production/base_2060_screen_20261026/source_evidence/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+CASE_data/02_history/01_production/base_2060_screen_20261026/ready/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "files": 648,
+  "bytes": 21493047,
+  "case_count": 29,
+  "archive_sha256": "1fead4fc645c7897e9a63ccf0213ff546e66a5fce0ea25e0cf9297b0d046d0a4",
+  "imported_at_utc": "2026-11-24T13:12:32.371816+00:00",
+  "root": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\CASE_data",
+  "no_original_large_files": true
+}

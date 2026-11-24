@@ -1,3 +1,6 @@
+<!-- CASE_data-canonical-20261124 -->
+本地求解数据已实体迁入同级 **CASE_data**。请打开 [新案例总览](../CASE_data/00_案例总览.html)，核心位于 `CASE_data/01_cases`，历史证据位于 `02_history`，旧交付位于 `03_legacy_deliveries`。本目录保留旧书签及兼容入口。
+
 # 求解案例资料入口
 
 <!-- paper-name-20261124 -->

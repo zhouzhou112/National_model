@@ -1,0 +1,18 @@
+# Generated scientific payloads and preserved untracked historical data stay on disk.
+/01_cases/
+/02_history/
+/03_legacy_deliveries/
+/package_manifest.json
+/catalog.json
+/schema.json
+/csv_schema.json
+/00_registry/*.tar.gz
+/00_registry/deliveries/
+/00_registry/import_tests/
+/00_registry/migration_20261124/inventory_before.json
+/00_registry/migration_20261124/move_plan.json
+/00_registry/migration_20261124/hashes_before.json
+/00_registry/migration_20261124/hashes_after.json
+/00_registry/migration_20261124/stage_projection/
+/00_registry/migration_20261124/git_index_plan.json
+**/__pycache__/
