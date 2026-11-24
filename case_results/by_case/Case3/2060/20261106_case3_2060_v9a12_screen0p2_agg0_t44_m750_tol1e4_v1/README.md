@@ -1,5 +1,8 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**PLAN 2060**；历史代号：`Case3`。
+
 <!-- unified-core-20261123 -->
-最新统一核心入口：[Case3 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+最新统一核心入口：[PLAN 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Case3/2060/20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
 
 # Case3 2060 · v1 · 44线程尝试
 

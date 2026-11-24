@@ -12,6 +12,8 @@ This is the repository's single handoff document for work continued across Codex
 
 ## Current validated snapshot
 
+- **2026-11-24：案例导航采用论文正式名 REF/OPS/LATE/PLAN/PLAN-NC（对应旧 Base/B/C/Case3/nocredit），C5显示D1；资源情景后缀保留。本地与T550新增by_paper_scenario正式名入口，29案对应、1155本地链接/58远端链接通过、590原件SHA不变；旧case/release和核心数据保留身份。总入口case_results/00_案例总览.html，证据case_results/naming_20261124。**
+
 - 本轮主要实现提交 `7c58a8f5` 已推送并核验 GitHub 工作分支一致；26案验收身份关联补核 PASS。凭证见 `case_results/organization_20261123/git_sync_receipt.json` 与 `acceptance_identity_verification.json`。
 
 - **2026-11-23 22:17UTC：LATE-Open2060条件验收收尾及全案例资料整理均完成。此前21:47的镜像/回读待办已于21:54补齐（closeout_verification=PASS）。T550 case_library_v2_20261123统一导航29条记录；25生产+1诊断各21核心文件，另2失败+1测试明确不适用。本地case_results/00_案例总览.html为总入口，统一核心约19.99MiB、压缩回传4.83MiB；590件SHA一致、594本地链接及111远端导航链接通过。大模型、逐时数组及分析留T550，原件未移动/删除，无新求解/监听。详见case_results/organization_20261123/REPORT_ZH.md。**
@@ -4030,6 +4032,12 @@ PYTHON=/home/zz2/.local/envs/cispo-2030/bin/python
    才允许中断任一正式任务。
 
 ## Version history
+
+### 2026-11-24 — 案例入口改用论文正式情景名
+
+- 起始Git f1c6ebaa；修正上轮仅副说明使用正式名的问题。依据论文figstyle_paper.py SCENARIO_LABEL及正式命名表，映射Base→REF、B→OPS、C→LATE、Case3→PLAN、nocredit→PLAN-NC；C5→D1。
+- 命令：RL python case_results/rename_paper_navigation_20261124.py；T550同脚本--remote case_library_v2_20261123 --mapping paper_scenarios.json。修改仅导航、映射与新增台账字段；安装脚本追加正式命名步骤，原模型、验收原件、release和旧case键不变。
+- 本地59页/1155链接、T55058链接通过，两端590原交付文件SHA一致；29案齐全。证据naming_20261124/{local_verification,remote_verification,REPORT_ZH}。无新计算/大文件回传/监听；下一步从论文正式名入口查找，历史代号留作溯源。
 
 ### 2026-11-23 — 统一 T550 全量导航与本地轻量核心库
 

@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "cases": 29,
+  "original_payload_files_sha_verified": 590,
+  "navigation_links": 58,
+  "root": "/home/zz2/National_model_server/case_library_v2_20261123",
+  "mapping": {
+    "Base": "REF",
+    "B": "OPS",
+    "C": "LATE",
+    "Case3": "PLAN",
+    "nocredit": "PLAN-NC",
+    "OPS-Open": "OPS-Open",
+    "OPS-Conservative": "OPS-Conservative",
+    "LATE-Open": "LATE-Open",
+    "C5": "D1",
+    "LATE-Open-TEST": "LATE-Open-TEST"
+  },
+  "as_of_utc": "2026-11-24T12:47:45.084114+00:00",
+  "originals_renamed": false
+}

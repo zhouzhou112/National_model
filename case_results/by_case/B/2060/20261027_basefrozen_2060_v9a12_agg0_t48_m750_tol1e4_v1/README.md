@@ -1,5 +1,8 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**OPS 2060**；历史代号：`B`。
+
 <!-- unified-core-20261123 -->
-最新统一核心入口：[B 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/B/2060/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+最新统一核心入口：[OPS 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/B/2060/20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
 
 # B 2060 · v1
 

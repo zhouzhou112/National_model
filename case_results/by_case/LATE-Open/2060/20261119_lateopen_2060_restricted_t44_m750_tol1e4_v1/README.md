@@ -1,3 +1,6 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**LATE-Open 2060**；历史代号：`LATE-Open`。
+
 <!-- unified-core-20261123 -->
 最新统一核心入口：[LATE-Open 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/LATE-Open/2060/20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
 

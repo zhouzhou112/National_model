@@ -1,0 +1,265 @@
+{
+  "cases": [
+    {
+      "paper_scenario": "OPS",
+      "year": 2030,
+      "legacy_case": "B",
+      "kind": "FAILED_ATTEMPT",
+      "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v2\\core"
+    },
+    {
+      "paper_scenario": "OPS",
+      "year": 2030,
+      "legacy_case": "B",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2030\\20261026_basefrozen_2030_v9_agg0_t48_m750_tol1e4_v3\\core"
+    },
+    {
+      "paper_scenario": "OPS",
+      "year": 2040,
+      "legacy_case": "B",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2040\\20261027_basefrozen_2040_v9a12_agg0_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS",
+      "year": 2050,
+      "legacy_case": "B",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2050\\20261027_basefrozen_2050_v9a12_agg0_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS",
+      "year": 2060,
+      "legacy_case": "B",
+      "kind": "FAILED_ATTEMPT",
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS",
+      "year": 2060,
+      "legacy_case": "B",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\B\\2060\\20261027_basefrozen_2060_v9a12_agg0_t48_m750_tol1e4_v2\\core"
+    },
+    {
+      "paper_scenario": "REF",
+      "year": 2030,
+      "legacy_case": "Base",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20260914_base_v9_t48_m750_tol1e4_v3",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\REF\\2030\\20260914_base_v9_t48_m750_tol1e4_v3",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Base\\2030\\20260914_base_v9_t48_m750_tol1e4_v3\\core"
+    },
+    {
+      "paper_scenario": "REF",
+      "year": 2040,
+      "legacy_case": "Base",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\REF\\2040\\20260919_base2040_v9_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Base\\2040\\20260919_base2040_v9_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "REF",
+      "year": 2050,
+      "legacy_case": "Base",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\REF\\2050\\20260930_base2050_v9_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Base\\2050\\20260930_base2050_v9_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "REF",
+      "year": 2060,
+      "legacy_case": "Base",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\REF\\2060\\20261012_base2060_v9a12_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Base\\2060\\20261012_base2060_v9a12_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "LATE",
+      "year": 2050,
+      "legacy_case": "C",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\LATE\\2050\\20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\C\\2050\\20261020_lateentry_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\core"
+    },
+    {
+      "paper_scenario": "LATE",
+      "year": 2060,
+      "legacy_case": "C",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\LATE\\2060\\20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\C\\2060\\20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "PLAN",
+      "year": 2030,
+      "legacy_case": "Case3",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\PLAN\\2030\\20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Case3\\2030\\20261014_case3_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "PLAN",
+      "year": 2040,
+      "legacy_case": "Case3",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\PLAN\\2040\\20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Case3\\2040\\20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2\\core"
+    },
+    {
+      "paper_scenario": "PLAN",
+      "year": 2050,
+      "legacy_case": "Case3",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\PLAN\\2050\\20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Case3\\2050\\20261027_case3_2050_v9a12_screen0p2_agg0_t40_m750_tol1e4_v2\\core"
+    },
+    {
+      "paper_scenario": "PLAN-NC",
+      "year": 2030,
+      "legacy_case": "nocredit",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\PLAN-NC\\2030\\20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\nocredit\\2030\\20261014_case3nocredit_2030_v9_screen0p2_agg0_t48_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "PLAN",
+      "year": 2060,
+      "legacy_case": "Case3",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\PLAN\\2060\\20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\Case3\\2060\\20261106_case3_2060_v9a12_screen0p2_agg0_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Open",
+      "year": 2050,
+      "legacy_case": "OPS-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Open\\2050\\20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Open\\2050\\20261115_opsopen_2050_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Conservative",
+      "year": 2050,
+      "legacy_case": "OPS-Conservative",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Conservative\\2050\\20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Conservative\\2050\\20261115_opscons_2050_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "D1",
+      "year": 2050,
+      "legacy_case": "C5",
+      "kind": "COMPLETED_DIAGNOSTIC",
+      "release": "20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\D1\\2050\\20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\C5\\2050\\20261115_C5_intra_2050_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "LATE-Open-TEST",
+      "year": 2050,
+      "legacy_case": "LATE-Open-TEST",
+      "kind": "COMPLETED_FACTOR_TEST",
+      "release": "20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\LATE-Open-TEST\\2050\\20261115_lateopen_2050_restricted_factor5_t44_m750_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\LATE-Open-TEST\\2050\\20261115_lateopen_2050_restricted_factor5_t44_m750_v1\\core"
+    },
+    {
+      "paper_scenario": "LATE-Open",
+      "year": 2050,
+      "legacy_case": "LATE-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\LATE-Open\\2050\\20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\LATE-Open\\2050\\20261115_lateopen_2050_restricted_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Open",
+      "year": 2040,
+      "legacy_case": "OPS-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Open\\2040\\20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Open\\2040\\20261115_opsopen_2040_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Open",
+      "year": 2060,
+      "legacy_case": "OPS-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Open\\2060\\20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Open\\2060\\20261115_opsopen_2060_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Open",
+      "year": 2030,
+      "legacy_case": "OPS-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Open\\2030\\20261115_opsopen_2030_v9_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Conservative",
+      "year": 2030,
+      "legacy_case": "OPS-Conservative",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Conservative\\2030\\20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Conservative\\2030\\20261117_opsconservative_2030_v9_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Conservative",
+      "year": 2040,
+      "legacy_case": "OPS-Conservative",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Conservative\\2040\\20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Conservative\\2040\\20261117_opsconservative_2040_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "OPS-Conservative",
+      "year": 2060,
+      "legacy_case": "OPS-Conservative",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\OPS-Conservative\\2060\\20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\OPS-Conservative\\2060\\20261117_opsconservative_2060_v9a12_t44_m750_tol1e4_v1\\core"
+    },
+    {
+      "paper_scenario": "LATE-Open",
+      "year": 2060,
+      "legacy_case": "LATE-Open",
+      "kind": "COMPLETED_PRODUCTION",
+      "release": "20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+      "local_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\by_paper_scenario\\LATE-Open\\2060\\20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1",
+      "original_core_directory": "D:\\codeenv\\pycharmproject\\National_RL\\National_model\\case_results\\core_library_20261123\\by_case\\LATE-Open\\2060\\20261119_lateopen_2060_restricted_t44_m750_tol1e4_v1\\core"
+    }
+  ]
+}

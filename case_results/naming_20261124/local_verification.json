@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "cases": 29,
+  "pages": 59,
+  "local_links_checked": 1155,
+  "original_payload_files_sha_verified": 590,
+  "authority_path": "D:\\codeenv\\pycharmproject\\National_RL\\claude_workspace\\paper\\common\\figstyle_paper.py",
+  "authority_sha256": "ec5aa3de06679e30e02e9f005852f739183cfb01fa65cf80e27247354e5a07f7",
+  "mapping": {
+    "Base": "REF",
+    "B": "OPS",
+    "C": "LATE",
+    "Case3": "PLAN",
+    "nocredit": "PLAN-NC",
+    "OPS-Open": "OPS-Open",
+    "OPS-Conservative": "OPS-Conservative",
+    "LATE-Open": "LATE-Open",
+    "C5": "D1",
+    "LATE-Open-TEST": "LATE-Open-TEST"
+  },
+  "originals_renamed": false,
+  "remote_status": "PASS",
+  "as_of_utc": "2026-11-24T12:47:59.765894+00:00",
+  "remote_receipt": "remote_verification.json"
+}

@@ -1,3 +1,6 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**LATE-Open-TEST 2050**；历史代号：`LATE-Open-TEST`。
+
 <!-- unified-core-20261123 -->
 最新统一核心入口：[LATE-Open-TEST 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/LATE-Open-TEST/2050/20261115_lateopen_2050_restricted_factor5_t44_m750_v1/index.html)。本卡以下内容作为历史记录保留。
 

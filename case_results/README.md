@@ -1,5 +1,8 @@
 # 求解案例资料入口
 
+<!-- paper-name-20261124 -->
+主要分类入口为 `by_paper_scenario/REF、OPS、LATE、PLAN、PLAN-NC/`，以及保留后缀的资源敏感性案例。正式名见 `paper_scenarios.json`；旧 `case` 字段/原件目录保持身份，新表增加 `paper_scenario` 与 `legacy_case`。
+
 打开 [00_案例总览.html](00_案例总览.html)，按情景、年份和版本查找全部 29 条登记记录。
 
 - `core_library_20261123/by_case/`：T550 预处理并逐文件 SHA 核验的统一轻量包；25 个生产案例和 1 个诊断案例各 21 个核心文件，字段一致。

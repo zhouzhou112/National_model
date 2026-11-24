@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "approved_basis": "claude_workspace/paper/common/figstyle_paper.py SCENARIO_LABEL and 图件规范与五图定稿.md",
+  "mapping": {
+    "Base": "REF",
+    "B": "OPS",
+    "C": "LATE",
+    "Case3": "PLAN",
+    "nocredit": "PLAN-NC",
+    "OPS-Open": "OPS-Open",
+    "OPS-Conservative": "OPS-Conservative",
+    "LATE-Open": "LATE-Open",
+    "C5": "D1",
+    "LATE-Open-TEST": "LATE-Open-TEST"
+  },
+  "definitions_zh": {
+    "REF": "无付费终端柔性的参考规划路径",
+    "OPS": "同年 REF 设施固定，采购并调用柔性",
+    "LATE": "沿 REF 至 2040，柔性从 2050 进入规划",
+    "PLAN": "柔性从 2030 起纳入联合规划",
+    "PLAN-NC": "PLAN 的无容量信用反事实，仅 2030",
+    "OPS-Open": "OPS 的开放资源情景",
+    "OPS-Conservative": "OPS 的保守资源情景",
+    "LATE-Open": "LATE 的开放资源受限联合优化",
+    "D1": "仅放开省内城市链路的诊断案例",
+    "LATE-Open-TEST": "LATE-Open 的前五轮排序测试"
+  },
+  "boundary": "Paper names apply to navigation and added metadata. Legacy case keys, release identifiers, core data and acceptance evidence remain unchanged. Resource-scenario Base is distinct from legacy model Base=REF."
+}

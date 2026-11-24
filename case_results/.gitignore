@@ -1,8 +1,10 @@
 /_packages/
 /deliveries/
 /core_library_20261123/
+/by_paper_scenario/
 /organization_20261123/*.tar.gz
 /organization_20261123/library_inputs.json
 /organization_20261123/remote_inventory.json
 /organization_20261123/schema_inventory.json
 /organization_20261123/stage_projection/
+/naming_20261124/stage_projection/

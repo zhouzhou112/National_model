@@ -154,6 +154,10 @@ def main():
         exclusions=['No original large arrays, MPS, BarX, BarPi or full hourly CSV downloaded'],cases=validations)
     save(WORK/'local_library_verification.json',verification)
     print(json.dumps({k:v for k,v in verification.items() if k not in ('cases','archive')}))
+    # Keep the user-facing entry points aligned with the approved paper names.
+    import runpy
+    naming=runpy.run_path(str(RESULTS/'rename_paper_navigation_20261124.py'))
+    naming['local'](RESULTS,json.loads((RESULTS/'paper_scenarios.json').read_text(encoding='utf-8-sig')))
 
 
 if __name__=='__main__':main()

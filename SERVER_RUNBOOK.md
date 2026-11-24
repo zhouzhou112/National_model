@@ -1,5 +1,7 @@
 # CISPO 2030/8760 server runbook
 
+- **2026-11-24：案例导航采用论文正式名 REF/OPS/LATE/PLAN/PLAN-NC（对应旧 Base/B/C/Case3/nocredit），C5显示D1；资源情景后缀保留。本地与T550新增by_paper_scenario正式名入口，29案对应、1155本地链接/58远端链接通过、590原件SHA不变；旧case/release和核心数据保留身份。总入口case_results/00_案例总览.html，证据case_results/naming_20261124。**
+
 ## 全量与轻量案例资料统一入口（2026-11-23）
 
 T550统一入口`/home/zz2/National_model_server/case_library_v2_20261123/INDEX_ZH.md`，按case/year/release排列。每案`core/`为统一预处理文件，`full_backup/`与`analysis_links/`仅为原备份/分析导航符号链接；不通过链接修改原件。当前29登记案，26完整解每案同21核心文件。

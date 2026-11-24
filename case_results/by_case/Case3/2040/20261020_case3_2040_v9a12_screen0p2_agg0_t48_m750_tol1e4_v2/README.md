@@ -1,5 +1,8 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**PLAN 2040**；历史代号：`Case3`。
+
 <!-- unified-core-20261123 -->
-最新统一核心入口：[Case3 2040](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/index.html)。本卡以下内容作为历史记录保留。
+最新统一核心入口：[PLAN 2040](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Case3/2040/20261020_case3_2040_v9a12_screen0p2_agg0_t48_m750_tol1e4_v2/index.html)。本卡以下内容作为历史记录保留。
 
 # Case3 2040 · v2
 

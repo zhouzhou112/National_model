@@ -1,5 +1,8 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**LATE 2060**；历史代号：`C`。
+
 <!-- unified-core-20261123 -->
-最新统一核心入口：[C 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/C/2060/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+最新统一核心入口：[LATE 2060](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/C/2060/20261030_lateentry_2060_v9a12_screen0p2_agg0_t40_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
 
 # C 2060 · v1
 

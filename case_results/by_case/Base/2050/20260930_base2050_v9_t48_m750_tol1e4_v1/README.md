@@ -1,5 +1,8 @@
+<!-- paper-name-20261124 -->
+论文正式名称：**REF 2050**；历史代号：`Base`。
+
 <!-- unified-core-20261123 -->
-最新统一核心入口：[Base 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Base/2050/20260930_base2050_v9_t48_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
+最新统一核心入口：[REF 2050](D:/codeenv/pycharmproject/National_RL/National_model/case_results/core_library_20261123/by_case/Base/2050/20260930_base2050_v9_t48_m750_tol1e4_v1/index.html)。本卡以下内容作为历史记录保留。
 
 # Base 2050 · v1
 
